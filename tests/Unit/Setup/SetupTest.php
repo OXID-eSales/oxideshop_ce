@@ -19,16 +19,18 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Setup;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Setup;
 
 require_once getShopBasePath() . '/Setup/functions.php';
 
-use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
-use OxidEsales\Eshop\Setup\Core;
-use OxidEsales\Eshop\Setup\Setup;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Edition\EditionPathProvider;
+use OxidEsales\EshopCommunity\Core\Edition\EditionRootPathProvider;
+use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopVersion;
+use OxidEsales\EshopCommunity\Setup\Core;
+use OxidEsales\EshopCommunity\Setup\Setup;
 
 /**
  * Setup tests
@@ -176,20 +178,9 @@ class SetupTest extends \OxidTestCase
         $this->assertEquals('fail', $oSetup->getModuleClass(0));
     }
 
-    /**
-     * Test if sql files don't have invalid encoding.
-     */
-    public function testSqlFilesForInvalidEncoding()
+    public function testShopVersion()
     {
-        $pathProvider = new EditionPathProvider(new EditionRootPathProvider(new EditionSelector()));
-        $filePathPattern = $pathProvider->getSetupDirectory() . '/Sql/*.sql';
-        foreach (glob($filePathPattern) as $sFilePath) {
-            if (is_readable($sFilePath)) {
-                $sFileContent = file_get_contents($sFilePath);
-                foreach (array(0xEF, 0xBB, 0xBF, 0x9C) as $sCharacter) {
-                    $this->assertFalse(strpos($sFileContent, $sCharacter), "Character with invalid encoding found in {$sFilePath} file.");
-                }
-            }
-        }
+        $version = ShopVersion::getVersion();
+        $this->assertNotEmpty($version);
     }
 }

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 
@@ -30,7 +30,7 @@ use oxRegistry;
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling -> Main.
  */
-class DeliveryArticles extends \oxAdminDetails
+class DeliveryArticles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -49,7 +49,7 @@ class DeliveryArticles extends \oxAdminDetails
             $this->_createCategoryTree("artcattree");
 
             // load object
-            $oDelivery = oxNew("oxdelivery");
+            $oDelivery = oxNew(\OxidEsales\Eshop\Application\Model\Delivery::class);
             $oDelivery->load($soxId);
             $this->_aViewData["edit"] = $oDelivery;
 
@@ -59,14 +59,14 @@ class DeliveryArticles extends \oxAdminDetails
             }
         }
 
-        $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
+        $iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc");
         if ($iAoc == 1) {
-            $oDeliveryArticlesAjax = oxNew('delivery_articles_ajax');
+            $oDeliveryArticlesAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryArticlesAjax::class);
             $this->_aViewData['oxajax'] = $oDeliveryArticlesAjax->getColumns();
 
             return "popups/delivery_articles.tpl";
         } elseif ($iAoc == 2) {
-            $oDeliveryCategoriesAjax = oxNew('delivery_categories_ajax');
+            $oDeliveryCategoriesAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryCategoriesAjax::class);
             $this->_aViewData['oxajax'] = $oDeliveryCategoriesAjax->getColumns();
 
             return "popups/delivery_categories.tpl";

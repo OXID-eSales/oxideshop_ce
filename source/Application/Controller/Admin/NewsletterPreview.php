@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 
@@ -29,7 +29,7 @@ use oxRegistry;
  * Creates plaintext and HTML format newsletter preview.
  * Admin Menu: Customer Info -> Newsletter -> Preview.
  */
-class NewsletterPreview extends \oxAdminDetails
+class NewsletterPreview extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -46,12 +46,12 @@ class NewsletterPreview extends \oxAdminDetails
         $soxId = $this->getEditObjectId();
         if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oNewsletter = oxNew("oxnewsletter");
+            $oNewsletter = oxNew(\OxidEsales\Eshop\Application\Model\Newsletter::class);
             $oNewsletter->load($soxId);
             $this->_aViewData["edit"] = $oNewsletter;
 
             // user
-            $sUserID = oxRegistry::getSession()->getVariable("auth");
+            $sUserID = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("auth");
 
             // assign values to the newsletter and show it
             $oNewsletter->prepare($sUserID, $this->getConfig()->getConfigParam('bl_perfLoadAktion'));

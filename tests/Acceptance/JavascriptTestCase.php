@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Tests\Acceptance;
+namespace OxidEsales\EshopCommunity\Tests\Acceptance;
 
 abstract class JavascriptTestCase extends AcceptanceTestCase
 {

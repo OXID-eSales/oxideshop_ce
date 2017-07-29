@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 
 /**
  * Encapsulates methods for application initialization.
  */
-class OxidStartController extends \oxUBase
+class OxidStartController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
      * Initializes globals and environment vars
@@ -38,7 +38,7 @@ class OxidStartController extends \oxUBase
     {
         $this->pageStart();
 
-        if ('oxstart' == oxRegistry::getConfig()->getRequestParameter('cl') || $this->isAdmin()) {
+        if ('oxstart' == \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestControllerId() || $this->isAdmin()) {
             return;
         }
 
@@ -55,7 +55,7 @@ class OxidStartController extends \oxUBase
     {
         parent::render();
 
-        $errorNumber = oxRegistry::getConfig()->getRequestParameter('execerror');
+        $errorNumber = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('execerror');
         $templates = $this->getErrorTemplates();
 
         if (array_key_exists($errorNumber, $templates)) {
@@ -88,7 +88,7 @@ class OxidStartController extends \oxUBase
         }
 
         //commit file cache
-        oxRegistry::getUtils()->commitFileCache();
+        \OxidEsales\Eshop\Core\Registry::getUtils()->commitFileCache();
     }
 
     /**
@@ -98,7 +98,7 @@ class OxidStartController extends \oxUBase
      */
     public function getErrorNumber()
     {
-        return oxRegistry::getConfig()->getRequestParameter('errornr');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('errornr');
     }
 
     /**
@@ -120,6 +120,6 @@ class OxidStartController extends \oxUBase
      */
     protected function _getSystemEventHandler()
     {
-        return oxNew('oxSystemEventHandler');
+        return oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
     }
 }

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Module;
+namespace OxidEsales\EshopCommunity\Core\Module;
 
 use \oxException;
 
@@ -37,7 +37,7 @@ class ModuleTemplateBlockContentReader
      * Path to template block file is provided via $pathFormatter.
      * Throw exception if file does not exist or is not readable.
      *
-     * @param ModuleTemplateBlockPathFormatter $pathFormatter
+     * @param \OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter $pathFormatter
      *
      * @throws \oxException
      *
@@ -45,9 +45,9 @@ class ModuleTemplateBlockContentReader
      */
     public function getContent($pathFormatter)
     {
-        if (!$pathFormatter instanceof ModuleTemplateBlockPathFormatter) {
+        if (!$pathFormatter instanceof \OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter) {
             $exceptionMessage = 'Provided object is not an instance of class %s or does not have method getPath().';
-            throw oxNew('oxException', sprintf($exceptionMessage, ModuleTemplateBlockPathFormatter::class));
+            throw oxNew('oxException', sprintf($exceptionMessage, \OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter::class));
         }
 
         $filePath = $pathFormatter->getPath();

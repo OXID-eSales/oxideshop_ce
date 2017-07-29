@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
 
@@ -40,8 +40,8 @@ class NewsletterSelectionAjaxTest extends \OxidTestCase
     {
         parent::setUp();
 
-        oxDb::getDb()->execute("insert into oxobject2group set oxid='_testGroupRemove1', oxobjectid='_testGroupRemove'");
-        oxDb::getDb()->execute("insert into oxobject2group set oxid='_testGroupRemove2', oxobjectid='_testGroupRemove'");
+        oxDb::getDb()->execute("insert into oxobject2group set oxid='_testGroupRemove1', oxobjectid='_testGroupRemove', oxgroupsid='_testGroup1'");
+        oxDb::getDb()->execute("insert into oxobject2group set oxid='_testGroupRemove2', oxobjectid='_testGroupRemove', oxgroupsid='_testGroup2'");
 
         oxDb::getDb()->execute("insert into oxobject2group set oxid='_testGroupRemoveAll1', oxobjectid='_testGroupRemoveAll', oxgroupsid='_testGroup1'");
         oxDb::getDb()->execute("insert into oxobject2group set oxid='_testGroupRemoveAll2', oxobjectid='_testGroupRemoveAll', oxgroupsid='_testGroup2'");
@@ -59,10 +59,7 @@ class NewsletterSelectionAjaxTest extends \OxidTestCase
      */
     protected function tearDown()
     {
-        oxDb::getDb()->execute("delete from oxobject2group where oxobjectid='_testGroupRemove'");
-        oxDb::getDb()->execute("delete from oxobject2group where oxobjectid='_testGroupRemoveAll'");
-        oxDb::getDb()->execute("delete from oxobject2group where oxobjectid='_testGroupAdd'");
-        oxDb::getDb()->execute("delete from oxobject2group where oxobjectid='_testGroupAddAll'");
+        oxDb::getDb()->execute("delete from oxobject2group where oxid LIKE '\_testGroupRemove%'");
 
         oxDb::getDb()->execute("delete from oxgroups where oxid='_testGroup1'");
         oxDb::getDb()->execute("delete from oxgroups where oxid='_testGroup2'");
@@ -143,7 +140,7 @@ class NewsletterSelectionAjaxTest extends \OxidTestCase
      */
     public function testRemoveGroupFromNewsletter()
     {
-        $oView = $this->getMock("newsletter_selection_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NewsletterSelectionAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testGroupRemove1', '_testGroupRemove2')));
 
         $sSql = "select count(oxid) from oxobject2group where oxid in ('_testGroupRemove1', '_testGroupRemove2')";
@@ -183,7 +180,7 @@ class NewsletterSelectionAjaxTest extends \OxidTestCase
         $sSql = "select count(oxid) from oxobject2group where oxobjectid='$sSynchoxid'";
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
-        $oView = $this->getMock("newsletter_selection_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NewsletterSelectionAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testGroupAdd1', '_testGroupAdd2')));
 
         $oView->addGroupToNewsletter();
@@ -207,7 +204,7 @@ class NewsletterSelectionAjaxTest extends \OxidTestCase
         $sSql = "select count(oxid) from oxobject2group where oxobjectid='$sSynchoxid'";
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
-        $oView = $this->getMock("newsletter_selection_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NewsletterSelectionAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testGroupAdd1', '_testGroupAdd2')));
 
         $oView->addGroupToNewsletter();

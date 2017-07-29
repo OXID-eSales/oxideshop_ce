@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxDb;
 use oxRegistry;
@@ -29,7 +29,7 @@ use oxRegistry;
  * Seo encoder base
  *
  */
-class SeoDecoder extends \oxSuperCfg
+class SeoDecoder extends \OxidEsales\Eshop\Core\Base
 {
 
     /**
@@ -88,7 +88,7 @@ class SeoDecoder extends \oxSuperCfg
         $sKey = $this->_getIdent($sSeoUrl);
         $aRet = false;
 
-        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $oRs = $oDb->select("select oxstdurl, oxlang from oxseo where oxident=" . $oDb->quote($sKey) . " and oxshopid='$iShopId' limit 1");
         if (!$oRs->EOF) {
             // primary seo language changed ?
@@ -111,7 +111,7 @@ class SeoDecoder extends \oxSuperCfg
     protected function _decodeOldUrl($sSeoUrl)
     {
         $oStr = getStr();
-        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $sBaseUrl = $this->getConfig()->getShopURL();
         if ($oStr->strpos($sSeoUrl, $sBaseUrl) === 0) {
             $sSeoUrl = $oStr->substr($sSeoUrl, $oStr->strlen($sBaseUrl));
@@ -169,7 +169,7 @@ class SeoDecoder extends \oxSuperCfg
      */
     protected function _getSeoUrl($sObjectId, $iLang, $iShopId)
     {
-        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $aInfo = $oDb->getRow("select oxseourl, oxtype from oxseo where oxobjectid =  " . $oDb->quote($sObjectId) . " and oxlang =  " . $oDb->quote($iLang) . " and oxshopid = " . $oDb->quote($iShopId) . " order by oxparams limit 1");
         if ('oxarticle' == $aInfo['oxtype']) {
             $sMainCatId = $oDb->getOne("select oxcatnid from " . getViewName("oxobject2category") . " where oxobjectid = " . $oDb->quote($sObjectId) . " order by oxtime");
@@ -209,15 +209,15 @@ class SeoDecoder extends \oxSuperCfg
             // in case SEO url is actual
             if (is_array($aGet = $this->decodeUrl($sParams))) {
                 $_GET = array_merge($aGet, $_GET);
-                oxRegistry::getLang()->resetBaseLanguage();
+                \OxidEsales\Eshop\Core\Registry::getLang()->resetBaseLanguage();
             } elseif (($sRedirectUrl = $this->_decodeOldUrl($sParams))) {
                 // in case SEO url was changed - redirecting to new location
-                oxRegistry::getUtils()->redirect($this->getConfig()->getShopURL() . $sRedirectUrl, false, 301);
+                \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getConfig()->getShopURL() . $sRedirectUrl, false, 301);
             } elseif (($sRedirectUrl = $this->_decodeSimpleUrl($sParams))) {
                 // old type II seo urls
-                oxRegistry::getUtils()->redirect($this->getConfig()->getShopURL() . $sRedirectUrl, false, 301);
+                \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getConfig()->getShopURL() . $sRedirectUrl, false, 301);
             } else {
-                oxRegistry::getSession()->start();
+                \OxidEsales\Eshop\Core\Registry::getSession()->start();
                 // unrecognized url
                 error_404_handler($sParams);
             }
@@ -243,7 +243,7 @@ class SeoDecoder extends \oxSuperCfg
         $sUrl = null;
 
         if ($sLastParam) {
-            $iLanguage = oxRegistry::getLang()->getBaseLanguage();
+            $iLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
 
             // article ?
             if (strpos($sLastParam, '.htm') !== false) {
@@ -275,7 +275,7 @@ class SeoDecoder extends \oxSuperCfg
      */
     protected function _getObjectUrl($sSeoId, $sTable, $iLanguage, $sType)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sTable = getViewName($sTable, $iLanguage);
 
         // first checking of field exists at all
@@ -305,7 +305,7 @@ class SeoDecoder extends \oxSuperCfg
 
         // this should not happen on most cases, because this redirect is handled by .htaccess
         if ($sParams && !$oStr->preg_match('/\.html$/', $sParams) && !$oStr->preg_match('/\/$/', $sParams)) {
-            oxRegistry::getUtils()->redirect($this->getConfig()->getShopURL() . $sParams . '/', false);
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getConfig()->getShopURL() . $sParams . '/', false);
         }
 
         return $sParams;

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 
@@ -32,7 +32,7 @@ use oxRegistry;
  * etc. Some fields must be entered. OXID eShop -> MY ACCOUNT
  * -> Update your billing and delivery settings.
  */
-class AccountUserController extends \Account
+class AccountUserController extends \OxidEsales\Eshop\Application\Controller\AccountController
 {
 
     /**
@@ -43,9 +43,9 @@ class AccountUserController extends \Account
     protected $_sThisTemplate = 'page/account/user.tpl';
 
     /**
-     * If user is not logged in - returns name of template account_user::_sThisLoginTemplate,
+     * If user is not logged in - returns name of template \OxidEsales\Eshop\Application\Controller\AccountUserController::_sThisLoginTemplate,
      * or if user is allready logged in additionally loads user delivery address
-     * info and forms country list. Returns name of template account_user::_sThisTemplate
+     * info and forms country list. Returns name of template \OxidEsales\Eshop\Application\Controller\AccountUserController::_sThisTemplate
      *
      * @return  string  $_sThisTemplate current template file name
      */
@@ -69,7 +69,7 @@ class AccountUserController extends \Account
      */
     public function showShipAddress()
     {
-        return oxRegistry::getSession()->getVariable('blshowshipaddress');
+        return \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('blshowshipaddress');
     }
 
     /**
@@ -82,14 +82,14 @@ class AccountUserController extends \Account
         $aPaths = array();
         $aPath = array();
 
-        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $sSelfLink = $this->getViewConfig()->getSelfLink();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
-        $aPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($sSelfLink . 'cl=account');
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
+        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($sSelfLink . 'cl=account');
         $aPaths[] = $aPath;
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('BILLING_SHIPPING_SETTINGS', $iBaseLanguage, false);
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('BILLING_SHIPPING_SETTINGS', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 

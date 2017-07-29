@@ -20,12 +20,12 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin selectlist list manager.
  */
-class CountryList extends \oxAdminList
+class CountryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**
@@ -95,5 +95,4 @@ class CountryList extends \oxAdminList
     {
         return $this->sSecondDefSortField;
     }
-
 }

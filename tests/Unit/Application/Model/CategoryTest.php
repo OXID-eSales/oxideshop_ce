@@ -19,12 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use oxCategory;
 use oxCategoryHelper;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
-use oxUtilsObject;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use \oxUtilsView;
 use \oxField;
 use \oxDb;
@@ -134,12 +133,12 @@ class CategoryTest extends \OxidTestCase
     private function reload()
     {
         if (@$this->_oCategory->getId()) {
-            $oObj = oxUtilsObject::getInstance()->oxNew("oxCategory", "core");
+            $oObj = oxRegistry::getUtilsObject()->oxNew("oxCategory", "core");
             $oObj->load($this->_oCategory->getId());
             $this->_oCategory = $oObj;
         }
         if (@$this->_oCategoryB->getId()) {
-            $oObj = oxUtilsObject::getInstance()->oxNew("oxCategory", "core");
+            $oObj = oxRegistry::getUtilsObject()->oxNew("oxCategory", "core");
             $oObj->load($this->_oCategoryB->getId());
             $this->_oCategoryB = $oObj;
         }
@@ -208,7 +207,7 @@ class CategoryTest extends \OxidTestCase
 
     public function testGetSqlActiveSnippet()
     {
-        $oCategory = $this->getMock('oxCategory', array('isAdmin', 'getViewName'));
+        $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('isAdmin', 'getViewName'));
         $oCategory->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
         $oCategory->expects($this->any())->method('getViewName')->will($this->returnValue('xxx'));
 
@@ -264,7 +263,6 @@ class CategoryTest extends \OxidTestCase
 
     public function testAssignParseLongDesc()
     {
-        oxAddClassModule('oxcategoryTest_oxUtilsView', 'oxUtilsView');
         $this->getConfig()->setConfigParam('bl_perfParseLongDescinSmarty', true);
         $this->_oCategory->oxcategories__oxlongdesc = new oxField('aa[{* smarty comment *}]zz', oxField::T_RAW);
         $this->_oCategory->setId('test33');
@@ -316,7 +314,7 @@ class CategoryTest extends \OxidTestCase
         $sCat = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab83fdee7564.23264141' : '8a142c3e4143562a5.46426637';
 
         $oObj->load($sCat);
-        oxRegistry::get("oxUtilsCount")->resetCatArticleCount($oObj->getId());
+        \OxidEsales\Eshop\Core\Registry::getUtilsCount()->resetCatArticleCount($oObj->getId());
 
         $expectedArticlesCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 32;
         $this->assertEquals($expectedArticlesCount, $oObj->getNrOfArticles());
@@ -332,7 +330,7 @@ class CategoryTest extends \OxidTestCase
         $this->_oCategory->save();
         $this->reload(); // call assign
 
-        oxRegistry::get("oxUtilsCount")->resetCatArticleCount($this->_oCategory->getId());
+        \OxidEsales\Eshop\Core\Registry::getUtilsCount()->resetCatArticleCount($this->_oCategory->getId());
 
         $expectedArticlesCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 34 : 24;
         $this->assertEquals($expectedArticlesCount, $this->_oCategory->getNrOfArticles());
@@ -490,7 +488,7 @@ class CategoryTest extends \OxidTestCase
         $oCategory = oxNew('oxCategory');
         $oCategory->oxcategories__oxextlink = new oxField('xxx', oxField::T_RAW);
 
-        $this->assertEquals('xxx?', $oCategory->getStdLink());
+        $this->assertEquals('xxx', $oCategory->getStdLink());
     }
 
     public function testGetStdLinkshoudlReturnDefaultLink()
@@ -521,7 +519,7 @@ class CategoryTest extends \OxidTestCase
         $oCategory = oxNew('oxCategory');
         $oCategory->oxcategories__oxextlink = new oxField('www.test.com', oxField::T_RAW);
 
-        $this->assertEquals('www.test.com?', $oCategory->getLink());
+        $this->assertEquals('www.test.com', $oCategory->getLink());
     }
 
     public function testGetLinkSeoDe()
@@ -565,7 +563,7 @@ class CategoryTest extends \OxidTestCase
         $oCategory = oxNew('oxCategory');
         $oCategory->oxcategories__oxextlink = new oxField('xxx', oxField::T_RAW);
 
-        $this->assertEquals('xxx?', $oCategory->getStdLink(2));
+        $this->assertEquals('xxx', $oCategory->getStdLink(2));
     }
 
     public function testGetStdLinkshoudlReturnDefaultLinkWithLangParam()
@@ -699,7 +697,7 @@ class CategoryTest extends \OxidTestCase
 
     public function testSetGetSubCats()
     {
-        $oSubCat = $this->getMock('oxcategory', array('getIsVisible'));
+        $oSubCat = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('getIsVisible'));
         $oSubCat->expects($this->once())->method('getIsVisible')->will($this->returnValue(true));
         $oCategory = $this->getProxyClass("oxcategory");
         $oCategory->setSubCats(array($oSubCat));
@@ -711,7 +709,7 @@ class CategoryTest extends \OxidTestCase
 
     public function testSetGetSubCat()
     {
-        $oSubCat = $this->getMock('oxcategory', array('getIsVisible'));
+        $oSubCat = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('getIsVisible'));
         $oSubCat->expects($this->any())->method('getIsVisible')->will($this->returnValue(true));
         $oCategory = $this->getProxyClass("oxcategory");
         $oCategory->setSubCat($oSubCat);
@@ -771,7 +769,7 @@ class CategoryTest extends \OxidTestCase
         $articlesCountExpected = $this->getTestConfig()->getShopEdition() == 'EE' ? 8 : 6;
 
         $oCategory->load($categoryId);
-        oxRegistry::get("oxUtilsCount")->resetCatArticleCount($oCategory->getId());
+        \OxidEsales\Eshop\Core\Registry::getUtilsCount()->resetCatArticleCount($oCategory->getId());
         $this->assertEquals($articlesCountExpected, $oCategory->getNrOfArticles());
     }
 
@@ -911,11 +909,11 @@ class CategoryTest extends \OxidTestCase
 
         // old path
         $oCategory->oxcategories__oxthumb = new oxField($sExistingPic);
-        $this->assertEquals($oCategory->getPictureUrl() . 'generated/category/thumb/748_150_75/' . $sExistingPic, $oCategory->getThumbUrl());
+        $this->assertEquals($oCategory->getPictureUrl() . 'generated/category/thumb/555_200_75/' . $sExistingPic, $oCategory->getThumbUrl());
 
         // new path
         $sUrl = $this->getConfig()->getOutUrl() . basename($this->getConfig()->getPicturePath(""));
-        $sUrl .= "/generated/category/thumb/748_150_75/sportswear_1_tc.jpg";
+        $sUrl .= "/generated/category/thumb/555_200_75/sportswear_1_tc.jpg";
 
         $oCategory->oxcategories__oxthumb = new oxField("sportswear_1_tc.jpg");
         $this->assertEquals($sUrl, $oCategory->getThumbUrl());
@@ -985,10 +983,10 @@ class CategoryTest extends \OxidTestCase
         $oAttr = oxNew('oxAttribute');
         $oAttrList->offsetSet(1, $oAttr);
 
-        $oCAttrList = $this->getMock('oxattributelist', array('getCategoryAttributes'));
+        $oCAttrList = $this->getMock(\OxidEsales\Eshop\Application\Model\AttributeList::class, array('getCategoryAttributes'));
         $oCAttrList->expects($this->any())->method('getCategoryAttributes')->will($this->returnValue($oAttrList));
 
-        $oCategory = $this->getMock('oxcategory', array('getAttributes'));
+        $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('getAttributes'));
         $oCategory->expects($this->any())->method('getAttributes')->will($this->returnValue($oCAttrList));
 
         $this->assertEquals($oCAttrList->getArray(), $oCategory->getAttributes()->getArray());

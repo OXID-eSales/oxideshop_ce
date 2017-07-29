@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use DOMXPath;
@@ -34,7 +34,7 @@ use OxidEsales\Eshop\Core\Edition\EditionSelector;
 /**
  * Navigation tree control class
  */
-class NavigationTree extends \oxSuperCfg
+class NavigationTree extends \OxidEsales\Eshop\Core\Base
 {
     /**
      * stores DOM object for all navigation tree
@@ -152,7 +152,7 @@ class NavigationTree extends \oxSuperCfg
      */
     protected function _addDynLinks($dom)
     {
-        $myUtilsFile = oxRegistry::get("oxUtilsFile");
+        $myUtilsFile = \OxidEsales\Eshop\Core\Registry::getUtilsFile();
 
         $url = 'index.php?'; // session parameters will be included later (after cache processor)
 
@@ -324,8 +324,6 @@ class NavigationTree extends \oxSuperCfg
      * Removes node from tree elements if it is marked as not visible (visible="0")
      *
      * @param DOMDocument $dom document to check group
-     *
-     * @return null
      */
     protected function removeInvisibleMenuNodes($dom)
     {
@@ -477,7 +475,7 @@ class NavigationTree extends \oxSuperCfg
     protected function _getMenuFiles()
     {
         $myConfig = $this->getConfig();
-        $myOxUtlis = oxRegistry::getUtils();
+        $myOxUtlis = \OxidEsales\Eshop\Core\Registry::getUtils();
 
         $editionPathSelector = new EditionPathProvider(new EditionRootPathProvider(new EditionSelector()));
         $fullAdminDir = $editionPathSelector->getViewsDirectory() . 'admin' . DIRECTORY_SEPARATOR;
@@ -499,7 +497,7 @@ class NavigationTree extends \oxSuperCfg
 
         // including module menu files
         $path = getShopBasePath();
-        $modulelist = oxNew('oxmodulelist');
+        $modulelist = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
         $activeModuleInfo = $modulelist->getActiveModuleInfo();
         if (is_array($activeModuleInfo)) {
             foreach ($activeModuleInfo as $modulePath) {
@@ -526,7 +524,7 @@ class NavigationTree extends \oxSuperCfg
                 $remoteDynUrl = $this->_getDynMenuUrl($dynLang, $loadDynContents);
 
                 // loading remote file from server only once
-                $loadRemote = oxRegistry::getSession()->getVariable("loadedremotexml");
+                $loadRemote = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("loadedremotexml");
 
                 // very basic check if its valid xml file
                 if ((!isset($loadRemote) || $loadRemote) && ($dynPath = $myOxUtlis->getRemoteCachePath($remoteDynUrl, $localDynPath))) {
@@ -534,13 +532,14 @@ class NavigationTree extends \oxSuperCfg
                 }
 
                 // caching last load state
-                oxRegistry::getSession()->setVariable("loadedremotexml", $dynPath ? true : false);
+                \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("loadedremotexml", $dynPath ? true : false);
             }
         }
 
         // loading dynpages
         if ($dynPath) {
-            $filesToLoad[] = $dynPath;
+            // for not loading/showing the dynpages, we set don't add the dyn path to the files to load:
+            // $filesToLoad[] = $dynPath;
         }
 
         return $filesToLoad;
@@ -599,7 +598,7 @@ class NavigationTree extends \oxSuperCfg
     protected function _getInitialDom()
     {
         if ($this->_oInitialDom === null) {
-            $myOxUtlis = oxRegistry::getUtils();
+            $myOxUtlis = \OxidEsales\Eshop\Core\Registry::getUtils();
 
             if (is_array($filesToLoad = $this->_getMenuFiles())) {
                 // now checking if xml files are newer than cached file
@@ -715,7 +714,6 @@ class NavigationTree extends \oxSuperCfg
                 $node->parentNode->setAttribute('active', 1);
             }
         }
-
     }
 
     /**
@@ -784,7 +782,7 @@ class NavigationTree extends \oxSuperCfg
             $url = trim($myConfig->getConfigParam('sShopURL'), '/') . '/admin';
         }
 
-        return oxRegistry::get("oxUtilsUrl")->processUrl("{$url}/index.php", false);
+        return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl("{$url}/index.php", false);
     }
 
     /**
@@ -833,7 +831,7 @@ class NavigationTree extends \oxSuperCfg
      *
      * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
      *
-     * @param int    $lang             language id
+     * @param int    $lang            language id
      * @param string $loadDynContents get local or remote content path
      *
      * @return string
@@ -846,7 +844,7 @@ class NavigationTree extends \oxSuperCfg
 
             return $fullAdminDir . "/dynscreen_local.xml";
         }
-        $adminView = oxNew('oxadminview');
+        $adminView = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\AdminController::class);
         $this->_sDynIncludeUrl = $adminView->getServiceUrl($lang);
 
         return $this->_sDynIncludeUrl . "menue/dynscreen.xml";
@@ -862,7 +860,7 @@ class NavigationTree extends \oxSuperCfg
     protected function _getDynMenuLang()
     {
         $myConfig = $this->getConfig();
-        $lang = oxRegistry::getLang();
+        $lang = \OxidEsales\Eshop\Core\Registry::getLang();
 
         $dynLang = $myConfig->getConfigParam('iDynInterfaceLanguage');
         $dynLang = isset($dynLang) ? $dynLang : ($lang->getTplLanguage());

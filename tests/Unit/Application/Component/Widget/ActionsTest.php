@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Component\Widget;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Component\Widget;
 
-use oxArticleList;
+use OxidEsales\EshopCommunity\Application\Model\ArticleList;
 
 
 /**
@@ -66,7 +66,7 @@ class ActionsTest extends \OxidTestCase
         $action = oxNew('oxwActions');
         $action->setViewParameters(array('action' => 'oxtop5'));
         $aList = $action->getAction();
-        $this->assertTrue($aList instanceof oxArticleList);
+        $this->assertTrue($aList instanceof ArticleList);
         $this->assertSame($topProductCount, $aList->count());
         $this->assertSame($topProductId, $aList->current()->getId());
     }

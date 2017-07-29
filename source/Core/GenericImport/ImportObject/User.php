@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
+namespace OxidEsales\EshopCommunity\Core\GenericImport\ImportObject;
 
 use Exception;
 use oxField;
@@ -28,7 +28,7 @@ use oxField;
 /**
  * Import object for Users.
  */
-class User extends ImportObject
+class User extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject
 {
     /** @var string Database table name. */
     protected $tableName = 'oxuser';
@@ -52,7 +52,7 @@ class User extends ImportObject
             $userName = $data['OXUSERNAME'];
 
             $user = oxNew("oxUser", "core");
-            $user->oxuser__oxusername = new oxField($userName, oxField::T_RAW);
+            $user->oxuser__oxusername = new \OxidEsales\Eshop\Core\Field($userName, \OxidEsales\Eshop\Core\Field::T_RAW);
 
             if ($user->exists($id) && $id != $user->getId()) {
                 throw new Exception("USER $userName already exists!");

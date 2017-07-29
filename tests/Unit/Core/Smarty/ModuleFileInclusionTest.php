@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Unit\Core\Smarty;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Smarty;
 
 use \testModuleInclusion_parent;
 use \oxRegistry;
@@ -29,6 +29,8 @@ use \oxRegistry;
  * module class is registered for oxnew but was not yet instantialized
  * module file inclusion makes autoload mod_parent by including the same module file
  * thus in the end module class is created twice resulting in php fatal error
+ *
+ * @group module
  */
 class ModuleFileInclusionTest extends \OxidTestCase
 {
@@ -38,41 +40,23 @@ class ModuleFileInclusionTest extends \OxidTestCase
      */
     public function testModuleInclusion()
     {
-        $filePath = $this->createFile('testModuleInclusion.php', '<?php
-            class testModuleInclusion extends testModuleInclusion_parent {
-                public function sayHi() {
-                    return "Hi!";
-                }
-            }
-        ');
+        $wrapper = $this->getVfsStreamWrapper();
+        oxRegistry::get("oxConfigFile")->setVar("sShopDir", $wrapper->getRootPath());
+        $wrapper->createStructure(array(
+            'modules' => array(
+                'testmoduleinclusion.php' => "<?php
+                    class testmoduleinclusion extends testmoduleinclusion_parent {
+                        public function sayHi() {
+                            return \"Hi!\";
+                        }
+                    }"
+            )
+        ));
 
-        oxRegistry::get('oxUtilsObject')->setModuleVar('aModules', array('oxarticle' => 'testmoduleinclusion'));
-
-        include_once $filePath;
+        \OxidEsales\Eshop\Core\Registry::getUtilsObject()->setModuleVar('aModules', array('oxarticle' => 'testmoduleinclusion'));
 
         $oTestMod = oxNew('testModuleInclusion');
         $this->assertEquals("Hi!", $oTestMod->sayHi());
-
-        $oTestArt = oxNew('oxArticle');
-        $this->assertEquals("Hi!", $oTestArt->sayHi());
-    }
-
-    /**
-     * test main scenario
-     */
-    public function testMissingModuleInChain()
-    {
-        $filePath = $this->createFile('testModuleInclusion.php', '<?php
-            class testModuleInclusion extends testModuleInclusion_parent {
-                public function sayHi() {
-                    return "Hi!";
-                }
-            }
-        ');
-
-        oxRegistry::get('oxUtilsObject')->setModuleVar('aModules', array('oxarticle' => 'testmod2&testmoduleinclusion'));
-
-        include_once $filePath;
 
         $oTestArt = oxNew('oxArticle');
         $this->assertEquals("Hi!", $oTestArt->sayHi());

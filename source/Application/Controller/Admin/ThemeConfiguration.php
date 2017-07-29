@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxConfig;
@@ -33,7 +33,7 @@ use oxException;
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling -> Main Sets.
  */
-class ThemeConfiguration extends \Shop_Config
+class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
 
     protected $_sTheme = null;
@@ -55,7 +55,7 @@ class ThemeConfiguration extends \Shop_Config
             $sTheme = $this->_sTheme = $this->getConfig()->getConfigParam('sTheme');
         }
 
-        $oTheme = oxNew('oxTheme');
+        $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
         if ($oTheme->load($sTheme)) {
             $this->_aViewData["oTheme"] = $oTheme;
 
@@ -66,12 +66,12 @@ class ThemeConfiguration extends \Shop_Config
                 foreach ($this->_aConfParams as $sType => $sParam) {
                     $this->_aViewData[$sParam] = $aDbVariables['vars'][$sType];
                 }
-            } catch (oxException $oEx) {
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
+            } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
                 $oEx->debugOut();
             }
         } else {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay(oxNew("oxException", 'EXCEPTION_THEME_NOT_LOADED'));
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew("oxException", 'EXCEPTION_THEME_NOT_LOADED'));
         }
 
         return 'theme_config.tpl';
@@ -88,7 +88,7 @@ class ThemeConfiguration extends \Shop_Config
             $this->_sTheme = $this->getEditObjectId();
         }
 
-        return oxConfig::OXMODULE_THEME_PREFIX . $this->_sTheme;
+        return \OxidEsales\Eshop\Core\Config::OXMODULE_THEME_PREFIX . $this->_sTheme;
     }
 
     /**

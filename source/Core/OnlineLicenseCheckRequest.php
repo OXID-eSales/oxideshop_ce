@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * Online license check request class used as entity.
@@ -30,7 +30,7 @@ namespace OxidEsales\Eshop\Core;
  *
  * @ignore   This class will not be included in documentation.
  */
-class OnlineLicenseCheckRequest extends \oxOnlineRequest
+class OnlineLicenseCheckRequest extends \OxidEsales\Eshop\Core\OnlineRequest
 {
     /**
      * Web service protocol version.

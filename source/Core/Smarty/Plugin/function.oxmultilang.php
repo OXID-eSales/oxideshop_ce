@@ -38,8 +38,8 @@ function smarty_function_oxmultilang( $params, &$smarty )
 {
     startProfile("smarty_function_oxmultilang");
 
-    $oLang = oxRegistry::getLang();
-    $oConfig = oxRegistry::getConfig();
+    $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
+    $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
     $oShop = $oConfig->getActiveShop();
     $blAdmin = $oLang->isAdmin();
 
@@ -60,7 +60,7 @@ function smarty_function_oxmultilang( $params, &$smarty )
         if ( 'NO_SUFFIX' != $sSuffix ) {
             $sSuffixTranslation = $oLang->translateString( $sSuffix, $iLang, $blAdmin );
         }
-    } catch ( oxLanguageException $oEx ) {
+    } catch (\OxidEsales\Eshop\Core\Exception\LanguageException $oEx ) {
         // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
     }
 

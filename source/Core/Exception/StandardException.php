@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Exception;
+namespace OxidEsales\EshopCommunity\Core\Exception;
 
 use oxRegistry;
 
@@ -39,11 +39,11 @@ class StandardException extends \Exception
 
     /**
      * Log file path/name
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
      *
      * @var string
      */
-    protected $_sFileName = 'EXCEPTION_LOG.txt';
+    protected $_sFileName = OX_LOG_FILE;
 
     /**
      * Not caught means the exception was not caught and occured in the rendering process,
@@ -63,40 +63,45 @@ class StandardException extends \Exception
     /**
      * Default constructor
      *
-     * @param string  $sMessage exception message
-     * @param integer $iCode    exception code
+     * @param string          $sMessage exception message
+     * @param integer         $iCode    exception code
+     * @param \Exception|null $previous previous exception
      */
-    public function __construct($sMessage = "not set", $iCode = 0)
+    public function __construct($sMessage = "not set", $iCode = 0, \Exception $previous = null)
     {
-        parent::__construct($sMessage, $iCode);
+        parent::__construct($sMessage, $iCode, $previous);
     }
 
     /**
-     * Set log file path/name
+     * Set log file name. The file will always be relative to the directory of OX_LOG_FILE
      *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
      *
-     * @param string $sFile File name
+     * @param string $fileName File name
      */
-    public function setLogFileName($sFile)
+    public function setLogFileName($fileName)
     {
-        $this->_sFileName = $sFile;
+        $fileName = dirname(OX_LOG_FILE) . DIRECTORY_SEPARATOR . basename($fileName);
+
+        $this->_sFileName = $fileName;
     }
 
     /**
      * Get log file path/name
      *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
      *
      * @return string
      */
     public function getLogFileName()
     {
-        return $this->_sFileName;
+        return basename($this->_sFileName);
     }
 
     /**
      * Sets the exception message
+     *
+     *  @deprecated since v6.0 (2017-02-27); This method will be removed. Set message in the constructor.
      *
      * @param string $sMessage exception message
      */
@@ -142,18 +147,19 @@ class StandardException extends \Exception
     }
 
     /**
-     * Prints exception in file EXCEPTION_LOG.txt
+     * Write exception to log file
+     *
+     * @return mixed
      */
     public function debugOut()
     {
-        //We are most likely are already dealing with an exception so making sure no other exceptions interfere
-        try {
-            $sLogMsg = $this->getString() . "\n---------------------------------------------\n";
-            //deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
-            oxRegistry::getUtils()->writeToLog($sLogMsg, $this->getLogFileName());
-            //end deprecated
-        } catch (\Exception $e) {
-        }
+        $exceptionHandler = new \OxidEsales\Eshop\Core\Exception\ExceptionHandler();
+        /**
+         * @deprecated since v6.0 (2017-02-27); Logging mechanism will be changed in 6.0.
+         */
+        $exceptionHandler->setLogFileName($this->getLogFileName());
+
+        return $exceptionHandler->writeExceptionToLog($this);
     }
 
     /**
@@ -173,22 +179,11 @@ class StandardException extends \Exception
             $sWarning .= "--!--RENDERER--!--";
         }
 
-        $currentTime = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime());
+        $currentTime = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
 
         return $sWarning . __CLASS__ . " (time: " . $currentTime . "): [{$this->code}]: {$this->message} \n Stack Trace: {$this->getTraceAsString()}\n\n";
     }
 
-    /**
-     * Default __toString method wraps getString(). In the shop no __toString() is used to be PHP 5.1 compatible,
-     *
-     * @return string
-     */
-    /*
-    public function __toString()
-    {
-        return $this->getString();
-    }
-    */
     /**
      * Creates an array of field name => field value of the object.
      * To make a easy conversion of exceptions to error messages possible.

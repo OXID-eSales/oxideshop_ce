@@ -20,18 +20,19 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
+use oxDb;
+use oxPrice;
 use oxRegistry;
 use stdClass;
-use oxPrice;
-use oxDb;
+use Exception;
 
 /**
  * General utils class
  *
  */
-class Utils extends \oxSuperCfg
+class Utils extends \OxidEsales\Eshop\Core\Base
 {
 
     /**
@@ -98,42 +99,6 @@ class Utils extends \oxSuperCfg
      * @var bool
      */
     protected $_blSeoIsActive = null;
-
-    /**
-     * OXID specific string manipulation method
-     *
-     * @param string $sVal string
-     * @param string $sKey key
-     *
-     * @deprecated since v5.2 (2014-08-11); use oxEncryptor::encrypt() instead.
-     *
-     * @return string
-     */
-    public function strMan($sVal, $sKey = null)
-    {
-        $oEncryptor = oxNew('oxEncryptor');
-        $sKey = $sKey ? $sKey : $this->getConfig()->getConfigParam('sConfigKey');
-
-        return $oEncryptor->encrypt($sVal, $sKey);
-    }
-
-    /**
-     * OXID specific string manipulation method
-     *
-     * @param string $sVal string
-     * @param string $sKey key
-     *
-     * @deprecated since v5.2 (2014-08-11); use oxDecryptor::decrypt() instead.
-     *
-     * @return string
-     */
-    public function strRem($sVal, $sKey = null)
-    {
-        $oDecryptor = oxNew('oxDecryptor');
-        $sKey = $sKey ? $sKey : $this->getConfig()->getConfigParam('sConfigKey');
-
-        return $oDecryptor->decrypt($sVal, $sKey);
-    }
 
     /**
      * Returns string witch "." symbols were replaced with "__".
@@ -302,23 +267,6 @@ class Utils extends \oxSuperCfg
     }
 
     /**
-     * User email validation function. Returns true if email is OK otherwise - false;
-     * Syntax validation is performed only.
-     *
-     * @param string $sEmail user email
-     *
-     * @deprecated since v4.9.0/v5.2.0 (2014-06-17); Use MailValidator::isValidEmail().
-     *
-     * @return bool
-     */
-    public function isValidEmail($sEmail)
-    {
-        $oMailValidator = oxNew('oxMailValidator');
-
-        return $oMailValidator->isValidEmail($sEmail);
-    }
-
-    /**
      * Parses profile configuration, loads stored info in cookie
      *
      * @param array $aInterfaceProfiles ($myConfig->getConfigParam( 'aInterfaceProfiles' ))
@@ -331,7 +279,7 @@ class Utils extends \oxSuperCfg
         // checking for available profiles list
         if (is_array($aInterfaceProfiles)) {
             //checking for previous profiles
-            $sPrevProfile = oxRegistry::get("oxUtilsServer")->getOxCookie('oxidadminprofile');
+            $sPrevProfile = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('oxidadminprofile');
             if (isset($sPrevProfile)) {
                 $aPrevProfile = @explode("@", trim($sPrevProfile));
             }
@@ -347,7 +295,7 @@ class Utils extends \oxSuperCfg
                 $aProfiles[$aPrevProfile[0]][2] = 1;
             }
 
-            oxRegistry::getSession()->setVariable("aAdminProfiles", $aProfiles);
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("aAdminProfiles", $aProfiles);
 
             return $aProfiles;
         }
@@ -390,6 +338,8 @@ class Utils extends \oxSuperCfg
         }
         stopProfile('fround');
 
+        $sVal = (float) $sVal;
+
         return round($sVal + $dprez * ($sVal >= 0 ? 1 : -1), $iCurPrecision);
     }
 
@@ -403,7 +353,7 @@ class Utils extends \oxSuperCfg
      * to string before performing array search.
      *
      * @param string $needle
-     * @param array $haystack
+     * @param array  $haystack
      *
      * @return mixed
      */
@@ -544,7 +494,7 @@ class Utils extends \oxSuperCfg
         $aMeta = $this->getCacheMeta($sKey);
         if ($iTtl) {
             $aCacheData['ttl'] = $iTtl;
-            $aCacheData['timestamp'] = oxRegistry::get("oxUtilsDate")->getTime();
+            $aCacheData['timestamp'] = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         }
         $this->_aFileCacheContents[$sKey] = $aCacheData;
 
@@ -582,7 +532,7 @@ class Utils extends \oxSuperCfg
                 $iTimestamp = $sRes['timestamp'];
                 $iTtl = $sRes['ttl'];
 
-                $iTime = oxRegistry::get("oxUtilsDate")->getTime();
+                $iTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
                 if ($iTime > $iTimestamp + $iTtl) {
                     return null;
                 }
@@ -756,7 +706,7 @@ class Utils extends \oxSuperCfg
     /**
      * Removes most files stored in cache (default 'tmp') folder. Some files
      * e.g. table files names description, are left. Excluded cache file name
-     * patterns are defined in oxUtils::_sPermanentCachePattern parameter
+     * patterns are defined in \OxidEsales\Eshop\Core\Utils::_sPermanentCachePattern parameter
      */
     public function oxResetFileCache()
     {
@@ -777,7 +727,7 @@ class Utils extends \oxSuperCfg
      */
     public function resetTemplateCache($aTemplates)
     {
-        $sSmartyDir = oxRegistry::get("oxUtilsView")->getSmartyDir();
+        $sSmartyDir = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmartyDir();
         //$aFiles = glob( $this->getCacheFilePath( null, true ) . '*' );
         $aFiles = glob($sSmartyDir . '*');
 
@@ -893,12 +843,12 @@ class Utils extends \oxSuperCfg
     public function canPreview()
     {
         $blCan = null;
-        if (($sPrevId = oxRegistry::getConfig()->getRequestParameter('preview')) &&
-            ($sAdminSid = oxRegistry::get("oxUtilsServer")->getOxCookie('admin_sid'))
+        if (($sPrevId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('preview')) &&
+            ($sAdminSid = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('admin_sid'))
         ) {
             $sTable = getViewName('oxuser');
-            $oDb = oxDb::getDb();
-            $sQ = "select 1 from $sTable where MD5( CONCAT( " . $oDb->quote($sAdminSid) . ", {$sTable}.oxid, {$sTable}.oxpassword, {$sTable}.oxrights ) ) = " . oxDb::getDb()->quote($sPrevId);
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+            $sQ = "select 1 from $sTable where MD5( CONCAT( " . $oDb->quote($sAdminSid) . ", {$sTable}.oxid, {$sTable}.oxpassword, {$sTable}.oxrights ) ) = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sPrevId);
             $blCan = (bool) $oDb->getOne($sQ);
         }
 
@@ -912,7 +862,7 @@ class Utils extends \oxSuperCfg
      */
     public function getPreviewId()
     {
-        $sAdminSid = oxRegistry::get("oxUtilsServer")->getOxCookie('admin_sid');
+        $sAdminSid = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('admin_sid');
         if (($oUser = $this->getUser())) {
             return md5($sAdminSid . $oUser->getId() . $oUser->oxuser__oxpassword->value . $oUser->oxuser__oxrights->value);
         }
@@ -929,48 +879,48 @@ class Utils extends \oxSuperCfg
 
         $blIsAuth = false;
 
-        $sUserID = oxRegistry::getSession()->getVariable("auth");
+        $sUserID = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("auth");
 
         // deleting admin marker
-        oxRegistry::getSession()->setVariable("malladmin", 0);
-        oxRegistry::getSession()->setVariable("blIsAdmin", 0);
-        oxRegistry::getSession()->deleteVariable("blIsAdmin");
+        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("malladmin", 0);
+        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("blIsAdmin", 0);
+        \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable("blIsAdmin");
         $myConfig->setConfigParam('blMallAdmin', false);
         //#1552T
         $myConfig->setConfigParam('blAllowInheritedEdit', false);
 
         if ($sUserID) {
             // escaping
-            $oDb = oxDb::getDb();
-            $sRights = $oDb->getOne("select oxrights from oxuser where oxid = " . $oDb->quote($sUserID));
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+            $sRights = $this->fetchRightsForUser($sUserID);
 
             if ($sRights != "user") {
                 // malladmin ?
                 if ($sRights == "malladmin") {
-                    oxRegistry::getSession()->setVariable("malladmin", 1);
+                    \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("malladmin", 1);
                     $myConfig->setConfigParam('blMallAdmin', true);
 
                     //#1552T
                     //So far this blAllowSharedEdit is Equal to blMallAdmin but in future to be solved over rights and roles
                     $myConfig->setConfigParam('blAllowSharedEdit', true);
 
-                    $sShop = oxRegistry::getSession()->getVariable("actshop");
+                    $sShop = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("actshop");
                     if (!isset($sShop)) {
-                        oxRegistry::getSession()->setVariable("actshop", $myConfig->getBaseShopId());
+                        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("actshop", $myConfig->getBaseShopId());
                     }
                     $blIsAuth = true;
                 } else {
                     // Shopadmin... check if this shop is valid and exists
-                    $sShopID = $oDb->getOne("select oxid from oxshops where oxid = " . $oDb->quote($sRights));
+                    $sShopID = $this->fetchShopAdminById($sRights);
                     if (isset($sShopID) && $sShopID) {
                         // success, this shop exists
 
-                        oxRegistry::getSession()->setVariable("actshop", $sRights);
-                        oxRegistry::getSession()->setVariable("currentadminshop", $sRights);
-                        oxRegistry::getSession()->setVariable("shp", $sRights);
+                        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("actshop", $sRights);
+                        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("currentadminshop", $sRights);
+                        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("shp", $sRights);
 
                         // check if this subshop admin is evil.
-                        if ('chshp' == oxRegistry::getConfig()->getRequestParameter('fnc')) {
+                        if ('chshp' == \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('fnc')) {
                             // dont allow this call
                             $blIsAuth = false;
                         } else {
@@ -978,7 +928,7 @@ class Utils extends \oxSuperCfg
 
                             $aShopIdVars = array('actshop', 'shp', 'currentadminshop');
                             foreach ($aShopIdVars as $sShopIdVar) {
-                                if ($sGotShop = oxRegistry::getConfig()->getRequestParameter($sShopIdVar)) {
+                                if ($sGotShop = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter($sShopIdVar)) {
                                     if ($sGotShop != $sRights) {
                                         $blIsAuth = false;
                                         break;
@@ -989,11 +939,39 @@ class Utils extends \oxSuperCfg
                     }
                 }
                 // marking user as admin
-                oxRegistry::getSession()->setVariable("blIsAdmin", 1);
+                \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("blIsAdmin", 1);
             }
         }
 
         return $blIsAuth;
+    }
+
+    /**
+     * Fetch the rights for the user given by its oxid
+     *
+     * @param string $userOxId The oxId of the user we want the rights for.
+     *
+     * @return mixed The rights
+     */
+    protected function fetchRightsForUser($userOxId)
+    {
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+
+        return $database->getOne("select oxrights from oxuser where oxid = " . $database->quote($userOxId));
+    }
+
+    /**
+     * Fetch the oxId from the oxshops table.
+     *
+     * @param string $oxId The oxId of the shop.
+     *
+     * @return mixed The oxId of the shop with the given oxId.
+     */
+    protected function fetchShopAdminById($oxId)
+    {
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+
+        return $database->getOne("select oxid from oxshops where oxid = " . $database->quote($oxId));
     }
 
     /**
@@ -1018,7 +996,7 @@ class Utils extends \oxSuperCfg
 
             $aSeoModes = $myConfig->getconfigParam('aSeoModes');
             $sActShopId = $sShopId ? $sShopId : $myConfig->getActiveShop()->getId();
-            $iActLang = $iActLang ? $iActLang : (int) oxRegistry::getLang()->getBaseLanguage();
+            $iActLang = $iActLang ? $iActLang : (int) \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
 
             // checking special config param for active shop and language
             if (is_array($aSeoModes) && isset($aSeoModes[$sActShopId]) && isset($aSeoModes[$sActShopId][$iActLang])) {
@@ -1050,7 +1028,7 @@ class Utils extends \oxSuperCfg
      */
     protected function _simpleRedirect($sUrl, $sHeaderCode)
     {
-        $oHeader = oxNew("oxHeader");
+        $oHeader = oxNew(\OxidEsales\Eshop\Core\Header::class);
         $oHeader->setHeader($sHeaderCode);
         $oHeader->setHeader("Location: $sUrl");
         $oHeader->setHeader("Connection: close");
@@ -1074,12 +1052,10 @@ class Utils extends \oxSuperCfg
      */
     public function showOfflinePage()
     {
-        $this->setHeader("HTTP/1.1 500 Internal Server Error");
-        $offlineMessageFile = $this->getConfig()->getConfigParam('sShopDir') . 'offline.html';
-        $offline = file_get_contents($offlineMessageFile);
-        $this->showMessageAndExit($offline);
+        \oxTriggerOfflinePageDisplay();
+        $this->showMessageAndExit('');
     }
-    
+
     /**
      * redirect user to the specified URL
      *
@@ -1093,7 +1069,7 @@ class Utils extends \oxSuperCfg
     {
         //preventing possible cyclic redirection
         //#M341 and check only if redirect parameter must be added
-        if ($blAddRedirectParam && oxRegistry::getConfig()->getRequestParameter('redirected')) {
+        if ($blAddRedirectParam && \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('redirected')) {
             return;
         }
 
@@ -1119,7 +1095,7 @@ class Utils extends \oxSuperCfg
 
         try { //may occur in case db is lost
             $this->getSession()->freeze();
-        } catch (oxException $oEx) {
+        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
             $oEx->debugOut();
             //do nothing else to make sure the redirect takes place
         }
@@ -1132,8 +1108,6 @@ class Utils extends \oxSuperCfg
      * message might be whole content like 404 page.
      *
      * @param string $sMsg message to show
-     *
-     * @return null dies
      */
     public function showMessageAndExit($sMsg)
     {
@@ -1209,7 +1183,7 @@ class Utils extends \oxSuperCfg
             } else {
                 $oCur = $myConfig->getActShopCurrencyObject();
                 $oObject->price = str_replace(',', '.', $oObject->price);
-                $oObject->fprice = oxRegistry::getLang()->formatCurrency($oObject->price * $oCur->rate, $oCur);
+                $oObject->fprice = \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($oObject->price * $oCur->rate, $oCur);
                 $oObject->priceUnit = 'abs';
             }
 
@@ -1224,9 +1198,9 @@ class Utils extends \oxSuperCfg
                 }
                 //V FS#2616
                 if ($dVat != null && $oObject->priceUnit == 'abs') {
-                    $oPrice = oxNew('oxPrice');
+                    $oPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
                     $oPrice->setPrice($oObject->price, $dVat);
-                    $aName[0] .= oxRegistry::getLang()->formatCurrency($dPrice * $oCur->rate, $oCur);
+                    $aName[0] .= \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($dPrice * $oCur->rate, $oCur);
                 } else {
                     $aName[0] .= $oObject->fprice;
                 }
@@ -1261,9 +1235,9 @@ class Utils extends \oxSuperCfg
 
         $blEnterNetPrice = $this->getConfig()->getConfigParam('blEnterNetPrice');
         if ($blCalculationModeNetto && !$blEnterNetPrice) {
-            $dPrice = round(oxPrice::brutto2Netto($dPrice, $dVat), $oCurrency->decimal);
+            $dPrice = round(\OxidEsales\Eshop\Core\Price::brutto2Netto($dPrice, $dVat), $oCurrency->decimal);
         } elseif (!$blCalculationModeNetto && $blEnterNetPrice) {
-            $dPrice = round(oxPrice::netto2Brutto($dPrice, $dVat), $oCurrency->decimal);
+            $dPrice = round(\OxidEsales\Eshop\Core\Price::netto2Brutto($dPrice, $dVat), $oCurrency->decimal);
         }
 
         return $dPrice;
@@ -1336,7 +1310,7 @@ class Utils extends \oxSuperCfg
     /**
      * Processes logging.
      *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
      *
      * @param string $sText     Log message text
      * @param bool   $blNewline If true, writes message to new line (default false)
@@ -1352,7 +1326,6 @@ class Utils extends \oxSuperCfg
             $sLogMsg = "----------------------------------------------\n{$sText}" . (($blNewline) ? "\n" : "") . "\n";
             $this->writeToLog($sLogMsg, "log.txt");
         }
-
     }
 
     /**
@@ -1455,24 +1428,24 @@ class Utils extends \oxSuperCfg
     /**
      * Writes given log message. Returns write state
      *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will be changed in 6.0.
+     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
      *
-     * @param string $sLogMessage  log message
-     * @param string $sLogFileName log file name
+     * @param string $logMessage  log message
+     * @param string $logFileName log file name
      *
      * @return bool
      */
-    public function writeToLog($sLogMessage, $sLogFileName)
+    public function writeToLog($logMessage, $logFileName)
     {
-        $sLogDist = $this->getConfig()->getLogsDir() . $sLogFileName;
-        $blOk = false;
+        $logFilePath = $this->getConfig()->getLogsDir() . $logFileName;
+        $writeSucceed = false;
 
-        if (($oHandle = fopen($sLogDist, 'a')) !== false) {
-            fwrite($oHandle, $sLogMessage);
-            $blOk = fclose($oHandle);
+        if (($logFileResource = fopen($logFilePath, 'a')) !== false) {
+            fwrite($logFileResource, $logMessage);
+            $writeSucceed = fclose($logFileResource);
         }
 
-        return $blOk;
+        return $writeSucceed;
     }
 
     /**
@@ -1483,18 +1456,16 @@ class Utils extends \oxSuperCfg
     public function handlePageNotFoundError($sUrl = '')
     {
         $this->setHeader("HTTP/1.0 404 Not Found");
-        if (oxRegistry::getConfig()->isUtf()) {
-            $this->setHeader("Content-Type: text/html; charset=UTF-8");
-        }
+        $this->setHeader("Content-Type: text/html; charset=UTF-8");
 
         $sReturn = "Page not found.";
         try {
-            $oView = oxNew('oxUBase');
+            $oView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
             $oView->init();
             $oView->render();
             $oView->setClassName('oxUBase');
             $oView->addTplParam('sUrl', $sUrl);
-            if ($sRet = oxRegistry::get("oxUtilsView")->getTemplateOutput('message/err_404.tpl', $oView)) {
+            if ($sRet = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getTemplateOutput('message/err_404.tpl', $oView)) {
                 $sReturn = $sRet;
             }
         } catch (Exception $e) {

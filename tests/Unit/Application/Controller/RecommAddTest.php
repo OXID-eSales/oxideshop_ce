@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \oxField;
 
@@ -35,7 +35,7 @@ class RecommAddTest extends \OxidTestCase
         $oProduct->load("1126");
         $oProduct->oxarticles__oxtemplate->value = 'details_persparam.tpl';
 
-        $oRecomm = $this->getMock("recommadd", array("getProduct"));
+        $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\RecommendationAddController::class, array("getProduct"));
         $oRecomm->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
         $oRecomm->init();
 
@@ -48,7 +48,7 @@ class RecommAddTest extends \OxidTestCase
      */
     public function testGetRecommLists()
     {
-        $oUser = $this->getMock('oxUser', array('getUserRecommLists'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getUserRecommLists'));
         $oUser->expects($this->once())->method('getUserRecommLists')->will($this->returnValue('testRecommList'));
 
         $oRecomm = oxNew('RecommAdd');
@@ -65,7 +65,7 @@ class RecommAddTest extends \OxidTestCase
         $oProduct->oxarticles__oxtitle = new oxField('title');
         $oProduct->oxarticles__oxvarselect = new oxField('select');
 
-        $oView = $this->getMock("RecommAdd", array('getProduct'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\RecommendationAddController::class, array('getProduct'));
         $oView->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
 
         $this->assertEquals('title select', $oView->getTitle());

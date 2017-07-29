@@ -19,11 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \oxField;
 use \oxException;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Registry;
 use \oxTestModules;
 
 /**
@@ -37,22 +37,22 @@ class CmpShopTest extends \OxidTestCase
      */
     public function testRenderNoActiveShop()
     {
-        $oView = $this->getMock("oxView", array("getClassName"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getClassName"));
         $oView->expects($this->once())->method('getClassName')->will($this->returnValue("test"));
 
         $oShop = oxNew('oxShop');
         $oShop->oxshops__oxactive = new oxField(0);
 
-        $oUtils = $this->getMock('oxUtils', array('showOfflinePage'));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('showOfflinePage'));
         $oUtils->expects($this->once())->method('showOfflinePage');
-        Registry::set('oxUtils', $oUtils);
-        
-        $oConfig = $this->getMock("oxConfig", array("getConfigParam", "getActiveView", "getActiveShop"));
+        Registry::set(\OxidEsales\Eshop\Core\Utils::Class, $oUtils);
+
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getConfigParam", "getActiveView", "getActiveShop"));
         $oConfig->expects($this->once())->method('getActiveView')->will($this->returnValue($oView));
         $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(false));
         $oConfig->expects($this->once())->method('getActiveShop')->will($this->returnValue($oShop));
 
-        $oCmp = $this->getMock("oxcmp_shop", array("getConfig", "isAdmin"), array(), '', false);
+        $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\ShopComponent::class, array("getConfig", "isAdmin"), array(), '', false);
         $oCmp->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
         $oCmp->expects($this->once())->method('isAdmin')->will($this->returnValue(false));
 

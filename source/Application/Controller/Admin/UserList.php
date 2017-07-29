@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxUser;
@@ -30,7 +30,7 @@ use oxUser;
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: User Administration -> Users.
  */
-class UserList extends \oxAdminList
+class UserList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
     /**
      * Name of chosen object class (default null).
@@ -68,7 +68,7 @@ class UserList extends \oxAdminList
     public function render()
     {
         foreach ($this->getItemList() as $itemId => $user) {
-            /** @var oxUser $user */
+            /** @var \OxidEsales\Eshop\Application\Model\User $user */
             if ($user->inGroup("oxidblacklist") || $user->inGroup("oxidblocked")) {
                 $user->blacklist = "1";
             }
@@ -122,7 +122,7 @@ class UserList extends \oxAdminList
             $values = explode(' ', $name);
             $query .= ' and (';
             $queryBoolAction = '';
-            $utilsString = oxRegistry::get("oxUtilsString");
+            $utilsString = \OxidEsales\Eshop\Core\Registry::getUtilsString();
 
             foreach ($nameWhere as $fieldName => $fieldValue) {
                 //for each search field using AND action

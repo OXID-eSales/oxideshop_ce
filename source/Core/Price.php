@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxRegistry;
 use oxPrice;
@@ -76,11 +76,11 @@ class Price
      *
      * @param double $dPrice given price
      *
-     * @return oxPrice
+     * @return \OxidEsales\Eshop\Core\Price
      */
     public function __construct($dPrice = null)
     {
-        $this->setNettoMode(oxRegistry::getConfig()->getConfigParam('blEnterNetPrice'));
+        $this->setNettoMode(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blEnterNetPrice'));
 
         if (!is_null($dPrice)) {
             $this->setPrice($dPrice);
@@ -205,7 +205,7 @@ class Price
         if ($this->isNettoMode()) {
             return $this->getNettoPrice() + $this->getVatValue();
         } else {
-            return oxRegistry::getUtils()->fRound($this->_dBrutto);
+            return \OxidEsales\Eshop\Core\Registry::getUtils()->fRound($this->_dBrutto);
         }
     }
 
@@ -217,7 +217,7 @@ class Price
     public function getNettoPrice()
     {
         if ($this->isNettoMode()) {
-            return oxRegistry::getUtils()->fRound($this->_dNetto);
+            return \OxidEsales\Eshop\Core\Registry::getUtils()->fRound($this->_dNetto);
         } else {
             return $this->getBruttoPrice() - $this->getVatValue();
         }
@@ -236,7 +236,7 @@ class Price
             $dVatValue = $this->getBruttoPrice() * $this->getVat() / (100 + $this->getVat());
         }
 
-        return oxRegistry::getUtils()->fRound($dVatValue);
+        return \OxidEsales\Eshop\Core\Registry::getUtils()->fRound($dVatValue);
     }
 
     /**
@@ -265,9 +265,9 @@ class Price
     /**
      * Adds another oxPrice object and recalculates current method.
      *
-     * @param oxPrice $oPrice object
+     * @param \OxidEsales\Eshop\Core\Price $oPrice object
      */
-    public function addPrice(oxPrice $oPrice)
+    public function addPrice(\OxidEsales\Eshop\Core\Price $oPrice)
     {
         if ($this->isNettoMode()) {
             $this->add($oPrice->getNettoPrice());
@@ -330,11 +330,11 @@ class Price
      *   1 - when this price is larger than $oPrice.
      *  -1 - when this price is smaller than $oPrice.
      *
-     * @param oxPrice $oPrice price object
+     * @param \OxidEsales\Eshop\Core\Price $oPrice price object
      *
      * @return null
      */
-    public function compare(oxPrice $oPrice)
+    public function compare(\OxidEsales\Eshop\Core\Price $oPrice)
     {
         $dBruttoPrice1 = $this->getBruttoPrice();
         $dBruttoPrice2 = $oPrice->getBruttoPrice();
@@ -410,7 +410,7 @@ class Price
      */
     public static function getPriceInActCurrency($dPrice)
     {
-        $oCur = oxRegistry::getConfig()->getActShopCurrencyObject();
+        $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
 
         return (( double ) $dPrice) * $oCur->rate;
     }
@@ -455,7 +455,6 @@ class Price
 
         if ($aDiscounts) {
             foreach ($aDiscounts as $aDiscount) {
-
                 if ($aDiscount['type'] == 'abs') {
                     $dPrice = $dPrice - $aDiscount['value'];
                 } else {

@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxTestModules;
 
@@ -51,11 +51,11 @@ class ToolsTest extends \OxidTestCase
         oxTestModules::addFunction('oxUtils', 'showMessageAndExit', '{ return "Access denied !"; }');
 
 
-        $oConfig = $this->getMock("oxConfig", array("isDemoShop"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("isDemoShop"));
         $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(true));
 
         // testing..
-        $oView = $this->getMock("Tools", array("getConfig"), array(), '', false);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ToolsController::class, array("getConfig"), array(), '', false);
         $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
         $this->assertEquals("Access denied !", $oView->render());
     }

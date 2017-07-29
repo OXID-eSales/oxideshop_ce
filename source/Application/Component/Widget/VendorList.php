@@ -20,13 +20,13 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Component\Widget;
+namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
 /**
  * Vendor list widget.
  * Forms vendor list.
  */
-class VendorList extends \oxWidget
+class VendorList extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
 
     /**
@@ -44,7 +44,7 @@ class VendorList extends \oxWidget
     public function getVendorlist()
     {
         if ($this->_aVendorlist === null) {
-            $oVendorTree = oxNew('oxvendorlist');
+            $oVendorTree = oxNew(\OxidEsales\Eshop\Application\Model\VendorList::class);
             $oVendorTree->buildVendorTree('vendorlist', null, $this->getConfig()->getShopHomeUrl());
             $this->_aVendorlist = $oVendorTree;
         }

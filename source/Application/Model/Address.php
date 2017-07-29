@@ -20,14 +20,13 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 /**
  * Address handler
  */
-class Address extends \oxBase
+class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-
     /**
      * Current class name
      *
@@ -55,7 +54,7 @@ class Address extends \oxBase
     protected function _getStateObject()
     {
         if (is_null($this->_oStateObject)) {
-            $this->_oStateObject = oxNew('oxState');
+            $this->_oStateObject = oxNew(\OxidEsales\Eshop\Application\Model\State::class);
         }
 
         return $this->_oStateObject;
@@ -111,18 +110,6 @@ class Address extends \oxBase
     public function getEncodedDeliveryAddress()
     {
         return md5($this->_getMergedAddressFields());
-    }
-
-    /**
-     * Return address state id
-     *
-     * @deprecated since v5.2 (2014-01-10); Naming changed use function getStateId()
-     *
-     * @return string
-     */
-    public function getState()
-    {
-        return $this->getStateId();
     }
 
     /**

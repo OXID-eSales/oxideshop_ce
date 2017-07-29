@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Integration\Price;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Price;
 
 require_once __DIR__. '/BasketConstruct.php';
 

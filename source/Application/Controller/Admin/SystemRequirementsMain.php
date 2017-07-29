@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxSysRequirements;
 
@@ -28,7 +28,7 @@ use oxSysRequirements;
  * Collects System information.
  * Admin Menu: Service -> System Requirements -> Main.
  */
-class SystemRequirementsMain extends \oxAdminDetails
+class SystemRequirementsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -41,7 +41,7 @@ class SystemRequirementsMain extends \oxAdminDetails
     {
         parent::render();
 
-        $oSysReq = new oxSysRequirements();
+        $oSysReq = new \OxidEsales\Eshop\Core\SystemRequirements();
 
         $this->_aViewData['aInfo'] = $oSysReq->getSystemInfo();
         $this->_aViewData['aCollations'] = $oSysReq->checkCollation();
@@ -84,7 +84,7 @@ class SystemRequirementsMain extends \oxAdminDetails
      */
     public function getReqInfoUrl($sIdent)
     {
-        $oSysReq = new oxSysRequirements();
+        $oSysReq = new \OxidEsales\Eshop\Core\SystemRequirements();
 
         return $oSysReq->getReqInfoUrl($sIdent);
     }
@@ -92,13 +92,13 @@ class SystemRequirementsMain extends \oxAdminDetails
     /**
      * return missing template blocks
      *
-     * @see oxSysRequirements::getMissingTemplateBlocks
+     * @see \OxidEsales\Eshop\Core\SystemRequirements::getMissingTemplateBlocks
      *
      * @return array
      */
     public function getMissingTemplateBlocks()
     {
-        $oSysReq = oxNew('oxSysRequirements');
+        $oSysReq = oxNew(\OxidEsales\Eshop\Core\SystemRequirements::class);
 
         return $oSysReq->getMissingTemplateBlocks();
     }

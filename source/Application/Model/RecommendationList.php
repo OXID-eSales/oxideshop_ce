@@ -20,12 +20,12 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
+use Exception;
 use oxDb;
 use oxRegistry;
 use oxList;
-use oxUtilsObject;
 use oxField;
 
 /**
@@ -34,7 +34,7 @@ use oxField;
  * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
  *
  */
-class RecommendationList extends \oxBase implements \oxIUrl
+class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
 
     /**
@@ -81,7 +81,7 @@ class RecommendationList extends \oxBase implements \oxIUrl
      * @param integer $iNrofArticles nr of items per page
      * @param bool    $blReload      if TRUE forces to reload list
      *
-     * @return oxList
+     * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getArticles($iStart = null, $iNrofArticles = null, $blReload = false)
     {
@@ -90,7 +90,7 @@ class RecommendationList extends \oxBase implements \oxIUrl
             return $this->_oArticles;
         }
 
-        $this->_oArticles = oxNew('oxArticleList');
+        $this->_oArticles = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
 
         if ($iStart !== null && $iNrofArticles !== null) {
             $this->_oArticles->setSqlLimit($iStart, $iNrofArticles);
@@ -112,7 +112,7 @@ class RecommendationList extends \oxBase implements \oxIUrl
         $iCnt = 0;
         $sSelect = $this->_getArticleSelect();
         if ($sSelect) {
-            $iCnt = oxDb::getDb()->getOne($sSelect);
+            $iCnt = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sSelect);
         }
 
         return $iCnt;
@@ -140,7 +140,7 @@ class RecommendationList extends \oxBase implements \oxIUrl
      */
     public function getFirstArticle()
     {
-        $oArtList = oxNew('oxArticleList');
+        $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
         $oArtList->setSqlLimit(0, 1);
         $oArtList->loadRecommArticles($this->getId(), $this->_sArticlesFilter);
         $oArtList->rewind();
@@ -165,7 +165,7 @@ class RecommendationList extends \oxBase implements \oxIUrl
         }
 
         if (($blDelete = parent::delete($sOXID))) {
-            $oDb = oxDb::getDb();
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             // cleaning up related data
             $oDb->execute("delete from oxobject2list where oxlistid = " . $oDb->quote($sOXID));
             $this->onDelete();
@@ -187,7 +187,7 @@ class RecommendationList extends \oxBase implements \oxIUrl
             return false;
         }
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sSelect = 'select oxdesc from oxobject2list where oxlistid = ' . $oDb->quote($this->getId()) . ' and oxobjectid = ' . $oDb->quote($sOXID);
 
         return $oDb->getOne($sSelect);
@@ -203,7 +203,7 @@ class RecommendationList extends \oxBase implements \oxIUrl
     public function removeArticle($sOXID)
     {
         if ($sOXID) {
-            $oDb = oxDb::getDb();
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sQ = "delete from oxobject2list where oxobjectid = " . $oDb->quote($sOXID) . " and oxlistid=" . $oDb->quote($this->getId());
 
             return $oDb->execute($sQ);
@@ -216,17 +216,30 @@ class RecommendationList extends \oxBase implements \oxIUrl
      * @param string $sOXID Object ID
      * @param string $sDesc recommended article description
      *
+     * @throws Exception
+     *
      * @return bool
      */
     public function addArticle($sOXID, $sDesc)
     {
         $blAdd = false;
         if ($sOXID) {
-            $oDb = oxDb::getDb();
-            if (!$oDb->getOne("select oxid from oxobject2list where oxobjectid=" . $oDb->quote($sOXID) . " and oxlistid=" . $oDb->quote($this->getId()), false, false)) {
-                $sUid = oxUtilsObject::getInstance()->generateUID();
-                $sQ = "insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( '$sUid', " . $oDb->quote($sOXID) . ", " . $oDb->quote($this->getId()) . ", " . $oDb->quote($sDesc) . " )";
-                $blAdd = $oDb->execute($sQ);
+            // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
+            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+
+            $database->startTransaction();
+            try {
+                if (!$database->getOne("select oxid from oxobject2list where oxobjectid=" . $database->quote($sOXID) . " and oxlistid=" . $database->quote($this->getId()))) {
+                    $sUid = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID();
+                    $sQ = "insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( '$sUid', " . $database->quote($sOXID) . ", " . $database->quote($this->getId()) . ", " . $database->quote($sDesc) . " )";
+                    $blAdd = $database->execute($sQ);
+                }
+
+                $database->commitTransaction();
+            } catch (Exception $exception) {
+                $database->rollbackTransaction();
+
+                throw $exception;
             }
         }
 
@@ -241,16 +254,16 @@ class RecommendationList extends \oxBase implements \oxIUrl
      *
      * @param array $aArticleIds Object IDs
      *
-     * @return oxList
+     * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getRecommListsByIds($aArticleIds)
     {
         if (count($aArticleIds)) {
             startProfile(__FUNCTION__);
 
-            $sIds = implode(",", oxDb::getInstance()->quoteArray($aArticleIds));
+            $sIds = implode(",", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aArticleIds));
 
-            $oRecommList = oxNew('oxlist');
+            $oRecommList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oRecommList->init('oxrecommlist');
 
             $iShopId = $this->getConfig()->getShopId();
@@ -289,18 +302,17 @@ class RecommendationList extends \oxBase implements \oxIUrl
      *     1. first show articles from our search
      *     2. do not shown articles as 1st, which are shown in other recomm lists as 1st
      *
-     * @param oxList $oRecommList recommendation list
-     * @param array  $aIds        article ids
+     * @param \OxidEsales\Eshop\Core\Model\ListModel $oRecommList recommendation list
+     * @param array                                  $aIds        article ids
      */
-    protected function _loadFirstArticles(oxList $oRecommList, $aIds)
+    protected function _loadFirstArticles(\OxidEsales\Eshop\Core\Model\ListModel $oRecommList, $aIds)
     {
-        $aIds = oxDb::getInstance()->quoteArray($aIds);
+        $aIds = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds);
         $sIds = implode(", ", $aIds);
 
         $aPrevIds = array();
         $sArtView = getViewName('oxarticles');
         foreach ($oRecommList as $key => $oRecomm) {
-
             if (count($aPrevIds)) {
                 $sNegateSql = " AND $sArtView.oxid not in ( '" . implode("','", $aPrevIds) . "' ) ";
             } else {
@@ -308,7 +320,7 @@ class RecommendationList extends \oxBase implements \oxIUrl
             }
             $sArticlesFilter = "$sNegateSql ORDER BY $sArtView.oxid in ( $sIds ) desc";
             $oRecomm->setArticlesFilter($sArticlesFilter);
-            $oArtList = oxNew('oxArticleList');
+            $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
             $oArtList->setSqlLimit(0, 1);
             $oArtList->loadRecommArticles($oRecomm->getId(), $sArticlesFilter);
 
@@ -336,14 +348,14 @@ class RecommendationList extends \oxBase implements \oxIUrl
     {
         if ($sSearchStr) {
             // sets active page
-            $iActPage = (int) oxRegistry::getConfig()->getRequestParameter('pgNr');
+            $iActPage = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pgNr');
             $iActPage = ($iActPage < 0) ? 0 : $iActPage;
 
             // load only lists which we show on screen
             $iNrofCatArticles = $this->getConfig()->getConfigParam('iNrofCatArticles');
             $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
 
-            $oRecommList = oxNew('oxlist');
+            $oRecommList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oRecommList->init('oxrecommlist');
             $sSelect = $this->_getSearchSelect($sSearchStr);
             $oRecommList->setSqlLimit($iNrofCatArticles * $iActPage, $iNrofCatArticles);
@@ -365,10 +377,9 @@ class RecommendationList extends \oxBase implements \oxIUrl
         $iCnt = 0;
         $sSelect = $this->_getSearchSelect($sSearchStr);
         if ($sSelect) {
-
             $sPartial = substr($sSelect, strpos($sSelect, ' from '));
             $sSelect = "select count( distinct rl.oxid ) $sPartial ";
-            $iCnt = oxDb::getDb()->getOne($sSelect);
+            $iCnt = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sSelect);
         }
 
         return $iCnt;
@@ -384,7 +395,7 @@ class RecommendationList extends \oxBase implements \oxIUrl
     protected function _getSearchSelect($sSearchStr)
     {
         $iShopId = $this->getConfig()->getShopId();
-        $sSearchStrQuoted = oxDb::getDb()->quote("%$sSearchStr%");
+        $sSearchStrQuoted = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote("%$sSearchStr%");
 
         $sSelect = "select distinct rl.* from oxrecommlists as rl";
         $sSelect .= " inner join oxobject2list as o2l on o2l.oxlistid = rl.oxid";
@@ -403,19 +414,19 @@ class RecommendationList extends \oxBase implements \oxIUrl
     {
         $dOldRating = $this->oxrecommlists__oxrating->value;
         $dOldCnt = $this->oxrecommlists__oxratingcnt->value;
-        $this->oxrecommlists__oxrating = new oxField(($dOldRating * $dOldCnt + $iRating) / ($dOldCnt + 1), oxField::T_RAW);
-        $this->oxrecommlists__oxratingcnt = new oxField($dOldCnt + 1, oxField::T_RAW);
+        $this->oxrecommlists__oxrating = new \OxidEsales\Eshop\Core\Field(($dOldRating * $dOldCnt + $iRating) / ($dOldCnt + 1), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxrecommlists__oxratingcnt = new \OxidEsales\Eshop\Core\Field($dOldCnt + 1, \OxidEsales\Eshop\Core\Field::T_RAW);
         $this->save();
     }
 
     /**
      * Collects user written reviews about an article.
      *
-     * @return oxList
+     * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getReviews()
     {
-        $oReview = oxNew('oxreview');
+        $oReview = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
         $oRevs = $oReview->loadList('oxrecommlist', $this->getId());
         //if no review found, return null
         if ($oRevs->count() < 1) {
@@ -435,7 +446,7 @@ class RecommendationList extends \oxBase implements \oxIUrl
      */
     public function getBaseSeoLink($iLang, $iPage = 0)
     {
-        $oEncoder = oxRegistry::get("oxSeoEncoderRecomm");
+        $oEncoder = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderRecomm::class);
         if (!$iPage) {
             return $oEncoder->getRecommUrl($this, $iLang);
         }
@@ -453,10 +464,10 @@ class RecommendationList extends \oxBase implements \oxIUrl
     public function getLink($iLang = null)
     {
         if ($iLang === null) {
-            $iLang = oxRegistry::getLang()->getBaseLanguage();
+            $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         }
 
-        if (!oxRegistry::getUtils()->seoIsActive()) {
+        if (!\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive()) {
             return $this->getStdLink($iLang);
         }
 
@@ -478,10 +489,10 @@ class RecommendationList extends \oxBase implements \oxIUrl
     public function getStdLink($iLang = null, $aParams = array())
     {
         if ($iLang === null) {
-            $iLang = oxRegistry::getLang()->getBaseLanguage();
+            $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         }
 
-        return oxRegistry::get("oxUtilsUrl")->processUrl($this->getBaseStdLink($iLang), true, $aParams, $iLang);
+        return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($this->getBaseStdLink($iLang), true, $aParams, $iLang);
     }
 
     /**

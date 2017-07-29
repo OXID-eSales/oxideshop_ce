@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 
 /**
  * Content seo config class
  */
-class ContentSeo extends \Object_Seo
+class ContentSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
 {
 
     /**
@@ -47,7 +47,7 @@ class ContentSeo extends \Object_Seo
      */
     protected function _getEncoder()
     {
-        return oxRegistry::get("oxSeoEncoderContent");
+        return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderContent::class);
     }
 
     /**
@@ -57,7 +57,7 @@ class ContentSeo extends \Object_Seo
      */
     public function getEntryUri()
     {
-        $oContent = oxNew('oxcontent');
+        $oContent = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
         if ($oContent->load($this->getEditObjectId())) {
             return $this->_getEncoder()->getContentUri($oContent, $this->getEditLang());
         }

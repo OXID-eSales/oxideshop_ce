@@ -20,12 +20,12 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Component\Widget;
+namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
 /**
  * Language selection list widget
  */
-class LanguageList extends \oxWidget
+class LanguageList extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
 
     /**

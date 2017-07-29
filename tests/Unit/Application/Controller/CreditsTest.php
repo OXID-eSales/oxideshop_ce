@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
-use \oxcontent;
+use OxidEsales\EshopCommunity\Application\Model\Content;
 
 /**
  * Tests for content class
@@ -50,7 +50,7 @@ class CreditsTest extends \OxidTestCase
         // default "oxcredits"
         $oView = oxNew('Credits');
         $oContent = $oView->getContent();
-        $this->assertTrue($oContent instanceof oxcontent);
+        $this->assertTrue($oContent instanceof Content);
         $this->assertEquals("oxcredits", $oContent->oxcontents__oxloadid->value);
         $this->assertNotEquals("", $oContent->oxcontents__oxcontent->value);
 

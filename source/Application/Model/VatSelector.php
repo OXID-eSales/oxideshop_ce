@@ -20,9 +20,8 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxArticle;
 use oxDb;
 use oxObjectException;
 
@@ -30,7 +29,7 @@ use oxObjectException;
  * Class, responsible for retrieving correct vat for users and articles
  *
  */
-class VatSelector extends \oxSuperCfg
+class VatSelector extends \OxidEsales\Eshop\Core\Base
 {
 
     /**
@@ -50,13 +49,13 @@ class VatSelector extends \oxSuperCfg
     /**
      * get VAT for user, can NOT be null
      *
-     * @param User $oUser given  user object
-     * @param bool $blCacheReset reset cache
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser        given  user object
+     * @param bool                                     $blCacheReset reset cache
      *
      * @throws oxObjectException if wrong country
      * @return double | false
      */
-    public function getUserVat(User $oUser, $blCacheReset = false)
+    public function getUserVat(\OxidEsales\Eshop\Application\Model\User $oUser, $blCacheReset = false)
     {
         $cacheId = $oUser->getId() . '_' . $oUser->oxuser__oxcountryid->value;
 
@@ -73,9 +72,9 @@ class VatSelector extends \oxSuperCfg
         $sCountryId = $this->_getVatCountry($oUser);
 
         if ($sCountryId) {
-            $oCountry = oxNew('oxcountry');
+            $oCountry = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
             if (!$oCountry->load($sCountryId)) {
-                throw oxNew("oxObjectException");
+                throw oxNew(\OxidEsales\Eshop\Core\Exception\ObjectException::class);
             }
             if ($oCountry->isForeignCountry()) {
                 $ret = $this->_getForeignCountryUserVat($oUser, $oCountry);
@@ -90,12 +89,12 @@ class VatSelector extends \oxSuperCfg
     /**
      * get vat for user of a foreign country
      *
-     * @param User    $oUser    given user object
-     * @param Country $oCountry given country object
+     * @param \OxidEsales\Eshop\Application\Model\User    $oUser    given user object
+     * @param \OxidEsales\Eshop\Application\Model\Country $oCountry given country object
      *
      * @return mixed
      */
-    protected function _getForeignCountryUserVat(User $oUser, Country $oCountry)
+    protected function _getForeignCountryUserVat(\OxidEsales\Eshop\Application\Model\User $oUser, \OxidEsales\Eshop\Application\Model\Country $oCountry)
     {
         if ($oCountry->isInEU()) {
             if ($oUser->oxuser__oxustid->value) {
@@ -109,15 +108,15 @@ class VatSelector extends \oxSuperCfg
     }
 
     /**
-     * return Vat value for oxcategory type assignment only
+     * return Vat value for category type assignment only
      *
-     * @param Article $oArticle given article
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle given article
      *
      * @return float | false
      */
-    protected function _getVatForArticleCategory(Article $oArticle)
+    protected function _getVatForArticleCategory(\OxidEsales\Eshop\Application\Model\Article $oArticle)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sCatT = getViewName('oxcategories');
 
         if ($this->_blCatVatSet === null) {
@@ -151,11 +150,11 @@ class VatSelector extends \oxSuperCfg
     /**
      * get VAT for given article, can NOT be null
      *
-     * @param oxArticle $oArticle given article
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle given article
      *
      * @return double
      */
-    public function getArticleVat(oxArticle $oArticle)
+    public function getArticleVat(\OxidEsales\Eshop\Application\Model\Article $oArticle)
     {
         startProfile("_assignPriceInternal");
         // article has its own VAT ?
@@ -178,15 +177,15 @@ class VatSelector extends \oxSuperCfg
 
     /**
      * Currently returns vats percent that can be applied for basket
-     * item ( executes oxVatSelector::getArticleVat()). Can be used to override
-     * basket price calculation behaviour (oxarticle::getBasketPrice())
+     * item ( executes \OxidEsales\Eshop\Application\Model\VatSelector::getArticleVat()). Can be used to override
+     * basket price calculation behaviour (\OxidEsales\Eshop\Application\Model\Article::getBasketPrice())
      *
-     * @param Article $oArticle article object
-     * @param Basket  $oBasket  oxbasket object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
+     * @param \OxidEsales\Eshop\Application\Model\Basket  $oBasket  oxbasket object
      *
      * @return double
      */
-    public function getBasketItemVat(Article $oArticle, $oBasket)
+    public function getBasketItemVat(\OxidEsales\Eshop\Application\Model\Article $oArticle, $oBasket)
     {
         return $this->getArticleVat($oArticle);
     }
@@ -194,11 +193,11 @@ class VatSelector extends \oxSuperCfg
     /**
      * get article user vat
      *
-     * @param oxArticle $oArticle article object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      *
      * @return double | false
      */
-    public function getArticleUserVat(oxArticle $oArticle)
+    public function getArticleUserVat(\OxidEsales\Eshop\Application\Model\Article $oArticle)
     {
         if (($oUser = $oArticle->getArticleUser())) {
             return $this->getUserVat($oUser);
@@ -212,11 +211,11 @@ class VatSelector extends \oxSuperCfg
      * Returns country id which VAT should be applied to.
      * Depending on configuration option either user billing country or shipping country (if available) is returned.
      *
-     * @param User $oUser user object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser user object
      *
      * @return string
      */
-    protected function _getVatCountry(User $oUser)
+    protected function _getVatCountry(\OxidEsales\Eshop\Application\Model\User $oUser)
     {
         $blUseShippingCountry = $this->getConfig()->getConfigParam("blShippingCountryVat");
 

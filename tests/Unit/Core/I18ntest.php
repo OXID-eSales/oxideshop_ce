@@ -19,13 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use modDB;
-use \oxField;
-use \oxDb;
-use \oxRegistry;
-use \oxTestModules;
+use oxDb;
+use oxField;
+use OxidEsales\EshopCommunity\Core\DatabaseProvider;
+use oxRegistry;
+use oxTestModules;
 
 //require_once 'oxbaseTest.php';
 
@@ -107,7 +108,7 @@ class I18ntest extends \OxidTestCase
     public function testUpdateAndSeoIsOnMock()
     {
 
-        $oSeo = $this->getMock('oxseoencoder', array('markAsExpired'));
+        $oSeo = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('markAsExpired'));
         $oSeo->expects($this->once())->method('markAsExpired')->with(
             $this->equalTo('testa'),
             $this->equalTo(null),
@@ -162,7 +163,7 @@ class I18ntest extends \OxidTestCase
 
     public function testSetEnableMultilanguageCacheTest()
     {
-        $oI18n = $this->getMock('oxI18n', array('modifyCacheKey'));
+        $oI18n = $this->getMock(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class, array('modifyCacheKey'));
         $oI18n->expects($this->once())->method('modifyCacheKey')->with("_nonml");
         $oI18n->setEnableMultilang(false);
     }
@@ -461,12 +462,11 @@ class I18ntest extends \OxidTestCase
     {
         $iCurrTime = 1453734000; //some rounded timestamp
 
-        $oUtilsDate = $this->getMock('oxUtilsDate', array('getRequestTime'));
+        $oUtilsDate = $this->getMock(\OxidEsales\Eshop\Core\UtilsDate::class, array('getRequestTime'));
         $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue($iCurrTime));
-        /** @var oxUtilsDate $oUtils */
-        oxRegistry::set('oxUtilsDate', $oUtilsDate);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsDate::class, $oUtilsDate);
 
-        $oI18n = $this->getMock('oxI18n', array('getViewName'));
+        $oI18n = $this->getMock(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class, array('getViewName'));
         $oI18n->expects($this->once())->method('getViewName')->with($this->equalTo(null))->will($this->returnValue('oxi18n'));
 
         $oI18n->UNITaddField('oxactive', 0);
@@ -489,15 +489,15 @@ class I18ntest extends \OxidTestCase
     {
         $iCurrTime = 1453734000; //some rounded timestamp
 
-        $oUtilsDate = $this->getMock('oxUtilsDate', array('getRequestTime'));
+        $oUtilsDate = $this->getMock(\OxidEsales\Eshop\Core\UtilsDate::class, array('getRequestTime'));
         $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue($iCurrTime));
         /** @var oxUtilsDate $oUtils */
-        oxRegistry::set('oxUtilsDate', $oUtilsDate);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsDate::class, $oUtilsDate);
 
         $sTable = 'oxi18n';
 
         /** @var oxI18n|PHPUnit_Framework_MockObject_MockObject $oI18n */
-        $oI18n = $this->getMock('oxI18n', array('getCoreTableName', 'getViewName', 'isMultilingualField', 'getLanguage'));
+        $oI18n = $this->getMock(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class, array('getCoreTableName', 'getViewName', 'isMultilingualField', 'getLanguage'));
         $oI18n->expects($this->any())->method('getCoreTableName')->will($this->returnValue($sTable));
         $oI18n->expects($this->once())->method('getViewName')->will($this->returnValue('oxi18n'));
         $oI18n->expects($this->never())->method('getLanguage');
@@ -547,7 +547,7 @@ class I18ntest extends \OxidTestCase
      */
     public function testGetUpdateSqlFieldNameMLfield()
     {
-        $oObj = $this->getMock('oxi18n', array('isMultilingualField'));
+        $oObj = $this->getMock(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class, array('isMultilingualField'));
         $oObj->expects($this->exactly(2))->method('isMultilingualField')
             ->with($this->equalTo('field'))
             ->will($this->returnValue(true));
@@ -565,7 +565,7 @@ class I18ntest extends \OxidTestCase
      */
     public function testGetUpdateSqlFieldNameNonMLfield()
     {
-        $oObj = $this->getMock('oxi18n', array('isMultilingualField'));
+        $oObj = $this->getMock(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class, array('isMultilingualField'));
         $oObj->expects($this->exactly(2))->method('isMultilingualField')
             ->with($this->equalTo('field'))
             ->will($this->returnValue(false));
@@ -636,7 +636,7 @@ class I18ntest extends \OxidTestCase
      */
     public function testGetUpdateFields()
     {
-        $oObj = $this->getMock('oxi18n', array('_getUpdateFieldsForTable', 'getCoreTableName'));
+        $oObj = $this->getMock(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class, array('_getUpdateFieldsForTable', 'getCoreTableName'));
         $oObj->expects($this->exactly(1))->method('_getUpdateFieldsForTable')
             ->with($this->equalTo('coretable'), $this->equalTo('useskipsavefields'))
             ->will($this->returnValue('returned val'));
@@ -649,48 +649,117 @@ class I18ntest extends \OxidTestCase
     public static $aLoggedSqls = array();
 
     /**
-     * base test
+     * Test the method 'update' of the Base class.
      */
     public function testUpdate()
     {
-        $oObj = oxNew('oxi18n');
-        $oObj->init('oxstates');
+        $tableName = 'oxstates';
+        $oxId = "test_update";
+        $oxTitle = 'test_x';
 
+        $expectedUpdateSql = "update $tableName set oxid = '$oxId',oxcountryid = '',oxtitle = '$oxTitle',oxisoalpha2 = '' where oxstates.oxid = '$oxId'";
 
-        $oObj->setId("test_update");
-        $oObj->oxstates__oxtitle = new oxField('test_x');
+        $i18nMock = $this->getMock('OxidEsales\EshopCommunity\Core\I18n', array('executeDatabaseQuery'));
+        $i18nMock->expects($this->any())->method('executeDatabaseQuery')->with($this->equalTo($expectedUpdateSql));
 
-        $dbMock = $this->getDbObjectMock();
-        $dbMock->expects($this->any())->method('select')->will($this->returnValue(false));
-        $dbMock->expects($this->any())->method('execute')->will($this->evalFunction('{\Unit\Core\I18nTest::$aLoggedSqls[] = $args[0];return true;}'));
-        oxDb::setDbObject($dbMock);
+        $i18nMock->init($tableName);
 
-        $oObj->setLanguage(0);
-        I18nTest::$aLoggedSqls = array();
-        $oObj->UNITupdate();
-        $this->assertEquals(
-            array("update oxstates set oxid = 'test_update',oxcountryid = '',oxtitle = 'test_x',oxisoalpha2 = '' where oxstates.oxid = 'test_update'"),
-            array_map('trim', I18ntest::$aLoggedSqls)
-        );
+        $i18nMock->setId($oxId);
+        $i18nMock->oxstates__oxtitle = new oxField($oxTitle);
 
-        $oObj->setLanguage(90);
-        I18nTest::$aLoggedSqls = array();
-        $oObj->UNITupdate();
-        $this->assertEquals(
-            array(
-                 "update oxstates set oxid = 'test_update',oxcountryid = '',oxisoalpha2 = '' where oxstates.oxid = 'test_update'",
-                 "insert into oxstates_set11 set oxid = 'test_update',oxtitle_90 = 'test_x' on duplicate key update oxid = 'test_update',oxtitle_90 = 'test_x'",
-            ),
-            array_map('trim', I18ntest::$aLoggedSqls)
-        );
+        $i18nMock->setLanguage(0);
+
+        $i18nMock->UNITupdate();
+    }
+
+    /**
+     * Test the method 'update' of the Base class.
+     */
+    public function testUpdateTwo()
+    {
+        $tableName = 'oxstates';
+        $oxId = "test_update";
+        $oxTitle = 'test_x';
+
+        $expectedUpdateSql = "update $tableName set oxid = '$oxId',oxcountryid = '',oxisoalpha2 = '' where oxstates.oxid = '$oxId'";
+        $expectedInsertSql = "insert into oxstates_set11 set oxid = '$oxId',oxtitle_90 = '$oxTitle' on duplicate key update oxid = '$oxId',oxtitle_90 = '$oxTitle'";
+
+        $I18n = $this->getMock('OxidEsales\EshopCommunity\Core\I18n', array('executeDatabaseQuery'));
+        $I18n->expects($this->at(0))
+            ->method('executeDatabaseQuery')
+            ->with($this->equalTo($expectedUpdateSql))
+            ->will($this->returnValue(true));
+        $I18n->expects($this->at(1))->method('executeDatabaseQuery')->with($this->equalTo($expectedInsertSql));
+        $I18n->init($tableName);
+
+        $I18n->setId($oxId);
+        $I18n->oxstates__oxtitle = new oxField($oxTitle);
+
+        $I18n->setLanguage(90);
+        $I18n->UNITupdate();
+    }
+
+    /**
+     * Data provider for the test method testUpdateMultiLanguageLangDisabled.
+     */
+    public function dataProviderTestUpdateMultiLanguageLangDisabled()
+    {
+        return [
+            [
+                'testedLanuageId' => 0,
+                'testDescription' => 'the default language'
+            ],
+            [
+                'testedLanguageId' => 90,
+                'testDescription' => 'another language'
+            ]
+        ];
     }
 
     /**
      * base test
+     *
+     * @dataProvider dataProviderTestUpdateMultiLanguageLangDisabled
      */
-    public function testUpdate_MLangDisabled()
+    public function testUpdateMultiLanguageLangDisabled($testedLanuageId)
     {
-        $cl = oxTestModules::addFunction(
+        $tableName = 'oxstates';
+        $extendedTableName = 'oxstates_set11';
+        $oxId = "test_update";
+        $oxTitle = 'test_x';
+        $oxTitleAnotherLanguage = 'test_y';
+        $oxTitleKeyAnotherLanguage = 'oxtitle_90';
+
+        $expectedUpdateSql = "update $tableName set oxid = '$oxId',oxcountryid = '',oxtitle = '$oxTitle',oxisoalpha2 = '',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '' where oxstates.oxid = '$oxId'";
+        $expectedInsertSql = "insert into $extendedTableName set oxid = '$oxId',oxtitle_90 = '$oxTitleAnotherLanguage' on duplicate key update oxid = '$oxId',oxtitle_90 = '$oxTitleAnotherLanguage'";
+
+        $extendedI18nMock = $this->createProtectedAccessI18nMock();
+        $i18nMock = $this->getMock($extendedI18nMock, array('_getLanguageSetTables', 'executeDatabaseQuery'));
+        $i18nMock->setEnableMultilang(false);
+        $i18nMock->init($tableName);
+        $i18nMock->__setFieldNames(array_merge($i18nMock->__getFieldNames(), array($oxTitleKeyAnotherLanguage => 0)));
+
+        $i18nMock->setId($oxId);
+        $i18nMock->oxstates__oxtitle = new oxField($oxTitle);
+        $i18nMock->oxstates__oxtitle_90 = new oxField($oxTitleAnotherLanguage);
+
+        $i18nMock->expects($this->at(0))->method('executeDatabaseQuery')->with($this->equalTo($expectedUpdateSql))->willReturn(true);
+        $i18nMock->expects($this->at(1))->method('_getLanguageSetTables')->will($this->returnValue(array($extendedTableName)));
+        $i18nMock->expects($this->at(2))->method('executeDatabaseQuery')->with($this->equalTo($expectedInsertSql));
+
+        $i18nMock->setLanguage($testedLanuageId);
+
+        $i18nMock->UNITupdate();
+    }
+
+    /**
+     * Create a class definition of a mocked I18n.
+     *
+     * @return string The class definition we wanted.
+     */
+    protected function createProtectedAccessI18nMock()
+    {
+        $classDefinition = oxTestModules::addFunction(
             oxTestModules::addFunction(
                 'oxi18n',
                 '__setFieldNames($fn)',
@@ -699,42 +768,8 @@ class I18ntest extends \OxidTestCase
             '__getFieldNames',
             '{return $this->_aFieldNames;}'
         );
-        $oObj = $this->getMock($cl, array('_getLanguageSetTables'));
-        $oObj->expects($this->any())->method('_getLanguageSetTables')->will($this->returnValue(array('oxstates_set11')));
-        $oObj->setEnableMultilang(false);
-        $oObj->init('oxstates');
-        $oObj->__setFieldNames(array_merge($oObj->__getFieldNames(), array('oxtitle_90' => 0)));
 
-        $oObj->setId("test_update");
-        $oObj->oxstates__oxtitle = new oxField('test_x');
-        $oObj->oxstates__oxtitle_90 = new oxField('test_y');
-
-        $dbMock = $this->getDbObjectMock();
-        $dbMock->expects($this->any())->method('select')->will($this->returnValue(false));
-        $dbMock->expects($this->any())->method('execute')->will($this->evalFunction('{\Unit\Core\I18nTest::$aLoggedSqls[] = $args[0];return true;}'));
-        oxDb::setDbObject($dbMock);
-
-        $oObj->setLanguage(0);
-        I18ntest::$aLoggedSqls = array();
-        $oObj->UNITupdate();
-        $this->assertEquals(
-            array(
-                 "update oxstates set oxid = 'test_update',oxcountryid = '',oxtitle = 'test_x',oxisoalpha2 = '',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '' where oxstates.oxid = 'test_update'",
-                 "insert into oxstates_set11 set oxid = 'test_update',oxtitle_90 = 'test_y' on duplicate key update oxid = 'test_update',oxtitle_90 = 'test_y'",
-            ),
-            array_map('trim', I18ntest::$aLoggedSqls)
-        );
-
-        $oObj->setLanguage(90);
-        I18nTest::$aLoggedSqls = array();
-        $oObj->UNITupdate();
-        $this->assertEquals(
-            array(
-                 "update oxstates set oxid = 'test_update',oxcountryid = '',oxtitle = 'test_x',oxisoalpha2 = '',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '' where oxstates.oxid = 'test_update'",
-                 "insert into oxstates_set11 set oxid = 'test_update',oxtitle_90 = 'test_y' on duplicate key update oxid = 'test_update',oxtitle_90 = 'test_y'",
-            ),
-            array_map('trim', I18ntest::$aLoggedSqls)
-        );
+        return $classDefinition;
     }
 
     public function testGetLanguageSetTables()
@@ -747,7 +782,7 @@ class I18ntest extends \OxidTestCase
             $oObj->UNITgetLanguageSetTables()
         );
 
-        $oLang = $this->getMock('oxLang', array('getLanguageIds'));
+        $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array('getLanguageIds'));
         $oLang->expects($this->any())->method('getLanguageIds')->will($this->returnValue(array(0 => 'de', 1 => 'en', 90 => 'lt')));
 
         oxTestModules::addModuleObject('oxLang', $oLang);
@@ -761,47 +796,60 @@ class I18ntest extends \OxidTestCase
     }
 
     /**
-     * base test
+     * Data provider for the test method testUpdateMultiLanguageLangDisabled.
      */
-    public function testInsert()
+    public function dataProviderTestInsertDefaultLanguage()
     {
-        $oObj = $this->getMock('oxi18n', array('_getLanguageSetTables'));
-        $oObj->expects($this->any())->method('_getLanguageSetTables')->will($this->returnValue(array('oxstates_set11')));
-        $oObj->init('oxstates');
-
-
-        $oObj->setId("test_insert");
-        $oObj->oxstates__oxtitle = new oxField('test_x');
-
-
-        $dbMock = $this->getDbObjectMock();
-        $dbMock->expects($this->any())->method('select')->will($this->returnValue(false));
-        $dbMock->expects($this->any())->method('execute')->will($this->evalFunction('{\Unit\Core\I18nTest::$aLoggedSqls[] = $args[0];return true;}'));
-        oxDb::setDbObject($dbMock);
-
-        $oObj->setLanguage(0);
-        I18nTest::$aLoggedSqls = array();
-        $oObj->UNITinsert();
-        $this->assertEquals(
-            array(
-                "Insert into oxstates set oxid = 'test_insert',oxcountryid = '',oxtitle = 'test_x',oxisoalpha2 = ''",
-                "insert into oxstates_set11 set oxid = 'test_insert'",
-            ),
-            array_map('trim', I18nTest::$aLoggedSqls)
-        );
-
-        $oObj->setLanguage(90);
-        I18nTest::$aLoggedSqls = array();
-        $oObj->UNITinsert();
-        $this->assertEquals(
-            array(
-                "Insert into oxstates set oxid = 'test_insert',oxcountryid = '',oxisoalpha2 = ''",
-                "insert into oxstates_set11 set oxid = 'test_insert',oxtitle_90 = 'test_x'",
-            ),
-            array_map('trim', I18nTest::$aLoggedSqls)
-        );
+        return [
+            [
+                'languageId'      => 0,
+                'isOxTitleInParent' => true,
+                'testDescription' => 'The default language.'
+            ],
+            [
+                'languageId'      => 90,
+                'isOxTitleInParent' => false,
+                'testDescription' => 'Another language.'
+            ],
+        ];
     }
 
+    /**
+     * base test
+     *
+     * @dataProvider dataProviderTestInsertDefaultLanguage
+     *
+     * @param int  $testedLanguageId  The language id, we want to test here.
+     * @param bool $isOxTitleInParent Is in this test the oxtitle in the parent or in the child SQL?
+     */
+    public function testInsertDefaultLanguage($testedLanguageId, $isOxTitleInParent)
+    {
+        $tableName = 'oxstates';
+        $tableNameExtended = 'oxstates_set11';
+        $oxId = "test_insert";
+        $oxTitle = 'test_x';
+
+        if ($isOxTitleInParent) {
+            $expectedInsertSqlParent = "Insert into $tableName set oxid = '$oxId',oxcountryid = '',oxtitle = '$oxTitle',oxisoalpha2 = ''";
+            $expectedInsertSqlChild = "insert into $tableNameExtended set oxid = '$oxId'";
+        } else {
+            $expectedInsertSqlParent = "Insert into $tableName set oxid = '$oxId',oxcountryid = '',oxisoalpha2 = ''";
+            $expectedInsertSqlChild = "insert into $tableNameExtended set oxid = '$oxId',oxtitle_90 = '$oxTitle'";
+        }
+
+        $i18nMock = $this->getMock('OxidEsales\EshopCommunity\Core\I18n', array('executeDatabaseQuery','_getLanguageSetTables'));
+        $i18nMock->expects($this->at(0))->method('executeDatabaseQuery')->with($this->equalTo($expectedInsertSqlParent))->willReturn(true);
+        $i18nMock->expects($this->at(1))->method('_getLanguageSetTables')->will($this->returnValue(array($tableNameExtended)));
+        $i18nMock->expects($this->at(2))->method('executeDatabaseQuery')->with($this->equalTo($expectedInsertSqlChild));
+        $i18nMock->init($tableName);
+
+        $i18nMock->setId($oxId);
+        $i18nMock->oxstates__oxtitle = new oxField($oxTitle);
+
+        $i18nMock->setLanguage($testedLanguageId);
+
+        $i18nMock->UNITinsert();
+    }
 
     /**
      * base test
@@ -829,13 +877,12 @@ class I18ntest extends \OxidTestCase
         $this->assertEquals(getViewName('oxarticles', -1, 1), $oObj->getViewName());
     }
 
-
     /**
      * base test
      */
     public function testGetAllFields()
     {
-        $oObj = $this->getMock('oxi18n', array('_getTableFields', 'getViewName'));
+        $oObj = $this->getMock(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class, array('_getTableFields', 'getViewName'));
         $oObj->expects($this->exactly(1))->method('_getTableFields')
             ->with($this->equalTo('view'), $this->equalTo('simeple?'))
             ->will($this->returnValue('returned val'));
@@ -845,7 +892,7 @@ class I18ntest extends \OxidTestCase
 
         $this->assertEquals('returned val', $oObj->UNITGetAllFields('simeple?'));
 
-        $oObj = $this->getMock('oxi18n', array('getViewName'));
+        $oObj = $this->getMock(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class, array('getViewName'));
         $oObj->expects($this->exactly(1))->method('getViewName')
             ->will($this->returnValue(''));
         $oObj->setEnableMultilang(false);
@@ -917,7 +964,7 @@ class I18ntest extends \OxidTestCase
         // creating language set tables and inserting by one test record
         foreach ($this->_aLangTables as $iPos => $sTable) {
             $sQ = "show create table {$sTable}";
-            $rs = $oDb->execute($sQ);
+            $rs = $oDb->select($sQ);
 
             // creating table
             $sQ = end($rs->fields);
@@ -944,8 +991,8 @@ class I18ntest extends \OxidTestCase
 
             $sQVal = "";
             $sQ = "show columns from {$sTable}";
-            $rs = $oDb->execute($sQ);
-            if ($rs != false && $rs->recordCount() > 0) {
+            $rs = $oDb->select($sQ);
+            if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {
                     $sValue = $rs->fields["Default"];
                     $sType = $rs->fields["Type"];
@@ -964,7 +1011,7 @@ class I18ntest extends \OxidTestCase
                         $sQVal .= ", ";
                     }
                     $sQVal .= "'$sValue'";
-                    $rs->moveNext();
+                    $rs->fetchRow();
                 }
             }
 

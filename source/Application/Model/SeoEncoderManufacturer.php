@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
 
 /**
  * Seo encoder base
  */
-class SeoEncoderManufacturer extends \oxSeoEncoder
+class SeoEncoderManufacturer extends \OxidEsales\Eshop\Core\SeoEncoder
 {
     /**
      * Root manufacturer uri cache
@@ -49,9 +49,9 @@ class SeoEncoderManufacturer extends \oxSeoEncoder
     /**
      * Returns part of SEO url excluding path
      *
-     * @param oxManufacturer $oManufacturer manufacturer object
-     * @param int            $iLang         language
-     * @param bool           $blRegenerate  if TRUE forces seo url regeneration
+     * @param \OxidEsales\Eshop\Application\Model\Manufacturer $oManufacturer manufacturer object
+     * @param int                                              $iLang         language
+     * @param bool                                             $blRegenerate  if TRUE forces seo url regeneration
      *
      * @return string
      */
@@ -64,14 +64,14 @@ class SeoEncoderManufacturer extends \oxSeoEncoder
         if ($blRegenerate || !($sSeoUrl = $this->_loadFromDb('oxmanufacturer', $oManufacturer->getId(), $iLang))) {
             if ($iLang != $oManufacturer->getLanguage()) {
                 $sId = $oManufacturer->getId();
-                $oManufacturer = oxNew('oxmanufacturer');
+                $oManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
                 $oManufacturer->loadInLang($iLang, $sId);
             }
 
             $sSeoUrl = '';
             if ($oManufacturer->getId() != 'root') {
                 if (!isset($this->_aRootManufacturerUri[$iLang])) {
-                    $oRootManufacturer = oxNew('oxmanufacturer');
+                    $oRootManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
                     $oRootManufacturer->loadInLang($iLang, 'root');
                     $this->_aRootManufacturerUri[$iLang] = $this->getManufacturerUri($oRootManufacturer, $iLang);
                 }
@@ -91,10 +91,10 @@ class SeoEncoderManufacturer extends \oxSeoEncoder
     /**
      * Returns Manufacturer SEO url for specified page
      *
-     * @param oxManufacturer $oManufacturer manufacturer object
-     * @param int            $iPage         page tu prepare number
-     * @param int            $iLang         language
-     * @param bool           $blFixed       fixed url marker (default is null)
+     * @param \OxidEsales\Eshop\Application\Model\Manufacturer $oManufacturer manufacturer object
+     * @param int                                              $iPage         page tu prepare number
+     * @param int                                              $iLang         language
+     * @param bool                                             $blFixed       fixed url marker (default is null)
      *
      * @return string
      */
@@ -119,8 +119,8 @@ class SeoEncoderManufacturer extends \oxSeoEncoder
     /**
      * Encodes manufacturer category URLs into SEO format
      *
-     * @param oxManufacturer $oManufacturer Manufacturer object
-     * @param int            $iLang         language
+     * @param \OxidEsales\Eshop\Application\Model\Manufacturer $oManufacturer Manufacturer object
+     * @param int                                              $iLang         language
      *
      * @return string
      */
@@ -136,11 +136,11 @@ class SeoEncoderManufacturer extends \oxSeoEncoder
     /**
      * Deletes manufacturer seo entry
      *
-     * @param oxManufacturer $oManufacturer Manufacturer object
+     * @param \OxidEsales\Eshop\Application\Model\Manufacturer $oManufacturer Manufacturer object
      */
     public function onDeleteManufacturer($oManufacturer)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sIdQuoted = $oDb->quote($oManufacturer->getId());
         $oDb->execute("delete from oxseo where oxobjectid = $sIdQuoted and oxtype = 'oxmanufacturer'");
         $oDb->execute("delete from oxobject2seodata where oxobjectid = $sIdQuoted");
@@ -158,7 +158,7 @@ class SeoEncoderManufacturer extends \oxSeoEncoder
     protected function _getAltUri($sObjectId, $iLang)
     {
         $sSeoUrl = null;
-        $oManufacturer = oxNew("oxmanufacturer");
+        $oManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
         if ($oManufacturer->loadInLang($iLang, $sObjectId)) {
             $sSeoUrl = $this->getManufacturerUri($oManufacturer, $iLang, true);
         }

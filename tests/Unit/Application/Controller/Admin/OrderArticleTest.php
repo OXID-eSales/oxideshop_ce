@@ -19,9 +19,10 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use \oxArticle;
+use OxidEsales\EshopCommunity\Application\Model\Article;
+use OxidEsales\EshopCommunity\Application\Model\Order;
 use \oxOrder;
 use \oxField;
 use \oxTestModules;
@@ -160,7 +161,7 @@ class OrderArticleTest extends \OxidTestCase
     public function testAddThisArticle2()
     {
         oxTestModules::addFunction("oxUtilsServer", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        oxAddClassModule('Unit\Application\Controller\Admin\OrderArticleHelper', 'oxorder');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin\OrderArticleHelper::class, 'oxorder');
 
         $this->setRequestParameter('aid', '2000');
         $this->setRequestParameter('am', 1);
@@ -274,7 +275,7 @@ class OrderArticleTest extends \OxidTestCase
 
         $oView = oxNew('Order_Article');
         $oOrder = $oView->getEditObject();
-        $this->assertTrue($oOrder instanceof oxorder);
+        $this->assertTrue($oOrder instanceof order);
     }
 
     /**
@@ -304,7 +305,7 @@ class OrderArticleTest extends \OxidTestCase
         $oProduct = oxNew('oxArticle');
         $oProduct->oxarticles__oxartnum = new oxField($sProdArtNr);
 
-        $oView = $this->getMock("Order_Article", array("getSearchProductArtNr", "getProductList"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\OrderArticle::class, array("getSearchProductArtNr", "getProductList"));
         $oView->expects($this->once())->method('getSearchProductArtNr')->will($this->returnValue($sProdArtNr));
         $oView->expects($this->once())->method('getProductList')->will($this->returnValue(array($oProduct)));
 
@@ -335,7 +336,7 @@ class OrderArticleTest extends \OxidTestCase
 
         $oView = oxNew('Order_Article');
         $oProduct = $oView->getMainProduct();
-        $this->assertTrue($oProduct instanceof oxarticle);
+        $this->assertTrue($oProduct instanceof article);
     }
 
     /**
@@ -372,7 +373,7 @@ class OrderArticleTest extends \OxidTestCase
      */
     public function testAddThisArticleWrongArticle()
     {
-        oxAddClassModule('Unit\Application\Controller\Admin\OrderArticleHelper', 'oxorder');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin\OrderArticleHelper::class, 'oxorder');
 
         $this->setRequestParameter('sArtNum', 'sdasda');
         $this->setRequestParameter('am', 1);
@@ -393,7 +394,7 @@ class OrderArticleTest extends \OxidTestCase
      */
     public function testAddThisArticleWrongAmount()
     {
-        oxAddClassModule('Unit\Application\Controller\Admin\OrderArticleHelper', 'oxorder');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin\OrderArticleHelper::class, 'oxorder');
 
         $this->setRequestParameter('sArtNum', '2000');
         $this->setRequestParameter('am', 'test');

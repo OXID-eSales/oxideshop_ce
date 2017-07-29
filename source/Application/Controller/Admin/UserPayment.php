@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 
@@ -29,7 +29,7 @@ use oxRegistry;
  * Collects user payment settings, updates it on user submit, etc.
  * Admin Menu: User Administration -> Users -> Payment.
  */
-class UserPayment extends \oxAdminDetails
+class UserPayment extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -106,19 +106,19 @@ class UserPayment extends \oxAdminDetails
 
         $soxId = $this->getEditObjectId();
         if ($this->_allowAdminEdit($soxId)) {
-            $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
-            $aDynvalues = oxRegistry::getConfig()->getRequestParameter("dynvalue");
+            $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+            $aDynvalues = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("dynvalue");
 
             if (isset($aDynvalues)) {
                 // store the dynvalues
-                $aParams['oxuserpayments__oxvalue'] = oxRegistry::getUtils()->assignValuesToText($aDynvalues);
+                $aParams['oxuserpayments__oxvalue'] = \OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesToText($aDynvalues);
             }
 
             if ($aParams['oxuserpayments__oxid'] == "-1") {
                 $aParams['oxuserpayments__oxid'] = null;
             }
 
-            $oAdress = oxNew("oxuserpayment");
+            $oAdress = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
             $oAdress->assign($aParams);
             $oAdress->save();
         }
@@ -129,11 +129,11 @@ class UserPayment extends \oxAdminDetails
      */
     public function delPayment()
     {
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
         $soxId = $this->getEditObjectId();
         if ($this->_allowAdminEdit($soxId)) {
             if ($aParams['oxuserpayments__oxid'] != "-1") {
-                $oAdress = oxNew("oxuserpayment");
+                $oAdress = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
                 if ($oAdress->load($aParams['oxuserpayments__oxid'])) {
                     $this->_blDelete = ( bool ) $oAdress->delete();
                 }
@@ -153,7 +153,7 @@ class UserPayment extends \oxAdminDetails
             $sOxId = $this->getEditObjectId();
             if (isset($sOxId) && $sOxId != "-1") {
                 // load object
-                $this->_oActiveUser = oxNew("oxuser");
+                $this->_oActiveUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
                 $this->_oActiveUser->load($sOxId);
             }
         }
@@ -169,7 +169,7 @@ class UserPayment extends \oxAdminDetails
     public function getPaymentId()
     {
         if ($this->_sPaymentId == null) {
-            $this->_sPaymentId = oxRegistry::getConfig()->getRequestParameter("oxpaymentid");
+            $this->_sPaymentId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxpaymentid");
             if (!$this->_sPaymentId || $this->_blDelete) {
                 if ($oUser = $this->getUser()) {
                     $oUserPayments = $oUser->getUserPayments();
@@ -195,10 +195,10 @@ class UserPayment extends \oxAdminDetails
     {
         if ($this->_oPaymentTypes == null) {
             // all paymenttypes
-            $this->_oPaymentTypes = oxNew("oxlist");
+            $this->_oPaymentTypes = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $this->_oPaymentTypes->init("oxpayment");
             $oListObject = $this->_oPaymentTypes->getBaseObject();
-            $oListObject->setLanguage(oxRegistry::getLang()->getObjectTplLanguage());
+            $oListObject->setLanguage(\OxidEsales\Eshop\Core\Registry::getLang()->getObjectTplLanguage());
             $this->_oPaymentTypes->getList();
         }
 
@@ -216,7 +216,7 @@ class UserPayment extends \oxAdminDetails
             $this->_oUserPayment = false;
             $sPaymentId = $this->getPaymentId();
             if ($sPaymentId != "-1" && isset($sPaymentId)) {
-                $this->_oUserPayment = oxNew("oxuserpayment");
+                $this->_oUserPayment = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
                 $this->_oUserPayment->load($sPaymentId);
                 $sTemplate = $this->_oUserPayment->oxuserpayments__oxvalue->value;
 
@@ -232,7 +232,7 @@ class UserPayment extends \oxAdminDetails
                         break;
                     }
                 }
-                $this->_oUserPayment->setDynValues(oxRegistry::getUtils()->assignValuesFromText($sTemplate));
+                $this->_oUserPayment->setDynValues(\OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($sTemplate));
             }
         }
 
@@ -249,12 +249,12 @@ class UserPayment extends \oxAdminDetails
         if ($this->_oUserPayments == null) {
             $this->_oUserPayments = false;
             if ($oUser = $this->getUser()) {
-                $sTplLang = oxRegistry::getLang()->getObjectTplLanguage();
+                $sTplLang = \OxidEsales\Eshop\Core\Registry::getLang()->getObjectTplLanguage();
                 $sPaymentId = $this->getPaymentId();
                 $this->_oUserPayments = $oUser->getUserPayments();
                 // generate selected
                 foreach ($this->_oUserPayments as $oUserPayment) {
-                    $oPayment = oxNew('oxpayment');
+                    $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
                     $oPayment->setLanguage($sTplLang);
                     $oPayment->load($oUserPayment->oxuserpayments__oxpaymentsid->value);
                     $oUserPayment->oxpayments__oxdesc = clone $oPayment->oxpayments__oxdesc;

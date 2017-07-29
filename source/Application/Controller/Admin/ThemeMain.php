@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxTheme;
@@ -32,7 +32,7 @@ use oxException;
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling -> Main Sets.
  */
-class ThemeMain extends \oxAdminDetails
+class ThemeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -45,7 +45,7 @@ class ThemeMain extends \oxAdminDetails
     {
         $soxId = $this->getEditObjectId();
 
-        $oTheme = oxNew('oxTheme');
+        $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
 
         if (!$soxId) {
             $soxId = $oTheme->getActiveThemeId();
@@ -54,13 +54,13 @@ class ThemeMain extends \oxAdminDetails
         if ($oTheme->load($soxId)) {
             $this->_aViewData["oTheme"] = $oTheme;
         } else {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay(oxNew("oxException", 'EXCEPTION_THEME_NOT_LOADED'));
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew("oxException", 'EXCEPTION_THEME_NOT_LOADED'));
         }
 
         parent::render();
 
         if ($this->themeInConfigFile()) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_THEME_SHOULD_BE_ONLY_IN_DATABASE');
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_SHOULD_BE_ONLY_IN_DATABASE');
         }
 
         return 'theme_main.tpl';
@@ -88,18 +88,18 @@ class ThemeMain extends \oxAdminDetails
     public function setTheme()
     {
         $sTheme = $this->getEditObjectId();
-        /** @var oxTheme $oTheme */
-        $oTheme = oxNew('oxtheme');
+        /** @var \OxidEsales\Eshop\Core\Theme $oTheme */
+        $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
         if (!$oTheme->load($sTheme)) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay(oxNew("oxException", 'EXCEPTION_THEME_NOT_LOADED'));
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew("oxException", 'EXCEPTION_THEME_NOT_LOADED'));
 
             return;
         }
         try {
             $oTheme->activate();
             $this->resetContentCache();
-        } catch (oxException $oEx) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
+        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
             $oEx->debugOut();
         }
     }

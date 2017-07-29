@@ -19,9 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Integration\Modules;
-
-require_once __DIR__ . '/BaseModuleTestCase.php';
+namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 class ModuleActivationTest extends BaseModuleTestCase
 {
@@ -91,9 +89,9 @@ class ModuleActivationTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
-                    'oxorder'   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
-                    'oxarticle' => 'with_everything/myarticle',
-                    'oxuser'    => 'with_everything/myuser',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
+                    \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
+                    \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                 ),
                 'files'           => array(
                     'with_2_files'    => array(
@@ -173,9 +171,9 @@ class ModuleActivationTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
                 ),
                 'extend'          => array(
-                    'oxarticle' => 'with_everything/myarticle',
-                    'oxorder'   => 'with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
-                    'oxuser'    => 'with_everything/myuser',
+                    \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
+                    \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                 ),
                 'files'           => array(
                     'with_everything' => array(
@@ -232,11 +230,11 @@ class ModuleActivationTest extends BaseModuleTestCase
             array(
                 'blocks'          => array(),
                 'extend'          => array(
-                    'oxorder'   => 'extending_1_class/myorder&extending_3_classes_with_1_extension/mybaseclass&' .
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&extending_3_classes_with_1_extension/mybaseclass&' .
                                    'extending_3_classes/myorder&extending_1_class_3_extensions/myorder1&' .
                                    'extending_1_class_3_extensions/myorder2&extending_1_class_3_extensions/myorder3',
-                    'oxarticle' => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myarticle',
-                    'oxuser'    => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myuser',
+                    \OxidEsales\Eshop\Application\Model\Article::class => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myarticle',
+                    \OxidEsales\Eshop\Application\Model\User::class    => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myuser',
                 ),
                 'files'           => array(),
                 'settings'        => array(),
@@ -286,9 +284,9 @@ class ModuleActivationTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
-                    'oxorder'   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
-                    'oxarticle' => 'with_everything/myarticle',
-                    'oxuser'    => 'with_everything/myuser',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
+                    \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
+                    \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                 ),
                 'files'           => array(
                     'with_2_files'    => array(

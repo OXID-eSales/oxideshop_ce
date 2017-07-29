@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 
@@ -29,7 +29,7 @@ use oxRegistry;
  * Collects order addressing information, updates it on user submit, etc.
  * Admin Menu: Orders -> Display Orders -> Address.
  */
-class OrderAddress extends \oxAdminDetails
+class OrderAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
     /**
      * Executes parent method parent::render(), creates oxorder object
@@ -45,14 +45,14 @@ class OrderAddress extends \oxAdminDetails
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oOrder = oxNew("oxorder");
+            $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
             $oOrder->load($soxId);
 
             $this->_aViewData["edit"] = $oOrder;
         }
 
-        $oCountryList = oxNew("oxCountryList");
-        $oCountryList->loadActiveCountries(oxRegistry::getLang()->getObjectTplLanguage());
+        $oCountryList = oxNew(\OxidEsales\Eshop\Application\Model\CountryList::class);
+        $oCountryList->loadActiveCountries(\OxidEsales\Eshop\Core\Registry::getLang()->getObjectTplLanguage());
 
         $this->_aViewData["countrylist"] = $oCountryList;
 
@@ -110,9 +110,9 @@ class OrderAddress extends \oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = (array) oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
 
-        $oOrder = oxNew("oxorder");
+        $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         if ($soxId != "-1") {
             $oOrder->load($soxId);
         } else {

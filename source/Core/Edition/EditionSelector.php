@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Edition;
+namespace OxidEsales\EshopCommunity\Core\Edition;
 
 use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\Registry;
@@ -94,30 +94,23 @@ class EditionSelector
      */
     protected function findEdition()
     {
-        if (!class_exists('OxidEsales\Eshop\Core\Registry') || !Registry::instanceExists('oxConfigFile')) {
-            $configFile = new ConfigFile(getShopBasePath() . "config.inc.php");
+        if (!class_exists('OxidEsales\EshopCommunity\Core\Registry') || !Registry::instanceExists('oxConfigFile')) {
+            $configFile = new ConfigFile(OX_BASE_PATH . DIRECTORY_SEPARATOR . "config.inc.php");
         }
-        $configFile = isset($configFile) ? $configFile : Registry::get('oxConfigFile');
-        $edition = $configFile->getVar('edition') ?: $this->findEditionByClassMap();
+        $configFile = isset($configFile) ? $configFile : Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class);
+        $edition = $configFile->getVar('edition') ?: $this->getEditionByExistingClasses();
         $configFile->setVar('edition', $edition);
 
         return strtoupper($edition);
     }
 
     /**
-     * Determine shop version by ClassMap existence.
+     * Determine shop edition by existence of edition specific classes.
      *
      * @return string
      */
-    protected function findEditionByClassMap()
+    protected function getEditionByExistingClasses()
     {
-        $edition = static::COMMUNITY;
-        if (class_exists('OxidEsales\EshopEnterprise\ClassMap')) {
-            $edition = static::ENTERPRISE;
-        } elseif (class_exists('OxidEsales\EshopProfessional\ClassMap')) {
-            $edition = static::PROFESSIONAL;
-        }
-
-        return $edition;
+        return static::COMMUNITY;
     }
 }

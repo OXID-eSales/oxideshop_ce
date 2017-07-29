@@ -20,18 +20,19 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
 use oxAdminDetails;
+use Exception;
 
 /**
  * Admin shop config manager.
  * Collects shop config information, updates it on user submit, etc.
  * Admin Menu: Main Menu -> Core Settings -> General.
  */
-class ShopConfiguration extends oxAdminDetails
+class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     protected $_sThisTemplate = 'shop_config.tpl';
@@ -68,7 +69,7 @@ class ShopConfiguration extends oxAdminDetails
                 // category choosen as default
                 $this->_aViewData["defcat"] = null;
                 if ($oShop->oxshops__oxdefcat->value) {
-                    $oCat = oxNew("oxCategory");
+                    $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
                     if ($oCat->load($oShop->oxshops__oxdefcat->value)) {
                         $this->_aViewData["defcat"] = $oCat;
                     }
@@ -79,14 +80,13 @@ class ShopConfiguration extends oxAdminDetails
                 $this->_aViewData["updateViews"] = 1;
             }
 
-            $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
+            $iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc");
             if ($iAoc == 1) {
-                $oShopDefaultCategoryAjax = oxNew('shop_default_category_ajax');
+                $oShopDefaultCategoryAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ShopDefaultCategoryAjax::class);
                 $this->_aViewData['oxajax'] = $oShopDefaultCategoryAjax->getColumns();
 
                 return "popups/shop_default_category.tpl";
             }
-
         }
 
         $aDbVariables = $this->loadConfVars($soxId, $this->_getModuleForConfigVars());
@@ -100,8 +100,8 @@ class ShopConfiguration extends oxAdminDetails
         }
 
         // #251A passing country list
-        $oCountryList = oxNew("oxCountryList");
-        $oCountryList->loadActiveCountries(oxRegistry::getLang()->getObjectTplLanguage());
+        $oCountryList = oxNew(\OxidEsales\Eshop\Application\Model\CountryList::class);
+        $oCountryList->loadActiveCountries(\OxidEsales\Eshop\Core\Registry::getLang()->getObjectTplLanguage());
         if (isset($aConfVars['arr']["aHomeCountry"]) && count($aConfVars['arr']["aHomeCountry"]) && count($oCountryList)) {
             foreach ($oCountryList as $sCountryId => $oCountry) {
                 if (in_array($oCountry->oxcountry__oxid->value, $aConfVars['arr']["aHomeCountry"])) {
@@ -140,19 +140,19 @@ class ShopConfiguration extends oxAdminDetails
         $sShopId = $this->getEditObjectId();
         $sModule = $this->_getModuleForConfigVars();
 
-        $configValidator = oxNew('oxNoJsValidator');
+        $configValidator = oxNew(\OxidEsales\Eshop\Core\NoJsValidator::class);
         foreach ($this->_aConfParams as $sType => $sParam) {
-            $aConfVars = oxRegistry::getConfig()->getRequestParameter($sParam, true);
+            $aConfVars = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter($sParam, true);
             if (is_array($aConfVars)) {
                 foreach ($aConfVars as $sName => $sValue) {
                     $oldValue = $myConfig->getConfigParam($sName);
                     if ($sValue !== $oldValue) {
                         $sValueToValidate = is_array($sValue) ? join(', ', $sValue) : $sValue;
                         if (!$configValidator->isValid($sValueToValidate)) {
-                            $error = oxNew('oxDisplayError');
+                            $error = oxNew(\OxidEsales\Eshop\Core\DisplayError::class);
                             $error->setFormatParameters(htmlspecialchars($sValueToValidate));
                             $error->setMessage("SHOP_CONFIG_ERROR_INVALID_VALUE");
-                            oxRegistry::get("oxUtilsView")->addErrorToDisplay($error);
+                            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($error);
                             continue;
                         }
                         $myConfig->saveShopConfVar(
@@ -177,10 +177,10 @@ class ShopConfiguration extends oxAdminDetails
         $this->saveConfVars();
 
         //saving additional fields ("oxshops__oxdefcat"") that goes directly to shop (not config)
-        /** @var oxShop $oShop */
-        $oShop = oxNew("oxshop");
+        /** @var \OxidEsales\Eshop\Application\Model\Shop $oShop */
+        $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         if ($oShop->load($this->getEditObjectId())) {
-            $oShop->assign(oxRegistry::getConfig()->getRequestParameter("editval"));
+            $oShop->assign(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval"));
             $oShop->save();
         }
     }
@@ -209,8 +209,8 @@ class ShopConfiguration extends oxAdminDetails
         );
         $aVarConstraints = array();
         $aGrouping = array();
-        $oDb = oxDb::getDb();
-        $rs = $oDb->Execute(
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $rs = $oDb->select(
             "select cfg.oxvarname,
                     cfg.oxvartype,
                     DECODE( cfg.oxvarvalue, " . $oDb->quote($myConfig->getConfigParam('sConfigKey')) . ") as oxvarvalue,
@@ -224,7 +224,7 @@ class ShopConfiguration extends oxAdminDetails
                 order by disp.oxpos, cfg.oxvarname"
         );
 
-        if ($rs != false && $rs->recordCount() > 0) {
+        if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
                 list($sName, $sType, $sValue, $sConstraint, $sGrouping) = $rs->fields;
                 $aConfVars[$sType][$sName] = $this->_unserializeConfVar($sType, $sName, $sValue);
@@ -236,7 +236,7 @@ class ShopConfiguration extends oxAdminDetails
                         $aGrouping[$sGrouping][$sName] = $sType;
                     }
                 }
-                $rs->moveNext();
+                $rs->fetchRow();
             }
         }
 

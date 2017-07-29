@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Integration\Modules;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 use oxConfig;
 use oxDb;
@@ -127,6 +127,21 @@ class Validator
         $aModuleFilesToCheck = is_null($aModuleFilesToCheck) ? array() : $aModuleFilesToCheck;
 
         return $aExpectedFiles == $aModuleFilesToCheck;
+    }
+
+    /**
+     * Asserts that module controllers match expected files
+     *
+     * @param array $expectedControllers
+     *
+     * @return bool
+     */
+    public function checkControllers($expectedControllers)
+    {
+        $moduleControllersToCheck = $this->getConfig()->getConfigParam('aModuleControllers');
+        $moduleControllersToCheck = is_null($moduleControllersToCheck) ? array() : $moduleControllersToCheck;
+
+        return $expectedControllers == $moduleControllersToCheck;
     }
 
     /**

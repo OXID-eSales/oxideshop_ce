@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core\Module;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Module;
 
 use oxException;
 use OxidEsales\TestingLibrary\UnitTestCase;
@@ -27,6 +27,10 @@ use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockContentReader;
 use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
+/**
+ * @group module
+ * @package Unit\Core\Module
+ */
 class ModuleTemplateBlockContentReaderTest extends UnitTestCase
 {
     public function testCanCreateClass()

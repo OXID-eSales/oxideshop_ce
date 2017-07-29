@@ -20,12 +20,12 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Component\Widget;
+namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
 /**
  * Product reviews widget
  */
-class Review extends \oxWidget
+class Review extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
     /**
      * Names of components (classes) that are initiated and executed

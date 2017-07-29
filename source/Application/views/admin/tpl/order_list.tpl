@@ -127,11 +127,11 @@ window.onload = function ()
             [{if $listitem->getId() == $oxid}]
                 [{assign var="listclass" value=listitem4}]
             [{/if}]
-            <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxorder__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxorder__oxorderdate|oxformdate:'datetime':true}]</a></div></td>
-            <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxorder__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxorder__oxpaid|oxformdate}]</a></div></td>
-            <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxorder__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxorder__oxordernr->value}]</a></div></td>
-            <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxorder__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxorder__oxbillfname->value}]</a></div></td>
-            <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxorder__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxorder__oxbilllname->value}]</a></div></td>
+            <td valign="top" class="[{$listclass}] order_time" height="15"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxorder__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxorder__oxorderdate|oxformdate:'datetime':true}]</a></div></td>
+            <td valign="top" class="[{$listclass}] payment_date" height="15"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxorder__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxorder__oxpaid|oxformdate}]</a></div></td>
+            <td valign="top" class="[{$listclass}] order_no" height="15"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxorder__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxorder__oxordernr->value}]</a></div></td>
+            <td valign="top" class="[{$listclass}] first_name" height="15"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxorder__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxorder__oxbillfname->value}]</a></div></td>
+            <td valign="top" class="[{$listclass}] last_name" height="15"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxorder__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxorder__oxbilllname->value}]</a></div></td>
             <td class="[{$listclass}]">
                 [{if !$readonly}]
                     <a href="Javascript:top.oxid.admin.deleteThis('[{$listitem->oxorder__oxid->value}]');" class="delete" id="del.[{$_cnt}]" [{include file="help.tpl" helpid=item_delete}]></a>

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxDb;
 use oxField;
@@ -28,7 +28,7 @@ use oxField;
 /**
  * Class manages delivery groups
  */
-class DeliveryGroupsAjax extends \ajaxListComponent
+class DeliveryGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**
@@ -56,7 +56,7 @@ class DeliveryGroupsAjax extends \ajaxListComponent
     protected function _getQuery()
     {
         $myConfig = $this->getConfig();
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         // active AJAX component
         $sGroupTable = $this->_getViewName('oxgroups');
@@ -92,14 +92,12 @@ class DeliveryGroupsAjax extends \ajaxListComponent
     {
         $aRemoveGroups = $this->_getActionIds('oxobject2delivery.oxid');
         if ($this->getConfig()->getRequestParameter('all')) {
-
             $sQ = $this->_addFilter("delete oxobject2delivery.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
-
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
-            $sRemoveGroups = implode(", ", oxDb::getInstance()->quoteArray($aRemoveGroups));
+            $sRemoveGroups = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRemoveGroups));
             $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . $sRemoveGroups . ") ";
-            oxDb::getDb()->Execute($sQ);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
 
@@ -119,11 +117,11 @@ class DeliveryGroupsAjax extends \ajaxListComponent
 
         if ($soxId && $soxId != "-1" && is_array($aChosenCat)) {
             foreach ($aChosenCat as $sChosenCat) {
-                $oObject2Delivery = oxNew('oxBase');
+                $oObject2Delivery = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Delivery->init('oxobject2delivery');
-                $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField($soxId);
-                $oObject2Delivery->oxobject2delivery__oxobjectid = new oxField($sChosenCat);
-                $oObject2Delivery->oxobject2delivery__oxtype = new oxField('oxgroups');
+                $oObject2Delivery->oxobject2delivery__oxdeliveryid = new \OxidEsales\Eshop\Core\Field($soxId);
+                $oObject2Delivery->oxobject2delivery__oxobjectid = new \OxidEsales\Eshop\Core\Field($sChosenCat);
+                $oObject2Delivery->oxobject2delivery__oxtype = new \OxidEsales\Eshop\Core\Field('oxgroups');
                 $oObject2Delivery->save();
             }
         }

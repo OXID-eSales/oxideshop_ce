@@ -19,10 +19,10 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core\Smarty;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Smarty;
 
 use \oxField;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use \Smarty;
 use \stdClass;
 use \oxRegistry;

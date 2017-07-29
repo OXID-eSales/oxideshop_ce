@@ -16,540 +16,521 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Setup;
+namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
-use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\Eshop\Core\ShopVersion;
+use OxidEsales\Eshop\Core\SystemRequirements;
+use OxidEsales\Eshop\Core\ConfigFile;
+use OxidEsales\EshopCommunity\Setup\Controller\ModuleStateMapGenerator;
+use OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
+use OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException;
 
 /**
  * Class holds scripts (controllers) needed to perform shop setup steps
  */
 class Controller extends Core
 {
-    /** @var View */
-    private $_oView = null;
+    /** @var \OxidEsales\EshopCommunity\Setup\View */
+    private $view = null;
 
     /**
-     * Returns View object
-     *
-     * @return View
+     * Controller constructor
      */
-    public function getView()
+    public function __construct()
     {
-        if ($this->_oView == null) {
-            $this->_oView = new View();
-        }
-
-        return $this->_oView;
+        $this->view = new View();
     }
 
-    // ---- controllers ----
     /**
      * First page with system requirements check
      *
-     * @return string
+     * Functionality is tested via:
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSystemRequirementsPageCanContinueWithSetup`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSystemRequirementsPageShowsTranslatedModuleNames`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSystemRequirementsPageShowsTranslatedModuleGroupNames`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSystemRequirementsContainsProperModuleStateHtmlClassNames`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testInstallShopCantContinueDueToHtaccessProblem`
      */
     public function systemReq()
     {
-        /** @var Setup $oSetup */
-        $oSetup = $this->getInstance("Setup");
-        /** @var Language $oLanguage */
-        $oLanguage = $this->getInstance("Language");
-        /** @var Utilities $oUtils */
-        $oUtils = $this->getInstance("Utilities");
-        $oView = $this->getView();
+        $systemRequirementsInfo = $this->getSystemRequirementsInfo();
+        $moduleStateMapGenerator = $this->getModuleStateMapGenerator($systemRequirementsInfo);
 
-        $blContinue = true;
-        $aGroupModuleInfo = array();
+        $moduleStateMap = $moduleStateMapGenerator->getModuleStateMap();
+        $isSafeForSetupToContinue = SystemRequirements::canSetupContinue($systemRequirementsInfo);
 
-        $blHtaccessUpdateError = false;
-        try {
-            $aPath = $oUtils->getDefaultPathParams();
-            $aPath['sBaseUrlPath'] = $oUtils->extractRewriteBase($aPath['sShopURL']);
-            //$oUtils->updateHtaccessFile( $aPath, "admin" );
-            $oUtils->updateHtaccessFile($aPath);
-        } catch (Exception $oExcp) {
-            //$oView->setMessage( $oExcp->getMessage() );
-            $blHtaccessUpdateError = true;
-        }
-
-        $oSysReq = getSystemReqCheck();
-        $aInfo = $oSysReq->getSystemInfo();
-        foreach ($aInfo as $sGroup => $aModules) {
-            // translating
-            $sGroupName = $oLanguage->getModuleName($sGroup);
-            foreach ($aModules as $sModule => $iModuleState) {
-                // translating
-                $blContinue = $blContinue && ( bool ) abs($iModuleState);
-
-                // was unable to update htaccess file for mod_rewrite check
-                if ($blHtaccessUpdateError && $sModule == 'server_permissions') {
-                    $sClass = $oSetup->getModuleClass(0);
-                    $blContinue = false;
-                } else {
-                    $sClass = $oSetup->getModuleClass($iModuleState);
-                }
-                $aGroupModuleInfo[$sGroupName][] = array('module'     => $sModule,
-                    'class'      => $sClass,
-                    'modulename' => $oLanguage->getModuleName($sModule));
-            }
-        }
-
-        $oView->setTitle('STEP_0_TITLE');
-        $oView->setViewParam("blContinue", $blContinue);
-        $oView->setViewParam("aGroupModuleInfo", $aGroupModuleInfo);
-        $oView->setViewParam("aLanguages", getLanguages());
-        $oView->setViewParam("sLanguage", $this->getInstance("Session")->getSessionParam('setup_lang'));
-
-        return "systemreq.php";
+        $this->setViewOptions(
+            'systemreq.php',
+            'STEP_0_TITLE',
+            [
+                "blContinue" => $isSafeForSetupToContinue,
+                "aGroupModuleInfo" => $moduleStateMap,
+                "aLanguages" => getLanguages(),
+                "sLanguage" => $this->getSessionInstance()->getSessionParam('setup_lang'),
+            ]
+        );
     }
 
     /**
      * Welcome page
-     *
-     * @return string
      */
     public function welcome()
     {
-        /** @var Session $oSession */
-        $oSession = $this->getInstance("Session");
+        $session = $this->getSessionInstance();
 
         //setting admin area default language
-        $sAdminLang = $oSession->getSessionParam('setup_lang');
-        $this->getInstance("Utilities")->setCookie("oxidadminlanguage", $sAdminLang, time() + 31536000, "/");
+        $adminLanguage = $session->getSessionParam('setup_lang');
+        $this->getUtilitiesInstance()->setCookie("oxidadminlanguage", $adminLanguage, time() + 31536000, "/");
 
-        $oView = $this->getView();
-        $oView->setTitle('STEP_1_TITLE');
-        $oView->setViewParam("aCountries", getCountryList());
-        $oView->setViewParam("aLocations", getLocation());
-        $oView->setViewParam("aLanguages", getLanguages());
-        $oView->setViewParam("sShopLang", $oSession->getSessionParam('sShopLang'));
-        $oView->setViewParam("sLanguage", $this->getInstance("Language")->getLanguage());
-        $oView->setViewParam("sLocationLang", $oSession->getSessionParam('location_lang'));
-        $oView->setViewParam("sCountryLang", $oSession->getSessionParam('country_lang'));
-
-        return "welcome.php";
+        $this->setViewOptions(
+            'welcome.php',
+            'STEP_1_TITLE',
+            [
+                "aCountries" => getCountryList(),
+                "aLocations" => getLocation(),
+                "aLanguages" => getLanguages(),
+                "sShopLang" => $session->getSessionParam('sShopLang'),
+                "sLanguage" => $this->getLanguageInstance()->getLanguage(),
+                "sLocationLang" => $session->getSessionParam('location_lang'),
+                "sCountryLang" => $session->getSessionParam('country_lang')
+            ]
+        );
     }
 
     /**
      * License confirmation page
-     *
-     * @return string
      */
     public function license()
     {
-        $sLicenseFile = "lizenz.txt";
+        $languageId = $this->getLanguageInstance()->getLanguage();
+        $utils = $this->getUtilitiesInstance();
 
-        $editionPathSelector = $this->getEditionPathProvider();
-
-        $oView = $this->getView();
-        $oView->setTitle('STEP_2_TITLE');
-        $oView->setViewParam("aLicenseText", $this->getInstance("Utilities")->getFileContents(
-            $editionPathSelector->getSetupDirectory()
-            . '/'. ucfirst($this->getInstance("Language")->getLanguage())
-            . '/' . $sLicenseFile
-        ));
-
-        return "license.php";
+        $this->setViewOptions(
+            'license.php',
+            'STEP_2_TITLE',
+            [
+                "aLicenseText" => $utils->getLicenseContent($languageId)
+            ]
+        );
     }
 
     /**
      * DB info entry page
      *
-     * @return string
+     * Functionality is tested via:
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToWelcomeScreenInCaseLicenseIsNotCheckedAsAgreed`
      */
     public function dbInfo()
     {
-        $oView = $this->getView();
-        /** @var Session $oSession */
-        $oSession = $this->getInstance("Session");
+        $view = $this->getView();
+        $session = $this->getSessionInstance();
+        $systemRequirements = getSystemReqCheck();
+        $utilities = $this->getUtilitiesInstance();
 
-        $iEula = $this->getInstance("Utilities")->getRequestVar("iEula", "post");
-        $iEula = (int) ($iEula ? $iEula : $oSession->getSessionParam("eula"));
-        if (!$iEula) {
-            /** @var Setup $oSetup */
-            $oSetup = $this->getInstance("Setup");
-            $oSetup->setNextStep($oSetup->getStep("STEP_WELCOME"));
-            $oView->setMessage($this->getInstance("Language")->getText("ERROR_SETUP_CANCELLED"));
+        $eulaOptionValue = $utilities->getRequestVar("iEula", "post");
+        $eulaOptionValue = (int)($eulaOptionValue ? $eulaOptionValue : $session->getSessionParam("eula"));
+        if (!$eulaOptionValue) {
+            $setup = $this->getSetupInstance();
+            $setup->setNextStep($setup->getStep("STEP_WELCOME"));
+            $view->setMessage($this->getLanguageInstance()->getText("ERROR_SETUP_CANCELLED"));
 
-            return "licenseerror.php";
+            throw new SetupControllerExitException("licenseerror.php");
         }
 
-        $oView->setTitle('STEP_3_TITLE');
-        $aDB = $oSession->getSessionParam('aDB');
-        if (!isset($aDB)) {
+        $databaseConfigValues = $session->getSessionParam('aDB');
+        $demodataPackageExists = $utilities->isDemodataPrepared();
+
+        if (!isset($databaseConfigValues)) {
             // default values
-            $aDB['dbHost'] = "localhost";
-            $aDB['dbUser'] = "";
-            $aDB['dbPwd'] = "";
-            $aDB['dbName'] = "";
-            $aDB['dbiDemoData'] = 1;
+            $databaseConfigValues['dbHost'] = "localhost";
+            $databaseConfigValues['dbPort'] = "3306";
+            $databaseConfigValues['dbUser'] = "";
+            $databaseConfigValues['dbPwd'] = "";
+            $databaseConfigValues['dbName'] = "";
+            $databaseConfigValues['dbiDemoData'] = $demodataPackageExists ? 1 : 0;
         }
-        $oView->setViewParam("aDB", $aDB);
 
-        // mb string library info
-        $oSysReq = getSystemReqCheck();
-        $oView->setViewParam("blMbStringOn", $oSysReq->getModuleInfo('mb_string'));
-        $oView->setViewParam("blUnicodeSupport", $oSysReq->getModuleInfo('unicode_support'));
-
-        return "dbinfo.php";
+        $this->setViewOptions(
+            'dbinfo.php',
+            'STEP_3_TITLE',
+            [
+                "aDB" => $databaseConfigValues,
+                "blMbStringOn" => $systemRequirements->getModuleInfo('mb_string'),
+                "blUnicodeSupport" => $systemRequirements->getModuleInfo('unicode_support'),
+                "demodataPackageExists" => $demodataPackageExists
+            ]
+        );
     }
 
     /**
      * Setup paths info entry page
-     *
-     * @return string
      */
     public function dirsInfo()
     {
-        /** @var Session $oSession */
-        $oSession = $this->getInstance("Session");
-        $oView = $this->getView();
-        $oView->setTitle('STEP_4_TITLE');
-        $oView->setViewParam("aSetupConfig", $oSession->getSessionParam('aSetupConfig'));
-        $oView->setViewParam("aAdminData", $oSession->getSessionParam('aAdminData'));
-        $oView->setViewParam("aPath", $this->getInstance("Utilities")->getDefaultPathParams());
+        $session = $this->getSessionInstance();
+        $setup = $this->getSetupInstance();
 
-        return "dirsinfo.php";
+        if ($this->userDecidedOverwriteDB()) {
+            $session->setSessionParam('blOverwrite', true);
+        }
+        if ($this->userDecidedIgnoreDBWarning()) {
+            $session->setSessionParam('blIgnoreDbRecommendations', true);
+        }
+
+        $this->setViewOptions(
+            'dirsinfo.php',
+            'STEP_4_TITLE',
+            [
+                "aAdminData" => $session->getSessionParam('aAdminData'),
+                "aPath" => $this->getUtilitiesInstance()->getDefaultPathParams(),
+                "aSetupConfig" => ["blDelSetupDir" => $setup->deleteSetupDirectory()],
+            ]
+        );
     }
 
     /**
      * Testing database connection
      *
-     * @return string
+     * Functionality is tested via:
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDatabaseEntryPageWhenNotAllFieldsAreFilled`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDatabaseEntryPageWhenDatabaseUserDoesNotHaveAccess`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDatabaseEntryPageWhenDatabaseUserIsValidButCantCreateDatabase`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testUserIsNotifiedIfAValidDatabaseAlreadyExistsBeforeTryingToOverwriteIt`
      */
     public function dbConnect()
     {
-        /** @var Setup $oSetup */
-        $oSetup = $this->getInstance("Setup");
-        /** @var Session $oSession */
-        $oSession = $this->getInstance("Session");
-        /** @var Language $oLang */
-        $oLang = $this->getInstance("Language");
+        $setup = $this->getSetupInstance();
+        $session = $this->getSessionInstance();
+        $language = $this->getLanguageInstance();
 
-        $oView = $this->getView();
-        $oView->setTitle('STEP_3_1_TITLE');
+        $view = $this->getView();
+        $view->setTitle('STEP_3_1_TITLE');
 
-        $aDB = $this->getInstance("Utilities")->getRequestVar("aDB", "post");
-        if (!isset($aDB['iUtfMode'])) {
-            $aDB['iUtfMode'] = 0;
-        }
-        $oSession->setSessionParam('aDB', $aDB);
+        $databaseConfigValues = $this->getUtilitiesInstance()->getRequestVar("aDB", "post");
+        $session->setSessionParam('aDB', $databaseConfigValues);
 
-        // check if iportant parameters are set
-        if (!$aDB['dbHost'] || !$aDB['dbName']) {
-            $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
-            $oView->setMessage($oLang->getText('ERROR_FILL_ALL_FIELDS'));
+        // check if important parameters are set
+        if (!$databaseConfigValues['dbHost'] || !$databaseConfigValues['dbName']) {
+            $setup->setNextStep($setup->getStep('STEP_DB_INFO'));
+            $view->setMessage($language->getText('ERROR_FILL_ALL_FIELDS'));
 
-            return "default.php";
+            throw new SetupControllerExitException();
         }
 
         try {
             // ok check DB Connection
-            /** @var Database $oDb */
-            $oDb = $this->getInstance("Database");
-            $oDb->openDatabase($aDB);
-        } catch (Exception $oExcp) {
-            if ($oExcp->getCode() === Database::ERROR_DB_CONNECT) {
-                $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
-                $oView->setMessage($oLang->getText('ERROR_DB_CONNECT') . " - " . $oExcp->getMessage());
+            $database = $this->getDatabaseInstance();
+            $database->openDatabase($databaseConfigValues);
+        } catch (Exception $exception) {
+            if ($exception->getCode() === Database::ERROR_DB_CONNECT) {
+                $setup->setNextStep($setup->getStep('STEP_DB_INFO'));
+                $view->setMessage($language->getText('ERROR_DB_CONNECT') . " - " . $exception->getMessage());
 
-                return "default.php";
-            } elseif ($oExcp->getCode() === Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS) {
-                $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
-                $oView->setMessage($oExcp->getMessage());
+                throw new SetupControllerExitException();
+            } elseif ($exception->getCode() === Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS) {
+                $setup->setNextStep($setup->getStep('STEP_DB_INFO'));
+                $view->setMessage($exception->getMessage());
 
-                return "default.php";
-            } else {
-                try {
-                    // if database is not there, try to create it
-                    $oDb->createDb($aDB['dbName']);
-                } catch (Exception $oExcp) {
-                    $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
-                    $oView->setMessage($oExcp->getMessage());
-
-                    return "default.php";
+                throw new SetupControllerExitException();
+            } elseif (($exception->getCode() === Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS)) {
+                $setup->setNextStep(null);
+                $this->formMessageIfMySqyVersionIsNotRecommended($view, $language);
+                $databaseExists = false;
+                // check if DB is already UP and running
+                if (!$this->databaseCanBeOverwritten($database)) {
+                    $this->formMessageIfDBCanBeOverwritten($databaseConfigValues['dbName'], $view, $language);
+                    $databaseExists = true;
                 }
-                $oView->setViewParam("blCreated", 1);
+                $this->formMessageIgnoreDbVersionNotRecommended($view, $language, $session->getSid(), $setup->getStep('STEP_DIRS_INFO'), $databaseExists);
+
+                throw new SetupControllerExitException();
+            } else {
+                $this->ensureDatabasePresent($database, $databaseConfigValues['dbName']);
             }
         }
 
-        $oView->setViewParam("aDB", $aDB);
-        $oSetup->setNextStep($oSetup->getStep('STEP_DB_CREATE'));
+        $view->setViewParam("aDB", $databaseConfigValues);
 
-        return "dbconnect.php";
+        // check if DB is already UP and running
+        if (!$this->databaseCanBeOverwritten($database)) {
+            $this->formMessageIfDBCanBeOverwritten($databaseConfigValues['dbName'], $view, $language);
+            $this->formMessageInstallAnyway($view, $language, $session->getSid(), $setup->getStep('STEP_DIRS_INFO'));
+
+            throw new SetupControllerExitException();
+        }
+
+        $setup->setNextStep($setup->getStep('STEP_DIRS_INFO'));
+
+        $this->view->setTemplateFileName("dbconnect.php");
     }
 
     /**
      * Creating database
      *
-     * @return string
+     * Functionality is tested via:
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDatabaseEntryPageWhenDatabaseUserIsValidButCantCreateDatabase`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testUserIsNotifiedIfAValidDatabaseAlreadyExistsBeforeTryingToOverwriteIt`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDatabaseEntryPageWhenSetupSqlFileIsMissing`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDatabaseEntryPageWhenSetupSqlFileHasSyntaxError`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupShowsErrorMessageWhenMigrationFileContainsSyntaxErrors`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupShowsErrorMessageWhenMigrationExecutableIsMissing`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupShowsErrorMessageWhenViewRegenerationReturnsErrorCode`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupShowsErrorMessageWhenViewsRegenerationExecutableIsMissing`
      */
     public function dbCreate()
     {
-        /** @var Setup $oSetup */
-        $oSetup = $this->getInstance("Setup");
-        /** @var Session $oSession */
-        $oSession = $this->getInstance("Session");
-        /** @var Language $oLang */
-        $oLang = $this->getInstance("Language");
+        $setup = $this->getSetupInstance();
+        $session = $this->getSessionInstance();
+        $language = $this->getLanguageInstance();
 
-        $oView = $this->getView();
-        $oView->setTitle('STEP_3_2_TITLE');
+        $view = $this->getView();
+        $view->setTitle('STEP_4_2_TITLE');
 
-        $aDB = $oSession->getSessionParam('aDB');
-        $blOverwrite = $this->getInstance("Utilities")->getRequestVar("ow", "get");
-        if (!isset($blOverwrite)) {
-            $blOverwrite = false;
+        $databaseConfigValues = $session->getSessionParam('aDB');
+
+        try {
+            $database = $this->getDatabaseInstance();
+            $database->openDatabase($databaseConfigValues);
+        } catch (Exception $exception) {
+            if (($exception->getCode() === Database::ERROR_COULD_NOT_CREATE_DB) && $this->userDecidedIgnoreDBWarning()) {
+                //User agreed to ignore SystemRequirements warning, database does not exist yet, create database.
+                $this->ensureDatabasePresent($database, $databaseConfigValues['dbName']);
+            } elseif (($exception->getCode() === Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS)) {
+                $setup->setNextStep(null);
+                $this->formMessageIfMySqyVersionIsNotRecommended($view, $language);
+                $databaseExists = false;
+                // check if DB is already UP and running
+                if (!$this->databaseCanBeOverwritten($database)) {
+                    $this->formMessageIfDBCanBeOverwritten($databaseConfigValues['dbName'], $view, $language);
+                    $databaseExists = true;
+                }
+                $this->formMessageIgnoreDbVersionNotRecommended($view, $language, $session->getSid(), $setup->getStep('STEP_DB_CREATE'), $databaseExists);
+
+                throw new SetupControllerExitException();
+            } else {
+                $setup->setNextStep($setup->getStep('STEP_DB_CREATE'));
+                $view->setMessage($exception->getMessage());
+
+                throw new SetupControllerExitException();
+            }
         }
-
-        /** @var Database $oDb */
-        $oDb = $this->getInstance("Database");
-        $oDb->openDatabase($aDB);
 
         // testing if Views can be created
         try {
-            $oDb->testCreateView();
-        } catch (Exception $oExcp) {
+            $database->testCreateView();
+        } catch (Exception $exception) {
             // Views can not be created
-            $oView->setMessage($oExcp->getMessage());
-            $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
+            $view->setMessage($exception->getMessage());
+            $setup->setNextStep($setup->getStep('STEP_DB_INFO'));
 
-            return "default.php";
+            throw new SetupControllerExitException();
         }
 
         // check if DB is already UP and running
-        $databaseExists = $this->checkDbExists($oDb);
-        if (!$blOverwrite && $databaseExists) {
-            // DB already UP ?
-            $oView->setMessage(
-                sprintf($oLang->getText('ERROR_DB_ALREADY_EXISTS'), $aDB['dbName']) .
-                "<br><br>" . $oLang->getText('STEP_3_2_CONTINUE_INSTALL_OVER_EXISTING_DB') . " <a href=\"index.php?sid=" . $oSession->getSid() . "&istep=" . $oSetup->getStep('STEP_DB_CREATE') . "&ow=1\" id=\"step3Continue\" style=\"text-decoration: underline;\">" . $oLang->getText('HERE') . "</a>"
-            );
+        if (!$this->databaseCanBeOverwritten($database)) {
+            $this->formMessageIfDBCanBeOverwritten($databaseConfigValues['dbName'], $view, $language);
+            $this->formMessageInstallAnyway($view, $language, $session->getSid(), $setup->getStep('STEP_DB_CREATE'));
 
-            return "default.php";
+            throw new SetupControllerExitException();
         }
-
-        $editionPathSelector = $this->getEditionPathProvider();
-        $sqlDir = $editionPathSelector->getDatabaseSqlDirectory();
-
-        $baseEditionPathSelector = $this->getEditionPathProvider(EditionSelector::COMMUNITY);
-        $baseSqlDir = $baseEditionPathSelector->getDatabaseSqlDirectory();
-
-        //setting database collation
-        $iUtfMode = isset($aDB['iUtfMode']) ? ((int) $aDB['iUtfMode']) : 0;
-        $oDb->setMySqlCollation($iUtfMode);
 
         try {
-            $oDb->queryFile("$baseSqlDir/database_schema.sql");
-            $oDb->queryFile("$baseSqlDir/initial_data.sql");
+            $baseSqlDir = $this->getUtilitiesInstance()->getSqlDirectory(EditionSelector::COMMUNITY);
+            $database->queryFile("$baseSqlDir/database_schema.sql");
+            $utilities = $this->getUtilitiesInstance();
+            $demodataInstallationRequired = $databaseConfigValues['dbiDemoData'];
 
-            /** @var ConfigFile $shopConfig */
-            $shopConfig = Registry::get("oxConfigFile");
-            $vendorDir = $shopConfig->getVar('vendorDirectory');
+            if ($demodataInstallationRequired && !$utilities->isDemodataPrepared()) {
+                throw new SetupControllerExitException($language->getText('ERROR_NO_DEMODATA_INSTALLED'));
+            }
 
-            exec("{$vendorDir}/bin/oe-eshop-facts oe-eshop-db_migrate");
-            exec("{$vendorDir}/bin/oe-eshop-facts oe-eshop-db_views_regenerate");
-        } catch (Exception $oExcp) {
-            $oView->setMessage($oExcp->getMessage());
-
-            return "default.php";
-        }
-
-        if ($aDB['dbiDemoData'] == '1') {
-            // install demo data
+            // install demo/initial data
             try {
-                $oDb->queryFile("$sqlDir/demodata.sql");
-            } catch (Exception $oExcp) {
+                $this->installShopData($database, $demodataInstallationRequired);
+            } catch (CommandExecutionFailedException $exception) {
+                $this->handleCommandExecutionFailedException($exception);
+                throw new SetupControllerExitException();
+            } catch (Exception $exception) {
                 // there where problems with queries
-                $oView->setMessage($oLang->getText('ERROR_BAD_DEMODATA') . "<br><br>" . $oExcp->getMessage());
+                $view->setMessage($language->getText('ERROR_BAD_DEMODATA') . "<br><br>" . $exception->getMessage());
 
-                return "default.php";
+                throw new SetupControllerExitException();
             }
-        }
 
-        //swap database to english
-        if ($oSession->getSessionParam('location_lang') != "de") {
             try {
-                $oDb->queryFile("$sqlDir/en.sql");
-            } catch (Exception $oExcp) {
-                $oView->setMessage($oLang->getText('ERROR_BAD_DEMODATA') . "<br><br>" . $oExcp->getMessage());
+                $this->getUtilitiesInstance()->executeExternalRegenerateViewsCommand();
+            } catch (CommandExecutionFailedException $exception) {
+                $this->handleCommandExecutionFailedException($exception);
 
-                return "default.php";
+                throw new SetupControllerExitException();
             }
+        } catch (Exception $exception) {
+            $view->setMessage($exception->getMessage());
+
+            throw new SetupControllerExitException();
         }
 
         //update dyn pages / shop country config options (from first step)
-        $oDb->saveShopSettings(array());
+        $database->saveShopSettings(array());
 
-        //applying utf-8 specific queries
+        // update shop version
+        $version = ShopVersion::getVersion();
+        $database->execSql("update `oxshops` set `oxversion` = '{$version}'");
 
-        if ($iUtfMode) {
-            $oDb->queryFile("$sqlDir/latin1_to_utf8.sql");
+        try {
+            $adminData = $session->getSessionParam('aAdminData');
+            // creating admin user
+            $database->writeAdminLoginData($adminData['sLoginName'], $adminData['sPassword']);
+        } catch (Exception $exception) {
+            $view->setMessage($exception->getMessage());
 
-            //converting oxconfig table field 'oxvarvalue' values to utf
-            $oDb->setMySqlCollation(0);
-            $oDb->convertConfigTableToUtf();
+            throw new SetupControllerExitException();
         }
 
-        $oSetup->setNextStep($oSetup->getStep('STEP_DIRS_INFO'));
-        $oView->setMessage($oLang->getText('STEP_3_2_CREATING_DATA'));
-
-        return "default.php";
+        $view->setMessage($language->getText('STEP_4_2_UPDATING_DATABASE'));
+        $this->onDirsWriteSetStep($setup);
     }
 
     /**
      * Writing config info
      *
-     * @return string
+     * Functionality is tested via:
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDirInfoEntryPageWhenNotAllFieldsAreFilled`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDirInfoEntryPageWhenPasswordIsTooShort`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDirInfoEntryPageWhenPasswordDoesNotMatch`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDirInfoEntryPageWhenInvalidEmailUsed`
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDirInfoEntryPageWhenSetupCantFindConfigFile`
      */
     public function dirsWrite()
     {
-        $oView = $this->getView();
+        $view = $this->getView();
+        $setup = $this->getSetupInstance();
+        $session = $this->getSessionInstance();
+        $language = $this->getLanguageInstance();
+        $utils = $this->getUtilitiesInstance();
 
-        /** @var Setup $oSetup */
-        $oSetup = $this->getInstance("Setup");
-        /** @var Session $oSession */
-        $oSession = $this->getInstance("Session");
-        /** @var Language $oLang */
-        $oLang = $this->getInstance("Language");
-        /** @var Utilities $oUtils */
-        $oUtils = $this->getInstance("Utilities");
+        $view->setTitle('STEP_4_1_TITLE');
 
-        $oView->setTitle('STEP_4_1_TITLE');
-
-        $aPath = $oUtils->getRequestVar("aPath", "post");
-        $aSetupConfig = $oUtils->getRequestVar("aSetupConfig", "post");
-        $aAdminData = $oUtils->getRequestVar("aAdminData", "post");
+        $pathCollection = $utils->getRequestVar("aPath", "post");
+        $setupConfig = $utils->getRequestVar("aSetupConfig", "post");
+        $adminData = $utils->getRequestVar("aAdminData", "post");
 
         // correct them
-        $aPath['sShopURL'] = $oUtils->preparePath($aPath['sShopURL']);
-        $aPath['sShopDir'] = $oUtils->preparePath($aPath['sShopDir']);
-        $aPath['sCompileDir'] = $oUtils->preparePath($aPath['sCompileDir']);
-        $aPath['sBaseUrlPath'] = $oUtils->extractRewriteBase($aPath['sShopURL']);
+        $pathCollection['sShopURL'] = $utils->preparePath($pathCollection['sShopURL']);
+        $pathCollection['sShopDir'] = $utils->preparePath($pathCollection['sShopDir']);
+        $pathCollection['sCompileDir'] = $utils->preparePath($pathCollection['sCompileDir']);
+        $pathCollection['sBaseUrlPath'] = $utils->extractRewriteBase($pathCollection['sShopURL']);
 
         // using same array to pass additional setup variable
-        if (isset($aSetupConfig['blDelSetupDir']) && $aSetupConfig['blDelSetupDir']) {
-            $aSetupConfig['blDelSetupDir'] = 1;
+        if (isset($setupConfig['blDelSetupDir']) && $setupConfig['blDelSetupDir']) {
+            $setupConfig['blDelSetupDir'] = 1;
         } else {
-            $aSetupConfig['blDelSetupDir'] = 0;
+            $setupConfig['blDelSetupDir'] = 0;
         }
 
-        $oSession->setSessionParam('aPath', $aPath);
-        $oSession->setSessionParam('aSetupConfig', $aSetupConfig);
-        $oSession->setSessionParam('aAdminData', $aAdminData);
+        $session->setSessionParam('aPath', $pathCollection);
+        $session->setSessionParam('aSetupConfig', $setupConfig);
+        $session->setSessionParam('aAdminData', $adminData);
 
         // check if important parameters are set
-        if (!$aPath['sShopURL'] || !$aPath['sShopDir'] || !$aPath['sCompileDir'] ||
-            !$aAdminData['sLoginName'] || !$aAdminData['sPassword'] || !$aAdminData['sPasswordConfirm']
+        if (!$pathCollection['sShopURL'] || !$pathCollection['sShopDir'] || !$pathCollection['sCompileDir']
+            || !$adminData['sLoginName'] || !$adminData['sPassword'] || !$adminData['sPasswordConfirm']
         ) {
-            $oSetup->setNextStep($oSetup->getStep('STEP_DIRS_INFO'));
-            $oView->setMessage($oLang->getText('ERROR_FILL_ALL_FIELDS'));
+            $setup->setNextStep($setup->getStep('STEP_DIRS_INFO'));
+            $view->setMessage($language->getText('ERROR_FILL_ALL_FIELDS'));
 
-            return "default.php";
+            throw new SetupControllerExitException();
         }
 
         // check if passwords match
-        if (strlen($aAdminData['sPassword']) < 6) {
-            $oSetup->setNextStep($oSetup->getStep('STEP_DIRS_INFO'));
-            $oView->setMessage($oLang->getText('ERROR_PASSWORD_TOO_SHORT'));
+        if (strlen($adminData['sPassword']) < 6) {
+            $setup->setNextStep($setup->getStep('STEP_DIRS_INFO'));
+            $view->setMessage($language->getText('ERROR_PASSWORD_TOO_SHORT'));
 
-            return "default.php";
+            throw new SetupControllerExitException();
         }
 
         // check if passwords match
-        if ($aAdminData['sPassword'] != $aAdminData['sPasswordConfirm']) {
-            $oSetup->setNextStep($oSetup->getStep('STEP_DIRS_INFO'));
-            $oView->setMessage($oLang->getText('ERROR_PASSWORDS_DO_NOT_MATCH'));
+        if ($adminData['sPassword'] != $adminData['sPasswordConfirm']) {
+            $setup->setNextStep($setup->getStep('STEP_DIRS_INFO'));
+            $view->setMessage($language->getText('ERROR_PASSWORDS_DO_NOT_MATCH'));
 
-            return "default.php";
+            throw new SetupControllerExitException();
         }
 
         // check if email matches pattern
-        if (!$oUtils->isValidEmail($aAdminData['sLoginName'])) {
-            $oSetup->setNextStep($oSetup->getStep('STEP_DIRS_INFO'));
-            $oView->setMessage($oLang->getText('ERROR_USER_NAME_DOES_NOT_MATCH_PATTERN'));
+        if (!$utils->isValidEmail($adminData['sLoginName'])) {
+            $setup->setNextStep($setup->getStep('STEP_DIRS_INFO'));
+            $view->setMessage($language->getText('ERROR_USER_NAME_DOES_NOT_MATCH_PATTERN'));
 
-            return "default.php";
-        }
-
-        try {
-            // creating admin user
-            $this->getInstance("Database")->writeAdminLoginData($aAdminData['sLoginName'], $aAdminData['sPassword']);
-        } catch (Exception $oExcp) {
-            $oView->setMessage($oExcp->getMessage());
-
-            return "default.php";
+            throw new SetupControllerExitException();
         }
 
         // write it now
         try {
-            $aParams = array_merge(( array ) $oSession->getSessionParam('aDB'), $aPath);
+            $parameters = array_merge(( array )$session->getSessionParam('aDB'), $pathCollection);
 
             // updating config file
-            $oUtils->updateConfigFile($aParams);
+            $utils->updateConfigFile($parameters);
 
             // updating regular htaccess file
-            $oUtils->updateHtaccessFile($aParams);
+            $utils->updateHtaccessFile($parameters);
 
             // updating admin htaccess file
             //$oUtils->updateHtaccessFile( $aParams, "admin" );
-        } catch (Exception $oExcp) {
-            $oSetup->setNextStep($oSetup->getStep('STEP_DIRS_INFO'));
-            $oView->setMessage($oExcp->getMessage());
+        } catch (Exception $exception) {
+            $setup->setNextStep($setup->getStep('STEP_DIRS_INFO'));
+            $view->setMessage($exception->getMessage());
 
-            return "default.php";
+            throw new SetupControllerExitException();
         }
 
-        $this->onDirsWriteSetStep($oSetup);
+        $view->setMessage($language->getText('STEP_4_1_DATA_WAS_WRITTEN'));
+        $view->setViewParam("aPath", $pathCollection);
+        $view->setViewParam("aSetupConfig", $setupConfig);
 
-        $oView->setMessage($oLang->getText('STEP_4_1_DATA_WAS_WRITTEN'));
-        $oView->setViewParam("aPath", $aPath);
-        $oView->setViewParam("aSetupConfig", $aSetupConfig);
-
-        return "default.php";
+        $databaseConfigValues = $session->getSessionParam('aDB');
+        $view->setViewParam("aDB", $databaseConfigValues);
+        $setup->setNextStep($setup->getStep('STEP_DB_CREATE'));
     }
 
     /**
      * Final setup step
-     *
-     * @return string
      */
     public function finish()
     {
-        /** @var Session $oSession */
-        $oSession = $this->getInstance("Session");
-        $aPath = $oSession->getSessionParam("aPath");
+        $session = $this->getSessionInstance();
+        $pathCollection = $session->getSessionParam("aPath");
 
-        $oView = $this->getView();
-        $oView->setTitle("STEP_6_TITLE");
-        $oView->setViewParam("aPath", $aPath);
-        $oView->setViewParam("aSetupConfig", $oSession->getSessionParam("aSetupConfig"));
-        $oView->setViewParam("blWritableConfig", is_writable($aPath['sShopDir'] . "/config.inc.php"));
-
-        return "finish.php";
+        $this->setViewOptions(
+            'finish.php',
+            'STEP_6_TITLE',
+            [
+                "aPath" => $pathCollection,
+                "aSetupConfig" => $session->getSessionParam("aSetupConfig"),
+                "blWritableConfig" => is_writable($pathCollection['sShopDir'] . "/config.inc.php")
+            ]
+        );
     }
 
     /**
-     * @param string $edition
-     * @return EditionPathProvider
+     * Returns View object
+     *
+     * @return \OxidEsales\EshopCommunity\Setup\View
      */
-    protected function getEditionPathProvider($edition = null)
+    public function getView()
     {
-        $editionPathSelector = new EditionRootPathProvider(new EditionSelector($edition));
-        return new EditionPathProvider($editionPathSelector);
+        return $this->view;
     }
 
     /**
-     * @param Setup $setup
+     * @param \OxidEsales\EshopCommunity\Setup\Setup $setup
      */
     protected function onDirsWriteSetStep($setup)
     {
@@ -557,20 +538,272 @@ class Controller extends Core
     }
 
     /**
-     * Check if database is up and running
+     * Check if database can be safely overwritten.
      *
-     * @param Database $database
+     * @param \OxidEsales\EshopCommunity\Setup\Database $database database instance used to connect to DB
+     *
      * @return bool
      */
-    private function checkDbExists($database)
+    private function databaseCanBeOverwritten($database)
     {
-        try {
-            $blDbExists = true;
-            $database->execSql("select * from oxconfig");
-        } catch (Exception $oExcp) {
-            $blDbExists = false;
+        $canBeOverwritten = true;
+
+        if (!$this->userDecidedOverwriteDB()) {
+            $canBeOverwritten = !$this->getUtilitiesInstance()->checkDbExists($database);
         }
 
-        return $blDbExists;
+        return $canBeOverwritten;
+    }
+
+    /**
+     * Show warning-question if database with same name already exists.
+     *
+     * @param string                                    $databaseName name of database to check if exist
+     * @param \OxidEsales\EshopCommunity\Setup\View     $view         to set parameters for template
+     * @param \OxidEsales\EshopCommunity\Setup\Language $language     to translate text
+     */
+    private function formMessageIfDBCanBeOverwritten($databaseName, $view, $language)
+    {
+        $view->setMessage(sprintf($language->getText('ERROR_DB_ALREADY_EXISTS'), $databaseName));
+    }
+
+    /**
+     * Show warning-question if MySQL version does meet minimal requirements, but is neither recommended nor supported.
+     *
+     * @param \OxidEsales\EshopCommunity\Setup\View     $view     to set parameters for template
+     * @param \OxidEsales\EshopCommunity\Setup\Language $language to translate text
+     */
+    private function formMessageIfMySqyVersionIsNotRecommended($view, $language)
+    {
+        $view->setMessage(sprintf($language->getText('ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS')));
+    }
+
+    /**
+     * Show a message and a link to continue installation process, not regarding errors and warnings
+     *
+     * @param \OxidEsales\EshopCommunity\Setup\View     $view      to set parameters for template
+     * @param \OxidEsales\EshopCommunity\Setup\Language $language  to translate text
+     * @param string                                    $sessionId
+     * @param string                                    $setupStep where to redirect if chose to rewrite database
+     */
+    private function formMessageInstallAnyway($view, $language, $sessionId, $setupStep)
+    {
+        $view->setMessage("<br><br>" . $language->getText('STEP_4_2_OVERWRITE_DB') . " <a href=\"index.php?sid=" . $sessionId . "&istep=" . $setupStep . "&ow=1\" id=\"step3Continue\" style=\"text-decoration: underline;\">" . $language->getText('HERE') . "</a>");
+    }
+
+    /**
+     * Show a message and a link to continue installation process, not regarding errors and warnings
+     *
+     * @param \OxidEsales\EshopCommunity\Setup\View     $view           to set parameters for template
+     * @param \OxidEsales\EshopCommunity\Setup\Language $language       to translate text
+     * @param string                                    $sessionId
+     * @param string                                    $setupStep      where to redirect if chose to rewrite database
+     * @param bool                                      $databaseExists Database already exists
+     */
+    private function formMessageIgnoreDbVersionNotRecommended($view, $language, $sessionId, $setupStep, $databaseExists)
+    {
+        $ignoreParam = $databaseExists ? '&ow=1&owrec=1' : '&owrec=1';
+        $info = $databaseExists ? 'STEP_4_2_OVERWRITE_DB' : 'STEP_4_2_NOT_RECOMMENDED_MYSQL_VERSION';
+        $view->setMessage("<br><br>" . $language->getText($info) . " <a href=\"index.php?sid=" . $sessionId . "&istep=" . $setupStep . $ignoreParam . "id=\"step3Continue\" style=\"text-decoration: underline;\">" . $language->getText('HERE') . "</a>");
+    }
+
+    /**
+     * Installs demo data or initial, dependent on parameter
+     *
+     * @param \OxidEsales\EshopCommunity\Setup\Database $database
+     * @param int                                       $demodataRequired
+     */
+    private function installShopData($database, $demodataRequired = 0)
+    {
+        $baseSqlDir = $this->getUtilitiesInstance()->getSqlDirectory(EditionSelector::COMMUNITY);
+
+        // If demo data files are provided.
+        if ($demodataRequired && $this->getUtilitiesInstance()->isDemodataPrepared()) {
+            $this->getUtilitiesInstance()->executeExternalDatabaseMigrationCommand();
+
+            // Install demo data.
+            $database->queryFile($this->getUtilitiesInstance()->getActiveEditionDemodataPackageSqlFilePath());
+            // Copy demo data files.
+            $this->getUtilitiesInstance()->executeExternalDemodataAssetsInstallCommand();
+        } else {
+            $database->queryFile("$baseSqlDir/initial_data.sql");
+
+            $this->getUtilitiesInstance()->executeExternalDatabaseMigrationCommand();
+        }
+    }
+
+    /**
+     * Allows to set all necessary view information with single method call.
+     *
+     * @param string $templateFileName File name of template which will be used to pass in the context data.
+     * @param string $titleId          Title Id which will be used in the template.
+     * @param array  $viewOptions      An array containing all view elements to be used inside a template.
+     */
+    protected function setViewOptions($templateFileName, $titleId, $viewOptions)
+    {
+        $view = $this->getView();
+        $view->setTemplateFileName($templateFileName);
+        $view->setTitle($titleId);
+
+        foreach ($viewOptions as $optionKey => $optionValue) {
+            $view->setViewParam($optionKey, $optionValue);
+        }
+    }
+
+    /**
+     * Getter for ModuleStateMapGenerator.
+     *
+     * Returns an instance of ModuleStateMapGenerator which has all necessary functions predefined:
+     *
+     *   - StateHtmlClassConverterFunction to convert module state to HTML class attribute for setup page;
+     *   - ModuleNameTranslateFunction to translate requirement module id to it's full name;
+     *   - ModuleGroupNameTranslateFunction to translate requirement module group id to it's full name.
+     *
+     * @param array $systemRequirementsInfo
+     *
+     * @return ModuleStateMapGenerator
+     */
+    private function getModuleStateMapGenerator($systemRequirementsInfo)
+    {
+        $setup = $this->getSetupInstance();
+        $language = $this->getLanguageInstance();
+
+        $moduleStateMapGenerator = new Controller\ModuleStateMapGenerator($systemRequirementsInfo);
+
+        $moduleStateMapGenerator->setModuleStateHtmlClassConvertFunction(function ($moduleState) use ($setup) {
+            return $setup->getModuleClass($moduleState);
+        });
+        $moduleStateMapGenerator->setModuleNameTranslateFunction(function ($moduleId) use ($language) {
+            return $language->getModuleName($moduleId);
+        });
+        $moduleStateMapGenerator->setModuleGroupNameTranslateFunction(function ($moduleGroupId) use ($language) {
+            return $language->getModuleName($moduleGroupId);
+        });
+
+        return $moduleStateMapGenerator;
+    }
+
+    /**
+     * Get updated array in the same format as provided by `SystemRequirements::getSystemInfo`.
+     *
+     * @return array Updated SystemRequirementsInfo array.
+     */
+    private function getSystemRequirementsInfo()
+    {
+        $systemRequirements = getSystemReqCheck();
+
+        return $this->updateSystemRequirementsInfo(
+            $systemRequirements->getSystemInfo()
+        );
+    }
+
+    /**
+     * Modify given array of format `SystemRequirements::getSystemInfo` with exceptional cases.
+     *
+     * ATM it is a bit tricky to include these changes due to the way SystemRequirements are constructed.
+     *
+     * @param array $systemRequirementsInfo An array taken from `SystemRequirements::getSystemInfo`.
+     *
+     * @return array An array in the same format as provided in `SystemRequirements::getSystemInfo`.
+     */
+    private function updateSystemRequirementsInfo($systemRequirementsInfo)
+    {
+        return SystemRequirements::filter(
+            $systemRequirementsInfo,
+            function ($groupId, $moduleId, $moduleState) {
+                // HtAccess check exception case
+                if (($groupId === SystemRequirements::MODULE_GROUP_ID_SERVER_CONFIG)
+                    && ($moduleId === SystemRequirements::MODULE_ID_MOD_REWRITE)
+                    && (!$this->canUpdateHtaccess())
+                ) {
+                    return SystemRequirements::MODULE_STATUS_BLOCKS_SETUP;
+                }
+
+                // MySql version detect exception case
+                // More information can be obtained from commits with tag 'ESDEV-3999'
+                if (($groupId === SystemRequirements::MODULE_GROUP_ID_SERVER_CONFIG)
+                    && ($moduleId === SystemRequirements::MODULE_ID_MYSQL_VERSION)
+                ) {
+                    return SystemRequirements::MODULE_STATUS_UNABLE_TO_DETECT;
+                }
+
+                return $moduleState;
+            }
+        );
+    }
+
+    /**
+     * Check if htaccess file can be updated.
+     *
+     * @return bool Returns true in case htaccess file can be updated.
+     */
+    private function canUpdateHtaccess()
+    {
+        $utilities = $this->getUtilitiesInstance();
+        return $utilities->canHtaccessFileBeUpdated();
+    }
+
+    /**
+     * @param CommandExecutionFailedException $exception
+     */
+    private function handleCommandExecutionFailedException($exception)
+    {
+        $language = $this->getLanguageInstance();
+        $view = $this->getView();
+
+        $commandOutput = $exception->getCommandOutput();
+        $htmlCommandOutput = $this->convertCommandOutputToHtmlOutput($commandOutput);
+
+        $errorLines[] = sprintf(
+            $language->getText('EXTERNAL_COMMAND_ERROR_1'),
+            $exception->getCommand(),
+            $exception->getReturnCode()
+        );
+        $errorLines[] = $language->getText('EXTERNAL_COMMAND_ERROR_2');
+
+        $errorHeader = implode("<br />", $errorLines);
+        $errorMessage = implode("<br /><br />", [$errorHeader, $htmlCommandOutput]);
+
+        $view->setMessage($errorMessage);
+    }
+
+    /**
+     * @param string $commandOutput
+     *
+     * @return string
+     */
+    private function convertCommandOutputToHtmlOutput($commandOutput)
+    {
+        $commandOutput = Utilities::stripAnsiControlCodes($commandOutput);
+        $commandOutput = htmlspecialchars($commandOutput);
+        $commandOutput = str_replace("\n", "<br />", $commandOutput);
+        $commandOutput = "<span style=\"font-family: courier,serif\">$commandOutput</span>";
+
+        return $commandOutput;
+    }
+
+    /**
+     * Ensure the database is available
+     *
+     * @throws \OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException
+     *
+     * @param \OxidEsales\EshopCommunity\Setup\Database $database
+     * @param string                                    $dbName
+     *
+     * @throws SetupControllerExitException
+     */
+    private function ensureDatabasePresent($database, $dbName)
+    {
+        try {
+            // if database is not there, try to create it
+            $database->createDb($dbName);
+        } catch (Exception $exception) {
+            $setup = $this->getSetupInstance();
+            $setup->setNextStep($setup->getStep('STEP_DB_INFO'));
+            $this->getView()->setMessage($exception->getMessage());
+
+            throw new SetupControllerExitException();
+        }
+        $this->getView()->setViewParam("blCreated", 1);
     }
 }

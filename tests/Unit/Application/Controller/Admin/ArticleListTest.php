@@ -19,14 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use oxCategoryList;
+use OxidEsales\EshopCommunity\Application\Model\CategoryList;
 use \oxField;
 use \oxDb;
-use oxManufacturerList;
+use OxidEsales\EshopCommunity\Application\Model\ManufacturerList;
 use \oxTestModules;
-use oxVendorList;
+use OxidEsales\EshopCommunity\Application\Model\VendorList;
 
 /**
  * Tests for Article_List class
@@ -46,7 +46,7 @@ class ArticleListTest extends \OxidTestCase
 
         $this->setRequestParameter('folder', $sObjects . 'TestFolderName');
 
-        $oAdminList = $this->getMock('article_list', array("getItemList"));
+        $oAdminList = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleList::class, array("getItemList"));
         $oAdminList->expects($this->once())->method('getItemList')->will($this->returnValue(null));
         $aBuildWhere = $oAdminList->buildWhere();
         $this->assertEquals('oxArticleTestFolderName', $aBuildWhere[getViewName('oxarticles') . '.oxfolder']);
@@ -69,11 +69,11 @@ class ArticleListTest extends \OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["cattree"] instanceof oxCategoryList);
+        $this->assertTrue($aViewData["cattree"] instanceof CategoryList);
         $this->assertTrue($aViewData["cattree"]->offsetExists($sCatId));
         $this->assertEquals(1, $aViewData["cattree"]->offsetGet($sCatId)->selected);
-        $this->assertTrue($aViewData["mnftree"] instanceof oxManufacturerList);
-        $this->assertTrue($aViewData["vndtree"] instanceof oxVendorList);
+        $this->assertTrue($aViewData["mnftree"] instanceof ManufacturerList);
+        $this->assertTrue($aViewData["vndtree"] instanceof VendorList);
         $this->assertTrue(isset($aViewData["pwrsearchinput"]));
         $this->assertEquals("testValue", $aViewData["pwrsearchinput"]);
     }
@@ -89,17 +89,17 @@ class ArticleListTest extends \OxidTestCase
         $this->setRequestParameter("art_category", "mnf@@" . $sManId);
 
         // testing..
-        $oView = $this->getMock("Article_List", array("getItemList"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleList::class, array("getItemList"));
         $oView->expects($this->any())->method('getItemList')->will($this->returnValue(oxNew('oxarticlelist')));
         $this->assertEquals('article_list.tpl', $oView->render());
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["cattree"] instanceof oxCategoryList);
-        $this->assertTrue($aViewData["mnftree"] instanceof oxManufacturerList);
+        $this->assertTrue($aViewData["cattree"] instanceof CategoryList);
+        $this->assertTrue($aViewData["mnftree"] instanceof ManufacturerList);
         $this->assertTrue($aViewData["mnftree"]->offsetExists($sManId));
         $this->assertEquals(1, $aViewData["mnftree"]->offsetGet($sManId)->selected);
-        $this->assertTrue($aViewData["vndtree"] instanceof oxVendorList);
+        $this->assertTrue($aViewData["vndtree"] instanceof VendorList);
     }
 
     /**
@@ -131,15 +131,15 @@ class ArticleListTest extends \OxidTestCase
         $oList->offsetSet("3", $oArticle3);
 
         // testing..
-        $oView = $this->getMock("Article_List", array("getItemList"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleList::class, array("getItemList"));
         $oView->expects($this->any())->method('getItemList')->will($this->returnValue($oList));
         $this->assertEquals('article_list.tpl', $oView->render());
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["cattree"] instanceof oxCategoryList);
-        $this->assertTrue($aViewData["mnftree"] instanceof oxManufacturerList);
-        $this->assertTrue($aViewData["vndtree"] instanceof oxVendorList);
+        $this->assertTrue($aViewData["cattree"] instanceof CategoryList);
+        $this->assertTrue($aViewData["mnftree"] instanceof ManufacturerList);
+        $this->assertTrue($aViewData["vndtree"] instanceof VendorList);
         $this->assertTrue($aViewData["vndtree"]->offsetExists($sVndId));
         $this->assertEquals(1, $aViewData["vndtree"]->offsetGet($sVndId)->selected);
     }
@@ -239,10 +239,10 @@ class ArticleListTest extends \OxidTestCase
 
         $this->setRequestParameter("oxid", "testId");
 
-        $oSess = $this->getMock('oxsession', array('checkSessionChallenge'));
+        $oSess = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSess->expects($this->any())->method('checkSessionChallenge')->will($this->returnValue(true));
 
-        $oView = $this->getMock("Article_List", array("_authorize", 'getSession'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleList::class, array("_authorize", 'getSession'));
         $oView->expects($this->any())->method('_authorize')->will($this->returnValue(true));
         $oView->expects($this->any())->method('getSession')->will($this->returnValue($oSess));
         $oView->deleteEntry();

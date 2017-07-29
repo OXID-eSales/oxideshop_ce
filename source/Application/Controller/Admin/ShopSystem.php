@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -30,7 +30,7 @@ use oxDb;
  * Collects shop system settings, updates it on user submit, etc.
  * Admin Menu: Main Menu -> Core Settings -> System.
  */
-class ShopSystem extends \Shop_Config
+class ShopSystem extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
 
     /**
@@ -53,7 +53,7 @@ class ShopSystem extends \Shop_Config
 
         $aConfArrs = array();
 
-        $oLang = oxRegistry::getLang();
+        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
 
         $aLanguages = $oLang->getLanguageArray();
         $sLangAbbr = $aLanguages[$oLang->getObjectTplLanguage()]->abbr;
@@ -66,8 +66,9 @@ class ShopSystem extends \Shop_Config
             $soxId = $myConfig->getShopId();
         }
 
-        $oDb = oxDb::getDb();
-        $sShopCountry = $oDb->getOne("select DECODE( oxvarvalue, " . $oDb->quote($myConfig->getConfigParam('sConfigKey')) . ") as oxvarvalue from oxconfig where oxshopid = '$soxId' and oxvarname = 'sShopCountry'", false, false);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
+        $sShopCountry = $masterDb->getOne("select DECODE( oxvarvalue, " . $masterDb->quote($myConfig->getConfigParam('sConfigKey')) . ") as oxvarvalue from oxconfig where oxshopid = '$soxId' and oxvarname = 'sShopCountry'");
 
         $this->_aViewData["shop_countries"] = $aLocationCountries[$sLangAbbr];
         $this->_aViewData["confstrs"]["sShopCountry"] = $sShopCountry;

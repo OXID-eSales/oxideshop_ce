@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxRegistry;
 use oxApplicationServer;
@@ -53,17 +53,17 @@ class ServerChecker
      */
     public function __construct()
     {
-        $this->_iCurrentTime = oxRegistry::get("oxUtilsDate")->getTime();
+        $this->_iCurrentTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
     }
 
     /**
      * Checks if server node is valid.
      *
-     * @param oxApplicationServer $oServer
+     * @param \OxidEsales\Eshop\Core\ApplicationServer $oServer
      *
      * @return bool
      */
-    public function check(oxApplicationServer $oServer)
+    public function check(\OxidEsales\Eshop\Core\ApplicationServer $oServer)
     {
         return $this->_isValid($oServer) && $this->_isServerTimeValid($oServer->getTimestamp());
     }
@@ -71,7 +71,7 @@ class ServerChecker
     /**
      * Check is server information out dated.
      *
-     * @param oxApplicationServer $oServer
+     * @param \OxidEsales\Eshop\Core\ApplicationServer $oServer
      *
      * @return bool
      */

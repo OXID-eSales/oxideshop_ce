@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxDb;
 
@@ -51,7 +51,7 @@ class AdminLogSqlDecorator
      */
     protected function getUserId()
     {
-        $user = oxNew('oxUser');
+        $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         if ($user->loadAdminUser()) {
             return $user->getId();
         }
@@ -60,11 +60,12 @@ class AdminLogSqlDecorator
     /**
      * Quotes the string for saving in database field;
      *
-     * @param $str
+     * @param string $str
+     *
      * @return string
      */
     protected function quote($str)
     {
-        return oxDb::getDb()->quote($str);
+        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($str);
     }
 }

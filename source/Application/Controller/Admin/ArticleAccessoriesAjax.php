@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -29,7 +29,7 @@ use oxField;
 /**
  * Class controls article assignment to accessories
  */
-class ArticleAccessoriesAjax extends \ajaxListComponent
+class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**
@@ -72,9 +72,9 @@ class ArticleAccessoriesAjax extends \ajaxListComponent
     protected function _getQuery()
     {
         $myConfig = $this->getConfig();
-        $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchSelId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
-        $oDb = oxDb::getDb();
+        $sSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $sSynchSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sArticleTable = $this->_getViewName('oxarticles');
         $sView = $this->_getViewName('oxobject2category');
@@ -123,15 +123,13 @@ class ArticleAccessoriesAjax extends \ajaxListComponent
     {
         $aChosenArt = $this->_getActionIds('oxaccessoire2article.oxid');
         // removing all
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
-
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxaccessoire2article.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
-
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
-            $sChosenArticles = implode(", ", oxDb::getInstance()->quoteArray($aChosenArt));
+            $sChosenArticles = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt));
             $sQ = "delete from oxaccessoire2article where oxaccessoire2article.oxid in ({$sChosenArticles}) ";
-            oxDb::getDb()->Execute($sQ);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
 
@@ -140,23 +138,23 @@ class ArticleAccessoriesAjax extends \ajaxListComponent
      */
     public function addArticleAcc()
     {
-        $oArticle = oxNew("oxArticle");
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $aChosenArt = $this->_getActionIds('oxarticles.oxid');
-        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
         // adding
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sArtTable = $this->_getViewName('oxarticles');
             $aChosenArt = $this->_getAll(parent::_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }
 
         if ($oArticle->load($soxId) && $soxId && $soxId != "-1" && is_array($aChosenArt)) {
             foreach ($aChosenArt as $sChosenArt) {
-                $oNewGroup = oxNew("oxBase");
+                $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oNewGroup->init("oxaccessoire2article");
-                $oNewGroup->oxaccessoire2article__oxobjectid = new oxField($sChosenArt);
-                $oNewGroup->oxaccessoire2article__oxarticlenid = new oxField($oArticle->oxarticles__oxid->value);
-                $oNewGroup->oxaccessoire2article__oxsort = new oxField(0);
+                $oNewGroup->oxaccessoire2article__oxobjectid = new \OxidEsales\Eshop\Core\Field($sChosenArt);
+                $oNewGroup->oxaccessoire2article__oxarticlenid = new \OxidEsales\Eshop\Core\Field($oArticle->oxarticles__oxid->value);
+                $oNewGroup->oxaccessoire2article__oxsort = new \OxidEsales\Eshop\Core\Field(0);
                 $oNewGroup->save();
             }
 
@@ -167,7 +165,7 @@ class ArticleAccessoriesAjax extends \ajaxListComponent
     /**
      * Method is used to bind to accessory addition to article action.
      *
-     * @param oxArticle $article
+     * @param \OxidEsales\Eshop\Application\Model\Article $article
      */
     protected function onArticleAccessoryRelationChange($article)
     {

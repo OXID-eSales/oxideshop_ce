@@ -19,11 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-use OxidEsales\Eshop\Core\Registry;
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxException;
+use oxRegistry;
 
 /**
  * Themes handler class.
@@ -31,7 +31,7 @@ use oxException;
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
-class Theme extends \oxSuperCfg
+class Theme extends \OxidEsales\Eshop\Core\Base
 {
 
     /**
@@ -78,7 +78,7 @@ class Theme extends \oxSuperCfg
     {
         $sError = $this->checkForActivationErrors();
         if ($sError) {
-            /** @var oxException $oException */
+            /** @var \OxidEsales\Eshop\Core\Exception\StandardException $oException */
             $oException = oxNew("oxException", $sError);
             throw $oException;
         }
@@ -90,6 +90,8 @@ class Theme extends \oxSuperCfg
             $this->getConfig()->saveShopConfVar("str", 'sTheme', $this->getId());
             $this->getConfig()->saveShopConfVar("str", 'sCustomTheme', '');
         }
+        $settingsHandler = oxNew(\OxidEsales\Eshop\Core\SettingsHandler::class);
+        $settingsHandler->setModuleType('theme')->run($this);
     }
 
     /**
@@ -102,7 +104,7 @@ class Theme extends \oxSuperCfg
         $this->_aThemeList = array();
         $sOutDir = $this->getConfig()->getViewsDir();
         foreach (glob($sOutDir . "*", GLOB_ONLYDIR) as $sDir) {
-            $oTheme = oxNew('oxTheme');
+            $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
             if ($oTheme->load(basename($sDir))) {
                 $this->_aThemeList[$sDir] = $oTheme;
             }
@@ -152,7 +154,7 @@ class Theme extends \oxSuperCfg
      */
     public function getActiveThemesList()
     {
-        $config = Registry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $activeThemeList = array();
         if (!$this->isAdmin()) {
@@ -177,7 +179,7 @@ class Theme extends \oxSuperCfg
         if (!$sParent) {
             return null;
         }
-        $oTheme = oxNew('oxTheme');
+        $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
         if ($oTheme->load($sParent)) {
             return $oTheme;
         }

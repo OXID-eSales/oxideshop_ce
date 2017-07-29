@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Component\Widget;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Component\Widget;
 
 use \oxTestModules;
 use RecommList;
@@ -51,7 +51,7 @@ class RecommendationTest extends \OxidTestCase
      */
     public function testGetSimilarRecommLists()
     {
-        $oRecommList = $this->getMock("oxrecommlist", array("getRecommListsByIds"));
+        $oRecommList = $this->getMock(\OxidEsales\Eshop\Application\Model\RecommendationList::class, array("getRecommListsByIds"));
         $oRecommList->expects($this->once())->method("getRecommListsByIds")->with($this->equalTo(array("articleId")))->will($this->returnValue("oxRecommListMock"));
         oxTestModules::addModuleObject('oxrecommlist', $oRecommList);
 
@@ -71,7 +71,7 @@ class RecommendationTest extends \OxidTestCase
     public function testGetRecommList()
     {
         $oRecommList = oxNew('oxwRecommendation');
-        $this->assertTrue($oRecommList->getRecommList() instanceof RecommList);
+        $this->assertTrue($oRecommList->getRecommList() instanceof \OxidEsales\EshopCommunity\Application\Controller\RecommListController);
     }
 
 }

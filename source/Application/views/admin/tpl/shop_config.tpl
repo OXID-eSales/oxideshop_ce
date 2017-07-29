@@ -951,8 +951,7 @@ function editThis(sID)
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_SETORDELETECURRENCY"}]
                 </dt>
                 <dd>
-                  [{oxmultilang ident="SHOP_CONFIG_SETORDELETECURRENCY"}]<br>
-                  [name]@[rate]@[decimal separator]@[thousand separator]@[symbol]@[decimal precision]
+                  [{oxmultilang ident="SHOP_CONFIG_SETORDELETECURRENCY"}]
                 </dd>
                 <div class="spacer"></div>
             </dl>

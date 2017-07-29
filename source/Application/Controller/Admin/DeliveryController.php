@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin article delivery manager.
@@ -28,7 +28,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
  * and "delivery_main.tpl") to frame.
  * Admin Menu: Shop settings -> Shipping & Handling.
  */
-class DeliveryController extends \oxAdminView
+class DeliveryController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

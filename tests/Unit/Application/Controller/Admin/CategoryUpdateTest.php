@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use \oxCategoryList;
+use OxidEsales\EshopCommunity\Application\Model\CategoryList;
 
 use \oxTestModules;
 
@@ -39,10 +39,10 @@ class CategoryUpdateTest extends \OxidTestCase
     public function testGetCatListUpdateInfo()
     {
         // testing..
-        $oCategoryList = $this->getMock("oxCategoryList", array("getUpdateInfo"));
+        $oCategoryList = $this->getMock(\OxidEsales\Eshop\Application\Model\CategoryList::class, array("getUpdateInfo"));
         $oCategoryList->expects($this->once())->method('getUpdateInfo');
 
-        $oView = $this->getMock("Category_Update", array("_getCategoryList"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\CategoryUpdate::class, array("_getCategoryList"));
         $oView->expects($this->once())->method('_getCategoryList')->will($this->returnValue($oCategoryList));
         $oView->getCatListUpdateInfo();
     }
@@ -57,7 +57,7 @@ class CategoryUpdateTest extends \OxidTestCase
         oxTestModules::addFunction('oxCategoryList', 'updateCategoryTree', '{}');
 
         $oView = oxNew('Category_Update');
-        $this->assertTrue($oView->UNITgetCategoryList() instanceof oxCategoryList);
+        $this->assertTrue($oView->UNITgetCategoryList() instanceof CategoryList);
     }
 
     /**

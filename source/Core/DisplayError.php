@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxRegistry;
 
 /**
  * simple class to add a error message to display
  */
-class DisplayError implements \oxIDisplayError
+class DisplayError implements \OxidEsales\Eshop\Core\Contract\IDisplayError
 {
     /**
      * Error message
@@ -46,7 +46,7 @@ class DisplayError implements \oxIDisplayError
      */
     public function getOxMessage()
     {
-        $translatedMessage = oxRegistry::getLang()->translateString($this->_sMessage);
+        $translatedMessage = \OxidEsales\Eshop\Core\Registry::getLang()->translateString($this->_sMessage);
         if (!empty($this->_aFormatParameters)) {
             $translatedMessage = vsprintf($translatedMessage, $this->_aFormatParameters);
         }

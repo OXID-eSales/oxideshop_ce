@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Integration\OnlineInfo;
+namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
 
 use oxServerChecker;
 use oxServerProcessor;
@@ -33,7 +33,7 @@ use oxUtilsServer;
  * @covers oxServerProcessor
  * @covers oxApplicationServer
  * @covers oxServerChecker
- * @covers oxServerManager
+ * @covers oxServersManager
  */
 class FrontendServersInformationStoringTest extends \OxidTestCase
 {
@@ -106,7 +106,7 @@ class FrontendServersInformationStoringTest extends \OxidTestCase
      */
     private function _createDateMock($aExpectedServersData, $sServerId)
     {
-        $oUtilsDate = $this->getMock('oxUtilsDate', array('getTime'));
+        $oUtilsDate = $this->getMock(\OxidEsales\Eshop\Core\UtilsDate::class, array('getTime'));
         $oUtilsDate->expects($this->any())->method('getTime')->will($this->returnValue($aExpectedServersData[$sServerId]['timestamp']));
 
         return $oUtilsDate;
@@ -120,7 +120,7 @@ class FrontendServersInformationStoringTest extends \OxidTestCase
      */
     private function _createServerMock($sServerId, $sServerIp)
     {
-        $oUtilsServer = $this->getMock('oxUtilsServer', array('getServerNodeId', 'getServerIp'));
+        $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array('getServerNodeId', 'getServerIp'));
         $oUtilsServer->expects($this->any())->method('getServerNodeId')->will($this->returnValue($sServerId));
         $oUtilsServer->expects($this->any())->method('getServerIp')->will($this->returnValue($sServerIp));
 

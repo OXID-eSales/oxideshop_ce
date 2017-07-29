@@ -20,16 +20,17 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
 use oxField;
+use Exception;
 
 /**
  * Class manages article select lists configuration
  */
-class SelectListMainAjax extends \ajaxListComponent
+class SelectListMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**
@@ -85,9 +86,9 @@ class SelectListMainAjax extends \ajaxListComponent
         $sArtTable = $this->_getViewName('oxarticles');
         $sCatTable = $this->_getViewName('oxcategories');
         $sO2CView = $this->_getViewName('oxobject2category');
-        $oDb = oxDb::getDb();
-        $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchSelId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $sSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $sSynchSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sSelId) {
@@ -122,41 +123,49 @@ class SelectListMainAjax extends \ajaxListComponent
     {
         $aChosenArt = $this->_getActionIds('oxobject2selectlist.oxid');
 
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sQ = parent::_addFilter("delete oxobject2selectlist.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
-
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
-            $sQ = "delete from oxobject2selectlist where oxobject2selectlist.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aChosenArt)) . ") ";
-            oxDb::getDb()->Execute($sQ);
+            $sQ = "delete from oxobject2selectlist where oxobject2selectlist.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt)) . ") ";
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
 
     /**
      * Adds article to Selection list
+     *
+     * @throws Exception
      */
     public function addArtToSel()
     {
         $aAddArticle = $this->_getActionIds('oxarticles.oxid');
-        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sArtTable = $this->_getViewName('oxarticles');
             $aAddArticle = $this->_getAll(parent::_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }
 
         if ($soxId && $soxId != "-1" && is_array($aAddArticle)) {
-            $oDb = oxDb::getDb();
-            foreach ($aAddArticle as $sAdd) {
-                $oNewGroup = oxNew("oxBase");
-                $oNewGroup->init("oxobject2selectlist");
-                $oNewGroup->oxobject2selectlist__oxobjectid = new oxField($sAdd);
-                $oNewGroup->oxobject2selectlist__oxselnid = new oxField($soxId);
-                $oNewGroup->oxobject2selectlist__oxsort = new oxField(( int ) $oDb->getOne("select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  " . $oDb->quote($sAdd) . " ", false, false));
-                $oNewGroup->save();
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->startTransaction();
+            try {
+                $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+                foreach ($aAddArticle as $sAdd) {
+                    $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
+                    $oNewGroup->init("oxobject2selectlist");
+                    $oNewGroup->oxobject2selectlist__oxobjectid = new \OxidEsales\Eshop\Core\Field($sAdd);
+                    $oNewGroup->oxobject2selectlist__oxselnid = new \OxidEsales\Eshop\Core\Field($soxId);
+                    $oNewGroup->oxobject2selectlist__oxsort = new \OxidEsales\Eshop\Core\Field(( int ) $database->getOne("select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  " . $database->quote($sAdd) . " "));
+                    $oNewGroup->save();
 
-                $this->onArticleAddToSelectionList($sAdd);
+                    $this->onArticleAddToSelectionList($sAdd);
+                }
+            } catch (Exception $exception) {
+                \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
+                throw $exception;
             }
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->commitTransaction();
         }
     }
 

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
 
@@ -28,7 +28,7 @@ use oxDb;
  * Order delivery set manager.
  *
  */
-class DeliverySet extends \oxI18n
+class DeliverySet extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
 
     /**
@@ -63,7 +63,7 @@ class DeliverySet extends \oxI18n
             return false;
         }
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sOxIdQuoted = $oDb->quote($sOxId);
         $oDb->execute('delete from oxobject2payment where oxobjectid = ' . $sOxIdQuoted);
@@ -82,7 +82,7 @@ class DeliverySet extends \oxI18n
      */
     public function getIdByName($sTitle)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQ = "SELECT `oxid` FROM `" . getViewName('oxdeliveryset') . "` WHERE  `oxtitle` = " . $oDb->quote($sTitle);
         $sId = $oDb->getOne($sQ);
 

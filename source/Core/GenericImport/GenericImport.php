@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\GenericImport;
+namespace OxidEsales\EshopCommunity\Core\GenericImport;
 
 use Exception;
 use OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject;
@@ -100,8 +100,8 @@ class GenericImport
      */
     public function init()
     {
-        $config = oxRegistry::getConfig();
-        $user = oxNew('oxUser');
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $user->loadAdminUser();
 
         if (($user->oxuser__oxrights->value == 'malladmin' || $user->oxuser__oxrights->value == $config->getShopId())) {
@@ -408,7 +408,7 @@ class GenericImport
      */
     protected function getCsvFieldsTerminator()
     {
-        $config = oxRegistry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $fieldTerminator = $config->getConfigParam('sGiCsvFieldTerminator');
 
@@ -429,7 +429,7 @@ class GenericImport
      */
     protected function getCsvFieldsEncolser()
     {
-        $config = \oxRegistry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if ($fieldEncloser = $config->getConfigParam('sGiCsvFieldEncloser')) {
             return $fieldEncloser;

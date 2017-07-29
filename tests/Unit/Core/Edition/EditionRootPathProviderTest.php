@@ -19,10 +19,10 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core\Edition;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Edition;
 
-use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\EshopCommunity\Core\Edition\EditionRootPathProvider;
+use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 
@@ -30,7 +30,7 @@ class EditionRootPathProviderTest extends UnitTestCase
 {
     public function providerReturnsEditionPath()
     {
-        $vendorDirectory = $this->getConfig()->getConfigParam('vendorDirectory');
+        $vendorDirectory = VENDOR_PATH;
         return array(
             array(EditionSelector::ENTERPRISE, realpath("$vendorDirectory/oxid-esales/oxideshop-ee").'/'),
             array(EditionSelector::PROFESSIONAL, realpath("$vendorDirectory/oxid-esales/oxideshop-pe/").'/'),
@@ -66,7 +66,7 @@ class EditionRootPathProviderTest extends UnitTestCase
             $mockedMethodName = 'isProfessional';
         }
 
-        $editionSelector = $this->getMockBuilder('OxidEsales\Eshop\Core\Edition\EditionSelector')->getMock();
+        $editionSelector = $this->getMockBuilder('OxidEsales\EshopCommunity\Core\Edition\EditionSelector')->getMock();
         $editionSelector->method($mockedMethodName)->willReturn(true);
 
         return $editionSelector;

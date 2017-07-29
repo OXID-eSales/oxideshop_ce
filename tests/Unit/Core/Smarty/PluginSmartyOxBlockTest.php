@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core\Smarty;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Smarty;
 
 use \stdClass;
 use \oxException;
@@ -47,7 +47,7 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
 
         $this->getConfig()->setConfigParam('blDebugTemplateBlocks', false);
 
-        $oUtilsView = $this->getMock('oxUtilsView', array('getTemplateBlocks'));
+        $oUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getTemplateBlocks'));
         $oUtilsView->expects($this->once())->method('getTemplateBlocks')
                 ->with($this->equalTo('testfile.tpl'))
                 ->will(
@@ -93,7 +93,7 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
 
         $this->getConfig()->setConfigParam('blDebugTemplateBlocks', false);
 
-        $oUtilsView = $this->getMock('oxUtilsView', array('getTemplateBlocks'));
+        $oUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getTemplateBlocks'));
         $oUtilsView->expects($this->once())->method('getTemplateBlocks')
                 ->with($this->equalTo('testfile.tpl'))
                 ->will(
@@ -111,7 +111,7 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
                 '[{block name="test1"}]<b1/>[{/block}]',
                 $oSmartyCompiler
             );
-        } catch (oxException $e) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\StandardException $e) {
             $this->assertEquals('ok', $e->getMessage());
         }
     }
@@ -128,7 +128,7 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
 
         $this->getConfig()->setConfigParam('blDebugTemplateBlocks', true);
 
-        $oUtilsView = $this->getMock('oxUtilsView', array('getTemplateBlocks'));
+        $oUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getTemplateBlocks'));
         $oUtilsView->expects($this->once())->method('getTemplateBlocks')
                 ->with($this->equalTo('testfile.tpl'))
                 ->will(
@@ -208,7 +208,7 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
 
         $this->getConfig()->setConfigParam('blDebugTemplateBlocks', false);
 
-        $oUtilsView = $this->getMock('oxUtilsView', array('getTemplateBlocks'));
+        $oUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getTemplateBlocks'));
         $oUtilsView->expects($this->once())->method('getTemplateBlocks')
                 ->with($this->equalTo('testfile.tpl'))
                 ->will(
@@ -268,7 +268,7 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
 
         $this->getConfig()->setConfigParam('blDebugTemplateBlocks', false);
 
-        $oUtilsView = $this->getMock('oxUtilsView', array('getTemplateBlocks'));
+        $oUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getTemplateBlocks'));
         $oUtilsView->expects($this->once())->method('getTemplateBlocks')
                 ->with($this->equalTo('testfile.tpl'))
                 ->will(
@@ -286,7 +286,7 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
                 '[{block name="test1"}]<b1/>[{/block}]',
                 $oSmartyCompiler
             );
-        } catch (oxException $e) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\StandardException $e) {
             $this->assertEquals('ok', $e->getMessage());
         }
     }
@@ -306,7 +306,7 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
 
         $this->getConfig()->setConfigParam('blDebugTemplateBlocks', true);
 
-        $oUtilsView = $this->getMock('oxUtilsView', array('getTemplateBlocks'));
+        $oUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getTemplateBlocks'));
         $oUtilsView->expects($this->once())->method('getTemplateBlocks')
                 ->with($this->equalTo('testfile.tpl'))
                 ->will(

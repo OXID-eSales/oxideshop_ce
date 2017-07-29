@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin user manager.
@@ -28,7 +28,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
  * and "user_main.tpl") to frame.
  * Admin Menu: User Administration -> Users.
  */
-class AdminUser extends \oxAdminView
+class AdminUser extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

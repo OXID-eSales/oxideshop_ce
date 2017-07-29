@@ -19,14 +19,20 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Integration\User;
+namespace OxidEsales\EshopCommunity\Tests\Integration\User;
 
 use oxBasket;
 use oxField;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use oxRegistry;
 use oxUser;
-use oxUtilsObject;
+use \OxidEsales\Eshop\Application\Model\Basket;
+use \OxidEsales\Eshop\Application\Model\User;
+use \OxidEsales\Eshop\Application\Model\BasketItem;
+use \OxidEsales\Eshop\Core\Price;
+use \OxidEsales\Eshop\Core\PriceList;
+
+use \OxidEsales\Eshop\Core\Registry;
 
 class SessionTest extends UnitTestCase
 {
@@ -118,6 +124,189 @@ class SessionTest extends UnitTestCase
         $this->assertSame(0, count($articles));
     }
 
+    public function testReturnsEmptyBasketIfNoBasketHasBeenSerializedInSession()
+    {
+        $this->assertSessionBasketIsEmpty();
+    }
+
+    public function testReturnsSerializedCalculatedBasketFromSessionOfAnonymousUser()
+    {
+        $this->storeSerializedBasketToSession(
+            $this->getSerializedBasketWithArticle(self::FIRST_ARTICLE_ID)
+        );
+
+        $this->assertArticleInSessionBasket(self::FIRST_ARTICLE_ID);
+    }
+
+    public function testReturnsSerializedNonCalculatedBasketFromSessionOfAnonymousUser()
+    {
+        $this->storeSerializedBasketToSession(
+            $this->getSerializedBasketWithArticle(self::FIRST_ARTICLE_ID, false)
+        );
+
+        $this->assertArticleInSessionBasket(self::FIRST_ARTICLE_ID);
+    }
+
+    /**
+     * @dataProvider serializedBasketClassProvider
+     */
+    public function testReturnsEmptyBasketIfAnonymousUserHasSerializedBasketWithDeactivatedModuleClass($className)
+    {
+        $this->storeSerializedBasketToSession(
+            $this->changeSerializedClass(
+                $this->getSerializedBasketWithArticle(self::FIRST_ARTICLE_ID),
+                get_class(oxNew($className)),
+                "DummyDeactivatedModuleClassName"
+            )
+        );
+
+        $this->assertSessionBasketIsEmpty();
+    }
+
+    /**
+     * @dataProvider serializedBasketClassProvider
+     */
+    public function testReturnsEmptyBasketIfAnonymousUserHasSerializedBasketWithDeactivatedModuleAndNamespacedClass($className)
+    {
+        $deactivatedModuleClassFqn = "OxidEsales\\DummySpace\\DeactivatedModuleClassName";
+        $this->registerFakeNamespacedDeactivatedModuleClass($deactivatedModuleClassFqn);
+
+        $this->storeSerializedBasketToSession(
+            $this->changeSerializedClass(
+                $this->getSerializedBasketWithArticle(self::FIRST_ARTICLE_ID),
+                get_class(oxNew($className)),
+                $deactivatedModuleClassFqn
+            )
+        );
+
+        $this->assertSessionBasketIsEmpty();
+    }
+
+    public function testReturnsEmptyBasketIfRegisteredUserHasSerializedBasketWithDeactivatedModuleUserClass()
+    {
+        $this->storeSerializedBasketToSession(
+            $this->changeSerializedClass(
+                $this->getSerializedBasketWithArticle(self::FIRST_ARTICLE_ID, true, true),
+                get_class(oxNew(User::class)),
+                "DummyDeactivatedModuleClassName"
+            )
+        );
+
+        $this->assertSessionBasketIsEmpty();
+    }
+
+    public function testReturnsEmptyBasketIfRegisteredUserHasSerializedBasketWithDeactivatedModuleAndNamespacedUserClass()
+    {
+        $deactivatedModuleClassFqn = "OxidEsales\\DummySpace\\DeactivatedModuleClassName";
+        $this->registerFakeNamespacedDeactivatedModuleClass($deactivatedModuleClassFqn);
+
+        $this->storeSerializedBasketToSession(
+            $this->changeSerializedClass(
+                $this->getSerializedBasketWithArticle(self::FIRST_ARTICLE_ID, true, true),
+                get_class(oxNew(User::class)),
+                $deactivatedModuleClassFqn
+            )
+        );
+
+        $this->assertSessionBasketIsEmpty();
+    }
+
+    /**
+     * Describe all classes which could be serialized within Basket object.
+     *
+     * @return array
+     */
+    public function serializedBasketClassProvider()
+    {
+        return [
+            [Basket::class],
+            [BasketItem::class],
+            [Price::class],
+            [PriceList::class]
+        ];
+    }
+
+    /**
+     * @param string $serializedBasket
+     */
+    private function storeSerializedBasketToSession($serializedBasket)
+    {
+        Registry::getSession()->delBasket();
+        $shopId = $this->getShopId();
+        $this->setSessionParam("{$shopId}_basket", $serializedBasket);
+    }
+
+    /**
+     * @param string $serializedBasket
+     * @param string $oldClassName
+     * @param string $newClassName
+     *
+     * @return string
+     */
+    private function changeSerializedClass($serializedBasket, $oldClassName, $newClassName)
+    {
+        $replaceFrom = sprintf('O:%d:"%s"', strlen($oldClassName), $oldClassName);
+        $replaceTo = sprintf('O:%d:"%s"', strlen($newClassName), $newClassName);
+
+        return str_replace($replaceFrom, $replaceTo, $serializedBasket);
+    }
+
+    /**
+     * @param string $fqn Fully Qualified Name of namespaced class
+     */
+    private function registerFakeNamespacedDeactivatedModuleClass($fqn)
+    {
+        $fqnElements = explode("\\", $fqn);
+        $className = array_pop($fqnElements);
+        $namespace = implode("\\", $fqnElements);
+
+        spl_autoload_register(function ($classToAutoload) use ($namespace, $className, $fqn) {
+            if ($classToAutoload === $fqn) {
+                eval("namespace $namespace;\n\nclass $className extends {$className}_parent {};");
+            }
+        });
+    }
+
+    private function assertSessionBasketIsEmpty()
+    {
+        $articles = Registry::getSession()->getBasket()->getBasketSummary()->aArticles;
+        $count = count($articles);
+        $this->assertSame(0, $count, "Failed asserting that basket is empty. Given count of items: $count.");
+    }
+
+    /**
+     * @param string $articleId
+     */
+    private function assertArticleInSessionBasket($articleId)
+    {
+        $articles = Registry::getSession()->getBasket()->getBasketSummary()->aArticles;
+        $this->assertGreaterThanOrEqual(
+            1, (int)$articles[$articleId], "Failed asserting that there is at least one article '$articleId' in basket."
+        );
+    }
+
+    /**
+     * @param string $articleId
+     * @param bool   $enableBasketCalculation
+     * @param bool   $addUser
+     *
+     * @return string
+     */
+    private function getSerializedBasketWithArticle($articleId, $enableBasketCalculation = true, $addUser = false)
+    {
+        $basket = oxNew(Basket::class);
+        $basket->addToBasket($articleId, 1);
+
+        if ($addUser) {
+            $user = oxNew(User::class);
+            $user->load('firstuser@oxideshop.dev');
+            $basket->setBasketUser($user);
+        }
+
+        $enableBasketCalculation && $basket->calculateBasket(true);
+        return serialize($basket);
+    }
+
     /**
      * Test helper inserts new user
      */
@@ -170,7 +359,7 @@ class SessionTest extends UnitTestCase
      */
     private function _insertUser($data)
     {
-        $userOxid = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+        $userOxid = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
 
         $user = oxNew('oxUser');
         $user->setId($userOxid);
@@ -217,7 +406,7 @@ class SessionTest extends UnitTestCase
         $this->setRequestParameter('lgn_usr', $username);
         $this->setRequestParameter('lgn_pwd', $password);
 
-        $parent = $this->getMock('oxUser', array('isEnabledPrivateSales'));
+        $parent = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('isEnabledPrivateSales'));
         $parent->expects($this->any())->method('isEnabledPrivateSales')->will($this->returnValue(false));
 
         $userComponent = oxNew('oxcmp_user');

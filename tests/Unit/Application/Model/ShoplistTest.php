@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 /**
  * Testing oxshoplist class
@@ -32,7 +32,7 @@ class ShoplistTest extends \OxidTestCase
     public function testGetAll()
     {
         /** @var oxShopList|PHPUnit_Framework_MockObject_MockObject $oShopList */
-        $oShopList = $this->getMock('oxShopList', array('selectString', 'setBaseObject'));
+        $oShopList = $this->getMock(\OxidEsales\Eshop\Application\Model\ShopList::class, array('selectString', 'setBaseObject'));
         $oShopList->expects($this->once())->method('selectString');
         $oShopList->getAll();
     }
@@ -43,7 +43,7 @@ class ShoplistTest extends \OxidTestCase
     public function testGetIdTitleList()
     {
         /** @var oxShopList|PHPUnit_Framework_MockObject_MockObject $oShopList */
-        $oShopList = $this->getMock('oxShopList', array('selectString', 'setBaseObject'));
+        $oShopList = $this->getMock(\OxidEsales\Eshop\Application\Model\ShopList::class, array('selectString', 'setBaseObject'));
         $oShopList->expects($this->once())->method('setBaseObject');
         $oShopList->expects($this->once())->method('selectString');
         $oShopList->getIdTitleList();

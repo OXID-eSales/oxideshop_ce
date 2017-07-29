@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxRegistry;
 use oxDb;
@@ -29,7 +29,7 @@ use oxDb;
  * Select list manager
  *
  */
-class SelectList extends \oxI18n implements \oxISelectList
+class SelectList extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\ISelectList
 {
     /**
      * Select list fields array
@@ -85,7 +85,7 @@ class SelectList extends \oxI18n implements \oxISelectList
     public function getFieldList($dVat = null)
     {
         if ($this->_aFieldList == null && $this->oxselectlist__oxvaldesc->value) {
-            $this->_aFieldList = oxRegistry::getUtils()->assignValuesFromText($this->oxselectlist__oxvaldesc->value, $dVat);
+            $this->_aFieldList = \OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($this->oxselectlist__oxvaldesc->value, $dVat);
             foreach ($this->_aFieldList as $sKey => $oField) {
                 $this->_aFieldList[$sKey]->name = getStr()->strip_tags($this->_aFieldList[$sKey]->name);
             }
@@ -112,7 +112,7 @@ class SelectList extends \oxI18n implements \oxISelectList
 
         // remove selectlists from articles also
         if ($blRemove = parent::delete($sOXID)) {
-            $oDb = oxDb::getDb();
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $oDb->execute("delete from oxobject2selectlist where oxselnid = " . $oDb->quote($sOXID) . " ");
         }
 
@@ -158,7 +158,7 @@ class SelectList extends \oxI18n implements \oxISelectList
     {
         if ($this->_aList === null && $this->oxselectlist__oxvaldesc->value) {
             $this->_aList = false;
-            $aList = oxRegistry::getUtils()->assignValuesFromText($this->oxselectlist__oxvaldesc->getRawValue(), $this->getVat());
+            $aList = \OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($this->oxselectlist__oxvaldesc->getRawValue(), $this->getVat());
             foreach ($aList as $sKey => $oField) {
                 if ($oField->name) {
                     $this->_aList[$sKey] = oxNew("oxSelection", getStr()->strip_tags($oField->name), $sKey, false, $this->_aList === false ? true : false);

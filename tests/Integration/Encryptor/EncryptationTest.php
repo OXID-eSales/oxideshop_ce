@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Integration\Encryptor;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Encryptor;
 
 /**
  * Class Unit_Core_oxEncryptorTest

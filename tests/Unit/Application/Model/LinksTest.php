@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
 use \oxDb;
@@ -72,8 +72,8 @@ class LinksTest extends \OxidTestCase
     {
         $oLink = oxNew("oxlinks", getViewName('oxlinks'));
         $oLink->load($this->_oxLinks->getId());
-        $oLink->oxlinks__oxurldesc = new oxField('Link&, &amp;, !@#$%^&*%$$&@\'.,;p"äüßö', oxField::T_RAW);
+        $oLink->oxlinks__oxurldesc = new oxField('Link&, &amp;, !@#$%^&*%$$&@\'.,;p"Ã¤Ã¼ÃŸÃ¶', oxField::T_RAW);
         $this->_oxLinks->Save();
-        $this->assertEquals('Link&, &amp;, !@#$%^&*%$$&@\'.,;p"äüßö', $oLink->oxlinks__oxurldesc->value);
+        $this->assertEquals('Link&, &amp;, !@#$%^&*%$$&@\'.,;p"Ã¤Ã¼ÃŸÃ¶', $oLink->oxlinks__oxurldesc->value);
     }
 }

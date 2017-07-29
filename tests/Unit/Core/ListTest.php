@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxI18n;
 use \stdClass;
@@ -202,7 +202,7 @@ class ListTest extends \OxidTestCase
         $oAction->init('oxactions');
         $oAction->blIsClonedAndKeptProperty = true;
 
-        $oList = $this->getMock('oxlist', array('getBaseObject'));
+        $oList = $this->getMock(\OxidEsales\Eshop\Core\Model\ListModel::class, array('getBaseObject'));
         $oList->expects($this->once())->method('getBaseObject')->will($this->returnValue($oAction));
         $oList->init('oxactions');
 
@@ -237,6 +237,30 @@ class ListTest extends \OxidTestCase
         $oList->selectString('select * from oxactions where oxid like "\_%"');
 
         $this->assertEquals('1', count($oList));
+    }
+
+    /**
+     * Test ListModel with negative offset which results in not using limit for select.
+     */
+    public function testSelectStringIfLimitIsSetAndOffsetNegative()
+    {
+        $action = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
+        $action->init('oxactions');
+        $action->setId('_test1');
+        $action->oxactions__oxtitle = new oxField('action1', oxField::T_RAW);
+        $action->save();
+
+        $action = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
+        $action->init('oxactions');
+        $action->setId('_test2');
+        $action->oxactions__oxtitle = new oxField('action2', oxField::T_RAW);
+        $action->save();
+
+        $list = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class, 'oxactions');
+        $list->setSqlLimit(1, -10);
+        $list->selectString('select * from oxactions where oxid like "\_%"');
+
+        $this->assertEquals('2', count($list));
     }
 
     public function testSelectStringEmpty()
@@ -327,7 +351,7 @@ class ListTest extends \OxidTestCase
 
         $sQ = "select * from oxarticles limit 0,5";
         $oSubj = oxNew('oxList');
-        $oSubj->init("Unit\\Core\\TestElement", "oxarticles");
+        $oSubj->init(\OxidEsales\EshopCommunity\Tests\Unit\Core\TestElement::class, "oxarticles");
         $oSubj->selectString($sQ);
 
         $oElement = new TestElement();
@@ -341,7 +365,7 @@ class ListTest extends \OxidTestCase
     public function testAssignElement()
     {
         $aDbFields = array("field1" => "val1");
-        $oListObjectMock = $this->getMock('oxBase', array('assign'));
+        $oListObjectMock = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('assign'));
         $oListObjectMock->expects($this->once())->method('assign')->with($aDbFields);
 
         $oSubj = $this->getProxyClass("oxList");

@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
+namespace OxidEsales\EshopCommunity\Core\GenericImport\ImportObject;
 
 use oxBase;
 
 /**
  * Import object for Categories.
  */
-class Category extends ImportObject
+class Category extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject
 {
     /** @var string Database table name. */
     protected $tableName = 'oxcategories';
@@ -38,9 +38,9 @@ class Category extends ImportObject
     /**
      * Issued before saving an object. can modify aData for saving.
      *
-     * @param oxBase $shopObject        Shop object.
-     * @param array  $data              Data to prepare.
-     * @param bool   $allowCustomShopId If allow custom shop id.
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $shopObject        Shop object.
+     * @param array                                  $data              Data to prepare.
+     * @param bool                                   $allowCustomShopId If allow custom shop id.
      *
      * @return array
      */

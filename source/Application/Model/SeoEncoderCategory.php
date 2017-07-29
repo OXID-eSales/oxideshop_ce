@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
 
 /**
  * Seo encoder category
  */
-class SeoEncoderCategory extends \oxSeoEncoder
+class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
 {
     /** @var array _aCatCache cache for categories. */
     protected $_aCatCache = array();
@@ -46,8 +46,8 @@ class SeoEncoderCategory extends \oxSeoEncoder
      * _categoryUrlLoader loads category from db
      * returns false if cat needs to be encoded (load failed)
      *
-     * @param oxCategory $oCat  category object
-     * @param int        $iLang active language id
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCat  category object
+     * @param int                                          $iLang active language id
      *
      * @access protected
      *
@@ -69,8 +69,8 @@ class SeoEncoderCategory extends \oxSeoEncoder
     /**
      * _getCatecgoryCacheId return string for isntance cache id
      *
-     * @param oxCategory $oCat  category object
-     * @param int        $iLang active language
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCat  category object
+     * @param int                                          $iLang active language
      *
      * @access private
      *
@@ -84,9 +84,9 @@ class SeoEncoderCategory extends \oxSeoEncoder
     /**
      * Returns SEO uri for passed category
      *
-     * @param oxCategory $oCat         category object
-     * @param int        $iLang        language
-     * @param bool       $blRegenerate if TRUE forces seo url regeneration
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCat         category object
+     * @param int                                          $iLang        language
+     * @param bool                                         $blRegenerate if TRUE forces seo url regeneration
      *
      * @return string
      */
@@ -110,7 +110,7 @@ class SeoEncoderCategory extends \oxSeoEncoder
             while ($oCat && !($sSeoUrl = $this->_categoryUrlLoader($oCat, $iLang))) {
                 if ($iLang != $oCat->getLanguage()) {
                     $sId = $oCat->getId();
-                    $oCat = oxNew('oxCategory');
+                    $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
                     $oCat->loadInLang($iLang, $sId);
                 }
 
@@ -144,10 +144,10 @@ class SeoEncoderCategory extends \oxSeoEncoder
     /**
      * Returns category SEO url for specified page
      *
-     * @param oxcategory $oCategory category object
-     * @param int        $iPage     page tu prepare number
-     * @param int        $iLang     language
-     * @param bool       $blFixed   fixed url marker (default is null)
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCategory category object
+     * @param int                                          $iPage     page tu prepare number
+     * @param int                                          $iLang     language
+     * @param bool                                         $blFixed   fixed url marker (default is null)
      *
      * @return string
      */
@@ -172,11 +172,11 @@ class SeoEncoderCategory extends \oxSeoEncoder
     /**
      * Category URL encoder. If category has external URLs, skip encoding
      * for this category. If SEO id is not set, generates and saves SEO id
-     * for category (oxSeoEncoder::_getSeoId()).
+     * for category (\OxidEsales\Eshop\Core\SeoEncoder::_getSeoId()).
      * If category has subcategories, it iterates through them.
      *
-     * @param oxCategory $oCategory Category object
-     * @param int        $iLang     Language
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCategory Category object
+     * @param int                                          $iLang     Language
      *
      * @return string
      */
@@ -197,11 +197,11 @@ class SeoEncoderCategory extends \oxSeoEncoder
     /**
      * Marks related to category objects as expired
      *
-     * @param oxCategory $oCategory Category object
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCategory Category object
      */
     public function markRelatedAsExpired($oCategory)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sIdQuoted = $oDb->quote($oCategory->getId());
 
         // select it from table instead of using object carrying value
@@ -226,11 +226,11 @@ class SeoEncoderCategory extends \oxSeoEncoder
     /**
      * deletes Category seo entries
      *
-     * @param oxCategory $oCategory Category object
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCategory Category object
      */
     public function onDeleteCategory($oCategory)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sIdQuoted = $oDb->quote($oCategory->getId());
         $oDb->execute("update oxseo, (select oxseourl from oxseo where oxobjectid = $sIdQuoted and oxtype = 'oxcategory') as test set oxseo.oxexpired=1 where oxseo.oxseourl like concat(test.oxseourl, '%') and (oxtype = 'oxcategory' or oxtype = 'oxarticle')");
         $oDb->execute("delete from oxseo where oxseo.oxtype = 'oxarticle' and oxseo.oxparams = $sIdQuoted");
@@ -250,7 +250,7 @@ class SeoEncoderCategory extends \oxSeoEncoder
     protected function _getAltUri($sObjectId, $iLang)
     {
         $sSeoUrl = null;
-        $oCat = oxNew("oxCategory");
+        $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         if ($oCat->loadInLang($iLang, $sObjectId)) {
             $sSeoUrl = $this->getCategoryUri($oCat, $iLang);
         }

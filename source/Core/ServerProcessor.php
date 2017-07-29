@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxServersManager;
 use oxServerChecker;
@@ -31,25 +31,25 @@ use oxUtilsDate;
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
-class ServerProcessor extends \oxSuperCfg
+class ServerProcessor extends \OxidEsales\Eshop\Core\Base
 {
 
-    /** @var oxServersManager */
+    /** @var \OxidEsales\Eshop\Core\ServersManager */
     private $_oServerNodesManager;
 
-    /** @var oxServerChecker */
+    /** @var \OxidEsales\Eshop\Core\ServerChecker */
     private $_oServerNodeChecker;
 
-    /** @var oxUtilsServer */
+    /** @var \OxidEsales\Eshop\Core\UtilsServer */
     private $_oUtilsServer;
 
-    /** @var oxUtilsDate */
+    /** @var \OxidEsales\Eshop\Core\UtilsDate */
     private $_oUtilsDate;
 
     /**
      * Gets server node checker.
      *
-     * @return oxServerChecker
+     * @return \OxidEsales\Eshop\Core\ServerChecker
      */
     protected function _getServerNodeChecker()
     {
@@ -59,7 +59,7 @@ class ServerProcessor extends \oxSuperCfg
     /**
      * Gets server node manager.
      *
-     * @return oxServersManager
+     * @return \OxidEsales\Eshop\Core\ServersManager
      */
     protected function _getServerNodesManager()
     {
@@ -69,7 +69,7 @@ class ServerProcessor extends \oxSuperCfg
     /**
      * Gets utils server.
      *
-     * @return oxUtilsServer
+     * @return \OxidEsales\Eshop\Core\UtilsServer
      */
     protected function _getUtilsServer()
     {
@@ -79,7 +79,7 @@ class ServerProcessor extends \oxSuperCfg
     /**
      * Gets utils date.
      *
-     * @return oxUtilsDate
+     * @return \OxidEsales\Eshop\Core\UtilsDate
      */
     protected function _getUtilsDate()
     {
@@ -89,16 +89,16 @@ class ServerProcessor extends \oxSuperCfg
     /**
      * Sets dependencies.
      *
-     * @param oxServersManager $oServerNodesManager
-     * @param oxServerChecker  $oServerNodeChecker
-     * @param oxUtilsServer    $oUtilsServer
-     * @param oxUtilsDate      $oUtilsDate
+     * @param \OxidEsales\Eshop\Core\ServersManager $oServerNodesManager
+     * @param \OxidEsales\Eshop\Core\ServerChecker  $oServerNodeChecker
+     * @param \OxidEsales\Eshop\Core\UtilsServer    $oUtilsServer
+     * @param \OxidEsales\Eshop\Core\UtilsDate      $oUtilsDate
      */
     public function __construct(
-        oxServersManager $oServerNodesManager,
-        oxServerChecker $oServerNodeChecker,
-        oxUtilsServer $oUtilsServer,
-        oxUtilsDate $oUtilsDate
+        \OxidEsales\Eshop\Core\ServersManager $oServerNodesManager,
+        \OxidEsales\Eshop\Core\ServerChecker $oServerNodeChecker,
+        \OxidEsales\Eshop\Core\UtilsServer $oUtilsServer,
+        \OxidEsales\Eshop\Core\UtilsDate $oUtilsDate
     ) {
         $this->_oServerNodesManager = $oServerNodesManager;
         $this->_oServerNodeChecker = $oServerNodeChecker;
@@ -125,7 +125,7 @@ class ServerProcessor extends \oxSuperCfg
     /**
      * Updates mode information.
      *
-     * @param oxApplicationServer $oNode
+     * @param \OxidEsales\Eshop\Core\ApplicationServer $oNode
      */
     private function _updateNodeInformation($oNode)
     {

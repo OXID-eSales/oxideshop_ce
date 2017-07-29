@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxConfig;
 use oxRegistry;
@@ -32,7 +32,7 @@ use oxException;
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling -> Main Sets.
  */
-class ModuleConfiguration extends \Shop_Config
+class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
     /** @var string Template name. */
     protected $_sModule = 'shop_config.tpl';
@@ -56,7 +56,7 @@ class ModuleConfiguration extends \Shop_Config
     {
         $sModuleId = $this->_sModuleId = $this->getEditObjectId();
 
-        $oModule = oxNew('oxModule');
+        $oModule = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
 
         if ($sModuleId && $oModule->load($sModuleId)) {
             try {
@@ -69,12 +69,12 @@ class ModuleConfiguration extends \Shop_Config
                     $this->_aViewData[$sParam] = $aDbVariables['vars'][$sType];
                     $iCount += count($aDbVariables['vars'][$sType]);
                 }
-            } catch (oxException $oEx) {
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
+            } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
                 $oEx->debugOut();
             }
         } else {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay(new oxException('EXCEPTION_MODULE_NOT_LOADED'));
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_MODULE_NOT_LOADED'));
         }
 
         $this->_aViewData["oModule"] = $oModule;
@@ -89,7 +89,7 @@ class ModuleConfiguration extends \Shop_Config
      */
     protected function _getModuleForConfigVars()
     {
-        return oxConfig::OXMODULE_MODULE_PREFIX . $this->_sModuleId;
+        return \OxidEsales\Eshop\Core\Config::OXMODULE_MODULE_PREFIX . $this->_sModuleId;
     }
 
     /**

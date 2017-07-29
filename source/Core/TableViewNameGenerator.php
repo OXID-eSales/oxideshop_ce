@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxRegistry;
 use oxConfig;
@@ -30,25 +30,25 @@ use oxConfig;
  */
 class TableViewNameGenerator
 {
-    /** @var oxConfig */
+    /** @var \OxidEsales\Eshop\Core\Config */
     private $config;
 
-    /** @var oxLang */
+    /** @var \OxidEsales\Eshop\Core\Language */
     private $language;
 
     /**
-     * @param oxConfig $config
-     * @param oxLang   $language
+     * @param \OxidEsales\Eshop\Core\Config   $config
+     * @param \OxidEsales\Eshop\Core\Language $language
      */
     public function __construct($config = null, $language = null)
     {
         if (!$config) {
-            $config = oxRegistry::getConfig();
+            $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         }
         $this->config = $config;
 
         if (!$language) {
-            $language = oxRegistry::getLang();
+            $language = \OxidEsales\Eshop\Core\Registry::getLang();
         }
         $this->language = $language;
     }
@@ -105,7 +105,7 @@ class TableViewNameGenerator
     }
 
     /**
-     * @return oxConfig
+     * @return \OxidEsales\Eshop\Core\Config
      */
     protected function getConfig()
     {
@@ -113,7 +113,7 @@ class TableViewNameGenerator
     }
 
     /**
-     * @return oxLang
+     * @return \OxidEsales\Eshop\Core\Language
      */
     protected function getLanguage()
     {

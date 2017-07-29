@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use \oxorder;
+use OxidEsales\EshopCommunity\Application\Model\Order;
 
 use \Exception;
 use \oxTestModules;
@@ -46,7 +46,7 @@ class OrderAddressTest extends \OxidTestCase
         $this->assertEquals('order_address.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxorder);
+        $this->assertTrue($aViewData['edit'] instanceof order);
     }
 
     /**

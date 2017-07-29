@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -31,7 +31,7 @@ use oxDb;
  * them by Description or delete them.
  * Admin Menu: Customerinformations -> Content.
  */
-class ContentList extends \oxAdminList
+class ContentList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**
@@ -65,7 +65,7 @@ class ContentList extends \oxAdminList
     {
         parent::render();
 
-        $sFolder = oxRegistry::getConfig()->getRequestParameter("folder");
+        $sFolder = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("folder");
         $sFolder = $sFolder ? $sFolder : -1;
 
         $this->_aViewData["folder"] = $sFolder;
@@ -85,14 +85,14 @@ class ContentList extends \oxAdminList
     protected function _prepareWhereQuery($aWhere, $sqlFull)
     {
         $sQ = parent::_prepareWhereQuery($aWhere, $sqlFull);
-        $sFolder = oxRegistry::getConfig()->getRequestParameter('folder');
+        $sFolder = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('folder');
         $sViewName = getviewName("oxcontents");
 
         //searchong for empty oxfolder fields
         if ($sFolder == 'CMSFOLDER_NONE' || $sFolder == 'CMSFOLDER_NONE_RR') {
             $sQ .= " and {$sViewName}.oxfolder = '' ";
         } elseif ($sFolder && $sFolder != '-1') {
-            $sFolder = oxDb::getDb()->quote($sFolder);
+            $sFolder = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sFolder);
             $sQ .= " and {$sViewName}.oxfolder = {$sFolder}";
         }
 

@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use \oxVariantHandler;
 use \stdClass;
 use \oxField;
@@ -119,12 +119,12 @@ class VarianthandlerTest extends \OxidTestCase
 
         $oVariantHandler = oxNew("oxVariantHandler");
         $aVar = $oVariantHandler->UNITassignValues($aValues, oxNew('oxArticleList'), $oArticle, array('en', 'de'));
-        $oRez = $myDB->Execute("select oxvarselect, oxvarselect_1 from oxarticles where oxparentid = '2000'");
+        $oRez = $myDB->select("select oxvarselect, oxvarselect_1 from oxarticles where oxparentid = '2000'");
         while (!$oRez->EOF) {
             $oRez->fields = array_change_key_case($oRez->fields, CASE_LOWER);
             $this->assertEquals('red', $oRez->fields[0]);
             $this->assertEquals('rot', $oRez->fields[1]);
-            $oRez->moveNext();
+            $oRez->fetchRow();
         }
     }
 
@@ -232,15 +232,15 @@ class VarianthandlerTest extends \OxidTestCase
      */
     public function testBuildMdVariants()
     {
-        $oPrice = $this->getMock("oxPrice", array("getBruttoPrice"));
+        $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, array("getBruttoPrice"));
         $oPrice->expects($this->exactly(2))->method('getBruttoPrice')->will($this->returnValue(999));
 
-        $oVar1 = $this->getMock("oxArticle", array("getPrice", "getLink"));
+        $oVar1 = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getPrice", "getLink"));
         $oVar1->expects($this->once())->method('getPrice')->will($this->returnValue($oPrice));
         $oVar1->expects($this->once())->method('getLink')->will($this->returnValue("testLink"));
         $oVar1->oxarticles__oxvarselect = new oxField("var1value1 | var1value2 | var1value3");
 
-        $oVar2 = $this->getMock("oxArticle", array("getPrice", "getLink"));
+        $oVar2 = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getPrice", "getLink"));
         $oVar2->expects($this->once())->method('getPrice')->will($this->returnValue($oPrice));
         $oVar2->expects($this->once())->method('getLink')->will($this->returnValue("testLink"));
         $oVar2->oxarticles__oxvarselect = new oxField("var2value1 | var2value2 | var2value3");
@@ -492,7 +492,7 @@ class VarianthandlerTest extends \OxidTestCase
      */
     public function testBuildVariantSelectionsNoLimit()
     {
-        $oHandler = $this->getMock("oxVariantHandler", array('_getSelections', "_fillVariantSelections", "_applyVariantSelectionsFilter", "_buildVariantSelectionsList"));
+        $oHandler = $this->getMock(\OxidEsales\Eshop\Application\Model\VariantHandler::class, array('_getSelections', "_fillVariantSelections", "_applyVariantSelectionsFilter", "_buildVariantSelectionsList"));
         $oHandler->expects($this->once())->method('_getSelections')
             ->with($this->equalTo("testvarname"))
             ->will($this->returnValue(array('t1', 't2', 't3')));
@@ -526,7 +526,7 @@ class VarianthandlerTest extends \OxidTestCase
      */
     public function testBuildVariantSelectionsWithLimit()
     {
-        $oHandler = $this->getMock("oxVariantHandler", array('_getSelections', "_fillVariantSelections", "_applyVariantSelectionsFilter", "_buildVariantSelectionsList"));
+        $oHandler = $this->getMock(\OxidEsales\Eshop\Application\Model\VariantHandler::class, array('_getSelections', "_fillVariantSelections", "_applyVariantSelectionsFilter", "_buildVariantSelectionsList"));
         $oHandler->expects($this->once())->method('_getSelections')
             ->with($this->equalTo("testvarname"))
             ->will($this->returnValue(array('t1', 't2', 't3')));

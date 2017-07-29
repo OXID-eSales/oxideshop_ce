@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxRegistry;
 
@@ -34,6 +34,9 @@ class Curl
 {
     /** Curl option for setting the timeout of whole execution process. */
     const EXECUTION_TIMEOUT_OPTION = 'CURLOPT_TIMEOUT';
+
+    /** Curl option for setting the timeout for connect. */
+    const CONNECT_TIMEOUT_OPTION = 'CURLOPT_CONNECTTIMEOUT';
 
     /**
      * Curl instance.
@@ -268,10 +271,10 @@ class Curl
     {
         if (strpos($name, 'CURLOPT_') !== 0 || !defined($constant = strtoupper($name))) {
             /**
-             * @var oxException $exception
+             * @var \OxidEsales\Eshop\Core\Exception\StandardException $exception
              */
-            $exception = oxNew('oxException');
-            $lang = oxRegistry::getLang();
+            $exception = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
+            $lang = \OxidEsales\Eshop\Core\Registry::getLang();
             $exception->setMessage(sprintf($lang->translateString('EXCEPTION_NOT_VALID_CURL_CONSTANT', $lang->getTplLanguage()), $name));
             throw $exception;
         }
@@ -309,10 +312,10 @@ class Curl
 
         if ($curlErrorNumber) {
             /**
-             * @var oxException $exception
+             * @var \OxidEsales\Eshop\Core\Exception\StandardException $exception
              */
-            $exception = oxNew('oxException');
-            $lang = oxRegistry::getLang();
+            $exception = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
+            $lang = \OxidEsales\Eshop\Core\Registry::getLang();
             $exception->setMessage(sprintf($lang->translateString('EXCEPTION_CURL_ERROR', $lang->getTplLanguage()), $curlErrorNumber));
             throw $exception;
         }

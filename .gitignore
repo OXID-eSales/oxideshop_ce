@@ -4,7 +4,6 @@
 # Log
 /source/log/
 !/source/log/.htaccess
-!/source/log/oxdebugdb_skipped.sql
 
 # Cache
 /source/cache/
@@ -33,6 +32,7 @@
 # IDE
 /.idea/
 /.phpstorm-oxid.meta.php
+/.ide-helper.php
 
 # OS
 .DS_Store

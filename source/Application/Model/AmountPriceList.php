@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
 
@@ -28,7 +28,7 @@ use oxDb;
  * Article amount price list
  *
  */
-class AmountPriceList extends \oxList
+class AmountPriceList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
     /**
      * List Object class name
@@ -40,7 +40,7 @@ class AmountPriceList extends \oxList
     /**
      * oxArticle object
      *
-     * @var oxArticle
+     * @var \OxidEsales\Eshop\Application\Model\Article
      */
     protected $_oArticle = null;
 
@@ -56,7 +56,7 @@ class AmountPriceList extends \oxList
     /**
      *  Article getter
      *
-     * @return oxArticle $_oArticle
+     * @return \OxidEsales\Eshop\Application\Model\Article $_oArticle
      */
     public function getArticle()
     {
@@ -66,7 +66,7 @@ class AmountPriceList extends \oxList
     /**
      * Article setter
      *
-     * @param oxArticle $oArticle Article
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle Article
      */
     public function setArticle($oArticle)
     {
@@ -76,7 +76,7 @@ class AmountPriceList extends \oxList
     /**
      * Load category list data
      *
-     * @param oxArticle $article Article
+     * @param \OxidEsales\Eshop\Application\Model\Article $article Article
      */
     public function load($article)
     {
@@ -103,11 +103,11 @@ class AmountPriceList extends \oxList
         if ($this->getConfig()->getConfigParam('blMallInterchangeArticles')) {
             $sShopSelect = '1';
         } else {
-            $sShopSelect = " `oxshopid` = " . oxDb::getDb()->quote($this->getConfig()->getShopId()) . " ";
+            $sShopSelect = " `oxshopid` = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($this->getConfig()->getShopId()) . " ";
         }
 
-        $sSql = "SELECT * FROM `oxprice2article` WHERE `oxartid` = " . oxDb::getDb()->quote($sArticleId) . " AND $sShopSelect ORDER BY `oxamount` ";
+        $sSql = "SELECT * FROM `oxprice2article` WHERE `oxartid` = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sArticleId) . " AND $sShopSelect ORDER BY `oxamount` ";
 
-        return oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll($sSql);
+        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getAll($sSql);
     }
 }

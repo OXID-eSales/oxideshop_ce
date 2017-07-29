@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin article discount manager.
@@ -28,7 +28,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
  * and "discount_main.tpl") to frame.
  * Admin Menu: Shop Settings -> Discounts.
  */
-class DiscountController extends \oxAdminView
+class DiscountController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

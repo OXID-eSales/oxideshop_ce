@@ -19,10 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use \oxcontent;
-
+use OxidEsales\EshopCommunity\Application\Model\Content;
 use \Exception;
 use \oxTestModules;
 
@@ -46,7 +45,7 @@ class ContentMainTest extends \OxidTestCase
         $this->assertEquals('content_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxcontent);
+        $this->assertTrue($aViewData['edit'] instanceof Content);
     }
 
     /**
@@ -77,7 +76,7 @@ class ContentMainTest extends \OxidTestCase
 
         // testing..
         try {
-            $oView = $this->getMock("Content_Main", array("_checkIdent"));
+            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ContentMain::class, array("_checkIdent"));
             $oView->expects($this->once())->method('_checkIdent')->will($this->returnValue(false));
             $oView->save();
         } catch (Exception $oExcp) {

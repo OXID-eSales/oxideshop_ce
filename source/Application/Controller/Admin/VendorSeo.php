@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxField;
@@ -28,7 +28,7 @@ use oxField;
 /**
  * Vendor seo config class
  */
-class VendorSeo extends \Object_Seo
+class VendorSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
 {
 
     /**
@@ -38,12 +38,12 @@ class VendorSeo extends \Object_Seo
      */
     public function save()
     {
-        $oVendor = oxNew('oxBase');
+        $oVendor = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
         $oVendor->init('oxvendor');
         if ($oVendor->load($this->getEditObjectId())) {
             $sShowSuffixField = 'oxvendor__oxshowsuffix';
-            $blShowSuffixParameter = oxRegistry::getConfig()->getRequestParameter('blShowSuffix');
-            $oVendor->$sShowSuffixField = new oxField((int) $blShowSuffixParameter);
+            $blShowSuffixParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('blShowSuffix');
+            $oVendor->$sShowSuffixField = new \OxidEsales\Eshop\Core\Field((int) $blShowSuffixParameter);
             $oVendor->save();
         }
 
@@ -57,7 +57,7 @@ class VendorSeo extends \Object_Seo
      */
     protected function _getEncoder()
     {
-        return oxRegistry::get("oxSeoEncoderVendor");
+        return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderVendor::class);
     }
 
     /**
@@ -77,7 +77,7 @@ class VendorSeo extends \Object_Seo
      */
     public function isEntrySuffixed()
     {
-        $oVendor = oxNew('oxvendor');
+        $oVendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
         if ($oVendor->load($this->getEditObjectId())) {
             return (bool) $oVendor->oxvendor__oxshowsuffix->value;
         }
@@ -100,7 +100,7 @@ class VendorSeo extends \Object_Seo
      */
     public function getEntryUri()
     {
-        $oVendor = oxNew('oxvendor');
+        $oVendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
         if ($oVendor->load($this->getEditObjectId())) {
             return $this->_getEncoder()->getVendorUri($oVendor, $this->getEditLang());
         }

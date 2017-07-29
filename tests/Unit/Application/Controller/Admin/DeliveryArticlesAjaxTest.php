@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
 
@@ -221,7 +221,7 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
      */
     public function testRemoveArtFromDel()
     {
-        $oView = $this->getMock("delivery_articles_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryArticlesAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testDelivery1', '_testDelivery2')));
 
         $sSql = "select count(oxid) from oxobject2delivery where oxid in ('_testDelivery1', '_testDelivery2')";
@@ -261,7 +261,7 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
         $sSql = "select count(oxid) from oxobject2delivery where oxdeliveryid='$sSynchoxid'";
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
-        $oView = $this->getMock("delivery_articles_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryArticlesAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testActionAdd1', '_testActionAdd2')));
 
         $oView->addArtToDel();
@@ -285,7 +285,7 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
         $sSql = "select count(oxid) from oxobject2delivery where oxdeliveryid='$sSynchoxid'";
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
-        $oView = $this->getMock("delivery_articles_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryArticlesAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testActionAdd1', '_testActionAdd2')));
 
         $oView->addArtToDel();

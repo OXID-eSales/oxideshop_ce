@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Component\Widget;
+namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
 /**
  * Recomendation list.
@@ -28,7 +28,7 @@ namespace OxidEsales\Eshop\Application\Component\Widget;
  *
  * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
  */
-class Recommendation extends \oxWidget
+class Recommendation extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
 
     /**
@@ -56,7 +56,7 @@ class Recommendation extends \oxWidget
     {
         $aArticleIds = $this->getViewParameter("aArticleIds");
 
-        $oRecommList = oxNew('oxrecommlist');
+        $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
 
         return $oRecommList->getRecommListsByIds($aArticleIds);
     }
@@ -68,6 +68,6 @@ class Recommendation extends \oxWidget
      */
     public function getRecommList()
     {
-        return oxNew('recommlist');
+        return oxNew(\OxidEsales\Eshop\Application\Controller\RecommListController::class);
     }
 }

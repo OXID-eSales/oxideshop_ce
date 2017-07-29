@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxArticle;
 use oxArticleList;
@@ -33,7 +33,7 @@ use oxRegistry;
  * meta tags (for search engines). Result - "list.tpl" template.
  * OXID eShop -> (Any selected shop product category).
  */
-class ArticleListController extends \oxUBase
+class ArticleListController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
      * Count of all articles in list.
@@ -159,9 +159,9 @@ class ArticleListController extends \oxUBase
      */
     protected function generateViewId()
     {
-        $categoryId = oxRegistry::getConfig()->getRequestParameter('cnid');
+        $categoryId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid');
         $activePage = $this->getActPage();
-        $articlesPerPage = oxRegistry::getSession()->getVariable('_artperpage');
+        $articlesPerPage = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('_artperpage');
         $listDisplayType = $this->_getListDisplayType();
         $parentViewId = parent::generateViewId();
 
@@ -176,7 +176,7 @@ class ArticleListController extends \oxUBase
      * articles - regular (oxArticleList::LoadCategoryArticles()) or price
      * dependent (oxArticleList::LoadPriceArticles()). Generates page navigation data
      * such as previous/next window URL, number of available pages, generates
-     * meta tags info (oxUBase::_convertForMetaTags()) and returns name of
+     * meta tags info (\OxidEsales\Eshop\Application\Controller\FrontendController::_convertForMetaTags()) and returns name of
      * template to render. Also checks if actual pages count does not exceed real
      * articles page count. If yes - calls error_404_handler().
      *
@@ -190,12 +190,12 @@ class ArticleListController extends \oxUBase
 
         $isCategoryActive = $category && (bool) $category->oxcategories__oxactive->value;
         if (!$isCategoryActive) {
-            oxRegistry::getUtils()->redirect($config->getShopURL() . 'index.php', true, 302);
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($config->getShopURL() . 'index.php', true, 302);
         }
 
         $activeCategory = $this->getActiveCategory();
         if ($activeCategory && $config->getConfigParam('bl_rssCategories')) {
-            $rss = oxNew('oxrssfeed');
+            $rss = oxNew(\OxidEsales\Eshop\Application\Model\RssFeed::class);
             $this->addRssFeed(
                 $rss->getCategoryArticlesTitle($activeCategory),
                 $rss->getCategoryArticlesUrl($activeCategory),
@@ -223,7 +223,7 @@ class ArticleListController extends \oxUBase
      * In case of 'more categories' page is viewed, sets 'more categories' template,
      * sets empty category as active category and returns it.
      *
-     * @return oxCategory
+     * @return \OxidEsales\Eshop\Application\Model\Category
      */
     protected function getCategoryToRender()
     {
@@ -235,8 +235,8 @@ class ArticleListController extends \oxUBase
         if ('oxmore' == $config->getRequestParameter('cnid')) {
             // overriding some standard value and parameters
             $this->_sThisTemplate = $this->_sThisMoreTemplate;
-            $category = oxNew('oxCategory');
-            $category->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
+            $category = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
+            $category->oxcategories__oxactive = new \OxidEsales\Eshop\Core\Field(1, \OxidEsales\Eshop\Core\Field::T_RAW);
             $this->setActiveCategory($category);
         } elseif (($category = $this->getActiveCategory())) {
             $this->_blIsCat = true;
@@ -257,7 +257,7 @@ class ArticleListController extends \oxUBase
         $pageCount = $this->getPageCount();
         // redirecting to first page in case requested page does not exist
         if ($pageCount && (($pageCount - 1) < $this->getActPage())) {
-            oxRegistry::getUtils()->redirect($this->getActiveCategory()->getLink(), false);
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getActiveCategory()->getLink(), false);
         }
     }
 
@@ -273,7 +273,7 @@ class ArticleListController extends \oxUBase
             $seoParameters = $this->getAddSeoUrlParams();
 
             foreach ($articleList as $article) {
-                /** @var oxArticle $article */
+                /** @var \OxidEsales\Eshop\Application\Model\Article $article */
                 $article->setLinkType($linkType);
 
                 if ($dynamicParameters) {
@@ -295,8 +295,8 @@ class ArticleListController extends \oxUBase
     public function getAddUrlParams()
     {
         $dynamicParameters = parent::getAddUrlParams();
-        if (!oxRegistry::getUtils()->seoIsActive()) {
-            $pageNumber = (int) oxRegistry::getConfig()->getRequestParameter('pgNr');
+        if (!\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive()) {
+            $pageNumber = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pgNr');
             if ($pageNumber > 0) {
                 $dynamicParameters .= ($dynamicParameters ? '&amp;' : '') . "pgNr={$pageNumber}";
             }
@@ -340,25 +340,25 @@ class ArticleListController extends \oxUBase
      */
     public function executefilter()
     {
-        $baseLanguageId = oxRegistry::getLang()->getBaseLanguage();
+        $baseLanguageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         // store this into session
-        $attributeFilter = oxRegistry::getConfig()->getRequestParameter('attrfilter', true);
-        $activeCategory = oxRegistry::getConfig()->getRequestParameter('cnid');
+        $attributeFilter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('attrfilter', true);
+        $activeCategory = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid');
 
         if (!empty($attributeFilter)) {
-            $sessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
+            $sessionFilter = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('session_attrfilter');
             //fix for #2904 - if language will be changed attributes of this category will be deleted from session
             //and new filters for active language set.
             $sessionFilter[$activeCategory] = null;
             $sessionFilter[$activeCategory][$baseLanguageId] = $attributeFilter;
-            oxRegistry::getSession()->setVariable('session_attrfilter', $sessionFilter);
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('session_attrfilter', $sessionFilter);
         }
     }
 
     /**
      * Loads and returns article list of active category.
      *
-     * @param oxCategory $category category object
+     * @param \OxidEsales\Eshop\Application\Model\Category $category category object
      *
      * @return oxArticleList
      */
@@ -370,7 +370,7 @@ class ArticleListController extends \oxUBase
         $numberOfCategoryArticles = $numberOfCategoryArticles ? $numberOfCategoryArticles : 1;
 
         // load only articles which we show on screen
-        $articleList = oxNew('oxArticleList');
+        $articleList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
         $articleList->setSqlLimit($numberOfCategoryArticles * $this->_getRequestPageNr(), $numberOfCategoryArticles);
         $articleList->setCustomSorting($this->getSortingSql($this->getSortIdent()));
 
@@ -380,7 +380,7 @@ class ArticleListController extends \oxUBase
 
             $this->_iAllArtCnt = $articleList->loadPriceArticles($priceFrom, $priceTo, $category);
         } else {
-            $sessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
+            $sessionFilter = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('session_attrfilter');
 
             $activeCategoryId = $category->getId();
             $this->_iAllArtCnt = $articleList->loadCategoryArticles($activeCategoryId, $sessionFilter);
@@ -421,10 +421,10 @@ class ArticleListController extends \oxUBase
      */
     protected function _getListDisplayType()
     {
-        $listDisplayType = oxRegistry::getSession()->getVariable('ldtype');
+        $listDisplayType = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('ldtype');
 
         if (is_null($listDisplayType)) {
-            $listDisplayType = oxRegistry::getConfig()->getConfigParam('sDefaultListDisplayType');
+            $listDisplayType = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sDefaultListDisplayType');
         }
 
         return $listDisplayType;
@@ -542,7 +542,7 @@ class ArticleListController extends \oxUBase
         //formatting description tag
         $category = $this->getActiveCategory();
 
-        $additionalText = (($category instanceof oxCategory)) ? trim($category->getLongDesc()) : '';
+        $additionalText = (($category instanceof \OxidEsales\Eshop\Application\Model\Category)) ? trim($category->getLongDesc()) : '';
 
         $articleList = $this->getArticleList();
         if (!$additionalText && count($articleList)) {
@@ -620,7 +620,7 @@ class ArticleListController extends \oxUBase
         if (count($articleList = $this->getArticleList())) {
             $stringModifier = getStr();
             foreach ($articleList as $article) {
-                /** @var oxArticle $article */
+                /** @var \OxidEsales\Eshop\Application\Model\Article $article */
                 $description = $stringModifier->strip_tags(trim($stringModifier->strtolower($article->getLongDescription()->value)));
 
                 //removing dots from string (they are not cleaned up during general string cleanup)
@@ -662,7 +662,7 @@ class ArticleListController extends \oxUBase
     public function getTemplateName()
     {
         // assign template name
-        if (($templateName = basename(oxRegistry::getConfig()->getRequestParameter('tpl')))) {
+        if (($templateName = basename(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('tpl')))) {
             $this->_sThisTemplate = 'custom/' . $templateName;
         } elseif (($category = $this->getActiveCategory()) && $category->oxcategories__oxtemplate->value) {
             $this->_sThisTemplate = $category->oxcategories__oxtemplate->value;
@@ -682,7 +682,7 @@ class ArticleListController extends \oxUBase
      */
     protected function _addPageNrParam($url, $currentPage, $languageId = null)
     {
-        if (oxRegistry::getUtils()->seoIsActive() && ($category = $this->getActiveCategory())) {
+        if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && ($category = $this->getActiveCategory())) {
             if ($currentPage) {
                 // only if page number > 0
                 $url = $category->getBaseSeoLink($languageId, $currentPage);
@@ -711,7 +711,7 @@ class ArticleListController extends \oxUBase
      */
     public function generatePageNavigationUrl()
     {
-        if ((oxRegistry::getUtils()->seoIsActive() && ($category = $this->getActiveCategory()))) {
+        if ((\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && ($category = $this->getActiveCategory()))) {
             return $category->getLink();
         }
 
@@ -728,7 +728,7 @@ class ArticleListController extends \oxUBase
         $sorting = parent::getDefaultSorting();
 
         $category = $this->getActiveCategory();
-        if ($category && $category instanceof oxCategory) {
+        if ($category && $category instanceof \OxidEsales\Eshop\Application\Model\Category) {
             if ($defaultSorting = $category->getDefaultSorting()) {
                 $articleViewName = getViewName('oxarticles');
                 $sortBy = $articleViewName . '.' . $defaultSorting;
@@ -761,7 +761,7 @@ class ArticleListController extends \oxUBase
     public function getTitlePageSuffix()
     {
         if (($activePage = $this->getActPage())) {
-            return oxRegistry::getLang()->translateString('PAGE') . " " . ($activePage + 1);
+            return \OxidEsales\Eshop\Core\Registry::getLang()->translateString('PAGE') . " " . ($activePage + 1);
         }
     }
 
@@ -886,11 +886,11 @@ class ArticleListController extends \oxUBase
     {
         $paths = array();
 
-        if ('oxmore' == oxRegistry::getConfig()->getRequestParameter('cnid')) {
+        if ('oxmore' == \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid')) {
             $path = array();
-            $path['title'] = oxRegistry::getLang()->translateString(
+            $path['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString(
                 'CATEGORY_OVERVIEW',
-                oxRegistry::getLang()->getBaseLanguage(),
+                \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage(),
                 false
             );
             $path['link'] = $this->getLink();
@@ -902,7 +902,7 @@ class ArticleListController extends \oxUBase
 
         if (($categoryTree = $this->getCategoryTree()) && ($categoryPaths = $categoryTree->getPath())) {
             foreach ($categoryPaths as $category) {
-                /** @var oxCategory $category */
+                /** @var \OxidEsales\Eshop\Application\Model\Category $category */
                 $categoryPath = array();
 
                 $categoryPath['link'] = $category->getLink();
@@ -974,7 +974,7 @@ class ArticleListController extends \oxUBase
         if ($this->_sCatTitle === null) {
             $this->_sCatTitle = false;
             if ($this->getCategoryId() == 'oxmore') {
-                $language = oxRegistry::getLang();
+                $language = \OxidEsales\Eshop\Core\Registry::getLang();
                 $baseLanguageId = $language->getBaseLanguage();
 
                 $this->_sCatTitle = $language->translateString('CATEGORY_OVERVIEW', $baseLanguageId, false);
@@ -996,7 +996,7 @@ class ArticleListController extends \oxUBase
         if ($this->_aBargainArticleList === null) {
             $this->_aBargainArticleList = array();
             if ($this->getConfig()->getConfigParam('bl_perfLoadAktion') && $this->_isActCategory()) {
-                $articleList = oxNew('oxArticleList');
+                $articleList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                 $articleList->loadActionArticles('OXBARGAIN');
                 if ($articleList->count()) {
                     $this->_aBargainArticleList = $articleList;
@@ -1010,13 +1010,13 @@ class ArticleListController extends \oxUBase
     /**
      * Template variable getter. Returns active search
      *
-     * @return oxCategory
+     * @return \OxidEsales\Eshop\Application\Model\Category
      */
     public function getActiveCategory()
     {
         if ($this->_oActCategory === null) {
             $this->_oActCategory = false;
-            $category = oxNew('oxCategory');
+            $category = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             if ($category->load($this->getCategoryId())) {
                 $this->_oActCategory = $category;
             }
@@ -1033,8 +1033,8 @@ class ArticleListController extends \oxUBase
     public function getCanonicalUrl()
     {
         if (($category = $this->getActiveCategory())) {
-            $utilsUrl = oxRegistry::get("oxUtilsUrl");
-            if (oxRegistry::getUtils()->seoIsActive()) {
+            $utilsUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl();
+            if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive()) {
                 $url = $utilsUrl->prepareCanonicalUrl(
                     $category->getBaseSeoLink($category->getLanguage(), $this->getActPage())
                 );

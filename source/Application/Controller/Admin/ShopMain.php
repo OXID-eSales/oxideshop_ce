@@ -20,11 +20,10 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
-use oxUtilsObject;
 use oxException;
 
 /**
@@ -32,7 +31,7 @@ use oxException;
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Main Menu -> Core Settings -> Main.
  */
-class ShopMain extends \oxAdminDetails
+class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
     /** Identifies new shop. */
     const NEW_SHOP_ID = "-1";
@@ -69,8 +68,8 @@ class ShopMain extends \oxAdminDetails
 
         if (isset($shopId) && $shopId != self::NEW_SHOP_ID) {
             // load object
-            $shop = oxNew("oxshop");
-            $subjLang = oxRegistry::getConfig()->getRequestParameter("subjlang");
+            $shop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
+            $subjLang = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("subjlang");
             if (!isset($subjLang)) {
                 $subjLang = $this->_iEditLang;
             }
@@ -82,15 +81,15 @@ class ShopMain extends \oxAdminDetails
             $shop->loadInLang($subjLang, $shopId);
 
             $this->_aViewData["edit"] = $shop;
-            //oxSession::setVar( "actshop", $soxId);//echo "<h2>$soxId</h2>";
-            oxRegistry::getSession()->setVariable("shp", $shopId);
+            //\OxidEsales\Eshop\Core\Session::setVar( "actshop", $soxId);//echo "<h2>$soxId</h2>";
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("shp", $shopId);
         }
 
         $this->checkParent($shop);
 
         $this->_aViewData['IsOXDemoShop'] = $config->isDemoShop();
         if (!isset($this->_aViewData['updatenav'])) {
-            $this->_aViewData['updatenav'] = oxRegistry::getConfig()->getRequestParameter('updatenav');
+            $this->_aViewData['updatenav'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('updatenav');
         }
 
         return "shop_main.tpl";
@@ -108,7 +107,7 @@ class ShopMain extends \oxAdminDetails
         $config = $this->getConfig();
         $shopId = $this->getEditObjectId();
 
-        $parameters = oxRegistry::getConfig()->getRequestParameter("editval");
+        $parameters = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
 
         $user = $this->getUser();
         $shopId = $this->updateShopIdByUser($user, $shopId, false);
@@ -118,10 +117,10 @@ class ShopMain extends \oxAdminDetails
         $parameters['oxshops__oxactive'] = (isset($parameters['oxshops__oxactive']) && $parameters['oxshops__oxactive'] == true) ? 1 : 0;
         $parameters['oxshops__oxproductive'] = (isset($parameters['oxshops__oxproductive']) && $parameters['oxshops__oxproductive'] == true) ? 1 : 0;
 
-        $subjLang = oxRegistry::getConfig()->getRequestParameter("subjlang");
+        $subjLang = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("subjlang");
         $shopLanguageId = ($subjLang && $subjLang > 0) ? $subjLang : 0;
 
-        $shop = oxNew("oxshop");
+        $shop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         if ($shopId != self::NEW_SHOP_ID) {
             $shop->loadInLang($shopLanguageId, $shopId);
         } else {
@@ -136,7 +135,7 @@ class ShopMain extends \oxAdminDetails
         $shop->assign($parameters);
         $shop->setLanguage($shopLanguageId);
 
-        if (($newSMPTPass = oxRegistry::getConfig()->getRequestParameter("oxsmtppwd"))) {
+        if (($newSMPTPass = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxsmtppwd"))) {
             $shop->oxshops__oxsmtppwd->setValue($newSMPTPass == '-' ? "" : $newSMPTPass);
         }
 
@@ -147,7 +146,7 @@ class ShopMain extends \oxAdminDetails
 
         try {
             $shop->save();
-        } catch (oxException $e) {
+        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $e) {
             $this->checkExceptionType($e);
             return;
         }
@@ -156,7 +155,7 @@ class ShopMain extends \oxAdminDetails
 
         $this->updateShopInformation($config, $shop, $shopId);
 
-        oxRegistry::getSession()->setVariable("actshop", $shopId);
+        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("actshop", $shopId);
     }
 
     /**
@@ -179,13 +178,13 @@ class ShopMain extends \oxAdminDetails
     /**
      * Copies base shop config variables to current
      *
-     * @param oxshop $shop new shop object
+     * @param \OxidEsales\Eshop\Application\Model\Shop $shop new shop object
      */
     protected function _copyConfigVars($shop)
     {
         $config = $this->getConfig();
-        $utilsObject = oxUtilsObject::getInstance();
-        $db = oxDb::getDb();
+        $utilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $nonCopyVars = $this->_getNonCopyConfigVars();
 
@@ -193,8 +192,8 @@ class ShopMain extends \oxAdminDetails
             "select oxvarname, oxvartype,
             DECODE( oxvarvalue, " . $db->quote($config->getConfigParam('sConfigKey')) . ") as oxvarvalue, oxmodule
             from oxconfig where oxshopid = '1'";
-        $shopConfiguration = $db->execute($selectShopConfigurationQuery);
-        if ($shopConfiguration != false && $shopConfiguration->recordCount() > 0) {
+        $shopConfiguration = $db->select($selectShopConfigurationQuery);
+        if ($shopConfiguration != false && $shopConfiguration->count() > 0) {
             while (!$shopConfiguration->EOF) {
                 $configName = $shopConfiguration->fields[0];
                 if (!in_array($configName, $nonCopyVars)) {
@@ -210,7 +209,7 @@ class ShopMain extends \oxAdminDetails
                         . ", " . $db->quote($shopConfiguration->fields[3]) . " )";
                     $db->execute($insertNewConfigQuery);
                 }
-                $shopConfiguration->moveNext();
+                $shopConfiguration->fetchRow();
             }
         }
 
@@ -234,9 +233,9 @@ class ShopMain extends \oxAdminDetails
     /**
      * Check user rights and change userId if need.
      *
-     * @param oxUser $user
-     * @param string $shopId
-     * @param bool   $updateViewData If needs to update view data when shop Id changes.
+     * @param \OxidEsales\Eshop\Application\Model\User $user
+     * @param string                                   $shopId
+     * @param bool                                     $updateViewData If needs to update view data when shop Id changes.
      *
      * @return string
      */
@@ -248,7 +247,7 @@ class ShopMain extends \oxAdminDetails
     /**
      * Load Shop parent and set result to _aViewData.
      *
-     * @param oxShop $shop
+     * @param \OxidEsales\Eshop\Application\Model\Shop $shop
      */
     protected function checkParent($shop)
     {
@@ -271,7 +270,7 @@ class ShopMain extends \oxAdminDetails
     /**
      * Check for exception type and set it to _aViewData.
      *
-     * @param oxException $exception
+     * @param \OxidEsales\Eshop\Core\Exception\StandardException $exception
      */
     protected function checkExceptionType($exception)
     {
@@ -280,8 +279,8 @@ class ShopMain extends \oxAdminDetails
     /**
      * Check if Shop can be created.
      *
-     * @param string $shopId
-     * @param oxShop $shop
+     * @param string                                   $shopId
+     * @param \OxidEsales\Eshop\Application\Model\Shop $shop
      *
      * @return bool
      */
@@ -293,9 +292,9 @@ class ShopMain extends \oxAdminDetails
     /**
      * Update shop information in DB and oxConfig.
      *
-     * @param oxConfig $config
-     * @param oxShop   $shop
-     * @param string   $shopId
+     * @param \OxidEsales\Eshop\Core\Config            $config
+     * @param \OxidEsales\Eshop\Application\Model\Shop $shop
+     * @param string                                   $shopId
      */
     protected function updateShopInformation($config, $shop, $shopId)
     {

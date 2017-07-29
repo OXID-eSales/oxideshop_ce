@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxRegistry;
 use oxDb;
@@ -223,7 +223,7 @@ class Diagnostics
     public function getShopDetails()
     {
         $aShopDetails = array(
-            'Date'                => date(oxRegistry::getLang()->translateString('fullDateFormat'), time()),
+            'Date'                => date(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('fullDateFormat'), time()),
             'URL'                 => $this->getShopLink(),
             'Edition'             => $this->getEdition(),
             'Version'             => $this->getVersion(),
@@ -250,16 +250,16 @@ class Diagnostics
      */
     protected function _countRows($sTable, $blMode)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sRequest = 'SELECT COUNT(*) FROM ' . $sTable;
 
         if ($blMode == false) {
             $sRequest .= ' WHERE oxactive = 1';
         }
 
-        $aRes = $oDb->execute($sRequest)->fields(0);
+         $aRes = $oDb->select($sRequest)->fields[0];
 
-        return $aRes[0];
+        return $aRes;
     }
 
 
@@ -523,7 +523,7 @@ class Diagnostics
      */
     protected function _getMySqlServerInfo()
     {
-        $aResult = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getRow("SHOW VARIABLES LIKE 'version'");
+        $aResult = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getRow("SHOW VARIABLES LIKE 'version'");
 
         return $aResult['Value'];
     }

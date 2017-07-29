@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin theme manager.
@@ -28,7 +28,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
  * and "theme_main.tpl") to frame.
  * Admin Menu: Main Menu -> Theme.
  */
-class ThemeController extends \oxAdminView
+class ThemeController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

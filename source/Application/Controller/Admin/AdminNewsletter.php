@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin newsletter manager.
@@ -28,7 +28,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
  * and "newsletter_main.tpl") to frame.
  * Admin Menu: Customer Info -> Newsletter.
  */
-class AdminNewsletter extends \oxAdminView
+class AdminNewsletter extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

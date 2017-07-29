@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 
 /**
  * CMS - loads pages and displays it
  */
-class ClearCookiesController extends \oxUBase
+class ClearCookiesController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
      * Current view template
@@ -57,7 +57,7 @@ class ClearCookiesController extends \oxUBase
      */
     protected function _removeCookies()
     {
-        $oUtilsServer = oxRegistry::get("oxUtilsServer");
+        $oUtilsServer = \OxidEsales\Eshop\Core\Registry::getUtilsServer();
         if (isset($_SERVER['HTTP_COOKIE'])) {
             $aCookies = explode(';', $_SERVER['HTTP_COOKIE']);
             foreach ($aCookies as $sCookie) {
@@ -79,8 +79,8 @@ class ClearCookiesController extends \oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
-        $aPath['title'] = oxRegistry::getLang()->translateString('INFO_ABOUT_COOKIES', $iBaseLanguage, false);
+        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('INFO_ABOUT_COOKIES', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 

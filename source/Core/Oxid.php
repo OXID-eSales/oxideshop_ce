@@ -20,10 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
-
-use oxShopControl;
-use oxWidgetControl;
+namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * Static class mostly containing static methods which are supposed to be called before the full framework initialization
@@ -40,10 +37,10 @@ class Oxid
      */
     public static function run()
     {
-        /** @var oxShopControl $oShopControl */
-        $oShopControl = oxNew('oxShopControl');
+        /** @var ShopControl $shopControl */
+        $shopControl = oxNew(\OxidEsales\Eshop\Core\ShopControl::class);
 
-        return $oShopControl->start();
+        return $shopControl->start();
     }
 
     /**
@@ -55,9 +52,9 @@ class Oxid
      */
     public static function runWidget()
     {
-        /** @var oxWidgetControl $oWidgetControl */
-        $oWidgetControl = oxNew('oxWidgetControl');
+        /** @var WidgetControl $widgetControl */
+        $widgetControl = oxNew(\OxidEsales\Eshop\Core\WidgetControl::class);
 
-        return $oWidgetControl->start();
+        return $widgetControl->start();
     }
 }

@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxTestModules;
 
@@ -37,7 +37,7 @@ class PriceAlarmSendTest extends \OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = $this->getMock("PriceAlarm_Send", array("_setupNavigation"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PriceAlarmSend::class, array("_setupNavigation"));
         $oView->expects($this->once())->method('_setupNavigation');
         $this->assertEquals('pricealarm_done.tpl', $oView->render());
     }
@@ -54,11 +54,11 @@ class PriceAlarmSendTest extends \OxidTestCase
         $this->setRequestParameter("menu", $sNode);
         $this->setRequestParameter('actedit', 1);
 
-        $oNavigation = $this->getMock("oxnavigationtree", array("getTabs", "getActiveTab"));
+        $oNavigation = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationTree::class, array("getTabs", "getActiveTab"));
         $oNavigation->expects($this->any())->method('getActiveTab')->will($this->returnValue("testEdit"));
         $oNavigation->expects($this->once())->method('getTabs')->with($this->equalTo($sNode), $this->equalTo(1))->will($this->returnValue("editTabs"));
 
-        $oView = $this->getMock("PriceAlarm_Send", array("getNavigation"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PriceAlarmSend::class, array("getNavigation"));
         $oView->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavigation));
 
         $oView->UNITsetupNavigation($sNode);
@@ -75,7 +75,7 @@ class PriceAlarmSendTest extends \OxidTestCase
      */
     public function testSendeMail()
     {
-        $oAlarm = $this->getMock('oxpricealarm', array('save', 'load'));
+        $oAlarm = $this->getMock(\OxidEsales\Eshop\Application\Model\PriceAlarm::class, array('save', 'load'));
         $oAlarm->expects($this->once())->method('load')
             ->with($this->equalTo("paid"))
             ->will($this->returnValue(true));
@@ -84,9 +84,9 @@ class PriceAlarmSendTest extends \OxidTestCase
 
         oxTestModules::addModuleObject('oxpricealarm', $oAlarm);
 
-        $oEmail = $this->getMock('oxemail', array('sendPricealarmToCustomer'));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('sendPricealarmToCustomer'));
         $oEmail->expects($this->once())->method('sendPricealarmToCustomer')
-            ->with($this->equalTo("info@example.com"), $this->isInstanceOf('oxpricealarm'))
+            ->with($this->equalTo("info@example.com"), $this->isInstanceOf('\OxidEsales\EshopCommunity\Application\Model\PriceAlarm'))
             ->will($this->returnValue(true));
 
         oxTestModules::addModuleObject('oxemail', $oEmail);

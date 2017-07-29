@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxRegistry;
 
@@ -60,7 +60,7 @@ class Str
     {
         if (!isset(self::$_oHandler)) {
             //let's init now non-static instance of oxStr to get the instance of str handler
-            self::$_oHandler = oxNew("oxStr")->_getStrHandler();
+            self::$_oHandler = oxNew(\OxidEsales\Eshop\Core\Str::class)->_getStrHandler();
         }
 
         return self::$_oHandler;
@@ -68,17 +68,17 @@ class Str
 
     /**
      * Non static getter returning str handler. The sense of getStr() and _getStrHandler() is
-     * to be possible to call this method statically ( oxStr::getStr() ), yet leaving the
+     * to be possible to call this method statically ( \OxidEsales\Eshop\Core\Str::getStr() ), yet leaving the
      * possibility to extend it in modules by overriding _getStrHandler() method.
      *
      * @return oxStrRegular|oxStrMb
      */
     protected function _getStrHandler()
     {
-        if (oxRegistry::getConfig()->isUtf() && function_exists('mb_strlen')) {
-            return oxNew("oxStrMb");
+        if (function_exists('mb_strlen')) {
+            return oxNew(\OxidEsales\Eshop\Core\StrMb::class);
         }
 
-        return oxNew("oxStrRegular");
+        return oxNew(\OxidEsales\Eshop\Core\StrRegular::class);
     }
 }

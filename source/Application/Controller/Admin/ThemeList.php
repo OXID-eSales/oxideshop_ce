@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin actionss manager.
@@ -28,7 +28,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
  * field ('oxactions.oxtitle').
  * Admin Menu: Manage Products -> Actions.
  */
-class ThemeList extends \oxAdminList
+class ThemeList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**
@@ -38,7 +38,7 @@ class ThemeList extends \oxAdminList
      */
     public function render()
     {
-        $oTheme = oxNew('oxtheme');
+        $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
 
         parent::render();
 

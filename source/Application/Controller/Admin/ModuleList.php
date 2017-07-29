@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin actionss manager.
@@ -28,7 +28,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
  * field ('oxactions.oxtitle').
  * Admin Menu: Manage Products -> Actions.
  */
-class ModuleList extends \oxAdminList
+class ModuleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**
@@ -47,7 +47,7 @@ class ModuleList extends \oxAdminList
     {
         $sModulesDir = $this->getConfig()->getModulesDir();
 
-        $oModuleList = oxNew("oxModuleList");
+        $oModuleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
         $aModules = $oModuleList->getModulesFromDir($sModulesDir);
 
         parent::render();

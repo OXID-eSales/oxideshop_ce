@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 /**
  * Tests for Shop_Config class
@@ -57,7 +57,7 @@ class ModuleSortListTest extends \OxidTestCase
         $aModules = array("oxarticle" => "dir1/module1&dir2/module2");
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
-        $oConfig = $this->getMock('oxConfig', array('saveShopConfVar'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('saveShopConfVar'));
         $oConfig->expects($this->once())->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("aModules"), $this->equalTo($aModules));
 
         $oView = oxNew('Module_SortList');

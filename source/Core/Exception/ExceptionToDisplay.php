@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Exception;
+namespace OxidEsales\EshopCommunity\Core\Exception;
 
 use oxRegistry;
 
@@ -28,7 +28,7 @@ use oxRegistry;
  * simplified Exception classes for simply displaying errors
  * saves resources when exception functionality is not needed
  */
-class ExceptionToDisplay implements \oxIDisplayError
+class ExceptionToDisplay implements \OxidEsales\Eshop\Core\Contract\IDisplayError
 {
 
     /**
@@ -87,7 +87,7 @@ class ExceptionToDisplay implements \oxIDisplayError
     }
 
     /**
-     * Sets oxExceptionToDisplay::_aValues value
+     * Sets \OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::_aValues value
      *
      * @param array $aValues exception values to store
      */
@@ -178,7 +178,7 @@ class ExceptionToDisplay implements \oxIDisplayError
         if ($this->_blDebug) {
             return $this;
         } else {
-            $sString = oxRegistry::getLang()->translateString($this->_sMessage);
+            $sString = \OxidEsales\Eshop\Core\Registry::getLang()->translateString($this->_sMessage);
 
             if (!empty($this->_aMessageArgs)) {
                 $sString = vsprintf($sString, $this->_aMessageArgs);
@@ -195,7 +195,7 @@ class ExceptionToDisplay implements \oxIDisplayError
      */
     public function __toString()
     {
-        $sRes = $this->getErrorClassType() . " (time: " . date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()) . "): " . $this->getOxMessage() . " \n Stack Trace: " . $this->getStackTrace() . "\n";
+        $sRes = $this->getErrorClassType() . " (time: " . date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()) . "): " . $this->getOxMessage() . " \n Stack Trace: " . $this->getStackTrace() . "\n";
         foreach ($this->_aValues as $key => $value) {
             $sRes .= $key . " => " . $value . "\n";
         }

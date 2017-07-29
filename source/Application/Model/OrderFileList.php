@@ -20,13 +20,13 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 /**
  * Article file link manager.
  *
  */
-class OrderFileList extends \oxList
+class OrderFileList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
 
     /**

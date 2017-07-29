@@ -35,7 +35,7 @@
  */
 function smarty_modifier_oxnumberformat( $sFormat = "EUR@ 1.00@ ,@ .@ EUR@ 2", $sValue = 0)
 {
-    // logic copied from oxconfig::getCurrencyArray()
+    // logic copied from \OxidEsales\Eshop\Core\Config::getCurrencyArray()
     $sCur = explode( "@", $sFormat);
     $oCur           = new stdClass();
     $oCur->id       = 0;
@@ -51,5 +51,5 @@ function smarty_modifier_oxnumberformat( $sFormat = "EUR@ 1.00@ ,@ .@ EUR@ 2", $
         $oCur->side = @trim($sCur[6]);
     }
 
-    return oxRegistry::getLang()->formatCurrency($sValue, $oCur);
+    return \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($sValue, $oCur);
 }

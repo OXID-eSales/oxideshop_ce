@@ -19,9 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Integration\OnlineInfo;
+namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
 
 use oxCurl;
+use OxidEsales\Eshop\Core\Curl;
+use OxidEsales\Eshop\Core\OnlineServerEmailBuilder;
 use oxOnlineLicenseCheck;
 use oxOnlineLicenseCheckCaller;
 use oxRegistry;
@@ -29,7 +31,7 @@ use oxRegistry;
 /**
  * Class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest
  *
- * @covers oxOnlineServerEmailBuilder
+ * @covers OnlineServerEmailBuilder
  * @covers oxOnlineCaller
  * @covers oxSimpleXml
  * @covers oxOnlineLicenseCheckCaller
@@ -61,7 +63,7 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidTestCase
 
         $oConfig->saveShopConfVar('arr', 'aSerials', array('license_key'));
         $oConfig->saveShopConfVar('arr', 'sClusterId', array('generated_unique_cluster_id'));
-        $iValidNodeTime =  oxRegistry::get("oxUtilsDate")->getTime();
+        $iValidNodeTime =  \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $oConfig->saveShopConfVar(
             'arr',
             'aServersData',
@@ -126,12 +128,13 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidTestCase
         $sXml .=   '<productId>eShop</productId>';
         $sXml .= '</olcRequest>'."\n";
 
-        $oCurl = $this->getMock('oxCurl', array('setParameters', 'execute'));
+        /** @var oxCurl $oCurl */
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('setParameters', 'execute', 'getStatusCode'));
         $oCurl->expects($this->atLeastOnce())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $sXml)));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue(true));
-        /** @var oxCurl $oCurl */
+        $oCurl->expects($this->any())->method('getStatusCode')->will($this->returnValue(200));
 
-        $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
+        $oEmailBuilder = oxNew(OnlineServerEmailBuilder::class);
         $oSimpleXml = oxNew('oxSimpleXml');
         $oLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);
 
@@ -150,7 +153,7 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidTestCase
 
         $oConfig->setConfigParam('aSerials', array('license_key'));
         $oConfig->setConfigParam('sClusterId', array('generated_unique_cluster_id'));
-        $iValidNodeTime =  oxRegistry::get("oxUtilsDate")->getTime();
+        $iValidNodeTime =  \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $oConfig->setConfigParam(
             'aServersData',
             array(
@@ -217,12 +220,13 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidTestCase
         $sXml .=   '<productId>eShop</productId>';
         $sXml .= '</olcRequest>'."\n";
 
-        $oCurl = $this->getMock('oxCurl', array('setParameters', 'execute'));
-        $oCurl->expects($this->atLeastOnce())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $sXml)));
+        /** @var Curl $oCurl */
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('setParameters', 'execute','getStatusCode'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue(true));
-        /** @var oxCurl $oCurl */
+        $oCurl->expects($this->any())->method('getStatusCode')->will($this->returnValue(200));
+        $oCurl->expects($this->atLeastOnce())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $sXml)));
 
-        $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
+        $oEmailBuilder = oxNew(OnlineServerEmailBuilder::class);
 
         $oSimpleXml = oxNew('oxSimpleXml');
         $oLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $oSimpleXml);

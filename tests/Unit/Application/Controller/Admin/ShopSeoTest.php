@@ -19,11 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \Exception;
 use \oxDb;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use \oxTestModules;
 
 /**
@@ -118,7 +118,7 @@ class ShopSeoTest extends \OxidTestCase
 
         // testing..
         try {
-            $oView = $this->getMock("Shop_Seo", $aTasks);
+            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopSeo::class, $aTasks);
             foreach ($aTasks as $sMethodName) {
                 $oView->expects($this->any())->method($sMethodName);
             }
@@ -143,7 +143,7 @@ class ShopSeoTest extends \OxidTestCase
                        'oxseo__oxseourl' => array("seourl1", "seourl2"));
 
         // testing..
-        $oView = $this->getMock("Shop_Seo", array("_cleanupUrl"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopSeo::class, array("_cleanupUrl"));
         $oView->expects($this->at(0))->method('_cleanupUrl')->with($this->equalTo("stdurl"));
         $oView->expects($this->at(1))->method('_cleanupUrl')->with($this->equalTo("seourl1"));
         $oView->expects($this->at(2))->method('_cleanupUrl')->with($this->equalTo("seourl2"));
@@ -198,7 +198,7 @@ class ShopSeoTest extends \OxidTestCase
         $oDb = oxDb::getDb();
 
         // inserting test record
-        $oDb->getOne("insert into oxseo (`OXOBJECTID`, `OXIDENT`, `OXSHOPID`, `OXLANG`, `OXSTDURL`, `OXSEOURL`, `OXTYPE`, `OXFIXED`, `OXEXPIRED`, `OXPARAMS`) values( 'testObjectId', 'testident', '1', '0', 'teststdurl', 'testseourl', 'static', '0', '', '' )");
+        $oDb->execute("insert into oxseo (`OXOBJECTID`, `OXIDENT`, `OXSHOPID`, `OXLANG`, `OXSTDURL`, `OXSEOURL`, `OXTYPE`, `OXFIXED`, `OXEXPIRED`, `OXPARAMS`) values( 'testObjectId', 'testident', '1', '0', 'teststdurl', 'testseourl', 'static', '0', '', '' )");
         $this->assertEquals(1, $oDb->getOne("select 1 from oxseo where oxobjectid = 'testObjectId' and oxshopid = '1'"));
 
         // testing..

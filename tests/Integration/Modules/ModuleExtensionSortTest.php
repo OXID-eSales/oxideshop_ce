@@ -19,11 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Integration\Modules;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 use oxRegistry;
-
-require_once __DIR__ . '/BaseModuleTestCase.php';
 
 class ModuleExtensionSortTest extends BaseModuleTestCase
 {
@@ -45,19 +43,19 @@ class ModuleExtensionSortTest extends BaseModuleTestCase
 
                 // Reordered extensions
                 array(
-                    'oxorder'   => 'extending_3_classes_with_1_extension/mybaseclass&extending_1_class/myorder&' .
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_3_classes_with_1_extension/mybaseclass&extending_1_class/myorder&' .
                                    'extending_1_class_3_extensions/myorder1&extending_3_classes/myorder&' .
                                    'extending_1_class_3_extensions/myorder3&extending_1_class_3_extensions/myorder2',
-                    'oxarticle' => 'extending_3_classes/myarticle&extending_3_classes_with_1_extension/mybaseclass',
-                    'oxuser'    => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myuser',
+                    \OxidEsales\Eshop\Application\Model\Article::class => 'extending_3_classes/myarticle&extending_3_classes_with_1_extension/mybaseclass',
+                    \OxidEsales\Eshop\Application\Model\User::class    => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myuser',
                 ),
                 // Not reordered extensions
                 array(
-                    'oxorder'   => 'extending_1_class/myorder&extending_3_classes_with_1_extension/mybaseclass&' .
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&extending_3_classes_with_1_extension/mybaseclass&' .
                                    'extending_3_classes/myorder&extending_1_class_3_extensions/myorder1&' .
                                    'extending_1_class_3_extensions/myorder2&extending_1_class_3_extensions/myorder3',
-                    'oxarticle' => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myarticle',
-                    'oxuser'    => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myuser',
+                    \OxidEsales\Eshop\Application\Model\Article::class => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myarticle',
+                    \OxidEsales\Eshop\Application\Model\User::class    => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myuser',
                 ),
             ),
 
@@ -72,13 +70,13 @@ class ModuleExtensionSortTest extends BaseModuleTestCase
 
                 // Reordered extensions
                 array(
-                    'oxorder' => 'extending_1_class_3_extensions/myorder2&' .
+                    \OxidEsales\Eshop\Application\Model\Order::class => 'extending_1_class_3_extensions/myorder2&' .
                                  'extending_1_class_3_extensions/myorder1&' .
                                  'extending_1_class_3_extensions/myorder3',
                 ),
                 // Not reordered extensions
                 array(
-                    'oxorder' => 'extending_1_class_3_extensions/myorder1&' .
+                    \OxidEsales\Eshop\Application\Model\Order::class => 'extending_1_class_3_extensions/myorder1&' .
                                  'extending_1_class_3_extensions/myorder2&' .
                                  'extending_1_class_3_extensions/myorder3',
                 ),

@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \oxRegistry;
 
@@ -50,13 +50,13 @@ class ExceptionErrorTest extends \OxidTestCase
         $sEx = "testText";
         $aErrors = array("default" => array("aaa" => serialize($sEx)));
 
-        $oErr = $this->getMock("exceptionError", array("_getErrors", 'getViewData'));
+        $oErr = $this->getMock(\OxidEsales\Eshop\Application\Controller\ExceptionErrorController::class, array("_getErrors", 'getViewData'));
         $oErr->expects($this->once())->method('getViewData')->will($this->returnValue(array()));
         $oErr->expects($this->once())->method('_getErrors')->will($this->returnValue($aErrors));
 
         $oErr->displayExceptionError();
 
-        $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
+        $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
         $aTplVars = $oSmarty->get_template_vars("Errors");
         $oViewEx = $aTplVars["default"]["aaa"];
 
@@ -73,7 +73,7 @@ class ExceptionErrorTest extends \OxidTestCase
         $this->getSession()->setVariable("Errors", "testValue");
         $this->assertEquals("testValue", $this->getSession()->getVariable("Errors"));
 
-        $oErr = $this->getMock("exceptionError", array("_getErrors", 'getViewData'));
+        $oErr = $this->getMock(\OxidEsales\Eshop\Application\Controller\ExceptionErrorController::class, array("_getErrors", 'getViewData'));
         $oErr->expects($this->once())->method('getViewData')->will($this->returnValue(array()));
         $oErr->expects($this->once())->method('_getErrors')->will($this->returnValue(array()));
 

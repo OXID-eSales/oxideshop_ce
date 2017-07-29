@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Component;
+namespace OxidEsales\EshopCommunity\Application\Component;
 
 use oxRegistry;
 
@@ -30,7 +30,7 @@ use oxRegistry;
  *
  * @subpackage oxcmp
  */
-class LanguageComponent extends \oxView
+class LanguageComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
 
     /**
@@ -51,7 +51,7 @@ class LanguageComponent extends \oxView
 
         // Performance
         if ($this->getConfig()->getConfigParam('bl_perfLoadLanguages')) {
-            $aLanguages = oxRegistry::getLang()->getLanguageArray(null, true, true);
+            $aLanguages = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageArray(null, true, true);
             reset($aLanguages);
             while (list($sKey, $oVal) = each($aLanguages)) {
                 $aLanguages[$sKey]->link = $this->getConfig()->getTopActiveView()->getLink($oVal->id);

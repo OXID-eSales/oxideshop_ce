@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
 
@@ -168,7 +168,7 @@ class ArticleCrosssellingAjaxTest extends \OxidTestCase
      */
     public function testRemoveArticleCross()
     {
-        $oView = $this->getMock("article_crossselling_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleCrosssellingAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testCrosssellingOxid1', '_testCrosssellingOxid2')));
 
         $this->assertEquals(2, oxDb::getDb()->getOne("select count(oxid) from oxobject2article where oxobjectid='_testCrosselling'"));
@@ -203,7 +203,7 @@ class ArticleCrosssellingAjaxTest extends \OxidTestCase
 
         $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2article where oxarticlenid='$sSynchoxid'"));
 
-        $oView = $this->getMock("article_crossselling_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleCrosssellingAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testObjectId1', '_testObjectId2')));
 
         $oView->addArticleCross();

@@ -49,7 +49,7 @@ function smarty_function_oxprice($params, &$smarty)
     if (!is_null($mPrice)) {
         $oConfig = Registry::getConfig();
 
-        $sPrice = ($mPrice instanceof oxPrice) ? $mPrice->getPrice() : $mPrice;
+        $sPrice = ($mPrice instanceof \OxidEsales\Eshop\Core\Price) ? $mPrice->getPrice() : floatval($mPrice);
         $oCurrency = isset($params['currency']) ? $params['currency'] : $oConfig->getActShopCurrencyObject();
 
         if (!is_null($oCurrency)) {

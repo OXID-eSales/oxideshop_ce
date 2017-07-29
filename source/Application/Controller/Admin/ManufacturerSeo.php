@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxField;
@@ -28,7 +28,7 @@ use oxField;
 /**
  * Manufacturer seo config class
  */
-class ManufacturerSeo extends \Object_Seo
+class ManufacturerSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
 {
 
     /**
@@ -38,12 +38,12 @@ class ManufacturerSeo extends \Object_Seo
      */
     public function save()
     {
-        $oManufacturer = oxNew('oxBase');
+        $oManufacturer = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
         $oManufacturer->init('oxmanufacturers');
         if ($oManufacturer->load($this->getEditObjectId())) {
             $sShowSuffixField = 'oxmanufacturers__oxshowsuffix';
-            $blShowSuffixParameter = oxRegistry::getConfig()->getRequestParameter('blShowSuffix');
-            $oManufacturer->$sShowSuffixField = new oxField((int) $blShowSuffixParameter);
+            $blShowSuffixParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('blShowSuffix');
+            $oManufacturer->$sShowSuffixField = new \OxidEsales\Eshop\Core\Field((int) $blShowSuffixParameter);
             $oManufacturer->save();
         }
 
@@ -57,7 +57,7 @@ class ManufacturerSeo extends \Object_Seo
      */
     protected function _getEncoder()
     {
-        return oxRegistry::get("oxSeoEncoderManufacturer");
+        return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer::class);
     }
 
     /**
@@ -87,7 +87,7 @@ class ManufacturerSeo extends \Object_Seo
      */
     public function isEntrySuffixed()
     {
-        $oManufacturer = oxNew('oxmanufacturer');
+        $oManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
         if ($oManufacturer->load($this->getEditObjectId())) {
             return (bool) $oManufacturer->oxmanufacturers__oxshowsuffix->value;
         }
@@ -100,7 +100,7 @@ class ManufacturerSeo extends \Object_Seo
      */
     public function getEntryUri()
     {
-        $oManufacturer = oxNew('oxmanufacturer');
+        $oManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
         if ($oManufacturer->load($this->getEditObjectId())) {
             return $this->_getEncoder()->getManufacturerUri($oManufacturer, $this->getEditLang());
         }

@@ -19,17 +19,18 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
-use oxConnectionException;
-use oxCookieException;
-use oxDb;
 use oxException;
-use OxidEsales\Eshop\Application\Controller\BaseController;
-use OxidEsales\EshopEnterprise\Core\Cache\DynamicContent\ContentCache;
+use OxidEsales\Eshop\Application\Controller\FrontendController;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
+use OxidEsales\Eshop\Core\Exception\RoutingException;
+use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\Cache\DynamicContent\ContentCache;
 use oxOutput;
 use oxRegistry;
 use oxSystemComponentException;
+use PHPMailer;
 use ReflectionMethod;
 
 /**
@@ -37,8 +38,9 @@ use ReflectionMethod;
  * them (if needed), controls output, redirects according to
  * processed methods logic. This class is initialized from index.php
  */
-class ShopControl extends \oxSuperCfg
+class ShopControl extends \OxidEsales\Eshop\Core\Base
 {
+
     /**
      * Used to force handling, it allows other place like widget controller to skip it.
      *
@@ -112,36 +114,51 @@ class ShopControl extends \oxSuperCfg
     protected $_oCache = null;
 
     /**
+     * Path to the file, which holds the timestamp of the moment the last offline warning was sent.
+     *
+     * @var
+     */
+    protected $offlineWarningTimestampFile;
+
+    /**
+     * ShopControl constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->offlineWarningTimestampFile = OX_BASE_PATH . 'log/last-offline-warning-timestamp.log';
+    }
+
+    /**
      * Main shop manager, that sets shop status, executes configuration methods.
-     * Executes oxShopControl::_runOnce(), if needed sets default class (according
+     * Executes \OxidEsales\Eshop\Core\ShopControl::_runOnce(), if needed sets default class (according
      * to admin or regular activities). Additionally its possible to pass class name,
      * function name and parameters array to view, which will be executed.
      *
-     * @param string $class      Class name
-     * @param string $function   Function name
-     * @param array  $parameters Parameters array
-     * @param array  $viewsChain Array of views names that should be initialized also
+     * @param string $controllerKey Key of the controller class to be processed
+     * @param string $function      Function name
+     * @param array  $parameters    Parameters array
+     * @param array  $viewsChain    Array of views names that should be initialized also
      */
-    public function start($class = null, $function = null, $parameters = null, $viewsChain = null)
+    public function start($controllerKey = null, $function = null, $parameters = null, $viewsChain = null)
     {
-        //sets default exception handler
-        $this->_setDefaultExceptionHandler();
-
         try {
             $this->_runOnce();
 
-            $function = !is_null($function) ? $function : oxRegistry::getConfig()->getRequestParameter('fnc');
-            $class = !is_null($class) ? $class : $this->_getStartController();
+            $function = !is_null($function) ? $function : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('fnc');
+            $controllerKey = !is_null($controllerKey) ? $controllerKey : $this->getStartControllerKey();
+            $controllerClass = $this->getControllerClass($controllerKey);
 
-            $this->_process($class, $function, $parameters, $viewsChain);
-        } catch (oxSystemComponentException $ex) {
-            $this->_handleSystemException($ex);
-        } catch (oxCookieException $ex) {
-            $this->_handleCookieException($ex);
-        } catch (oxConnectionException $ex) {
-            $this->_handleDbConnectionException($ex);
-        } catch (oxException $ex) {
-            $this->_handleBaseException($ex);
+            $this->_process($controllerClass, $function, $parameters, $viewsChain);
+        } catch (\OxidEsales\Eshop\Core\Exception\SystemComponentException $exception) {
+            $this->_handleSystemException($exception);
+        } catch (\OxidEsales\Eshop\Core\Exception\CookieException $exception) {
+            $this->_handleCookieException($exception);
+        } catch (\OxidEsales\Eshop\Core\Exception\DatabaseException $exception) {
+            $this->handleDatabaseException($exception);
+        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
+            $this->_handleBaseException($exception);
         }
     }
 
@@ -159,44 +176,22 @@ class ShopControl extends \oxSuperCfg
         return 0;
     }
 
+
     /**
-     * Sets default exception handler.
-     * Ideally all exceptions should be handled with try catch and default exception should never be reached.
+     * @deprecated since v6.0 (2017-02-03). Use ShopControl::getStartControllerKey() instead.
      *
-     * @return null
-     */
-    protected function _setDefaultExceptionHandler()
-    {
-        if (isset($this->_blHandlerSet)) {
-            return;
-        }
-
-        set_exception_handler(array(oxNew('oxexceptionhandler', $this->_isDebugMode()), 'handleUncaughtException'));
-    }
-
-    /**
      * Returns controller class which should be loaded.
      *
      * @return string
      */
     protected function _getStartController()
     {
-        $class = oxRegistry::getConfig()->getRequestParameter('cl');
-
-        if (!$class) {
-            $session = oxRegistry::getSession();
-            if ($this->isAdmin()) {
-                $class = $session->getVariable("auth") ? 'admin_start' : 'login';
-            } else {
-                $class = $this->_getFrontendStartController();
-            }
-            $session->setVariable('cl', $class);
-        }
-
-        return $class;
+        return $this->getStartControllerKey();
     }
 
     /**
+     * @deprecated since v6.0 (2017-02-03). Use ShopControl::getFrontendStartControllerKey() instead.
+     *
      * Returns which controller should be loaded at shop start.
      * Check whether we have to display mall start screen or not.
      *
@@ -208,16 +203,72 @@ class ShopControl extends \oxSuperCfg
     }
 
     /**
+     * Returns class id of controller which should be loaded.
+     * When in doubt returns default start controller class.
+     *
+     * @return string
+     */
+    protected function getStartControllerKey()
+    {
+        $controllerKey = Registry::getConfig()->getRequestControllerId();
+
+        // Use default route in case no controller id is given
+        if (!$controllerKey) {
+            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            if ($this->isAdmin()) {
+                $controllerKey = $session->getVariable("auth") ? 'admin_start' : 'login';
+            } else {
+                $controllerKey = $this->getFrontendStartControllerKey();
+            }
+            $session->setVariable('cl', $controllerKey);
+        }
+
+        return $controllerKey;
+    }
+
+    /**
+     * Returns class id of controller which should be loaded.
+     * When in doubt returns default start controller class.
+     *
+     * @param string $controllerKey Controller id
+     *
+     * @throws RoutingException
+     * @return string
+     */
+    protected function resolveControllerClass($controllerKey)
+    {
+        $resolvedClass = Registry::getControllerClassNameResolver()->getClassNameById($controllerKey);
+
+        // If unmatched controller id is requested throw exception
+        if (!$resolvedClass) {
+            throw new \OxidEsales\Eshop\Core\Exception\RoutingException($controllerKey);
+        }
+
+        return $resolvedClass;
+    }
+
+    /**
+     * Returns id of controller that should be loaded at shop start.
+     * Check whether we have to display mall start screen or not.
+     *
+     * @return string
+     */
+    protected function getFrontendStartControllerKey()
+    {
+        return 'start';
+    }
+
+    /**
      * Initiates object (object::init()), executes passed function
-     * (oxShopControl::executeFunction(), if method returns some string - will
+     * (\OxidEsales\Eshop\Core\ShopControl::executeFunction(), if method returns some string - will
      * redirect page and will call another function according to returned
      * parameters), renders object (object::render()). Performs output processing
-     * oxOutput::ProcessViewArray(). Passes template variables to template
+     * \OxidEsales\Eshop\Core\Output::ProcessViewArray(). Passes template variables to template
      * engine witch generates output. Output is additionally processed
-     * (oxOutput::Process()), fixed links according search engines optimization
+     * (\OxidEsales\Eshop\Core\Output::Process()), fixed links according search engines optimization
      * rules (configurable in Admin area). Finally echoes the output.
      *
-     * @param string $class      Name of class
+     * @param string $class      Class name
      * @param string $function   Name of function
      * @param array  $parameters Parameters array
      * @param array  $viewsChain Array of views names that should be initialized also
@@ -244,7 +295,7 @@ class ShopControl extends \oxSuperCfg
         $outputManager->setCharset($view->getCharSet());
 
         if ($config->getRequestParameter('renderPartial')) {
-            $outputManager->setOutputFormat(oxOutput::OUTPUT_FORMAT_JSON);
+            $outputManager->setOutputFormat(\OxidEsales\Eshop\Core\Output::OUTPUT_FORMAT_JSON);
             $outputManager->output('errors', $this->_getFormattedErrors($view->getClassName()));
         }
 
@@ -275,7 +326,7 @@ class ShopControl extends \oxSuperCfg
         }
 
         startProfile('executeMaintenanceTasks');
-        oxNew("oxArticleList")->updateUpcomingPrices();
+        oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class)->updateUpcomingPrices();
         stopProfile('executeMaintenanceTasks');
     }
 
@@ -283,8 +334,8 @@ class ShopControl extends \oxSuperCfg
      * Executes provided function on view object.
      * If this function can not be executed (is protected or so), oxSystemComponentException exception is thrown.
      *
-     * @param BaseController $view
-     * @param string         $functionName
+     * @param FrontendController $view
+     * @param string             $functionName
      *
      * @throws oxSystemComponentException
      */
@@ -300,7 +351,7 @@ class ShopControl extends \oxSuperCfg
     /**
      * Forms output from view object.
      *
-     * @param BaseController $view
+     * @param FrontendController $view
      *
      * @return string
      */
@@ -312,7 +363,7 @@ class ShopControl extends \oxSuperCfg
     /**
      * Method for sending any additional headers on every page requests.
      *
-     * @param BaseController $view
+     * @param FrontendController $view
      */
     protected function sendAdditionalHeaders($view)
     {
@@ -321,19 +372,22 @@ class ShopControl extends \oxSuperCfg
     /**
      * Initialize and return view object.
      *
-     * @param string $class      View name
+     * @param string $class      View class
      * @param string $function   Function name
      * @param array  $parameters Parameters array
      * @param array  $viewsChain Array of views names that should be initialized also
      *
-     * @return BaseController
+     * @return FrontendController
      */
     protected function _initializeViewObject($class, $function, $parameters = null, $viewsChain = null)
     {
-        /** @var BaseController $view */
+        $classKey = Registry::getControllerClassNameResolver()->getIdByClassName($class);
+        $classKey = !is_null($classKey) ? $classKey : $class; //fallback
+
+        /** @var FrontendController $view */
         $view = oxNew($class);
 
-        $view->setClassName($class);
+        $view->setClassKey($classKey);
         $view->setFncName($function);
         $view->setViewParameters($parameters);
 
@@ -349,7 +403,7 @@ class ShopControl extends \oxSuperCfg
     /**
      * Event for any actions during view creation.
      *
-     * @param BaseController $view
+     * @param FrontendController $view
      */
     protected function onViewCreation($view)
     {
@@ -358,8 +412,8 @@ class ShopControl extends \oxSuperCfg
     /**
      * Check if method can be executed.
      *
-     * @param BaseController $view     View object to check if its method can be executed.
-     * @param string         $function Method to check if it can be executed.
+     * @param FrontendController $view     View object to check if its method can be executed.
+     * @param string             $function Method to check if it can be executed.
      *
      * @return bool
      */
@@ -402,14 +456,14 @@ class ShopControl extends \oxSuperCfg
     /**
      * Render BaseController object.
      *
-     * @param BaseController $view view object to render
+     * @param FrontendController $view view object to render
      *
      * @return string
      */
     protected function _render($view)
     {
         // get Smarty is important here as it sets template directory correct
-        $smarty = oxRegistry::get("oxUtilsView")->getSmarty();
+        $smarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
 
         // render it
         $templateName = $view->render();
@@ -417,14 +471,14 @@ class ShopControl extends \oxSuperCfg
         // check if template dir exists
         $templateFile = $this->getConfig()->getTemplatePath($templateName, $this->isAdmin());
         if (!file_exists($templateFile)) {
-            $ex = oxNew('oxSystemComponentException');
-            $ex->setMessage('EXCEPTION_SYSTEMCOMPONENT_TEMPLATENOTFOUND');
+            $ex = oxNew(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class);
+            $ex->setMessage('EXCEPTION_SYSTEMCOMPONENT_TEMPLATENOTFOUND' . ' ' . $templateName);
             $ex->setComponent($templateName);
 
             $templateName = "message/exception.tpl";
 
             if ($this->_isDebugMode()) {
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay($ex);
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($ex);
             }
             $ex->debugOut();
         }
@@ -437,7 +491,7 @@ class ShopControl extends \oxSuperCfg
         //add all exceptions to display
         $errors = $this->_getErrors($view->getClassName());
         if (is_array($errors) && count($errors)) {
-            oxRegistry::get("oxUtilsView")->passAllErrorsToView($viewData, $errors);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->passAllErrorsToView($viewData, $errors);
         }
 
         foreach (array_keys($viewData) as $viewName) {
@@ -463,7 +517,7 @@ class ShopControl extends \oxSuperCfg
     protected function _getOutputManager()
     {
         if (!$this->_oOutput) {
-            $this->_oOutput = oxNew('oxOutput');
+            $this->_oOutput = oxNew(\OxidEsales\Eshop\Core\Output::class);
         }
 
         return $this->_oOutput;
@@ -479,8 +533,8 @@ class ShopControl extends \oxSuperCfg
     protected function _getErrors($currentControllerName)
     {
         if (null === $this->_aErrors) {
-            $this->_aErrors = oxRegistry::getSession()->getVariable('Errors');
-            $this->_aControllerErrors = oxRegistry::getSession()->getVariable('ErrorController');
+            $this->_aErrors = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('Errors');
+            $this->_aControllerErrors = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('ErrorController');
             if (null === $this->_aErrors) {
                 $this->_aErrors = array();
             }
@@ -497,8 +551,8 @@ class ShopControl extends \oxSuperCfg
         } else {
             $this->_aAllErrors = array();
         }
-        oxRegistry::getSession()->setVariable('ErrorController', $this->_aControllerErrors);
-        oxRegistry::getSession()->setVariable('Errors', $this->_aAllErrors);
+        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('ErrorController', $this->_aControllerErrors);
+        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('Errors', $this->_aAllErrors);
 
         return $this->_aErrors;
     }
@@ -506,29 +560,30 @@ class ShopControl extends \oxSuperCfg
     /**
      * This function is only executed one time here we perform checks if we
      * only need once per session.
-     *
-     * @return null
      */
     protected function _runOnce()
     {
         $config = $this->getConfig();
 
+        //Ensures config values are available, database connection is established,
+        //session is started, a possible SeoUrl is decoded, globals and environment variables are set.
+        $config->init();
+
         error_reporting($this->_getErrorReportingLevel());
 
-
-        $runOnceExecuted = oxRegistry::getSession()->getVariable('blRunOnceExecuted');
+        $runOnceExecuted = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('blRunOnceExecuted');
         if (!$runOnceExecuted && !$this->isAdmin() && $config->isProductiveMode()) {
             // check if setup is still there
             if (file_exists($config->getConfigParam('sShopDir') . '/Setup/index.php')) {
                 $tpl = 'message/err_setup.tpl';
-                $activeView = oxNew('oxUBase');
-                $smarty = oxRegistry::get("oxUtilsView")->getSmarty();
+                $activeView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
+                $smarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
                 $smarty->assign('oView', $activeView);
                 $smarty->assign('oViewConf', $activeView->getViewConfig());
-                oxRegistry::getUtils()->showMessageAndExit($smarty->fetch($tpl));
+                \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit($smarty->fetch($tpl));
             }
 
-            oxRegistry::getSession()->setVariable('blRunOnceExecuted', true);
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('blRunOnceExecuted', true);
         }
     }
 
@@ -561,7 +616,7 @@ class ShopControl extends \oxSuperCfg
      */
     protected function _isDebugMode()
     {
-        return (bool) oxRegistry::get("OxConfigFile")->getVar('iDebug');
+        return (bool) Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('iDebug');
     }
 
     /**
@@ -579,16 +634,18 @@ class ShopControl extends \oxSuperCfg
      *
      * @deprecated on b-dev (2015-10-01); Use self::stopMonitoring() instead.
      *
-     * @param bool           $isCallForCache Is content cache
-     * @param bool           $isCached       Is content cached
-     * @param string         $viewId         View ID
-     * @param array          $viewData       View data
-     * @param BaseController $view           View object
+     * @param bool               $isCallForCache Is content cache
+     * @param bool               $isCached       Is content cached
+     * @param string             $viewId         View ID
+     * @param array              $viewData       View data
+     * @param FrontendController $view           View object
      */
     protected function _stopMonitor($isCallForCache = false, $isCached = false, $viewId = null, $viewData = array(), $view = null)
     {
         if (is_null($view)) {
-            $view = oxNew($this->_getStartController());
+            $controllerKey = $this->getStartControllerKey();
+            $controllerClass = $this->getControllerClass($controllerKey);
+            $view = oxNew($controllerClass);
         }
         $this->stopMonitoring($view);
     }
@@ -596,13 +653,13 @@ class ShopControl extends \oxSuperCfg
     /**
      * Stops resource monitor, summarizes and outputs values.
      *
-     * @param BaseController $view View object
+     * @param FrontendController $view View object
      */
     protected function stopMonitoring($view)
     {
         if ($this->_isDebugMode() && !$this->isAdmin()) {
             $debugLevel = $this->getConfig()->getConfigParam('iDebug');
-            $debugInfo = oxNew('oxDebugInfo');
+            $debugInfo = oxNew(\OxidEsales\Eshop\Core\DebugInfo::class);
 
             $logId = md5(time() . rand() . rand());
             $header = $debugInfo->formatGeneralInfo();
@@ -632,13 +689,13 @@ class ShopControl extends \oxSuperCfg
     /**
      * Forms message for displaying monitoring information on the bottom of the page.
      *
-     * @param BaseController $view
+     * @param FrontendController $view
      *
      * @return string
      */
     protected function formMonitorMessage($view)
     {
-        $debugInfo = oxNew('oxDebugInfo');
+        $debugInfo = oxNew(\OxidEsales\Eshop\Core\DebugInfo::class);
 
         $debugLevel = $this->getConfig()->getConfigParam('iDebug');
 
@@ -656,14 +713,6 @@ class ShopControl extends \oxSuperCfg
         $message .= $debugInfo->formatTimeStamp();
         $message .= $debugInfo->formatExecutionTime($this->getTotalTime());
 
-        if ($debugLevel == 7) {
-            $message .= $debugInfo->formatDbInfo();
-        }
-
-        if ($debugLevel == 2 || $debugLevel == 3 || $debugLevel == 4) {
-            $message .= $debugInfo->formatAdoDbPerf();
-        }
-
         return $message;
     }
 
@@ -671,60 +720,239 @@ class ShopControl extends \oxSuperCfg
      * Shows exceptionError page.
      * possible reason: class does not exist etc. --> just redirect to start page.
      *
-     * @param oxException $exception
+     * @param \OxidEsales\Eshop\Core\Exception\StandardException $exception
      */
     protected function _handleSystemException($exception)
     {
         $exception->debugOut();
 
         if ($this->_isDebugMode()) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay($exception);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($exception);
             $this->_process('exceptionError', 'displayExceptionError');
         } else {
-            oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . 'cl=start', true, 302);
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . 'cl=start', true, 302);
+        }
+    }
+
+    /**
+     * Handle routing exception.
+     * Reason: requested controller id has not matching class --> log if in debug mode and redirect to start page.
+     *
+     * @param RoutingException $exception
+     */
+    protected function handleRoutingException($exception)
+    {
+        if ($this->_isDebugMode()) {
+            $exception->debugOut();
         }
     }
 
     /**
      * Redirect to start page, in debug mode shows error message.
      *
-     * @param oxException $exception Exception
+     * @param \OxidEsales\Eshop\Core\Exception\StandardException $exception Exception
      */
     protected function _handleCookieException($exception)
     {
         if ($this->_isDebugMode()) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay($exception);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($exception);
         }
-        oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . 'cl=start', true, 302);
+        \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . 'cl=start', true, 302);
     }
 
     /**
-     * Shows exception message if debug mode is enabled, redirects otherwise.
+     * Handle database exceptions
+     * There is still space for improving this as a similar exception handling for database exceptions may be done in
+     * \OxidEsales\EshopCommunity\Core\Config::init() and the current method may not be executed
      *
-     * @param oxConnectionException $exception message to show on exit
+     * @param \OxidEsales\Eshop\Core\Exception\DatabaseException $exception Exception to handle
      */
-    protected function _handleDbConnectionException($exception)
+    protected function handleDatabaseException(\OxidEsales\Eshop\Core\Exception\DatabaseException $exception)
     {
-        $exception->debugOut();
-
-        if ($this->_isDebugMode()) {
-            oxRegistry::getUtils()->showMessageAndExit($exception->getString());
+        /**
+         * There may be some more exceptions, while trying to retrieve debug mode.
+         * As we are already inside the exception handling process, we MUST catch any exception here.
+         * The exception newly thrown will not be handled as we might end up in a loop.
+         */
+        try {
+            $debugMode = $this->_isDebugMode();
+        } catch (\Exception $newException) {
+            $this->logException($newException);
+            $debugMode = 0;
         }
-        oxRegistry::getUtils()->redirectOffline();
+        if ($exception instanceof \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException) {
+            try {
+                $this->reportDatabaseConnectionException($exception);
+            } catch (\Exception $newException) {
+                $this->logException($newException);
+            }
+        }
+
+        /**
+         * Do not use oxNew here as this code forms already part of the exception handling process and there should at
+         * least shop code called as possible.
+         */
+        $exceptionHandler = new \OxidEsales\Eshop\Core\Exception\ExceptionHandler($debugMode);
+        $exceptionHandler->handleDatabaseException($exception);
     }
 
     /**
-     * Catching other not caught exceptions.
+     * Handling other not caught exceptions.
      *
-     * @param oxException $exception
+     * @param \OxidEsales\Eshop\Core\Exception\StandardException $exception
      */
     protected function _handleBaseException($exception)
     {
-        $exception->debugOut();
+        $this->logException($exception);
 
         if ($this->_isDebugMode()) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay($exception);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($exception);
             $this->_process('exceptionError', 'displayExceptionError');
         }
+    }
+
+    /**
+     * Log an exception.
+     *
+     * This method forms part of the exception handling process. Any further exceptions must be caught.
+     *
+     * @param \Exception $exception
+     */
+    protected function logException(\Exception $exception)
+    {
+        if (!$exception instanceof \OxidEsales\Eshop\Core\Exception\StandardException) {
+            $exception = new \OxidEsales\Eshop\Core\Exception\StandardException($exception->getMessage(), $exception->getCode(), $exception);
+        }
+        $exception->debugOut();
+    }
+
+    /**
+     * Notify the shop owner about database connection problems.
+     *
+     * This method forms part of the exception handling process. Any further exceptions must be caught.
+     *
+     * @param DatabaseConnectionException $exception Database connection exception to report
+     *
+     * @return null
+     */
+    protected function reportDatabaseConnectionException(DatabaseConnectionException $exception)
+    {
+        /**
+         * If the shop is not in debug mode, a "shop offline" warning is send to the shop admin.
+         * In order not to spam the shop admin, the warning will be sent in a certain interval of time.
+         */
+        if ($this->messageWasSentWithinThreshold() || $this->_isDebugMode()) {
+            return;
+        }
+
+        $result = $this->sendOfflineWarning($exception);
+        if ($result) {
+            file_put_contents($this->offlineWarningTimestampFile, time());
+        }
+    }
+
+    /**
+     * Return true, if a message was already sent within a given threshold.
+     *
+     * This method forms part of the exception handling process. Any further exceptions must be caught.
+     *
+     * @return bool
+     */
+    protected function messageWasSentWithinThreshold()
+    {
+        $wasSentWithinThreshold = false;
+
+        /** @var int $threshold Threshold in seconds */
+        $threshold = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('offlineWarningInterval');
+        if (file_exists($this->offlineWarningTimestampFile)) {
+            $lastSentTimestamp = (int) file_get_contents($this->offlineWarningTimestampFile);
+            $lastSentBefore = time() - $lastSentTimestamp;
+            if ($lastSentBefore < $threshold) {
+                $wasSentWithinThreshold = true;
+            }
+        }
+
+        return $wasSentWithinThreshold;
+    }
+
+    /**
+     * Send an offline warning to the shop owner.
+     * Currently an email is sent to the email address configured as 'sAdminEmail' in the eShop config file.
+     *
+     * This method forms part of the exception handling process. Any further exceptions must be caught.
+     *
+     * @param StandardException $exception
+     *
+     * @return bool Returns true, if the email was sent.
+     */
+    protected function sendOfflineWarning(\OxidEsales\Eshop\Core\Exception\StandardException $exception)
+    {
+        $result = false;
+        /** @var  $emailAddress Email address to sent the message to */
+        $emailAddress = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('sAdminEmail');
+
+        if ($emailAddress) {
+            /** As we are inside the exception handling process, any further exceptions must be caught */
+            $failedShop = isset($_REQUEST['shp']) ? addslashes($_REQUEST['shp']) : 'Base shop';
+
+            $date = date(DATE_RFC822); // RFC 822 (example: Mon, 15 Aug 05 15:52:01 +0000)
+            $script = $_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING'];
+            $referrer = $_SERVER['HTTP_REFERER'];
+
+            //sending a message to admin
+            $emailSubject = 'Offline warning!';
+            $emailBody = "
+                Database connection error in OXID eShop:
+                Date: {$date}
+                Shop: {$failedShop}
+
+                mysql error: " . $exception->getMessage() . "
+                mysql error no: " . $exception->getCode() . "
+
+                Script: {$script}
+                Referrer: {$referrer}";
+
+            $mailer = new PHPMailer();
+            $mailer->isMail();
+
+            $mailer->setFrom($emailAddress);
+            $mailer->addAddress($emailAddress);
+            $mailer->Subject = $emailSubject;
+            $mailer->Body = $emailBody;
+            /** Set the priority of the message
+             * For most clients expecting the Priority header:
+             * 1 = High, 2 = Medium, 3 = Low
+             * */
+            $mailer->Priority = 1;
+            /** MS Outlook custom header */
+            $mailer->addCustomHeader("X-MSMail-Priority: Urgent");
+            /** Set the Importance header: */
+            $mailer->addCustomHeader("Importance: High");
+
+            $result = $mailer->send();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get controller class from key.
+     * Fallback is to use key as class if no match can be found.
+     *
+     * @param string $controllerKey
+     *
+     * @return string
+     */
+    protected function getControllerClass($controllerKey)
+    {
+        /** Remove try catch block after routing BC is removed */
+        try {
+            $controllerClass = $this->resolveControllerClass($controllerKey);
+        } catch (\OxidEsales\Eshop\Core\Exception\RoutingException $exception) {
+            $this->handleRoutingException($exception);
+            $controllerClass = $controllerKey;
+        }
+
+        return $controllerClass;
     }
 }

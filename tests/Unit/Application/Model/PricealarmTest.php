@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
 use \oxRegistry;
@@ -43,7 +43,7 @@ class PricealarmTest extends \OxidTestCase
     public function testInsert()
     {
         oxAddClassModule('modOxUtilsDate', 'oxUtilsDate');
-        oxRegistry::get("oxUtilsDate")->UNITSetTime(100);
+        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->UNITSetTime(100);
 
         $oAlarm = oxNew('oxpricealarm');
         $oAlarm->setId('testalarm');
@@ -150,7 +150,7 @@ class PricealarmTest extends \OxidTestCase
         $oAlarm->oxpricealarm__oxprice = new oxField('13', oxField::T_RAW);
         $oAlarm->save();
 
-        $oAlarm = $this->getMock('oxpricealarm', array('getPrice'));
+        $oAlarm = $this->getMock(\OxidEsales\Eshop\Application\Model\PriceAlarm::class, array('getPrice'));
         $oAlarm->expects($this->once())->method('getPrice')->will($this->returnValue("15"));
         $oAlarm->load('testalarm');
         $this->assertEquals(0, $oAlarm->getPriceAlarmStatus());
@@ -164,7 +164,7 @@ class PricealarmTest extends \OxidTestCase
         $oAlarm->oxpricealarm__oxsended = new oxField('2010-10-10 00:00:00', oxField::T_RAW);
         $oAlarm->save();
 
-        $oAlarm = $this->getMock('oxpricealarm', array('getPrice'));
+        $oAlarm = $this->getMock(\OxidEsales\Eshop\Application\Model\PriceAlarm::class, array('getPrice'));
         $oAlarm->expects($this->once())->method('getPrice')->will($this->returnValue("15"));
         $oAlarm->load('testalarm');
         $this->assertEquals(2, $oAlarm->getPriceAlarmStatus());
@@ -177,7 +177,7 @@ class PricealarmTest extends \OxidTestCase
         $oAlarm->oxpricealarm__oxprice = new oxField('13', oxField::T_RAW);
         $oAlarm->save();
 
-        $oAlarm = $this->getMock('oxpricealarm', array('getPrice'));
+        $oAlarm = $this->getMock(\OxidEsales\Eshop\Application\Model\PriceAlarm::class, array('getPrice'));
         $oAlarm->expects($this->once())->method('getPrice')->will($this->returnValue("12"));
         $oAlarm->load('testalarm');
         $this->assertEquals(1, $oAlarm->getPriceAlarmStatus());

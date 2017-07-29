@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
+namespace OxidEsales\EshopCommunity\Core\GenericImport\ImportObject;
 
 use Exception;
 use oxBase;
@@ -70,8 +70,8 @@ abstract class ImportObject
      * Basic access check for writing data, checks for same shopId, should be overridden if field oxshopid does not
      * exist.
      *
-     * @param oxBase $shopObject Loaded shop object.
-     * @param array  $data       Fields to be written, null for default.
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $shopObject Loaded shop object.
+     * @param array                                  $data       Fields to be written, null for default.
      *
      * @throws Exception on now access
      */
@@ -136,11 +136,11 @@ abstract class ImportObject
         if ($objectName) {
             $shopObject = oxNew($objectName);
         } else {
-            $shopObject = oxNew('oxBase');
+            $shopObject = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
             $shopObject->init($this->getTableName());
         }
 
-        if ($shopObject instanceof oxI18n) {
+        if ($shopObject instanceof \OxidEsales\Eshop\Core\Model\MultiLanguageModel) {
             $shopObject->setLanguage(0);
             $shopObject->setEnableMultilang(false);
         }
@@ -180,7 +180,7 @@ abstract class ImportObject
      */
     protected function getTableName()
     {
-        $shopId = oxRegistry::getConfig()->getShopId();
+        $shopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
 
         return getViewName($this->tableName, -1, $shopId);
     }
@@ -188,16 +188,16 @@ abstract class ImportObject
     /**
      * Issued before saving an object. can modify aData for saving.
      *
-     * @param oxBase $shopObject        shop object
-     * @param array  $data              data to prepare
-     * @param bool   $allowCustomShopId if allow custom shop id
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $shopObject        shop object
+     * @param array                                  $data              data to prepare
+     * @param bool                                   $allowCustomShopId if allow custom shop id
      *
      * @return array
      */
     protected function preAssignObject($shopObject, $data, $allowCustomShopId)
     {
         if (isset($data['OXSHOPID'])) {
-            $data['OXSHOPID'] = oxRegistry::getConfig()->getShopId();
+            $data['OXSHOPID'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
         }
 
         if (!isset($data['OXID'])) {
@@ -219,8 +219,8 @@ abstract class ImportObject
      * Prepares object for saving in shop.
      * Returns true if save can proceed further.
      *
-     * @param oxBase $shopObject Shop object.
-     * @param array  $data       Data for importing.
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $shopObject Shop object.
+     * @param array                                  $data       Data for importing.
      *
      * @return boolean
      */
@@ -286,8 +286,8 @@ abstract class ImportObject
     /**
      * Post saving hook. can finish transactions if needed or adjust related data.
      *
-     * @param oxBase $shopObject Shop object.
-     * @param array  $data       Data to save.
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $shopObject Shop object.
+     * @param array                                  $data       Data to save.
      *
      * @return mixed data to return
      */
@@ -310,7 +310,7 @@ abstract class ImportObject
             return null;
         }
 
-        $database = oxDb::getDb();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $queryWherePart = array();
         $allKeysExists = true;
@@ -340,7 +340,7 @@ abstract class ImportObject
      */
     protected function isAllowedToEdit($shopId)
     {
-        $user = oxNew('oxUser');
+        $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $user->loadAdminUser();
 
         if ($user->oxuser__oxrights->value == "malladmin" || $user->oxuser__oxrights->value == (int) $shopId) {
@@ -369,14 +369,14 @@ abstract class ImportObject
     /**
      * Creates shop object.
      *
-     * @return oxBase
+     * @return \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function createShopObject()
     {
         $objectName = $this->getShopObjectName();
         if ($objectName) {
             $shopObject = oxNew($objectName, 'core');
-            if ($shopObject instanceof oxI18n) {
+            if ($shopObject instanceof \OxidEsales\Eshop\Core\Model\MultiLanguageModel) {
                 $shopObject->setLanguage(0);
                 $shopObject->setEnableMultilang(false);
             }

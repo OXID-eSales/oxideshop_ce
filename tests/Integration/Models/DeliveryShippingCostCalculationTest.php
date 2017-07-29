@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Integration\Models;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Models;
 
 use oxArticle;
 use oxDb;
@@ -27,7 +27,6 @@ use oxDelivery;
 use oxField;
 use oxRegistry;
 use oxUser;
-use oxUtilsObject;
 
 /**
  * Integration test for ESDEV-2954 delivery rules and shipping cost calculation.
@@ -708,8 +707,8 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
      */
     private function insertArticle($oxArtNum = '666-T-V', $categories = null)
     {
-        $testArticleId       = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
-        $testArticleParentId = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+        $testArticleId       = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
+        $testArticleParentId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
 
         //copy from original article parent and variant
         $articleParent = oxNew('oxarticle');
@@ -750,7 +749,7 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
      */
     private function insertUser()
     {
-        $this->testUserId = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+        $this->testUserId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
 
         $user = oxNew('oxUser');
         $user->setId($this->testUserId);
@@ -780,7 +779,7 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
 
         $user->save();
 
-        $newId = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+        $newId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
         $oDb   = oxDb::getDb();
         $sQ    = 'insert into `oxobject2delivery` (oxid, oxdeliveryid, oxobjectid, oxtype ) ' .
                  " values ('$newId', 'oxidstandard', '" . $this->testUserId . "', 'oxdelsetu')";
@@ -800,7 +799,7 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
      */
     private function createRule($data)
     {
-        $deliveryId                    = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+        $deliveryId                    = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
         $this->deliveries[$deliveryId] = $data['oxtitle'];
         $delivery                      = oxNew('oxDelivery');
         $delivery->setId($deliveryId);
@@ -824,7 +823,7 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
      */
     private function createDeliverySet($ruleIds, $title = 'shippingCostRulesTest')
     {
-        $deliverySetId = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+        $deliverySetId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
         $deliveryset   = oxNew('oxDeliverySet');
         $deliveryset->setId($deliverySetId);
         $deliveryset->oxdeliveryset__oxtitle  = new oxField($title, oxField::T_RAW);
@@ -847,7 +846,7 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
      */
     private function attachDelivery2DeliverySet($deliverySetId, $deliveryId)
     {
-        $delivery2deliverySetId = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+        $delivery2deliverySetId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
         $delivery2deliverySet   = oxNew('oxBase');
         $delivery2deliverySet->init('oxdel2delset');
 
@@ -866,7 +865,7 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
      */
     private function attachObject2Delivery($deliveryId, $objectId, $type)
     {
-        $object2DeliveryId = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+        $object2DeliveryId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
         $object2Delivery   = oxNew('oxBase');
         $object2Delivery->init('oxobject2delivery');
 
@@ -882,7 +881,7 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
      */
     private function attachDeliveryset2Payment($deliverySetId)
     {
-        $object2PaymenId = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+        $object2PaymenId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
         $object2Payment  = oxNew('oxBase');
         $object2Payment->init('oxobject2payment');
 
@@ -898,7 +897,7 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
      */
     private function attachArticle2Category($articleId, $categoryId)
     {
-        $object2CategoryId = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+        $object2CategoryId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
         $object2Category   = oxNew('oxObject2Category');
 
         $object2Category->setId($object2CategoryId);

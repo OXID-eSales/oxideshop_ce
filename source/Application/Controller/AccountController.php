@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 use oxUtilsUrl;
@@ -31,7 +31,7 @@ use oxUtilsUrl;
  * is a link for logging out. Template includes Topoffer , bargain
  * boxes. OXID eShop -> MY ACCOUNT.
  */
-class AccountController extends \oxUBase
+class AccountController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
      * Number of user's orders.
@@ -161,7 +161,7 @@ class AccountController extends \oxUBase
      */
     public function confirmTerms()
     {
-        $termsConfirmation = oxRegistry::getConfig()->getRequestParameter("term");
+        $termsConfirmation = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("term");
         if (!$termsConfirmation && $this->isEnabledPrivateSales()) {
             $user = $this->getUser();
             if ($user && !$user->isTermsAccepted()) {
@@ -184,11 +184,11 @@ class AccountController extends \oxUBase
     {
         $parameters = parent::getNavigationParams();
 
-        if ($sourceClass = oxRegistry::getConfig()->getRequestParameter("sourcecl")) {
+        if ($sourceClass = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sourcecl")) {
             $parameters['sourcecl'] = $sourceClass;
         }
 
-        if ($articleId = oxRegistry::getConfig()->getRequestParameter("anid")) {
+        if ($articleId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("anid")) {
             $parameters['anid'] = $articleId;
         }
 
@@ -209,10 +209,9 @@ class AccountController extends \oxUBase
     public function redirectAfterLogin()
     {
         // in case source class is provided - redirecting back to it with all default parameters
-        if (($sourceClass = oxRegistry::getConfig()->getRequestParameter("sourcecl")) &&
+        if (($sourceClass = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sourcecl")) &&
             $this->_oaComponents['oxcmp_user']->getLoginStatus() === USER_LOGIN_SUCCESS
         ) {
-
             $redirectUrl = $this->getConfig()->getShopUrl() . 'index.php?cl=' . rawurlencode($sourceClass);
 
             // building redirect link
@@ -222,9 +221,9 @@ class AccountController extends \oxUBase
                 }
             }
 
-            /** @var oxUtilsUrl $utilsUrl */
-            $utilsUrl = oxRegistry::get("oxUtilsUrl");
-            return oxRegistry::getUtils()->redirect($utilsUrl->processUrl($redirectUrl), true, 302);
+            /** @var \OxidEsales\Eshop\Core\UtilsUrl $utilsUrl */
+            $utilsUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl();
+            return \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($utilsUrl->processUrl($redirectUrl), true, 302);
         }
     }
 
@@ -254,7 +253,7 @@ class AccountController extends \oxUBase
     {
         if ($this->_sArticleId === null) {
             // passing wishlist information
-            if ($articleId = oxRegistry::getConfig()->getRequestParameter('aid')) {
+            if ($articleId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aid')) {
                 $this->_sArticleId = $articleId;
             }
         }
@@ -272,7 +271,7 @@ class AccountController extends \oxUBase
         if ($this->_sSearchParamForHtml === null) {
             $this->_sSearchParamForHtml = false;
             if ($this->getArticleId()) {
-                $this->_sSearchParamForHtml = oxRegistry::getConfig()->getRequestParameter('searchparam');
+                $this->_sSearchParamForHtml = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchparam');
             }
         }
 
@@ -289,7 +288,7 @@ class AccountController extends \oxUBase
         if ($this->_sSearchParam === null) {
             $this->_sSearchParam = false;
             if ($this->getArticleId()) {
-                $this->_sSearchParam = rawurlencode(oxRegistry::getConfig()->getRequestParameter('searchparam', true));
+                $this->_sSearchParam = rawurlencode(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchparam', true));
             }
         }
 
@@ -307,7 +306,7 @@ class AccountController extends \oxUBase
             $this->_sListType = false;
             if ($this->getArticleId()) {
                 // searching in vendor #671
-                $this->_sListType = oxRegistry::getConfig()->getRequestParameter('listtype');
+                $this->_sListType = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('listtype');
             }
         }
 
@@ -323,7 +322,7 @@ class AccountController extends \oxUBase
     {
         $paths = array();
         $pathData = array();
-        $language = oxRegistry::getLang();
+        $language = \OxidEsales\Eshop\Core\Registry::getLang();
         $baseLanguageId = $language->getBaseLanguage();
         if ($user = $this->getUser()) {
             $username = $user->oxuser__oxusername->value;
@@ -344,7 +343,7 @@ class AccountController extends \oxUBase
      */
     public function getCompareItemsCnt()
     {
-        $compare = oxNew("Compare");
+        $compare = oxNew(\OxidEsales\Eshop\Application\Controller\CompareController::class);
 
         return $compare->getCompareItemsCnt();
     }
@@ -359,8 +358,8 @@ class AccountController extends \oxUBase
         $title = parent::getTitle();
 
         if ($this->getConfig()->getActiveView()->getClassName() == 'account') {
-            $baseLanguageId = oxRegistry::getLang()->getBaseLanguage();
-            $title = oxRegistry::getLang()->translateString('PAGE_TITLE_ACCOUNT', $baseLanguageId, false);
+            $baseLanguageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+            $title = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('PAGE_TITLE_ACCOUNT', $baseLanguageId, false);
             if ($user = $this->getUser()) {
                 $username = $user->oxuser__oxusername->value;
                 $title .= ' - "' . $username . '"';

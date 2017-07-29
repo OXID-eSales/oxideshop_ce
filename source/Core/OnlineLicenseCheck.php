@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxOnlineLicenseCheckCaller;
 use oxUserCounter;
@@ -82,19 +82,19 @@ class OnlineLicenseCheck
      */
     protected $_blIsException = false;
 
-    /** @var oxOnlineLicenseCheckCaller */
+    /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheckCaller */
     protected $_oCaller = null;
 
-    /** @var oxUserCounter */
+    /** @var \OxidEsales\Eshop\Core\UserCounter */
     protected $_oUserCounter = null;
 
-    /** @var oxServersManager */
+    /** @var \OxidEsales\Eshop\Core\ServersManager */
     protected $_oServersManager = null;
 
     /**
      * Sets servers manager.
      *
-     * @param oxServersManager $oServersManager
+     * @param \OxidEsales\Eshop\Core\ServersManager $oServersManager
      */
     public function setServersManager($oServersManager)
     {
@@ -104,7 +104,7 @@ class OnlineLicenseCheck
     /**
      * Gets servers manager.
      *
-     * @return oxServersManager
+     * @return \OxidEsales\Eshop\Core\ServersManager
      */
     public function getServersManager()
     {
@@ -114,7 +114,7 @@ class OnlineLicenseCheck
     /**
      * Sets user counter.
      *
-     * @param oxUserCounter $oUserCounter
+     * @param \OxidEsales\Eshop\Core\UserCounter $oUserCounter
      */
     public function setUserCounter($oUserCounter)
     {
@@ -124,7 +124,7 @@ class OnlineLicenseCheck
     /**
      * Gets user counter.
      *
-     * @return oxUserCounter
+     * @return \OxidEsales\Eshop\Core\UserCounter
      */
     public function getUserCounter()
     {
@@ -135,7 +135,7 @@ class OnlineLicenseCheck
     /**
      * Sets dependencies.
      *
-     * @param oxOnlineLicenseCheckCaller $oCaller
+     * @param \OxidEsales\Eshop\Core\OnlineLicenseCheckCaller $oCaller
      */
     public function __construct($oCaller)
     {
@@ -169,7 +169,7 @@ class OnlineLicenseCheck
      */
     public function validateShopSerials()
     {
-        $aSerials = oxRegistry::getConfig()->getConfigParam("aSerials");
+        $aSerials = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("aSerials");
         if (!$this->validate($aSerials) && !$this->isException()) {
             $this->_startGracePeriod();
         }
@@ -184,7 +184,7 @@ class OnlineLicenseCheck
      */
     public function validateNewSerial($sSerial)
     {
-        $aSerials = oxRegistry::getConfig()->getConfigParam("aSerials");
+        $aSerials = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("aSerials");
         $aSerials[] = array('attributes' => array('state' => 'new'), 'value' => $sSerial);
 
         return $this->validate($aSerials);
@@ -214,7 +214,7 @@ class OnlineLicenseCheck
             if ($blResult) {
                 $this->_logSuccess();
             }
-        } catch (oxException $oEx) {
+        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
             $this->_setErrorMessage($oEx->getMessage());
             $this->_setIsException(true);
         }
@@ -235,7 +235,7 @@ class OnlineLicenseCheck
     /**
      * Gets caller.
      *
-     * @return oxOnlineLicenseCheckCaller
+     * @return \OxidEsales\Eshop\Core\OnlineLicenseCheckCaller
      */
     protected function _getCaller()
     {
@@ -245,7 +245,7 @@ class OnlineLicenseCheck
     /**
      * Performs a check of the response code and message.
      *
-     * @param oxOnlineLicenseCheckResponse $oResponse
+     * @param \OxidEsales\Eshop\Core\OnlineLicenseCheckResponse $oResponse
      *
      * @throws oxException
      *
@@ -261,12 +261,12 @@ class OnlineLicenseCheck
                 $blValid = true;
             } else {
                 // serial keys are not valid
-                $this->_setErrorMessage(oxRegistry::getLang()->translateString('OLC_ERROR_SERIAL_NOT_VALID'));
+                $this->_setErrorMessage(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('OLC_ERROR_SERIAL_NOT_VALID'));
                 $blValid = false;
             }
         } else {
             // validation result is unknown
-            throw new oxException('OLC_ERROR_RESPONSE_NOT_VALID');
+            throw new \OxidEsales\Eshop\Core\Exception\StandardException('OLC_ERROR_RESPONSE_NOT_VALID');
         }
 
         return $blValid;
@@ -279,14 +279,14 @@ class OnlineLicenseCheck
      *
      * @throws oxException
      *
-     * @return oxOnlineLicenseCheckRequest
+     * @return \OxidEsales\Eshop\Core\OnlineLicenseCheckRequest
      */
     protected function _formRequest($aSerials)
     {
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-        /** @var oxOnlineLicenseCheckRequest $oRequest */
-        $oRequest = oxNew('oxOnlineLicenseCheckRequest');
+        /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheckRequest $oRequest */
+        $oRequest = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest::class);
 
         $oRequest->revision = $oConfig->getRevision();
 
@@ -331,7 +331,7 @@ class OnlineLicenseCheck
 
         $aCounters[] = array(
             'name' => 'subShops',
-            'value' => oxRegistry::getConfig()->getMandateCount(),
+            'value' => \OxidEsales\Eshop\Core\Registry::getConfig()->getMandateCount(),
         );
 
         return $aCounters;
@@ -342,9 +342,9 @@ class OnlineLicenseCheck
      */
     protected function _logSuccess()
     {
-        $iTime = oxRegistry::get("oxUtilsDate")->getTime();
-        $sBaseShop = oxRegistry::getConfig()->getBaseShopId();
-        oxRegistry::getConfig()->saveShopConfVar("str", oxOnlineLicenseCheck::CONFIG_VAR_NAME, $iTime, $sBaseShop);
+        $iTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
+        $sBaseShop = \OxidEsales\Eshop\Core\Registry::getConfig()->getBaseShopId();
+        \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar("str", \OxidEsales\Eshop\Core\OnlineLicenseCheck::CONFIG_VAR_NAME, $iTime, $sBaseShop);
     }
 
     /**
@@ -368,7 +368,7 @@ class OnlineLicenseCheck
     /**
      * Gets user counter.
      *
-     * @return oxUserCounter
+     * @return \OxidEsales\Eshop\Core\UserCounter
      */
     protected function _getUserCounter()
     {

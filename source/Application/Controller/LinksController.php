@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 
@@ -30,7 +30,7 @@ use oxRegistry;
  * administrator GUI) with short link description and URL. OXID
  * eShop -> LINKS.
  */
-class LinksController extends \oxUBase
+class LinksController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
 
     /**
@@ -57,7 +57,7 @@ class LinksController extends \oxUBase
         if ($this->_oLinksList === null) {
             $this->_oLinksList = false;
             // Load links
-            $oLinksList = oxNew("oxlist");
+            $oLinksList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oLinksList->init("oxlinks");
             $oLinksList->getList();
             $this->_oLinksList = $oLinksList;
@@ -75,8 +75,8 @@ class LinksController extends \oxUBase
     {
         $aPaths = array();
         $aPath = array();
-        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
-        $aPath['title'] = oxRegistry::getLang()->translateString('LINKS', $iBaseLanguage, false);
+        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('LINKS', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
 
         $aPaths[] = $aPath;

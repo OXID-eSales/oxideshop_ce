@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Component\Widget;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Component\Widget;
 
-use oxCategory;
+use OxidEsales\EshopCommunity\Application\Model\Category;
 
 /**
  * Tests for oxwArticleBox class
@@ -124,7 +124,7 @@ class ArticleBoxTest extends \OxidTestCase
         $sLinkUrl = $oArticleBox->getProduct()->getMainLink();
 
         $oArticleBox->setParent("search");
-        $oConfig = $this->getMock("oxConfig", array('getTopActiveView'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getTopActiveView'));
         $oSearch = oxNew('Search');
         $oConfig->expects($this->any())->method('getTopActiveView')->will($this->returnValue($oSearch));
 
@@ -245,13 +245,13 @@ class ArticleBoxTest extends \OxidTestCase
         $oList = oxNew('aList');
         $oList->setActiveCategory($oCategory);
 
-        $oConfig = $this->getMock('oxConfig', array('getTopActiveView'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getTopActiveView'));
         $oConfig->expects($this->any())->method('getTopActiveView')->will($this->returnValue($oList));
 
-        $oArticleBox = $this->getMock('oxwArticleBox', array('getConfig'));
+        $oArticleBox = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleBox::class, array('getConfig'));
         $oArticleBox->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
-        $this->assertTrue($oArticleBox->getActiveCategory() instanceof oxCategory);
+        $this->assertTrue($oArticleBox->getActiveCategory() instanceof Category);
         $this->assertEquals('943a9ba3050e78b443c16e043ae60ef3', $oArticleBox->getActiveCategory()->getId());
         $this->assertEquals('Eco-Fashion', $oArticleBox->getActiveCategory()->getTitle());
     }
@@ -267,13 +267,13 @@ class ArticleBoxTest extends \OxidTestCase
         $oList = oxNew('aList');
         $oList->setActiveCategory($oCategory);
 
-        $oConfig = $this->getMock('oxConfig', array('getTopActiveView'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getTopActiveView'));
         $oConfig->expects($this->any())->method('getTopActiveView')->will($this->returnValue($oList));
 
-        $oArticleBox = $this->getMock('oxwArticleBox', array('getConfig'));
+        $oArticleBox = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleBox::class, array('getConfig'));
         $oArticleBox->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
-        $this->assertTrue($oArticleBox->getActiveCategory() instanceof oxCategory);
+        $this->assertTrue($oArticleBox->getActiveCategory() instanceof Category);
         $this->assertEquals(null, $oArticleBox->getActiveCategory()->getId());
         $this->assertEquals(null, $oArticleBox->getActiveCategory()->getTitle());
     }

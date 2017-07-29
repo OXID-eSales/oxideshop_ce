@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -28,7 +28,7 @@ use oxDb;
 /**
  * Class controls article assignment to attributes
  */
-class ArticleBundleAjax extends \ajaxListComponent
+class ArticleBundleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**
@@ -62,12 +62,12 @@ class ArticleBundleAjax extends \ajaxListComponent
     protected function _getQuery()
     {
         $myConfig = $this->getConfig();
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sArticleTable = $this->_getViewName('oxarticles');
         $sView = $this->_getViewName('oxobject2category');
 
-        $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchSelId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $sSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $sSynchSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sSelId) {
@@ -118,8 +118,8 @@ class ArticleBundleAjax extends \ajaxListComponent
      */
     public function removeArticleBundle()
     {
-        $oDb = oxDb::getDb();
-        $sQuotedChosenArt = $oDb->quote(oxRegistry::getConfig()->getRequestParameter('oxid'));
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $sQuotedChosenArt = $oDb->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid'));
 
         $sQ = "update oxarticles set oxarticles.oxbundleid = '' where oxarticles.oxid  =  {$sQuotedChosenArt} ";
         $oDb->Execute($sQ);
@@ -130,9 +130,9 @@ class ArticleBundleAjax extends \ajaxListComponent
      */
     public function addArticleBundle()
     {
-        $oDb = oxDb::getDb();
-        $sQuotedChosenArt = $oDb->quote(oxRegistry::getConfig()->getRequestParameter('oxbundleid'));
-        $sQuotedOxId = $oDb->quote(oxRegistry::getConfig()->getRequestParameter('oxid'));
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $sQuotedChosenArt = $oDb->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxbundleid'));
+        $sQuotedOxId = $oDb->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid'));
 
         $sQ = "update oxarticles set oxarticles.oxbundleid =  {$sQuotedChosenArt} " .
               "where oxarticles.oxid  =  {$sQuotedOxId} ";

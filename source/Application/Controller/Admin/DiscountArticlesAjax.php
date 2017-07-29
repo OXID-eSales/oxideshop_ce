@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxDb;
 use oxField;
@@ -28,7 +28,7 @@ use oxField;
 /**
  * Class manages discount articles
  */
-class DiscountArticlesAjax extends \ajaxListComponent
+class DiscountArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
     /**  */
     const NEW_DISCOUNT_LIST_ID = "-1";
@@ -79,7 +79,7 @@ class DiscountArticlesAjax extends \ajaxListComponent
         $sArticleTable = $this->_getViewName('oxarticles');
         $sO2CView = $this->_getViewName('oxobject2category');
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sOxid = $oConfig->getRequestParameter('oxid');
         $sSynchOxid = $oConfig->getRequestParameter('synchoxid');
 
@@ -126,13 +126,11 @@ class DiscountArticlesAjax extends \ajaxListComponent
         $aChosenArt = $this->_getActionIds('oxobject2discount.oxid');
 
         if ($this->getConfig()->getRequestParameter('all')) {
-
             $sQ = parent::_addFilter("delete oxobject2discount.* " . $this->_getQuery());
-            oxDb::getDb()->execute($sQ);
-
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($sQ);
         } elseif (is_array($aChosenArt)) {
-            $sQ = "delete from oxobject2discount where oxobject2discount.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aChosenArt)) . ") ";
-            oxDb::getDb()->execute($sQ);
+            $sQ = "delete from oxobject2discount where oxobject2discount.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt)) . ") ";
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($sQ);
         }
     }
 
@@ -165,11 +163,11 @@ class DiscountArticlesAjax extends \ajaxListComponent
      */
     protected function addArticleToDiscount($discountListId, $articleId)
     {
-        $object2Discount = oxNew("oxBase");
+        $object2Discount = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
         $object2Discount->init('oxobject2discount');
-        $object2Discount->oxobject2discount__oxdiscountid = new oxField($discountListId);
-        $object2Discount->oxobject2discount__oxobjectid = new oxField($articleId);
-        $object2Discount->oxobject2discount__oxtype = new oxField("oxarticles");
+        $object2Discount->oxobject2discount__oxdiscountid = new \OxidEsales\Eshop\Core\Field($discountListId);
+        $object2Discount->oxobject2discount__oxobjectid = new \OxidEsales\Eshop\Core\Field($articleId);
+        $object2Discount->oxobject2discount__oxtype = new \OxidEsales\Eshop\Core\Field("oxarticles");
 
         $object2Discount->save();
     }

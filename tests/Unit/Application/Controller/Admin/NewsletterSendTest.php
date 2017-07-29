@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxField;
 use \oxGroups;
@@ -87,7 +87,7 @@ class NewsletterSendTest extends \OxidTestCase
         $oNewsSubscribed->save();
 
         // testing..
-        $oView = $this->getMock("Newsletter_Send", array("_setupNavigation"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NewsletterSend::class, array("_setupNavigation"));
         $oView->expects($this->once())->method("_setupNavigation");
         $this->assertEquals('newsletter_send.tpl', $oView->render());
 
@@ -126,7 +126,7 @@ class NewsletterSendTest extends \OxidTestCase
         $oNewsSubscribed->save();
 
         // testing..
-        $oView = $this->getMock("Newsletter_Send", array("_setupNavigation", "getUserCount"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NewsletterSend::class, array("_setupNavigation", "getUserCount"));
         $oView->expects($this->exactly(2))->method("_setupNavigation");
         $oView->expects($this->exactly(2))->method("getUserCount")->will($this->returnValue(2));
         $this->assertEquals('newsletter_send.tpl', $oView->render());
@@ -168,11 +168,11 @@ class NewsletterSendTest extends \OxidTestCase
      */
     public function testSetupNavigation()
     {
-        $oNavigation = $this->getMock("oxnavigationtree", array("getTabs", "getActiveTab"));
+        $oNavigation = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationTree::class, array("getTabs", "getActiveTab"));
         $oNavigation->expects($this->once())->method("getTabs")->will($this->returnValue("getTabs"));
         $oNavigation->expects($this->exactly(2))->method("getActiveTab")->will($this->returnValue("getActiveTab"));
 
-        $oView = $this->getMock("Newsletter_Send", array("getNavigation"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NewsletterSend::class, array("getNavigation"));
         $oView->expects($this->once())->method("getNavigation")->will($this->returnValue($oNavigation));
         $oView->UNITsetupNavigation("something");
 

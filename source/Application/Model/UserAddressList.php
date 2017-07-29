@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
 
 /**
  * Class oxUserAddressList
  */
-class UserAddressList extends \oxList
+class UserAddressList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
 
     /**
@@ -53,7 +53,7 @@ class UserAddressList extends \oxList
                 SELECT {$sSelectFields}, `oxcountry`.`oxtitle` AS oxcountry
                 FROM oxaddress
                 LEFT JOIN {$sViewName} AS oxcountry ON oxaddress.oxcountryid = oxcountry.oxid
-                WHERE oxaddress.oxuserid = " . oxDb::getDb()->quote($sUserId);
+                WHERE oxaddress.oxuserid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sUserId);
         $this->selectString($sSelect);
     }
 }

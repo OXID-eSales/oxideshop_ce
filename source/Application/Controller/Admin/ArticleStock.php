@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -33,7 +33,7 @@ use stdClass;
  * stock message, etc; Updates information (on user submit).
  * Admin Menu: Manage Products -> Articles -> Inventory.
  */
-class ArticleStock extends \oxAdminDetails
+class ArticleStock extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -48,7 +48,7 @@ class ArticleStock extends \oxAdminDetails
 
         parent::render();
 
-        $this->_aViewData["edit"] = $oArticle = oxNew("oxArticle");
+        $this->_aViewData["edit"] = $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
         $soxId = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
@@ -75,7 +75,7 @@ class ArticleStock extends \oxAdminDetails
 
             // variant handling
             if ($oArticle->oxarticles__oxparentid->value) {
-                $oParentArticle = oxNew("oxArticle");
+                $oParentArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                 $oParentArticle->load($oArticle->oxarticles__oxparentid->value);
                 $this->_aViewData["parentarticle"] = $oParentArticle;
                 $this->_aViewData["oxparentid"] = $oArticle->oxarticles__oxparentid->value;
@@ -88,7 +88,7 @@ class ArticleStock extends \oxAdminDetails
                 $sShopSelect = " oxshopid =  '$sShopID' ";
             }
 
-            $oPriceList = oxNew("oxlist");
+            $oPriceList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oPriceList->init('oxbase', "oxprice2article");
             $sQ = "select * from oxprice2article where oxartid = '{$soxId}' " .
                   "and {$sShopSelect} and (oxamount > 0 or oxamountto > 0) order by oxamount ";
@@ -108,9 +108,9 @@ class ArticleStock extends \oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
 
-        $oArticle = oxNew("oxArticle");
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oArticle->loadInLang($this->_iEditLang, $soxId);
 
         $oArticle->setLanguage(0);
@@ -124,7 +124,7 @@ class ArticleStock extends \oxAdminDetails
 
         //tells to article to save in different language
         $oArticle->setLanguage($this->_iEditLang);
-        $oArticle = oxRegistry::get("oxUtilsFile")->processFiles($oArticle);
+        $oArticle = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oArticle);
 
         $oArticle->resetRemindStatus();
 
@@ -150,7 +150,7 @@ class ArticleStock extends \oxAdminDetails
         $sOxArtId = $this->getEditObjectId();
         $this->onArticleAmountPriceChange($sOxArtId);
 
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
 
         if (!is_array($aParams)) {
             return;
@@ -184,11 +184,11 @@ class ArticleStock extends \oxAdminDetails
         $dPrice = $aParams['price'];
         $sType = $aParams['pricetype'];
 
-        $oArticlePrice = oxNew("oxBase");
+        $oArticlePrice = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
         $oArticlePrice->init("oxprice2article");
         $oArticlePrice->assign($aParams);
 
-        $oArticlePrice->$sType = new oxField($dPrice);
+        $oArticlePrice->$sType = new \OxidEsales\Eshop\Core\Field($dPrice);
 
         //validating
         if ($oArticlePrice->$sType->value &&
@@ -203,7 +203,7 @@ class ArticleStock extends \oxAdminDetails
         }
 
         // check if abs price is lower than base price
-        $oArticle = oxNew("oxArticle");
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oArticle->loadInLang($this->_iEditLang, $sOxArtId);
         $sPriceField = 'oxarticles__oxprice';
         if (($aParams['price'] >= $oArticle->$sPriceField->value) &&
@@ -213,7 +213,6 @@ class ArticleStock extends \oxAdminDetails
             }
             $this->_aViewData["errorscaleprice"][] = $sOXID;
         }
-
     }
 
     /**
@@ -221,7 +220,7 @@ class ArticleStock extends \oxAdminDetails
      */
     public function updateprices()
     {
-        $aParams = oxRegistry::getConfig()->getRequestParameter("updateval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("updateval");
         if (is_array($aParams)) {
             foreach ($aParams as $soxId => $aStockParams) {
                 $this->addprice($soxId, $aStockParams);
@@ -240,8 +239,8 @@ class ArticleStock extends \oxAdminDetails
     {
         $this->resetContentCache();
 
-        $oDb = oxDb::getDb();
-        $sPriceId = $oDb->quote(oxRegistry::getConfig()->getRequestParameter("priceid"));
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $sPriceId = $oDb->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("priceid"));
         $articleId = $this->getEditObjectId();
         $sId = $oDb->quote($articleId);
         $oDb->execute("delete from oxprice2article where oxid = {$sPriceId} and oxartid = {$sId}");

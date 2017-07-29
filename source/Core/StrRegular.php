@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * Class dealing with regular string handling
@@ -51,8 +51,6 @@ class StrRegular
 
     /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
-     *
-     * @return null;
      */
     public function __construct()
     {
@@ -236,11 +234,11 @@ class StrRegular
     /**
      * PHP preg_match() function wrapper
      *
-     * @param string $sPattern  pattern to search for, as a string
-     * @param string $sSubject  input string
-     * @param array  &$aMatches is filled with the results of search
-     * @param int    $iFlags    flags
-     * @param int    $iOffset   place from which to start the search
+     * @param string $sPattern pattern to search for, as a string
+     * @param string $sSubject input string
+     * @param array  $aMatches is filled with the results of search
+     * @param int    $iFlags   flags
+     * @param int    $iOffset  place from which to start the search
      *
      * @return string
      */
@@ -252,11 +250,11 @@ class StrRegular
     /**
      * PHP preg_match_all() function wrapper
      *
-     * @param string $sPattern  pattern to search for, as a string
-     * @param string $sSubject  input string
-     * @param array  &$aMatches is filled with the results of search
-     * @param int    $iFlags    flags
-     * @param int    $iOffset   place from which to start the search
+     * @param string $sPattern pattern to search for, as a string
+     * @param string $sSubject input string
+     * @param array  $aMatches is filled with the results of search
+     * @param int    $iFlags   flags
+     * @param int    $iOffset  place from which to start the search
      *
      * @return string
      */
@@ -331,7 +329,7 @@ class StrRegular
      * Special chars are: \n \r \t x95 xa0 ;
      *
      * @param string $sStr      string to cleanup
-     * @param object $sCleanChr which character should be used as a replacement (default is empty space)
+     * @param mixed  $sCleanChr which character should be used as a replacement (default is empty space)
      *
      * @return string
      */

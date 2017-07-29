@@ -19,14 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxUniversallyUniqueIdGenerator;
 
 /**
  * Class Unit_Core_oxServersClusterIdGeneratorTest
- *
- * @covers oxServerNodesManager
  */
 class UniversallyUniqueIdGeneratorTest extends \OxidTestCase
 {
@@ -72,7 +70,7 @@ class UniversallyUniqueIdGeneratorTest extends \OxidTestCase
      */
     public function testUUIDV4UniquenessWhenInFallbackMode()
     {
-        $oCheckerMock = $this->getMock('oxOpenSSLFunctionalityChecker', array('isOpenSslRandomBytesGeneratorAvailable'));
+        $oCheckerMock = $this->getMock(\OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker::class, array('isOpenSslRandomBytesGeneratorAvailable'));
         $oCheckerMock->expects($this->any())->method('isOpenSslRandomBytesGeneratorAvailable')->will($this->returnValue(false));
         /** @var oxOpenSSLFunctionalityChecker $oChecker */
         $oChecker = $oCheckerMock;

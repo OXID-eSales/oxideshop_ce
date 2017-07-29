@@ -19,10 +19,10 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use \oxorder;
-use \oxuserpayment;
+use OxidEsales\EshopCommunity\Application\Model\Order;
+use OxidEsales\EshopCommunity\Application\Model\UserPayment;
 
 use \oxField;
 use \Exception;
@@ -61,7 +61,7 @@ class OrderOverviewTest extends \OxidTestCase
         $this->assertEquals('order_overview.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxorder);
+        $this->assertTrue($aViewData['edit'] instanceof order);
     }
 
     /**
@@ -74,13 +74,13 @@ class OrderOverviewTest extends \OxidTestCase
         oxTestModules::addFunction('oxpayment', 'load', '{ $this->oxpayments__oxdesc = new oxField("testValue"); return true; }');
 
         // defining parameters
-        $oOrder = $this->getMock("oxorder", array("getPaymentType"));
+        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array("getPaymentType"));
         $oOrder->oxorder__oxpaymenttype = new oxField("testValue");
 
         $oView = oxNew('Order_Overview');
         $oUserPayment = $oView->UNITgetPaymentType($oOrder);
 
-        $this->assertTrue($oUserPayment instanceof oxuserpayment);
+        $this->assertTrue($oUserPayment instanceof userpayment);
         $this->assertEquals("testValue", $oUserPayment->oxpayments__oxdesc->value);
     }
 
@@ -132,33 +132,6 @@ class OrderOverviewTest extends \OxidTestCase
     }
 
     /**
-     * Order_Overview::CanExport() test case
-     *
-     * @return null
-     */
-    public function testCanExport()
-    {
-        oxTestModules::addFunction('oxModule', 'isActive', '{ return true; }');
-
-        $oBase = oxNew('oxbase');
-        $oBase->init("oxorderarticles");
-        $oBase->setId("_testOrderArticleId");
-        $oBase->oxorderarticles__oxorderid = new oxField("testOrderId");
-        $oBase->oxorderarticles__oxamount = new oxField(1);
-        $oBase->oxorderarticles__oxartid = new oxField("1126");
-        $oBase->oxorderarticles__oxordershopid = new oxField($this->getConfig()->getShopId());
-        $oBase->save();
-
-        // testing..
-        $oView = oxNew('Order_Overview');
-
-        $oView = $this->getMock("Order_Overview", array("getEditObjectId"));
-        $oView->expects($this->any())->method('getEditObjectId')->will($this->returnValue('testOrderId'));
-
-        $this->assertTrue($oView->canExport());
-    }
-
-    /**
      * Order shipping date reset test case
      *
      * @return null
@@ -185,7 +158,7 @@ class OrderOverviewTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $soxId);
         $this->assertFalse($oView->canResetShippingDate());
 
-        $oOrder->oxorder__oxsenddate = new oxField(date("Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime()));
+        $oOrder->oxorder__oxsenddate = new oxField(date("Y-m-d H:i:s", \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
         $oOrder->save();
 
         $this->assertTrue($oView->canResetShippingDate());

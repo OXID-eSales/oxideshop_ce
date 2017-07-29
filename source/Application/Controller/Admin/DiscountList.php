@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin discount list manager.
@@ -28,7 +28,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
  * filter them by description, title or delete them.
  * Admin Menu: Shop Settings -> Discounts.
  */
-class DiscountList extends \oxAdminList
+class DiscountList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**

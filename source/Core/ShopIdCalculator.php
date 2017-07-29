@@ -20,9 +20,9 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
-use oxDb;
+use \oxDb;
 
 /**
  * Calculates Shop id from request data or shop url.
@@ -66,11 +66,11 @@ class ShopIdCalculator
      */
     protected function _getConfKey()
     {
-        if (Registry::instanceExists('oxConfigFile')) {
-            $config = Registry::get('oxConfigFile');
+        if (Registry::instanceExists(\OxidEsales\Eshop\Core\ConfigFile::class)) {
+            $config = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class);
         } else {
-            $config = new ConfigFile(getShopBasePath() . '/config.inc.php');
-            Registry::set('oxConfigFile', $config);
+            $config = new \OxidEsales\Eshop\Core\ConfigFile(getShopBasePath() . '/config.inc.php');
+            Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $config);
         }
         return $config->getVar('sConfigKey') ?: Config::DEFAULT_CONFIG_KEY;
     }
@@ -97,15 +97,17 @@ class ShopIdCalculator
 
         $aMap = array();
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sConfKey = $this->_getConfKey();
 
         $sSelect = "SELECT oxshopid, oxvarname, DECODE( oxvarvalue , " . $oDb->quote($sConfKey) . " ) as oxvarvalue " .
             "FROM oxconfig WHERE oxvarname in ('aLanguageURLs','sMallShopURL','sMallSSLShopURL')";
 
-        $oRs = $oDb->select($sSelect, false, false);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
+        $oRs = $masterDb->select($sSelect, false);
 
-        if ($oRs && $oRs->recordCount() > 0) {
+        if ($oRs && $oRs->count() > 0) {
             while (!$oRs->EOF) {
                 $iShp = (int) $oRs->fields[0];
                 $sVar = $oRs->fields[1];
@@ -122,7 +124,7 @@ class ShopIdCalculator
                     $aMap[$sURL] = $iShp;
                 }
 
-                $oRs->moveNext();
+                $oRs->fetchRow();
             }
         }
 

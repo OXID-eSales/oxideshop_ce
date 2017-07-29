@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxField;
 use oxRegistry;
@@ -29,7 +29,7 @@ use oxRegistry;
  * User registration window.
  * Collects and arranges user object data (information, like shipping address, etc.).
  */
-class RegisterController extends \User
+class RegisterController extends \OxidEsales\Eshop\Application\Controller\UserController
 {
 
     /**
@@ -96,7 +96,7 @@ class RegisterController extends \User
      */
     public function getRegistrationError()
     {
-        return oxRegistry::getConfig()->getRequestParameter('newslettererror');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('newslettererror');
     }
 
     /**
@@ -106,7 +106,7 @@ class RegisterController extends \User
      */
     public function getRegistrationStatus()
     {
-        return oxRegistry::getConfig()->getRequestParameter('success');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('success');
     }
 
     /**
@@ -130,23 +130,23 @@ class RegisterController extends \User
      */
     public function confirmRegistration()
     {
-        $oUser = oxNew('oxuser');
+        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         if ($oUser->loadUserByUpdateId($this->getUpdateId())) {
             // resetting update key parameter
             $oUser->setUpdateKey(true);
 
             // saving ..
-            $oUser->oxuser__oxactive = new oxField(1);
+            $oUser->oxuser__oxactive = new \OxidEsales\Eshop\Core\Field(1);
             $oUser->save();
 
             // forcing user login
-            oxRegistry::getSession()->setVariable('usr', $oUser->getId());
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('usr', $oUser->getId());
 
             // redirecting to confirmation page
             return 'register?confirmstate=1';
         } else {
             // confirmation failed
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay('REGISTER_ERRLINKEXPIRED', false, true);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('REGISTER_ERRLINKEXPIRED', false, true);
 
             // redirecting to confirmation page
             return 'account';
@@ -160,7 +160,7 @@ class RegisterController extends \User
      */
     public function getUpdateId()
     {
-        return oxRegistry::getConfig()->getRequestParameter('uid');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('uid');
     }
 
     /**
@@ -170,7 +170,7 @@ class RegisterController extends \User
      */
     public function isConfirmed()
     {
-        return (bool) oxRegistry::getConfig()->getRequestParameter("confirmstate");
+        return (bool) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("confirmstate");
     }
 
     /**
@@ -183,8 +183,8 @@ class RegisterController extends \User
         $aPaths = array();
         $aPath = array();
 
-        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
-        $aPath['title'] = oxRegistry::getLang()->translateString('REGISTER', $iBaseLanguage, false);
+        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('REGISTER', $iBaseLanguage, false);
         $aPath['link']  = $this->getLink();
         $aPaths[] = $aPath;
 

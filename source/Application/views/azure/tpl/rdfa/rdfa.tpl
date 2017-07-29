@@ -1,5 +1,0 @@
-[{if $oView->getClassName() eq "details"}]
-    [{include file="rdfa/details/details.tpl"}]
-[{elseif $oView->getClassName() eq "content"}]
-    [{include file="rdfa/content/content.tpl"}]
-[{/if}]

@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
 use \oxDb;
@@ -55,7 +55,7 @@ class OrderFileTest extends \OxidTestCase
         $oOrderFile = oxNew('oxOrderFile');
         $oOrderFile->load($id);
 
-        $sDate = date('Y-m-d', oxRegistry::get('oxUtilsDate')->getTime() + 24 * 3600);
+        $sDate = date('Y-m-d', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() + 24 * 3600);
 
         $this->assertEquals('orderId', $oOrderFile->oxorderfiles__oxorderid->value);
         $this->assertEquals('orderArticleId', $oOrderFile->oxorderfiles__oxorderarticleid->value);
@@ -133,7 +133,7 @@ class OrderFileTest extends \OxidTestCase
         $this->assertEquals('2011-10-20 00:00:00', $oOrderFile->oxorderfiles__oxlastdownload->value);
         $this->assertEquals("2011-10-20 12:12:00", $oOrderFile->oxorderfiles__oxvaliduntil->value);
 
-        $iTime = oxRegistry::get('oxUtilsDate')->getTime();
+        $iTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $sDate = date('Y-m-d H:i:s', $iTime + 24 * 3600);
 
         $oOrderFile->reset();
@@ -217,7 +217,7 @@ class OrderFileTest extends \OxidTestCase
 
         $sNowDate = date('Y-m-d H:i:s');
 
-        $sNow = oxRegistry::get("oxUtilsDate")->getTime();
+        $sNow = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $sDate = date('Y-m-d H:i:s', $sNow);
 
         $oOrderFile = oxNew('oxOrderFile');

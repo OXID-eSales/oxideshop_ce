@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxPayment;
 use \oxField;
@@ -100,7 +100,14 @@ class PaymentTest extends \OxidTestCase
                         'oxidpricea',
                         'oxidpricec');
 
-        $this->assertEquals($aArray, $oPayment->getGroups()->arrayKeys());
+        $this->assertEquals(
+                            $aArray,
+                            $oPayment->getGroups()->arrayKeys(),
+                            "Groups are not as expected.",
+                            0.0,
+                            10,
+                            true
+        );
     }
 
     /**
@@ -245,7 +252,7 @@ class PaymentTest extends \OxidTestCase
         $oPayment->oxpayments__oxid = new oxField('oxempty', oxField::T_RAW);
         $oPayment->oxpayments__oxactive = new oxField(1);
 
-        $oUser = $this->getMock('oxuser', array('getActiveCountry'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getActiveCountry'));
         $oUser->expects($this->once())->method('getActiveCountry')->will($this->returnValue('otherCountry'));
         $oUser->Load('oxdefaultadmin');
 
@@ -379,7 +386,7 @@ class PaymentTest extends \OxidTestCase
      */
     public function testIsValidPaymentInGroup()
     {
-        $oPayment = oxNew('Unit\Application\Model\testPayment');
+        $oPayment = oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\testPayment::class);
         $oPayment->Load('oxcreditcard');
 
         $oUser = oxNew('oxuser');

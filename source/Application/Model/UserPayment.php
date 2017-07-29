@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxRegistry;
 use oxDb;
@@ -31,7 +31,7 @@ use oxDb;
  * user payment.
  *
  */
-class UserPayment extends \oxBase
+class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
 
     // you can change this if you want more security
@@ -86,7 +86,7 @@ class UserPayment extends \oxBase
         //due to compatibility with templates
         if ($sName == 'oxpayments__oxdesc') {
             if ($this->_oPayment === null) {
-                $this->_oPayment = oxNew('oxpayment');
+                $this->_oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
                 $this->_oPayment->load($this->oxuserpayments__oxpaymentsid->value);
             }
 
@@ -111,7 +111,7 @@ class UserPayment extends \oxBase
     {
         parent::__construct();
         $this->init('oxuserpayments');
-        $this->_sPaymentKey = oxRegistry::getUtils()->strRot13($this->_sPaymentKey);
+        $this->_sPaymentKey = \OxidEsales\Eshop\Core\Registry::getUtils()->strRot13($this->_sPaymentKey);
         $this->setStoreCreditCardInfo($this->getConfig()->getConfigParam('blStoreCreditCardInfo'));
     }
 
@@ -135,7 +135,7 @@ class UserPayment extends \oxBase
     public function load($sOxId)
     {
         $sSelect = 'select oxid, oxuserid, oxpaymentsid, DECODE( oxvalue, "' . $this->getPaymentKey() . '" ) as oxvalue
-                    from oxuserpayments where oxid = ' . oxDb::getDb()->quote($sOxId);
+                    from oxuserpayments where oxid = ' . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sOxId);
 
         return $this->assignRecord($sSelect);
     }
@@ -156,8 +156,10 @@ class UserPayment extends \oxBase
 
         //encode sensitive data
         if ($sValue = $this->oxuserpayments__oxvalue->value) {
-            $oDb = oxDb::getDb();
-            $sEncodedValue = $oDb->getOne("select encode( " . $oDb->quote($sValue) . ", '" . $this->getPaymentKey() . "' )", false, false);
+            // Function is called from inside a transaction in Category::save (see ESDEV-3804 and ESDEV-3822).
+            // No need to explicitly force master here.
+            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+            $sEncodedValue = $database->getOne("select encode( " . $database->quote($sValue) . ", '" . $this->getPaymentKey() . "' )");
             $this->oxuserpayments__oxvalue->setValue($sEncodedValue);
         }
 
@@ -178,11 +180,14 @@ class UserPayment extends \oxBase
      */
     protected function _update()
     {
-        $oDb = oxDb::getDb();
 
         //encode sensitive data
         if ($sValue = $this->oxuserpayments__oxvalue->value) {
-            $sEncodedValue = $oDb->getOne("select encode( " . $oDb->quote($sValue) . ", '" . $this->getPaymentKey() . "' )", false, false);
+            // Function is called from inside a transaction in Category::save (see ESDEV-3804 and ESDEV-3822).
+            // No need to explicitly force master here.
+            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+
+            $sEncodedValue = $database->getOne("select encode( " . $database->quote($sValue) . ", '" . $this->getPaymentKey() . "' )");
             $this->oxuserpayments__oxvalue->setValue($sEncodedValue);
         }
 
@@ -219,8 +224,8 @@ class UserPayment extends \oxBase
     /**
      * Get user payment by payment id
      *
-     * @param oxUser $oUser        user object
-     * @param string $sPaymentType payment type
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser        user object
+     * @param string                                   $sPaymentType payment type
      *
      * @return bool
      */
@@ -228,7 +233,7 @@ class UserPayment extends \oxBase
     {
         $blGet = false;
         if ($oUser && $sPaymentType != null) {
-            $oDb = oxDb::getDb();
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sQ = 'select oxpaymentid from oxorder where oxpaymenttype=' . $oDb->quote($sPaymentType) . ' and
                     oxuserid=' . $oDb->quote($oUser->getId()) . ' order by oxorderdate desc';
             if (($sOxId = $oDb->getOne($sQ))) {
@@ -251,13 +256,12 @@ class UserPayment extends \oxBase
         }
 
         if (!$this->_aDynValues) {
-
             $sRawDynValue = null;
             if (is_object($this->oxuserpayments__oxvalue)) {
                 $sRawDynValue = $this->oxuserpayments__oxvalue->getRawValue();
             }
 
-            $this->_aDynValues = oxRegistry::getUtils()->assignValuesFromText($sRawDynValue);
+            $this->_aDynValues = \OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($sRawDynValue);
         }
 
         return $this->_aDynValues;

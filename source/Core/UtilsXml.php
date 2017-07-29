@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use DOMDocument;
 
 /**
  * XML document handler
  */
-class UtilsXml extends \oxSuperCfg
+class UtilsXml extends \OxidEsales\Eshop\Core\Base
 {
 
     /**

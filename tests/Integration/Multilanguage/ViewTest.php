@@ -19,14 +19,18 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Integration\Multilanguage;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Multilanguage;
 
 use oxField;
 use oxRegistry;
-use oxUtilsObject;
 
-require_once 'MultilanguageTestCase.php';
-
+/**
+ * Class ViewTest
+ *
+ * @group slow-tests
+ *
+ * @package OxidEsales\EshopCommunity\Tests\Integration\Multilanguage
+ */
 class ViewTest extends MultilanguageTestCase
 {
     /**
@@ -101,7 +105,7 @@ class ViewTest extends MultilanguageTestCase
      */
     private function insertArticle()
     {
-        $this->testArticleId = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+        $this->testArticleId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
 
         //copy from original article
         $article = oxNew('oxArticle');

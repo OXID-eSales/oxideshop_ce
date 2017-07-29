@@ -16,21 +16,33 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Exception\SystemComponentException;
+use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use oxRegistry;
 use oxDb;
+use Exception;
 
 /**
  * System requirements class.
  */
 class SystemRequirements
 {
+    const MODULE_STATUS_UNABLE_TO_DETECT = -1;
+    const MODULE_STATUS_BLOCKS_SETUP = 0;
+    const MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS = 1;
+    const MODULE_STATUS_OK = 2;
+
+    const MODULE_GROUP_ID_SERVER_CONFIG = 'server_config';
+    const MODULE_ID_MOD_REWRITE = 'mod_rewrite';
+    const MODULE_ID_MYSQL_VERSION = 'mysql_version';
+
     /**
      * System required modules
      *
@@ -119,8 +131,7 @@ class SystemRequirements
      * @var array
      */
     protected $_aInfoMap = array(
-        "php_version"        => "PHP_version_at_least_5.3.25",
-        "lib_xml2"           => "LIB_XML2",
+        "php_version"        => "PHP_version_at_least_5.6",
         "php_xml"            => "DOM",
         "open_ssl"           => "OpenSSL",
         "soap"               => "SOAP",
@@ -132,32 +143,17 @@ class SystemRequirements
         "mb_string"          => "mbstring",
         "bc_math"            => "BCMath",
         "allow_url_fopen"    => "allow_url_fopen_or_fsockopen_to_port_80",
-        "php4_compat"        => "Zend_compatibility_mode_must_be_off",
         "request_uri"        => "REQUEST_URI_set",
         "ini_set"            => "ini_set_allowed",
-        "register_globals"   => "register_globals_must_be_off",
-        "memory_limit"       => "PHP_Memory_limit_.28min._14MB.2C_30MB_recommended.29",
+        "memory_limit"       => "PHP_Memory_limit_.28min._32MB.2C_60MB_recommended.29",
         "unicode_support"    => "UTF-8_support",
         "file_uploads"       => "file_uploads_on",
         "mod_rewrite"        => "apache_mod_rewrite_module",
         "server_permissions" => "Files_.26_Folder_Permission_Setup",
         "zend_optimizer"     => "Zend_Optimizer",
-        "bug53632"           => "Not_recommended_PHP_versions",
         "session_autostart"  => "session.auto_start_must_be_off",
-        "magic_quotes_gpc"   => "magic_quotes_must_be_off",
         "mysql_version"      => "Not_recommended_MySQL_versions",
-        // "zend_platform_or_server"
     );
-
-    /**
-     * Returns PHP consntant PHP_INT_SIZE
-     *
-     * @return integer
-     */
-    protected function _getPhpIntSize()
-    {
-        return PHP_INT_SIZE;
-    }
 
     /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
@@ -175,7 +171,7 @@ class SystemRequirements
      * @param string $sMethod Methods name
      * @param array  $aArgs   Argument array
      *
-     * @throws oxSystemComponentException Throws an exception if the called method does not exist or is not accessible
+     * @throws SystemComponentException Throws an exception if the called method does not exist or is not accessible
      * in current class
      *
      * @return string
@@ -191,7 +187,7 @@ class SystemRequirements
             }
         }
 
-        throw new oxSystemComponentException(
+        throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException(
             "Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL
         );
     }
@@ -199,11 +195,11 @@ class SystemRequirements
     /**
      * Returns config instance
      *
-     * @return oxConfig
+     * @return \oxConfig
      */
     public function getConfig()
     {
-        return oxRegistry::getConfig();
+        return \OxidEsales\Eshop\Core\Registry::getConfig();
     }
 
     /**
@@ -225,8 +221,6 @@ class SystemRequirements
     {
         if ($this->_aRequiredModules == null) {
             $aRequiredPHPExtensions = array(
-                'php_version',
-                'lib_xml2',
                 'php_xml',
                 'j_son',
                 'i_conv',
@@ -242,55 +236,30 @@ class SystemRequirements
 
             $aRequiredPHPConfigs = array(
                 'allow_url_fopen',
-                'php4_compat',
                 'request_uri',
                 'ini_set',
-                'register_globals',
                 'memory_limit',
                 'unicode_support',
                 'file_uploads',
                 'session_autostart',
-                'magic_quotes_gpc',
             );
 
             $aRequiredServerConfigs = array(
+                'php_version',
                 'mod_rewrite',
-                'server_permissions',
-                'bug53632'
+                'server_permissions'
             );
 
             if ($this->isAdmin()) {
                 $aRequiredServerConfigs[] = 'mysql_version';
             }
-            $this->_aRequiredModules = array_fill_keys($aRequiredPHPExtensions, 'php_extennsions') +
+            $this->_aRequiredModules = array_fill_keys($aRequiredServerConfigs, 'server_config') +
                                        array_fill_keys($aRequiredPHPConfigs, 'php_config') +
-                                       array_fill_keys($aRequiredServerConfigs, 'server_config');
+                                       array_fill_keys($aRequiredPHPExtensions, 'php_extennsions')
+                                       ;
         }
 
         return $this->_aRequiredModules;
-    }
-
-    /**
-     * Version check for http://bugs.php.net/53632
-     * Assumme that PHP versions < 5.3.5 may have this issue, so
-     * informing users about possible issues
-     * PHP version 5.3.7 has security bug too.
-     *
-     * @return int
-     */
-    public function checkBug53632()
-    {
-        if ($this->_getPhpIntSize() > 4) {
-            return 2;
-        }
-
-        if (version_compare($this->getPhpVersion(), "5.3", ">=")) {
-            if (version_compare($this->getPhpVersion(), "5.3.5", ">=") && version_compare($this->getPhpVersion(), "5.3.7", "!=")) {
-                return 2;
-            }
-        }
-
-        return 1;
     }
 
     /**
@@ -336,7 +305,7 @@ class SystemRequirements
         }
 
         $sTmp = "$sPath/tmp/";
-        $config = new ConfigFile(getShopBasePath() . "/config.inc.php");
+        $config = new \OxidEsales\Eshop\Core\ConfigFile(getShopBasePath() . "/config.inc.php");
         $sCfgTmp = $config->getVar('sCompileDir');
         if ($sCfgTmp && strpos($sCfgTmp, '<sCompileDir') === false) {
             $sTmp = $sCfgTmp;
@@ -565,61 +534,68 @@ class SystemRequirements
     }
 
     /**
-     * Checks if activated allow_url_fopen or fsockopen on port 80 possible
+     * Checks if activated allow_url_fopen and fsockopen on port 80 possible
      *
      * @return integer
      */
     public function checkAllowUrlFopen()
     {
-        $iModStat = @ini_get('allow_url_fopen');
-        $iModStat = ($iModStat && strcasecmp('1', $iModStat)) ? 2 : 1;
-        if ($iModStat == 1) {
-            $iErrNo = 0;
-            $sErrStr = '';
-            if ($oRes = @fsockopen('www.example.com', 80, $iErrNo, $sErrStr, 10)) {
-                $iModStat = 2;
-                fclose($oRes);
-            }
-        }
+        $resultAllowUrlFopen = @ini_get('allow_url_fopen');
+        $resultAllowUrlFopen = strcasecmp('1', $resultAllowUrlFopen);
 
-        return $iModStat ?: 1;
+        if (0 === $resultAllowUrlFopen && 2 === $this->checkFsockopen()) {
+            return 2;
+        }
+        return 1;
     }
 
     /**
-     * PHP4 compatibility mode must be set off:
-     * zend.ze1_compatibility_mode = Off
+     * Check if fsockopen on port 80 possible
      *
      * @return integer
      */
-    public function checkPhp4Compat()
+    public function checkFsockopen()
     {
-        $sZendStatus = (strtolower((string) @ini_get('zend.ze1_compatibility_mode')));
-
-        return in_array($sZendStatus, array('on', '1')) ? 0 : 2;
+        $result = 1;
+        $iErrNo = 0;
+        $sErrStr = '';
+        if ($oRes = @fsockopen('www.example.com', 80, $iErrNo, $sErrStr, 10)) {
+            $result = 2;
+            fclose($oRes);
+        }
+        return $result;
     }
 
     /**
-     * Checks PHP version.
-     * < PHP 5.3.0 - red.
-     * PHP 5.3.0-5.3.24 - yellow.
-     * PHP 5.3.25 or higher - green.
+     * Checks supported PHP versions.
      *
      * @return integer
      */
     public function checkPhpVersion()
     {
-        $sPhpVersion = $this->getPhpVersion();
-        if (version_compare($sPhpVersion, '5.3', '<')) {
-            $iModStat = 0;
-        } elseif (version_compare($sPhpVersion, '5.3.0', '>=') && version_compare($sPhpVersion, '5.3.25', '<')) {
-            $iModStat = 1;
-        } elseif (version_compare($sPhpVersion, '5.3.25', '>=')) {
-            $iModStat = 2;
-        } else {
-            $iModStat = 1;
+        $requirementFits = null;
+
+        $minimalRequiredVersion = '5.5.0';
+        $minimalRecommendedVersion = '5.6.0';
+        $maximalRecommendedVersion = '7.0.9999';
+
+        $installedPhpVersion = $this->getPhpVersion();
+
+        if (version_compare($installedPhpVersion, $minimalRequiredVersion, '<')) {
+            $requirementFits = static::MODULE_STATUS_BLOCKS_SETUP;
         }
 
-        return $iModStat;
+        if (is_null($requirementFits) &&
+            version_compare($installedPhpVersion, $minimalRecommendedVersion, '>=')
+            && version_compare($installedPhpVersion, $maximalRecommendedVersion, '<=')) {
+            $requirementFits = static::MODULE_STATUS_OK;
+        }
+
+        if (is_null($requirementFits)) {
+            $requirementFits = static::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS;
+        }
+
+        return $requirementFits;
     }
 
     /**
@@ -643,23 +619,13 @@ class SystemRequirements
     }
 
     /**
-     * Checks if libxml2 is activated
-     *
-     * @return integer
-     */
-    public function checkLibXml2()
-    {
-        return class_exists('DOMDocument') ? 2 : 0;
-    }
-
-    /**
-     * Checks if php-xml is activated ???
+     * Check if DOM extension is loaded
      *
      * @return integer
      */
     public function checkPhpXml()
     {
-        return class_exists('DOMDocument') ? 2 : 0;
+        return extension_loaded('dom') ? 2 : 0;
     }
 
     /**
@@ -729,90 +695,57 @@ class SystemRequirements
      */
     public function checkMysqlConnect()
     {
-        // MySQL module for MySQL5
-        $iModStat = (extension_loaded('mysql') || extension_loaded('mysqli') || extension_loaded('pdo_mysql')) ? 2 : 0;
-
-        // client version must be >=5
-        if ($iModStat) {
-            $sClientVersion = $this->getMySQLClientVersion();
-            if (version_compare($sClientVersion, '5', '<')) {
-                $iModStat = 1;
-                if (version_compare($sClientVersion, '4', '<')) {
-                    $iModStat = 0;
-                }
-            } elseif (version_compare($sClientVersion, '5.0.36', '>=') &&
-                      version_compare($sClientVersion, '5.0.38', '<')
-            ) {
-                // mantis#0001003: Problems with MySQL version 5.0.37
-                $iModStat = 0;
-            } elseif (version_compare($sClientVersion, '5.0.40', '>') &&
-                      version_compare($sClientVersion, '5.0.42', '<')
-            ) {
-                // mantis#0001877: Exclude MySQL 5.0.41 from system requirements as not fitting
-                $iModStat = 0;
-            }
-            if (strpos($sClientVersion, 'mysqlnd') !== false) {
-                // PHP 5.3 includes new mysqlnd extension
-                $iModStat = 2;
-            }
-        }
-
+        $iModStat = extension_loaded('pdo_mysql') ? 2 : 0;
         return $iModStat;
     }
 
     /**
-     * @return string
-     * @throws Exception
-     */
-    protected function getMySQLClientVersion()
-    {
-        if (extension_loaded("mysql")) {
-            return mysql_get_client_info();
-        }
-
-        if (extension_loaded("mysqli")) {
-            return mysqli_get_client_info();
-        }
-
-        throw new Exception('PHP extension "mysqli" is required!');
-    }
-
-    /**
-     * Checks if current mysql version matches requirements ( >=5 )
+     * Checks if current mysql version matches requirements
      *
-     * @param string $sVersion MySQL version
+     * @param string $installedVersion MySQL version
      *
      * @return int
      */
-    public function checkMysqlVersion($sVersion = null)
+    public function checkMysqlVersion($installedVersion = null)
     {
-        if ($sVersion === null) {
-            $aRez = oxDb::getDb()->getAll("SHOW VARIABLES LIKE 'version'");
-            foreach ($aRez as $aRecord) {
-                $sVersion = $aRecord[1];
-                break;
-            }
+        $requirementFits = null;
+
+        $minimalRequiredVersion = '5.5.0';
+        $maximalRequiredVersion = '5.7.9999';
+
+        if ($installedVersion === null) {
+            $resultContainingDatabaseVersion = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getRow("SHOW VARIABLES LIKE 'version'");
+            $installedVersion = $resultContainingDatabaseVersion[1];
         }
 
-        $iModStat = 0;
-        if (version_compare($sVersion, '5.0.3', '>=')) {
-            $iModStat = 2;
+        if (version_compare($installedVersion, $minimalRequiredVersion, '<')) {
+            $requirementFits = static::MODULE_STATUS_BLOCKS_SETUP;
         }
 
         /**
-         * The following version of MySQL server are reported to not be compatible with OXID eShop
+         * There is a bug in MySQL 5.6,* which under certain conditions affects OXID eShop Enterprise Edition.
+         * Version MySQL 5.6.* in neither recommended nor supported by OXID eSales.
+         * See https://bugs.mysql.com/bug.php?id=79203
          */
-        if (// https://bugs.oxid-esales.com/view.php?id=1877
-            version_compare($sVersion, '5.0.41', '=') ||
-            // https://bugs.oxid-esales.com/view.php?id=1003
-            version_compare($sVersion, '5.0.37', '=') ||
-            // Only a note in http://oxidforge.org/en/installation.html
-            version_compare($sVersion, '5.0.36', '=')
-         ) {
-            $iModStat = 0;
+        if (is_null($requirementFits) &&
+            version_compare($installedVersion, '5.6.0', '>=') &&
+            version_compare($installedVersion, '5.7.0', '<')
+        ) {
+            $requirementFits = static::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS;
         }
 
-        return $iModStat;
+        if (is_null($requirementFits) &&
+            version_compare($installedVersion, $minimalRequiredVersion, '>=') &&
+            version_compare($installedVersion, $maximalRequiredVersion, '<=')
+        ) {
+            $requirementFits = static::MODULE_STATUS_OK;
+        }
+
+        if (is_null($requirementFits)) {
+            $requirementFits = static::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS;
+        }
+
+        return $requirementFits;
     }
 
     /**
@@ -824,7 +757,9 @@ class SystemRequirements
     {
         $iModStat = extension_loaded('gd') ? 1 : 0;
         $iModStat = function_exists('imagecreatetruecolor') ? 2 : $iModStat;
+        $iModStat = function_exists('imagecreatefromgif') ? $iModStat : 0;
         $iModStat = function_exists('imagecreatefromjpeg') ? $iModStat : 0;
+        $iModStat = function_exists('imagecreatefrompng') ? $iModStat : 0;
 
         return $iModStat;
     }
@@ -837,32 +772,6 @@ class SystemRequirements
     public function checkIniSet()
     {
         return (@ini_set('session.name', 'sid') !== false) ? 2 : 0;
-    }
-
-    /**
-     * Checks if register_globals are off/on. Should be off.
-     *
-     * @return integer
-     */
-    public function checkRegisterGlobals()
-    {
-        $sGlobStatus = (strtolower((string) @ini_get('register_globals')));
-
-        return in_array($sGlobStatus, array('on', '1')) ? 0 : 2;
-    }
-
-    /**
-     * Checks if magic_quotes_gpc are off/on. Should be off.
-     *
-     * @return integer
-     */
-    public function checkMagicQuotesGpc()
-    {
-        if (function_exists('get_magic_quotes_gpc')) {
-            return get_magic_quotes_gpc() ? 0 : 2;
-        }
-
-        return 2;
     }
 
     /**
@@ -891,7 +800,6 @@ class SystemRequirements
                 $iModStat = ($iMemLimit >= $this->_getBytes($sDefLimit)) ? 1 : 0;
                 $iModStat = $iModStat ? (($iMemLimit >= $this->_getBytes($sRecLimit)) ? 2 : $iModStat) : $iModStat;
             }
-
         } else {
             $iModStat = -1;
         }
@@ -900,7 +808,7 @@ class SystemRequirements
     }
 
     /**
-     * Additional sql: do not check collation for oxsysrequirements::$_aException columns
+     * Additional sql: do not check collation for \OxidEsales\Eshop\Core\SystemRequirements::$_aException columns
      *
      * @return string
      */
@@ -915,7 +823,7 @@ class SystemRequirements
     }
 
     /**
-     * Checks tables and columns (oxsysrequirements::$_aColumns) collation
+     * Checks tables and columns (\OxidEsales\Eshop\Core\SystemRequirements::$_aColumns) collation
      *
      * @return array
      */
@@ -929,7 +837,7 @@ class SystemRequirements
                     where TABLE_NAME not like "oxv\_%" and table_schema = "' . $myConfig->getConfigParam('dbName') . '"
                     and COLUMN_NAME in ("' . implode('", "', $this->_aColumns) . '") ' . $this->_getAdditionalCheck() .
                    'ORDER BY TABLE_NAME, COLUMN_NAME DESC;';
-        $aRez = oxDb::getDb()->getAll($sSelect);
+        $aRez = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getAll($sSelect);
         foreach ($aRez as $aRetTable) {
             if (!$sCollation) {
                 $sCollation = $aRetTable[2];
@@ -1038,6 +946,27 @@ class SystemRequirements
     }
 
     /**
+     * Apply given filter function to all iterations of SystemRequirementInfo array.
+     *
+     * @param array    $systemRequirementsInfo
+     * @param \Closure $filterFunction         Filter function used for the update of actual values; Function will
+     *                                         receive the same arguments as provided from
+     *                                         `iterateThroughSystemRequirementsInfo` method.
+     *
+     * @return array An array which is in the same format as the main input argument but with updated data.
+     */
+    public static function filter($systemRequirementsInfo, $filterFunction)
+    {
+        $iterator = static::iterateThroughSystemRequirementsInfo($systemRequirementsInfo);
+
+        foreach ($iterator as list($groupId, $moduleId, $moduleState)) {
+            $systemRequirementsInfo[$groupId][$moduleId] = $filterFunction($groupId, $moduleId, $moduleState);
+        }
+
+        return $systemRequirementsInfo;
+    }
+
+    /**
      * Returns passed module state
      *
      * @param string $sModule module name to check
@@ -1052,6 +981,44 @@ class SystemRequirements
             $iModStat = $this->$sCheckFunction();
 
             return $iModStat;
+        }
+    }
+
+    /**
+     * Returns true if given module state is acceptable for setup process to continue.
+     *
+     * @param array $systemRequirementsInfo
+     * @return bool
+     */
+    public static function canSetupContinue($systemRequirementsInfo)
+    {
+        $iterator = static::iterateThroughSystemRequirementsInfo($systemRequirementsInfo);
+
+        foreach ($iterator as list($groupId, $moduleId, $moduleState)) {
+            if ($moduleState === static::MODULE_STATUS_BLOCKS_SETUP) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Iterates through given SystemRequirementsInfo returning three items:
+     *
+     *   - GroupId
+     *   - ModuleId
+     *   - ModuleState
+     *
+     * @param array $systemRequirementsInfo
+     * @return \Generator Iterator which yields [group_id, module_id, module_state].
+     */
+    public static function iterateThroughSystemRequirementsInfo($systemRequirementsInfo)
+    {
+        foreach ($systemRequirementsInfo as $groupId => $modules) {
+            foreach ($modules as $moduleId => $moduleState) {
+                yield [$groupId, $moduleId, $moduleState];
+            }
         }
     }
 
@@ -1137,23 +1104,16 @@ class SystemRequirements
      * returned array components are of form array(module name, block name, template file)
      * only active (oxactive==1) blocks are checked
      *
-     * @todo extract oxtplblocks query to ModuleTemplateBlockRepository
-     *
      * @return array
      */
     public function getMissingTemplateBlocks()
     {
-        $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-        $activeThemeId = oxNew('oxTheme')->getActiveThemeId();
-        $config = $this->getConfig();
-
         $result = array();
         $analized = array();
 
-        $sql = "select * from oxtplblocks where oxactive=1 and oxshopid=? and oxtheme in ('', ?)";
-        $blockRecords = $db->execute($sql, array($config->getShopId(), $activeThemeId));
+        $blockRecords = $this->fetchBlockRecords();
 
-        if ($blockRecords != false && $blockRecords->recordCount() > 0) {
+        if ($blockRecords != false && $blockRecords->count() > 0) {
             while (!$blockRecords->EOF) {
                 $template = $blockRecords->fields['OXTEMPLATE'];
                 $blockName = $blockRecords->fields['OXBLOCKNAME'];
@@ -1173,11 +1133,29 @@ class SystemRequirements
                     );
                 }
 
-                $blockRecords->moveNext();
+                $blockRecords->fetchRow();
             }
         }
 
         return $result;
+    }
+
+    /**
+     * Fetch the active template blocks for the active shop and the active theme.
+     *
+     * @todo extract oxtplblocks query to ModuleTemplateBlockRepository
+     *
+     * @return ResultSetInterface The active template blocks for the active shop and the active theme.
+     */
+    protected function fetchBlockRecords()
+    {
+        $activeThemeId = oxNew(\OxidEsales\Eshop\Core\Theme::class)->getActiveThemeId();
+        $config = $this->getConfig();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+
+        $query = "select * from oxtplblocks where oxactive=1 and oxshopid=? and oxtheme in ('', ?)";
+
+        return $database->select($query, array($config->getShopId(), $activeThemeId));
     }
 
     /**
@@ -1199,7 +1177,7 @@ class SystemRequirements
      */
     protected function _getMinimumMemoryLimit()
     {
-        return '14M';
+        return '32M';
     }
 
     /**
@@ -1209,6 +1187,6 @@ class SystemRequirements
      */
     protected function _getRecommendMemoryLimit()
     {
-        return '30M';
+        return '60M';
     }
 }

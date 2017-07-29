@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxField;
 
@@ -29,7 +29,7 @@ use oxField;
  * Manager class for shopping basket item (class may be overriden).
  *
  */
-class UserBasketItem extends \oxBase
+class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
 
     /**
@@ -100,14 +100,13 @@ class UserBasketItem extends \oxBase
     {
         if (!$this->oxuserbasketitems__oxartid->value) {
             //this exception may not be caught, anyhow this is a critical exception
-            $oEx = oxNew('oxArticleException');
+            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ArticleException::class);
             $oEx->setMessage('EXCEPTION_ARTICLE_NOPRODUCTID');
             throw $oEx;
         }
 
         if ($this->_oArticle === null) {
-
-            $this->_oArticle = oxNew('oxArticle');
+            $this->_oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
             // performance
             /* removed due to #4178
@@ -123,7 +122,6 @@ class UserBasketItem extends \oxBase
             $aSelList = $this->getSelList();
             if (($aSelectlist = $this->_oArticle->getSelectLists()) && is_array($aSelList)) {
                 foreach ($aSelList as $iKey => $iSel) {
-
                     if (isset($aSelectlist[$iKey][$iSel])) {
                         // cloning select list information
                         $aSelectlist[$iKey][$iSel] = clone $aSelectlist[$iKey][$iSel];
@@ -138,7 +136,6 @@ class UserBasketItem extends \oxBase
         }
 
         return $this->_oArticle;
-
     }
 
     /**
@@ -179,7 +176,7 @@ class UserBasketItem extends \oxBase
      */
     public function setSelList($aSelList)
     {
-        $this->oxuserbasketitems__oxsellist = new oxField(serialize($aSelList), oxField::T_RAW);
+        $this->oxuserbasketitems__oxsellist = new \OxidEsales\Eshop\Core\Field(serialize($aSelList), \OxidEsales\Eshop\Core\Field::T_RAW);
     }
 
     /**
@@ -203,7 +200,7 @@ class UserBasketItem extends \oxBase
      */
     public function setPersParams($sPersParams)
     {
-        $this->oxuserbasketitems__oxpersparam = new oxField(serialize($sPersParams), oxField::T_RAW);
+        $this->oxuserbasketitems__oxpersparam = new \OxidEsales\Eshop\Core\Field(serialize($sPersParams), \OxidEsales\Eshop\Core\Field::T_RAW);
     }
 
     /**
@@ -215,12 +212,12 @@ class UserBasketItem extends \oxBase
      *
      * @return null
      */
-    protected function _setFieldData($sFieldName, $sValue, $iDataType = oxField::T_TEXT)
+    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
     {
         if ('oxsellist' === strtolower($sFieldName) || 'oxuserbasketitems__oxsellist' === strtolower($sFieldName)
             || 'oxpersparam' === strtolower($sFieldName) || 'oxuserbasketitems__oxpersparam' === strtolower($sFieldName)
         ) {
-            $iDataType = oxField::T_RAW;
+            $iDataType = \OxidEsales\Eshop\Core\Field::T_RAW;
         }
 
         return parent::_setFieldData($sFieldName, $sValue, $iDataType);

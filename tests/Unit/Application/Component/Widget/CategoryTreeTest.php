@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Component\Widget;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Component\Widget;
 
 /**
  * Tests for oxwCategoryTree class
@@ -45,6 +45,8 @@ class CategoryTreeTest extends \OxidTestCase
      */
     public function testRenderDifferentTemplate()
     {
+        $this->getConfig()->setConfigParam('sTheme', 'azure');
+
         $oCategoryTree = oxNew('oxwCategoryTree');
         $oCategoryTree->setViewParameters(array("sWidgetType" => "header"));
         $this->assertEquals('widget/header/categorylist.tpl', $oCategoryTree->render());
@@ -64,14 +66,14 @@ class CategoryTreeTest extends \OxidTestCase
 
     public function testChecksIfContentCategoryNotReturned()
     {
-        $categoryTree = oxNew('OxidEsales\Eshop\Application\Component\Widget\CategoryTree');
+        $categoryTree = oxNew('OxidEsales\EshopCommunity\Application\Component\Widget\CategoryTree');
 
         $this->assertSame(false, $categoryTree->getContentCategory());
     }
 
     public function testChecksIfContentCategoryReturned()
     {
-        $categoryTree = oxNew('OxidEsales\Eshop\Application\Component\Widget\CategoryTree');
+        $categoryTree = oxNew('OxidEsales\EshopCommunity\Application\Component\Widget\CategoryTree');
         $_GET['oxcid'] = 'test';
 
         $this->assertSame('test', $categoryTree->getContentCategory());

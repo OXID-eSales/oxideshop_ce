@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxRegistry;
 use oxField;
@@ -30,13 +30,13 @@ use oxField;
  * Collects list of vendors according to collection rules (activ, etc.).
  *
  */
-class VendorList extends \oxList
+class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
 
     /**
      * Vendor root.
      *
-     * @var stdClass
+     * @var \stdClass
      */
     protected $_oRoot = null;
 
@@ -57,7 +57,7 @@ class VendorList extends \oxList
     /**
      * Active vendor object
      *
-     * @var oxvendor
+     * @var \OxidEsales\Eshop\Application\Model\Vendor
      */
     protected $_oClickedVendor = null;
 
@@ -117,7 +117,7 @@ class VendorList extends \oxList
 
 
         //Create fake vendor root category
-        $this->_oRoot = oxNew("oxVendor");
+        $this->_oRoot = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
         $this->_oRoot->load('root');
 
         //category fields
@@ -125,7 +125,6 @@ class VendorList extends \oxList
         $this->_aPath[] = $this->_oRoot;
 
         foreach ($this as $sVndId => $oVendor) {
-
             // storing active vendor object
             if ($sVndId == $sActCat) {
                 $this->setClickVendor($oVendor);
@@ -143,7 +142,7 @@ class VendorList extends \oxList
     /**
      * Root vendor list node (which usually is a manually prefilled object) getter
      *
-     * @return oxvendor
+     * @return \OxidEsales\Eshop\Application\Model\Vendor
      */
     public function getRootCat()
     {
@@ -167,7 +166,7 @@ class VendorList extends \oxList
      */
     protected function _addCategoryFields($oVendor)
     {
-        $oVendor->oxcategories__oxid = new oxField("v_" . $oVendor->oxvendor__oxid->value);
+        $oVendor->oxcategories__oxid = new \OxidEsales\Eshop\Core\Field("v_" . $oVendor->oxvendor__oxid->value);
         $oVendor->oxcategories__oxicon = $oVendor->oxvendor__oxicon;
         $oVendor->oxcategories__oxtitle = $oVendor->oxvendor__oxtitle;
         $oVendor->oxcategories__oxdesc = $oVendor->oxvendor__oxshortdesc;
@@ -179,7 +178,7 @@ class VendorList extends \oxList
     /**
      * Sets active (open) vendor object
      *
-     * @param oxvendor $oVendor active vendor
+     * @param \OxidEsales\Eshop\Application\Model\Vendor $oVendor active vendor
      */
     public function setClickVendor($oVendor)
     {
@@ -189,7 +188,7 @@ class VendorList extends \oxList
     /**
      * returns active (open) vendor object
      *
-     * @return oxvendor
+     * @return \OxidEsales\Eshop\Application\Model\Vendor
      */
     public function getClickVendor()
     {
@@ -202,9 +201,8 @@ class VendorList extends \oxList
     protected function _seoSetVendorData()
     {
         // only when SEO id on and in front end
-        if (oxRegistry::getUtils()->seoIsActive() && !$this->isAdmin()) {
-
-            $oEncoder = oxRegistry::get("oxSeoEncoderVendor");
+        if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && !$this->isAdmin()) {
+            $oEncoder = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderVendor::class);
 
             // preparing root vendor category
             if ($this->_oRoot) {

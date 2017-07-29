@@ -19,12 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxCurl;
 use \Exception;
-use oxOnlineCaller;
-use oxOnlineRequest;
+use \oxOnlineCaller;
+use \oxOnlineRequest;
+use \oxTestModules;
+use \OxidEsales\Eshop\Core\OnlineServerEmailBuilder;
 
 /**
  * Class Unit_Core_oxoOnlineCallerTest
@@ -52,6 +54,8 @@ class OnlineCallerTest extends \OxidTestCase
 
     public function testCallWhenFailsAndItsLastAllowedCall()
     {
+        $this->stubExceptionToNotWriteToLog();
+
         /** @var oxOnlineCaller $oCaller */
         $oCaller = $this->getMockForAbstractClass(
             'oxOnlineCaller',
@@ -66,10 +70,12 @@ class OnlineCallerTest extends \OxidTestCase
 
     public function testCallWhenFailsAndThereAreNotAllowedCallsCount()
     {
-        $oEmail = $this->getMock('oxEmail', array('send'));
+        $this->stubExceptionToNotWriteToLog();
+
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('send'));
         // Email send function must be called.
         $oEmail->expects($this->once())->method('send')->will($this->returnValue(true));
-        $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder', array('build'));
+        $oEmailBuilder = $this->getMock(OnlineServerEmailBuilder::class, array('build'));
         $oEmailBuilder->expects($this->any())->method('build')->will($this->returnValue($oEmail));
 
         $oCaller = $this->getMockForAbstractClass(
@@ -87,7 +93,9 @@ class OnlineCallerTest extends \OxidTestCase
 
     public function testCallWhenStatusCodeIndicatesError()
     {
-        $oCurl = $this->getMock('oxCurl', array('execute', 'getStatusCode'));
+        $this->stubExceptionToNotWriteToLog();
+
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute', 'getStatusCode'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue('_testResult'));
         $oCurl->expects($this->any())->method('getStatusCode')->will($this->returnValue(500));
 
@@ -108,6 +116,8 @@ class OnlineCallerTest extends \OxidTestCase
      */
     public function testCallSetsTimeoutOptionForCurlExecution()
     {
+        $this->stubExceptionToNotWriteToLog();
+
         // Arrange
         $curlDouble = new oxOnlineCallerOxCurlOptionDouble();
 
@@ -139,7 +149,7 @@ class OnlineCallerTest extends \OxidTestCase
      */
     private function _getMockedCurl()
     {
-        $oCurl = $this->getMock('oxCurl', array('execute', 'getStatusCode'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute', 'getStatusCode'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue('_testResult'));
         $oCurl->expects($this->any())->method('getStatusCode')->will($this->returnValue(200));
 
@@ -153,22 +163,24 @@ class OnlineCallerTest extends \OxidTestCase
      */
     private function _getMockedCurlWhichThrowsException()
     {
-        $oCurl = $this->getMock('oxCurl', array('execute'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute'));
         $oCurl->expects($this->any())->method('execute')->will($this->throwException(new Exception()));
 
         return $oCurl;
     }
 
     /**
-     * @return oxOnlineServerEmailBuilder
+     * @return OnlineServerEmailBuilder
      */
     private function _getMockedEmailBuilder()
     {
-        $oEmail = $this->getMock('oxEmail', array('send'));
-        $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder', array('build'));
-        $oEmailBuilder->expects($this->any())->method('build')->will($this->returnValue($oEmail));
+        $emailMock = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('send'));
 
-        return $oEmailBuilder;
+        $emailBuilderMock = $this->getMock(OnlineServerEmailBuilder::class, array('build'));
+        $emailBuilderMock->expects($this->any())->method('build')->will($this->returnValue($emailMock));
+
+        /** @var OnlineServerEmailBuilder $emailBuilderMock */
+        return $emailBuilderMock;
     }
 
     /**
@@ -202,7 +214,7 @@ class OnlineCallerTest extends \OxidTestCase
      */
     private function _getMockedSimpleXML()
     {
-        $oSimpleXML = $this->getMock('oxSimpleXml', array('objectToXml'));
+        $oSimpleXML = $this->getMock(\OxidEsales\Eshop\Core\SimpleXml::class, array('objectToXml'));
         $oSimpleXML->expects($this->any())->method('objectToXml')->will($this->returnValue('_someXML'));
 
         return $oSimpleXML;

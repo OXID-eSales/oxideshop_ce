@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxOnlineLicenseCheckRequest;
 use oxRegistry;
@@ -36,7 +36,7 @@ use oxOnlineLicenseCheckResponse ;
  *
  * @ignore   This class will not be included in documentation.
  */
-class OnlineLicenseCheckCaller extends \oxOnlineCaller
+class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
 {
 
     /** Online License Key Check web service url. */
@@ -55,12 +55,12 @@ class OnlineLicenseCheckCaller extends \oxOnlineCaller
     /**
      * Performs Web service request
      *
-     * @param oxOnlineLicenseCheckRequest $oRequest Object with request parameters
+     * @param \OxidEsales\Eshop\Core\OnlineLicenseCheckRequest $oRequest Object with request parameters
      *
      * @throws oxException
-     * @return oxOnlineLicenseCheckResponse
+     * @return \OxidEsales\Eshop\Core\OnlineLicenseCheckResponse
      */
-    public function doRequest(oxOnlineLicenseCheckRequest $oRequest)
+    public function doRequest(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest $oRequest)
     {
         return $this->_formResponse($this->call($oRequest));
     }
@@ -68,7 +68,7 @@ class OnlineLicenseCheckCaller extends \oxOnlineCaller
     /**
      * Removes serial keys from request and forms email body.
      *
-     * @param oxOnlineLicenseCheckRequest $oRequest
+     * @param \OxidEsales\Eshop\Core\OnlineLicenseCheckRequest $oRequest
      *
      * @return string
      */
@@ -86,30 +86,30 @@ class OnlineLicenseCheckCaller extends \oxOnlineCaller
      *
      * @throws oxException
      *
-     * @return oxOnlineLicenseCheckResponse
+     * @return \OxidEsales\Eshop\Core\OnlineLicenseCheckResponse
      */
     protected function _formResponse($sRawResponse)
     {
-        /** @var oxUtilsXml $oUtilsXml */
-        $oUtilsXml = oxRegistry::get("oxUtilsXml");
+        /** @var \OxidEsales\Eshop\Core\UtilsXml $oUtilsXml */
+        $oUtilsXml = \OxidEsales\Eshop\Core\Registry::getUtilsXml();
         if (empty($sRawResponse) || !($oDomDoc = $oUtilsXml->loadXml($sRawResponse))) {
-            throw new oxException('OLC_ERROR_RESPONSE_NOT_VALID');
+            throw new \OxidEsales\Eshop\Core\Exception\StandardException('OLC_ERROR_RESPONSE_NOT_VALID');
         }
 
         if ($oDomDoc->documentElement->nodeName != $this->_sResponseElement) {
-            throw new oxException('OLC_ERROR_RESPONSE_UNEXPECTED');
+            throw new \OxidEsales\Eshop\Core\Exception\StandardException('OLC_ERROR_RESPONSE_UNEXPECTED');
         }
 
         $oResponseNode = $oDomDoc->firstChild;
 
         if (!$oResponseNode->hasChildNodes()) {
-            throw new oxException('OLC_ERROR_RESPONSE_NOT_VALID');
+            throw new \OxidEsales\Eshop\Core\Exception\StandardException('OLC_ERROR_RESPONSE_NOT_VALID');
         }
 
         $oNodes = $oResponseNode->childNodes;
 
-        /** @var oxOnlineLicenseCheckResponse $oResponse */
-        $oResponse = oxNew('oxOnlineLicenseCheckResponse');
+        /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheckResponse $oResponse */
+        $oResponse = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckResponse::class);
 
         // iterate through response node to get response parameters
         for ($i = 0; $i < $oNodes->length; $i++) {

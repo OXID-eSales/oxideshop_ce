@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * Request represents an HTTP request.
@@ -62,7 +62,7 @@ class Request
         // TODO: remove this after special chars concept implementation
         $isAdmin = Registry::getConfig()->isAdmin() && Registry::getSession()->getVariable("blIsAdmin");
         if ($value !== null && !$isAdmin) {
-            $value = $this->checkParamSpecialChars($value);
+            $this->checkParamSpecialChars($value);
         }
 
         return $value;
@@ -80,7 +80,6 @@ class Request
     {
         $requestUrl = '';
         if ($_SERVER["REQUEST_METHOD"] != "POST") {
-
             if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI']) {
                 $rawRequestUrl = $_SERVER['REQUEST_URI'];
             } else {
@@ -89,7 +88,6 @@ class Request
 
             // trying to resolve controller file name
             if ($rawRequestUrl && ($iPos = stripos($rawRequestUrl, '?')) !== false) {
-
                 $string = getStr();
                 // formatting request url
                 $requestUrl = 'index.php' . $string->substr($rawRequestUrl, $iPos);
@@ -109,12 +107,12 @@ class Request
      * Checks if passed parameter has special chars and replaces them.
      * Returns checked value.
      *
-     * @param mixed &$sValue value to process escaping
-     * @param array $aRaw    keys of unescaped values
+     * @param mixed $sValue value to process escaping
+     * @param array $aRaw   keys of unescaped values
      *
      * @return mixed
      */
-    public function checkParamSpecialChars($sValue, $aRaw = null)
+    public function checkParamSpecialChars(& $sValue, $aRaw = null)
     {
         if (is_object($sValue)) {
             return $sValue;
@@ -125,10 +123,10 @@ class Request
             foreach ($sValue as $sKey => $sVal) {
                 $sValidKey = $sKey;
                 if (!$aRaw || !in_array($sKey, $aRaw)) {
-                    $sValidKey = $this->checkParamSpecialChars($sValidKey);
-                    $sVal = $this->checkParamSpecialChars($sVal);
+                    $this->checkParamSpecialChars($sValidKey);
+                    $this->checkParamSpecialChars($sVal);
                     if ($sValidKey != $sKey) {
-                        unset ($sValue[$sKey]);
+                        unset($sValue[$sKey]);
                     }
                 }
                 $newValue[$sValidKey] = $sVal;

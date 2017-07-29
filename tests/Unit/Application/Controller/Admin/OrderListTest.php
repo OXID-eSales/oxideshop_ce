@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxField;
 use \oxDb;
@@ -59,7 +59,7 @@ class OrderListTest extends \OxidTestCase
         oxTestModules::addFunction('oxorder', 'load', '{ return true; }');
         oxTestModules::addFunction('oxorder', 'cancelOrder', '{ return true; }');
 
-        $oView = $this->getMock("order_list", array("init"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\OrderList::class, array("init"));
         $oView->expects($this->once())->method('init');
         $oView->storno();
     }
@@ -69,7 +69,7 @@ class OrderListTest extends \OxidTestCase
      *
      * @return null
      */
-    public function testBuildSelectString()
+    public function testBuildSelectStringForOrderList()
     {
         $oDb = oxDb::getDb();
         $oListObject = oxNew('oxOrder');

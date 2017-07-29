@@ -20,12 +20,12 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
+namespace OxidEsales\EshopCommunity\Core\GenericImport\ImportObject;
 
 /**
  * Import object for Articles assignment to categories.
  */
-class Article2Category extends ImportObject
+class Article2Category extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject
 {
     /** @var string Database table name. */
     protected $tableName = 'oxobject2category';

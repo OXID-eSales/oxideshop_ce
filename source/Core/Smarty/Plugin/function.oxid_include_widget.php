@@ -43,6 +43,6 @@ function smarty_function_oxid_include_widget($params, &$oSmarty)
         unset($params["_parent"]);
     }
 
-    $widgetControl = oxRegistry::get('oxWidgetControl');
+    $widgetControl = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\WidgetControl::class);
     return $widgetControl->start($class, null, $params, $parentViews);
 }

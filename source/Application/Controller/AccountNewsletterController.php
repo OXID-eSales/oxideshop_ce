@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 
@@ -30,7 +30,7 @@ use oxRegistry;
  * his newletter subscription status - simply register or
  * unregister from newsletter. OXID eShop -> MY ACCOUNT -> Newsletter.
  */
-class AccountNewsletterController extends \Account
+class AccountNewsletterController extends \OxidEsales\Eshop\Application\Controller\AccountController
 {
     /**
      * Current class template name.
@@ -54,9 +54,9 @@ class AccountNewsletterController extends \Account
     protected $_iSubscriptionStatus = 0;
 
     /**
-     * If user is not logged in - returns name of template account_newsletter::_sThisLoginTemplate,
+     * If user is not logged in - returns name of template \OxidEsales\Eshop\Application\Controller\AccountNewsletterController::_sThisLoginTemplate,
      * or if user is allready logged in - returns name of template
-     * Account_Newsletter::_sThisTemplate
+     * \OxidEsales\Eshop\Application\Controller\AccountNewsletterController::_sThisTemplate
      *
      * @return string
      */
@@ -98,7 +98,7 @@ class AccountNewsletterController extends \Account
      */
     public function subscribe()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!\OxidEsales\Eshop\Core\Registry::getSession()->checkSessionChallenge()) {
             return false;
         }
 
@@ -134,15 +134,15 @@ class AccountNewsletterController extends \Account
     {
         $aPaths = array();
         $aPath = array();
-        $oUtils = oxRegistry::get("oxUtilsUrl");
-        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $oUtils = \OxidEsales\Eshop\Core\Registry::getUtilsUrl();
+        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $sSelfLink = $this->getViewConfig()->getSelfLink();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
-        $aPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($sSelfLink . 'cl=account');
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
+        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($sSelfLink . 'cl=account');
         $aPaths[] = $aPath;
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('NEWSLETTER_SETTINGS', $iBaseLanguage, false);
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('NEWSLETTER_SETTINGS', $iBaseLanguage, false);
         $aPath['link'] = $oUtils->cleanUrl($this->getLink(), array('fnc'));
         $aPaths[] = $aPath;
 

@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Component\Widget;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Component\Widget;
 
-use oxVendorList;
+use OxidEsales\EshopCommunity\Application\Model\VendorList;
 
 /**
  * Tests for oxwVendorList class
@@ -49,7 +49,7 @@ class VendorListTest extends \OxidTestCase
     {
         $oVendorList = oxNew('oxwVendorList');
         $oList = $oVendorList->getVendorlist();
-        $this->assertTrue($oList instanceof oxVendorList);
+        $this->assertTrue($oList instanceof VendorList);
         $this->assertEquals(3, $oList->count());
     }
 

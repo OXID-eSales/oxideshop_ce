@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \oxField;
 use \oxDb;
@@ -201,7 +201,7 @@ class WishlistTest extends \OxidTestCase
         $oUser->oxuser__oxfname = new oxField('fName');
         $oUser->oxuser__oxlname = new oxField('lName');
 
-        $oView = $this->getMock("WishList", array('getWishUser'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\WishListController::class, array('getWishUser'));
         $oView->expects($this->any())->method('getWishUser')->will($this->returnValue($oUser));
 
         $this->assertEquals(oxRegistry::getLang()->translateString('GIFT_REGISTRY_OF_3', oxRegistry::getLang()->getBaseLanguage(), false) . ' fName lName', $oView->getTitle());
@@ -212,7 +212,7 @@ class WishlistTest extends \OxidTestCase
      */
     public function testGetTitleWithoutUser()
     {
-        $oView = $this->getMock("WishList", array('getWishUser'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\WishListController::class, array('getWishUser'));
         $oView->expects($this->any())->method('getWishUser')->will($this->returnValue(null));
 
         $this->assertEquals(oxRegistry::getLang()->translateString('PUBLIC_GIFT_REGISTRIES', oxRegistry::getLang()->getBaseLanguage(), false), $oView->getTitle());

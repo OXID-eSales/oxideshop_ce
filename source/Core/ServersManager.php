@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxRegistry;
 
@@ -55,7 +55,7 @@ class ServersManager
      */
     public function __construct()
     {
-        $this->_aServersData = (array) oxRegistry::getConfig()->getConfigParam('aServersData');
+        $this->_aServersData = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aServersData');
     }
 
     /**
@@ -63,7 +63,7 @@ class ServersManager
      *
      * @param string $sServerId
      *
-     * @return oxApplicationServer
+     * @return \OxidEsales\Eshop\Core\ApplicationServer
      */
     public function getServer($sServerId)
     {
@@ -73,7 +73,7 @@ class ServersManager
     /**
      * Saves given server information to config.
      *
-     * @param oxApplicationServer $oServer
+     * @param \OxidEsales\Eshop\Core\ApplicationServer $oServer
      */
     public function saveServer($oServer)
     {
@@ -120,12 +120,12 @@ class ServersManager
      * @param string $sServerId
      * @param array  $aData
      *
-     * @return oxApplicationServer
+     * @return \OxidEsales\Eshop\Core\ApplicationServer
      */
     protected function _createServer($sServerId, $aData = array())
     {
-        /** @var oxApplicationServer $oAppServer */
-        $oAppServer = oxNew('oxApplicationServer');
+        /** @var \OxidEsales\Eshop\Core\ApplicationServer $oAppServer */
+        $oAppServer = oxNew(\OxidEsales\Eshop\Core\ApplicationServer::class);
 
         $oAppServer->setId($sServerId);
         $oAppServer->setTimestamp($this->_getServerParameter($aData, 'timestamp'));
@@ -194,7 +194,7 @@ class ServersManager
         $aServersData = $this->_getServersData();
 
         foreach ($aServersData as $sServerId => $aServerData) {
-            if ($aServerData['timestamp'] < oxRegistry::get("oxUtilsDate")->getTime() - self::NODE_AVAILABILITY_CHECK_PERIOD) {
+            if ($aServerData['timestamp'] < \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - self::NODE_AVAILABILITY_CHECK_PERIOD) {
                 $oServer = $this->getServer($sServerId);
                 $oServer->setIsValid(false);
                 $this->saveServer($oServer);
@@ -210,7 +210,7 @@ class ServersManager
         $aServersData = $this->_getServersData();
 
         foreach ($aServersData as $sServerId => $aServerData) {
-            if ($aServerData['timestamp'] < oxRegistry::get("oxUtilsDate")->getTime() - self::INACTIVE_NODE_STORAGE_PERIOD) {
+            if ($aServerData['timestamp'] < \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - self::INACTIVE_NODE_STORAGE_PERIOD) {
                 $this->deleteServer($sServerId);
             }
         }
@@ -223,7 +223,7 @@ class ServersManager
      */
     protected function _save($aServersData)
     {
-        oxRegistry::getConfig()->saveSystemConfigParameter('arr', 'aServersData', $aServersData);
+        \OxidEsales\Eshop\Core\Registry::getConfig()->saveSystemConfigParameter('arr', 'aServersData', $aServersData);
         $this->_aServersData = $aServersData;
     }
 }

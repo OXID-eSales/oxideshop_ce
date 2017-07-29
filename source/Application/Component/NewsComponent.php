@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Component;
+namespace OxidEsales\EshopCommunity\Application\Component;
 
 /**
  * News list manager, loads some news informetion.
@@ -28,9 +28,9 @@ namespace OxidEsales\Eshop\Application\Component;
  * @subpackage oxcmp
  *
  * @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
- *             
+ *
  */
-class NewsComponent extends \oxView
+class NewsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
 
     /**
@@ -72,7 +72,7 @@ class NewsComponent extends \oxView
         $iNewsToLoad = $myConfig->getConfigParam('sCntOfNewsLoaded');
         $iNewsToLoad = $iNewsToLoad ? $iNewsToLoad : 1;
 
-        $oActNews = oxNew('oxnewslist');
+        $oActNews = oxNew(\OxidEsales\Eshop\Application\Model\NewsList::class);
         $oActNews->loadNews(0, $iNewsToLoad);
 
         return $oActNews;

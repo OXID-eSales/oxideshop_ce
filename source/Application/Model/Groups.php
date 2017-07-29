@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
 
@@ -29,7 +29,7 @@ use oxDb;
  * Base class for user groups. Does nothing special yet.
  *
  */
-class Groups extends \oxI18n
+class Groups extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
 
     /**
@@ -66,17 +66,17 @@ class Groups extends \oxI18n
 
         parent::delete($sOXID);
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         // deleting related data records
         $sDelete = 'delete from oxobject2group where oxobject2group.oxgroupsid = ' . $oDb->quote($sOXID);
-        $rs = $oDb->execute($sDelete);
+        $oDb->execute($sDelete);
 
         $sDelete = 'delete from oxobject2delivery where oxobject2delivery.oxobjectid = ' . $oDb->quote($sOXID);
-        $rs = $oDb->execute($sDelete);
+        $oDb->execute($sDelete);
 
         $sDelete = 'delete from oxobject2discount where oxobject2discount.oxobjectid = ' . $oDb->quote($sOXID);
-        $rs = $oDb->execute($sDelete);
+        $oDb->execute($sDelete);
 
         $sDelete = 'delete from oxobject2payment where oxobject2payment.oxobjectid = ' . $oDb->quote($sOXID);
         $rs = $oDb->execute($sDelete);

@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Returns template, that arranges two other templates ("manufacturer_list.tpl"
  * and "manufacturer_main.tpl") to frame.
  * Admin Menu: Settings -> Manufacturers
  */
-class ManufacturerController extends \oxAdminView
+class ManufacturerController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

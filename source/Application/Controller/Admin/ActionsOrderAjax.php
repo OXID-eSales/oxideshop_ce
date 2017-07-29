@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -28,7 +28,7 @@ use oxDb;
 /**
  * Class manages article select lists sorting
  */
-class ActionsOrderAjax extends \ajaxListComponent
+class ActionsOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**
@@ -53,10 +53,10 @@ class ActionsOrderAjax extends \ajaxListComponent
     protected function _getQuery()
     {
         $sSelTable = $this->_getViewName('oxselectlist');
-        $sArtId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $sArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
 
         return " from $sSelTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sSelTable.oxid " .
-                 "where oxobjectid = " . oxDb::getDb()->quote($sArtId) . "  ";
+                 "where oxobjectid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sArtId) . "  ";
     }
 
     /**
@@ -74,11 +74,11 @@ class ActionsOrderAjax extends \ajaxListComponent
      */
     public function setSorting()
     {
-        $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sQuotedSelectionId = oxDb::getDb()->quote($sSelId);
+        $sSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $sQuotedSelectionId = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sSelId);
         $sSelect = "select * from oxobject2selectlist where oxobjectid= {$sQuotedSelectionId} order by oxsort";
 
-        $oList = oxNew("oxlist");
+        $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oList->init("oxbase", "oxobject2selectlist");
         $oList->selectString($sSelect);
 
@@ -97,8 +97,8 @@ class ActionsOrderAjax extends \ajaxListComponent
         }
 
         //
-        if (($iKey = array_search(oxRegistry::getConfig()->getRequestParameter('sortoxid'), $aIdx2Id)) !== false) {
-            $iDir = (oxRegistry::getConfig()->getRequestParameter('direction') == 'up') ? ($iKey - 1) : ($iKey + 1);
+        if (($iKey = array_search(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sortoxid'), $aIdx2Id)) !== false) {
+            $iDir = (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('direction') == 'up') ? ($iKey - 1) : ($iKey + 1);
             if (isset($aIdx2Id[$iDir])) {
                 // exchanging indexes
                 $oDir1 = $oList->offsetGet($aIdx2Id[$iDir]);

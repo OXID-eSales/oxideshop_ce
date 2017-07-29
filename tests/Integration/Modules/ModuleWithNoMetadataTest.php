@@ -19,10 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Integration\Modules;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 use oxRegistry;
 
+/**
+ * @group module
+ * @package Integration\Modules
+ */
 class ModuleWithNoMetadataTest extends \OxidTestCase
 {
     /**
@@ -30,6 +34,8 @@ class ModuleWithNoMetadataTest extends \OxidTestCase
      */
     public function testGetDisabledModules()
     {
+        $this->getConfig()->setConfigParam("aDisabledModules", []);
+
         $sShopDir = realpath(dirname(__FILE__)) . '/TestData/';
 
         oxRegistry::getConfig()->setConfigParam('sShopDir', $sShopDir);

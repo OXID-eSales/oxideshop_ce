@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxRegistry;
 
@@ -35,7 +35,7 @@ use oxRegistry;
  * returned value escaping status.
  *
  */
-class Field // extends oxSuperCfg
+class Field // extends \OxidEsales\Eshop\Core\Base
 {
 
     /**
@@ -156,7 +156,7 @@ class Field // extends oxSuperCfg
      */
     public function convertToFormattedDbDate()
     {
-        $this->setValue(oxRegistry::get("oxUtilsDate")->formatDBDate($this->rawValue), self::T_RAW);
+        $this->setValue(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($this->rawValue), self::T_RAW);
     }
 
     /**

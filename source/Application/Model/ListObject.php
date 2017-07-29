@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxField;
 
@@ -59,7 +59,7 @@ class ListObject
         }
         foreach ($aData as $sKey => $sValue) {
             $sFieldName = strtolower($this->_sTableName . '__' . $sKey);
-            $this->$sFieldName = new oxField($sValue);
+            $this->$sFieldName = new \OxidEsales\Eshop\Core\Field($sValue);
         }
     }
 

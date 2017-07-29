@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 use oxUBase;
@@ -30,7 +30,7 @@ use oxSearch;
  * Articles searching class.
  * Performs searching through articles in database.
  */
-class SearchController extends oxUBase
+class SearchController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
 
     /**
@@ -164,7 +164,7 @@ class SearchController extends oxUBase
         $myConfig = $this->getConfig();
 
         // #1184M - special char search
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sSearchParamForQuery = trim($oConfig->getRequestParameter('searchparam', true));
 
         // searching in category ?
@@ -192,8 +192,8 @@ class SearchController extends oxUBase
         }
 
         // searching ..
-        /** @var oxSearch $oSearchHandler */
-        $oSearchHandler = oxNew('oxsearch');
+        /** @var \OxidEsales\Eshop\Application\Model\Search $oSearchHandler */
+        $oSearchHandler = oxNew(\OxidEsales\Eshop\Application\Model\Search::class);
         $oSearchList = $oSearchHandler->getSearchArticles(
             $sSearchParamForQuery,
             $sInitialSearchCat,
@@ -233,7 +233,7 @@ class SearchController extends oxUBase
 
         $oConfig = $this->getConfig();
         if ($oConfig->getConfigParam('bl_rssSearch')) {
-            $oRss = oxNew('oxrssfeed');
+            $oRss = oxNew(\OxidEsales\Eshop\Application\Model\RssFeed::class);
             $sSearch = $oConfig->getRequestParameter('searchparam', true);
             $sCnid = $oConfig->getRequestParameter('searchcnid', true);
             $sVendor = $oConfig->getRequestParameter('searchvendor', true);
@@ -257,7 +257,7 @@ class SearchController extends oxUBase
     {
         $sAddDynParams = $this->getAddUrlParams();
         if ($sAddDynParams && ($aArtList = $this->getArticleList())) {
-            $blSeo = oxRegistry::getUtils()->seoIsActive();
+            $blSeo = \OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive();
             foreach ($aArtList as $oArticle) {
                 // appending std and dynamic urls
                 if (!$blSeo) {
@@ -308,7 +308,7 @@ class SearchController extends oxUBase
     {
         if ($this->_blSearchClass === null) {
             $this->_blSearchClass = false;
-            if (strtolower($this->getConfig()->getRequestParameter('cl')) == 'search') {
+            if ('search' == strtolower($this->getConfig()->getRequestControllerId())) {
                 $this->_blSearchClass = true;
             }
         }
@@ -338,7 +338,7 @@ class SearchController extends oxUBase
 
     /**
      * Return array of id to form recommend list.
-     * 
+     *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return array
@@ -481,8 +481,8 @@ class SearchController extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
-        $aPath['title'] = oxRegistry::getLang()->translateString('SEARCH', $iBaseLanguage, false);
+        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('SEARCH', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
@@ -528,8 +528,8 @@ class SearchController extends oxUBase
     {
         $sTitle = '';
         $sTitle .= $this->getArticleCount();
-        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
-        $sTitle .= ' ' . oxRegistry::getLang()->translateString('HITS_FOR', $iBaseLanguage, false);
+        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        $sTitle .= ' ' . \OxidEsales\Eshop\Core\Registry::getLang()->translateString('HITS_FOR', $iBaseLanguage, false);
         $sTitle .= ' "' . $this->getSearchParamForHtml() . '"';
 
         return $sTitle;

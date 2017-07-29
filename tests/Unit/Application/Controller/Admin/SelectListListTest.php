@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 /**
  * Tests for SelectList_List class
@@ -35,7 +35,7 @@ class SelectListListTest extends \OxidTestCase
     public function testInit()
     {
         // testing..
-        $oView = $this->getMock("SelectList_List", array("_authorize"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\SelectListList::class, array("_authorize"));
         $oView->expects($this->any())->method('_authorize')->will($this->returnValue(true));
         $oView->init();
         $oView->render();

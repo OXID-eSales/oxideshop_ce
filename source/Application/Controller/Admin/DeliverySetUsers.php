@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxField;
@@ -32,7 +32,7 @@ use oxGroups;
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling Sets -> Users.
  */
-class DeliverySetUsers extends \oxAdminDetails
+class DeliverySetUsers extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -48,27 +48,27 @@ class DeliverySetUsers extends \oxAdminDetails
         $soxId = $this->getEditObjectId();
 
         // all usergroups
-        $oGroups = oxNew('oxlist');
+        $oGroups = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oGroups->init('oxgroups');
         $oGroups->selectString("select * from " . getViewName("oxgroups", $this->_iEditLang));
 
-        $oRoot = new oxgroups();
-        $oRoot->oxgroups__oxid = new oxField("");
-        $oRoot->oxgroups__oxtitle = new oxField("-- ");
+        $oRoot = new \OxidEsales\Eshop\Application\Model\Groups();
+        $oRoot->oxgroups__oxid = new \OxidEsales\Eshop\Core\Field("");
+        $oRoot->oxgroups__oxtitle = new \OxidEsales\Eshop\Core\Field("-- ");
         // rebuild list as we need the "no value" entry at the first position
         $aNewList = array();
         $aNewList[] = $oRoot;
 
         foreach ($oGroups as $val) {
-            $aNewList[$val->oxgroups__oxid->value] = new oxGroups();
-            $aNewList[$val->oxgroups__oxid->value]->oxgroups__oxid = new oxField($val->oxgroups__oxid->value);
-            $aNewList[$val->oxgroups__oxid->value]->oxgroups__oxtitle = new oxField($val->oxgroups__oxtitle->value);
+            $aNewList[$val->oxgroups__oxid->value] = new \OxidEsales\Eshop\Application\Model\Groups();
+            $aNewList[$val->oxgroups__oxid->value]->oxgroups__oxid = new \OxidEsales\Eshop\Core\Field($val->oxgroups__oxid->value);
+            $aNewList[$val->oxgroups__oxid->value]->oxgroups__oxtitle = new \OxidEsales\Eshop\Core\Field($val->oxgroups__oxtitle->value);
         }
 
         $oGroups = $aNewList;
 
         if (isset($soxId) && $soxId != "-1") {
-            $oDelivery = oxNew("oxdeliveryset");
+            $oDelivery = oxNew(\OxidEsales\Eshop\Application\Model\DeliverySet::class);
             $oDelivery->load($soxId);
 
             //Disable editing for derived articles
@@ -79,14 +79,14 @@ class DeliverySetUsers extends \oxAdminDetails
 
         $this->_aViewData["allgroups2"] = $oGroups;
 
-        $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
+        $iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc");
         if ($iAoc == 1) {
-            $oDeliverysetGroupsAjax = oxNew('deliveryset_groups_ajax');
+            $oDeliverysetGroupsAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetGroupsAjax::class);
             $this->_aViewData['oxajax'] = $oDeliverysetGroupsAjax->getColumns();
 
             return "popups/deliveryset_groups.tpl";
         } elseif ($iAoc == 2) {
-            $oDeliverysetUsersAjax = oxNew('deliveryset_users_ajax');
+            $oDeliverysetUsersAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetUsersAjax::class);
             $this->_aViewData['oxajax'] = $oDeliverysetUsersAjax->getColumns();
 
             return "popups/deliveryset_users.tpl";

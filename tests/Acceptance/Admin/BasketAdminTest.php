@@ -20,9 +20,9 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Tests\Acceptance\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin;
 
-use OxidEsales\Eshop\Tests\Acceptance\AdminTestCase;
+use OxidEsales\EshopCommunity\Tests\Acceptance\AdminTestCase;
 
 /** Tests related creating of orders in frontend. */
 class BasketAdminTest extends AdminTestCase
@@ -59,7 +59,7 @@ class BasketAdminTest extends AdminTestCase
         //checking in Admin
         $this->loginAdmin("Administer Orders", "Orders");
         $this->openListItem("link=12");
-        $this->assertTextPresent("Label: test label šÄßüл 1");
+        $this->waitForText("Label: test label šÄßüл 1");
 
         $firstArticle  = ['2 *', '1000', 'Test product 0 [EN]', '', '90,00 EUR'];
         $secondArticle = ['2 *', '1000', 'Test product 0 [EN]', '', '90,00 EUR'];
@@ -89,14 +89,15 @@ class BasketAdminTest extends AdminTestCase
         $this->assertEquals("Label: test label šÄßüл 1", $this->getText("//tr[@id='art.{$counter}']/td[5]"));
         $this->assertEquals("45,00 EUR", $this->getText("//tr[@id='art.{$counter}']/td[7]"));
         $this->assertEquals("90,00 EUR", $this->getText("//tr[@id='art.{$counter}']/td[8]"));
-        $this->type("//tr[@id='art.{$counter}']/td[1]/input", "1");
+
+        $this->type("//tr[@id='art.{$counter}']/td[1]/input", "3");
         $this->clickAndWait("//input[@value='Update']");
+        $this->waitForElementText("135,00 EUR", "//tr[@id='art.{$counter}']/td[8]");
         $this->assertEquals("Label: test label šÄßüл 1", $this->getText("//tr[@id='art.{$counter}']/td[5]"));
         $this->assertEquals("45,00 EUR", $this->getText("//tr[@id='art.{$counter}']/td[7]"));
-        $this->assertEquals("45,00 EUR", $this->getText("//tr[@id='art.{$counter}']/td[8]"));
 
         //After recalculation fix sum total should be:
-        $this->assertTextPresent('336,42');
+        $this->assertTextPresent('426,00');
     }
 
     /**

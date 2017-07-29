@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
 use \oxDb;
@@ -37,7 +37,7 @@ class RatingTest extends \OxidTestCase
         parent::setUp();
         $oDB = oxDb::getDb();
         $myConfig = $this->getConfig();
-        $sDate = date('Y-m-d', oxRegistry::get("oxUtilsDate")->getTime() - 5 * 24 * 60 * 60);
+        $sDate = date('Y-m-d', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - 5 * 24 * 60 * 60);
         $sInsert = "INSERT INTO `oxratings` (`OXID` ,`OXSHOPID` ,`OXUSERID` ,`OXOBJECTID` ,`OXRATING` ,`OXTIMESTAMP` ,
                     `OXTYPE`) VALUES ('test', '" . $myConfig->getShopId() . "', 'oxdefaultadmin', '1651', '5', '$sDate', 'oxarticle')";
         $oDB->Execute($sInsert);

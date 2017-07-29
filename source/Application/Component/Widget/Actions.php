@@ -20,13 +20,13 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Component\Widget;
+namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
 /**
  * Actions widget.
  * Access actions in tpl.
  */
-class Actions extends \oxWidget
+class Actions extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
     /**
      * Current class template name.
@@ -51,7 +51,7 @@ class Actions extends \oxWidget
     {
         $actionId = $this->getViewParameter('action');
         if ($actionId && $this->_getLoadActionsParam()) {
-            $artList = oxNew('oxarticlelist');
+            $artList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
             $artList->loadActionArticles($actionId);
             if ($artList->count()) {
                 return $artList;
@@ -79,7 +79,7 @@ class Actions extends \oxWidget
     public function getActionName()
     {
         $actionId = $this->getViewParameter('action');
-        $action   = oxNew('oxactions');
+        $action   = oxNew(\OxidEsales\Eshop\Application\Model\Actions::class);
         if ($action->load($actionId)) {
             return $action->oxactions__oxtitle->value;
         }

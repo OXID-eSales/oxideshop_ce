@@ -20,13 +20,13 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Collects System information.
  * Admin Menu: Service -> System Requirements.
  */
-class SystemRequirementsList extends \oxAdminList
+class SystemRequirementsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**

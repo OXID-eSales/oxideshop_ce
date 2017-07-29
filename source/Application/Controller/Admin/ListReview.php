@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxAdminList;
 
 /**
  * user list "view" class.
  */
-class ListReview extends \Article_List
+class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleList
 {
 
     /**

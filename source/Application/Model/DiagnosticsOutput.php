@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxRegistry;
 
@@ -59,7 +59,7 @@ class DiagnosticsOutput
      */
     public function __construct()
     {
-        $this->_oUtils = oxRegistry::getUtils();
+        $this->_oUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
     }
 
     /**
@@ -139,7 +139,7 @@ class DiagnosticsOutput
     {
         $sCurrentKey = (empty($sOutputKey)) ? $this->_sOutputKey : $sOutputKey;
 
-        $this->_oUtils = oxRegistry::getUtils();
+        $this->_oUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
         $iFileSize = filesize($this->_oUtils->getCacheFilePath($sCurrentKey));
 
         $this->_oUtils->setHeader("Pragma: public");

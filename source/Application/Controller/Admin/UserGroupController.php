@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin usergroup manager.
@@ -28,7 +28,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
  * and "usergroup_main.tpl") to frame.
  * Admin Menu: User Administration -> User Groups.
  */
-class UserGroupController extends \oxAdminView
+class UserGroupController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

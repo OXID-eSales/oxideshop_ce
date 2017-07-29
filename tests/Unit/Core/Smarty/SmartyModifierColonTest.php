@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core\Smarty;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Smarty;
 
 use \oxRegistry;
 
@@ -53,10 +53,10 @@ class SmartyModifierColonTest extends \OxidTestCase
      */
     public function testColons($sTranslation, $sResult)
     {
-        $oLang = $this->getMock("oxLang", array("translateString"));
+        $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array("translateString"));
         $oLang->expects($this->any())->method("translateString")->with($this->equalTo('COLON'))->will($this->returnValue($sTranslation));
 
-        oxRegistry::set('oxLang', $oLang);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Language::class, $oLang);
 
         $this->assertEquals($sResult, smarty_modifier_colon('Name'));
     }

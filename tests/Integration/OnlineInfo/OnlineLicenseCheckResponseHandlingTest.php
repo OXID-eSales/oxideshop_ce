@@ -19,15 +19,19 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Integration\OnlineInfo;
+namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
 
-use oxCurl;
-use oxRegistry;
+use \oxCurl;
+use OxidEsales\Eshop\Core\OnlineServerEmailBuilder;
+use OxidEsales\EshopCommunity\Core\Exception\SystemComponentException;
+use \oxRegistry;
+use \oxSystemComponentException;
+use \oxTestModules;
 
 /**
  * Class Integration_OnlineInfo_FrontendServersInformationStoringTest
  *
- * @covers oxOnlineServerEmailBuilder
+ * @covers OnlineServerEmailBuilder
  * @covers oxOnlineCaller
  * @covers oxSimpleXml
  * @covers oxOnlineLicenseCheckCaller
@@ -38,6 +42,8 @@ class OnlineLicenseCheckResponseHandlingTest extends \oxUnitTestCase
 {
     public function testRequestHandlingWithPositiveResponse()
     {
+        $this->stubExceptionToNotWriteToLog(SystemComponentException::class);
+
         $oConfig = oxRegistry::getConfig();
         $oConfig->setConfigParam('blShopStopped', false);
         $oConfig->setConfigParam('sShopVar', '');
@@ -48,11 +54,11 @@ class OnlineLicenseCheckResponseHandlingTest extends \oxUnitTestCase
         $sXml .=   '<message>ACK</message>';
         $sXml .= '</olc>'."\n";
 
-        $oCurl = $this->getMock('oxCurl', array('execute'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($sXml));
         /** @var oxCurl $oCurl */
 
-        $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
+        $oEmailBuilder = oxNew(OnlineServerEmailBuilder::class);
 
         $oSimpleXml = oxNew('oxSimpleXml');
         $oLicenseCaller = oxNew('oxOnlineLicenseCheckCaller', $oCurl, $oEmailBuilder, $oSimpleXml);
@@ -68,7 +74,9 @@ class OnlineLicenseCheckResponseHandlingTest extends \oxUnitTestCase
 
     public function testRequestHandlingWithNegativeResponse()
     {
-        if (!$this->getTestConfig()->getShopEdition() != 'CE') {
+        $this->stubExceptionToNotWriteToLog(SystemComponentException::class);
+
+        if ($this->getTestConfig()->getShopEdition() !== 'CE') {
             $this->markTestSkipped('This test is for Community edition only.');
         }
 
@@ -82,11 +90,11 @@ class OnlineLicenseCheckResponseHandlingTest extends \oxUnitTestCase
         $sXml .=   '<message>NACK</message>';
         $sXml .= '</olc>'."\n";
 
-        $oCurl = $this->getMock('oxCurl', array('execute'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($sXml));
         /** @var oxCurl $oCurl */
 
-        $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
+        $oEmailBuilder = oxNew(OnlineServerEmailBuilder::class);
         $oSimpleXml = oxNew('oxSimpleXml');
         $oLicenseCaller = oxNew('oxOnlineLicenseCheckCaller', $oCurl, $oEmailBuilder, $oSimpleXml);
 
@@ -101,6 +109,8 @@ class OnlineLicenseCheckResponseHandlingTest extends \oxUnitTestCase
 
     public function testRequestHandlingWithInvalidResponse()
     {
+        $this->stubExceptionToNotWriteToLog(SystemComponentException::class);
+
         $oConfig = oxRegistry::getConfig();
         $oConfig->setConfigParam('blShopStopped', false);
         $oConfig->setConfigParam('sShopVar', '');
@@ -108,11 +118,11 @@ class OnlineLicenseCheckResponseHandlingTest extends \oxUnitTestCase
         $sXml = '<?xml version="1.0" encoding="utf-8"?>'."\n";
         $sXml .= 'Some random XML'."\n";
 
-        $oCurl = $this->getMock('oxCurl', array('execute'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($sXml));
         /** @var oxCurl $oCurl */
 
-        $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
+        $oEmailBuilder = oxNew(OnlineServerEmailBuilder::class);
         $oSimpleXml = oxNew('oxSimpleXml');
         $oLicenseCaller = oxNew('oxOnlineLicenseCheckCaller', $oCurl, $oEmailBuilder, $oSimpleXml);
 

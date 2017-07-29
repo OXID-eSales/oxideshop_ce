@@ -20,15 +20,16 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxDb;
 use oxField;
+use Exception;
 
 /**
  * Class manages deliveryset payment
  */
-class DeliverySetPaymentAjax extends \ajaxListComponent
+class DeliverySetPaymentAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**
@@ -57,7 +58,7 @@ class DeliverySetPaymentAjax extends \ajaxListComponent
      */
     protected function _getQuery()
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sId = $this->getConfig()->getRequestParameter('oxid');
         $sSynchId = $this->getConfig()->getRequestParameter('synchoxid');
 
@@ -86,18 +87,18 @@ class DeliverySetPaymentAjax extends \ajaxListComponent
     {
         $aChosenCntr = $this->_getActionIds('oxobject2payment.oxid');
         if ($this->getConfig()->getRequestParameter('all')) {
-
             $sQ = $this->_addFilter("delete oxobject2payment.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
-
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenCntr)) {
-            $sQ = "delete from oxobject2payment where oxobject2payment.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aChosenCntr)) . ") ";
-            oxDb::getDb()->Execute($sQ);
+            $sQ = "delete from oxobject2payment where oxobject2payment.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenCntr)) . ") ";
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
 
     /**
      * Adds this payments to this set
+     *
+     * @throws Exception
      */
     public function addPayToSet()
     {
@@ -110,19 +111,27 @@ class DeliverySetPaymentAjax extends \ajaxListComponent
             $aChosenSets = $this->_getAll($this->_addFilter("select $sPayTable.oxid " . $this->_getQuery()));
         }
         if ($soxId && $soxId != "-1" && is_array($aChosenSets)) {
-            $oDb = oxDb::getDb();
-            foreach ($aChosenSets as $sChosenSet) {
-                // check if we have this entry already in
-                $sID = $oDb->getOne("select oxid from oxobject2payment where oxpaymentid = " . $oDb->quote($sChosenSet) . "  and oxobjectid = " . $oDb->quote($soxId) . " and oxtype = 'oxdelset'", false, false);
-                if (!isset($sID) || !$sID) {
-                    $oObject = oxNew('oxBase');
-                    $oObject->init('oxobject2payment');
-                    $oObject->oxobject2payment__oxpaymentid = new oxField($sChosenSet);
-                    $oObject->oxobject2payment__oxobjectid = new oxField($soxId);
-                    $oObject->oxobject2payment__oxtype = new oxField("oxdelset");
-                    $oObject->save();
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->startTransaction();
+            try {
+                $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+                foreach ($aChosenSets as $sChosenSet) {
+                    // check if we have this entry already in
+                    // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+                    $sID = $database->getOne("select oxid from oxobject2payment where oxpaymentid = " . $database->quote($sChosenSet) . "  and oxobjectid = " . $database->quote($soxId) . " and oxtype = 'oxdelset'");
+                    if (!isset($sID) || !$sID) {
+                        $oObject = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
+                        $oObject->init('oxobject2payment');
+                        $oObject->oxobject2payment__oxpaymentid = new \OxidEsales\Eshop\Core\Field($sChosenSet);
+                        $oObject->oxobject2payment__oxobjectid = new \OxidEsales\Eshop\Core\Field($soxId);
+                        $oObject->oxobject2payment__oxtype = new \OxidEsales\Eshop\Core\Field("oxdelset");
+                        $oObject->save();
+                    }
                 }
+            } catch (Exception $exception) {
+                \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
+                throw $exception;
             }
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->commitTransaction();
         }
     }
 }

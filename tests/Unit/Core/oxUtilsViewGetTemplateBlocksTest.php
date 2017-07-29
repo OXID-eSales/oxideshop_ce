@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use oxDb;
 use oxException;
@@ -223,16 +223,16 @@ class oxUtilsViewGetTemplateBlocksTest extends UnitTestCase
      */
     public function testGetTemplateBlocksLogsExceptions()
     {
-        $config = $this->getMock('oxConfig', array('getShopId', 'init'));
+        $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getShopId', 'init'));
         $config->expects($this->atLeastOnce())->method('getShopId')->will($this->returnValue('15'));
         $aInfo = array('module1' => 'module1', 'module2' => 'module2');
 
         /** @var oxException|PHPUnit_Framework_MockObject_MockObject $exception */
-        $exception = $this->getMock('oxException', array('debugOut'));
+        $exception = $this->getMock(\OxidEsales\Eshop\Core\Exception\StandardException::class, array('debugOut'));
         $exception->expects($this->once())->method('debugOut');
 
         /** @var oxUtilsView|PHPUnit_Framework_MockObject_MockObject $utilsView */
-        $utilsView = $this->getMock('oxUtilsView', array('getConfig', '_getActiveModuleInfo', '_getTemplateBlock'));
+        $utilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getConfig', '_getActiveModuleInfo', '_getTemplateBlock'));
         $utilsView->expects($this->any())->method('getConfig')->will($this->returnValue($config));
         $utilsView->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($aInfo));
 

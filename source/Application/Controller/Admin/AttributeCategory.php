@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 
@@ -30,7 +30,7 @@ use oxRegistry;
  * this attribute, etc.
  * Admin Menu: Manage Products -> Attributes -> Gruppen.
  */
-class AttributeCategory extends \oxAdminDetails
+class AttributeCategory extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -47,13 +47,13 @@ class AttributeCategory extends \oxAdminDetails
 
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oAttr = oxNew("oxattribute");
+            $oAttr = oxNew(\OxidEsales\Eshop\Application\Model\Attribute::class);
             $oAttr->load($soxId);
             $this->_aViewData["edit"] = $oAttr;
         }
 
-        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
-            $oAttributeCategoryAjax = oxNew('attribute_category_ajax');
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc")) {
+            $oAttributeCategoryAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\AttributeCategoryAjax::class);
             $this->_aViewData['oxajax'] = $oAttributeCategoryAjax->getColumns();
 
             return "popups/attribute_category.tpl";

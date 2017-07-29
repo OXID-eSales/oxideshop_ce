@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
 use \oxDb;
@@ -104,7 +104,7 @@ class AddressTest extends \OxidTestCase
      */
     public function testToStringMagicMocked()
     {
-        $oSubj = $this->getMock("oxaddress", array("toString"));
+        $oSubj = $this->getMock(\OxidEsales\Eshop\Application\Model\Address::class, array("toString"));
         $oSubj->expects($this->once())->method('toString')->will($this->returnValue("teststr"));
         (string) $oSubj;
     }
@@ -154,7 +154,7 @@ class AddressTest extends \OxidTestCase
         $iAlternateStateId = 'AK';
 
         /** @var oxState|PHPUnit_Framework_MockObject_MockObject $oStateMock */
-        $oStateMock = $this->getMock('oxState', array('getTitleById'));
+        $oStateMock = $this->getMock(\OxidEsales\Eshop\Application\Model\State::class, array('getTitleById'));
 
         $oStateMock->expects($this->at(0))
             ->method('getTitleById')
@@ -177,7 +177,7 @@ class AddressTest extends \OxidTestCase
             ->will($this->returnValue('Alaska'));
 
         /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUserMock */
-        $oAddressMock = $this->getMock('oxAddress', array('_getStateObject', 'getStateId'));
+        $oAddressMock = $this->getMock(\OxidEsales\Eshop\Application\Model\Address::class, array('_getStateObject', 'getStateId'));
 
         $oAddressMock->expects($this->any())
             ->method('_getStateObject')

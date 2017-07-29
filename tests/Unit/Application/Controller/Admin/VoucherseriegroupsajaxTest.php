@@ -19,10 +19,10 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 
 /**
  * Tests for Actions_List class
@@ -93,7 +93,7 @@ class VoucherseriegroupsajaxTest extends \OxidTestCase
     {
         $this->setRequestParameter("oxid", "_testVoucherId1");
 
-        $oView = $this->getMock("voucherserie_groups_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieGroupsAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testId1')));
 
         $this->assertEquals(2, oxDb::getDb()->getOne("select count(oxid) from oxobject2group where oxid like '_test%'"));
@@ -117,7 +117,7 @@ class VoucherseriegroupsajaxTest extends \OxidTestCase
         oxDb::getDB()->execute("delete from oxobject2group where oxid like '\_test%'");
         $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2group where oxid like '_test%'"));
 
-        $oView = $this->getMock("voucherserie_groups_ajax", array("_getQuery"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieGroupsAjax::class, array("_getQuery"));
         $oView->expects($this->once())->method('_getQuery')->will($this->returnValue("from oxv_oxgroups_de where oxid like '\_test%'"));
 
         $oView->addGroupToVoucher();
@@ -134,7 +134,7 @@ class VoucherseriegroupsajaxTest extends \OxidTestCase
     {
         $this->setRequestParameter("synchoxid", "_testVoucherId1");
 
-        $oView = $this->getMock("voucherserie_groups_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieGroupsAjax::class, array("_getActionIds"));
         $oView->expects($this->once())->method('_getActionIds')->will($this->returnValue(array('_testGroupId3')));
 
         $this->assertEquals(2, oxDb::getDb()->getOne("select count(oxid) from oxobject2group where oxid like '_test%'"));

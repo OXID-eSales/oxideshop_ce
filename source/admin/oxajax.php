@@ -36,7 +36,7 @@ if ($blAjaxCall) {
     // Setting error reporting mode
     error_reporting(E_ALL ^ E_NOTICE);
 
-    $myConfig = oxRegistry::getConfig();
+    $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
     // Includes Utility module.
     $sUtilModule = $myConfig->getConfigParam('sUtilModule');
@@ -47,38 +47,25 @@ if ($blAjaxCall) {
     $myConfig->setConfigParam('blAdmin', true);
 
     // authorization
-    if (!(oxRegistry::getSession()->checkSessionChallenge() && count(oxRegistry::get("oxUtilsServer")->getOxCookie()) && oxRegistry::getUtils()->checkAccessRights())) {
+    if (!(\OxidEsales\Eshop\Core\Registry::getSession()->checkSessionChallenge() && count(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie()) && \OxidEsales\Eshop\Core\Registry::getUtils()->checkAccessRights())) {
         header("location:index.php");
-        oxRegistry::getUtils()->showMessageAndExit("");
+        \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("");
     }
 
-    if ($sContainer = oxRegistry::getConfig()->getRequestParameter('container')) {
-
+    if ($sContainer = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('container')) {
         $sContainer = trim(strtolower(basename($sContainer)));
 
         try {
             $oAjaxComponent = oxNew($sContainer . '_ajax');
-        } catch (oxSystemComponentException $oCe) {
-            $sFile = 'inc/' . $sContainer . '.inc.php';
-            if (file_exists($sFile)) {
-                $aColumns = array();
-                include_once $sFile;
-                $oAjaxComponent = new ajaxcomponent($aColumns);
-                $oAjaxComponent->init($aColumns);
-            } else {
-                $oEx = oxNew('oxFileException');
-                $oEx->setMessage('EXCEPTION_FILENOTFOUND');
-                $oEx->setFileName($sFile);
-                $oEx->debugOut();
-                throw $oEx;
-            }
+        } catch (\OxidEsales\Eshop\Core\Exception\SystemComponentException $oCe) {
+            $oEx = new FileException();
+            $oEx->setMessage('EXCEPTION_FILENOTFOUND' . ' ' . $sContainer . '_ajax.php');
+            $oEx->debugOut();
+            throw $oEx;
         }
 
         $oAjaxComponent->setName($sContainer);
-        $oAjaxComponent->processRequest(oxRegistry::getConfig()->getRequestParameter('fnc'));
-
-    } else {
-
+        $oAjaxComponent->processRequest(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('fnc'));
     }
 
     $myConfig->pageClose();

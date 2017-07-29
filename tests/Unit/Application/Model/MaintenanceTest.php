@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxTestModules;
 
@@ -33,7 +33,7 @@ class MaintenanceTest extends \OxidTestCase
      */
     public function testExecute()
     {
-        $oList = $this->getMock('oxArticleList', array('updateUpcomingPrices'));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('updateUpcomingPrices'));
         $oList->expects($this->once())->method('updateUpcomingPrices')->with($this->equalTo(true));
 
         oxTestModules::addModuleObject('oxarticlelist', $oList);

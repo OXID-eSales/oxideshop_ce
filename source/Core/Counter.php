@@ -20,8 +20,9 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
+use Exception;
 use oxDb;
 
 /**
@@ -32,58 +33,71 @@ class Counter
 {
 
     /**
-     * Returns next counter value
+     * Return the next counter value for a given type of counter
      *
-     * @param string $ident counter ident
+     * @param string $ident Identifies the type of counter. E.g. 'oxOrder'
      *
-     * @return int
+     * @throws Exception
+     *
+     * @return int Next counter value
      */
     public function getNext($ident)
     {
-        $db = oxDb::getDb();
-        $db->startTransaction();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $query = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = " . $db->quote($ident) . " FOR UPDATE";
+        /** Current counter retrieval needs to be encapsulated in transaction */
+        $database->startTransaction();
+        try {
+            /** Block row for reading until the counter is updated */
+            $query = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = ? FOR UPDATE";
+            $currentCounter = (int) $database->getOne($query, array($ident));
+            $nextCounter = $currentCounter + 1;
 
-        if (($cnt = $db->getOne($query, false, false)) === false) {
-            $query = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (?, '0')";
-            $db->execute($query, array($ident));
+            /** Insert or increment the the counter */
+            $query = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (?, 1) ON DUPLICATE KEY UPDATE `oxcount` = `oxcount` + 1";
+            $database->execute($query, array($ident));
+
+            $database->commitTransaction();
+        } catch (Exception $exception) {
+            $database->rollbackTransaction();
+
+            throw $exception;
         }
 
-        $cnt = ((int) $cnt) + 1;
-        $query = "UPDATE `oxcounters` SET `oxcount` = ? WHERE `oxident` = ?";
-        $db->execute($query, array($cnt, $ident));
-
-        $db->commitTransaction();
-
-        return $cnt;
+        return $nextCounter;
     }
 
     /**
-     * update counter value, only when it is greater than old one,
-     * if counter ident not exist creates counter and sets value
+     * Update the counter value for a given type of counter, but only when it is greater than the current value
      *
-     * @param string  $ident counter ident
-     * @param integer $count value
+     * @param string  $ident Identifies the type of counter. E.g. 'oxOrder'
+     * @param integer $count New counter value
      *
-     * @return int
+     * @throws Exception
+     *
+     * @return int Number of affected rows
      */
     public function update($ident, $count)
     {
-        $db = oxDb::getDb();
-        $db->startTransaction();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $query = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = " . $db->quote($ident) . " FOR UPDATE";
+        /** Current counter retrieval needs to be encapsulated in transaction */
+        $database->startTransaction();
+        try {
+            /** Block row for reading until the counter is updated */
+            $query = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = ? FOR UPDATE";
+            $database->getOne($query, array($ident));
 
-        if (($cnt = $db->getOne($query, false, false)) === false) {
-            $query = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (?, ?)";
-            $result = $db->execute($query, array($ident, $count));
-        } else {
-            $query = "UPDATE `oxcounters` SET `oxcount` = ? WHERE `oxident` = ? AND `oxcount` < ?";
-            $result = $db->execute($query, array($count, $ident, $count));
+            /** Insert or update the counter, if the value to be updated is greater, than the current value */
+            $query = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `oxcount` = IF(? > oxcount, ?, oxcount)";
+            $result = $database->execute($query, array($ident, $count, $count, $count ));
+
+            $database->commitTransaction();
+        } catch (Exception $exception) {
+            $database->rollbackTransaction();
+
+            throw $exception;
         }
-
-        $db->commitTransaction();
 
         return $result;
     }

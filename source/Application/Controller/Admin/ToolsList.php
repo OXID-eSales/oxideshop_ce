@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -32,7 +32,7 @@ use Exception;
  * Returns template, that arranges two other templates ("tools_list.tpl"
  * and "tools_main.tpl") to frame.
  */
-class ToolsList extends \oxAdminList
+class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**
@@ -48,8 +48,8 @@ class ToolsList extends \oxAdminList
     public function updateViews()
     {
         //preventing edit for anyone except malladmin
-        if (oxRegistry::getSession()->getVariable("malladmin")) {
-            $oMetaData = oxNew('oxDbMetaDataHandler');
+        if (\OxidEsales\Eshop\Core\Registry::getSession()->getVariable("malladmin")) {
+            $oMetaData = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
             $this->_aViewData["blViewSuccess"] = $oMetaData->updateViews();
         }
     }
@@ -59,11 +59,10 @@ class ToolsList extends \oxAdminList
      */
     public function performsql()
     {
-        $oAuthUser = oxNew('oxuser');
+        $oAuthUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $oAuthUser->loadAdminUser();
         if ($oAuthUser->oxuser__oxrights->value === "malladmin") {
-
-            $sUpdateSQL = oxRegistry::getConfig()->getRequestParameter("updatesql");
+            $sUpdateSQL = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("updatesql");
             $sUpdateSQLFile = $this->_processFiles();
 
             if ($sUpdateSQLFile && strlen($sUpdateSQLFile) > 0) {
@@ -87,14 +86,14 @@ class ToolsList extends \oxAdminList
 
                 if (count($aQueries) > 0) {
                     $blStop = false;
-                    $oDB = oxDb::getDb();
+                    $oDB = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
                     $iQueriesCounter = 0;
                     for ($i = 0; $i < count($aQueries); $i++) {
                         $sUpdateSQL = $aQueries[$i];
                         $sUpdateSQL = trim($sUpdateSQL);
 
                         if ($oStr->strlen($sUpdateSQL) > 0) {
-                            $aPassedQueries[$iQueriesCounter] = nl2br(oxStr::getStr()->htmlentities($sUpdateSQL));
+                            $aPassedQueries[$iQueriesCounter] = nl2br(\OxidEsales\Eshop\Core\Str::getStr()->htmlentities($sUpdateSQL));
                             if ($oStr->strlen($aPassedQueries[$iQueriesCounter]) > 200) {
                                 $aPassedQueries[$iQueriesCounter] = $oStr->substr($aPassedQueries[$iQueriesCounter], 0, 200) . "...";
                             }
@@ -108,12 +107,11 @@ class ToolsList extends \oxAdminList
                             $aQErrorNumbers [$iQueriesCounter] = null;
 
                             try {
-                                $oDB->execute($sUpdateSQL);
-                                $aQAffectedRows[$iQueriesCounter] = $oDB->affectedRows();
+                                $aQAffectedRows[$iQueriesCounter] = $oDB->execute($sUpdateSQL);
                             } catch (Exception $exception) {
                                 // Report errors
-                                $aQErrorMessages[$iQueriesCounter] = oxStr::getStr()->htmlentities($exception->getMessage());
-                                $aQErrorNumbers[$iQueriesCounter] = oxStr::getStr()->htmlentities($exception->getCode());
+                                $aQErrorMessages[$iQueriesCounter] = \OxidEsales\Eshop\Core\Str::getStr()->htmlentities($exception->getMessage());
+                                $aQErrorNumbers[$iQueriesCounter] = \OxidEsales\Eshop\Core\Str::getStr()->htmlentities($exception->getCode());
                                 // Trigger breaking the loop
                                 $blStop = true;
                             }
@@ -160,7 +158,7 @@ class ToolsList extends \oxAdminList
                 $aBadFiles = array("php", 'php4', 'php5', "jsp", "cgi", "cmf", "exe");
 
                 if (in_array($aFilename[1], $aBadFiles)) {
-                    oxRegistry::getUtils()->showMessageAndExit("We don't play this game, go away");
+                    \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("File didn't pass our allowed files filter.");
                 }
 
                 //reading SQL dump file

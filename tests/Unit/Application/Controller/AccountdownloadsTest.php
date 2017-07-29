@@ -19,11 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \oxField;
 use oxOrderFile;
 use \oxTestModules;
+use OxidEsales\EshopCommunity\Application\Model\OrderFile;
 
 /**
  * Tests for Account_downloads class
@@ -64,7 +65,7 @@ class AccountdownloadsTest extends \OxidTestCase
      */
     public function testGetArticleList()
     {
-        $oUser = $this->getMock('oxUser', array('getId'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getId'));
         $oUser->expects($this->any())->method('getId')->will($this->returnValue("userId"));
 
         $oFileOrder = oxNew("oxorderfile");
@@ -73,19 +74,19 @@ class AccountdownloadsTest extends \OxidTestCase
         $oFileOrder->oxorderfiles__oxorderdate = new oxField("2011-11-11 11:11:11");
         $oFileOrder->oxorderfiles__oxarticletitle = new oxField("testArtTitle");
 
-        $oOrderFileList = $this->getMock('oxOrderFileList', array('loadUserFiles'));
+        $oOrderFileList = $this->getMock(\OxidEsales\Eshop\Application\Model\OrderFileList::class, array('loadUserFiles'));
         $oOrderFileList->expects($this->any())->method('loadUserFiles')->will($this->returnValue("orderfilelist"));
         $oOrderFileList[] = $oFileOrder;
         oxTestModules::addModuleObject('oxOrderFileList', $oOrderFileList);
 
-        $oAccDownloads = $this->getMock('Account_Downloads', array('getUser'));
+        $oAccDownloads = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountDownloadsController::class, array('getUser'));
         $oAccDownloads->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
 
         $aOrderFilesList = $oAccDownloads->getOrderFilesList();
         $this->assertEquals("testOrder", $aOrderFilesList["testArtNr"]["oxordernr"]);
         $this->assertEquals("2011-11-11 11:11", $aOrderFilesList["testArtNr"]["oxorderdate"]);
         $this->assertEquals("testArtTitle", $aOrderFilesList["testArtNr"]["oxarticletitle"]);
-        $this->assertTrue($aOrderFilesList["testArtNr"]["oxorderfiles"][0] instanceof oxOrderFile);
+        $this->assertTrue($aOrderFilesList["testArtNr"]["oxorderfiles"][0] instanceof OrderFile);
     }
 
     /**

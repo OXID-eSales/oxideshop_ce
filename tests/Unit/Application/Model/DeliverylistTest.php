@@ -19,14 +19,14 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
-use \oxdelivery;
+use OxidEsales\EshopCommunity\Application\Model\Delivery;
 use \oxArticleHelper;
 use \oxdeliverylist;
 use \oxDb;
 use \oxField;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use \oxRegistry;
 use \oxTestModules;
 use \oxUser;
@@ -121,7 +121,7 @@ class DeliverylistTest extends \OxidTestCase
         // set to load full deliveries list
         $this->getConfig()->setConfigParam('bl_perfLoadDelivery', true);
 
-        oxAddClassModule('Unit\Application\Model\oxDeliveryListTestClass', 'oxDeliveryList');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\oxDeliveryListTestClass::class, 'oxDeliveryList');
 
         // inserting some demo data
 
@@ -227,8 +227,8 @@ class DeliverylistTest extends \OxidTestCase
      */
     protected function tearDown()
     {
-        oxRemClassModule('Unit\Application\Model\oxDeliveryListTestClass');
-        oxRemClassModule('Unit\Application\Model\oxDb_noActiveSnippetInDeliveryList');
+        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\oxDeliveryListTestClass::class);
+        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\oxDb_noActiveSnippetInDeliveryList::class);
 
         $this->cleanUpTable('oxdel2delset');
         $this->cleanUpTable('oxobject2category');
@@ -359,12 +359,12 @@ class DeliverylistTest extends \OxidTestCase
     public function testOxDeliveryList()
     {
         /** @var oxDeliveryList|MockObject $oList */
-        $oList = $this->getMock('oxDeliveryList', array('setHomeCountry'));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliveryList::class, array('setHomeCountry'));
         $oList->expects($this->once())->method('setHomeCountry');
         $oList->__construct();
 
         // checking object type
-        $this->assertTrue($oList->getBaseObject() instanceof oxdelivery);
+        $this->assertTrue($oList->getBaseObject() instanceof delivery);
     }
 
     /**
@@ -429,12 +429,12 @@ class DeliverylistTest extends \OxidTestCase
     public function testGetListExecTestWithUser()
     {
         /** @var oxUser|MockObject $oUser */
-        $oUser = $this->getMock('oxUser', array('getId', 'getActiveCountry'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getId', 'getActiveCountry'));
         $oUser->expects($this->once())->method('getId')->will($this->returnValue('xxx'));
         $oUser->expects($this->once())->method('getActiveCountry')->will($this->returnValue('yyy'));
 
         /** @var oxDeliveryList|MockObject $oList */
-        $oList = $this->getMock('oxDeliveryList', array('getUser', '_getFilterSelect', 'selectString', 'rewind'));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliveryList::class, array('getUser', '_getFilterSelect', 'selectString', 'rewind'));
         $oList->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
         $oList->expects($this->once())->method('_getFilterSelect');
         $oList->expects($this->once())->method('selectString');
@@ -450,7 +450,7 @@ class DeliverylistTest extends \OxidTestCase
     public function testGetListExecTestNoUser()
     {
         /** @var oxDeliveryList|MockObject $oList */
-        $oList = $this->getMock('oxDeliveryList', array('getUser', 'selectString', 'rewind'));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliveryList::class, array('getUser', 'selectString', 'rewind'));
         $oList->expects($this->once())->method('getUser')->will($this->returnValue(null));
         $oList->expects($this->once())->method('selectString');
         $oList->expects($this->once())->method('rewind');
@@ -525,7 +525,7 @@ class DeliverylistTest extends \OxidTestCase
         $oDList = new oxDeliveryListTestClass();
 
         $sTable = getViewName('oxdelivery');
-        $sQ = "select $sTable.* from ( select $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '' ) as $sTable where (
+        $sQ = "select $sTable.* from ( select distinct $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = ''  order by $sTable.oxsort asc ) as $sTable where (
             select
                 if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' LIMIT 1),
                     0,
@@ -536,7 +536,7 @@ class DeliverylistTest extends \OxidTestCase
                 if(EXISTS(select 1 from oxobject2delivery, $sGroupTable where $sGroupTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxgroups' LIMIT 1),
                     0,
                     1)
-            ) order by $sTable.oxsort ";
+            ) order by $sTable.oxsort asc ";
 
         $sTestSQ = $oDList->_getFilterSelect(null, null, null);
 
@@ -561,7 +561,7 @@ class DeliverylistTest extends \OxidTestCase
         $oDList = new oxDeliveryListTestClass();
 
         $sTable = getViewName('oxdelivery');
-        $sQ = "select $sTable.* from ( select $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '' ) as $sTable where (
+        $sQ = "select $sTable.* from ( select distinct $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = ''  order by $sTable.oxsort asc ) as $sTable where (
             select
                 if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' LIMIT 1),
                     EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' and oxobject2delivery.OXOBJECTID='_testCountryId'),
@@ -572,7 +572,7 @@ class DeliverylistTest extends \OxidTestCase
                 if(EXISTS(select 1 from oxobject2delivery, $sGroupTable where $sGroupTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxgroups' LIMIT 1),
                     0,
                     1)
-            ) order by $sTable.oxsort ";
+            ) order by $sTable.oxsort asc ";
 
         $sTestSQ = $oDList->_getFilterSelect(null, '_testCountryId', null);
 
@@ -599,7 +599,7 @@ class DeliverylistTest extends \OxidTestCase
         $oDList = new oxDeliveryListTestClass();
         // default oxConfig country check.
         $sTable = getViewName('oxdelivery');
-        $sQ = "select $sTable.* from ( select $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '_testDeliverySetId' ) as $sTable where (
+        $sQ = "select $sTable.* from ( select distinct $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '_testDeliverySetId'  order by $sTable.oxsort asc ) as $sTable where (
             select
                 if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' LIMIT 1),
                     EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' and oxobject2delivery.OXOBJECTID='_testCountryId'),
@@ -610,7 +610,7 @@ class DeliverylistTest extends \OxidTestCase
                 if(EXISTS(select 1 from oxobject2delivery, $sGroupTable where $sGroupTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxgroups' LIMIT 1),
                     EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxgroups' and oxobject2delivery.OXOBJECTID in ('oxidadmin') ),
                     1)
-            ) order by $sTable.oxsort ";
+            ) order by $sTable.oxsort asc ";
 
         $sTestSQ = $oDList->_getFilterSelect($this->_oUser, '_testCountryId', '_testDeliverySetId');
 
@@ -639,7 +639,7 @@ class DeliverylistTest extends \OxidTestCase
         $oDList = new oxDeliveryListTestClass();
         // default oxConfig country check.
         $sTable = getViewName('oxdelivery');
-        $sQ = "select $sTable.* from ( select $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '_testDeliverySetId' ) as $sTable where (
+        $sQ = "select $sTable.* from ( select distinct $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid where " . $oDList->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = '_testDeliverySetId'  order by $sTable.oxsort asc ) as $sTable where (
             select
                 if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' LIMIT 1),
                     EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' and oxobject2delivery.OXOBJECTID='_testCountryId'),
@@ -650,7 +650,7 @@ class DeliverylistTest extends \OxidTestCase
                 if(EXISTS(select 1 from oxobject2delivery, $sGroupTable where $sGroupTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxgroups' LIMIT 1),
                     0,
                     1)
-            ) order by $sTable.oxsort ";
+            ) order by $sTable.oxsort asc ";
 
         $sTestSQ = $oDList->_getFilterSelect($this->_oUser, '_testCountryId', '_testDeliverySetId');
 
@@ -679,7 +679,7 @@ class DeliverylistTest extends \OxidTestCase
         $aBasketContents[] = $basketItem;
         $aBasketContents[] = $basketItem;
 
-        $oBasket = $this->getMock('oxBasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->any())
             ->method('getContents')
             ->will($this->returnValue($aBasketContents));
@@ -712,7 +712,7 @@ class DeliverylistTest extends \OxidTestCase
         $aBasketContents[] = $basketItem;
         $aBasketContents[] = $basketItem;
 
-        $oBasket = $this->getMock('oxBasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->any())
             ->method('getContents')
             ->will($this->returnValue($aBasketContents));
@@ -740,7 +740,7 @@ class DeliverylistTest extends \OxidTestCase
         $aBasketContents[] = $basketItem;
         $aBasketContents[] = $basketItem;
 
-        $oBasket = $this->getMock('oxBasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->any())
             ->method('getContents')
             ->will($this->returnValue($aBasketContents));
@@ -789,7 +789,7 @@ class DeliverylistTest extends \OxidTestCase
         $aBasketContents[] = $basketItem;
         $aBasketContents[] = $basketItem;
 
-        $oBasket = $this->getMock('oxBasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->any())
             ->method('getContents')
             ->will($this->returnValue($aBasketContents));
@@ -837,7 +837,7 @@ class DeliverylistTest extends \OxidTestCase
         $aBasketContents[] = $basketItem;
         $aBasketContents[] = $basketItem;
 
-        $oBasket = $this->getMock('oxBasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->any())
             ->method('getContents')
             ->will($this->returnValue($aBasketContents));
@@ -879,7 +879,7 @@ class DeliverylistTest extends \OxidTestCase
         $aBasketContents[] = $basketItem;
         $aBasketContents[] = $basketItem;
 
-        $oBasket = $this->getMock('oxBasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->any())
             ->method('getContents')
             ->will($this->returnValue($aBasketContents));
@@ -921,7 +921,7 @@ class DeliverylistTest extends \OxidTestCase
         $aBasketContents[] = $basketItem;
         $aBasketContents[] = $basketItem;
 
-        $oBasket = $this->getMock('oxBasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->any())
             ->method('getContents')
             ->will($this->returnValue($aBasketContents));
@@ -977,7 +977,7 @@ class DeliverylistTest extends \OxidTestCase
         $aBasketContents[] = $basketItem;
         $aBasketContents[] = $_oBasketItem2;
 
-        $oBasket = $this->getMock('oxBasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->any())
             ->method('getContents')
             ->will($this->returnValue($aBasketContents));
@@ -1023,7 +1023,7 @@ class DeliverylistTest extends \OxidTestCase
         $aBasketContents[] = $basketItem;
         $aBasketContents[] = $basketItem;
 
-        $oBasket = $this->getMock('oxBasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->any())
             ->method('getContents')
             ->will($this->returnValue($aBasketContents));
@@ -1063,7 +1063,7 @@ class DeliverylistTest extends \OxidTestCase
         $aBasketContents[] = $basketItem;
         $aBasketContents[] = $basketItem;
 
-        $oBasket = $this->getMock('oxBasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->any())
             ->method('getContents')
             ->will($this->returnValue($aBasketContents));

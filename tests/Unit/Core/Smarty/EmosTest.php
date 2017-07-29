@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core\Smarty;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Smarty;
 
-use OxidEsales\Eshop\Core\Smarty\Plugin\Emos;
+use OxidEsales\EshopCommunity\Core\Smarty\Plugin\Emos;
 use \stdClass;
 
 /**
@@ -105,7 +105,7 @@ class EmosTest extends \OxidTestCase
         $oItem->variant2 = 'var2';
         $oItem->variant3 = 'var3';
 
-        $oEmos = $this->getMock('\Unit\Core\Smarty\EmosHelper', array('_emos_DataFormat'));
+        $oEmos = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\Smarty\EmosHelper::class, array('_emos_DataFormat'));
         $oEmos->expects($this->at(0))->method('_emos_DataFormat')->with($this->equalTo('prodid'))->will($this->returnValue('prodid'));
         $oEmos->expects($this->at(1))->method('_emos_DataFormat')->with($this->equalTo('prodname'))->will($this->returnValue('prodname'));
         $oEmos->expects($this->at(2))->method('_emos_DataFormat')->with($this->equalTo('prodgrp'))->will($this->returnValue('prodgrp'));

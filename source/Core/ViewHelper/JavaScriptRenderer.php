@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\ViewHelper;
+namespace OxidEsales\EshopCommunity\Core\ViewHelper;
 
 use oxRegistry;
 
@@ -40,11 +40,11 @@ class JavaScriptRenderer
      */
     public function render($widget, $forceRender, $isDynamic = false)
     {
-        $config = oxRegistry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $output = '';
         $suffix = $isDynamic ? '_dynamic' : '';
-        $filesParameterName = JavaScriptRegistrator::FILES_PARAMETER_NAME . $suffix;
-        $scriptsParameterName = JavaScriptRegistrator::SNIPPETS_PARAMETER_NAME . $suffix;
+        $filesParameterName = \OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator::FILES_PARAMETER_NAME . $suffix;
+        $scriptsParameterName = \OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator::SNIPPETS_PARAMETER_NAME . $suffix;
 
         $isAjaxRequest = $this->isAjaxRequest();
         $forceRender = $this->shouldForceRender($forceRender, $isAjaxRequest);
@@ -55,9 +55,9 @@ class JavaScriptRenderer
                 $output .= $this->formFilesOutput($files, $widget);
                 $config->setGlobalParameter($filesParameterName, null);
                 if ($widget) {
-                    $dynamicIncludes = (array)$config->getGlobalParameter(JavaScriptRegistrator::FILES_PARAMETER_NAME . '_dynamic');
+                    $dynamicIncludes = (array)$config->getGlobalParameter(\OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator::FILES_PARAMETER_NAME . '_dynamic');
                     $output .= $this->formFilesOutput($dynamicIncludes, $widget);
-                    $config->setGlobalParameter(JavaScriptRegistrator::FILES_PARAMETER_NAME . '_dynamic', null);
+                    $config->setGlobalParameter(\OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator::FILES_PARAMETER_NAME . '_dynamic', null);
                 }
             }
 
@@ -66,9 +66,9 @@ class JavaScriptRenderer
             $scriptOutput = $this->formSnippetsOutput($snippets, $widget, $isAjaxRequest);
             $config->setGlobalParameter($scriptsParameterName, null);
             if ($widget) {
-                $dynamicScripts = (array) $config->getGlobalParameter(JavaScriptRegistrator::SNIPPETS_PARAMETER_NAME . '_dynamic');
+                $dynamicScripts = (array) $config->getGlobalParameter(\OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator::SNIPPETS_PARAMETER_NAME . '_dynamic');
                 $scriptOutput .= $this->formSnippetsOutput($dynamicScripts, $widget, $isAjaxRequest);
-                $config->setGlobalParameter(JavaScriptRegistrator::SNIPPETS_PARAMETER_NAME . '_dynamic', null);
+                $config->setGlobalParameter(\OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator::SNIPPETS_PARAMETER_NAME . '_dynamic', null);
             }
             $output .= $this->enclose($scriptOutput, $widget, $isAjaxRequest);
         }

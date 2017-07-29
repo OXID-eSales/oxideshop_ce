@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin article categories text manager.
@@ -28,7 +28,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
  * and "category_main.tpl") to frame.
  * Admin Menu: Manage Products -> Categories.
  */
-class CategoryController extends \oxAdminView
+class CategoryController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

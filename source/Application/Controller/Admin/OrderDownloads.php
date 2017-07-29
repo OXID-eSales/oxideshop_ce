@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 
@@ -29,7 +29,7 @@ use oxRegistry;
  * Collects order articles information, updates it on user submit, etc.
  * Admin Menu: Orders -> Display Orders -> Articles.
  */
-class OrderDownloads extends \oxAdminDetails
+class OrderDownloads extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -65,7 +65,7 @@ class OrderDownloads extends \oxAdminDetails
     {
         $soxId = $this->getEditObjectId();
         if ($this->_oEditObject === null && isset($soxId) && $soxId != "-1") {
-            $this->_oEditObject = oxNew("oxOrderFileList");
+            $this->_oEditObject = oxNew(\OxidEsales\Eshop\Application\Model\OrderFileList::class);
             $this->_oEditObject->loadOrderFiles($soxId);
         }
 
@@ -77,8 +77,8 @@ class OrderDownloads extends \oxAdminDetails
      */
     public function resetDownloadLink()
     {
-        $sOrderFileId = oxRegistry::getConfig()->getRequestParameter('oxorderfileid');
-        $oOrderFile = oxNew("oxorderfile");
+        $sOrderFileId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxorderfileid');
+        $oOrderFile = oxNew(\OxidEsales\Eshop\Application\Model\OrderFile::class);
         if ($oOrderFile->load($sOrderFileId)) {
             $oOrderFile->reset();
             $oOrderFile->save();

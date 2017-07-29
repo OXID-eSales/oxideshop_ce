@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 
@@ -32,7 +32,7 @@ use oxRegistry;
  *
  * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
  */
-class DynamicScreenList extends \Dynscreen
+class DynamicScreenList extends \OxidEsales\Eshop\Application\Controller\Admin\DynamicScreenController
 {
 
     /**
@@ -44,7 +44,7 @@ class DynamicScreenList extends \Dynscreen
     public function render()
     {
         parent::render();
-        $this->_aViewData['menu'] = basename(oxRegistry::getConfig()->getRequestParameter("menu"));
+        $this->_aViewData['menu'] = basename(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("menu"));
 
         return "dynscreen_list.tpl";
     }

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
 use oxField;
@@ -31,7 +31,7 @@ use oxRegistry;
  * Performs loading, updating, inserting of article review.
  *
  */
-class Review extends \oxBase
+class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
 
     /**
@@ -69,8 +69,8 @@ class Review extends \oxBase
         $blRet = parent::assign($dbRecord);
 
         if (isset($this->oxreviews__oxuserid) && $this->oxreviews__oxuserid->value) {
-            $oDb = oxDb::getDb();
-            $this->oxuser__oxfname = new oxField($oDb->getOne("select oxfname from oxuser where oxid=" . $oDb->quote($this->oxreviews__oxuserid->value)));
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+            $this->oxuser__oxfname = new \OxidEsales\Eshop\Core\Field($oDb->getOne("select oxfname from oxuser where oxid=" . $oDb->quote($this->oxreviews__oxuserid->value)));
         }
 
         return $blRet;
@@ -87,7 +87,7 @@ class Review extends \oxBase
     {
         if ($blRet = parent::load($oxId)) {
             // convert date's to international format
-            $this->oxreviews__oxcreate->setValue(oxRegistry::get("oxUtilsDate")->formatDBDate($this->oxreviews__oxcreate->value));
+            $this->oxreviews__oxcreate->setValue(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($this->oxreviews__oxcreate->value));
         }
 
         return $blRet;
@@ -101,7 +101,7 @@ class Review extends \oxBase
     protected function _insert()
     {
         // set oxcreate
-        $this->oxreviews__oxcreate = new oxField(date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
+        $this->oxreviews__oxcreate = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
 
         return parent::_insert();
     }
@@ -118,21 +118,21 @@ class Review extends \oxBase
      */
     public function loadList($sType, $aIds, $blLoadEmpty = false, $iLoadInLang = null)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $oRevs = oxNew('oxlist');
+        $oRevs = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oRevs->init('oxreview');
 
         $sObjectIdWhere = '';
         if (is_array($aIds) && count($aIds)) {
-            $sObjectIdWhere = "oxreviews.oxobjectid in ( " . implode(", ", oxDb::getInstance()->quoteArray($aIds)) . " )";
+            $sObjectIdWhere = "oxreviews.oxobjectid in ( " . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds)) . " )";
         } elseif (is_string($aIds) && $aIds) {
             $sObjectIdWhere = "oxreviews.oxobjectid = " . $oDb->quote($aIds);
         } else {
             return $oRevs;
         }
 
-        $iLoadInLang = is_null($iLoadInLang) ? (int) oxRegistry::getLang()->getBaseLanguage() : (int) $iLoadInLang;
+        $iLoadInLang = is_null($iLoadInLang) ? (int) \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage() : (int) $iLoadInLang;
 
         $sSelect = "select oxreviews.* from oxreviews where oxreviews.oxtype = " . $oDb->quote($sType) . " and $sObjectIdWhere and oxreviews.oxlang = '$iLoadInLang'";
 

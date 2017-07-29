@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxStr;
 use oxRegistry;
@@ -29,7 +29,7 @@ use oxAdminDetails;
 /**
  * Admin general export manager.
  */
-class GenericImportMain extends oxAdminDetails
+class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -98,7 +98,7 @@ class GenericImportMain extends oxAdminDetails
     {
         $config = $this->getConfig();
 
-        $genericImport = oxNew('OxidEsales\Eshop\Core\GenericImport\GenericImport');
+        $genericImport = oxNew(\OxidEsales\Eshop\Core\GenericImport\GenericImport::class);
         $this->_sCsvFilePath = null;
 
         $navigationStep = $config->getRequestParameter('sNavStep');
@@ -112,12 +112,12 @@ class GenericImportMain extends oxAdminDetails
         $navigationStep = $this->_checkErrors($navigationStep);
 
         if ($navigationStep == 1) {
-            $this->_aViewData['sGiCsvFieldTerminator'] = oxStr::getStr()->htmlentities($this->_getCsvFieldsTerminator());
-            $this->_aViewData['sGiCsvFieldEncloser'] = oxStr::getStr()->htmlentities($this->_getCsvFieldsEncolser());
+            $this->_aViewData['sGiCsvFieldTerminator'] = \OxidEsales\Eshop\Core\Str::getStr()->htmlentities($this->_getCsvFieldsTerminator());
+            $this->_aViewData['sGiCsvFieldEncloser'] = \OxidEsales\Eshop\Core\Str::getStr()->htmlentities($this->_getCsvFieldsEncolser());
         }
 
         if ($navigationStep == 2) {
-            $noJsValidator = oxNew('oxNoJsValidator');
+            $noJsValidator = oxNew(\OxidEsales\Eshop\Core\NoJsValidator::class);
             //saving csv field terminator and encloser to config
             $terminator = $config->getRequestParameter('sGiCsvFieldTerminator');
             if ($terminator && !$noJsValidator->isValid($terminator)) {
@@ -147,10 +147,10 @@ class GenericImportMain extends oxAdminDetails
             $csvFields = $config->getRequestParameter('aCsvFields');
             $type = $config->getRequestParameter('sType');
 
-            $genericImport = oxNew('OxidEsales\Eshop\Core\GenericImport\GenericImport');
+            $genericImport = oxNew(\OxidEsales\Eshop\Core\GenericImport\GenericImport::class);
             $genericImport->setImportType($type);
             $genericImport->setCsvFileFieldsOrder($csvFields);
-            $genericImport->setCsvContainsHeader(oxRegistry::getSession()->getVariable('blCsvContainsHeader'));
+            $genericImport->setCsvContainsHeader(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('blCsvContainsHeader'));
 
             $genericImport->importFile($this->_getUploadedCsvFilePath());
             $this->_aViewData['iTotalRows'] = $genericImport->getImportedRowCount();
@@ -199,7 +199,7 @@ class GenericImportMain extends oxAdminDetails
     protected function _getCsvFieldsNames()
     {
         $blCsvContainsHeader = $this->getConfig()->getRequestParameter('blContainsHeader');
-        oxRegistry::getSession()->setVariable('blCsvContainsHeader', $blCsvContainsHeader);
+        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('blCsvContainsHeader', $blCsvContainsHeader);
         $sCsvPath = $this->_getUploadedCsvFilePath();
 
         $aFirstRow = $this->_getCsvFirstRow();
@@ -211,7 +211,7 @@ class GenericImportMain extends oxAdminDetails
             }
         } else {
             foreach ($aFirstRow as $sKey => $sValue) {
-                $aFirstRow[$sKey] = oxStr::getStr()->htmlentities($sValue);
+                $aFirstRow[$sKey] = \OxidEsales\Eshop\Core\Str::getStr()->htmlentities($sValue);
             }
 
             $aCsvFields = $aFirstRow;
@@ -245,8 +245,8 @@ class GenericImportMain extends oxAdminDetails
     protected function _resetUploadedCsvData()
     {
         $this->_sCsvFilePath = null;
-        oxRegistry::getSession()->setVariable('sCsvFilePath', null);
-        oxRegistry::getSession()->setVariable('blCsvContainsHeader', null);
+        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('sCsvFilePath', null);
+        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('blCsvContainsHeader', null);
     }
 
     /**
@@ -261,9 +261,9 @@ class GenericImportMain extends oxAdminDetails
     {
         if ($iNavStep == 2) {
             if (!$this->_getUploadedCsvFilePath()) {
-                $oEx = oxNew("oxExceptionToDisplay");
+                $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
                 $oEx->setMessage('GENIMPORT_ERRORUPLOADINGFILE');
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'genimport');
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false, true, 'genimport');
 
                 return 1;
             }
@@ -280,9 +280,9 @@ class GenericImportMain extends oxAdminDetails
             }
 
             if ($blIsEmpty) {
-                $oEx = oxNew("oxExceptionToDisplay");
+                $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
                 $oEx->setMessage('GENIMPORT_ERRORASSIGNINGFIELDS');
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'genimport');
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false, true, 'genimport');
 
                 return 2;
             }
@@ -302,7 +302,7 @@ class GenericImportMain extends oxAdminDetails
         //try to get uploaded csv file path
         if ($this->_sCsvFilePath !== null) {
             return $this->_sCsvFilePath;
-        } elseif ($this->_sCsvFilePath = oxRegistry::getSession()->getVariable('sCsvFilePath')) {
+        } elseif ($this->_sCsvFilePath = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('sCsvFilePath')) {
             return $this->_sCsvFilePath;
         }
 
@@ -311,7 +311,7 @@ class GenericImportMain extends oxAdminDetails
         if (isset($aFile['name']) && $aFile['name']) {
             $this->_sCsvFilePath = $oConfig->getConfigParam('sCompileDir') . basename($aFile['tmp_name']);
             move_uploaded_file($aFile['tmp_name'], $this->_sCsvFilePath);
-            oxRegistry::getSession()->setVariable('sCsvFilePath', $this->_sCsvFilePath);
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('sCsvFilePath', $this->_sCsvFilePath);
 
             return $this->_sCsvFilePath;
         }
@@ -326,12 +326,11 @@ class GenericImportMain extends oxAdminDetails
     {
         foreach ($oErpImport->getStatistics() as $aValue) {
             if (!$aValue ['r']) {
-                $oEx = oxNew("oxExceptionToDisplay");
+                $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
                 $oEx->setMessage($aValue ['m']);
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'genimport');
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false, true, 'genimport');
             }
         }
-
     }
 
     /**
@@ -373,9 +372,9 @@ class GenericImportMain extends oxAdminDetails
      */
     private function setErrorToView($invalidData)
     {
-        $error = oxNew('oxDisplayError');
+        $error = oxNew(\OxidEsales\Eshop\Core\DisplayError::class);
         $error->setFormatParameters(htmlspecialchars($invalidData));
         $error->setMessage("SHOP_CONFIG_ERROR_INVALID_VALUE");
-        oxRegistry::get("oxUtilsView")->addErrorToDisplay($error);
+        \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($error);
     }
 }

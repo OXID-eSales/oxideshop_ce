@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use stdClass;
@@ -30,7 +30,7 @@ use stdClass;
  * Category text/description manager, enables editing of text.
  * Admin Menu: Manage Products -> Categories -> Text.
  */
-class CategoryText extends \oxAdminDetails
+class CategoryText extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -43,12 +43,12 @@ class CategoryText extends \oxAdminDetails
     {
         parent::render();
 
-        $this->_aViewData['edit'] = $oCategory = oxNew('oxCategory');
+        $this->_aViewData['edit'] = $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $iCatLang = oxRegistry::getConfig()->getRequestParameter("catlang");
+            $iCatLang = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("catlang");
 
             if (!isset($iCatLang)) {
                 $iCatLang = $this->_iEditLang;
@@ -63,7 +63,7 @@ class CategoryText extends \oxAdminDetails
                 $this->_aViewData['readonly'] = true;
             }
 
-            foreach (oxRegistry::getLang()->getLanguageNames() as $id => $language) {
+            foreach (\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames() as $id => $language) {
                 $oLang = new stdClass();
                 $oLang->sLangDesc = $language;
                 $oLang->selected = ($id == $this->_iEditLang);
@@ -88,10 +88,10 @@ class CategoryText extends \oxAdminDetails
         $myConfig = $this->getConfig();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
 
-        $oCategory = oxNew("oxCategory");
-        $iCatLang = oxRegistry::getConfig()->getRequestParameter("catlang");
+        $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
+        $iCatLang = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("catlang");
         $iCatLang = $iCatLang ? $iCatLang : 0;
 
         if ($soxId != "-1") {

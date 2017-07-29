@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 
@@ -29,7 +29,7 @@ use oxRegistry;
  * There is possibility to change category sorting.
  * Admin Menu: Manage Products -> Categories -> Order.
  */
-class CategoryOrder extends \oxAdminDetails
+class CategoryOrder extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -42,10 +42,10 @@ class CategoryOrder extends \oxAdminDetails
     {
         parent::render();
 
-        $this->_aViewData['edit'] = $oCategory = oxNew('oxCategory');
+        $this->_aViewData['edit'] = $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
 
         // resetting
-        oxRegistry::getSession()->setVariable('neworder_sess', null);
+        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('neworder_sess', null);
 
         $soxId = $this->getEditObjectId();
 
@@ -58,8 +58,8 @@ class CategoryOrder extends \oxAdminDetails
                 $this->_aViewData['readonly'] = true;
             }
         }
-        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
-            $oCategoryOrderAjax = oxNew('category_order_ajax');
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc")) {
+            $oCategoryOrderAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\CategoryOrderAjax::class);
             $this->_aViewData['oxajax'] = $oCategoryOrderAjax->getColumns();
 
             return "popups/category_order.tpl";

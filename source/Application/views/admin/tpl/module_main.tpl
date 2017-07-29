@@ -73,19 +73,23 @@
                                 <input type="hidden" name="cl" value="module_main">
                                 <input type="hidden" name="updatelist" value="1">
                                 <input type="hidden" name="oxid" value="[{$oModule->getId()}]">
-                                [{if $oModule->hasMetadata()}]
-                                    [{if $oModule->isActive()}]
-                                    <input type="hidden" name="fnc" value="deactivateModule">
-                                    <div align="center">
-                                        <input type="submit" id="module_deactivate" class="saveButton" value="[{oxmultilang ident="MODULE_DEACTIVATE"}]">
-                                    </div>
-                                    [{else}]
-                                    <input type="hidden" name="fnc" value="activateModule">
+                                [{if !$oView->isDemoShop()}]
+                                    [{if $oModule->hasMetadata()}]
+                                        [{if $oModule->isActive()}]
+                                        <input type="hidden" name="fnc" value="deactivateModule">
+                                        <div align="center">
+                                            <input type="submit" id="module_deactivate" class="saveButton" value="[{oxmultilang ident="MODULE_DEACTIVATE"}]">
+                                        </div>
+                                        [{else}]
+                                        <input type="hidden" name="fnc" value="activateModule">
 
-                                    <div align="center">
-                                        <input type="submit" id="module_activate" class="saveButton" value="[{oxmultilang ident="MODULE_ACTIVATE"}]">
-                                    </div>
+                                        <div align="center">
+                                            <input type="submit" id="module_activate" class="saveButton" value="[{oxmultilang ident="MODULE_ACTIVATE"}]">
+                                        </div>
+                                        [{/if}]
                                     [{/if}]
+                                [{else}]
+                                    [{ oxmultilang ident="MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE" }]
                                 [{/if}]
                             </div>
                         </form>

@@ -15,12 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link          http://www.oxid-esales.com
+ * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2016
- * @version       OXID eShop CE
+ * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Component\Widget;
+namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
 use oxRegistry;
 use stdClass;
@@ -29,7 +29,7 @@ use oxCategory;
 /**
  * Article detailed information widget.
  */
-class ArticleDetails extends \oxWidget
+class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
 
     /**
@@ -66,15 +66,6 @@ class ArticleDetails extends \oxWidget
      * @var bool
      */
     protected $_blCanRate = null;
-
-    /**
-     * If tags can be changed
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *
-     * @var bool
-     */
-    protected $_blCanEditTags = null;
 
     /**
      * Media files
@@ -247,7 +238,7 @@ class ArticleDetails extends \oxWidget
     {
         if ($sParentId && $this->_oParentProd === null) {
             $this->_oParentProd = false;
-            $oProduct = oxNew('oxArticle');
+            $oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             if (($oProduct->load($sParentId))) {
                 $this->_processProduct($oProduct);
                 $this->_oParentProd = $oProduct;
@@ -303,24 +294,12 @@ class ArticleDetails extends \oxWidget
             $this->_blCanRate = false;
 
             if ($this->ratingIsActive() && $oUser = $this->getUser()) {
-                $oRating = oxNew('oxrating');
+                $oRating = oxNew(\OxidEsales\Eshop\Application\Model\Rating::class);
                 $this->_blCanRate = $oRating->allowRating($oUser->getId(), 'oxarticle', $this->getProduct()->getId());
             }
         }
 
         return $this->_blCanRate;
-    }
-
-    /**
-     * Checks if rating functionality is on and allowed to user
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *
-     * @return bool
-     */
-    public function canChangeTags()
-    {
-        return (bool) $this->getUser();
     }
 
     /**
@@ -350,26 +329,6 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Returns if tags can be changed, if user is logged in and
-     * product exists.
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module.
-     *
-     * @return bool
-     */
-    public function isEditableTags()
-    {
-        if ($this->_blCanEditTags === null) {
-            $this->_blCanEditTags = false;
-            if ($this->getProduct() && $this->getUser()) {
-                $this->_blCanEditTags = true;
-            }
-        }
-
-        return $this->_blCanEditTags;
-    }
-
-    /**
      * Returns current view link type
      *
      * @return int
@@ -377,7 +336,7 @@ class ArticleDetails extends \oxWidget
     public function getLinkType()
     {
         if ($this->_iLinkType === null) {
-            $sListType = oxRegistry::getConfig()->getRequestParameter('listtype');
+            $sListType = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('listtype');
             if ('vendor' == $sListType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_VENDOR;
             } elseif ('manufacturer' == $sListType) {
@@ -499,7 +458,7 @@ class ArticleDetails extends \oxWidget
             $sParentIdField = 'oxarticles__oxparentid';
             $sArtId = $oProduct->$sParentIdField->value ? $oProduct->$sParentIdField->value : $oProduct->getId();
 
-            $oHistoryArtList = oxNew('oxArticleList');
+            $oHistoryArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
             $oHistoryArtList->loadHistoryArticles($sArtId, $iCnt);
             $this->_aLastProducts = $oHistoryArtList;
         }
@@ -861,10 +820,10 @@ class ArticleDetails extends \oxWidget
         if ($this->_sBidPrice === null) {
             $this->_sBidPrice = false;
 
-            $aParams = oxRegistry::getConfig()->getRequestParameter('pa');
+            $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pa');
             $oCur = $this->getConfig()->getActShopCurrencyObject();
-            $iPrice = oxRegistry::getUtils()->currency2Float($aParams['price']);
-            $this->_sBidPrice = oxRegistry::getLang()->formatCurrency($iPrice, $oCur);
+            $iPrice = \OxidEsales\Eshop\Core\Registry::getUtils()->currency2Float($aParams['price']);
+            $this->_sBidPrice = \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($iPrice, $oCur);
         }
 
         return $this->_sBidPrice;
@@ -881,12 +840,12 @@ class ArticleDetails extends \oxWidget
         $oProduct = $this->getProduct();
         $sParentIdField = 'oxarticles__oxparentid';
         if (($oParent = $this->_getParentProduct($oProduct->$sParentIdField->value))) {
-            $sVarSelId = oxRegistry::getConfig()->getRequestParameter("varselid");
+            $sVarSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("varselid");
 
             return $oParent->getVariantSelections($sVarSelId, $oProduct->getId());
         }
 
-        return $oProduct->getVariantSelections(oxRegistry::getConfig()->getRequestParameter("varselid"));
+        return $oProduct->getVariantSelections(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("varselid"));
     }
 
     /**
@@ -912,7 +871,7 @@ class ArticleDetails extends \oxWidget
     public function getProduct()
     {
         $myConfig = $this->getConfig();
-        $myUtils = oxRegistry::getUtils();
+        $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
 
         if ($this->_oProduct === null) {
             if ($this->getViewParameter('_object')) {
@@ -922,17 +881,17 @@ class ArticleDetails extends \oxWidget
                 //as blLoadVariants = false affect "ab price" functionality
                 $myConfig->setConfigParam('blLoadVariants', true);
 
-                $sOxid = oxRegistry::getConfig()->getRequestParameter('anid');
+                $sOxid = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('anid');
 
                 // object is not yet loaded
-                $this->_oProduct = oxNew('oxArticle');
+                $this->_oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
                 if (!$this->_oProduct->load($sOxid)) {
                     $myUtils->redirect($myConfig->getShopHomeUrl());
                     $myUtils->showMessageAndExit('');
                 }
 
-                $sVarSelId = oxRegistry::getConfig()->getRequestParameter("varselid");
+                $sVarSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("varselid");
                 $aVarSelections = $this->_oProduct->getVariantSelections($sVarSelId);
                 if ($aVarSelections && $aVarSelections['oActiveVariant'] && $aVarSelections['blPerfectFit']) {
                     $this->_oProduct = $aVarSelections['oActiveVariant'];
@@ -970,7 +929,7 @@ class ArticleDetails extends \oxWidget
 
         parent::render();
 
-        $oCategory = oxNew('oxCategory');
+        $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
 
         // if category parameter is not found, use category from product
         $sCatId = $this->getViewParameter("cnid");
@@ -1014,8 +973,8 @@ class ArticleDetails extends \oxWidget
     /**
      * Runs additional checks for article.
      *
-     * @param oxUtils  $myUtils  General utils
-     * @param oxConfig $myConfig Main shop configuration
+     * @param \OxidEsales\Eshop\Core\Utils  $myUtils  General utils
+     * @param \OxidEsales\Eshop\Core\Config $myConfig Main shop configuration
      */
     protected function _additionalChecksForArticle($myUtils, $myConfig)
     {
@@ -1049,7 +1008,7 @@ class ArticleDetails extends \oxWidget
 
         $oCategory = $this->getActiveCategory();
 
-        if ($this->getListType() != 'search' && $oCategory && $oCategory instanceof oxCategory) {
+        if ($this->getListType() != 'search' && $oCategory && $oCategory instanceof \OxidEsales\Eshop\Application\Model\Category) {
             if ($sSortBy = $oCategory->getDefaultSorting()) {
                 $sSortDir = ($oCategory->getDefaultSortingMode()) ? "desc" : "asc";
                 $aSorting = array('sortby' => $sSortBy, 'sortdir' => $sSortDir);

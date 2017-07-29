@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxDb;
 
 /**
  * Class manages manufacturer assignment to articles
  */
-class ManufacturerMainAjax extends \ajaxListComponent
+class ManufacturerMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**
@@ -76,7 +76,7 @@ class ManufacturerMainAjax extends \ajaxListComponent
         // looking for table/view
         $articlesViewName = $this->_getViewName('oxarticles');
         $objectToCategoryViewName = $this->_getViewName('oxobject2category');
-        $database = oxDb::getDb();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $manufacturerId = $config->getRequestParameter('oxid');
         $syncedManufacturerId = $config->getRequestParameter('synchoxid');
@@ -134,7 +134,7 @@ class ManufacturerMainAjax extends \ajaxListComponent
 
         if (is_array($articleIds) && !empty($articleIds)) {
             $query = $this->formManufacturerRemovalQuery($articleIds);
-            oxDb::getDb()->execute($query);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($query);
 
             $this->resetCounter("manufacturerArticle", $manufacturerId);
         }
@@ -152,7 +152,7 @@ class ManufacturerMainAjax extends \ajaxListComponent
         return "
           UPDATE oxarticles
           SET oxmanufacturerid = null
-          WHERE oxid IN ( " . implode(", ", oxDb::getDb()->quoteArray($articlesToRemove)) . ") ";
+          WHERE oxid IN ( " . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($articlesToRemove)) . ") ";
     }
 
     /**
@@ -171,7 +171,7 @@ class ManufacturerMainAjax extends \ajaxListComponent
         }
 
         if ($manufacturerId && $manufacturerId != "-1" && is_array($articleIds)) {
-            $database = oxDb::getDb();
+            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
             $query = $this->formArticleToManufacturerAdditionQuery($manufacturerId, $articleIds);
             $database->execute($query);
@@ -189,7 +189,7 @@ class ManufacturerMainAjax extends \ajaxListComponent
      */
     protected function formArticleToManufacturerAdditionQuery($manufacturerId, $articlesToAdd)
     {
-        $database = oxDb::getDb();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         return "
             UPDATE oxarticles

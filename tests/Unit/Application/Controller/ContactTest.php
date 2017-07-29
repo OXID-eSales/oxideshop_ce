@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \oxField;
 use \oxRegistry;
@@ -192,7 +192,7 @@ class ContactTest extends \OxidTestCase
         $sMessage = $oLang->translateString('MESSAGE_FROM') . " " . $oLang->translateString('MR') . " admin admin(user@oxid-esales.com)<br /><br />message";
 
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
-        $oEmail = $this->getMock("oxemail", array("sendContactMail"));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("sendContactMail"));
         $oEmail->expects($this->once())->method('sendContactMail')->with($this->equalTo('user@oxid-esales.com'), $this->equalTo('subject'), $this->equalTo($sMessage))->will($this->returnValue(true));
 
         oxTestModules::addModuleObject('oxemail', $oEmail);
@@ -210,7 +210,7 @@ class ContactTest extends \OxidTestCase
     public function testSendEmailNotSend()
     {
         /** @var oxUtilsView|PHPUnit_Framework_MockObject_MockObject $oUtils */
-        $oUtils = $this->getMock('oxUtilsView', array('addErrorToDisplay'));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('addErrorToDisplay'));
         $oUtils->expects($this->once())->method('addErrorToDisplay')->with($this->equalTo("ERROR_MESSAGE_CHECK_EMAIL"));
         oxTestModules::addModuleObject('oxUtilsView', $oUtils);
 
@@ -224,7 +224,7 @@ class ContactTest extends \OxidTestCase
         $this->setRequestParameter("c_subject", "subject");
 
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
-        $oEmail = $this->getMock("oxemail", array("sendContactMail"));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("sendContactMail"));
         $oEmail->expects($this->once())->method('sendContactMail')->will($this->returnValue(false));
 
         oxTestModules::addModuleObject('oxemail', $oEmail);
@@ -242,10 +242,10 @@ class ContactTest extends \OxidTestCase
         $oShop = oxNew('oxShop');
         $oShop->oxshops__oxcompany = new oxField('shop');
 
-        $oConfig = $this->getMock("oxConfig", array('getActiveShop'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getActiveShop'));
         $oConfig->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
 
-        $oView = $this->getMock("contact", array('getConfig'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContactController::class, array('getConfig'));
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         $this->assertEquals('shop', $oView->getTitle());

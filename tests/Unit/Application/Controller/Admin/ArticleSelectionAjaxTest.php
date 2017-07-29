@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
 
@@ -135,7 +135,7 @@ class ArticleSelectionAjaxTest extends \OxidTestCase
     {
         $oDb = oxDb::getDb();
 
-        $oView = $this->getMock("article_selection_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSelectionAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testOxid1', '_testOxid2')));
 
         $this->assertEquals(2, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testRemove'"));
@@ -173,7 +173,7 @@ class ArticleSelectionAjaxTest extends \OxidTestCase
         $sSynchoxid = '_testAdd';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
-        $oView = $this->getMock("article_selection_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSelectionAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testAdd1', '_testAdd2')));
 
         $this->assertEquals(0, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testAdd'"));

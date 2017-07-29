@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use \oxTheme;
+use OxidEsales\EshopCommunity\Core\Theme;
 
 use \Exception;
 use \oxTestModules;
@@ -39,20 +39,22 @@ class ThemeMainTest extends \OxidTestCase
      */
     public function testRender()
     {
+        $this->getConfig()->setConfigParam('sTheme', 'azure');
+
         // testing..
         $oView = oxNew('Theme_Main');
         $this->assertEquals('theme_main.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oTheme']));
-        $this->assertTrue($aViewData['oTheme'] instanceof oxTheme);
+        $this->assertTrue($aViewData['oTheme'] instanceof Theme);
         $this->assertEquals('azure', $aViewData['oTheme']->getInfo('id'));
     }
 
 
     public function testSetTheme()
     {
-        $oTM = $this->getMock('Theme_Main', array('getEditObjectId'));
+        $oTM = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ThemeMain::class, array('getEditObjectId'));
         $oTM->expects($this->any())->method('getEditObjectId')->will($this->returnValue('azure'));
 
         oxTestModules::addFunction('oxTheme', 'load($name)', '{if ($name != "azure") throw new Exception("FAIL TO LOAD"); return true;}');
@@ -71,7 +73,7 @@ class ThemeMainTest extends \OxidTestCase
      */
     public function testThemeConfigExceptionInRender()
     {
-        $oTM = $this->getMock('Theme_Main', array('themeInConfigFile'));
+        $oTM = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ThemeMain::class, array('themeInConfigFile'));
         $oTM->expects($this->once())->method('themeInConfigFile');
         $oTM->render();
     }

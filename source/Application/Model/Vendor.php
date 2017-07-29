@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxRegistry;
 use oxField;
@@ -29,7 +29,7 @@ use oxField;
  * Vendor manager
  *
  */
-class Vendor extends \oxI18n implements \oxIUrl
+class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
 
     protected static $_aRootVendor = array();
@@ -112,10 +112,10 @@ class Vendor extends \oxI18n implements \oxIUrl
 
         // vendor article count is stored in cache
         if ($this->_blShowArticleCnt && !$this->isAdmin()) {
-            $this->_iNrOfArticles = oxRegistry::get("oxUtilsCount")->getVendorArticleCount($this->getId());
+            $this->_iNrOfArticles = \OxidEsales\Eshop\Core\Registry::getUtilsCount()->getVendorArticleCount($this->getId());
         }
 
-        $this->oxvendor__oxnrofarticles = new oxField($this->_iNrOfArticles, oxField::T_RAW);
+        $this->oxvendor__oxnrofarticles = new \OxidEsales\Eshop\Core\Field($this->_iNrOfArticles, \OxidEsales\Eshop\Core\Field::T_RAW);
     }
 
     /**
@@ -143,9 +143,9 @@ class Vendor extends \oxI18n implements \oxIUrl
     protected function _setRootObjectData()
     {
         $this->setId('root');
-        $this->oxvendor__oxicon = new oxField('', oxField::T_RAW);
-        $this->oxvendor__oxtitle = new oxField(oxRegistry::getLang()->translateString('BY_VENDOR', $this->getLanguage(), false), oxField::T_RAW);
-        $this->oxvendor__oxshortdesc = new oxField('', oxField::T_RAW);
+        $this->oxvendor__oxicon = new \OxidEsales\Eshop\Core\Field('', \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxvendor__oxtitle = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('BY_VENDOR', $this->getLanguage(), false), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxvendor__oxshortdesc = new \OxidEsales\Eshop\Core\Field('', \OxidEsales\Eshop\Core\Field::T_RAW);
 
         return true;
     }
@@ -160,7 +160,7 @@ class Vendor extends \oxI18n implements \oxIUrl
      */
     public function getBaseSeoLink($iLang, $iPage = 0)
     {
-        $oEncoder = oxRegistry::get("oxSeoEncoderVendor");
+        $oEncoder = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderVendor::class);
         if (!$iPage) {
             return $oEncoder->getVendorUrl($this, $iLang);
         }
@@ -177,7 +177,7 @@ class Vendor extends \oxI18n implements \oxIUrl
      */
     public function getLink($iLang = null)
     {
-        if (!oxRegistry::getUtils()->seoIsActive()) {
+        if (!\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive()) {
             return $this->getStdLink($iLang);
         }
 
@@ -226,7 +226,7 @@ class Vendor extends \oxI18n implements \oxIUrl
             $iLang = $this->getLanguage();
         }
 
-        return oxRegistry::get("oxUtilsUrl")->processUrl($this->getBaseStdLink($iLang), true, $aParams, $iLang);
+        return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($this->getBaseStdLink($iLang), true, $aParams, $iLang);
     }
 
     /**
@@ -311,7 +311,7 @@ class Vendor extends \oxI18n implements \oxIUrl
     public function delete($sOXID = null)
     {
         if (parent::delete($sOXID)) {
-            oxRegistry::get("oxSeoEncoderVendor")->onDeleteVendor($this);
+            \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderVendor::class)->onDeleteVendor($this);
 
             return true;
         }
@@ -334,7 +334,7 @@ class Vendor extends \oxI18n implements \oxIUrl
                 $sSize = $oConfig->getConfigParam('sIconsize');
             }
 
-            return oxRegistry::get("oxPictureHandler")->getPicUrl("vendor/icon/", $sIcon, $sSize);
+            return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getPicUrl("vendor/icon/", $sIcon, $sSize);
         }
     }
 

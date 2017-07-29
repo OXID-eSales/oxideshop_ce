@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxField;
@@ -28,7 +28,7 @@ use oxField;
 /**
  * Category seo config class
  */
-class CategorySeo extends \Object_Seo
+class CategorySeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
 {
 
     /**
@@ -39,11 +39,11 @@ class CategorySeo extends \Object_Seo
     public function save()
     {
         $sOxid = $this->getEditObjectId();
-        $oCategory = oxNew('oxCategory');
+        $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         if ($oCategory->load($sOxid)) {
-            $blShowSuffixParameter = oxRegistry::getConfig()->getRequestParameter('blShowSuffix');
+            $blShowSuffixParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('blShowSuffix');
             $sShowSuffixField = 'oxcategories__oxshowsuffix';
-            $oCategory->$sShowSuffixField = new oxField((int) $blShowSuffixParameter);
+            $oCategory->$sShowSuffixField = new \OxidEsales\Eshop\Core\Field((int) $blShowSuffixParameter);
             $oCategory->save();
 
             $this->_getEncoder()->markRelatedAsExpired($oCategory);
@@ -59,7 +59,7 @@ class CategorySeo extends \Object_Seo
      */
     protected function _getEncoder()
     {
-        return oxRegistry::get("oxSeoEncoderCategory");
+        return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class);
     }
 
     /**
@@ -89,7 +89,7 @@ class CategorySeo extends \Object_Seo
      */
     public function isEntrySuffixed()
     {
-        $oCategory = oxNew('oxCategory');
+        $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         if ($oCategory->load($this->getEditObjectId())) {
             return (bool) $oCategory->oxcategories__oxshowsuffix->value;
         }
@@ -102,7 +102,7 @@ class CategorySeo extends \Object_Seo
      */
     public function getEntryUri()
     {
-        $oCategory = oxNew('oxCategory');
+        $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         if ($oCategory->load($this->getEditObjectId())) {
             return $this->_getEncoder()->getCategoryUri($oCategory, $this->getEditLang());
         }

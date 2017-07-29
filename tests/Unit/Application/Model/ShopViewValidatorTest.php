@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 class ShopViewValidatorTest extends \OxidTestCase
 {
@@ -105,7 +105,7 @@ class ShopViewValidatorTest extends \OxidTestCase
         $aAllViews = $aAllShopViews['baseshop'];
         $aAllShopLanguageIds = $aLanguageIds = array(0 => 'de', 1 => 'en');
 
-        $oValidator = $this->getMock('oxShopViewValidator', array('_getAllViews',));
+        $oValidator = $this->getMock(\OxidEsales\Eshop\Application\Model\ShopViewValidator::class, array('_getAllViews',));
         $oValidator->expects($this->once())->method('_getAllViews')->will($this->returnValue($aAllViews));
 
         $oValidator->setShopId(1);

@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use \oxvendor;
+use OxidEsales\EshopCommunity\Application\Model\Vendor;
 
 use \Exception;
 use \oxTestModules;
@@ -42,12 +42,12 @@ class VendorMainTest extends \OxidTestCase
         $this->setRequestParameter("oxid", "testId");
 
         // testing..
-        $oView = $this->getMock("Vendor_Main", array("_createCategoryTree"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VendorMain::class, array("_createCategoryTree"));
         $oView->expects($this->once())->method('_createCategoryTree');
         $this->assertEquals('vendor_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxvendor);
+        $this->assertTrue($aViewData['edit'] instanceof vendor);
     }
 
     /**

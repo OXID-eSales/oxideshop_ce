@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 
@@ -29,7 +29,7 @@ use oxRegistry;
  * Returns template, that arranges two other templates ("delivery_list.tpl"
  * and "delivery_main.tpl") to frame.
  */
-class SystemInfoController extends \oxAdminView
+class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**
@@ -44,7 +44,7 @@ class SystemInfoController extends \oxAdminView
 
         parent::render();
 
-        $oAuthUser = oxNew('oxuser');
+        $oAuthUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $oAuthUser->loadAdminUser();
         $blisMallAdmin = $oAuthUser->oxuser__oxrights->value == "malladmin";
 
@@ -52,7 +52,7 @@ class SystemInfoController extends \oxAdminView
             $aClassVars = get_object_vars($myConfig);
             $aSystemInfo = array();
             $aSystemInfo['pkg.info'] = $myConfig->getPackageInfo();
-            $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
+            $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
             while (list($name, $value) = each($aClassVars)) {
                 if (gettype($value) == "object") {
                     continue;
@@ -77,9 +77,9 @@ class SystemInfoController extends \oxAdminView
 
             phpinfo();
 
-            oxRegistry::getUtils()->showMessageAndExit("");
+            \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("");
         } else {
-            return oxRegistry::getUtils()->showMessageAndExit("Access denied !");
+            return \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("Access denied !");
         }
     }
 

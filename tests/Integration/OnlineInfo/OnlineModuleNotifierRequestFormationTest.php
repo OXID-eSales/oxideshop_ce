@@ -19,14 +19,18 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Integration\OnlineInfo;
+namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
 
-use oxCurl;
-use oxModule;
-use oxOnlineModuleVersionNotifier;
-use oxOnlineModuleVersionNotifierCaller;
-use oxRegistry;
-use oxSimpleXml;
+use \oxCurl;
+use OxidEsales\Eshop\Core\OnlineServerEmailBuilder;
+use OxidEsales\EshopCommunity\Core\Exception\SystemComponentException;
+use \oxModule;
+use \oxOnlineModuleVersionNotifier;
+use \oxOnlineModuleVersionNotifierCaller;
+use \oxRegistry;
+use \oxSimpleXml;
+use \oxSystemComponentException;
+use \oxTestModules;
 
 /**
  * Class Integration_OnlineInfo_FrontendServersInformationStoringTest
@@ -34,12 +38,14 @@ use oxSimpleXml;
  * @covers oxServerProcessor
  * @covers oxApplicationServer
  * @covers oxServerChecker
- * @covers oxServerManager
+ * @covers oxServersManager
  */
 class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
 {
     public function testRequestFormation()
     {
+        $this->stubExceptionToNotWriteToLog(SystemComponentException::class);
+
         $oConfig = oxRegistry::getConfig();
         $oConfig->setConfigParam('sClusterId', array('generated_unique_cluster_id'));
         $sEdition = $oConfig->getEdition();
@@ -68,12 +74,12 @@ class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
         $sXml .=   '<productId>eShop</productId>';
         $sXml .= '</omvnRequest>'."\n";
 
-        $oCurl = $this->getMock('oxCurl', array('setParameters', 'execute'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('setParameters', 'execute'));
         $oCurl->expects($this->atLeastOnce())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $sXml)));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue(true));
         /** @var oxCurl $oCurl */
 
-        $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
+        $oEmailBuilder = oxNew(OnlineServerEmailBuilder::class);
         $oOnlineModuleVersionNotifierCaller = new oxOnlineModuleVersionNotifierCaller($oCurl, $oEmailBuilder, new oxSimpleXml());
 
         $oModule1 = oxNew('oxModule');
@@ -90,7 +96,7 @@ class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
             'active' => true,
         ));
 
-        $oModuleList = $this->getMock('oxModuleList', array('getList'));
+        $oModuleList = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, array('getList'));
         $oModuleList->expects($this->any())->method('getList')->will($this->returnValue(array($oModule1, $oModule2)));
         /** @var oxModule $oModuleList */
 

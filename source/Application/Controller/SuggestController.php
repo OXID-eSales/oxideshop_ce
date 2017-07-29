@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 
@@ -29,7 +29,7 @@ use oxRegistry;
  * Collects some article base information, sets default recomendation text,
  * sends suggestion mail to user.
  */
-class SuggestController extends \oxUBase
+class SuggestController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
      * Current class template name.
@@ -88,16 +88,16 @@ class SuggestController extends \oxUBase
      */
     public function send()
     {
-        $aParams = oxRegistry::getConfig()->getRequestParameter('editval', true);
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval', true);
         if (!is_array($aParams)) {
             return;
         }
 
         // storing used written values
         $oParams = (object) $aParams;
-        $this->setSuggestData((object) oxRegistry::getConfig()->getRequestParameter('editval'));
+        $this->setSuggestData((object) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval'));
 
-        $oUtilsView = oxRegistry::get("oxUtilsView");
+        $oUtilsView = \OxidEsales\Eshop\Core\Registry::getUtilsView();
 
         // filled not all fields ?
         foreach ($this->_aReqFields as $sFieldName) {
@@ -108,8 +108,8 @@ class SuggestController extends \oxUBase
             }
         }
 
-        $oUtils = oxRegistry::getUtils();
-        if (!$oUtils->isValidEmail($aParams["rec_email"]) || !$oUtils->isValidEmail($aParams["send_email"])) {
+        $oUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
+        if (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams["rec_email"]) || !oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams["send_email"])) {
             $oUtilsView->addErrorToDisplay('SUGGEST_INVALIDMAIL');
 
             return;
@@ -117,32 +117,32 @@ class SuggestController extends \oxUBase
 
         $sReturn = "";
         // #1834M - specialchar search
-        $sSearchParamForLink = rawurlencode(oxRegistry::getConfig()->getRequestParameter('searchparam', true));
+        $sSearchParamForLink = rawurlencode(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchparam', true));
         if ($sSearchParamForLink) {
             $sReturn .= "&searchparam=$sSearchParamForLink";
         }
 
-        $sSearchCatId = oxRegistry::getConfig()->getRequestParameter('searchcnid');
+        $sSearchCatId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchcnid');
         if ($sSearchCatId) {
             $sReturn .= "&searchcnid=$sSearchCatId";
         }
 
-        $sSearchVendor = oxRegistry::getConfig()->getRequestParameter('searchvendor');
+        $sSearchVendor = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchvendor');
         if ($sSearchVendor) {
             $sReturn .= "&searchvendor=$sSearchVendor";
         }
 
-        if (($sSearchManufacturer = oxRegistry::getConfig()->getRequestParameter('searchmanufacturer'))) {
+        if (($sSearchManufacturer = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchmanufacturer'))) {
             $sReturn .= "&searchmanufacturer=$sSearchManufacturer";
         }
 
-        $sListType = oxRegistry::getConfig()->getRequestParameter('listtype');
+        $sListType = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('listtype');
         if ($sListType) {
             $sReturn .= "&listtype=$sListType";
         }
 
         // sending suggest email
-        $oEmail = oxNew('oxemail');
+        $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
         $oProduct = $this->getProduct();
         if ($oProduct && $oEmail->sendSuggestMail($oParams, $oProduct)) {
             return 'details?anid=' . $oProduct->getId() . $sReturn;
@@ -162,7 +162,7 @@ class SuggestController extends \oxUBase
             $this->_oProduct = false;
 
             if ($sProductId = $this->getConfig()->getRequestParameter('anid')) {
-                $oProduct = oxNew('oxArticle');
+                $oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                 $oProduct->load($sProductId);
                 $this->_oProduct = $oProduct;
             }
@@ -221,7 +221,7 @@ class SuggestController extends \oxUBase
         if ($this->_oRecommList === null) {
             $this->_oRecommList = false;
             if ($oProduct = $this->getProduct()) {
-                $oRecommList = oxNew('oxrecommlist');
+                $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
                 $this->_oRecommList = $oRecommList->getRecommListsByIds(array($oProduct->getId()));
             }
         }
@@ -261,12 +261,12 @@ class SuggestController extends \oxUBase
         $sLink = parent::getLink($iLang);
 
         // active category
-        if ($sVal = oxRegistry::getConfig()->getRequestParameter('cnid')) {
+        if ($sVal = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid')) {
             $sLink .= ((strpos($sLink, '?') === false) ? '?' : '&amp;') . "cnid={$sVal}";
         }
 
         // active article
-        if ($sVal = oxRegistry::getConfig()->getRequestParameter('anid')) {
+        if ($sVal = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('anid')) {
             $sLink .= ((strpos($sLink, '?') === false) ? '?' : '&amp;') . "anid={$sVal}";
         }
 
@@ -282,8 +282,8 @@ class SuggestController extends \oxUBase
     {
         $aPaths = array();
         $aPath = array();
-        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
-        $aPath['title'] = oxRegistry::getLang()->translateString('RECOMMEND_PRODUCT', $iBaseLanguage, false);
+        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('RECOMMEND_PRODUCT', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
 
         $aPaths[] = $aPath;

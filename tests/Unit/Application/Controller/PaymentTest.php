@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \oxPayment;
 use \oxField;
@@ -288,6 +288,7 @@ class PaymentTest extends \OxidTestCase
 
     public function testGetDynValueSetInSession()
     {
+        $this->setSessionParam('usr', 'oxdefaultadmin');
         $this->setSessionParam('dynvalue', 'test');
         $this->setRequestParameter('dynvalue', 'test2');
 
@@ -297,6 +298,7 @@ class PaymentTest extends \OxidTestCase
 
     public function testGetDynValueNotSetInSession()
     {
+        $this->setSessionParam('usr', 'oxdefaultadmin');
         $this->setSessionParam('dynvalue', null);
         $this->setRequestParameter('dynvalue', 'test2');
 
@@ -341,7 +343,7 @@ class PaymentTest extends \OxidTestCase
         $oUpay->oxuserpayments__oxpaymentsid = new oxField('oxiddebitnote', oxField::T_RAW);
         $oUpay->save();
 
-        $oPayment = $this->getMock("payment", array("getPaymentList"));
+        $oPayment = $this->getMock(\OxidEsales\Eshop\Application\Controller\PaymentController::class, array("getPaymentList"));
         $oPayment->expects($this->once())->method('getPaymentList')->will($this->returnValue(array('oxiddebitnote' => true)));
         $oPayment->setUser($oUser);
         $this->assertEquals(array('lsbankname' => 'test'), $oPayment->getDynValue());
@@ -432,17 +434,17 @@ class PaymentTest extends \OxidTestCase
         $oUser = oxNew('oxUser');
         $oUser->load('oxdefaultadmin');
 
-        oxAddClassModule('Unit\Application\Controller\PaymentHelper2', 'oxPayment');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\PaymentHelper2::class, 'oxPayment');
 
-        $oBasket = $this->getMock('oxBasket', array('getPriceForPayment'));
-        $oBasket->expects($this->once())->method('getPriceForPayment')->will($this->returnValue(100));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getPriceForPayment'));
+        $oBasket->expects($this->atLeastOnce())->method('getPriceForPayment')->will($this->returnValue(100));
 
-        $oSession = $this->getMock('oxSession', array('getBasket'));
-        $oSession->expects($this->once())->method('getBasket')->will($this->returnValue($oBasket));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasket'));
+        $oSession->expects($this->atLeastOnce())->method('getBasket')->will($this->returnValue($oBasket));
 
-        $oPayment = $this->getMock('Payment', array('getUser', 'getSession'));
-        $oPayment->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
-        $oPayment->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
+        $oPayment = $this->getMock(\OxidEsales\Eshop\Application\Controller\PaymentController::class, array('getUser', 'getSession'));
+        $oPayment->expects($this->atLeastOnce())->method('getUser')->will($this->returnValue($oUser));
+        $oPayment->expects($this->atLeastOnce())->method('getSession')->will($this->returnValue($oSession));
         $this->setRequestParameter("paymentid", 'testId');
 
         $oPayment->validatePayment();
@@ -458,18 +460,18 @@ class PaymentTest extends \OxidTestCase
         $oUser = oxNew('oxUser');
         $oUser->load('oxdefaultadmin');
 
-        oxAddClassModule('Unit\Application\Controller\PaymentHelper2', 'oxPayment');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\PaymentHelper2::class, 'oxPayment');
 
-        $oBasket = $this->getMock('oxBasket', array('getPriceForPayment'));
-        $oBasket->expects($this->once())->method('getPriceForPayment')->will($this->returnValue(100));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getPriceForPayment'));
+        $oBasket->expects($this->atLeastOnce())->method('getPriceForPayment')->will($this->returnValue(100));
         $oBasket->setShipping('currentShipping');
 
-        $oSession = $this->getMock('oxSession', array('getBasket'));
-        $oSession->expects($this->once())->method('getBasket')->will($this->returnValue($oBasket));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasket'));
+        $oSession->expects($this->atLeastOnce())->method('getBasket')->will($this->returnValue($oBasket));
 
-        $oPayment = $this->getMock('Payment', array('getUser', 'getSession'));
-        $oPayment->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
-        $oPayment->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
+        $oPayment = $this->getMock(\OxidEsales\Eshop\Application\Controller\PaymentController::class, array('getUser', 'getSession'));
+        $oPayment->expects($this->atLeastOnce())->method('getUser')->will($this->returnValue($oUser));
+        $oPayment->expects($this->atLeastOnce())->method('getSession')->will($this->returnValue($oSession));
         $this->setRequestParameter("paymentid", 'testId');
         $this->setRequestParameter("sShipSet", 'newShipping');
 
@@ -637,10 +639,10 @@ class PaymentTest extends \OxidTestCase
         oxTestModules::addFunction('oxUtils', 'redirect', '{throw new Exception("REDIRECT");}');
         $this->setConfigParam('blPsBasketReservationEnabled', false);
 
-        $oS = $this->getMock('oxsession', array('getBasketReservations'));
+        $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations'));
         $oS->expects($this->never())->method('getBasketReservations');
 
-        $oP = $this->getMock('payment', array('getSession'));
+        $oP = $this->getMock(\OxidEsales\Eshop\Application\Controller\PaymentController::class, array('getSession'));
         $oP->expects($this->any())->method('getSession')->will($this->returnValue($oS));
 
         try {
@@ -658,10 +660,10 @@ class PaymentTest extends \OxidTestCase
         $oR = $this->getMock('stdclass', array('renewExpiration'));
         $oR->expects($this->once())->method('renewExpiration')->will($this->returnValue(null));
 
-        $oS = $this->getMock('oxsession', array('getBasketReservations'));
+        $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations'));
         $oS->expects($this->once())->method('getBasketReservations')->will($this->returnValue($oR));
 
-        $oP = $this->getMock('payment', array('getSession'));
+        $oP = $this->getMock(\OxidEsales\Eshop\Application\Controller\PaymentController::class, array('getSession'));
         $oP->expects($this->any())->method('getSession')->will($this->returnValue($oS));
 
         try {
@@ -680,14 +682,14 @@ class PaymentTest extends \OxidTestCase
         $oR = $this->getMock('stdclass', array('renewExpiration'));
         $oR->expects($this->once())->method('renewExpiration')->will($this->returnValue(null));
 
-        $oB = $this->getMock('oxbasket', array('getProductsCount'));
+        $oB = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getProductsCount'));
         $oB->expects($this->once())->method('getProductsCount')->will($this->returnValue(0));
 
-        $oS = $this->getMock('oxsession', array('getBasketReservations', 'getBasket'));
+        $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations', 'getBasket'));
         $oS->expects($this->once())->method('getBasketReservations')->will($this->returnValue($oR));
         $oS->expects($this->any())->method('getBasket')->will($this->returnValue($oB));
 
-        $oO = $this->getMock('payment', array('getSession'));
+        $oO = $this->getMock(\OxidEsales\Eshop\Application\Controller\PaymentController::class, array('getSession'));
         $oO->expects($this->any())->method('getSession')->will($this->returnValue($oS));
 
         try {
@@ -710,13 +712,13 @@ class PaymentTest extends \OxidTestCase
         // skip redirect to SSL
         $this->setRequestParameter('sslredirect', 'forced');
 
-        $oB = $this->getMock('oxbasket', array('getProductsCount'));
+        $oB = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getProductsCount'));
         $oB->expects($this->once())->method('getProductsCount')->will($this->returnValue(1));
 
-        $oS = $this->getMock('oxsession', array('getBasketReservations', 'getBasket'));
+        $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations', 'getBasket'));
         $oS->expects($this->any())->method('getBasket')->will($this->returnValue($oB));
 
-        $oO = $this->getMock('payment', array('getSession', 'getUser'));
+        $oO = $this->getMock(\OxidEsales\Eshop\Application\Controller\PaymentController::class, array('getSession', 'getUser'));
         $oO->expects($this->any())->method('getSession')->will($this->returnValue($oS));
         $oO->expects($this->any())->method('getUser')->will($this->returnValue(null));
         $oO->render();
@@ -732,13 +734,13 @@ class PaymentTest extends \OxidTestCase
         // skip redirect to SSL
         $this->setRequestParameter('sslredirect', 'forced');
 
-        $oB = $this->getMock('oxbasket', array('getProductsCount'));
+        $oB = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getProductsCount'));
         $oB->expects($this->once())->method('getProductsCount')->will($this->returnValue(0));
 
-        $oS = $this->getMock('oxsession', array('getBasketReservations', 'getBasket'));
+        $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations', 'getBasket'));
         $oS->expects($this->any())->method('getBasket')->will($this->returnValue($oB));
 
-        $oO = $this->getMock('payment', array('getSession', 'getUser'));
+        $oO = $this->getMock(\OxidEsales\Eshop\Application\Controller\PaymentController::class, array('getSession', 'getUser'));
         $oO->expects($this->any())->method('getSession')->will($this->returnValue($oS));
         $oO->expects($this->any())->method('getUser')->will($this->returnValue(null));
         $oO->render();
@@ -864,16 +866,14 @@ class PaymentTest extends \OxidTestCase
         $oUser = oxNew('oxUser');
         $oUser->load('oxdefaultadmin');
 
-        oxAddClassModule('modOxPayment_payment', 'oxPayment');
-
-        $oBasket = $this->getMock('oxBasket', array('getPriceForPayment'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getPriceForPayment'));
         $oBasket->expects($this->any())->method('getPriceForPayment')->will($this->returnValue(100));
         $oBasket->setShipping('currentShipping');
 
-        $oSession = $this->getMock('oxSession', array('getBasket'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasket'));
         $oSession->expects($this->any())->method('getBasket')->will($this->returnValue($oBasket));
 
-        $oPayment = $this->getMock('Payment', array('getUser', 'getSession'));
+        $oPayment = $this->getMock(\OxidEsales\Eshop\Application\Controller\PaymentController::class, array('getUser', 'getSession'));
         $oPayment->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
         $oPayment->expects($this->any())->method('getSession')->will($this->returnValue($oSession));
 
@@ -912,16 +912,14 @@ class PaymentTest extends \OxidTestCase
         $oUser = oxNew('oxUser');
         $oUser->load('oxdefaultadmin');
 
-        oxAddClassModule('modOxPayment_payment', 'oxPayment');
-
-        $oBasket = $this->getMock('oxBasket', array('getPriceForPayment'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getPriceForPayment'));
         $oBasket->expects($this->any())->method('getPriceForPayment')->will($this->returnValue(100));
         $oBasket->setShipping('currentShipping');
 
-        $oSession = $this->getMock('oxSession', array('getBasket'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasket'));
         $oSession->expects($this->any())->method('getBasket')->will($this->returnValue($oBasket));
 
-        $oPayment = $this->getMock('Payment', array('getUser', 'getSession'));
+        $oPayment = $this->getMock(\OxidEsales\Eshop\Application\Controller\PaymentController::class, array('getUser', 'getSession'));
         $oPayment->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
         $oPayment->expects($this->any())->method('getSession')->will($this->returnValue($oSession));
 
@@ -1008,14 +1006,14 @@ class PaymentTest extends \OxidTestCase
     public function testChangeshippingt()
     {
         $this->setRequestParameter('sShipSet', 'paypal');
-        $oBasket = $this->getMock('oxBasket', array('onUpdate', 'setShipping'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('onUpdate', 'setShipping'));
         $oBasket->expects($this->once())->method('onUpdate');
         $oBasket->expects($this->once())->method('setShipping')->with($this->equalTo(null));
 
-        $oSession = $this->getMock('oxSession', array('getBasket'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasket'));
         $oSession->expects($this->any())->method('getBasket')->will($this->returnValue($oBasket));
 
-        $oPayment = $this->getMock('Payment', array('getSession'));
+        $oPayment = $this->getMock(\OxidEsales\Eshop\Application\Controller\PaymentController::class, array('getSession'));
         $oPayment->expects($this->any())->method('getSession')->will($this->returnValue($oSession));
         $oPayment->changeshipping();
 

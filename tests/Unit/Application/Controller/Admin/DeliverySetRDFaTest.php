@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \stdClass;
 
@@ -64,8 +64,8 @@ class DeliverySetRDFaTest extends \OxidTestCase
         $oDB = oxDb::getDb();
 
         $iExists = $oDB->GetOne(
-            'SELECT 1 FROM oxobject2delivery WHERE oxdeliveryid = ? AND oxtype = ?'
-            , array($sTestID, 'rdfadeliveryset')
+            'SELECT 1 FROM oxobject2delivery WHERE oxdeliveryid = ? AND oxtype = ?',
+            array($sTestID, 'rdfadeliveryset')
         );
         $this->assertFalse(empty($iExists));
 
@@ -73,8 +73,8 @@ class DeliverySetRDFaTest extends \OxidTestCase
         $oView->save();
 
         $iExists = $oDB->GetOne(
-            'SELECT 1 FROM oxobject2delivery WHERE oxdeliveryid = ? AND oxtype = ?'
-            , array($sTestID, 'rdfadeliveryset')
+            'SELECT 1 FROM oxobject2delivery WHERE oxdeliveryid = ? AND oxtype = ?',
+            array($sTestID, 'rdfadeliveryset')
         );
         $this->assertTrue(empty($iExists));
     }
@@ -104,8 +104,8 @@ class DeliverySetRDFaTest extends \OxidTestCase
         $oView->save();
 
         $aCurrObjIDs = $oDB->GetCol(
-            'SELECT oxobjectid FROM oxobject2delivery WHERE oxdeliveryid = ? AND oxtype = ?'
-            , array($sTestID, 'rdfadeliveryset')
+            'SELECT oxobjectid FROM oxobject2delivery WHERE oxdeliveryid = ? AND oxtype = ?',
+            array($sTestID, 'rdfadeliveryset')
         );
         sort($aObjIDs);
         sort($aCurrObjIDs);
@@ -122,7 +122,7 @@ class DeliverySetRDFaTest extends \OxidTestCase
         $aAssignedRDFaDeliveries = array('DeliveryModeOwnFleet');
         $aExpResp = array();
 
-        $oView = $this->getMock('DeliverySet_RDFa', array('getAssignedRDFaDeliveries'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetRdfa::class, array('getAssignedRDFaDeliveries'));
         $oView->expects($this->once())->method('getAssignedRDFaDeliveries')->will($this->returnValue($aAssignedRDFaDeliveries));
         $aCurrResp = $oView->getAllRDFaDeliveries();
 

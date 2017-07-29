@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -33,7 +33,7 @@ use oxDb;
  *
  * @internal This class should not be directly extended, instead of it oxAdminList class should be used.
  */
-class ArticleList extends \oxAdminList
+class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
     /**
      * Name of chosen object class (default null).
@@ -58,7 +58,7 @@ class ArticleList extends \oxAdminList
     public function render()
     {
         $myConfig = $this->getConfig();
-        $sPwrSearchFld = oxRegistry::getConfig()->getRequestParameter("pwrsearchfld");
+        $sPwrSearchFld = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("pwrsearchfld");
         $sPwrSearchFld = $sPwrSearchFld ? strtolower($sPwrSearchFld) : "oxtitle";
 
         $oArticle = null;
@@ -70,11 +70,11 @@ class ArticleList extends \oxAdminList
                 // formatting view
                 if (!$myConfig->getConfigParam('blSkipFormatConversion')) {
                     if ($oArticle->$sFieldName->fldtype == "datetime") {
-                        oxRegistry::get("oxUtilsDate")->convertDBDateTime($oArticle->$sFieldName);
+                        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDateTime($oArticle->$sFieldName);
                     } elseif ($oArticle->$sFieldName->fldtype == "timestamp") {
-                        oxRegistry::get("oxUtilsDate")->convertDBTimestamp($oArticle->$sFieldName);
+                        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBTimestamp($oArticle->$sFieldName);
                     } elseif ($oArticle->$sFieldName->fldtype == "date") {
-                        oxRegistry::get("oxUtilsDate")->convertDBDate($oArticle->$sFieldName);
+                        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDate($oArticle->$sFieldName);
                     }
                 }
 
@@ -100,7 +100,7 @@ class ArticleList extends \oxAdminList
         $sType = '';
         $sValue = '';
 
-        $sArtCat = oxRegistry::getConfig()->getRequestParameter("art_category");
+        $sArtCat = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("art_category");
         if ($sArtCat && strstr($sArtCat, "@@") !== false) {
             list($sType, $sValue) = explode("@@", $sArtCat);
         }
@@ -127,7 +127,7 @@ class ArticleList extends \oxAdminList
     {
         $aSkipFields = array("oxblfixedprice", "oxvarselect", "oxamitemid",
                             "oxamtaskid", "oxpixiexport", "oxpixiexported");
-        $oArticle = oxNew("oxArticle");
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
         return array_diff($oArticle->getFieldNames(), $aSkipFields);
     }
@@ -138,12 +138,12 @@ class ArticleList extends \oxAdminList
      * @param string $sType  active list type
      * @param string $sValue active list item id
      *
-     * @return oxCategoryList
+     * @return \OxidEsales\Eshop\Application\Model\CategoryList
      */
     public function getCategoryList($sType, $sValue)
     {
-        /** @var oxCategoryList $oCatTree parent category tree */
-        $oCatTree = oxNew("oxCategoryList");
+        /** @var \OxidEsales\Eshop\Application\Model\CategoryList $oCatTree parent category tree */
+        $oCatTree = oxNew(\OxidEsales\Eshop\Application\Model\CategoryList::class);
         $oCatTree->loadList();
         if ($sType === 'cat') {
             foreach ($oCatTree as $oCategory) {
@@ -167,7 +167,7 @@ class ArticleList extends \oxAdminList
      */
     public function getManufacturerList($sType, $sValue)
     {
-        $oMnfTree = oxNew("oxManufacturerList");
+        $oMnfTree = oxNew(\OxidEsales\Eshop\Application\Model\ManufacturerList::class);
         $oMnfTree->loadManufacturerList();
         if ($sType === 'mnf') {
             foreach ($oMnfTree as $oManufacturer) {
@@ -191,7 +191,7 @@ class ArticleList extends \oxAdminList
      */
     public function getVendorList($sType, $sValue)
     {
-        $oVndTree = oxNew("oxVendorList");
+        $oVndTree = oxNew(\OxidEsales\Eshop\Application\Model\VendorList::class);
         $oVndTree->loadVendorList();
         if ($sType === 'vnd') {
             foreach ($oVndTree as $oVendor) {
@@ -220,7 +220,7 @@ class ArticleList extends \oxAdminList
             $sQ .= " and $sTable.oxparentid = '' ";
 
             $sType = false;
-            $sArtCat = oxRegistry::getConfig()->getRequestParameter("art_category");
+            $sArtCat = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("art_category");
             if ($sArtCat && strstr($sArtCat, "@@") !== false) {
                 list($sType, $sValue) = explode("@@", $sArtCat);
             }
@@ -231,16 +231,16 @@ class ArticleList extends \oxAdminList
                     $oStr = getStr();
                     $sViewName = getViewName("oxobject2category");
                     $sInsert = "from $sTable left join {$sViewName} on {$sTable}.oxid = {$sViewName}.oxobjectid " .
-                               "where {$sViewName}.oxcatnid = " . oxDb::getDb()->quote($sValue) . " and ";
+                               "where {$sViewName}.oxcatnid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sValue) . " and ";
                     $sQ = $oStr->preg_replace("/from\s+$sTable\s+where/i", $sInsert, $sQ);
                     break;
                 // add category
                 case 'mnf':
-                    $sQ .= " and $sTable.oxmanufacturerid = " . oxDb::getDb()->quote($sValue);
+                    $sQ .= " and $sTable.oxmanufacturerid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sValue);
                     break;
                 // add vendor
                 case 'vnd':
-                    $sQ .= " and $sTable.oxvendorid = " . oxDb::getDb()->quote($sValue);
+                    $sQ .= " and $sTable.oxvendorid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sValue);
                     break;
             }
         }
@@ -259,7 +259,7 @@ class ArticleList extends \oxAdminList
         $this->_aWhere = parent::buildWhere();
 
         // adding folder check
-        $sFolder = oxRegistry::getConfig()->getRequestParameter('folder');
+        $sFolder = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('folder');
         if ($sFolder && $sFolder != '-1') {
             $this->_aWhere[getViewName("oxarticles") . ".oxfolder"] = $sFolder;
         }
@@ -273,7 +273,7 @@ class ArticleList extends \oxAdminList
     public function deleteEntry()
     {
         $sOxId = $this->getEditObjectId();
-        $oArticle = oxNew("oxArticle");
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         if ($sOxId && $oArticle->load($sOxId)) {
             parent::deleteEntry();
         }

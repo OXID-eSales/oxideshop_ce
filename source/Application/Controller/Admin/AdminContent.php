@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Sets template, that arranges two other templates ("content_list.tpl"
  * and "content_main.tpl") to frame.
  * Admin Menu: Customerinformations -> Content.
  */
-class AdminContent extends \oxAdminView
+class AdminContent extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

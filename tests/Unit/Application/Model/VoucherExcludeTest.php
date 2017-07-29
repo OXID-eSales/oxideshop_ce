@@ -19,10 +19,10 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxDb;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use oxVoucherException;
 
 /**
@@ -471,7 +471,7 @@ class VoucherExcludeTest extends \OxidTestCase
      */
     public function testGetProductDiscountValue_ThrowNoArticleException()
     {
-        $oVoucher = $this->getMock('oxVoucher', array('isAdmin'));
+        $oVoucher = $this->getMock(\OxidEsales\Eshop\Application\Model\Voucher::class, array('isAdmin'));
         $oVoucher->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $oVoucher->load('test_111');
 
@@ -487,7 +487,7 @@ class VoucherExcludeTest extends \OxidTestCase
      */
     public function testGetCategoryDiscountValue_ThrowNoArticleException()
     {
-        $oVoucher = $this->getMock('oxVoucher', array('isAdmin'));
+        $oVoucher = $this->getMock(\OxidEsales\Eshop\Application\Model\Voucher::class, array('isAdmin'));
         $oVoucher->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $oVoucher->load('test_333');
 
@@ -511,7 +511,7 @@ class VoucherExcludeTest extends \OxidTestCase
         // there are no items in basket matching this discount, expecting exception
         try {
             $oVoucher->getDiscountValue(100);
-        } catch (oxVoucherException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
             $this->fail('exception thrown');
         }
     }
@@ -531,7 +531,7 @@ class VoucherExcludeTest extends \OxidTestCase
         // there are no items in basket matching this discount, expecting exception
         try {
             $oVoucher->getDiscountValue(100);
-        } catch (oxVoucherException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
             $this->fail('exception thrown');
         }
     }

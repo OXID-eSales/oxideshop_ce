@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \oxField;
 use \oxDb;
@@ -351,7 +351,7 @@ class NewsletterTest extends \OxidTestCase
      */
     public function testRender()
     {
-        $oTestNews = $this->getMock('NewsLetter', array('getTopStartArticle', 'getTopStartActionArticles', 'getHomeCountryId', 'getNewsletterStatus', 'getRegParams'));
+        $oTestNews = $this->getMock(\OxidEsales\Eshop\Application\Controller\NewsletterController::class, array('getTopStartArticle', 'getTopStartActionArticles', 'getHomeCountryId', 'getNewsletterStatus', 'getRegParams'));
         $oTestNews->expects($this->once())->method('getTopStartArticle')->will($this->returnValue(1));
         $oTestNews->expects($this->once())->method('getTopStartActionArticles')->will($this->returnValue(2));
         $oTestNews->expects($this->once())->method('getHomeCountryId')->will($this->returnValue(3));
@@ -443,7 +443,7 @@ class NewsletterTest extends \OxidTestCase
      */
     public function testGetTitle_KeepSubscribed()
     {
-        $oView = $this->getMock("Newsletter", array('getNewsletterStatus'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\NewsletterController::class, array('getNewsletterStatus'));
         $oView->expects($this->any())->method('getNewsletterStatus')->will($this->returnValue(null));
 
         $this->assertEquals(oxRegistry::getLang()->translateString('STAY_INFORMED', oxRegistry::getLang()->getBaseLanguage(), false), $oView->getTitle());
@@ -454,7 +454,7 @@ class NewsletterTest extends \OxidTestCase
      */
     public function testGetTitle_NeedsConfirmation()
     {
-        $oView = $this->getMock("Newsletter", array('getNewsletterStatus'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\NewsletterController::class, array('getNewsletterStatus'));
         $oView->expects($this->any())->method('getNewsletterStatus')->will($this->returnValue(1));
 
         $this->assertEquals(oxRegistry::getLang()->translateString('MESSAGE_THANKYOU_FOR_SUBSCRIBING_NEWSLETTERS', oxRegistry::getLang()->getBaseLanguage(), false), $oView->getTitle());
@@ -465,7 +465,7 @@ class NewsletterTest extends \OxidTestCase
      */
     public function testGetTitle_SuccessfulSubscription()
     {
-        $oView = $this->getMock("Newsletter", array('getNewsletterStatus'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\NewsletterController::class, array('getNewsletterStatus'));
         $oView->expects($this->any())->method('getNewsletterStatus')->will($this->returnValue(2));
 
         $this->assertEquals(oxRegistry::getLang()->translateString('MESSAGE_NEWSLETTER_CONGRATULATIONS', oxRegistry::getLang()->getBaseLanguage(), false), $oView->getTitle());
@@ -476,7 +476,7 @@ class NewsletterTest extends \OxidTestCase
      */
     public function testGetTitle_RemovedSubscription()
     {
-        $oView = $this->getMock("Newsletter", array('getNewsletterStatus'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\NewsletterController::class, array('getNewsletterStatus'));
         $oView->expects($this->any())->method('getNewsletterStatus')->will($this->returnValue(3));
 
         $this->assertEquals(oxRegistry::getLang()->translateString('SUCCESS', oxRegistry::getLang()->getBaseLanguage(), false), $oView->getTitle());

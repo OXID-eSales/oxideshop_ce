@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -31,7 +31,7 @@ use oxDb;
  * last modification date, sales rating and etc.
  * Admin Menu: Manage Products -> Articles -> Overview.
  */
-class ArticleOverview extends \oxAdminDetails
+class ArticleOverview extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -46,7 +46,7 @@ class ArticleOverview extends \oxAdminDetails
 
         parent::render();
 
-        $this->_aViewData['edit'] = $oArticle = oxNew('oxArticle');
+        $this->_aViewData['edit'] = $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
         $soxId = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
@@ -73,16 +73,16 @@ class ArticleOverview extends \oxAdminDetails
             $sSelect = "select oxartid,sum(oxamount) as cnt from oxorderarticles " .
                        "where oxordershopid = '{$sShopID}' group by oxartid order by cnt desc";
 
-            $rs = $oDB->execute($sSelect);
+            $rs = $oDB->select($sSelect);
             $iTopPos = 0;
             $iPos = 0;
-            if ($rs != false && $rs->recordCount() > 0) {
+            if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {
                     $iPos++;
                     if ($rs->fields[0] == $soxId) {
                         $iTopPos = $iPos;
                     }
-                    $rs->moveNext();
+                    $rs->fetchRow();
                 }
             }
 
@@ -97,11 +97,11 @@ class ArticleOverview extends \oxAdminDetails
     }
 
     /**
-     * @return oxLegacyDb
+     * @return DatabaseInterface
      */
     protected function getDatabase()
     {
-        return oxDb::getDb();
+        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
     }
 
     /**
@@ -150,14 +150,14 @@ class ArticleOverview extends \oxAdminDetails
     /**
      * Loads language for article object.
      *
-     * @param oxArticle $article
-     * @param string    $oxId
+     * @param \OxidEsales\Eshop\Application\Model\Article $article
+     * @param string                                      $oxId
      *
-     * @return oxArticle
+     * @return \OxidEsales\Eshop\Application\Model\Article
      */
     protected function updateArticle($article, $oxId)
     {
-        $article->loadInLang(oxRegistry::getConfig()->getRequestParameter("editlanguage"), $oxId);
+        $article->loadInLang(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editlanguage"), $oxId);
 
         return $article;
     }

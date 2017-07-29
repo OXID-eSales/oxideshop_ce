@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
 use oxRegistry;
@@ -30,7 +30,7 @@ use oxRegistry;
  * Performs loading, updating, inserting of article rates.
  *
  */
-class Rating extends \oxBase
+class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
 
     /**
@@ -67,11 +67,11 @@ class Rating extends \oxBase
      */
     public function allowRating($sUserId, $sType, $sObjectId)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $myConfig = $this->getConfig();
 
         if ($iRatingLogsTimeout = $myConfig->getConfigParam('iRatingLogsTimeout')) {
-            $sExpDate = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() - $iRatingLogsTimeout * 24 * 60 * 60);
+            $sExpDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - $iRatingLogsTimeout * 24 * 60 * 60);
             $oDb->execute("delete from oxratings where oxtimestamp < '$sExpDate'");
         }
         $sSelect = "select oxid from oxratings where oxuserid = " . $oDb->quote($sUserId) . " and oxtype=" . $oDb->quote($sType) . " and oxobjectid = " . $oDb->quote($sObjectId);
@@ -94,7 +94,7 @@ class Rating extends \oxBase
      */
     public function getRatingAverage($sObjectId, $sType, $aIncludedObjectsIds = null)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sQuerySnipet = '';
         if (is_array($aIncludedObjectsIds) && count($aIncludedObjectsIds) > 0) {
@@ -113,7 +113,8 @@ class Rating extends \oxBase
             LIMIT 1";
 
         $fRating = 0;
-        if ($fRating = $oDb->getOne($sSelect, false, false)) {
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
+        if ($fRating = $database->getOne($sSelect)) {
             $fRating = round($fRating, 1);
         }
 
@@ -131,7 +132,7 @@ class Rating extends \oxBase
      */
     public function getRatingCount($sObjectId, $sType, $aIncludedObjectsIds = null)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sQuerySnipet = '';
         if (is_array($aIncludedObjectsIds) && count($aIncludedObjectsIds) > 0) {
@@ -150,7 +151,9 @@ class Rating extends \oxBase
             LIMIT 1";
 
         $iCount = 0;
-        $iCount = $oDb->getOne($sSelect, false, false);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
+        $iCount = $masterDb->getOne($sSelect);
 
         return $iCount;
     }

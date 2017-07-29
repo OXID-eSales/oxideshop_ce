@@ -19,10 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxArticle;
 
+use OxidEsales\EshopCommunity\Core\Exception\SystemComponentException;
 use \stdClass;
 use \oxField;
 use \oxTestModules;
@@ -100,13 +101,20 @@ class FunctionsTest extends \OxidTestCase
         $this->assertTrue(cmpart($oA, $oB) == -1);
     }
 
-    public function testOxNew()
+    public function testOxNewWithExistingClassName()
     {
-        $oNew = oxNew('oxArticle');
-        $this->assertTrue($oNew instanceof oxArticle);
+        $article = oxNew('oxArticle');
 
-        $this->setExpectedException('oxSystemComponentException');
-        oxNew('oxxxx');
+        $this->assertTrue($article instanceof \OxidEsales\EshopCommunity\Application\Model\Article);
+    }
+
+    public function testOxNewWithNonExistingClassName()
+    {
+        $this->stubExceptionToNotWriteToLog(SystemComponentException::class,  SystemComponentException::class);
+
+        $this->setExpectedException(SystemComponentException::class, 'non_existing_class');
+
+        oxNew("non_existing_class");
     }
 
     public function testOx_get_template()
@@ -153,7 +161,7 @@ class FunctionsTest extends \OxidTestCase
 
     public function testError_404_handler()
     {
-        $oUtils = $this->getMock('oxutils', array('handlePageNotFoundError'));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('handlePageNotFoundError'));
         $oUtils->expects($this->at(0))->method('handlePageNotFoundError')->with($this->equalTo(''));
         $oUtils->expects($this->at(1))->method('handlePageNotFoundError')->with($this->equalTo('asd'));
         oxTestModules::addModuleObject('oxutils', $oUtils);

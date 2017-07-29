@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 /**
  * Payment gateway manager.
  * Checks and sets payment method data, executes payment.
  *
  */
-class PaymentGateway extends \oxSuperCfg
+class PaymentGateway extends \OxidEsales\Eshop\Core\Base
 {
 
     /**
@@ -75,11 +75,11 @@ class PaymentGateway extends \oxSuperCfg
      * Executes payment, returns true on success.
      *
      * @param double $dAmount Goods amount
-     * @param object &$oOrder User ordering object
+     * @param object $oOrder  User ordering object
      *
      * @return bool
      */
-    public function executePayment($dAmount, & $oOrder)
+    public function executePayment($dAmount, &$oOrder)
     {
         $this->_iLastErrorNo = null;
         $this->_sLastError = null;

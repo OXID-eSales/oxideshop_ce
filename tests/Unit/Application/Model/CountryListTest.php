@@ -15,11 +15,11 @@
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link          http://www.oxid-esales.com
+ * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2016
- * @version       OXID eShop CE
+ * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use oxField;
 use OxidEsales\EshopEnterprise\Application\Model\Country;
@@ -47,13 +47,13 @@ class CountryListTest extends \OxidTestCase
         );
 
         foreach ($aCountryTitle as $oxid => $title) {
-            /** @var Country $country */
+            /** @var \OxidEsales\Eshop\Application\Controller\Admin\CountryController $country */
             $country = oxNew('oxCountry');
             $country->setId($oxid);
             $country->oxcountry__oxactive = new oxField(0, oxField::T_RAW);
             $country->oxcountry__oxorder = new oxField(0, oxField::T_RAW);
             $country->oxcountry__oxtitle = new oxField($title, oxField::T_RAW);
-            
+
             $country->save();
         }
     }

@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxArticleList;
 use oxOrderFileList;
@@ -28,7 +28,7 @@ use oxRegistry;
 /**
  * Account article file download page.
  */
-class AccountDownloadsController extends \Account
+class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controller\AccountController
 {
     /**
      * Current class template name.
@@ -45,7 +45,7 @@ class AccountDownloadsController extends \Account
     protected $_iViewIndexState = VIEW_INDEXSTATE_NOINDEXNOFOLLOW;
 
     /**
-     * @var oxOrderFileList
+     * @var \OxidEsales\Eshop\Application\Model\OrderFileList
      */
     protected $_oOrderFilesList = null;
 
@@ -60,14 +60,14 @@ class AccountDownloadsController extends \Account
         $aPaths = array();
         $aPath = array();
 
-        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
-        /** @var oxSeoEncoder $oSeoEncoder */
-        $oSeoEncoder = oxRegistry::get("oxSeoEncoder");
-        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
+        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        /** @var \OxidEsales\Eshop\Core\SeoEncoder $oSeoEncoder */
+        $oSeoEncoder = \OxidEsales\Eshop\Core\Registry::getSeoEncoder();
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
         $aPath['link'] = $oSeoEncoder->getStaticUrl($this->getViewConfig()->getSelfLink() . "cl=account");
         $aPaths[] = $aPath;
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('MY_DOWNLOADS', $iBaseLanguage, false);
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_DOWNLOADS', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
@@ -85,7 +85,7 @@ class AccountDownloadsController extends \Account
             return $this->_oOrderFilesList;
         }
 
-        $oOrderFileList = oxNew('oxOrderFileList');
+        $oOrderFileList = oxNew(\OxidEsales\Eshop\Application\Model\OrderFileList::class);
         $oOrderFileList->loadUserFiles($this->getUser()->getId());
 
         $this->_oOrderFilesList = $this->_prepareForTemplate($oOrderFileList);
@@ -96,7 +96,7 @@ class AccountDownloadsController extends \Account
     /**
      * Returns prepared orders files list
      *
-     * @param oxorderfilelist $oOrderFileList - list or orderfiles
+     * @param \OxidEsales\Eshop\Application\Model\OrderFileList $oOrderFileList - list or orderfiles
      *
      * @return array
      */

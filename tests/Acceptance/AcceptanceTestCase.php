@@ -20,13 +20,39 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Tests\Acceptance;
+namespace OxidEsales\EshopCommunity\Tests\Acceptance;
 
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use \OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
 use OxidEsales\TestingLibrary\TestSqlPathProvider;
 
 abstract class AcceptanceTestCase extends \OxidEsales\TestingLibrary\AcceptanceTestCase
 {
+    protected $preventModuleVersionNotify = true;
+
+    /**
+     * Sets up default environment for tests.
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        //Suppress check for new module versions on every admin login
+        if ($this->preventModuleVersionNotify) {
+            $aParams = array("type" => "bool", "value" => true);
+            $this->callShopSC("oxConfig", null, null, array('preventModuleVersionNotify' => $aParams));
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setUpTestsSuite($testSuitePath)
+    {
+        $this->activateTheme('azure');
+        parent::setUpTestsSuite($testSuitePath);
+    }
+
     /**
      * Adds tests sql data to database.
      *
@@ -51,5 +77,21 @@ abstract class AcceptanceTestCase extends \OxidEsales\TestingLibrary\AcceptanceT
                 $this->importSql($sTestSuitePath . '/demodata_EE_mall.sql');
             }
         }
+        $this->resetConfig();
+    }
+
+    /**
+     * Reset config to have newest information from database.
+     * SQL files might contain configuration changes.
+     * Base object has static cache for Config object.
+     * Config object has cache for database configuration.
+     *
+     */
+    private function resetConfig()
+    {
+        $config = Registry::getConfig();
+        $config->reinitialize();
+        /** Reset static variable in oxSuperCfg class, which is base class for every class. */
+        $config->setConfig($config);
     }
 }

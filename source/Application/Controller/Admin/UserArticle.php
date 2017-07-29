@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin user articles setting manager.
  * Collects user articles settings, updates it on user submit, etc.
  * Admin Menu: User Administration -> Users -> Articles.
  */
-class UserArticle extends \oxAdminDetails
+class UserArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -43,7 +43,7 @@ class UserArticle extends \oxAdminDetails
         $soxId = $this->getEditObjectId();
         if ($soxId && $soxId != '-1') {
             // load object
-            $oArticlelist = oxNew('oxorderarticlelist');
+            $oArticlelist = oxNew(\OxidEsales\Eshop\Application\Model\OrderArticleList::class);
             $oArticlelist->loadOrderArticlesForUser($soxId);
 
             $this->_aViewData['oArticlelist'] = $oArticlelist;

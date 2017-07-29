@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxDb;
 use oxField;
@@ -28,7 +28,7 @@ use oxField;
 /**
  * Class manages newsletter user groups rights
  */
-class NewsletterSelectionAjax extends \ajaxListComponent
+class NewsletterSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**
@@ -57,7 +57,7 @@ class NewsletterSelectionAjax extends \ajaxListComponent
     {
         // active AJAX component
         $sGroupTable = $this->_getViewName('oxgroups');
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sDiscountId = $this->getConfig()->getRequestParameter('oxid');
         $sSynchDiscountId = $this->getConfig()->getRequestParameter('synchoxid');
 
@@ -86,13 +86,11 @@ class NewsletterSelectionAjax extends \ajaxListComponent
     {
         $aRemoveGroups = $this->_getActionIds('oxobject2group.oxid');
         if ($this->getConfig()->getRequestParameter('all')) {
-
             $sQ = $this->_addFilter("delete oxobject2group.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
-
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
-            $sQ = "delete from oxobject2group where oxobject2group.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aRemoveGroups)) . ") ";
-            oxDb::getDb()->Execute($sQ);
+            $sQ = "delete from oxobject2group where oxobject2group.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRemoveGroups)) . ") ";
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
 
@@ -110,9 +108,9 @@ class NewsletterSelectionAjax extends \ajaxListComponent
         }
         if ($soxId && $soxId != "-1" && is_array($aAddGroups)) {
             foreach ($aAddGroups as $sAddgroup) {
-                $oNewGroup = oxNew("oxobject2group");
-                $oNewGroup->oxobject2group__oxobjectid = new oxField($soxId);
-                $oNewGroup->oxobject2group__oxgroupsid = new oxField($sAddgroup);
+                $oNewGroup = oxNew(\OxidEsales\Eshop\Application\Model\Object2Group::class);
+                $oNewGroup->oxobject2group__oxobjectid = new \OxidEsales\Eshop\Core\Field($soxId);
+                $oNewGroup->oxobject2group__oxgroupsid = new \OxidEsales\Eshop\Core\Field($sAddgroup);
                 $oNewGroup->save();
             }
         }

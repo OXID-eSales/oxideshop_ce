@@ -19,10 +19,10 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \Exception;
-use oxArticle;
+use OxidEsales\EshopCommunity\Application\Model\Article;
 use \oxDb;
 use \oxTestModules;
 
@@ -59,7 +59,7 @@ class ArticleStockTest extends \OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof oxArticle);
+        $this->assertTrue($aViewData["edit"] instanceof Article);
         $this->assertEquals('article_stock.tpl', $sTplName);
     }
 
@@ -165,7 +165,7 @@ class ArticleStockTest extends \OxidTestCase
         $oDb = oxDb::getDb();
 
         /** @var Article_Stock|PHPUnit_Framework_MockObject_MockObject $oView */
-        $oView = $this->getMock("Article_Stock", array("resetContentCache"), array(), '', false);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleStock::class, array("resetContentCache"), array(), '', false);
         $oView->expects($this->atLeastOnce())->method('resetContentCache');
 
         $oView->addprice($sOXID, $aParams);
@@ -218,7 +218,7 @@ class ArticleStockTest extends \OxidTestCase
         $oDb = oxDb::getDb();
         $oDb->execute("insert into oxprice2article set oxid='_testId', oxartid='_testArtId' ");
 
-        $oView = $this->getMock("Article_Stock", array("resetContentCache"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleStock::class, array("resetContentCache"));
         $oView->expects($this->atLeastOnce())->method('resetContentCache');
 
         $this->setRequestParameter('oxid', '_testArtId');
@@ -254,15 +254,15 @@ class ArticleStockTest extends \OxidTestCase
         //expected shop id
         $sShopId = $this->getTestConfig()->getShopEdition() == 'EE' ? '2' : '1';
 
-        $oConfig = $this->getMock("oxConfig", array("getShopId"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getShopId"));
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue($sShopId));
 
-        $oBase = $this->getMock('oxbase', array('isDerived'));
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('isDerived'));
         $oBase->expects($this->any())->method('isDerived')->will($this->returnValue(false));
 
         oxTestModules::addModuleObject('oxbase', $oBase);
 
-        $oView = $this->getMock("Article_Stock", array('getConfig', 'resetContentCache', 'getEditObjectId', 'oxNew'), array(), '', false);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleStock::class, array('getConfig', 'resetContentCache', 'getEditObjectId', 'oxNew'), array(), '', false);
         $oView->expects($this->atLeastOnce())->method('getConfig')->will($this->returnValue($oConfig));
         $oView->expects($this->atLeastOnce())->method('resetContentCache');
         $oView->expects($this->atLeastOnce())->method('getEditObjectId')->will($this->returnValue('_testArtId'));

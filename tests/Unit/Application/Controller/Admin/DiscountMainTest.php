@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use \oxdiscount;
+use OxidEsales\EshopCommunity\Application\Model\Discount;
 
 use \Exception;
 use \oxField;
@@ -60,7 +60,7 @@ class DiscountMainTest extends \OxidTestCase
         $this->assertEquals('discount_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxdiscount);
+        $this->assertTrue($aViewData['edit'] instanceof discount);
     }
 
     /**

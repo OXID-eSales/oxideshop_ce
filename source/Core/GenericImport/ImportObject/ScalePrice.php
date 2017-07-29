@@ -20,12 +20,12 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
+namespace OxidEsales\EshopCommunity\Core\GenericImport\ImportObject;
 
 /**
  * Import object for Scale Prices.
  */
-class ScalePrice extends ImportObject
+class ScalePrice extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject
 {
     /** @var string Database table name. */
     protected $tableName = 'oxprice2article';

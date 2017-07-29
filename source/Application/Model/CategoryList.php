@@ -20,9 +20,10 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
+use Exception;
 
 /**
  * Category list manager.
@@ -30,7 +31,7 @@ use oxDb;
  * list structure.
  *
  */
-class CategoryList extends \oxList
+class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
 
     /**
@@ -175,6 +176,8 @@ class CategoryList extends \oxList
      * Get activity related fields
      *
      * @param string $tableName
+     *
+     * @return string SQL snippet
      */
     protected function getActivityFieldsSql($tableName)
     {
@@ -197,7 +200,7 @@ class CategoryList extends \oxList
 
         //excluding long desc
         if (!$this->isAdmin() && !$this->_blHideEmpty && !$this->getLoadFull()) {
-            $oCat = oxNew('oxCategory');
+            $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             if (!($this->_sActCat && $oCat->load($this->_sActCat) && $oCat->oxcategories__oxrootid->value)) {
                 $oCat = null;
                 $this->_sActCat = null;
@@ -222,7 +225,7 @@ class CategoryList extends \oxList
      * constructs the sql snippet responsible for depth optimizations,
      * loads only selected category's siblings
      *
-     * @param oxCategory $oCat selected category
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCat selected category
      *
      * @return string
      */
@@ -234,7 +237,7 @@ class CategoryList extends \oxList
         // load complete tree of active category, if it exists
         if ($oCat) {
             // select children here, siblings will be selected from union
-            $sDepthSnippet .= " or ($sViewName.oxparentid = " . oxDb::getDb()->quote($oCat->oxcategories__oxid->value) . ")";
+            $sDepthSnippet .= " or ($sViewName.oxparentid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($oCat->oxcategories__oxid->value) . ")";
         }
 
         // load 1'st category level (roots)
@@ -257,8 +260,8 @@ class CategoryList extends \oxList
      * siblings of the same root (siblings of the category, and parents and
      * grandparents etc)
      *
-     * @param oxCategory $oCat     current category object
-     * @param array      $aColumns required column names (optional)
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCat     current category object
+     * @param array                                        $aColumns required column names (optional)
      *
      * @return string
      */
@@ -273,7 +276,7 @@ class CategoryList extends \oxList
         return "UNION SELECT " . $this->_getSqlSelectFieldsForTree('maincats', $aColumns)
                . " FROM oxcategories AS subcats"
                . " LEFT JOIN $sViewName AS maincats on maincats.oxparentid = subcats.oxparentid"
-               . " WHERE subcats.oxrootid = " . oxDb::getDb()->quote($oCat->oxcategories__oxrootid->value)
+               . " WHERE subcats.oxrootid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($oCat->oxcategories__oxrootid->value)
                . " AND subcats.oxleft <= " . (int) $oCat->oxcategories__oxleft->value
                . " AND subcats.oxright >= " . (int) $oCat->oxcategories__oxright->value;
     }
@@ -286,7 +289,7 @@ class CategoryList extends \oxList
     protected function _loadFromDb()
     {
         $sSql = $this->_getSelectString(false, null, 'oxparentid, oxsort, oxtitle');
-        $aData = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll($sSql);
+        $aData = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getAll($sSql);
 
         return $aData;
     }
@@ -316,7 +319,6 @@ class CategoryList extends \oxList
 
         // PostProcessing
         if (!$this->isAdmin()) {
-
             // remove inactive categories
             $this->_ppRemoveInactiveCategories();
 
@@ -344,7 +346,7 @@ class CategoryList extends \oxList
     protected function _ppLoadFullCategory($sId)
     {
         if (isset($this->_aArray[$sId])) {
-            $oNewCat = oxNew('oxCategory');
+            $oNewCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             if ($oNewCat->load($sId)) {
                 // replace aArray object with fully loaded category
                 $this->_aArray[$sId] = $oNewCat;
@@ -396,7 +398,7 @@ class CategoryList extends \oxList
     /**
      * Getter for active category
      *
-     * @return oxCategory
+     * @return \OxidEsales\Eshop\Application\Model\Category
      */
     public function getClickCat()
     {
@@ -442,8 +444,7 @@ class CategoryList extends \oxList
                 is_array($aRemoveList[$oCat->oxcategories__oxrootid->value])
             ) {
                 foreach ($aRemoveList[$oCat->oxcategories__oxrootid->value] as $iLeft => $iRight) {
-                    if (
-                        ($iLeft <= $oCat->oxcategories__oxleft->value)
+                    if (($iLeft <= $oCat->oxcategories__oxleft->value)
                         && ($iRight >= $oCat->oxcategories__oxleft->value)
                     ) {
                         // this is a child in an inactive range (parent already gone)
@@ -485,13 +486,12 @@ class CategoryList extends \oxList
     protected function _ppAddContentCategories()
     {
         // load content pages for adding them into menu tree
-        $oContentList = oxNew("oxContentList");
+        $oContentList = oxNew(\OxidEsales\Eshop\Application\Model\ContentList::class);
         $oContentList->loadCatMenues();
 
         foreach ($oContentList as $sCatId => $aContent) {
             if (array_key_exists($sCatId, $this->_aArray)) {
                 $this[$sCatId]->setContentCats($aContent);
-
             }
         }
     }
@@ -528,7 +528,6 @@ class CategoryList extends \oxList
 
         $aTree = array();
         foreach ($this->_aArray as $oCat) {
-
             $aTree[$oCat->getId()] = $oCat;
             $aSubCats = $oCat->getSubCats();
             if (count($aSubCats) > 0) {
@@ -572,26 +571,34 @@ class CategoryList extends \oxList
      */
     public function updateCategoryTree($blVerbose = true, $sShopID = null)
     {
-        $oDb = oxDb::getDb();
+        // Only called from admin and admin mode reads from master (see ESDEV-3804 and ESDEV-3822).
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $database->startTransaction();
 
-        $sWhere = $this->getInitialUpdateCategoryTreeCondition($blVerbose);
+        try {
+            $sWhere = $this->getInitialUpdateCategoryTreeCondition($blVerbose);
 
-        $oDb->execute("update oxcategories set oxleft = 0, oxright = 0 where $sWhere");
-        $oDb->execute("update oxcategories set oxleft = 1, oxright = 2 where oxparentid = 'oxrootid' and $sWhere");
+            $database->execute("update oxcategories set oxleft = 0, oxright = 0 where $sWhere");
+            $database->execute("update oxcategories set oxleft = 1, oxright = 2 where oxparentid = 'oxrootid' and $sWhere");
 
-        // Get all root categories
-        $rs = $oDb->select("select oxid, oxtitle from oxcategories where oxparentid = 'oxrootid' and $sWhere order by oxsort", false, false);
-        if ($rs != false && $rs->recordCount() > 0) {
-            while (!$rs->EOF) {
-                $this->_aUpdateInfo[] = "<b>Processing : " . $rs->fields[1] . "</b>(" . $rs->fields[0] . ")<br>";
-                if ($blVerbose) {
-                    echo next($this->_aUpdateInfo);
+            // Get all root categories
+            $rs = $database->select("select oxid, oxtitle from oxcategories where oxparentid = 'oxrootid' and $sWhere order by oxsort", false);
+            if ($rs != false && $rs->count() > 0) {
+                while (!$rs->EOF) {
+                    $this->_aUpdateInfo[] = "<b>Processing : " . $rs->fields[1] . "</b>(" . $rs->fields[0] . ")<br>";
+                    if ($blVerbose) {
+                        echo next($this->_aUpdateInfo);
+                    }
+                    $oxRootId = $rs->fields[0];
+
+                    $this->_updateNodes($oxRootId, true, $oxRootId);
+                    $rs->fetchRow();
                 }
-                $oxRootId = $rs->fields[0];
-
-                $this->_updateNodes($oxRootId, true, $oxRootId);
-                $rs->moveNext();
             }
+            $database->commitTransaction();
+        } catch (Exception $exception) {
+            $database->rollbackTransaction();
+            throw $exception;
         }
 
         $this->onUpdateCategoryTree();
@@ -606,6 +613,10 @@ class CategoryList extends \oxList
 
     /**
      * Get Initial updateCategoryTree sql condition
+     *
+     * @param bool $blVerbose
+     *
+     * @return string
      */
     protected function getInitialUpdateCategoryTreeCondition($blVerbose = false)
     {
@@ -631,35 +642,36 @@ class CategoryList extends \oxList
      */
     protected function _updateNodes($oxRootId, $isRoot, $thisRoot)
     {
-        $oDb = oxDb::getDb();
+        // Called from inside a transaction so master is picked automatically (see ESDEV-3804 and ESDEV-3822).
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         if ($isRoot) {
             $thisRoot = $oxRootId;
         }
 
         // Get sub categories of root categories
-        $rs = $oDb->execute("update oxcategories set oxrootid = " . $oDb->quote($thisRoot) . " where oxparentid = " . $oDb->quote($oxRootId));
-        $rs = $oDb->select("select oxid, oxparentid from oxcategories where oxparentid = " . $oDb->quote($oxRootId) . " order by oxsort", false, false);
+        $rs = $database->execute("update oxcategories set oxrootid = " . $database->quote($thisRoot) . " where oxparentid = " . $database->quote($oxRootId));
+        $rs = $database->select("select oxid, oxparentid from oxcategories where oxparentid = " . $database->quote($oxRootId) . " order by oxsort", false);
         // If there are sub categories
-        if ($rs != false && $rs->recordCount() > 0) {
+        if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
                 $parentId = $rs->fields[1];
                 $actOxid = $rs->fields[0];
-                $sActOxidQuoted = $oDb->quote($actOxid);
+                $sActOxidQuoted = $database->quote($actOxid);
 
                 // Get the data of the parent category to the current Cat
-                $rs3 = $oDb->select("select oxrootid, oxright from oxcategories where oxid = " . $oDb->quote($parentId), false, false);
+                $rs3 = $database->select("select oxrootid, oxright from oxcategories where oxid = " . $database->quote($parentId), false);
                 while (!$rs3->EOF) {
                     $parentOxRootId = $rs3->fields[0];
                     $parentRight = (int) $rs3->fields[1];
-                    $rs3->moveNext();
+                    $rs3->fetchRow();
                 }
-                $sParentOxRootIdQuoted = $oDb->quote($parentOxRootId);
-                $oDb->execute("update oxcategories set oxleft = oxleft + 2 where oxrootid = $sParentOxRootIdQuoted and oxleft > '$parentRight' and oxright >= '$parentRight' and oxid != $sActOxidQuoted");
-                $oDb->execute("update oxcategories set oxright = oxright + 2 where oxrootid = $sParentOxRootIdQuoted and oxright >= '$parentRight' and oxid != $sActOxidQuoted");
-                $oDb->execute("update oxcategories set oxleft = $parentRight, oxright = ($parentRight + 1) where oxid = $sActOxidQuoted");
+                $sParentOxRootIdQuoted = $database->quote($parentOxRootId);
+                $database->execute("update oxcategories set oxleft = oxleft + 2 where oxrootid = $sParentOxRootIdQuoted and oxleft > '$parentRight' and oxright >= '$parentRight' and oxid != $sActOxidQuoted");
+                $database->execute("update oxcategories set oxright = oxright + 2 where oxrootid = $sParentOxRootIdQuoted and oxright >= '$parentRight' and oxid != $sActOxidQuoted");
+                $database->execute("update oxcategories set oxleft = $parentRight, oxright = ($parentRight + 1) where oxid = $sActOxidQuoted");
                 $this->_updateNodes($actOxid, false, $thisRoot);
-                $rs->moveNext();
+                $rs->fetchRow();
             }
         }
     }

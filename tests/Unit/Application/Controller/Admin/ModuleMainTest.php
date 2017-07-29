@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 /**
  * Tests for Shop_Config class
@@ -37,26 +37,5 @@ class ModuleMainTest extends \OxidTestCase
         // testing..
         $oView = oxNew('Module_Main');
         $this->assertEquals('module_main.tpl', $oView->render());
-    }
-
-
-    /**
-     * Theme_Main::Render() test case - loading module object
-     *
-     * @return null
-     */
-    public function testRender_loadingObject()
-    {
-        if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $this->markTestSkipped('This test is for Community and Professional editions only.');
-        }
-        $oView = $this->getMock('Module_Main', array('getEditObjectId'));
-        $oView->expects($this->any())->method('getEditObjectId')->will($this->returnValue('oe/invoicepdf'));
-        $oView->render();
-
-        $aViewData = $oView->getViewData();
-
-        $oModule = $aViewData['oModule'];
-        $this->assertEquals("invoicepdf", $oModule->getInfo("id"));
     }
 }

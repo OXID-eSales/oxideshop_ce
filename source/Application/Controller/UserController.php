@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 
@@ -27,7 +27,7 @@ use oxRegistry;
  * User details.
  * Collects and arranges user object data (information, like shipping address, etc.).
  */
-class UserController extends \oxUBase
+class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
      * Current class template.
@@ -86,7 +86,7 @@ class UserController extends \oxUBase
     protected $_sWishId = null;
 
     /**
-     * Loads customer basket object form session (oxSession::getBasket()),
+     * Loads customer basket object form session (\OxidEsales\Eshop\Core\Session::getBasket()),
      * passes action article/basket/country list to template engine. If
      * available - loads user delivery address data (oxAddress). Returns
      * name template file to render user::_sThisTemplate.
@@ -106,7 +106,7 @@ class UserController extends \oxUBase
             $isPsBasketReservationsEnabled = $config->getConfigParam('blPsBasketReservationEnabled');
             if ($this->_blIsOrderStep && $isPsBasketReservationsEnabled &&
                 (!$basket || ($basket && !$basket->getProductsCount()))) {
-                oxRegistry::getUtils()->redirect($config->getShopHomeUrl() . 'cl=basket', true, 302);
+                \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($config->getShopHomeUrl() . 'cl=basket', true, 302);
             }
         }
 
@@ -138,7 +138,7 @@ class UserController extends \oxUBase
     {
         if ($this->_iOption === null) {
             // passing user chosen option value to display correct content
-            $option = oxRegistry::getConfig()->getRequestParameter('option');
+            $option = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('option');
             // if user chosen "Option 2"" - we should show user details only if he is authorized
             if ($option == 2 && !$this->getUser()) {
                 $option = 0;
@@ -156,11 +156,11 @@ class UserController extends \oxUBase
      */
     public function getOrderRemark()
     {
-        $config = oxRegistry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         if ($this->_sOrderRemark === null) {
             // if already connected, we can use the session
             if ($this->getUser()) {
-                $orderRemark = oxRegistry::getSession()->getVariable('ordrem');
+                $orderRemark = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('ordrem');
             } else {
                 // not connected so nowhere to save, we're gonna use what we get from post
                 $orderRemark = $config->getRequestParameter('order_remark', true);
@@ -180,7 +180,7 @@ class UserController extends \oxUBase
     public function isNewsSubscribed()
     {
         if ($this->_blNewsSubscribed === null) {
-            if (($isSubscribedToNews = oxRegistry::getConfig()->getRequestParameter('blnewssubscribed')) === null) {
+            if (($isSubscribedToNews = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('blnewssubscribed')) === null) {
                 $isSubscribedToNews = false;
             }
             if (($user = $this->getUser())) {
@@ -203,7 +203,7 @@ class UserController extends \oxUBase
      */
     public function showShipAddress()
     {
-        return oxRegistry::getSession()->getVariable('blshowshipaddress');
+        return \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('blshowshipaddress');
     }
 
     /**
@@ -213,7 +213,7 @@ class UserController extends \oxUBase
      */
     public function modifyBillAddress()
     {
-        return oxRegistry::getConfig()->getRequestParameter('blnewssubscribed');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('blnewssubscribed');
     }
 
     /**
@@ -226,8 +226,8 @@ class UserController extends \oxUBase
         $paths = array();
         $path = array();
 
-        $baseLanguageId = oxRegistry::getLang()->getBaseLanguage();
-        $path['title'] = oxRegistry::getLang()->translateString('ADDRESS', $baseLanguageId, false);
+        $baseLanguageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        $path['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('ADDRESS', $baseLanguageId, false);
         $path['link'] = $this->getLink();
 
         $paths[] = $path;

@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxRegistry;
 
@@ -94,7 +94,7 @@ class ServerCheckerTest extends \OxidTestCase
     {
         $oServerNodeChecker = oxNew('oxServerChecker');
         /** @var oxApplicationServer $oNode */
-        $oNode = $this->getMock('oxApplicationServer', array('getTimestamp'));
+        $oNode = $this->getMock(\OxidEsales\Eshop\Core\ApplicationServer::class, array('getTimestamp'));
         $oNode->expects($this->any())->method('getTimestamp')->will($this->returnValue(null));
 
         $this->assertFalse($oServerNodeChecker->check($oNode), 'Server node must be not valid when returns timestamp null.');
@@ -106,7 +106,7 @@ class ServerCheckerTest extends \OxidTestCase
     private function _getMockedNode()
     {
         /** @var oxApplicationServer $oNode */
-        $oNode = $this->getMock('oxApplicationServer', array('getTimestamp'));
+        $oNode = $this->getMock(\OxidEsales\Eshop\Core\ApplicationServer::class, array('getTimestamp'));
         $oNode->expects($this->any())->method('getTimestamp')->will($this->returnValue(1400000000));
 
         return $oNode;

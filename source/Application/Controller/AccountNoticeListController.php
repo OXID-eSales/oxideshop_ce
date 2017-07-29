@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 
@@ -31,7 +31,7 @@ use oxRegistry;
  * store them to shopping basket, view detail information.
  * OXID eShop -> MY ACCOUNT -> Newsletter.
  */
-class AccountNoticeListController extends \Account
+class AccountNoticeListController extends \OxidEsales\Eshop\Application\Controller\AccountController
 {
     /**
      * Current class template name.
@@ -77,11 +77,11 @@ class AccountNoticeListController extends \Account
 
     /**
      * If user is not logged in - returns name of template
-     * Account_Noticelist::_sThisLoginTemplate, or if user is allready
+     * \OxidEsales\Eshop\Application\Controller\AccountNoticeListController::_sThisLoginTemplate, or if user is allready
      * logged in - loads notice list articles (articles may be accessed
-     * by oxuser::getBasket()), loads similar articles (if available) for
-     * the last article in list oxarticle::GetSimilarProducts() and
-     * returns name of template to render account_noticelist::_sThisTemplate
+     * by \OxidEsales\Eshop\Application\Model\User::getBasket()), loads similar articles (if available) for
+     * the last article in list \OxidEsales\Eshop\Application\Model\Article::GetSimilarProducts() and
+     * returns name of template to render \OxidEsales\Eshop\Application\Controller\AccountNoticeListController::_sThisTemplate
      *
      * @return string current template file name
      */
@@ -123,7 +123,6 @@ class AccountNoticeListController extends \Account
     {
         // similar products list
         if ($this->_aSimilarProductList === null && count($this->getNoticeProductList())) {
-
             // just ensuring that next call will skip this check
             $this->_aSimilarProductList = false;
 
@@ -165,12 +164,12 @@ class AccountNoticeListController extends \Account
         $aPaths = array();
         $aPath = array();
 
-        $oLang = oxRegistry::getLang();
+        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $sSelfLink = $this->getViewConfig()->getSelfLink();
 
         $iBaseLanguage = $oLang->getBaseLanguage();
         $aPath['title'] = $oLang->translateString('MY_ACCOUNT', $iBaseLanguage, false);
-        $aPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($sSelfLink . "cl=account");
+        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($sSelfLink . "cl=account");
         $aPaths[] = $aPath;
 
         $aPath['title'] = $oLang->translateString('MY_WISH_LIST', $iBaseLanguage, false);

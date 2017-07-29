@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use stdClass;
@@ -31,7 +31,7 @@ use oxField;
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Shop Settings -> Payment Methods -> Main.
  */
-class PaymentCountry extends \oxAdminDetails
+class PaymentCountry extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -52,7 +52,7 @@ class PaymentCountry extends \oxAdminDetails
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oPayment = oxNew("oxpayment");
+            $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
             $oPayment->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oPayment->getAvailableInLangs();
@@ -63,7 +63,7 @@ class PaymentCountry extends \oxAdminDetails
             $this->_aViewData["edit"] = $oPayment;
 
             // remove already created languages
-            $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
+            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
             if (count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
@@ -76,8 +76,8 @@ class PaymentCountry extends \oxAdminDetails
             }
         }
 
-        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
-            $oPaymentCountryAjax = oxNew('payment_country_ajax');
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc")) {
+            $oPaymentCountryAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\PaymentCountryAjax::class);
             $this->_aViewData['oxajax'] = $oPaymentCountryAjax->getColumns();
 
             return "popups/payment_country.tpl";
@@ -92,14 +92,14 @@ class PaymentCountry extends \oxAdminDetails
     public function addcountry()
     {
         $sOxId = $this->getEditObjectId();
-        $aChosenCntr = oxRegistry::getConfig()->getRequestParameter("allcountries");
+        $aChosenCntr = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("allcountries");
         if (isset($sOxId) && $sOxId != "-1" && is_array($aChosenCntr)) {
             foreach ($aChosenCntr as $sChosenCntr) {
-                $oObject2Payment = oxNew('oxBase');
+                $oObject2Payment = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Payment->init('oxobject2payment');
-                $oObject2Payment->oxobject2payment__oxpaymentid = new oxField($sOxId);
-                $oObject2Payment->oxobject2payment__oxobjectid = new oxField($sChosenCntr);
-                $oObject2Payment->oxobject2payment__oxtype = new oxField("oxcountry");
+                $oObject2Payment->oxobject2payment__oxpaymentid = new \OxidEsales\Eshop\Core\Field($sOxId);
+                $oObject2Payment->oxobject2payment__oxobjectid = new \OxidEsales\Eshop\Core\Field($sChosenCntr);
+                $oObject2Payment->oxobject2payment__oxtype = new \OxidEsales\Eshop\Core\Field("oxcountry");
                 $oObject2Payment->save();
             }
         }
@@ -111,10 +111,10 @@ class PaymentCountry extends \oxAdminDetails
     public function removecountry()
     {
         $sOxId = $this->getEditObjectId();
-        $aChosenCntr = oxRegistry::getConfig()->getRequestParameter("countries");
+        $aChosenCntr = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("countries");
         if (isset($sOxId) && $sOxId != "-1" && is_array($aChosenCntr)) {
             foreach ($aChosenCntr as $sChosenCntr) {
-                $oObject2Payment = oxNew('oxBase');
+                $oObject2Payment = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Payment->init('oxobject2payment');
                 $oObject2Payment->delete($sChosenCntr);
             }

@@ -16,13 +16,14 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Setup;
+namespace OxidEsales\EshopCommunity\Setup;
 
 use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use OxidEsales\EshopCommunity\Setup\Exception\TemplateNotFoundException;
 
 /**
  * Setup View class
@@ -50,17 +51,51 @@ class View extends Core
      */
     protected $_aViewParams = array();
 
+    /** @var string */
+    private $templateFileName = 'default.php';
 
     /**
-     * Displayes current setup step template
+     * Defines name of template to be used in display method.
      *
-     * @param string $sTemplate name of template to display
+     * @param string $templateFileName
+     * @throws TemplateNotFoundException
      */
-    public function display($sTemplate)
+    public function setTemplateFileName($templateFileName)
+    {
+        if (!file_exists($this->getPathToTemplateFileName($templateFileName))) {
+            throw new TemplateNotFoundException($templateFileName);
+        }
+
+        $this->templateFileName = $templateFileName;
+    }
+
+    /**
+     * Displays current setup step template
+     */
+    public function display()
     {
         ob_start();
-        include "tpl/{$sTemplate}";
+        $templateFilePath = $this->getPathToActiveTemplateFileName();
+        include $templateFilePath;
         ob_end_flush();
+    }
+
+    /**
+     * @return string
+     */
+    private function getPathToActiveTemplateFileName()
+    {
+        return $this->getPathToTemplateFileName($this->templateFileName);
+    }
+
+    /**
+     * @param string $templateFileName Name of the template file.
+     *
+     * @return string
+     */
+    private function getPathToTemplateFileName($templateFileName)
+    {
+        return implode(DIRECTORY_SEPARATOR, [__DIR__, "tpl", $templateFileName]);
     }
 
     /**

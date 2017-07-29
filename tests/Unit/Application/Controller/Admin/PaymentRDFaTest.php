@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \stdClass;
 
@@ -64,8 +64,8 @@ class PaymentRDFaTest extends \OxidTestCase
         $oDB = oxDb::getDb();
 
         $iExists = $oDB->GetOne(
-            'SELECT 1 FROM oxobject2payment WHERE oxpaymentid = ? AND oxtype = ?'
-            , array($sTestID, 'rdfapayment')
+            'SELECT 1 FROM oxobject2payment WHERE oxpaymentid = ? AND oxtype = ?',
+            array($sTestID, 'rdfapayment')
         );
         $this->assertFalse(empty($iExists));
 
@@ -73,8 +73,8 @@ class PaymentRDFaTest extends \OxidTestCase
         $oView->save();
 
         $iExists = $oDB->GetOne(
-            'SELECT 1 FROM oxobject2payment WHERE oxpaymentid = ? AND oxtype = ?'
-            , array($sTestID, 'rdfapayment')
+            'SELECT 1 FROM oxobject2payment WHERE oxpaymentid = ? AND oxtype = ?',
+            array($sTestID, 'rdfapayment')
         );
         $this->assertTrue(empty($iExists));
     }
@@ -104,8 +104,8 @@ class PaymentRDFaTest extends \OxidTestCase
         $oView->save();
 
         $aCurrObjIDs = $oDB->GetCol(
-            'SELECT oxobjectid FROM oxobject2payment WHERE oxpaymentid = ? AND oxtype = ?'
-            , array($sTestID, 'rdfapayment')
+            'SELECT oxobjectid FROM oxobject2payment WHERE oxpaymentid = ? AND oxtype = ?',
+            array($sTestID, 'rdfapayment')
         );
         sort($aObjIDs);
         sort($aCurrObjIDs);
@@ -122,7 +122,7 @@ class PaymentRDFaTest extends \OxidTestCase
         $aAssignedRDFaPayments = array('GoogleCheckout');
         $aExpResp = array();
 
-        $oView = $this->getMock('Payment_RDFa', array('getAssignedRDFaPayments'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PaymentRdfa::class, array('getAssignedRDFaPayments'));
         $oView->expects($this->once())->method('getAssignedRDFaPayments')->will($this->returnValue($aAssignedRDFaPayments));
         $aCurrResp = $oView->getAllRDFaPayments();
 

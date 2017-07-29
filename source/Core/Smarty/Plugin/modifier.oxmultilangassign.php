@@ -38,8 +38,8 @@ function smarty_modifier_oxmultilangassign( $sIdent, $args = null )
         $sIdent = 'IDENT MISSING';
     }
 
-    $oLang = oxRegistry::getLang();
-    $oConfig = oxRegistry::getConfig();
+    $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
+    $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
     $oShop = $oConfig->getActiveShop();
     $iLang = $oLang->getTplLanguage();
     $blShowError = true;
@@ -51,7 +51,7 @@ function smarty_modifier_oxmultilangassign( $sIdent, $args = null )
     try {
         $sTranslation = $oLang->translateString( $sIdent, $iLang, $oLang->isAdmin() );
         $blTranslationNotFound = !$oLang->isTranslated();
-    } catch ( oxLanguageException $oEx ) {
+    } catch (\OxidEsales\Eshop\Core\Exception\LanguageException $oEx ) {
         // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
     }
 

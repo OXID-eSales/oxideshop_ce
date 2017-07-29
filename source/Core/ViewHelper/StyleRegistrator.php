@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\ViewHelper;
+namespace OxidEsales\EshopCommunity\Core\ViewHelper;
 
 use oxRegistry;
 
@@ -41,7 +41,7 @@ class StyleRegistrator
      */
     public function addFile($style, $condition, $isDynamic)
     {
-        $config = oxRegistry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $suffix = $isDynamic ? '_dynamic' : '';
 
         if (!preg_match('#^https?://#', $style)) {
@@ -73,7 +73,7 @@ class StyleRegistrator
      */
     protected function formLocalFileUrl($file)
     {
-        $config = oxRegistry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $parts = explode('?', $file);
         $url = $config->getResourceUrl($parts[0], $config->isAdmin());
         $parameters = $parts[1];

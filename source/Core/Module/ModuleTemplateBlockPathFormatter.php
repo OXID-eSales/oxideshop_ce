@@ -20,10 +20,10 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Module;
+namespace OxidEsales\EshopCommunity\Core\Module;
 
 use \oxException;
-use \OxidEsales\Eshop\Core\FileSystem\FileSystem;
+use OxidEsales\Eshop\Core\FileSystem\FileSystem;
 
 /**
  * Forms path to module block template.
@@ -84,7 +84,7 @@ class ModuleTemplateBlockPathFormatter
     public function getPath()
     {
         if (is_null($this->moduleId) || is_null($this->fileName)) {
-            throw oxNew('oxException');
+            throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
         }
 
         $fileName = $this->fileName;
@@ -99,7 +99,7 @@ class ModuleTemplateBlockPathFormatter
             $fileName = "out/blocks/$fileName";
         }
 
-        $moduleList = oxNew('oxmodulelist');
+        $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
         $activeModuleInfo = $moduleList->getActiveModuleInfo();
 
         if (!array_key_exists($this->moduleId, $activeModuleInfo)) {

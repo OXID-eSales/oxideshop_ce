@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Integration\Price;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Price;
 
 use oxDb;
 use oxOrder;
@@ -97,7 +97,7 @@ class OrderNumberingTest extends BaseTestCase
 
         // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
         /** @var oxOrder|MockObject $order1 */
-        $order1 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
+        $order1 = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
         $order1->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
         $order1->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $order1->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
@@ -109,7 +109,7 @@ class OrderNumberingTest extends BaseTestCase
 
         // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
         /** @var oxOrder|MockObject $order2 */
-        $order2 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
+        $order2 = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
         $order2->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
         $order2->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $order2->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
@@ -153,7 +153,7 @@ class OrderNumberingTest extends BaseTestCase
 
         // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
         /** @var oxOrder|MockObject $order1 */
-        $order1 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
+        $order1 = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
         $order1->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
         $order1->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $order1->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
@@ -165,7 +165,7 @@ class OrderNumberingTest extends BaseTestCase
 
         // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
         /** @var oxOrder|MockObject $order2 */
-        $order2 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
+        $order2 = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
         $order2->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
         $order2->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $order2->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
@@ -179,7 +179,7 @@ class OrderNumberingTest extends BaseTestCase
 
         // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
         /** @var oxOrder|MockObject $order3 */
-        $order3 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
+        $order3 = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
         $order3->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
         $order3->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $order3->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
@@ -223,7 +223,7 @@ class OrderNumberingTest extends BaseTestCase
 
         // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
         /** @var oxOrder|MockObject $order1 */
-        $order1 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
+        $order1 = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
         $order1->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
         $order1->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $order1->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
@@ -235,7 +235,7 @@ class OrderNumberingTest extends BaseTestCase
 
         // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
         /** @var oxOrder|MockObject $order2 */
-        $order2 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
+        $order2 = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
         $order2->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
         $order2->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $order2->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
@@ -243,7 +243,7 @@ class OrderNumberingTest extends BaseTestCase
 
         // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
         /** @var oxOrder|MockObject $order3 */
-        $order3 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
+        $order3 = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
         $order3->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
         $order3->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $order3->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));

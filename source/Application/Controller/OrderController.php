@@ -20,12 +20,13 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxAddress;
 use oxArticleInputException;
 use oxBasket;
 use oxBasketContentMarkGenerator;
+use OxidEsales\Eshop\Core\UtilsObject;
 use oxNoArticleException;
 use oxOrder;
 use oxOutOfStockException;
@@ -36,7 +37,7 @@ use oxUtilsObject;
  * Order manager. Arranges user ordering data, checks/validates
  * it, on success stores ordering data to DB.
  */
-class OrderController extends \oxUBase
+class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
 
     /**
@@ -110,22 +111,6 @@ class OrderController extends \oxUBase
     protected $_blConfirmAGBError = null;
 
     /**
-     * Config option "blConfirmCustInfo". Will be removed later
-     *
-     * @deprecated since v5.1.6 (2014-05-28); Not used anymore
-     * @var bool
-     */
-    protected $_blConfirmCustInfo = null;
-
-    /**
-     * Boolean of option "blConfirmCustInfo" error
-     *
-     * @deprecated since v5.1.6 (2014-05-28); Not used anymore
-     * @var bool
-     */
-    protected $_blConfirmCustInfoError = null;
-
-    /**
      * Current class template name.
      *
      * @var string
@@ -145,8 +130,8 @@ class OrderController extends \oxUBase
     protected $_iWrapCnt = null;
 
     /**
-     * Loads basket oxsession::getBasket(), sets $this->oBasket->blCalcNeeded = true to
-     * recalculate, sets back basket to session oxsession::setBasket(), executes
+     * Loads basket \OxidEsales\Eshop\Core\Session::getBasket(), sets $this->oBasket->blCalcNeeded = true to
+     * recalculate, sets back basket to session \OxidEsales\Eshop\Core\Session::setBasket(), executes
      * parent::init().
      */
     public function init()
@@ -164,10 +149,10 @@ class OrderController extends \oxUBase
 
     /**
      * Executes parent::render(), if basket is empty - redirects to main page
-     * and exits the script (oxorder::validateOrder()). Loads and passes payment
+     * and exits the script (\OxidEsales\Eshop\Application\Model\Order::validateOrder()). Loads and passes payment
      * info to template engine. Refreshes basket articles info by additionally loading
-     * each article object (oxorder::getProdFromBasket()), adds customer addressing/delivering
-     * data (oxorder::getDelAddressInfo()) and delivery sets info (oxorder::getShipping()).
+     * each article object (\OxidEsales\Eshop\Application\Model\Order::getProdFromBasket()), adds customer addressing/delivering
+     * data (\OxidEsales\Eshop\Application\Model\Order::getDelAddressInfo()) and delivery sets info (\OxidEsales\Eshop\Application\Model\Order::getShipping()).
      * Returns name of template to render order::_sThisTemplate.
      *
      * @return string
@@ -181,30 +166,30 @@ class OrderController extends \oxUBase
             if ($myConfig->getConfigParam('blPsBasketReservationEnabled')) {
                 $this->getSession()->getBasketReservations()->renewExpiration();
                 if (!$oBasket || ($oBasket && !$oBasket->getProductsCount())) {
-                    oxRegistry::getUtils()->redirect($myConfig->getShopHomeUrl() . 'cl=basket', true, 302);
+                    \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($myConfig->getShopHomeUrl() . 'cl=basket', true, 302);
                 }
             }
 
             // can we proceed with ordering ?
             $oUser = $this->getUser();
             if (!$oUser && ($oBasket && $oBasket->getProductsCount() > 0)) {
-                oxRegistry::getUtils()->redirect($myConfig->getShopHomeUrl() . 'cl=basket', false, 302);
+                \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($myConfig->getShopHomeUrl() . 'cl=basket', false, 302);
             } elseif (!$oBasket || !$oUser || ($oBasket && !$oBasket->getProductsCount())) {
-                oxRegistry::getUtils()->redirect($myConfig->getShopHomeUrl(), false, 302);
+                \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($myConfig->getShopHomeUrl(), false, 302);
             }
 
             // payment is set ?
             if (!$this->getPayment()) {
                 // redirecting to payment step on error ..
-                oxRegistry::getUtils()->redirect($myConfig->getShopCurrentURL() . '&cl=payment', true, 302);
+                \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($myConfig->getShopCurrentURL() . '&cl=payment', true, 302);
             }
         }
 
         parent::render();
 
         // reload blocker
-        if (!oxRegistry::getSession()->getVariable('sess_challenge')) {
-            oxRegistry::getSession()->setVariable('sess_challenge', oxUtilsObject::getInstance()->generateUID());
+        if (!\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('sess_challenge')) {
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('sess_challenge', $this->getUtilsObjectInstance()->generateUID());
         }
 
         return $this->_sThisTemplate;
@@ -215,8 +200,8 @@ class OrderController extends \oxUBase
      * rules agreed - returns to order view), loads basket contents (plus applied
      * price/amount discount if available - checks for stock, checks user data (if no
      * data is set - returns to user login page). Stores order info to database
-     * (oxorder::finalizeOrder()). According to sum for items automatically assigns user to
-     * special user group ( oxuser::onOrderExecute(); if this option is not disabled in
+     * (\OxidEsales\Eshop\Application\Model\Order::finalizeOrder()). According to sum for items automatically assigns user to
+     * special user group ( \OxidEsales\Eshop\Application\Model\User::onOrderExecute(); if this option is not disabled in
      * admin). Finally you will be redirected to next page (order::_getNextStep()).
      *
      * @return string
@@ -233,15 +218,6 @@ class OrderController extends \oxUBase
             return;
         }
 
-        /* @deprecated since v5.1.6 (2014-05-28); Not used anymore */
-        $oConfig = $this->getConfig();
-        $sOrderCustomerInfo = $oConfig->getRequestParameter('ord_custinfo');
-        if ($sOrderCustomerInfo !== null && !$sOrderCustomerInfo && $this->isConfirmCustInfoActive()) {
-            $this->_blConfirmCustInfoError = 1;
-
-            return;
-        }
-
         // additional check if we really really have a user now
         $oUser = $this->getUser();
         if (!$oUser) {
@@ -252,7 +228,7 @@ class OrderController extends \oxUBase
         $oBasket = $this->getSession()->getBasket();
         if ($oBasket->getProductsCount()) {
             try {
-                $oOrder = oxNew('oxorder');
+                $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
 
                 //finalizing ordering process (validating, storing order into DB, executing payment, setting status ...)
                 $iSuccess = $oOrder->finalizeOrder($oBasket, $oUser);
@@ -262,13 +238,13 @@ class OrderController extends \oxUBase
 
                 // proceeding to next view
                 return $this->_getNextStep($iSuccess);
-            } catch (oxOutOfStockException $oEx) {
+            } catch (\OxidEsales\Eshop\Core\Exception\OutOfStockException $oEx) {
                 $oEx->setDestination('basket');
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'basket');
-            } catch (oxNoArticleException $oEx) {
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
-            } catch (oxArticleInputException $oEx) {
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false, true, 'basket');
+            } catch (\OxidEsales\Eshop\Core\Exception\NoArticleException $oEx) {
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
+            } catch (\OxidEsales\Eshop\Core\Exception\ArticleInputException $oEx) {
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
             }
         }
     }
@@ -288,15 +264,15 @@ class OrderController extends \oxUBase
 
             // payment is set ?
             $sPaymentid = $oBasket->getPaymentId();
-            $oPayment = oxNew('oxpayment');
+            $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
 
             if ($sPaymentid && $oPayment->load($sPaymentid) &&
                 $oPayment->isValidPayment(
-                    oxRegistry::getSession()->getVariable('dynvalue'),
+                    \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('dynvalue'),
                     $this->getConfig()->getShopId(),
                     $oUser,
                     $oBasket->getPriceForPayment(),
-                    oxRegistry::getSession()->getVariable('sShipSet')
+                    \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('sShipSet')
                 )
             ) {
                 $this->_oPayment = $oPayment;
@@ -342,8 +318,8 @@ class OrderController extends \oxUBase
     {
         if ($this->_sOrderRemark === null) {
             $this->_sOrderRemark = false;
-            if ($sRemark = oxRegistry::getSession()->getVariable('ordrem')) {
-                $this->_sOrderRemark = oxRegistry::getConfig()->checkParamSpecialChars($sRemark);
+            if ($sRemark = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('ordrem')) {
+                $this->_sOrderRemark = \OxidEsales\Eshop\Core\Registry::getConfig()->checkParamSpecialChars($sRemark);
             }
         }
 
@@ -376,7 +352,7 @@ class OrderController extends \oxUBase
     {
         if ($this->_oDelAddress === null) {
             $this->_oDelAddress = false;
-            $oOrder = oxNew('oxorder');
+            $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
             $this->_oDelAddress = $oOrder->getDelAddressInfo();
         }
 
@@ -393,7 +369,7 @@ class OrderController extends \oxUBase
         if ($this->_oShipSet === null) {
             $this->_oShipSet = false;
             if ($oBasket = $this->getBasket()) {
-                $oShipSet = oxNew('oxdeliveryset');
+                $oShipSet = oxNew(\OxidEsales\Eshop\Application\Model\DeliverySet::class);
                 if ($oShipSet->load($oBasket->getShippingId())) {
                     $this->_oShipSet = $oShipSet;
                 }
@@ -419,26 +395,6 @@ class OrderController extends \oxUBase
     }
 
     /**
-     * Template variable getter. Returns if option "blConfirmCustInfo" is on.
-     *
-     * @deprecated since v5.1.6 (2014-05-28); Not used anymore
-     *
-     * @return bool
-     */
-    public function isConfirmCustInfoActive()
-    {
-        if ($this->_blConfirmCustInfo === null) {
-            $this->_blConfirmCustInfo = false;
-            $sConf = $this->getConfig()->getConfigParam('blConfirmCustInfo');
-            if ($sConf != null) {
-                $this->_blConfirmCustInfo = $this->getConfig()->getConfigParam('blConfirmCustInfo');
-            }
-        }
-
-        return $this->_blConfirmCustInfo;
-    }
-
-    /**
      * Template variable getter. Returns if option "blConfirmAGB" was not set
      *
      * @return bool
@@ -446,18 +402,6 @@ class OrderController extends \oxUBase
     public function isConfirmAGBError()
     {
         return $this->_blConfirmAGBError;
-    }
-
-    /**
-     * Template variable getter. Returns if option "blConfirmCustInfo" was not set.
-     *
-     * @deprecated since v5.1.6 (2014-05-28); Not used anymore
-     *
-     * @return bool
-     */
-    public function isConfirmCustInfoError()
-    {
-        return $this->_blConfirmCustInfoError;
     }
 
     /**
@@ -489,7 +433,7 @@ class OrderController extends \oxUBase
         if ($this->_iWrapCnt === null) {
             $this->_iWrapCnt = 0;
 
-            $oWrap = oxNew('oxwrapping');
+            $oWrap = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class);
             $this->_iWrapCnt += $oWrap->getWrappingCount('WRAP');
             $this->_iWrapCnt += $oWrap->getWrappingCount('CARD');
         }
@@ -507,8 +451,8 @@ class OrderController extends \oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
-        $aPath['title'] = oxRegistry::getLang()->translateString('ORDER', $iBaseLanguage, false);
+        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('ORDER', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
 
         $aPaths[] = $aPath;
@@ -523,7 +467,7 @@ class OrderController extends \oxUBase
      */
     public function getAddressError()
     {
-        return oxRegistry::getConfig()->getRequestParameter('iAddressError');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('iAddressError');
     }
 
     /**
@@ -538,9 +482,9 @@ class OrderController extends \oxUBase
         $sDelAddress = $oUser->getEncodedDeliveryAddress();
 
         // delivery address
-        if (oxRegistry::getSession()->getVariable('deladrid')) {
-            $oDelAdress = oxNew('oxAddress');
-            $oDelAdress->load(oxRegistry::getSession()->getVariable('deladrid'));
+        if (\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('deladrid')) {
+            $oDelAdress = oxNew(\OxidEsales\Eshop\Application\Model\Address::class);
+            $oDelAdress->load(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('deladrid'));
 
             $sDelAddress .= $oDelAdress->getEncodedDeliveryAddress();
         }
@@ -573,29 +517,29 @@ class OrderController extends \oxUBase
 
         //little trick with switch for multiple cases
         switch (true) {
-            case ($iSuccess === oxOrder::ORDER_STATE_MAILINGERROR):
+            case ($iSuccess === \OxidEsales\Eshop\Application\Model\Order::ORDER_STATE_MAILINGERROR):
                 $sNextStep = 'thankyou?mailerror=1';
                 break;
-            case ($iSuccess === oxOrder::ORDER_STATE_INVALIDDElADDRESSCHANGED):
+            case ($iSuccess === \OxidEsales\Eshop\Application\Model\Order::ORDER_STATE_INVALIDDElADDRESSCHANGED):
                 $sNextStep = 'order?iAddressError=1';
                 break;
-            case ($iSuccess === oxOrder::ORDER_STATE_BELOWMINPRICE):
+            case ($iSuccess === \OxidEsales\Eshop\Application\Model\Order::ORDER_STATE_BELOWMINPRICE):
                 $sNextStep = 'order';
                 break;
-            case ($iSuccess === oxOrder::ORDER_STATE_PAYMENTERROR):
+            case ($iSuccess === \OxidEsales\Eshop\Application\Model\Order::ORDER_STATE_PAYMENTERROR):
                 // no authentication, kick back to payment methods
-                oxRegistry::getSession()->setVariable('payerror', 2);
+                \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('payerror', 2);
                 $sNextStep = 'payment?payerror=2';
                 break;
-            case ($iSuccess === oxOrder::ORDER_STATE_ORDEREXISTS):
+            case ($iSuccess === \OxidEsales\Eshop\Application\Model\Order::ORDER_STATE_ORDEREXISTS):
                 break; // reload blocker activ
             case (is_numeric($iSuccess) && $iSuccess > 3):
-                oxRegistry::getSession()->setVariable('payerror', $iSuccess);
+                \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('payerror', $iSuccess);
                 $sNextStep = 'payment?payerror=' . $iSuccess;
                 break;
             case (!is_numeric($iSuccess) && $iSuccess):
                 //instead of error code getting error text and setting payerror to -1
-                oxRegistry::getSession()->setVariable('payerror', -1);
+                \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('payerror', -1);
                 $iSuccess = urlencode($iSuccess);
                 $sNextStep = 'payment?payerror=-1&payerrortext=' . $iSuccess;
                 break;
@@ -635,5 +579,13 @@ class OrderController extends \oxUBase
         }
 
         return $blValid;
+    }
+
+    /**
+     * @return UtilsObject
+     */
+    protected function getUtilsObjectInstance()
+    {
+        return \OxidEsales\Eshop\Core\Registry::getUtilsObject();
     }
 }

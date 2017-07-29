@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxPasswordSaltGenerator;
 
@@ -75,7 +75,7 @@ class PasswordSaltGeneratorTest extends \OxidTestCase
             $oOpenSSLFunctionalityChecker = oxNew('oxOpenSSLFunctionalityChecker');
         } else {
             /** @var oxOpenSSLFunctionalityChecker $oOpenSSLFunctionalityChecker */
-            $oOpenSSLFunctionalityChecker = $this->getMock('oxOpenSSLFunctionalityChecker', array('isOpenSslRandomBytesGeneratorAvailable'));
+            $oOpenSSLFunctionalityChecker = $this->getMock(\OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker::class, array('isOpenSslRandomBytesGeneratorAvailable'));
             $oOpenSSLFunctionalityChecker->expects($this->any())->method('isOpenSslRandomBytesGeneratorAvailable')->will($this->returnValue($blIsOpenSslRandomBytesGeneratorAvailable));
         }
 

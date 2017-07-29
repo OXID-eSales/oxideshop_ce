@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 class SubShopSpecificFileCacheTest extends \OxidTestCase
 {
@@ -28,7 +28,7 @@ class SubShopSpecificFileCacheTest extends \OxidTestCase
     {
         $sTest = "test val";
 
-        $shopIdCalculator = $this->getMock('oxShopIdCalculator', array('getShopId'), array(), '', false);
+        $shopIdCalculator = $this->getMock(\OxidEsales\Eshop\Core\ShopIdCalculator::class, array('getShopId'), array(), '', false);
         $shopIdCalculator->expects($this->any())->method('getShopId')->will($this->returnValue(1));
 
         $moduleCache = oxNew('oxSubShopSpecificFileCache', $shopIdCalculator);
@@ -39,7 +39,7 @@ class SubShopSpecificFileCacheTest extends \OxidTestCase
 
     public function testGetCacheFileName()
     {
-        $shopIdCalculator = $this->getMock('oxShopIdCalculator', array('getShopId'), array(), '', false);
+        $shopIdCalculator = $this->getMock(\OxidEsales\Eshop\Core\ShopIdCalculator::class, array('getShopId'), array(), '', false);
         $shopIdCalculator->expects($this->any())->method('getShopId')->will($this->returnValue(2));
 
         $moduleCache = $this->getProxyClass('oxSubShopSpecificFileCache', array($shopIdCalculator));

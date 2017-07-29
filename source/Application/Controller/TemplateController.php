@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 
@@ -29,7 +29,7 @@ use oxRegistry;
  * Used only in some specific cases (usually when you need to outpt just template
  * having text information).
  */
-class TemplateController extends \oxUBase
+class TemplateController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
      * Executes parent method parent::render(), returns name of template file.
@@ -41,7 +41,7 @@ class TemplateController extends \oxUBase
         parent::render();
 
         // security fix so that you cant access files from outside template dir
-        $sTplName = basename((string) oxRegistry::getConfig()->getRequestParameter("tpl"));
+        $sTplName = basename((string) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("tpl"));
         if ($sTplName) {
             $sTplName = 'custom/' . $sTplName;
         }

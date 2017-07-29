@@ -19,15 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Integration\Modules;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 use oxOnlineModulesNotifierRequest;
 use oxOnlineModuleVersionNotifier;
 use oxOnlineModuleVersionNotifierCaller;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
-require_once __DIR__ . '/BaseModuleTestCase.php';
-
+/**
+ * @group module
+ * @package Integration\Modules
+ */
 class OnlineModuleNotifierTest extends BaseModuleTestCase
 {
     /**
@@ -39,7 +41,7 @@ class OnlineModuleNotifierTest extends BaseModuleTestCase
         $oEnvironment->prepare(array('extending_1_class', 'extending_1_class_3_extensions', 'with_everything'));
 
         /** @var oxOnlineModuleVersionNotifierCaller|MockObject $oCaller */
-        $oCaller = $this->getMock('oxOnlineModuleVersionNotifierCaller', array('doRequest'), array(), '', false);
+        $oCaller = $this->getMock(\OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller::class, array('doRequest'), array(), '', false);
         $oCaller->expects($this->any())->method('doRequest')->with($this->equalTo($this->getExpectedRequest()));
 
         $oModuleList = oxNew('oxModuleList');
@@ -70,18 +72,28 @@ class OnlineModuleNotifierTest extends BaseModuleTestCase
         $modules->module = array();
 
         $aModulesInfo = array();
+        $aModulesInfo[] = array('id' => null, 'version' => null, 'activeInShop' => array());
+        $aModulesInfo[] = array('id' => 'EshopTestModuleOne', 'version' => '1.0.0', 'activeInShop' => array());
         $aModulesInfo[] = array('id' => 'extending_1_class', 'version' => '1.0', 'activeInShop' => array($sShopUrl));
         $aModulesInfo[] = array('id' => 'extending_1_class_3_extensions', 'version' => '1.0', 'activeInShop' => array($sShopUrl));
         $aModulesInfo[] = array('id' => 'extending_3_blocks', 'version' => '1.0', 'activeInShop' => array());
         $aModulesInfo[] = array('id' => 'extending_3_classes', 'version' => '1.0', 'activeInShop' => array());
         $aModulesInfo[] = array('id' => 'extending_3_classes_with_1_extension', 'version' => '1.0', 'activeInShop' => array());
+        $aModulesInfo[] = array('id' => 'metadata_controllers_feature', 'version' => '1.0', 'activeInShop' => array());
         $aModulesInfo[] = array('id' => 'no_extending', 'version' => '1.0', 'activeInShop' => array());
+        $aModulesInfo[] = array('id' => 'translation_Application', 'version' => '1.0', 'activeInShop' => array());
+        $aModulesInfo[] = array('id' => 'unifiednamespace_module1', 'version' => '1.0.0', 'activeInShop' => array());
+        $aModulesInfo[] = array('id' => 'unifiednamespace_module2', 'version' => '1.0.0', 'activeInShop' => array());
+        $aModulesInfo[] = array('id' => 'unifiednamespace_module3', 'version' => '1.0.0', 'activeInShop' => array());
         $aModulesInfo[] = array('id' => 'with_1_extension', 'version' => '1.0', 'activeInShop' => array());
         $aModulesInfo[] = array('id' => 'with_2_files', 'version' => '1.0', 'activeInShop' => array());
         $aModulesInfo[] = array('id' => 'with_2_settings', 'version' => '1.0', 'activeInShop' => array());
         $aModulesInfo[] = array('id' => 'with_2_templates', 'version' => '1.0', 'activeInShop' => array());
         $aModulesInfo[] = array('id' => 'with_events', 'version' => '1.0', 'activeInShop' => array());
         $aModulesInfo[] = array('id' => 'with_everything', 'version' => '1.0', 'activeInShop' => array($sShopUrl));
+        $aModulesInfo[] = array('id' => 'with_metadata_v2', 'version' => '1.0', 'activeInShop' => array());
+        $aModulesInfo[] = array('id' => 'with_more_metadata_v2', 'version' => '1.0', 'activeInShop' => array());
+        $aModulesInfo[] = array('id' => 'without_own_module_namespace', 'version' => '1.0.0', 'activeInShop' => array());
 
         foreach ($aModulesInfo as $aModuleInfo) {
             $module = new \StdClass();

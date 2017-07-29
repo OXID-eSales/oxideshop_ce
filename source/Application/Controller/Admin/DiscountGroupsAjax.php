@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxDb;
 use oxField;
@@ -28,7 +28,7 @@ use oxField;
 /**
  * Class manages discount groups
  */
-class DiscountGroupsAjax extends \ajaxListComponent
+class DiscountGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
     /** If this discount id comes from request, it means that new discount should be created. */
     const NEW_DISCOUNT_ID = "-1";
@@ -62,7 +62,7 @@ class DiscountGroupsAjax extends \ajaxListComponent
         $oConfig = $this->getConfig();
         // active AJAX component
         $sGroupTable = $this->_getViewName('oxgroups');
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sId = $oConfig->getRequestParameter('oxid');
         $sSynchId = $oConfig->getRequestParameter('synchoxid');
 
@@ -94,14 +94,12 @@ class DiscountGroupsAjax extends \ajaxListComponent
 
         $groupIds = $this->_getActionIds('oxobject2discount.oxid');
         if ($config->getRequestParameter('all')) {
-
             $query = $this->_addFilter("delete oxobject2discount.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($query);
-
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($query);
         } elseif ($groupIds && is_array($groupIds)) {
-            $groupIdsQuoted = implode(", ", oxDb::getInstance()->quoteArray($groupIds));
+            $groupIdsQuoted = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($groupIds));
             $query = "delete from oxobject2discount where oxobject2discount.oxid in (" . $groupIdsQuoted . ") ";
-            oxDb::getDb()->Execute($query);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($query);
         }
     }
 
@@ -120,11 +118,11 @@ class DiscountGroupsAjax extends \ajaxListComponent
         }
         if ($discountId && $discountId != self::NEW_DISCOUNT_ID && is_array($groupIds)) {
             foreach ($groupIds as $groupId) {
-                $object2Discount = oxNew("oxBase");
+                $object2Discount = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $object2Discount->init('oxobject2discount');
-                $object2Discount->oxobject2discount__oxdiscountid = new oxField($discountId);
-                $object2Discount->oxobject2discount__oxobjectid = new oxField($groupId);
-                $object2Discount->oxobject2discount__oxtype = new oxField("oxgroups");
+                $object2Discount->oxobject2discount__oxdiscountid = new \OxidEsales\Eshop\Core\Field($discountId);
+                $object2Discount->oxobject2discount__oxobjectid = new \OxidEsales\Eshop\Core\Field($groupId);
+                $object2Discount->oxobject2discount__oxtype = new \OxidEsales\Eshop\Core\Field("oxgroups");
                 $object2Discount->save();
             }
         }

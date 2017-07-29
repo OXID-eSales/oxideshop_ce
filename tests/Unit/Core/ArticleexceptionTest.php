@@ -19,12 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 /**
  * Testing oxArticleException class.
  */
-class ArticleexceptionTest extends \OxidTestCase
+class ArticleexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
 
     /**
@@ -77,8 +77,6 @@ class ArticleexceptionTest extends \OxidTestCase
 
     /**
      * Test set type.
-     *
-     * @return null
      */
     public function testType()
     {

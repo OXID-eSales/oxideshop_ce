@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxCompanyVatIn;
 
@@ -61,9 +61,9 @@ abstract class CompanyVatInChecker
     /**
      * Validates company VAT identification number
      *
-     * @param oxCompanyVatIn $vatIn
+     * @param \OxidEsales\Eshop\Application\Model\CompanyVatIn $vatIn
      *
      * @return mixed
      */
-    abstract public function validate(oxCompanyVatIn $vatIn);
+    abstract public function validate(\OxidEsales\Eshop\Application\Model\CompanyVatIn $vatIn);
 }

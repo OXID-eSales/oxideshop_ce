@@ -20,13 +20,13 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 /**
  * Simple variant list.
  *
  */
-class SimpleVariantList extends \oxList
+class SimpleVariantList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
 
     /**
@@ -44,7 +44,7 @@ class SimpleVariantList extends \oxList
     /**
      * Sets parent variant
      *
-     * @param oxArticle $oParent Parent article
+     * @param \OxidEsales\Eshop\Application\Model\Article $oParent Parent article
      */
     public function setParent($oParent)
     {

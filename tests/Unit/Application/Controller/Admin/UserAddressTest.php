@@ -19,10 +19,10 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use \oxuser;
-use \oxCountryList;
+use OxidEsales\EshopCommunity\Application\Model\User;
+use OxidEsales\EshopCommunity\Application\Model\CountryList;
 
 use \Exception;
 use \oxTestModules;
@@ -44,16 +44,16 @@ class UserAddressTest extends \OxidTestCase
         $this->setRequestParameter("oxaddressid", "testaddressid");
 
         // testing..
-        $oView = $this->getMock("User_Address", array("_allowAdminEdit"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserAddress::class, array("_allowAdminEdit"));
         $oView->expects($this->once())->method('_allowAdminEdit')->will($this->returnValue(false));
         $this->assertEquals('user_address.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxaddressid']));
         $this->assertTrue(isset($aViewData['edituser']));
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edituser'] instanceof oxuser);
+        $this->assertTrue($aViewData['edituser'] instanceof user);
         $this->assertTrue(isset($aViewData['countrylist']));
-        $this->assertTrue($aViewData['countrylist'] instanceof oxCountryList);
+        $this->assertTrue($aViewData['countrylist'] instanceof CountryList);
         $this->assertTrue(isset($aViewData['readonly']));
         $this->assertTrue($aViewData['readonly']);
     }
@@ -74,7 +74,7 @@ class UserAddressTest extends \OxidTestCase
 
         // testing..
         try {
-            $oView = $this->getMock("User_Address", array("_allowAdminEdit"));
+            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserAddress::class, array("_allowAdminEdit"));
             $oView->expects($this->at(0))->method('_allowAdminEdit')->with($this->equalTo("testId"))->will($this->returnValue(true));
             $oView->save();
         } catch (Exception $oExcp) {
@@ -98,7 +98,7 @@ class UserAddressTest extends \OxidTestCase
         $this->setRequestParameter("editval", array("oxaddress__oxid" => "testOxId"));
 
         // testing..
-        $oView = $this->getMock("User_Address", array("_allowAdminEdit"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserAddress::class, array("_allowAdminEdit"));
         $oView->expects($this->at(0))->method('_allowAdminEdit')->with($this->equalTo("testId"))->will($this->returnValue(true));
         $oView->delAddress();
     }

@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
 
@@ -131,7 +131,7 @@ class PaymentCountryAjaxTest extends \OxidTestCase
      */
     public function testRemovePayFromCountry()
     {
-        $oView = $this->getMock("payment_country_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PaymentCountryAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testPayRemove1', '_testPayRemove2')));
 
         $sSql = "select count(oxid) from oxobject2payment where oxid in ('_testPayRemove1', '_testPayRemove2')";
@@ -171,7 +171,7 @@ class PaymentCountryAjaxTest extends \OxidTestCase
         $sSql = "select count(oxid) from oxobject2payment where oxpaymentid='$sSynchoxid'";
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
-        $oView = $this->getMock("payment_country_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PaymentCountryAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testPayAdd1', '_testPayAdd2')));
 
         $oView->addPayCountry();
@@ -195,7 +195,7 @@ class PaymentCountryAjaxTest extends \OxidTestCase
         $sSql = "select count(oxid) from oxobject2payment where oxpaymentid='$sSynchoxid'";
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
-        $oView = $this->getMock("payment_country_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PaymentCountryAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testPayAdd1', '_testPayAdd2')));
 
         $oView->addPayCountry();

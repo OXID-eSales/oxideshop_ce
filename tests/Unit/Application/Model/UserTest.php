@@ -19,12 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use oxEmailHelper;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseErrorException;
+use OxidEsales\Eshop\Core\UtilsObject;
 use \oxnewssubscribed;
 use oxUser;
-use oxUtilsObject;
 use \oxUtilsServer;
 use \oxField;
 use \oxInputException;
@@ -150,10 +151,10 @@ class UserTest extends \OxidTestCase
         // resetting globally admin mode
 
         // removing email wrapper module
-        oxRemClassModule('Unit\Application\Model\UserTest_oxNewsSubscribed');
-        oxRemClassModule('Unit\Application\Model\UserTest_oxUtilsServerHelper');
-        oxRemClassModule('Unit\Application\Model\UserTest_oxUtilsServerHelper2');
-        oxRemClassModule('Unit\Application\Model\oxEmailHelper');
+        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxNewsSubscribed::class);
+        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxUtilsServerHelper::class);
+        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxUtilsServerHelper2::class);
+        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\oxEmailHelper::class);
 
         // removing users
         foreach ($this->_aUsers as $sUserId => $oUser) {
@@ -203,11 +204,11 @@ class UserTest extends \OxidTestCase
         $oUser->save();
 
         $sUserId = $oUser->getId();
-        $sId = oxUtilsObject::getInstance()->generateUID();
+        $sId = oxRegistry::getUtilsObject()->generateUID();
 
         // loading user groups
         $sGroupId = $oDb->getOne('select oxid from oxgroups order by rand() ');
-        $sQ = 'insert into oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) values ( "' . $sUserId . '", "' . $sShopId . '", "' . $sUserId . '", "' . $sGroupId . '" )';
+        $sQ = 'REPLACE INTO oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) VALUES ( "' . $sUserId . '", "' . $sShopId . '", "' . $sUserId . '", "' . $sGroupId . '" )';
         $oDb->Execute($sQ);
 
         $sQ = 'insert into oxorder ( oxid, oxshopid, oxuserid, oxorderdate ) values ( "' . $sId . '", "' . $sShopId . '", "' . $sUserId . '", "' . date('Y-m-d  H:i:s', time() + 3600) . '" ) ';
@@ -264,7 +265,7 @@ class UserTest extends \OxidTestCase
      */
     public function testGetOrdersWhenPagingIsOn()
     {
-        $oUtils = oxUtilsObject::getInstance();
+        $oUtils = oxRegistry::getUtilsObject();
         $oDb = $this->getDb();
 
         $oUser = $this->createUser();
@@ -308,7 +309,7 @@ class UserTest extends \OxidTestCase
      */
     public function testSetCreditPointsForRegistrant()
     {
-        $sDate = oxRegistry::get("oxUtilsDate")->formatDBDate(date("Y-m-d"), true);
+        $sDate = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate(date("Y-m-d"), true);
         $oDb = $this->getDb();
         $sSql = "INSERT INTO oxinvitations SET oxuserid = 'oxdefaultadmin', oxemail = 'oxemail',  oxdate='$sDate', oxpending = '1', oxaccepted = '0', oxtype = '1' ";
         $oDb->execute($sSql);
@@ -317,7 +318,7 @@ class UserTest extends \OxidTestCase
         $this->getSession()->setVariable('su', 'oxdefaultadmin');
         $this->getSession()->setVariable('re', md5('oxemail'));
 
-        $oUser = $this->getMock("oxuser", array("save"));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array("save"));
         $oUser->expects($this->once())->method('save')->will($this->returnValue(true));
         $this->assertFalse($oUser->setCreditPointsForRegistrant("oxdefaultadmin", md5('oxemail')));
         $this->assertNull(oxRegistry::getSession()->getVariable('su'));
@@ -333,7 +334,7 @@ class UserTest extends \OxidTestCase
     {
         $this->getConfig()->setConfigParam("dPointsForInvitation", 10);
 
-        $oUser = $this->getMock("oxuser", array("save"));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array("save"));
         $oUser->expects($this->once())->method('save')->will($this->returnValue(true));
         $this->assertTrue($oUser->setCreditPointsForInviter());
     }
@@ -348,7 +349,7 @@ class UserTest extends \OxidTestCase
         $sShopId = $this->getConfig()->getShopId();
         $this->getDb()->execute("insert into oxacceptedterms (`OXUSERID`, `OXSHOPID`, `OXTERMVERSION`) values ( 'testUserId', '{$sShopId}', '0' )");
 
-        $oUser = $this->getMock("oxuser", array("getId"));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array("getId"));
         $oUser->expects($this->once())->method('getId')->will($this->returnValue('testUserId'));
         $this->assertTrue($oUser->isTermsAccepted());
     }
@@ -370,7 +371,7 @@ class UserTest extends \OxidTestCase
 
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxacceptedterms where oxuserid='oxdefaultadmin' and oxtermversion='1'"));
 
-        $oDb->getOne("update oxacceptedterms set oxtermversion='0'");
+        $oDb->execute("update oxacceptedterms set oxtermversion='0'");
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxacceptedterms where oxuserid='oxdefaultadmin' and oxtermversion='0'"));
         $this->assertFalse((bool) $oDb->getOne("select 1 from oxacceptedterms where oxuserid='oxdefaultadmin' and oxtermversion='1'"));
 
@@ -440,7 +441,7 @@ class UserTest extends \OxidTestCase
 
     public function testMagicGetter()
     {
-        $oNewsSubscription = $this->getMock('oxnewssubscribed', array('getOptInStatus', 'getOptInEmailStatus'));
+        $oNewsSubscription = $this->getMock(\OxidEsales\Eshop\Application\Model\NewsSubscribed::class, array('getOptInStatus', 'getOptInEmailStatus'));
         $oNewsSubscription->expects($this->once())->method('getOptInStatus')->will($this->returnValue('getOptInStatus'));
         $oNewsSubscription->expects($this->once())->method('getOptInEmailStatus')->will($this->returnValue('getOptInEmailStatus'));
 
@@ -514,7 +515,7 @@ class UserTest extends \OxidTestCase
 
     public function testGetUpdateId()
     {
-        $oUser = $this->getMock('oxuser', array('setUpdateKey'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('setUpdateKey'));
         $oUser->expects($this->once())->method('setUpdateKey');
 
         $oUser->setId('xxx');
@@ -528,12 +529,13 @@ class UserTest extends \OxidTestCase
     {
         $iCurrTime = time();
 
-        // overriding utility functions
-        oxTestModules::addFunction("oxUtilsObject", "generateUId", "{ return 'xxx'; }");
+        $utilsObjectInstanceMock = $this->getMock(UtilsObject::class, array('generateUID'));
+        $utilsObjectInstanceMock->expects($this->any())->method('generateUID')->will($this->returnValue('xxx'));
         $this->setTime($iCurrTime);
 
-        $oUser = $this->getMock('oxuser', array('save'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('save', 'getUtilsObjectInstance'));
         $oUser->expects($this->once())->method('save');
+        $oUser->expects($this->once())->method('getUtilsObjectInstance')->will($this->returnValue($utilsObjectInstanceMock));
         $oUser->setUpdateKey();
 
         $this->assertEquals('xxx', $oUser->oxuser__oxupdatekey->value);
@@ -542,7 +544,7 @@ class UserTest extends \OxidTestCase
 
     public function testReSetUpdateKey()
     {
-        $oUser = $this->getMock('oxuser', array('save'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('save'));
         $oUser->expects($this->once())->method('save');
         $oUser->setUpdateKey(true);
 
@@ -636,10 +638,10 @@ class UserTest extends \OxidTestCase
      */
     public function testNewUserInSubShop()
     {
-        $oConfig = $this->getMock('oxconfig', array('getShopId'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getShopId'));
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue(2));
 
-        $oUser = $this->getMock('oxuser', array('isAdmin', 'getConfig', 'getViewName'), array(), '', false);
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('isAdmin', 'getConfig', 'getViewName'), array(), '', false);
         $oUser->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
         $oUser->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $oUser->expects($this->any())->method('getViewName')->will($this->returnValue('oxuser'));
@@ -875,7 +877,7 @@ class UserTest extends \OxidTestCase
     // 2. loading subscription by user id
     public function testGetNewsSubscriptionNoUserReturnsByOxid()
     {
-        oxAddClassModule('Unit\Application\Model\UserTest_oxNewsSubscribed', 'oxnewssubscribed');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxNewsSubscribed::class, 'oxnewssubscribed');
         $oUser = oxNew('oxUser');
         $oUser->setId('oxid');
         $this->assertTrue($oUser->getNewsSubscription()->loadFromUserID);
@@ -884,7 +886,7 @@ class UserTest extends \OxidTestCase
     // 3. loading subscription by user email
     public function testGetNewsSubscriptionNoUserReturnsByEmail()
     {
-        oxAddClassModule('Unit\Application\Model\UserTest_oxNewsSubscribed', 'oxnewssubscribed');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxNewsSubscribed::class, 'oxnewssubscribed');
         $oUser = oxNew('oxUser');
         $oUser->oxuser__oxusername = new oxField('email', oxField::T_RAW);
         $this->assertTrue($oUser->getNewsSubscription()->loadFromEMail);
@@ -1249,7 +1251,9 @@ class UserTest extends \OxidTestCase
 
         $oUser = oxNew('oxUser');
         $oUser->load($sUserId);
-        $oUser->delete();
+        $bSuccess = $oUser->delete();
+
+        $this->assertEquals(true, $bSuccess);
 
         $aWhat = array('oxuser'            => 'oxid',
                        'oxaddress'         => 'oxuserid',
@@ -1308,7 +1312,7 @@ class UserTest extends \OxidTestCase
         $oUser->load($sUserId);
 
         $sCreate = $oDb->getOne('select oxcreate from oxuser where oxid="' . $oUser->getId() . '" ');
-        $this->assertEquals(oxRegistry::get("oxUtilsDate")->formatDBDate($sCreate), $oUser->oxuser__oxcreate->value);
+        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($sCreate), $oUser->oxuser__oxcreate->value);
     }
 
 
@@ -1340,7 +1344,7 @@ class UserTest extends \OxidTestCase
         $oUser = $this->createUser();
         $sUserId = $oUser->getId();
 
-        $oUser = $this->getMock("oxuser", array('isAdmin'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('isAdmin'));
         $oUser->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $oUser->load($sUserId);
 
@@ -1611,7 +1615,7 @@ class UserTest extends \OxidTestCase
 
     public function testCreateUserSavingFailsExcpThrown()
     {
-        $oUser = $this->getMock('oxuser', array('save'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('save'));
         $oUser->expects($this->once())->method("save")->will($this->returnValue(false));
 
         try {
@@ -1683,8 +1687,8 @@ class UserTest extends \OxidTestCase
         $sGroupId = $oDb->getOne($sQ);
 
         // checking
-        $sQ = 'insert into oxobject2group ( oxid, oxshopid, oxobjectid, oxgroupsid ) ';
-        $sQ .= 'values ( "_testO2G_id", "' . $myConfig->getShopId() . '", "' . $sUserId . '", "' . $sGroupId . '" ) ';
+        $sQ = 'REPLACE INTO oxobject2group ( oxid, oxshopid, oxobjectid, oxgroupsid ) ';
+        $sQ .= 'VALUES ( "_testO2G_id", "' . $myConfig->getShopId() . '", "' . $sUserId . '", "' . $sGroupId . '" ) ';
         $oDb->Execute($sQ);
 
         // loading to initialize group list
@@ -1721,7 +1725,7 @@ class UserTest extends \OxidTestCase
         $sUserId = $oUser->getId();
         $sShopId = $this->getConfig()->getShopId();
 
-        $sQ = 'insert into oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) values ( "' . oxUtilsObject::getInstance()->generateUID() . '", "' . $sShopId . '", "' . $sUserId . '", "oxidnotyetordered" )';
+        $sQ = 'REPLACE INTO oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) VALUES ( "' . oxRegistry::getUtilsObject()->generateUID() . '", "' . $sShopId . '", "' . $sUserId . '", "oxidnotyetordered" )';
         $oDb->Execute($sQ);
 
         $oBasket = $this->getProxyClass("oxBasket");
@@ -1754,7 +1758,7 @@ class UserTest extends \OxidTestCase
         $sUserId = $oUser->getId();
         $sShopId = $this->getConfig()->getShopId();
 
-        $sQ = 'insert into oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) values ( "' . oxUtilsObject::getInstance()->generateUID() . '", "' . $sShopId . '", "' . $sUserId . '", "oxidnotyetordered" )';
+        $sQ = 'REPLACE INTO oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) VALUES ( "' . oxRegistry::getUtilsObject()->generateUID() . '", "' . $sShopId . '", "' . $sUserId . '", "oxidnotyetordered" )';
         $oDb->Execute($sQ);
 
         $oBasket = $this->getProxyClass("oxBasket");
@@ -1786,7 +1790,7 @@ class UserTest extends \OxidTestCase
         $sUserId = $oUser->getId();
         $sShopId = $this->getConfig()->getShopId();
 
-        $sQ = 'insert into oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) values ( "' . oxUtilsObject::getInstance()->generateUID() . '", "' . $sShopId . '", "' . $sUserId . '", "oxidnotyetordered" )';
+        $sQ = 'REPLACE INTO oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) VALUES ( "' . oxRegistry::getUtilsObject()->generateUID() . '", "' . $sShopId . '", "' . $sUserId . '", "oxidnotyetordered" )';
         $oDb->Execute($sQ);
 
         $oBasket = $this->getProxyClass("oxBasket");
@@ -1897,7 +1901,7 @@ class UserTest extends \OxidTestCase
         $oInputValidator->expects($this->once())->method('checkRequiredFields');
         $oInputValidator->expects($this->once())->method('checkCountries');
         $oInputValidator->expects($this->once())->method('checkVatId');
-        oxRegistry::set('oxInputValidator', $oInputValidator);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\InputValidator::class, $oInputValidator);
 
         $oUser = oxNew('oxUser');
         $oUser->checkValues("X", "X", "X", array(), array());
@@ -1907,12 +1911,12 @@ class UserTest extends \OxidTestCase
     {
         $oInputValidator = $this->getMock('oxInputValidator');
         $oInputValidator->expects($this->once())->method("checkVatId")->will($this->throwException(new oxInputException()));
-        oxRegistry::set('oxInputValidator', $oInputValidator);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\InputValidator::class, $oInputValidator);
 
         $oUser = oxNew('oxUser');
         try {
             $oUser->checkValues("X", "X", "X", array(), array());
-        } catch (oxInputException $oException) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\InputException $oException) {
             return;
         }
 
@@ -1925,7 +1929,7 @@ class UserTest extends \OxidTestCase
     // 1. testing if foreigner is automatically assigned/removed to/from special user groups
     public function testSetAutoGroupsForeigner()
     {
-        $oUser = $this->getMock("oxUser", array("ingroup", "removefromgroup", "addtogroup"));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array("ingroup", "removefromgroup", "addtogroup"));
         $oUser->expects($this->once())->method("removeFromGroup");
         $oUser->expects($this->once())->method("addToGroup");
         $oUser->expects($this->exactly(2))->method('inGroup')->will($this->onConsecutiveCalls($this->returnValue(false), $this->returnValue(true)));
@@ -1937,7 +1941,7 @@ class UserTest extends \OxidTestCase
     // 2. testing if native country customer is automatically assigned/removed to/from special user groups
     public function testSetAutoGroupsNative()
     {
-        $oUser = $this->getMock("oxUser", array("ingroup", "removefromgroup", "addtogroup"));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array("ingroup", "removefromgroup", "addtogroup"));
         $this->getConfig()->setConfigParam('aHomeCountry', 'xxx');
         $oUser->expects($this->once())->method("removeFromGroup");
         $oUser->expects($this->once())->method("addToGroup");
@@ -1949,7 +1953,7 @@ class UserTest extends \OxidTestCase
 
     public function testSetAutoGroupsNativeMultiple()
     {
-        $oUser = $this->getMock("oxUser", array("ingroup", "removefromgroup", "addtogroup"));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array("ingroup", "removefromgroup", "addtogroup"));
         $this->getConfig()->setConfigParam('aHomeCountry', array('asd', 'xxx', 'ad'));
         $oUser->expects($this->once())->method("removeFromGroup");
         $oUser->expects($this->once())->method("addToGroup");
@@ -1966,11 +1970,11 @@ class UserTest extends \OxidTestCase
     {
         $oConfig = $this->getMock('oxconfig');
 
-        $oSubscription = $this->getMock('oxnewssubscribed', array('getOptInStatus', 'setOptInStatus'));
+        $oSubscription = $this->getMock(\OxidEsales\Eshop\Application\Model\NewsSubscribed::class, array('getOptInStatus', 'setOptInStatus'));
         $oSubscription->expects($this->once())->method('getOptInStatus')->will($this->returnValue(1));
         $oSubscription->expects($this->never())->method('setOptInStatus');
 
-        $oUser = $this->getMock('oxuser', array('getNewsSubscription', 'addToGroup', 'removeFromGroup'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getNewsSubscription', 'addToGroup', 'removeFromGroup'));
         $oUser->expects($this->once())->method('getNewsSubscription')->will($this->returnValue($oSubscription));
         $oUser->expects($this->never())->method('addToGroup');
         $oUser->expects($this->never())->method('removeFromGroup');
@@ -1984,11 +1988,11 @@ class UserTest extends \OxidTestCase
         $oConfig = $this->getMock('oxconfig');
         $oConfig->setConfigParam('blOrderOptInEmail', false);
 
-        $oSubscription = $this->getMock('oxnewssubscribed', array('getOptInStatus', 'setOptInStatus'));
+        $oSubscription = $this->getMock(\OxidEsales\Eshop\Application\Model\NewsSubscribed::class, array('getOptInStatus', 'setOptInStatus'));
         $oSubscription->expects($this->once())->method('getOptInStatus')->will($this->returnValue(0));
         $oSubscription->expects($this->once())->method('setOptInStatus')->with($this->equalTo(1));
 
-        $oUser = $this->getMock('oxuser', array('getNewsSubscription', 'addToGroup', 'removeFromGroup'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getNewsSubscription', 'addToGroup', 'removeFromGroup'));
         $oUser->expects($this->once())->method('getNewsSubscription')->will($this->returnValue($oSubscription));
         $oUser->expects($this->once())->method('addToGroup')->with($this->equalTo('oxidnewsletter'));
         $oUser->expects($this->never())->method('removeFromGroup');
@@ -2005,11 +2009,11 @@ class UserTest extends \OxidTestCase
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blOrderOptInEmail', true);
 
-        $oSubscription = $this->getMock('oxnewssubscribed', array('getOptInStatus', 'setOptInStatus'));
+        $oSubscription = $this->getMock(\OxidEsales\Eshop\Application\Model\NewsSubscribed::class, array('getOptInStatus', 'setOptInStatus'));
         $oSubscription->expects($this->once())->method('getOptInStatus')->will($this->returnValue(0));
         $oSubscription->expects($this->once())->method('setOptInStatus')->with($this->equalTo(2));
 
-        $oUser = $this->getMock('oxuser', array('getNewsSubscription', 'addToGroup', 'removeFromGroup'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getNewsSubscription', 'addToGroup', 'removeFromGroup'));
         $oUser->expects($this->once())->method('getNewsSubscription')->will($this->returnValue($oSubscription));
         $oUser->expects($this->never())->method('addToGroup');
         $oUser->expects($this->never())->method('removeFromGroup');
@@ -2021,7 +2025,7 @@ class UserTest extends \OxidTestCase
     public function testSetNewsSubscriptionSubscribesWithOptInEmail_sendsOnlyOnce()
     {
         // email should be sent only once
-        $oEmail = $this->getMock('oxemail', array('sendNewsletterDBOptInMail'));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('sendNewsletterDBOptInMail'));
         $oEmail->expects($this->once())->method('sendNewsletterDBOptInMail')->will($this->returnValue(true));
 
         oxTestModules::addModuleObject("oxemail", $oEmail);
@@ -2029,13 +2033,13 @@ class UserTest extends \OxidTestCase
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blOrderOptInEmail', true);
 
-        $oSubscription = $this->getMock('oxnewssubscribed', array('getOptInStatus', 'setOptInStatus'));
+        $oSubscription = $this->getMock(\OxidEsales\Eshop\Application\Model\NewsSubscribed::class, array('getOptInStatus', 'setOptInStatus'));
         $oSubscription->expects($this->at(0))->method('getOptInStatus')->will($this->returnValue(0));
         $oSubscription->expects($this->at(1))->method('setOptInStatus')->with($this->equalTo(2));
         $oSubscription->expects($this->at(2))->method('getOptInStatus')->will($this->returnValue(2));
         $oSubscription->expects($this->at(3))->method('setOptInStatus')->with($this->equalTo(2));
 
-        $oUser = $this->getMock('oxuser', array('getNewsSubscription', 'addToGroup', 'removeFromGroup'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getNewsSubscription', 'addToGroup', 'removeFromGroup'));
         $oUser->expects($this->any())->method('getNewsSubscription')->will($this->returnValue($oSubscription));
         $oUser->setConfig($oConfig);
 
@@ -2053,11 +2057,11 @@ class UserTest extends \OxidTestCase
 
         $oConfig = $this->getMock('oxconfig');
 
-        $oSubscription = $this->getMock('oxnewssubscribed', array('getOptInStatus', 'setOptInStatus'));
+        $oSubscription = $this->getMock(\OxidEsales\Eshop\Application\Model\NewsSubscribed::class, array('getOptInStatus', 'setOptInStatus'));
         $oSubscription->expects($this->never())->method('getOptInStatus');
         $oSubscription->expects($this->once())->method('setOptInStatus')->with($this->equalTo(0));
 
-        $oUser = $this->getMock('oxuser', array('getNewsSubscription', 'addToGroup', 'removeFromGroup'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getNewsSubscription', 'addToGroup', 'removeFromGroup'));
         $oUser->expects($this->once())->method('getNewsSubscription')->will($this->returnValue($oSubscription));
         $oUser->expects($this->never())->method('addToGroup');
         $oUser->expects($this->once())->method('removeFromGroup')->with($this->equalTo('oxidnewsletter'));
@@ -2071,7 +2075,7 @@ class UserTest extends \OxidTestCase
      */
     public function testLoadAdminUser()
     {
-        oxAddClassModule('Unit\Application\Model\UserTest_oxUtilsServerHelper', 'oxUtilsServer');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxUtilsServerHelper::class, 'oxUtilsServer');
         //not logged in
         $oUser = oxNew('oxUser');
         $this->assertFalse($oUser->loadAdminUser());
@@ -2083,7 +2087,7 @@ class UserTest extends \OxidTestCase
 
         $this->assertNull($oActiveUser->oxuser__oxusername->value);
 
-        $oAdminUser = $this->getMock('oxuser', array('isAdmin'));
+        $oAdminUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('isAdmin'));
         $oAdminUser->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
         $oAdminUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD);
 
@@ -2103,7 +2107,7 @@ class UserTest extends \OxidTestCase
         //not logged in
         $oActUser = oxNew('oxUser');
         $this->assertFalse($oActUser->loadActiveUser());
-        $testUser = $this->getMock('oxuser', array('isAdmin'));
+        $testUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('isAdmin'));
         $testUser->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         //trying to login
         $testUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD);
@@ -2119,14 +2123,14 @@ class UserTest extends \OxidTestCase
      */
     public function testGetUserNotAdmin()
     {
-        oxAddClassModule('Unit\Application\Model\UserTest_oxUtilsServerHelper2', 'oxutilsserver');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxUtilsServerHelper2::class, 'oxutilsserver');
         $sShopId = $this->getConfig()->getShopId();
         $sTempPassword = oxADMIN_PASSWD;
 
         //not logged in
         $oActUser = oxNew('oxUser');
         $this->assertFalse($oActUser->loadActiveUser());
-        $testUser = $this->getMock('oxuser', array('isAdmin'));
+        $testUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('isAdmin'));
         $testUser->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
 
         $aResults = $this->getDb(oxDb::FETCH_MODE_ASSOC)->getAll('select OXPASSSALT, OXPASSWORD from oxuser where OXID="oxdefaultadmin"');
@@ -2136,7 +2140,7 @@ class UserTest extends \OxidTestCase
         $sSql = "update oxuser set OXPASSWORD = '{$sTemporaryPassword}'  where OXID='oxdefaultadmin'";
         $this->addToDatabase($sSql, 'oxuser');
         $sVal = oxADMIN_LOGIN . '@@@' . crypt($sTemporaryPassword, $sPassSalt);
-        oxRegistry::get("oxUtilsServer")->setOxCookie('oxid_' . $sShopId, $sVal);
+        \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie('oxid_' . $sShopId, $sVal);
 
         $oActUser->loadActiveUser();
         $testUser->logout();
@@ -2153,10 +2157,10 @@ class UserTest extends \OxidTestCase
      */
     public function testLogin_AdminCookieSupport()
     {
-        oxAddClassModule('Unit\Application\Model\UserTest_oxUtilsServerHelper2', 'oxUtilsServer');
-        $oUser = $this->getMock('oxuser', array('isAdmin'));
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxUtilsServerHelper2::class, 'oxUtilsServer');
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('isAdmin'));
         $oUser->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
-        oxRegistry::get("oxUtilsServer")->delOxCookie();
+        \OxidEsales\Eshop\Core\Registry::getUtilsServer()->delOxCookie();
         try {
             //should throw no cookie support exception
             $oUser->login(1, oxADMIN_PASSWD);
@@ -2194,7 +2198,7 @@ class UserTest extends \OxidTestCase
      */
     public function testLogin_resetsActiveUser()
     {
-        $oUser = $this->getMock("oxuser", array("setUser"));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array("setUser"));
         $oUser->expects($this->once())->method("setUser")->with($this->equalTo(null));
 
         $oUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD);
@@ -2221,7 +2225,7 @@ class UserTest extends \OxidTestCase
      */
     public function testLoginButUnableToLoadExceptionWillBeThrown()
     {
-        $oUser = $this->getMock('oxuser', array('load'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('load'));
         $oUser->expects($this->atLeastOnce())->method('load')->will($this->returnValue(false));
 
         try {
@@ -2240,7 +2244,7 @@ class UserTest extends \OxidTestCase
      */
     public function testLoginOxidNotSet()
     {
-        $oUser = $this->getMock('oxuser', array('load', '_ldapLogin'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('load', '_ldapLogin'));
         $oUser->expects($this->atLeastOnce())->method('load')->will($this->returnValue(true));
 
         try {
@@ -2297,7 +2301,7 @@ class UserTest extends \OxidTestCase
         oxTestModules::addFunction('oxUtilsServer', 'getOxCookie', '{ return ""; }');
         $this->getConfig()->setConfigParam('blDemoShop', 1);
 
-        $oUser = $this->getMock('oxuser', array('isAdmin'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('isAdmin'));
         $oUser->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
 
         try {
@@ -2317,7 +2321,7 @@ class UserTest extends \OxidTestCase
     {
         $oConfig = $this->getConfig();
 
-        oxAddClassModule('Unit\Application\Model\UserTest_oxUtilsServerHelper', 'oxutilsserver');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxUtilsServerHelper::class, 'oxutilsserver');
         $oConfig->setConfigParam('blDemoShop', 1);
         $oConfig->setAdminMode(true);
 
@@ -2503,7 +2507,7 @@ class UserTest extends \OxidTestCase
         $oUser = $this->getProxyClass("oxuser");
         $oUser->load($sUserId);
 
-        $oBasket = $this->getMock('oxbasket', array('getItemCount'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getItemCount'));
         $oBasket->expects($this->once())->method('getItemCount')->will($this->returnValue(11));
         $aBaskets['noticelist'] = $oBasket;
         $oUser->setNonPublicVar('_aBaskets', $aBaskets);
@@ -2519,7 +2523,7 @@ class UserTest extends \OxidTestCase
         $oUser = $this->getProxyClass("oxuser");
         $oUser->load($sUserId);
 
-        $oBasket = $this->getMock('oxbasket', array('getItemCount'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getItemCount'));
         $oBasket->expects($this->once())->method('getItemCount')->will($this->returnValue(11));
         $aBaskets['wishlist'] = $oBasket;
         $oUser->setNonPublicVar('_aBaskets', $aBaskets);
@@ -2625,19 +2629,19 @@ class UserTest extends \OxidTestCase
         $oUser->setPassword('testPassword');
         $oUser->save();
 
-        oxRegistry::get("oxUtilsServer")->setUserCookie(
+        \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setUserCookie(
             $oUser->oxuser__oxusername->value,
             $oUser->oxuser__oxpassword->value, null, 31536000, $oUser->oxuser__oxpasssalt->value
         );
 
-        $sCookie = oxRegistry::get("oxUtilsServer")->getUserCookie();
+        $sCookie = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getUserCookie();
 
-        $testUser = $this->getMock('oxuser', array('isAdmin'));
+        $testUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('isAdmin'));
         $testUser->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
 
         $this->assertTrue($testUser->loadActiveUser());
 
-        $this->assertEquals($sCookie, oxRegistry::get("oxUtilsServer")->getUserCookie());
+        $this->assertEquals($sCookie, \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getUserCookie());
     }
 
     /**
@@ -2648,25 +2652,25 @@ class UserTest extends \OxidTestCase
     {
         $this->getConfig()->setConfigParam("blShowRememberMe", true);
 
-        oxRegistry::get("oxUtilsServer")->setUserCookie('RandomUserId', 'RandomPassword');
+        \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setUserCookie('RandomUserId', 'RandomPassword');
 
-        $testUser = $this->getMock('oxuser', array('isAdmin'));
+        $testUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('isAdmin'));
         $testUser->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
 
         $this->assertFalse($testUser->loadActiveUser());
 
-        $this->assertNull(oxRegistry::get("oxUtilsServer")->getUserCookie());
+        $this->assertNull(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getUserCookie());
     }
 
     public function testGetWishListId()
     {
-        $oBasketItem = $this->getMock('oxBasketItem', array('getWishId'));
+        $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array('getWishId'));
         $oBasketItem->expects($this->once())->method('getWishId')->will($this->returnValue("testwishid"));
-        $oBasket = $this->getMock('oxBasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->once())->method('getContents')->will($this->returnValue(array($oBasketItem)));
-        $oSession = $this->getMock('oxSession', array('getBasket'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasket'));
         $oSession->expects($this->once())->method('getBasket')->will($this->returnValue($oBasket));
-        $oUserView = $this->getMock('oxuser', array('getSession'));
+        $oUserView = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getSession'));
         $oUserView->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
         $this->assertEquals("testwishid", $oUserView->UNITgetWishListId());
     }
@@ -2709,7 +2713,7 @@ class UserTest extends \OxidTestCase
         $oUser = $this->createUser();
         $sUserId = $oUser->getId();
 
-        $oUser = $this->getMock("oxuser", array("inGroup"));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array("inGroup"));
         $oUser->expects($this->any())->method('inGroup')->will($this->returnValue(false));
         $oUser->load($sUserId);
 
@@ -2793,7 +2797,7 @@ class UserTest extends \OxidTestCase
         $iAlternateStateId = 'AK';
 
         /** @var oxState|PHPUnit_Framework_MockObject_MockObject $oStateMock */
-        $oStateMock = $this->getMock('oxState', array('getTitleById'));
+        $oStateMock = $this->getMock(\OxidEsales\Eshop\Application\Model\State::class, array('getTitleById'));
 
         $oStateMock->expects($this->at(0))
             ->method('getTitleById')
@@ -2816,7 +2820,7 @@ class UserTest extends \OxidTestCase
             ->will($this->returnValue('Alaska'));
 
         /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUserMock */
-        $oUserMock = $this->getMock('oxUser', array('_getStateObject', 'getStateId'));
+        $oUserMock = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('_getStateObject', 'getStateId'));
 
         $oUserMock->expects($this->any())
             ->method('_getStateObject')

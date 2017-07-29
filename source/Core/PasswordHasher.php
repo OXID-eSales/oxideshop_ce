@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * Hash password together with salt, using set hash algorithm
@@ -29,14 +29,14 @@ class PasswordHasher
 {
 
     /**
-     * @var oxHasher
+     * @var \oxHasher
      */
     private $_ohasher = null;
 
     /**
      * Gets hasher.
      *
-     * @return oxHasher
+     * @return \OxidEsales\Eshop\Core\Hasher
      */
     protected function _getHasher()
     {
@@ -46,7 +46,7 @@ class PasswordHasher
     /**
      * Sets dependencies.
      *
-     * @param oxHasher $oHasher hasher.
+     * @param \OxidEsales\Eshop\Core\Hasher $oHasher hasher.
      */
     public function __construct($oHasher)
     {

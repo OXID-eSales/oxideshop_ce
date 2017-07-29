@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Exception;
+namespace OxidEsales\EshopCommunity\Core\Exception;
 
 use oxRegistry;
 
 /**
  * exception class for an article which is out of stock
  */
-class OutOfStockException extends \oxArticleException
+class OutOfStockException extends \OxidEsales\Eshop\Core\Exception\ArticleException
 {
     /**
      * Exception type, currently old class name is used.
@@ -134,9 +134,9 @@ class OutOfStockException extends \oxArticleException
     {
         // in case destination not set, overriding default error message
         if (!$sDestination) {
-            $this->message = oxRegistry::getLang()->translateString($this->getMessage()) . ": " . $this->getRemainingAmount();
+            $this->message = \OxidEsales\Eshop\Core\Registry::getLang()->translateString($this->getMessage()) . ": " . $this->getRemainingAmount();
         } else {
-            $this->message = oxRegistry::getLang()->translateString($this->getMessage()) . ": ";
+            $this->message = \OxidEsales\Eshop\Core\Registry::getLang()->translateString($this->getMessage()) . ": ";
         }
     }
 }

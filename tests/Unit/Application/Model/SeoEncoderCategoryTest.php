@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use modDB;
 use \oxField;
@@ -80,7 +80,7 @@ class SeoEncoderCategoryTest extends \OxidTestCase
     {
         oxTestModules::addFunction("oxcategory", "loadInLang", "{ return true; }");
 
-        $oEncoder = $this->getMock("oxSeoEncoderCategory", array("getCategoryUri"));
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class, array("getCategoryUri"));
         $oEncoder->expects($this->once())->method('getCategoryUri')->will($this->returnValue("categoryUri"));
 
         $this->assertEquals("categoryUri", $oEncoder->UNITgetAltUri('1126', 0));
@@ -178,10 +178,10 @@ class SeoEncoderCategoryTest extends \OxidTestCase
      */
     public function testGetCategoryUrl()
     {
-        $oCategory = $this->getMock('oxcategory', array('getLanguage'));
+        $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('getLanguage'));
         $oCategory->expects($this->once())->method('getLanguage')->will($this->returnValue(0));
 
-        $oEncoder = $this->getMock('oxSeoEncoderCategory', array('_getFullUrl', 'getCategoryUri'));
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class, array('_getFullUrl', 'getCategoryUri'));
         $oEncoder->expects($this->once())->method('_getFullUrl')->will($this->returnValue('seocaturl'));
         $oEncoder->expects($this->once())->method('getCategoryUri')->will($this->returnValue(true));
 

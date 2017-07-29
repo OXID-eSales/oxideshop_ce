@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use oxCategory;
+use OxidEsales\EshopCommunity\Application\Model\Category;
 use \oxTestModules;
 
 /**
@@ -46,7 +46,7 @@ class CategoryOrderTest extends \OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof oxCategory);
+        $this->assertTrue($aViewData["edit"] instanceof Category);
 
         $this->assertEquals('category_order.tpl', $sTplName);
     }

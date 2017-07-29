@@ -20,13 +20,13 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 /**
  * Voucher list manager.
  *
  */
-class VoucherList extends \oxList
+class VoucherList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
 
     /**

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxRegistry;
 
@@ -28,7 +28,7 @@ use oxRegistry;
  * class for output processing
  *
  */
-class Output extends \oxSuperCfg
+class Output extends \OxidEsales\Eshop\Core\Base
 {
 
     const OUTPUT_FORMAT_HTML = 'html';
@@ -69,7 +69,7 @@ class Output extends \oxSuperCfg
      */
     public function __construct()
     {
-        $this->setIsSearchEngine(oxRegistry::getUtils()->isSearchEngine());
+        $this->setIsSearchEngine(\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine());
     }
 
     /**
@@ -93,13 +93,6 @@ class Output extends \oxSuperCfg
      */
     public function process($sValue, $sClassName)
     {
-        $myConfig = $this->getConfig();
-
-        //fix for euro currency problem (it's invisible in some older browsers)
-        if (!$myConfig->getConfigParam('blSkipEuroReplace') && !$myConfig->isUtf()) {
-            $sValue = str_replace('¤', '&euro;', $sValue);
-        }
-
         return $sValue;
     }
 
@@ -153,13 +146,12 @@ class Output extends \oxSuperCfg
     /**
      * This function is called from index.php
      *
-     * @param object &$oEmail email object
+     * @param object $oEmail email object
      */
-    public function processEmail(& $oEmail)
+    public function processEmail(&$oEmail)
     {
         // #669 PHP5 claims that you cant pas full this but should instead pass reference what is anyway a much better idea
         // removed "return" as by reference you dont need any return
-
     }
 
 
@@ -224,11 +216,11 @@ class Output extends \oxSuperCfg
     {
         switch ($this->_sOutputFormat) {
             case self::OUTPUT_FORMAT_JSON:
-                oxRegistry::getUtils()->setHeader("Content-Type: application/json; charset=" . $this->_sCharset);
+                \OxidEsales\Eshop\Core\Registry::getUtils()->setHeader("Content-Type: application/json; charset=" . $this->_sCharset);
                 break;
             case self::OUTPUT_FORMAT_HTML:
             default:
-                oxRegistry::getUtils()->setHeader("Content-Type: text/html; charset=" . $this->_sCharset);
+                \OxidEsales\Eshop\Core\Registry::getUtils()->setHeader("Content-Type: text/html; charset=" . $this->_sCharset);
                 break;
         }
     }

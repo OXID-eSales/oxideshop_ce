@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxField;
 use \oxRegistry;
@@ -54,8 +54,8 @@ class VoucherSerieExportTest extends \OxidTestCase
         $myConfig = $this->getConfig();
 
         $myConfig->setConfigParam("sAdminSSLURL", "sAdminSSLURL");
-        oxRegistry::get("oxUtilsUrl")->setAdminMode(true);
-        $sUrl = oxRegistry::get("oxUtilsUrl")->processUrl('sAdminSSLURL/index.php');
+        \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->setAdminMode(true);
+        $sUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl('sAdminSSLURL/index.php');
 
         // ssl
         $oView = oxNew('VoucherSerie_Export');
@@ -63,7 +63,7 @@ class VoucherSerieExportTest extends \OxidTestCase
 
         $myConfig->setConfigParam("sAdminSSLURL", null);
         $sUrl = $myConfig->getConfigParam('sShopURL') . $myConfig->getConfigParam('sAdminDir');
-        $sUrl = oxRegistry::get("oxUtilsUrl")->processUrl($sUrl . '/index.php');
+        $sUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($sUrl . '/index.php');
 
         // non ssl
         $oView = oxNew('VoucherSerie_Export');
@@ -90,7 +90,7 @@ class VoucherSerieExportTest extends \OxidTestCase
      */
     public function testGetExportFilePath()
     {
-        $oView = $this->getMock("VoucherSerie_Export", array("_getExportFileName"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieExport::class, array("_getExportFileName"));
         $oView->expects($this->once())->method('_getExportFileName')->will($this->returnValue("testName"));
 
         $this->assertEquals($this->getConfig()->getConfigParam('sShopDir') . "/export/" . "testName", $oView->UNITgetExportFilePath());
@@ -115,7 +115,7 @@ class VoucherSerieExportTest extends \OxidTestCase
         $oVoucher->oxvouchers__oxvouchernr = new oxField("_testvoucher");
         $oVoucher->save();
 
-        $oView = $this->getMock("VoucherSerie_Export", array("write", "_getVoucherSerie"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieExport::class, array("write", "_getVoucherSerie"));
         $oView->expects($this->at(0))->method('_getVoucherSerie')->will($this->returnValue($oVoucherSerie));
         $oView->expects($this->at(1))->method('write')->with($this->equalTo("Gutscheine"));
         $oView->expects($this->at(2))->method('write')->with($this->equalTo("_testvoucher"));

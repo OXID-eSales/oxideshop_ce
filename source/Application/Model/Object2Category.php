@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxField;
 
 /**
  * Manages product assignment to category.
  */
-class Object2Category extends \oxBase
+class Object2Category extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
 
     /**
@@ -63,7 +63,7 @@ class Object2Category extends \oxBase
      */
     public function setProductId($sId)
     {
-        $this->oxobject2category__oxobjectid = new oxField($sId);
+        $this->oxobject2category__oxobjectid = new \OxidEsales\Eshop\Core\Field($sId);
     }
 
     /**
@@ -83,6 +83,6 @@ class Object2Category extends \oxBase
      */
     public function setCategoryId($sId)
     {
-        $this->oxobject2category__oxcatnid = new oxField($sId);
+        $this->oxobject2category__oxcatnid = new \OxidEsales\Eshop\Core\Field($sId);
     }
 }

@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
 
@@ -38,8 +38,8 @@ class PaymentMainAjaxTest extends \OxidTestCase
     {
         parent::setUp();
 
-        oxDb::getDb()->execute("insert into oxobject2group set oxid='_testPayRemove1', oxobjectid='_testPayRemove'");
-        oxDb::getDb()->execute("insert into oxobject2group set oxid='_testPayRemove2', oxobjectid='_testPayRemove'");
+        oxDb::getDb()->execute("insert into oxobject2group set oxid='_testPayRemove1', oxobjectid='_testPayRemove1', oxgroupsid='_testRemoveGroup1'");
+        oxDb::getDb()->execute("insert into oxobject2group set oxid='_testPayRemove2', oxobjectid='_testPayRemove2', oxgroupsid='_testRemoveGroup2'");
 
         oxDb::getDb()->execute("insert into oxobject2group set oxid='_testPayRemoveAll1', oxgroupsid='_testGroup1', oxobjectid='_testPayRemoveAll'");
         oxDb::getDb()->execute("insert into oxobject2group set oxid='_testPayRemoveAll2', oxgroupsid='_testGroup2', oxobjectid='_testPayRemoveAll'");
@@ -57,13 +57,7 @@ class PaymentMainAjaxTest extends \OxidTestCase
      */
     protected function tearDown()
     {
-        oxDb::getDb()->execute("delete from oxobject2group where oxobjectid='_testPayRemove'");
-        oxDb::getDb()->execute("delete from oxobject2group where oxid='_testPayRemoveAll1'");
-        oxDb::getDb()->execute("delete from oxobject2group where oxid='_testPayRemoveAll2'");
-        oxDb::getDb()->execute("delete from oxobject2group where oxid='_testPayRemoveAll3'");
-
-        oxDb::getDb()->execute("delete from oxobject2group where oxobjectid='_testPayAdd'");
-        oxDb::getDb()->execute("delete from oxobject2group where oxobjectid='_testPayAddAll'");
+        oxDb::getDb()->execute("delete from oxobject2group where oxid LIKE '\_testPayRemove%'");
 
         oxDb::getDb()->execute("delete from oxgroups where oxid='_testGroup1'");
         oxDb::getDb()->execute("delete from oxgroups where oxid='_testGroup2'");
@@ -134,7 +128,7 @@ class PaymentMainAjaxTest extends \OxidTestCase
      */
     public function testRemovePayGroup()
     {
-        $oView = $this->getMock("payment_main_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PaymentMainAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testPayRemove1', '_testPayRemove2')));
 
         $sSql = "select count(oxid) from oxobject2group where oxid in ('_testPayRemove1', '_testPayRemove2')";
@@ -174,7 +168,7 @@ class PaymentMainAjaxTest extends \OxidTestCase
         $sSql = "select count(oxid) from oxobject2group where oxobjectid='$sSynchoxid'";
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
-        $oView = $this->getMock("payment_main_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PaymentMainAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testPayAdd1', '_testPayAdd2')));
 
         $oView->addPayGroup();
@@ -198,7 +192,7 @@ class PaymentMainAjaxTest extends \OxidTestCase
         $sSql = "select count(oxid) from oxobject2group where oxobjectid='$sSynchoxid'";
         $this->assertEquals(0, oxDb::getDb()->getOne($sSql));
 
-        $oView = $this->getMock("payment_main_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PaymentMainAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testPayAdd1', '_testPayAdd2')));
 
         $oView->addPayGroup();

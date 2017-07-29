@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use \oxorderfilelist;
+use OxidEsales\EshopCommunity\Application\Model\OrderFileList;
 
 use \oxField;
 use \oxDb;
@@ -104,7 +104,7 @@ class OrderDownloadsTest extends \OxidTestCase
 
         $oView = oxNew('Order_Downloads');
         $oOrderFiles = $oView->getEditObject();
-        $this->assertTrue($oOrderFiles instanceof oxorderfilelist);
+        $this->assertTrue($oOrderFiles instanceof orderfilelist);
     }
 
     /**
@@ -120,7 +120,7 @@ class OrderDownloadsTest extends \OxidTestCase
                                     oxdownloadexpirationtime="12", oxvaliduntil="2011-10-20 12:12:00", oxdownloadcount="2", oxfirstdownload="2011-10-10", oxlastdownload="2011-10-20"'
         );
 
-        $sNow = oxRegistry::get("oxUtilsDate")->getTime();
+        $sNow = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $sDate = date('Y-m-d H:i:s', $sNow);
 
         $oView = oxNew('Order_Downloads');

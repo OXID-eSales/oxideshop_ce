@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxOpenSSLFunctionalityChecker;
 
@@ -31,19 +31,19 @@ class UniversallyUniqueIdGenerator
 {
 
     /**
-     * @var oxOpenSSLFunctionalityChecker
+     * @var \OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker
      */
     private $_openSSLChecker;
 
     /**
      * Sets dependencies.
      *
-     * @param oxOpenSSLFunctionalityChecker $openSSLChecker
+     * @param \OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker $openSSLChecker
      */
-    public function __construct(oxOpenSSLFunctionalityChecker $openSSLChecker = null)
+    public function __construct(\OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker $openSSLChecker = null)
     {
         if (is_null($openSSLChecker)) {
-            $openSSLChecker = oxNew('oxOpenSSLFunctionalityChecker');
+            $openSSLChecker = oxNew(\OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker::class);
         }
         $this->_openSSLChecker = $openSSLChecker;
     }
@@ -105,7 +105,7 @@ class UniversallyUniqueIdGenerator
     /**
      * gets open SSL checker.
      *
-     * @return oxOpenSSLFunctionalityChecker
+     * @return \OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker
      */
     protected function _getOpenSSLChecker()
     {

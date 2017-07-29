@@ -20,9 +20,9 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Tests\Acceptance\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin;
 
-use OxidEsales\Eshop\Tests\Acceptance\AdminTestCase;
+use OxidEsales\EshopCommunity\Tests\Acceptance\AdminTestCase;
 
 class NavigationAdminTest extends AdminTestCase
 {
@@ -77,8 +77,8 @@ class NavigationAdminTest extends AdminTestCase
         $aParameters = array(
             'OXSAL' => 'MRS',
             'OXUSERID' => $sUserId,
-            'OXFNAME' => 'name_¨Äßü?',
-            'OXLNAME' => 'surname_¨Äßü?',
+            'OXFNAME' => 'name_Â¨Ã„ÃŸÃ¼?',
+            'OXLNAME' => 'surname_Â¨Ã„ÃŸÃ¼?',
             'OXEMAIL' => 'example01@oxid-esales.dev',
             'OXDBOPTIN' => 2
         );

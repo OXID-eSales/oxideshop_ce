@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxField;
 use \oxTestModules;
@@ -43,7 +43,7 @@ class PictureHandlerTest extends \OxidTestCase
      */
     public function testGetMainIconName()
     {
-        $oPicHandler = $this->getMock('oxPictureHandler', array('_getBaseMasterImageFileName'));
+        $oPicHandler = $this->getMock(\OxidEsales\Eshop\Core\PictureHandler::class, array('_getBaseMasterImageFileName'));
         $oPicHandler->expects($this->once())->method('_getBaseMasterImageFileName')->with($this->equalTo('testPic_p1.jpg'))->will($this->returnValue("testPic.jpg"));
 
         $this->assertEquals('testPic.jpg', $oPicHandler->getMainIconName("testPic_p1.jpg"));
@@ -104,14 +104,14 @@ class PictureHandlerTest extends \OxidTestCase
         $oArticle->oxarticles__oxpic1 = new oxField("testPic1.jpg");
 
         // testing functions calls
-        $oUtilsPic = $this->getMock('oxUtilsPic', array('safePictureDelete'));
+        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
         $oUtilsPic->expects($this->at(0))->method('safePictureDelete')->with($this->equalTo($aDelPics[0]["sFileName"]), $this->equalTo($sAbsImageDir . $aDelPics[0]["sDir"]), $this->equalTo("oxarticles"), $this->equalTo($aDelPics[0]["sField"]))->will($this->returnValue(true));
         $oUtilsPic->expects($this->at(1))->method('safePictureDelete')->with($this->equalTo($aDelPics[1]["sFileName"]), $this->equalTo($sAbsImageDir . $aDelPics[1]["sDir"]), $this->equalTo("oxarticles"), $this->equalTo($aDelPics[1]["sField"]))->will($this->returnValue(true));
         $oUtilsPic->expects($this->at(2))->method('safePictureDelete')->with($this->equalTo($aDelPics[2]["sFileName"]), $this->equalTo($sAbsImageDir . $aDelPics[2]["sDir"]), $this->equalTo("oxarticles"), $this->equalTo($aDelPics[2]["sField"]))->will($this->returnValue(true));
 
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
-        $oPicHandler = $this->getMock('oxPictureHandler', array('getZoomName', 'getMainIconName', 'getThumbName', 'deleteZoomPicture'));
+        $oPicHandler = $this->getMock(\OxidEsales\Eshop\Core\PictureHandler::class, array('getZoomName', 'getMainIconName', 'getThumbName', 'deleteZoomPicture'));
         $oPicHandler->expects($this->any())->method('getZoomName')->will($this->returnValue("testZoomPic1.jpg"));
         $oPicHandler->expects($this->any())->method('getMainIconName')->will($this->returnValue("testIco1.jpg"));
         $oPicHandler->expects($this->any())->method('getThumbName')->will($this->returnValue("testThumb1.jpg"));
@@ -144,14 +144,14 @@ class PictureHandlerTest extends \OxidTestCase
         $oArticle->oxarticles__oxpic1 = new oxField("testPic1.jpg");
 
         // testing functions calls
-        $oUtilsPic = $this->getMock('oxUtilsPic', array('safePictureDelete'));
+        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
         $oUtilsPic->expects($this->at(0))->method('safePictureDelete')->with($this->equalTo($aDelPics[0]["sFileName"]), $this->equalTo($sAbsImageDir . $aDelPics[0]["sDir"]), $this->equalTo("oxarticles"), $this->equalTo($aDelPics[0]["sField"]))->will($this->returnValue(true));
         $oUtilsPic->expects($this->at(1))->method('safePictureDelete')->with($this->equalTo($aDelPics[1]["sFileName"]), $this->equalTo($sAbsImageDir . $aDelPics[1]["sDir"]), $this->equalTo("oxarticles"), $this->equalTo($aDelPics[1]["sField"]));
         $oUtilsPic->expects($this->at(2))->method('safePictureDelete')->with($this->equalTo($aDelPics[2]["sFileName"]), $this->equalTo($sAbsImageDir . $aDelPics[2]["sDir"]), $this->equalTo("oxarticles"), $this->equalTo($aDelPics[2]["sField"]));
 
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
-        $oPicHandler = $this->getMock('oxPictureHandler', array('deleteZoomPicture', 'getMainIconName', 'getThumbName'));
+        $oPicHandler = $this->getMock(\OxidEsales\Eshop\Core\PictureHandler::class, array('deleteZoomPicture', 'getMainIconName', 'getThumbName'));
         $oPicHandler->expects($this->once())->method('deleteZoomPicture');
         $oPicHandler->expects($this->any())->method('getMainIconName')->will($this->returnValue("testIco1.jpg"));
         $oPicHandler->expects($this->any())->method('getThumbName')->will($this->returnValue("testThumb1.jpg"));
@@ -178,12 +178,12 @@ class PictureHandlerTest extends \OxidTestCase
         $oArticle->oxarticles__oxicon = new oxField("testIco1.jpg");
 
         // testing functions calls
-        $oUtilsPic = $this->getMock('oxUtilsPic', array('safePictureDelete'));
+        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
         $oUtilsPic->expects($this->once())->method('safePictureDelete')->with($this->equalTo($aDelPics[0]["sFileName"]), $this->equalTo($sAbsImageDir . $aDelPics[0]["sDir"]), $this->equalTo("oxarticles"), $this->equalTo($aDelPics[0]["sField"]))->will($this->returnValue(true));
 
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
-        $oPicHandler = $this->getMock('oxPictureHandler', array('deleteZoomPicture', 'getMainIconName', 'getThumbName'));
+        $oPicHandler = $this->getMock(\OxidEsales\Eshop\Core\PictureHandler::class, array('deleteZoomPicture', 'getMainIconName', 'getThumbName'));
         $oPicHandler->expects($this->once())->method('deleteZoomPicture');
         $oPicHandler->expects($this->any())->method('getMainIconName')->will($this->returnValue("testIco1.jpg"));
         $oPicHandler->expects($this->any())->method('getThumbName')->will($this->returnValue("testThumb1.jpg"));
@@ -202,13 +202,13 @@ class PictureHandlerTest extends \OxidTestCase
         $oArticle->oxarticles__oxzoom1 = new oxField("testCustomZoom.jpg");
 
         // testing functions calls
-        $oUtilsPic = $this->getMock('oxUtilsPic', array('safePictureDelete'));
+        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
         $oUtilsPic->expects($this->any())->method('safePictureDelete');
 
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
-        $oPicHandler = $this->getMock('oxPictureHandler', array('deleteZoomPicture'));
-        $oPicHandler->expects($this->once())->method('deleteZoomPicture')->with($this->isInstanceOf("oxArticle"), $this->equalTo(1));
+        $oPicHandler = $this->getMock(\OxidEsales\Eshop\Core\PictureHandler::class, array('deleteZoomPicture'));
+        $oPicHandler->expects($this->once())->method('deleteZoomPicture')->with($this->isInstanceOf('OxidEsales\EshopCommunity\Application\Model\Article'), $this->equalTo(1));
 
         $oPicHandler->deleteArticleMasterPicture($oArticle, 1, false);
     }
@@ -226,7 +226,7 @@ class PictureHandlerTest extends \OxidTestCase
         $oArticle->oxarticles__oxpic1 = new oxField("nopic.jpg");
 
         // testing functions calls
-        $oUtilsPic = $this->getMock('oxUtilsPic', array('safePictureDelete'));
+        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
         $oUtilsPic->expects($this->never())->method('safePictureDelete');
 
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
@@ -254,12 +254,12 @@ class PictureHandlerTest extends \OxidTestCase
         $oArticle->oxarticles__oxpic1 = new oxField("1/testPic1.jpg");
 
         // testing functions calls
-        $oUtilsPic = $this->getMock('oxUtilsPic', array('safePictureDelete'));
+        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
         $oUtilsPic->expects($this->at(0))->method('safePictureDelete')->with($this->equalTo($sFileName), $this->equalTo($sAbsImageDir . $sDir), $this->equalTo("oxarticles"), $this->equalTo($sField));
 
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
-        $oPicHandler = $this->getMock('oxPictureHandler', array('getZoomName', 'getMainIconName', 'getThumbName'));
+        $oPicHandler = $this->getMock(\OxidEsales\Eshop\Core\PictureHandler::class, array('getZoomName', 'getMainIconName', 'getThumbName'));
         $oPicHandler->expects($this->any())->method('getZoomName')->will($this->returnValue("testZoomPic1.jpg"));
         $oPicHandler->expects($this->any())->method('getMainIconName')->will($this->returnValue("testIco1.jpg"));
         $oPicHandler->expects($this->any())->method('getThumbName')->will($this->returnValue("testThumb1.jpg"));
@@ -283,7 +283,7 @@ class PictureHandlerTest extends \OxidTestCase
         $oArticle->oxarticles__oxicon = new oxField("testIcon.jpg");
 
         // testing functions calls
-        $oUtilsPic = $this->getMock('oxUtilsPic', array('safePictureDelete'));
+        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
         $oUtilsPic->expects($this->exactly(1))->method('safePictureDelete');
         $oUtilsPic->expects($this->at(0))->method('safePictureDelete')->with($this->equalTo($sFileName), $this->equalTo($sAbsImageDir . $sDir), $this->equalTo("oxarticles"), $this->equalTo($sField));
 
@@ -304,7 +304,7 @@ class PictureHandlerTest extends \OxidTestCase
         $oArticle->oxarticles__oxicon = new oxField("");
 
         // testing functions calls
-        $oUtilsPic = $this->getMock('oxUtilsPic', array('safePictureDelete'));
+        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
         $oUtilsPic->expects($this->never())->method('safePictureDelete');
 
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
@@ -329,7 +329,7 @@ class PictureHandlerTest extends \OxidTestCase
         $oArticle->oxarticles__oxthumb = new oxField("testThumb.jpg");
 
         // testing functions calls
-        $oUtilsPic = $this->getMock('oxUtilsPic', array('safePictureDelete'));
+        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
         $oUtilsPic->expects($this->exactly(1))->method('safePictureDelete');
         $oUtilsPic->expects($this->at(0))->method('safePictureDelete')->with($this->equalTo($sFileName), $this->equalTo($sAbsImageDir . $sDir), $this->equalTo("oxarticles"), $this->equalTo($sField));
 
@@ -349,7 +349,7 @@ class PictureHandlerTest extends \OxidTestCase
         $oArticle->oxarticles__oxthumb = new oxField("");
 
         // testing functions calls
-        $oUtilsPic = $this->getMock('oxUtilsPic', array('safePictureDelete'));
+        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
         $oUtilsPic->expects($this->never())->method('safePictureDelete');
 
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
@@ -375,7 +375,7 @@ class PictureHandlerTest extends \OxidTestCase
         $oArticle->oxarticles__oxzoom2 = new oxField("testZoom2.jpg");
 
         // testing functions calls
-        $oUtilsPic = $this->getMock('oxUtilsPic', array('safePictureDelete'));
+        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
         $oUtilsPic->expects($this->exactly(1))->method('safePictureDelete');
         $oUtilsPic->expects($this->at(0))->method('safePictureDelete')->with($this->equalTo($sFileName), $this->equalTo($sAbsImageDir . $sDir), $this->equalTo("oxarticles"), $this->equalTo($sField));
 
@@ -397,7 +397,7 @@ class PictureHandlerTest extends \OxidTestCase
         $oArticle->oxarticles__oxzoom1 = new oxField("");
 
         // testing functions calls
-        $oUtilsPic = $this->getMock('oxUtilsPic', array('safePictureDelete'));
+        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
         $oUtilsPic->expects($this->never())->method('safePictureDelete');
 
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
@@ -418,7 +418,7 @@ class PictureHandlerTest extends \OxidTestCase
         $oArticle->oxarticles__oxzoom1 = new oxField("nopic.jpg");
 
         // testing functions calls
-        $oUtilsPic = $this->getMock('oxUtilsPic', array('safePictureDelete'));
+        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
         $oUtilsPic->expects($this->never())->method('safePictureDelete');
 
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
@@ -444,7 +444,7 @@ class PictureHandlerTest extends \OxidTestCase
         $oArticle->oxarticles__oxpic2 = new oxField("testMaster2.jpg");
 
         // testing functions calls
-        $oUtilsPic = $this->getMock('oxUtilsPic', array('safePictureDelete'));
+        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
         $oUtilsPic->expects($this->exactly(1))->method('safePictureDelete');
         $oUtilsPic->expects($this->at(0))->method('safePictureDelete')->with($this->equalTo($aDelPics[0]["sFileName"]), $this->equalTo($sAbsImageDir . $aDelPics[0]["sDir"]), $this->equalTo("oxarticles"), $this->equalTo($aDelPics[0]["sField"]));
 
@@ -468,7 +468,7 @@ class PictureHandlerTest extends \OxidTestCase
 
     public function testGetPictureInfo()
     {
-        $oCfg = $this->getMock('oxConfig', array('getPicturePath', 'getOutDir', 'getOutUrl'));
+        $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getPicturePath', 'getOutDir', 'getOutUrl'));
         $oCfg->expects($this->once())->method('getPicturePath')->will($this->returnValue('/qqq/pic/mic.jpg'));
         $oCfg->expects($this->once())->method('getOutDir')->will($this->returnValue('/qqq/'));
         $oCfg->expects($this->once())->method('getOutUrl')->will($this->returnValue('http://qqq/'));
@@ -515,7 +515,7 @@ class PictureHandlerTest extends \OxidTestCase
 
     public function testGetPictureInfoNotFound()
     {
-        $oCfg = $this->getMock('oxConfig', array('getPicturePath', 'getOutDir', 'getOutUrl'));
+        $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getPicturePath', 'getOutDir', 'getOutUrl'));
         $oCfg->expects($this->once())->method('getPicturePath')->will($this->returnValue(false));
         $oCfg->expects($this->never())->method('getOutDir');
         $oCfg->expects($this->never())->method('getOutUrl');
@@ -529,10 +529,10 @@ class PictureHandlerTest extends \OxidTestCase
 
     public function testGetAltImageUrlNotSet()
     {
-        $oCfg = $this->getMock('oxConfig', array('getConfigParam'));
+        $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
         $oCfg->expects($this->any())->method('getConfigParam')->will($this->returnValue(false));
 
-        $oPicHandler = $this->getMock('oxPictureHandler', array('getConfig'));
+        $oPicHandler = $this->getMock(\OxidEsales\Eshop\Core\PictureHandler::class, array('getConfig'));
         $oPicHandler->expects($this->any())->method('getConfig')->will($this->returnValue($oCfg));
 
         $this->assertEquals(null, $oPicHandler->getAltImageUrl('master/product/', 'nopic.jpg'));
@@ -540,12 +540,12 @@ class PictureHandlerTest extends \OxidTestCase
 
     public function testGetAltImageUrlAltUrl()
     {
-        $oCfg = $this->getMock('oxConfig', array('getConfigParam'));
+        $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
         $oCfg->expects($this->any())->method('getConfigParam')
             ->with($this->equalTo('sAltImageUrl'))
             ->will($this->returnValue('http://alt/image/url'));
 
-        $oPicHandler = $this->getMock('oxPictureHandler', array('getConfig'));
+        $oPicHandler = $this->getMock(\OxidEsales\Eshop\Core\PictureHandler::class, array('getConfig'));
         $oPicHandler->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
 
         $this->assertEquals('http://alt/image/url/master/product/nopic.jpg', $oPicHandler->getAltImageUrl('master/product/', 'nopic.jpg'));
@@ -554,7 +554,7 @@ class PictureHandlerTest extends \OxidTestCase
     public function testGetAltImageUrlSslAltUrlIsSsl()
     {
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
-        $config = $this->getMock('oxConfig', array('isSsl'));
+        $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isSsl'));
         $config->expects($this->any())->method('isSsl')->will($this->returnValue(true));
 
         $config->setConfigParam('sAltImageUrl', 'http://alt/image/url');
@@ -569,7 +569,7 @@ class PictureHandlerTest extends \OxidTestCase
     public function testGetAltImageUrlSslAltUrlIsNotSsl()
     {
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
-        $config = $this->getMock('oxConfig', array('isSsl'));
+        $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isSsl'));
         $config->expects($this->any())->method('isSsl')->will($this->returnValue(false));
 
         $config->setConfigParam('sAltImageUrl', 'http://alt/image/url');
@@ -584,7 +584,7 @@ class PictureHandlerTest extends \OxidTestCase
     public function testGetAltImageUrlSslAltUrlForseSsl()
     {
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
-        $config = $this->getMock('oxConfig', array('isSsl'));
+        $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isSsl'));
         $config->expects($this->any())->method('isSsl')->will($this->returnValue(false));
 
         $config->setConfigParam('sAltImageUrl', 'http://alt/image/url');
@@ -599,7 +599,7 @@ class PictureHandlerTest extends \OxidTestCase
     public function testGetAltImageUrlSslAltUrlForseNoSsl()
     {
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
-        $config = $this->getMock('oxConfig', array('isSsl'));
+        $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isSsl'));
         $config->expects($this->any())->method('isSsl')->will($this->returnValue(true));
 
         $config->setConfigParam('sAltImageUrl', 'http://alt/image/url');
@@ -618,7 +618,7 @@ class PictureHandlerTest extends \OxidTestCase
      */
     public function testGetPicUrl()
     {
-        $oPicHandler = $this->getMock('oxPictureHandler', array('_getPictureInfo'));
+        $oPicHandler = $this->getMock(\OxidEsales\Eshop\Core\PictureHandler::class, array('_getPictureInfo'));
         $oPicHandler->expects($this->once())->method('_getPictureInfo')
             ->with($this->equalTo('master/product/'), $this->equalTo('nopic.jpg'))
             ->will($this->returnValue(array('url' => 'http://booo/master/product/nopic.jpg')));
@@ -636,7 +636,7 @@ class PictureHandlerTest extends \OxidTestCase
      */
     public function testGetPicUrlNoSizeInfo()
     {
-        $oPicHandler = $this->getMock('oxPictureHandler', array('getImageSize'));
+        $oPicHandler = $this->getMock(\OxidEsales\Eshop\Core\PictureHandler::class, array('getImageSize'));
         $oPicHandler->expects($this->once())->method('getImageSize')
             ->with(
                 $this->equalTo(""),
@@ -653,7 +653,7 @@ class PictureHandlerTest extends \OxidTestCase
      */
     public function testGetPicUrlNoPathInfo()
     {
-        $oPicHandler = $this->getMock('oxPictureHandler', array('getImageSize'));
+        $oPicHandler = $this->getMock(\OxidEsales\Eshop\Core\PictureHandler::class, array('getImageSize'));
         $oPicHandler->expects($this->never())->method('getImageSize');
         $this->assertNull($oPicHandler->getPicUrl(false, false, false));
     }
@@ -667,7 +667,7 @@ class PictureHandlerTest extends \OxidTestCase
     {
         $oConfig = $this->getConfig();
         $sSize = $oConfig->getConfigParam('aDetailImageSizes');
-        $sPath = $oConfig->getPictureUrl("") . 'generated/product/1/380_340_75/30-360-back_p1_z_f_th_665.jpg';
+        $sPath = $oConfig->getPictureUrl("") . 'generated/product/1/250_200_75/30-360-back_p1_z_f_th_665.jpg';
 
         $oPicHandler = oxNew('oxPictureHandler');
         $this->assertEquals($sPath, $oPicHandler->getProductPicUrl("product/1/", "30-360-back_p1_z_f_th_665.jpg", $sSize, "oxpic1"));
@@ -682,7 +682,7 @@ class PictureHandlerTest extends \OxidTestCase
     {
         $oConfig = $this->getConfig();
         $sSize = $oConfig->getConfigParam('aDetailImageSizes');
-        $sPath = $oConfig->getPictureUrl("") . 'generated/product/1/380_340_75/nopic.jpg';
+        $sPath = $oConfig->getPictureUrl("") . 'generated/product/1/250_200_75/nopic.jpg';
 
         $oPicHandler = oxNew('oxPictureHandler');
         $this->assertEquals($sPath, $oPicHandler->getProductPicUrl("product/1/", false, $sSize, "oxpic1"));

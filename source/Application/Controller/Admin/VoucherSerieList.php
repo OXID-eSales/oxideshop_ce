@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin voucherserie list manager.
@@ -28,7 +28,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
  * there is ability to filter them by deiscount, serie no. or delete them.
  * Admin Menu: Shop Settings -> Vouchers.
  */
-class VoucherSerieList extends \oxAdminList
+class VoucherSerieList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**
@@ -51,7 +51,7 @@ class VoucherSerieList extends \oxAdminList
     public function deleteEntry()
     {
         // first we remove vouchers
-        $oVoucherSerie = oxNew("oxvoucherserie");
+        $oVoucherSerie = oxNew(\OxidEsales\Eshop\Application\Model\VoucherSerie::class);
         $oVoucherSerie->load($this->getEditObjectId());
         $oVoucherSerie->deleteVoucherList();
 

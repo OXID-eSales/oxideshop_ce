@@ -19,47 +19,43 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Component\Widget;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Component\Widget;
 
 /**
  * Tests for oxwCategoryTree class
  */
-class WidgetTest extends \OxidTestCase
+class WidgetTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
 
     /**
-     * Testing oxWidget::init()
-     *
-     * @return null
+     * @covers \OxidEsales\Eshop\Application\Component\Widget\WidgetController::init()
      */
     public function testInitComponentNotSet()
     {
-        $oWidget = oxNew('oxwLanguageList');
-        $oWidget->init();
+        $languageList = oxNew(\OxidEsales\Eshop\Application\Component\Widget\LanguageList::class);
+        $languageList->init();
 
-        $aComponents = $oWidget->getComponents();
-        $this->assertEquals(1, count($aComponents));
-        $this->assertEquals('oxidesales\eshop\application\component\languagecomponent', $aComponents["oxcmp_lang"]->getThisAction());
+        $components = $languageList->getComponents();
+        $this->assertEquals(1, count($components));
+        $this->assertEquals('oxidesales\eshop\application\component\languagecomponent', $components["oxcmp_lang"]->getThisAction());
     }
 
     /**
-     * Testing oxWidget::init()
-     *
-     * @return null
+     * @covers \OxidEsales\Eshop\Application\Component\Widget\WidgetController::init()
      */
     public function testInitComponentIsSet()
     {
-        $aComponents["oxcmp_lang"] = oxNew('oxcmp_lang');
-        $oView = oxNew("details");
-        $oView->setComponents($aComponents);
-        $this->getConfig()->setActiveView($oView);
+        $components["oxcmp_lang"] = oxNew(\OxidEsales\Eshop\Application\Component\LanguageComponent::class);
+        $view = oxNew(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class);
+        $view->setComponents($components);
+        $this->getConfig()->setActiveView($view);
 
-        $oWidget = oxNew('oxwLanguageList');
-        $oWidget->init();
+        $languageListWidget = oxNew(\OxidEsales\Eshop\Application\Component\Widget\LanguageList::class);
+        $languageListWidget->init();
 
-        $aComponents = $oWidget->getComponents();
-        $this->assertEquals(1, count($aComponents));
-        $this->assertTrue(isset($aComponents["oxcmp_lang"]));
+        $components = $languageListWidget->getComponents();
+        $this->assertEquals(1, count($components));
+        $this->assertTrue(isset($components["oxcmp_lang"]));
     }
 
 }

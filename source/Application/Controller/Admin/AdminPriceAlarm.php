@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin admin_pricealarm manager.
@@ -28,7 +28,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
  * and "pricealarm_main.tpl") to frame.
  * Admin Menu: Customer Info -> admin_pricealarm.
  */
-class AdminPricealarm extends \oxAdminView
+class AdminPriceAlarm extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

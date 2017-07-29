@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Component;
+namespace OxidEsales\EshopCommunity\Application\Component;
 
 use oxRegistry;
 
@@ -30,7 +30,7 @@ use oxRegistry;
  *
  * @subpackage oxcmp
  */
-class ShopComponent extends \oxView
+class ShopComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
 
     /**
@@ -58,7 +58,7 @@ class ShopComponent extends \oxView
 
         if (!$oShop->$sActiveField->value && 'oxstart' != $sClassName && !$this->isAdmin()) {
             // redirect to offline if there is no active shop
-            oxRegistry::getUtils()->redirectOffline();
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirectOffline();
         }
 
         return $oShop;

@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxTestModules;
 
@@ -37,7 +37,7 @@ class ShopListTest extends \OxidTestCase
         oxTestModules::addFunction("oxUtilsServer", "getOxCookie", "{return array(1);}");
         oxTestModules::addFunction("oxUtils", "checkAccessRights", "{return true;}");
 
-        $oSess = $this->getMock('oxsession', array('checkSessionChallenge'));
+        $oSess = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSess->expects($this->any())->method('checkSessionChallenge')->will($this->returnValue(true));
 
         $oView = $this->getMock($this->getProxyClassName('Shop_List'), array('getSession'));

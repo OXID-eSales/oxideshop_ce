@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxField;
 
@@ -28,7 +28,7 @@ use oxField;
  * Links manager.
  * Collects stored in DB links data (URL, description).
  */
-class Links extends \oxI18n
+class Links extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
 
     /**
@@ -58,10 +58,10 @@ class Links extends \oxI18n
      *
      * @return null
      */
-    protected function _setFieldData($sFieldName, $sValue, $iDataType = oxField::T_TEXT)
+    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
     {
         if ('oxurldesc' === strtolower($sFieldName) || 'oxlinks__oxurldesc' === strtolower($sFieldName)) {
-            $iDataType = oxField::T_RAW;
+            $iDataType = \OxidEsales\Eshop\Core\Field::T_RAW;
         }
 
         return parent::_setFieldData($sFieldName, $sValue, $iDataType);

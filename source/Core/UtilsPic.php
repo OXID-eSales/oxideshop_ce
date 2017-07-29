@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxDb;
 use oxRegistry;
@@ -33,7 +33,7 @@ require_once __DIR__ . "/utils/oxpicgenerator.php";
 /**
  * Image manipulation class
  */
-class UtilsPic extends \oxSuperCfg
+class UtilsPic extends \OxidEsales\Eshop\Core\Base
 {
 
     /**
@@ -143,10 +143,28 @@ class UtilsPic extends \oxSuperCfg
             return false;
         }
 
-        $oDb = oxDb::getDb();
-        $iCountUsed = $oDb->getOne("select count(*) from $sTable where $sField = " . $oDb->quote($sPicName) . " group by $sField ", false, false);
+        $iCountUsed = $this->fetchIsImageDeletable($sPicName, $sTable, $sField);
 
         return $iCountUsed > 1 ? false : true;
+    }
+
+    /**
+     * Fetch the information, if the given image is deletable from the database.
+     *
+     * @param string $sPicName Name of image file.
+     * @param string $sTable   The table in which we search for the image.
+     * @param string $sField   The value of the table field.
+     *
+     * @return mixed
+     */
+    protected function fetchIsImageDeletable($sPicName, $sTable, $sField)
+    {
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
+
+        $query = "select count(*) from $sTable where $sField = " . $masterDb->quote($sPicName) . " group by $sField ";
+
+        return $masterDb->getOne($query);
     }
 
     /**
@@ -168,7 +186,7 @@ class UtilsPic extends \oxSuperCfg
         if (isset($oObject->{$sPic}) &&
             ($_FILES['myfile']['size'][$sPicType . '@' . $sPic] > 0 || $aParams[$sPic] != $oObject->{$sPic}->value)
         ) {
-            $sImgDir = $sAbsDynImageDir . oxRegistry::get("oxUtilsFile")->getImageDirByType($sPicType);
+            $sImgDir = $sAbsDynImageDir . \OxidEsales\Eshop\Core\Registry::getUtilsFile()->getImageDirByType($sPicType);
             return $this->safePictureDelete($oObject->{$sPic}->value, $sImgDir, $sPicTable, $sPicField);
         }
 

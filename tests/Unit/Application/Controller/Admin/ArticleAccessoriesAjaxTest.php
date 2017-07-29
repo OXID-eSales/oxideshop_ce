@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
 
@@ -149,7 +149,7 @@ class ArticleAccessoriesAjaxTest extends \OxidTestCase
      */
     public function testRemoveArticleAcc()
     {
-        $oView = $this->getMock("article_accessories_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleAccessoriesAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testArticle1', '_testArticle2')));
         $this->assertEquals(2, oxDb::getDb()->getOne("select count(oxid) from oxaccessoire2article where OXARTICLENID='_testArticleAccessories'"));
 
@@ -168,7 +168,7 @@ class ArticleAccessoriesAjaxTest extends \OxidTestCase
         $this->setRequestParameter("oxid", '_testArticleAccessories');
 
         $this->assertEquals(2, oxDb::getDb()->getOne("select count(oxid) from oxaccessoire2article where OXARTICLENID='_testArticleAccessories'"));
-        /** @var article_accessories_ajax $oView */
+        /** @var \OxidEsales\Eshop\Application\Controller\Admin\ArticleAccessoriesAjax $oView */
         $oView = oxNew('article_accessories_ajax');
         $oView->removearticleacc();
         $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxaccessoire2article where OXARTICLENID='_testArticleAccessories'"));
@@ -181,7 +181,7 @@ class ArticleAccessoriesAjaxTest extends \OxidTestCase
      */
     public function testAddArticleAcc()
     {
-        $oView = $this->getMock("article_accessories_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleAccessoriesAjax::class, array("_getActionIds"));
         $this->setRequestParameter("synchoxid", '_testArticle1');
 
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testGroupAdd1', '_testGroupAdd2')));
@@ -198,7 +198,7 @@ class ArticleAccessoriesAjaxTest extends \OxidTestCase
      */
     public function testAddArticleAccAll()
     {
-        $oView = $this->getMock("article_accessories_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleAccessoriesAjax::class, array("_getActionIds"));
         $sSynchoxid = '_testArticle1';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
         $this->setRequestParameter("all", true);

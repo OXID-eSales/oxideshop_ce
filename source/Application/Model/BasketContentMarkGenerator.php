@@ -20,9 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
-
-use OxidEsales\Eshop\Application\Model\Basket;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 /**
  * Class oxBasketContentMarkGenerator which forms explanation marks.
@@ -45,16 +43,16 @@ class BasketContentMarkGenerator
     /**
      * Basket that is used to get article type(downloadable, intangible etc..).
      *
-     * @var oxBasket
+     * @var \OxidEsales\Eshop\Application\Model\Basket
      */
     private $_oBasket;
 
     /**
      * Sets basket that is used to get article type(downloadable, intangible etc..).
      *
-     * @param oxBasket $oBasket
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket
      */
-    public function __construct(Basket $oBasket)
+    public function __construct(\OxidEsales\Eshop\Application\Model\Basket $oBasket)
     {
         $this->_oBasket = $oBasket;
     }
@@ -80,7 +78,7 @@ class BasketContentMarkGenerator
     /**
      * Basket that is used to get article type(downloadable, intangible etc..).
      *
-     * @return oxBasket
+     * @return \OxidEsales\Eshop\Application\Model\Basket
      */
     private function _getBasket()
     {

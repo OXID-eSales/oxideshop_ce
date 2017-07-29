@@ -20,19 +20,18 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
 use oxRegistry;
 use oxField;
-use oxUtilsObject;
 
 /**
  * Article attributes manager.
  * Collects and keeps attributes of chosen article.
  *
  */
-class Attribute extends \oxI18n
+class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
     /**
      * Current class name
@@ -89,14 +88,14 @@ class Attribute extends \oxI18n
         }
 
         // remove attributes from articles also
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sOxidQuoted = $oDb->quote($sOXID);
         $sDelete = "delete from oxobject2attribute where oxattrid = " . $sOxidQuoted;
-        $rs = $oDb->execute($sDelete);
+        $oDb->execute($sDelete);
 
         // #657 ADDITIONAL removes attribute connection to category
         $sDelete = "delete from oxcategory2attribute where oxattrid = " . $sOxidQuoted;
-        $rs = $oDb->execute($sDelete);
+        $oDb->execute($sDelete);
 
         return parent::delete($sOXID);
     }
@@ -109,7 +108,7 @@ class Attribute extends \oxI18n
      */
     public function assignVarToAttribute($aMDVariants, $aSelTitle)
     {
-        $myLang = oxRegistry::getLang();
+        $myLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $aConfLanguages = $myLang->getLanguageIds();
         $sAttrId = $this->_getAttrId($aSelTitle[0]);
         if (!$sAttrId) {
@@ -118,26 +117,25 @@ class Attribute extends \oxI18n
         foreach ($aMDVariants as $sVarId => $oValue) {
             if (strpos($sVarId, "mdvar_") === 0) {
                 foreach ($oValue as $sId) {
-                    //var_dump($sVarId, $oAttribute->oxattribute__oxid->value);
                     $sVarId = substr($sVarId, 6);
-                    $oNewAssign = oxNew("oxBase");
+                    $oNewAssign = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                     $oNewAssign->init("oxobject2attribute");
-                    $sNewId = oxUtilsObject::getInstance()->generateUID();
+                    $sNewId = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID();
                     if ($oNewAssign->load($sId)) {
-                        $oNewAssign->oxobject2attribute__oxobjectid = new oxField($sVarId);
+                        $oNewAssign->oxobject2attribute__oxobjectid = new \OxidEsales\Eshop\Core\Field($sVarId);
                         $oNewAssign->setId($sNewId);
                         $oNewAssign->save();
                     }
                 }
             } else {
-                $oNewAssign = oxNew("oxi18n");
+                $oNewAssign = oxNew(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class);
                 $oNewAssign->setEnableMultilang(false);
                 $oNewAssign->init("oxobject2attribute");
-                $oNewAssign->oxobject2attribute__oxobjectid = new oxField($sVarId);
-                $oNewAssign->oxobject2attribute__oxattrid = new oxField($sAttrId);
+                $oNewAssign->oxobject2attribute__oxobjectid = new \OxidEsales\Eshop\Core\Field($sVarId);
+                $oNewAssign->oxobject2attribute__oxattrid = new \OxidEsales\Eshop\Core\Field($sAttrId);
                 foreach ($aConfLanguages as $sKey => $sLang) {
                     $sPrefix = $myLang->getLanguageTag($sKey);
-                    $oNewAssign->{'oxobject2attribute__oxvalue' . $sPrefix} = new oxField($oValue[$sKey]->name);
+                    $oNewAssign->{'oxobject2attribute__oxvalue' . $sPrefix} = new \OxidEsales\Eshop\Core\Field($oValue[$sKey]->name);
                 }
                 $oNewAssign->save();
             }
@@ -153,7 +151,7 @@ class Attribute extends \oxI18n
      */
     protected function _getAttrId($sSelTitle)
     {
-        $oDb = oxDb::getDB();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDB();
         $sAttViewName = getViewName('oxattribute');
 
         return $oDb->getOne("select oxid from $sAttViewName where LOWER(oxtitle) = " . $oDb->quote(getStr()->strtolower($sSelTitle)));
@@ -168,14 +166,14 @@ class Attribute extends \oxI18n
      */
     protected function _createAttribute($aSelTitle)
     {
-        $myLang = oxRegistry::getLang();
+        $myLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $aConfLanguages = $myLang->getLanguageIds();
-        $oAttr = oxNew('oxI18n');
+        $oAttr = oxNew(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class);
         $oAttr->setEnableMultilang(false);
         $oAttr->init('oxattribute');
         foreach ($aConfLanguages as $sKey => $sLang) {
             $sPrefix = $myLang->getLanguageTag($sKey);
-            $oAttr->{'oxattribute__oxtitle' . $sPrefix} = new oxField($aSelTitle[$sKey]);
+            $oAttr->{'oxattribute__oxtitle' . $sPrefix} = new \OxidEsales\Eshop\Core\Field($aSelTitle[$sKey]);
         }
         $oAttr->save();
 
@@ -192,17 +190,17 @@ class Attribute extends \oxI18n
     public function getAttributeAssigns($sArtId)
     {
         if ($sArtId) {
-            $oDb = oxDb::getDb();
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
             $sSelect = "select o2a.oxid from oxobject2attribute as o2a ";
             $sSelect .= "where o2a.oxobjectid = " . $oDb->quote($sArtId) . " order by o2a.oxpos";
 
             $aIds = array();
             $rs = $oDb->select($sSelect);
-            if ($rs != false && $rs->recordCount() > 0) {
+            if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {
                     $aIds[] = $rs->fields[0];
-                    $rs->moveNext();
+                    $rs->fetchRow();
                 }
             }
 

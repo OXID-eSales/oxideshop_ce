@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxUtils;
 use \oxOutput;
@@ -54,27 +54,6 @@ class oxConfigForUnit_oxoutputTest extends oxconfig
 class OutputTest extends \OxidTestCase
 {
     /**
-     * Initialize the fixture.
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-        oxAddClassModule('oxUtils_Extended', 'oxUtils');
-        oxAddClassModule('oxOutput_Extended', 'oxOutput');
-    }
-
-    /**
-     * Tear down the fixture.
-     */
-    public function tearDown()
-    {
-        oxRemClassModule('oxUtils_Extended');
-        oxRemClassModule('oxOutput_Extended');
-
-        parent::tearDown();
-    }
-
-    /**
      * Testing output processor
      */
     public function testProcess()
@@ -84,25 +63,12 @@ class OutputTest extends \OxidTestCase
     }
 
     /**
-     * Testing output processor replaces euro sign in non utf mode
+     * Testing output processor replaces euro sign in utf mode
      */
     public function testProcessWithEuroSign()
     {
         $oOutput = oxNew('oxOutput');
-        $this->getConfig()->setConfigParam('blSkipEuroReplace', false);
-        $this->getConfig()->setConfigParam('iUtfMode', 0);
-        $this->assertEquals('&euro;someting', $oOutput->process('山ometing', 'something'));
-    }
-
-    /**
-     * Testing output processor replaces euro sign in utf mode
-     */
-    public function testProcessWithEuroSignInUtfMode()
-    {
-        $oOutput = oxNew('oxOutput');
-        $this->getConfig()->setConfigParam('blSkipEuroReplace', false);
-        $this->getConfig()->setConfigParam('iUtfMode', 1);
-        $this->assertEquals('山ometing', $oOutput->process('山ometing', 'something'));
+        $this->assertEquals('嚙編ometing', $oOutput->process('嚙編ometing', 'something'));
     }
 
     /**
@@ -111,10 +77,8 @@ class OutputTest extends \OxidTestCase
     public function testProcessWithEuroSignWithDisabledReplace()
     {
         $oOutput = oxNew('oxOutput');
-        $this->getConfig()->setConfigParam('blSkipEuroReplace', true);
-        $this->getConfig()->setConfigParam('iUtfMode', 0);
 
-        $this->assertEquals('山ometing', $oOutput->process('山ometing', 'something'));
+        $this->assertEquals('嚙編ometing', $oOutput->process('嚙編ometing', 'something'));
     }
 
     public function testAddVersionTags()
@@ -185,7 +149,7 @@ class OutputTest extends \OxidTestCase
 
     public function testSetCharsetSetOutputFormatSendHeaders()
     {
-        $utils = $this->getMock('oxUtils', array('setHeader'));
+        $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('setHeader'));
         $utils->expects($this->once())->method('setHeader')->with($this->equalTo('Content-Type: text/html; charset=asd'));
         oxTestModules::cleanUp();
         oxTestModules::addModuleObject('oxUtils', $utils);
@@ -194,7 +158,7 @@ class OutputTest extends \OxidTestCase
         $oOutput->sendHeaders();
 
 
-        $utils = $this->getMock('oxUtils', array('setHeader'));
+        $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('setHeader'));
         $utils->expects($this->once())->method('setHeader')->with($this->equalTo('Content-Type: application/json; charset=asdd'));
         oxTestModules::cleanUp();
         oxTestModules::addModuleObject('oxUtils', $utils);
@@ -204,7 +168,7 @@ class OutputTest extends \OxidTestCase
         $oOutput->sendHeaders();
 
 
-        $utils = $this->getMock('oxUtils', array('setHeader'));
+        $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('setHeader'));
         $utils->expects($this->once())->method('setHeader')->with($this->equalTo('Content-Type: text/html; charset=asdd'));
         oxTestModules::cleanUp();
         oxTestModules::addModuleObject('oxUtils', $utils);

@@ -20,12 +20,12 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 /**
  * Special page for Credits
  */
-class CreditsController extends ContentController
+class CreditsController extends \OxidEsales\Eshop\Application\Controller\ContentController
 {
 
     /**
@@ -54,7 +54,7 @@ class CreditsController extends ContentController
     {
         if ($this->_oContent === null) {
             $this->_oContent = false;
-            $oContent = oxNew('oxcontent');
+            $oContent = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
             if ($oContent->loadByIdent($this->getContentId())) {
                 $this->_oContent = $oContent;
             }

@@ -20,12 +20,12 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * Encrypt string with sha512 algorithm.
  */
-class Sha512Hasher extends \oxHasher
+class Sha512Hasher extends \OxidEsales\Eshop\Core\Hasher
 {
 
     /** Algorithm name. */
@@ -34,12 +34,12 @@ class Sha512Hasher extends \oxHasher
     /**
      * Encrypt string.
      *
-     * @param string $sString
+     * @param string $string
      *
      * @return string
      */
-    public function hash($sString)
+    public function hash($string)
     {
-        return hash(self::HASHING_ALGORITHM_SHA512, $sString);
+        return hash(self::HASHING_ALGORITHM_SHA512, $string);
     }
 }

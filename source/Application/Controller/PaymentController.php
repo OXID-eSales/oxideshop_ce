@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxBasket;
 use oxRegistry;
@@ -29,7 +29,7 @@ use oxRegistry;
  * Payment manager.
  * Customer payment manager class. Performs payment validation function, etc.
  */
-class PaymentController extends \oxUBase
+class PaymentController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
 
     /**
@@ -172,7 +172,7 @@ class PaymentController extends \oxUBase
 
         //but first checking maybe there were redirection already to prevent infinite redirections
         //due to possible buggy ssl detection on server
-        $blAlreadyRedirected = oxRegistry::getConfig()->getRequestParameter('sslredirect') == 'forced';
+        $blAlreadyRedirected = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sslredirect') == 'forced';
 
         if ($this->getIsOrderStep()) {
             //additional check if we really really have a user now
@@ -180,33 +180,33 @@ class PaymentController extends \oxUBase
             $oBasket = $this->getSession()->getBasket();
             $blPsBasketReservationEnabled = $myConfig->getConfigParam('blPsBasketReservationEnabled');
             if ($blPsBasketReservationEnabled && (!$oBasket || ($oBasket && !$oBasket->getProductsCount()))) {
-                oxRegistry::getUtils()->redirect($myConfig->getShopHomeUrl() .'cl=basket', true, 302);
+                \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($myConfig->getShopHomeUrl() .'cl=basket', true, 302);
             }
 
             $oUser = $this->getUser();
             if (!$oUser && ($oBasket && $oBasket->getProductsCount() > 0)) {
-                oxRegistry::getUtils()->redirect($myConfig->getShopHomeUrl() . 'cl=basket', false, 302);
+                \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($myConfig->getShopHomeUrl() . 'cl=basket', false, 302);
             } elseif (!$oBasket || !$oUser || ($oBasket && !$oBasket->getProductsCount())) {
-                oxRegistry::getUtils()->redirect($myConfig->getShopHomeUrl() . 'cl=start', false, 302);
+                \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($myConfig->getShopHomeUrl() . 'cl=start', false, 302);
             }
         }
 
-        $sFncParameter = oxRegistry::getConfig()->getRequestParameter('fnc');
+        $sFncParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('fnc');
         if ($myConfig->getCurrentShopURL() != $myConfig->getSSLShopURL() && !$blAlreadyRedirected && !$sFncParameter) {
-            $sPayErrorParameter = oxRegistry::getConfig()->getRequestParameter('payerror');
-            $sPayErrorTextParameter = oxRegistry::getConfig()->getRequestParameter('payerrortext');
+            $sPayErrorParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('payerror');
+            $sPayErrorTextParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('payerrortext');
             $shopSecureHomeURL = $myConfig->getShopSecureHomeURL();
 
             $sPayError = $sPayErrorParameter ?'payerror='.$sPayErrorParameter:'';
             $sPayErrorText = $sPayErrorTextParameter ?'payerrortext='.$sPayErrorTextParameter:'';
             $sRedirectURL = $shopSecureHomeURL .'sslredirect=forced&cl=payment&'.$sPayError."&".$sPayErrorText;
-            oxRegistry::getUtils()->redirect($sRedirectURL, true, 302);
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($sRedirectURL, true, 302);
         }
 
         if (!$this->getAllSetsCnt()) {
             // no fitting shipping set found, setting default empty payment
             $this->_setDefaultEmptyPayment();
-            oxRegistry::getSession()->setVariable('sShipSet', null);
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('sShipSet', null);
         }
 
         $this->_unsetPaymentErrors();
@@ -223,7 +223,7 @@ class PaymentController extends \oxUBase
     {
         // no shipping method there !!
         if ($this->getConfig()->getConfigParam('blOtherCountryOrder')) {
-            $oPayment = oxNew('oxpayment');
+            $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
             if ($oPayment->load('oxempty')) {
                 $this->_oEmptyPayment = $oPayment;
             } else {
@@ -240,20 +240,20 @@ class PaymentController extends \oxUBase
      */
     protected function _unsetPaymentErrors()
     {
-        $iPayError = oxRegistry::getConfig()->getRequestParameter('payerror');
-        $sPayErrorText = oxRegistry::getConfig()->getRequestParameter('payerrortext');
+        $iPayError = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('payerror');
+        $sPayErrorText = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('payerrortext');
 
         if (!($iPayError || $sPayErrorText)) {
-            $iPayError = oxRegistry::getSession()->getVariable('payerror');
-            $sPayErrorText = oxRegistry::getSession()->getVariable('payerrortext');
+            $iPayError = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('payerror');
+            $sPayErrorText = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('payerrortext');
         }
 
         if ($iPayError) {
-            oxRegistry::getSession()->deleteVariable('payerror');
+            \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable('payerror');
             $this->_sPaymentError = $iPayError;
         }
         if ($sPayErrorText) {
-            oxRegistry::getSession()->deleteVariable('payerrortext');
+            \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable('payerrortext');
             $this->_sPaymentErrorText = $sPayErrorText;
         }
     }
@@ -297,13 +297,13 @@ class PaymentController extends \oxUBase
             return;
         }
 
-        if (!($sShipSetId = oxRegistry::getConfig()->getRequestParameter('sShipSet'))) {
+        if (!($sShipSetId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sShipSet'))) {
             $sShipSetId = $oSession->getVariable('sShipSet');
         }
-        if (!($sPaymentId = oxRegistry::getConfig()->getRequestParameter('paymentid'))) {
+        if (!($sPaymentId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('paymentid'))) {
             $sPaymentId = $oSession->getVariable('paymentid');
         }
-        if (!($aDynvalue = oxRegistry::getConfig()->getRequestParameter('dynvalue'))) {
+        if (!($aDynvalue = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('dynvalue'))) {
             $aDynvalue = $oSession->getVariable('dynvalue');
         }
 
@@ -327,7 +327,7 @@ class PaymentController extends \oxUBase
 
         $oBasket = $oSession->getBasket();
         $oBasket->setPayment(null);
-        $oPayment = oxNew('oxpayment');
+        $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
         $oPayment->load($sPaymentId);
 
         // getting basket price for payment calculation
@@ -363,16 +363,16 @@ class PaymentController extends \oxUBase
         if ($this->_oPaymentList === null) {
             $this->_oPaymentList = false;
 
-            $sActShipSet = oxRegistry::getConfig()->getRequestParameter('sShipSet');
+            $sActShipSet = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sShipSet');
             if (!$sActShipSet) {
-                $sActShipSet = oxRegistry::getSession()->getVariable('sShipSet');
+                $sActShipSet = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('sShipSet');
             }
 
             $oBasket = $this->getSession()->getBasket();
 
             // load sets, active set, and active set payment list
             list($aAllSets, $sActShipSet, $aPaymentList) =
-                oxRegistry::get("oxDeliverySetList")->getDeliverySetData($sActShipSet, $this->getUser(), $oBasket);
+                \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DeliverySetList::class)->getDeliverySetData($sActShipSet, $this->getUser(), $oBasket);
 
             $oBasket->setShipping($sActShipSet);
 
@@ -380,7 +380,6 @@ class PaymentController extends \oxUBase
             $this->_setValues($aPaymentList, $oBasket);
             $this->_oPaymentList = $aPaymentList;
             $this->_aAllSets = $aAllSets;
-
         }
 
         return $this->_oPaymentList;
@@ -425,8 +424,8 @@ class PaymentController extends \oxUBase
     /**
      * Calculate payment cost for each payment. Sould be removed later
      *
-     * @param array    &$aPaymentList payments array
-     * @param oxBasket $oBasket       basket object
+     * @param array                                      $aPaymentList payments array
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket      basket object
      */
     protected function _setValues(& $aPaymentList, $oBasket = null)
     {
@@ -502,10 +501,10 @@ class PaymentController extends \oxUBase
             $this->_aDynValue = false;
 
             // flyspray#1217 (sarunas)
-            if (($aDynValue = oxRegistry::getSession()->getVariable('dynvalue'))) {
+            if (($aDynValue = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('dynvalue'))) {
                 $this->_aDynValue = $aDynValue;
             } else {
-                $this->_aDynValue = oxRegistry::getConfig()->getRequestParameter("dynvalue");
+                $this->_aDynValue = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("dynvalue");
             }
 
             // #701A
@@ -526,11 +525,11 @@ class PaymentController extends \oxUBase
     protected function _assignDebitNoteParams()
     {
         // #701A
-        $oUserPayment = oxNew('oxuserpayment');
+        $oUserPayment = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
         //such info available ?
         if ($oUserPayment->getPaymentByPaymentType($this->getUser(), 'oxiddebitnote')) {
             $sUserPaymentField = 'oxuserpayments__oxvalue';
-            $aAddPaymentData = oxRegistry::getUtils()->assignValuesFromText($oUserPayment->$sUserPaymentField->value);
+            $aAddPaymentData = \OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($oUserPayment->$sUserPaymentField->value);
 
             //checking if some of values is allready set in session - leave it
             foreach ($aAddPaymentData as $oData) {
@@ -552,17 +551,17 @@ class PaymentController extends \oxUBase
     public function getCheckedPaymentId()
     {
         if ($this->_sCheckedPaymentId === null) {
-            if (!($sPaymentID = oxRegistry::getConfig()->getRequestParameter('paymentid'))) {
-                $sPaymentID = oxRegistry::getSession()->getVariable('paymentid');
+            if (!($sPaymentID = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('paymentid'))) {
+                $sPaymentID = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('paymentid');
             }
             if ($sPaymentID) {
                 $sCheckedId = $sPaymentID;
-            } elseif (($sSelectedPaymentID = oxRegistry::getSession()->getVariable('_selected_paymentid'))) {
+            } elseif (($sSelectedPaymentID = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('_selected_paymentid'))) {
                 $sCheckedId = $sSelectedPaymentID;
             } else {
                 // #1010A.
                 if ($oUser = $this->getUser()) {
-                    $oOrder = oxNew('oxorder');
+                    $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
                     if (($sLastPaymentId = $oOrder->getLastUserPaymentType($oUser->getId()))) {
                         $sCheckedId = $sLastPaymentId;
                     }
@@ -657,7 +656,7 @@ class PaymentController extends \oxUBase
     protected function _filterDynData()
     {
         //in case we actually ARE allowed to store the data
-        if (oxRegistry::getConfig()->getConfigParam("blStoreCreditCardInfo")) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("blStoreCreditCardInfo")) {
             //then do nothing and reset _blDynDataFiltered
             $this->_blDynDataFiltered = false;
 
@@ -678,7 +677,7 @@ class PaymentController extends \oxUBase
             $aDynData["kkmonth"] = null;
             $aDynData["kkyear"] = null;
             $aDynData["kkpruef"] = null;
-            oxRegistry::getSession()->setVariable("dynvalue", $aDynData);
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("dynvalue", $aDynData);
         }
 
         if (!$this->_checkArrValuesEmpty($_REQUEST["dynvalue"], $aFields) ||
@@ -708,7 +707,6 @@ class PaymentController extends \oxUBase
         unset($_GET["dynvalue"]["kkmonth"]);
         unset($_GET["dynvalue"]["kkyear"]);
         unset($_GET["dynvalue"]["kkpruef"]);
-
     }
 
     /**
@@ -722,8 +720,8 @@ class PaymentController extends \oxUBase
         $aPath = array();
 
 
-        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
-        $aPath['title'] = oxRegistry::getLang()->translateString('PAY', $iBaseLanguage, false);
+        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('PAY', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
 
         $aPaths[] = $aPath;

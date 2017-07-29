@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -29,7 +29,7 @@ use oxField;
 /**
  * Class manages article attributes
  */
-class AttributeMainAjax extends \ajaxListComponent
+class AttributeMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**
@@ -72,14 +72,14 @@ class AttributeMainAjax extends \ajaxListComponent
     protected function _getQuery()
     {
         $myConfig = $this->getConfig();
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sArticleTable = $this->_getViewName('oxarticles');
         $sOCatView = $this->_getViewName('oxobject2category');
         $sOAttrView = $this->_getViewName('oxobject2attribute');
 
-        $sDelId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchDelId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $sDelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $sSynchDelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sDelId) {
@@ -141,15 +141,15 @@ class AttributeMainAjax extends \ajaxListComponent
     {
         $aChosenCat = $this->_getActionIds('oxobject2attribute.oxid');
 
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sO2AttributeView = $this->_getViewName('oxobject2attribute');
 
             $sQ = parent::_addFilter("delete $sO2AttributeView.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenCat)) {
-            $sChosenCategories = implode(", ", oxDb::getInstance()->quoteArray($aChosenCat));
+            $sChosenCategories = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenCat));
             $sQ = "delete from oxobject2attribute where oxobject2attribute.oxid in (" . $sChosenCategories . ") ";
-            oxDb::getDb()->Execute($sQ);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
 
@@ -159,22 +159,22 @@ class AttributeMainAjax extends \ajaxListComponent
     public function addAttrArticle()
     {
         $aAddArticle = $this->_getActionIds('oxarticles.oxid');
-        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
         // adding
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sArticleTable = $this->_getViewName('oxarticles');
             $aAddArticle = $this->_getAll($this->_addFilter("select $sArticleTable.oxid " . $this->_getQuery()));
         }
 
-        $oAttribute = oxNew("oxattribute");
+        $oAttribute = oxNew(\OxidEsales\Eshop\Application\Model\Attribute::class);
 
         if ($oAttribute->load($soxId) && is_array($aAddArticle)) {
             foreach ($aAddArticle as $sAdd) {
-                $oNewGroup = oxNew("oxBase");
+                $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oNewGroup->init("oxobject2attribute");
-                $oNewGroup->oxobject2attribute__oxobjectid = new oxField($sAdd);
-                $oNewGroup->oxobject2attribute__oxattrid = new oxField($oAttribute->oxattribute__oxid->value);
+                $oNewGroup->oxobject2attribute__oxobjectid = new \OxidEsales\Eshop\Core\Field($sAdd);
+                $oNewGroup->oxobject2attribute__oxattrid = new \OxidEsales\Eshop\Core\Field($oAttribute->oxattribute__oxid->value);
                 $oNewGroup->save();
 
                 $this->onArticleAddToAttributeList($sAdd);

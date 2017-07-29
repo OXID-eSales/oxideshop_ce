@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 /**
  * Tests for Dynscreen_List class
@@ -35,7 +35,7 @@ class DynscreenListTest extends \OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = $this->getMock("Dynscreen_List", array("_setupNavigation"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DynamicScreenList::class, array("_setupNavigation"));
         $oView->expects($this->once())->method('_setupNavigation');
         $this->assertEquals('dynscreen_list.tpl', $oView->render());
     }

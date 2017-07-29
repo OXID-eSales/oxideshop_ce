@@ -47,9 +47,9 @@ if (!function_exists('getSystemReqCheck')) {
         if ($editionSelector->isEnterprise()) {
             $systemRequirements = new \OxidEsales\EshopEnterprise\Core\SystemRequirements;
         } elseif ($editionSelector->isProfessional()) {
-            $systemRequirements = new OxidEsales\EshopProfessional\Core\SystemRequirements;
+            $systemRequirements = new \OxidEsales\EshopProfessional\Core\SystemRequirements;
         } else {
-            $systemRequirements = new OxidEsales\Eshop\Core\SystemRequirements;
+            $systemRequirements = new \OxidEsales\EshopCommunity\Core\SystemRequirements;
         }
 
         return $systemRequirements;
@@ -66,8 +66,8 @@ if (!function_exists('getCountryList')) {
     {
         $aCountries = array();
         $relativePath = 'Application/Controller/Admin/ShopCountries.php';
-        if (file_exists(getVendorDirectory() . "/oxid-esales/oxideshop-ce/source/$relativePath")) {
-            include getVendorDirectory() . "/oxid-esales/oxideshop-ce/source/$relativePath";
+        if (file_exists(getVendorDirectory() . "oxid-esales/oxideshop-ce/source/$relativePath")) {
+            include getVendorDirectory() . "oxid-esales/oxideshop-ce/source/$relativePath";
         } else {
             include __DIR__ . "/../$relativePath";
         }
@@ -86,8 +86,8 @@ if (!function_exists('getLocation')) {
     {
         $aLocationCountries = array();
         $relativePath = 'Application/Controller/Admin/ShopCountries.php';
-        if (file_exists(getVendorDirectory() . "/oxid-esales/oxideshop-ce/source/$relativePath")) {
-            include getVendorDirectory() . "/oxid-esales/oxideshop-ce/source/$relativePath";
+        if (file_exists(getVendorDirectory() . "oxid-esales/oxideshop-ce/source/$relativePath")) {
+            include getVendorDirectory() . "oxid-esales/oxideshop-ce/source/$relativePath";
         } else {
             include __DIR__ . "/../$relativePath";
         }
@@ -105,8 +105,8 @@ if (!function_exists('getLanguages')) {
     {
         $aLanguages = array();
         $relativePath = 'Application/Controller/Admin/ShopCountries.php';
-        if (file_exists(getVendorDirectory() . "/oxid-esales/oxideshop-ce/source/$relativePath")) {
-            include getVendorDirectory() . "/oxid-esales/oxideshop-ce/source/$relativePath";
+        if (file_exists(getVendorDirectory() . "oxid-esales/oxideshop-ce/source/$relativePath")) {
+            include getVendorDirectory() . "oxid-esales/oxideshop-ce/source/$relativePath";
         } else {
             include __DIR__ . "/../$relativePath";
         }
@@ -159,8 +159,7 @@ if (!function_exists('getVendorDirectory')) {
      */
     function getVendorDirectory()
     {
-        $oConfigFile = new OxidEsales\Eshop\Core\ConfigFile(OX_BASE_PATH . "config.inc.php");
-        return $oConfigFile->vendorDirectory;
+        return VENDOR_PATH;
     }
 }
 
@@ -175,8 +174,8 @@ if (!class_exists("Conf", false)) {
          */
         public function __construct()
         {
-            $config = new \OxidEsales\Eshop\Core\ConfigFile(getShopBasePath() . "/config.inc.php");
-            $this->sConfigKey = $config->getVar('sConfigKey') ?: \OxidEsales\Eshop\Core\Config::DEFAULT_CONFIG_KEY;
+            $config = new \OxidEsales\EshopCommunity\Core\ConfigFile(getShopBasePath() . "/config.inc.php");
+            $this->sConfigKey = $config->getVar('sConfigKey') ?: \OxidEsales\EshopCommunity\Core\Config::DEFAULT_CONFIG_KEY;
         }
     }
 }

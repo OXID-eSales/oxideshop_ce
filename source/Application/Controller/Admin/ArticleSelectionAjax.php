@@ -20,16 +20,17 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
 use oxField;
+use Exception;
 
 /**
  * Class controls article assignment to selection lists
  */
-class ArticleSelectionAjax extends \ajaxListComponent
+class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**
@@ -60,16 +61,17 @@ class ArticleSelectionAjax extends \ajaxListComponent
     {
         $sSLViewName = $this->_getViewName('oxselectlist');
         $sArtViewName = $this->_getViewName('oxarticles');
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $sArtId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchArtId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $sArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $sSynchArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
         $sOxid = ($sArtId) ? $sArtId : $sSynchArtId;
         $sQ = "select oxparentid from {$sArtViewName} where oxid = " . $oDb->quote($sOxid) . " and oxparentid != '' ";
         $sQ .= "and (select count(oxobjectid) from oxobject2selectlist " .
                "where oxobjectid = " . $oDb->quote($sOxid) . ") = 0";
-        $sParentId = oxDb::getDb()->getOne($sQ, false, false);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $sParentId = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sQ);
 
         // all selectlists article is in
         $sQAdd = " from oxobject2selectlist left join {$sSLViewName} " .
@@ -93,49 +95,58 @@ class ArticleSelectionAjax extends \ajaxListComponent
     public function removeSel()
     {
         $aChosenArt = $this->_getActionIds('oxobject2selectlist.oxid');
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
-
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2selectlist.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
-            $sChosenArticles = implode(", ", oxDb::getInstance()->quoteArray($aChosenArt));
+            $sChosenArticles = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt));
             $sQ = "delete from oxobject2selectlist " .
                   "where oxobject2selectlist.oxid in (" . $sChosenArticles . ") ";
-            oxDb::getDb()->Execute($sQ);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
 
-        $articleId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $articleId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
         $this->onArticleSelectionListChange($articleId);
     }
 
     /**
      * Adds selection lists to article.
+     *
+     * @throws Exception
      */
     public function addSel()
     {
         $aAddSel = $this->_getActionIds('oxselectlist.oxid');
-        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
         // adding
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sSLViewName = $this->_getViewName('oxselectlist');
             $aAddSel = $this->_getAll($this->_addFilter("select $sSLViewName.oxid " . $this->_getQuery()));
         }
 
         if ($soxId && $soxId != "-1" && is_array($aAddSel)) {
-            $oDb = oxDb::getDb();
-            foreach ($aAddSel as $sAdd) {
-                $oNew = oxNew("oxBase");
-                $oNew->init("oxobject2selectlist");
-                $sObjectIdField = 'oxobject2selectlist__oxobjectid';
-                $sSelectetionIdField = 'oxobject2selectlist__oxselnid';
-                $sOxSortField = 'oxobject2selectlist__oxsort';
-                $oNew->$sObjectIdField = new oxField($soxId);
-                $oNew->$sSelectetionIdField = new oxField($sAdd);
-                $sSql = "select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  {$oDb->quote($soxId)} ";
-                $oNew->$sOxSortField = new oxField(( int ) $oDb->getOne($sSql, false, false));
-                $oNew->save();
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->startTransaction();
+            try {
+                $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+                foreach ($aAddSel as $sAdd) {
+                    $oNew = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
+                    $oNew->init("oxobject2selectlist");
+                    $sObjectIdField = 'oxobject2selectlist__oxobjectid';
+                    $sSelectetionIdField = 'oxobject2selectlist__oxselnid';
+                    $sOxSortField = 'oxobject2selectlist__oxsort';
+                    $oNew->$sObjectIdField = new \OxidEsales\Eshop\Core\Field($soxId);
+                    $oNew->$sSelectetionIdField = new \OxidEsales\Eshop\Core\Field($sAdd);
+                    $sSql = "select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  {$database->quote($soxId)} ";
+                    // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+                    $oNew->$sOxSortField = new \OxidEsales\Eshop\Core\Field(( int ) $database->getOne($sSql));
+                    $oNew->save();
+                }
+            } catch (Exception $exception) {
+                \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
+                throw $exception;
             }
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->commitTransaction();
 
             $this->onArticleSelectionListChange($soxId);
         }

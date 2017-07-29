@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin payment manager.
@@ -28,7 +28,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
  * and "payment_main.tpl") to frame.
  * Admin Menu: Shop Settings -> Payment Methods.
  */
-class AdminPayment extends \oxAdminView
+class AdminPayment extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

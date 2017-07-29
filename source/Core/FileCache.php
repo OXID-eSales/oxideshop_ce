@@ -20,9 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
-
-use oxRegistry;
+namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * Cache for storing module variables selected from database.
@@ -79,7 +77,7 @@ class FileCache
      */
     public static function clearCache()
     {
-        $tempDirectory = oxRegistry::get("oxConfigFile")->getVar("sCompileDir");
+        $tempDirectory = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar("sCompileDir");
         $mask = $tempDirectory . "/" . self::CACHE_FILE_PREFIX . ".*.txt";
         $files = glob($mask);
         if (is_array($files)) {
@@ -110,7 +108,7 @@ class FileCache
      */
     protected function getCacheDir()
     {
-        return oxRegistry::get("oxConfigFile")->getVar("sCompileDir");
+        return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar("sCompileDir");
     }
 
     /**

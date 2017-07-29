@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use OxidEsales\TestingLibrary\UnitTestCase;
 
@@ -27,8 +27,8 @@ class AdminLogSqlDecoratorTest extends UnitTestCase
 {
     public function testPrepareSqlForLogging()
     {
-        $decorator = oxNew('OxidEsales\Eshop\Core\AdminLogSqlDecorator');
-        $this->assertInstanceOf('\OxidEsales\Eshop\Core\AdminLogSqlDecorator', $decorator);
+        $decorator = oxNew('OxidEsales\EshopCommunity\Core\AdminLogSqlDecorator');
+        $this->assertInstanceOf('\OxidEsales\EshopCommunity\Core\AdminLogSqlDecorator', $decorator);
 
         // check if wrapping of string to inserting sql works
         $originalTestString = 'somestring';

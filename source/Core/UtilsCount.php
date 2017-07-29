@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxDb;
 use oxRegistry;
@@ -28,7 +28,7 @@ use oxRegistry;
 /**
  * Date manipulation utility class
  */
-class UtilsCount extends \oxSuperCfg
+class UtilsCount extends \OxidEsales\Eshop\Core\Base
 {
 
     /**
@@ -146,10 +146,10 @@ class UtilsCount extends \oxSuperCfg
      */
     public function setCatArticleCount($aCache, $sCatId, $sActIdent)
     {
-        $oArticle = oxNew('oxArticle');
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $sTable = $oArticle->getViewName();
         $sO2CView = getViewName('oxobject2category');
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         // we use distinct if article is assigned to category twice
         $sQ = "SELECT COUNT( DISTINCT $sTable.`oxid` )
@@ -177,7 +177,7 @@ class UtilsCount extends \oxSuperCfg
      */
     public function setPriceCatArticleCount($aCache, $sCatId, $sActIdent, $dPriceFrom, $dPriceTo)
     {
-        $oArticle = oxNew('oxArticle');
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $sTable = $oArticle->getViewName();
 
         $sSelect = "select count({$sTable}.oxid) from {$sTable} where oxvarminprice >= 0 ";
@@ -185,7 +185,7 @@ class UtilsCount extends \oxSuperCfg
         $sSelect .= $dPriceFrom ? "and oxvarminprice  >= " . (double) $dPriceFrom . " " : " ";
         $sSelect .= "and {$sTable}.oxissearch = 1 and " . $oArticle->getSqlActiveSnippet();
 
-        $aCache[$sCatId][$sActIdent] = oxDb::getDb()->getOne($sSelect);
+        $aCache[$sCatId][$sActIdent] = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sSelect);
 
         $this->_setCatCache($aCache);
 
@@ -208,7 +208,7 @@ class UtilsCount extends \oxSuperCfg
             return 0;
         }
 
-        $oArticle = oxNew('oxArticle');
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $sTable = $oArticle->getViewName();
 
         // select each vendor articles count
@@ -231,21 +231,18 @@ class UtilsCount extends \oxSuperCfg
      * The values of the first level arrays with numeric key that hold the all the values of each row but the first one,
      * which is used a a key in the first level.
      *
-     * This function was added to mimic the functionality of a the removed core method oxLegacy::getAssoc
-     *
      * @param string $query
      * @param array  $parameters
-     * @param bool   $executeOnSlave
      *
      * @return array
      */
-    protected function getAssoc($query, $parameters = array(), $executeOnSlave = true)
+    protected function getAssoc($query, $parameters = array())
     {
-        $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
-        $resultSet = $database->select($query, $parameters, $executeOnSlave);
+        $resultSet = $database->select($query, $parameters);
 
-        $rows = $resultSet->getAll();
+        $rows = $resultSet->fetchAll();
 
         if (!$rows) {
             return array();
@@ -283,7 +280,7 @@ class UtilsCount extends \oxSuperCfg
             return 0;
         }
 
-        $oArticle = oxNew('oxArticle');
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $sArtTable = $oArticle->getViewName();
         $sManTable = getViewName('oxmanufacturers');
 
@@ -291,7 +288,7 @@ class UtilsCount extends \oxSuperCfg
         //#3485
         $sQ = "select count($sArtTable.oxid) from $sArtTable where $sArtTable.oxparentid = '' and oxmanufacturerid = '$sMnfId' and " . $oArticle->getSqlActiveSnippet();
 
-        $iValue = oxDb::getDb()->getOne($sQ);
+        $iValue = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ);
 
         $aCache[$sMnfId][$sActIdent] = (int) $iValue;
 
@@ -309,7 +306,7 @@ class UtilsCount extends \oxSuperCfg
     {
         if (!$sCatId) {
             $this->getConfig()->setGlobalParameter('aLocalCatCache', null);
-            oxRegistry::getUtils()->toFileCache('aLocalCatCache', '');
+            \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalCatCache', '');
         } else {
             // loading from cache
             $aCatData = $this->_getCatCache();
@@ -332,13 +329,14 @@ class UtilsCount extends \oxSuperCfg
             $sTable = getViewName('oxcategories');
             $sSelect = "select $sTable.oxid from $sTable where " . (double) $iPrice . " >= $sTable.oxpricefrom and " . (double) $iPrice . " <= $sTable.oxpriceto ";
 
-            $rs = oxDb::getDb()->select($sSelect, false, false);
-            if ($rs != false && $rs->recordCount() > 0) {
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            $rs = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->select($sSelect, false);
+            if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {
                     if (isset($aCatData[$rs->fields[0]])) {
                         unset($aCatData[$rs->fields[0]]);
                     }
-                    $rs->moveNext();
+                    $rs->fetchRow();
                 }
 
                 // writing back to cache
@@ -356,7 +354,7 @@ class UtilsCount extends \oxSuperCfg
     {
         if (!$sVendorId) {
             $this->getConfig()->setGlobalParameter('aLocalVendorCache', null);
-            oxRegistry::getUtils()->toFileCache('aLocalVendorCache', '');
+            \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalVendorCache', '');
         } else {
             // loading from cache
             $aVendorData = $this->_getVendorCache();
@@ -376,7 +374,7 @@ class UtilsCount extends \oxSuperCfg
     {
         if (!$sManufacturerId) {
             $this->getConfig()->setGlobalParameter('aLocalManufacturerCache', null);
-            oxRegistry::getUtils()->toFileCache('aLocalManufacturerCache', '');
+            \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalManufacturerCache', '');
         } else {
             // loading from cache
             $aManufacturerData = $this->_getManufacturerCache();
@@ -401,7 +399,7 @@ class UtilsCount extends \oxSuperCfg
 
         // if local cache is not set - loading from file cache
         if (!$aLocalCatCache) {
-            $sLocalCatCache = oxRegistry::getUtils()->fromFileCache('aLocalCatCache');
+            $sLocalCatCache = \OxidEsales\Eshop\Core\Registry::getUtils()->fromFileCache('aLocalCatCache');
             if ($sLocalCatCache) {
                 $aLocalCatCache = $sLocalCatCache;
             } else {
@@ -421,7 +419,7 @@ class UtilsCount extends \oxSuperCfg
     protected function _setCatCache($aCache)
     {
         $this->getConfig()->setGlobalParameter('aLocalCatCache', $aCache);
-        oxRegistry::getUtils()->toFileCache('aLocalCatCache', $aCache);
+        \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalCatCache', $aCache);
     }
 
     /**
@@ -432,7 +430,7 @@ class UtilsCount extends \oxSuperCfg
     protected function _setVendorCache($aCache)
     {
         $this->getConfig()->setGlobalParameter('aLocalVendorCache', $aCache);
-        oxRegistry::getUtils()->toFileCache('aLocalVendorCache', $aCache);
+        \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalVendorCache', $aCache);
     }
 
     /**
@@ -443,7 +441,7 @@ class UtilsCount extends \oxSuperCfg
     protected function _setManufacturerCache($aCache)
     {
         $this->getConfig()->setGlobalParameter('aLocalManufacturerCache', $aCache);
-        oxRegistry::getUtils()->toFileCache('aLocalManufacturerCache', $aCache);
+        \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalManufacturerCache', $aCache);
     }
 
     /**
@@ -459,7 +457,7 @@ class UtilsCount extends \oxSuperCfg
         $aLocalVendorCache = $myConfig->getGlobalParameter('aLocalVendorCache');
         // if local cache is not set - loading from file cache
         if (!$aLocalVendorCache) {
-            $sLocalVendorCache = oxRegistry::getUtils()->fromFileCache('aLocalVendorCache');
+            $sLocalVendorCache = \OxidEsales\Eshop\Core\Registry::getUtils()->fromFileCache('aLocalVendorCache');
             if ($sLocalVendorCache) {
                 $aLocalVendorCache = $sLocalVendorCache;
             } else {
@@ -484,7 +482,7 @@ class UtilsCount extends \oxSuperCfg
         $aLocalManufacturerCache = $myConfig->getGlobalParameter('aLocalManufacturerCache');
         // if local cache is not set - loading from file cache
         if (!$aLocalManufacturerCache) {
-            $sLocalManufacturerCache = oxRegistry::getUtils()->fromFileCache('aLocalManufacturerCache');
+            $sLocalManufacturerCache = \OxidEsales\Eshop\Core\Registry::getUtils()->fromFileCache('aLocalManufacturerCache');
             if ($sLocalManufacturerCache) {
                 $aLocalManufacturerCache = $sLocalManufacturerCache;
             } else {
@@ -511,7 +509,7 @@ class UtilsCount extends \oxSuperCfg
 
         // loading R&R data from session
         $userSessionGroups = $this->getCurrentUserSessionGroups();
-        $this->_sUserViewId = md5($this->getConfig()->getShopID() . oxRegistry::getLang()->getLanguageTag() . serialize($userSessionGroups) . (int) $this->isAdmin());
+        $this->_sUserViewId = md5($this->getConfig()->getShopID() . \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageTag() . serialize($userSessionGroups) . (int) $this->isAdmin());
 
         return $this->_sUserViewId;
     }

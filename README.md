@@ -5,7 +5,7 @@ OXID eShop
 
 This repository contains the sources of OXID eShop Community Edition.
 
-###About OXID eShop:
+### About OXID eShop:
 
 OXID eShop is a flexible open source e-commerce software with a wide range of functionalities. 
 Thanks to its modular, modern and state-of-the-art architecture, it can be modified, expanded 
@@ -17,16 +17,23 @@ OXID eShop is just e-commerce software for agencies with deadlines :-)
 
 ### Installation
 
-Please note: if you don't know what the following is about, please download the OXID eShop package from this place: https://www.oxid-esales.com/en/community/download-oxid-eshop.html and follow the [installation instruction] (https://www.oxid-esales.com/en/support-services/documentation-and-help/oxid-eshop/installation/oxid-eshop-new-installation/server-and-system-requirements.html "OXID eShop installation instruction").
+Please note: if you don't know what the following is about, please download the OXID eShop package from this place: https://www.oxid-esales.com/en/community/download-oxid-eshop.html and follow the [installation instruction](https://www.oxid-esales.com/en/support-services/documentation-and-help/oxid-eshop/installation/oxid-eshop-new-installation/server-and-system-requirements.html "OXID eShop installation instruction").
 
 When checking out this repository or downloading the zip file from this place, composer is required for setting up OXID eShop.
 
-1. make sure [composer] (https://getcomposer.org/) is installed on your system
+1. make sure [composer](https://getcomposer.org/) is installed on your system
 2. `$ git clone https://github.com/OXID-eSales/oxideshop_ce.git`
 3. `$ cd oxideshop_ce`
 4. `$ composer install --no-dev`
 5. `$ cp source/config.inc.php.dist source/config.inc.php`
 
+If you want to install OXID eShop including example data like products, categories etc., you first need to install the demo data package:
+
+1. `$ composer require oxid-esales/oxideshop-demodata-ce:dev-b-6.0`
+
+### IDE code completion
+
+You can easily enable code completion in your IDE by installing [this script](https://github.com/OXID-eSales/eshop-ide-helper) and generating it as described.
 
 ### Useful links
 

@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use DOMDocument;
 
@@ -57,10 +57,10 @@ class ListReviewTest extends \OxidTestCase
      */
     public function testRender()
     {
-        $oNavTree = $this->getMock("oxnavigationtree", array("getDomXml"));
+        $oNavTree = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationTree::class, array("getDomXml"));
         $oNavTree->expects($this->once())->method('getDomXml')->will($this->returnValue(new DOMDocument));
 
-        $oView = $this->getMock("List_Review", array("getNavigation"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListReview::class, array("getNavigation"));
         $oView->expects($this->at(0))->method('getNavigation')->will($this->returnValue($oNavTree));
         $this->assertEquals("list_review.tpl", $oView->render());
     }

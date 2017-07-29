@@ -16,50 +16,48 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-class LanguageexceptionTest extends \OxidTestCase
+class LanguageexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
 
-    private $_oTestObject = null;
-    private $_sMsg = 'Erik was here..';
-    private $_sLanguageConstant = 'a language';
+    private $testObject = null;
+    private $message = 'Erik was here..';
+    private $languageConstant = 'a language';
 
     /**
      * Initialize the fixture.
-     *
-     * @return null
      */
     protected function setUp()
     {
         parent::setUp();
-        $this->_oTestObject = oxNew('oxLanguageException', $this->_sMsg);
-        $this->assertEquals('OxidEsales\Eshop\Core\Exception\LanguageException', get_class($this->_oTestObject));
-        $this->_oTestObject->setLangConstant($this->_sLanguageConstant);
+        $this->testObject = oxNew(\OxidEsales\Eshop\Core\Exception\LanguageException::class, $this->message);
+        $this->assertEquals(\OxidEsales\Eshop\Core\Exception\LanguageException::class, get_class($this->testObject));
+        $this->testObject->setLangConstant($this->languageConstant);
     }
 
     public function testSetGetLangConstant()
     {
-        $this->assertEquals($this->_sLanguageConstant, $this->_oTestObject->getLangConstant());
+        $this->assertEquals($this->languageConstant, $this->testObject->getLangConstant());
     }
 
     // We check on class name and message only - rest is not checked yet
     public function testGetString()
     {
-        $sStringOut = $this->_oTestObject->getString();
-        $this->assertContains($this->_sMsg, $sStringOut); // Message
+        $sStringOut = $this->testObject->getString();
+        $this->assertContains($this->message, $sStringOut); // Message
         $this->assertContains('LanguageException', $sStringOut); // Exception class name
-        $this->assertContains($this->_sLanguageConstant, $sStringOut); // Language constant
+        $this->assertContains($this->languageConstant, $sStringOut); // Language constant
     }
 
     public function testGetValues()
     {
-        $aRes = $this->_oTestObject->getValues();
-        $this->assertArrayHasKey('langConstant', $aRes);
-        $this->assertTrue($this->_sLanguageConstant === $aRes['langConstant']);
+        $result = $this->testObject->getValues();
+        $this->assertArrayHasKey('langConstant', $result);
+        $this->assertTrue($this->languageConstant === $result['langConstant']);
     }
 
     /**

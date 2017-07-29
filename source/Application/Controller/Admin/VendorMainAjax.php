@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -28,7 +28,7 @@ use oxDb;
 /**
  * Class manages vendor assignment to articles
  */
-class VendorMainAjax extends \ajaxListComponent
+class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**
@@ -73,8 +73,8 @@ class VendorMainAjax extends \ajaxListComponent
         // looking for table/view
         $sArtTable = $this->_getViewName('oxarticles');
         $sO2CView = $this->_getViewName('oxobject2category');
-        $oDb = oxDb::getDb();
-        $oConfig = oxRegistry::getConfig();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sVendorId = $oConfig->getRequestParameter('oxid');
         $sSynchVendorId = $oConfig->getRequestParameter('synchoxid');
 
@@ -132,7 +132,7 @@ class VendorMainAjax extends \ajaxListComponent
         if (is_array($aRemoveArt)) {
             $sSelect = "update oxarticles set oxvendorid = null where "
                 . $this->onVendorActionArticleUpdateConditions($aRemoveArt);
-            oxDb::getDb()->Execute($sSelect);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sSelect);
 
             $this->resetCounter("vendorArticle", $oConfig->getRequestParameter('oxid'));
 
@@ -156,7 +156,7 @@ class VendorMainAjax extends \ajaxListComponent
         }
 
         if ($soxId && $soxId != "-1" && is_array($aAddArticle)) {
-            $oDb = oxDb::getDb();
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sSelect = "update oxarticles set oxvendorid = " . $oDb->quote($soxId) . " where "
                 . $this->onVendorActionArticleUpdateConditions($aAddArticle);
 
@@ -170,17 +170,19 @@ class VendorMainAjax extends \ajaxListComponent
     /**
      * Condition for updating oxarticles on add / remove vendor actions.
      *
-     * @param $vendorOxid
+     * @param array $articleIds
+     *
+     * @return string
      */
     protected function onVendorActionArticleUpdateConditions($articleIds)
     {
-        return 'oxid in (' . implode(", ", oxDb::getDb()->quoteArray($articleIds)) . ')';
+        return 'oxid in (' . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($articleIds)) . ')';
     }
 
     /**
      * Additional actions on vendor add/remove.
      *
-     * @param $vendorOxid
+     * @param string $vendorOxid
      */
     protected function onVendorAction($vendorOxid)
     {

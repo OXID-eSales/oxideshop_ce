@@ -39,7 +39,7 @@
  * $Id$
  */
 
-namespace OxidEsales\Eshop\Core\Smarty\Plugin;
+namespace OxidEsales\EshopCommunity\Core\Smarty\Plugin;
 
 /**
  * PHP Helper Class to construct a ECONDA Monitor statement for the later
@@ -397,7 +397,7 @@ class Emos
     /**
      * adds a detailView to the preScript
      *
-     * @param EMOS_Item $oItem item to add to view
+     * @param \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem $oItem item to add to view
      */
     public function addDetailView($oItem)
     {
@@ -407,7 +407,7 @@ class Emos
     /**
      * adds a removeFromBasket to the preScript
      *
-     * @param EMOS_Item $oItem item to remove from basket
+     * @param \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem $oItem item to remove from basket
      */
     public function removeFromBasket($oItem)
     {
@@ -417,7 +417,7 @@ class Emos
     /**
      * adds a addToBasket to the preScript
      *
-     * @param EMOS_Item $oItem item to add to basket
+     * @param \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem $oItem item to add to basket
      */
     public function addToBasket($oItem)
     {
@@ -483,7 +483,7 @@ class Emos
     /**
      * constructs a emosECPageArray of given $sEvent type
      *
-     * @param EMOS_Item $oItem      an instance of class EMOS_Item
+     * @param \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem $oItem      an instance of class EMOS_Item
      * @param string    $sEvent     Type of this event ("view","c_rmv","c_add")
      */
     protected function _setEmosECPageArray($oItem, $sEvent)
@@ -499,7 +499,7 @@ class Emos
     /**
      * formats data/values/params by eliminating named entities and xml-entities
      *
-     * @param EMOS_Item $oItem item to format its parameters
+     * @param \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem $oItem item to format its parameters
      *
      * @return null
      */

@@ -19,13 +19,17 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Integration\Modules;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 use oxException;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter;
 use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockContentReader;
 
+/**
+ * @group module
+ * @package Integration\Modules
+ */
 class ModuleTemplateBlockTest extends UnitTestCase
 {
     public function testGetContentForModuleTemplateBlock()

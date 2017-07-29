@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxTestModules;
 
@@ -41,7 +41,7 @@ class VoucherSerieListTest extends \OxidTestCase
         oxTestModules::addFunction('oxvoucherserie', 'load', '{ return true; }');
         oxTestModules::addFunction('oxvoucherserie', 'deleteVoucherList', '{ return true; }');
 
-        $oSess = $this->getMock('oxsession', array('checkSessionChallenge'));
+        $oSess = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSess->expects($this->any())->method('checkSessionChallenge')->will($this->returnValue(true));
 
         $oView = $this->getMock($this->getProxyClassName('VoucherSerie_List'), array('getSession'));

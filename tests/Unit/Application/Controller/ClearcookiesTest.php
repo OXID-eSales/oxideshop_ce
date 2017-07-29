@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \oxRegistry;
 
@@ -62,11 +62,11 @@ class ClearcookiesTest extends \OxidTestCase
 
         $oView = oxNew('ClearCookies');
 
-        $oUtilsServer = $this->getMock('oxUtilsServer', array('setOxCookie'));
+        $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array('setOxCookie'));
         $oUtilsServer->expects($this->at(0))->method('setOxCookie')->with($this->equalTo('shop'));
         $oUtilsServer->expects($this->at(1))->method('setOxCookie')->with($this->equalTo('language'));
         $oUtilsServer->expects($this->at(2))->method('setOxCookie')->with($this->equalTo('displayedCookiesNotification'));
-        oxRegistry::set('oxUtilsServer', $oUtilsServer);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsServer::class, $oUtilsServer);
 
         $this->assertEquals('page/info/clearcookies.tpl', $oView->render());
     }

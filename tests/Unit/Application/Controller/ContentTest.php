@@ -19,12 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
-use \oxpaymentlist;
-use \oxdeliverysetlist;
-use \oxdelivery;
-use \oxdeliverylist;
+use OxidEsales\EshopCommunity\Application\Model\PaymentList;
+use OxidEsales\EshopCommunity\Application\Model\DeliverySetList;
+use OxidEsales\EshopCommunity\Application\Model\Delivery;
+use OxidEsales\EshopCommunity\Application\Model\DeliveryList;
 
 use \oxUtilsView;
 use \oxField;
@@ -104,7 +104,7 @@ class ContentTest extends \OxidTestCase
      */
     public function testCanShowContent()
     {
-        $oView = $this->getMock("content", array("getUser", "isEnabledPrivateSales"), array(), '', false);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array("getUser", "isEnabledPrivateSales"), array(), '', false);
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
         $oView->expects($this->any())->method('isEnabledPrivateSales')->will($this->returnValue(true));
 
@@ -113,7 +113,7 @@ class ContentTest extends \OxidTestCase
         $this->assertTrue($oView->UNITcanShowContent("oximpressum"));
         $this->assertFalse($oView->UNITcanShowContent("testcontentident"));
 
-        $oView = $this->getMock("content", array("getUser", "isEnabledPrivateSales"), array(), '', false);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array("getUser", "isEnabledPrivateSales"), array(), '', false);
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
         $oView->expects($this->any())->method('isEnabledPrivateSales')->will($this->returnValue(false));
         $this->assertTrue($oView->UNITcanShowContent("testcontentident"));
@@ -171,7 +171,7 @@ class ContentTest extends \OxidTestCase
         $oContent = oxNew('oxContent');
         $oContent->setId("testContent");
 
-        $oContentView = $this->getMock('content', array('_canShowContent', 'getContent', 'showPlainTemplate', '_getTplName'));
+        $oContentView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array('_canShowContent', 'getContent', 'showPlainTemplate', '_getTplName'));
         $oContentView->expects($this->atLeastOnce())->method('_getTplName')->will($this->returnValue(false));
         $oContentView->expects($this->atLeastOnce())->method('_canShowContent')->will($this->returnValue(true));
         $oContentView->expects($this->atLeastOnce())->method('getContent')->will($this->returnValue($oContent));
@@ -193,7 +193,7 @@ class ContentTest extends \OxidTestCase
 
         try {
             // testing..
-            $oView = $this->getMock("content", array("_canShowContent"), array(), '', false);
+            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array("_canShowContent"), array(), '', false);
             $oView->expects($this->once())->method('_canShowContent')->will($this->returnValue(false));
             $oView->render();
         } catch (Exception $oExcp) {
@@ -212,10 +212,10 @@ class ContentTest extends \OxidTestCase
     public function testPrepareMetaKeyword()
     {
         $oContent = oxNew('oxArticle');
-        $oContent->oxcontents__oxtitle = $this->getMock('oxField', array('__get'));
+        $oContent->oxcontents__oxtitle = $this->getMock(\OxidEsales\Eshop\Core\Field::class, array('__get'));
         $oContent->oxcontents__oxtitle->expects($this->once())->method('__get')->will($this->returnValue('testtitle'));
 
-        $oContentView = $this->getMock('content', array('getContent'));
+        $oContentView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array('getContent'));
         $oContentView->expects($this->once())->method('getContent')->will($this->returnValue($oContent));
 
         $oView = oxNew('oxubase');
@@ -230,10 +230,10 @@ class ContentTest extends \OxidTestCase
     public function testPrepareMetaDescription()
     {
         $oContent = oxNew('oxArticle');
-        $oContent->oxcontents__oxtitle = $this->getMock('oxField', array('__get'));
+        $oContent->oxcontents__oxtitle = $this->getMock(\OxidEsales\Eshop\Core\Field::class, array('__get'));
         $oContent->oxcontents__oxtitle->expects($this->once())->method('__get')->will($this->returnValue('testtitle'));
 
-        $oContentView = $this->getMock('content', array('getContent'));
+        $oContentView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array('getContent'));
         $oContentView->expects($this->once())->method('getContent')->will($this->returnValue($oContent));
 
         $oView = oxNew('oxubase');
@@ -247,7 +247,7 @@ class ContentTest extends \OxidTestCase
      */
     public function testGetContentCategoryNoCategoryAssigned()
     {
-        $oView = $this->getMock('content', array('getContent'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array('getContent'));
         $oView->expects($this->once())->method('getContent')->will($this->returnValue(new oxcontent()));
 
         $this->assertFalse($oView->getContentCategory());
@@ -263,7 +263,7 @@ class ContentTest extends \OxidTestCase
         $oContent = oxNew('oxcontent');
         $oContent->oxcontents__oxtype = new oxfield(2);
 
-        $oView = $this->getMock('content', array('getContent'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array('getContent'));
         $oView->expects($this->once())->method('getContent')->will($this->returnValue($oContent));
 
         $this->assertEquals($oContent, $oView->getContentCategory());
@@ -304,16 +304,16 @@ class ContentTest extends \OxidTestCase
 
         $this->setRequestParameter('plain', 0);
 
-        $oView = $this->getMock('content', array('getUser'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array('getUser'));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
         $this->assertTrue($oView->showPlainTemplate());
 
         $this->setRequestParameter('plain', 0);
 
-        $oUser = $this->getMock('oxuser', array('isTermsAccepted'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('isTermsAccepted'));
         $oUser->expects($this->any())->method('isTermsAccepted')->will($this->returnValue(true));
 
-        $oView = $this->getMock('content', array('getUser'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array('getUser'));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
         $this->assertFalse($oView->showPlainTemplate());
 
@@ -411,7 +411,7 @@ class ContentTest extends \OxidTestCase
         oxTestModules::addFunction('oxUtils', 'redirect', '{ throw new Exception($aA[0]); }');
         $this->getConfig()->setConfigParam("blPsLoginEnabled", false);
 
-        $oView = $this->getMock('content', array('_getTplName'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array('_getTplName'));
         $oView->expects($this->once())->method('_getTplName')->will($this->returnValue('test.tpl'));
 
         $this->assertEquals('test.tpl', $oView->render());
@@ -434,11 +434,11 @@ class ContentTest extends \OxidTestCase
     {
         $this->setRequestParameter('oxcid', null);
         $this->setRequestParameter('oxloadid', null);
-        $oView = $this->getMock('content', array('_getTplName', 'getContentId'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array('_getTplName', 'getContentId'));
         $oView->expects($this->once())->method('_getTplName')->will($this->returnValue(''));
         $oView->expects($this->any())->method('getContentId')->will($this->returnValue(false));
 
-        $oUtils = $this->getMock('oxutils', array('handlePageNotFoundError'));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('handlePageNotFoundError'));
         $oUtils->expects($this->once())->method('handlePageNotFoundError')->will($this->throwException(new Exception("404")));
         oxTestModules::addModuleObject('oxutils', $oUtils);
 
@@ -507,7 +507,7 @@ class ContentTest extends \OxidTestCase
         $sExpResp = $oViewProxy->getNonPublicVar('_sBusinessTemplate');
         $this->assertFalse(empty($sExpResp));
 
-        $oView = $this->getMock('Content', array('getContent'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array('getContent'));
         $oView->expects($this->once())->method('getContent')->will($this->returnValue($oContent));
         $aTpl = $oView->getContentPageTpl();
         $this->assertSame($sExpResp, $aTpl[0]);
@@ -530,7 +530,7 @@ class ContentTest extends \OxidTestCase
         $sExpResp = $oViewProxy->getNonPublicVar('_sDeliveryTemplate');
         $this->assertFalse(empty($sExpResp));
 
-        $oView = $this->getMock('Content', array('getContent'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array('getContent'));
         $oView->expects($this->once())->method('getContent')->will($this->returnValue($oContent));
         $aTpl = $oView->getContentPageTpl();
         $this->assertSame($sExpResp, $aTpl[0]);
@@ -553,7 +553,7 @@ class ContentTest extends \OxidTestCase
         $sExpResp = $oViewProxy->getNonPublicVar('_sPaymentTemplate');
         $this->assertFalse(empty($sExpResp));
 
-        $oView = $this->getMock('Content', array('getContent'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array('getContent'));
         $oView->expects($this->once())->method('getContent')->will($this->returnValue($oContent));
         $aTpl = $oView->getContentPageTpl();
         $this->assertSame($sExpResp, $aTpl[0]);
@@ -588,7 +588,7 @@ class ContentTest extends \OxidTestCase
 
         $oView = oxNew('Content');
         $oResp = $oView->getNotMappedToRDFaPayments();
-        $this->assertTrue($oResp instanceof oxpaymentlist);
+        $this->assertTrue($oResp instanceof PaymentList);
     }
 
     /**
@@ -602,7 +602,7 @@ class ContentTest extends \OxidTestCase
 
         $oView = oxNew('Content');
         $oResp = $oView->getNotMappedToRDFaDeliverySets();
-        $this->assertTrue($oResp instanceof oxdeliverysetlist);
+        $this->assertTrue($oResp instanceof DeliverySetList);
     }
 
     /**
@@ -636,8 +636,8 @@ class ContentTest extends \OxidTestCase
 
         $this->assertEquals(5, count($oResp));
         foreach ($oResp as $oDelivery) {
-            $this->assertTrue($oDelivery instanceof oxdelivery);
-            $this->assertTrue($oDelivery->deliverysetmethods instanceof oxdeliverysetlist);
+            $this->assertTrue($oDelivery instanceof Delivery);
+            $this->assertTrue($oDelivery->deliverysetmethods instanceof DeliverySetList);
         }
     }
 
@@ -652,7 +652,7 @@ class ContentTest extends \OxidTestCase
 
         $oView = oxNew('Content');
         $oResp = $oView->getDeliveryList();
-        $this->assertTrue($oResp instanceof oxdeliverylist);
+        $this->assertTrue($oResp instanceof DeliveryList);
     }
 
     /**
@@ -752,11 +752,11 @@ class ContentTest extends \OxidTestCase
     {
         $this->setConfigParam('blSeoMode', true);
 
-        $contentMock = $this->getMock("oxcontent", array("getBaseSeoLink", "getBaseStdLink"));
+        $contentMock = $this->getMock(\OxidEsales\Eshop\Application\Model\Content::class, array("getBaseSeoLink", "getBaseStdLink"));
         $contentMock->expects($this->once())->method('getBaseSeoLink')->will($this->returnValue("testSeoUrl"));
         $contentMock->expects($this->never())->method('getBaseStdLink')->will($this->returnValue("testStdUrl"));
 
-        $contentView = $this->getMock("Content", array("getContent"));
+        $contentView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array("getContent"));
         $contentView->expects($this->once())->method('getContent')->will($this->returnValue($contentMock));
 
         $this->assertEquals("testSeoUrl", $contentView->getCanonicalUrl());
@@ -769,11 +769,11 @@ class ContentTest extends \OxidTestCase
     {
         $this->setConfigParam('blSeoMode', false);
 
-        $contentMock = $this->getMock("oxcontent", array("getBaseSeoLink", "getBaseStdLink"));
+        $contentMock = $this->getMock(\OxidEsales\Eshop\Application\Model\Content::class, array("getBaseSeoLink", "getBaseStdLink"));
         $contentMock->expects($this->never())->method('getBaseSeoLink')->will($this->returnValue("testSeoUrl"));
         $contentMock->expects($this->once())->method('getBaseStdLink')->will($this->returnValue("testStdUrl"));
 
-        $contentView = $this->getMock("Content", array("getContent"));
+        $contentView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array("getContent"));
         $contentView->expects($this->once())->method('getContent')->will($this->returnValue($contentMock));
 
         $this->assertEquals("testStdUrl", $contentView->getCanonicalUrl());
@@ -784,7 +784,7 @@ class ContentTest extends \OxidTestCase
      */
     public function testGetCanonicalUrlNoContent()
     {
-        $contentView = $this->getMock('Content', array('getContent'));
+        $contentView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array('getContent'));
         $contentView->expects($this->once())->method('getContent')->will($this->returnValue(null));
         $this->assertSame('', $contentView->getCanonicalUrl());
     }

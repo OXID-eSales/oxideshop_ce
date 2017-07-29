@@ -16,20 +16,39 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Setup;
+namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
+
+use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
+use OxidEsales\DoctrineMigrationWrapper\Migrations;
 
 /**
  * Setup utilities class
  */
 class Utilities extends Core
 {
+    const CONFIG_FILE_NAME = 'config.inc.php';
+
+    const DEMODATA_PACKAGE_NAME = 'oxideshop-demodata-%s';
+
+    const DEMODATA_PACKAGE_SOURCE_DIRECTORY = 'src';
+    const COMPOSER_VENDOR_BIN_DIRECTORY = 'bin';
+
+    const DEMODATA_SQL_FILENAME = 'demodata.sql';
+    const LICENSE_TEXT_FILENAME = "lizenz.txt";
+
+    const DATABASE_VIEW_REGENERATION_BINARY_FILENAME = 'oe-eshop-db_views_generate';
+    const DATABASE_MIGRATION_BINARY_FILENAME = 'oe-eshop-doctrine_migration';
+    const DEMODATA_ASSETS_INSTALL_BINARY_FILENAME = 'oe-eshop-demodata_install';
+
     /**
      * Unable to find file
      *
@@ -58,46 +77,6 @@ class Utilities extends Core
      */
     protected $_sEmailTpl = "/^([-!#\$%&'*+.\/0-9=?A-Z^_`a-z{|}~\177])+@([-!#\$%&'*+\/0-9=?A-Z^_`a-z{|}~\177]+\\.)+[a-zA-Z]{2,6}\$/i";
 
-    /**
-     * Converts given data array from iso-8859-15 to utf-8
-     *
-     * @param array $aData data to convert
-     *
-     * @return array
-     */
-    public function convertToUtf8($aData)
-    {
-        if (is_array($aData)) {
-            $aKeys = array_keys($aData);
-            $aValues = array_values($aData);
-
-            //converting keys
-            if (count($aData) > 1) {
-                foreach ($aKeys as $sKeyIndex => $sKeyValue) {
-                    if (is_string($sKeyValue)) {
-                        $aKeys[$sKeyIndex] = iconv('iso-8859-15', 'utf-8', $sKeyValue);
-                    }
-                }
-
-                $aData = array_combine($aKeys, $aValues);
-
-                //converting values
-                foreach ($aData as $sKey => $sValue) {
-                    if (is_array($sValue)) {
-                        $this->convertToUtf8($sValue);
-                    }
-
-                    if (is_string($sValue)) {
-                        $aData[$sKey] = iconv('iso-8859-15', 'utf-8', $sValue);
-                    }
-                }
-            }
-        } else {
-            $aData = iconv('iso-8859-15', 'utf-8', $aData);
-        }
-
-        return $aData;
-    }
 
     /**
      * Generates unique id
@@ -157,7 +136,7 @@ class Utilities extends Core
     /**
      * Extracts install path
      *
-     * @param string $aPath path info array
+     * @param array $aPath path info array
      *
      * @return string
      */
@@ -210,17 +189,19 @@ class Utilities extends Core
     }
 
     /**
-     * Updates config.inc.php file contents
+     * Updates config.inc.php file contents.
      *
      * @param array $aParams paths parameters
      *
-     * @throws Exception exception is thrown is file cant be open for reading or can not be written
+     * @throws Exception File can't be found, opened for reading or written.
      */
     public function updateConfigFile($aParams)
     {
         $sConfPath = $aParams['sShopDir'] . "/config.inc.php";
 
         $oLang = $this->getInstance("Language");
+
+        $this->handleMissingConfigFileException($sConfPath);
 
         clearstatcache();
         @chmod($sConfPath, getDefaultFileMode());
@@ -250,14 +231,35 @@ class Utilities extends Core
     }
 
     /**
+     * Throws an exception in case config file is missing.
+     *
+     * This is necessary to suppress PHP warnings during Setup. With the help of exception this problem is
+     * caught and displayed properly.
+     *
+     * @param string $pathToConfigFile File path to eShop configuration file.
+     *
+     * @throws Exception Config file is missing.
+     */
+    private function handleMissingConfigFileException($pathToConfigFile)
+    {
+        if (!file_exists($pathToConfigFile)) {
+            $language = $this->getLanguageInstance();
+
+            throw new Exception(sprintf($language->getText('ERROR_COULD_NOT_OPEN_CONFIG_FILE'), $pathToConfigFile));
+        }
+    }
+
+    /**
      * Updates default htaccess file with user defined params
      *
      * @param array  $aParams    various setup parameters
      * @param string $sSubFolder in case you need to update non default, but e.g. admin file, you must add its folder
+     *
+     * @throws Exception when .htaccess file is not accessible/readable.
      */
     public function updateHtaccessFile($aParams, $sSubFolder = "")
     {
-        /** @var Language $oLang */
+        /** @var \OxidEsales\EshopCommunity\Setup\Language $oLang */
         $oLang = $this->getInstance("Language");
 
         // preparing rewrite base param
@@ -296,6 +298,27 @@ class Utilities extends Core
             // error ? strange !?
             throw new Exception(sprintf($oLang->getText('ERROR_COULD_NOT_WRITE_TO_FILE'), $sHtaccessPath), Utilities::ERROR_COULD_NOT_WRITE_TO_FILE);
         }
+    }
+
+    /**
+     * Returns true if htaccess file can be updated by setup process.
+     *
+     * Functionality is tested via:
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testInstallShopCantContinueDueToHtaccessProblem`
+     *
+     * @return bool
+     */
+    public function canHtaccessFileBeUpdated()
+    {
+        try {
+            $defaultPathParameters = $this->getDefaultPathParams();
+            $defaultPathParameters['sBaseUrlPath'] = $this->extractRewriteBase($defaultPathParameters['sShopURL']);
+            $this->updateHtaccessFile($defaultPathParameters);
+        } catch (Exception $exception) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -429,5 +452,217 @@ class Utilities extends Core
     public function isValidEmail($sEmail)
     {
         return preg_match($this->_sEmailTpl, $sEmail) != 0;
+    }
+
+    /**
+     * Calls external database views regeneration command.
+     */
+    public function executeExternalRegenerateViewsCommand()
+    {
+        $regenerateViewsCommand = $this->formCommandToVendor(self::DATABASE_VIEW_REGENERATION_BINARY_FILENAME);
+        $this->executeShellCommand($regenerateViewsCommand);
+    }
+
+    /**
+     * Calls external database migration command.
+     */
+    public function executeExternalDatabaseMigrationCommand()
+    {
+        $databaseMigrateCommand = $this->formCommandToVendor(self::DATABASE_MIGRATION_BINARY_FILENAME) . ' ' . Migrations::MIGRATE_COMMAND;
+        $this->executeShellCommand($databaseMigrateCommand);
+    }
+
+    /**
+     * Calls external demodata assets install command.
+     */
+    public function executeExternalDemodataAssetsInstallCommand()
+    {
+        $installDemoDataCommand = $this->formCommandToVendor(self::DEMODATA_ASSETS_INSTALL_BINARY_FILENAME);
+        $this->executeShellCommand($installDemoDataCommand);
+    }
+
+    /**
+     * Execute shell command and capture output when return code is non zero.
+     *
+     * @param string $command Command to execute.
+     *
+     * @throws CommandExecutionFailedException When execution returns non zero return code.
+     */
+    private function executeShellCommand($command)
+    {
+        $commandWithStdErrRedirection = $command . " 2>&1";
+
+        exec($commandWithStdErrRedirection, $outputLines, $returnCode);
+
+        if (($returnCode !== 0)) {
+            $exception = new CommandExecutionFailedException($command);
+            $exception->setReturnCode($returnCode);
+            $exception->setCommandOutput($returnCode !== 127 ? $outputLines : ['Impossible to execute the command.']);
+
+            throw $exception;
+        }
+    }
+
+    /**
+     * Return path to composer vendor directory.
+     *
+     * @return string
+     */
+    private function getVendorDirectory()
+    {
+        return VENDOR_PATH;
+    }
+
+    /**
+     * Return path to composer vendor bin directory.
+     *
+     * @return string
+     */
+    private function getVendorBinaryDirectory()
+    {
+        return $this->getVendorDirectory() . self::COMPOSER_VENDOR_BIN_DIRECTORY;
+    }
+
+    /**
+     * Check if database is up and running
+     *
+     * @param  Database $database
+     * @return bool
+     */
+    public function checkDbExists($database)
+    {
+        try {
+            $databaseExists = true;
+            $database->execSql("select * from oxconfig");
+        } catch (Exception $exception) {
+            $databaseExists = false;
+        }
+
+        return $databaseExists;
+    }
+
+    /**
+     * Get specific edition sql directory
+     *
+     * @param null|string $edition
+     * @return string
+     */
+    public function getSqlDirectory($edition = null)
+    {
+        $editionPathSelector = $this->getEditionPathProvider($edition);
+        return $editionPathSelector->getDatabaseSqlDirectory();
+    }
+
+    /**
+     * Get setup directory
+     *
+     * @return string
+     */
+    public function getSetupDirectory()
+    {
+        $editionPathSelector = $this->getEditionPathProvider();
+        return $editionPathSelector->getSetupDirectory();
+    }
+
+    /**
+     * @param string $edition
+     * @return EditionPathProvider
+     */
+    private function getEditionPathProvider($edition = null)
+    {
+        $editionPathSelector = new EditionRootPathProvider(new EditionSelector($edition));
+        return new EditionPathProvider($editionPathSelector);
+    }
+
+    /**
+     * Check if demodata package is installed.
+     *
+     * @return bool
+     */
+    public function isDemodataPrepared()
+    {
+        $demodataSqlFile = $this->getActiveEditionDemodataPackageSqlFilePath();
+        return file_exists($demodataSqlFile) ? true : false;
+    }
+
+    /**
+     * Return full path to `demodata.sql` file of demodata package based on current eShop edition.
+     *
+     * @return string
+     */
+    public function getActiveEditionDemodataPackageSqlFilePath()
+    {
+        return implode(
+            DIRECTORY_SEPARATOR,
+            [
+                $this->getActiveEditionDemodataPackagePath(),
+                self::DEMODATA_PACKAGE_SOURCE_DIRECTORY,
+                self::DEMODATA_SQL_FILENAME,
+            ]
+        );
+    }
+
+    /**
+     * Return full path to demodata package based on current eShop edition.
+     *
+     * @return string
+     */
+    public function getActiveEditionDemodataPackagePath()
+    {
+        $editionSelector = new EditionSelector();
+
+        return $this->getUtilitiesInstance()->getVendorDirectory()
+            . EditionRootPathProvider::EDITIONS_DIRECTORY
+            . DIRECTORY_SEPARATOR
+            . sprintf(self::DEMODATA_PACKAGE_NAME, strtolower($editionSelector->getEdition()));
+    }
+
+    /**
+     * Returns the contents of license agreement in requested language.
+     *
+     * @param string $languageId
+     * @return string
+     */
+    public function getLicenseContent($languageId)
+    {
+        $licensePathElements = [
+            $this->getSetupDirectory(),
+            ucfirst($languageId),
+            self::LICENSE_TEXT_FILENAME
+        ];
+        $licensePath = implode(DIRECTORY_SEPARATOR, $licensePathElements);
+
+        $licenseContent = $this->getFileContents($licensePath);
+
+        return $licenseContent;
+    }
+
+    /**
+     * Removes any ANSI control codes from command output.
+     *
+     * @param string $outputWithAnsiControlCodes
+     * @return string
+     */
+    public static function stripAnsiControlCodes($outputWithAnsiControlCodes)
+    {
+        return preg_replace('/\x1b(\[|\(|\))[;?0-9]*[0-9A-Za-z]/', "", $outputWithAnsiControlCodes);
+    }
+
+    /**
+     * Form command to script file in Vendor directory.
+     *
+     * @param string $command
+     *
+     * @return string
+     */
+    private function formCommandToVendor($command)
+    {
+        $migrateCommand = implode(
+            DIRECTORY_SEPARATOR,
+            [$this->getVendorBinaryDirectory(), $command]
+        );
+        $migrateCommand = '"' . $migrateCommand . '"';
+
+        return $migrateCommand;
     }
 }

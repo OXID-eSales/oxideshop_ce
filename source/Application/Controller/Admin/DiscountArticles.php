@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 
@@ -30,7 +30,7 @@ use oxRegistry;
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling -> Main.
  */
-class DiscountArticles extends \oxAdminDetails
+class DiscountArticles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -46,7 +46,7 @@ class DiscountArticles extends \oxAdminDetails
         $soxId = $this->getEditObjectId();
         if (isset($soxId) && $soxId != '-1') {
             // load object
-            $oDiscount = oxNew('oxdiscount');
+            $oDiscount = oxNew(\OxidEsales\Eshop\Application\Model\Discount::class);
             $oDiscount->load($soxId);
             $this->_aViewData['edit'] = $oDiscount;
 
@@ -59,14 +59,14 @@ class DiscountArticles extends \oxAdminDetails
             $this->_createCategoryTree("artcattree");
         }
 
-        $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
+        $iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc");
         if ($iAoc == 1) {
-            $oDiscountArticlesAjax = oxNew('discount_articles_ajax');
+            $oDiscountArticlesAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DiscountArticlesAjax::class);
             $this->_aViewData['oxajax'] = $oDiscountArticlesAjax->getColumns();
 
             return "popups/discount_articles.tpl";
         } elseif ($iAoc == 2) {
-            $oDiscountCategoriesAjax = oxNew('discount_categories_ajax');
+            $oDiscountCategoriesAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DiscountCategoriesAjax::class);
             $this->_aViewData['oxajax'] = $oDiscountCategoriesAjax->getColumns();
 
             return "popups/discount_categories.tpl";

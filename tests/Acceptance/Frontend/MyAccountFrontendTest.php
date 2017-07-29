@@ -20,9 +20,9 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Tests\Acceptance\Frontend;
+namespace OxidEsales\EshopCommunity\Tests\Acceptance\Frontend;
 
-use OxidEsales\Eshop\Tests\Acceptance\FrontendTestCase;
+use OxidEsales\EshopCommunity\Tests\Acceptance\FrontendTestCase;
 
 /** My account related tests */
 class MyAccountFrontendTest extends FrontendTestCase
@@ -506,7 +506,7 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->clickAndWAit("//ul[@id='services']/li[5]/a");
         $this->type("amountToBasket_noticelistProductList_1", "2");
         $this->clickAndWait("toBasket_noticelistProductList_1");
-        $this->assertEquals("2", $this->getText("//div[@id='miniBasket']/span"));
+        $this->waitForElementText("2", "//div[@id='miniBasket']/span");
 
         $this->clickAndWait("//button[@triggerform='remove_tonoticelistnoticelistProductList_1']");
         $this->assertEquals("%PAGE_TITLE_ACCOUNT_NOTICELIST%", $this->getText("//h1"));
@@ -660,7 +660,7 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->clickAndWAit("//ul[@id='services']/li[6]/a");
         $this->type("amountToBasket_wishlistProductList_1", "2");
         $this->clickAndWait("toBasket_wishlistProductList_1");
-        $this->assertEquals("2", $this->getText("//div[@id='miniBasket']/span"));
+        $this->waitForElementText("2", "//div[@id='miniBasket']/span");
         $this->clickAndWait("//button[@triggerform='remove_towishlistwishlistProductList_1']");
         $this->assertTextPresent("%GIFT_REGISTRY_EMPTY%");
 
@@ -715,7 +715,7 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("wishlistProductList_1"));
         $this->type("amountToBasket_wishlistProductList_1", "2");
         $this->clickAndWait("toBasket_wishlistProductList_1");
-        $this->assertEquals("2", $this->getText("//div[@id='miniBasket']/span"));
+        $this->waitForElementText("2", "//div[@id='miniBasket']/span");
 
         //deleting gift registry
         $this->clickAndWait("link=%LOGOUT%");

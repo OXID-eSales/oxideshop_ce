@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core\Smarty;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Smarty;
 
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Registry;
 use oxRegistry;
 use \stdClass;
 use \oxPrice;
@@ -162,7 +162,7 @@ class PluginSmartyOxPriceTest extends \OxidTestCase
         $oEmptyCurrency = new stdClass();
 
         return array(
-            array('', $oEURCurrency, ''),
+            array('', $oEURCurrency, '0,00 EUR'),
             array(null, $oUSDCurrency, ''),
             array(0, $oEURCurrency, '0,00 EUR'),
             array(0, $oEURCurrencyZero, '0 EUR'),

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 
@@ -29,7 +29,7 @@ use oxRegistry;
  * If chosen article has more pictures there is ability to create
  * gallery of pictures.
  */
-class MoreDetailsController extends \Details
+class MoreDetailsController extends \OxidEsales\Eshop\Application\Controller\ArticleDetailsController
 {
 
     /**
@@ -93,7 +93,7 @@ class MoreDetailsController extends \Details
             $aPicGallery = $this->getProduct()->getPictureGallery();
 
             if ($aPicGallery['ZoomPic']) {
-                $sActPicId = oxRegistry::getConfig()->getRequestParameter('actpicid');
+                $sActPicId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('actpicid');
                 $this->_sActPicId = $sActPicId ? $sActPicId : 1;
             }
         }
@@ -131,8 +131,8 @@ class MoreDetailsController extends \Details
     public function getProduct()
     {
         if ($this->_oProduct === null) {
-            $oArticle = oxNew('oxArticle');
-            $oArticle->load(oxRegistry::getConfig()->getRequestParameter('anid'));
+            $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
+            $oArticle->load(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('anid'));
             $this->_oProduct = $oArticle;
         }
 

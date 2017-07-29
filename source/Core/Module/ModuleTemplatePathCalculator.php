@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Module;
+namespace OxidEsales\EshopCommunity\Core\Module;
 
 use oxException;
 use OxidEsales\Eshop\Core\FileSystem\FileSystem;
@@ -38,10 +38,10 @@ class ModuleTemplatePathCalculator
     /** @var string Path to modules directory inside the shop. */
     private $modulesPath = '';
 
-    /** @var oxTheme */
+    /** @var \OxidEsales\Eshop\Core\Theme */
     private $theme;
 
-    /** @var oxModuleList */
+    /** @var \OxidEsales\Eshop\Core\Module\ModuleList */
     private $moduleList;
 
     /** @var FileSystem */
@@ -50,17 +50,17 @@ class ModuleTemplatePathCalculator
     /**
      * Sets required dependencies
      *
-     * @param oxModuleList $moduleList
-     * @param oxTheme     $theme
-     * @param FileSystem   $fileSystem
+     * @param \OxidEsales\Eshop\Core\Module\ModuleList $moduleList
+     * @param \OxidEsales\Eshop\Core\Theme             $theme
+     * @param FileSystem                               $fileSystem
      */
     public function __construct($moduleList = null, $theme = null, $fileSystem = null)
     {
         if (is_null($moduleList)) {
-            $moduleList = oxNew('oxModuleList');
+            $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
         }
         if (is_null($theme)) {
-            $theme = oxNew('oxTheme');
+            $theme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
         }
         if (is_null($fileSystem)) {
             $fileSystem = oxNew(FileSystem::class);
@@ -107,18 +107,15 @@ class ModuleTemplatePathCalculator
 
         if (is_array($moduleTemplates) && is_array($activeModules)) {
             foreach ($moduleTemplates as $sModuleId => $aTemplates) {
-
                 // check if module is active
                 if (isset($activeModules[$sModuleId])) {
                     $foundTemplate = null;
                     $fileSystem = $this->getFileSystem();
 
                     // check if template for our active themes exists
-                    if ($activeThemes = $theme->getActiveThemesList()) {
-                        foreach ($activeThemes as $oneActiveThemeId) {
-                            if (isset($aTemplates[$oneActiveThemeId], $aTemplates[$oneActiveThemeId][$templateName])) {
-                                $foundTemplate = $fileSystem->combinePaths($this->getModulesPath(), $aTemplates[$oneActiveThemeId][$templateName]);
-                            }
+                    foreach ((array) $theme->getActiveThemesList() as $oneActiveThemeId) {
+                        if (isset($aTemplates[$oneActiveThemeId], $aTemplates[$oneActiveThemeId][$templateName])) {
+                            $foundTemplate = $fileSystem->combinePaths($this->getModulesPath(), $aTemplates[$oneActiveThemeId][$templateName]);
                         }
                     }
 
@@ -147,7 +144,7 @@ class ModuleTemplatePathCalculator
     }
 
     /**
-     * @return oxTheme
+     * @return \OxidEsales\Eshop\Core\Theme
      */
     protected function getTheme()
     {
@@ -155,7 +152,7 @@ class ModuleTemplatePathCalculator
     }
 
     /**
-     * @return oxModuleList
+     * @return \OxidEsales\Eshop\Core\Module\ModuleList
      */
     protected function getModuleList()
     {

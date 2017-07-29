@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxRegistry;
 
@@ -59,7 +59,7 @@ class RequiredAddressFields
     {
         $this->setRequiredFields($this->_aDefaultRequiredFields);
 
-        $aRequiredFields = oxRegistry::getConfig()->getConfigParam('aMustFillFields');
+        $aRequiredFields = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aMustFillFields');
         if (is_array($aRequiredFields)) {
             $this->setRequiredFields($aRequiredFields);
         }

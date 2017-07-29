@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core\Smarty;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Smarty;
 
 use \Smarty;
 use \oxRegistry;
@@ -36,11 +36,11 @@ class PluginSmartyoxIncludeWidgetTest extends \OxidTestCase
 {
     public function testIncludeWidget()
     {
-        $oReverseProxyBackend = $this->getMock("oxReverseProxyBackend", array("isActive"), array(), '', false);
+        $oReverseProxyBackend = $this->getMock(\OxidEsales\Eshop\Core\Cache\ReverseProxy\ReverseProxyBackend::class, array("isActive"), array(), '', false);
         $oReverseProxyBackend->expects($this->any())->method("isActive")->will($this->returnValue(false));
-        oxRegistry::set("oxReverseProxyBackend", $oReverseProxyBackend);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Cache\ReverseProxy\ReverseProxyBackend::class, $oReverseProxyBackend);
 
-        $oShopControl = $this->getMock("oxWidgetControl", array("start"), array(), '', false);
+        $oShopControl = $this->getMock(\OxidEsales\Eshop\Core\WidgetControl::class, array("start"), array(), '', false);
         $oShopControl->expects($this->any())->method("start")->will($this->returnValue('html'));
         oxTestModules::addModuleObject('oxWidgetControl', $oShopControl);
 

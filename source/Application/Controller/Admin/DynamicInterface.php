@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin dyn manager.
@@ -29,7 +29,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
  *
  * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
  */
-class DynamicInterface extends \oxAdminDetails
+class DynamicInterface extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**

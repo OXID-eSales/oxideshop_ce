@@ -19,11 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
+use OxidEsales\Eshop\Core\OnlineServerEmailBuilder;
 use \oxOnlineModuleVersionNotifierCaller;
 use \oxSimpleXml;
 use \stdClass;
+use \oxTestModules;
 
 /**
  * Class Unit_Core_oxOnlineModuleVersionNotifierCallerTest
@@ -33,13 +35,14 @@ use \stdClass;
  */
 class OnlineModuleVersionNotifierCallerTest extends \OxidTestCase
 {
-
     public function testGetWebServiceUrl()
     {
+        $this->stubExceptionToNotWriteToLog();
+
         /** @var oxCurl $oCurl */
-        $oCurl = $this->getMock('oxCurl', array('execute'));
-        /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
-        $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder');
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute'));
+        /** @var OnlineServerEmailBuilder $oEmailBuilder */
+        $oEmailBuilder = $this->getMock(OnlineServerEmailBuilder::class);
         $oNotifier = new oxOnlineModuleVersionNotifierCaller($oCurl, $oEmailBuilder, new oxSimpleXml());
         $oNotifier->call($this->_getRequest());
 
@@ -48,15 +51,17 @@ class OnlineModuleVersionNotifierCallerTest extends \OxidTestCase
 
     public function testDoRequestAndCheckDocumentName()
     {
+        $this->stubExceptionToNotWriteToLog();
+
         $this->getConfig()->setConfigParam('sClusterId', 'generated_unique_cluster_id');
 
-        $oCurl = $this->getMock('oxCurl', array('execute', 'setParameters'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute', 'setParameters'));
         $oCurl->expects($this->once())->method('execute');
         $oCurl->expects($this->once())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $this->_getExpectedXml())));
         /** @var oxCurl $oCurl */
 
-        /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
-        $oEmailBuilder = $this->getMock('oxOnlineServerEmailBuilder');
+        /** @var OnlineServerEmailBuilder $oEmailBuilder */
+        $oEmailBuilder = $this->getMock(OnlineServerEmailBuilder::class);
 
         $oNotifier = new oxOnlineModuleVersionNotifierCaller($oCurl, $oEmailBuilder, new oxSimpleXml());
         $oNotifier->doRequest($this->_getRequest());

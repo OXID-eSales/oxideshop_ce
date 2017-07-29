@@ -42,4 +42,4 @@
 require_once __DIR__ . "/bootstrap.php";
 
 // rendering requested image
-OxidEsales\Eshop\Core\DynamicImageGenerator::getInstance()->outputImage();
+OxidEsales\EshopCommunity\Core\DynamicImageGenerator::getInstance()->outputImage();

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
 
@@ -87,7 +87,6 @@ class FileCollector
         }
 
         if (is_file($this->_sBaseDirectory . $sFile)) {
-
             $this->_aFiles[] = $sFile;
 
             return true;
@@ -126,7 +125,6 @@ class FileCollector
         $handle = opendir($this->_sBaseDirectory . $sFolder);
 
         while ($sFile = readdir($handle)) {
-
             if ($sFile != "." && $sFile != "..") {
                 if (is_dir($this->_sBaseDirectory . $sFolder . $sFile)) {
                     if ($blRecursive) {
@@ -142,7 +140,6 @@ class FileCollector
                     if ((!empty($aExtensions) && is_array($aExtensions) && in_array($sExt, $aExtensions)) ||
                         (empty($aExtensions))
                     ) {
-
                         $this->addFile($sFolder . $sFile);
                     }
                 }

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxOpenSSLFunctionalityChecker;
 
@@ -32,16 +32,16 @@ class PasswordSaltGenerator
 {
 
     /**
-     * @var oxOpenSSLFunctionalityChecker
+     * @var \OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker
      */
     private $_openSSLFunctionalityChecker;
 
     /**
      * Sets dependencies.
      *
-     * @param oxOpenSSLFunctionalityChecker $openSSLFunctionalityChecker
+     * @param \OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker $openSSLFunctionalityChecker
      */
-    public function __construct(oxOpenSSLFunctionalityChecker $openSSLFunctionalityChecker)
+    public function __construct(\OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker $openSSLFunctionalityChecker)
     {
         $this->_openSSLFunctionalityChecker = $openSSLFunctionalityChecker;
     }
@@ -66,7 +66,7 @@ class PasswordSaltGenerator
     /**
      * Gets open SSL functionality checker.
      *
-     * @return oxOpenSSLFunctionalityChecker
+     * @return \OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker
      */
     protected function _getOpenSSLFunctionalityChecker()
     {

@@ -409,7 +409,7 @@ window.onload = function ()
           <tr>
             <td class="edittext"></td>
             <td class="edittext"><br>
-              <input type="submit" class="edittext" id="oLockButton" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'"" [{if $oxid==-1}]disabled[{/if}] [{$readonly}]>
+              <input type="submit" class="edittext" id="oLockButton" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'" [{if $oxid==-1}]disabled[{/if}] [{$readonly}]>
             </td>
           </tr>
         </table>

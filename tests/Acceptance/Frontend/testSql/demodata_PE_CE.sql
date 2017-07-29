@@ -1,8 +1,5 @@
 SET @@session.sql_mode = '';
 
-# Activate Azure theme
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x4db70f6d1a WHERE `OXVARNAME` = 'sTheme';
-
 # Activate en and de languages
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x4dba832f744c5786a371d9df33778f956ef30fb1e8bb85d97b3b5de43e6bad688dfc6f63a8af34b33290cdd6fc889c8e77cfee0e8a17ade6b94130fda30d062d03e35d8d1bda1c2dc4dd5281fcb1c9538cf114050a3e7118e16151bfe94f5a0706d2eb3d9ff8b4a24f88963788f5dd1c33c573a1ebe3f5b06c072c6a373aaecb11755d907b50a79bbac613054871af686a7d3dbe0b6e1a3e292a109e2f5bc31bcd26ebbe42dac8c9cac3fa53c6fae3c8c7c3c113a4f1a8823d13c78c27dc WHERE `OXVARNAME` = 'aLanguageParams';
 
@@ -12,8 +9,8 @@ UPDATE `oxconfig` SET `OXVARVALUE` = 0x07 WHERE `OXVARNAME` = 'sDefaultLang';
 # Activate all coutries
 UPDATE `oxcountry` SET `OXACTIVE` = 1 WHERE `OXISOALPHA2` in ('DE', 'AT', 'CH', 'GB', 'US');
 
-# Setting shop version to 5.0.0 so that connector could be downloaded
-UPDATE `oxshops` SET `OXVERSION` = '5.0.0';
+# Setting shop version to 5.3.0 so that connector could be downloaded
+UPDATE `oxshops` SET `OXVERSION` = '5.3.0';
 
 #set country, username, password for default user
 UPDATE oxuser
@@ -174,7 +171,25 @@ REPLACE INTO `oxnewssubscribed` (`OXID`,                       `OXSHOPID`,   `OX
                                ('aad47a859fa2fd5d2.73169490', 1, 'testuser',  'Mr',    'UserName',  'UserSurname',  'example_test@oxid-esales.dev', 0,          '2008-02-05 14:43:38'),
                                ('aad47a85b24b7fbc4.83843468', 1, 'testusera', 'Mrs',   'UserAName', 'UserASurname', 'example0a@oxid-esales.dev',    0,          '2008-02-05 14:48:36'),
                                ('aad47a862e176ec58.80688736', 1, 'testuserb', 'Mr',    'UserBName', 'UserBSurname', 'example0b@oxid-esales.dev',    0,          '2008-02-05 15:21:37'),
-                               ('aad47a86412506061.78359483', 1, 'testuserc', 'Mrs',   'UserCName', 'UserCSurname', 'example0c@oxid-esales.dev',    0,          '2008-02-05 15:26:42');
+                               ('aad47a86412506061.78359483', 1, 'testuserc', 'Mrs',   'UserCName', 'UserCSurname', 'example0c@oxid-esales.dev',    0,          '2008-02-05 15:26:42'),
+                               ('15947a85ab4658ce7.11111111', 1, 'testuser1',  'Mr',   'UserName',  'UserSurname',  'example_test@oxid-esales.dev', 0,          '2008-02-05 14:46:44'),
+                               ('15947a85ab4658ce7.22222222', 1, 'testuser2',  'Mr',   'UserName',  'UserSurname',  'example_test@oxid-esales.dev', 0,          '2008-02-05 14:46:44'),
+
+                               ('15947a85ab4658ce7.33333333', 1, 'testuser3',  'Mr',   'UserName',  'UserSurname',  'example_test@oxid-esales.dev', 0,          '2008-02-05 14:46:44'),
+
+                               ('15947a85ab4658ce7.44444444', 1, 'testuser3',  'Mr',   'UserName',  'UserSurname',  'example_test@oxid-esales.dev', 0,          '2008-02-05 14:46:44'),
+
+                               ('15947a85ab4658ce7.55555555', 1, 'testuser5',  'Mr',   'UserName',  'UserSurname',  'example_test@oxid-esales.dev', 0,          '2008-02-05 14:46:44'),
+
+                               ('15947a85ab4658ce7.66666666', 1, 'testuser6',  'Mr',   'UserName',  'UserSurname',  'example_test@oxid-esales.dev', 0,          '2008-02-05 14:46:44'),
+
+                               ('15947a85ab4658ce7.77777777', 1, 'testuser7',  'Mr',   'UserName',  'UserSurname',  'example_test@oxid-esales.dev', 0,          '2008-02-05 14:46:44'),
+
+                               ('15947a85ab4658ce7.88888888', 1, 'testuser8',  'Mr',   'UserName',  'UserSurname',  'example_test@oxid-esales.dev', 0,          '2008-02-05 14:46:44'),
+
+                               ('15947a85ab4658ce7.99999999', 1, 'testuser9',  'Mr',   'UserName',  'UserSurname',  'example_test@oxid-esales.dev', 0,          '2008-02-05 14:46:44'),
+
+                               ('15947a85ab4658ce7.11111110', 1, 'testuser10', 'Mr',   'UserName',  'UserSurname',  'example_test@oxid-esales.dev', 0,          '2008-02-05 14:46:44');
 
 #Users demodata
 REPLACE INTO `oxuser` (`OXID`,     `OXACTIVE`, `OXRIGHTS`, `OXSHOPID`,   `OXUSERNAME`,         `OXPASSWORD`,                       `OXPASSSALT`,        `OXCUSTNR`, `OXUSTID`, `OXCOMPANY`,          `OXFNAME`,        `OXLNAME`,           `OXSTREET`,        `OXSTREETNR`, `OXADDINFO`,                   `OXCITY`,            `OXCOUNTRYID`,                `OXZIP`, `OXFON`,        `OXFAX`,       `OXSAL`, `OXBONI`, `OXCREATE`,            `OXREGISTER`,          `OXPRIVFON`,   `OXMOBFON`,    `OXBIRTHDATE`) VALUES
@@ -387,7 +402,6 @@ REPLACE INTO `oxobject2discount` (`OXID`,                        `OXDISCOUNTID`,
 
 #updating oxconfig settings
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x07a1       WHERE `OXVARNAME` = 'dDefaultVAT';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0xde         WHERE `OXVARNAME` = 'iNewBasketItemMessage';
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x93ea1218   WHERE `OXVARNAME` = 'bl_perfUseSelectlistPrice';
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x7900fdf51e WHERE `OXVARNAME` = 'bl_perfShowActionCatArticleCnt';
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x93ea1218   WHERE `OXVARNAME` = 'blOtherCountryOrder';
@@ -395,26 +409,24 @@ UPDATE `oxconfig` SET `OXVARVALUE` = 0x7900fdf51e WHERE `OXVARNAME` = 'blCheckTe
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x93ea1218   WHERE `OXVARNAME` = 'blDisableNavBars';
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x93ea1218   WHERE `OXVARNAME` = 'blAllowUnevenAmounts';
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x07         WHERE `OXVARNAME` = 'blConfirmAGB';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0xb0         WHERE `OXVARNAME` = 'iTopNaviCatCount' AND `OXMODULE` = 'theme:azure';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x4dba222b70e349f0c9d1aba6133981af1e8d79724d7309a19dd3eed099418943829510e114c4f6ffcb2543f5856ec4fea325d58b96e406decb977395c57d7cc79eec7f9f8dd6e30e2f68d198bd9d079dbe8b4f WHERE `OXVARNAME` = 'aNrofCatArticles';
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x4dbace29724a51b6af7d09aac117301142e91c3c5b7eed9a850f85c1e3d58739aa9ea92523f05320a95060d60d57fbb027bad88efdaa0b928ebcd6aacf58084d31dd6ed5e718b833f1079b3805d28203f284492955c82cea3405879ea7588ec610ccde56acede495 WHERE `OXVARNAME` = 'aInterfaceProfiles';
 DELETE FROM `oxconfig` WHERE `OXVARNAME`='blBasketExcludeEnabled';
-REPLACE INTO `oxconfig` (`OXID`, `OXSHOPID`,   `OXVARNAME`,                     `OXVARTYPE`, `OXVARVALUE`) VALUES
-                       ('fb54', 1, 'perf_LoadFullVariantsInLists',  'bool',       0x7900fdf51e),
-                       ('fh90', 1, 'bl_perfLoadSelectListsInAList', 'bool',       0x93ea1218),
-                       ('a910', 1, 'blLoadSelectBoxAlways',         'bool',       0x93ea1218),
-                       ('4742', 1, 'blPerfNoBasketSaving',          'bool',       0x93ea1218),
-                       ('d084', 1, 'iMinOrderPrice',                'str',        0xfba4),
-                       ('33bd', 1, 'blOverrideZeroABCPrices',       'bool',       0x93ea1218),
-                       ('3c9f', 1, 'blShowOrderButtonOnTop',        'bool',       0x93ea1218),
-                       ('24d5', 1, 'bl_rssBargain',                 'bool',       0x07),
-                       ('2bf5', 1, 'bl_rssRecommLists',             'bool',       0x07),
-                       ('64i5', 1, 'bl_rssRecommListArts',          'bool',       0x07),
-                       ('c5iu', 1, 'blVariantParentBuyable',        'bool',       ''),
-                       ('czzz', 1, 'blShowVariantReviews',          'bool',       ''),
-                       ('a6ba', 1, 'blOrderDisWithoutReg',          'bool',       ''),
-                       ('a85z', 1, 'blShowVATForWrapping',          'bool',       ''),
-                       ('asdf', 1, 'blBasketExcludeEnabled',        'str',        '');
+REPLACE INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`,   `OXVARNAME`,                     `OXVARTYPE`, `OXVARVALUE`) VALUES
+                       ('fb54', 1, '', 'perf_LoadFullVariantsInLists',  'bool',       0x7900fdf51e),
+                       ('fh90', 1, '', 'bl_perfLoadSelectListsInAList', 'bool',       0x93ea1218),
+                       ('a910', 1, '', 'blLoadSelectBoxAlways',         'bool',       0x93ea1218),
+                       ('4742', 1, '', 'blPerfNoBasketSaving',          'bool',       0x93ea1218),
+                       ('d084', 1, '', 'iMinOrderPrice',                'str',        0xfba4),
+                       ('33bd', 1, '', 'blOverrideZeroABCPrices',       'bool',       0x93ea1218),
+                       ('3c9f', 1, '', 'blShowOrderButtonOnTop',        'bool',       0x93ea1218),
+                       ('24d5', 1, '', 'bl_rssBargain',                 'bool',       0x07),
+                       ('2bf5', 1, '', 'bl_rssRecommLists',             'bool',       0x07),
+                       ('64i5', 1, '', 'bl_rssRecommListArts',          'bool',       0x07),
+                       ('c5iu', 1, '', 'blVariantParentBuyable',        'bool',       ''),
+                       ('czzz', 1, '', 'blShowVariantReviews',          'bool',       ''),
+                       ('a6ba', 1, '', 'blOrderDisWithoutReg',          'bool',       ''),
+                       ('a85z', 1, '', 'blShowVATForWrapping',          'bool',       ''),
+                       ('asdf', 1, '', 'blBasketExcludeEnabled',        'str',        '');
 
 #review demodata
 REPLACE INTO `oxreviews` (`OXID`,       `OXACTIVE`, `OXOBJECTID`, `OXTYPE`,    `OXTEXT`,                           `OXUSERID`, `OXCREATE`,           `OXLANG`, `OXRATING`) VALUES

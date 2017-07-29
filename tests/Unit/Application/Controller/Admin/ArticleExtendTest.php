@@ -19,13 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \Exception;
-use oxArticle;
-use oxCategoryList;
+use OxidEsales\EshopCommunity\Application\Model\Article;
+use OxidEsales\EshopCommunity\Application\Model\CategoryList;
 use \oxDb;
-use oxList;
+use OxidEsales\EshopCommunity\Core\Model\ListModel;
 use \oxRegistry;
 use \oxTestModules;
 
@@ -62,9 +62,9 @@ class ArticleExtendTest extends \OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof oxArticle);
-        $this->assertTrue($aViewData["artcattree"] instanceof oxCategoryList);
-        $this->assertTrue($aViewData["aMediaUrls"] instanceof oxList);
+        $this->assertTrue($aViewData["edit"] instanceof Article);
+        $this->assertTrue($aViewData["artcattree"] instanceof CategoryList);
+        $this->assertTrue($aViewData["aMediaUrls"] instanceof ListModel);
 
         $this->assertEquals('article_extend.tpl', $sTplName);
     }
@@ -145,12 +145,12 @@ class ArticleExtendTest extends \OxidTestCase
         $this->setRequestParameter("mediaUrl", "testUrl");
         $this->setRequestParameter("mediaDesc", "testDesc");
 
-        $oConfig = $this->getMock("oxConfig", array("getUploadedFile", "isDemoShop"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getUploadedFile", "isDemoShop"));
         $oConfig->expects($this->exactly(2))->method('getUploadedFile')->will($this->returnValue(array("name" => "testName")));
         $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(false));
 
         // testing..
-        $oView = $this->getMock("Article_Extend", array("getConfig", "resetContentCache"), array(), '', false);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleExtend::class, array("getConfig", "resetContentCache"), array(), '', false);
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $oView->expects($this->any())->method('resetContentCache');
         $this->assertEquals("handleUploadedFile", $oView->save());
@@ -171,12 +171,12 @@ class ArticleExtendTest extends \OxidTestCase
         $this->setRequestParameter("mediaUrl", "testUrl");
         $this->setRequestParameter("mediaDesc", "testDesc");
 
-        $oConfig = $this->getMock("oxConfig", array("getUploadedFile", "isDemoShop"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getUploadedFile", "isDemoShop"));
         $oConfig->expects($this->exactly(2))->method('getUploadedFile')->will($this->returnValue(array("name" => "testName")));
         $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(false));
 
         // testing..
-        $oView = $this->getMock("Article_Extend", array("getConfig", "resetContentCache"), array(), '', false);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleExtend::class, array("getConfig", "resetContentCache"), array(), '', false);
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $oView->expects($this->any())->method('resetContentCache');
 
@@ -199,7 +199,7 @@ class ArticleExtendTest extends \OxidTestCase
      */
     public function testSaveDemoShopFileUpload()
     {
-        $oConfig = $this->getMock("oxConfig", array("getUploadedFile", "isDemoShop"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getUploadedFile", "isDemoShop"));
         $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(true));
         $oConfig->expects($this->exactly(2))->method('getUploadedFile')->will(
             $this->onConsecutiveCalls(
@@ -207,7 +207,7 @@ class ArticleExtendTest extends \OxidTestCase
             )
         );
         // testing..
-        $oView = $this->getMock("Article_Extend", array("getConfig", "resetContentCache"), array(), '', false);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleExtend::class, array("getConfig", "resetContentCache"), array(), '', false);
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $oView->expects($this->any())->method('resetContentCache');
         $oView->save();

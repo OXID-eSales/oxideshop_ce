@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Returns template, that arranges two other templates ("vendor_list.tpl"
  * and "vendor_main.tpl") to frame.
  * Admin Menu: Settings -> Vendors
  */
-class VendorController extends \oxAdminView
+class VendorController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

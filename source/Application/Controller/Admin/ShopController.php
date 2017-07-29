@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\ShopIdCalculator;
 
@@ -30,7 +30,7 @@ use OxidEsales\Eshop\Core\ShopIdCalculator;
  * and "shop_main.tpl") to frame.
  * Admin Menu: Main Menu -> Core Settings.
  */
-class ShopController extends \oxAdminView
+class ShopController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
     const CURRENT_TEMPLATE = 'shop.tpl';
 

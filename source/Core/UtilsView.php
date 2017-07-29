@@ -19,23 +19,24 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter;
-use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockContentReader;
-use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository;
-use Smarty;
-use oxRegistry;
-use oxIDisplayError;
 use oxException;
-use oxSystemComponentException;
 use oxField;
-use oxDb;
+use OxidEsales\Eshop\Core\Contract\IDisplayError;
+use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockContentReader;
+use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter;
+use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository;
+use oxIDisplayError;
+use oxRegistry;
+use oxSystemComponentException;
+use Smarty;
 
 /**
  * View utility class
  */
-class UtilsView extends \oxSuperCfg
+class UtilsView extends \OxidEsales\Eshop\Core\Base
 {
 
     /**
@@ -78,6 +79,7 @@ class UtilsView extends \oxSuperCfg
     public function getSmarty($blReload = false)
     {
         if (!self::$_oSmarty || $blReload) {
+            $this->_aTemplateDir = [];
             self::$_oSmarty = new Smarty();
             $this->_fillCommonSmartyProperties(self::$_oSmarty);
             $this->_smartyCompileCheck(self::$_oSmarty);
@@ -119,7 +121,7 @@ class UtilsView extends \oxSuperCfg
     /**
      * adds the given errors to the view array
      *
-     * @param array &$aView view data array
+     * @param array $aView  view data array
      * @param array $errors array of errors to pass to view
      */
     public function passAllErrorsToView(&$aView, $errors)
@@ -134,27 +136,27 @@ class UtilsView extends \oxSuperCfg
     }
 
     /**
-     * adds a exception to the array of displayed exceptions for the view
+     * Adds an exception to the array of displayed exceptions for the view
      * by default is displayed in the inc_header, but with the custom destination set to true
      * the exception won't be displayed by default but can be displayed where ever wanted in the tpl
      *
-     * @param exception $oEr                  a exception object or just a language local (string) which will be converted into a oxExceptionToDisplay object
-     * @param bool      $blFull               if true the whole object is add to display (default false)
-     * @param bool      $useCustomDestination true if the exception shouldn't be displayed at the default position (default false)
-     * @param string    $customDestination    defines a name of the view variable containing the messages, overrides Parameter 'CustomError' ("default")
-     * @param string    $activeController     defines a name of the controller, which should handle the error.
+     * @param StandardException|IDisplayError|string $oEr                  an exception object or just a language local (string),
+     *                                                                     which will be converted into a oxExceptionToDisplay object
+     * @param bool                                   $blFull               if true the whole object is add to display (default false)
+     * @param bool                                   $useCustomDestination true if the exception shouldn't be displayed
+     *                                                                     at the default position (default false)
+     * @param string                                 $customDestination    defines a name of the view variable containing
+     *                                                                     the messages, overrides Parameter 'CustomError' ("default")
+     * @param string                                 $activeController     defines a name of the controller, which should
+     *                                                                     handle the error.
      */
     public function addErrorToDisplay($oEr, $blFull = false, $useCustomDestination = false, $customDestination = "", $activeController = "")
     {
-        if ($useCustomDestination && (oxRegistry::getConfig()->getRequestParameter('CustomError') || $customDestination != '')) {
-            // check if the current request wants do display exceptions on its own
-            $destination = oxRegistry::getConfig()->getRequestParameter('CustomError');
-            if ($customDestination != '') {
-                $destination = $customDestination;
-            }
-        } else {
-            //default
-            $destination = 'default';
+        //default
+        $destination = 'default';
+        $customDestination = $customDestination ? $customDestination : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('CustomError');
+        if ($useCustomDestination && $customDestination) {
+            $destination = $customDestination;
         }
 
         //starting session if not yet started as all exception
@@ -165,13 +167,13 @@ class UtilsView extends \oxSuperCfg
             $session->start();
         }
 
-        $aEx = oxRegistry::getSession()->getVariable('Errors');
-        if ($oEr instanceof oxException) {
-            $oEx = oxNew('oxExceptionToDisplay');
+        $aEx = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('Errors');
+        if ($oEr instanceof \OxidEsales\Eshop\Core\Exception\StandardException) {
+            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             $oEx->setMessage($oEr->getMessage());
             $oEx->setExceptionType($oEr->getType());
 
-            if ($oEr instanceof oxSystemComponentException) {
+            if ($oEr instanceof \OxidEsales\Eshop\Core\Exception\SystemComponentException) {
                 $oEx->setMessageArgs($oEr->getComponent());
             }
 
@@ -179,12 +181,12 @@ class UtilsView extends \oxSuperCfg
             $oEx->setStackTrace($oEr->getTraceAsString());
             $oEx->setDebug($blFull);
             $oEr = $oEx;
-        } elseif ($oEr && !($oEr instanceof oxIDisplayError)) {
+        } elseif ($oEr && !($oEr instanceof \OxidEsales\Eshop\Core\Contract\IDisplayError)) {
             // assuming that a string was given
             $sTmp = $oEr;
-            $oEr = oxNew('oxDisplayError');
+            $oEr = oxNew(\OxidEsales\Eshop\Core\DisplayError::class);
             $oEr->setMessage($sTmp);
-        } elseif ($oEr instanceof oxIDisplayError) {
+        } elseif ($oEr instanceof \OxidEsales\Eshop\Core\Contract\IDisplayError) {
             // take the object
         } else {
             $oEr = null;
@@ -192,14 +194,14 @@ class UtilsView extends \oxSuperCfg
 
         if ($oEr) {
             $aEx[$destination][] = serialize($oEr);
-            oxRegistry::getSession()->setVariable('Errors', $aEx);
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('Errors', $aEx);
 
             if ($activeController == '') {
-                $activeController = oxRegistry::getConfig()->getRequestParameter('actcontrol');
+                $activeController = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('actcontrol');
             }
             if ($activeController) {
                 $aControllerErrors[$destination] = $activeController;
-                oxRegistry::getSession()->setVariable('ErrorController', $aControllerErrors);
+                \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('ErrorController', $aControllerErrors);
             }
         }
     }
@@ -209,16 +211,17 @@ class UtilsView extends \oxSuperCfg
      * to process, array will be returned, if you pass string - string
      * will be passed as result
      *
-     * @param mixed  $sDesc       description or array of descriptions ( array( [] => array( _ident_, _value_to_process_ ) ) )
-     * @param string $sOxid       current object id
-     * @param oxview $oActView    view data to use its view data (optional)
-     * @param bool   $blRecompile force to recompile if found in cache
+     * @param mixed                                            $sDesc       description or array of descriptions
+     *                                                                      (array( [] => array(_ident_, _value_to_process_)))
+     * @param string                                           $sOxid       current object id
+     * @param \OxidEsales\Eshop\Core\Controller\BaseController $oActView    view data to use its view data (optional)
+     * @param bool                                             $blRecompile force to recompile if found in cache
      *
      * @return mixed
      */
     public function parseThroughSmarty($sDesc, $sOxid = null, $oActView = null, $blRecompile = false)
     {
-        if (oxRegistry::getConfig()->isDemoShop()) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop()) {
             return $sDesc;
         }
 
@@ -230,7 +233,7 @@ class UtilsView extends \oxSuperCfg
             return $sDesc;
         }
 
-        $activeLanguageId = oxRegistry::getLang()->getTplLanguage();
+        $activeLanguageId = \OxidEsales\Eshop\Core\Registry::getLang()->getTplLanguage();
 
         // now parse it through smarty
         $smarty = clone $this->getSmarty();
@@ -242,7 +245,7 @@ class UtilsView extends \oxSuperCfg
         $smarty->force_compile = $blRecompile;
 
         if (!$oActView) {
-            $oActView = oxNew('oxUBase');
+            $oActView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
             $oActView->addGlobalParams();
         }
 
@@ -253,11 +256,11 @@ class UtilsView extends \oxSuperCfg
 
         if (is_array($sDesc)) {
             foreach ($sDesc as $name => $aData) {
-                $smarty->oxidcache = new oxField($aData[1], oxField::T_RAW);
+                $smarty->oxidcache = new \OxidEsales\Eshop\Core\Field($aData[1], \OxidEsales\Eshop\Core\Field::T_RAW);
                 $result[$name] = $smarty->fetch("ox:" . $aData[0] . $activeLanguageId);
             }
         } else {
-            $smarty->oxidcache = new oxField($sDesc, oxField::T_RAW);
+            $smarty->oxidcache = new \OxidEsales\Eshop\Core\Field($sDesc, \OxidEsales\Eshop\Core\Field::T_RAW);
             $result = $smarty->fetch("ox:{$sOxid}{$activeLanguageId}");
         }
 
@@ -289,7 +292,7 @@ class UtilsView extends \oxSuperCfg
      */
     public function getTemplateDirs()
     {
-        $config = oxRegistry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         // buffer for CE (main) edition templates
         $mainTemplatesDirectory = $config->getTemplateDir($this->isAdmin());
@@ -369,7 +372,7 @@ class UtilsView extends \oxSuperCfg
         $smarty->cache_dir = $smartyDir;
         $smarty->template_dir = $this->getTemplateDirs();
         $smarty->compile_id = $this->getTemplateCompileId();
-        $smarty->default_template_handler_func = array(oxRegistry::get("oxUtilsView"), '_smartyDefaultTemplateHandler');
+        $smarty->default_template_handler_func = array(\OxidEsales\Eshop\Core\Registry::getUtilsView(), '_smartyDefaultTemplateHandler');
 
         $coreDirectory = $config->getConfigParam('sCoreDir');
         array_unshift($smarty->plugins_dir, $coreDirectory . 'Smarty/Plugin');
@@ -421,17 +424,17 @@ class UtilsView extends \oxSuperCfg
     /**
      * is called when a template cannot be obtained from its resource.
      *
-     * @param string $resourceType       template type
-     * @param string $resourceName       template file name
-     * @param string &$resourceContent   template file content
-     * @param int    &$resourceTimestamp template file timestamp
-     * @param object $smarty             template processor object (smarty)
+     * @param string $resourceType      template type
+     * @param string $resourceName      template file name
+     * @param string $resourceContent   template file content
+     * @param int    $resourceTimestamp template file timestamp
+     * @param object $smarty            template processor object (smarty)
      *
      * @return bool
      */
     public function _smartyDefaultTemplateHandler($resourceType, $resourceName, &$resourceContent, &$resourceTimestamp, $smarty)
     {
-        $config = oxRegistry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         if ($resourceType == 'file' && !is_readable($resourceName)) {
             $resourceName = $config->getTemplatePath($resourceName, $config->isAdmin());
             $resourceContent = $smarty->_read_file($resourceName);
@@ -495,7 +498,7 @@ class UtilsView extends \oxSuperCfg
             $ids = $this->_getActiveModuleInfo();
 
             $activeModulesId = array_keys($ids);
-            $activeThemeIds = oxNew('oxTheme')->getActiveThemesList();
+            $activeThemeIds = oxNew(\OxidEsales\Eshop\Core\Theme::class)->getActiveThemesList();
 
             $templateBlockRepository = oxNew(ModuleTemplateBlockRepository::class);
             $activeBlockTemplates = $templateBlockRepository->getBlocks($templateFileName, $activeModulesId, $shopId, $activeThemeIds);
@@ -518,7 +521,7 @@ class UtilsView extends \oxSuperCfg
     protected function _getActiveModuleInfo()
     {
         if ($this->_aActiveModuleInfo === null) {
-            $modulelist = oxNew('oxmodulelist');
+            $modulelist = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
             $this->_aActiveModuleInfo = $modulelist->getActiveModuleInfo();
         }
 
@@ -741,7 +744,7 @@ class UtilsView extends \oxSuperCfg
                     $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']] = array();
                 }
                 $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']][] = $this->_getTemplateBlock($activeBlockTemplate['OXMODULE'], $activeBlockTemplate['OXFILE']);
-            } catch (oxException $exception) {
+            } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
                 $exception->debugOut();
             }
         }

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxRegistry;
 use oxDb;
@@ -28,7 +28,7 @@ use oxDb;
 /**
  * Seo encoder base
  */
-class SeoEncoderContent extends \oxSeoEncoder
+class SeoEncoderContent extends \OxidEsales\Eshop\Core\SeoEncoder
 {
     /**
      * Returns target "extension" (/)
@@ -44,9 +44,9 @@ class SeoEncoderContent extends \oxSeoEncoder
      * Returns SEO uri for content object. Includes parent category path info if
      * content is assigned to it
      *
-     * @param oxContent $oCont        content category object
-     * @param int       $iLang        language
-     * @param bool      $blRegenerate if TRUE forces seo url regeneration
+     * @param \OxidEsales\Eshop\Application\Model\Content $oCont        content category object
+     * @param int                                         $iLang        language
+     * @param bool                                        $blRegenerate if TRUE forces seo url regeneration
      *
      * @return string
      */
@@ -59,19 +59,19 @@ class SeoEncoderContent extends \oxSeoEncoder
         if ($blRegenerate || !($sSeoUrl = $this->_loadFromDb('oxContent', $oCont->getId(), $iLang))) {
             if ($iLang != $oCont->getLanguage()) {
                 $sId = $oCont->getId();
-                $oCont = oxNew('oxContent');
+                $oCont = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
                 $oCont->loadInLang($iLang, $sId);
             }
 
             $sSeoUrl = '';
             if ($oCont->getCategoryId() && $oCont->getType() === 2) {
-                $oCat = oxNew('oxCategory');
+                $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
                 if ($oCat->loadInLang($iLang, $oCont->oxcontents__oxcatid->value)) {
                     $sParentId = $oCat->oxcategories__oxparentid->value;
                     if ($sParentId && $sParentId != 'oxrootid') {
-                        $oParentCat = oxNew('oxCategory');
+                        $oParentCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
                         if ($oParentCat->loadInLang($iLang, $oCat->oxcategories__oxparentid->value)) {
-                            $sSeoUrl .= oxRegistry::get("oxSeoEncoderCategory")->getCategoryUri($oParentCat);
+                            $sSeoUrl .= \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class)->getCategoryUri($oParentCat);
                         }
                     }
                 }
@@ -89,8 +89,8 @@ class SeoEncoderContent extends \oxSeoEncoder
     /**
      * encodeContentUrl encodes content link
      *
-     * @param oxContent $oCont category object
-     * @param int       $iLang language
+     * @param \OxidEsales\Eshop\Application\Model\Content $oCont category object
+     * @param int                                         $iLang language
      *
      * @return string|bool
      */
@@ -110,7 +110,7 @@ class SeoEncoderContent extends \oxSeoEncoder
      */
     public function onDeleteContent($sId)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sIdQuoted = $oDb->quote($sId);
         $oDb->execute("delete from oxseo where oxobjectid = $sIdQuoted and oxtype = 'oxcontent'");
         $oDb->execute("delete from oxobject2seodata where oxobjectid = $sIdQuoted");
@@ -128,7 +128,7 @@ class SeoEncoderContent extends \oxSeoEncoder
     protected function _getAltUri($sObjectId, $iLang)
     {
         $sSeoUrl = null;
-        $oCont = oxNew("oxContent");
+        $oCont = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
         if ($oCont->loadInLang($iLang, $sObjectId)) {
             $sSeoUrl = $this->getContentUri($oCont, $iLang, true);
         }

@@ -20,50 +20,52 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
-
-use oxEmail;
-use oxRegistry;
+namespace OxidEsales\EshopCommunity\Core;
 
 /**
- * Class oxOnlineServerEmailBuilder is responsible for email sending when it's not possible to make call via CURL.
+ * Class OnlineServerEmailBuilder is responsible for generation of email with specific message
+ * when it's not possible to make OLIS call via CURL.
  *
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  *
  * @ignore   This class will not be included in documentation.
  */
-class OnlineServerEmailBuilder
+class OnlineServerEmailBuilder extends \OxidEsales\Eshop\Core\EmailBuilder
 {
+    const OLC_EMAIL = 'olc@oxid-esales.com';
 
     /**
-     * Created oxEmail object and sets values.
-     *
-     * @param string $sBody Email body in XML format.
-     *
-     * @return oxEmail
-     */
-    public function build($sBody)
-    {
-        /** @var oxEmail $oExpirationEmail */
-        $oExpirationEmail = oxNew('oxEmail');
-        $oExpirationEmail->setSubject(oxRegistry::getLang()->translateString('SUBJECT_UNABLE_TO_SEND_VIA_CURL', null, true));
-        $oExpirationEmail->setRecipient('olc@oxid-esales.com');
-        $oExpirationEmail->setFrom($this->_getShopInfoAddress());
-        $oExpirationEmail->setBody($sBody);
-
-        return $oExpirationEmail;
-    }
-
-    /**
-     * Returns active shop info email address.
+     * @inheritdoc
      *
      * @return string
      */
-    private function _getShopInfoAddress()
+    protected function getBody()
     {
-        $oShop = oxRegistry::getConfig()->getActiveShop();
+        return $this->buildParam;
+    }
 
-        return $oShop->oxshops__oxinfoemail->value;
+    /**
+     * @inheritdoc
+     *
+     * @return string
+     */
+    protected function getSubject()
+    {
+        return \OxidEsales\Eshop\Core\Registry::getLang()->translateString(
+            'SUBJECT_UNABLE_TO_SEND_VIA_CURL',
+            null,
+            true
+        );
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @return string
+     */
+    protected function getRecipient()
+    {
+        return self::OLC_EMAIL;
     }
 }

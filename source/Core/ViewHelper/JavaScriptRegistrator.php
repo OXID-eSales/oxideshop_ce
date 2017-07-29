@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\ViewHelper;
+namespace OxidEsales\EshopCommunity\Core\ViewHelper;
 
 use oxRegistry;
 
@@ -40,7 +40,7 @@ class JavaScriptRegistrator
      */
     public function addSnippet($script, $isDynamic = false)
     {
-        $config = oxRegistry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $suffix = $isDynamic ? '_dynamic' : '';
         $scriptsParameterName = static::SNIPPETS_PARAMETER_NAME . $suffix;
         $scripts = (array) $config->getGlobalParameter($scriptsParameterName);
@@ -60,7 +60,7 @@ class JavaScriptRegistrator
      */
     public function addFile($file, $priority, $isDynamic = false)
     {
-        $config = oxRegistry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $suffix = $isDynamic ? '_dynamic' : '';
         $filesParameterName = static::FILES_PARAMETER_NAME . $suffix;
         $includes = (array) $config->getGlobalParameter($filesParameterName);
@@ -85,7 +85,7 @@ class JavaScriptRegistrator
      */
     protected function formLocalFileUrl($file)
     {
-        $config = oxRegistry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $parts = explode('?', $file);
         $url = $config->getResourceUrl($parts[0], $config->isAdmin());
         $parameters = $parts[1];

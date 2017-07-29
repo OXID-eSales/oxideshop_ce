@@ -19,12 +19,16 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core\Module;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Module;
 
 use OxidEsales\TestingLibrary\UnitTestCase;
-use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter;
+use OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockPathFormatter;
 use oxTestModules;
 
+/**
+ * @group module
+ * @package Unit\Core\Module
+ */
 class ModuleTemplateBlockPathFormatterTest extends UnitTestCase
 {
     public function testCanCreateClass()
@@ -167,7 +171,7 @@ class ModuleTemplateBlockPathFormatterTest extends UnitTestCase
      */
     private function stubActiveModulesList($activeModules = ['myTestModule' => 'myTestModulePath'])
     {
-        $moduleListMock = $this->getMock('oxmodulelist', ['getActiveModuleInfo']);
+        $moduleListMock = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, ['getActiveModuleInfo']);
         $moduleListMock->method('getActiveModuleInfo')->willReturn($activeModules);
         oxTestModules::addModuleObject('oxmodulelist', $moduleListMock);
     }

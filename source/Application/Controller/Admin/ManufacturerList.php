@@ -20,12 +20,12 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin Manufacturer list manager.
  */
-class ManufacturerList extends \oxAdminList
+class ManufacturerList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**

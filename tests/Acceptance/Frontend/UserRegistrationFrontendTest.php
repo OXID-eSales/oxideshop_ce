@@ -20,9 +20,9 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Tests\Acceptance\Frontend;
+namespace OxidEsales\EshopCommunity\Tests\Acceptance\Frontend;
 
-use OxidEsales\Eshop\Tests\Acceptance\FrontendTestCase;
+use OxidEsales\EshopCommunity\Tests\Acceptance\FrontendTestCase;
 
 /** Frontend: user registration */
 class UserRegistrationFrontendTest extends FrontendTestCase
@@ -470,7 +470,7 @@ class UserRegistrationFrontendTest extends FrontendTestCase
         $this->type( "userLoginName", $aUserData['oxusername'] );
         unset( $aUserData['oxusername'] );
 
-        if ( $aUserData['oxpassword'] ) {
+        if ( isset($aUserData['oxpassword']) && $aUserData['oxpassword'] ) {
             $this->type( "userPassword", $aUserData['oxpassword'] );
             $this->type( "userPasswordConfirm", $aUserData['oxpassword'] );
             unset( $aUserData['oxpassword'] );
@@ -526,7 +526,7 @@ class UserRegistrationFrontendTest extends FrontendTestCase
     public function formOrderAddressData( $aData )
     {
         $sAddress =  $aData["oxcompany"].' '.$aData["oxaddinfo"].' ';
-        $sAddress .= $aData["oxsal"]? $aData["oxsal"] : "Mr";
+        $sAddress .= isset($aData["oxsal"])? $aData["oxsal"] : "Mr";
         $sAddress .= " ".$aData["oxfname"].' '.$aData["oxlname"].' ';
         $sAddress .= $aData["oxstreet"].' '.$aData["oxstreetnr"].' ';
         $sAddress .= (isset($aData["oxstateid"]) && $aData["oxstateid"] == 'BE') ? 'Berlin' : $aData["oxstateid"];

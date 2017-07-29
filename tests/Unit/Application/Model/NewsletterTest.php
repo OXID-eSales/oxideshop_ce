@@ -19,11 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use Exception;
 use oxException;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use \oxNewsLetter;
 use \oxEmail;
 use \oxDb;
@@ -112,11 +112,9 @@ class NewsletterTest extends \OxidTestCase
 
         $oDB = oxDb::getDb();
 
-        $additionalFieldInQuery = '';
         $shopId = ShopIdCalculator::BASE_SHOP_ID;
         if ($this->getConfig()->getEdition() === 'EE') {
             $shopId = 1;
-            $additionalFieldInQuery = ", ''";
         }
 
         $sInsert = "INSERT INTO `oxnewsletter` VALUES ( 'newstest', '{$shopId}', 'Test', 'TestHTML', 'TestPlain', 'TestSubject', NOW() )";
@@ -159,7 +157,52 @@ class NewsletterTest extends \OxidTestCase
     ";
         $oDB->Execute($sInsert);
 
-        $sInsert = "INSERT INTO `oxorderarticles` VALUES ('9a9456981a6530fe2.51471234', '9a94569819f6c7368.72892345', 1, '2080', '2080', 'Eiswürfel HERZ', 'Das Original aus Filmen wie Eis am Stil & Co.', '', 68.88, 68.88, 0, 0, '', 79.9, 0, 89.9, '', '', '', '', '0/1964_th.jpg', '1/1964_p1.jpg', '2/nopic.jpg', '3/nopic.jpg', '4/nopic.jpg', '5/nopic.jpg', 0, 0, 0x303030302d30302d3030, 0x303030302d30302d3030, 0x323030352d30372d32382030303a30303a3030, 0, 0, 0, '', '', '', '', 1, '', '', '', '{$shopId}'$additionalFieldInQuery, 0 )";
+        $sInsert = "INSERT INTO `oxorderarticles` SET
+        `OXID` = '9a9456981a6530fe2.51471234',
+        `OXORDERID` = '9a94569819f6c7368.72892345',
+        `OXAMOUNT` = 1,
+        `OXARTID` = '2080',
+        `OXARTNUM` = '2080',
+        `OXTITLE` = 'Eiswürfel HERZ',
+        `OXSHORTDESC` = 'Das Original aus Filmen wie Eis am Stil & Co.',
+        `OXSELVARIANT` = '',
+        `OXNETPRICE` = 68.88,
+        `OXBRUTPRICE` = 68.88,
+        `OXVATPRICE` = 0,
+        `OXVAT` = 0,
+        `OXPERSPARAM` = '',
+        `OXPRICE` = 79.9,
+        `OXBPRICE` = 0,
+        `OXNPRICE` = 89.9,
+        `OXWRAPID` = '',
+        `OXEXTURL` = '',
+        `OXURLDESC` = '',
+        `OXURLIMG` = '',
+        `OXTHUMB` = '0/1964_th.jpg',
+        `OXPIC1` = '1/1964_p1.jpg',
+        `OXPIC2` = '2/nopic.jpg',
+        `OXPIC3` = '3/nopic.jpg',
+        `OXPIC4` = '4/nopic.jpg',
+        `OXPIC5` = '5/nopic.jpg',
+        `OXWEIGHT` = 0,
+        `OXSTOCK` = 0,
+        `OXDELIVERY` = 0x303030302d30302d3030,
+        `OXINSERT` = 0x303030302d30302d3030,
+        `OXTIMESTAMP` = 0x323030352d30372d32382030303a30303a3030,
+        `OXLENGTH` = 0,
+        `OXWIDTH` = 0,
+        `OXHEIGHT` = 0,
+        `OXFILE` = '',
+        `OXSEARCHKEYS` = '',
+        `OXTEMPLATE` = '',
+        `OXQUESTIONEMAIL` = '',
+        `OXISSEARCH` = 1,
+        `OXFOLDER` = '',
+        `OXSUBCLASS` = '',
+        `OXSTORNO` = '',
+        `OXORDERSHOPID` = '{$shopId}',
+        `OXISBUNDLE` = 0";
+
         $oDB->Execute($sInsert);
 
         $sInsert = "INSERT INTO `oxactions2article` VALUES ('d8842e3ca1c35e146.46512345', '{$shopId}', 'oxnewsletter', '1351', 0, NOW())";
@@ -201,8 +244,8 @@ class NewsletterTest extends \OxidTestCase
         $sSql = "update oxnewssubscribed set oxemailfailed = '0' where oxuserid = 'oxdefaultadmin' ";
         $oDB->Execute($sSql);
 
-        oxRemClassModule('modEmailOxNewsLetter');
-        oxRemClassModule('modEmailOxNewsLetter2');
+        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modEmailOxNewsLetter::class);
+        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modEmailOxNewsLetter2::class);
 
         parent::tearDown();
     }
@@ -213,15 +256,15 @@ class NewsletterTest extends \OxidTestCase
     public function testDelete()
     {
         $oTestNews = oxNew("oxNewsLetter");
-        $this->assertEquals($oTestNews->delete('newstest'), true);
+        $this->assertEquals(true, $oTestNews->delete('newstest'));
 
         $oDB = oxDb::getDb();
 
         $sSelect = 'select * from oxobject2group where oxobjectid="newstest"';
-        $this->assertEquals($oDB->getOne($sSelect), false);
+        $this->assertEquals(false, $oDB->getOne($sSelect));
 
         $sSelect = 'select * from oxnewsletter where oxid="newstest"';
-        $this->assertEquals($oDB->getOne($sSelect), false);
+        $this->assertEquals(false, $oDB->getOne($sSelect));
     }
 
     public function testDeleteLoadedNews()
@@ -262,8 +305,8 @@ class NewsletterTest extends \OxidTestCase
         $oUser = oxNew('oxuser');
         $oUser->load('oxdefaultadmin');
 
-        $oTestNews = $this->getMock('Unit\Application\Model\oxnewsletterForUnit_oxnewsletterTest', array('_assignProducts'));
-        $oTestNews->expects($this->once())->method('_assignProducts')->with($this->isInstanceOf('oxUBase'), $this->equalTo(true));
+        $oTestNews = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\oxnewsletterForUnit_oxnewsletterTest::class, array('_assignProducts'));
+        $oTestNews->expects($this->once())->method('_assignProducts')->with($this->isInstanceOf('\OxidEsales\EshopCommunity\Application\Controller\FrontendController'), $this->equalTo(true));
         $oTestNews->load('newstest');
         $oTestNews->setNonPublicVar('_oUser', $oUser);
 
@@ -383,15 +426,14 @@ class NewsletterTest extends \OxidTestCase
         $oTestNews->UNITassignProducts($oView, true);
 
         $oArtList = $oView->getViewDataElement('articlelist');
+        $oSimilarArticlesList = $oView->getViewDataElement('simlist');
 
-        // testing passed data
+        // test the view data
         $this->assertNotNull($oArtList);
         $this->assertEquals(2, $oArtList->count());
 
-        $oArtList = $oView->getViewDataElement('simlist');
-
-        $this->assertNotNull($oArtList);
-        $this->assertEquals(2, $oArtList->count());
+        $this->assertNotNull($oSimilarArticlesList);
+        $this->assertEquals(2, $oSimilarArticlesList->count());
 
         $this->assertNotNull($oView->getViewDataElement('simarticle0'));
         $this->assertNotNull($oView->getViewDataElement('simarticle1'));
@@ -399,7 +441,7 @@ class NewsletterTest extends \OxidTestCase
 
     public function testSendMail()
     {
-        oxAddClassModule('Unit\Application\Model\modEmailOxNewsLetter2', 'oxEmail');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modEmailOxNewsLetter2::class, 'oxEmail');
 
         $oTestNews = oxNew("oxNewsLetter");
         if (!$oTestNews->load('oxidnewsletter')) {
@@ -418,7 +460,7 @@ class NewsletterTest extends \OxidTestCase
      */
     public function testSendMail_Subject()
     {
-        oxAddClassModule('Unit\Application\Model\modEmailOxNewsLetterSubject', 'oxEmail');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modEmailOxNewsLetterSubject::class, 'oxEmail');
 
         $oTestNews = oxNew("oxNewsLetter");
         if (!$oTestNews->load('oxidnewsletter')) {
@@ -435,8 +477,6 @@ class NewsletterTest extends \OxidTestCase
 
     public function testSendMailAndFail()
     {
-        oxAddClassModule('modEmailOxNewsLetter', 'oxEmail');
-
         $oTestNews = oxNew("oxNewsLetter");
         if (!$oTestNews->load('oxidnewsletter')) {
             $this->fail('can not load news');

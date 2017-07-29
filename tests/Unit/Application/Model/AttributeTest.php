@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
 use \stdClass;
@@ -125,13 +125,13 @@ class AttributeTest extends \OxidTestCase
                                               1 => $oValue4));
         $oAttr->assignVarToAttribute($aSellValue, $aSellTitle);
         $this->assertEquals(2, $myDB->getOne("select count(*) from oxobject2attribute where oxobjectid like '_testVar%'"));
-        $oRez = $myDB->Execute("select oxvalue, oxvalue_1, oxobjectid  from oxobject2attribute where oxobjectid = '_testVar'");
+        $oRez = $myDB->select("select oxvalue, oxvalue_1, oxobjectid  from oxobject2attribute where oxobjectid = '_testVar'");
         while (!$oRez->EOF) {
             $oRez->fields = array_change_key_case($oRez->fields, CASE_LOWER);
             $this->assertEquals('red', $oRez->fields[0]);
             $this->assertEquals('_testVar', $oRez->fields[2]);
             $this->assertEquals('rot', $oRez->fields[1]);
-            $oRez->moveNext();
+            $oRez->fetchRow();
         }
     }
 

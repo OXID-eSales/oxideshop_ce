@@ -16,19 +16,19 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-class NoarticleexceptionTest extends \OxidTestCase
+class NoarticleexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
 
     // We check on class name and message only - rest is not checked yet
     public function testGetString()
     {
-        $oTestObject = oxNew('oxNoArticleException');
-        $this->assertEquals('OxidEsales\Eshop\Core\Exception\NoArticleException', get_class($oTestObject));
+        $oTestObject = oxNew(\OxidEsales\Eshop\Core\Exception\NoArticleException::class);
+        $this->assertEquals(\OxidEsales\Eshop\Core\Exception\NoArticleException::class, get_class($oTestObject));
         $sStringOut = $oTestObject->getString(); // (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
         $this->assertContains('NoArticleException', $sStringOut);
     }

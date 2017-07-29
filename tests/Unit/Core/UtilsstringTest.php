@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxRegistry;
 
@@ -28,33 +28,33 @@ class UtilsstringTest extends \OxidTestCase
 
     public function testPrepareCSVField()
     {
-        $this->assertEquals('"blafoo;wurst;suppe"', oxRegistry::get("oxUtilsString")->prepareCSVField("blafoo;wurst;suppe"));
-        $this->assertEquals('"bl""afoo;wurst;suppe"', oxRegistry::get("oxUtilsString")->prepareCSVField("bl\"afoo;wurst;suppe"));
-        $this->assertEquals('"blafoo;wu"";rst;suppe"', oxRegistry::get("oxUtilsString")->prepareCSVField("blafoo;wu\";rst;suppe"));
-        $this->assertEquals('', oxRegistry::get("oxUtilsString")->prepareCSVField(""));
-        $this->assertEquals('""""', oxRegistry::get("oxUtilsString")->prepareCSVField("\""));
-        $this->assertEquals('";"', oxRegistry::get("oxUtilsString")->prepareCSVField(";"));
+        $this->assertEquals('"blafoo;wurst;suppe"', \OxidEsales\Eshop\Core\Registry::getUtilsString()->prepareCSVField("blafoo;wurst;suppe"));
+        $this->assertEquals('"bl""afoo;wurst;suppe"', \OxidEsales\Eshop\Core\Registry::getUtilsString()->prepareCSVField("bl\"afoo;wurst;suppe"));
+        $this->assertEquals('"blafoo;wu"";rst;suppe"', \OxidEsales\Eshop\Core\Registry::getUtilsString()->prepareCSVField("blafoo;wu\";rst;suppe"));
+        $this->assertEquals('', \OxidEsales\Eshop\Core\Registry::getUtilsString()->prepareCSVField(""));
+        $this->assertEquals('""""', \OxidEsales\Eshop\Core\Registry::getUtilsString()->prepareCSVField("\""));
+        $this->assertEquals('";"', \OxidEsales\Eshop\Core\Registry::getUtilsString()->prepareCSVField(";"));
     }
 
     public function testMinimizeTruncateString()
     {
         $sTest = "myfooblatest";
-        $this->assertEquals("myf", oxRegistry::get("oxUtilsString")->minimizeTruncateString($sTest, 3));
-        $this->assertEquals("", oxRegistry::get("oxUtilsString")->minimizeTruncateString($sTest, 0));
-        $this->assertEquals("myfooblatest", oxRegistry::get("oxUtilsString")->minimizeTruncateString($sTest, 99));
+        $this->assertEquals("myf", \OxidEsales\Eshop\Core\Registry::getUtilsString()->minimizeTruncateString($sTest, 3));
+        $this->assertEquals("", \OxidEsales\Eshop\Core\Registry::getUtilsString()->minimizeTruncateString($sTest, 0));
+        $this->assertEquals("myfooblatest", \OxidEsales\Eshop\Core\Registry::getUtilsString()->minimizeTruncateString($sTest, 99));
 
         $sTest = "        my,f,,     o  o bl at  ,,  ,,est,  ";
-        $this->assertEquals("my", oxRegistry::get("oxUtilsString")->minimizeTruncateString($sTest, 3));
-        $this->assertEquals("my,f", oxRegistry::get("oxUtilsString")->minimizeTruncateString($sTest, 4));
-        $this->assertEquals("", oxRegistry::get("oxUtilsString")->minimizeTruncateString($sTest, 0));
-        $this->assertEquals("my,f,, o o bl at ,, ,,est", oxRegistry::get("oxUtilsString")->minimizeTruncateString($sTest, 99));
+        $this->assertEquals("my", \OxidEsales\Eshop\Core\Registry::getUtilsString()->minimizeTruncateString($sTest, 3));
+        $this->assertEquals("my,f", \OxidEsales\Eshop\Core\Registry::getUtilsString()->minimizeTruncateString($sTest, 4));
+        $this->assertEquals("", \OxidEsales\Eshop\Core\Registry::getUtilsString()->minimizeTruncateString($sTest, 0));
+        $this->assertEquals("my,f,, o o bl at ,, ,,est", \OxidEsales\Eshop\Core\Registry::getUtilsString()->minimizeTruncateString($sTest, 99));
     }
 
     public function testPrepareStrForSearch()
     {
-        $this->assertEquals(' &auml; &ouml; &uuml; &Auml; &Ouml; &Uuml; &szlig; &', oxRegistry::get("oxUtilsString")->prepareStrForSearch(' ä ö ü Ä Ö Ü ß &amp;'));
-        $this->assertEquals(' h&auml;user', oxRegistry::get("oxUtilsString")->prepareStrForSearch(' häuser'));
-        $this->assertEquals('', oxRegistry::get("oxUtilsString")->prepareStrForSearch('qwertz'));
-        $this->assertEquals('', oxRegistry::get("oxUtilsString")->prepareStrforSearch(''));
+        $this->assertEquals(' &auml; &ouml; &uuml; &Auml; &Ouml; &Uuml; &szlig; &', \OxidEsales\Eshop\Core\Registry::getUtilsString()->prepareStrForSearch(' ä ö ü Ä Ö Ü ß &amp;'));
+        $this->assertEquals(' h&auml;user', \OxidEsales\Eshop\Core\Registry::getUtilsString()->prepareStrForSearch(' häuser'));
+        $this->assertEquals('', \OxidEsales\Eshop\Core\Registry::getUtilsString()->prepareStrForSearch('qwertz'));
+        $this->assertEquals('', \OxidEsales\Eshop\Core\Registry::getUtilsString()->prepareStrforSearch(''));
     }
 }

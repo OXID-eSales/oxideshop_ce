@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxField;
@@ -32,7 +32,7 @@ use stdClass;
  * filter them by sorting, title or delete them.
  * Admin Menu: Manage Products -> Categories.
  */
-class CategoryList extends \oxAdminList
+class CategoryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**
@@ -56,7 +56,7 @@ class CategoryList extends \oxAdminList
      */
     public function getListSorting()
     {
-        $sSortParameter = oxRegistry::getConfig()->getRequestParameter('sort');
+        $sSortParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sort');
         if ($this->_aCurrSorting === null && !$sSortParameter && ($oBaseObject = $this->getItemListBaseObject())) {
             $sCatView = $oBaseObject->getCoreTableName();
 
@@ -81,24 +81,24 @@ class CategoryList extends \oxAdminList
 
         parent::render();
 
-        $oLang = oxRegistry::getLang();
+        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $iLang = $oLang->getTplLanguage();
 
         // parent category tree
-        $oCatTree = oxNew("oxCategoryList");
+        $oCatTree = oxNew(\OxidEsales\Eshop\Application\Model\CategoryList::class);
         $oCatTree->loadList();
 
         // add Root as fake category
         // rebuild list as we need the root entry at the first position
         $aNewList = array();
         $oRoot = new stdClass();
-        $oRoot->oxcategories__oxid = new oxField(null, oxField::T_RAW);
-        $oRoot->oxcategories__oxtitle = new oxField($oLang->translateString("viewAll", $iLang), oxField::T_RAW);
+        $oRoot->oxcategories__oxid = new \OxidEsales\Eshop\Core\Field(null, \OxidEsales\Eshop\Core\Field::T_RAW);
+        $oRoot->oxcategories__oxtitle = new \OxidEsales\Eshop\Core\Field($oLang->translateString("viewAll", $iLang), \OxidEsales\Eshop\Core\Field::T_RAW);
         $aNewList[] = $oRoot;
 
         $oRoot = new stdClass();
-        $oRoot->oxcategories__oxid = new oxField("oxrootid", oxField::T_RAW);
-        $oRoot->oxcategories__oxtitle = new oxField("-- " . $oLang->translateString("mainCategory", $iLang) . " --", oxField::T_RAW);
+        $oRoot->oxcategories__oxid = new \OxidEsales\Eshop\Core\Field("oxrootid", \OxidEsales\Eshop\Core\Field::T_RAW);
+        $oRoot->oxcategories__oxtitle = new \OxidEsales\Eshop\Core\Field("-- " . $oLang->translateString("mainCategory", $iLang) . " --", \OxidEsales\Eshop\Core\Field::T_RAW);
         $aNewList[] = $oRoot;
 
         foreach ($oCatTree as $oCategory) {

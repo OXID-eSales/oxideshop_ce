@@ -37,7 +37,7 @@
  */
 function smarty_modifier_colon($string)
 {
-    $colon = oxRegistry::getLang()->translateString('COLON');
+    $colon = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('COLON');
 
     return $string . $colon;
 }

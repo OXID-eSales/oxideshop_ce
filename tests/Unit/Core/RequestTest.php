@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-use OxidEsales\Eshop\Core\Request;
+use OxidEsales\EshopCommunity\Core\Request;
 use stdClass;
 
 class RequestTest extends \OxidTestCase
@@ -132,21 +132,18 @@ class RequestTest extends \OxidTestCase
     {
         $oVar = new stdClass();
         $oVar->xxx = 'yyy';
-        $aVar = array('&\\o<x>i"\' d' . chr(0));
-        $sVar = '&\\o<x>i"\' d' . chr(0);
+        $aVar = array('&\\o<x>i"\'d' . chr(0));
+        $sVar = '&\\o<x>i"\'d' . chr(0);
         $request = oxNew(Request::class);
 
         // object must came back the same
         $this->assertEquals($oVar, $request->checkParamSpecialChars($oVar));
 
         // array items comes fixed
-        $this->assertEquals(array("&amp;&#092;o&lt;x&gt;i&quot;&#039; d"), $request->checkParamSpecialChars($aVar));
+        $this->assertEquals(array("&amp;&#092;o&lt;x&gt;i&quot;&#039;d"), $request->checkParamSpecialChars($aVar));
 
         // string comes fixed
-        $this->assertEquals('&amp;&#092;o&lt;x&gt;i&quot;&#039; d', $request->checkParamSpecialChars($sVar));
-
-        // original variable is not modified
-        $this->assertEquals('&\\o<x>i"\' d' . chr(0), $sVar);
+        $this->assertEquals('&amp;&#092;o&lt;x&gt;i&quot;&#039;d', $request->checkParamSpecialChars($sVar));
     }
 
     /**

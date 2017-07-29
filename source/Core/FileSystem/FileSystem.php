@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\FileSystem;
+namespace OxidEsales\EshopCommunity\Core\FileSystem;
 
 /**
  * Wrapper for actions related to file system.

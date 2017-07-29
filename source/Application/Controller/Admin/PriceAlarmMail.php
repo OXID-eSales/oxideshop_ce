@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxDb;
 
@@ -29,7 +29,7 @@ use oxDb;
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Customer Info -> pricealarm -> Main.
  */
-class PriceAlarmMail extends \oxAdminDetails
+class PriceAlarmMail extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -52,8 +52,8 @@ class PriceAlarmMail extends \oxAdminDetails
             SELECT oxprice, oxartid
             FROM oxpricealarm
             WHERE oxsended = '000-00-00 00:00:00' AND oxshopid = '$shopId' ";
-        $result = oxDb::getDb()->execute($query);
-        if ($result != false && $result->recordCount() > 0) {
+        $result = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->select($query);
+        if ($result != false && $result->count() > 0) {
             $simpleCache = array();
             while (!$result->EOF) {
                 $price = $result->fields[0];
@@ -63,7 +63,7 @@ class PriceAlarmMail extends \oxAdminDetails
                         $this->_aViewData['iAllCnt'] += 1;
                     }
                 } else {
-                    $article = oxNew("oxArticle");
+                    $article = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                     if ($article->load($articleId)) {
                         $articlePrice = $simpleCache[$articleId] = $article->getPrice()->getBruttoPrice();
                         if ($articlePrice <= $price) {
@@ -71,7 +71,7 @@ class PriceAlarmMail extends \oxAdminDetails
                         }
                     }
                 }
-                $result->moveNext();
+                $result->fetchRow();
             }
         }
 

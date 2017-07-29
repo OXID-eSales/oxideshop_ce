@@ -1,6 +1,13 @@
 <?php
-class test1Content extends test1Content_parent {
 
+/**
+ * Class test1Content
+ */
+class test1Content extends test1Content_parent
+{
+    /**
+     * @return mixed
+     */
     public function render()
     {
         $sTpl = parent::render();

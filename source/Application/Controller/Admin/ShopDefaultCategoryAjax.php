@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxField;
@@ -28,7 +28,7 @@ use oxField;
 /**
  * Class controls article assignment to attributes
  */
-class ShopDefaultCategoryAjax extends \ajaxListComponent
+class ShopDefaultCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**
@@ -51,8 +51,8 @@ class ShopDefaultCategoryAjax extends \ajaxListComponent
      */
     protected function _getQuery()
     {
-        $oCat = oxNew('oxCategory');
-        $oCat->setLanguage(oxRegistry::getConfig()->getRequestParameter('editlanguage'));
+        $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
+        $oCat->setLanguage(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editlanguage'));
 
         $sCategoriesTable = $oCat->getViewName();
 
@@ -64,10 +64,10 @@ class ShopDefaultCategoryAjax extends \ajaxListComponent
      */
     public function unassignCat()
     {
-        $sShopId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $oShop = oxNew('oxShop');
+        $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         if ($oShop->load($sShopId)) {
-            $oShop->oxshops__oxdefcat = new oxField('');
+            $oShop->oxshops__oxdefcat = new \OxidEsales\Eshop\Core\Field('');
             $oShop->save();
         }
     }
@@ -77,11 +77,11 @@ class ShopDefaultCategoryAjax extends \ajaxListComponent
      */
     public function assignCat()
     {
-        $sChosenCat = oxRegistry::getConfig()->getRequestParameter('oxcatid');
-        $sShopId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $oShop = oxNew('oxShop');
+        $sChosenCat = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxcatid');
+        $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         if ($oShop->load($sShopId)) {
-            $oShop->oxshops__oxdefcat = new oxField($sChosenCat);
+            $oShop->oxshops__oxdefcat = new \OxidEsales\Eshop\Core\Field($sChosenCat);
             $oShop->save();
         }
     }

@@ -20,9 +20,10 @@
  * @version   OXID eShop CE
  */
 
-    /** @name database information */
-    $this->dbType = 'mysqli';
+    // Database connection information
+    $this->dbType = 'pdo_mysql';
     $this->dbHost = '<dbHost>'; // database host name
+    $this->dbPort  = 3306; // tcp port to which the database is bound
     $this->dbName = '<dbName>'; // database name
     $this->dbUser = '<dbUser>'; // database user name
     $this->dbPwd  = '<dbPwd>'; // database user password
@@ -32,64 +33,64 @@
     $this->sShopDir     = '<sShopDir>';
     $this->sCompileDir  = '<sCompileDir>';
 
-    // UTF-8 mode in shop 0 - off, 1 - on
-    $this->iUtfMode = '<iUtfMode>';
-
-    // Force shop edition. Even if enterprise or professional packages exists, shop edition can still be forced here.
-    // Possible options: CE|PE|EE or left empty (will be determined automatically).
+    /**
+     * Force shop edition. Even if enterprise or professional packages exists, shop edition can still be forced here.
+     * Possible options: CE|PE|EE or left empty (will be determined automatically).
+     */
     $this->edition = '';
-
-    // Location of composer's vendor directory.
-    $this->vendorDirectory = __DIR__ . '/../vendor';
 
     // File type whitelist for file upload
     $this->aAllowedUploadTypes = array('jpg', 'gif', 'png', 'pdf', 'mp3', 'avi', 'mpg', 'mpeg', 'doc', 'xls', 'ppt');
 
-    // timezone information
+    // Timezone information
     date_default_timezone_set('Europe/Berlin');
 
-    // Search engine friendly URL processor
-    // After changing this value, you should rename oxid.php file as well
-    // Always leave .php extension here unless you know what you are doing
+    /**
+     * Search engine friendly URL processor.
+     * After changing this value, you should rename oxid.php file as well
+     * Always leave .php extension here unless you know what you are doing
+     */
     $this->sOXIDPHP = "oxid.php";
 
-    //  enable debug mode for template development or bugfixing
-    // -1 = Log more messages and throw exceptions on errors (not recommended for production)
-    //  0 = off
-    //  1 = smarty
-    //  2 = SQL
-    //  3 = SQL + smarty
-    //  4 = SQL + smarty + shoptemplate data
-    //  5 = Delivery Cost calculation info
-    //  6 = SMTP Debug Messages
-    //  7 = oxDbDebug SQL parser
-    //  8 = display smarty template names (requires /tmp cleanup)
+    /**
+     * Enable debug mode for template development or bugfixing
+     * -1 = Log more messages and throw exceptions on errors (not recommended for production)
+     * 0 = off
+     * 1 = smarty
+     * 3 = smarty
+     * 4 = smarty + shoptemplate data
+     * 5 = Delivery Cost calculation info
+     * 6 = SMTP Debug Messages
+     * 8 = display smarty template names (requires /tmp cleanup)
+     */
     $this->iDebug = 0;
 
     // Log all modifications performed in Admin
     $this->blLogChangesInAdmin = false;
 
-    // Force admin email
+    // Force admin email. Offline warnings are sent with high priority to this address.
     $this->sAdminEmail = '';
 
-    // in case session must be started on first user page visit (not only on
-    // session required action) set this option value 1
+    // Defines the time interval in seconds warnings are sent during the shop is offline.
+    $this->offlineWarningInterval = 60 * 5;
+
+    // In case session must be started on the very first user page visit (not only on session required action).
     $this->blForceSessionStart = false;
 
     // Use browser cookies to store session id (no sid parameter in URL)
     $this->blSessionUseCookies = true;
 
-    // The domain that the cookie is available: array( _SHOP_ID_ => _DOMAIN_ );
-    // check setcookie() documentation for more details @php.net
+    /**
+     * The domain that the cookie is available: array(_SHOP_ID_ => _DOMAIN_);
+     * Check setcookie() documentation for more details: http://php.net/manual/de/function.setcookie.php
+     */
     $this->aCookieDomains = null;
 
-    // The path on the server in which the cookie will be available on: array( _SHOP_ID_ => _PATH_ );
-    // check setcookie() documentation for more details @php.net
+    /**
+     * The path on the server in which the cookie will be available on: array(_SHOP_ID_ => _PATH_);
+     * Check setcookie() documentation for more details: http://php.net/manual/de/function.setcookie.php
+     */
     $this->aCookiePaths = null;
-
-    // uncomment the following line if you want to leave euro sign unchanged in output
-    // by default is set to convert euro sign symbol to html entity
-    // $this->blSkipEuroReplace = true;
 
     // List of all Search-Engine Robots
     $this->aRobots = array(
@@ -130,47 +131,34 @@
     $this->iBasketReservationCleanPerRequest = 200;
 
     /**
-     * should template blocks be highlighted in frontend ?
-     * this is mainly intended for module writers in non productive environment
+     * Should template blocks be highlighted in frontend?
+     * This is mainly intended for module writers in non productive environment
      */
     $this->blDebugTemplateBlocks = false;
 
     /**
-     * should requests, coming via stdurl and not redirected to seo url be logged to seologs db table?
-     * note: only active if in productive mode, as the eShop in non productive more will always log such urls
+     * Should requests, coming via stdurl and not redirected to seo url be logged to seologs db table?
+     * Note: only active if in productive mode, as the eShop in non productive more will always log such urls
      */
     $this->blSeoLogging = false;
 
     /**
-     * To override oxubase::_aUserComponentNames use this array option:
+     * To override FrontendController::$_aUserComponentNames use this array option:
      * array keys are component(class) names and array values defines if component is cacheable (true/false)
-     * e.g. array("user_class" => false);
+     * E.g. array('user_class' => false);
      */
     $this->aUserComponentNames = null;
 
-    /**
-     * Default database connection character set. This option is only used when config option iUtfMode is set to 0.
-     */
-    $this->sDefaultDatabaseConnection = 'latin1';
-
-    /**
-     * Additional multi language tables
-     */
+    // Additional multi language tables
     $this->aMultiLangTables = null;
 
-    /**
-     * Instructs shop that price update is perfomed by cron (time based job sheduler)
-     */
+    // Instructs shop that price update is performed by cron (time based job sheduler)
     $this->blUseCron = false;
 
-    /**
-     * Do not disable module if class from extension path does not exist.
-     */
+    // Do not disable module if class from extension path does not exist.
     $this->blDoNotDisableModuleOnError = false;
 
-    /**
-     * Enable temporarily in case you can't access the backend due to broken views
-     */
+    // Enable temporarily in case you can't access the backend due to broken views
     $this->blSkipViewUsage = false;
 
     /**
@@ -181,19 +169,23 @@
     //Time limit in ms to be notified about slow queries
     $this->iDebugSlowQueryTime = 20;
 
-    // enables Rights and Roles engine
-    // 0 - off,
-    // 1 - only in admin,
-    // 2 - only in shop,
-    // 3 - both
+    /**
+     * Enables Rights and Roles engine
+     * 0 - off,
+     * 1 - only in admin,
+     * 2 - only in shop,
+     * 3 - both
+     */
     $this->blUseRightsRoles = 3;
 
-    //define oxarticles fields which could be edited individually in subshops
-    //do not forget to add these fields to oxfield2shop table
-    //note the field names are case sensitive here
+    /**
+     * Define oxarticles fields which could be edited individually in subshops.
+     * Do not forget to add these fields to oxfield2shop table.
+     * Note: The field names are case sensitive here.
+     */
     $this->aMultishopArticleFields = array("OXPRICE", "OXPRICEA", "OXPRICEB", "OXPRICEC", "OXUPDATEPRICE", "OXUPDATEPRICEA", "OXUPDATEPRICEB", "OXUPDATEPRICEC", "OXUPDATEPRICETIME");
 
-    //Show "Update Views" button in admin
+    // Show "Update Views" button in admin
     $this->blShowUpdateViews = true;
 
     // If default 30 seconds is not enougth
@@ -202,8 +194,15 @@
     /**
      * Database master-slave configuration:
      * aSlaveHosts - array of slave hosts: array('localhost', '10.2.3.12')
-     * iMasterSlaveBalance - balance between master and slaves from 0 to 100; 0 - all select queries on slaves, 100 - all on master;
-     * To turn on balance between Master and Slave, Mater IP or host must be added to aSlaveHost array.
      */
     $this->aSlaveHosts = null;
-    $this->iMasterSlaveBalance = 0;
+
+    // Control the removal of Setup directory
+    $this->blDelSetupDir = true;
+
+    /**
+     * Needed for backwards compatibility. Do not change the value of this property.
+     *
+     * @deprecated since v6.0 (2017-05-15); This property will be removed in the future as the shop will always use UTF-8.
+     */
+    $this->iUtfMode = 1;

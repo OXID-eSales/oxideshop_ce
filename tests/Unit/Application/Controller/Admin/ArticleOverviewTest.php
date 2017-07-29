@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use oxArticle;
+use OxidEsales\EshopCommunity\Application\Model\Article;
 use \oxField;
 use \oxTestModules;
 
@@ -69,7 +69,7 @@ class ArticleOverviewTest extends \OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof oxArticle);
+        $this->assertTrue($aViewData["edit"] instanceof Article);
         $this->assertNull($aViewData["afolder"]);
         $this->assertNull($aViewData["aSubclass"]);
 
@@ -93,7 +93,7 @@ class ArticleOverviewTest extends \OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof oxArticle);
+        $this->assertTrue($aViewData["edit"] instanceof Article);
         $this->assertNull($aViewData["afolder"]);
         $this->assertNull($aViewData["aSubclass"]);
 

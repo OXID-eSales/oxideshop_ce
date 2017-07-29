@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Edition;
+namespace OxidEsales\EshopCommunity\Core\Edition;
 
 use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\Registry;
@@ -43,7 +43,7 @@ class EditionRootPathProvider
     private $editionSelector;
 
     /**
-     * @param $editionSelector
+     * @param EditionSelector $editionSelector
      */
     public function __construct($editionSelector)
     {
@@ -57,17 +57,17 @@ class EditionRootPathProvider
      */
     public function getDirectoryPath()
     {
-        if (Registry::instanceExists('oxConfigFile')) {
-            $configFile = Registry::get('oxConfigFile');
+        if (Registry::instanceExists(\OxidEsales\Eshop\Core\ConfigFile::class)) {
+            $configFile = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class);
         } else {
             $configFile = new ConfigFile(getShopBasePath() . '/config.inc.php');
-            Registry::set('oxConfigFile', $configFile);
+            Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $configFile);
         }
-        $editionsPath = $configFile->getVar('vendorDirectory')  .'/'. static::EDITIONS_DIRECTORY;
+        $editionsPath = VENDOR_PATH . static::EDITIONS_DIRECTORY;
         $path = getShopBasePath();
         if ($this->getEditionSelector()->isEnterprise()) {
             $path = $editionsPath  .'/'. static::ENTERPRISE_DIRECTORY;
-        } else if ($this->getEditionSelector()->isProfessional()) {
+        } elseif ($this->getEditionSelector()->isProfessional()) {
             $path = $editionsPath .'/'.  static::PROFESSIONAL_DIRECTORY;
         }
 

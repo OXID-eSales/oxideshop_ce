@@ -1,6 +1,6 @@
 {
     "name": "oxid-esales/oxideshop-ce",
-    "description": "Use this file to get OXID eShop dependencies. Use modules/composer.json for project dependencies.",
+    "description": "This package contains OXID eShop CE source code.",
     "type": "oxideshop",
     "keywords": ["oxid", "modules", "eShop"],
     "homepage": "https://www.oxid-esales.com/en/home.html",
@@ -9,43 +9,65 @@
         "proprietary"
     ],
     "require": {
-        "phpmailer/phpmailer": "^5.2.14",
-        "smarty/smarty": "^2.6.30",
-        "oxid-esales/oxideshop-composer-plugin": "dev-master",
-        "oxid-esales/flow-theme": "dev-master",
-        "oxid-esales/eshop-db-migration-wrapper": "dev-master",
-        "oxid-esales/eshop-db-views-regenerator": "dev-master"
+        "php": ">=5.6",
+        "phpmailer/phpmailer": "^v5.2.22",
+        "smarty/smarty": "^v2.6.30",
+        "oxid-esales/flow-theme": "dev-master || ^2.2.0",
+        "oxid-esales/oxideshop-doctrine-migration-wrapper": "^v2.0.0",
+        "oxid-esales/oxideshop-db-views-generator": "^v1.1.0",
+        "oxid-esales/eshop-edition-facts": "^v1.0.0",
+        "doctrine/dbal": "v2.5.12",
+        "oxid-esales/oxideshop-demodata-installer": "^v1.1.0",
+        "oxid-esales/oxideshop-composer-plugin": "^v2.0.0",
+        "oxid-esales/oxideshop-unified-namespace-generator": "dev-master || ^1.0.0",
+        "ddoe/wysiwyg-editor-module": "^v1.0.0"
     },
     "require-dev": {
         "oxid-esales/testing-library": "dev-master",
-        "oxid-esales/coding-standards": "dev-master",
+        "oxid-esales/coding-standards": "^v3.0.2",
         "oxid-esales/coding-standards-wrapper": "dev-master",
-        "incenteev/composer-parameter-handler": "~2.0"
+        "incenteev/composer-parameter-handler": "~v2.0",
+        "oxid-esales/oxideshop-ide-helper": "^2.0",
+        "oxid-esales/eshop-virtual-namespace-generator": "^2.0",
+        "oxid-esales/azure-theme": "dev-b-1.4"
     },
     "autoload": {
         "psr-4": {
-            "OxidEsales\\Eshop\\": "./source"
+            "OxidEsales\\EshopCommunity\\": "./source"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "OxidEsales\\Eshop\\Tests\\": "./tests"
+            "OxidEsales\\EshopCommunity\\Tests\\": "./tests"
         }
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {
         "post-install-cmd": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "@oe:ide-helper:generate"
         ],
         "post-update-cmd": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "@oe:ide-helper:generate"
         ],
-        "oe:migration:run": "oe-eshop-facts oe-eshop-db_migrate",
-        "oe:migration:new": "oe-eshop-facts oe-eshop-db_generate_migration",
-        "oe:views:regenerate": "oe-eshop-facts oe-eshop-db_views_regenerate"
+        "oe:ide-helper:generate": [
+            "if [ -f ./vendor/bin/oe-eshop-ide_helper ]; then oe-eshop-ide_helper; fi"
+        ],
+        "oe:migration:run": "oe-eshop-doctrine_migration migrations:migrate",
+        "oe:migration:new": "oe-eshop-doctrine_migration migrations:generate",
+        "oe:views:regenerate": "oe-eshop-db_views_regenerate"
     },
     "extra": {
+        "oxideshop": {
+            "blacklist-filter": [
+                "Application/Component/**/*",
+                "Application/Controller/**/*",
+                "Application/Model/**/*",
+                "Core/**/*"
+            ]
+        },
         "incenteev-parameters": {
             "file": "test_config.yml",
             "dist-file": "vendor/oxid-esales/testing-library/test_config.yml.dist",

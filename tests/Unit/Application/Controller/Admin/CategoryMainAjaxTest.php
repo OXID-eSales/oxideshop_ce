@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
 
@@ -161,7 +161,7 @@ class CategoryMainAjaxTest extends \OxidTestCase
     {
         $sOxid = '_testCategory';
         $this->setRequestParameter("oxid", $sOxid);
-        $oView = $this->getMock("category_main_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\CategoryMainAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testObjectRemove1')));
         $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2category where oxcatnid='$sOxid'"));
 
@@ -196,7 +196,7 @@ class CategoryMainAjaxTest extends \OxidTestCase
     {
         $sSynchoxid = '_testCategory';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
-        $oView = $this->getMock("category_main_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\CategoryMainAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testArticleAdd1', '_testArticleAdd2')));
         $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxobject2category where oxcatnid='$sSynchoxid'"));
 

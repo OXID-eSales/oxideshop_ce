@@ -20,12 +20,12 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Component\Widget;
+namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
 /**
  * Cookie note widget
  */
-class CookieNote extends \oxWidget
+class CookieNote extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
 
     /**

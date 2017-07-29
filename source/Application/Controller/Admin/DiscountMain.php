@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -28,10 +28,10 @@ use stdClass;
 
 /**
  * Admin article main discount manager.
- * Performs collection and updatind (on user submit) main item information.
+ * Performs collection and updating (on user submit) main item information.
  * Admin Menu: Shop Settings -> Discounts -> Main.
  */
-class DiscountMain extends \oxAdminDetails
+class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -48,7 +48,7 @@ class DiscountMain extends \oxAdminDetails
         $sOxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($sOxId) && $sOxId != "-1") {
             // load object
-            $oDiscount = oxNew("oxdiscount");
+            $oDiscount = oxNew(\OxidEsales\Eshop\Application\Model\Discount::class);
             $oDiscount->loadInLang($this->_iEditLang, $sOxId);
 
             $oOtherLang = $oDiscount->getAvailableInLangs();
@@ -65,7 +65,7 @@ class DiscountMain extends \oxAdminDetails
             }
 
             // remove already created languages
-            $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
+            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
 
             if (count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
@@ -79,9 +79,9 @@ class DiscountMain extends \oxAdminDetails
             }
         }
 
-        if (($iAoc = oxRegistry::getConfig()->getRequestParameter("aoc"))) {
+        if (($iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc"))) {
             if ($iAoc == "1") {
-                $oDiscountMainAjax = oxNew('discount_main_ajax');
+                $oDiscountMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DiscountMainAjax::class);
                 $this->_aViewData['oxajax'] = $oDiscountMainAjax->getColumns();
 
                 return "popups/discount_main.tpl";
@@ -89,7 +89,7 @@ class DiscountMain extends \oxAdminDetails
                 // generating category tree for artikel choose select list
                 $this->_createCategoryTree("artcattree");
 
-                $oDiscountItemAjax = oxNew('discount_item_ajax');
+                $oDiscountItemAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DiscountItemAjax::class);
                 $this->_aViewData['oxajax'] = $oDiscountItemAjax->getColumns();
 
                 return "popups/discount_item.tpl";
@@ -110,11 +110,12 @@ class DiscountMain extends \oxAdminDetails
         $sOxId = $this->getEditObjectId();
         if (isset($sOxId) && $sOxId != "-1") {
             $sViewName = getViewName("oxarticles", $this->_iEditLang);
-            $oDb = oxDb::getDb();
+            // Reading from slave is ok here (see ESDEV-3804 and ESDEV-3822).
+            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sQ = "select concat( $sViewName.oxartnum, ' ', $sViewName.oxtitle ) from oxdiscount
                    left join $sViewName on $sViewName.oxid=oxdiscount.oxitmartid
-                   where oxdiscount.oxitmartid != '' and oxdiscount.oxid=" . $oDb->quote($sOxId);
-            $sTitle = $oDb->getOne($sQ, false, false);
+                   where oxdiscount.oxitmartid != '' and oxdiscount.oxid=" . $database->quote($sOxId);
+            $sTitle = $database->getOne($sQ);
         }
 
         return $sTitle ? $sTitle : " -- ";
@@ -130,9 +131,9 @@ class DiscountMain extends \oxAdminDetails
         parent::save();
 
         $sOxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
 
-        $oDiscount = oxNew("oxDiscount");
+        $oDiscount = oxNew(\OxidEsales\Eshop\Application\Model\Discount::class);
         if ($sOxId != "-1") {
             $oDiscount->load($sOxId);
         } else {
@@ -153,21 +154,20 @@ class DiscountMain extends \oxAdminDetails
         $oDiscount->setLanguage(0);
         $oDiscount->assign($aParams);
         $oDiscount->setLanguage($this->_iEditLang);
-        $oDiscount = oxRegistry::get("oxUtilsFile")->processFiles($oDiscount);
+        $oDiscount = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oDiscount);
         try {
             $oDiscount->save();
         } catch (\oxInputException $exception) {
-
-            $newException = oxNew("oxExceptionToDisplay");
+            $newException = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             $newException->setMessage($exception->getMessage());
             $this->addTplParam('discount_title', $aParams['oxdiscount__oxtitle']);
 
             if (false !== strpos($exception->getMessage(), 'DISCOUNT_ERROR_OXSORT')) {
-                $messageArgument = oxRegistry::getLang()->translateString('DISCOUNT_MAIN_SORT', oxRegistry::getLang()->getTplLanguage(), true);
+                $messageArgument = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('DISCOUNT_MAIN_SORT', \OxidEsales\Eshop\Core\Registry::getLang()->getTplLanguage(), true);
                 $newException->setMessageArgs($messageArgument);
             }
 
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay($newException);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($newException);
 
             return;
         }
@@ -186,9 +186,9 @@ class DiscountMain extends \oxAdminDetails
         parent::save();
 
         $sOxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
 
-        $oAttr = oxNew("oxdiscount");
+        $oAttr = oxNew(\OxidEsales\Eshop\Application\Model\Discount::class);
         if ($sOxId != "-1") {
             $oAttr->load($sOxId);
         } else {
@@ -208,16 +208,22 @@ class DiscountMain extends \oxAdminDetails
         $oAttr->setLanguage(0);
         $oAttr->assign($aParams);
         $oAttr->setLanguage($this->_iEditLang);
-        $oAttr = oxRegistry::get("oxUtilsFile")->processFiles($oAttr);
+        $oAttr = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oAttr);
         $oAttr->save();
 
         // set oxid if inserted
         $this->setEditObjectId($oAttr->getId());
     }
 
-    public function getNextOxsort() {
-        $shopId = oxRegistry::getConfig()->getShopId();
-        $nextSort = oxNew("oxdiscount")->getNextOxsort($shopId);
+    /**
+     * Increment the maximum value of oxsort found in the database by certain amount and return it.
+     *
+     * @return int The incremented oxsort.
+     */
+    public function getNextOxsort()
+    {
+        $shopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
+        $nextSort = oxNew(\OxidEsales\Eshop\Application\Model\Discount::class)->getNextOxsort($shopId);
 
         return $nextSort;
     }

@@ -20,20 +20,20 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxField;
 use oxRegistry;
 
 /**
- * Pricealarm window.
+ * PriceAlarm window.
  * Arranges "pricealarm" window, by sending eMail and storing into Database (etc.)
  * submission. Result - "pricealarm.tpl"  template. After user correctly
  * fulfils all required fields all information is sent to shop owner by
  * email.
  * OXID eShop -> pricealarm.
  */
-class PriceAlarmController extends \oxUBase
+class PriceAlarmController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
      * Current class template name.
@@ -75,10 +75,10 @@ class PriceAlarmController extends \oxUBase
     public function addme()
     {
         $myConfig = $this->getConfig();
-        $myUtils = oxRegistry::getUtils();
+        $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
 
-        $aParams = oxRegistry::getConfig()->getRequestParameter('pa');
-        if (!isset($aParams['email']) || !$myUtils->isValidEmail($aParams['email'])) {
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pa');
+        if (!isset($aParams['email']) || !oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams['email'])) {
             $this->_iPriceAlarmStatus = 0;
 
             return;
@@ -88,20 +88,20 @@ class PriceAlarmController extends \oxUBase
         // convert currency to default
         $dPrice = $myUtils->currency2Float($aParams['price']);
 
-        $oAlarm = oxNew("oxpricealarm");
-        $oAlarm->oxpricealarm__oxuserid = new oxField(oxRegistry::getSession()->getVariable('usr'));
-        $oAlarm->oxpricealarm__oxemail = new oxField($aParams['email']);
-        $oAlarm->oxpricealarm__oxartid = new oxField($aParams['aid']);
-        $oAlarm->oxpricealarm__oxprice = new oxField($myUtils->fRound($dPrice, $oCur));
-        $oAlarm->oxpricealarm__oxshopid = new oxField($myConfig->getShopId());
-        $oAlarm->oxpricealarm__oxcurrency = new oxField($oCur->name);
+        $oAlarm = oxNew(\OxidEsales\Eshop\Application\Model\PriceAlarm::class);
+        $oAlarm->oxpricealarm__oxuserid = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('usr'));
+        $oAlarm->oxpricealarm__oxemail = new \OxidEsales\Eshop\Core\Field($aParams['email']);
+        $oAlarm->oxpricealarm__oxartid = new \OxidEsales\Eshop\Core\Field($aParams['aid']);
+        $oAlarm->oxpricealarm__oxprice = new \OxidEsales\Eshop\Core\Field($myUtils->fRound($dPrice, $oCur));
+        $oAlarm->oxpricealarm__oxshopid = new \OxidEsales\Eshop\Core\Field($myConfig->getShopId());
+        $oAlarm->oxpricealarm__oxcurrency = new \OxidEsales\Eshop\Core\Field($oCur->name);
 
-        $oAlarm->oxpricealarm__oxlang = new oxField(oxRegistry::getLang()->getBaseLanguage());
+        $oAlarm->oxpricealarm__oxlang = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage());
 
         $oAlarm->save();
 
         // Send Email
-        $oEmail = oxNew('oxemail');
+        $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
         $this->_iPriceAlarmStatus = (int) $oEmail->sendPricealarmNotification($aParams, $oAlarm);
     }
 
@@ -117,8 +117,8 @@ class PriceAlarmController extends \oxUBase
 
             $aParams = $this->_getParams();
             $oCur = $this->getConfig()->getActShopCurrencyObject();
-            $iPrice = oxRegistry::getUtils()->currency2Float($aParams['price']);
-            $this->_sBidPrice = oxRegistry::getLang()->formatCurrency($iPrice, $oCur);
+            $iPrice = \OxidEsales\Eshop\Core\Registry::getUtils()->currency2Float($aParams['price']);
+            $this->_sBidPrice = \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($iPrice, $oCur);
         }
 
         return $this->_sBidPrice;
@@ -134,7 +134,7 @@ class PriceAlarmController extends \oxUBase
         if ($this->_oArticle === null) {
             $this->_oArticle = false;
             $aParams = $this->_getParams();
-            $oArticle = oxNew('oxArticle');
+            $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             $oArticle->load($aParams['aid']);
             $this->_oArticle = $oArticle;
         }
@@ -149,7 +149,7 @@ class PriceAlarmController extends \oxUBase
      */
     private function _getParams()
     {
-        return oxRegistry::getConfig()->getRequestParameter('pa');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pa');
     }
 
     /**

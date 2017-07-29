@@ -20,24 +20,15 @@
  * @version   OXID eShop CE
  */
 
+namespace OxidEsales\EshopCommunity\Setup;
+
+require_once '../bootstrap.php';
+
+/** moduleAutoload must be unregistered, as it would trigger a database connection, which is not yet available */
+$moduleAutoload = \OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload::class ;
+spl_autoload_unregister([$moduleAutoload, 'autoload']);
+
 error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
-
-//setting basic configuration parameters
-ini_set('session.name', 'sid');
-ini_set('session.use_cookies', 0);
-ini_set('session.use_trans_sid', 0);
-ini_set('url_rewriter.tags', '');
-
-use OxidEsales\Eshop\Setup\Dispatcher;
-
-if (!defined('OX_BASE_PATH')) {
-    define('OX_BASE_PATH', __DIR__ . DIRECTORY_SEPARATOR . '/../');
-}
-
-require_once '../oxfunctions.php';
-
-registerComposerAutoload();
-registerShopAutoLoad();
 
 require_once 'functions.php';
 

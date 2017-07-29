@@ -19,12 +19,11 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
 use \oxDb;
 use \oxRegistry;
-use oxUtilsObject;
 
 /**
  * Testing oxvoucherserie class
@@ -414,7 +413,7 @@ class VoucherserieTest extends \OxidTestCase
             $oNewVoucher = oxNew("oxvoucher");
             $oNewVoucher->oxvouchers__oxvouchernr = new oxField('_test_' . $sOxid);
             $oNewVoucher->oxvouchers__oxvoucherserieid = new oxField($sOxid);
-            $oNewVoucher->oxvouchers__oxorderid = new oxField(oxUtilsObject::getInstance()->generateUID());
+            $oNewVoucher->oxvouchers__oxorderid = new oxField(oxRegistry::getUtilsObject()->generateUID());
             $oNewVoucher->setId('_test_' . $sOxid);
             $oNewVoucher->save();
 

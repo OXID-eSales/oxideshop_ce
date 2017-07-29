@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin usergroup list manager.
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: User Administration -> User Groups.
  */
-class UserGroupList extends \oxAdminList
+class UserGroupList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**

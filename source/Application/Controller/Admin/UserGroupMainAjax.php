@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -29,7 +29,7 @@ use oxField;
 /**
  * Class manages users assignment to groups
  */
-class UserGroupMainAjax extends \ajaxListComponent
+class UserGroupMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**
@@ -74,9 +74,9 @@ class UserGroupMainAjax extends \ajaxListComponent
 
         // looking for table/view
         $sUserTable = $this->_getViewName('oxuser');
-        $oDb = oxDb::getDb();
-        $sRoleId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchRoleId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $sRoleId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $sSynchRoleId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sRoleId) {
@@ -109,14 +109,12 @@ class UserGroupMainAjax extends \ajaxListComponent
     {
         $aRemoveGroups = $this->_getActionIds('oxobject2group.oxid');
 
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
-
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2group.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
-
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
-            $sQ = "delete from oxobject2group where oxobject2group.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aRemoveGroups)) . ") ";
-            oxDb::getDb()->Execute($sQ);
+            $sQ = "delete from oxobject2group where oxobject2group.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRemoveGroups)) . ") ";
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
 
@@ -126,17 +124,17 @@ class UserGroupMainAjax extends \ajaxListComponent
     public function addUserToUGroup()
     {
         $aAddUsers = $this->_getActionIds('oxuser.oxid');
-        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sUserTable = $this->_getViewName('oxuser');
             $aAddUsers = $this->_getAll($this->_addFilter("select $sUserTable.oxid " . $this->_getQuery()));
         }
         if ($soxId && $soxId != "-1" && is_array($aAddUsers)) {
             foreach ($aAddUsers as $sAdduser) {
-                $oNewGroup = oxNew("oxobject2group");
-                $oNewGroup->oxobject2group__oxobjectid = new oxField($sAdduser);
-                $oNewGroup->oxobject2group__oxgroupsid = new oxField($soxId);
+                $oNewGroup = oxNew(\OxidEsales\Eshop\Application\Model\Object2Group::class);
+                $oNewGroup->oxobject2group__oxobjectid = new \OxidEsales\Eshop\Core\Field($sAdduser);
+                $oNewGroup->oxobject2group__oxgroupsid = new \OxidEsales\Eshop\Core\Field($soxId);
                 $oNewGroup->save();
             }
         }

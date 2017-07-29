@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
-use oxArticleList;
+use OxidEsales\EshopCommunity\Application\Model\ArticleList;
 use \oxField;
 use \oxTestModules;
 
@@ -38,7 +38,7 @@ class AccountOrderTest extends \OxidTestCase
      */
     public function testGetPageNavigation()
     {
-        $oView = $this->getMock("Account_Order", array("generatePageNavigation"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountOrderController::class, array("generatePageNavigation"));
         $oView->expects($this->once())->method('generatePageNavigation');
         $this->assertNull($oView->getPageNavigation());
     }
@@ -50,7 +50,7 @@ class AccountOrderTest extends \OxidTestCase
      */
     public function testGetOrderArticleListEmptyOrderList()
     {
-        $oView = $this->getMock("Account_Order", array("getOrderList"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountOrderController::class, array("getOrderList"));
         $oView->expects($this->any())->method('getOrderList')->will($this->returnValue(false));
         $this->assertFalse($oView->getOrderArticleList());
     }
@@ -64,12 +64,12 @@ class AccountOrderTest extends \OxidTestCase
     {
         oxTestModules::addFunction('oxarticlelist', 'loadOrderArticles', '{ return "testOrderArticles"; }');
 
-        $oOrderList = $this->getMock("oxlist", array("count"));
+        $oOrderList = $this->getMock(\OxidEsales\Eshop\Core\Model\ListModel::class, array("count"));
         $oOrderList->expects($this->any())->method('count')->will($this->returnValue(1));
 
-        $oView = $this->getMock("Account_Order", array("getOrderList"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountOrderController::class, array("getOrderList"));
         $oView->expects($this->any())->method('getOrderList')->will($this->returnValue($oOrderList));
-        $this->assertTrue($oView->getOrderArticleList() instanceof oxArticleList);
+        $this->assertTrue($oView->getOrderArticleList() instanceof ArticleList);
     }
 
     /**
@@ -79,7 +79,7 @@ class AccountOrderTest extends \OxidTestCase
      */
     public function testGetOrderListNoSessionUser()
     {
-        $oView = $this->getMock("Account_Order", array("getUser"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountOrderController::class, array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
         $this->assertEquals(0, count($oView->getOrderList()));
     }
@@ -91,11 +91,11 @@ class AccountOrderTest extends \OxidTestCase
      */
     public function testGetOrderList()
     {
-        $oUser = $this->getMock("oxUser", array("getOrders", "getOrderCount"));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array("getOrders", "getOrderCount"));
         $oUser->expects($this->once())->method('getOrders')->will($this->returnValue("testOrders"));
         $oUser->expects($this->once())->method('getOrderCount')->will($this->returnValue(1));
 
-        $oView = $this->getMock("Account_Order", array("getUser"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountOrderController::class, array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
         $this->assertEquals("testOrders", $oView->getOrderList());
     }
@@ -107,7 +107,7 @@ class AccountOrderTest extends \OxidTestCase
      */
     public function testRenderNoUser()
     {
-        $oView = $this->getMock("Account_Order", array("getUser"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountOrderController::class, array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
         $this->assertEquals('page/account/login.tpl', $oView->render());
     }
@@ -122,7 +122,7 @@ class AccountOrderTest extends \OxidTestCase
         $oUser = oxNew('oxuser');
         $oUser->oxuser__oxpassword = new oxField("testPassword");
 
-        $oView = $this->getMock("Account_Order", array("getUser"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountOrderController::class, array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
         $this->assertEquals('page/account/order.tpl', $oView->render());
     }

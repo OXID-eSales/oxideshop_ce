@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxSystemComponentException;
@@ -30,7 +30,7 @@ use oxSystemComponentException;
  * Collects shop license settings, updates it on user submit, etc.
  * Admin Menu: Main Menu -> Core Settings -> License.
  */
-class ShopLicense extends \Shop_Config
+class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
     /**
      * Current class template.
@@ -52,7 +52,7 @@ class ShopLicense extends \Shop_Config
     {
         $myConfig = $this->getConfig();
         if ($myConfig->isDemoShop()) {
-            /** @var oxSystemComponentException $oSystemComponentException */
+            /** @var \OxidEsales\Eshop\Core\Exception\SystemComponentException $oSystemComponentException */
             $oSystemComponentException = oxNew("oxSystemComponentException", "license");
             throw $oSystemComponentException;
         }
@@ -62,7 +62,7 @@ class ShopLicense extends \Shop_Config
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if ($soxId != "-1") {
             // load object
-            $oShop = oxNew("oxshop");
+            $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
             $oShop->load($soxId);
             $this->_aViewData["edit"] = $oShop;
         }
@@ -87,7 +87,7 @@ class ShopLicense extends \Shop_Config
     {
         $myConfig = $this->getConfig();
 
-        $blIsMallAdmin = oxRegistry::getSession()->getVariable('malladmin');
+        $blIsMallAdmin = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('malladmin');
         if (!$blIsMallAdmin) {
             return false;
         }
@@ -109,11 +109,11 @@ class ShopLicense extends \Shop_Config
     protected function _fetchCurVersionInfo($sUrl)
     {
         $aParams = array("myversion" => $this->getConfig()->getVersion());
-        $oLang = oxRegistry::getLang();
+        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $iLang = $oLang->getTplLanguage();
         $sLang = $oLang->getLanguageAbbr($iLang);
 
-        $oCurl = oxNew('oxCurl');
+        $oCurl = oxNew(\OxidEsales\Eshop\Core\Curl::class);
         $oCurl->setMethod("POST");
         $oCurl->setUrl($sUrl . "/" . $sLang);
         $oCurl->setParameters($aParams);
@@ -122,7 +122,7 @@ class ShopLicense extends \Shop_Config
         $sOutput = strip_tags($sOutput, "<br>, <b>");
         $aResult = explode("<br>", $sOutput);
         if (strstr($aResult[5], "update")) {
-            $sUpdateLink = oxRegistry::getLang()->translateString("VERSION_UPDATE_LINK");
+            $sUpdateLink = \OxidEsales\Eshop\Core\Registry::getLang()->translateString("VERSION_UPDATE_LINK");
             $aResult[5] = "<a id='linkToUpdate' href='$sUpdateLink' target='_blank'>" . $aResult[5] . "</a>";
         }
 

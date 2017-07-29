@@ -19,15 +19,19 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core\Module;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Module;
 
 use Exception;
-use OxidEsales\Eshop\Core\FileSystem\FileSystem;
-use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
+use OxidEsales\EshopCommunity\Core\FileSystem\FileSystem;
+use OxidEsales\EshopCommunity\Core\Module\ModuleTemplatePathCalculator;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use oxModuleList;
 use PHPUnit_Framework_MockObject_MockObject;
 
+/**
+ * @group module
+ * @package Unit\Core\Module
+ */
 class ModuleTemplatePathFormatterTest extends UnitTestCase
 {
     /**

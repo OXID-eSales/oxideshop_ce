@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -29,7 +29,7 @@ use oxField;
 /**
  * Class manages promotion groups
  */
-class ActionsGroupsAjax extends \ajaxListComponent
+class ActionsGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
     /**
      * Columns array
@@ -59,10 +59,10 @@ class ActionsGroupsAjax extends \ajaxListComponent
     {
         // active AJAX component
         $sGroupTable = $this->_getViewName('oxgroups');
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $sId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $sId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $sSynchId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sId) {
@@ -91,11 +91,11 @@ class ActionsGroupsAjax extends \ajaxListComponent
         $aRemoveGroups = $this->_getActionIds('oxobject2action.oxid');
         if ($this->getConfig()->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2action.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
-            $sRemoveGroups = implode(", ", oxDb::getInstance()->quoteArray($aRemoveGroups));
+            $sRemoveGroups = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRemoveGroups));
             $sQ = "delete from oxobject2action where oxobject2action.oxid in (" . $sRemoveGroups . ") ";
-            oxDb::getDb()->Execute($sQ);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
 
@@ -117,11 +117,11 @@ class ActionsGroupsAjax extends \ajaxListComponent
         $promotionAdded = false;
         if ($soxId && $soxId != "-1" && is_array($aChosenGroup)) {
             foreach ($aChosenGroup as $sChosenGroup) {
-                $oObject2Promotion = oxNew("oxBase");
+                $oObject2Promotion = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Promotion->init('oxobject2action');
-                $oObject2Promotion->oxobject2action__oxactionid = new oxField($soxId);
-                $oObject2Promotion->oxobject2action__oxobjectid = new oxField($sChosenGroup);
-                $oObject2Promotion->oxobject2action__oxclass = new oxField("oxgroups");
+                $oObject2Promotion->oxobject2action__oxactionid = new \OxidEsales\Eshop\Core\Field($soxId);
+                $oObject2Promotion->oxobject2action__oxobjectid = new \OxidEsales\Eshop\Core\Field($sChosenGroup);
+                $oObject2Promotion->oxobject2action__oxclass = new \OxidEsales\Eshop\Core\Field("oxgroups");
                 $oObject2Promotion->save();
             }
 

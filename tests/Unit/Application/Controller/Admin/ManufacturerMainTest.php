@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use \oxmanufacturer;
+use OxidEsales\EshopCommunity\Application\Model\Manufacturer;
 
 use \Exception;
 use \oxTestModules;
@@ -47,7 +47,7 @@ class ManufacturerMainTest extends \OxidTestCase
         $this->assertEquals('manufacturer_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxmanufacturer);
+        $this->assertTrue($aViewData['edit'] instanceof manufacturer);
         $this->assertTrue(isset($aViewData['readonly']));
     }
 

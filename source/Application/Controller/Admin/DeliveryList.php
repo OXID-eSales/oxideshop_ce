@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin delivery list manager.
@@ -28,7 +28,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
  * filter them by description, title or delete them.
  * Admin Menu: Shop Settings -> Shipping & Handling.
  */
-class DeliveryList extends \oxAdminList
+class DeliveryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**

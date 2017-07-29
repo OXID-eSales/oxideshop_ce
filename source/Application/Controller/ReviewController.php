@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxField;
 use oxRegistry;
@@ -31,7 +31,7 @@ use oxUser;
  * Review of chosen article.
  * Collects article review data, saves new review to DB.
  */
-class ReviewController extends \Details
+class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleDetailsController
 {
 
     /**
@@ -143,7 +143,7 @@ class ReviewController extends \Details
      */
     public function generateViewId()
     {
-        return oxUBase::generateViewId();
+        return \OxidEsales\Eshop\Application\Controller\FrontendController::generateViewId();
     }
 
     /**
@@ -152,18 +152,18 @@ class ReviewController extends \Details
     public function init()
     {
         // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-        if (oxRegistry::getConfig()->getRequestParameter('recommid') && !$this->getActiveRecommList()) {
-            oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeUrl(), true, 302);
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recommid') && !$this->getActiveRecommList()) {
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getConfig()->getShopHomeUrl(), true, 302);
         }
         // END deprecated
 
-        oxUBase::init();
+        \OxidEsales\Eshop\Application\Controller\FrontendController::init();
     }
 
     /**
      * Executes parent::render, loads article reviews and additional data
-     * (oxarticle::getReviews(), oxarticle::getCrossSelling(),
-     * oxarticle::GetSimilarProducts()). Returns name of template file to
+     * (\OxidEsales\Eshop\Application\Model\Article::getReviews(), \OxidEsales\Eshop\Application\Model\Article::getCrossSelling(),
+     * \OxidEsales\Eshop\Application\Model\Article::GetSimilarProducts()). Returns name of template file to
      * render review::_sThisTemplate.
      *
      * @return  string  current template file name
@@ -173,10 +173,10 @@ class ReviewController extends \Details
         $oConfig = $this->getConfig();
 
         if (!$oConfig->getConfigParam("bl_perfLoadReviews")) {
-            oxRegistry::getUtils()->redirect($oConfig->getShopHomeUrl());
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($oConfig->getShopHomeUrl());
         }
 
-        oxUBase::render();
+        \OxidEsales\Eshop\Application\Controller\FrontendController::render();
         if (!($this->getReviewUser())) {
             $this->_sThisTemplate = $this->_sThisLoginTemplate;
         } else {
@@ -206,14 +206,14 @@ class ReviewController extends \Details
      */
     public function saveReview()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!\OxidEsales\Eshop\Core\Registry::getSession()->checkSessionChallenge()) {
             return;
         }
 
         if (($oRevUser = $this->getReviewUser()) && $this->canAcceptFormData()) {
             if (($oActObject = $this->_getActiveObject()) && ($sType = $this->_getActiveType())) {
-                if (($dRating = oxRegistry::getConfig()->getRequestParameter('rating')) === null) {
-                    $dRating = oxRegistry::getConfig()->getRequestParameter('artrating');
+                if (($dRating = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('rating')) === null) {
+                    $dRating = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('artrating');
                 }
 
                 if ($dRating !== null) {
@@ -222,12 +222,12 @@ class ReviewController extends \Details
 
                 //save rating
                 if ($dRating !== null && $dRating >= 1 && $dRating <= 5) {
-                    $oRating = oxNew('oxrating');
+                    $oRating = oxNew(\OxidEsales\Eshop\Application\Model\Rating::class);
                     if ($oRating->allowRating($oRevUser->getId(), $sType, $oActObject->getId())) {
-                        $oRating->oxratings__oxuserid = new oxField($oRevUser->getId());
-                        $oRating->oxratings__oxtype = new oxField($sType);
-                        $oRating->oxratings__oxobjectid = new oxField($oActObject->getId());
-                        $oRating->oxratings__oxrating = new oxField($dRating);
+                        $oRating->oxratings__oxuserid = new \OxidEsales\Eshop\Core\Field($oRevUser->getId());
+                        $oRating->oxratings__oxtype = new \OxidEsales\Eshop\Core\Field($sType);
+                        $oRating->oxratings__oxobjectid = new \OxidEsales\Eshop\Core\Field($oActObject->getId());
+                        $oRating->oxratings__oxrating = new \OxidEsales\Eshop\Core\Field($dRating);
                         $oRating->save();
 
                         $oActObject->addToRatingAverage($dRating);
@@ -236,14 +236,14 @@ class ReviewController extends \Details
                     }
                 }
 
-                if (($sReviewText = trim(( string ) oxRegistry::getConfig()->getRequestParameter('rvw_txt', true)))) {
-                    $oReview = oxNew('oxreview');
-                    $oReview->oxreviews__oxobjectid = new oxField($oActObject->getId());
-                    $oReview->oxreviews__oxtype = new oxField($sType);
-                    $oReview->oxreviews__oxtext = new oxField($sReviewText, oxField::T_RAW);
-                    $oReview->oxreviews__oxlang = new oxField(oxRegistry::getLang()->getBaseLanguage());
-                    $oReview->oxreviews__oxuserid = new oxField($oRevUser->getId());
-                    $oReview->oxreviews__oxrating = new oxField(($dRating !== null) ? $dRating : null);
+                if (($sReviewText = trim(( string ) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('rvw_txt', true)))) {
+                    $oReview = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
+                    $oReview->oxreviews__oxobjectid = new \OxidEsales\Eshop\Core\Field($oActObject->getId());
+                    $oReview->oxreviews__oxtype = new \OxidEsales\Eshop\Core\Field($sType);
+                    $oReview->oxreviews__oxtext = new \OxidEsales\Eshop\Core\Field($sReviewText, \OxidEsales\Eshop\Core\Field::T_RAW);
+                    $oReview->oxreviews__oxlang = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage());
+                    $oReview->oxreviews__oxuserid = new \OxidEsales\Eshop\Core\Field($oRevUser->getId());
+                    $oReview->oxreviews__oxrating = new \OxidEsales\Eshop\Core\Field(($dRating !== null) ? $dRating : null);
                     $oReview->save();
 
                     $this->_blReviewSendStatus = true;
@@ -261,7 +261,7 @@ class ReviewController extends \Details
     {
         if ($this->_oRevUser === null) {
             $this->_oRevUser = false;
-            $oUser = oxNew("oxuser");
+            $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
 
             if ($sUserId = $oUser->getReviewUserId($this->getReviewUserHash())) {
                 // review user, by link or other source?
@@ -272,7 +272,6 @@ class ReviewController extends \Details
                 // session user?
                 $this->_oRevUser = $oUser;
             }
-
         }
 
         return $this->_oRevUser;
@@ -285,7 +284,7 @@ class ReviewController extends \Details
      */
     public function getReviewUserHash()
     {
-        return oxRegistry::getConfig()->getRequestParameter('reviewuserhash');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('reviewuserhash');
     }
 
     /**
@@ -342,8 +341,8 @@ class ReviewController extends \Details
         if ($this->_oActiveRecommList === null) {
             $this->_oActiveRecommList = false;
 
-            if ($sRecommId = oxRegistry::getConfig()->getRequestParameter('recommid')) {
-                $oActiveRecommList = oxNew('oxrecommlist');
+            if ($sRecommId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recommid')) {
+                $oActiveRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
                 if ($oActiveRecommList->load($sRecommId)) {
                     $this->_oActiveRecommList = $oActiveRecommList;
                 }
@@ -363,7 +362,7 @@ class ReviewController extends \Details
         if ($this->_blRate === null) {
             $this->_blRate = false;
             if (($oActObject = $this->_getActiveObject()) && ($oRevUser = $this->getReviewUser())) {
-                $oRating = oxNew('oxrating');
+                $oRating = oxNew(\OxidEsales\Eshop\Application\Model\Rating::class);
                 $this->_blRate = $oRating->allowRating(
                     $oRevUser->getId(),
                     $this->_getActiveType(),
@@ -404,7 +403,7 @@ class ReviewController extends \Details
         if ($this->_oRecommList === null) {
             $this->_oRecommList = false;
             if ($oProduct = $this->getProduct()) {
-                $oRecommList = oxNew('oxrecommlist');
+                $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
                 $this->_oRecommList = $oRecommList->getRecommListsByIds(array($oProduct->getId()));
             }
         }
@@ -425,7 +424,7 @@ class ReviewController extends \Details
             $this->_oActiveRecommItems = false;
             if ($oActiveRecommList = $this->getActiveRecommList()) {
                 // sets active page
-                $iActPage = (int) oxRegistry::getConfig()->getRequestParameter('pgNr');
+                $iActPage = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pgNr');
                 $iActPage = ($iActPage < 0) ? 0 : $iActPage;
 
                 // load only lists which we show on screen
@@ -482,7 +481,7 @@ class ReviewController extends \Details
      */
     public function getAdditionalParams()
     {
-        $sAddParams = oxUBase::getAdditionalParams();
+        $sAddParams = \OxidEsales\Eshop\Application\Controller\FrontendController::getAdditionalParams();
         // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         if ($oActRecommList = $this->getActiveRecommList()) {
             $sAddParams .= '&amp;recommid=' . $oActRecommList->getId();
@@ -501,17 +500,17 @@ class ReviewController extends \Details
     {
         $sParams = parent::getDynUrlParams();
 
-        if ($sCnId = oxRegistry::getConfig()->getRequestParameter('cnid')) {
+        if ($sCnId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid')) {
             $sParams .= "&amp;cnid={$sCnId}";
         }
-        if ($sAnId = oxRegistry::getConfig()->getRequestParameter('anid')) {
+        if ($sAnId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('anid')) {
             $sParams .= "&amp;anid={$sAnId}";
         }
-        if ($sListType = oxRegistry::getConfig()->getRequestParameter('listtype')) {
+        if ($sListType = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('listtype')) {
             $sParams .= "&amp;listtype={$sListType}";
         }
         // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-        if ($sRecommId = oxRegistry::getConfig()->getRequestParameter('recommid')) {
+        if ($sRecommId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recommid')) {
             $sParams .= "&amp;recommid={$sRecommId}";
         }
         // END deprecated

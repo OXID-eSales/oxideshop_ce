@@ -19,10 +19,10 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
-use oxUtilsObject;
+use oxRegistry;
 
 class PaymentlistTest extends \OxidTestCase
 {
@@ -37,7 +37,7 @@ class PaymentlistTest extends \OxidTestCase
      */
     protected function _getUId()
     {
-        $sUId = oxUtilsObject::getInstance()->generateUId();
+        $sUId = oxRegistry::getUtilsObject()->generateUId();
         $sUId[0] = '_';
 
         return $sUId;
@@ -352,8 +352,7 @@ class PaymentlistTest extends \OxidTestCase
         $oPayment->save();
 
         // assigning groups
-        $oObjectToGroup = oxNew('oxBase');
-        $oObjectToGroup->init('oxobject2group');
+        $oObjectToGroup = oxNew('oxObject2Group');
         $oObjectToGroup->setId($this->_getUId());
         $oObjectToGroup->oxobject2group__oxshopid = new oxField($iShopId);
         $oObjectToGroup->oxobject2group__oxobjectid = new oxField($oPayment->getId());
@@ -382,8 +381,7 @@ class PaymentlistTest extends \OxidTestCase
         $oPayment->save();
 
         // assigning groups
-        $oObjectToGroup = oxNew('oxBase');
-        $oObjectToGroup->init('oxobject2group');
+        $oObjectToGroup = oxNew('oxObject2Group');
         $oObjectToGroup->setId($this->_getUId());
         $oObjectToGroup->oxobject2group__oxshopid = new oxField($iShopId);
         $oObjectToGroup->oxobject2group__oxobjectid = new oxField($oPayment->getId());
@@ -511,7 +509,6 @@ class PaymentlistTest extends \OxidTestCase
         $oDel2delset->oxdel2delset__oxdelsetid = new oxField($oDelSet->getId());
         $oDel2delset->save();
 
-
         //
         $oDelSet = oxNew('oxDeliverySet');
         $oDelSet->setId($this->_getUId());
@@ -555,7 +552,6 @@ class PaymentlistTest extends \OxidTestCase
         $oDel2delset->oxdel2delset__oxdelid = new oxField("1b842e738970d31e3.71258328");
         $oDel2delset->oxdel2delset__oxdelsetid = new oxField($oDelSet->getId());
         $oDel2delset->save();
-
 
         //
         $oDelSet = oxNew('oxDeliverySet');
@@ -626,7 +622,7 @@ class PaymentlistTest extends \OxidTestCase
         $sTestQ .= "inner join oxobject2payment ON oxobject2payment.oxobjectid = 'xxx' and oxobject2payment.oxpaymentid = $sTable.oxid ";
         $sTestQ .= "where $sTable.oxactive='1' "; // and oxobject2group.oxobjectid = $sTable.oxid
         $sTestQ .= "and $sPaymentsTable.oxfromboni <= '0' and $sPaymentsTable.oxfromamount <= '666' and $sPaymentsTable.oxtoamount >= '666' ";
-        $sTestQ .= " ) as $sTable where ( select if( exists( select 1 from oxobject2payment as ss1, $sCountryTable where $sCountryTable.oxid=ss1.oxobjectid and ss1.oxpaymentid=$sTable.OXID and ss1.oxtype='oxcountry' limit 1),
+        $sTestQ .= " order by {$sTable}.oxsort asc ) as $sTable where ( select if( exists( select 1 from oxobject2payment as ss1, $sCountryTable where $sCountryTable.oxid=ss1.oxobjectid and ss1.oxpaymentid=$sTable.OXID and ss1.oxtype='oxcountry' limit 1),
                     exists( select 1 from oxobject2payment as s1 where s1.oxpaymentid=$sTable.OXID and s1.oxtype='oxcountry' and s1.OXOBJECTID='a7c40f631fc920687.20179984' limit 1 ), 1) &&
                     if( exists( select 1 from oxobject2group as ss3, $sGroupTable where $sGroupTable.oxid=ss3.oxgroupsid and ss3.OXOBJECTID=$sTable.OXID limit 1), 0, 1) ) ) order by $sTable.oxsort asc ";
 
@@ -659,7 +655,7 @@ class PaymentlistTest extends \OxidTestCase
         $sTestQ .= "inner join oxobject2payment ON oxobject2payment.oxobjectid = 'xxx' and oxobject2payment.oxpaymentid = $sTable.oxid ";
         $sTestQ .= "where $sTable.oxactive='1' "; //  and oxobject2group.oxobjectid = $sTable.oxid
         $sTestQ .= "and $sTable.oxfromboni <= '1000' and $sTable.oxfromamount <= '666' and $sTable.oxtoamount >= '666' ";
-        $sTestQ .= ") as $sTable where ( select if( exists( select 1 from oxobject2payment as ss1, $sCountryTable where $sCountryTable.oxid=ss1.oxobjectid and ss1.oxpaymentid=$sTable.OXID and ss1.oxtype='oxcountry' limit 1),
+        $sTestQ .= " order by {$sTable}.oxsort asc ) as $sTable where ( select if( exists( select 1 from oxobject2payment as ss1, $sCountryTable where $sCountryTable.oxid=ss1.oxobjectid and ss1.oxpaymentid=$sTable.OXID and ss1.oxtype='oxcountry' limit 1),
                     exists( select 1 from oxobject2payment as s1 where s1.oxpaymentid=$sTable.OXID and s1.oxtype='oxcountry' and s1.OXOBJECTID='a7c40f631fc920687.20179984' limit 1), 1) &&
                     if( exists( select 1 from oxobject2group as ss3, $sGroupTable where $sGroupTable.oxid=ss3.oxgroupsid and ss3.OXOBJECTID=$sTable.OXID limit 1),
                     exists( select 1 from oxobject2group as s3 where s3.OXOBJECTID=$sTable.OXID and s3.OXGROUPSID in ( $sGroupIds ) limit 1), 1) ) ) order by $sTable.oxsort asc ";
@@ -686,7 +682,7 @@ class PaymentlistTest extends \OxidTestCase
         $this->assertNull($oList->getCountryId(null));
 
         // now passing user and testing
-        $oUser = $this->getMock('oxuser', array('getActiveCountry'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getActiveCountry'));
         $oUser->expects($this->once())->method('getActiveCountry')->will($this->returnValue('xxx'));
 
         $this->assertEquals('xxx', $oList->getCountryId($oUser));

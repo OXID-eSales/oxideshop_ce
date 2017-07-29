@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \oxField;
 
@@ -36,7 +36,7 @@ class AccountUserTest extends \OxidTestCase
      */
     public function testRenderNoUser()
     {
-        $oView = $this->getMock("Account_User", array("getUser"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountUserController::class, array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
         $this->assertEquals('page/account/login.tpl', $oView->render());
     }
@@ -51,7 +51,7 @@ class AccountUserTest extends \OxidTestCase
         $oUser = oxNew('oxuser');
         $oUser->oxuser__oxpassword = new oxField("testPassword");
 
-        $oView = $this->getMock("Account_User", array("getUser"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountUserController::class, array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
         $this->assertEquals('page/account/user.tpl', $oView->render());
     }

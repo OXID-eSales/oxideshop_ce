@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
@@ -31,7 +31,7 @@ class TableViewNameGeneratorTest extends \OxidTestCase
         $config = $this->getConfig();
 
         /** @var oxLang|MockObject $language */
-        $language = $this->getMock('oxLang', array('getMultiLangTables', 'getBaseLanguage', 'getLanguageAbbr'));
+        $language = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array('getMultiLangTables', 'getBaseLanguage', 'getLanguageAbbr'));
         $language->expects($this->any())->method('getMultiLangTables')->will($this->returnValue(array('test_table1', 'test_table2')));
         $language->expects($this->any())->method('getBaseLanguage')->will($this->returnValue('baseLanguage'));
         $language->expects($this->any())->method('getLanguageAbbr')->with('baseLanguage')->will($this->returnValue('te'));
@@ -46,7 +46,7 @@ class TableViewNameGeneratorTest extends \OxidTestCase
         $config = $this->getConfig();
 
         /** @var oxLang|MockObject $language */
-        $language = $this->getMock('oxLang', array('getMultiLangTables', 'getBaseLanguage', 'getLanguageAbbr'));
+        $language = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array('getMultiLangTables', 'getBaseLanguage', 'getLanguageAbbr'));
         $language->expects($this->any())->method('getMultiLangTables')->will($this->returnValue(array('test_table1', 'test_table2')));
         $language->expects($this->any())->method('getBaseLanguage')->will($this->returnValue('baseLanguage'));
         $language->expects($this->any())->method('getLanguageAbbr')->with('passedLanguage')->will($this->returnValue('te'));
@@ -61,7 +61,7 @@ class TableViewNameGeneratorTest extends \OxidTestCase
         $config = $this->getConfig();
 
         /** @var oxLang|MockObject $language */
-        $language = $this->getMock('oxLang', array('getMultiLangTables', 'getBaseLanguage', 'getLanguageAbbr'));
+        $language = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array('getMultiLangTables', 'getBaseLanguage', 'getLanguageAbbr'));
         $language->expects($this->any())->method('getMultiLangTables')->will($this->returnValue(array()));
 
         $viewNameGenerator = oxNew('oxTableViewNameGenerator', $config, $language);
@@ -74,7 +74,7 @@ class TableViewNameGeneratorTest extends \OxidTestCase
         $config = $this->getConfig();
 
         /** @var oxLang|MockObject $language */
-        $language = $this->getMock('oxLang', array('getMultiLangTables', 'getBaseLanguage', 'getLanguageAbbr'));
+        $language = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array('getMultiLangTables', 'getBaseLanguage', 'getLanguageAbbr'));
         $language->expects($this->any())->method('getMultiLangTables')->will($this->returnValue(array('table1')));
 
         $viewNameGenerator = oxNew('oxTableViewNameGenerator', $config, $language);

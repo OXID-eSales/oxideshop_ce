@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxRegistry;
 use oxField;
@@ -32,7 +32,7 @@ use oxDb;
  * deletes and etc.
  *
  */
-class Newsletter extends \oxBase
+class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
 
     /**
@@ -99,7 +99,7 @@ class Newsletter extends \oxBase
         $blDeleted = parent::delete($sOxId);
 
         if ($blDeleted) {
-            $oDb = oxDb::getDb();
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sDelete = "delete from oxobject2group where oxobject2group.oxshopid = '" . $this->getShopId() . "' and oxobject2group.oxobjectid = " . $oDb->quote($sOxId);
             $oDb->execute($sDelete);
         }
@@ -181,7 +181,7 @@ class Newsletter extends \oxBase
      */
     public function send()
     {
-        $oxEMail = oxNew('oxemail');
+        $oxEMail = oxNew(\OxidEsales\Eshop\Core\Email::class);
         $blSend = $oxEMail->sendNewsletterMail($this, $this->_oUser, $this->oxnewsletter__oxsubject->value);
 
         return $blSend;
@@ -198,10 +198,10 @@ class Newsletter extends \oxBase
     {
         $myConfig = $this->getConfig();
 
-        $oShop = oxNew('oxShop');
+        $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         $oShop->load($myConfig->getShopId());
 
-        $oView = oxNew('oxubase');
+        $oView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
         $oShop = $oView->addGlobalParams($oShop);
 
         $oView->addTplParam('myshop', $oShop);
@@ -215,7 +215,7 @@ class Newsletter extends \oxBase
 
         $aInput[] = array($this->getId() . 'html', $this->oxnewsletter__oxtemplate->value);
         $aInput[] = array($this->getId() . 'plain', $this->oxnewsletter__oxplaintemplate->value);
-        $aRes = oxRegistry::get("oxUtilsView")->parseThroughSmarty($aInput, null, $oView, true);
+        $aRes = \OxidEsales\Eshop\Core\Registry::getUtilsView()->parseThroughSmarty($aInput, null, $oView, true);
 
         $this->_sHtmlText = $aRes[0];
         $this->_sPlainText = $aRes[1];
@@ -229,7 +229,7 @@ class Newsletter extends \oxBase
     protected function _setUser($sUserid)
     {
         if (is_string($sUserid)) {
-            $oUser = oxNew('oxuser');
+            $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             if ($oUser->load($sUserid)) {
                 $this->_oUser = $oUser;
             }
@@ -242,19 +242,19 @@ class Newsletter extends \oxBase
      * Add newsletter products (#559 only if we have user we can assign this info),
      * adds products which fit to the last order of assigned user.
      *
-     * @param oxview $oView            view object to store view data
-     * @param bool   $blPerfLoadAktion perform option load actions
+     * @param \OxidEsales\Eshop\Core\Controller\BaseController $oView            view object to store view data
+     * @param bool                                             $blPerfLoadAktion perform option load actions
      */
     protected function _assignProducts($oView, $blPerfLoadAktion = false)
     {
         if ($blPerfLoadAktion) {
-            $oArtList = oxNew('oxArticleList');
+            $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
             $oArtList->loadActionArticles('OXNEWSLETTER');
             $oView->addTplParam('articlelist', $oArtList);
         }
 
         if ($this->_oUser->getId()) {
-            $oArticle = oxNew('oxArticle');
+            $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             $sArticleTable = $oArticle->getViewName();
 
             // add products which fit to the last order of this user
@@ -286,10 +286,10 @@ class Newsletter extends \oxBase
      *
      * @return null
      */
-    protected function _setFieldData($sFieldName, $sValue, $iDataType = oxField::T_TEXT)
+    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
     {
         if ('oxtemplate' === $sFieldName || 'oxplaintemplate' === $sFieldName) {
-            $iDataType = oxField::T_RAW;
+            $iDataType = \OxidEsales\Eshop\Core\Field::T_RAW;
         }
 
         return parent::_setFieldData($sFieldName, $sValue, $iDataType);

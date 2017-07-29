@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 /**
  * Tests for Dynscreen class
@@ -38,14 +38,14 @@ class DynscreenTest extends \OxidTestCase
         $this->setRequestParameter("menu", $sNode);
         $this->setRequestParameter('actedit', 1);
 
-        $oNavigation = $this->getMock("oxnavigationtree", array("getListUrl", "getEditUrl", "getTabs", "getActiveTab", "getBtn"));
+        $oNavigation = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationTree::class, array("getListUrl", "getEditUrl", "getTabs", "getActiveTab", "getBtn"));
         $oNavigation->expects($this->any())->method('getActiveTab')->will($this->returnValue("testEdit"));
         $oNavigation->expects($this->once())->method('getListUrl')->with($this->equalTo($sNode))->will($this->returnValue("testListUrl"));
         $oNavigation->expects($this->once())->method('getEditUrl')->with($this->equalTo($sNode), $this->equalTo(1))->will($this->returnValue("testEditUrl"));
         $oNavigation->expects($this->once())->method('getTabs')->with($this->equalTo($sNode), $this->equalTo(1))->will($this->returnValue("editTabs"));
         $oNavigation->expects($this->once())->method('getBtn')->with($this->equalTo($sNode))->will($this->returnValue("testBtn"));
 
-        $oView = $this->getMock("Dynscreen", array("getNavigation"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DynamicScreenController::class, array("getNavigation"));
         $oView->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavigation));
 
         $oView->UNITsetupNavigation($sNode);
@@ -77,7 +77,7 @@ class DynscreenTest extends \OxidTestCase
     public function testRender()
     {
         // testing..
-        $oView = $this->getMock("Dynscreen", array("_setupNavigation"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DynamicScreenController::class, array("_setupNavigation"));
         $oView->expects($this->once())->method('_setupNavigation');
         $this->assertEquals('dynscreen.tpl', $oView->render());
     }

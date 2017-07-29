@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-$editionSelector = new \OxidEsales\Eshop\Core\Edition\EditionSelector();
+$editionSelector = new \OxidEsales\EshopCommunity\Core\Edition\EditionSelector();
 ?>
 <!DOCTYPE html>
 <html>
@@ -117,6 +117,7 @@ $editionSelector = new \OxidEsales\Eshop\Core\Edition\EditionSelector();
         dl.tab.act dd{}
         dl.tab.act dd a{color: #000;}
 
+        .exclamation-icon {background-image:url('./out/src/img/pmin.png');background-repeat: no-repeat;width:12px;height:12px;display:inline-block;}
         ul.req {padding:0 5px;border:1px solid #888;margin:5px 0;clear:both;display:block;}
         ul.req li{list-style:none;margin:5px 0;padding-left:1.5em;}
         ul.req li.pass{background-image:url('./out/src/img/pass.png');background-repeat: no-repeat;}

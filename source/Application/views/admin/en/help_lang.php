@@ -139,6 +139,17 @@ $aLang =  array(
                                                  '<ul><li>If the setting is checked, negative stock values are calculated if further units are bought.</li>' .
                                                  '<li>If the setting is unchecked, the stock value never falls below 0, even if further units are bought.</li></ul>',
 
+'HELP_SHOP_CONFIG_SETORDELETECURRENCY'        => 'Add or remove currencies. Each line contains currency parameters separated by the symbol @.<br /><br />'.
+                                                 '<ul>'.
+                                                 '<li>currency code according to ISO 4217 (e.g. EUR)</li>'.
+                                                 '<li>currency rate to basic currency with the value 1.00</li>'.
+                                                 '<li>decimal separator</li>'.
+                                                 '<li>thousands separator</li>'.
+                                                 '<li>currency sign</li>'.
+                                                 '<li>number of decimal places</li>'.
+                                                 '<li>optional parameter "Front". If entered, the currency sign shows up in front of the price.</li>'.
+                                                 '</ul>',
+
 'HELP_SHOP_CONFIG_NEWARTBYINSERT'             => 'On the front page of your eShop the newest products are shown in <span class="filename_filepath_or_italic">Just arrived!</span>.  This setting determines how the newest products are calculated: by date of creation or by date of last change in admin/last order.',
 
 'HELP_SHOP_CONFIG_LOAD_DYNAMIC_PAGES'         => 'Activate this option for displaying additional product information at the administration panel and to transmit technical information to OXID servers for statistical purposes as well as for increasing our service quality. No business relevant data (users, orders etc) will be transmitted at any time.',

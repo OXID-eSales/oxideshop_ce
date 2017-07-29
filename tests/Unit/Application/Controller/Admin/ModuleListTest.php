@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use oxConfig;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
@@ -36,11 +36,11 @@ class ModuleListTest extends \OxidTestCase
         $oView = oxNew('Module_List');
         $this->assertEquals('module_list.tpl', $oView->render());
     }
-    
+
     public function testRenderWithCorrectModuleNames()
     {
         /** @var oxConfig|MockObject $config */
-        $config = $this->getMock('oxConfig', array('getModulesDir'));
+        $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getModulesDir'));
         $config->expects($this->any())->method('getModulesDir')->will($this->returnValue(__DIR__.'/../../../testData/modules/'));
 
         $oView = oxNew('Module_List');

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Component;
+namespace OxidEsales\EshopCommunity\Application\Component;
 
 use oxRegistry;
 
@@ -29,7 +29,7 @@ use oxRegistry;
  *
  * @subpackage oxcmp
  */
-class CurrencyComponent extends \oxView
+class CurrencyComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
 
     /**
@@ -76,7 +76,7 @@ class CurrencyComponent extends \oxView
             return;
         }
 
-        $iCur = oxRegistry::getConfig()->getRequestParameter('cur');
+        $iCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cur');
         if (isset($iCur)) {
             $aCurrencies = $myConfig->getCurrencyArray();
             if (!isset($aCurrencies[$iCur])) {
@@ -119,7 +119,7 @@ class CurrencyComponent extends \oxView
         $oParentView = $this->getParent();
         $oParentView->setActCurrency($this->_oActCur);
 
-        $oUrlUtils = oxRegistry::get("oxUtilsUrl");
+        $oUrlUtils = \OxidEsales\Eshop\Core\Registry::getUtilsUrl();
         $sUrl = $oUrlUtils->cleanUrl($this->getConfig()->getTopActiveView()->getLink(), array("cur"));
 
         if ($this->getConfig()->getConfigParam('bl_perfLoadCurrency')) {

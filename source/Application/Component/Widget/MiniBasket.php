@@ -20,12 +20,12 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Component\Widget;
+namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
 /**
  * Mini basket widget
  */
-class MiniBasket extends \oxWidget
+class MiniBasket extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
     /**
      * Names of components (classes) that are initiated and executed

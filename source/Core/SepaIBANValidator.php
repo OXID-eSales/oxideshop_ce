@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * SEPA (Single Euro Payments Area) validation class
@@ -256,7 +256,6 @@ class SepaIBANValidator
                 $blValid = false;
                 break;
             }
-
         }
 
         return $blValid;

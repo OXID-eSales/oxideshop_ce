@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxRegistry;
 
 /**
  * File manipulation utility class
  */
-class UtilsFile extends \oxSuperCfg
+class UtilsFile extends \OxidEsales\Eshop\Core\Base
 {
 
     /**
@@ -273,7 +273,7 @@ class UtilsFile extends \oxSuperCfg
      *
      * @param object $sValue     uploadable file name
      * @param string $sType      image type
-     * @param object $blDemo     if true = whecks if file type is defined in oxutilsfile::_aAllowedFiles
+     * @param object $blDemo     if true = whecks if file type is defined in \OxidEsales\Eshop\Core\UtilsFile::_aAllowedFiles
      * @param string $sImagePath final image file location
      * @param bool   $blUnique   if TRUE - generates unique file name
      *
@@ -292,7 +292,7 @@ class UtilsFile extends \oxSuperCfg
 
                 // unallowed files ?
                 if (in_array($sFileType, $this->_aBadFiles) || ($blDemo && !in_array($sFileType, $this->_aAllowedFiles))) {
-                    oxRegistry::getUtils()->showMessageAndExit("We don't play this game, go away");
+                    \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("File didn't pass our allowed files filter.");
                 }
 
                 // removing file type
@@ -439,7 +439,7 @@ class UtilsFile extends \oxSuperCfg
             $aError = $aFiles['myfile']['error'];
             $sErrorsDescription = '';
 
-            $oEx = oxNew("oxExceptionToDisplay");
+            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             // process all files
             while (list($sKey, $sValue) = each($aFiles['myfile']['name'])) {
                 $sSource = $aSource[$sKey];
@@ -455,7 +455,7 @@ class UtilsFile extends \oxSuperCfg
                 if (UPLOAD_ERR_OK !== $iError && UPLOAD_ERR_NO_FILE !== $iError) {
                     $sErrorsDescription = $this->translateError($iError);
                     $oEx->setMessage($sErrorsDescription);
-                    oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false);
+                    \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false);
                 }
 
                 // checking file type and building final file name
@@ -500,7 +500,7 @@ class UtilsFile extends \oxSuperCfg
      */
     public function checkFile($sFile)
     {
-        $aCheckCache = oxRegistry::getSession()->getVariable("checkcache");
+        $aCheckCache = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("checkcache");
 
         if (isset($aCheckCache[$sFile])) {
             return $aCheckCache[$sFile];
@@ -516,7 +516,7 @@ class UtilsFile extends \oxSuperCfg
         }
 
         $aCheckCache[$sFile] = $blRet;
-        oxRegistry::getSession()->setVariable("checkcache", $aCheckCache);
+        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("checkcache", $aCheckCache);
 
         return $blRet;
     }

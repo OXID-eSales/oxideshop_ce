@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
 
@@ -28,7 +28,7 @@ use oxDb;
  * Order article list manager.
  *
  */
-class OrderArticleList extends \oxList
+class OrderArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
 
     /**
@@ -57,9 +57,8 @@ class OrderArticleList extends \oxList
         $sSelect = "SELECT oxorderarticles.* FROM oxorder ";
         $sSelect .= "left join oxorderarticles on oxorderarticles.oxorderid = oxorder.oxid ";
         $sSelect .= "left join oxarticles on oxorderarticles.oxartid = oxarticles.oxid ";
-        $sSelect .= "WHERE oxorder.oxuserid = " . oxDb::getDb()->quote($sOxId);
+        $sSelect .= "WHERE oxorder.oxuserid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sOxId);
 
         $this->selectString($sSelect);
-
     }
 }

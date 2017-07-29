@@ -19,87 +19,119 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
+use OxidEsales\Eshop\Core\Theme;
 use \stdClass;
 use \oxRegistry;
 use \oxTestModules;
 
 class UtilsViewTest extends \OxidTestCase
 {
-    /**
-     * oxUtilsView::getTemplateDirs() test case
-     *
-     * @return null
-     */
-    public function testGetTemplateDirs()
+    public function setUp()
     {
-        if ($this->getTestConfig()->getShopEdition() != 'CE') {
-            $this->markTestSkipped('This test is for Community edition only.');
-        }
+        parent::setUp();
 
-        $myConfig = $this->getConfig();
-        $aDirs = array();
-        $aDirs[] = $myConfig->getTemplateDir(false);
-        $sDir = $myConfig->getOutDir(true) . $myConfig->getConfigParam('sTheme') . "/tpl/";
-        if (!in_array($sDir, $aDirs)) {
-            $aDirs[] = $sDir;
-        }
-
-        $sDir = $myConfig->getOutDir(true) . "azure/tpl/";
-        if (!in_array($sDir, $aDirs)) {
-            $aDirs[] = $sDir;
-        }
-
-        //
-        $oUtilsView = $this->getMock("oxUtilsView", array("isAdmin"));
-        $oUtilsView->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-        $this->assertEquals($aDirs, $oUtilsView->getTemplateDirs());
+        $theme = oxNew(Theme::class);
+        $theme->load('azure');
+        $theme->activate();
     }
 
-    public function testGetEditionTemplateDirs()
+    public function testGetTemplateDirsContainsAzure()
     {
         if ($this->getTestConfig()->getShopEdition() != 'CE') {
             $this->markTestSkipped('This test is for Community edition only.');
         }
 
-        $config = $this->getConfig();
-        $shopPath = rtrim($config->getConfigParam('sShopDir'), '/') . '/';
+        $expectedTemplateDirs = $this->getTemplateDirsAzure();
+        $utilsView = $this->getUtilsViewMockNotAdmin();
 
-        $dirs = array(
+        $this->assertArraySubset($expectedTemplateDirs, $utilsView->getTemplateDirs());
+    }
+
+    public function testGetTemplateDirsOnlyAzure()
+    {
+        if ($this->getTestConfig()->getShopEdition() != 'CE') {
+            $this->markTestSkipped('This test is for Community edition only.');
+        }
+
+        $expectedTemplateDirs = $this->getTemplateDirsAzure();
+        $utilsView = $this->getUtilsViewMockNotAdmin();
+
+        $this->assertEquals($expectedTemplateDirs, $utilsView->getTemplateDirs());
+    }
+
+    public function testGetEditionTemplateDirsContainsAzure()
+    {
+        if ($this->getTestConfig()->getShopEdition() != 'CE') {
+            $this->markTestSkipped('This test is for Community edition only.');
+        }
+
+        $shopPath = $this->getShopPath();
+
+        $dirs = [
             $shopPath . 'Application/views/azure/tpl/',
             $shopPath . 'out/azure/tpl/',
-        );
+        ];
 
-        $utilsView = $this->getMock("oxUtilsView", array("isAdmin"));
-        $utilsView->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-        $this->assertEquals($dirs, $utilsView->getTemplateDirs());
+        $utilsView = $this->getUtilsViewMockNotAdmin();
+
+        $this->assertArraySubset($dirs, $utilsView->getTemplateDirs());
     }
 
-    public function testGetEditionTemplateDirsForAdmin()
+    public function testGetEditionTemplateDirsOnlyAzure()
     {
         if ($this->getTestConfig()->getShopEdition() != 'CE') {
             $this->markTestSkipped('This test is for Community edition only.');
         }
 
-        $config = $this->getConfig();
-        $shopPath = rtrim($config->getConfigParam('sShopDir'), '/') . '/';
+        $shopPath = $this->getShopPath();
 
-        $dirs = array(
-            $shopPath . 'Application/views/admin/tpl/',
-        );
+        $dirs = [
+            $shopPath . 'Application/views/azure/tpl/',
+            $shopPath . 'out/azure/tpl/',
+        ];
 
-        $utilsView = $this->getMock("oxUtilsView", array("isAdmin"));
-        $utilsView->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
+        $utilsView = $this->getUtilsViewMockNotAdmin();
+
         $this->assertEquals($dirs, $utilsView->getTemplateDirs());
     }
 
-    /**
-     * oxUtilsView::setTemplateDir() test case
-     *
-     * @return null
-     */
-    public function testSetTemplateDir()
+    public function testGetEditionTemplateDirsForAdminContainsAzure()
+    {
+        if ($this->getTestConfig()->getShopEdition() != 'CE') {
+            $this->markTestSkipped('This test is for Community edition only.');
+        }
+
+        $shopPath = $this->getShopPath();
+
+        $dirs = [
+            $shopPath . 'Application/views/admin/tpl/',
+        ];
+
+        $utilsView = $this->getUtilsViewMockBeAdmin();
+
+        $this->assertArraySubset($dirs, $utilsView->getTemplateDirs());
+    }
+
+    public function testGetEditionTemplateDirsForAdminOnlyAzure()
+    {
+        if ($this->getTestConfig()->getShopEdition() != 'CE') {
+            $this->markTestSkipped('This test is for Community edition only.');
+        }
+
+        $shopPath = $this->getShopPath();
+
+        $dirs = [
+            $shopPath . 'Application/views/admin/tpl/',
+        ];
+
+        $utilsView = $this->getUtilsViewMockBeAdmin();
+
+        $this->assertEquals($dirs, $utilsView->getTemplateDirs());
+    }
+
+    public function testSetTemplateDirContainsAzure()
     {
         if ($this->getTestConfig()->getShopEdition() != 'CE') {
             $this->markTestSkipped('This test is for Community edition only.');
@@ -119,14 +151,40 @@ class UtilsViewTest extends \OxidTestCase
             $aDirs[] = $sDir;
         }
 
-        //
-        $oUtilsView = $this->getMock("oxUtilsView", array("isAdmin"));
-        $oUtilsView->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-        $oUtilsView->setTemplateDir("testDir1");
-        $oUtilsView->setTemplateDir("testDir2");
-        $oUtilsView->setTemplateDir("testDir1");
+        $utilsView = $this->getUtilsViewMockNotAdmin();
+        $utilsView->setTemplateDir("testDir1");
+        $utilsView->setTemplateDir("testDir2");
+        $utilsView->setTemplateDir("testDir1");
 
-        $this->assertEquals($aDirs, $oUtilsView->getTemplateDirs());
+        $this->assertArraySubset($aDirs, $utilsView->getTemplateDirs());
+    }
+
+    public function testSetTemplateDirOnlyAzure()
+    {
+        if ($this->getTestConfig()->getShopEdition() != 'CE') {
+            $this->markTestSkipped('This test is for Community edition only.');
+        }
+
+        $myConfig = $this->getConfig();
+        $aDirs[] = "testDir1";
+        $aDirs[] = "testDir2";
+        $aDirs[] = $myConfig->getTemplateDir(false);
+        $sDir = $myConfig->getOutDir(true) . $myConfig->getConfigParam('sTheme') . "/tpl/";
+        if (!in_array($sDir, $aDirs)) {
+            $aDirs[] = $sDir;
+        }
+
+        $sDir = $myConfig->getOutDir(true) . "azure/tpl/";
+        if (!in_array($sDir, $aDirs)) {
+            $aDirs[] = $sDir;
+        }
+
+        $utilsView = $this->getUtilsViewMockNotAdmin();
+        $utilsView->setTemplateDir("testDir1");
+        $utilsView->setTemplateDir("testDir2");
+        $utilsView->setTemplateDir("testDir1");
+
+        $this->assertEquals($aDirs, $utilsView->getTemplateDirs());
     }
 
     /**
@@ -134,7 +192,7 @@ class UtilsViewTest extends \OxidTestCase
      */
     public function testGetSmartyCacheCheck()
     {
-        $oUtilsView = $this->getMock('oxutilsview', array('_fillCommonSmartyProperties', '_smartyCompileCheck'));
+        $oUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, ['_fillCommonSmartyProperties', '_smartyCompileCheck']);
         $oUtilsView->expects($this->once())->method('_fillCommonSmartyProperties');
         $oUtilsView->expects($this->once())->method('_smartyCompileCheck');
 
@@ -162,22 +220,21 @@ class UtilsViewTest extends \OxidTestCase
 
     public function testPassAllErrorsToView()
     {
-        $aView = array();
+        $aView = [];
         $aErrors[1][2] = serialize("foo");
-        oxRegistry::get("oxUtilsView")->passAllErrorsToView($aView, $aErrors);
+        \OxidEsales\Eshop\Core\Registry::getUtilsView()->passAllErrorsToView($aView, $aErrors);
         $this->assertEquals($aView['Errors'][1][2], "foo");
     }
 
     public function testAddErrorToDisplayCustomDestinationFromParam()
     {
-        $oSession = $this->getMock('oxSession', array('getId'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['getId']);
         $oSession->expects($this->once())->method('getId')->will($this->returnValue(true));
 
-        $oxUtilsView = $this->getMock('oxUtilsView', array('getSession'));
+        $oxUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, ['getSession']);
         $oxUtilsView->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
 
         $oxUtilsView->addErrorToDisplay("testMessage", false, true, "myDest");
-
 
         $aErrors = oxRegistry::getSession()->getVariable('Errors');
         $oEx = unserialize($aErrors['myDest'][0]);
@@ -187,14 +244,13 @@ class UtilsViewTest extends \OxidTestCase
 
     public function testAddErrorToDisplayCustomDestinationFromPost()
     {
-        $myConfig = $this->getConfig();
         $this->setRequestParameter('CustomError', 'myDest');
         $this->setRequestParameter('actcontrol', 'oxwminibasket');
 
-        $oSession = $this->getMock('oxSession', array('getId'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['getId']);
         $oSession->expects($this->once())->method('getId')->will($this->returnValue(true));
 
-        $oxUtilsView = $this->getMock('oxUtilsView', array('getSession'));
+        $oxUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, ['getSession']);
         $oxUtilsView->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
 
         $oxUtilsView->addErrorToDisplay("testMessage", false, true, "");
@@ -208,10 +264,10 @@ class UtilsViewTest extends \OxidTestCase
     public function testAddErrorToDisplayDefaultDestination()
     {
         $this->setRequestParameter('actcontrol', 'start');
-        $oSession = $this->getMock('oxSession', array('getId'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['getId']);
         $oSession->expects($this->once())->method('getId')->will($this->returnValue(true));
 
-        $oxUtilsView = $this->getMock('oxUtilsView', array('getSession'));
+        $oxUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, ['getSession']);
         $oxUtilsView->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
 
         $oxUtilsView->addErrorToDisplay("testMessage", false, true, "");
@@ -224,14 +280,13 @@ class UtilsViewTest extends \OxidTestCase
 
     public function testAddErrorToDisplayUsingExeptionObject()
     {
-        $aTest = array();
         $oTest = oxNew('oxException');
         $oTest->setMessage("testMessage");
 
-        $oSession = $this->getMock('oxSession', array('getId'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['getId']);
         $oSession->expects($this->once())->method('getId')->will($this->returnValue(true));
 
-        $oxUtilsView = $this->getMock('oxUtilsView', array('getSession'));
+        $oxUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, ['getSession']);
         $oxUtilsView->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
 
         $oxUtilsView->addErrorToDisplay($oTest, false, false, "");
@@ -243,10 +298,10 @@ class UtilsViewTest extends \OxidTestCase
 
     public function testAddErrorToDisplayIfNotSet()
     {
-        $oSession = $this->getMock('oxSession', array('getId'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['getId']);
         $oSession->expects($this->once())->method('getId')->will($this->returnValue(true));
 
-        $oxUtilsView = $this->getMock('oxUtilsView', array('getSession'));
+        $oxUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, ['getSession']);
         $oxUtilsView->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
 
         $oxUtilsView->addErrorToDisplay(null, false, false, "");
@@ -260,13 +315,13 @@ class UtilsViewTest extends \OxidTestCase
 
     public function testAddErrorToDisplay_startsSessionIfNotStarted()
     {
-        $oSession = $this->getMock('oxSession', array('getId', 'isHeaderSent', 'setForceNewSession', 'start'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['getId', 'isHeaderSent', 'setForceNewSession', 'start']);
         $oSession->expects($this->once())->method('getId')->will($this->returnValue(false));
         $oSession->expects($this->once())->method('isHeaderSent')->will($this->returnValue(false));
         $oSession->expects($this->once())->method('setForceNewSession');
         $oSession->expects($this->once())->method('start');
 
-        $oxUtilsView = $this->getMock('oxUtilsView', array('getSession'));
+        $oxUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, ['getSession']);
         $oxUtilsView->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
 
         $oxUtilsView->addErrorToDisplay(null, false, false, "");
@@ -280,24 +335,67 @@ class UtilsViewTest extends \OxidTestCase
         $aData['shop'] = new stdClass();
         $aData['shop']->urlSeparator = '?';
 
-        $oActView = $this->getMock('oxview', array('getViewData'));
+        $oActView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, ['getViewData']);
         $oActView->expects($this->once())->method('getViewData')->will($this->returnValue($aData));
 
         $oUtilsView = oxNew('oxutilsview');
         $this->assertEquals('?', $oUtilsView->parseThroughSmarty('[{$shop->urlSeparator}]', time(), $oActView));
 
-        $oActView = $this->getMock('oxview', array('getViewData'));
+        $oActView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, ['getViewData']);
         $oActView->expects($this->once())->method('getViewData')->will($this->returnValue($aData));
 
         $oUtilsView = oxNew('oxutilsview');
-        $this->assertEquals(array('!' => '?'), $oUtilsView->parseThroughSmarty(array('!' => array('%', '[{$shop->urlSeparator}]')), time(), $oActView));
+        $this->assertEquals(['!' => '?'], $oUtilsView->parseThroughSmarty(['!' => ['%', '[{$shop->urlSeparator}]']], time(), $oActView));
+    }
+
+    public function testFillCommonSmartyPropertiesAndSmartyCompileCheckDemoShopContains()
+    {
+        if ($this->getTestConfig()->getShopEdition() != 'CE') {
+            $this->markTestSkipped('This test is for Community edition only.');
+        }
+
+        $config = oxNew('oxConfig');
+
+        $config->setConfigParam('iDebug', 1);
+        $config->setConfigParam('blDemoShop', 1);
+
+        $templateDirs = [];
+
+        $sTplDir = $config->getTemplateDir($config->isAdmin());
+        if ($sTplDir) {
+            $templateDirs[] = $sTplDir;
+        }
+
+        $sTplDir = $config->getOutDir() . $config->getConfigParam('sTheme') . "/tpl/";
+        if ($sTplDir && !in_array($sTplDir, $templateDirs)) {
+            $templateDirs[] = $sTplDir;
+        }
+
+        $compileDirectory = $this->getCompileDirectory();
+        $config->setConfigParam('sCompileDir', $compileDirectory);
+
+        $smartyCheckArray = $this->getSmartyCheckArray($compileDirectory, $config);
+
+        $smarty = $this->getSmartyMock();
+
+        $oUtilsView = oxNew('oxUtilsView');
+        $oUtilsView->setConfig($config);
+        $oUtilsView->UNITfillCommonSmartyProperties($smarty);
+        $oUtilsView->UNITsmartyCompileCheck($smarty);
+
+        foreach ($smartyCheckArray as $varName => $varValue) {
+            $this->assertTrue(isset($smarty->$varName));
+            $this->assertEquals($varValue, $smarty->$varName, $varName);
+        }
+
+        $this->assertArraySubset($templateDirs, $smarty->template_dir);
     }
 
     /**
      * Testing smarty config data setter
      */
     // demo mode
-    public function testFillCommonSmartyPropertiesANDSmartyCompileCheckDemoShop()
+    public function testFillCommonSmartyPropertiesAndSmartyCompileCheckDemoShopExactMatch()
     {
         if ($this->getTestConfig()->getShopEdition() != 'CE') {
             $this->markTestSkipped('This test is for Community edition only.');
@@ -310,7 +408,8 @@ class UtilsViewTest extends \OxidTestCase
 
         $sTplDir = $config->getTemplateDir($config->isAdmin());
 
-        $aTemplatesDir = array();
+        $aTemplatesDir = [];
+
         if ($sTplDir) {
             $aTemplatesDir[] = $sTplDir;
         }
@@ -320,87 +419,26 @@ class UtilsViewTest extends \OxidTestCase
             $aTemplatesDir[] = $sTplDir;
         }
 
-        $oVfsStreamWrapper = $this->getVfsStreamWrapper();
-        $oVfsStreamWrapper->createStructure(array('tmp_directory' => array()));
-        $compileDirectory = $oVfsStreamWrapper->getRootPath().'tmp_directory';
+        $compileDirectory = $this->getCompileDirectory();
         $config->setConfigParam('sCompileDir', $compileDirectory);
 
-        $aCheck = array('php_handling'      => 2,
-                        'security'          => true,
-                        'php_handling'      => SMARTY_PHP_REMOVE,
-                        'left_delimiter'    => '[{',
-                        'right_delimiter'   => '}]',
-                        'caching'           => false,
-                        'compile_dir'       => $compileDirectory . "/smarty/",
-                        'cache_dir'         => $compileDirectory . "/smarty/",
-                        'template_dir'      => $aTemplatesDir,
-                        'compile_id'        => md5($config->getTemplateDir(false) . '__' . $config->getShopId()),
-                        'debugging'         => true,
-                        'compile_check'     => true,
-                        'security_settings' => array(
-                            'PHP_HANDLING'        => false,
-                            'IF_FUNCS'            =>
-                                array(
-                                    0  => 'array',
-                                    1  => 'list',
-                                    2  => 'isset',
-                                    3  => 'empty',
-                                    4  => 'count',
-                                    5  => 'sizeof',
-                                    6  => 'in_array',
-                                    7  => 'is_array',
-                                    8  => 'true',
-                                    9  => 'false',
-                                    10 => 'null',
-                                    11 => 'XML_ELEMENT_NODE',
-                                    12 => 'is_int',
-                                ),
-                            'INCLUDE_ANY'         => false,
-                            'PHP_TAGS'            => false,
-                            'MODIFIER_FUNCS'      =>
-                                array(
-                                    0 => 'count',
-                                    1 => 'round',
-                                    2 => 'floor',
-                                    3 => 'trim',
-                                    4 => 'implode',
-                                    5 => 'is_array',
-                                    6 => 'getimagesize',
-                                ),
-                            'ALLOW_CONSTANTS'     => true,
-                            'ALLOW_SUPER_GLOBALS' => true,
-                        )
-        );
+        $smartyCheckArray = $this->getSmartyCheckArray($compileDirectory, $config);
+        $smartyCheckArray['template_dir'] = $aTemplatesDir;
 
-        $oSmarty = $this->getMock('\Smarty', array('register_resource', 'register_prefilter'));
-        $oSmarty->expects($this->once())->method('register_resource')
-            ->with(
-                $this->equalTo('ox'),
-                $this->equalTo(
-                    array(
-                         'ox_get_template',
-                         'ox_get_timestamp',
-                         'ox_get_secure',
-                         'ox_get_trusted',
-                    )
-                )
-            );
-        $oSmarty->expects($this->once())->method('register_prefilter')
-            ->with($this->equalTo('smarty_prefilter_oxblock'));
+        $smarty = $this->getSmartyMock();
 
         $oUtilsView = oxNew('oxUtilsView');
         $oUtilsView->setConfig($config);
-        $oUtilsView->UNITfillCommonSmartyProperties($oSmarty);
-        $oUtilsView->UNITsmartyCompileCheck($oSmarty);
+        $oUtilsView->UNITfillCommonSmartyProperties($smarty);
+        $oUtilsView->UNITsmartyCompileCheck($smarty);
 
-        foreach ($aCheck as $sVarName => $sVarValue) {
-            $this->assertTrue(isset($oSmarty->$sVarName));
-            $this->assertEquals($sVarValue, $oSmarty->$sVarName, $sVarName);
+        foreach ($smartyCheckArray as $sVarName => $sVarValue) {
+            $this->assertTrue(isset($smarty->$sVarName));
+            $this->assertEquals($sVarValue, $smarty->$sVarName, $sVarName);
         }
     }
 
-    // non demo mode
-    public function testFillCommonSmartyPropertiesANDSmartyCompileCheck()
+    public function testFillCommonSmartyPropertiesAndSmartyCompileCheckContains()
     {
         if ($this->getTestConfig()->getShopEdition() != 'CE') {
             $this->markTestSkipped('This test is for Community edition only.');
@@ -411,9 +449,9 @@ class UtilsViewTest extends \OxidTestCase
         $config->setConfigParam('iDebug', 1);
         $config->setConfigParam('blDemoShop', 0);
 
-        $sTplDir = $config->getTemplateDir($config->isAdmin());
+        $aTemplatesDir = [];
 
-        $aTemplatesDir = array();
+        $sTplDir = $config->getTemplateDir($config->isAdmin());
         if ($sTplDir) {
             $aTemplatesDir[] = $sTplDir;
         }
@@ -423,27 +461,58 @@ class UtilsViewTest extends \OxidTestCase
             $aTemplatesDir[] = $sTplDir;
         }
 
-        $oVfsStreamWrapper = $this->getVfsStreamWrapper();
-        $oVfsStreamWrapper->createStructure(array('tmp_directory' => array()));
-        $compileDirectory = $oVfsStreamWrapper->getRootPath().'tmp_directory';
+        $compileDirectory = $this->getCompileDirectory();
         $config->setConfigParam('sCompileDir', $compileDirectory);
 
-        $aCheck = array(
-            'security'        => false,
-            'php_handling'    => (int) $config->getConfigParam('iSmartyPhpHandling'),
-            'left_delimiter'  => '[{',
-            'right_delimiter' => '}]',
-            'caching'         => false,
-            'compile_dir'     => $compileDirectory . "/smarty/",
-            'cache_dir'       => $compileDirectory . "/smarty/",
-            'template_dir'    => $aTemplatesDir,
-            'compile_id'      => md5($config->getTemplateDir(false) . '__' . $config->getShopId()),
-            'debugging'       => true,
-            'compile_check'   => true,
-            'plugins_dir'     => array($this->getConfigParam('sCoreDir') . 'Smarty/Plugin', 'plugins'),
-        );
+        $aCheck = $this->getSmartyCheckArrayForFillCommonSmartyPropertiesAndSmartyCompileCheck($config, $compileDirectory);
 
-        $oSmarty = $this->getMock('\Smarty', array('register_resource'));
+        $oSmarty = $this->getMock('\Smarty', ['register_resource']);
+        $oSmarty->expects($this->once())->method('register_resource');
+
+        $oUtilsView = oxNew('oxUtilsView');
+        $oUtilsView->setConfig($config);
+        $oUtilsView->UNITfillCommonSmartyProperties($oSmarty);
+        $oUtilsView->UNITsmartyCompileCheck($oSmarty);
+
+        foreach ($aCheck as $sVarName => $sVarValue) {
+            $this->assertTrue(isset($oSmarty->$sVarName));
+            $this->assertEquals($sVarValue, $oSmarty->$sVarName, $sVarName);
+        }
+
+        $this->assertArraySubset($aTemplatesDir, $oSmarty->template_dir);
+    }
+
+    // non demo mode
+    public function testFillCommonSmartyPropertiesAndSmartyCompileCheckExactMatch()
+    {
+        if ($this->getTestConfig()->getShopEdition() != 'CE') {
+            $this->markTestSkipped('This test is for Community edition only.');
+        }
+
+        $config = oxNew('oxConfig');
+
+        $config->setConfigParam('iDebug', 1);
+        $config->setConfigParam('blDemoShop', 0);
+
+        $aTemplatesDir = [];
+
+        $sTplDir = $config->getTemplateDir($config->isAdmin());
+        if ($sTplDir) {
+            $aTemplatesDir[] = $sTplDir;
+        }
+
+        $sTplDir = $config->getOutDir() . $config->getConfigParam('sTheme') . "/tpl/";
+        if ($sTplDir && !in_array($sTplDir, $aTemplatesDir)) {
+            $aTemplatesDir[] = $sTplDir;
+        }
+
+        $compileDirectory = $this->getCompileDirectory();
+        $config->setConfigParam('sCompileDir', $compileDirectory);
+
+        $aCheck = $this->getSmartyCheckArrayForFillCommonSmartyPropertiesAndSmartyCompileCheck($config, $compileDirectory);
+        $aCheck['template_dir'] = $aTemplatesDir;
+
+        $oSmarty = $this->getMock('\Smarty', ['register_resource']);
         $oSmarty->expects($this->once())->method('register_resource');
 
         $oUtilsView = oxNew('oxUtilsView');
@@ -459,14 +528,14 @@ class UtilsViewTest extends \OxidTestCase
 
     public function testParseThroughSmartyInDiffLang()
     {
-        $smarty = oxRegistry::get("oxUtilsView")->getSmarty();
+        $smarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
         $smarty->compile_check = false;
         $lang = oxRegistry::getLang()->getTplLanguage();
 
         oxRegistry::getLang()->setTplLanguage(0);
-        $text1 = oxRegistry::get("oxUtilsView")->parseThroughSmarty('aaa', 'aaa');
+        $text1 = \OxidEsales\Eshop\Core\Registry::getUtilsView()->parseThroughSmarty('aaa', 'aaa');
         oxRegistry::getLang()->setTplLanguage(1);
-        $text2 = oxRegistry::get("oxUtilsView")->parseThroughSmarty('bbb', 'aaa');
+        $text2 = \OxidEsales\Eshop\Core\Registry::getUtilsView()->parseThroughSmarty('bbb', 'aaa');
 
         $smarty->compile_check = true;
         oxRegistry::getLang()->setTplLanguage($lang);
@@ -496,9 +565,7 @@ class UtilsViewTest extends \OxidTestCase
         $oUV = oxNew('oxUtilsView');
         $oUV->setConfig($config);
 
-        $oVfsStreamWrapper = $this->getVfsStreamWrapper();
-        $oVfsStreamWrapper->createStructure(array('tmp_directory' => array()));
-        $compileDirectory = $oVfsStreamWrapper->getRootPath().'tmp_directory';
+        $compileDirectory = $this->getCompileDirectory();
         $config->setConfigParam('sCompileDir', $compileDirectory);
 
         $sExp = $compileDirectory . "/smarty/";
@@ -507,4 +574,164 @@ class UtilsViewTest extends \OxidTestCase
 
     }
 
+    /**
+     * @return array
+     */
+    private function getTemplateDirsAzure()
+    {
+        $config = $this->getConfig();
+        $dirs = [];
+        $dirs[] = $config->getTemplateDir(false);
+        $dir = $config->getOutDir(true) . $config->getConfigParam('sTheme') . "/tpl/";
+        if (!in_array($dir, $dirs)) {
+            $dirs[] = $dir;
+        }
+        $dir = $config->getOutDir(true) . "azure/tpl/";
+        if (!in_array($dir, $dirs)) {
+            $dirs[] = $dir;
+        }
+        return $dirs;
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getUtilsViewMockNotAdmin()
+    {
+        $utilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, ["isAdmin"]);
+        $utilsView->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
+        return $utilsView;
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getUtilsViewMockBeAdmin()
+    {
+        $utilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, ["isAdmin"]);
+        $utilsView->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
+        return $utilsView;
+    }
+
+    /**
+     * @return string
+     */
+    private function getShopPath()
+    {
+        $config = $this->getConfig();
+        $shopPath = rtrim($config->getConfigParam('sShopDir'), '/') . '/';
+        return $shopPath;
+    }
+
+    /**
+     * @param $compileDirectory
+     * @param $config
+     * @return array
+     */
+    private function getSmartyCheckArray($compileDirectory, $config)
+    {
+        $aCheck = [
+            'security' => true,
+            'php_handling' => SMARTY_PHP_REMOVE,
+            'left_delimiter' => '[{',
+            'right_delimiter' => '}]',
+            'caching' => false,
+            'compile_dir' => $compileDirectory . "/smarty/",
+            'cache_dir' => $compileDirectory . "/smarty/",
+            'compile_id' => md5($config->getTemplateDir(false) . '__' . $config->getShopId()),
+            'debugging' => true,
+            'compile_check' => true,
+            'security_settings' => [
+                'PHP_HANDLING' => false,
+                'IF_FUNCS' =>
+                    [
+                        0 => 'array',
+                        1 => 'list',
+                        2 => 'isset',
+                        3 => 'empty',
+                        4 => 'count',
+                        5 => 'sizeof',
+                        6 => 'in_array',
+                        7 => 'is_array',
+                        8 => 'true',
+                        9 => 'false',
+                        10 => 'null',
+                        11 => 'XML_ELEMENT_NODE',
+                        12 => 'is_int',
+                    ],
+                'INCLUDE_ANY' => false,
+                'PHP_TAGS' => false,
+                'MODIFIER_FUNCS' =>
+                    [
+                        0 => 'count',
+                        1 => 'round',
+                        2 => 'floor',
+                        3 => 'trim',
+                        4 => 'implode',
+                        5 => 'is_array',
+                        6 => 'getimagesize',
+                    ],
+                'ALLOW_CONSTANTS' => true,
+                'ALLOW_SUPER_GLOBALS' => true,
+            ]
+        ];
+        return $aCheck;
+    }
+
+    /**
+     * @param $config
+     * @param $compileDirectory
+     * @return array
+     */
+    private function getSmartyCheckArrayForFillCommonSmartyPropertiesAndSmartyCompileCheck($config, $compileDirectory)
+    {
+        $aCheck = [
+            'security' => false,
+            'php_handling' => (int)$config->getConfigParam('iSmartyPhpHandling'),
+            'left_delimiter' => '[{',
+            'right_delimiter' => '}]',
+            'caching' => false,
+            'compile_dir' => $compileDirectory . "/smarty/",
+            'cache_dir' => $compileDirectory . "/smarty/",
+            'compile_id' => md5($config->getTemplateDir(false) . '__' . $config->getShopId()),
+            'debugging' => true,
+            'compile_check' => true,
+            'plugins_dir' => [$this->getConfigParam('sCoreDir') . 'Smarty/Plugin', 'plugins'],
+        ];
+        return $aCheck;
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getSmartyMock()
+    {
+        $oSmarty = $this->getMock('\Smarty', ['register_resource', 'register_prefilter']);
+        $oSmarty->expects($this->once())->method('register_resource')
+            ->with(
+                $this->equalTo('ox'),
+                $this->equalTo(
+                    [
+                        'ox_get_template',
+                        'ox_get_timestamp',
+                        'ox_get_secure',
+                        'ox_get_trusted',
+                    ]
+                )
+            );
+        $oSmarty->expects($this->once())->method('register_prefilter')
+            ->with($this->equalTo('smarty_prefilter_oxblock'));
+        return $oSmarty;
+    }
+
+    /**
+     * @return string
+     */
+    private function getCompileDirectory()
+    {
+        $oVfsStreamWrapper = $this->getVfsStreamWrapper();
+        $oVfsStreamWrapper->createStructure(['tmp_directory' => []]);
+        $compileDirectory = $oVfsStreamWrapper->getRootPath() . 'tmp_directory';
+        return $compileDirectory;
+    }
 }

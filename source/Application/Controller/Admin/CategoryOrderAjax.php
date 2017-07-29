@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -28,7 +28,7 @@ use oxDb;
 /**
  * Class manages category articles order
  */
-class CategoryOrderAjax extends \ajaxListComponent
+class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**
@@ -67,19 +67,19 @@ class CategoryOrderAjax extends \ajaxListComponent
         // looking for table/view
         $sArtTable = $this->_getViewName('oxarticles');
         $sO2CView = $this->_getViewName('oxobject2category');
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         // category selected or not ?
-        if ($sSynchOxid = oxRegistry::getConfig()->getRequestParameter('synchoxid')) {
+        if ($sSynchOxid = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid')) {
             $sQAdd = " from $sArtTable left join $sO2CView on $sArtTable.oxid=$sO2CView.oxobjectid where $sO2CView.oxcatnid = " . $oDb->quote($sSynchOxid);
-            if ($aSkipArt = oxRegistry::getSession()->getVariable('neworder_sess')) {
-                $sQAdd .= " and $sArtTable.oxid not in ( " . implode(", ", oxDb::getInstance()->quoteArray($aSkipArt)) . " ) ";
+            if ($aSkipArt = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('neworder_sess')) {
+                $sQAdd .= " and $sArtTable.oxid not in ( " . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aSkipArt)) . " ) ";
             }
         } else {
             // which fields to load ?
             $sQAdd = " from $sArtTable where ";
-            if ($aSkipArt = oxRegistry::getSession()->getVariable('neworder_sess')) {
-                $sQAdd .= " $sArtTable.oxid in ( " . implode(", ", oxDb::getInstance()->quoteArray($aSkipArt)) . " ) ";
+            if ($aSkipArt = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('neworder_sess')) {
+                $sQAdd .= " $sArtTable.oxid in ( " . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aSkipArt)) . " ) ";
             } else {
                 $sQAdd .= " 1 = 0 ";
             }
@@ -96,14 +96,14 @@ class CategoryOrderAjax extends \ajaxListComponent
     protected function _getSorting()
     {
         $sOrder = '';
-        if (oxRegistry::getConfig()->getRequestParameter('synchoxid')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid')) {
             $sOrder = parent::_getSorting();
-        } elseif (($aSkipArt = oxRegistry::getSession()->getVariable('neworder_sess'))) {
+        } elseif (($aSkipArt = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('neworder_sess'))) {
             $sOrderBy = '';
             $sArtTable = $this->_getViewName('oxarticles');
             $sSep = '';
             foreach ($aSkipArt as $sId) {
-                $sOrderBy = " $sArtTable.oxid=" . oxDb::getDb()->quote($sId) . " " . $sSep . $sOrderBy;
+                $sOrderBy = " $sArtTable.oxid=" . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sId) . " " . $sSep . $sOrderBy;
                 $sSep = ", ";
             }
             $sOrder = "order by " . $sOrderBy;
@@ -118,8 +118,8 @@ class CategoryOrderAjax extends \ajaxListComponent
     public function removeCatOrderArticle()
     {
         $aRemoveArt = $this->_getActionIds('oxarticles.oxid');
-        $soxId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $aSkipArt = oxRegistry::getSession()->getVariable('neworder_sess');
+        $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $aSkipArt = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('neworder_sess');
 
         if (is_array($aRemoveArt) && is_array($aSkipArt)) {
             foreach ($aRemoveArt as $sRem) {
@@ -127,7 +127,7 @@ class CategoryOrderAjax extends \ajaxListComponent
                     unset($aSkipArt[$iKey]);
                 }
             }
-            oxRegistry::getSession()->setVariable('neworder_sess', $aSkipArt);
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('neworder_sess', $aSkipArt);
 
             $sArticleTable = $this->_getViewName('oxarticles');
             $sO2CView = $this->_getViewName('oxobject2category');
@@ -135,10 +135,11 @@ class CategoryOrderAjax extends \ajaxListComponent
             // checking if all articles were moved from one
             $sSelect = "select 1 from $sArticleTable left join $sO2CView on $sArticleTable.oxid=$sO2CView.oxobjectid ";
             $sSelect .= "where $sO2CView.oxcatnid = '$soxId' and $sArticleTable.oxparentid = '' and $sArticleTable.oxid ";
-            $sSelect .= "not in ( " . implode(", ", oxDb::getInstance()->quoteArray($aSkipArt)) . " ) ";
+            $sSelect .= "not in ( " . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aSkipArt)) . " ) ";
 
             // simply echoing "1" if some items found, and 0 if nothing was found
-            echo (int) oxDb::getDb()->getOne($sSelect, false, false);
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            echo (int) \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sSelect);
         }
     }
 
@@ -148,9 +149,9 @@ class CategoryOrderAjax extends \ajaxListComponent
     public function addCatOrderArticle()
     {
         $aAddArticle = $this->_getActionIds('oxarticles.oxid');
-        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
-        $aOrdArt = oxRegistry::getSession()->getVariable('neworder_sess');
+        $aOrdArt = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('neworder_sess');
         if (!is_array($aOrdArt)) {
             $aOrdArt = array();
         }
@@ -164,7 +165,7 @@ class CategoryOrderAjax extends \ajaxListComponent
                     $aOrdArt[] = $sAdd;
                 }
             }
-            oxRegistry::getSession()->setVariable('neworder_sess', $aOrdArt);
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('neworder_sess', $aOrdArt);
 
             $sArticleTable = $this->_getViewName('oxarticles');
             $sO2CView = $this->_getViewName('oxobject2category');
@@ -172,10 +173,11 @@ class CategoryOrderAjax extends \ajaxListComponent
             // checking if all articles were moved from one
             $sSelect = "select 1 from $sArticleTable left join $sO2CView on $sArticleTable.oxid=$sO2CView.oxobjectid ";
             $sSelect .= "where $sO2CView.oxcatnid = '$soxId' and $sArticleTable.oxparentid = '' and $sArticleTable.oxid ";
-            $sSelect .= "not in ( " . implode(", ", oxDb::getInstance()->quoteArray($aOrdArt)) . " ) ";
+            $sSelect .= "not in ( " . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aOrdArt)) . " ) ";
 
             // simply echoing "1" if some items found, and 0 if nothing was found
-            echo (int) oxDb::getDb()->getOne($sSelect, false, false);
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            echo (int) \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sSelect);
         }
     }
 
@@ -186,10 +188,9 @@ class CategoryOrderAjax extends \ajaxListComponent
      */
     public function saveNewOrder()
     {
-        $oCategory = oxNew("oxCategory");
-        $sId = oxRegistry::getConfig()->getRequestParameter("oxid");
+        $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
+        $sId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid");
         if ($oCategory->load($sId)) {
-
             //Disable editing for derived items
             if ($oCategory->isDerived()) {
                 return;
@@ -197,11 +198,11 @@ class CategoryOrderAjax extends \ajaxListComponent
 
             $this->resetContentCache();
 
-            $aNewOrder = oxRegistry::getSession()->getVariable("neworder_sess");
+            $aNewOrder = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("neworder_sess");
             if (is_array($aNewOrder) && count($aNewOrder)) {
                 $sO2CView = $this->_getViewName('oxobject2category');
-                $sSelect = "select * from $sO2CView where $sO2CView.oxcatnid='" . $oCategory->getId() . "' and $sO2CView.oxobjectid in (" . implode(", ", oxDb::getInstance()->quoteArray($aNewOrder)) . " )";
-                $oList = oxNew("oxlist");
+                $sSelect = "select * from $sO2CView where $sO2CView.oxcatnid='" . $oCategory->getId() . "' and $sO2CView.oxobjectid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aNewOrder)) . " )";
+                $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
                 $oList->init("oxbase", "oxobject2category");
                 $oList->selectString($sSelect);
 
@@ -213,7 +214,7 @@ class CategoryOrderAjax extends \ajaxListComponent
                     }
                 }
 
-                oxRegistry::getSession()->setVariable('neworder_sess', null);
+                \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('neworder_sess', null);
             }
 
             $this->onCategoryChange($sId);
@@ -227,16 +228,15 @@ class CategoryOrderAjax extends \ajaxListComponent
      */
     public function remNewOrder()
     {
-        $oCategory = oxNew("oxCategory");
-        $sId = oxRegistry::getConfig()->getRequestParameter("oxid");
+        $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
+        $sId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid");
         if ($oCategory->load($sId)) {
-
             //Disable editing for derived items
             if ($oCategory->isDerived()) {
                 return;
             }
 
-            $oDb = oxDb::getDb();
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
             $sQuotedCategoryId = $oDb->quote($oCategory->getId());
 
@@ -244,7 +244,7 @@ class CategoryOrderAjax extends \ajaxListComponent
             $sSelect = "update oxobject2category set oxpos = '0' where oxobject2category.oxcatnid = {$sQuotedCategoryId} {$sSqlShopFilter}";
             $oDb->execute($sSelect);
 
-            oxRegistry::getSession()->setVariable('neworder_sess', null);
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('neworder_sess', null);
 
             $this->onCategoryChange($sId);
         }

@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 
@@ -29,7 +29,7 @@ use oxRegistry;
  * Collects some article base information, sets default recommendation text,
  * sends suggestion mail to user.
  */
-class InviteController extends \oxUBase
+class InviteController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
      * Current class template name.
@@ -99,7 +99,7 @@ class InviteController extends \oxUBase
         $oConfig = $this->getConfig();
 
         if (!$oConfig->getConfigParam("blInvitationsEnabled")) {
-            oxRegistry::getUtils()->redirect($oConfig->getShopHomeUrl());
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($oConfig->getShopHomeUrl());
 
             return;
         }
@@ -120,10 +120,10 @@ class InviteController extends \oxUBase
         $oConfig = $this->getConfig();
 
         if (!$oConfig->getConfigParam("blInvitationsEnabled")) {
-            oxRegistry::getUtils()->redirect($oConfig->getShopHomeUrl());
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($oConfig->getShopHomeUrl());
         }
 
-        $aParams = oxRegistry::getConfig()->getRequestParameter('editval', true);
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval', true);
         $oUser = $this->getUser();
         if (!is_array($aParams) || !$oUser) {
             return;
@@ -131,9 +131,9 @@ class InviteController extends \oxUBase
 
         // storing used written values
         $oParams = (object) $aParams;
-        $this->setInviteData((object) oxRegistry::getConfig()->getRequestParameter('editval'));
+        $this->setInviteData((object) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval'));
 
-        $oUtilsView = oxRegistry::get("oxUtilsView");
+        $oUtilsView = \OxidEsales\Eshop\Core\Registry::getUtilsView();
 
         // filled not all fields ?
         foreach ($this->_aReqFields as $sFieldName) {
@@ -164,25 +164,25 @@ class InviteController extends \oxUBase
             }
         }
 
-        $oUtils = oxRegistry::getUtils();
+        $oUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
 
         //validating entered emails
         foreach ($aParams["rec_email"] as $sRecipientEmail) {
-            if (!$oUtils->isValidEmail($sRecipientEmail)) {
+            if (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($sRecipientEmail)) {
                 $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_INVITE_INCORRECTEMAILADDRESS');
 
                 return;
             }
         }
 
-        if (!$oUtils->isValidEmail($aParams["send_email"])) {
+        if (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams["send_email"])) {
             $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_INVITE_INCORRECTEMAILADDRESS');
 
             return;
         }
 
         // sending invite email
-        $oEmail = oxNew('oxemail');
+        $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
 
         if ($oEmail->sendInviteMail($oParams)) {
             $this->_iMailStatus = 1;
@@ -193,7 +193,7 @@ class InviteController extends \oxUBase
             //saving statistics for sent emails
             $oUser->updateInvitationStatistics($aParams["rec_email"]);
         } else {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL');
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL');
         }
     }
 
@@ -237,8 +237,8 @@ class InviteController extends \oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $iLang = oxRegistry::getLang()->getBaseLanguage();
-        $aPath['title'] = oxRegistry::getLang()->translateString('INVITE_YOUR_FRIENDS', $iLang, false);
+        $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('INVITE_YOUR_FRIENDS', $iLang, false);
         $aPath['link']  = $this->getLink();
         $aPaths[] = $aPath;
 

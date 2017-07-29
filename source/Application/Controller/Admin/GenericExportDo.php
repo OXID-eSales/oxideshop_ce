@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 
 /**
  * General export class.
  */
-class GenericExportDo extends \DynExportBase
+class GenericExportDo extends \OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController
 {
 
     /**
@@ -70,9 +70,9 @@ class GenericExportDo extends \DynExportBase
         $iExportedItems = $iCnt;
         $blContinue = false;
         if ($oArticle = $this->getOneArticle($iCnt, $blContinue)) {
-            $myConfig = oxRegistry::getConfig();
-            $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
-            $oSmarty->assign("sCustomHeader", oxRegistry::getSession()->getVariable("sExportCustomHeader"));
+            $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+            $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
+            $oSmarty->assign("sCustomHeader", \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("sExportCustomHeader"));
             $oSmarty->assign_by_ref("linenr", $iCnt);
             $oSmarty->assign_by_ref("article", $oArticle);
             $oSmarty->assign("spr", $myConfig->getConfigParam('sCSVSign'));

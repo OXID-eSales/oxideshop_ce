@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxField;
 use \oxPrice;
@@ -44,8 +44,10 @@ class EmailAzureTplTest extends \OxidTestCase
     {
         parent::setUp();
 
+        $this->getConfig()->setConfigParam('sTheme', 'azure');
+
         // reload smarty
-        oxRegistry::get("oxUtilsView")->getSmarty(true);
+        \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty(true);
 
         $this->_oEmail = oxNew("oxEmail");
 
@@ -110,7 +112,7 @@ class EmailAzureTplTest extends \OxidTestCase
     protected function tearDown()
     {
         // reload smarty
-        oxRegistry::get("oxUtilsView")->getSmarty(true);
+        \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty(true);
 
         $oActShop = $this->getConfig()->getActiveShop();
         $oActShop->setLanguage(0);
@@ -134,7 +136,7 @@ class EmailAzureTplTest extends \OxidTestCase
 
         $sBody = 'testBody';
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop"));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
 
@@ -156,7 +158,6 @@ class EmailAzureTplTest extends \OxidTestCase
      */
     public function testSendOrderEmailToUser()
     {
-        $this->getConfig()->setConfigParam('blSkipEuroReplace', true);
         $this->getConfig()->setConfigParam('blShowVATForDelivery', false);
 
         $oPrice = oxNew('oxPrice');
@@ -229,7 +230,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $oPayment->oxpayments__oxdesc = new oxField("testPaymentDesc");
 
         /** @var oxOrder|PHPUnit_Framework_MockObject_MockObject $oOrder */
-        $oOrder = $this->getMock('oxOrder', array("getOrderUser", "getBasket", "getPayment"));
+        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array("getOrderUser", "getBasket", "getPayment"));
         $oOrder->expects($this->any())->method('getOrderUser')->will($this->returnValue($this->_oUser));
         $oOrder->expects($this->any())->method('getBasket')->will($this->returnValue($oBasket));
         $oOrder->expects($this->any())->method('getPayment')->will($this->returnValue($oPayment));
@@ -246,7 +247,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $oOrder->oxorder__oxdeltype = new oxField("oxidstandard");
 
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop", "_getUseInlineImages", 'getOrderFileList'));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop", "_getUseInlineImages", 'getOrderFileList'));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
         $oEmail->expects($this->any())->method('_getUseInlineImages')->will($this->returnValue(true));
@@ -273,7 +274,6 @@ class EmailAzureTplTest extends \OxidTestCase
      */
     public function testSendOrderEmailToOwner()
     {
-        $this->getConfig()->setConfigParam('blSkipEuroReplace', true);
         $this->getConfig()->setConfigParam('blShowVATForDelivery', false);
 
         $oPrice = oxNew('oxPrice');
@@ -339,7 +339,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $oPayment = oxNew('oxPayment');
         $oPayment->oxpayments__oxdesc = new oxField("testPaymentDesc");
 
-        $oOrder = $this->getMock('oxOrder', array("getOrderUser", "getBasket", "getPayment"));
+        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array("getOrderUser", "getBasket", "getPayment"));
         $oOrder->expects($this->any())->method('getOrderUser')->will($this->returnValue($this->_oUser));
         $oOrder->expects($this->any())->method('getBasket')->will($this->returnValue($oBasket));
         $oOrder->expects($this->any())->method('getPayment')->will($this->returnValue($oPayment));
@@ -354,7 +354,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $oOrder->oxorder__oxbillcountry = new oxField('');
         $oOrder->oxorder__oxdeltype = new oxField("oxidstandard");
 
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop", "_getUseInlineImages"));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop", "_getUseInlineImages"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
         $oEmail->expects($this->any())->method('_getUseInlineImages')->will($this->returnValue(true));
@@ -391,7 +391,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $oBasket->setCost('oxpayment', new oxPrice(0));
         $oBasket->setCost('oxdelivery', new oxPrice(6626));
 
-        $oOrder = $this->getMock('oxOrder', array("getOrderUser", "getBasket", "getPayment"));
+        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array("getOrderUser", "getBasket", "getPayment"));
         $oOrder->expects($this->any())->method('getOrderUser')->will($this->returnValue($this->_oUser));
         $oOrder->expects($this->any())->method('getBasket')->will($this->returnValue($oBasket));
         $oOrder->expects($this->any())->method('getPayment')->will($this->returnValue($oPayment));
@@ -408,7 +408,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $oShop_en = clone $this->_oShop;
         $oShop_en->oxshops__oxordersubject = new oxField('testOrderSubject_en', oxField::T_RAW);
 
-        $oEmail = $this->getMock('oxEmail', array("_getShop", "_sendMail"));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_getShop", "_sendMail"));
         $oEmail->expects($this->at(0))->method('_getShop')->will($this->returnValue($this->_oShop));
         $oEmail->expects($this->at(1))->method('_getShop')->with($this->equalTo(1))->will($this->returnValue($oShop_en));
         $oEmail->expects($this->at(2))->method('_getShop')->will($this->returnValue($this->_oShop));
@@ -439,7 +439,7 @@ class EmailAzureTplTest extends \OxidTestCase
      */
     public function testSendRegisterEMail()
     {
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop", "_getUseInlineImages"));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop", "_getUseInlineImages"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
         $oEmail->expects($this->any())->method('_getUseInlineImages')->will($this->returnValue(true));
@@ -466,7 +466,7 @@ class EmailAzureTplTest extends \OxidTestCase
      */
     public function testSendForgotPwdEmail()
     {
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop", "_getUseInlineImages"));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop", "_getUseInlineImages"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
         $oEmail->expects($this->any())->method('_getUseInlineImages')->will($this->returnValue(true));
@@ -492,7 +492,7 @@ class EmailAzureTplTest extends \OxidTestCase
      */
     public function testSendForgotPwdEmailToNotExistingUser()
     {
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop"));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
         $oEmail->expects($this->never())->method('_sendMail');
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
 
@@ -510,7 +510,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $sUserMail = 'username@useremail.nl';
         $sShopOwnerMail = 'shopOwner@shopOwnerEmail.nl';
 
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop"));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
 
@@ -538,7 +538,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $this->getSession()->setId('xsessx');
 
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop", "_getUseInlineImages", "isSessionStarted"));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop", "_getUseInlineImages", "isSessionStarted"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
         $oEmail->expects($this->any())->method('_getUseInlineImages')->will($this->returnValue(true));
@@ -569,11 +569,11 @@ class EmailAzureTplTest extends \OxidTestCase
             $this->markTestSkipped('This test is for Community and Professional editions only.');
         }
 
-        $oNewsletter = $this->getMock('oxNewsletter', array("getHtmlText"));
+        $oNewsletter = $this->getMock(\OxidEsales\Eshop\Application\Model\Newsletter::class, array("getHtmlText"));
         $oNewsletter->expects($this->once())->method("getHtmlText")->will($this->returnValue("testNewsletterHtmlText"));
         $oNewsletter->oxnewsletter__oxtitle = new oxField('testNewsletterTitle', oxField::T_RAW);
 
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop"));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
 
@@ -609,7 +609,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $oProduct = oxNew('oxArticle');
         $oProduct->load('_testArticleId');
 
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop", "_getUseInlineImages"));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop", "_getUseInlineImages"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
         $oEmail->expects($this->any())->method('_getUseInlineImages')->will($this->returnValue(true));
@@ -649,7 +649,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $oPayment = oxNew('oxPayment');
         $oPayment->oxpayments__oxdesc = new oxField("testPaymentDesc");
 
-        $oOrder = $this->getMock('oxOrder', array("getOrderUser", "getOrderArticles", "getPayment"));
+        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array("getOrderUser", "getOrderArticles", "getPayment"));
         $oOrder->expects($this->any())->method('getOrderUser')->will($this->returnValue($this->_oUser));
         $oOrder->expects($this->any())->method('getOrderArticles')->will($this->returnValue($oArticles));
         $oOrder->expects($this->any())->method('getPayment')->will($this->returnValue($oPayment));
@@ -668,7 +668,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $oOrder->oxorder__oxbilllname = new oxField('testOrderBillLName', oxField::T_RAW);
         $oOrder->oxorder__oxuserid = new oxField($this->_oUser->getId(), oxField::T_RAW);
 
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop", "_getUseInlineImages", 'getOrderFileList'));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop", "_getUseInlineImages", 'getOrderFileList'));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
         $oEmail->expects($this->any())->method('_getUseInlineImages')->will($this->returnValue(true));
@@ -699,7 +699,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $myConfig->setConfigParam('blAdmin', true);
         $myConfig->setAdminMode(true);
 
-        $oOrder = $this->getMock('oxOrder', array("getId"));
+        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array("getId"));
         $oOrder->expects($this->any())->method('getId')->will($this->returnValue('_testOrder'));
 
         $oOrder->oxorder__oxordernr = new oxField('123456789', oxField::T_RAW);
@@ -709,12 +709,12 @@ class EmailAzureTplTest extends \OxidTestCase
         $oOrder->oxorder__oxbilllname = new oxField('testOrderBillLName', oxField::T_RAW);
         $oOrder->oxorder__oxuserid = new oxField($this->_oUser->getId(), oxField::T_RAW);
 
-        $oOrderFile = $this->getMock('oxOrderFile', array("getId", "getFileSize"));
+        $oOrderFile = $this->getMock(\OxidEsales\Eshop\Application\Model\OrderFile::class, array("getId", "getFileSize"));
         $oOrderFile->expects($this->any())->method('getId')->will($this->returnValue('_testOrder'));
         $oOrderFile->expects($this->any())->method('getFileSize')->will($this->returnValue('5000'));
         $oOrderFile->oxorderfiles__oxfilename = new oxField('testFileName', oxField::T_RAW);
 
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop", "_getUseInlineImages", 'getOrderFileList'));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop", "_getUseInlineImages", 'getOrderFileList'));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
         $oEmail->expects($this->any())->method('_getUseInlineImages')->will($this->returnValue(true));
@@ -749,7 +749,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $aStatus = array();
         $aError = array();
 
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop"));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
 
@@ -779,13 +779,13 @@ class EmailAzureTplTest extends \OxidTestCase
         $this->_oArticle->oxarticles__oxremindamount = new oxField('9', oxField::T_RAW);
         $this->_oArticle->save();
 
-        $oBasketItem = $this->getMock('oxBasketItem', array('getArticle', 'getProductId'));
+        $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array('getArticle', 'getProductId'));
         $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($this->_oArticle));
         $oBasketItem->expects($this->any())->method('getProductId')->will($this->returnValue('_testArticleId'));
 
         $aBasketContents[] = $oBasketItem;
 
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop", "_getUseInlineImages"));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop", "_getUseInlineImages"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
         $oEmail->expects($this->any())->method('_getUseInlineImages')->will($this->returnValue(true));
@@ -819,7 +819,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $oParams->send_id = '123456789';
 
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop", "_getUseInlineImages"));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop", "_getUseInlineImages"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
         $oEmail->expects($this->any())->method('_getUseInlineImages')->will($this->returnValue(true));
@@ -852,7 +852,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $alarm = oxNew("oxpricealarm");
         $alarm->oxpricealarm__oxprice = new oxField('123', oxField::T_RAW);
 
-        $email = $this->getMock('oxEmail', array("_sendMail", "_getShop", "_getUseInlineImages"));
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop", "_getUseInlineImages"));
         $email->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $email->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
         $email->expects($this->any())->method('_getUseInlineImages')->will($this->returnValue(true));
@@ -888,7 +888,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $oSmarty = $this->getMock('Smarty', array("fetch"));
         $oSmarty->expects($this->once())->method('fetch')->will($this->returnValue("body"));
 
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop", "_getUseInlineImages", "_getSmarty"));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop", "_getUseInlineImages", "_getSmarty"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
         $oEmail->expects($this->any())->method('_getUseInlineImages')->will($this->returnValue(true));
@@ -918,7 +918,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $aParams['email'] = 'user@oxid-esales.com';
 
         /** @var oxShop|PHPUnit_Framework_MockObject_MockObject $oShop */
-        $oShop = $this->getMock('oxShop', array('getImageUrl'));
+        $oShop = $this->getMock(\OxidEsales\Eshop\Application\Model\OxidEsalesshopApplicationControllerAdminShopController::class, array('getImageUrl'));
         $oShop->expects($this->any())->method('getImageUrl');
         //$oShop->loadInLang( 1, $this->getConfig()->getBaseShopId() );
         $oShop->oxshops__oxorderemail = new oxField('order@oxid-esales.com');

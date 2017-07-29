@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * Class dealing with multibyte strings
@@ -172,6 +172,7 @@ class StrMb
         return htmlentities($sString, $iQuotStyle, $this->_sEncoding);
     }
 
+    // @codingStandardsIgnoreStart
     /**
      * PHP html_entity_decode() function wrapper
      *
@@ -251,11 +252,11 @@ class StrMb
     /**
      * PHP preg_match() function wrapper
      *
-     * @param string $sPattern  pattern to search for, as a string
-     * @param string $sSubject  input string
-     * @param array  &$aMatches is filled with the results of search
-     * @param int    $iFlags    flags
-     * @param int    $iOffset   place from which to start the search
+     * @param string $sPattern pattern to search for, as a string
+     * @param string $sSubject input string
+     * @param array  $aMatches is filled with the results of search
+     * @param int    $iFlags   flags
+     * @param int    $iOffset  place from which to start the search
      *
      * @return string
      */
@@ -267,11 +268,11 @@ class StrMb
     /**
      * PHP preg_match_all() function wrapper
      *
-     * @param string $sPattern  pattern to search for, as a string
-     * @param string $sSubject  input string
-     * @param array  &$aMatches is filled with the results of search
-     * @param int    $iFlags    flags
-     * @param int    $iOffset   place from which to start the search
+     * @param string $sPattern pattern to search for, as a string
+     * @param string $sSubject input string
+     * @param array  $aMatches is filled with the results of search
+     * @param int    $iFlags   flags
+     * @param int    $iOffset  place from which to start the search
      *
      * @return string
      */
@@ -279,6 +280,7 @@ class StrMb
     {
         return preg_match_all($sPattern . 'u', $sSubject, $aMatches, $iFlags, $iOffset);
     }
+    // @codingStandardsIgnoreEnd
 
     /**
      * PHP ucfirst() function wrapper
@@ -341,8 +343,8 @@ class StrMb
 
     /**
      * Recodes and returns passed input:
-     * if $blToHtmlEntities == true  ä -> &auml;
-     * if $blToHtmlEntities == false &auml; -> ä
+     * if $blToHtmlEntities == true  Ã¤ -> &auml;
+     * if $blToHtmlEntities == false &auml; -> Ã¤
      *
      * @param string $sInput           text to recode
      * @param bool   $blToHtmlEntities recode direction
@@ -397,6 +399,7 @@ class StrMb
         return json_encode($data);
     }
 
+    // @codingStandardsIgnoreStart
     /**
      * PHP strip_tags() function wrapper.
      *
@@ -414,6 +417,7 @@ class StrMb
 
         return strip_tags($sString, $sAllowableTags);
     }
+    // @codingStandardsIgnoreEnd
 
     /**
      * Compares two strings. Case sensitive.

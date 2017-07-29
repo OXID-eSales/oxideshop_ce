@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Setup;
+namespace OxidEsales\EshopCommunity\Setup;
 
 use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
@@ -79,7 +79,7 @@ class Core
             }
         }
 
-        throw new oxSystemComponentException("Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
+        throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException("Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
     }
 
     /**
@@ -92,7 +92,7 @@ class Core
     protected function getClass($sInstanceName)
     {
         $editionSelector = new EditionSelector();
-        $class =  'OxidEsales\\Eshop\\Setup\\' . $sInstanceName;
+        $class =  'OxidEsales\\EshopCommunity\\Setup\\' . $sInstanceName;
 
         $classEnterprise = '\\OxidEsales\\EshopEnterprise\\'.EditionPathProvider::SETUP_DIRECTORY.'\\'.$sInstanceName;
         $classProfessional = '\\OxidEsales\\EshopProfessional\\'.EditionPathProvider::SETUP_DIRECTORY.'\\'.$sInstanceName;
@@ -104,5 +104,83 @@ class Core
         }
 
         return $class;
+    }
+
+    /**
+     * @return Setup
+     */
+    protected function getSetupInstance()
+    {
+        return $this->getInstance("Setup");
+    }
+
+    /**
+     * @return Language
+     */
+    protected function getLanguageInstance()
+    {
+        return $this->getInstance("Language");
+    }
+
+    /**
+     * @return Utilities
+     */
+    protected function getUtilitiesInstance()
+    {
+        return $this->getInstance("Utilities");
+    }
+
+    /**
+     * @return Session
+     */
+    protected function getSessionInstance()
+    {
+        return $this->getInstance("Session");
+    }
+
+    /**
+     * @return Database
+     */
+    protected function getDatabaseInstance()
+    {
+        return $this->getInstance("Database");
+    }
+
+    /**
+     * Return true if user already decided to overwrite database.
+     *
+     * @return bool
+     */
+    protected function userDecidedOverwriteDB()
+    {
+        $userDecidedOverwriteDatabase = false;
+
+        $overwriteCheck = $this->getUtilitiesInstance()->getRequestVar("ow", "get");
+        $session = $this->getSessionInstance();
+
+        if (isset($overwriteCheck) || $session->getSessionParam('blOverwrite')) {
+            $userDecidedOverwriteDatabase = true;
+        }
+
+        return $userDecidedOverwriteDatabase;
+    }
+
+    /**
+     * Return true if user already decided to ignore database recommended version related warnings.
+     *
+     * @return bool
+     */
+    protected function userDecidedIgnoreDBWarning()
+    {
+        $userDecidedIgnoreDBWarning = false;
+
+        $overwriteCheck = $this->getUtilitiesInstance()->getRequestVar("owrec", "get");
+        $session = $this->getSessionInstance();
+
+        if (isset($overwriteCheck) || $session->getSessionParam('blIgnoreDbRecommendations')) {
+            $userDecidedIgnoreDBWarning = true;
+        }
+
+        return $userDecidedIgnoreDBWarning;
     }
 }

@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxObjectException;
 
@@ -300,7 +300,7 @@ class BaseTest extends \OxidTestCase
      */
     public function testIsLoaded()
     {
-        $oBase = $this->getMock("oxbase", array("_addField", "buildSelectString", "assignRecord", "getViewName"));
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array("_addField", "buildSelectString", "assignRecord", "getViewName"));
         $oBase->expects($this->once())->method('_addField')->with($this->equalTo('oxid'), $this->equalTo(0));
         $oBase->expects($this->once())->method('getViewName')->will($this->returnValue("testView"));
         $oBase->expects($this->once())->method('buildSelectString')->with($this->equalto(array("testView.oxid" => "xxx")))->will($this->returnValue("testSql"));
@@ -319,10 +319,10 @@ class BaseTest extends \OxidTestCase
      */
     public function testIsDerivedBothShopIdsAreNull()
     {
-        $oConfig = $this->getMock('oxconfig', array('getShopId'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getShopId'));
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue(null));
 
-        $oBase = $this->getMock('oxbase', array('getConfig', 'getShopId'), array(), '', false);
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('getConfig', 'getShopId'), array(), '', false);
         $oBase->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $oBase->expects($this->any())->method('getShopId')->will($this->returnValue(null));
 
@@ -338,10 +338,10 @@ class BaseTest extends \OxidTestCase
     {
         $expected = $this->getConfig()->getEdition() === 'EE' ? false : null;
 
-        $oConfig = $this->getMock('oxconfig', array('getShopId'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getShopId'));
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue('xxx'));
 
-        $oBase = $this->getMock('oxbase', array('getConfig', 'getShopId'), array(), '', false);
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('getConfig', 'getShopId'), array(), '', false);
         $oBase->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $oBase->expects($this->any())->method('getShopId')->will($this->returnValue('xxx'));
 
@@ -357,10 +357,10 @@ class BaseTest extends \OxidTestCase
     {
         $expected = $this->getConfig()->getEdition() === 'EE' ? true : null;
 
-        $oConfig = $this->getMock('oxconfig', array('getShopId'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getShopId'));
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue('xxx'));
 
-        $oBase = $this->getMock('oxbase', array('getConfig', 'getShopId'), array(), '', false);
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('getConfig', 'getShopId'), array(), '', false);
         $oBase->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $oBase->expects($this->any())->method('getShopId')->will($this->returnValue('yyy'));
 
@@ -374,7 +374,7 @@ class BaseTest extends \OxidTestCase
      */
     public function testAllowDerivedUpdate()
     {
-        $oBase = $this->getMock('oxbase', array('isDerived'));
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('isDerived'));
         $oBase->expects($this->once())->method('isDerived')->will($this->returnValue(false));
         $this->assertTrue($oBase->allowDerivedUpdate());
     }
@@ -386,7 +386,7 @@ class BaseTest extends \OxidTestCase
      */
     public function testAllowDerivedDelete()
     {
-        $oBase = $this->getMock('oxbase', array('isDerived'));
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('isDerived'));
         $oBase->expects($this->once())->method('isDerived')->will($this->returnValue(false));
         $this->assertTrue($oBase->allowDerivedDelete());
     }
@@ -398,7 +398,7 @@ class BaseTest extends \OxidTestCase
      */
     public function testConvertingFields()
     {
-        $oBase = $this->getMock('oxbase', array('_initDataStructure', 'isAdmin', 'exists', 'isDerived', '_update', '_insert', 'onChange', 'getId'));
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('_initDataStructure', 'isAdmin', 'exists', 'isDerived', '_update', '_insert', 'onChange', 'getId'));
         $oBase->expects($this->once())->method('_initDataStructure');
         $oBase->expects($this->once())->method('isAdmin')->will($this->returnValue(true));
         $oBase->expects($this->once())->method('exists')->will($this->returnValue(false));
@@ -949,7 +949,7 @@ class BaseTest extends \OxidTestCase
         $oBase->init("oxactions");
         $select = "select * from oxactions where oxid = 'oxstart'";
         $oDB = oxDb::getDB(oxDB::FETCH_MODE_ASSOC);
-        $rs = $oDB->execute($select);
+        $rs = $oDB->select($select);
         $oBase->assign($rs->fields);
         $this->assertEquals("oxstart", $oBase->getId());
     }
@@ -966,7 +966,7 @@ class BaseTest extends \OxidTestCase
         $oBase->init("oxactions");
         $oBase->oxactions__oxid = new oxField("oxstart", oxField::T_RAW);
         $select = "select * from oxactions where oxid = 'oxstart'";
-        $rs = $oDB->Execute($select);
+        $rs = $oDB->select($select);
         $oBase->assign($rs->fields);
         $this->assertEquals($oBase->getId(), "oxstart");
     }
@@ -1266,9 +1266,9 @@ class BaseTest extends \OxidTestCase
 
         $oDB = oxDb::getDb();
 
-        $rs = $oDB->Execute($sSelect);
+        $rs = $oDB->select($sSelect);
         $expectedCount = $this->getConfig()->getEdition() === 'EE' ? 6 : 1;
-        $this->assertEquals($expectedCount, $rs->RecordCount());
+        $this->assertEquals($expectedCount, $rs->count());
     }
 
     /**
@@ -1492,7 +1492,7 @@ class BaseTest extends \OxidTestCase
     public function  testSaveIfExists()
     {
         $oBase = new _oxBase();
-        $oBase = $this->getMock('oxbase', array('update'));
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('update'));
         $oBase->expects($this->any())
             ->method('update')
             ->will($this->returnValue(true));
@@ -1523,7 +1523,7 @@ class BaseTest extends \OxidTestCase
      */
     public function  testSaveIfNew()
     {
-        $oBase = $this->getMock('oxbase', array('_insert'));
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('_insert'));
         $oBase->expects($this->any())
             ->method('_insert')
             ->will($this->returnValue(true));
@@ -1540,7 +1540,7 @@ class BaseTest extends \OxidTestCase
      */
     public function  testSaveIfCannotInsert()
     {
-        $oBase = $this->getMock('oxbase', array('_insert'));
+        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('_insert'));
         $oBase->expects($this->any())
             ->method('_insert')
             ->will($this->returnValue(false));
@@ -1557,7 +1557,7 @@ class BaseTest extends \OxidTestCase
      */
     public function  testSaveIsDerived()
     {
-        $oBase = $this->getMock('Unit\Core\_oxBase', array('update'));
+        $oBase = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxBase::class, array('update'));
         $oBase->expects($this->any())
             ->method('update')
             ->will($this->returnValue(true));
@@ -1586,7 +1586,7 @@ class BaseTest extends \OxidTestCase
 
         $this->assertNotNull($sResult);
         $myDB = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
-        $res = $myDB->Execute("select oxupdate from oxuserbaskets where oxid='_test'");
+        $res = $myDB->select("select oxupdate from oxuserbaskets where oxid='_test'");
         $this->assertNotEquals("2007-07-07 00:00:00", $res->fields['oxupdate']);
     }
 
@@ -1629,7 +1629,7 @@ class BaseTest extends \OxidTestCase
         //$this->getConfig()->blAdmin = false;
         $this->assertNotNull($sResult);
         $myDB = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
-        $res = $myDB->Execute("select oxdate from oxnews where oxshortdesc='oxbasetest'");
+        $res = $myDB->select("select oxdate from oxnews where oxshortdesc='oxbasetest'");
         $this->assertEquals($res->fields['oxdate'], "2007-07-07");
     }
 
@@ -1647,7 +1647,7 @@ class BaseTest extends \OxidTestCase
         } catch (Exception $e) {
         }
 
-        $this->assertTrue($e instanceof oxObjectException);
+        $this->assertTrue($e instanceof \OxidEsales\EshopCommunity\Core\Exception\ObjectException);
     }
 
     /**
@@ -1669,7 +1669,7 @@ class BaseTest extends \OxidTestCase
         $sResult = $oBase->update();
         $this->assertNotNull($sResult);
         $myDB = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
-        $res = $myDB->Execute("select oxtitle from oxarticles where oxid='_test'");
+        $res = $myDB->select("select oxtitle from oxarticles where oxid='_test'");
         $this->assertEquals($res->fields['oxtitle'], "changed title");
     }
 
@@ -1701,7 +1701,7 @@ class BaseTest extends \OxidTestCase
         $sInsert = "Insert into oxarticles (`OXID`,`OXTITLE`) values ('_test','test')";
         $myDB->Execute($sInsert);
 
-        $oBase = $this->getMock('Unit\Core\_oxBase', array('_getUpdateFields'));
+        $oBase = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxBase::class, array('_getUpdateFields'));
         $oBase->expects($this->any())
             ->method('_getUpdateFields')
             ->will($this->returnValue(''));
@@ -1825,11 +1825,11 @@ class BaseTest extends \OxidTestCase
     {
         oxTestModules::addFunction('oxUtils', 'fromFileCache', '{return false;}');
         oxTestModules::addFunction('oxUtils', 'fromStaticCache', '{return false;}');
-        $oBase = $this->getMock('Unit\Core\_oxBase', array('isAdmin'));
+        $oBase = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxBase::class, array('isAdmin'));
         $oBase->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
         $oBase->init('oxactions');
 
-        $oField1 = oxNew('ADOFieldObject');
+        $oField1 = new stdClass();
         $oField1->name = 'OXID';
         $oField1->max_length = '32';
         $oField1->type = 'char';
@@ -1840,8 +1840,11 @@ class BaseTest extends \OxidTestCase
         $oField1->binary = false;
         $oField1->unsigned = false;
         $oField1->has_default = false;
+        $oField1->comment = 'Action id';
+        $oField1->characterSet = 'latin1';
+        $oField1->collation = 'latin1_general_ci';
 
-        $oField2 = oxNew('ADOFieldObject');
+        $oField2 = new stdClass();
         $oField2->name = 'OXSHOPID';
         $oField2->max_length = '11';
         $oField2->type = 'int';
@@ -1851,11 +1854,13 @@ class BaseTest extends \OxidTestCase
         $oField2->auto_increment = false;
         $oField2->binary = false;
         $oField2->unsigned = false;
-        $oField2->has_default = false;
         $oField2->has_default = true;
-        $oField2->default_value = 1;
+        $oField2->default_value = '1';
+        $oField2->comment = 'Shop id (oxshops)';
+        $oField2->characterSet = null;
+        $oField2->collation = '';
 
-        $oField3 = oxNew('ADOFieldObject');
+        $oField3 = new stdClass();
         $oField3->name = 'OXTYPE';
         $oField3->max_length = '1';
         $oField3->type = 'tinyint';
@@ -1866,11 +1871,14 @@ class BaseTest extends \OxidTestCase
         $oField3->binary = false;
         $oField3->unsigned = false;
         $oField3->has_default = false;
+        $oField3->comment = 'Action type: 0 or 1 - action, 2 - promotion, 3 - banner';
+        $oField3->characterSet = null;
+        $oField3->collation = '';
 
-        $oField4 = oxNew('ADOFieldObject');
+        $oField4 = new stdClass();
         $oField4->name = 'OXTITLE';
         $oField4->max_length = '128';
-        $oField4->type = 'char';
+        $oField4->type = 'varchar';
         $oField4->scale = null;
         $oField4->not_null = true;
         $oField4->primary_key = false;
@@ -1878,19 +1886,23 @@ class BaseTest extends \OxidTestCase
         $oField4->binary = false;
         $oField4->unsigned = false;
         $oField4->has_default = false;
+        $oField4->comment = 'Title (multilanguage)';
+        $oField4->characterSet = 'utf8';
+        $oField4->collation = 'utf8_general_ci';
 
         $oField41 = clone $oField4;
         $oField41->name = 'OXTITLE_1';
+        $oField41->comment = '';
 
         $oField42 = clone $oField4;
         $oField42->name = 'OXTITLE_2';
+        $oField42->comment = '';
 
         $oField43 = clone $oField4;
         $oField43->name = 'OXTITLE_3';
+        $oField43->comment = '';
 
-        $aExpectedFields = array($oField1, $oField2, $oField3, $oField4, $oField41, $oField42, $oField43);
-
-        $oField5 = oxNew('ADOFieldObject');
+        $oField5 = new stdClass();
         $oField5->name = 'OXLONGDESC';
         $oField5->max_length = '10';
         $oField5->type = 'text';
@@ -1901,17 +1913,23 @@ class BaseTest extends \OxidTestCase
         $oField5->binary = false;
         $oField5->unsigned = false;
         $oField5->has_default = false;
+        $oField5->comment = 'Long description, used for promotion (multilanguage)';
+        $oField5->characterSet = 'utf8';
+        $oField5->collation = 'utf8_general_ci';
 
         $oField51 = clone $oField5;
         $oField51->name = 'OXLONGDESC_1';
+        $oField51->comment = '';
 
         $oField52 = clone $oField5;
         $oField52->name = 'OXLONGDESC_2';
+        $oField52->comment = '';
 
         $oField53 = clone $oField5;
         $oField53->name = 'OXLONGDESC_3';
+        $oField53->comment = '';
 
-        $oField6 = oxNew('ADOFieldObject');
+        $oField6 = new stdClass();
         $oField6->name = 'OXACTIVE';
         $oField6->max_length = '1';
         $oField6->type = 'tinyint';
@@ -1922,9 +1940,12 @@ class BaseTest extends \OxidTestCase
         $oField6->binary = false;
         $oField6->unsigned = false;
         $oField6->has_default = true;
-        $oField6->default_value = 1;
+        $oField6->default_value = '1';
+        $oField6->comment = 'Active';
+        $oField6->characterSet = null;
+        $oField6->collation = null;
 
-        $oField7 = oxNew('ADOFieldObject');
+        $oField7 = new stdClass();
         $oField7->name = 'OXACTIVEFROM';
         $oField7->max_length = 20;
         $oField7->type = 'datetime';
@@ -1936,8 +1957,11 @@ class BaseTest extends \OxidTestCase
         $oField7->unsigned = false;
         $oField7->has_default = true;
         $oField7->default_value = '0000-00-00 00:00:00';
+        $oField7->comment = 'Active from specified date';
+        $oField7->characterSet = null;
+        $oField7->collation = null;
 
-        $oField8 = oxNew('ADOFieldObject');
+        $oField8 = new stdClass();
         $oField8->name = 'OXACTIVETO';
         $oField8->max_length = 20;
         $oField8->type = 'datetime';
@@ -1949,8 +1973,11 @@ class BaseTest extends \OxidTestCase
         $oField8->unsigned = false;
         $oField8->has_default = true;
         $oField8->default_value = '0000-00-00 00:00:00';
+        $oField8->comment = 'Active to specified date';
+        $oField8->characterSet = null;
+        $oField8->collation = null;
 
-        $oField9 = oxNew('ADOFieldObject');
+        $oField9 = new stdClass();
         $oField9->name = 'OXPIC';
         $oField9->max_length = '128';
         $oField9->type = 'varchar';
@@ -1961,17 +1988,23 @@ class BaseTest extends \OxidTestCase
         $oField9->binary = false;
         $oField9->unsigned = false;
         $oField9->has_default = false;
+        $oField9->comment = 'Picture filename, used for banner (multilanguage)';
+        $oField9->characterSet = 'utf8';
+        $oField9->collation = 'utf8_general_ci';
 
         $oField91 = clone $oField9;
         $oField91->name = 'OXPIC_1';
+        $oField91->comment = '';
 
         $oField92 = clone $oField9;
         $oField92->name = 'OXPIC_2';
+        $oField92->comment = '';
 
         $oField93 = clone $oField9;
         $oField93->name = 'OXPIC_3';
+        $oField93->comment = '';
 
-        $oField10 = oxNew('ADOFieldObject');
+        $oField10 = new stdClass();
         $oField10->name = 'OXLINK';
         $oField10->max_length = '128';
         $oField10->type = 'varchar';
@@ -1982,17 +2015,23 @@ class BaseTest extends \OxidTestCase
         $oField10->binary = false;
         $oField10->unsigned = false;
         $oField10->has_default = false;
+        $oField10->comment = 'Link, used on banner (multilanguage)';
+        $oField10->characterSet = 'utf8';
+        $oField10->collation = 'utf8_general_ci';
 
         $oField101 = clone $oField10;
         $oField101->name = 'OXLINK_1';
+        $oField101->comment = '';
 
         $oField102 = clone $oField10;
         $oField102->name = 'OXLINK_2';
+        $oField102->comment = '';
 
         $oField103 = clone $oField10;
         $oField103->name = 'OXLINK_3';
+        $oField103->comment = '';
 
-        $oField11 = oxNew('ADOFieldObject');
+        $oField11 = new stdClass();
         $oField11->name = 'OXSORT';
         $oField11->max_length = '5';
         $oField11->type = 'int';
@@ -2004,8 +2043,11 @@ class BaseTest extends \OxidTestCase
         $oField11->unsigned = false;
         $oField11->has_default = true;
         $oField11->default_value = '0';
+        $oField11->comment = 'Sorting';
+        $oField11->characterSet = null;
+        $oField11->collation = null;
 
-        $oField12 = oxNew('ADOFieldObject');
+        $oField12 = new stdClass();
         $oField12->name = 'OXTIMESTAMP';
         $oField12->max_length = '10';
         $oField12->type = 'timestamp';
@@ -2017,26 +2059,38 @@ class BaseTest extends \OxidTestCase
         $oField12->unsigned = false;
         $oField12->has_default = true;
         $oField12->default_value = 'CURRENT_TIMESTAMP';
+        $oField12->comment = 'Timestamp';
+        $oField12->characterSet = null;
+        $oField12->collation = null;
 
-        $aExpectedFields[] = $oField5;
-        $aExpectedFields[] = $oField51;
-        $aExpectedFields[] = $oField52;
-        $aExpectedFields[] = $oField53;
-        $aExpectedFields[] = $oField6;
-        $aExpectedFields[] = $oField7;
-        $aExpectedFields[] = $oField8;
-        $aExpectedFields[] = $oField9;
-        $aExpectedFields[] = $oField91;
-        $aExpectedFields[] = $oField92;
-        $aExpectedFields[] = $oField93;
-        $aExpectedFields[] = $oField10;
-        $aExpectedFields[] = $oField101;
-        $aExpectedFields[] = $oField102;
-        $aExpectedFields[] = $oField103;
-        $aExpectedFields[] = $oField11;
-        $aExpectedFields[] = $oField12;
+        $expectedFields = array(
+            $oField1,
+            $oField2,
+            $oField3,
+            $oField4,
+            $oField41,
+            $oField42,
+            $oField43,
+            $oField5,
+            $oField51,
+            $oField52,
+            $oField53,
+            $oField6,
+            $oField7,
+            $oField8,
+            $oField9,
+            $oField91,
+            $oField92,
+            $oField93,
+            $oField10,
+            $oField101,
+            $oField102,
+            $oField103,
+            $oField11,
+            $oField12
+        );
 
-        $this->assertEquals($aExpectedFields, $oBase->UNITgetAllFields());
+        $this->assertEquals($expectedFields, $oBase->UNITgetAllFields());
     }
 
     /**
@@ -2129,10 +2183,10 @@ class BaseTest extends \OxidTestCase
     {
         $iCurrTime = 1453734000; //some rounded timestamp
 
-        $oUtilsDate = $this->getMock('oxUtilsDate', array('getRequestTime'));
+        $oUtilsDate = $this->getMock(\OxidEsales\Eshop\Core\UtilsDate::class, array('getRequestTime'));
         $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue($iCurrTime));
         /** @var oxUtilsDate $oUtils */
-        oxRegistry::set('oxUtilsDate', $oUtilsDate);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsDate::class, $oUtilsDate);
 
         $aFields = array('oxactive' => 1, 'oxactivefrom' => 1, 'oxactiveto' => 1);
         $sDate = date('Y-m-d H:i:s', $iCurrTime);

@@ -20,12 +20,12 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Class for updating category tree structure in DB.
  */
-class CategoryUpdate extends \oxAdminView
+class CategoryUpdate extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**
@@ -50,7 +50,7 @@ class CategoryUpdate extends \oxAdminView
     protected function _getCategoryList()
     {
         if ($this->_oCatList == null) {
-            $this->_oCatList = oxNew("oxCategoryList");
+            $this->_oCatList = oxNew(\OxidEsales\Eshop\Application\Model\CategoryList::class);
             $this->_oCatList->updateCategoryTree(false);
         }
 

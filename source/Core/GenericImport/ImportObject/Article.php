@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\GenericImport\ImportObject;
+namespace OxidEsales\EshopCommunity\Core\GenericImport\ImportObject;
 
 use oxArticle;
 use oxBase;
@@ -28,7 +28,7 @@ use oxBase;
 /**
  * Import object for Articles.
  */
-class Article extends ImportObject
+class Article extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject
 {
     /** @var string Database table name. */
     protected $tableName = 'oxarticles';
@@ -57,9 +57,9 @@ class Article extends ImportObject
      * Can modify $data array before saving.
      * Set default value of OXSTOCKFLAG to 1 according to eShop admin functionality.
      *
-     * @param oxBase $shopObject        shop object
-     * @param array  $data              data to prepare
-     * @param bool   $allowCustomShopId if allow custom shop id
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $shopObject        shop object
+     * @param array                                  $data              data to prepare
+     * @param bool                                   $allowCustomShopId if allow custom shop id
      *
      * @return array
      */
@@ -77,8 +77,8 @@ class Article extends ImportObject
     /**
      * Post saving hook. can finish transactions if needed or ajust related data.
      *
-     * @param oxArticle $shopObject Shop object.
-     * @param array     $data       Data to save.
+     * @param \OxidEsales\Eshop\Application\Model\Article $shopObject Shop object.
+     * @param array                                       $data       Data to save.
      *
      * @return mixed data to return
      */
@@ -93,11 +93,11 @@ class Article extends ImportObject
     /**
      * Creates shop object.
      *
-     * @return oxBase
+     * @return \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function createShopObject()
     {
-        /** @var oxArticle $shopObject */
+        /** @var \OxidEsales\Eshop\Application\Model\Article $shopObject */
         $shopObject = parent::createShopObject();
         $shopObject->setNoVariantLoading(true);
 

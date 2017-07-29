@@ -23,14 +23,8 @@ require "_header.php"; ?>
 <?php
 $this->getText('STEP_3_DESC');
 $aDB = $this->getViewParam( "aDB" );
-$blMbStringOn = $this->getViewParam( "blMbStringOn" );
-$blUnicodeSupport = $this->getViewParam( "blUnicodeSupport" );
+$demodataPackageExists = $this->getViewParam('demodataPackageExists');
 
-$sChecked = '';
-if ( ( !isset( $aDB['iUtfMode'] ) || $aDB['iUtfMode'] == 1 ) && $blMbStringOn > 1 && $blUnicodeSupport > 1 ) {
-    $sChecked = 'checked';
-}
-$sDisabled = ( $blMbStringOn > 1 && $blUnicodeSupport > 1 ) ? '' : 'disabled';
 ?><br>
 <br>
 <form action="index.php" method="post">
@@ -40,6 +34,10 @@ $sDisabled = ( $blMbStringOn > 1 && $blUnicodeSupport > 1 ) ? '' : 'disabled';
   <tr>
     <td><?php $this->getText('STEP_3_DB_HOSTNAME'); ?>:</td>
     <td>&nbsp;&nbsp;<input size="40" name="aDB[dbHost]" class="editinput" value="<?php echo( $aDB['dbHost']);?>"> </td>
+  </tr>
+  <tr>
+    <td><?php $this->getText('STEP_3_DB_PORT'); ?>:</td>
+    <td>&nbsp;&nbsp;<input size="40" name="aDB[dbPort]" class="editinput" value="<?php echo( $aDB['dbPort']);?>"> </td>
   </tr>
   <tr>
     <td><?php $this->getText('STEP_3_DB_DATABSE_NAME'); ?>:</td>
@@ -59,36 +57,17 @@ $sDisabled = ( $blMbStringOn > 1 && $blUnicodeSupport > 1 ) ? '' : 'disabled';
   <tr>
     <td><?php $this->getText('STEP_3_DB_DEMODATA'); ?>:</td>
     <td>
-        &nbsp;&nbsp;<input type="radio" name="aDB[dbiDemoData]" value="1" <?php if( $aDB['dbiDemoData'] == 1) echo( "checked"); ?>><?php $this->getText('BUTTON_RADIO_INSTALL_DB_DEMO'); ?><br>
+        &nbsp;&nbsp;<input type="radio" name="aDB[dbiDemoData]" value="1" <?php if( $aDB['dbiDemoData'] == 1) echo( "checked"); ?> <?php echo !$demodataPackageExists ? "disabled" : "" ?>><?php $this->getText('BUTTON_RADIO_INSTALL_DB_DEMO'); ?> <?php echo !$demodataPackageExists ? "<span class='exclamation-icon'></span>" : "" ?><br>
         &nbsp;&nbsp;<input type="radio" name="aDB[dbiDemoData]" value="0" <?php if( $aDB['dbiDemoData'] == 0) echo( "checked"); ?>><?php $this->getText('BUTTON_RADIO_NOT_INSTALL_DB_DEMO'); ?><br>
-    </td>
-  </tr>
-  <tr>
-    <td><?php $this->getText('STEP_3_UTFMODE'); ?>:</td>
-    <td>
-        &nbsp;&nbsp;<input type="checkbox" name="aDB[iUtfMode]" value="1" <?php echo $sChecked; echo $sDisabled; ?>>
-        <?php
-            if ( $blMbStringOn > 1 && $blUnicodeSupport > 1 ) {
-                $this->getText('STEP_3_UTFINFO');
-            } else {
-                $this->getText('STEP_3_UTFNOTSUPPORTED');
-                if ( $blMbStringOn < 2 ) {
-                    $this->getText('STEP_3_UTFNOTSUPPORTED1');
-                }
-                if ( ($blMbStringOn + $blUnicodeSupport) == 2) {
-                    echo ",";
-                }
-                if ( $blUnicodeSupport < 2 ) {
-                    $this->getText('STEP_3_UTFNOTSUPPORTED2');
-                }
-                echo ".";
-            }
-        ?>
-        <br>
     </td>
   </tr>
 </table>
 <input type="hidden" name="sid" value="<?php $this->getSid(); ?>">
-<input type="submit" id="step3Submit" class="edittext" value="<?php $this->getText('BUTTON_DB_INSTALL'); ?>">
+
+<?php if (!$demodataPackageExists) { ?>
+    <ul class="req"><li class="pmin"><?php $this->getText('NOTICE_NO_DEMODATA_INSTALLED'); ?></li></ul><br>
+<?php } ?>
+
+<input type="submit" id="step3Submit" class="edittext" value="<?php $this->getText('BUTTON_DB_CREATE'); ?>">
 </form>
 <?php require "_footer.php";

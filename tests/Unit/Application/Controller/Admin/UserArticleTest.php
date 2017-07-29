@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use \oxorderarticlelist;
+use OxidEsales\EshopCommunity\Application\Model\OrderArticleList;
 
 /**
  * Tests for User_Article class
@@ -43,6 +43,6 @@ class UserArticleTest extends \OxidTestCase
         $this->assertEquals('user_article.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oArticlelist']));
-        $this->assertTrue($aViewData['oArticlelist'] instanceof oxorderarticlelist);
+        $this->assertTrue($aViewData['oArticlelist'] instanceof orderarticlelist);
     }
 }

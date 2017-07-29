@@ -37,9 +37,9 @@ function smarty_prefilter_oxblock($sSource, &$oSmartyCompiler)
     if (strpos($oSmartyCompiler->_version, 'Smarty3') === 0) {
         $blUseSmarty3 = true;
     }
-    $blDebugTemplateBlocks = (bool)oxRegistry::getConfig()->getConfigParam('blDebugTemplateBlocks');
+    $blDebugTemplateBlocks = (bool)\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blDebugTemplateBlocks');
 
-    $aBlocks = oxRegistry::get("oxUtilsView")->getTemplateBlocks($oSmartyCompiler->_current_file);
+    $aBlocks = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getTemplateBlocks($oSmartyCompiler->_current_file);
 
     $iLimit = 500;
 
@@ -60,7 +60,7 @@ function smarty_prefilter_oxblock($sSource, &$oSmartyCompiler)
             $sAppend .= '[{/__smartyblock__}]';
         }
         if ($blDebugTemplateBlocks) {
-            $sTplDir = trim(oxRegistry::getConfig()->getConfigParam('_sTemplateDir'), '/\\');
+            $sTplDir = trim(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('_sTemplateDir'), '/\\');
             $sFile = str_replace(array('\\', '//'), '/', $oSmartyCompiler->_current_file);
             if (preg_match('@/'.preg_quote($sTplDir, '@').'/(.*)$@', $sFile, $m)) {
                 $sFile = $m[1];

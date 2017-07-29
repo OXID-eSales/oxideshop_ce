@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \stdClass;
 
@@ -73,7 +73,7 @@ class PriceAlarmListTest extends \OxidTestCase
         $sViewName = getViewName("oxpricealarm");
         $sArtViewName = getViewName("oxarticles");
 
-        $oView = $this->getMock("PriceAlarm_List", array("_authorize"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PriceAlarmList::class, array("_authorize"));
         $oView->expects($this->any())->method('_authorize')->will($this->returnValue(true));
         $oView->init();
 

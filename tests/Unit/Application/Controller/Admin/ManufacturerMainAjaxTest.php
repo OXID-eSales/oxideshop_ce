@@ -19,10 +19,10 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 
 /**
  * Tests for Manufacturer_Main_Ajax class
@@ -207,7 +207,7 @@ class ManufacturerMainAjaxTest extends \OxidTestCase
      */
     public function testRemoveManufacturer()
     {
-        $oView = $this->getMock("manufacturer_main_ajax", array("_getActionIds", "resetCounter"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ManufacturerMainAjax::class, array("_getActionIds", "resetCounter"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testArticle1', '_testArticle2')));
         $oView->expects($this->once())->method('resetCounter')->with($this->equalTo("manufacturerArticle"));
         $this->assertEquals(2, oxDb::getDb()->getOne("select count(oxid) from " . $this->getArticleViewTable() . " where oxmanufacturerid in('_testRemove1', '_testRemove2')"));
@@ -228,7 +228,7 @@ class ManufacturerMainAjaxTest extends \OxidTestCase
 
         $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from " . $this->getArticleViewTable() . " where oxmanufacturerid = '_testRemoveAll'"));
 
-        $oView = $this->getMock("manufacturer_main_ajax", array("resetCounter"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ManufacturerMainAjax::class, array("resetCounter"));
         $oView->expects($this->once())->method('resetCounter')->with($this->equalTo("manufacturerArticle"), $this->equalTo($sOxid));
         $oView->removeManufacturer();
         $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from " . $this->getArticleViewTable() . " where oxmanufacturerid = '_testRemoveAll'"));
@@ -244,7 +244,7 @@ class ManufacturerMainAjaxTest extends \OxidTestCase
         $sSynchoxid = '_testAddManufacturer';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
-        $oView = $this->getMock("manufacturer_main_ajax", array("_getActionIds", "resetCounter"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ManufacturerMainAjax::class, array("_getActionIds", "resetCounter"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testArticle1', '_testArticle2')));
         $oView->expects($this->once())->method('resetCounter')->with($this->equalTo("manufacturerArticle"));
 
@@ -267,7 +267,7 @@ class ManufacturerMainAjaxTest extends \OxidTestCase
         $iCount = oxDb::getDb()->getOne(" select count(oxid) from " . $this->getArticleViewTable() . " where " . $this->getArticleViewTable() . ".oxshopid='" . $this->getShopIdTest() . "' and 1  and " . $this->getArticleViewTable() . ".oxparentid = '' and " . $this->getArticleViewTable() . ".oxmanufacturerid != '" . $sSynchoxid . "'");
         $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from " . $this->getArticleViewTable() . " where oxmanufacturerid = '" . $sSynchoxid . "'"));
 
-        $oView = $this->getMock("manufacturer_main_ajax", array("resetCounter"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ManufacturerMainAjax::class, array("resetCounter"));
         $oView->expects($this->once())->method('resetCounter')->with($this->equalTo("manufacturerArticle"), $this->equalTo($sSynchoxid));
         $oView->addManufacturer();
         $this->assertEquals($iCount, oxDb::getDb()->getOne("select count(oxid) from " . $this->getArticleViewTable() . " where oxmanufacturerid = '" . $sSynchoxid . "'"));

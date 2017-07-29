@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Exception;
+namespace OxidEsales\EshopCommunity\Core\Exception;
 
 /**
  * exception class for all kind of connection problems to external servers, e.g.:
@@ -29,7 +29,7 @@ namespace OxidEsales\Eshop\Core\Exception;
  * - online vat id check
  * - db server
  */
-class ConnectionException extends \oxException
+class ConnectionException extends \OxidEsales\Eshop\Core\Exception\StandardException
 {
     /**
      * Exception type, currently old class name is used.

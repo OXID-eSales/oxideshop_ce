@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \stdClass;
 use \Exception;
@@ -39,7 +39,7 @@ class LanguageListTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("blAllowSharedEdit", true);
         $this->setRequestParameter('oxid', 1);
 
-        $oConfig = $this->getMock("oxConfig", array("getConfigParam", "saveShopConfVar"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getConfigParam", "saveShopConfVar"));
 
         $map = array(
             array('blAllowSharedEdit',  null, "1"),
@@ -62,7 +62,7 @@ class LanguageListTest extends \OxidTestCase
 
         $aTasks = array("getConfig");
 
-        $oView = $this->getMock("Language_List", $aTasks, array(), '', false);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageList::class, $aTasks, array(), '', false);
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         $oView->deleteEntry();

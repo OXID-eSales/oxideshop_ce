@@ -29,7 +29,7 @@ $iLangNr    = 1;
 // -------------------------------
 $aLang = array(
 
-'charset'                                       => 'ISO-8859-15'
+'charset'                                       => 'UTF-8'
 );
 
 /*

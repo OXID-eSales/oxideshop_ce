@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 class CmpCurTest extends \OxidTestCase
 {
@@ -38,7 +38,7 @@ class CmpCurTest extends \OxidTestCase
         $this->assertEquals(2, $oCur->decimal);
 
         // changing decimal percision from 2 => 1
-        $this->getConfig()->setConfigParam("aCurrencies", array("EUR@ 1.00@ ,@ .@ ¤@ 1"));
+        $this->getConfig()->setConfigParam("aCurrencies", array("EUR@ 1.00@ ,@ .@ Â¤@ 1"));
         $oCurView->init();
 
         $oCur = $oCurView->getSession()->getBasket()->getBasketCurrency();

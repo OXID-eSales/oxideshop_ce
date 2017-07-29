@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 
@@ -28,7 +28,7 @@ use oxRegistry;
  * Comparing Products.
  * Takes a few products and show attribute values to compare them.
  */
-class CompareController extends \oxUBase
+class CompareController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
 
     /**
@@ -124,7 +124,7 @@ class CompareController extends \oxUBase
      */
     public function moveLeft() //#777C
     {
-        $sArticleId = oxRegistry::getConfig()->getRequestParameter('aid');
+        $sArticleId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aid');
         if ($sArticleId && ($aItems = $this->getCompareItems())) {
             $sPrevArticleId = null;
 
@@ -139,7 +139,6 @@ class CompareController extends \oxUBase
             }
 
             if ($sPrevArticleId) {
-
                 $aNewItems = array();
                 foreach ($aItems as $sOxid => $sVal) {
                     if ($sOxid == $sPrevArticleId) {
@@ -161,7 +160,7 @@ class CompareController extends \oxUBase
      */
     public function moveRight() //#777C
     {
-        $sArticleId = oxRegistry::getConfig()->getRequestParameter('aid');
+        $sArticleId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aid');
         if ($sArticleId && ($aItems = $this->getCompareItems())) {
             $sNextArticleId = 0;
 
@@ -177,7 +176,6 @@ class CompareController extends \oxUBase
             }
 
             if ($sNextArticleId) {
-
                 $aNewItems = array();
                 foreach ($aItems as $sOxid => $sVal) {
                     if ($sOxid == $sArticleId) {
@@ -237,7 +235,7 @@ class CompareController extends \oxUBase
     public function getCompareItems()
     {
         if ($this->_aCompItems === null) {
-            $aItems = oxRegistry::getSession()->getVariable('aFiltcompproducts');
+            $aItems = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('aFiltcompproducts');
             if (is_array($aItems) && count($aItems)) {
                 $this->_aCompItems = $aItems;
             }
@@ -254,7 +252,7 @@ class CompareController extends \oxUBase
     public function setCompareItems($aItems)
     {
         $this->_aCompItems = $aItems;
-        oxRegistry::getSession()->setVariable('aFiltcompproducts', $aItems);
+        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('aFiltcompproducts', $aItems);
     }
 
     /**
@@ -287,7 +285,7 @@ class CompareController extends \oxUBase
         if ($this->_oArtList === null) {
             if (($aItems = $this->getCompareItems())) {
                 // counts how many pages
-                $oList = oxNew('oxArticleList');
+                $oList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                 $oList->loadIds(array_keys($aItems));
 
                 // cut page articles
@@ -313,14 +311,13 @@ class CompareController extends \oxUBase
         if ($this->_oAttributeList === null) {
             $this->_oAttributeList = false;
             if ($oArtList = $this->getCompArtList()) {
-
                 $aProductIds = array_keys($oArtList);
                 foreach ($oArtList as $oArticle) {
                     if ($oArticle->getParentId()) {
                         $aProductIds[] = $oArticle->getParentId();
                     }
                 }
-                $oAttributeList = oxNew('oxAttributeList');
+                $oAttributeList = oxNew(\OxidEsales\Eshop\Application\Model\AttributeList::class);
                 $this->_oAttributeList = $oAttributeList->loadAttributesByIds($aProductIds);
             }
         }
@@ -330,7 +327,7 @@ class CompareController extends \oxUBase
 
     /**
      * Return array of id to form recommend list.
-     * 
+     *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return array
@@ -405,9 +402,8 @@ class CompareController extends \oxUBase
         $iCnt = 0;
         $iActPage = $this->getActPage();
         foreach ($aItems as $sOxid => $sVal) {
-
             //#4391T, skipping non loaded products
-            if (!isset ($oList[$sOxid])) {
+            if (!isset($oList[$sOxid])) {
                 continue;
             }
 
@@ -457,11 +453,11 @@ class CompareController extends \oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false);
-        $aPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($this->getViewConfig()->getSelfLink() . 'cl=account');
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_ACCOUNT', \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage(), false);
+        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($this->getViewConfig()->getSelfLink() . 'cl=account');
         $aPaths[] = $aPath;
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('PRODUCT_COMPARISON', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('PRODUCT_COMPARISON', \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage(), false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 

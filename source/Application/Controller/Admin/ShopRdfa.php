@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 
@@ -30,7 +30,7 @@ use oxRegistry;
  * Admin Menu: Main Menu -> Core Settings -> RDFa.
  *
  */
-class ShopRdfa extends \Shop_Config
+class ShopRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
 
     /**
@@ -58,12 +58,12 @@ class ShopRdfa extends \Shop_Config
      */
     public function getContentList()
     {
-        $oContentList = oxNew("oxcontentlist");
+        $oContentList = oxNew(\OxidEsales\Eshop\Application\Model\ContentList::class);
         $sTable = getViewName("oxcontents", $this->_iEditLang);
         $oContentList->selectString(
             "SELECT * FROM {$sTable} WHERE OXACTIVE = 1 AND OXTYPE = 0
                                     AND OXLOADID IN ('oxagb', 'oxdeliveryinfo', 'oximpressum', 'oxrightofwithdrawal')
-                                    AND OXSHOPID = '" . oxRegistry::getConfig()->getRequestParameter("oxid") . "'"
+                                    AND OXSHOPID = '" . \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid") . "'"
         ); // $this->getEditObjectId()
 
         return $oContentList;
@@ -93,7 +93,7 @@ class ShopRdfa extends \Shop_Config
      */
     public function submitUrl()
     {
-        $aParams = oxRegistry::getConfig()->getRequestParameter("aSubmitUrl");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aSubmitUrl");
         if ($aParams['url']) {
             $sNotificationUrl = "http://gr-notify.appspot.com/submit?uri=" . urlencode($aParams['url']) . "&agent=oxid";
             if ($aParams['email']) {
@@ -103,10 +103,10 @@ class ShopRdfa extends \Shop_Config
             if (substr($aHeaders[2], -4) === "True") {
                 $this->_aViewData["submitMessage"] = 'SHOP_RDFA_SUBMITED_SUCCESSFULLY';
             } else {
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay(substr($aHeaders[3], strpos($aHeaders[3], ":") + 2));
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(substr($aHeaders[3], strpos($aHeaders[3], ":") + 2));
             }
         } else {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay('SHOP_RDFA_MESSAGE_NOURL');
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('SHOP_RDFA_MESSAGE_NOURL');
         }
     }
 

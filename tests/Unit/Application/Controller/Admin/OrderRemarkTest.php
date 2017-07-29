@@ -19,9 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
-
-use \oxlist;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxField;
 use \Exception;
@@ -60,7 +58,7 @@ class OrderRemarkTest extends \OxidTestCase
         $this->assertEquals("order_remark.tpl", $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['allremark']));
-        $this->assertTrue($aViewData['allremark'] instanceof oxlist);
+        $this->assertTrue($aViewData['allremark'] instanceof \OxidEsales\EshopCommunity\Core\Model\ListModel);
     }
 
     /**

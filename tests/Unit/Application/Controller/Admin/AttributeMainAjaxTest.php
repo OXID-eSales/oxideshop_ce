@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
 
@@ -212,7 +212,7 @@ class AttributeMainAjaxTest extends \OxidTestCase
      */
     public function testRemoveAttrArticle()
     {
-        $oView = $this->getMock("attribute_main_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AttributeMainAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testOxid1', '_testOxid2')));
         $this->assertEquals(2, oxDb::getDb()->getOne("select count(oxid) from oxobject2attribute where oxobjectid='_testObjectRemove'"));
 
@@ -247,7 +247,7 @@ class AttributeMainAjaxTest extends \OxidTestCase
         $sSynchoxid = '_testAttribute';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
 
-        $oView = $this->getMock("attribute_main_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AttributeMainAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testOxidAdd1', '_testOxidAdd2')));
 
         $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxobject2attribute where oxattrid='$sSynchoxid'"));

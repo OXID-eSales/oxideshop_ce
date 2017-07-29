@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -32,7 +32,7 @@ use stdClass;
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Customer Info -> pricealarm -> Main.
  */
-class PriceAlarmMain extends \oxAdminDetails
+class PriceAlarmMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -51,19 +51,19 @@ class PriceAlarmMain extends \oxAdminDetails
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oPricealarm = oxNew("oxpricealarm");
+            $oPricealarm = oxNew(\OxidEsales\Eshop\Application\Model\PriceAlarm::class);
             $oPricealarm->load($soxId);
 
             // customer info
             $oUser = null;
             if ($oPricealarm->oxpricealarm__oxuserid->value) {
-                $oUser = oxNew("oxuser");
+                $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
                 $oUser->load($oPricealarm->oxpricealarm__oxuserid->value);
                 $oPricealarm->oUser = $oUser;
             }
 
             //
-            $oShop = oxNew("oxshop");
+            $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
             $oShop->load($config->getShopId());
             $this->addGlobalParams($oShop);
 
@@ -71,21 +71,21 @@ class PriceAlarmMain extends \oxAdminDetails
                 $iLang = 0;
             }
 
-            $oLang = oxRegistry::getLang();
+            $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
             $aLanguages = $oLang->getLanguageNames();
             $this->_aViewData["edit_lang"] = $aLanguages[$iLang];
             // rendering mail message text
             $oLetter = new stdClass();
-            $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+            $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
             if (isset($aParams['oxpricealarm__oxlongdesc']) && $aParams['oxpricealarm__oxlongdesc']) {
-                $oLetter->oxpricealarm__oxlongdesc = new oxField(stripslashes($aParams['oxpricealarm__oxlongdesc']), oxField::T_RAW);
+                $oLetter->oxpricealarm__oxlongdesc = new \OxidEsales\Eshop\Core\Field(stripslashes($aParams['oxpricealarm__oxlongdesc']), \OxidEsales\Eshop\Core\Field::T_RAW);
             } else {
-                $oEmail = oxNew("oxEmail");
+                $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
                 $sDesc = $oEmail->sendPricealarmToCustomer($oPricealarm->oxpricealarm__oxemail->value, $oPricealarm, null, true);
 
                 $iOldLang = $oLang->getTplLanguage();
                 $oLang->setTplLanguage($iLang);
-                $oLetter->oxpricealarm__oxlongdesc = new oxField($sDesc, oxField::T_RAW);
+                $oLetter->oxpricealarm__oxlongdesc = new \OxidEsales\Eshop\Core\Field($sDesc, \OxidEsales\Eshop\Core\Field::T_RAW);
                 $oLang->setTplLanguage($iOldLang);
             }
 
@@ -108,18 +108,18 @@ class PriceAlarmMain extends \oxAdminDetails
 
         // error
         if (($sOxid = $this->getEditObjectId())) {
-            $oPricealarm = oxNew("oxpricealarm");
+            $oPricealarm = oxNew(\OxidEsales\Eshop\Application\Model\PriceAlarm::class);
             $oPricealarm->load($sOxid);
 
-            $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+            $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
             $sMailBody = isset($aParams['oxpricealarm__oxlongdesc']) ? stripslashes($aParams['oxpricealarm__oxlongdesc']) : '';
             if ($sMailBody) {
-                $sMailBody = oxRegistry::get("oxUtilsView")->parseThroughSmarty($sMailBody, $oPricealarm->getId());
+                $sMailBody = \OxidEsales\Eshop\Core\Registry::getUtilsView()->parseThroughSmarty($sMailBody, $oPricealarm->getId());
             }
 
             $sRecipient = $oPricealarm->oxpricealarm__oxemail->value;
 
-            $oEmail = oxNew('oxemail');
+            $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
             $blSuccess = (int) $oEmail->sendPricealarmToCustomer($sRecipient, $oPricealarm, $sMailBody);
 
             // setting result message
@@ -149,17 +149,17 @@ class PriceAlarmMain extends \oxAdminDetails
             SELECT oxarticles.oxid, oxpricealarm.oxprice
             FROM oxpricealarm, oxarticles
             WHERE oxarticles.oxid = oxpricealarm.oxartid AND oxpricealarm.oxsended = '000-00-00 00:00:00'";
-        $result = oxDb::getDb()->execute($query);
+        $result = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->select($query);
         $count = 0;
 
-        if ($result != false && $result->recordCount() > 0) {
+        if ($result != false && $result->count() > 0) {
             while (!$result->EOF) {
-                $article = oxNew("oxArticle");
+                $article = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                 $article->load($result->fields[0]);
                 if ($article->getPrice()->getBruttoPrice() <= $result->fields[1]) {
                     $count++;
                 }
-                $result->moveNext();
+                $result->fetchRow();
             }
         }
 

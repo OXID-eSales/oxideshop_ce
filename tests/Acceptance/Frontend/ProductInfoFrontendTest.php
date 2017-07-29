@@ -20,9 +20,9 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Tests\Acceptance\Frontend;
+namespace OxidEsales\EshopCommunity\Tests\Acceptance\Frontend;
 
-use OxidEsales\Eshop\Tests\Acceptance\FrontendTestCase;
+use OxidEsales\EshopCommunity\Tests\Acceptance\FrontendTestCase;
 
 /** Frontend: product information/ details related tests */
 class ProductInfoFrontendTest extends FrontendTestCase
@@ -95,7 +95,7 @@ class ProductInfoFrontendTest extends FrontendTestCase
         $this->type("amountToBasket", "2");
         $this->clickAndWait("toBasket");
 
-        $this->assertEquals("2", $this->getText("//div[@id='miniBasket']/span"));
+        $this->waitForElementText("2", "//div[@id='miniBasket']/span");
 
         $this->clickAndWait("//div[@id='overviewLink']/a");
         $this->assertEquals("%YOU_ARE_HERE%: / %SEARCH%", $this->getText("breadCrumb"));
@@ -336,7 +336,7 @@ class ProductInfoFrontendTest extends FrontendTestCase
         $this->clickAndWait("toBasket");
         $this->type("amountToBasket", "1");
         $this->clickAndWait("toBasket");
-        $this->assertEquals("6", $this->getText("//div[@id='miniBasket']/span"));
+        $this->waitForElementText("6", "//div[@id='miniBasket']/span");
         $this->assertEquals("3 x Test product 2 [EN] šÄßüл, var1 [EN] šÄßüл 165,00 €", $this->clearString($this->getText("//div[@id='basketFlyout']//li[1]")));
         $this->assertEquals("3 x Test product 2 [EN] šÄßüл, var2 [EN] šÄßüл 201,00 €", $this->clearString($this->getText("//div[@id='basketFlyout']//li[2]")));
         $this->assertEquals("%TOTAL% 366,00 €", $this->clearString($this->getText("//div[@id='basketFlyout']/p[2]")));

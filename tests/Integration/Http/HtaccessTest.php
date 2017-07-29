@@ -15,11 +15,11 @@
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link          http://www.oxid-esales.com
+ * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2015
- * @version       OXID eShop CE
+ * @version   OXID eShop CE
  */
-namespace Integration\Http;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Http;
 
 
 class HtaccessTest extends \OxidTestCase

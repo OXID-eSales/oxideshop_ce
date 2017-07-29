@@ -93,7 +93,7 @@
         <tr class="edittext">
             <td align="center" valign="top"><b>[{oxmultilang ident="ARTICLE_ATTRIBUTE_NOATTRIBUTE"}]</b></td>
             <td align="center" valign="top"><b>[{oxmultilang ident="ARTICLE_ATTRIBUTE_ITEMSATTRIBUTE"}]</b></td>
-            <td align="center" valign="top">[{oxmultilang ident="ARTICLE_ATTRIBUTE_SELECTONEATTR"}]</td>
+            <td align="center" valign="top">[{oxmultilang ident="ARTICLE_ATTRIBUTE_SELECTONEATTR"}]:</td>
         </tr>
         <tr>
             <td valign="top" id="container1"></td>

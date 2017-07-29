@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxField;
@@ -30,7 +30,7 @@ use oxField;
  * Collects user extended settings, updates it on user submit, etc.
  * Admin Menu: User Administration -> Users -> Extended.
  */
-class UserExtend extends \oxAdminDetails
+class UserExtend extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -46,13 +46,13 @@ class UserExtend extends \oxAdminDetails
         $soxId = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oUser = oxNew("oxuser");
+            $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             $oUser->load($soxId);
 
             //show country in active language
-            $oCountry = oxNew("oxCountry");
-            $oCountry->loadInLang(oxRegistry::getLang()->getObjectTplLanguage(), $oUser->oxuser__oxcountryid->value);
-            $oUser->oxuser__oxcountry = new oxField($oCountry->oxcountry__oxtitle->value);
+            $oCountry = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
+            $oCountry->loadInLang(\OxidEsales\Eshop\Core\Registry::getLang()->getObjectTplLanguage(), $oUser->oxuser__oxcountryid->value);
+            $oUser->oxuser__oxcountry = new \OxidEsales\Eshop\Core\Field($oCountry->oxcountry__oxtitle->value);
 
             $this->_aViewData["edit"] = $oUser;
         }
@@ -79,9 +79,9 @@ class UserExtend extends \oxAdminDetails
             return false;
         }
 
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
 
-        $oUser = oxNew("oxuser");
+        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         if ($soxId != "-1") {
             $oUser->load($soxId);
         } else {
@@ -91,11 +91,11 @@ class UserExtend extends \oxAdminDetails
         // checkbox handling
         $aParams['oxuser__oxactive'] = $oUser->oxuser__oxactive->value;
 
-        $blNewsParams = oxRegistry::getConfig()->getRequestParameter("editnews");
+        $blNewsParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editnews");
         if (isset($blNewsParams)) {
             $oNewsSubscription = $oUser->getNewsSubscription();
             $oNewsSubscription->setOptInStatus((int) $blNewsParams);
-            $oNewsSubscription->setOptInEmailStatus((int) oxRegistry::getConfig()->getRequestParameter("emailfailed"));
+            $oNewsSubscription->setOptInEmailStatus((int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("emailfailed"));
         }
 
         $oUser->assign($aParams);

@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use oxStr;
 use oxStrMb;
@@ -31,19 +31,11 @@ class StrTest extends \OxidTestCase
     {
         $oStr = $this->getProxyClass('oxStr');
 
-        $this->getConfig()->setConfigParam('iUtfMode', 0);
-        $this->assertFalse($oStr->UNITgetStrHandler() instanceof oxStrMb);
-
-        $this->getConfig()->setConfigParam('iUtfMode', 1);
-        $this->assertTrue($oStr->UNITgetStrHandler() instanceof oxStrMb);
+        $this->assertTrue($oStr->UNITgetStrHandler() instanceof \OxidEsales\EshopCommunity\Core\StrMb);
     }
 
     public function testGetStr()
     {
-        if ($this->getConfig()->getConfigParam('iUtfMode')) {
-            $this->assertTrue(oxStr::getStr() instanceof oxStrMb);
-        } else {
-            $this->assertFalse(oxStr::getStr() instanceof oxStrMb);
-        }
+        $this->assertTrue(oxStr::getStr() instanceof \OxidEsales\EshopCommunity\Core\StrMb);
     }
 }

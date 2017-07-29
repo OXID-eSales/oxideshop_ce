@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -31,13 +31,13 @@ use oxField;
  * Collects order articles information, updates it on user submit, etc.
  * Admin Menu: Orders -> Display Orders -> Articles.
  */
-class OrderArticle extends \oxAdminDetails
+class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
      * Product which was currently found by search
      *
-     * @var oxarticle
+     * @var \OxidEsales\Eshop\Application\Model\Article
      */
     protected $_oSearchProduct = null;
 
@@ -53,7 +53,7 @@ class OrderArticle extends \oxAdminDetails
     /**
      * Product found by search. If product is variant - it keeps parent object
      *
-     * @var oxarticle
+     * @var \OxidEsales\Eshop\Application\Model\Article
      */
     protected $_oMainSearchProduct = null;
 
@@ -92,7 +92,7 @@ class OrderArticle extends \oxAdminDetails
     {
         $soxId = $this->getEditObjectId();
         if ($this->_oEditObject === null && isset($soxId) && $soxId != "-1") {
-            $this->_oEditObject = oxNew("oxorder");
+            $this->_oEditObject = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
             $this->_oEditObject->load($soxId);
         }
 
@@ -106,13 +106,13 @@ class OrderArticle extends \oxAdminDetails
      */
     public function getSearchProductArtNr()
     {
-        return oxRegistry::getConfig()->getRequestParameter('sSearchArtNum');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sSearchArtNum');
     }
 
     /**
      * If possible returns searched/found oxarticle object
      *
-     * @return oxarticle | false
+     * @return \OxidEsales\Eshop\Application\Model\Article | false
      */
     public function getSearchProduct()
     {
@@ -143,15 +143,15 @@ class OrderArticle extends \oxAdminDetails
             $sArtId = null;
 
             //get article id
-            $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
             $sTable = getViewName("oxarticles");
             $sQ = "select oxid, oxparentid from $sTable where oxartnum = " . $oDb->quote($sArtNum) . " limit 1";
 
-            $rs = $oDb->execute($sQ);
-            if ($rs != false && $rs->recordCount() > 0) {
+            $rs = $oDb->select($sQ);
+            if ($rs != false && $rs->count() > 0) {
                 $sArtId = $rs->fields['OXPARENTID'] ? $rs->fields['OXPARENTID'] : $rs->fields['OXID'];
 
-                $oProduct = oxNew("oxArticle");
+                $oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                 if ($oProduct->load($sArtId)) {
                     $this->_oMainSearchProduct = $oProduct;
                 }
@@ -169,7 +169,7 @@ class OrderArticle extends \oxAdminDetails
     public function getProductList()
     {
         if ($this->_oSearchProductList === null) {
-            $this->_oSearchProductList = oxNew("oxlist");
+            $this->_oSearchProductList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
 
             // main search product is found?
             if ($oMainSearchProduct = $this->getMainProduct()) {
@@ -191,20 +191,19 @@ class OrderArticle extends \oxAdminDetails
      */
     public function addThisArticle()
     {
-        $sOxid = oxRegistry::getConfig()->getRequestParameter('aid');
-        $dAmount = oxRegistry::getConfig()->getRequestParameter('am');
-        $oProduct = oxNew("oxArticle");
+        $sOxid = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aid');
+        $dAmount = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('am');
+        $oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
         if ($sOxid && $dAmount && $oProduct->load($sOxid)) {
-
             $sOrderId = $this->getEditObjectId();
-            $oOrder = oxNew('oxorder');
+            $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
             if ($sOrderId && $oOrder->load($sOrderId)) {
-                $oOrderArticle = oxNew('oxorderArticle');
-                $oOrderArticle->oxorderarticles__oxartid = new oxField($oProduct->getId());
-                $oOrderArticle->oxorderarticles__oxartnum = new oxField($oProduct->oxarticles__oxartnum->value);
-                $oOrderArticle->oxorderarticles__oxamount = new oxField($dAmount);
-                $oOrderArticle->oxorderarticles__oxselvariant = new oxField(oxRegistry::getConfig()->getRequestParameter('sel'));
+                $oOrderArticle = oxNew(\OxidEsales\Eshop\Application\Model\OrderArticle::class);
+                $oOrderArticle->oxorderarticles__oxartid = new \OxidEsales\Eshop\Core\Field($oProduct->getId());
+                $oOrderArticle->oxorderarticles__oxartnum = new \OxidEsales\Eshop\Core\Field($oProduct->oxarticles__oxartnum->value);
+                $oOrderArticle->oxorderarticles__oxamount = new \OxidEsales\Eshop\Core\Field($dAmount);
+                $oOrderArticle->oxorderarticles__oxselvariant = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sel'));
                 $oOrder->recalculateOrder(array($oOrderArticle));
             }
         }
@@ -216,11 +215,11 @@ class OrderArticle extends \oxAdminDetails
     public function deleteThisArticle()
     {
         // get article id
-        $sOrderArtId = oxRegistry::getConfig()->getRequestParameter('sArtID');
+        $sOrderArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sArtID');
         $sOrderId = $this->getEditObjectId();
 
-        $oOrderArticle = oxNew('oxorderarticle');
-        $oOrder = oxNew('oxorder');
+        $oOrderArticle = oxNew(\OxidEsales\Eshop\Application\Model\OrderArticle::class);
+        $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
 
         // order and order article exits?
         if ($oOrderArticle->load($sOrderArtId) && $oOrder->load($sOrderId)) {
@@ -241,8 +240,8 @@ class OrderArticle extends \oxAdminDetails
     {
         $myConfig = $this->getConfig();
 
-        $sOrderArtId = oxRegistry::getConfig()->getRequestParameter('sArtID');
-        $oArticle = oxNew('oxorderarticle');
+        $sOrderArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sArtID');
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\OrderArticle::class);
         $oArticle->load($sOrderArtId);
 
         if ($oArticle->oxorderarticles__oxstorno->value == 1) {
@@ -258,14 +257,15 @@ class OrderArticle extends \oxAdminDetails
             $oArticle->updateArticleStock($oArticle->oxorderarticles__oxamount->value * $sStockSign, $myConfig->getConfigParam('blAllowNegativeStock'));
         }
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQ = "update oxorderarticles set oxstorno = " . $oDb->quote($oArticle->oxorderarticles__oxstorno->value) . " where oxid = " . $oDb->quote($sOrderArtId);
         $oDb->execute($sQ);
 
         //get article id
         $sQ = "select oxartid from oxorderarticles where oxid = " . $oDb->quote($sOrderArtId);
-        if (($sArtId = oxDb::getDb()->getOne($sQ, false, false))) {
-            $oOrder = oxNew('oxorder');
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        if (($sArtId = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sQ))) {
+            $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
             if ($oOrder->load($this->getEditObjectId())) {
                 $oOrder->recalculateOrder();
             }
@@ -277,11 +277,10 @@ class OrderArticle extends \oxAdminDetails
      */
     public function updateOrder()
     {
-        $aOrderArticles = oxRegistry::getConfig()->getRequestParameter('aOrderArticles');
+        $aOrderArticles = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aOrderArticles');
 
-        $oOrder = oxNew('oxorder');
+        $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         if (is_array($aOrderArticles) && $oOrder->load($this->getEditObjectId())) {
-
             $myConfig = $this->getConfig();
             $oOrderArticles = $oOrder->getOrderArticles(true);
 
@@ -289,7 +288,6 @@ class OrderArticle extends \oxAdminDetails
             foreach ($oOrderArticles as $oOrderArticle) {
                 $sItemId = $oOrderArticle->getId();
                 if (isset($aOrderArticles[$sItemId])) {
-
                     // update stock
                     if ($blUseStock) {
                         $oOrderArticle->setNewAmount($aOrderArticles[$sItemId]['oxamount']);

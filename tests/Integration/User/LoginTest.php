@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Integration\User;
+namespace OxidEsales\EshopCommunity\Tests\Integration\User;
 
 use oxField;
 use oxRegistry;
@@ -55,9 +55,9 @@ class LoginTest extends UserTestCase
         $this->setAdminMode(true);
 
         //faking cookie check
-        $oUtils = $this->getMock("oxUtilsServer", array("getOxCookie"));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("getOxCookie"));
         $oUtils->expects($this->any())->method("getOxCookie")->will($this->returnValue(array("test" => "test")));
-        oxRegistry::set("oxUtilsServer", $oUtils);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsServer::class, $oUtils);
 
         //creating test admin user
         $oUser = $this->_createUser($this->_sDefaultUserName, $this->_sOldEncodedPassword, $this->_sOldSalt);

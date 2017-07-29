@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin newsletter list manager.
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: Customer Info -> Newsletter.
  */
-class NewsletterList extends \oxAdminList
+class NewsletterList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**

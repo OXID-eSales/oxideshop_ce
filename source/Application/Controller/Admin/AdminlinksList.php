@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin links collection.
@@ -28,7 +28,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
  * url or any keyword.
  * Admin Menu: Customer Info -> Links.
  */
-class AdminlinksList extends \oxAdminList
+class AdminlinksList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
 
     /**

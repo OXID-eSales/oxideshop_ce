@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxField;
 use oxRegistry;
@@ -31,7 +31,7 @@ use oxException;
  * Article files manager.
  *
  */
-class File extends \oxBase
+class File extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
 
     /**
@@ -114,13 +114,12 @@ class File extends \oxBase
         $this->_checkArticleFile($aFileInfo);
 
         $sFileHash = $this->_getFileHash($aFileInfo['tmp_name']);
-        $this->oxfiles__oxstorehash = new oxField($sFileHash, oxField::T_RAW);
+        $this->oxfiles__oxstorehash = new \OxidEsales\Eshop\Core\Field($sFileHash, \OxidEsales\Eshop\Core\Field::T_RAW);
         $sUploadTo = $this->getStoreLocation();
 
         if (!$this->_uploadFile($aFileInfo['tmp_name'], $sUploadTo)) {
-            throw new oxException('EXCEPTION_COULDNOTWRITETOFILE');
+            throw new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_COULDNOTWRITETOFILE');
         }
-
     }
 
     /**
@@ -134,14 +133,13 @@ class File extends \oxBase
     {
         //checking params
         if (!isset($aFileInfo['name']) || !isset($aFileInfo['tmp_name'])) {
-            throw new oxException('EXCEPTION_NOFILE');
+            throw new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_NOFILE');
         }
 
         // error uploading file ?
         if (isset($aFileInfo['error']) && $aFileInfo['error']) {
-            throw new oxException('EXCEPTION_FILEUPLOADERROR_' . ((int) $aFileInfo['error']));
+            throw new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_FILEUPLOADERROR_' . ((int) $aFileInfo['error']));
         }
-
     }
 
     /**
@@ -151,7 +149,7 @@ class File extends \oxBase
      */
     protected function _getBaseDownloadDirPath()
     {
-        $sConfigValue = oxRegistry::getConfig()->getConfigParam('sDownloadsDir');
+        $sConfigValue = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sDownloadsDir');
 
         //Unix full path is set
         if ($sConfigValue && $sConfigValue[0] == DIRECTORY_SEPARATOR) {
@@ -335,9 +333,9 @@ class File extends \oxBase
             return false;
         }
         $sHash = $this->oxfiles__oxstorehash->value;
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $iCount = $oDb->getOne(
-            'SELECT COUNT(*) FROM `oxfiles` WHERE `OXSTOREHASH` = ' . $oDb->quote($sHash), false, false
+            'SELECT COUNT(*) FROM `oxfiles` WHERE `OXSTOREHASH` = ' . $oDb->quote($sHash)
         );
         if (!$iCount) {
             $sPath = $this->getStoreLocation();
@@ -361,12 +359,12 @@ class File extends \oxBase
      */
     public function download()
     {
-        $oUtils = oxRegistry::getUtils();
+        $oUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
         $sFileName = $this->_getFilenameForUrl();
         $sFileLocations = $this->getStoreLocation();
 
         if (!$this->exist() || !$this->isUnderDownloadFolder()) {
-            throw new oxException('EXCEPTION_NOFILE');
+            throw new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_NOFILE');
         }
 
         $oUtils->setHeader("Pragma: public");
@@ -400,10 +398,10 @@ class File extends \oxBase
     {
         if ($this->_blHasValidDownloads == null) {
             $this->_blHasValidDownloads = false;
-            $sNow = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime());
+            $sNow = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
             $sFileId = $this->getId();
 
-            $oDb = oxDb::getDb();
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
             $sSql = "SELECT
                         `oxorderfiles`.`oxid`

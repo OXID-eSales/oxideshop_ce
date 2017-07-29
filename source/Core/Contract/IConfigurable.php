@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Contract;
+namespace OxidEsales\EshopCommunity\Core\Contract;
 
 use oxConfig;
 
@@ -34,20 +34,20 @@ interface IConfigurable
     /**
      * Sets configuration object
      *
-     * @param OxConfig $oConfig Configraution object
+     * @param \OxidEsales\Eshop\Core\Config $oConfig Configraution object
      *
      * @abstract
      *
      * @return mixed
      */
-    public function setConfig(OxConfig $oConfig);
+    public function setConfig(\OxidEsales\Eshop\Core\Config $oConfig);
 
     /**
      * Returns active configuration object
      *
      * @abstract
      *
-     * @return OxConfig
+     * @return \OxidEsales\Eshop\Core\Config
      */
     public function getConfig();
 }

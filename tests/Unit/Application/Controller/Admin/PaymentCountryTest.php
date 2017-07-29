@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use \oxpayment;
+use OxidEsales\EshopCommunity\Application\Model\Payment;
 
 use \Exception;
 use \oxTestModules;
@@ -46,7 +46,7 @@ class PaymentCountryTest extends \OxidTestCase
         $this->assertEquals('payment_country.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxpayment);
+        $this->assertTrue($aViewData['edit'] instanceof payment);
     }
 
     /**

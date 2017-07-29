@@ -20,12 +20,12 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Component\Widget;
+namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
 /**
  * Currency selection list widget
  */
-class CurrencyList extends \oxWidget
+class CurrencyList extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
 
     /**

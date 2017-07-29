@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \Exception;
 use \oxField;
@@ -49,7 +49,7 @@ class UserPaymentTest extends \OxidTestCase
      */
     public function testRender()
     {
-        $oView = $this->getMock("user_payment", array("getSelUserPayment", "getPaymentId", "getPaymentTypes", "getUser", "getUserPayments", "_allowAdminEdit"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserPayment::class, array("getSelUserPayment", "getPaymentId", "getPaymentTypes", "getUser", "getUserPayments", "_allowAdminEdit"));
         $oView->expects($this->once())->method('getSelUserPayment')->will($this->returnValue("getSelUserPayment"));
         $oView->expects($this->once())->method('getPaymentId')->will($this->returnValue("getPaymentId"));
         $oView->expects($this->once())->method('getPaymentTypes')->will($this->returnValue("getPaymentTypes"));
@@ -81,7 +81,7 @@ class UserPaymentTest extends \OxidTestCase
         $this->setRequestParameter("dynvalue", "testId");
 
         try {
-            $oView = $this->getMock("user_payment", array("_allowAdminEdit"));
+            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserPayment::class, array("_allowAdminEdit"));
             $oView->expects($this->once())->method('_allowAdminEdit')->will($this->returnValue(true));
             $oView->save();
         } catch (Exception $oExcp) {
@@ -107,7 +107,7 @@ class UserPaymentTest extends \OxidTestCase
         $this->setRequestParameter("editval", array("oxuserpayments__oxid" => "testId"));
 
         try {
-            $oView = $this->getMock("user_payment", array("_allowAdminEdit"));
+            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserPayment::class, array("_allowAdminEdit"));
             $oView->expects($this->once())->method('_allowAdminEdit')->will($this->returnValue(true));
             $oView->delPayment();
         } catch (Exception $oExcp) {
@@ -166,7 +166,7 @@ class UserPaymentTest extends \OxidTestCase
         $this->setRequestParameter('oxpaymentid', null);
         $oUserPayment = oxNew('oxUserPayment');
         $oUserPayment->oxuserpayments__oxid = new oxField('oxidinvoice');
-        $oUser = $this->getMock('oxuser', array('getUserPayments'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getUserPayments'));
         $oUser->expects($this->once())->method('getUserPayments')->will($this->returnValue(array($oUserPayment)));
         $oUserView = $this->getProxyClass('user_payment');
         $oUserView->setNonPublicVar("_oActiveUser", $oUser);
@@ -178,11 +178,10 @@ class UserPaymentTest extends \OxidTestCase
      *
      * @return null
      */
-    public function testGetPaymentTypes()
+    public function testGetPaymentTypesIsCorrect()
     {
         $oUserView = $this->getProxyClass('user_payment');
         $oPaymentList = $oUserView->getPaymentTypes();
-        $this->assertEquals(6, $oPaymentList->count());
         $blIsLoaded = false;
         foreach ($oPaymentList as $oPayment) {
             if ($oPayment->oxpayments__oxdesc->value = 'Rechnung') {
@@ -190,6 +189,26 @@ class UserPaymentTest extends \OxidTestCase
             }
         }
         $this->assertTrue($blIsLoaded);
+    }
+
+    /**
+     * Test getPaymentTypes().
+     *
+     * @return null
+     */
+    public function testGetPaymentTypesAmountIsCorrect()
+    {
+        $oUserView = $this->getProxyClass('user_payment');
+        $oPaymentList = $oUserView->getPaymentTypes();
+
+        $payments = $oPaymentList->getArray();
+        $paymentsIds = '';
+        foreach ($payments as $payment)
+        {
+            $paymentsIds .= $payment->getId() ."\n";
+        }
+
+        $this->assertEquals(6, $oPaymentList->count(), $paymentsIds);
     }
 
     /**

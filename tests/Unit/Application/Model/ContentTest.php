@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
 use \oxDb;
@@ -87,6 +87,7 @@ class ContentTest extends \OxidTestCase
 
         $oContent = oxNew('oxContent');
         $oContent->loadByIdent("oxagb");
+        $oContent->oxcontents__oxtermversion = new oxField("testVersion");
         $oContent->save();
 
         $this->assertFalse((bool) $oDb->getOne("select 1 from oxacceptedterms"));
@@ -99,7 +100,7 @@ class ContentTest extends \OxidTestCase
      */
     public function testGetTermsVersion()
     {
-        $oContent = $this->getMock("oxContent", array("loadByIdent"));
+        $oContent = $this->getMock(\OxidEsales\Eshop\Application\Model\Content::class, array("loadByIdent"));
         $oContent->oxcontents__oxtermversion = new oxField("testVersion");
         $oContent->expects($this->once())->method('loadByIdent')->with($this->equalTo('oxagb'))->will($this->returnValue(true));
         $this->assertEquals("testVersion", $oContent->getTermsVersion());
@@ -149,6 +150,21 @@ class ContentTest extends \OxidTestCase
         $this->assertFalse($oObj->loadByIdent('noSuchLoadId'));
     }
 
+    /*
+     * Test loading active/inactive content
+     */
+    public function testLoadByIdentInactiveContent()
+    {
+        $oObj = oxNew('oxContent');
+        $this->assertTrue($oObj->loadByIdent('_testLoadId'), 'can not load oxcontent by ident');
+        $oObj->oxcontents__oxactive = new oxField('0', oxField::T_RAW);
+        $oObj->save();
+        $this->assertFalse($oObj->loadByIdent('_testLoadId', true));
+        $oObj->oxcontents__oxactive = new oxField('1', oxField::T_RAW);
+        $oObj->save();
+        $this->assertTrue($oObj->loadByIdent('_testLoadId', true));
+    }
+
     public function test_setFieldData()
     {
         $oObj = $this->getProxyClass('oxcontent');
@@ -186,7 +202,7 @@ class ContentTest extends \OxidTestCase
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
 
-        $oContent = $this->getMock('oxcontent', array('getStdLink'));
+        $oContent = $this->getMock(\OxidEsales\Eshop\Application\Model\Content::class, array('getStdLink'));
         $oContent->expects($this->once())->method('getStdLink')->will($this->returnValue('stdlink'));
 
         $this->assertEquals('stdlink', $oContent->getLink());
@@ -238,7 +254,7 @@ class ContentTest extends \OxidTestCase
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
 
-        $oContent = $this->getMock('oxcontent', array('getStdLink'));
+        $oContent = $this->getMock(\OxidEsales\Eshop\Application\Model\Content::class, array('getStdLink'));
         $oContent->expects($this->once())->method('getStdLink')->with($this->equalTo(1))->will($this->returnValue('stdlink'));
 
         $this->assertEquals('stdlink', $oContent->getLink(1));
@@ -248,7 +264,7 @@ class ContentTest extends \OxidTestCase
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
 
-        $oContent = $this->getMock('oxcontent', array('getStdLink'));
+        $oContent = $this->getMock(\OxidEsales\Eshop\Application\Model\Content::class, array('getStdLink'));
         $oContent->expects($this->once())->method('getStdLink')->will($this->returnValue('stdlink'));
 
         $this->assertEquals('stdlink', $oContent->getLink(0));

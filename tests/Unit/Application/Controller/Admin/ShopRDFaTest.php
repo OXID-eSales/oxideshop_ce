@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxRegistry;
 
@@ -86,7 +86,7 @@ class ShopRDFaTest extends \OxidTestCase
     {
         $this->setRequestParameter('aSubmitUrl', array("url" => "http://www.myshop.com", "email" => "test@email"));
         $aHeaders = array(2 => "Return: True", 3 => "Return message: Success");
-        $oView = $this->getMock('Shop_RDFa', array("getHttpResponseCode"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopRdfa::class, array("getHttpResponseCode"));
         $oView->expects($this->any())->method('getHttpResponseCode')->will($this->returnValue($aHeaders));
         $oView->submitUrl();
         $aViewData = $oView->getViewData();
@@ -117,7 +117,7 @@ class ShopRDFaTest extends \OxidTestCase
     {
         $this->setRequestParameter('aSubmitUrl', array("url" => "http://www.myshop.com"));
         $aHeaders = array(2 => "Return: False", 3 => "Return message: To many times submited");
-        $oView = $this->getMock('Shop_RDFa', array("getHttpResponseCode"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopRdfa::class, array("getHttpResponseCode"));
         $oView->expects($this->any())->method('getHttpResponseCode')->will($this->returnValue($aHeaders));
         $oView->submitUrl();
         $aErr = oxRegistry::getSession()->getVariable('Errors');

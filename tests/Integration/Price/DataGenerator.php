@@ -19,10 +19,10 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Integration\Price;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Price;
 
 use oxDb;
-use oxUtilsObject;
+use oxRegistry;
 
 require_once __DIR__. '/BasketConstruct.php';
 
@@ -122,7 +122,7 @@ class DataGenerator extends \OxidTestCase
     // What additional costs to generate
     private $aGenCosts = array(
         array("wrapping", 1),
-        //array( "payment",  3 ), 
+        //array( "payment",  3 ),
         //array( "delivery", 3 )
     );
     private $blGenDiscounts = false;
@@ -221,7 +221,7 @@ class DataGenerator extends \OxidTestCase
      */
     protected function _generateData($i)
     {
-        $oUtil = oxUtilsObject::getInstance();
+        $oUtil = oxRegistry::getUtilsObject();
         // init result array
         $aData = array();
 
@@ -473,11 +473,12 @@ class DataGenerator extends \OxidTestCase
     protected function _generateSqlDump()
     {
         $dbhost = $this->getConfigParam("dbHost");
+        $dbport = $this->getConfigParam("dbPort");
         $dbuser = $this->getConfigParam("dbUser");
         $dbpwd = $this->getConfigParam("dbPwd");
         $dbname = $this->getConfigParam("dbName");
         $dumpfile = "oxarticles.sql";
-        passthru("/usr/bin/mysqldump --opt --host=$dbhost --user=$dbuser --password=$dbpwd $dbname oxarticles > $this->sFilepath/$dumpfile");
+        passthru("/usr/bin/mysqldump --opt --host=$dbhost --port=$dbport --user=$dbuser --password=$dbpwd $dbname oxarticles > $this->sFilepath/$dumpfile");
         echo "$dumpfile ";
         passthru("tail -1 $this->sFilepath/$dumpfile");
     }

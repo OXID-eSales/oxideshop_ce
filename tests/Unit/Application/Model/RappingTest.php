@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxWrapping;
 use \oxField;
@@ -179,7 +179,7 @@ class RappingTest extends \OxidTestCase
      */
     public function testGetNoSslDynImageDir()
     {
-        $oConfig = $this->getMock('oxconfig', array('getPictureUrl'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getPictureUrl'));
         $oConfig->expects($this->once())->method('getPictureUrl')
             ->with(
                 $this->equalTo(null),
@@ -190,7 +190,7 @@ class RappingTest extends \OxidTestCase
             )
             ->will($this->returnValue('testDynPath'));
 
-        $oWrapping = $this->getMock('oxwrapping', array('getConfig'), array(), '', false);
+        $oWrapping = $this->getMock(\OxidEsales\Eshop\Application\Model\Wrapping::class, array('getConfig'), array(), '', false);
         $oWrapping->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
         $oWrapping->oxwrapping__oxshopid = new oxField('123');
 
@@ -393,7 +393,7 @@ class RappingTest extends \OxidTestCase
      */
     public function testGetFPrice()
     {
-        $oPrice = $this->getMock('oxprice', array('getBruttoPrice'));
+        $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, array('getBruttoPrice'));
         $oPrice->expects($this->once())->method('getBruttoPrice')->will($this->returnValue(11.588));
         $oWrap = $this->getProxyClass("oxWrapping");
         $oWrap->setNonPublicVar('_oPrice', $oPrice);

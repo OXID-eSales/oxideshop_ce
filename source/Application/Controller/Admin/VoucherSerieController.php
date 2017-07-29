@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin voucherserie manager.
@@ -28,7 +28,7 @@ namespace OxidEsales\Eshop\Application\Controller\Admin;
  * and "voucherserie_main.tpl") to frame.
  * Admin Menu: Shop Settings -> Vouchers.
  */
-class VoucherSerieController extends \oxAdminView
+class VoucherSerieController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
 
     /**

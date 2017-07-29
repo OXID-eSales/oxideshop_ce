@@ -20,15 +20,15 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
-use oxCountry;
-use oxCompanyVatIn;
+use OxidEsales\Eshop\Application\Model\CompanyVatIn;
+use OxidEsales\Eshop\Application\Model\Country;
 
 /**
  * Company VAT identification number checker. Check if number belongs to the country.
  */
-class CompanyVatInCountryChecker extends \oxCompanyVatInChecker implements \oxICountryAware
+class CompanyVatInCountryChecker extends \OxidEsales\Eshop\Core\CompanyVatInChecker implements \OxidEsales\Eshop\Core\Contract\ICountryAware
 {
 
     /**
@@ -46,9 +46,9 @@ class CompanyVatInCountryChecker extends \oxCompanyVatInChecker implements \oxIC
     /**
      * Country setter
      *
-     * @param oxCountry $country
+     * @param \OxidEsales\Eshop\Application\Model\Country $country
      */
-    public function setCountry(oxCountry $country)
+    public function setCountry(\OxidEsales\Eshop\Application\Model\Country $country)
     {
         $this->_oCountry = $country;
     }
@@ -66,11 +66,11 @@ class CompanyVatInCountryChecker extends \oxCompanyVatInChecker implements \oxIC
     /**
      * Validates.
      *
-     * @param oxCompanyVatIn $vatIn
+     * @param \OxidEsales\Eshop\Application\Model\CompanyVatIn $vatIn
      *
      * @return bool
      */
-    public function validate(oxCompanyVatIn $vatIn)
+    public function validate(\OxidEsales\Eshop\Application\Model\CompanyVatIn $vatIn)
     {
         $result = false;
         $country = $this->getCountry();

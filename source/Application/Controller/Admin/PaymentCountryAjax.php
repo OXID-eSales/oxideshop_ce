@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxDb;
 use oxField;
@@ -28,7 +28,7 @@ use oxField;
 /**
  * Class manages payment countries
  */
-class PaymentCountryAjax extends \ajaxListComponent
+class PaymentCountryAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
 
     /**
@@ -61,7 +61,7 @@ class PaymentCountryAjax extends \ajaxListComponent
     {
         // looking for table/view
         $sCountryTable = $this->_getViewName('oxcountry');
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sCountryId = $this->getConfig()->getRequestParameter('oxid');
         $sSynchCountryId = $this->getConfig()->getRequestParameter('synchoxid');
 
@@ -70,7 +70,6 @@ class PaymentCountryAjax extends \ajaxListComponent
             // which fields to load ?
             $sQAdd = " from $sCountryTable where $sCountryTable.oxactive = '1' ";
         } else {
-
             $sQAdd = " from oxobject2payment left join $sCountryTable on $sCountryTable.oxid=oxobject2payment.oxobjectid ";
             $sQAdd .= "where $sCountryTable.oxactive = '1' and oxobject2payment.oxpaymentid = " . $oDb->quote($sCountryId) . " and oxobject2payment.oxtype = 'oxcountry' ";
         }
@@ -98,11 +97,11 @@ class PaymentCountryAjax extends \ajaxListComponent
         }
         if ($soxId && $soxId != "-1" && is_array($aChosenCntr)) {
             foreach ($aChosenCntr as $sChosenCntr) {
-                $oObject2Payment = oxNew('oxBase');
+                $oObject2Payment = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Payment->init('oxobject2payment');
-                $oObject2Payment->oxobject2payment__oxpaymentid = new oxField($soxId);
-                $oObject2Payment->oxobject2payment__oxobjectid = new oxField($sChosenCntr);
-                $oObject2Payment->oxobject2payment__oxtype = new oxField("oxcountry");
+                $oObject2Payment->oxobject2payment__oxpaymentid = new \OxidEsales\Eshop\Core\Field($soxId);
+                $oObject2Payment->oxobject2payment__oxobjectid = new \OxidEsales\Eshop\Core\Field($sChosenCntr);
+                $oObject2Payment->oxobject2payment__oxtype = new \OxidEsales\Eshop\Core\Field("oxcountry");
                 $oObject2Payment->save();
             }
         }
@@ -115,13 +114,11 @@ class PaymentCountryAjax extends \ajaxListComponent
     {
         $aChosenCntr = $this->_getActionIds('oxobject2payment.oxid');
         if ($this->getConfig()->getRequestParameter('all')) {
-
             $sQ = $this->_addFilter("delete oxobject2payment.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
-
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenCntr)) {
-            $sQ = "delete from oxobject2payment where oxobject2payment.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aChosenCntr)) . ") ";
-            oxDb::getDb()->Execute($sQ);
+            $sQ = "delete from oxobject2payment where oxobject2payment.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenCntr)) . ") ";
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
 }

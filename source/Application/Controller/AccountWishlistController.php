@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 use oxField;
@@ -34,7 +34,7 @@ use oxField;
  * login name in special field. OXID eShop -> MY ACCOUNT
  *  -> Newsletter.
  */
-class AccountWishlistController extends \Account
+class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller\AccountController
 {
 
     /**
@@ -89,7 +89,7 @@ class AccountWishlistController extends \Account
     /**
      * List of users which were found according to search condition
      *
-     * @var oxlist
+     * @var \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected $_oWishListUsers = false;
 
@@ -123,9 +123,9 @@ class AccountWishlistController extends \Account
 
     /**
      * If user is logged in loads his wishlist articles (articles may be accessed by
-     * oxuser::GetBasket()), loads similar articles (is available) for
-     * the last article in list loaded by oxarticle::GetSimilarProducts() and
-     * returns name of template to render account_wishlist::_sThisTemplate
+     * \OxidEsales\Eshop\Application\Model\User::GetBasket()), loads similar articles (is available) for
+     * the last article in list loaded by \OxidEsales\Eshop\Application\Model\Article::GetSimilarProducts() and
+     * returns name of template to render \OxidEsales\Eshop\Application\Controller\AccountWishlistController::_sThisTemplate
      *
      * @return  string  $_sThisTemplate current template file name
      */
@@ -150,7 +150,7 @@ class AccountWishlistController extends \Account
     public function showSuggest()
     {
         if ($this->_blShowSuggest === null) {
-            $this->_blShowSuggest = ( bool ) oxRegistry::getConfig()->getRequestParameter('blshowsuggest');
+            $this->_blShowSuggest = ( bool ) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('blshowsuggest');
         }
 
         return $this->_blShowSuggest;
@@ -159,7 +159,7 @@ class AccountWishlistController extends \Account
     /**
      * Show the Wishlist
      *
-     * @return oxuserbasket | bool
+     * @return \OxidEsales\Eshop\Application\Model\UserBasket | bool
      */
     public function getWishList()
     {
@@ -219,22 +219,21 @@ class AccountWishlistController extends \Account
      */
     public function sendWishList()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!\OxidEsales\Eshop\Core\Registry::getSession()->checkSessionChallenge()) {
             return false;
         }
 
-        $aParams = oxRegistry::getConfig()->getRequestParameter('editval', true);
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval', true);
         if (is_array($aParams)) {
-            $oUtilsView = oxRegistry::get("oxUtilsView");
+            $oUtilsView = \OxidEsales\Eshop\Core\Registry::getUtilsView();
             $oParams = ( object ) $aParams;
-            $this->setEnteredData(( object ) oxRegistry::getConfig()->getRequestParameter('editval'));
+            $this->setEnteredData(( object ) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval'));
 
             if (!isset($aParams['rec_name']) || !isset($aParams['rec_email']) ||
                 !$aParams['rec_name'] || !$aParams['rec_email']
             ) {
                 return $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY', false, true);
             } else {
-
                 if ($oUser = $this->getUser()) {
                     $sFirstName = 'oxuser__oxfname';
                     $sLastName = 'oxuser__oxlname';
@@ -248,7 +247,7 @@ class AccountWishlistController extends \Account
                     $oParams->$sSendName = $oUser->$sFirstName->getRawValue() . ' ' . $oUser->$sLastName->getRawValue();
                     $oParams->$sSendId = $oUser->getId();
 
-                    $this->_blEmailSent = oxNew('oxemail')->sendWishlistMail($oParams);
+                    $this->_blEmailSent = oxNew(\OxidEsales\Eshop\Core\Email::class)->sendWishlistMail($oParams);
                     if (!$this->_blEmailSent) {
                         return $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL', false, true);
                     }
@@ -295,15 +294,14 @@ class AccountWishlistController extends \Account
      */
     public function togglePublic()
     {
-        if (!oxRegistry::getSession()->checkSessionChallenge()) {
+        if (!\OxidEsales\Eshop\Core\Registry::getSession()->checkSessionChallenge()) {
             return false;
         }
 
         if ($oUser = $this->getUser()) {
-
-            $blPublic = (int) oxRegistry::getConfig()->getRequestParameter('blpublic');
+            $blPublic = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('blpublic');
             $oBasket = $oUser->getBasket('wishlist');
-            $oBasket->oxuserbaskets__oxpublic = new oxField(($blPublic == 1) ? $blPublic : 0);
+            $oBasket->oxuserbaskets__oxpublic = new \OxidEsales\Eshop\Core\Field(($blPublic == 1) ? $blPublic : 0);
             $oBasket->save();
         }
     }
@@ -314,10 +312,9 @@ class AccountWishlistController extends \Account
      */
     public function searchForWishList()
     {
-        if ($sSearch = oxRegistry::getConfig()->getRequestParameter('search')) {
-
+        if ($sSearch = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('search')) {
             // search for baskets
-            $oUserList = oxNew('oxuserlist');
+            $oUserList = oxNew(\OxidEsales\Eshop\Application\Model\UserList::class);
             $oUserList->loadWishlistUsers($sSearch);
             if ($oUserList->count()) {
                 $this->_oWishListUsers = $oUserList;
@@ -331,7 +328,7 @@ class AccountWishlistController extends \Account
      * Returns a list of users which were found according to search condition.
      * If no users were found - false is returned
      *
-     * @return oxlist | bool
+     * @return \OxidEsales\Eshop\Core\Model\ListModel | bool
      */
     public function getWishListUsers()
     {
@@ -358,14 +355,14 @@ class AccountWishlistController extends \Account
         $aPaths = array();
         $aPath = array();
 
-        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $sSelfLink = $this->getViewConfig()->getSelfLink();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
-        $aPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($sSelfLink . 'cl=account');
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
+        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($sSelfLink . 'cl=account');
         $aPaths[] = $aPath;
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('MY_GIFT_REGISTRY', $iBaseLanguage, false);
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_GIFT_REGISTRY', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 

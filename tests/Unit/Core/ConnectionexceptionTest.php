@@ -19,8 +19,13 @@
  * @copyright (C) OXID eSales AG 2003-2015
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
+/**
+ * Class ConnectionexceptionTest
+ *
+ * @group database-adapter
+ */
 class ConnectionexceptionTest extends \OxidTestCase
 {
 

@@ -20,14 +20,14 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
 
 /**
  * State handler
  */
-class State extends \oxI18n
+class State extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
 
     /**
@@ -56,12 +56,11 @@ class State extends \oxI18n
      */
     public function getIdByCode($sCode, $sCountryId)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         return $oDb->getOne(
-            "SELECT oxid FROM oxstates WHERE oxisoalpha2 = " . $oDb->quote(
-                $sCode
-            ) . " AND oxcountryid = " . $oDb->quote($sCountryId)
+            "SELECT oxid FROM oxstates WHERE oxisoalpha2 = " . $oDb->quote($sCode) .
+            " AND oxcountryid = " . $oDb->quote($sCountryId)
         );
     }
 
@@ -74,7 +73,7 @@ class State extends \oxI18n
      */
     public function getTitleById($iStateId)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQ = "SELECT oxtitle FROM " . getViewName("oxstates") . " WHERE oxid = " . $oDb->quote($iStateId);
         $sStateTitle = $oDb->getOne($sQ);
 

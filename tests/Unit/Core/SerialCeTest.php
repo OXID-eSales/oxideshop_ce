@@ -16,18 +16,18 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 /**
  * License key managing class.
  */
-class SerialCeTest extends \OxidTestCase
+class SerialCeTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
     /**
-     * This test makes sure oxSerial class does not exist in CE edition
+     * This test makes sure \OxidEsales\Eshop\Core\Serial class does not exist in CE edition
      */
     public function testOxSerialClassDoesNotExist()
     {
@@ -35,8 +35,8 @@ class SerialCeTest extends \OxidTestCase
             $this->markTestSkipped('This test is for Community edition only.');
         }
 
-        if (class_exists('oxSerial')) {
-            $this->fail("oxSerial class is not excluded from CE eddition!!");
+        if (class_exists(\OxidEsales\Eshop\Core\Serial::class)) {
+            $this->fail("Serial class should not be included in CE eddition!!");
         }
     }
 }

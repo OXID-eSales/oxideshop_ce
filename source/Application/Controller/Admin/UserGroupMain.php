@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use stdClass;
@@ -30,7 +30,7 @@ use stdClass;
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: User Administration -> User Groups -> Main.
  */
-class UserGroupMain extends \oxAdminDetails
+class UserGroupMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -47,7 +47,7 @@ class UserGroupMain extends \oxAdminDetails
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oGroup = oxNew("oxgroups");
+            $oGroup = oxNew(\OxidEsales\Eshop\Application\Model\Groups::class);
             $oGroup->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oGroup->getAvailableInLangs();
@@ -59,7 +59,7 @@ class UserGroupMain extends \oxAdminDetails
             $this->_aViewData["edit"] = $oGroup;
 
             // remove already created languages
-            $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
+            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
 
             if (count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
@@ -72,8 +72,8 @@ class UserGroupMain extends \oxAdminDetails
                 $this->_aViewData["otherlang"][$id] = clone $oLang;
             }
         }
-        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
-            $oUsergroupMainAjax = oxNew('usergroup_main_ajax');
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc")) {
+            $oUsergroupMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\UserGroupMainAjax::class);
             $this->_aViewData['oxajax'] = $oUsergroupMainAjax->getColumns();
 
             return "popups/usergroup_main.tpl";
@@ -84,21 +84,19 @@ class UserGroupMain extends \oxAdminDetails
 
     /**
      * Saves changed usergroup parameters.
-     *
-     * @return mixed
      */
     public function save()
     {
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
         // checkbox handling
         if (!isset($aParams['oxgroups__oxactive'])) {
             $aParams['oxgroups__oxactive'] = 0;
         }
 
-        $oGroup = oxNew("oxgroups");
+        $oGroup = oxNew(\OxidEsales\Eshop\Application\Model\Groups::class);
         if ($soxId != "-1") {
             $oGroup->load($soxId);
         } else {

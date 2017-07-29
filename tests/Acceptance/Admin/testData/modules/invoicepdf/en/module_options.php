@@ -21,7 +21,7 @@
  */
 
 $aLang = array(
-'charset'                                       => 'ISO-8859-15',
+'charset'                                       => 'UTF-8',
 
 'SHOP_MODULE_GROUP_features'                     => 'Features',
 'SHOP_MODULE_sTestInvoicePdfOption'                 => 'label1',

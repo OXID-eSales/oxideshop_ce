@@ -20,13 +20,13 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Component\Widget;
+namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
 /**
  * List of additional shop information links widget.
  * Forms info link list.
  */
-class Information extends \oxWidget
+class Information extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
 
     /**
@@ -74,7 +74,7 @@ class Information extends \oxWidget
     protected function _getContentList()
     {
         if (!$this->_oContentList) {
-            $this->_oContentList = oxNew("oxContentList");
+            $this->_oContentList = oxNew(\OxidEsales\Eshop\Application\Model\ContentList::class);
         }
 
         return $this->_oContentList;

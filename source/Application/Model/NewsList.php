@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
 
@@ -30,9 +30,9 @@ use oxDb;
  *
  *
  * @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
- *             
+ *
  */
-class NewsList extends \oxList
+class NewsList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
 
     /**
@@ -90,7 +90,7 @@ class NewsList extends \oxList
     public function getCount()
     {
         $myConfig = $this->getConfig();
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sNewsViewName = getViewName('oxnews');
         $oBaseObject = $this->getBaseObject();
@@ -118,7 +118,7 @@ class NewsList extends \oxList
     /**
      * News list user setter
      *
-     * @param oxuser $oUser user object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser user object
      */
     public function setUser($oUser)
     {
@@ -128,7 +128,7 @@ class NewsList extends \oxList
     /**
      * News list user getter
      *
-     * @return oxuser
+     * @return \OxidEsales\Eshop\Application\Model\User
      */
     public function getUser()
     {

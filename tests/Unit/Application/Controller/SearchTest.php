@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \oxRegistry;
 use \oxTestModules;
@@ -58,17 +58,17 @@ class SearchTest extends \OxidTestCase
     {
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{ return false; }');
 
-        $oArticle = $this->getMock('oxarticle', array("appendStdLink", "appendLink"));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("appendStdLink", "appendLink"));
         $oArticle->expects($this->once())->method('appendStdLink')->with($this->equalto('testStdParams'));
         $oArticle->expects($this->once())->method('appendLink')->with($this->equalto('testStdParams'));
         $aArticleList[] = $oArticle;
 
-        $oArticle = $this->getMock('oxarticle', array("appendStdLink", "appendLink"));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("appendStdLink", "appendLink"));
         $oArticle->expects($this->once())->method('appendStdLink')->with($this->equalto('testStdParams'));
         $oArticle->expects($this->once())->method('appendLink')->with($this->equalto('testStdParams'));
         $aArticleList[] = $oArticle;
 
-        $oSearchView = $this->getMock('search', array('getArticleList', "getAddUrlParams"));
+        $oSearchView = $this->getMock(\OxidEsales\Eshop\Application\Controller\SearchController::class, array('getArticleList', "getAddUrlParams"));
         $oSearchView->expects($this->once())->method('getArticleList')->will($this->returnValue($aArticleList));
         $oSearchView->expects($this->once())->method('getAddUrlParams')->will($this->returnValue('testStdParams'));
 
@@ -84,17 +84,17 @@ class SearchTest extends \OxidTestCase
     {
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{ return true; }');
 
-        $oArticle = $this->getMock('oxarticle', array("appendStdLink", "appendLink"));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("appendStdLink", "appendLink"));
         $oArticle->expects($this->never())->method('appendStdLink');
         $oArticle->expects($this->once())->method('appendLink')->with($this->equalto('testStdParams'));
         $aArticleList[] = $oArticle;
 
-        $oArticle = $this->getMock('oxarticle', array("appendStdLink", "appendLink"));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("appendStdLink", "appendLink"));
         $oArticle->expects($this->never())->method('appendStdLink');
         $oArticle->expects($this->once())->method('appendLink')->with($this->equalto('testStdParams'));
         $aArticleList[] = $oArticle;
 
-        $oSearchView = $this->getMock('search', array('getArticleList', "getAddUrlParams"));
+        $oSearchView = $this->getMock(\OxidEsales\Eshop\Application\Controller\SearchController::class, array('getArticleList', "getAddUrlParams"));
         $oSearchView->expects($this->once())->method('getArticleList')->will($this->returnValue($aArticleList));
         $oSearchView->expects($this->once())->method('getAddUrlParams')->will($this->returnValue('testStdParams'));
 
@@ -123,12 +123,12 @@ class SearchTest extends \OxidTestCase
     public function testGetSimilarRecommListIds()
     {
         $aArrayKeys = array("articleId");
-        $oArtList = $this->getMock("oxarticlelist", array("count", "arrayKeys"));
+        $oArtList = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array("count", "arrayKeys"));
         $oArtList->expects($this->once())->method("count")->will($this->returnValue(1));
         $oArtList->expects($this->once())->method("arrayKeys")->will($this->returnValue($aArrayKeys));
 
 
-        $oSearch = $this->getMock("search", array("getArticleList"));
+        $oSearch = $this->getMock(\OxidEsales\Eshop\Application\Controller\SearchController::class, array("getArticleList"));
         $oSearch->expects($this->once())->method("getArticleList")->will($this->returnValue($oArtList));
         $this->assertEquals($aArrayKeys, $oSearch->getSimilarRecommListIds(), "getSimilarRecommListIds() should return array of keys from result of getArticleList()");
     }
@@ -137,18 +137,18 @@ class SearchTest extends \OxidTestCase
     {
         $oSearch = $this->getProxyClass('search');
         $oSearch->setNonPublicVar("_blSearchClass", true);
-        $this->setRequestParameter('searchparam', 'ü  a');
+        $this->setRequestParameter('searchparam', 'Ã¼  a');
 
-        $this->assertEquals('ü  a', $oSearch->getSearchParamForHtml());
+        $this->assertEquals('Ã¼  a', $oSearch->getSearchParamForHtml());
     }
 
     public function testGetSearchParam()
     {
         $oSearch = $this->getProxyClass('search');
         $oSearch->setNonPublicVar("_blSearchClass", true);
-        $this->setRequestParameter('searchparam', 'ü  a');
+        $this->setRequestParameter('searchparam', 'Ã¼  a');
 
-        $this->assertEquals('%FC%20%20a', $oSearch->getSearchParam());
+        $this->assertEquals('%C3%BC%20%20a', $oSearch->getSearchParam());
     }
 
     public function testGetSearchCatId()
@@ -171,14 +171,14 @@ class SearchTest extends \OxidTestCase
 
     public function testGetPageNavigation()
     {
-        $oSearch = $this->getMock('search', array('generatePageNavigation'));
+        $oSearch = $this->getMock(\OxidEsales\Eshop\Application\Controller\SearchController::class, array('generatePageNavigation'));
         $oSearch->expects($this->any())->method('generatePageNavigation')->will($this->returnValue("aaa"));
         $this->assertEquals('aaa', $oSearch->getPageNavigation());
     }
 
     public function testGetActiveCategory()
     {
-        $oSearch = $this->getMock('search', array('getActSearch'));
+        $oSearch = $this->getMock(\OxidEsales\Eshop\Application\Controller\SearchController::class, array('getActSearch'));
         $oSearch->expects($this->any())->method('getActSearch')->will($this->returnValue("aaa"));
         $this->assertEquals('aaa', $oSearch->getActiveCategory());
     }
@@ -198,7 +198,7 @@ class SearchTest extends \OxidTestCase
 
     public function testRenderRss()
     {
-        $oRss = $this->getMock('oxrssfeed', array('getSearchArticlesTitle', 'getSearchArticlesUrl'));
+        $oRss = $this->getMock(\OxidEsales\Eshop\Application\Model\RssFeed::class, array('getSearchArticlesTitle', 'getSearchArticlesUrl'));
         $oRss->expects($this->once())->method('getSearchArticlesTitle')
             ->with(
                 $this->equalTo('ysearchparam'),
@@ -253,7 +253,7 @@ class SearchTest extends \OxidTestCase
 
     public function testGetSearchManufacturer()
     {
-        $oSearch = $this->getMock("search", array("_isSearchClass"));
+        $oSearch = $this->getMock(\OxidEsales\Eshop\Application\Controller\SearchController::class, array("_isSearchClass"));
         $oSearch->expects($this->once())->method('_isSearchClass')->will($this->returnValue(true));
         $this->setRequestParameter('searchmanufacturer', 'gsearchmanufacturer&');
         $this->assertSame('gsearchmanufacturer&amp;', $oSearch->getSearchManufacturer());
@@ -261,7 +261,7 @@ class SearchTest extends \OxidTestCase
 
     public function testGetSearchManufacturerNotInSearch()
     {
-        $oSearch = $this->getMock("search", array("_isSearchClass"));
+        $oSearch = $this->getMock(\OxidEsales\Eshop\Application\Controller\SearchController::class, array("_isSearchClass"));
         $oSearch->expects($this->once())->method('_isSearchClass')->will($this->returnValue(false));
         $this->setRequestParameter('searchmanufacturer', 'gsearchmanufacturer&');
         $this->assertSame(false, $oSearch->getSearchManufacturer());
@@ -281,10 +281,10 @@ class SearchTest extends \OxidTestCase
      */
     public function testCanSelectDisplayType()
     {
-        $oConfig = $this->getMock('oxConfig', array('getConfigParam'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
         $oConfig->expects($this->once())->method('getConfigParam')->will($this->returnValue(true));
 
-        $oSubj = $this->getMock('alist', array('getConfig'));
+        $oSubj = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getConfig'));
         $oSubj->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
 
         $this->assertEquals(true, $oSubj->canSelectDisplayType());
@@ -310,7 +310,7 @@ class SearchTest extends \OxidTestCase
      */
     public function testGetTitle()
     {
-        $oView = $this->getMock("search", array('getArticleCount', 'getSearchParamForHtml'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\SearchController::class, array('getArticleCount', 'getSearchParamForHtml'));
         $oView->expects($this->any())->method('getArticleCount')->will($this->returnValue(6));
         $oView->expects($this->any())->method('getSearchParamForHtml')->will($this->returnValue('searchStr'));
 

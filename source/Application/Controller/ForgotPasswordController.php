@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 
@@ -31,7 +31,7 @@ use oxRegistry;
  * information and submits "Request Password" button mail is sent to users email.
  * OXID eShop -> MY ACCOUNT -> "Forgot your password? - click here."
  */
-class ForgotPasswordController extends \oxUBase
+class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
 
     /**
@@ -78,9 +78,9 @@ class ForgotPasswordController extends \oxUBase
      */
     public function forgotPassword()
     {
-        $sEmail = oxRegistry::getConfig()->getRequestParameter('lgn_usr');
+        $sEmail = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('lgn_usr');
         $this->_sForgotEmail = $sEmail;
-        $oEmail = oxNew('oxemail');
+        $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
 
         // problems sending passwd reminder ?
         $iSuccess = false;
@@ -89,7 +89,7 @@ class ForgotPasswordController extends \oxUBase
         }
         if ($iSuccess !== true) {
             $sError = ($iSuccess === false) ? 'ERROR_MESSAGE_PASSWORD_EMAIL_INVALID' : 'MESSAGE_NOT_ABLE_TO_SEND_EMAIL';
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay($sError, false, true);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($sError, false, true);
             $this->_sForgotEmail = false;
         }
     }
@@ -102,15 +102,15 @@ class ForgotPasswordController extends \oxUBase
      */
     public function updatePassword()
     {
-        $sNewPass = oxRegistry::getConfig()->getRequestParameter('password_new', true);
-        $sConfPass = oxRegistry::getConfig()->getRequestParameter('password_new_confirm', true);
+        $sNewPass = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('password_new', true);
+        $sConfPass = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('password_new_confirm', true);
 
-        $oUser = oxNew('oxuser');
+        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
 
-        /** @var oxInputValidator $oInputValidator */
-        $oInputValidator = oxRegistry::get('oxInputValidator');
+        /** @var \OxidEsales\Eshop\Core\InputValidator $oInputValidator */
+        $oInputValidator = \OxidEsales\Eshop\Core\Registry::getInputValidator();
         if (($oExcp = $oInputValidator->checkPassword($oUser, $sNewPass, $sConfPass, true))) {
-            return oxRegistry::get("oxUtilsView")->addErrorToDisplay($oExcp->getMessage(), false, true);
+            return \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oExcp->getMessage(), false, true);
         }
 
         // passwords are fine - updating and loggin user in
@@ -125,12 +125,12 @@ class ForgotPasswordController extends \oxUBase
             $oUser->save();
 
             // forcing user login
-            oxRegistry::getSession()->setVariable('usr', $oUser->getId());
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('usr', $oUser->getId());
 
             return 'forgotpwd?success=1';
         } else {
             // expired reminder
-            $oUtilsView = oxRegistry::get("oxUtilsView");
+            $oUtilsView = \OxidEsales\Eshop\Core\Registry::getUtilsView();
 
             return $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_PASSWORD_LINK_EXPIRED', false, true);
         }
@@ -143,7 +143,7 @@ class ForgotPasswordController extends \oxUBase
      */
     public function updateSuccess()
     {
-        return (bool) oxRegistry::getConfig()->getRequestParameter('success');
+        return (bool) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('success');
     }
 
     /**
@@ -163,7 +163,7 @@ class ForgotPasswordController extends \oxUBase
      */
     public function getUpdateId()
     {
-        return oxRegistry::getConfig()->getRequestParameter('uid');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('uid');
     }
 
     /**
@@ -174,7 +174,7 @@ class ForgotPasswordController extends \oxUBase
     public function isExpiredLink()
     {
         if (($sKey = $this->getUpdateId())) {
-            $blExpired = oxNew('oxuser')->isExpiredUpdateId($sKey);
+            $blExpired = oxNew(\OxidEsales\Eshop\Application\Model\User::class)->isExpiredUpdateId($sKey);
         }
 
         return $blExpired;
@@ -200,8 +200,8 @@ class ForgotPasswordController extends \oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
-        $aPath['title'] = oxRegistry::getLang()->translateString('FORGOT_PASSWORD', $iBaseLanguage, false);
+        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('FORGOT_PASSWORD', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
@@ -223,6 +223,6 @@ class ForgotPasswordController extends \oxUBase
             $sTitle = 'CHANGE_PASSWORD';
         }
 
-        return oxRegistry::getLang()->translateString($sTitle, oxRegistry::getLang()->getBaseLanguage(), false);
+        return \OxidEsales\Eshop\Core\Registry::getLang()->translateString($sTitle, \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage(), false);
     }
 }

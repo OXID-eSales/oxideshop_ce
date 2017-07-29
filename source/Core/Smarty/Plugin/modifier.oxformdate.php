@@ -38,22 +38,22 @@ function smarty_modifier_oxformdate( $oConvObject, $sFieldType = null, $blPassed
 {   // creating fake bject
     if ( $blPassedValue || is_string($oConvObject) ) {
         $sValue = $oConvObject;
-        $oConvObject = new oxField();
+        $oConvObject = new \OxidEsales\Eshop\Core\Field();
         $oConvObject->fldmax_length = "0";
         $oConvObject->fldtype = $sFieldType;
         $oConvObject->setValue($sValue);
     }
 
-    $myConfig = oxRegistry::getConfig();
+    $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
     // if such format applies to this type of field - sets formatted value to passed object
     if ( !$myConfig->getConfigParam( 'blSkipFormatConversion' ) ) {
         if ( $oConvObject->fldtype == "datetime" || $sFieldType == "datetime")
-            oxRegistry::get('oxUtilsDate')->convertDBDateTime( $oConvObject );
+            \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDateTime( $oConvObject );
         elseif ( $oConvObject->fldtype == "timestamp" || $sFieldType == "timestamp")
-            oxRegistry::get('oxUtilsDate')->convertDBTimestamp( $oConvObject );
+            \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBTimestamp( $oConvObject );
         elseif ( $oConvObject->fldtype == "date" || $sFieldType == "date")
-            oxRegistry::get('oxUtilsDate')->convertDBDate( $oConvObject );
+            \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDate( $oConvObject );
     }
 
     return $oConvObject->value;

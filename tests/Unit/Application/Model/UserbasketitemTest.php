@@ -19,8 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
+use OxidEsales\EshopCommunity\Application\Model\Article;
 use \oxArticle;
 use oxArticleException;
 use \oxField;
@@ -190,7 +191,7 @@ class UserbasketitemTest extends \OxidTestCase
         $oBasketItem = oxNew('oxuserbasketitem');
         try {
             $oBasketItem->getArticle("");
-        } catch (oxArticleException $oEx) {
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleException $oEx) {
             $this->assertEquals('EXCEPTION_ARTICLE_NOPRODUCTID', $oEx->getMessage());
 
             return;
@@ -209,8 +210,6 @@ class UserbasketitemTest extends \OxidTestCase
     // testing if getter returns article we expect
     public function testGetArticleTestingIfGetterWorksFine()
     {
-        oxAddClassModule('modOxArticle_oxUserBasketItem', 'oxArticle');
-
         $sProductId = "2000";
 
         $oBasketItem = oxNew('oxuserbasketitem');
@@ -218,7 +217,7 @@ class UserbasketitemTest extends \OxidTestCase
         $oBasketItem->oxuserbasketitems__oxartid = new oxField($sProductId, oxField::T_RAW);
 
         $oArticle = $oBasketItem->getArticle("123");
-        $this->assertTrue($oArticle instanceof oxarticle);
+        $this->assertTrue($oArticle instanceof article);
         $this->assertEquals($oArticle->getItemKey(), "123");
 
         // if thi line one day will faile, probebly becaus these parameters are not public any more :)

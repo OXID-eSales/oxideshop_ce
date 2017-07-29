@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxRegistry;
 
@@ -80,7 +80,7 @@ class OnlineRequest
      */
     public function __construct()
     {
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $this->clusterId = $this->_getClusterId();
         $this->edition = $oConfig->getEdition();
         $this->version = $oConfig->getVersion();
@@ -95,11 +95,11 @@ class OnlineRequest
      */
     private function _getClusterId()
     {
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sBaseShop = $oConfig->getBaseShopId();
         $sClusterId = $oConfig->getShopConfVar('sClusterId', $sBaseShop);
         if (!$sClusterId) {
-            $oUUIDGenerator = oxNew('oxUniversallyUniqueIdGenerator');
+            $oUUIDGenerator = oxNew(\OxidEsales\Eshop\Core\UniversallyUniqueIdGenerator::class);
             $sClusterId = $oUUIDGenerator->generate();
             $oConfig->saveShopConfVar("str", 'sClusterId', $sClusterId, $sBaseShop);
         }

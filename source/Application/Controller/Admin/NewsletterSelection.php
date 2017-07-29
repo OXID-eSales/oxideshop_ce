@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -30,7 +30,7 @@ use oxDb;
  * Adds/removes chosen user group to/from newsletter mailing.
  * Admin Menu: Customer Info -> Newsletter -> Selection.
  */
-class NewsletterSelection extends \oxAdminDetails
+class NewsletterSelection extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -54,12 +54,12 @@ class NewsletterSelection extends \oxAdminDetails
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oNewsletter = oxNew("oxnewsletter");
+            $oNewsletter = oxNew(\OxidEsales\Eshop\Application\Model\Newsletter::class);
             if ($oNewsletter->load($soxId)) {
                 $this->_aViewData["edit"] = $oNewsletter;
 
-                if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
-                    $oNewsletterSelectionAjax = oxNew('newsletter_selection_ajax');
+                if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc")) {
+                    $oNewsletterSelectionAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\NewsletterSelectionAjax::class);
                     $this->_aViewData['oxajax'] = $oNewsletterSelectionAjax->getColumns();
 
                     return "popups/newsletter_selection.tpl";
@@ -81,11 +81,11 @@ class NewsletterSelection extends \oxAdminDetails
             $this->_iUserCount = 0;
 
             // load object
-            $oNewsletter = oxNew("oxnewsletter");
+            $oNewsletter = oxNew(\OxidEsales\Eshop\Application\Model\Newsletter::class);
             if ($oNewsletter->load($this->getEditObjectId())) {
                 // get nr. of users in these groups
                 // we do not use lists here as we dont need this overhead right now
-                $oDB = oxDb::getDb();
+                $oDB = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
                 $blSep = false;
                 $sSelectGroups = " ( oxobject2group.oxgroupsid in ( ";
 
@@ -113,7 +113,8 @@ class NewsletterSelection extends \oxAdminDetails
                    and (not(oxnewssubscribed.oxemailfailed = '1')) and oxnewssubscribed.oxshopid = '{$sShopId}'
                    group by oxnewssubscribed.oxemail ) as _tmp";
 
-                $this->_iUserCount = $oDB->getOne($sQ, false, false);
+                // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+                $this->_iUserCount = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sQ);
             }
         }
 
@@ -126,10 +127,10 @@ class NewsletterSelection extends \oxAdminDetails
     public function save()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
         $aParams['oxnewsletter__oxshopid'] = $this->getConfig()->getShopId();
 
-        $oNewsletter = oxNew("oxNewsLetter");
+        $oNewsletter = oxNew(\OxidEsales\Eshop\Application\Model\Newsletter::class);
         if ($soxId != "-1") {
             $oNewsletter->load($soxId);
         } else {

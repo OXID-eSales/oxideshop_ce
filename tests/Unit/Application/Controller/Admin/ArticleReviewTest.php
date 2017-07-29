@@ -19,9 +19,9 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use oxArticle;
+use OxidEsales\EshopCommunity\Application\Model\Article;
 use \oxField;
 use \oxDb;
 use \oxTestModules;
@@ -78,7 +78,7 @@ class ArticleReviewTest extends \OxidTestCase
 
         // testing view data
         $aViewData = $oView->getViewData();
-        $this->assertTrue($aViewData["edit"] instanceof oxArticle);
+        $this->assertTrue($aViewData["edit"] instanceof Article);
 
         $this->assertEquals('article_review.tpl', $sTplName);
     }
@@ -105,7 +105,7 @@ class ArticleReviewTest extends \OxidTestCase
         $this->setRequestParameter("editval", array('oxreviews__oxtext' => 6, 'oxreviews__oxrating' => 6));
         $this->getConfig()->setConfigParam("blGBModerate", "_testReviewId");
 
-        $oView = $this->getMock("Article_Review", array("resetContentCache"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleReview::class, array("resetContentCache"));
         $oView->expects($this->once())->method('resetContentCache');
         $oView->save();
 
@@ -131,7 +131,7 @@ class ArticleReviewTest extends \OxidTestCase
         $this->assertTrue((bool) $oDb->getOne("select 1 from oxreviews where oxid = 'testReviewId'"));
         $this->setRequestParameter("rev_oxid", "testReviewId");
 
-        $oView = $this->getMock("Article_Review", array("resetContentCache"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleReview::class, array("resetContentCache"));
         $oView->expects($this->once())->method('resetContentCache');
 
         $oView->delete();

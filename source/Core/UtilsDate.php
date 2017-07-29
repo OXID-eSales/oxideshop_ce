@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxRegistry;
 use oxField;
@@ -29,7 +29,7 @@ use DateTime;
 /**
  * Date manipulation utility class
  */
-class UtilsDate extends \oxSuperCfg
+class UtilsDate extends \OxidEsales\Eshop\Core\Base
 {
 
     /**
@@ -83,9 +83,9 @@ class UtilsDate extends \oxSuperCfg
 
         // choosing format..
         if ($sTime) {
-            $sFormat = $blForceEnglishRet ? 'Y-m-d H:i:s' : oxRegistry::getLang()->translateString('fullDateFormat');
+            $sFormat = $blForceEnglishRet ? 'Y-m-d H:i:s' : \OxidEsales\Eshop\Core\Registry::getLang()->translateString('fullDateFormat');
         } else {
-            $sFormat = $blForceEnglishRet ? 'Y-m-d' : oxRegistry::getLang()->translateString('simpleDateFormat');
+            $sFormat = $blForceEnglishRet ? 'Y-m-d' : \OxidEsales\Eshop\Core\Registry::getLang()->translateString('simpleDateFormat');
         }
 
         if (count($aDate) != 3) {
@@ -229,7 +229,6 @@ class UtilsDate extends \oxSuperCfg
      *
      * @return string
      */
-
     public function convertDBTimestamp($oObject, $blToTimeStamp = false)
     {
         // on this case usually means that we gonna save value, and value is formatted, not plain
@@ -342,7 +341,7 @@ class UtilsDate extends \oxSuperCfg
     {
         // defining time format
         // checking for default values
-        $sLocalTimeFormat = oxRegistry::getConfig()->getConfigParam('sLocalTimeFormat');
+        $sLocalTimeFormat = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sLocalTimeFormat');
         if (!$sLocalTimeFormat || $blToTimeStamp) {
             $sLocalTimeFormat = "ISO";
         }
@@ -361,7 +360,7 @@ class UtilsDate extends \oxSuperCfg
     {
         // defining time format
         // checking for default values
-        $sLocalDateFormat = oxRegistry::getConfig()->getConfigParam('sLocalDateFormat');
+        $sLocalDateFormat = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sLocalDateFormat');
         if (!$sLocalDateFormat || $blToTimeStamp) {
             $sLocalDateFormat = "ISO";
         }
@@ -465,7 +464,7 @@ class UtilsDate extends \oxSuperCfg
             $sReturn .= " " . $aTFormats[$sLocalTimeFormat][2];
         }
 
-        if ($oObject instanceof oxField) {
+        if ($oObject instanceof \OxidEsales\Eshop\Core\Field) {
             $oObject->setValue(trim($sReturn));
         } else {
             $oObject->value = trim($sReturn);
@@ -494,7 +493,7 @@ class UtilsDate extends \oxSuperCfg
             $aDateMatches[$aDFields[2]]
         );
 
-        if ($oObject instanceof oxField) {
+        if ($oObject instanceof \OxidEsales\Eshop\Core\Field) {
             $oObject->setValue(@date($sDateFormat, $iTimestamp));
         } else {
             $oObject->value = @date($sDateFormat, $iTimestamp);
@@ -526,7 +525,7 @@ class UtilsDate extends \oxSuperCfg
             (int) $aDateMatches[$aDFields[2]]
         );
 
-        if ($oObject instanceof oxField) {
+        if ($oObject instanceof \OxidEsales\Eshop\Core\Field) {
             $oObject->setValue(trim(@date($sDateFormat . " " . $sTimeFormat, $iTimestamp)));
         } else {
             $oObject->value = trim(@date($sDateFormat . " " . $sTimeFormat, $iTimestamp));
@@ -560,7 +559,8 @@ class UtilsDate extends \oxSuperCfg
 
     /**
      * Returns the the timestamp formatted as date string for the database
-     * @param $iTimestamp the timestamp to be formatted
+     *
+     * @param int $iTimestamp the timestamp to be formatted
      *
      * @return bool|string timestamp formatted as date string for the database, false on error
      */

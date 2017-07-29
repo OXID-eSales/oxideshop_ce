@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\core;
 
 use \oxField;
 use oxStr;
@@ -78,7 +78,7 @@ class EmailUtf8Test extends \OxidTestCase
         $oPrice->expects($this->any())->method('getPrice')->will($this->returnValue(256));
         $oPrice->expects($this->any())->method('getBruttoPrice')->will($this->returnValue(8));
 
-        $oBasketItem = $this->getMock('oxbasketitem', array('getPrice', 'getUnitPrice', 'getRegularUnitPrice', 'getTitle'));
+        $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array('getPrice', 'getUnitPrice', 'getRegularUnitPrice', 'getTitle'));
         $oBasketItem->expects($this->any())->method('getPrice')->will($this->returnValue($oPrice));
         $oBasketItem->expects($this->any())->method('getUnitPrice')->will($this->returnValue($oPrice));
         $oBasketItem->expects($this->any())->method('getRegularUnitPrice')->will($this->returnValue($oPrice));
@@ -95,7 +95,7 @@ class EmailUtf8Test extends \OxidTestCase
 
         $oPrice->setPrice(0);
 
-        $oBasket = $this->getMock('oxBasket', array("getBasketArticles", "getContents", "getCosts", "getBruttoSum",));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array("getBasketArticles", "getContents", "getCosts", "getBruttoSum",));
         $oBasket->expects($this->any())->method('getBasketArticles')->will($this->returnValue($aBasketArticles));
         $oBasket->expects($this->any())->method('getContents')->will($this->returnValue($aBasketContents));
         $oBasket->expects($this->any())->method('getCosts')->will($this->returnValue($oPrice));
@@ -110,7 +110,7 @@ class EmailUtf8Test extends \OxidTestCase
         $oUser->oxuser__oxfname = new oxField('testUserFName', oxField::T_RAW);
         $oUser->oxuser__oxlname = new oxField('testUserLName', oxField::T_RAW);
 
-        $oOrder = $this->getMock('oxOrder', array("getOrderUser", "getBasket", "getPayment"));
+        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array("getOrderUser", "getBasket", "getPayment"));
         $oOrder->expects($this->any())->method('getOrderUser')->will($this->returnValue($oUser));
         $oOrder->expects($this->any())->method('getBasket')->will($this->returnValue($oBasket));
         $oOrder->expects($this->any())->method('getPayment')->will($this->returnValue($oPayment));
@@ -128,7 +128,7 @@ class EmailUtf8Test extends \OxidTestCase
         $oShop = oxNew("oxshop");
         $oShop->load($this->getConfig()->getShopId());
 
-        $oEmail = $this->getMock('oxEmail', array("_sendMail", "_getShop"));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($oShop));
         $oEmail->expects($this->any())->method('getOrderFileList')->will($this->returnValue(false));

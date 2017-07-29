@@ -19,12 +19,12 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Integration\Seo;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Seo;
 
 use oxBase;
 use oxDb;
 use oxField;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use oxRegistry;
 use oxSeoEncoder;
 
@@ -374,7 +374,7 @@ class SeoTest extends \OxidTestCase
         //check if old URL still active
         $aExp = array("cl" => "details", "anid" => "_testid", "cnid" => "_test3", "lang" => 0);
         /** @var oxSeoEncoder $oSeoDecoder */
-        $oSeoDecoder = oxRegistry::get('oxSeoDecoder');
+        $oSeoDecoder = \OxidEsales\Eshop\Core\Registry::getSeoDecoder();
         $aDecoded = $oSeoDecoder->decodeUrl($sCurrentSeo);
         $this->assertEquals($aExp, $aDecoded);
     }
@@ -432,7 +432,7 @@ class SeoTest extends \OxidTestCase
      */
     protected function _addArticlesToCategories(array $aArticles, array $aCategories)
     {
-        $myUtilsObject = oxRegistry::get("oxUtilsObject");
+        $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
         foreach ($aArticles as $sArticle) {
             foreach ($aCategories as $sCategory => $iTime) {
                 /** @var oxBase $oNew */

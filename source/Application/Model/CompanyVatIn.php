@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxStr;
 
@@ -54,7 +54,7 @@ class CompanyVatIn
      */
     public function getCountryCode()
     {
-        return (string) oxStr::getStr()->strtoupper(oxStr::getStr()->substr($this->_cleanUp($this->_sCompanyVatNumber), 0, 2));
+        return (string) \OxidEsales\Eshop\Core\Str::getStr()->strtoupper(\OxidEsales\Eshop\Core\Str::getStr()->substr($this->_cleanUp($this->_sCompanyVatNumber), 0, 2));
     }
 
     /**
@@ -64,7 +64,7 @@ class CompanyVatIn
      */
     public function getNumbers()
     {
-        return (string) oxStr::getStr()->substr($this->_cleanUp($this->_sCompanyVatNumber), 2);
+        return (string) \OxidEsales\Eshop\Core\Str::getStr()->substr($this->_cleanUp($this->_sCompanyVatNumber), 2);
     }
 
     /**
@@ -76,7 +76,7 @@ class CompanyVatIn
      */
     protected function _cleanUp($sValue)
     {
-        return (string) oxStr::getStr()->preg_replace("/\s|-/", '', $sValue);
+        return (string) \OxidEsales\Eshop\Core\Str::getStr()->preg_replace("/\s|-/", '', $sValue);
     }
 
 

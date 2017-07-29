@@ -19,10 +19,10 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 
 /**
  * Tests for Attribute_Category_Ajax class
@@ -229,7 +229,7 @@ class VendorMainAjaxTest extends \OxidTestCase
     {
         $this->setRequestParameter("oxid", "_testVendorId");
 
-        $oView = $this->getMock("vendor_main_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VendorMainAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testArticle1')));
 
         $oDb = oxDb::getDb();
@@ -268,7 +268,7 @@ class VendorMainAjaxTest extends \OxidTestCase
     {
         $this->setRequestParameter("oxid", "_testVendorId");
 
-        $oView = $this->getMock("vendor_main_ajax", array("_getActionIds", "resetCounter"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VendorMainAjax::class, array("_getActionIds", "resetCounter"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testArticle1')));
         $oView->expects($this->any())->method('resetCounter')->with($this->equalTo("vendorArticle"), $this->equalTo("_testVendorId"));
 
@@ -284,7 +284,7 @@ class VendorMainAjaxTest extends \OxidTestCase
     {
         $this->setRequestParameter("synchoxid", "_testVendorId");
 
-        $oView = $this->getMock("vendor_main_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VendorMainAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testArticle3')));
 
         $oDb = oxDb::getDb();
@@ -304,7 +304,7 @@ class VendorMainAjaxTest extends \OxidTestCase
         $this->setRequestParameter("synchoxid", "_testVendorId");
         $this->setRequestParameter("all", true);
 
-        $oView = $this->getMock("vendor_main_ajax", array("_getQuery"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VendorMainAjax::class, array("_getQuery"));
         $oView->expects($this->once())->method('_getQuery')->will($this->returnValue("from {$this->getArticleViewTable()} where oxid like '\_test%' and oxvendorid='' "));
 
         $oDb = oxDb::getDb();
@@ -324,7 +324,7 @@ class VendorMainAjaxTest extends \OxidTestCase
     {
         $this->setRequestParameter("synchoxid", "_testVendorId");
 
-        $oView = $this->getMock("vendor_main_ajax", array("_getActionIds", "resetCounter"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VendorMainAjax::class, array("_getActionIds", "resetCounter"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testArticle3')));
         $oView->expects($this->any())->method('resetCounter')->with($this->equalTo("vendorArticle"), $this->equalTo("_testVendorId"));
 

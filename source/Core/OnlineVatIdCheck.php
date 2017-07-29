@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use oxCompanyVatIn;
 use stdClass;
@@ -35,7 +35,7 @@ use SoapFault;
 /**
  * Online VAT id checker class.
  */
-class OnlineVatIdCheck extends \oxCompanyVatInChecker
+class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
 {
 
     /**
@@ -81,11 +81,11 @@ class OnlineVatIdCheck extends \oxCompanyVatInChecker
     /**
      * Validates VAT.
      *
-     * @param oxCompanyVatIn $oVatIn Company VAT identification number object.
+     * @param \OxidEsales\Eshop\Application\Model\CompanyVatIn $oVatIn Company VAT identification number object.
      *
      * @return bool
      */
-    public function validate(oxCompanyVatIn $oVatIn)
+    public function validate(\OxidEsales\Eshop\Application\Model\CompanyVatIn $oVatIn)
     {
         $oCheckVat = new stdClass();
         $oCheckVat->countryCode = $oVatIn->getCountryCode();
@@ -97,69 +97,6 @@ class OnlineVatIdCheck extends \oxCompanyVatInChecker
         }
 
         return $blResult;
-    }
-
-    /**
-     * Parses error and throws exception for it
-     *
-     * @param string $sErrorMsg error message
-     *
-     * @deprecated since v5.2 (2014-07-28); This logic was moved to oxCompanyVatInValidator
-     *
-     * @throws oxConnectionException
-     */
-    protected function _parseError($sErrorMsg)
-    {
-        if (!$sErrorMsg || $sErrorMsg == 'INVALID_INPUT') {
-            /** @var oxInputException $oEx */
-            $oEx = oxNew('oxInputException');
-            $oEx->setMessage('VAT_MESSAGE_' . ($sErrorMsg ? $sErrorMsg : 'ID_NOT_VALID'));
-            throw $oEx;
-        }
-
-        /** @var oxConnectionException $oEx */
-        $oEx = oxNew('oxConnectionException');
-        $oEx->setAdress($this->getWsdlUrl());
-        $oEx->setMessage('VAT_MESSAGE_' . $sErrorMsg);
-        $oEx->debugOut();
-        throw $oEx;
-    }
-
-    /**
-     * Checks if USt.ID number is valid.
-     * Returns true on success
-     *
-     * @param string $sCompVatId vat id that should be checked
-     *
-     * @deprecated since v5.2 (2014-07-28); use validate method
-     *
-     * @throws oxInputException, oxConnectionException
-     * @return bool
-     */
-    public function checkUid($sCompVatId)
-    {
-        if (isset(self::$_aVatCheckCache[$sCompVatId])) {
-            if (true === self::$_aVatCheckCache[$sCompVatId]) {
-                return true;
-            }
-            if (is_string(self::$_aVatCheckCache[$sCompVatId])) {
-                $this->_parseError(self::$_aVatCheckCache[$sCompVatId]);
-            }
-
-            return false;
-        }
-
-        $oCheckVat = new stdClass();
-        $oCheckVat->countryCode = substr($sCompVatId, 0, 2);
-        $oCheckVat->vatNumber = substr($sCompVatId, 2);
-
-        if (!$this->_checkOnline($oCheckVat)) {
-            $sErrorMsg = $this->_getError();
-            self::$_aVatCheckCache[$sCompVatId] = $sErrorMsg;
-            $this->_parseError($sErrorMsg);
-        }
-
-        return self::$_aVatCheckCache[$sCompVatId] = true;
     }
 
     /**
@@ -179,11 +116,11 @@ class OnlineVatIdCheck extends \oxCompanyVatInChecker
         $sLogMessage = "Warning: $sErrStr in $sErrFile on line $iErrLine";
 
         // fetching exception log file name
-        $oEx = oxNew("oxException");
+        $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
         $sLogFileName = $oEx->getLogFileName();
 
         // logs error message
-        return oxRegistry::getUtils()->writeToLog($sLogMessage, $sLogFileName);
+        return \OxidEsales\Eshop\Core\Registry::getUtils()->writeToLog($sLogMessage, $sLogFileName);
     }
 
     /**
@@ -272,25 +209,6 @@ class OnlineVatIdCheck extends \oxCompanyVatInChecker
     }
 
     /**
-     * Get error message.
-     *
-     * @deprecated since v5.2 (2014-07-28); This logic was moved to oxCompanyVatInValidator
-     *
-     * @return string
-     */
-    protected function _getError()
-    {
-        $sError = '';
-        if ($this->_sError) {
-            $sRegex = '/\{ \'([A-Z_]*)\' \}/';
-            $n = preg_match($sRegex, $this->_sError, $aMatches);
-            $sError = ($aMatches[1]) ? $aMatches[1] : 'SERVICE_UNAVAILABLE';
-        }
-
-        return $sError;
-    }
-
-    /**
      * Returns wsdl url
      *
      * @return string
@@ -298,22 +216,10 @@ class OnlineVatIdCheck extends \oxCompanyVatInChecker
     public function getWsdlUrl()
     {
         // overriding wsdl url
-        if (($sWsdl = oxRegistry::getConfig()->getConfigParam("sVatIdCheckInterfaceWsdl"))) {
+        if (($sWsdl = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("sVatIdCheckInterfaceWsdl"))) {
             $this->_sWsdl = $sWsdl;
         }
 
         return $this->_sWsdl;
-    }
-
-    /**
-     * Returns true if VAT id check is disabled
-     *
-     * @deprecated since v5.2 (2014-07-28); This logic was moved to oxCompanyVatInValidator
-     *
-     * @return bool
-     */
-    public function isDisabled()
-    {
-        return (bool) oxRegistry::getConfig()->getConfigParam("blVatIdCheckDisabled");
     }
 }

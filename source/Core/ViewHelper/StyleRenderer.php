@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\ViewHelper;
+namespace OxidEsales\EshopCommunity\Core\ViewHelper;
 
 use oxRegistry;
 
@@ -38,15 +38,15 @@ class StyleRenderer
      */
     public function render($widget, $forceRender, $isDynamic)
     {
-        $config = oxRegistry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $suffix = $isDynamic ? '_dynamic' : '';
         $output = '';
 
         if (!$widget || $this->shouldForceRender($forceRender)) {
-            $styles = (array) $config->getGlobalParameter(StyleRegistrator::STYLES_PARAMETER_NAME . $suffix);
+            $styles = (array) $config->getGlobalParameter(\OxidEsales\Eshop\Core\ViewHelper\StyleRegistrator::STYLES_PARAMETER_NAME . $suffix);
             $output .= $this->formStylesOutput($styles);
             $output .= PHP_EOL;
-            $conditionalStyles = (array) $config->getGlobalParameter(StyleRegistrator::CONDITIONAL_STYLES_PARAMETER_NAME . $suffix);
+            $conditionalStyles = (array) $config->getGlobalParameter(\OxidEsales\Eshop\Core\ViewHelper\StyleRegistrator::CONDITIONAL_STYLES_PARAMETER_NAME . $suffix);
             $output .= $this->formConditionalStylesOutput($conditionalStyles);
         }
 

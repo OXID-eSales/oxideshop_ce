@@ -20,13 +20,13 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Component\Widget;
+namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
 /**
  * Recomendation list.
  * Forms recomendation list.
  */
-class ServiceMenu extends \oxWidget
+class ServiceMenu extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
 
     /**
@@ -52,7 +52,7 @@ class ServiceMenu extends \oxWidget
      */
     public function getCompareItemsCnt()
     {
-        $oCompare = oxNew("compare");
+        $oCompare = oxNew(\OxidEsales\Eshop\Application\Controller\CompareController::class);
         return $oCompare->getCompareItemsCnt();
     }
 
@@ -65,7 +65,7 @@ class ServiceMenu extends \oxWidget
      */
     public function getCompareItems($blJson = false)
     {
-        $oCompare = oxNew("compare");
+        $oCompare = oxNew(\OxidEsales\Eshop\Application\Controller\CompareController::class);
         $aCompareItems = $oCompare->getCompareItems();
 
         if ($blJson) {

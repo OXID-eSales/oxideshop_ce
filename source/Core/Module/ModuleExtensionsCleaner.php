@@ -20,29 +20,28 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Core\Module;
-
-use oxModule;
+namespace OxidEsales\EshopCommunity\Core\Module;
 
 /**
  * Class responsible for cleaning not used extensions for module which is going to be activated.
  *
- * @package  OxidEsales\Eshop\Core\Module
+ * @package  OxidEsales\EshopCommunity\Core\Module
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ModuleExtensionsCleaner
 {
+
     /**
      * Removes garbage ( module not used extensions ) from all installed extensions list.
      * For example: some classes were renamed, so these should be removed.
      *
-     * @param array    $installedExtensions
-     * @param oxModule $module
+     * @param array                                $installedExtensions
+     * @param \OxidEsales\Eshop\Core\Module\Module $module
      *
      * @return array
      */
-    public function cleanExtensions($installedExtensions, oxModule $module)
+    public function cleanExtensions($installedExtensions, \OxidEsales\Eshop\Core\Module\Module $module)
     {
         $moduleExtensions = $module->getExtensions();
 
@@ -69,14 +68,19 @@ class ModuleExtensionsCleaner
      */
     protected function filterExtensionsByModuleId($modules, $moduleId)
     {
-        $modulePaths = \oxRegistry::getConfig()->getConfigParam('aModulePaths');
-        $path = $modulePaths[$moduleId];
+        $modulePaths = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModulePaths');
+
+        $path = '';
+        if (isset($modulePaths[$moduleId])) {
+            $path = $modulePaths[$moduleId];
+        }
+
         // TODO: This condition should be removed. Need to check integration tests.
         if (!$path) {
             $path = $moduleId . "/";
         }
 
-        $filteredModules = array();
+        $filteredModules = [];
         foreach ($modules as $class => $extend) {
             foreach ($extend as $extendPath) {
                 if (strpos($extendPath, $path) === 0) {

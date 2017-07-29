@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
 
@@ -158,7 +158,7 @@ class ShopViewValidator
     protected function _getAllViews()
     {
         if (empty($this->_aAllViews)) {
-            $this->_aAllViews = oxDb::getDb()->getCol("SHOW TABLES LIKE  'oxv_%'");
+            $this->_aAllViews = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol("SHOW TABLES LIKE  'oxv\_%'");
         }
 
         return $this->_aAllViews;

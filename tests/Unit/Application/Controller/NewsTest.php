@@ -19,7 +19,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \oxField;
 use \oxRegistry;
@@ -96,7 +96,7 @@ class NewsTest extends \OxidTestCase
 
     public function testRender()
     {
-        $n = $this->getMock('news', array('getNews'));
+        $n = $this->getMock(\OxidEsales\Eshop\Application\Controller\NewsController::class, array('getNews'));
         $n->expects($this->once())->method('getNews')->will($this->returnValue('newse'));
 
         $this->assertEquals('page/info/news.tpl', $n->render());
@@ -113,10 +113,10 @@ class NewsTest extends \OxidTestCase
         $oShop = oxNew('oxShop');
         $oShop->oxshops__oxname = new oxField('shop');
 
-        $oConfig = $this->getMock("oxConfig", array('getActiveShop'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getActiveShop'));
         $oConfig->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
 
-        $oNews = $this->getMock("news", array('getConfig'));
+        $oNews = $this->getMock(\OxidEsales\Eshop\Application\Controller\NewsController::class, array('getConfig'));
         $oNews->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         $aResult = array();
@@ -137,7 +137,7 @@ class NewsTest extends \OxidTestCase
      */
     public function testGetPageNavigation()
     {
-        $oObj = $this->getMock('News', array('generatePageNavigation'));
+        $oObj = $this->getMock(\OxidEsales\Eshop\Application\Controller\NewsController::class, array('generatePageNavigation'));
         $oObj->expects($this->any())->method('generatePageNavigation')->will($this->returnValue("aaa"));
         $this->assertEquals('aaa', $oObj->getPageNavigation());
     }
@@ -150,10 +150,10 @@ class NewsTest extends \OxidTestCase
         $oShop = oxNew('oxShop');
         $oShop->oxshops__oxname = new oxField('shop');
 
-        $oConfig = $this->getMock("oxConfig", array('getActiveShop'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getActiveShop'));
         $oConfig->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
 
-        $oView = $this->getMock("news", array('getConfig'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\NewsController::class, array('getConfig'));
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         $this->assertEquals(oxRegistry::getLang()->translateString('LATEST_NEWS_AND_UPDATES_AT', oxRegistry::getLang()->getBaseLanguage(), false) . ' shop', $oView->getTitle());

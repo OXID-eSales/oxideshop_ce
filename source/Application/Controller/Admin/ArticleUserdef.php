@@ -20,12 +20,12 @@
  * @version   OXID eShop CE
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Class reserved for extending (for customization - you can add you own fields, etc.).
  */
-class ArticleUserdef extends \oxAdminDetails
+class ArticleUserdef extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
 
     /**
@@ -38,7 +38,7 @@ class ArticleUserdef extends \oxAdminDetails
     {
         parent::render();
 
-        $oArticle = oxNew("oxArticle");
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $this->_aViewData["edit"] = $oArticle;
 
         $soxId = $this->getEditObjectId();

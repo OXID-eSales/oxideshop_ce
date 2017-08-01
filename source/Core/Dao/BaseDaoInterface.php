@@ -41,37 +41,15 @@ interface BaseDaoInterface
      * Deletes the entity with the given id.
      *
      * @param string $id An id of the entity to delete.
-     *
-     * @return int The number of affected rows.
      */
     public function delete($id);
 
     /**
-     * Finds an entity by given id.
-     *
-     * @param string $id An id of the entity to find.
-     *
-     * @return object|null The entity instance or NULL if the entity can not be found.
-     */
-    public function findById($id);
-
-    /**
-     * Updates the given entity.
+     * Updates or insert the given entity.
      *
      * @param object $object
-     *
-     * @return int The number of affected rows.
      */
-    public function update($object);
-
-    /**
-     * Insert new entity.
-     *
-     * @param object $object
-     *
-     * @return int The number of affected rows.
-     */
-    public function insert($object);
+    public function save($object);
 
     /**
      * Start a database transaction.

@@ -236,8 +236,8 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidEsales\TestingLibrary\
     private function getApplicationServerExporter()
     {
         $config = $this->getConfig();
-        $databaseProvider = oxNew(\OxidEsales\Eshop\Core\DatabaseProvider::class);
-        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $database, $config);
         $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
         $service = oxNew(
             \OxidEsales\Eshop\Core\Service\ApplicationServerService::class,

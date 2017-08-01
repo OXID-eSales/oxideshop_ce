@@ -43,7 +43,7 @@ class FrontendServersInformationStoringTest extends \OxidEsales\TestingLibrary\U
         $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
 
         $service = $this->getApplicationServerServiceObject($currentTime);
-        $service->updateAppServerInformation(false);
+        $service->updateAppServerInformationInFrontend();
 
         /** @var \OxidEsales\Eshop\Core\DataObject\ApplicationServer[] $appServers */
         $appServers = $service->loadAppServerList();
@@ -62,7 +62,7 @@ class FrontendServersInformationStoringTest extends \OxidEsales\TestingLibrary\U
         $this->storeAppServer1Information(($currentTime - (11 * 3600)));
 
         $service = $this->getApplicationServerServiceObject($currentTime);
-        $service->updateAppServerInformation(false);
+        $service->updateAppServerInformationInFrontend();
 
         /** @var \OxidEsales\Eshop\Core\DataObject\ApplicationServer[] $appServers */
         $appServers = $service->loadAppServerList();
@@ -85,7 +85,7 @@ class FrontendServersInformationStoringTest extends \OxidEsales\TestingLibrary\U
 
         $this->assertEquals(0, count($appServers));
 
-        $service->updateAppServerInformation(false);
+        $service->updateAppServerInformationInFrontend();
 
         /** @var \OxidEsales\Eshop\Core\DataObject\ApplicationServer[] $appServers */
         $appServers = $service->loadActiveAppServerList();
@@ -104,7 +104,7 @@ class FrontendServersInformationStoringTest extends \OxidEsales\TestingLibrary\U
         $this->storeAppServer2Information($currentTime);
 
         $service = $this->getApplicationServerServiceObject($currentTime);
-        $service->updateAppServerInformation(false);
+        $service->updateAppServerInformationInFrontend();
 
         /** @var \OxidEsales\Eshop\Core\DataObject\ApplicationServer[] $appServers */
         $appServers = $service->loadAppServerList();
@@ -124,7 +124,7 @@ class FrontendServersInformationStoringTest extends \OxidEsales\TestingLibrary\U
         $this->storeAppServer2Information(($currentTime - (25 * 3600)));
 
         $service = $this->getApplicationServerServiceObject($currentTime);
-        $service->updateAppServerInformation(false);
+        $service->updateAppServerInformationInFrontend();
 
         /** @var \OxidEsales\Eshop\Core\DataObject\ApplicationServer[] $appServers */
         $appServers = $service->loadActiveAppServerList();
@@ -143,7 +143,7 @@ class FrontendServersInformationStoringTest extends \OxidEsales\TestingLibrary\U
         $this->storeAppServer2Information(($currentTime - (75 * 3600)));
 
         $service = $this->getApplicationServerServiceObject($currentTime);
-        $service->updateAppServerInformation(true);
+        $service->updateAppServerInformationInAdmin();
 
         /** @var \OxidEsales\Eshop\Core\DataObject\ApplicationServer[] $appServers */
         $appServers = $service->loadAppServerList();
@@ -155,8 +155,8 @@ class FrontendServersInformationStoringTest extends \OxidEsales\TestingLibrary\U
     private function getApplicationServerServiceObject($currentTime)
     {
         $config = $this->getConfig();
-        $databaseProvider = oxNew(\OxidEsales\Eshop\Core\DatabaseProvider::class);
-        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $database, $config);
         $utilsServer = $this->getMockBuilder(\OxidEsales\Eshop\Core\UtilsServer::class)
             ->setMethods(['getServerNodeId', 'getServerIp'])
             ->getMock();

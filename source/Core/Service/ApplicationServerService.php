@@ -161,7 +161,7 @@ class ApplicationServerService implements \OxidEsales\Eshop\Core\Service\Applica
     /**
      * Deletes all application servers, that are longer not active.
      */
-    public function cleanupAppServers()
+    private function cleanupAppServers()
     {
         $allFoundServers = $this->loadAppServerList();
         /** @var \OxidEsales\Eshop\Core\DataObject\ApplicationServer $server */
@@ -173,13 +173,31 @@ class ApplicationServerService implements \OxidEsales\Eshop\Core\Service\Applica
     }
 
     /**
+     * Renews application server information when it is call in admin area and
+     * if it is outdated or if it does not exist.
+     */
+    public function updateAppServerInformationInAdmin()
+    {
+        $this->updateAppServerInformation(true);
+    }
+
+    /**
+     * Renews application server information when it is call in frontend and
+     * if it is outdated or if it does not exist.
+     */
+    public function updateAppServerInformationInFrontend()
+    {
+        $this->updateAppServerInformation(false);
+    }
+
+    /**
      * Renews application server information if it is outdated or if it does not exist.
      *
      * @throws \Exception
      *
      * @param bool $adminMode The status of admin mode
      */
-    public function updateAppServerInformation($adminMode = false)
+    public function updateAppServerInformation($adminMode)
     {
         $this->appServerDao->startTransaction();
         try {

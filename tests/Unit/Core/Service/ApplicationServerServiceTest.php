@@ -171,7 +171,7 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
 
         $currentTime = \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime();
         $service = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerService::class, $appServerDao, $utilsServer, $currentTime);
-        $service->updateAppServerInformation();
+        $service->updateAppServerInformationInFrontend();
     }
 
     private function getApplicationServerDaoMock($methodToMock, $expectedReturnValue)

@@ -31,18 +31,18 @@ namespace OxidEsales\EshopCommunity\Core\Dao;
 abstract class BaseDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterface
 {
     /**
-     * @var \OxidEsales\Eshop\Core\DatabaseProvider Database connection
+     * @var \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface
      */
-    private $connection;
+    protected $database;
 
     /**
      * BaseDao constructor.
      *
-     * @param \OxidEsales\Eshop\Core\DatabaseProvider $databaseProvider Database connection class.
+     * @param \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface $database Database connection class.
      */
-    public function __construct($databaseProvider)
+    public function __construct($database)
     {
-        $this->connection = $databaseProvider;
+        $this->database = $database;
     }
 
     /**
@@ -50,7 +50,7 @@ abstract class BaseDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterface
      */
     public function startTransaction()
     {
-        $this->getDb()->startTransaction();
+        $this->database->startTransaction();
     }
 
     /**
@@ -58,7 +58,7 @@ abstract class BaseDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterface
      */
     public function commitTransaction()
     {
-        $this->getDb()->commitTransaction();
+        $this->database->commitTransaction();
     }
 
     /**
@@ -66,38 +66,6 @@ abstract class BaseDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterface
      */
     public function rollbackTransaction()
     {
-        $this->getDb()->rollbackTransaction();
-    }
-
-    /**
-     * Returns database connection class.
-     *
-     * @param int $fetchMode The fetch mode. Default is numeric (0).
-     *
-     * @return \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface
-     */
-    private function getDb($fetchMode = \OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_NUM)
-    {
-        return $this->connection->getDb($fetchMode);
-    }
-
-    /**
-     * Returns database connection class with fetch mode - associative.
-     *
-     * @return \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface
-     */
-    protected function getAssociativeDb()
-    {
-        return $this->getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-    }
-
-    /**
-     * Returns database connection class with fetch mode - numeric.
-     *
-     * @return \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface
-     */
-    protected function getNumericDb()
-    {
-        return $this->getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_NUM);
+        $this->database->rollbackTransaction();
     }
 }

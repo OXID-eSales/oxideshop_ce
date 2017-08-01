@@ -184,7 +184,11 @@ class SystemEventHandler
     {
         try {
             $appServerService = $this->getAppServerService();
-            $appServerService->updateAppServerInformation($this->getConfig()->isAdmin());
+            if ($this->getConfig()->isAdmin()) {
+                $appServerService->updateAppServerInformationInAdmin();
+            } else {
+                $appServerService->updateAppServerInformationInFrontend();
+            }
 
             if ($this->isSendingShopDataEnabled() && !\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()) {
                 $this->sendShopInformation();
@@ -311,8 +315,8 @@ class SystemEventHandler
     protected function getAppServerService()
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $databaseProvider = oxNew(\OxidEsales\Eshop\Core\DatabaseProvider::class);
-        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $database, $config);
         $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
 
         $appServerService = oxNew(

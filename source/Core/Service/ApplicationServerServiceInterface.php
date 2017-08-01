@@ -63,11 +63,6 @@ interface ApplicationServerServiceInterface
     public function saveAppServer($appServer);
 
     /**
-     * Deletes all application servers, that are longer not active.
-     */
-    public function cleanupAppServers();
-
-    /**
      * Returns an array of all only active application servers.
      *
      * @return array
@@ -75,9 +70,14 @@ interface ApplicationServerServiceInterface
     public function loadActiveAppServerList();
 
     /**
-     * Renews application server information if it is outdated or if it does not exist.
-     *
-     * @param bool $adminMode The status of admin mode
+     * Renews application server information when it is call in admin area and
+     * if it is outdated or if it does not exist.
      */
-    public function updateAppServerInformation($adminMode = false);
+    public function updateAppServerInformationInAdmin();
+
+    /**
+     * Renews application server information when it is call in frontend and
+     * if it is outdated or if it does not exist.
+     */
+    public function updateAppServerInformationInFrontend();
 }

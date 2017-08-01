@@ -55,7 +55,7 @@ if (!is_dir(OX_BASE_PATH . 'Core')) {
  */
 register_shutdown_function(
     function () {
-        $handledErrorTypes = [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_RECOVERABLE_ERROR, E_USER_ERROR, E_USER_DEPRECATED];
+        $handledErrorTypes = [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_RECOVERABLE_ERROR, E_USER_ERROR];
         $sessionResetErrorTypes = [E_ERROR];
 
         $error = error_get_last();

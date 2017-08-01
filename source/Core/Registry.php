@@ -42,16 +42,6 @@ class Registry
     protected static $backwardsCompatibilityClassMap = null;
 
     /**
-     * Hold virtual namespace to class map
-     *
-     * @deprecated since v6.0.0-rc.2 (2017-06-01); Virtual namespaces were replaced by concrete classes, called
-     *                                             unified namespace classes
-     *
-     * @var null| array
-     */
-    protected static $virtualNameSpaceClassMap = null;
-
-    /**
      * Instance getter. Return an existing or new instance for a given class name.
      * Consider using the getter methods over the generic Registry::get() method.
      * In order to avoid issues with different shop editions, the given class name must be from the Unified Namespace.
@@ -363,24 +353,6 @@ class Registry
         }
 
         return self::$backwardsCompatibilityClassMap;
-    }
-
-    /**
-     * Return the VirtualNameSpaceClassMap for the current edition of OXID eShop
-     *
-     * @deprecated since v6.0.0-rc.2 (2017-06-01); Virtual namespaces were replaced by concrete classes, called
-     *                                             unified namespace classes
-     *
-     * @return array
-     */
-    public static function getVirtualNameSpaceClassMap()
-    {
-        if (is_null(self::$virtualNameSpaceClassMap)) {
-            $classMap = new \OxidEsales\Eshop\Core\Autoload\VirtualNameSpaceClassMap;
-            self::$virtualNameSpaceClassMap = $classMap->getClassMap();
-        }
-
-        return self::$virtualNameSpaceClassMap;
     }
 
     /**

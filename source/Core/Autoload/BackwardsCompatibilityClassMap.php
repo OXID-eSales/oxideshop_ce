@@ -20,6 +20,10 @@
  * @version       OXID eShop CE
  */
 
+/**
+ * @internal Do not make a module extension based on this file.
+ * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
+ */
 return [
     'oxcmp_basket'                        => 'OxidEsales\\Eshop\\Application\\Component\\BasketComponent',
     'oxcmp_categories'                    => 'OxidEsales\\Eshop\\Application\\Component\\CategoriesComponent',

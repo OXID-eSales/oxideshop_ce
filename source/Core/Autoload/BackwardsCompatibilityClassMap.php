@@ -441,7 +441,7 @@ return [
     'oxvoucherserie'                      => 'OxidEsales\\Eshop\\Application\\Model\\VoucherSerie',
     'oxwrapping'                          => 'OxidEsales\\Eshop\\Application\\Model\\Wrapping',
     'oxadminrights'                       => 'OxidEsales\\Eshop\\Core\\AdminRights',
-    'oxapplicationserver'                 => 'OxidEsales\\Eshop\\Core\\ApplicationServer',
+    'oxapplicationserver'                 => 'OxidEsales\\Eshop\\DataObject\\ApplicationServer',
     'oxarticle2shoprelations'             => 'OxidEsales\\Eshop\\Core\\Article2ShopRelations',
     'oxsupercfg'                          => 'OxidEsales\\Eshop\\Core\\Base',
     'oxcachebackenddefault'               => 'OxidEsales\\Eshop\\Core\\Cache\\DynamicContent\\Connector\\DefaultCacheConnector',

@@ -397,9 +397,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getNewSessionId($blUnset = true)
     {
-        $sOldId = session_id();
         @session_regenerate_id(true);
-        $sNewId = session_id();
 
         if ($blUnset) {
             session_unset();
@@ -424,7 +422,6 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     public function destroy()
     {
-        //session_unset();
         unset($_SESSION);
         session_destroy();
     }

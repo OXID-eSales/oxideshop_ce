@@ -22,13 +22,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
-use oxDb;
-use oxSuperCfg;
-
 /**
  * Class for handling database related operations
- *
  */
 class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
 {

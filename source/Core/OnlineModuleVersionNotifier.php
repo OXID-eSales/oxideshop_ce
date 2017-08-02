@@ -22,11 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxOnlineModuleVersionNotifierCaller;
-use oxModuleList;
-use oxModule;
 use stdClass;
-use oxRegistry;
 use oxOnlineModulesNotifierRequest;
 
 /**

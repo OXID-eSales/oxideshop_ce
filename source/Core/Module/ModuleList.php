@@ -22,10 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
-use oxDb;
-use oxModuleCache;
-use oxRegistry;
-
 /**
  * Modules list class.
  *

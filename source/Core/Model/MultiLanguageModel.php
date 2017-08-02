@@ -23,8 +23,6 @@
 namespace OxidEsales\EshopCommunity\Core\Model;
 
 use oxObjectException;
-use oxRegistry;
-use oxDb;
 
 /**
  * Class handling multilanguage data fields

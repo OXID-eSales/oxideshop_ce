@@ -22,14 +22,10 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
-
 /**
  * CURL request handler.
  * Handles CURL calls
- *
  */
-
 class Curl
 {
     /** Curl option for setting the timeout of whole execution process. */

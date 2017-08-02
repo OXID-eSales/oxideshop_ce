@@ -22,8 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
-
 /**
  * Online check base request class.
  *

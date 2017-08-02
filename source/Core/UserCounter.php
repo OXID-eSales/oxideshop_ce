@@ -22,8 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxDb;
-
 /**
  * Class used for counting users depending on given attributes.
  */

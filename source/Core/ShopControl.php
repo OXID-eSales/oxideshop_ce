@@ -21,14 +21,12 @@
  */
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxException;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Cache\DynamicContent\ContentCache;
 use oxOutput;
-use oxRegistry;
 use oxSystemComponentException;
 use PHPMailer;
 use ReflectionMethod;

@@ -23,11 +23,7 @@
 namespace OxidEsales\EshopCommunity\Core\GenericImport\ImportObject;
 
 use Exception;
-use oxBase;
-use oxDb;
-use oxI18n;
 use OxidEsales\Eshop\Core\GenericImport\GenericImport;
-use oxRegistry;
 
 /**
  * Main import object - includes basic implementations of methods.

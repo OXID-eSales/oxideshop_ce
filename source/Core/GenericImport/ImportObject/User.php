@@ -23,7 +23,6 @@
 namespace OxidEsales\EshopCommunity\Core\GenericImport\ImportObject;
 
 use Exception;
-use oxField;
 
 /**
  * Import object for Users.

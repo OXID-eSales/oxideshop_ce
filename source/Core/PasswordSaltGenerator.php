@@ -22,11 +22,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxOpenSSLFunctionalityChecker;
-
 /**
  * Generates Salt for the user password
- *
  */
 class PasswordSaltGenerator
 {

@@ -22,15 +22,11 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxDb;
-use oxPrice;
-use oxRegistry;
 use stdClass;
 use Exception;
 
 /**
  * General utils class
- *
  */
 class Utils extends \OxidEsales\Eshop\Core\Base
 {

@@ -22,9 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\Eshop\Application\Model\CompanyVatIn;
-use OxidEsales\Eshop\Application\Model\Country;
-
 /**
  * Company VAT identification number checker. Check if number belongs to the country.
  */

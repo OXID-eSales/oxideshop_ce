@@ -24,11 +24,8 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use Exception;
 use oxConnectionException;
-use oxDb;
-use oxException;
 use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Application\Model\Shop;
-use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
 use stdClass;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
@@ -933,11 +930,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getSslShopUrl($lang = null)
     {
-        $url = null;
-
-        if (!$url) {
-            $url = $this->getShopUrlByLanguage($lang, true);
-        }
+        $url = $this->getShopUrlByLanguage($lang, true);
 
         if (!$url) {
             $url = $this->getMallShopUrl(true);

@@ -22,9 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxDb;
-use oxRegistry;
-
 /**
  * Including pictures generator functions file
  */

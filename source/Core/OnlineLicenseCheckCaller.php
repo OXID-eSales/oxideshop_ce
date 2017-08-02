@@ -22,11 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxOnlineLicenseCheckRequest;
-use oxRegistry;
-use oxUtilsXml;
 use oxException;
-use oxOnlineLicenseCheckResponse ;
 
 /**
  * Class makes call to given URL address and sends request parameter.

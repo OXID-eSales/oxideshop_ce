@@ -21,7 +21,6 @@
  */
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxDb;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database as DatabaseAdapter;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;

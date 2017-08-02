@@ -22,8 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core\Contract;
 
-use oxModule;
-
 /**
  * Interface oxIModuleValidator
  */

@@ -22,11 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxCompanyVatIn;
 use stdClass;
-use oxRegistry;
-use oxInputException;
-use oxConnectionException;
 use DOMDocument;
 use Exception;
 use SoapClient;

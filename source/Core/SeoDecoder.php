@@ -22,12 +22,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxDb;
-use oxRegistry;
-
 /**
  * Seo encoder base
- *
  */
 class SeoDecoder extends \OxidEsales\Eshop\Core\Base
 {

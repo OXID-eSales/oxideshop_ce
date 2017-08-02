@@ -22,11 +22,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
-
 /**
  * class for output processing
- *
  */
 class Output extends \OxidEsales\Eshop\Core\Base
 {

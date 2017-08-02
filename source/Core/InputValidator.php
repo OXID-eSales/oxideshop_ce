@@ -23,9 +23,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
-use oxDb;
-
 /**
  * Class for validating input
  */

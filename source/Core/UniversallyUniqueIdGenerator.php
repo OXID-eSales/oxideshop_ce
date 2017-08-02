@@ -22,8 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxOpenSSLFunctionalityChecker;
-
 /**
  * Class oxUniversallyUniqueIdGenerator used as universally unique id generator.
  */

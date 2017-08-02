@@ -23,7 +23,6 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
-use oxRegistry;
 
 /**
  * View config data access class. Keeps most

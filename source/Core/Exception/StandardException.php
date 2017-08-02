@@ -22,7 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core\Exception;
 
-use oxRegistry;
 
 /**
  * Basic exception class

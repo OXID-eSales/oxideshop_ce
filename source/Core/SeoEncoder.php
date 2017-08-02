@@ -23,14 +23,9 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use Exception;
-use oxRegistry;
-use oxDb;
-use oxStr;
-use OxidEsales\Eshop\Core\Exception\StandardException;
 
 /**
  * Seo encoder base
- *
  */
 class SeoEncoder extends \OxidEsales\Eshop\Core\Base
 {

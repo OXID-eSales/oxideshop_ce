@@ -22,8 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxCompanyVatIn;
-
 /**
  * Company VAT identification number (VATIN) checker
  *

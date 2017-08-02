@@ -22,8 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core\ViewHelper;
 
-use oxRegistry;
-
 /**
  * Class for preparing JavaScript.
  */

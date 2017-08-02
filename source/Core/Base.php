@@ -22,11 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxConfig;
-use oxRegistry;
-use oxSession;
 use oxSystemComponentException;
-use oxUser;
 
 /**
  * Basic class which is used as parent class by other OXID eShop classes.

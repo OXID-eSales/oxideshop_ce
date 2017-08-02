@@ -22,8 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
-
 /**
  * simple class to add a error message to display
  */

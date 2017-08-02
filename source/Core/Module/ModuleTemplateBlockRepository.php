@@ -22,8 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
-use \oxDb;
-
 /**
  * Provides a way to get content from module template block file.
  *

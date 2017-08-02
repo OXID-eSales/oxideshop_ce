@@ -22,9 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxDb;
-use oxRegistry;
-
 /**
  * Date manipulation utility class
  */

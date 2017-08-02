@@ -22,8 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core\Contract;
 
-use oxConfig;
-
 /**
  * The interface methods should be implemented by classes which need a configuration object
  * (usually OxConfig) manually set.

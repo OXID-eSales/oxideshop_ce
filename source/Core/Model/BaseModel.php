@@ -34,9 +34,6 @@ DEFINE('ACTION_UPDATE_STOCK', 4);
 use Exception;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
 use oxObjectException;
-use oxRegistry;
-use oxField;
-use oxDb;
 
 /**
  * Class BaseModel

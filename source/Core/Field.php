@@ -22,8 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
-
 /**
  * Database field description object.
  *
@@ -33,7 +31,6 @@ use oxRegistry;
  *
  * T_RAW and T_TEXT types represent not the assignment logic, but rather a
  * returned value escaping status.
- *
  */
 class Field // extends \OxidEsales\Eshop\Core\Base
 {

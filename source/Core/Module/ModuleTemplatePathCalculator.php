@@ -24,8 +24,6 @@ namespace OxidEsales\EshopCommunity\Core\Module;
 
 use oxException;
 use OxidEsales\Eshop\Core\FileSystem\FileSystem;
-use oxModuleList;
-use oxTheme;
 
 /**
  * Forms path to module template.

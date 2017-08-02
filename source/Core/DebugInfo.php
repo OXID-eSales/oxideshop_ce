@@ -22,11 +22,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
-
 /**
  * Debug information formatter
- *
  */
 class DebugInfo
 {

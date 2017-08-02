@@ -23,10 +23,8 @@
 namespace OxidEsales\EshopCommunity\Core\Module;
 
 use OxidEsales\Eshop\Core\Config;
-use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\FileCache;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\Eshop\Core\DatabaseProvider;
 
 /**
  * Selects module variables from database or cache.

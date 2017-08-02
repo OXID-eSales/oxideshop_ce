@@ -39,11 +39,6 @@
 
 namespace OxidEsales\EshopCommunity\Core\Smarty\Plugin;
 
-use oxDb;
-use OxidEsales\Eshop\Application\Controller\ContentController;
-use oxRegistry;
-use oxSuperCfg;
-
 /**
  * This class is a reference implementation of a PHP Function to include
  * ECONDA Trackiong into a Shop-System.
@@ -310,7 +305,6 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
                 }
             }
             $this->_sEmosCatPath = (count($aCatTitle) ? strip_tags(implode('/', $aCatTitle)) : 'NULL');
-            $this->_sEmosCatPath = $this->_sEmosCatPath;
         }
 
         return $this->_sEmosCatPath;

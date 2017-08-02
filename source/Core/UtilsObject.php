@@ -22,12 +22,9 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Module\ModuleChainsGenerator;
 use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
-use ReflectionClass;
-use ReflectionException;
 
 /**
  * Object Factory implementation (oxNew() method is implemented in this class).

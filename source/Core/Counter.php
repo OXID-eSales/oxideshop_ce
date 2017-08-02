@@ -23,7 +23,6 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use Exception;
-use oxDb;
 
 /**
  * Counter class

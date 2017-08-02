@@ -24,10 +24,6 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
-use oxRegistry;
-use oxDb;
-use Exception;
 
 /**
  * System requirements class.
@@ -1043,7 +1039,7 @@ class SystemRequirements
     }
 
     /**
-     * Parses and calculates given string form byte syze value
+     * Parses and calculates given string form byte size value
      *
      * @param string $sBytes string form byte value (64M, 32K etc)
      *

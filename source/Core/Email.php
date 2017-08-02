@@ -23,11 +23,6 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use oxSystemComponentException;
-use oxField;
-use oxRegistry;
-use oxDb;
-use oxStr;
-use oxConfig;
 use Exception;
 
 /**

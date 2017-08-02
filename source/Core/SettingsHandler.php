@@ -21,9 +21,6 @@
  */
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxDb;
-use oxRegistry;
-
 /**
  * Settings handler class.
  */

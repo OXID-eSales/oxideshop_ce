@@ -24,7 +24,6 @@ namespace OxidEsales\EshopCommunity\Core\GenericImport;
 
 use Exception;
 use OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject;
-use oxRegistry;
 
 /**
  * Class responsible for generic import functionality.

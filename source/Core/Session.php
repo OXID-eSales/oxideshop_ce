@@ -22,9 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
-use oxBasket;
-
 use \OxidEsales\Eshop\Application\Model\Basket;
 use \OxidEsales\Eshop\Application\Model\BasketItem;
 use \OxidEsales\Eshop\Application\Model\User;

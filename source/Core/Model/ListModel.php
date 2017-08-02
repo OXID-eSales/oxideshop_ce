@@ -22,8 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core\Model;
 
-use oxDb;
-
 /**
  * List manager.
  * Collects list data (eg. from DB), performs list changes updating (to DB), etc.

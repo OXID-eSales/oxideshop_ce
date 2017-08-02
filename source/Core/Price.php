@@ -22,9 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
-use oxPrice;
-
 /**
  * Price calculation class. Responsible for simple price calculations. Basically contains Brutto, Netto prices and VAT values.
  */

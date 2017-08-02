@@ -33,7 +33,7 @@ class ApplicationServerService implements \OxidEsales\Eshop\Core\Service\Applica
     /**
      * The Dao object for application server.
      *
-     * @var \OxidEsales\Eshop\Core\Dao\BaseDaoInterface
+     * @var \OxidEsales\Eshop\Core\Dao\ApplicationServerDaoInterface
      */
     private $appServerDao;
 
@@ -54,12 +54,12 @@ class ApplicationServerService implements \OxidEsales\Eshop\Core\Service\Applica
     /**
      * ApplicationServerService constructor.
      *
-     * @param \OxidEsales\Eshop\Core\Dao\BaseDaoInterface $appServerDao The Dao object of application server.
-     * @param \OxidEsales\Eshop\Core\UtilsServer          $utilsServer
-     * @param int                                         $currentTime  The current time - timestamp.
+     * @param \OxidEsales\Eshop\Core\Dao\ApplicationServerDaoInterface $appServerDao The Dao of application server.
+     * @param \OxidEsales\Eshop\Core\UtilsServer                       $utilsServer
+     * @param int                                                      $currentTime  The current time - timestamp.
      */
     public function __construct(
-        \OxidEsales\Eshop\Core\Dao\BaseDaoInterface $appServerDao,
+        \OxidEsales\Eshop\Core\Dao\ApplicationServerDaoInterface $appServerDao,
         $utilsServer,
         $currentTime
     ) {
@@ -90,7 +90,7 @@ class ApplicationServerService implements \OxidEsales\Eshop\Core\Service\Applica
     public function loadAppServer($id)
     {
         /** @var \OxidEsales\Eshop\Core\DataObject\ApplicationServer $appServer */
-        $appServer = $this->appServerDao->findById($id);
+        $appServer = $this->appServerDao->findAppServer($id);
         if ($appServer === null) {
             /** @var \OxidEsales\Eshop\Core\Exception\NoResultException $exception */
             $exception = oxNew(\OxidEsales\Eshop\Core\Exception\NoResultException::class);
@@ -103,29 +103,20 @@ class ApplicationServerService implements \OxidEsales\Eshop\Core\Service\Applica
      * Removes server node information.
      *
      * @param string $serverId The Id of the application server to delete.
-     *
-     * @return bool
      */
     public function deleteAppServerById($serverId)
     {
-        return $this->appServerDao->delete($serverId);
+        $this->appServerDao->delete($serverId);
     }
 
     /**
      * Saves application server data.
      *
      * @param \OxidEsales\Eshop\Core\DataObject\ApplicationServer $appServer
-     *
-     * @return int
      */
     public function saveAppServer($appServer)
     {
-        if ($this->appServerDao->findById($appServer->getId()) !== null) {
-            $effectedRows = $this->appServerDao->update($appServer);
-        } else {
-            $effectedRows = $this->appServerDao->insert($appServer);
-        }
-        return $effectedRows;
+        $this->appServerDao->save($appServer);
     }
 
     /**
@@ -202,13 +193,11 @@ class ApplicationServerService implements \OxidEsales\Eshop\Core\Service\Applica
         $this->appServerDao->startTransaction();
         try {
             /** @var \OxidEsales\Eshop\Core\DataObject\ApplicationServer $appServer */
-            $appServer = $this->appServerDao->findById($this->utilsServer->getServerNodeId());
+            $appServer = $this->appServerDao->findAppServer($this->utilsServer->getServerNodeId());
             if ($appServer === null) {
                 $this->addNewAppServerData($adminMode);
-                $this->cleanupAppServers();
             } elseif ($appServer->needToUpdate($this->currentTime)) {
                 $this->updateAppServerData($appServer, $adminMode);
-                $this->cleanupAppServers();
             }
         } catch (\Exception $exception) {
             $this->appServerDao->rollbackTransaction();
@@ -233,7 +222,8 @@ class ApplicationServerService implements \OxidEsales\Eshop\Core\Service\Applica
         } else {
             $appServer->setLastFrontendUsage($this->currentTime);
         }
-        $this->appServerDao->update($appServer);
+        $this->saveAppServer($appServer);
+        $this->cleanupAppServers();
     }
 
     /**
@@ -254,6 +244,7 @@ class ApplicationServerService implements \OxidEsales\Eshop\Core\Service\Applica
         } else {
             $appServer->setLastFrontendUsage($this->currentTime);
         }
-        $this->appServerDao->insert($appServer);
+        $this->saveAppServer($appServer);
+        $this->cleanupAppServers();
     }
 }

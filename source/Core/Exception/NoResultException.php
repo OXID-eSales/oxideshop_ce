@@ -33,5 +33,4 @@ class NoResultException extends \OxidEsales\Eshop\Core\Exception\StandardExcepti
      * @var string
      */
     protected $type = 'NoResultException';
-
 }

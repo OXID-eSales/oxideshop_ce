@@ -1941,11 +1941,6 @@ return [
         'isAbstract'       => false,
         'isInterface'      => false
     ],
-    'OxidEsales\Eshop\Core\Dao\BaseDao'                                    => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Dao\BaseDao::class,
-        'isAbstract'       => true,
-        'isInterface'      => false
-    ],
     'OxidEsales\Eshop\Core\Dao\ApplicationServerDao'                                    => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Dao\ApplicationServerDao::class,
         'isAbstract'       => false,
@@ -1953,6 +1948,11 @@ return [
     ],
     'OxidEsales\Eshop\Core\Dao\BaseDaoInterface'                                    => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Dao\BaseDaoInterface::class,
+        'isAbstract'       => false,
+        'isInterface'      => true
+    ],
+    'OxidEsales\Eshop\Core\Dao\ApplicationServerDaoInterface'                                    => [
+        'editionClassName' => \OxidEsales\EshopCommunity\Core\Dao\ApplicationServerDaoInterface::class,
         'isAbstract'       => false,
         'isInterface'      => true
     ],

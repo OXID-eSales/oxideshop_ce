@@ -54,12 +54,12 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->assertEquals(0, count($appServers));
     }
 
-    public function testFindByIdIfExists()
+    public function testFindAppServerIfExists()
     {
         $this->storeInitialServersData();
 
         $appServerDao = $this->getApplicationServerDaoObject();
-        $appServer = $appServerDao->findById('serverNameHash1');
+        $appServer = $appServerDao->findAppServer('serverNameHash1');
 
         $expectedServer = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
         $expectedServer->setId('serverNameHash1');
@@ -70,12 +70,12 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->assertEquals($expectedServer, $appServer);
     }
 
-    public function testFindByIdIfNotExists()
+    public function testFindAppServerIfNotExists()
     {
         $this->storeInitialServersData();
 
         $appServerDao = $this->getApplicationServerDaoObject();
-        $appServer = $appServerDao->findById('serverNameHash3');
+        $appServer = $appServerDao->findAppServer('serverNameHash3');
 
         $this->assertNull($appServer);
     }
@@ -85,8 +85,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->storeInitialServersData();
 
         $appServerDao = $this->getApplicationServerDaoObject();
-        $result = $appServerDao->delete('serverNameHash1');
-        $this->assertEquals(1, $result);
+        $appServerDao->delete('serverNameHash1');
 
         $appServers = $appServerDao->findAll();
         $this->assertEquals(1, count($appServers));
@@ -102,8 +101,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->storeInitialServersData();
 
         $appServerDao = $this->getApplicationServerDaoObject();
-        $result = $appServerDao->delete('serverNameHash3');
-        $this->assertEquals(0, $result);
+        $appServerDao->delete('serverNameHash3');
 
         $appServers = $appServerDao->findAll();
         $this->assertEquals(2, count($appServers));
@@ -120,11 +118,9 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $expectedServer->setLastFrontendUsage('updatedFrontendUsageTimestamp');
 
         $appServerDao = $this->getApplicationServerDaoObject();
-        $result = $appServerDao->update($expectedServer);
+        $appServerDao->save($expectedServer);
 
-        $this->assertEquals(1, $result);
-
-        $appServer = $appServerDao->findById('serverNameHash1');
+        $appServer = $appServerDao->findAppServer('serverNameHash1');
         $this->assertEquals($expectedServer, $appServer);
     }
 
@@ -139,9 +135,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $updateServer->setLastAdminUsage('updatedAdminUsageTimestamp');
 
         $appServerDao = $this->getApplicationServerDaoObject();
-        $result = $appServerDao->update($updateServer);
-
-        $this->assertEquals(0, $result);
+        $appServerDao->save($updateServer);
 
         $expectedServer = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
         $expectedServer->setId('serverNameHash1');
@@ -149,7 +143,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $expectedServer->setIp('127.0.0.1');
         $expectedServer->setLastFrontendUsage('frontendUsageTimestamp');
 
-        $appServer = $appServerDao->findById('serverNameHash1');
+        $appServer = $appServerDao->findAppServer('serverNameHash1');
         $this->assertEquals($expectedServer, $appServer);
     }
 
@@ -166,8 +160,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $expectedServer->setIp('127.0.0.1');
         $expectedServer->setLastFrontendUsage('frontendUsageTimestamp');
 
-        $result = $appServerDao->insert($expectedServer);
-        $this->assertEquals(1, $result);
+        $appServerDao->save($expectedServer);
 
         $appServers = $appServerDao->findAll();
         $this->assertEquals(1, count($appServers));
@@ -189,7 +182,7 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $expectedServer->setLastFrontendUsage('frontendUsageTimestamp');
         $expectedServer->setLastAdminUsage('adminUsageTimestamp');
 
-        $appServerDao->insert($expectedServer);
+        $appServerDao->save($expectedServer);
 
         $appServers = $appServerDao->findAll();
         $this->assertEquals(2, count($appServers));
@@ -217,9 +210,9 @@ class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     private function getApplicationServerDaoObject()
     {
-        $databaseProvider = oxNew(\OxidEsales\Eshop\Core\DatabaseProvider::class);
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $config = $this->getConfig();
 
-        return oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $databaseProvider, $config);
+        return oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $database, $config);
     }
 }

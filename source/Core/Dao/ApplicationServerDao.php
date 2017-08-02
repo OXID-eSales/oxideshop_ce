@@ -28,7 +28,7 @@ namespace OxidEsales\EshopCommunity\Core\Dao;
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
-class ApplicationServerDao extends BaseDao
+class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServerDaoInterface
 {
     /**
      * The name of config option for saving servers data information.
@@ -36,19 +36,29 @@ class ApplicationServerDao extends BaseDao
     const CONFIG_NAME_FOR_SERVER_INFO = 'aServersData_';
 
     /**
+     * @var \OxidEsales\Eshop\Core\DataObject\ApplicationServer[]
+     */
+    private $appServer = [];
+
+    /**
      * @var \OxidEsales\Eshop\Core\Config Main shop configuration class.
      */
     private $config;
 
     /**
+     * @var \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface
+     */
+    protected $database;
+
+    /**
      * ApplicationServerDao constructor.
      *
-     * @param \OxidEsales\Eshop\Core\DatabaseProvider $databaseProvider Database connection class.
-     * @param \OxidEsales\Eshop\Core\Config           $config           Main shop configuration class.
+     * @param \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface $database Database connection class.
+     * @param \OxidEsales\Eshop\Core\Config                             $config   Main shop configuration class.
      */
-    public function __construct($databaseProvider, $config)
+    public function __construct($database, $config)
     {
-        parent::__construct($databaseProvider);
+        $this->database = $database;
         $this->config = $config;
     }
 
@@ -82,10 +92,11 @@ class ApplicationServerDao extends BaseDao
      *
      * @param string $id An id of the entity to delete.
      *
-     * @return int The number of affected rows.
      */
     public function delete($id)
     {
+        unset($this->appServer[$id]);
+
         $query = "DELETE FROM oxconfig WHERE oxvarname = ? and oxshopid = ?";
 
         $parameter = array(
@@ -93,7 +104,7 @@ class ApplicationServerDao extends BaseDao
             $this->config->getBaseShopId()
         );
 
-        return $this->getAssociativeDb()->execute($query, $parameter);
+        $this->database->execute($query, $parameter);
     }
 
     /**
@@ -103,27 +114,68 @@ class ApplicationServerDao extends BaseDao
      *
      * @return \OxidEsales\Eshop\Core\DataObject\ApplicationServer|null
      */
-    public function findById($id)
+    public function findAppServer($id)
     {
-        $serverData = $this->selectDataById($id);
+        if (!isset($this->appServer[$id])) {
+            $serverData = $this->selectDataById($id);
 
-        if ($serverData != false) {
-            $appServerProperties = (array)unserialize($serverData);
-        } else {
-            return null;
+            if ($serverData != false) {
+                $appServerProperties = (array)unserialize($serverData);
+            } else {
+                return null;
+            }
+
+            $this->appServer[$id] = $this->createServer($appServerProperties);
         }
+        return $this->appServer[$id];
+    }
 
-        return $this->createServer($appServerProperties);
+    /**
+     * Updates or insert the given entity.
+     *
+     * @param \OxidEsales\Eshop\Core\DataObject\ApplicationServer $appServer
+     */
+    public function save($appServer)
+    {
+        $id = $appServer->getId();
+        if ($this->findAppServer($id)) {
+            $this->update($appServer);
+            unset($this->appServer[$id]);
+        } else {
+            $this->insert($appServer);
+        }
+    }
+
+    /**
+     * Start a database transaction.
+     */
+    public function startTransaction()
+    {
+        $this->database->startTransaction();
+    }
+
+    /**
+     * Commit a database transaction.
+     */
+    public function commitTransaction()
+    {
+        $this->database->commitTransaction();
+    }
+
+    /**
+     * RollBack a database transaction.
+     */
+    public function rollbackTransaction()
+    {
+        $this->database->rollbackTransaction();
     }
 
     /**
      * Updates the given entity.
      *
      * @param \OxidEsales\Eshop\Core\DataObject\ApplicationServer $appServer
-     *
-     * @return int The number of affected rows.
      */
-    public function update($appServer)
+    protected function update($appServer)
     {
         $query = "UPDATE oxconfig SET oxvarvalue=ENCODE( ?, ?) WHERE oxvarname = ? and oxshopid = ?";
 
@@ -134,17 +186,15 @@ class ApplicationServerDao extends BaseDao
             $this->config->getBaseShopId()
         );
 
-        return $this->getAssociativeDb()->execute($query, $parameter);
+        $this->database->execute($query, $parameter);
     }
 
     /**
      * Insert new application server entity.
      *
      * @param \OxidEsales\Eshop\Core\DataObject\ApplicationServer $appServer
-     *
-     * @return int The number of affected rows.
      */
-    public function insert($appServer)
+    protected function insert($appServer)
     {
         $query = "insert into oxconfig (oxid, oxshopid, oxmodule, oxvarname, oxvartype, oxvarvalue)
                values(?, ?, '', ?, ?, ENCODE( ?, ?) )";
@@ -158,7 +208,7 @@ class ApplicationServerDao extends BaseDao
             $this->config->getConfigParam('sConfigKey')
         );
 
-        return $this->getAssociativeDb()->execute($query, $parameter);
+        $this->database->execute($query, $parameter);
     }
 
     /**
@@ -178,7 +228,8 @@ class ApplicationServerDao extends BaseDao
             $this->config->getBaseShopId()
         );
 
-        return $this->getAssociativeDb()->getOne($query, $parameter);
+        $this->database->setFetchMode(\OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface::FETCH_MODE_ASSOC);
+        return $this->database->getOne($query, $parameter);
     }
 
     /**
@@ -196,7 +247,8 @@ class ApplicationServerDao extends BaseDao
             $this->config->getBaseShopId()
         );
 
-        return $this->getAssociativeDb()->select($query, $parameter);
+        $this->database->setFetchMode(\OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface::FETCH_MODE_ASSOC);
+        return $this->database->select($query, $parameter);
     }
 
     /**
@@ -278,5 +330,4 @@ class ApplicationServerDao extends BaseDao
 
         return serialize($serverData);
     }
-
 }

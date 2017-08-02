@@ -23,49 +23,19 @@
 namespace OxidEsales\EshopCommunity\Core\Dao;
 
 /**
- *  The Data Access Object (DAO) layer encapsulates the access to a database.
+ * Application server data access manager.
  *
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
-abstract class BaseDao implements \OxidEsales\Eshop\Core\Dao\BaseDaoInterface
+interface ApplicationServerDaoInterface extends \OxidEsales\Eshop\Core\Dao\BaseDaoInterface
 {
     /**
-     * @var \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface
-     */
-    protected $database;
-
-    /**
-     * BaseDao constructor.
+     * Finds an application server by given id, null if none is found.
      *
-     * @param \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface $database Database connection class.
+     * @param string $id An id of the entity to find.
+     *
+     * @return \OxidEsales\Eshop\Core\DataObject\ApplicationServer|null
      */
-    public function __construct($database)
-    {
-        $this->database = $database;
-    }
-
-    /**
-     * Start a database transaction.
-     */
-    public function startTransaction()
-    {
-        $this->database->startTransaction();
-    }
-
-    /**
-     * Commit a database transaction.
-     */
-    public function commitTransaction()
-    {
-        $this->database->commitTransaction();
-    }
-
-    /**
-     * RollBack a database transaction.
-     */
-    public function rollbackTransaction()
-    {
-        $this->database->rollbackTransaction();
-    }
+    public function findAppServer($id);
 }

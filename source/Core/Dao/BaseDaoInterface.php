@@ -65,5 +65,4 @@ interface BaseDaoInterface
      * RollBack a database transaction.
      */
     public function rollbackTransaction();
-
 }

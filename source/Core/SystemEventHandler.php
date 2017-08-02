@@ -95,7 +95,7 @@ class SystemEventHandler
      *
      * @return \OxidEsales\Eshop\Core\Service\ApplicationServerExporterInterface
      */
-    public function getApplicationServerExporter()
+    protected function getApplicationServerExporter()
     {
         $appServerService = $this->getAppServerService();
         return oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerExporter::class, $appServerService);

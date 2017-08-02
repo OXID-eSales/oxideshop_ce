@@ -57,8 +57,6 @@ interface ApplicationServerServiceInterface
      * Saves application server data.
      *
      * @param \OxidEsales\Eshop\Core\DataObject\ApplicationServer $appServer
-     *
-     * @return int
      */
     public function saveAppServer($appServer);
 

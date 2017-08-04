@@ -1468,9 +1468,9 @@ class LangTest extends \OxidTestCase
         $oStdLang = new stdClass();
         $oStdLang->active = 0;
 
-        $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array('getTplLanguage', 'getAdminTplLanguageArray'));
-        $oLang->expects($this->once())->method('getTplLanguage')->will($this->returnValue(555));
-        $oLang->expects($this->once())->method('getAdminTplLanguageArray')->will($this->returnValue(array(444 => $oStdLang, 555 => $oStdLang)));
+        $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array('isAdmin', 'getTplLanguage'));
+        $oLang->expects($this->once())->method('isAdmin')->will($this->returnValue(false));
+        $oLang->expects($this->once())->method('getTplLanguage')->will($this->returnValue(444));
 
         $this->assertEquals(444, $oLang->getObjectTplLanguage());
     }

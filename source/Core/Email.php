@@ -840,8 +840,6 @@ class Email extends \PHPMailer
      */
     public function sendNewsletterDbOptInMail($user, $subject = null)
     {
-        $lang = \OxidEsales\Eshop\Core\Registry::getLang();
-
         // add user defined stuff if there is any
         $user = $this->_addNewsletterDbOptInMail($user);
 

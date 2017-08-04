@@ -424,7 +424,6 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         $aFiles = $aFiles ? $aFiles : $_FILES;
         if (isset($aFiles['myfile']['name'])) {
             $oConfig = $this->getConfig();
-            $oStr = getStr();
 
             // A. protection for demoshops - strictly defining allowed file extensions
             $blDemo = (bool) $oConfig->isDemoShop();
@@ -435,7 +434,6 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
             $iNewFilesCounter = 0;
             $aSource = $aFiles['myfile']['tmp_name'];
             $aError = $aFiles['myfile']['error'];
-            $sErrorsDescription = '';
 
             $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             // process all files

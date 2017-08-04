@@ -106,7 +106,6 @@ class Output extends \OxidEsales\Eshop\Core\Base
         $sVersion = $this->getConfig()->getVersion();
         $sEdition = $this->getConfig()->getFullEdition();
         $sCurYear = date("Y");
-        $sShopMode = "";
 
         // SHOW ONLY MAJOR VERSION NUMBER
         $aVersion = explode('.', $sVersion);

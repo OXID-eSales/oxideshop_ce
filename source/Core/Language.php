@@ -880,7 +880,6 @@ class Language extends \OxidEsales\Eshop\Core\Base
     protected function _appendModuleLangFiles($aLangFiles, $aModulePaths, $sLang, $blForAdmin = false)
     {
         if (is_array($aModulePaths)) {
-            $oConfig = $this->getConfig();
             foreach ($aModulePaths as $sPath) {
                 $moduleTranslationPathFinder = $this->getModuleTranslationPathFinder();
                 $sFullPath = $moduleTranslationPathFinder->findTranslationPath($sLang, $blForAdmin, $sPath);
@@ -927,7 +926,6 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getLanguageFileData($blAdmin = false, $iLang = 0, $aLangFiles = null)
     {
-        $myConfig = $this->getConfig();
         $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
 
         $sCacheName = $this->_getLangFileCacheName($blAdmin, $iLang, $aLangFiles);

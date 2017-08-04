@@ -89,7 +89,6 @@ class NewsList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getCount()
     {
-        $myConfig = $this->getConfig();
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sNewsViewName = getViewName('oxnews');

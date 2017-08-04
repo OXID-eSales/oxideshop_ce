@@ -522,10 +522,6 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function _ppAddDepthInformation()
     {
-        $aStack = array();
-        $iDepth = 0;
-        $sPrevParent = '';
-
         $aTree = array();
         foreach ($this->_aArray as $oCat) {
             $aTree[$oCat->getId()] = $oCat;

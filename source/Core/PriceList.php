@@ -207,7 +207,6 @@ class PriceList
 
         $dNetoTotal = 0;
         $dVatTotal = 0;
-        $dVat = 0;
 
         foreach ($this->_aList as $oPrice) {
             $dNetoTotal += $oPrice->getNettoPrice();

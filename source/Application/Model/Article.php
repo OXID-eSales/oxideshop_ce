@@ -4555,7 +4555,6 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     protected function _deletePics()
     {
-        $myUtilsPic = \OxidEsales\Eshop\Core\Registry::getUtilsPic();
         $myConfig = $this->getConfig();
         $oPictureHandler = \OxidEsales\Eshop\Core\Registry::getPictureHandler();
 
@@ -4564,8 +4563,6 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         //deleting custom thumbnail
         $oPictureHandler->deleteThumbnail($this);
-
-        $sAbsDynImageDir = $myConfig->getPictureDir(false);
 
         // deleting master image and all generated images
         $iPicCount = $myConfig->getConfigParam('iPicCount');

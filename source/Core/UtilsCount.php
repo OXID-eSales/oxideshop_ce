@@ -279,7 +279,6 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
 
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $sArtTable = $oArticle->getViewName();
-        $sManTable = getViewName('oxmanufacturers');
 
         // select each Manufacturer articles count
         //#3485

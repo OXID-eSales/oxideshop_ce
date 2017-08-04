@@ -1011,7 +1011,6 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $myConfig = $this->getConfig();
-        $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
         $sArticleTable = $this->getBaseObject()->getViewName();
 
         $aSearch = explode(' ', $sSearchString);
@@ -1027,7 +1026,6 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         }
 
         $aSearchCols = $myConfig->getConfigParam('aSearchCols');
-        $oBaseObject = $this->getBaseObject();
         $myUtilsString = \OxidEsales\Eshop\Core\Registry::getUtilsString();
         foreach ($aSearch as $sSearchString) {
             if (!strlen($sSearchString)) {
@@ -1076,8 +1074,6 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $oBaseObject = $this->getBaseObject();
         $sArticleTable = $oBaseObject->getViewName();
         $sSelectFields = $oBaseObject->getSelectFields();
-
-        $sSubSelect = "";
 
         $sSelect = "select {$sSelectFields} from {$sArticleTable} where oxvarminprice >= 0 ";
         $sSelect .= $dPriceTo ? "and oxvarminprice <= " . (double) $dPriceTo . " " : " ";

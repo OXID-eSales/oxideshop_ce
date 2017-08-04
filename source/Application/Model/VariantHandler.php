@@ -476,9 +476,6 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      */
     public function buildVariantSelections($sVarName, $oVariantList, $aFilter, $sActVariantId, $iLimit = 0)
     {
-        $aReturn = false;
-
-
         // assigning variants
         $aVarSelects = $this->_getSelections($sVarName);
 
@@ -498,7 +495,6 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
             if ($sActVariantId) {
                 $oCurrentVariant = $oVariantList[$sActVariantId];
             }
-
 
             return array(
                 'selections'     => $aVariantSelections,

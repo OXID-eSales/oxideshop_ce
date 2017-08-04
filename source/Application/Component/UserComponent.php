@@ -278,7 +278,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     public function login_noredirect()
     {
         $blAgb = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('ord_agb');
-        $oConfig = $this->getConfig();
+
         if ($this->getParent()->isEnabledPrivateSales() && $blAgb !== null && ($oUser = $this->getUser())) {
             if ($blAgb) {
                 $oUser->acceptTerms();

@@ -114,7 +114,6 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
             $iCur = (int) $oConfig->getShopCurrency();
             if ($iCur) {
                 $sUrl .= "{$sSep}cur=" . $iCur;
-                $sSep = '&amp;';
             }
         }
 

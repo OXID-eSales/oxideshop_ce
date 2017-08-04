@@ -800,8 +800,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _setWrapping(\OxidEsales\Eshop\Application\Model\Basket $oBasket)
     {
-        $myConfig = $this->getConfig();
-
         // wrapping price
         if (($oWrappingCost = $oBasket->getCosts('oxwrapping'))) {
             $this->oxorder__oxwrapcost = new \OxidEsales\Eshop\Core\Field($oWrappingCost->getBruttoPrice(), \OxidEsales\Eshop\Core\Field::T_RAW);

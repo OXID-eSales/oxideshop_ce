@@ -752,10 +752,8 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
         $oCategoryInDefaultLanguage = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         if ($this->isPriceCategory()) {
             // get it in base language
-            $oCategoryInDefaultLanguage = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             $oCategoryInDefaultLanguage->loadInLang(0, $this->getId());
         } else {
-            $oCategoryInDefaultLanguage = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             $oCategoryInDefaultLanguage->loadInLang(0, $oActCategory->getId());
         }
 

@@ -887,7 +887,6 @@ class Utils extends \OxidEsales\Eshop\Core\Base
 
         if ($sUserID) {
             // escaping
-            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sRights = $this->fetchRightsForUser($sUserID);
 
             if ($sRights != "user") {

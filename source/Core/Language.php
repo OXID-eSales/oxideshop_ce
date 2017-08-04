@@ -235,11 +235,14 @@ class Language extends \OxidEsales\Eshop\Core\Base
     {
         if ($this->_iObjectTplLanguageId === null) {
             $this->_iObjectTplLanguageId = $this->getTplLanguage();
-            $aLanguages = $this->getAdminTplLanguageArray();
-            if (!isset($aLanguages[$this->_iObjectTplLanguageId]) ||
-                $aLanguages[$this->_iObjectTplLanguageId]->active == 0
-            ) {
-                $this->_iObjectTplLanguageId = key($aLanguages);
+
+            if ($this->isAdmin()) {
+                $aLanguages = $this->getAdminTplLanguageArray();
+                if (!isset($aLanguages[$this->_iObjectTplLanguageId]) ||
+                    $aLanguages[$this->_iObjectTplLanguageId]->active == 0
+                ) {
+                    $this->_iObjectTplLanguageId = key($aLanguages);
+                }
             }
         }
 

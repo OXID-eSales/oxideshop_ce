@@ -47,7 +47,7 @@ interface IUrl
      *
      * @return string
      */
-    public function getStdLink($iLang = null, $aParams = array());
+    public function getStdLink($iLang = null, $aParams = []);
 
     /**
      * Returns base dynamic url: e.g. shopurl/index.php?cl=details&anid=artid

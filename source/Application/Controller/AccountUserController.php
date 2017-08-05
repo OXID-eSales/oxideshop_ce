@@ -79,8 +79,8 @@ class AccountUserController extends \OxidEsales\Eshop\Application\Controller\Acc
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
 
         $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $sSelfLink = $this->getViewConfig()->getSelfLink();

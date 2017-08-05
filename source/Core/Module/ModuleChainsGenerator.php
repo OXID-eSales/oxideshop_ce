@@ -78,7 +78,7 @@ class ModuleChainsGenerator
             $classAlias = $className;
         }
         $fullChain = $this->getFullChain($className, $classAlias);
-        $activeChain = array();
+        $activeChain = [];
         if (!empty($fullChain)) {
             $activeChain = $this->filterInactiveExtensions($fullChain);
         }
@@ -96,7 +96,7 @@ class ModuleChainsGenerator
      */
     public function getFullChain($className, $classAlias)
     {
-        $fullChain = array();
+        $fullChain = [];
         $lowerCaseClassAlias = strtolower($classAlias);
         $lowerCaseClassName = strtolower($className);
 
@@ -175,7 +175,7 @@ class ModuleChainsGenerator
         $variablesLocator = $this->getModuleVariablesLocator();
         $registeredExtensions = $variablesLocator->getModuleVariable('aModuleExtensions');
 
-        $toBeRemovedFromChain = array();
+        $toBeRemovedFromChain = [];
         if (isset($registeredExtensions[$moduleId])) {
             $toBeRemovedFromChain = array_combine($registeredExtensions[$moduleId], $registeredExtensions[$moduleId]);
         }
@@ -199,7 +199,7 @@ class ModuleChainsGenerator
     {
         $variablesLocator = $this->getModuleVariablesLocator();
         $disabledModules = $variablesLocator->getModuleVariable('aDisabledModules');
-        $disabledModules = is_array($disabledModules) ? $disabledModules : array();
+        $disabledModules = is_array($disabledModules) ? $disabledModules : [];
 
         return $disabledModules;
     }

@@ -286,28 +286,28 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @var array
      */
-    protected $_aStdUrls = array();
+    protected $_aStdUrls = [];
 
     /**
      * Seo article urls for languages
      *
      * @var array
      */
-    protected $_aSeoUrls = array();
+    protected $_aSeoUrls = [];
 
     /**
      * Additional parameters to seo urls
      *
      * @var array
      */
-    protected $_aSeoAddParams = array();
+    protected $_aSeoAddParams = [];
 
     /**
      * Additional parameters to std urls
      *
      * @var array
      */
-    protected $_aStdAddParams = array();
+    protected $_aStdAddParams = [];
 
     /**
      * Image url
@@ -342,7 +342,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @var array
      */
-    protected $_aSortingFieldsOnLoad = array();
+    protected $_aSortingFieldsOnLoad = [];
 
     /**
      * Stock status
@@ -377,46 +377,46 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @var array
      */
-    protected static $_aArticleManufacturers = array();
+    protected static $_aArticleManufacturers = [];
 
     /**
      * Articles vendor ids cache
      *
      * @var array
      */
-    protected static $_aArticleVendors = array();
+    protected static $_aArticleVendors = [];
 
     /**
      * Articles category ids cache
      *
      * @var array
      */
-    protected static $_aArticleCats = array();
+    protected static $_aArticleCats = [];
 
     /**
      * Do not copy certain parent fields to variant
      *
      * @var array
      */
-    protected $_aNonCopyParentFields = array(
+    protected $_aNonCopyParentFields = [
         'oxarticles__oxinsert',
         'oxarticles__oxtimestamp',
         'oxarticles__oxnid',
         'oxarticles__oxid',
         'oxarticles__oxparentid'
-    );
+    ];
 
     /**
      * Override certain parent fields to variant
      *
      * @var array
      */
-    protected $_aCopyParentField = array(
+    protected $_aCopyParentField = [
         'oxarticles__oxnonmaterial',
         'oxarticles__oxfreeshipping',
         'oxarticles__oxisdownloadable',
         'oxarticles__oxshowcustomagreement'
-    );
+    ];
 
     /**
      * Multidimensional variant tree structure
@@ -439,14 +439,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @var array
      */
-    protected $_aVariantSelections = array();
+    protected $_aVariantSelections = [];
 
     /**
      * Array of product selections
      *
      * @var array
      */
-    protected static $_aSelections = array();
+    protected static $_aSelections = [];
 
     /**
      * Category instance cache
@@ -1103,7 +1103,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         parent::assign($aRecord);
 
         //clear seo urls
-        $this->_aSeoUrls = array();
+        $this->_aSeoUrls = [];
 
         $this->oxarticles__oxnid = $this->oxarticles__oxid;
 
@@ -1187,7 +1187,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function hasSortingFieldsChanged()
     {
         $aSortingFields = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aSortCols');
-        $aSortingFields = !empty($aSortingFields) ? (array) $aSortingFields : array();
+        $aSortingFields = !empty($aSortingFields) ? (array) $aSortingFields : [];
         $blChanged = false;
         foreach ($aSortingFields as $sField) {
             $sParameterName = 'oxarticles__' . $sField;
@@ -1282,7 +1282,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getReviews()
     {
-        $aIds = array($this->getId());
+        $aIds = [$this->getId()];
 
         if ($this->oxarticles__oxparentid->value) {
             $aIds[] = $this->oxarticles__oxparentid->value;
@@ -1426,11 +1426,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         $myConfig = $this->getConfig();
         if (!$myConfig->getConfigParam('bl_perfLoadPrice') || !$this->_blLoadPrice || !$this->_blCalcPrice || !$this->hasAmountPrice()) {
-            return array();
+            return [];
         }
 
         if ($this->_oAmountPriceInfo === null) {
-            $this->_oAmountPriceInfo = array();
+            $this->_oAmountPriceInfo = [];
             if (count(($aAmPriceList = $this->_getAmountPriceList()->getArray()))) {
                 $this->_oAmountPriceInfo = $this->_fillAmountPriceList($aAmPriceList);
             }
@@ -1479,7 +1479,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $dVat = $this->getArticleVat();
 
             $iCnt = 0;
-            self::$_aSelList[$sKey] = array();
+            self::$_aSelList[$sKey] = [];
             foreach ($oLists as $oSelectlist) {
                 self::$_aSelList[$sKey][$iCnt] = $oSelectlist->getFieldList($dVat);
                 self::$_aSelList[$sKey][$iCnt]['name'] = $oSelectlist->oxselectlist__oxtitle->value;
@@ -2299,8 +2299,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         //initialize
         $blMorePic = false;
-        $aArtPics = array();
-        $aArtIcons = array();
+        $aArtPics = [];
+        $aArtIcons = [];
         $iActPicId = 1;
         $sActPic = $this->getPictureUrl($iActPicId);
 
@@ -2339,7 +2339,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         }
 
         $blZoomPic = false;
-        $aZoomPics = array();
+        $aZoomPics = [];
         $iZoomPicCount = $myConfig->getConfigParam('iPicCount');
 
         for ($j = 1, $c = 1; $j <= $iZoomPicCount; $j++) {
@@ -2357,7 +2357,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             }
         }
 
-        $aPicGallery = array(
+        $aPicGallery = [
             'ActPicID' => $iActPicId,
             'ActPic'   => $sActPic,
             'MorePics' => $blMorePic,
@@ -2365,7 +2365,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             'Icons'    => $aArtIcons,
             'ZoomPic'  => $blZoomPic,
             'ZoomPics' => $aZoomPics
-        );
+        ];
 
         return $aPicGallery;
     }
@@ -2751,7 +2751,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return string
      */
-    public function getStdLink($iLang = null, $aParams = array())
+    public function getStdLink($iLang = null, $aParams = [])
     {
         if ($iLang === null) {
             $iLang = $this->getLanguage();
@@ -3457,7 +3457,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     protected function _loadVariantList($loadSimpleVariants, $blRemoveNotOrderables = true, $forceCoreTableUsage = null)
     {
-        $variants = array();
+        $variants = [];
         if (($articleId = $this->getId())) {
             //do not load me as a parent later
             self::$_aLoadedParents[$articleId . "_" . $this->getLanguage()] = $this;
@@ -3541,7 +3541,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $aResult = $oDb->getAll($query);
-        $aReturn = array();
+        $aReturn = [];
 
         foreach ($aResult as $aValue) {
             $aValue = array_change_key_case($aValue, CASE_LOWER);
@@ -3724,7 +3724,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     protected function _skipSaveFields()
     {
-        $this->_aSkipSaveFields = array();
+        $this->_aSkipSaveFields = [];
 
         $this->_aSkipSaveFields[] = 'oxtimestamp';
         // $this->_aSkipSaveFields[] = 'oxlongdesc';
@@ -3882,7 +3882,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getVariantIds($blActiveVariants = true)
     {
-        $aSelect = array();
+        $aSelect = [];
         $sId = $this->getId();
         if ($sId) {
             $sActiveSqlSnippet = "";
@@ -3993,7 +3993,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         // #1137V iAttributesPercent = 100 doesn't work
         $iHitMin = ceil($iCnt * $iAttrPercent);
 
-        $aExcludeIds = array();
+        $aExcludeIds = [];
         $aExcludeIds[] = $this->getId();
         if ($this->getParentId()) {
             $aExcludeIds[] = $this->getParentId();
@@ -4207,7 +4207,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         }
 
         // certain fields with zero value treat as empty
-        $aZeroValueFields = array('oxarticles__oxprice', 'oxarticles__oxvat', 'oxarticles__oxunitquantity');
+        $aZeroValueFields = ['oxarticles__oxprice', 'oxarticles__oxvat', 'oxarticles__oxunitquantity'];
 
         if (!$mValue && in_array($sFieldName, $aZeroValueFields)) {
             return true;
@@ -4538,7 +4538,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             //collect variants to remove recursively
             $query= 'select oxid from ' . $this->getViewName() . ' where oxparentid = ?';
-            $rs = $database->select($query, array($sOXID));
+            $rs = $database->select($query, [$sOXID]);
             $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {
@@ -4607,16 +4607,16 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         if ($parentId) {
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $query = 'SELECT oxstock, oxvendorid, oxmanufacturerid FROM oxarticles WHERE oxid = ?';
-            $rs = $database->select($query, array($parentId));
+            $rs = $database->select($query, [$parentId]);
             $oldStock = $rs->fields[0];
             $vendorId = $rs->fields[1];
             $manufacturerId = $rs->fields[2];
 
             $query = 'SELECT SUM(oxstock) FROM ' . $this->getViewName(true) . ' WHERE oxparentid = ? AND ' . $this->getSqlActiveSnippet(true) . ' AND oxstock > 0 ';
-            $stock = (float) $database->getOne($query, array($parentId));
+            $stock = (float) $database->getOne($query, [$parentId]);
 
             $query = 'UPDATE oxarticles SET oxvarstock = ? WHERE oxid = ?';
-            $database->execute($query, array($stock, $parentId));
+            $database->execute($query, [$stock, $parentId]);
 
             //now lets update category counts
             //first detect stock status change for this article (to or from 0)
@@ -4665,10 +4665,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
             $query = "SELECT COUNT(*) AS varcount FROM oxarticles WHERE oxparentid = ?";
-            $varCount = (int) $database->getOne($query, array($parentId));
+            $varCount = (int) $database->getOne($query, [$parentId]);
 
             $query = "UPDATE oxarticles SET oxvarcount = ? WHERE oxid = ?";
-            $database->execute($query, array($varCount, $parentId));
+            $database->execute($query, [$varCount, $parentId]);
         }
     }
 
@@ -4978,7 +4978,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     protected function _loadFromDb($articleId)
     {
-        $sSelect = $this->buildSelectString(array($this->getViewName() . ".oxid" => $articleId));
+        $sSelect = $this->buildSelectString([$this->getViewName() . ".oxid" => $articleId]);
 
         return \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getRow($sSelect);
     }
@@ -5044,7 +5044,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     protected function _saveSortingFieldValuesOnLoad()
     {
         $aSortingFields = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aSortCols');
-        $aSortingFields = !empty($aSortingFields) ? (array) $aSortingFields : array();
+        $aSortingFields = !empty($aSortingFields) ? (array) $aSortingFields : [];
 
         foreach ($aSortingFields as $sField) {
             $sFullField = $this->_getFieldLongName($sField);

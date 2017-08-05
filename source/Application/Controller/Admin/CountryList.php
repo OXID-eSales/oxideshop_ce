@@ -79,7 +79,7 @@ class CountryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
     {
         $aListSorting = parent::getListSorting();
 
-        if (array_keys($aListSorting['oxcountry']) === array('oxactive')) {
+        if (array_keys($aListSorting['oxcountry']) === ['oxactive']) {
             $aListSorting['oxcountry'][$this->_getSecondSortFieldName()] = 'asc';
         }
 

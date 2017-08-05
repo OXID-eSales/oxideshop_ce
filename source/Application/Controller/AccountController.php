@@ -320,8 +320,8 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function getBreadCrumb()
     {
-        $paths = array();
-        $pathData = array();
+        $paths = [];
+        $pathData = [];
         $language = \OxidEsales\Eshop\Core\Registry::getLang();
         $baseLanguageId = $language->getBaseLanguage();
         if ($user = $this->getUser()) {

@@ -264,9 +264,9 @@ class FileChecker
     protected function _isWebServiceOnline()
     {
         $oXML = null;
-        $aParams = array(
+        $aParams = [
             'job' => 'ping',
-        );
+        ];
 
         $this->_oCurlHandler->setUrl($this->_sWebServiceUrl);
         $this->_oCurlHandler->setMethod("GET");
@@ -302,12 +302,12 @@ class FileChecker
      */
     protected function _isShopVersionIsKnown()
     {
-        $aParams = array(
+        $aParams = [
             'job' => 'existsversion',
             'ver' => $this->getVersion(),
             'rev' => $this->getRevision(),
             'edi' => $this->getEdition(),
-        );
+        ];
 
         $sURL = $this->_sWebServiceUrl . "?" . http_build_query($aParams);
 
@@ -343,7 +343,7 @@ class FileChecker
      */
     public function checkFile($sFile)
     {
-        $aResult = array();
+        $aResult = [];
 
         if ($this->_oCurlHandler == null) {
             return $aResult;
@@ -364,7 +364,7 @@ class FileChecker
         if (is_object($oXML)) {
             if ($oXML->res == 'OK') {
                 // If recognized, still can be source or snapshot
-                $aMatch = array();
+                $aMatch = [];
 
                 if (preg_match('/(SOURCE|SNAPSHOT)/', $oXML->pkg, $aMatch)) {
                     $blOk = false;
@@ -393,13 +393,13 @@ class FileChecker
         }
 
         if ($sMessage) {
-            $aResult = array(
+            $aResult = [
                 "result"  => strval($oXML->res),
                 "ok"      => $blOk,
                 "file"    => $sFile,
                 "color"   => $sColor,
                 "message" => $sMessage
-            );
+            ];
         }
 
         return $aResult;
@@ -415,14 +415,14 @@ class FileChecker
      */
     protected function _getFileVersion($sMD5, $sFile)
     {
-        $aParams = array(
+        $aParams = [
             'job' => 'md5check',
             'ver' => $this->getVersion(),
             'rev' => $this->getRevision(),
             'edi' => $this->getEdition(),
             'fil' => $sFile,
             'md5' => $sMD5,
-        );
+        ];
 
         $this->_oCurlHandler->setUrl($this->_sWebServiceUrl);
         $this->_oCurlHandler->setMethod("GET");

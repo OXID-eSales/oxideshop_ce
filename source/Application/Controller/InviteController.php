@@ -50,7 +50,7 @@ class InviteController extends \OxidEsales\Eshop\Application\Controller\Frontend
      *
      * @var array
      */
-    protected $_aReqFields = array('rec_email', 'send_name', 'send_email', 'send_message', 'send_subject');
+    protected $_aReqFields = ['rec_email', 'send_name', 'send_email', 'send_message', 'send_subject'];
 
     /**
      * CrossSelling article list
@@ -234,8 +234,8 @@ class InviteController extends \OxidEsales\Eshop\Application\Controller\Frontend
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
 
         $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('INVITE_YOUR_FRIENDS', $iLang, false);

@@ -36,13 +36,13 @@ class ShopDefaultCategoryAjax extends \OxidEsales\Eshop\Application\Controller\A
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
-        array('oxtitle', 'oxcategories', 1, 1, 0),
-        array('oxdesc', 'oxcategories', 1, 1, 0),
-        array('oxid', 'oxcategories', 0, 0, 0),
-        array('oxid', 'oxcategories', 0, 0, 1)
-    )
-    );
+    protected $_aColumns = ['container1' => [ // field , table,         visible, multilanguage, ident
+        ['oxtitle', 'oxcategories', 1, 1, 0],
+        ['oxdesc', 'oxcategories', 1, 1, 0],
+        ['oxid', 'oxcategories', 0, 0, 0],
+        ['oxid', 'oxcategories', 0, 0, 1]
+    ]
+    ];
 
     /**
      * Returns SQL query for data to fetc

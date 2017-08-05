@@ -90,7 +90,7 @@ class Database extends Core
         try {
             $pdo = $this->getConnection();
             list ($sStatement) = explode(" ", ltrim($sQ));
-            if (in_array(strtoupper($sStatement), array('SELECT', 'SHOW'))) {
+            if (in_array(strtoupper($sStatement), ['SELECT', 'SHOW'])) {
                 $oStatement = $pdo->query($sQ);
             } else {
                 return $pdo->exec($sQ);
@@ -218,7 +218,7 @@ class Database extends Core
                     $dsn,
                     $aParams['dbUser'],
                     $aParams['dbPwd'],
-                    array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8')
+                    [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']
                 );
                 $this->_oConn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $this->_oConn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
@@ -334,43 +334,43 @@ class Database extends Core
         $oInsert = $oPdo->prepare("insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
                                  values(:oxid, :shopId, :name, :type, ENCODE( :value, '{$oConfk->sConfigKey}'))");
         $oInsert->execute(
-            array(
+            [
                 'oxid' => $oUtils->generateUid(),
                 'shopId' => $sBaseShopId,
                 'name' => 'blLoadDynContents',
                 'type' => 'bool',
                 'value' => $blUseDynPages
-            )
+            ]
         );
 
         $oInsert->execute(
-            array(
+            [
                 'oxid' => $oUtils->generateUid(),
                 'shopId' => $sBaseShopId,
                 'name' => 'sShopCountry',
                 'type' => 'str',
                 'value' => $sLocationLang
-            )
+            ]
         );
 
         $oInsert->execute(
-            array(
+            [
                 'oxid' => $oUtils->generateUid(),
                 'shopId' => $sBaseShopId,
                 'name' => 'blCheckForUpdates',
                 'type' => 'bool',
                 'value' => $blCheckForUpdates
-            )
+            ]
         );
 
         $oInsert->execute(
-            array(
+            [
                 'oxid' => $oUtils->generateUid(),
                 'shopId' => $sBaseShopId,
                 'name' => 'sDefaultLang',
                 'type' => 'str',
                 'value' => $sShopLang
-            )
+            ]
         );
 
         $this->addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk, $oSession);
@@ -391,13 +391,13 @@ class Database extends Core
 
             $oPdo->exec("delete from oxconfig where oxvarname = 'aLanguageParams'");
             $oInsert->execute(
-                array(
+                [
                     'oxid' => $oUtils->generateUid(),
                     'shopId' => $sBaseShopId,
                     'name' => 'aLanguageParams',
                     'type' => 'aarr',
                     'value' => $sValue
-                )
+                ]
             );
         }
     }
@@ -412,7 +412,7 @@ class Database extends Core
     public function parseQuery($sSQL)
     {
         // parses query into single pieces
-        $aRet = array();
+        $aRet = [];
         $blComment = false;
         $blQuote = false;
         $sThisSQL = "";

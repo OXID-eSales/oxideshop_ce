@@ -717,7 +717,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
             $this->_aSimilarRecommListIds = false;
 
             if ($article = $this->getProduct()) {
-                $this->_aSimilarRecommListIds = array($article->getId());
+                $this->_aSimilarRecommListIds = [$article->getId()];
             }
         }
 
@@ -1029,7 +1029,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         $article = $this->getProduct();
         $count = $article->oxarticles__oxratingcnt->value;
         if (isset($minRating) && isset($maxRating) && $maxRating != '' && $minRating != '' && $count > 0) {
-            $normalizedRating = array();
+            $normalizedRating = [];
             $value = ((4 * ($article->oxarticles__oxrating->value - $minRating) / ($maxRating - $minRating))) + 1;
             $normalizedRating["count"] = $count;
             $normalizedRating["value"] = round($value, 2);
@@ -1050,7 +1050,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     public function getRDFaValidityPeriod($configVariableName)
     {
         if ($configVariableName) {
-            $validity = array();
+            $validity = [];
             $days = $this->getConfig()->getConfigParam($configVariableName);
             $from = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
 
@@ -1236,7 +1236,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         if ($this->getListType() != 'search' && $activeCategory && $activeCategory instanceof \OxidEsales\Eshop\Application\Model\Category) {
             if ($categorySorting = $activeCategory->getDefaultSorting()) {
                 $sortingDirection = ($activeCategory->getDefaultSortingMode()) ? "desc" : "asc";
-                $sorting = array('sortby' => $categorySorting, 'sortdir' => $sortingDirection);
+                $sorting = ['sortby' => $categorySorting, 'sortdir' => $sortingDirection];
             }
         }
 
@@ -1265,8 +1265,8 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      */
     protected function _getVendorBreadCrumb()
     {
-        $paths = array();
-        $vendorPath = array();
+        $paths = [];
+        $vendorPath = [];
 
         $vendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
         $vendor->load('root');
@@ -1294,8 +1294,8 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      */
     protected function _getRecommendationListBredCrumb()
     {
-        $paths = array();
-        $recommListPath = array();
+        $paths = [];
+        $recommListPath = [];
         $baseLanguageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $recommListPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('LISTMANIA', $baseLanguageId, false);
         $paths[] = $recommListPath;
@@ -1310,8 +1310,8 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      */
     protected function _getSearchBreadCrumb()
     {
-        $paths = array();
-        $searchPath = array();
+        $paths = [];
+        $searchPath = [];
 
         $baseLanguageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $translatedString = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('SEARCH_RESULT', $baseLanguageId, false);
@@ -1334,14 +1334,14 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      */
     protected function _getCategoryBreadCrumb()
     {
-        $paths = array();
+        $paths = [];
 
         $categoryTree = $this->getCatTreePath();
 
         if ($categoryTree) {
             foreach ($categoryTree as $category) {
                 /** @var \OxidEsales\Eshop\Application\Model\Category $category */
-                $categoryPath = array();
+                $categoryPath = [];
 
                 $categoryPath['link'] = $category->getLink();
                 $categoryPath['title'] = $category->oxcategories__oxtitle->value;

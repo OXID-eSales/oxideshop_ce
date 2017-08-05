@@ -54,7 +54,7 @@ class PriceAlarmMail extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             WHERE oxsended = '000-00-00 00:00:00' AND oxshopid = '$shopId' ";
         $result = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->select($query);
         if ($result != false && $result->count() > 0) {
-            $simpleCache = array();
+            $simpleCache = [];
             while (!$result->EOF) {
                 $price = $result->fields[0];
                 $articleId = $result->fields[1];

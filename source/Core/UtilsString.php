@@ -90,7 +90,7 @@ class UtilsString
     {
         $oStr = getStr();
         if ($oStr->hasSpecialChars($sSearchStr)) {
-            return $oStr->recodeEntities($sSearchStr, true, array('&amp;'), array('&'));
+            return $oStr->recodeEntities($sSearchStr, true, ['&amp;'], ['&']);
         }
 
         return '';

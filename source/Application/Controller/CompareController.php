@@ -139,7 +139,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
             }
 
             if ($sPrevArticleId) {
-                $aNewItems = array();
+                $aNewItems = [];
                 foreach ($aItems as $sOxid => $sVal) {
                     if ($sOxid == $sPrevArticleId) {
                         $aNewItems[$sArticleId] = true;
@@ -176,7 +176,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
             }
 
             if ($sNextArticleId) {
-                $aNewItems = array();
+                $aNewItems = [];
                 foreach ($aItems as $sOxid => $sVal) {
                     if ($sOxid == $sArticleId) {
                         $aNewItems[$sNextArticleId] = true;
@@ -375,7 +375,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $aListKeys = $oList->arrayKeys();
         $aItemKeys = array_keys($aItems);
         $aKeys = array_intersect($aItemKeys, $aListKeys);
-        $aNewItems = array();
+        $aNewItems = [];
         $iActPage = $this->getActPage();
         for ($i = $this->_iArticlesPerPage * $iActPage; $i < $this->_iArticlesPerPage * $iActPage + $this->_iArticlesPerPage; $i++) {
             if (!isset($aKeys[$i])) {
@@ -398,7 +398,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
     protected function _changeArtListOrder($aItems, $oList)
     {
         // #777C changing order of list elements, according to $aItems
-        $oNewList = array();
+        $oNewList = [];
         $iCnt = 0;
         $iActPage = $this->getActPage();
         foreach ($aItems as $sOxid => $sVal) {
@@ -450,8 +450,8 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
 
         $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_ACCOUNT', \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage(), false);
         $aPath['link'] = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($this->getViewConfig()->getSelfLink() . 'cl=account');

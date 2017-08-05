@@ -34,21 +34,21 @@ class RequiredFieldsValidator
      *
      * @var array
      */
-    private $_aRequiredFields = array();
+    private $_aRequiredFields = [];
 
     /**
      * Invalid fields array.
      *
      * @var array
      */
-    private $_aInvalidFields = array();
+    private $_aInvalidFields = [];
 
     /**
      * Required Field validator.
      *
      * @var \OxidEsales\Eshop\Application\Model\RequiredFieldValidator
      */
-    private $_oFieldValidator = array();
+    private $_oFieldValidator = [];
 
     /**
      * Sets dependencies.
@@ -126,7 +126,7 @@ class RequiredFieldsValidator
         $aRequiredFields = $this->getRequiredFields();
         $oFieldValidator = $this->getFieldValidator();
 
-        $aInvalidFields = array();
+        $aInvalidFields = [];
         foreach ($aRequiredFields as $sFieldName) {
             if (!$oFieldValidator->validateFieldValue($oObject->getFieldData($sFieldName))) {
                 $aInvalidFields[] = $sFieldName;

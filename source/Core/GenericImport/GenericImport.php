@@ -34,7 +34,7 @@ class GenericImport
     const ERROR_NO_INIT = 'Init not executed, Access denied!';
 
     /** @var array Import objects types. */
-    protected $objects = array(
+    protected $objects = [
         'A' => 'Article',
         'K' => 'Category',
         'H' => 'Vendor',
@@ -48,13 +48,13 @@ class GenericImport
         'R' => 'OrderArticle',
         'N' => 'Country',
         'Y' => 'ArticleExtends',
-    );
+    ];
 
     /** @var string Imported data array. */
     protected $importType = null;
 
     /** @var array Imported id array */
-    protected $importedIds = array();
+    protected $importedIds = [];
 
     /** @var string Return message after import. */
     protected $returnMessage;
@@ -78,13 +78,13 @@ class GenericImport
     protected $userId = null;
 
     /** @var array */
-    protected $statistics = array();
+    protected $statistics = [];
 
     /** @var bool Whether import was retried. */
     protected $retried = false;
 
     /** @var array CSV file fields array. */
-    protected $csvFileFieldsOrder = array();
+    protected $csvFileFieldsOrder = [];
 
     /** @var int Maximum length of imported line. */
     protected $maxLineLength = 8192;
@@ -185,7 +185,7 @@ class GenericImport
         $file = @fopen($this->importFilePath, 'r');
 
         if (isset($file) && $file) {
-            $data = array();
+            $data = [];
             while (($row = fgetcsv($file, $this->maxLineLength, $this->getCsvFieldsTerminator(), $this->getCsvFieldsEncolser())) !== false) {
                 $data[] = $this->csvTextConvert($row, false);
             }
@@ -226,7 +226,7 @@ class GenericImport
                     $errorMessage = $e->getMessage();
                 }
 
-                $this->statistics[$key] = array('r' => $success, 'm' => $errorMessage);
+                $this->statistics[$key] = ['r' => $success, 'm' => $errorMessage];
             }
         }
 
@@ -260,7 +260,7 @@ class GenericImport
      */
     public function getImportObjectsList()
     {
-        $importObjects = array();
+        $importObjects = [];
         foreach ($this->objects as $sKey => $importType) {
             $type = $this->createImportObject($importType);
             $importObjects[$sKey] = $type->getBaseTableName();
@@ -308,7 +308,7 @@ class GenericImport
     {
         $statistics = $this->getStatistics();
 
-        $dataForRetry = array();
+        $dataForRetry = [];
         foreach ($statistics as $key => $value) {
             if ($value['r'] == false) {
                 $this->returnMessage .= "File[" . $this->importFilePath . "] - dataset number: $key - Error: " . $value['m'] . " ---<br> " . PHP_EOL;
@@ -361,7 +361,7 @@ class GenericImport
      */
     protected function mapFields($data)
     {
-        $result = array();
+        $result = [];
         $index = 0;
 
         foreach ($this->csvFileFieldsOrder as $value) {
@@ -388,8 +388,8 @@ class GenericImport
      */
     protected function csvTextConvert($text, $mode)
     {
-        $search = array(chr(13), chr(10), '\'', '"');
-        $replace = array('&#13;', '&#10;', '&#39;', '&#34;');
+        $search = [chr(13), chr(10), '\'', '"'];
+        $replace = ['&#13;', '&#10;', '&#39;', '&#34;'];
 
         if ($mode) {
             $text = str_replace($search, $replace, $text);

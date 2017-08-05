@@ -405,7 +405,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
     public function getRecommLists()
     {
         if ($this->_oSearchRecommLists === null) {
-            $this->_oSearchRecommLists = array();
+            $this->_oSearchRecommLists = [];
             if (!$this->getActiveRecommList()) {
                 // list of found oxrecommlists
                 $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
@@ -563,8 +563,8 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
 
         $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('LISTMANIA', $iBaseLanguage, false);

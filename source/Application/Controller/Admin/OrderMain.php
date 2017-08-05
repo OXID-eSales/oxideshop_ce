@@ -39,10 +39,10 @@ class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
      *
      * @var array
      */
-    protected $fieldsTriggerNoOrderRecalculation = array('oxorder__oxordernr',
+    protected $fieldsTriggerNoOrderRecalculation = ['oxorder__oxordernr',
                                                          'oxorder__oxbillnr',
                                                          'oxorder__oxtrackcode',
-                                                         'oxorder__oxpaid');
+                                                         'oxorder__oxpaid'];
 
     /**
      * Executes parent method parent::render(), creates oxorder and

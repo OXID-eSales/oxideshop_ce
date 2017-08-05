@@ -175,8 +175,8 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
 
         $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('CONTACT', \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage(), false);
         $aPath['link'] = $this->getLink();

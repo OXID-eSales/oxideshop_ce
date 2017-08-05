@@ -32,7 +32,7 @@ use OxidEsales\Eshop\Core\Registry;
 class ModuleAutoload
 {
     /** @var array Classes, for which extension class chain was created. */
-    public $triedClasses = array();
+    public $triedClasses = [];
 
     /**
      * @var null|ModuleAutoload A singleton instance of this class or a sub class of this class

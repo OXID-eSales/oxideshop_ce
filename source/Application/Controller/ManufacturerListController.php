@@ -168,7 +168,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
         // counting pages
         $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrofCatArticles);
 
-        return array($oArtList, $this->_iAllArtCnt);
+        return [$oArtList, $this->_iAllArtCnt];
     }
 
     /**
@@ -249,7 +249,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
     public function getSubCatList()
     {
         if ($this->_oSubCatList === null) {
-            $this->_oSubCatList = $this->hasVisibleSubCats() ? $this->_oSubCatList : array();
+            $this->_oSubCatList = $this->hasVisibleSubCats() ? $this->_oSubCatList : [];
         }
 
         return $this->_oSubCatList;
@@ -263,7 +263,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
     public function getArticleList()
     {
         if ($this->_aArticleList === null) {
-            $this->_aArticleList = array();
+            $this->_aArticleList = [];
             if (($oManufacturerTree = $this->getManufacturerTree())) {
                 $oManufacturer = $this->getActManufacturer();
                 if ($oManufacturer && ($oManufacturer->getId() != 'root') && $oManufacturer->getIsVisible()) {
@@ -423,13 +423,13 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
+        $aPaths = [];
 
         $oCatTree = $this->getManufacturerTree();
 
         if ($oCatTree) {
             foreach ($oCatTree->getPath() as $oCat) {
-                $aCatPath = array();
+                $aCatPath = [];
                 $aCatPath['link'] = $oCat->getLink();
                 $aCatPath['title'] = $oCat->oxmanufacturers__oxtitle->value;
 

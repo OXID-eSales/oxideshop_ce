@@ -230,7 +230,7 @@ class Email extends \PHPMailer
      *
      * @var array
      */
-    protected $_aShops = array();
+    protected $_aShops = [];
 
     /**
      * Add inline images to mail
@@ -244,21 +244,21 @@ class Email extends \PHPMailer
      *
      * @var array
      */
-    protected $_aRecipients = array();
+    protected $_aRecipients = [];
 
     /**
      * Array of reply addresses used
      *
      * @var array
      */
-    protected $_aReplies = array();
+    protected $_aReplies = [];
 
     /**
      * Attachment info array
      *
      * @var array
      */
-    protected $_aAttachments = array();
+    protected $_aAttachments = [];
 
     /**
      * Smarty instance
@@ -272,7 +272,7 @@ class Email extends \PHPMailer
      *
      * @var array
      */
-    protected $_aViewData = array();
+    protected $_aViewData = [];
 
     /**
      * Shop object
@@ -331,7 +331,7 @@ class Email extends \PHPMailer
                 $method = str_replace("UNIT", "_", $method);
             }
             if (method_exists($this, $method)) {
-                return call_user_func_array(array(& $this, $method), $args);
+                return call_user_func_array([& $this, $method], $args);
             }
         }
 
@@ -448,7 +448,7 @@ class Email extends \PHPMailer
     {
         $protocol = '';
         $smtpHost = $url;
-        $match = array();
+        $match = [];
         if (getStr()->preg_match('@^([0-9a-z]+://)?(.*)$@i', $url, $match)) {
             if ($match[1]) {
                 if (($match[1] == 'ssl://') || ($match[1] == 'tls://')) {
@@ -506,7 +506,7 @@ class Email extends \PHPMailer
     {
         $isSmtp = false;
         if ($smtpHost) {
-            $match = array();
+            $match = [];
             $smtpPort = isset($this->SMTP_PORT)
                 ? $this->SMTP_PORT
                 : $this->smtpPort;
@@ -1218,12 +1218,12 @@ class Email extends \PHPMailer
                 $attashSucc = $this->addAttachment($fullPath, $attFile);
             } else {
                 $attashSucc = false;
-                $error[] = array(5, $attFile); //"Error: backup file $attFile not found";
+                $error[] = [5, $attFile]; //"Error: backup file $attFile not found";
             }
         }
 
         if (!$attashSucc) {
-            $error[] = array(4, ""); //"Error: backup files was not sent to email ...";
+            $error[] = [4, ""]; //"Error: backup files was not sent to email ...";
             $this->clearAttachments();
 
             return false;
@@ -1465,7 +1465,7 @@ class Email extends \PHPMailer
             $imageDirNoSSL = $fileUtils->normalizeDir($imageDirNoSSL);
 
             if (is_array($matches) && count($matches)) {
-                $imageCache = array();
+                $imageCache = [];
                 $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
                 $myUtilsObject = $this->getUtilsObjectInstance();
                 $imgGenerator = oxNew(\OxidEsales\Eshop\Core\DynamicImageGenerator::class);
@@ -1524,7 +1524,7 @@ class Email extends \PHPMailer
     public function setSubject($subject = null)
     {
         // A. HTML entities in subjects must be replaced
-        $subject = str_replace(array('&amp;', '&quot;', '&#039;', '&lt;', '&gt;'), array('&', '"', "'", '<', '>'), $subject);
+        $subject = str_replace(['&amp;', '&quot;', '&#039;', '&lt;', '&gt;'], ['&', '"', "'", '<', '>'], $subject);
 
         $this->set("Subject", $subject);
     }
@@ -1579,7 +1579,7 @@ class Email extends \PHPMailer
         }
 
         // A. alt body is used for plain text emails so we should eliminate HTML entities
-        $altBody = str_replace(array('&amp;', '&quot;', '&#039;', '&lt;', '&gt;'), array('&', '"', "'", '<', '>'), $altBody);
+        $altBody = str_replace(['&amp;', '&quot;', '&#039;', '&lt;', '&gt;'], ['&', '"', "'", '<', '>'], $altBody);
 
         $this->set("AltBody", $altBody);
     }
@@ -1610,7 +1610,7 @@ class Email extends \PHPMailer
             parent::AddAddress($address, $name);
 
             // copying values as original class does not allow to access recipients array
-            $this->_aRecipients[] = array($address, $name);
+            $this->_aRecipients[] = [$address, $name];
         } catch (Exception $exception) {
         }
     }
@@ -1632,7 +1632,7 @@ class Email extends \PHPMailer
      */
     public function clearAllRecipients()
     {
-        $this->_aRecipients = array();
+        $this->_aRecipients = [];
         parent::clearAllRecipients();
     }
 
@@ -1651,7 +1651,7 @@ class Email extends \PHPMailer
             $email = $this->_getShop()->oxshops__oxorderemail->value;
         }
 
-        $this->_aReplies[] = array($email, $name);
+        $this->_aReplies[] = [$email, $name];
 
         try {
             parent::addReplyTo($email, $name);
@@ -1674,7 +1674,7 @@ class Email extends \PHPMailer
      */
     public function clearReplyTos()
     {
-        $this->_aReplies = array();
+        $this->_aReplies = [];
         parent::clearReplyTos();
     }
 
@@ -1814,7 +1814,7 @@ class Email extends \PHPMailer
         $type = 'application/octet-stream',
         $disposition = 'attachment'
     ) {
-        $this->_aAttachments[] = array($path, $name, $encoding, $type, $disposition);
+        $this->_aAttachments[] = [$path, $name, $encoding, $type, $disposition];
         $result = false;
 
         try {
@@ -1843,7 +1843,7 @@ class Email extends \PHPMailer
         $type = 'application/octet-stream',
         $disposition = 'inline'
     ) {
-        $this->_aAttachments[] = array(
+        $this->_aAttachments[] = [
             $path,
             basename($path),
             $name,
@@ -1852,7 +1852,7 @@ class Email extends \PHPMailer
             false,
             $disposition,
             $cid
-        );
+        ];
 
         return parent::addEmbeddedImage($path, $cid, $name, $encoding, $type, $disposition);
     }
@@ -1872,7 +1872,7 @@ class Email extends \PHPMailer
      */
     public function clearAttachments()
     {
-        $this->_aAttachments = array();
+        $this->_aAttachments = [];
         parent::clearAttachments();
     }
 

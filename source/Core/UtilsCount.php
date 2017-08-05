@@ -233,7 +233,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function getAssoc($query, $parameters = array())
+    protected function getAssoc($query, $parameters = [])
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
@@ -242,10 +242,10 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
         $rows = $resultSet->fetchAll();
 
         if (!$rows) {
-            return array();
+            return [];
         }
 
-        $result = array();
+        $result = [];
 
         foreach ($rows as $row) {
             $firstColumn = array_keys($row)[0];

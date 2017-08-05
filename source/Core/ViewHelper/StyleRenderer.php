@@ -70,7 +70,7 @@ class StyleRenderer
      */
     protected function formStylesOutput($styles)
     {
-        $preparedStyles = array();
+        $preparedStyles = [];
         $template = '<link rel="stylesheet" type="text/css" href="%s" />';
         foreach ($styles as $style) {
             $preparedStyles[] = sprintf($template, $style);
@@ -86,7 +86,7 @@ class StyleRenderer
      */
     protected function formConditionalStylesOutput($styles)
     {
-        $preparedStyles = array();
+        $preparedStyles = [];
         $template = '<!--[if %s]><link rel="stylesheet" type="text/css" href="%s"><![endif]-->';
         foreach ($styles as $style => $condition) {
             $preparedStyles[] = sprintf($template, $condition, $style);

@@ -116,7 +116,7 @@ function oxNew($className)
 {
     startProfile('oxNew');
     $arguments = func_get_args();
-    $object = call_user_func_array(array(UtilsObject::getInstance(), "oxNew"), $arguments);
+    $object = call_user_func_array([UtilsObject::getInstance(), "oxNew"], $arguments);
     stopProfile('oxNew');
 
     return $object;

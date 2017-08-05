@@ -35,7 +35,7 @@ class LanguageList extends \OxidEsales\Eshop\Application\Component\Widget\Widget
      *
      * @var array
      */
-    protected $_aComponentNames = array('oxcmp_lang' => 0);
+    protected $_aComponentNames = ['oxcmp_lang' => 0];
 
     /**
      * Current class template name.

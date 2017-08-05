@@ -48,7 +48,7 @@ class VariantSelectList implements \OxidEsales\Eshop\Core\Contract\ISelectList
      *
      * @var array
      */
-    protected $_aList = array();
+    protected $_aList = [];
 
     /**
      * Active variant selection object

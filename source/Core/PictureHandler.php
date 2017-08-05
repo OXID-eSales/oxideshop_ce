@@ -52,30 +52,30 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
             return;
         }
 
-        $aPic = array("sField"    => "oxpic" . $iIndex,
+        $aPic = ["sField"    => "oxpic" . $iIndex,
                       "sDir"      => $oUtilsFile->getImageDirByType("M" . $iIndex, $blGeneratedImagesOnly),
-                      "sFileName" => $sMasterImage);
+                      "sFileName" => $sMasterImage];
 
         $blDeleted = $myUtilsPic->safePictureDelete($aPic["sFileName"], $sAbsDynImageDir . $aPic["sDir"], "oxarticles", $aPic["sField"]);
         if ($blDeleted) {
             $this->deleteZoomPicture($oObject, $iIndex);
 
-            $aDelPics = array();
+            $aDelPics = [];
             if ($iIndex == 1) {
                 // deleting generated main icon picture if custom main icon
                 // file name not equal with generated from master picture
                 if ($this->getMainIconName($sMasterImage) != basename($oObject->oxarticles__oxicon->value)) {
-                    $aDelPics[] = array("sField"    => "oxpic1",
+                    $aDelPics[] = ["sField"    => "oxpic1",
                                         "sDir"      => $oUtilsFile->getImageDirByType("ICO", $blGeneratedImagesOnly),
-                                        "sFileName" => $this->getMainIconName($sMasterImage));
+                                        "sFileName" => $this->getMainIconName($sMasterImage)];
                 }
 
                 // deleting generated thumbnail picture if custom thumbnail
                 // file name not equal with generated from master picture
                 if ($this->getThumbName($sMasterImage) != basename($oObject->oxarticles__oxthumb->value)) {
-                    $aDelPics[] = array("sField"    => "oxpic1",
+                    $aDelPics[] = ["sField"    => "oxpic1",
                                         "sDir"      => $oUtilsFile->getImageDirByType("TH", $blGeneratedImagesOnly),
-                                        "sFileName" => $this->getThumbName($sMasterImage));
+                                        "sFileName" => $this->getThumbName($sMasterImage)];
                 }
             }
 
@@ -255,19 +255,19 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
     {
         // custom server as image storage?
         if ($sAltUrl = $this->getAltImageUrl($sFilePath, $sFile, $blSSL)) {
-            return array('path' => false, 'url' => $sAltUrl);
+            return ['path' => false, 'url' => $sAltUrl];
         }
 
         $oConfig = $this->getConfig();
         $sPath = $oConfig->getPicturePath($sFilePath . $sFile, $blAdmin, $iLang, $iShopId);
         if (!$sPath) {
-            return array('path' => false, 'url' => false);
+            return ['path' => false, 'url' => false];
         }
 
         $sDirPrefix = $oConfig->getOutDir();
         $sUrlPrefix = $oConfig->getOutUrl($blSSL, $blAdmin, $oConfig->getConfigParam('blNativeImages'));
 
-        return array('path' => $sPath, 'url' => str_replace($sDirPrefix, $sUrlPrefix, $sPath));
+        return ['path' => $sPath, 'url' => str_replace($sDirPrefix, $sUrlPrefix, $sPath)];
     }
 
     /**

@@ -377,7 +377,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         if ($this->_aCountries === null) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $this->_aCountries = array();
+            $this->_aCountries = [];
             $sSelect = 'select oxobjectid from oxobject2payment where oxpaymentid=' . $oDb->quote($this->getId()) . ' and oxtype = "oxcountry" ';
             $rs = $oDb->getCol($sSelect);
             $this->_aCountries = $rs;

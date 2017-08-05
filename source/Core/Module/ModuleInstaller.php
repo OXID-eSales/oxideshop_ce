@@ -181,7 +181,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      */
     public function buildModuleChains($aModuleArray)
     {
-        $aModules = array();
+        $aModules = [];
         if (is_array($aModuleArray)) {
             foreach ($aModuleArray as $sClass => $aModuleChain) {
                 $aModules[$sClass] = implode('&', $aModuleChain);
@@ -205,13 +205,13 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
         if (is_array($aAllModuleArray) && is_array($aRemModuleArray)) {
             foreach ($aAllModuleArray as $sClass => $aModuleChain) {
                 if (!is_array($aModuleChain)) {
-                    $aModuleChain = array($aModuleChain);
+                    $aModuleChain = [$aModuleChain];
                 }
                 if (isset($aRemModuleArray[$sClass])) {
                     if (!is_array($aRemModuleArray[$sClass])) {
-                        $aRemModuleArray[$sClass] = array($aRemModuleArray[$sClass]);
+                        $aRemModuleArray[$sClass] = [$aRemModuleArray[$sClass]];
                     }
-                    $aAllModuleArray[$sClass] = array();
+                    $aAllModuleArray[$sClass] = [];
                     foreach ($aModuleChain as $sModule) {
                         if (!in_array($sModule, $aRemModuleArray[$sClass])) {
                             $aAllModuleArray[$sClass][] = $sModule;
@@ -248,7 +248,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     {
         $aDisabledModules = (array) $this->getConfig()->getConfigParam('aDisabledModules');
 
-        $aModules = array_merge($aDisabledModules, array($sModuleId));
+        $aModules = array_merge($aDisabledModules, [$sModuleId]);
         $aModules = array_unique($aModules);
 
         $this->_saveToConfig('aDisabledModules', $aModules, 'arr');
@@ -371,7 +371,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
         if (is_array($aAllModuleArray) && is_array($aAddModuleArray)) {
             foreach ($aAddModuleArray as $sClass => $aModuleChain) {
                 if (!is_array($aModuleChain)) {
-                    $aModuleChain = array($aModuleChain);
+                    $aModuleChain = [$aModuleChain];
                 }
                 if (isset($aAllModuleArray[$sClass])) {
                     foreach ($aModuleChain as $sModule) {
@@ -398,7 +398,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
         $aDisabledModules = (array) $this->getConfig()->getConfigParam('aDisabledModules');
 
         if (isset($aDisabledModules) && is_array($aDisabledModules)) {
-            $aDisabledModules = array_diff($aDisabledModules, array($sModuleId));
+            $aDisabledModules = array_diff($aDisabledModules, [$sModuleId]);
             $this->_saveToConfig('aDisabledModules', $aDisabledModules, 'arr');
         }
     }
@@ -434,7 +434,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
 
                 $db->execute(
                     $sql,
-                    array(
+                    [
                         $id,
                         $shopId,
                         $theme,
@@ -443,7 +443,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
                         $position,
                         $filePath,
                         $moduleId
-                    )
+                    ]
                 );
             }
         }

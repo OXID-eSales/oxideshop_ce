@@ -103,7 +103,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aSelList = array();
+    protected $_aSelList = [];
 
     /**
      * Shop id where product was put into basket
@@ -131,7 +131,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aPersistentParameters = array();
+    protected $_aPersistentParameters = [];
 
     /**
      * Buundle marker - marks if item is bundle or not
@@ -173,7 +173,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aChosenSelectlist = array();
+    protected $_aChosenSelectlist = [];
 
     /**
      * Used wrapping paper Id
@@ -618,7 +618,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
     public function getLink()
     {
         if ($this->_sLink === null || $this->getLanguageId() != \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage()) {
-            $this->_sLink = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->cleanUrl($this->getArticle()->getLink(), array('force_sid'));
+            $this->_sLink = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->cleanUrl($this->getArticle()->getLink(), ['force_sid']);
         }
 
         return $this->getSession()->processUrl($this->_sLink);
@@ -707,7 +707,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      */
     public function __sleep()
     {
-        $aRet = array();
+        $aRet = [];
         foreach (get_object_vars($this) as $sKey => $sVar) {
             if ($sKey != '_oArticle') {
                 $aRet[] = $sKey;
@@ -750,7 +750,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
         $this->_blSsl = $oConfig->isSsl();
 
         // removing force_sid from the link (in case it'll change)
-        $this->_sLink = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->cleanUrl($oArticle->getLink(), array('force_sid'));
+        $this->_sLink = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->cleanUrl($oArticle->getLink(), ['force_sid']);
 
         // shop Ids
         $this->_sShopId = $oConfig->getShopId();

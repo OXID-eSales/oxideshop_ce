@@ -185,7 +185,7 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
      */
     protected function parseModuleSettings($moduleSettings)
     {
-        $settings = array();
+        $settings = [];
 
         if (is_array($moduleSettings)) {
             foreach ($moduleSettings as $setting) {
@@ -208,7 +208,7 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
         $quotedShopId = $db->quote($this->getConfig()->getShopId());
         $quotedModuleId = $db->quote($this->getModuleConfigId($moduleId));
 
-        $quotedConfigsToRemove = array_map(array($db, 'quote'), $configsToRemove);
+        $quotedConfigsToRemove = array_map([$db, 'quote'], $configsToRemove);
         $deleteSql = "DELETE
                        FROM `oxconfig`
                        WHERE oxmodule = $quotedModuleId AND

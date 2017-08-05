@@ -438,7 +438,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected function _getFormattedErrors($controllerName)
     {
         $errors = $this->_getErrors($controllerName);
-        $formattedErrors = array();
+        $formattedErrors = [];
         if (is_array($errors) && count($errors)) {
             foreach ($errors as $location => $ex2) {
                 foreach ($ex2 as $key => $er) {
@@ -534,7 +534,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             $this->_aErrors = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('Errors');
             $this->_aControllerErrors = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('ErrorController');
             if (null === $this->_aErrors) {
-                $this->_aErrors = array();
+                $this->_aErrors = [];
             }
             $this->_aAllErrors = $this->_aErrors;
         }
@@ -547,7 +547,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
                 }
             }
         } else {
-            $this->_aAllErrors = array();
+            $this->_aAllErrors = [];
         }
         \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('ErrorController', $this->_aControllerErrors);
         \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('Errors', $this->_aAllErrors);
@@ -638,7 +638,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * @param array              $viewData       View data
      * @param FrontendController $view           View object
      */
-    protected function _stopMonitor($isCallForCache = false, $isCached = false, $viewId = null, $viewData = array(), $view = null)
+    protected function _stopMonitor($isCallForCache = false, $isCached = false, $viewId = null, $viewData = [], $view = null)
     {
         if (is_null($view)) {
             $controllerKey = $this->getStartControllerKey();

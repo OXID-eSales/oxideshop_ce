@@ -66,14 +66,14 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aLockedFileHandles = array();
+    protected $_aLockedFileHandles = [];
 
     /**
      * Local cache
      *
      * @var array
      */
-    protected $_aFileCacheContents = array();
+    protected $_aFileCacheContents = [];
 
     /**
      * Search engine indicator
@@ -118,7 +118,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function assignValuesFromText($sIn, $dVat = null)
     {
-        $aRet = array();
+        $aRet = [];
         $aPieces = explode('@@', $sIn);
         while (list($sKey, $sVal) = each($aPieces)) {
             if ($sVal) {
@@ -169,7 +169,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             $fRet = substr_replace($fRet, ",", $iPos, 1);
         }
         // remove thousands
-        $fRet = str_replace(array(" ", "."), "", $fRet);
+        $fRet = str_replace([" ", "."], "", $fRet);
 
         return (float) str_replace(",", ".", $fRet);
     }
@@ -188,7 +188,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         $iDotPos = strpos($fRet, ".");
         if (!$iDotPos xor !$iCommaPos) {
             if (substr_count($fRet, ",") > 1 || substr_count($fRet, ".") > 1) {
-                $fRet = str_replace(array(",", "."), "", $fRet);
+                $fRet = str_replace([",", "."], "", $fRet);
             } else {
                 $fRet = str_replace(",", ".", $fRet);
             }
@@ -200,7 +200,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         }
 
         // remove thousands
-        return (float) str_replace(array(" ", ","), "", $fRet);
+        return (float) str_replace([" ", ","], "", $fRet);
     }
 
     /**
@@ -241,10 +241,10 @@ class Utils extends \OxidEsales\Eshop\Core\Base
 
         if (!($myConfig->getConfigParam('iDebug') && $this->isAdmin())) {
             $aRobots = $myConfig->getConfigParam('aRobots');
-            $aRobots = is_array($aRobots) ? $aRobots : array();
+            $aRobots = is_array($aRobots) ? $aRobots : [];
 
             $aRobotsExcept = $myConfig->getConfigParam('aRobotsExcept');
-            $aRobotsExcept = is_array($aRobotsExcept) ? $aRobotsExcept : array();
+            $aRobotsExcept = is_array($aRobotsExcept) ? $aRobotsExcept : [];
 
             $sClient = $sClient ? $sClient : strtolower(getenv('HTTP_USER_AGENT'));
             $blIsSe = false;
@@ -281,9 +281,9 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             }
 
             //array to store profiles
-            $aProfiles = array();
+            $aProfiles = [];
             foreach ($aInterfaceProfiles as $iPos => $sProfile) {
-                $aProfileSettings = array($iPos, $sProfile);
+                $aProfileSettings = [$iPos, $sProfile];
                 $aProfiles[] = $aProfileSettings;
             }
             // setting previous used profile as active
@@ -361,7 +361,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         //got a different result when using strict and not strict?
         //do a detail check
         if ($result != $second) {
-            $stringstack = array();
+            $stringstack = [];
             foreach ($haystack as $value) {
                 $stringstack[] = (string) $value;
             }
@@ -428,7 +428,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         //only simple arrays are supported
         if (is_array($mContents) && ($sCachePath = $this->getCacheFilePath($sKey, false, 'php'))) {
             // setting meta
-            $this->setCacheMeta($sKey, array("serialize" => false, "cachepath" => $sCachePath));
+            $this->setCacheMeta($sKey, ["serialize" => false, "cachepath" => $sCachePath]);
 
             // caching..
             $this->toFileCache($sKey, $mContents);
@@ -445,7 +445,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     public function fromPhpFileCache($sKey)
     {
         // setting meta
-        $this->setCacheMeta($sKey, array("include" => true, "cachepath" => $this->getCacheFilePath($sKey, false, 'php')));
+        $this->setCacheMeta($sKey, ["include" => true, "cachepath" => $this->getCacheFilePath($sKey, false, 'php')]);
 
         return $this->fromFileCache($sKey);
     }
@@ -619,7 +619,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             stopProfile("!__SAVING CACHE__! (warning)");
 
             //empty buffer
-            $this->_aFileCacheContents = array();
+            $this->_aFileCacheContents = [];
         }
     }
 
@@ -921,7 +921,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
                         } else {
                             $blIsAuth = true;
 
-                            $aShopIdVars = array('actshop', 'shp', 'currentadminshop');
+                            $aShopIdVars = ['actshop', 'shp', 'currentadminshop'];
                             foreach ($aShopIdVars as $sShopIdVar) {
                                 if ($sGotShop = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter($sShopIdVar)) {
                                     if ($sGotShop != $sRights) {
@@ -1069,7 +1069,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         }
 
         if ($blAddRedirectParam) {
-            $sUrl = $this->_addUrlParameters($sUrl, array('redirected' => 1));
+            $sUrl = $this->_addUrlParameters($sUrl, ['redirected' => 1]);
         }
 
         $sUrl = str_ireplace("&amp;", "&", $sUrl);

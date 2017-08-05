@@ -50,7 +50,7 @@ class Database implements DatabaseInterface
     /**
      * Holds the necessary parameters to connect to the database
      */
-    protected $connectionParameters = array();
+    protected $connectionParameters = [];
 
     /**
      * @var DriverConnection The database connection.
@@ -65,22 +65,22 @@ class Database implements DatabaseInterface
     /**
      * @var array Map strings used in the shop to Doctrine constants
      */
-    protected $transactionIsolationLevelMap = array(
+    protected $transactionIsolationLevelMap = [
         'READ UNCOMMITTED' => Connection::TRANSACTION_READ_UNCOMMITTED,
         'READ COMMITTED'   => Connection::TRANSACTION_READ_COMMITTED,
         'REPEATABLE READ'  => Connection::TRANSACTION_REPEATABLE_READ,
         'SERIALIZABLE'     => Connection::TRANSACTION_SERIALIZABLE
-    );
+    ];
 
     /**
      * @var array Map fetch modes used in the shop to doctrine constants
      */
-    protected $fetchModeMap = array(
+    protected $fetchModeMap = [
         DatabaseInterface::FETCH_MODE_DEFAULT => PDO::FETCH_BOTH,
         DatabaseInterface::FETCH_MODE_NUM     => PDO::FETCH_NUM,
         DatabaseInterface::FETCH_MODE_ASSOC   => PDO::FETCH_ASSOC,
         DatabaseInterface::FETCH_MODE_BOTH    => PDO::FETCH_BOTH
-    );
+    ];
 
     /**
      * The standard constructor.
@@ -194,14 +194,14 @@ class Database implements DatabaseInterface
      */
     protected function getPdoMysqlConnectionParameters(array $connectionParameters)
     {
-        $pdoMysqlConnectionParameters = array(
+        $pdoMysqlConnectionParameters = [
             'driver'   => 'pdo_mysql',
             'host'     => $connectionParameters['databaseHost'],
             'dbname'   => $connectionParameters['databaseName'],
             'user'     => $connectionParameters['databaseUser'],
             'password' => $connectionParameters['databasePassword'],
             'port'     => $connectionParameters['databasePort'],
-        );
+        ];
 
         $this->addDriverOptions($pdoMysqlConnectionParameters);
         $this->addConnectionCharset(
@@ -220,9 +220,9 @@ class Database implements DatabaseInterface
      */
     protected function addDriverOptions(array &$existingParameters)
     {
-        $existingParameters['driverOptions'] = array(
+        $existingParameters['driverOptions'] = [
             PDO::MYSQL_ATTR_INIT_COMMAND => $this->getMySqlInitCommand()
-        );
+        ];
     }
 
     /**
@@ -308,7 +308,7 @@ class Database implements DatabaseInterface
      *
      * @return string|false      Returns a string for SELECT or SHOW statements and FALSE for any other statement.
      */
-    public function getOne($query, $parameters = array())
+    public function getOne($query, $parameters = [])
     {
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
@@ -356,7 +356,7 @@ class Database implements DatabaseInterface
      *
      * @return array The row, we selected with the given sql statement.
      */
-    public function getRow($query, $parameters = array())
+    public function getRow($query, $parameters = [])
     {
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
@@ -368,16 +368,16 @@ class Database implements DatabaseInterface
         } catch (\OxidEsales\Eshop\Core\Exception\DatabaseErrorException $exception) {
             /** Only log exception, do not re-throw here, as legacy code expects this behavior */
             $this->logException($exception);
-            $result = array();
+            $result = [];
         } catch (PDOException $exception) {
             /** Only log exception, do not re-throw here, as legacy code expects this behavior */
             $exception = $this->convertException($exception);
             $this->logException($exception);
-            $result = array();
+            $result = [];
         }
 
         if (false == $result) {
-            $result = array();
+            $result = [];
         }
 
         return $result;
@@ -464,7 +464,7 @@ class Database implements DatabaseInterface
      */
     public function quoteArray($array)
     {
-        $result = array();
+        $result = [];
 
         foreach ($array as $key => $item) {
             $result[$key] = $this->quote($item);
@@ -583,7 +583,7 @@ class Database implements DatabaseInterface
      *
      * @return integer Number of rows affected by the SQL statement
      */
-    public function execute($query, $parameters = array())
+    public function execute($query, $parameters = [])
     {
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
@@ -617,7 +617,7 @@ class Database implements DatabaseInterface
      *
      * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface The result of the given query.
      */
-    public function select($query, $parameters = array())
+    public function select($query, $parameters = [])
     {
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
@@ -678,7 +678,7 @@ class Database implements DatabaseInterface
      *
      * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface The result of the given query.
      */
-    public function selectLimit($query, $rowCount = -1, $offset = 0, $parameters = array())
+    public function selectLimit($query, $rowCount = -1, $offset = 0, $parameters = [])
     {
         /**
          * Parameter validation.
@@ -731,13 +731,13 @@ class Database implements DatabaseInterface
      *
      * @return array The values of the first column of a corresponding sql query.
      */
-    public function getCol($query, $parameters = array())
+    public function getCol($query, $parameters = [])
     {
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
         // END deprecated
 
-        $result = array();
+        $result = [];
 
         try {
             $rows = $this->getConnection()->fetchAll($query, $parameters);
@@ -782,7 +782,7 @@ class Database implements DatabaseInterface
      *
      * @return integer The number of affected rows.
      */
-    public function executeUpdate($query, $parameters = array(), $types = array())
+    public function executeUpdate($query, $parameters = [], $types = [])
     {
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
@@ -839,7 +839,7 @@ class Database implements DatabaseInterface
 
         /** If $parameter evaluates to false and it is not an array convert it into an array */
         if (!is_array($parameter)) {
-            $parameter = array();
+            $parameter = [];
         }
 
         return $parameter;
@@ -1022,9 +1022,9 @@ class Database implements DatabaseInterface
      *
      * @return array
      */
-    public function getAll($query, $parameters = array())
+    public function getAll($query, $parameters = [])
     {
-        $result = array();
+        $result = [];
         $statement = null;
 
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
@@ -1238,7 +1238,7 @@ class Database implements DatabaseInterface
     protected function getMetaColumnValueByKey(array $column, $key)
     {
         if (array_key_exists('Field', $column)) {
-            $keyMap = array(
+            $keyMap = [
                 'Field'        => 'Field',
                 'Type'         => 'Type',
                 'Null'         => 'Null',
@@ -1248,9 +1248,9 @@ class Database implements DatabaseInterface
                 'Comment'      => 'Comment',
                 'CharacterSet' => 'CharacterSet',
                 'Collation'    => 'Collation',
-            );
+            ];
         } else {
-            $keyMap = array(
+            $keyMap = [
                 'Field'        => 0,
                 'Type'         => 1,
                 'Null'         => 2,
@@ -1260,7 +1260,7 @@ class Database implements DatabaseInterface
                 'Comment'      => 6,
                 'CharacterSet' => 7,
                 'Collation'    => 8,
-            );
+            ];
         }
 
         $result = $column[$keyMap[$key]];
@@ -1318,15 +1318,15 @@ class Database implements DatabaseInterface
         }
 
         /** Numeric types, which may have a maximum length */
-        $integerTypes = array('INTEGER', 'INT', 'SMALLINT', 'TINYINT', 'MEDIUMINT', 'BIGINT');
-        $fixedPointTypes = array('DECIMAL', 'NUMERIC');
-        $floatingPointTypes = array('FLOAT', 'DOUBLE');
+        $integerTypes = ['INTEGER', 'INT', 'SMALLINT', 'TINYINT', 'MEDIUMINT', 'BIGINT'];
+        $fixedPointTypes = ['DECIMAL', 'NUMERIC'];
+        $floatingPointTypes = ['FLOAT', 'DOUBLE'];
 
         /** Text types, which may have a maximum length */
-        $textTypes = array('CHAR', 'VARCHAR');
+        $textTypes = ['CHAR', 'VARCHAR'];
 
         /** Date types, which may have a maximum length */
-        $dateTypes = array('YEAR');
+        $dateTypes = ['YEAR'];
 
         $assignedType = strtoupper($assignedType);
         if ((
@@ -1342,7 +1342,7 @@ class Database implements DatabaseInterface
              */
         }
 
-        return array((int) $maxLength, (int) $scale);
+        return [(int) $maxLength, (int) $scale];
     }
 
     /**

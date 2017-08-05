@@ -32,7 +32,7 @@ class SepaValidator
     /**
      * @var array IBAN Code Length array
      */
-    protected $_aIBANCodeLengths = array(
+    protected $_aIBANCodeLengths = [
         'AL' => 28,
         'AD' => 24,
         'AT' => 20,
@@ -97,7 +97,7 @@ class SepaValidator
         'AE' => 23,
         'GB' => 22,
         'VG' => 24
-    );
+    ];
 
     /**
      * Business identifier code validation

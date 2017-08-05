@@ -404,7 +404,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
             $this->_oRecommList = false;
             if ($oProduct = $this->getProduct()) {
                 $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
-                $this->_oRecommList = $oRecommList->getRecommListsByIds(array($oProduct->getId()));
+                $this->_oRecommList = $oRecommList->getRecommListsByIds([$oProduct->getId()]);
             }
         }
 

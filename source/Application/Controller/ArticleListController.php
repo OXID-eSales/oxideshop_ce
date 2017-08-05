@@ -579,7 +579,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     {
         $keywords = '';
         if (($activeCategory = $this->getActiveCategory())) {
-            $keywordsList = array();
+            $keywordsList = [];
 
             if ($categoryTree = $this->getCategoryTree()) {
                 foreach ($categoryTree->getPath() as $category) {
@@ -733,7 +733,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
                 $articleViewName = getViewName('oxarticles');
                 $sortBy = $articleViewName . '.' . $defaultSorting;
                 $sortDirection = ($category->getDefaultSortingMode()) ? "desc" : "asc";
-                $sorting = array('sortby' => $sortBy, 'sortdir' => $sortDirection);
+                $sorting = ['sortby' => $sortBy, 'sortdir' => $sortDirection];
             }
         }
 
@@ -884,10 +884,10 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      */
     public function getBreadCrumb()
     {
-        $paths = array();
+        $paths = [];
 
         if ('oxmore' == \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid')) {
-            $path = array();
+            $path = [];
             $path['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString(
                 'CATEGORY_OVERVIEW',
                 \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage(),
@@ -903,7 +903,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         if (($categoryTree = $this->getCategoryTree()) && ($categoryPaths = $categoryTree->getPath())) {
             foreach ($categoryPaths as $category) {
                 /** @var \OxidEsales\Eshop\Application\Model\Category $category */
-                $categoryPath = array();
+                $categoryPath = [];
 
                 $categoryPath['link'] = $category->getLink();
                 $categoryPath['title'] = $category->oxcategories__oxtitle->value;
@@ -941,7 +941,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     public function getSubCatList()
     {
         if ($this->_aSubCatList === null) {
-            $this->_aSubCatList = array();
+            $this->_aSubCatList = [];
             if ($activeCategory = $this->getActiveCategory()) {
                 $this->_aSubCatList = $activeCategory->getSubCats();
             }
@@ -994,7 +994,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     public function getBargainArticleList()
     {
         if ($this->_aBargainArticleList === null) {
-            $this->_aBargainArticleList = array();
+            $this->_aBargainArticleList = [];
             if ($this->getConfig()->getConfigParam('bl_perfLoadAktion') && $this->_isActCategory()) {
                 $articleList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                 $articleList->loadActionArticles('OXBARGAIN');

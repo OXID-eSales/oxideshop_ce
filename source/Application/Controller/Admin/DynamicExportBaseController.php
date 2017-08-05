@@ -111,7 +111,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @var array
      */
-    protected $_aExportResultset = array();
+    protected $_aExportResultset = [];
 
     /**
      * View template name
@@ -234,7 +234,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
     public function write($sLine)
     {
         $sLine = $this->removeSID($sLine);
-        $sLine = str_replace(array("\r\n", "\n"), "", $sLine);
+        $sLine = str_replace(["\r\n", "\n"], "", $sLine);
         fwrite($this->fpFile, $sLine . "\r\n");
     }
 
@@ -430,7 +430,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
     {
         $sInput = \OxidEsales\Eshop\Core\Registry::getUtilsString()->prepareCSVField($sInput);
 
-        return str_replace(array("&nbsp;", "&euro;", "|"), array(" ", "", ""), $sInput);
+        return str_replace(["&nbsp;", "&euro;", "|"], [" ", "", ""], $sInput);
     }
 
     /**
@@ -691,7 +691,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
 
         // add minimum stock value
         if ($this->getConfig()->getConfigParam('blUseStock') && ($dMinStock = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sExportMinStock"))) {
-            $dMinStock = str_replace(array(";", " ", "/", "'"), "", $dMinStock);
+            $dMinStock = str_replace([";", " ", "/", "'"], "", $dMinStock);
             $insertQuery .= " and {$sArticleTable}.oxstock >= " . $oDB->quote($dMinStock);
         }
 
@@ -742,7 +742,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
         \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable("sExportDelCost");
         $dDelCost = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sExportDelCost");
         if (isset($dDelCost)) {
-            $dDelCost = str_replace(array(";", " ", "/", "'"), "", $dDelCost);
+            $dDelCost = str_replace([";", " ", "/", "'"], "", $dDelCost);
             $dDelCost = str_replace(",", ".", $dDelCost);
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("sExportDelCost", $dDelCost);
         }
@@ -750,7 +750,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
         \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable("sExportMinPrice");
         $dMinPrice = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sExportMinPrice");
         if (isset($dMinPrice)) {
-            $dMinPrice = str_replace(array(";", " ", "/", "'"), "", $dMinPrice);
+            $dMinPrice = str_replace([";", " ", "/", "'"], "", $dMinPrice);
             $dMinPrice = str_replace(",", ".", $dMinPrice);
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("sExportMinPrice", $dMinPrice);
         }
@@ -759,7 +759,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
         \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable("sExportCampaign");
         $sCampaign = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sExportCampaign");
         if (isset($sCampaign)) {
-            $sCampaign = str_replace(array(";", " ", "/", "'"), "", $sCampaign);
+            $sCampaign = str_replace([";", " ", "/", "'"], "", $sCampaign);
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("sExportCampaign", $sCampaign);
         }
 
@@ -787,7 +787,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
     protected function _loadRootCats()
     {
         if ($this->_aCatLvlCache === null) {
-            $this->_aCatLvlCache = array();
+            $this->_aCatLvlCache = [];
 
             $sCatView = getViewName('oxcategories');
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();

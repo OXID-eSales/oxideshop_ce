@@ -143,8 +143,8 @@ class AccountPasswordController extends \OxidEsales\Eshop\Application\Controller
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
 
         /** @var \OxidEsales\Eshop\Core\SeoEncoder $oSeoEncoder */
         $oSeoEncoder = \OxidEsales\Eshop\Core\Registry::getSeoEncoder();

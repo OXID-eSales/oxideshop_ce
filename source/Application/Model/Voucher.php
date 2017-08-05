@@ -71,7 +71,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return mixed
      */
-    public function getVoucherByNr($sVoucherNr, $aVouchers = array(), $blCheckavalability = false)
+    public function getVoucherByNr($sVoucherNr, $aVouchers = [], $blCheckavalability = false)
     {
         $oRet = null;
         if (!empty($sVoucherNr)) {
@@ -574,7 +574,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
         } elseif ($this->getSession()->getBasket()) {
             return $this->_getSessionBasketItems($oDiscount);
         } else {
-            return array();
+            return [];
         }
     }
 
@@ -594,17 +594,17 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         $oOrder->load($this->oxvouchers__oxorderid->value);
 
-        $aItems = array();
+        $aItems = [];
         $iCount = 0;
 
         foreach ($oOrder->getOrderArticles(true) as $oOrderArticle) {
             if (!$oOrderArticle->skipDiscounts() && $oDiscount->isForBasketItem($oOrderArticle)) {
-                $aItems[$iCount] = array(
+                $aItems[$iCount] = [
                     'oxid'     => $oOrderArticle->getProductId(),
                     'price'    => $oOrderArticle->oxorderarticles__oxbprice->value,
                     'discount' => $oDiscount->getAbsValue($oOrderArticle->oxorderarticles__oxbprice->value),
                     'amount'   => $oOrderArticle->oxorderarticles__oxamount->value,
-                );
+                ];
                 $iCount++;
             }
         }
@@ -626,17 +626,17 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         $oBasket = $this->getSession()->getBasket();
-        $aItems = array();
+        $aItems = [];
         $iCount = 0;
 
         foreach ($oBasket->getContents() as $oBasketItem) {
             if (!$oBasketItem->isDiscountArticle() && ($oArticle = $oBasketItem->getArticle()) && !$oArticle->skipDiscounts() && $oDiscount->isForBasketItem($oArticle)) {
-                $aItems[$iCount] = array(
+                $aItems[$iCount] = [
                     'oxid'     => $oArticle->getId(),
                     'price'    => $oArticle->getBasketPrice($oBasketItem->getAmount(), $oBasketItem->getSelList(), $oBasket)->getPrice(),
                     'discount' => $oDiscount->getAbsValue($oArticle->getBasketPrice($oBasketItem->getAmount(), $oBasketItem->getSelList(), $oBasket)->getPrice()),
                     'amount'   => $oBasketItem->getAmount(),
-                );
+                ];
 
                 $iCount++;
             }

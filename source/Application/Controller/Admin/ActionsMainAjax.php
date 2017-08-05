@@ -45,26 +45,26 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
-        array('oxartnum', 'oxarticles', 1, 0, 0),
-        array('oxtitle', 'oxarticles', 1, 1, 0),
-        array('oxean', 'oxarticles', 1, 0, 0),
-        array('oxmpn', 'oxarticles', 0, 0, 0),
-        array('oxprice', 'oxarticles', 0, 0, 0),
-        array('oxstock', 'oxarticles', 0, 0, 0),
-        array('oxid', 'oxarticles', 0, 0, 1)
-    ),
-                                 'container2' => array(
-                                     array('oxartnum', 'oxarticles', 1, 0, 0),
-                                     array('oxsort', 'oxactions2article', 1, 0, 0),
-                                     array('oxtitle', 'oxarticles', 1, 1, 0),
-                                     array('oxean', 'oxarticles', 1, 0, 0),
-                                     array('oxmpn', 'oxarticles', 0, 0, 0),
-                                     array('oxprice', 'oxarticles', 0, 0, 0),
-                                     array('oxstock', 'oxarticles', 0, 0, 0),
-                                     array('oxid', 'oxactions2article', 0, 0, 1)
-                                 )
-    );
+    protected $_aColumns = ['container1' => [ // field , table,         visible, multilanguage, ident
+        ['oxartnum', 'oxarticles', 1, 0, 0],
+        ['oxtitle', 'oxarticles', 1, 1, 0],
+        ['oxean', 'oxarticles', 1, 0, 0],
+        ['oxmpn', 'oxarticles', 0, 0, 0],
+        ['oxprice', 'oxarticles', 0, 0, 0],
+        ['oxstock', 'oxarticles', 0, 0, 0],
+        ['oxid', 'oxarticles', 0, 0, 1]
+    ],
+                                 'container2' => [
+                                     ['oxartnum', 'oxarticles', 1, 0, 0],
+                                     ['oxsort', 'oxactions2article', 1, 0, 0],
+                                     ['oxtitle', 'oxarticles', 1, 1, 0],
+                                     ['oxean', 'oxarticles', 1, 0, 0],
+                                     ['oxmpn', 'oxarticles', 0, 0, 0],
+                                     ['oxprice', 'oxarticles', 0, 0, 0],
+                                     ['oxstock', 'oxarticles', 0, 0, 0],
+                                     ['oxid', 'oxactions2article', 0, 0, 1]
+                                 ]
+    ];
 
     /**
      * Returns SQL query for data to fetc
@@ -246,7 +246,7 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
 
         // fixing indexes
         $iSelCnt = 0;
-        $aIdx2Id = array();
+        $aIdx2Id = [];
         foreach ($oList as $sKey => $oSel) {
             if ($oSel->oxactions2article__oxsort->value != $iSelCnt) {
                 $oSel->oxactions2article__oxsort->setValue($iSelCnt);

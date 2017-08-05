@@ -85,7 +85,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
      *
      * @var array[string]oxMdVariant
      */
-    protected $_aSubvariants = array();
+    protected $_aSubvariants = [];
 
     /**
      * Sets MD variant identifier

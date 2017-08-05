@@ -45,7 +45,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aBasketContents = array();
+    protected $_aBasketContents = [];
 
     /**
      * Number of different product type in basket
@@ -108,14 +108,14 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aDiscounts = array();
+    protected $_aDiscounts = [];
 
     /**
      * Basket items discounts information
      *
      * @var array
      */
-    protected $_aItemDiscounts = array();
+    protected $_aItemDiscounts = [];
 
     /**
      * Basket order ID. Usually this ID is set on last order step
@@ -129,14 +129,14 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aVouchers = array();
+    protected $_aVouchers = [];
 
     /**
      * Additional costs array of oxPrice objects
      *
      * @var array
      */
-    protected $_aCosts = array();
+    protected $_aCosts = [];
 
     /**
      * Sum price of articles applicable to discounts
@@ -415,7 +415,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
         }
         $aNewCopy = array_merge(
             array_slice($this->_aBasketContents, 0, $iOldKeyPlace, true),
-            array($sNewKey => $value),
+            [$sNewKey => $value],
             array_slice($this->_aBasketContents, $iOldKeyPlace + 1, count($this->_aBasketContents) - $iOldKeyPlace, true)
         );
         $this->_aBasketContents = $aNewCopy;
@@ -595,7 +595,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     public function getItemKey($sProductId, $aSel = null, $aPersParam = null, $blBundle = false, $sAdditionalParam = '')
     {
-        $aSel = ($aSel != null) ? $aSel : array(0 => '0');
+        $aSel = ($aSel != null) ? $aSel : [0 => '0'];
 
         $sItemKey = md5($sProductId . '|' . serialize($aSel) . '|' . serialize($aPersParam) . '|' . ( int ) $blBundle . '|' . serialize($sAdditionalParam));
 
@@ -650,7 +650,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getArticleBundles($oBasketItem)
     {
-        $aBundles = array();
+        $aBundles = [];
 
         if ($oBasketItem->isBundle()) {
             return $aBundles;
@@ -672,10 +672,10 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getItemBundles($oBasketItem, $aBundles = array())
+    protected function _getItemBundles($oBasketItem, $aBundles = [])
     {
         if ($oBasketItem->isBundle()) {
-            return array();
+            return [];
         }
 
         // does this object still exists ?
@@ -709,7 +709,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getBasketBundles($aBundles = array())
+    protected function _getBasketBundles($aBundles = [])
     {
         $aDiscounts = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DiscountList::class)->getBasketBundleDiscounts($this, $this->getBasketUser());
 
@@ -740,7 +740,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     protected function _addBundles()
     {
-        $aBundles = array();
+        $aBundles = [];
         // iterating through articles and binding bundles
         foreach ($this->_aBasketContents as $key => $oBasketItem) {
             try {
@@ -1208,7 +1208,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     protected function _calcBasketDiscount()
     {
         // resetting
-        $this->_aDiscounts = array();
+        $this->_aDiscounts = [];
 
         // P using prices sum which has discount, not sum of skipped discounts
         $dOldPrice = $this->_oDiscountProductsPriceList->getSum($this->isCalculationModeNetto());
@@ -1415,7 +1415,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
             return;
         }
 
-        $this->_aCosts = array();
+        $this->_aCosts = [];
 
         //  1. saving basket to the database
         $this->_save();
@@ -1490,8 +1490,8 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     {
         if ($this->_blUpdateNeeded || $this->_aBasketSummary === null) {
             $this->_aBasketSummary = new stdclass();
-            $this->_aBasketSummary->aArticles = array();
-            $this->_aBasketSummary->aCategories = array();
+            $this->_aBasketSummary->aArticles = [];
+            $this->_aBasketSummary->aCategories = [];
             $this->_aBasketSummary->iArticleCount = 0;
             $this->_aBasketSummary->dArticlePrice = 0;
             $this->_aBasketSummary->dArticleDiscountablePrice = 0;
@@ -1759,7 +1759,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     public function deleteBasket()
     {
-        $this->_aBasketContents = array();
+        $this->_aBasketContents = [];
         $this->getSession()->delBasket();
 
         if ($this->getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
@@ -1850,7 +1850,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     public function getBasketArticles()
     {
-        $aBasketArticles = array();
+        $aBasketArticles = [];
         /** @var \oxBasketItem $oBasketItem */
         foreach ($this->_aBasketContents as $sItemKey => $oBasketItem) {
             try {
@@ -2034,7 +2034,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     public function getProductVats($blFormatCurrency = true)
     {
         if (!$this->_oNotDiscountedProductsPriceList) {
-            return array();
+            return [];
         }
 
         $aVats = $this->_oNotDiscountedProductsPriceList->getVatInfo($this->isCalculationModeNetto());

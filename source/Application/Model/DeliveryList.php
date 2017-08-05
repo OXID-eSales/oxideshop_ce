@@ -51,7 +51,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @var array
      */
-    protected $_aDeliveries = array();
+    protected $_aDeliveries = [];
 
     /**
      * User object
@@ -176,7 +176,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
             $aGroupIds = $oUser->getUserGroups();
         }
 
-        $aIds = array();
+        $aIds = [];
         if (count($aGroupIds)) {
             foreach ($aGroupIds as $oGroup) {
                 $aIds[] = $oGroup->getId();
@@ -243,7 +243,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function getDeliveryList($oBasket, $oUser = null, $sDelCountry = null, $sDelSet = null)
     {
         // ids of deliveries that does not fit for us to skip double check
-        $aSkipDeliveries = array();
+        $aSkipDeliveries = [];
         $aDelSetList = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DeliverySetList::class)->getDeliverySetList($oUser, $sDelCountry, $sDelSet);
 
         // must choose right delivery set to use its delivery list
@@ -302,7 +302,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
         }
 
         // nothing what fits was found
-        return array();
+        return [];
     }
 
     /**

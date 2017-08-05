@@ -125,7 +125,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      */
     public function getSortableFields()
     {
-        $aSkipFields = array("OXID", "OXSHOPID", "OXMAPID", "OXPARENTID", "OXACTIVE", "OXACTIVEFROM"
+        $aSkipFields = ["OXID", "OXSHOPID", "OXMAPID", "OXPARENTID", "OXACTIVE", "OXACTIVEFROM"
         , "OXACTIVETO", "OXSHORTDESC"
         , "OXUNITNAME", "OXUNITQUANTITY", "OXEXTURL", "OXURLDESC", "OXURLIMG", "OXVAT"
         , "OXTHUMB", "OXPIC1", "OXPIC2", "OXPIC3", "OXPIC4", "OXPIC5"
@@ -136,7 +136,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         , "OXBLFIXEDPRICE", "OXICON", "OXVARSELECT", "OXAMITEMID", "OXAMTASKID", "OXPIXIEXPORT", "OXPIXIEXPORTED", "OXSORT"
         , "OXUPDATEPRICE", "OXUPDATEPRICEA", "OXUPDATEPRICEB", "OXUPDATEPRICEC", "OXUPDATEPRICETIME", "OXISDOWNLOADABLE"
         , "OXVARMAXPRICE", "OXSHOWCUSTOMAGREEMENT"
-        );
+        ];
         /** @var \OxidEsales\Eshop\Core\DbMetaDataHandler $oDbHandler */
         $oDbHandler = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
         $aFields = array_merge($oDbHandler->getMultilangFields('oxarticles'), array_keys($oDbHandler->getSinglelangFields('oxarticles', 0)));

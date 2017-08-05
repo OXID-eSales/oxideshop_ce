@@ -347,8 +347,8 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
 
         $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $sSelfLink = $this->getViewConfig()->getSelfLink();

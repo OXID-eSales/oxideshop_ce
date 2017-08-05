@@ -144,7 +144,7 @@ class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function countVouchers()
     {
-        $aStatus = array();
+        $aStatus = [];
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQuery = 'select count(*) as total from oxvouchers where oxvoucherserieid = ' . $oDb->quote($this->getId());

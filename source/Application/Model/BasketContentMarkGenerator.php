@@ -95,7 +95,7 @@ class BasketContentMarkGenerator
     private function _formMarks($sCurrentMark)
     {
         $oBasket = $this->_getBasket();
-        $aMarks = array();
+        $aMarks = [];
         if ($oBasket->hasSkipedDiscount()) {
             $aMarks['skippedDiscount'] = $sCurrentMark;
             $sCurrentMark .= '*';

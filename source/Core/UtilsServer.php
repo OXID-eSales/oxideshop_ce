@@ -33,7 +33,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aUserCookie = array();
+    protected $_aUserCookie = [];
 
     /**
      * Session cookie parameter name
@@ -47,7 +47,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_sSessionCookies = array();
+    protected $_sSessionCookies = [];
 
     /**
      * sets cookie
@@ -149,7 +149,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     protected function _saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain)
     {
         if ($this->_mustSaveToSession()) {
-            $aCookieData = array('value' => $sValue, 'expire' => $iExpire, 'path' => $sPath, 'domain' => $sDomain);
+            $aCookieData = ['value' => $sValue, 'expire' => $iExpire, 'path' => $sPath, 'domain' => $sDomain];
 
             $aSessionCookies = ( array ) \OxidEsales\Eshop\Core\Registry::getSession()->getVariable($this->_sSessionCookiesName);
             $aSessionCookies[$this->_getSessionCookieKey(false)][$sName] = $aCookieData;

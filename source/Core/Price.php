@@ -421,7 +421,7 @@ class Price
      */
     public function setDiscount($dValue, $sType)
     {
-        $this->_aDiscounts[] = array('value' => $dValue, 'type' => $sType);
+        $this->_aDiscounts[] = ['value' => $dValue, 'type' => $sType];
     }
 
     /**

@@ -293,7 +293,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
             $sActCat = null;
         }
 
-        return array($sListType, $sActCat);
+        return [$sListType, $sActCat];
     }
 
     /**

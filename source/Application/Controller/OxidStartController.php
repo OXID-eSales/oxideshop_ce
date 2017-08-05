@@ -108,9 +108,9 @@ class OxidStartController extends \OxidEsales\Eshop\Application\Controller\Front
      */
     protected function getErrorTemplates()
     {
-        return array(
+        return [
             'unknown' => 'message/err_unknown.tpl',
-        );
+        ];
     }
 
     /**

@@ -204,7 +204,7 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
                 $oOrderArticle->oxorderarticles__oxartnum = new \OxidEsales\Eshop\Core\Field($oProduct->oxarticles__oxartnum->value);
                 $oOrderArticle->oxorderarticles__oxamount = new \OxidEsales\Eshop\Core\Field($dAmount);
                 $oOrderArticle->oxorderarticles__oxselvariant = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sel'));
-                $oOrder->recalculateOrder(array($oOrderArticle));
+                $oOrder->recalculateOrder([$oOrderArticle]);
             }
         }
     }

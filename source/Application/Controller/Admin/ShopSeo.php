@@ -92,7 +92,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
             $oRs = $oDb->select($sQ);
             if ($oRs != false && $oRs->count() > 0) {
                 while (!$oRs->EOF) {
-                    $aSeoUrls[$oRs->fields['oxlang']] = array($sActObject, $oRs->fields['oxseourl']);
+                    $aSeoUrls[$oRs->fields['oxlang']] = [$sActObject, $oRs->fields['oxseourl']];
                     $oRs->fetchRow();
                 }
                 $this->_aViewData['aSeoUrls'] = $aSeoUrls;

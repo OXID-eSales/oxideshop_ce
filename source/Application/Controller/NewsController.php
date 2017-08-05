@@ -101,8 +101,8 @@ class NewsController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
 
         $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $iBaseLanguage = $oLang->getBaseLanguage();

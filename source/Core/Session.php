@@ -120,20 +120,20 @@ class Session extends \OxidEsales\Eshop\Core\Base
      * @var array
      * @see _getRequireSessionWithParams()
      */
-    protected $_aRequireSessionWithParams = array(
-        'cl'          => array(
+    protected $_aRequireSessionWithParams = [
+        'cl'          => [
             'register' => true,
             'account'  => true,
-        ),
-        'fnc'         => array(
+        ],
+        'fnc'         => [
             'tobasket'         => true,
             'login_noredirect' => true,
             'tocomparelist'    => true,
-        ),
+        ],
         '_artperpage' => true,
         'ldtype'      => true,
         'listorderby' => true,
-    );
+    ];
 
     /**
      * Marker if processed urls must contain SID parameter
@@ -147,7 +147,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aPersistentParams = array("actshop", "lang", "currency", "language", "tpllanguage");
+    protected $_aPersistentParams = ["actshop", "lang", "currency", "language", "tpllanguage"];
 
     /**
      * Returns session ID
@@ -347,7 +347,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
         }
 
         //saving persistent params if old session exists
-        $aPersistent = array();
+        $aPersistent = [];
         foreach ($this->_aPersistentParams as $sParam) {
             if (($sValue = $this->getVariable($sParam))) {
                 $aPersistent[$sParam] = $sValue;
@@ -934,7 +934,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
         //if we detect the cookie then set session var for possible later use
         if ($sCookieSid == "oxid" && !$blSessCookieSetOnce) {
             if (!is_array($aSessCookieSetOnce)) {
-                $aSessCookieSetOnce = array();
+                $aSessCookieSetOnce = [];
             }
 
             $aSessCookieSetOnce[$sCurrUrl] = "ox_true";

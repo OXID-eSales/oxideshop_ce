@@ -48,7 +48,7 @@ class ModuleTemplateBlockRepository
                                 and oxshopid = ?
                                 and oxmodule in ( " . $modulesIdQuery . " )";
 
-        return $db->getOne($sql, array($shopId));
+        return $db->getOne($sql, [$shopId]);
     }
 
     /**

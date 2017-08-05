@@ -100,7 +100,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @var array
      */
-    protected $_aSkipSaveFields = array('oxtimestamp');
+    protected $_aSkipSaveFields = ['oxtimestamp'];
 
     /**
      * oxList of oxarticle objects
@@ -619,7 +619,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _convertVat($sVat)
     {
         if (strpos($sVat, '.') < strpos($sVat, ',')) {
-            $sVat = str_replace(array('.', ','), array('', '.'), $sVat);
+            $sVat = str_replace(['.', ','], ['', '.'], $sVat);
         } else {
             $sVat = str_replace(',', '', $sVat);
         }
@@ -996,7 +996,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oPayment->setDynValues(\OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($oPayment->oxpayments__oxvaldesc->value));
 
         // collecting dynamic values
-        $aDynVal = array();
+        $aDynVal = [];
 
         if (is_array($aPaymentDynValues = $oPayment->getDynValues())) {
             foreach ($aPaymentDynValues as $key => $oVal) {
@@ -1055,7 +1055,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
                 if ($sWishId == $oUser->getId()) {
                     $oUserBasket = $oUser->getBasket('wishlist');
                 } else {
-                    $aWhere = array('oxuserbaskets.oxuserid' => $sWishId, 'oxuserbaskets.oxtitle' => 'wishlist');
+                    $aWhere = ['oxuserbaskets.oxuserid' => $sWishId, 'oxuserbaskets.oxtitle' => 'wishlist'];
                     $oUserBasket = oxNew(\OxidEsales\Eshop\Application\Model\UserBasket::class);
                     $oUserBasket->assignRecord($oUserBasket->buildSelectString($aWhere));
                 }
@@ -1299,7 +1299,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         $iCnt = oxNew(\OxidEsales\Eshop\Core\Counter::class)->getNext($this->_getCounterIdent());
         $sQ = "update oxorder set oxordernr = ? where oxid = ?";
-        $blUpdate = ( bool ) $oDb->execute($sQ, array($iCnt, $this->getId()));
+        $blUpdate = ( bool ) $oDb->execute($sQ, [$iCnt, $this->getId()]);
 
         if ($blUpdate) {
             $this->oxorder__oxordernr = new \OxidEsales\Eshop\Core\Field($iCnt);
@@ -1315,7 +1315,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _update()
     {
-        $this->_aSkipSaveFields = array('oxtimestamp', 'oxorderdate');
+        $this->_aSkipSaveFields = ['oxtimestamp', 'oxorderdate'];
         $this->oxorder__oxsenddate = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($this->oxorder__oxsenddate->value, true));
 
         return parent::_update();
@@ -1368,7 +1368,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @throws Exception
      */
-    public function recalculateOrder($aNewArticles = array())
+    public function recalculateOrder($aNewArticles = [])
     {
         \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->startTransaction();
         try {
@@ -1623,7 +1623,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getVoucherNrList()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-        $aVouchers = array();
+        $aVouchers = [];
         $sSelect = "select oxvouchernr from oxvouchers where oxorderid = " . $oDb->quote($this->oxorder__oxid->value);
         $rs = $oDb->select($sSelect);
         if ($rs != false && $rs->count() > 0) {
@@ -1899,7 +1899,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getProductVats($blFormatCurrency = true)
     {
-        $aVats = array();
+        $aVats = [];
         if ($this->oxorder__oxartvat1->value) {
             $aVats[$this->oxorder__oxartvat1->value] = $this->oxorder__oxartvatprice1->value;
         }

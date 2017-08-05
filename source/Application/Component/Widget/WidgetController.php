@@ -36,7 +36,7 @@ class WidgetController extends \OxidEsales\Eshop\Application\Controller\Frontend
      *
      * @var array
      */
-    protected $_aComponentNames = array();
+    protected $_aComponentNames = [];
 
     /**
      * If active load components

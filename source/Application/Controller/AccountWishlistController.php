@@ -205,7 +205,7 @@ class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller
 
             $aWishProdList = $this->getWishProductList();
             if (is_array($aWishProdList) && ($oSimilarProd = current($aWishProdList))) {
-                $this->_aSimilarRecommListIds = array($oSimilarProd->getId());
+                $this->_aSimilarRecommListIds = [$oSimilarProd->getId()];
             }
         }
 
@@ -352,8 +352,8 @@ class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
 
         $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $sSelfLink = $this->getViewConfig()->getSelfLink();

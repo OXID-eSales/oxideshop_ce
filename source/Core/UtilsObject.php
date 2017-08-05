@@ -39,28 +39,28 @@ class UtilsObject
      *
      * @var array
      */
-    protected $_aClassNameCache = array();
+    protected $_aClassNameCache = [];
 
     /**
      * The array of already loaded articles
      *
      * @var array
      */
-    protected static $_aLoadedArticles = array();
+    protected static $_aLoadedArticles = [];
 
     /**
      * The array of already initialised instances
      *
      * @var array
      */
-    protected static $_aInstanceCache = array();
+    protected static $_aInstanceCache = [];
 
     /**
      * Class instance array
      *
      * @var array
      */
-    protected static $_aClassInstances = array();
+    protected static $_aClassInstances = [];
 
     /**
      * UtilsObject class instance.
@@ -133,7 +133,7 @@ class UtilsObject
      */
     public static function resetClassInstances()
     {
-        static::$_aClassInstances = array();
+        static::$_aClassInstances = [];
     }
 
     /**
@@ -165,7 +165,7 @@ class UtilsObject
             }
         }
 
-        static::$_aInstanceCache = array();
+        static::$_aInstanceCache = [];
     }
 
     /**

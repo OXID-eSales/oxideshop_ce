@@ -76,7 +76,7 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function _createAttributeListFromSql($sSelect)
     {
-        $aAttributes = array();
+        $aAttributes = [];
         $rs = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->select($sSelect);
         if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
@@ -230,7 +230,7 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
 
         if (count($aParentAttributes)) {
-            $aAttrIds = array();
+            $aAttrIds = [];
             foreach ($aAttributes as $aAttribute) {
                 $aAttrIds[] = $aAttribute['OXID'];
             }

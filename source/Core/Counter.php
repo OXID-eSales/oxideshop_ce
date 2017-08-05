@@ -49,12 +49,12 @@ class Counter
         try {
             /** Block row for reading until the counter is updated */
             $query = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = ? FOR UPDATE";
-            $currentCounter = (int) $database->getOne($query, array($ident));
+            $currentCounter = (int) $database->getOne($query, [$ident]);
             $nextCounter = $currentCounter + 1;
 
             /** Insert or increment the the counter */
             $query = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (?, 1) ON DUPLICATE KEY UPDATE `oxcount` = `oxcount` + 1";
-            $database->execute($query, array($ident));
+            $database->execute($query, [$ident]);
 
             $database->commitTransaction();
         } catch (Exception $exception) {
@@ -85,11 +85,11 @@ class Counter
         try {
             /** Block row for reading until the counter is updated */
             $query = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = ? FOR UPDATE";
-            $database->getOne($query, array($ident));
+            $database->getOne($query, [$ident]);
 
             /** Insert or update the counter, if the value to be updated is greater, than the current value */
             $query = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `oxcount` = IF(? > oxcount, ?, oxcount)";
-            $result = $database->execute($query, array($ident, $count, $count, $count ));
+            $result = $database->execute($query, [$ident, $count, $count, $count ]);
 
             $database->commitTransaction();
         } catch (Exception $exception) {

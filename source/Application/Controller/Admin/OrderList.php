@@ -71,7 +71,7 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
             $folder = $names[0];
         }
 
-        $search = array('oxorderarticles' => 'ARTID', 'oxpayments' => 'PAYMENT');
+        $search = ['oxorderarticles' => 'ARTID', 'oxpayments' => 'PAYMENT'];
         $searchQuery = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("addsearch");
         $searchField = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("addsearchfld");
 

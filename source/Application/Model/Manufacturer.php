@@ -32,7 +32,7 @@ use oxField;
 class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
 
-    protected static $_aRootManufacturer = array();
+    protected static $_aRootManufacturer = [];
 
     /**
      * @var string Name of current class
@@ -79,7 +79,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
      *
      * @var array
      */
-    protected $_aSeoUrls = array();
+    protected $_aSeoUrls = [];
 
     /**
      * Class constructor, initiates parent constructor (parent::oxI18n()).
@@ -252,7 +252,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
      *
      * @return string
      */
-    public function getStdLink($iLang = null, $aParams = array())
+    public function getStdLink($iLang = null, $aParams = [])
     {
         if ($iLang === null) {
             $iLang = $this->getLanguage();

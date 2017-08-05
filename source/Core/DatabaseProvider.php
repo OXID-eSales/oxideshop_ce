@@ -55,7 +55,7 @@ class DatabaseProvider
     /**
      * @var array Database tables descriptions cache array
      */
-    protected static $tblDescCache = array();
+    protected static $tblDescCache = [];
 
     /**
      * @var null|ConfigFile Database type
@@ -304,20 +304,20 @@ class DatabaseProvider
          */
         $databasePassword = $this->getConfigParam('dbPwd');
 
-        $connectionParameters = array(
-            'default' => array(
+        $connectionParameters = [
+            'default' => [
                 'databaseDriver'    => $databaseDriver,
                 'databaseHost'      => $databaseHost,
                 'databasePort'      => $databasePort,
                 'databaseName'      => $databaseName,
                 'databaseUser'      => $databaseUser,
                 'databasePassword'  => $databasePassword,
-            )
-        );
+            ]
+        ];
 
         /** The charset has to be set during the connection to the database */
         $charset = 'utf8';
-        $connectionParameters['default'] = array_merge($connectionParameters['default'], array('connectionCharset' => $charset));
+        $connectionParameters['default'] = array_merge($connectionParameters['default'], ['connectionCharset' => $charset]);
 
         return $connectionParameters;
     }

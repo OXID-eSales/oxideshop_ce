@@ -180,8 +180,8 @@ class RegisterController extends \OxidEsales\Eshop\Application\Controller\UserCo
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
 
         $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('REGISTER', $iBaseLanguage, false);

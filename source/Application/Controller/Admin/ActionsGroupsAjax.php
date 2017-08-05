@@ -36,19 +36,19 @@ class ActionsGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      *
      * @var array
      */
-    protected $_aColumns = array(
+    protected $_aColumns = [
         // field , table,  visible, multilanguage, ident
-        'container1' => array(
-            array('oxtitle', 'oxgroups', 1, 0, 0),
-            array('oxid', 'oxgroups', 0, 0, 0),
-            array('oxid', 'oxgroups', 0, 0, 1),
-        ),
-         'container2' => array(
-             array('oxtitle', 'oxgroups', 1, 0, 0),
-             array('oxid', 'oxgroups', 0, 0, 0),
-             array('oxid', 'oxobject2action', 0, 0, 1),
-         )
-    );
+        'container1' => [
+            ['oxtitle', 'oxgroups', 1, 0, 0],
+            ['oxid', 'oxgroups', 0, 0, 0],
+            ['oxid', 'oxgroups', 0, 0, 1],
+        ],
+         'container2' => [
+             ['oxtitle', 'oxgroups', 1, 0, 0],
+             ['oxid', 'oxgroups', 0, 0, 0],
+             ['oxid', 'oxobject2action', 0, 0, 1],
+         ]
+    ];
 
     /**
      * Returns SQL query for data to fetc

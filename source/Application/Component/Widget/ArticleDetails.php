@@ -44,7 +44,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      *
      * @var array
      */
-    protected $_aComponentNames = array('oxcmp_cur' => 1, 'oxcmp_shop' => 1, 'oxcmp_basket' => 1, 'oxcmp_user' => 1);
+    protected $_aComponentNames = ['oxcmp_cur' => 1, 'oxcmp_shop' => 1, 'oxcmp_basket' => 1, 'oxcmp_user' => 1];
 
     /**
      * Current class template name.
@@ -402,7 +402,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
                     //#1104S if parent is buyable load select lists too
                     $oParent->enablePriceLoad();
                     $oParent->aSelectlist = $oParent->getSelectLists();
-                    $this->_aVariantList = array_merge(array($oParent), $this->_aVariantList->getArray());
+                    $this->_aVariantList = array_merge([$oParent], $this->_aVariantList->getArray());
                 }
             } else {
                 //loading full list of variants
@@ -647,7 +647,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
             $this->_aSimilarRecommListIds = false;
 
             if ($oProduct = $this->getProduct()) {
-                $this->_aSimilarRecommListIds = array($oProduct->getId());
+                $this->_aSimilarRecommListIds = [$oProduct->getId()];
             }
         }
 
@@ -1011,7 +1011,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
         if ($this->getListType() != 'search' && $oCategory && $oCategory instanceof \OxidEsales\Eshop\Application\Model\Category) {
             if ($sSortBy = $oCategory->getDefaultSorting()) {
                 $sSortDir = ($oCategory->getDefaultSortingMode()) ? "desc" : "asc";
-                $aSorting = array('sortby' => $sSortBy, 'sortdir' => $sSortDir);
+                $aSorting = ['sortby' => $sSortBy, 'sortdir' => $sSortDir];
             }
         }
 

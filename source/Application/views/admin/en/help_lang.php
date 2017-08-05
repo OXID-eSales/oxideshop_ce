@@ -36,7 +36,7 @@
  * <ul> and <li> for lists
  */
 
-$aLang =  array(
+$aLang =  [
 'charset'                                     => 'UTF-8',
 
 'HELP_SHOP_SYSTEM_OTHERCOUNTRYORDER'          => 'Here you can set if orders can be made in countries for which no shipping costs are defined:' .
@@ -590,4 +590,4 @@ $aLang =  array(
 'HELP_SHOP_CONFIG_DEBIT_OLD_BANK_INFORMATION_NOT_ALLOWED' => 'Only IBAN and BIC can be entered during the checkout. Bank account number and the bank code can only be entered if this check box is not activated.',
 'HELP_SHOP_CONFIG_ENABLE_INTANGIBLE_PRODUCTS_AGREEMENT'   => 'If this option is activated, users have to confirm terms and conditions for intangible or downloadable products in the fourth step of the check-out process. Please make sure this option is enabled for the specific item as well!',
 
-);
+];

@@ -220,7 +220,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     public function getArticleList()
     {
         if ($this->_aArticleList === null) {
-            $this->_aArticleList = array();
+            $this->_aArticleList = [];
             if ($this->_getLoadActionsParam()) {
                 // start list
                 $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
@@ -265,7 +265,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     public function getNewestArticles()
     {
         if ($this->_aNewArticleList === null) {
-            $this->_aNewArticleList = array();
+            $this->_aNewArticleList = [];
             if ($this->_getLoadActionsParam()) {
                 // newest articles
                 $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
@@ -326,7 +326,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     public function getCatOfferArticleList()
     {
         if ($this->_oCatOfferArtList === null) {
-            $this->_oCatOfferArtList = array();
+            $this->_oCatOfferArtList = [];
             if ($this->_getLoadActionsParam()) {
                 // "category offer" articles
                 $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);

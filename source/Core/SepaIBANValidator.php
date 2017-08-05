@@ -31,7 +31,7 @@ class SepaIBANValidator
 
     const IBAN_ALGORITHM_MOD_VALUE = 97;
 
-    protected $_aCodeLengths = array();
+    protected $_aCodeLengths = [];
 
     /**
      * International bank account number validation
@@ -178,7 +178,7 @@ class SepaIBANValidator
      */
     protected function _replaceLettersToNumbers($sIBAN)
     {
-        $aReplaceArray = array(
+        $aReplaceArray = [
             'A' => 10,
             'B' => 11,
             'C' => 12,
@@ -205,7 +205,7 @@ class SepaIBANValidator
             'X' => 33,
             'Y' => 34,
             'Z' => 35
-        );
+        ];
 
         return str_replace(
             array_keys($aReplaceArray),

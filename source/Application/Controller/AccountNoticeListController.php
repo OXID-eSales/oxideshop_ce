@@ -161,8 +161,8 @@ class AccountNoticeListController extends \OxidEsales\Eshop\Application\Controll
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
 
         $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $sSelfLink = $this->getViewConfig()->getSelfLink();

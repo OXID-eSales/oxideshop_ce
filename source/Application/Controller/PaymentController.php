@@ -665,7 +665,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
         $aDynData = $this->getSession()->getVariable("dynvalue");
 
-        $aFields = array("kktype", "kknumber", "kkname", "kkmonth", "kkyear", "kkpruef");
+        $aFields = ["kktype", "kknumber", "kkname", "kkmonth", "kkyear", "kkpruef"];
 
         if ($aDynData) {
             if (!$this->_checkArrValuesEmpty($aDynData, $aFields)) {
@@ -716,8 +716,8 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
 
 
         $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();

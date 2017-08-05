@@ -42,14 +42,14 @@ class View extends Core
      *
      * @var array
      */
-    protected $_aMessages = array();
+    protected $_aMessages = [];
 
     /**
      * View parameters array
      *
      * @var array
      */
-    protected $_aViewParams = array();
+    protected $_aViewParams = [];
 
     /** @var string */
     private $templateFileName = 'default.php';
@@ -137,7 +137,7 @@ class View extends Core
     public function setMessage($sMessage, $blOverride = false)
     {
         if ($blOverride) {
-            $this->_aMessages = array();
+            $this->_aMessages = [];
         }
 
         $this->_aMessages[] = $sMessage;
@@ -278,7 +278,7 @@ class View extends Core
             $oUtils->removeDir($sPath . "out/pictures/generated", true);
 
             // "/master" cleanup, leaving nopic
-            $oUtils->removeDir($sPath . "out/pictures/master", true, 1, array("nopic.jpg"));
+            $oUtils->removeDir($sPath . "out/pictures/master", true, 1, ["nopic.jpg"]);
         }
 
         $aSetupConfig = $oSession->getSessionParam("aSetupConfig");

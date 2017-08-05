@@ -38,22 +38,22 @@ class DiscountCategoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @var array
      */
-    protected $_aColumns = array(
+    protected $_aColumns = [
         // field , table, visible, multilanguage, id
-        'container1' => array(
-            array('oxtitle', 'oxcategories', 1, 1, 0),
-            array('oxdesc', 'oxcategories', 1, 1, 0),
-            array('oxid', 'oxcategories', 0, 0, 0),
-            array('oxid', 'oxcategories', 0, 0, 1)
-        ),
-         'container2' => array(
-             array('oxtitle', 'oxcategories', 1, 1, 0),
-             array('oxdesc', 'oxcategories', 1, 1, 0),
-             array('oxid', 'oxcategories', 0, 0, 0),
-             array('oxid', 'oxobject2discount', 0, 0, 1),
-             array('oxid', 'oxcategories', 0, 0, 1)
-         ),
-    );
+        'container1' => [
+            ['oxtitle', 'oxcategories', 1, 1, 0],
+            ['oxdesc', 'oxcategories', 1, 1, 0],
+            ['oxid', 'oxcategories', 0, 0, 0],
+            ['oxid', 'oxcategories', 0, 0, 1]
+        ],
+         'container2' => [
+             ['oxtitle', 'oxcategories', 1, 1, 0],
+             ['oxdesc', 'oxcategories', 1, 1, 0],
+             ['oxid', 'oxcategories', 0, 0, 0],
+             ['oxid', 'oxobject2discount', 0, 0, 1],
+             ['oxid', 'oxcategories', 0, 0, 1]
+         ],
+    ];
 
     /**
      * Returns SQL query for data to fetc

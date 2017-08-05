@@ -35,7 +35,7 @@ class DebugInfo
      *
      * @return string
      */
-    public function formatTemplateData($viewData = array())
+    public function formatTemplateData($viewData = [])
     {
         $log = '';
         reset($viewData);

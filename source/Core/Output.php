@@ -57,7 +57,7 @@ class Output extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aBuffer = array();
+    protected $_aBuffer = [];
 
     /**
      * Class constructor. Sets search engine mode according to client info

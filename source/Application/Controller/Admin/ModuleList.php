@@ -35,7 +35,7 @@ class ModuleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLis
      * @var array Loaded modules array
      *
      */
-    protected $_aModules = array();
+    protected $_aModules = [];
 
 
     /**

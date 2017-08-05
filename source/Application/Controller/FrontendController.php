@@ -65,7 +65,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      *
      * @var array of object
      */
-    protected $_oaComponents = array();
+    protected $_oaComponents = [];
 
     /**
      * Flag if current view is an order view
@@ -86,7 +86,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      *
      * @var array
      */
-    protected $_aListDisplayTypes = array('grid', 'line', 'infogrid');
+    protected $_aListDisplayTypes = ['grid', 'line', 'infogrid'];
 
     /**
      * List display type
@@ -305,7 +305,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      *
      * @var array
      */
-    protected $_aComponentNames = array(
+    protected $_aComponentNames = [
         'oxcmp_user'       => 1, // 0 means dont init if cached
         'oxcmp_lang'       => 0,
         'oxcmp_cur'        => 1,
@@ -316,7 +316,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         'oxcmp_news' => 0,
         // END deprecated
         'oxcmp_basket'     => 1
-    );
+    ];
 
     /**
      * Names of components (classes) that are initiated and executed
@@ -324,7 +324,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      *
      * @var array
      */
-    protected $_aUserComponentNames = array();
+    protected $_aUserComponentNames = [];
 
     /** @var \OxidEsales\Eshop\Application\Model\Article Current view product object. */
     protected $_oProduct = null;
@@ -357,7 +357,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     protected $_iNewsRealStatus = null;
 
     /** @return array Url parameters which block redirection. */
-    protected $_aBlockRedirectParams = array('fnc', 'stoken', 'force_sid', 'force_admin_sid');
+    protected $_aBlockRedirectParams = ['fnc', 'stoken', 'force_sid', 'force_admin_sid'];
 
     /** @var \OxidEsales\Eshop\Application\Model\Vendor Root vendor object. */
     protected $_oRootVendor = null;
@@ -384,7 +384,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     protected $_sCatTreePath = null;
 
     /** @var array Loaded contents array (cache). */
-    protected $_aContents = array();
+    protected $_aContents = [];
 
     /** @var bool Sign if to load and show top5articles action. */
     protected $_blTop5Action = false;
@@ -484,7 +484,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
                     $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
                     $database->execute(
                         "replace oxseologs ( oxstdurl, oxident, oxshopid, oxlang ) values ( ?, ?, ?, ? ) ",
-                        array($requestUrl, $id, $shopId, $languageId)
+                        [$requestUrl, $id, $shopId, $languageId]
                     );
                 }
             }
@@ -840,15 +840,15 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function addRssFeed($title, $url, $key = null)
     {
         if (!is_array($this->_aRssLinks)) {
-            $this->_aRssLinks = array();
+            $this->_aRssLinks = [];
         }
 
         $url = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->prepareUrlForNoSession($url);
 
         if ($key === null) {
-            $this->_aRssLinks[] = array('title' => $title, 'link' => $url);
+            $this->_aRssLinks[] = ['title' => $title, 'link' => $url];
         } else {
-            $this->_aRssLinks[$key] = array('title' => $title, 'link' => $url);
+            $this->_aRssLinks[$key] = ['title' => $title, 'link' => $url];
         }
     }
 
@@ -900,7 +900,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function getUserSelectedSorting()
     {
-        $sortDirections = array('desc', 'asc');
+        $sortDirections = ['desc', 'asc'];
 
         $request = Registry::get(\OxidEsales\Eshop\Core\Request::class);
         $sortBy = $request->getRequestParameter($this->getSortOrderByParameterName());
@@ -912,7 +912,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             in_array(Str::getStr()->strtolower($sortOrder), $sortDirections) &&
             in_array($sortBy, oxNew(\OxidEsales\Eshop\Application\Model\Article::class)->getFieldNames())
         ) {
-            return array('sortby' => $sortBy, 'sortdir' => $sortOrder);
+            return ['sortby' => $sortBy, 'sortdir' => $sortOrder];
         }
     }
 
@@ -1198,7 +1198,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         }
 
         if (!is_array($numbersOfCategoryArticles) || !isset($numbersOfCategoryArticles[0])) {
-            $numbersOfCategoryArticles = array($numberOfCategoryArticles);
+            $numbersOfCategoryArticles = [$numberOfCategoryArticles];
             $config->setConfigParam('aNrofCatArticles', $numbersOfCategoryArticles);
         } else {
             $numberOfCategoryArticles = $numbersOfCategoryArticles[0];
@@ -1270,7 +1270,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
 
             // some special cases
             $meta = str_replace(' ,', ',', $meta);
-            $pattern = array("/,[\s\+\-\*]*,/", "/\s+,/");
+            $pattern = ["/,[\s\+\-\*]*,/", "/\s+,/"];
             $meta = $stringModifier->preg_replace($pattern, ',', $meta);
             $meta = \OxidEsales\Eshop\Core\Registry::getUtilsString()->minimizeTruncateString($meta, $length);
             $meta = $stringModifier->htmlspecialchars($meta);
@@ -1307,7 +1307,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      *
      * @return string of words separated by comma
      */
-    protected function _removeDuplicatedWords($input, $skipTags = array())
+    protected function _removeDuplicatedWords($input, $skipTags = [])
     {
         $stringModifier = getStr();
         if (is_array($input)) {
@@ -1466,7 +1466,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function getPageTitle()
     {
-        $titleParts = array();
+        $titleParts = [];
         $titleParts[] = $this->getTitlePrefix();
         $titleParts[] = $this->getTitle();
         $titleParts[] = $this->getTitleSuffix();
@@ -1613,7 +1613,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         $class = $this->getClassName();
         $function = $this->getFncName();
 
-        $forbiddenFunctions = array('tobasket', 'login_noredirect', 'addVoucher', 'moveleft', 'moveright');
+        $forbiddenFunctions = ['tobasket', 'login_noredirect', 'addVoucher', 'moveleft', 'moveright'];
         if (in_array($function, $forbiddenFunctions)) {
             $function = '';
         }
@@ -1695,7 +1695,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         $function = $this->getFncName();
 
         // #921 S
-        $forbiddenFunctions = array('tobasket', 'login_noredirect', 'addVoucher');
+        $forbiddenFunctions = ['tobasket', 'login_noredirect', 'addVoucher'];
         if (in_array($function, $forbiddenFunctions)) {
             $function = '';
         }
@@ -2315,7 +2315,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     {
         if ($this->_blBargainAction) {
             if ($this->_aBargainArticleList === null) {
-                $this->_aBargainArticleList = array();
+                $this->_aBargainArticleList = [];
                 if ($this->getConfig()->getConfigParam('bl_perfLoadAktion')) {
                     $articleList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                     $articleList->loadActionArticles('OXBARGAIN');

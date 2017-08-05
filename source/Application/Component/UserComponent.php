@@ -90,7 +90,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @var array
      */
-    protected $_aAllowedClasses = array(
+    protected $_aAllowedClasses = [
         'register',
         'forgotpwd',
         'content',
@@ -98,7 +98,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         'clearcookies',
         'oxwservicemenu',
         'oxwminibasket',
-    );
+    ];
 
     /**
      * Sets oxcmp_oxuser::blIsComponent = true, fetches user error
@@ -724,7 +724,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $blShowShipAddressParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('blshowshipaddress');
         $blShowShipAddressVariable = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('blshowshipaddress');
         $sDeliveryAddressParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('deladr', true);
-        $aDeladr = ($blShowShipAddressParameter || $blShowShipAddressVariable) ? $sDeliveryAddressParameter : array();
+        $aDeladr = ($blShowShipAddressParameter || $blShowShipAddressVariable) ? $sDeliveryAddressParameter : [];
         $aDelAdress = $aDeladr;
 
         if (is_array($aDeladr)) {
@@ -734,7 +734,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             }
             if (!count($aDeladr) || implode('', $aDeladr) == '') {
                 // resetting to avoid empty records
-                $aDelAdress = array();
+                $aDelAdress = [];
             }
         }
 

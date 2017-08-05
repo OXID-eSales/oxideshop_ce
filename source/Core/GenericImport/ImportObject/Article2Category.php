@@ -31,8 +31,8 @@ class Article2Category extends \OxidEsales\Eshop\Core\GenericImport\ImportObject
     protected $tableName = 'oxobject2category';
 
     /** @var array List of database key fields (i.e. oxid). */
-    protected $keyFieldList = array(
+    protected $keyFieldList = [
         'OXOBJECTID' => 'OXOBJECTID',
         'OXCATNID'   => 'OXCATNID',
-    );
+    ];
 }

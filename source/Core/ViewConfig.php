@@ -51,7 +51,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aConfigParams = array();
+    protected $_aConfigParams = [];
 
     /**
      * Help page link
@@ -208,7 +208,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     {
         $sClass = $this->getActiveClassName();
 
-        return array('oxhelp' . strtolower($sClass), 'oxhelpdefault');
+        return ['oxhelp' . strtolower($sClass), 'oxhelpdefault'];
     }
 
     /**
@@ -1433,7 +1433,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getAdditionalNavigationParameters()
     {
-        return array();
+        return [];
     }
 
     /**

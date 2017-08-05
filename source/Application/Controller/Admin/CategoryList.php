@@ -90,7 +90,7 @@ class CategoryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
 
         // add Root as fake category
         // rebuild list as we need the root entry at the first position
-        $aNewList = array();
+        $aNewList = [];
         $oRoot = new stdClass();
         $oRoot->oxcategories__oxid = new \OxidEsales\Eshop\Core\Field(null, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oRoot->oxcategories__oxtitle = new \OxidEsales\Eshop\Core\Field($oLang->translateString("viewAll", $iLang), \OxidEsales\Eshop\Core\Field::T_RAW);

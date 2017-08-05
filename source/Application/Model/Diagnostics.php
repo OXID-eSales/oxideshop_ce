@@ -66,7 +66,7 @@ class Diagnostics
      *
      * @var array
      */
-    protected $_aFileCheckerPathList = array(
+    protected $_aFileCheckerPathList = [
         'bootstrap.php',
         'index.php',
         'oxid.php',
@@ -76,14 +76,14 @@ class Diagnostics
         'bin/',
         'Core/',
         'modules/',
-    );
+    ];
 
     /**
      * Array of file extensions which are to be checked
      *
      * @var array
      */
-    protected $_aFileCheckerExtensionList = array('php', 'tpl');
+    protected $_aFileCheckerExtensionList = ['php', 'tpl'];
 
     /**
      * Setter for list of files and folders to check
@@ -222,7 +222,7 @@ class Diagnostics
      */
     public function getShopDetails()
     {
-        $aShopDetails = array(
+        $aShopDetails = [
             'Date'                => date(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('fullDateFormat'), time()),
             'URL'                 => $this->getShopLink(),
             'Edition'             => $this->getEdition(),
@@ -235,7 +235,7 @@ class Diagnostics
             'Articles (Total)'    => $this->_countRows('oxarticles', true),
             'Articles (Active)'   => $this->_countRows('oxarticles', false),
             'Users (Total)'       => $this->_countRows('oxuser', true),
-        );
+        ];
 
         return $aShopDetails;
     }
@@ -270,7 +270,7 @@ class Diagnostics
      */
     public function getPhpSelection()
     {
-        $aPhpIniParams = array(
+        $aPhpIniParams = [
             'allow_url_fopen',
             'display_errors',
             'file_uploads',
@@ -279,9 +279,9 @@ class Diagnostics
             'post_max_size',
             'register_globals',
             'upload_max_filesize',
-        );
+        ];
 
-        $aPhpIniConf = array();
+        $aPhpIniConf = [];
 
         foreach ($aPhpIniParams as $sParam) {
             $sValue = ini_get($sParam);
@@ -341,7 +341,7 @@ class Diagnostics
             }
         }
 
-        $aServerInfo = array(
+        $aServerInfo = [
             'Server OS'     => @php_uname('s'),
             'VM'            => $this->_getVirtualizationSystem(),
             'PHP'           => $this->_getPhpVersion(),
@@ -354,7 +354,7 @@ class Diagnostics
             'CPU Model'     => $sCpuModel,
             'CPU frequency' => $sCpuFreq,
             'CPU cores'     => round($iCpuCores, 0),
-        );
+        ];
 
         return $aServerInfo;
     }

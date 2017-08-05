@@ -93,7 +93,7 @@ class ShopIdCalculator
             return $aMap;
         }
 
-        $aMap = array();
+        $aMap = [];
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sConfKey = $this->_getConfKey();

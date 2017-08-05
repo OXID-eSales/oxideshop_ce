@@ -35,7 +35,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aViewData = array();
+    protected $_aViewData = [];
 
     /**
      * Location of a executed class file.

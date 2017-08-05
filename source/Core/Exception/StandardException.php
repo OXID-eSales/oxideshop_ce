@@ -191,7 +191,7 @@ class StandardException extends \Exception
      */
     public function getValues()
     {
-        return array();
+        return [];
     }
 
     /**

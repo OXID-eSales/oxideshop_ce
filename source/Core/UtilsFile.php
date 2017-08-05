@@ -54,7 +54,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aTypeToPath = array('TC'    => 'master/category/thumb',
+    protected $_aTypeToPath = ['TC'    => 'master/category/thumb',
                                     'CICO'  => 'master/category/icon',
                                     'PICO'  => 'master/category/promo_icon',
                                     'MICO'  => 'master/manufacturer/icon',
@@ -102,21 +102,21 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         //
                                     'WP'    => 'master/wrapping',
                                     'FL'    => 'media',
-    );
+    ];
 
     /**
      * Denied file types
      *
      * @var array
      */
-    protected $_aBadFiles = array('php', 'php3', 'php4', 'php5', 'phps', 'php6', 'jsp', 'cgi', 'cmf', 'exe');
+    protected $_aBadFiles = ['php', 'php3', 'php4', 'php5', 'phps', 'php6', 'jsp', 'cgi', 'cmf', 'exe'];
 
     /**
      * Allowed to upload files in demo mode ( "white list")
      *
      * @var array
      */
-    protected $_aAllowedFiles = array('gif', 'jpg', 'jpeg', 'png', 'pdf');
+    protected $_aAllowedFiles = ['gif', 'jpg', 'jpeg', 'png', 'pdf'];
 
     /**
      * Counts how many new files added.
@@ -419,7 +419,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      *
      * @return object
      */
-    public function processFiles($oObject = null, $aFiles = array(), $blUseMasterImage = false, $blUnique = true)
+    public function processFiles($oObject = null, $aFiles = [], $blUseMasterImage = false, $blUnique = true)
     {
         $aFiles = $aFiles ? $aFiles : $_FILES;
         if (isset($aFiles['myfile']['name'])) {

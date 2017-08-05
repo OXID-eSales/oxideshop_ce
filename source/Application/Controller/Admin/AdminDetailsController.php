@@ -112,7 +112,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
         // store smarty tags ([{$shop->currenthomedir}]/[{$oViewConf->getCurrentHomeDir()}]) in long
         // descriptions, which are filled dynamically
         if (!$this->getConfig()->getConfigParam('bl_perfParseLongDescinSmarty')) {
-            $aReplace = array('[{$shop->currenthomedir}]', '[{$oViewConf->getCurrentHomeDir()}]');
+            $aReplace = ['[{$shop->currenthomedir}]', '[{$oViewConf->getCurrentHomeDir()}]'];
             $sValue = str_replace($aReplace, $this->getConfig()->getCurrentShopURL(false), $sValue);
         }
 
@@ -239,7 +239,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
         $oRoot = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         $oRoot->oxcategories__oxtitle = new \OxidEsales\Eshop\Core\Field('--');
 
-        $oCatTree->assign(array_merge(array('' => $oRoot), $oCatTree->getArray()));
+        $oCatTree->assign(array_merge(['' => $oRoot], $oCatTree->getArray()));
 
         // passing to view
         $this->_aViewData[$sTplVarName] = $oCatTree;

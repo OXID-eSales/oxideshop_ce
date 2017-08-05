@@ -47,7 +47,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aTemplateDir = array();
+    protected $_aTemplateDir = [];
 
     /**
      * Templates directories array
@@ -353,12 +353,12 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
         $smarty->register_resource(
             'ox',
-            array(
+            [
                 'ox_get_template',
                 'ox_get_timestamp',
                 'ox_get_secure',
                 'ox_get_trusted'
-            )
+            ]
         );
 
         $smartyDir = $this->getSmartyDir();
@@ -368,7 +368,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         $smarty->cache_dir = $smartyDir;
         $smarty->template_dir = $this->getTemplateDirs();
         $smarty->compile_id = $this->getTemplateCompileId();
-        $smarty->default_template_handler_func = array(\OxidEsales\Eshop\Core\Registry::getUtilsView(), '_smartyDefaultTemplateHandler');
+        $smarty->default_template_handler_func = [\OxidEsales\Eshop\Core\Registry::getUtilsView(), '_smartyDefaultTemplateHandler'];
 
         $coreDirectory = $config->getConfigParam('sCoreDir');
         array_unshift($smarty->plugins_dir, $coreDirectory . 'Smarty/Plugin');
@@ -478,12 +478,12 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      */
     public function getTemplateBlocks($templateFileName)
     {
-        $templateBlocksWithContent = array();
+        $templateBlocksWithContent = [];
 
         $config = $this->getConfig();
 
         $tplDir = trim($config->getConfigParam('_sTemplateDir'), '/\\');
-        $templateFileName = str_replace(array('\\', '//'), '/', $templateFileName);
+        $templateFileName = str_replace(['\\', '//'], '/', $templateFileName);
         if (preg_match('@/' . preg_quote($tplDir, '@') . '/(.*)$@', $templateFileName, $m)) {
             $templateFileName = $m[1];
         }
@@ -635,7 +635,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      */
     private function formListOfDuplicatedBlocks($activeBlockTemplates)
     {
-        $templateBlocksToExchange = array();
+        $templateBlocksToExchange = [];
         $customThemeId = $this->getConfig()->getConfigParam('sCustomTheme');
 
         foreach ($activeBlockTemplates as $activeBlockTemplate) {
@@ -661,7 +661,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      */
     private function removeDefaultBlocks($activeBlockTemplates, $templateBlocksToExchange)
     {
-        $templateBlocks = array();
+        $templateBlocks = [];
         foreach ($activeBlockTemplates as $activeBlockTemplate) {
             if (!in_array($this->prepareBlockKey($activeBlockTemplate), $templateBlocksToExchange['theme'])
                 || $activeBlockTemplate['OXTHEME']
@@ -684,7 +684,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     private function removeParentBlocks($templateBlocks, $templateBlocksToExchange)
     {
         $activeBlockTemplates = $templateBlocks;
-        $templateBlocks = array();
+        $templateBlocks = [];
         $customThemeId = $this->getConfig()->getConfigParam('sCustomTheme');
         foreach ($activeBlockTemplates as $activeBlockTemplate) {
             if (!in_array($this->prepareBlockKey($activeBlockTemplate), $templateBlocksToExchange['custom_theme'])
@@ -732,12 +732,12 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      */
     private function fillTemplateBlockWithContent($blockTemplates)
     {
-        $templateBlocksWithContent = array();
+        $templateBlocksWithContent = [];
 
         foreach ($blockTemplates as $activeBlockTemplate) {
             try {
                 if (!is_array($templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']])) {
-                    $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']] = array();
+                    $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']] = [];
                 }
                 $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']][] = $this->_getTemplateBlock($activeBlockTemplate['OXMODULE'], $activeBlockTemplate['OXFILE']);
             } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {

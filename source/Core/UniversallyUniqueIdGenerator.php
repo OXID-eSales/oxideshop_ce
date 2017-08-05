@@ -82,7 +82,7 @@ class UniversallyUniqueIdGenerator
      */
     public function generateV5($sSeed, $sSalt)
     {
-        $sSeed = str_replace(array('-', '{', '}'), '', $sSeed);
+        $sSeed = str_replace(['-', '{', '}'], '', $sSeed);
         $sBinarySeed = '';
         for ($i = 0; $i < strlen($sSeed); $i += 2) {
             $sBinarySeed .= chr(hexdec($sSeed[$i] . $sSeed[$i + 1]));

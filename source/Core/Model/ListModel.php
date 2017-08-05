@@ -34,7 +34,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      *
      * @var array $_aArray
      */
-    protected $_aArray = array();
+    protected $_aArray = [];
 
     /**
      * Save the state, that active element was unset
@@ -233,7 +233,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
             unset( $this->_aArray[$key]);
         }
         reset( $this->_aArray);*/
-        $this->_aArray = array();
+        $this->_aArray = [];
     }
 
     /**
@@ -284,7 +284,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
     /**
      * @var array SQL Limit, 0 => Start, 1 => Records
      */
-    protected $_aSqlLimit = array();
+    protected $_aSqlLimit = [];
 
     /**
      * Class Constructor
@@ -378,7 +378,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      * @param string $sql        SQL select statement or prepared statement
      * @param array  $parameters Parameters to be used in a prepared statement
      */
-    public function selectString($sql, array $parameters = array())
+    public function selectString($sql, array $parameters = [])
     {
         $this->clear();
 

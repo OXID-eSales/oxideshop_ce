@@ -58,7 +58,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aSupportedExpathXmlEncodings = array('utf-8', 'utf-16', 'iso-8859-1', 'us-ascii');
+    protected $_aSupportedExpathXmlEncodings = ['utf-8', 'utf-16', 'iso-8859-1', 'us-ascii'];
 
     /**
      * clean empty nodes from tree
@@ -224,7 +224,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
         $url = $this->_getAdminUrl();
         $xPath = new DomXPath($dom);
         $str = getStr();
-        foreach (array('url', 'link') as $attrType) {
+        foreach (['url', 'link'] as $attrType) {
             foreach ($xPath->query("//OXMENU//*[@$attrType]") as $node) {
                 $localUrl = $node->getAttribute($attrType);
                 if (strpos($localUrl, 'index.php?') === 0) {

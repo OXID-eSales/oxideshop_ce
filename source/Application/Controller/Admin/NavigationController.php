@@ -65,7 +65,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
             $this->_aViewData["menustructure"] = $oNavTree->getDomXml()->documentElement->childNodes;
 
             // version patch string
-            $sVersion = str_replace(array("EE.", "PE."), "", $this->_sShopVersion);
+            $sVersion = str_replace(["EE.", "PE."], "", $this->_sShopVersion);
             $this->_aViewData["sVersion"] = trim($sVersion);
 
             //checking requirements if this is not nav frame reload
@@ -192,7 +192,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
      */
     protected function _doStartUpChecks()
     {
-        $aMessage = array();
+        $aMessage = [];
 
         if ($this->getConfig()->getConfigParam('blCheckSysReq') !== false) {
             // check if system reguirements are ok

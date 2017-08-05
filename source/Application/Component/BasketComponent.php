@@ -57,7 +57,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @var array
      */
-    public $aRedirectParams = array('cnid', // category id
+    public $aRedirectParams = ['cnid', // category id
                                     'mnid', // manufacturer id
                                     'anid', // active article id
                                     'tpl', // spec. template
@@ -69,7 +69,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
                                     'searchrecomm', // search recomendation
                                     'recommid' // recomm. list id
                                     // END deprecated
-    );
+    ];
 
     /**
      * Initiates component.
@@ -348,12 +348,12 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
             $sBasketItemId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('bindex');
 
-            $aProducts[$sProductId] = array('am'           => $dAmount,
+            $aProducts[$sProductId] = ['am'           => $dAmount,
                                             'sel'          => $aSel,
                                             'persparam'    => $aPersParam,
                                             'override'     => $blOverride,
                                             'basketitemid' => $sBasketItemId
-            );
+            ];
         }
 
         if (is_array($aProducts) && count($aProducts)) {
@@ -390,7 +390,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $basket = $this->getSession()->getBasket();
         $basketInfo = $basket->getBasketSummary();
 
-        $basketItemAmounts = array();
+        $basketItemAmounts = [];
 
         foreach ($products as $addProductId => $productInfo) {
             $data = $this->prepareProductInformation($addProductId, $productInfo);
@@ -436,7 +436,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected function _setLastCall($sCallName, $aProductInfo, $aBasketInfo)
     {
-        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('aLastcall', array($sCallName => $aProductInfo));
+        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('aLastcall', [$sCallName => $aProductInfo]);
     }
 
     /**
@@ -528,7 +528,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected function prepareProductInformation($addProductId, $productInfo)
     {
-        $return = array();
+        $return = [];
 
         $return['id'] = isset($productInfo['aid']) ? $productInfo['aid'] : $addProductId;
         $return['amount'] = isset($productInfo['am']) ? $productInfo['am'] : 0;

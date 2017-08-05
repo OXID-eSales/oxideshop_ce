@@ -210,7 +210,7 @@ class DeliveryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $iLang = $oLang->getTplLanguage();
 
-        $aDelTypes = array();
+        $aDelTypes = [];
         $oType = new stdClass();
         $oType->sType = "a";      // amount
         $oType->sDesc = $oLang->translateString("amount", $iLang);

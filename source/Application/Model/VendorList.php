@@ -45,7 +45,7 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @var array
      */
-    protected $_aPath = array();
+    protected $_aPath = [];
 
     /**
      * To show vendor article count or not

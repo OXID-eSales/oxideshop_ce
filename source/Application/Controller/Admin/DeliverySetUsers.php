@@ -56,7 +56,7 @@ class DeliverySetUsers extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
         $oRoot->oxgroups__oxid = new \OxidEsales\Eshop\Core\Field("");
         $oRoot->oxgroups__oxtitle = new \OxidEsales\Eshop\Core\Field("-- ");
         // rebuild list as we need the "no value" entry at the first position
-        $aNewList = array();
+        $aNewList = [];
         $aNewList[] = $oRoot;
 
         foreach ($oGroups as $val) {

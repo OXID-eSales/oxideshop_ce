@@ -151,14 +151,14 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _getFieldLongName($sFieldName)
     {
-        $aFieldNames = array(
+        $aFieldNames = [
             'oxorderfiles__oxarticletitle',
             'oxorderfiles__oxarticleartnum',
             'oxorderfiles__oxordernr',
             'oxorderfiles__oxorderdate',
             'oxorderfiles__oxispaid',
             'oxorderfiles__oxpurchasedonly'
-        );
+        ];
 
         if (in_array($sFieldName, $aFieldNames)) {
             return $sFieldName;

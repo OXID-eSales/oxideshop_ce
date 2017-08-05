@@ -35,21 +35,21 @@ class RequiredAddressFields
      *
      * @var array
      */
-    private $_aDefaultRequiredFields = array(
+    private $_aDefaultRequiredFields = [
         'oxuser__oxfname',
         'oxuser__oxlname',
         'oxuser__oxstreetnr',
         'oxuser__oxstreet',
         'oxuser__oxzip',
         'oxuser__oxcity'
-    );
+    ];
 
     /**
      * Required fields.
      *
      * @var array
      */
-    private $_aRequiredFields = array();
+    private $_aRequiredFields = [];
 
     /**
      * Sets default required fields either from config or from _aDefaultRequiredFields.
@@ -119,7 +119,7 @@ class RequiredAddressFields
      */
     private function _filterFields($aFields, $sPrefix)
     {
-        $aAllowed = array();
+        $aAllowed = [];
         foreach ($aFields as $sKey => $sValue) {
             if (strpos($sValue, $sPrefix) === 0) {
                 $aAllowed[] = $aFields[$sKey];

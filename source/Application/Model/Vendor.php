@@ -32,7 +32,7 @@ use oxField;
 class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
 
-    protected static $_aRootVendor = array();
+    protected static $_aRootVendor = [];
 
     /**
      * @var string Name of current class
@@ -79,7 +79,7 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
      *
      * @var array
      */
-    protected $_aSeoUrls = array();
+    protected $_aSeoUrls = [];
 
     /**
      * Class constructor, initiates parent constructor (parent::oxI18n()).
@@ -220,7 +220,7 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
      *
      * @return string
      */
-    public function getStdLink($iLang = null, $aParams = array())
+    public function getStdLink($iLang = null, $aParams = [])
     {
         if ($iLang === null) {
             $iLang = $this->getLanguage();

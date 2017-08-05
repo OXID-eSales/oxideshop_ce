@@ -36,7 +36,7 @@ class ManufacturerList extends \OxidEsales\Eshop\Application\Component\Widget\Wi
      *
      * @var array
      */
-    protected $_aComponentNames = array('oxcmp_categories' => 1);
+    protected $_aComponentNames = ['oxcmp_categories' => 1];
 
     /**
      * Current class template name.

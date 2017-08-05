@@ -50,14 +50,14 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @var array Tables which should be skipped from resetting
      */
-    protected $_aSkipTablesOnReset = array("oxcountry");
+    protected $_aSkipTablesOnReset = ["oxcountry"];
 
     /**
      * When creating views, always use those fields from core table.
      *
      * @var array
      */
-    protected $forceOriginalFields = array('OXID');
+    protected $forceOriginalFields = ['OXID'];
 
     /**
      *  Get table fields
@@ -68,7 +68,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
      */
     public function getFields($tableName)
     {
-        $fields = array();
+        $fields = [];
         $rawFields = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->MetaColumns($tableName);
         if (is_array($rawFields)) {
             foreach ($rawFields as $field) {
@@ -209,7 +209,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
      */
     public function getAllMultiTables($table)
     {
-        $mLTables = array();
+        $mLTables = [];
         foreach (array_keys(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageIds()) as $langId) {
             $langTableName = getLangTableName($table, $langId);
             if ($table != $langTableName && !in_array($langTableName, $mLTables)) {
@@ -303,8 +303,8 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
             $tableSet = $table;
         }
 
-        $indexQueries = array();
-        $sql = array();
+        $indexQueries = [];
+        $sql = [];
         if (count($index)) {
             foreach ($index as $key => $indexQuery) {
                 if (preg_match("/\([^)]*\b" . $field . "\b[^)]*\)/i", $indexQuery)) {
@@ -322,7 +322,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
                 }
             }
             if (count($indexQueries)) {
-                $sql = array("ALTER TABLE `$tableSet` " . implode(", ", $indexQueries));
+                $sql = ["ALTER TABLE `$tableSet` " . implode(", ", $indexQueries)];
             }
         }
 
@@ -373,7 +373,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
     public function getMultilangFields($table)
     {
         $fields = $this->getFields($table);
-        $multiLangFields = array();
+        $multiLangFields = [];
 
         foreach ($fields as $field) {
             if (preg_match("/({$table}\.)?(?<field>.+)_1$/", $field, $matches)) {
@@ -403,7 +403,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
         $langFields = $this->filterCoreFields($langFields);
 
         $fields = array_merge($baseFields, $langFields);
-        $singleLangFields = array();
+        $singleLangFields = [];
 
         foreach ($fields as $fieldName => $field) {
             if (preg_match("/(({$table}|{$langTable})\.)?(?<field>.+)_(?<lang>[0-9]+)$/", $field, $matches)) {
@@ -462,7 +462,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
             return;
         }
 
-        $sql = array();
+        $sql = [];
 
         $fields = $this->getMultilangFields($tableName);
         if (is_array($fields) && count($fields) > 0) {
@@ -577,7 +577,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
             $shop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
             $shop->load($shopId);
             $shop->setMultiShopTables($tables);
-            $mallInherit = array();
+            $mallInherit = [];
             foreach ($tables as $table) {
                 $mallInherit[$table] = $config->getShopConfVar('blMallInherit_' . $table, $shopId);
             }
@@ -645,7 +645,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
     protected function ensureMultiLanguageFields($table, $languageId)
     {
         $fields = $this->getMultilangFields($table);
-        $sql = array();
+        $sql = [];
 
         $tableSet = getLangTableName($table, $languageId);
         if (!$this->tableExists($tableSet)) {

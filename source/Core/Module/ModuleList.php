@@ -45,7 +45,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      *
      * @var array(id => array)
      */
-    protected $_aModules = array();
+    protected $_aModules = [];
 
     /**
      * All module extensions.
@@ -59,7 +59,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aSkipFiles = array('functions.php', 'vendormetadata.php');
+    protected $_aSkipFiles = ['functions.php', 'vendormetadata.php'];
 
     /**
      * Return array of modules
@@ -111,7 +111,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     public function getDisabledModuleInfo()
     {
         $aDisabledModules = $this->getDisabledModules();
-        $aModulePaths = array();
+        $aModulePaths = [];
 
         if (is_array($aDisabledModules) && count($aDisabledModules) > 0) {
             $aModulePaths = $this->getModuleConfigParametersByKey(static::MODULE_KEY_PATHS);
@@ -190,7 +190,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     public function extractModulePaths()
     {
         $aModules = $this->getModulesWithExtendedClass();
-        $aModulePaths = array();
+        $aModulePaths = [];
 
         if (is_array($aModules) && count($aModules) > 0) {
             foreach ($aModules as $aModuleClasses) {
@@ -237,7 +237,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     public function getDisabledModuleClasses()
     {
         $disabledModules = $this->getDisabledModules();
-        $disabledModuleClasses = array();
+        $disabledModuleClasses = [];
         if (isset($disabledModules) && is_array($disabledModules)) {
             //get all disabled module paths
             $extensions = $this->getModuleConfigParametersByKey(static::MODULE_KEY_EXTENSIONS);
@@ -321,12 +321,12 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
         $oModuleMetadataValidator = $oModuleValidatorFactory->getModuleMetadataValidator();
         $aModulesIds = $this->getModuleIds();
         $oModule = $this->getModule();
-        $aDeletedExt = array();
+        $aDeletedExt = [];
 
         foreach ($aModulesIds as $sModuleId) {
-            $oModule->setModuleData(array('id' => $sModuleId));
+            $oModule->setModuleData(['id' => $sModuleId]);
             if (!$oModuleMetadataValidator->validate($oModule)) {
-                $aDeletedExt[$sModuleId]['files'] = array($sModuleId . '/metadata.php');
+                $aDeletedExt[$sModuleId]['files'] = [$sModuleId . '/metadata.php'];
             } else {
                 $aInvalidExtensions = $this->_getInvalidExtensions($sModuleId);
                 if ($aInvalidExtensions) {
@@ -352,13 +352,13 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
         if (is_array($aAllModuleArray) && is_array($aRemModuleArray)) {
             foreach ($aAllModuleArray as $sClass => $aModuleChain) {
                 if (!is_array($aModuleChain)) {
-                    $aModuleChain = array($aModuleChain);
+                    $aModuleChain = [$aModuleChain];
                 }
                 if (isset($aRemModuleArray[$sClass])) {
                     if (!is_array($aRemModuleArray[$sClass])) {
-                        $aRemModuleArray[$sClass] = array($aRemModuleArray[$sClass]);
+                        $aRemModuleArray[$sClass] = [$aRemModuleArray[$sClass]];
                     }
-                    $aAllModuleArray[$sClass] = array();
+                    $aAllModuleArray[$sClass] = [];
                     foreach ($aModuleChain as $sModule) {
                         if (!in_array($sModule, $aRemModuleArray[$sClass])) {
                             $aAllModuleArray[$sClass][] = $sModule;
@@ -385,7 +385,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function buildModuleChains($aModuleArray)
     {
-        $aModules = array();
+        $aModules = [];
         if (is_array($aModuleArray)) {
             foreach ($aModuleArray as $sClass => $aModuleChain) {
                 $aModules[$sClass] = implode('&', $aModuleChain);
@@ -414,14 +414,14 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function parseModuleChains($modules)
     {
-        $moduleArray = array();
+        $moduleArray = [];
 
         if (is_array($modules)) {
             foreach ($modules as $class => $moduleChain) {
                 if (strstr($moduleChain, '&')) {
                     $moduleChain = explode('&', $moduleChain);
                 } else {
-                    $moduleChain = array($moduleChain);
+                    $moduleChain = [$moduleChain];
                 }
                 $moduleArray[$class] = $moduleChain;
             }
@@ -438,7 +438,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     protected function _removeExtensions($aModuleIds)
     {
         $aModuleExtensions = $this->getModulesWithExtendedClass();
-        $aExtensionsToDelete = array();
+        $aExtensionsToDelete = [];
         foreach ($aModuleIds as $sModuleId) {
             $aExtensionsToDelete = array_merge_recursive($aExtensionsToDelete, $this->getModuleExtensions($sModuleId));
         }
@@ -512,7 +512,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $aConfigIds = $sDelExtIds = array();
+        $aConfigIds = $sDelExtIds = [];
         foreach ($aDeletedExtIds as $sDeletedExtId) {
             $aConfigIds[] = $oDb->quote('module:' . $sDeletedExtId);
             $sDelExtIds[] = $oDb->quote($sDeletedExtId);
@@ -586,7 +586,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
         }
         // sorting by name
         if ($this->_aModules !== null) {
-            uasort($this->_aModules, array($this, '_sortModules'));
+            uasort($this->_aModules, [$this, '_sortModules']);
         }
 
         return $this->_aModules;
@@ -627,7 +627,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
         if (!isset($this->_aModuleExtensions)) {
             $aModuleExtension = $this->getConfig()->getModulesWithExtendedClass();
             $oModule = $this->getModule();
-            $aExtension = array();
+            $aExtension = [];
             foreach ($aModuleExtension as $sOxClass => $aFiles) {
                 foreach ($aFiles as $sFilePath) {
                     $sId = $oModule->getIdByPath($sFilePath);
@@ -638,7 +638,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
             $this->_aModuleExtensions = $aExtension;
         }
 
-        return $this->_aModuleExtensions[$sModuleId] ? $this->_aModuleExtensions[$sModuleId] : array();
+        return $this->_aModuleExtensions[$sModuleId] ? $this->_aModuleExtensions[$sModuleId] : [];
     }
 
     /**
@@ -722,7 +722,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     private function _getModuleIdsFromExtensions($aData)
     {
-        $aModuleIds = array();
+        $aModuleIds = [];
         $oModule = $this->getModule();
         foreach ($aData as $aModule) {
             foreach ($aModule as $sFilePath) {
@@ -744,7 +744,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     private function _getInvalidExtensions($moduleId)
     {
         $extendedShopClasses = $this->getModuleExtensions($moduleId);
-        $invalidModuleClasses = array();
+        $invalidModuleClasses = [];
 
         foreach ($extendedShopClasses as $extendedShopClass => $moduleClasses) {
             foreach ($moduleClasses as $moduleClass) {

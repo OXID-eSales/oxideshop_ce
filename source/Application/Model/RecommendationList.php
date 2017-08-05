@@ -63,7 +63,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      *
      * @var array
      */
-    protected $_aSeoUrls = array();
+    protected $_aSeoUrls = [];
 
     /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
@@ -310,7 +310,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
         $aIds = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds);
         $sIds = implode(", ", $aIds);
 
-        $aPrevIds = array();
+        $aPrevIds = [];
         $sArtView = getViewName('oxarticles');
         foreach ($oRecommList as $key => $oRecomm) {
             if (count($aPrevIds)) {
@@ -486,7 +486,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      *
      * @return string
      */
-    public function getStdLink($iLang = null, $aParams = array())
+    public function getStdLink($iLang = null, $aParams = [])
     {
         if ($iLang === null) {
             $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();

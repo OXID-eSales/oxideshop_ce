@@ -35,14 +35,14 @@ class FileCheckerResult
      *
      * @var mixed
      */
-    protected $_aResult = array();
+    protected $_aResult = [];
 
     /**
      * Counts number of matches for each type of result
      *
      * @var array
      */
-    protected $_aResultSummary = array();
+    protected $_aResultSummary = [];
 
     /**
      * If the variable is true, the script will show all files, even they are ok.

@@ -95,7 +95,7 @@ class Curl
      *
      * @var array
      */
-    protected $_aOptions = array('CURLOPT_RETURNTRANSFER' => 1);
+    protected $_aOptions = ['CURLOPT_RETURNTRANSFER' => 1];
 
     /**
      * Request HTTP status call code.
@@ -210,7 +210,7 @@ class Curl
         if (is_null($header) && $this->getMethod() == "POST") {
             $host = $this->getHost();
 
-            $header = array();
+            $header = [];
             $header[] = 'POST /cgi-bin/webscr HTTP/1.1';
             $header[] = 'Content-Type: application/x-www-form-urlencoded';
             if (isset($host)) {

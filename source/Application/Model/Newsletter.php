@@ -213,8 +213,8 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         $this->_assignProducts($oView, $blPerfLoadAktion);
 
-        $aInput[] = array($this->getId() . 'html', $this->oxnewsletter__oxtemplate->value);
-        $aInput[] = array($this->getId() . 'plain', $this->oxnewsletter__oxplaintemplate->value);
+        $aInput[] = [$this->getId() . 'html', $this->oxnewsletter__oxtemplate->value];
+        $aInput[] = [$this->getId() . 'plain', $this->oxnewsletter__oxplaintemplate->value];
         $aRes = \OxidEsales\Eshop\Core\Registry::getUtilsView()->parseThroughSmarty($aInput, null, $oView, true);
 
         $this->_sHtmlText = $aRes[0];

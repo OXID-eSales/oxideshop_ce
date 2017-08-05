@@ -175,8 +175,8 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
 
         $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('PUBLIC_GIFT_REGISTRIES', $iBaseLanguage, false);

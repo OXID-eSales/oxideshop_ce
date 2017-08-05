@@ -144,7 +144,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
             $this->_aCurrSorting = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sort');
 
             if (!$this->_aCurrSorting && $this->_sDefSortField && ($baseObject = $this->getItemListBaseObject())) {
-                $this->_aCurrSorting[$baseObject->getCoreTableName()] = array($this->_sDefSortField => "asc");
+                $this->_aCurrSorting[$baseObject->getCoreTableName()] = [$this->_sDefSortField => "asc"];
             }
         }
 
@@ -497,7 +497,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
     public function buildWhere()
     {
         if ($this->_aWhere === null && ($list = $this->getItemList())) {
-            $this->_aWhere = array();
+            $this->_aWhere = [];
             $filter = $this->getListFilter();
             if (is_array($filter)) {
                 $listItem = $this->getItemListBaseObject();
@@ -573,23 +573,23 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
     protected function _convertDate($date)
     {
         // regexps to validate input
-        $datePatterns = array(
+        $datePatterns = [
             "/^([0-9]{2})\.([0-9]{4})/" => "EUR2", // MM.YYYY
             "/^([0-9]{2})\.([0-9]{2})/" => "EUR1", // DD.MM
             "/^([0-9]{2})\/([0-9]{4})/" => "USA2", // MM.YYYY
             "/^([0-9]{2})\/([0-9]{2})/" => "USA1" // DD.MM
-        );
+        ];
 
         // date/time formatting rules
-        $dateFormats = array(
-            "EUR1" => array(2, 1),
-            "EUR2" => array(2, 1),
-            "USA1" => array(1, 2),
-            "USA2" => array(2, 1)
-        );
+        $dateFormats = [
+            "EUR1" => [2, 1],
+            "EUR2" => [2, 1],
+            "USA1" => [1, 2],
+            "USA2" => [2, 1]
+        ];
 
         // looking for date field
-        $dateMatches = array();
+        $dateMatches = [];
         $stringModifier = getStr();
         foreach ($datePatterns as $pattern => $type) {
             if ($stringModifier->preg_match($pattern, $date, $dateMatches)) {

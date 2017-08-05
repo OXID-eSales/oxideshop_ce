@@ -73,8 +73,8 @@ class LinksController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
         $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('LINKS', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();

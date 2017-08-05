@@ -223,7 +223,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     protected function _processOptions($aParams)
     {
         if (!is_array($aParams)) {
-            $aParams = array();
+            $aParams = [];
         }
 
         if (!isset($aParams["oxfiles__oxdownloadexptime"]) || $aParams["oxfiles__oxdownloadexptime"] == "") {

@@ -35,7 +35,7 @@ use OxidEsales\Eshop\Core\Registry;
 class ModuleVariablesLocator
 {
     /** @var array Static cache for module information variables. */
-    protected static $moduleVariables = array();
+    protected static $moduleVariables = [];
 
     /** @var FileCache */
     private $fileCache;
@@ -106,7 +106,7 @@ class ModuleVariablesLocator
      */
     public static function resetModuleVariables()
     {
-        self::$moduleVariables = array();
+        self::$moduleVariables = [];
         FileCache::clearCache();
     }
 
@@ -143,7 +143,7 @@ class ModuleVariablesLocator
 
         $query = "SELECT DECODE( oxvarvalue , ? ) FROM oxconfig WHERE oxvarname = ? AND oxshopid = ?";
 
-        $value = $masterDb->getOne($query, array($configKey, $name, $shopId));
+        $value = $masterDb->getOne($query, [$configKey, $name, $shopId]);
 
         return unserialize($value);
     }

@@ -38,7 +38,7 @@ function smarty_insert_oxid_newbasketitem($params, &$smarty)
 {
     $myConfig  = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-    $aTypes = array('0' => 'none','1' => 'message', '2' =>'popup', '3' =>'basket');
+    $aTypes = ['0' => 'none','1' => 'message', '2' =>'popup', '3' =>'basket'];
     $iType  = $myConfig->getConfigParam( 'iNewBasketItemMessage' );
 
     // If corect type of message is expected

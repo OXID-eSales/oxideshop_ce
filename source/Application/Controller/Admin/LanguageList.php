@@ -140,7 +140,7 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
                 }
             }
 
-            uasort($aLanguages, array($this, '_sortLanguagesCallback'));
+            uasort($aLanguages, [$this, '_sortLanguagesCallback']);
         }
 
         return $aLanguages;

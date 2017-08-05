@@ -38,7 +38,7 @@ class CompanyVatInValidator
      *
      * @var array
      */
-    private $_aCheckers = array();
+    private $_aCheckers = [];
 
     /**
      * Error message

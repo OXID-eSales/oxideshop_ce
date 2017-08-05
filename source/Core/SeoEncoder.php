@@ -36,7 +36,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected static $_aReservedWords = array('admin');
+    protected static $_aReservedWords = ['admin'];
 
     /**
      * cache for reserved path root node keys
@@ -78,7 +78,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected static $_aFixedCache = array();
+    protected static $_aFixedCache = [];
 
     /**
      * SEO Cache key for active view
@@ -92,7 +92,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected static $_aCache = array();
+    protected static $_aCache = [];
 
     /**
      * Maximum seo/dynamic url length
@@ -572,7 +572,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
     {
         if (!isset(self::$_aReservedEntryKeys) || !is_array(self::$_aReservedEntryKeys)) {
             $sDir = getShopBasePath();
-            self::$_aReservedEntryKeys = array_map('preg_quote', self::$_aReservedWords, array('#'));
+            self::$_aReservedEntryKeys = array_map('preg_quote', self::$_aReservedWords, ['#']);
             $oStr = getStr();
             foreach (glob("$sDir/*") as $sFile) {
                 if ($oStr->preg_match('/^(.+)\.php[0-9]*$/i', basename($sFile), $aMatches)) {
@@ -608,7 +608,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
         // if found ".html" or "/" at the end - removing it temporary
         $sExt = $this->_getUrlExtension();
         if ($sExt === null) {
-            $aMatched = array();
+            $aMatched = [];
             if ($oStr->preg_match('/(\.html?|\/)$/i', $sUri, $aMatched)) {
                 $sExt = $aMatched[0];
             } else {
@@ -654,8 +654,8 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
         }
 
         return $oStr->preg_replace(
-            array('|//+|', '/' . $sQuotedSeparator . $sQuotedSeparator . '+/'),
-            array('/', self::$_sSeparator),
+            ['|//+|', '/' . $sQuotedSeparator . $sQuotedSeparator . '+/'],
+            ['/', self::$_sSeparator],
             $sUri
         );
     }
@@ -679,7 +679,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
         }
 
         $sRegExp = '/[^A-Za-z0-9\/' . preg_quote(self::$_sPrefix, '/') . preg_quote($sSep, '/') . ']+/';
-        $sTitle = preg_replace(array("#/+#", $sRegExp, "# +#", "#(" . preg_quote($sSep, '/') . ")+#"), $sSep, $sTitle);
+        $sTitle = preg_replace(["#/+#", $sRegExp, "# +#", "#(" . preg_quote($sSep, '/') . ")+#"], $sSep, $sTitle);
 
         $oStr = getStr();
         // smart truncate
@@ -815,7 +815,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
     {
         $myConfig = $this->getConfig();
         $oStr = getStr();
-        $sUrl = str_replace(array($myConfig->getShopUrl($iLang, false), $myConfig->getSslShopUrl($iLang)), '', $sUrl);
+        $sUrl = str_replace([$myConfig->getShopUrl($iLang, false), $myConfig->getSslShopUrl($iLang)], '', $sUrl);
         $sUrl = $oStr->preg_replace('/(\?|&(amp;)?)(force_)?(admin_)?sid=[a-z0-9\.]+&?(amp;)?/i', '\1', $sUrl);
         $sUrl = $oStr->preg_replace('/(\?|&(amp;)?)shp=[0-9]+&?(amp;)?/i', '\1', $sUrl);
         $sUrl = $oStr->preg_replace('/(\?|&(amp;)?)lang=[0-9]+&?(amp;)?/i', '\1', $sUrl);
@@ -1279,7 +1279,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
 
         $query = "SELECT `oxseourl` FROM `oxseo` WHERE `oxstdurl` = ? AND `oxlang` = ? AND `oxshopid` = ? LIMIT 1";
 
-        return $database->getOne($query, array($standardUrl, $languageId, $shopId));
+        return $database->getOne($query, [$standardUrl, $languageId, $shopId]);
     }
 
     /**
@@ -1302,8 +1302,8 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
         }
         $sRegExp = '/[^A-Za-z0-9' . $sQuotedPrefix . '\/]+/';
         $sanitized = $oStr->preg_replace(
-            array("/\W*\/\W*/", $sRegExp),
-            array("/", self::$_sSeparator),
+            ["/\W*\/\W*/", $sRegExp],
+            ["/", self::$_sSeparator],
             $stringWithSpecialChars
         );
 

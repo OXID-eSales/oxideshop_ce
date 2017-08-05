@@ -145,7 +145,7 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function __sleep()
     {
-        $aRet = array();
+        $aRet = [];
         foreach (get_object_vars($this) as $sKey => $sVar) {
             if ($sKey != '_oArticle') {
                 $aRet[] = $sKey;

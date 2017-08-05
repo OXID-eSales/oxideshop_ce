@@ -22,8 +22,8 @@
 function smarty_modifier_smartwordwrap($string, $length=80, $break="\n", $cutrows=0, $tollerance=0, $etc = '...')
 { 
     $wraptag = "<wrap>";
-    $wrapchars = array("-");
-    $afterwrapchars = array("-".$wraptag);
+    $wrapchars = ["-"];
+    $afterwrapchars = ["-".$wraptag];
     
     
     $string = trim($string);
@@ -34,7 +34,7 @@ function smarty_modifier_smartwordwrap($string, $length=80, $break="\n", $cutrow
     $str  = wordwrap($string,$length,$wraptag,false);
     $arr  = explode($wraptag, $str);
     
-    $alt  = array();
+    $alt  = [];
     
     $ok = true;
     foreach($arr as $row)

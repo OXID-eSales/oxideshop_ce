@@ -58,14 +58,14 @@ class SystemRequirements
      *
      * @var array
      */
-    protected $_aException = array('OXDELIVERY' => 'OXDELTYPE', 'OXSELECTLIST' => 'OXIDENT');
+    protected $_aException = ['OXDELIVERY' => 'OXDELTYPE', 'OXSELECTLIST' => 'OXIDENT'];
 
     /**
      * Columns to check for collation
      *
      * @var array
      */
-    protected $_aColumns = array(
+    protected $_aColumns = [
         'OXID',
         'OXOBJECTID',
         'OXARTICLENID',
@@ -112,7 +112,7 @@ class SystemRequirements
         'OXPAYMENTSID',
         'OXORDERID',
         'OXVOUCHERSERIEID',
-    );
+    ];
 
     /**
      * Installation info url
@@ -126,7 +126,7 @@ class SystemRequirements
      *
      * @var array
      */
-    protected $_aInfoMap = array(
+    protected $_aInfoMap = [
         "php_version"        => "PHP_version_at_least_5.6",
         "php_xml"            => "DOM",
         "open_ssl"           => "OpenSSL",
@@ -149,7 +149,7 @@ class SystemRequirements
         "zend_optimizer"     => "Zend_Optimizer",
         "session_autostart"  => "session.auto_start_must_be_off",
         "mysql_version"      => "Not_recommended_MySQL_versions",
-    );
+    ];
 
     /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
@@ -179,7 +179,7 @@ class SystemRequirements
                 $sMethod = str_replace("UNIT", "_", $sMethod);
             }
             if (method_exists($this, $sMethod)) {
-                return call_user_func_array(array(& $this, $sMethod), $aArgs);
+                return call_user_func_array([& $this, $sMethod], $aArgs);
             }
         }
 
@@ -216,7 +216,7 @@ class SystemRequirements
     public function getRequiredModules()
     {
         if ($this->_aRequiredModules == null) {
-            $aRequiredPHPExtensions = array(
+            $aRequiredPHPExtensions = [
                 'php_xml',
                 'j_son',
                 'i_conv',
@@ -228,9 +228,9 @@ class SystemRequirements
                 'bc_math',
                 'open_ssl',
                 'soap',
-            );
+            ];
 
-            $aRequiredPHPConfigs = array(
+            $aRequiredPHPConfigs = [
                 'allow_url_fopen',
                 'request_uri',
                 'ini_set',
@@ -238,13 +238,13 @@ class SystemRequirements
                 'unicode_support',
                 'file_uploads',
                 'session_autostart',
-            );
+            ];
 
-            $aRequiredServerConfigs = array(
+            $aRequiredServerConfigs = [
                 'php_version',
                 'mod_rewrite',
                 'server_permissions'
-            );
+            ];
 
             if ($this->isAdmin()) {
                 $aRequiredServerConfigs[] = 'mysql_version';
@@ -307,7 +307,7 @@ class SystemRequirements
             $sTmp = $sCfgTmp;
         }
 
-        $aPathsToCheck = array(
+        $aPathsToCheck = [
             $sPath . 'out/pictures/promo/',
             $sPath . 'out/pictures/master/',
             $sPath . 'out/pictures/generated/',
@@ -315,7 +315,7 @@ class SystemRequirements
             $sPath . 'out/media/',
             $sPath . 'log/',
             $sTmp
-        );
+        ];
         $iModStat = 2;
         $sPathToCheck = reset($aPathsToCheck);
         while ($sPathToCheck) {
@@ -366,12 +366,12 @@ class SystemRequirements
             }
             $sScript = rtrim($m[5], '/') . '/';
 
-            return array(
+            return [
                 'host' => $sHost,
                 'port' => $iPort,
                 'dir'  => $sScript,
                 'ssl'  => $blSsl,
-            );
+            ];
         }
 
         return false;
@@ -395,12 +395,12 @@ class SystemRequirements
             }
             $sScript = rtrim($m[5], '/') . '/';
 
-            return array(
+            return [
                 'host' => $sHost,
                 'port' => $iPort,
                 'dir'  => $sScript,
                 'ssl'  => $blSsl,
-            );
+            ];
         }
 
         return false;
@@ -423,12 +423,12 @@ class SystemRequirements
         }
         $sScript = rtrim(dirname(dirname($sScript)), '/') . '/';
 
-        return array(
+        return [
             'host' => $_SERVER['HTTP_HOST'],
             'port' => $iPort,
             'dir'  => $sScript,
             'ssl'  => $blSsl,
-        );
+        ];
     }
 
     /**
@@ -827,7 +827,7 @@ class SystemRequirements
     {
         $myConfig = $this->getConfig();
 
-        $aCollations = array();
+        $aCollations = [];
         $sCollation = '';
         $sSelect = 'select TABLE_NAME, COLUMN_NAME, COLLATION_NAME from INFORMATION_SCHEMA.columns
                     where TABLE_NAME not like "oxv\_%" and table_schema = "' . $myConfig->getConfigParam('dbName') . '"
@@ -926,12 +926,12 @@ class SystemRequirements
      */
     public function getSystemInfo()
     {
-        $aSysInfo = array();
+        $aSysInfo = [];
         $aRequiredModules = $this->getRequiredModules();
         $this->_blSysReqStatus = true;
         foreach ($aRequiredModules as $sModule => $sGroup) {
             if (isset($aSysInfo[$sGroup]) && !$aSysInfo[$sGroup]) {
-                $aSysInfo[$sGroup] = array();
+                $aSysInfo[$sGroup] = [];
             }
             $iModuleState = $this->getModuleInfo($sModule);
             $aSysInfo[$sGroup][$sModule] = $iModuleState;
@@ -1104,8 +1104,8 @@ class SystemRequirements
      */
     public function getMissingTemplateBlocks()
     {
-        $result = array();
-        $analized = array();
+        $result = [];
+        $analized = [];
 
         $blockRecords = $this->fetchBlockRecords();
 
@@ -1122,11 +1122,11 @@ class SystemRequirements
                 }
 
                 if (!$blockExistsInTemplate) {
-                    $result[] = array(
+                    $result[] = [
                         'module'   => $blockRecords->fields['OXMODULE'],
                         'block'    => $blockName,
                         'template' => $template,
-                    );
+                    ];
                 }
 
                 $blockRecords->fetchRow();
@@ -1151,7 +1151,7 @@ class SystemRequirements
 
         $query = "select * from oxtplblocks where oxactive=1 and oxshopid=? and oxtheme in ('', ?)";
 
-        return $database->select($query, array($config->getShopId(), $activeThemeId));
+        return $database->select($query, [$config->getShopId(), $activeThemeId]);
     }
 
     /**
@@ -1163,7 +1163,7 @@ class SystemRequirements
     {
         $sStatus = (strtolower((string) @ini_get('session.auto_start')));
 
-        return in_array($sStatus, array('on', '1')) ? 0 : 2;
+        return in_array($sStatus, ['on', '1']) ? 0 : 2;
     }
 
     /**

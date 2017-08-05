@@ -82,12 +82,12 @@ class PriceAlarmList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
         // updating price fields values for correct search in DB
         if (isset($this->_aWhere[$sViewName . '.oxprice'])) {
-            $sPriceParam = (double) str_replace(array('%', ','), array('', '.'), $this->_aWhere[$sViewName . '.oxprice']);
+            $sPriceParam = (double) str_replace(['%', ','], ['', '.'], $this->_aWhere[$sViewName . '.oxprice']);
             $this->_aWhere[$sViewName . '.oxprice'] = '%' . $sPriceParam . '%';
         }
 
         if (isset($this->_aWhere[$sArtViewName . '.oxprice'])) {
-            $sPriceParam = (double) str_replace(array('%', ','), array('', '.'), $this->_aWhere[$sArtViewName . '.oxprice']);
+            $sPriceParam = (double) str_replace(['%', ','], ['', '.'], $this->_aWhere[$sArtViewName . '.oxprice']);
             $this->_aWhere[$sArtViewName . '.oxprice'] = '%' . $sPriceParam . '%';
         }
 

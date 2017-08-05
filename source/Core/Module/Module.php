@@ -57,7 +57,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aModule = array();
+    protected $_aModule = [];
 
     /**
      * Defines if module has metadata file or not
@@ -182,7 +182,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
      */
     public function getExtensions()
     {
-        $rawExtensions = isset($this->_aModule['extend']) ? $this->_aModule['extend'] : array();
+        $rawExtensions = isset($this->_aModule['extend']) ? $this->_aModule['extend'] : [];
 
         return $this->getUnifiedShopClassExtensionsForBc($rawExtensions);
     }
@@ -198,7 +198,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
             throw new \InvalidArgumentException('Value for metadata key "controllers" must be an array');
         }
 
-        return isset($this->_aModule['controllers']) ? array_change_key_case($this->_aModule['controllers']) : array();
+        return isset($this->_aModule['controllers']) ? array_change_key_case($this->_aModule['controllers']) : [];
     }
 
     /**
@@ -208,7 +208,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
      */
     public function getFiles()
     {
-        return isset($this->_aModule['files']) ? $this->_aModule['files'] : array();
+        return isset($this->_aModule['files']) ? $this->_aModule['files'] : [];
     }
 
     /**
@@ -457,7 +457,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
         }
 
         if (!$sModuleId) {
-            return array();
+            return [];
         }
 
         $sShopId = $this->getConfig()->getShopId();
@@ -553,7 +553,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
          * an empty array is assigned to self::aModule
          */
         if (!isset($aModule)) {
-            $aModule = array();
+            $aModule = [];
         }
         $this->setModuleData($aModule);
 

@@ -127,7 +127,7 @@ interface DatabaseInterface
      *
      * @return string|false      Returns a string for SELECT or SHOW statements and FALSE for any other statement.
      */
-    public function getOne($query, $parameters = array());
+    public function getOne($query, $parameters = []);
 
     /**
      * Get an array with the values of the first row of a given sql SELECT or SHOW statement .
@@ -156,7 +156,7 @@ interface DatabaseInterface
      *
      * @return array The row, we selected with the given sql statement.
      */
-    public function getRow($query, $parameters = array());
+    public function getRow($query, $parameters = []);
 
     /**
      * Return the first column of all rows of the results of a given sql SELECT or SHOW statement as an numeric array.
@@ -178,7 +178,7 @@ interface DatabaseInterface
      *
      * @return array The values of the first column of a corresponding sql query.
      */
-    public function getCol($query, $parameters = array());
+    public function getCol($query, $parameters = []);
 
     /**
      * Get an multi-dimensional array of arrays with the values of the all rows of a given sql SELECT or SHOW statement.
@@ -208,7 +208,7 @@ interface DatabaseInterface
      *
      * @return array
      */
-    public function getAll($query, $parameters = array());
+    public function getAll($query, $parameters = []);
 
     /**
      * Return the results of a given sql SELECT or SHOW statement as a ResultSet.
@@ -234,7 +234,7 @@ interface DatabaseInterface
      *
      * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface The result of the given query.
      */
-    public function select($query, $parameters = array());
+    public function select($query, $parameters = []);
 
     /**
      * Return the results of a given sql SELECT or SHOW statement limited by a LIMIT clause as a ResultSet.
@@ -264,7 +264,7 @@ interface DatabaseInterface
      *
      * @return ResultSetInterface The result of the given query.
      */
-    public function selectLimit($query, $rowCount = -1, $offset = 0, $parameters = array());
+    public function selectLimit($query, $rowCount = -1, $offset = 0, $parameters = []);
 
     /**
      * Execute non read statements like INSERT, UPDATE, DELETE and return the number of rows affected by the statement.
@@ -286,7 +286,7 @@ interface DatabaseInterface
      *
      * @return integer Number of rows affected by the SQL statement
      */
-    public function execute($query, $parameters = array());
+    public function execute($query, $parameters = []);
 
     /**
      * Quote a string or a numeric value in a way, that it might be used as a value in a sql statement.

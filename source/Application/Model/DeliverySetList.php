@@ -156,7 +156,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
             $aGroupIds = $oUser->getUserGroups();
         }
 
-        $aIds = array();
+        $aIds = [];
         if (count($aGroupIds)) {
             foreach ($aGroupIds as $oGroup) {
                 $aIds[] = $oGroup->getId();
@@ -212,7 +212,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
             $oDelSet = $aList[$sDelSet];
             unset($aList[$sDelSet]);
 
-            $aList = array_merge(array($sDelSet => $oDelSet), $aList);
+            $aList = array_merge([$sDelSet => $oDelSet], $aList);
         }
 
         return $aList;
@@ -235,8 +235,8 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function getDeliverySetData($sShipSet, $oUser, $oBasket)
     {
         $sActShipSet = null;
-        $aActSets = array();
-        $aActPaymentList = array();
+        $aActSets = [];
+        $aActPaymentList = [];
 
         if (!$oUser) {
             return;
@@ -275,7 +275,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
             }
         }
 
-        return array($aActSets, $sActShipSet, $aActPaymentList);
+        return [$aActSets, $sActShipSet, $aActPaymentList];
     }
 
     /**

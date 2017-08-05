@@ -67,7 +67,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aPagesContent = array(
+    protected $_aPagesContent = [
         'start' => 'Start',
         'basket' => 'Shop/Kaufprozess/Warenkorb',
         'user' => 'Shop/Kaufprozess/Kundendaten',
@@ -105,14 +105,14 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
         'content_oxdeliveryinfo' => 'Info/Versandinfo',
         'content_oxsecurityinfo' => 'Info/Sicherheit',
         'register' => 'Service/Register',
-    );
+    ];
 
     /**
      * Emos order step names
      *
      * @var array
      */
-    protected $_aOrderStepNames = array(
+    protected $_aOrderStepNames = [
         'basket' => '1_Warenkorb',
         'order_process' => '2_Kundendaten',
         'user' => '2_Kundendaten',
@@ -122,7 +122,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
         'payment' => '3_Zahlungsoptionen',
         'order' => '4_Bestelluebersicht',
         'thankyou' => '5_Bestaetigung',
-    );
+    ];
 
     /**
      * Returns new emos controller object
@@ -298,7 +298,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
     {
         // #4016: econda: json function returns null if title has an umlaut
         if ($this->_sEmosCatPath === null) {
-            $aCatTitle = array();
+            $aCatTitle = [];
             if ($aCatPath = $this->getConfig()->getActiveView()->getBreadCrumb()) {
                 foreach ($aCatPath as $aCatPathParts) {
                     $aCatTitle[] = $aCatPathParts['title'];
@@ -564,7 +564,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
         );
 
         // get Basket Page Array
-        $aBasket = array();
+        $aBasket = [];
         $aBasketProducts = $oBasket->getContents();
         foreach ($aBasketProducts as $oContent) {
             /** @var \OxidEsales\Eshop\Application\Model\BasketItem $oContent */

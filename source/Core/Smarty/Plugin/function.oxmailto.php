@@ -35,14 +35,14 @@ function smarty_function_oxmailto( $aParams, &$oSmarty )
         $sAddress = isset( $aParams['address'] ) ? $aParams['address'] : '';
         $sText = $sAddress;
 
-        $aMailParms = array();
+        $aMailParms = [];
         foreach ( $aParams as $sVarName => $sValue ) {
             switch ( $sVarName ) {
                 case 'cc':
                 case 'bcc':
                 case 'followupto':
                     if ( $sValue ) {
-                        $aMailParms[] = $sVarName . '=' . str_replace( array( '%40', '%2C' ), array( '@', ',' ), rawurlencode( $sValue ) );
+                        $aMailParms[] = $sVarName . '=' . str_replace( [ '%40', '%2C' ], [ '@', ',' ], rawurlencode( $sValue ) );
                     }
                     break;
                 case 'subject':

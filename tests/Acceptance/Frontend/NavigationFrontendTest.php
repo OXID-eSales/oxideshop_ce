@@ -146,7 +146,7 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertElementPresent("//div[@id='panel']/div[1]//label[text()='%NEWSLETTER%']");
         $this->assertElementPresent("//div[@id='panel']/div[1]//input[@name='editval[oxuser__oxusername]']");
         $this->assertElementPresent("//div[@id='panel']/div[1]//button[text()='%SUBSCRIBE%']");
-
+//exit;
         //SERVICE links
         $this->assertElementPresent("footerServices");
         //there are fixed amount of links in here

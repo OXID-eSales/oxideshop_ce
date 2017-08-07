@@ -74,8 +74,8 @@ window.onload = function ()
         [{if $listitem->getId() == $oxid}]
             [{assign var="listclass" value=listitem4}]
         [{/if}]
-        <td valign="top" class="[{$listclass}][{if $listitem->oxpayments__oxactive->value == 1}] active[{/if}]" height="15"><div class="listitemfloating">&nbsp</a></div></td>
-        <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxpayments__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxpayments__oxdesc->value}]</a></div></td>
+        <td valign="top" class="[{$listclass}] payment_active[{if $listitem->oxpayments__oxactive->value == 1}] active[{/if}]" height="15"><div class="listitemfloating">&nbsp</a></div></td>
+        <td valign="top" class="[{$listclass}] payment_name" height="15"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxpayments__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxpayments__oxdesc->value}]</a></div></td>
         <td class="[{$listclass}]">
         [{if !$listitem->isOx()}]
         [{if $readonly == ""}]<a href="Javascript:top.oxid.admin.deleteThis('[{$listitem->oxpayments__oxid->value}]');" class="delete" id="del.[{$_cnt}]" title="" [{include file="help.tpl" helpid=item_delete}]></a>[{/if}]

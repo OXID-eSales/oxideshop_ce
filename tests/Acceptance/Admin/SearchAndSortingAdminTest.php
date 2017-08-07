@@ -492,6 +492,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
      */
     public function testSearchPaymentMethods()
     {
+        $paymentColumn = "contains(@class, 'payment_name')";
         $this->loginAdmin("Shop Settings", "Payment Methods");
         //testing search
         $this->changeAdminListLanguage('Deutsch');
@@ -506,7 +507,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->assertEquals("DE test payment", $this->getValue("where[oxpayments][oxdesc]"));
         $this->type("where[oxpayments][oxdesc]", "method [DE] šÄßüл");
         $this->clickAndWait("submitit");
-        $this->assertEquals("Test payment method [DE] šÄßüл", $this->getText("//tr[@id='row.1']/td[2]"));
+        $this->assertEquals("Test payment method [DE] šÄßüл", $this->getText("//tr[@id='row.1']/td[$paymentColumn]"));
         $this->assertElementNotPresent("//tr[@id='row.2']/td[1]");
         $this->changeAdminListLanguage('English');
         $this->type("where[oxpayments][oxdesc]", "EN test payment");
@@ -519,7 +520,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->assertEquals("EN test payment", $this->getValue("where[oxpayments][oxdesc]"));
         $this->type("where[oxpayments][oxdesc]", "method [EN");
         $this->clickAndWait("submitit");
-        $this->assertEquals("Test payment method [EN] šÄßüл", $this->getText("//tr[@id='row.1']/td[2]"));
+        $this->assertEquals("Test payment method [EN] šÄßüл", $this->getText("//tr[@id='row.1']/td[$paymentColumn]"));
         $this->assertElementNotPresent("//tr[@id='row.2']/td[1]");
         $this->type("where[oxpayments][oxdesc]", "noEntry");
         $this->clickAndWait("submitit");
@@ -538,29 +539,29 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->loginAdmin("Shop Settings", "Payment Methods");
         $this->type("where[oxpayments][oxdesc]", "test");
         $this->clickAndWait("submitit");
-        $iNameCol = 2;
+        $paymentColumn = "contains(@class, 'payment_name')";
         //testing sorting and navigation between pages
         $this->assertEquals("Page 1 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
         $this->clickAndWait("link=Name");
-        $this->assertEquals("1 EN test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]"));
-        $this->assertEquals("2 EN test payment šÄßüл", $this->getText("//tr[@id='row.2']/td[".$iNameCol."]"));
-        $this->assertEquals("3 EN test payment šÄßüл", $this->getText("//tr[@id='row.3']/td[".$iNameCol."]"));
+        $this->assertEquals("1 EN test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$paymentColumn."]"));
+        $this->assertEquals("2 EN test payment šÄßüл", $this->getText("//tr[@id='row.2']/td[".$paymentColumn."]"));
+        $this->assertEquals("3 EN test payment šÄßüл", $this->getText("//tr[@id='row.3']/td[".$paymentColumn."]"));
         $this->clickAndWait("nav.next");
         $this->assertEquals("Page 2 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']");
-        $this->assertEquals("[last] EN test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]/div"));
+        $this->assertEquals("[last] EN test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$paymentColumn."]/div"));
         $this->clickAndWait("nav.prev");
         $this->assertEquals("Page 1 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
         $this->changeAdminListLanguage('Deutsch');
-        $this->assertEquals("1 DE test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]"));
-        $this->assertEquals("2 DE test payment šÄßüл", $this->getText("//tr[@id='row.2']/td[".$iNameCol."]"));
-        $this->assertEquals("3 DE test payment šÄßüл", $this->getText("//tr[@id='row.3']/td[".$iNameCol."]"));
+        $this->assertEquals("1 DE test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$paymentColumn."]"));
+        $this->assertEquals("2 DE test payment šÄßüл", $this->getText("//tr[@id='row.2']/td[".$paymentColumn."]"));
+        $this->assertEquals("3 DE test payment šÄßüл", $this->getText("//tr[@id='row.3']/td[".$paymentColumn."]"));
         $this->clickAndWait("nav.last");
         $this->assertEquals("Page 2 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']");
-        $this->assertEquals("[last] DE test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]/div"));
+        $this->assertEquals("[last] DE test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$paymentColumn."]/div"));
         $this->clickAndWait("nav.first");
         $this->assertEquals("Page 1 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
@@ -571,11 +572,11 @@ class SearchAndSortingAdminTest extends AdminTestCase
             $this->clickAndWait("nav.last");
             $this->assertEquals("Page 2 / 2", $this->getText("nav.site"));
             $this->assertElementPresent("//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']");
-            $this->assertEquals("[last] DE test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]/div"));
+            $this->assertEquals("[last] DE test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$paymentColumn."]/div"));
             $this->clickDeleteListItem(1);
             $this->assertElementNotPresent("nav.page.1");
             $this->assertElementPresent("//tr[@id='row.1']/td[1]");
-            $this->assertEquals("1 DE test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]"));
+            $this->assertEquals("1 DE test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$paymentColumn."]"));
         }
     }
 

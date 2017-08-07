@@ -491,7 +491,7 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->frame("list");
         $this->type("where[oxpayments][oxdesc]", "create_delete");
         $this->clickAndWait("submitit");
-        $this->assertEquals("create_delete payment [EN]_šÄßüл", $this->getText("//tr[@id='row.1']/td[2]"));
+        $this->assertEquals("create_delete payment [EN]_šÄßüл", $this->getText("//tr[@id='row.1']/td[contains(@class, 'payment_name')]"));
         $this->assertElementNotPresent("//tr[@id='row.2']/td[1]");
     }
 

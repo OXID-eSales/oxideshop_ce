@@ -36,11 +36,11 @@ class CategoryTree extends \OxidEsales\Eshop\Application\Component\Widget\Widget
     /**
      * Names of components (classes) that are initiated and executed
      * before any other regular operation.
-     * Cartegory component used in template.
+     * Category and MiniBasket components are used in this template.
      *
      * @var array
      */
-    protected $_aComponentNames = array('oxcmp_categories' => 1);
+    protected $_aComponentNames = array('oxcmp_categories' => 1, 'oxcmp_basket' => 1);
 
     /**
      * Current class template name.

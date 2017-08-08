@@ -283,7 +283,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
     {
         $sStdUrl = $this->_trimUrl($sStdUrl, $iLang);
 
-        return $this->_loadFromDb('static', $this->_getStaticObjectId($iShopId, $sStdUrl), $iLang);
+        return $this->_loadFromDb('static', $this->_getStaticObjectId($iShopId, $sStdUrl), $iLang, $iShopId);
     }
 
     /**

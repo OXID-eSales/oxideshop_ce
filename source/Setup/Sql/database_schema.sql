@@ -1523,7 +1523,7 @@ CREATE TABLE `oxtplblocks` (
   `OXBLOCKNAME` char(128) character set latin1 collate latin1_general_ci NOT NULL COMMENT 'Block name',
   `OXPOS`       int  NOT NULL COMMENT 'Sorting',
   `OXFILE`      char(255) character set latin1 collate latin1_general_ci NOT NULL COMMENT 'Module template filename, where block replacement is located',
-  `OXMODULE`    char(32) character set latin1 collate latin1_general_ci NOT NULL COMMENT 'Module, which uses this template',
+  `OXMODULE`    char(100) character set latin1 collate latin1_general_ci NOT NULL COMMENT 'Module, which uses this template',
   `OXTIMESTAMP` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT 'Timestamp',
   PRIMARY KEY (`OXID`),
   INDEX `search` (`OXACTIVE`, `OXTEMPLATE`, `OXPOS`),

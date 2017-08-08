@@ -108,7 +108,7 @@ class SimpleXml
      */
     protected function _addChildNode($oXml, $sKey, $mElement, $sPreferredKey = null)
     {
-        $aAttributes = array();
+        $aAttributes = [];
         if (is_array($mElement) && array_key_exists('attributes', $mElement) && is_array($mElement['attributes'])) {
             $aAttributes = $mElement['attributes'];
             $mElement = $mElement['value'];

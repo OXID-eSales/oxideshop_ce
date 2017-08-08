@@ -22,8 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core\ViewHelper;
 
-use oxRegistry;
-
 /**
  * Class for preparing JavaScript.
  */
@@ -127,8 +125,8 @@ class JavaScriptRenderer
         }
 
         ksort($includes); // Sort by priority.
-        $usedSources = array();
-        $widgets = array();
+        $usedSources = [];
+        $widgets = [];
         $widgetTemplate = "WidgetsHandler.registerFile('%s', '%s');";
         $scriptTemplate = '<script type="text/javascript" src="%s"></script>';
         foreach ($includes as $priority) {
@@ -165,7 +163,7 @@ JS;
      */
     protected function formSnippetsOutput($scripts, $widgetName, $ajaxRequest)
     {
-        $preparedScripts = array();
+        $preparedScripts = [];
         foreach ($scripts as $script) {
             if ($widgetName && !$ajaxRequest) {
                 $sanitizedScript = $this->sanitize($script);
@@ -186,7 +184,7 @@ JS;
      */
     protected function sanitize($scripts)
     {
-        return strtr($scripts, array('\\' => '\\\\', "'" => "\\'", "\r" => '', "\n" => '\n'));
+        return strtr($scripts, ['\\' => '\\\\', "'" => "\\'", "\r" => '', "\n" => '\n']);
     }
 
     /**

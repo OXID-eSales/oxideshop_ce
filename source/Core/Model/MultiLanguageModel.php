@@ -23,8 +23,6 @@
 namespace OxidEsales\EshopCommunity\Core\Model;
 
 use oxObjectException;
-use oxRegistry;
-use oxDb;
 
 /**
  * Class handling multilanguage data fields
@@ -203,7 +201,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
             getViewName($this->_sCoreTable, -1, -1),
             true
         );
-        $multiLangFields = array();
+        $multiLangFields = [];
 
         //selecting all object multilang fields
         foreach ($objFields as $key => $value) {
@@ -468,7 +466,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         if ($ret) {
             //also update multilang table if it is separate
-            $updateTables = array();
+            $updateTables = [];
             if ($this->_blEmployMultilanguage) {
                 $coreTable = $this->getCoreTableName();
                 $langTable = getLangTableName($coreTable, $this->getLanguage());
@@ -568,7 +566,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
         } else {
             $viewName = $this->getViewName();
             if (!$viewName) {
-                return array();
+                return [];
             }
 
             return $this->_getTableFields($viewName, $returnSimple);

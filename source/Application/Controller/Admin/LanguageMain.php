@@ -279,11 +279,11 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      */
     protected function _sortLangArraysByBaseId()
     {
-        $aUrls = array();
-        $aSslUrls = array();
-        $aLanguages = array();
+        $aUrls = [];
+        $aSslUrls = [];
+        $aLanguages = [];
 
-        uasort($this->_aLangData['params'], array($this, '_sortLangParamsByBaseIdCallback'));
+        uasort($this->_aLangData['params'], [$this, '_sortLangParamsByBaseIdCallback']);
 
         foreach ($this->_aLangData['params'] as $sAbbr => $aParams) {
             $iId = (int) $aParams['baseId'];
@@ -306,7 +306,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      */
     protected function _assignDefaultLangParams($aLanguages)
     {
-        $aParams = array();
+        $aParams = [];
         $iBaseId = 0;
 
         foreach (array_keys($aLanguages) as $sOxId) {
@@ -338,7 +338,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      */
     protected function _getAvailableLangBaseId()
     {
-        $aBaseId = array();
+        $aBaseId = [];
         foreach ($this->_aLangData['params'] as $aLang) {
             $aBaseId[] = $aLang['baseId'];
         }

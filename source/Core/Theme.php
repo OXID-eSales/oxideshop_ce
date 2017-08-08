@@ -22,9 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxException;
-use oxRegistry;
-
 /**
  * Themes handler class.
  *
@@ -39,14 +36,14 @@ class Theme extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aTheme = array();
+    protected $_aTheme = [];
 
     /**
      * Theme info list
      *
      * @var array
      */
-    protected $_aThemeList = array();
+    protected $_aThemeList = [];
 
     /**
      * Load theme info
@@ -59,7 +56,7 @@ class Theme extends \OxidEsales\Eshop\Core\Base
     {
         $sFilePath = $this->getConfig()->getViewsDir() . $sOXID . "/theme.php";
         if (file_exists($sFilePath) && is_readable($sFilePath)) {
-            $aTheme = array();
+            $aTheme = [];
             include $sFilePath;
             $this->_aTheme = $aTheme;
             $this->_aTheme['id'] = $sOXID;
@@ -101,7 +98,7 @@ class Theme extends \OxidEsales\Eshop\Core\Base
      */
     public function getList()
     {
-        $this->_aThemeList = array();
+        $this->_aThemeList = [];
         $sOutDir = $this->getConfig()->getViewsDir();
         foreach (glob($sOutDir . "*", GLOB_ONLYDIR) as $sDir) {
             $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
@@ -156,7 +153,7 @@ class Theme extends \OxidEsales\Eshop\Core\Base
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-        $activeThemeList = array();
+        $activeThemeList = [];
         if (!$this->isAdmin()) {
             $activeThemeList[] = $config->getConfigParam('sTheme');
 

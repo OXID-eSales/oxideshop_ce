@@ -134,7 +134,7 @@ class ActionList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sTable = getViewName('oxactions');
         $sGroupTable = getViewName('oxgroups');
 
-        $aIds = array();
+        $aIds = [];
         // checking for current session user which gives additional restrictions for user itself, users group and country
         if ($oUser && count($aGroupIds = $oUser->getUserGroups())) {
             foreach ($aGroupIds as $oGroup) {

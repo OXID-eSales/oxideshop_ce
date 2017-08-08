@@ -37,7 +37,7 @@ class ExceptionErrorController extends \OxidEsales\Eshop\Application\Controller\
     protected $_sThisTemplate = 'message/exception.tpl';
 
     /** @var array Remove loading of components on exception handling. */
-    protected $_aComponentNames = array();
+    protected $_aComponentNames = [];
 
     /**
      * Sets exception errros to template
@@ -57,7 +57,7 @@ class ExceptionErrorController extends \OxidEsales\Eshop\Application\Controller\
         $oSmarty->assign_by_ref("Errors", $aViewData["Errors"]);
 
         // resetting errors from session
-        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('Errors', array());
+        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('Errors', []);
     }
 
     /**
@@ -70,7 +70,7 @@ class ExceptionErrorController extends \OxidEsales\Eshop\Application\Controller\
         $aErrors = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('Errors');
 
         if (null === $aErrors) {
-            $aErrors = array();
+            $aErrors = [];
         }
 
         return $aErrors;

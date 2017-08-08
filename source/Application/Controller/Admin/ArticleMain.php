@@ -603,33 +603,33 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     protected function _formJumpList($oArticle, $oParentArticle)
     {
-        $aJumpList = array();
+        $aJumpList = [];
         //fetching parent article variants
         $sOxIdField = 'oxarticles__oxid';
         if (isset($oParentArticle)) {
-            $aJumpList[] = array($oParentArticle->$sOxIdField->value, $this->_getTitle($oParentArticle));
+            $aJumpList[] = [$oParentArticle->$sOxIdField->value, $this->_getTitle($oParentArticle)];
             $sEditLanguageParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editlanguage");
             $oParentVariants = $oParentArticle->getAdminVariants($sEditLanguageParameter);
             if ($oParentVariants->count()) {
                 foreach ($oParentVariants as $oVar) {
-                    $aJumpList[] = array($oVar->$sOxIdField->value, " - " . $this->_getTitle($oVar));
+                    $aJumpList[] = [$oVar->$sOxIdField->value, " - " . $this->_getTitle($oVar)];
                     if ($oVar->$sOxIdField->value == $oArticle->$sOxIdField->value) {
                         $oVariants = $oArticle->getAdminVariants($sEditLanguageParameter);
                         if ($oVariants->count()) {
                             foreach ($oVariants as $oVVar) {
-                                $aJumpList[] = array($oVVar->$sOxIdField->value, " -- " . $this->_getTitle($oVVar));
+                                $aJumpList[] = [$oVVar->$sOxIdField->value, " -- " . $this->_getTitle($oVVar)];
                             }
                         }
                     }
                 }
             }
         } else {
-            $aJumpList[] = array($oArticle->$sOxIdField->value, $this->_getTitle($oArticle));
+            $aJumpList[] = [$oArticle->$sOxIdField->value, $this->_getTitle($oArticle)];
             //fetching this article variants data
             $oVariants = $oArticle->getAdminVariants(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editlanguage"));
             if ($oVariants && $oVariants->count()) {
                 foreach ($oVariants as $oVar) {
-                    $aJumpList[] = array($oVar->$sOxIdField->value, " - " . $this->_getTitle($oVar));
+                    $aJumpList[] = [$oVar->$sOxIdField->value, " - " . $this->_getTitle($oVar)];
                 }
             }
         }

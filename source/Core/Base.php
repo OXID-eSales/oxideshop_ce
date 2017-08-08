@@ -22,11 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxConfig;
-use oxRegistry;
-use oxSession;
 use oxSystemComponentException;
-use oxUser;
 
 /**
  * Basic class which is used as parent class by other OXID eShop classes.
@@ -87,7 +83,7 @@ class Base
                 $method = str_replace('UNIT', '_', $method);
             }
             if (method_exists($this, $method)) {
-                return call_user_func_array(array(& $this, $method), $arguments);
+                return call_user_func_array([& $this, $method], $arguments);
             }
         }
 

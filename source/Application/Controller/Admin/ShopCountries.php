@@ -23,28 +23,28 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 //shop location countries - used when loading dynamic content from oxid servers
-$aLanguages = array(
+$aLanguages = [
 
     'en' => 'English',
     'de' => 'Deutsch',
 
-);
+];
 
-$aLocationCountries['en'] = array(
+$aLocationCountries['en'] = [
 
     'de' => 'Germany, Austria, Switzerland',
     'en' => 'Any other',
 
-);
+];
 
-$aLocationCountries['de'] = array(
+$aLocationCountries['de'] = [
 
     'de' => 'Deutschland, &Ouml;sterreich, Schweiz',
     'en' => 'Andere Region',
 
-);
+];
 
-$aCountries['en'] = array(
+$aCountries['en'] = [
 
     "a7c40f6320aeb2ec2.72885259" => "Austria",
     "a7c40f63272a57296.32117580" => "France",
@@ -293,9 +293,9 @@ $aCountries['en'] = array(
     "8f241f110969c34a2.42564730" => "Zambia",
     "8f241f110969da699.04185888" => "Zimbabwe",
     "a7c40f632a0804ab5.18804099" => "Åland Islands",
-);
+];
 
-$aCountries['de'] = array(
+$aCountries['de'] = [
 
     "a7c40f6320aeb2ec2.72885259" => "Österreich",
     "a7c40f63272a57296.32117580" => "Frankreich",
@@ -544,4 +544,4 @@ $aCountries['de'] = array(
     "8f241f11095861fb7.55278256" => "Ägypten",
     "8f241f1109588d077.74284490" => "Äquatorialguinea",
     "8f241f110958caf67.08982313" => "Äthiopien",
-);
+];

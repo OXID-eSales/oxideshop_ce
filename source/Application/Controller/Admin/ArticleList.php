@@ -125,8 +125,8 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      */
     public function getSearchFields()
     {
-        $aSkipFields = array("oxblfixedprice", "oxvarselect", "oxamitemid",
-                            "oxamtaskid", "oxpixiexport", "oxpixiexported");
+        $aSkipFields = ["oxblfixedprice", "oxvarselect", "oxamitemid",
+                            "oxamtaskid", "oxpixiexport", "oxpixiexported"];
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
         return array_diff($oArticle->getFieldNames(), $aSkipFields);

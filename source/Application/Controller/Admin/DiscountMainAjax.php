@@ -36,21 +36,21 @@ class DiscountMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
-        array('oxtitle', 'oxcountry', 1, 1, 0),
-        array('oxisoalpha2', 'oxcountry', 1, 0, 0),
-        array('oxisoalpha3', 'oxcountry', 0, 0, 0),
-        array('oxunnum3', 'oxcountry', 0, 0, 0),
-        array('oxid', 'oxcountry', 0, 0, 1)
-    ),
-                                 'container2' => array(
-                                     array('oxtitle', 'oxcountry', 1, 1, 0),
-                                     array('oxisoalpha2', 'oxcountry', 1, 0, 0),
-                                     array('oxisoalpha3', 'oxcountry', 0, 0, 0),
-                                     array('oxunnum3', 'oxcountry', 0, 0, 0),
-                                     array('oxid', 'oxobject2discount', 0, 0, 1)
-                                 )
-    );
+    protected $_aColumns = ['container1' => [ // field , table,         visible, multilanguage, ident
+        ['oxtitle', 'oxcountry', 1, 1, 0],
+        ['oxisoalpha2', 'oxcountry', 1, 0, 0],
+        ['oxisoalpha3', 'oxcountry', 0, 0, 0],
+        ['oxunnum3', 'oxcountry', 0, 0, 0],
+        ['oxid', 'oxcountry', 0, 0, 1]
+    ],
+                                 'container2' => [
+                                     ['oxtitle', 'oxcountry', 1, 1, 0],
+                                     ['oxisoalpha2', 'oxcountry', 1, 0, 0],
+                                     ['oxisoalpha3', 'oxcountry', 0, 0, 0],
+                                     ['oxunnum3', 'oxcountry', 0, 0, 0],
+                                     ['oxid', 'oxobject2discount', 0, 0, 1]
+                                 ]
+    ];
 
     /**
      * Returns SQL query for data to fetc

@@ -45,10 +45,10 @@ class ShopRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfig
      *
      * @var array
      */
-    protected $_aCustomers = array("Enduser"           => 0,
+    protected $_aCustomers = ["Enduser"           => 0,
                                    "Reseller"          => 0,
                                    "Business"          => 0,
-                                   "PublicInstitution" => 0);
+                                   "PublicInstitution" => 0];
 
     /**
      * Gets list of content pages which could be used for embedding
@@ -82,7 +82,7 @@ class ShopRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfig
                 $aCustomers[$sCustomer] = (in_array($sCustomer, $aCustomersConf)) ? 1 : 0;
             }
         } else {
-            $aCustomers = array();
+            $aCustomers = [];
         }
 
         return $aCustomers;

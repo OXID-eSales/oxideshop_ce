@@ -37,17 +37,17 @@ class UserMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListCo
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array( // field , table,  visible, multilanguage, ident
-        array('oxtitle', 'oxgroups', 1, 0, 0),
-        array('oxid', 'oxgroups', 0, 0, 0),
-        array('oxid', 'oxgroups', 0, 0, 1),
-    ),
-                                 'container2' => array(
-                                     array('oxtitle', 'oxgroups', 1, 0, 0),
-                                     array('oxid', 'oxgroups', 0, 0, 0),
-                                     array('oxid', 'oxobject2group', 0, 0, 1),
-                                 )
-    );
+    protected $_aColumns = ['container1' => [ // field , table,  visible, multilanguage, ident
+        ['oxtitle', 'oxgroups', 1, 0, 0],
+        ['oxid', 'oxgroups', 0, 0, 0],
+        ['oxid', 'oxgroups', 0, 0, 1],
+    ],
+                                 'container2' => [
+                                     ['oxtitle', 'oxgroups', 1, 0, 0],
+                                     ['oxid', 'oxgroups', 0, 0, 0],
+                                     ['oxid', 'oxobject2group', 0, 0, 1],
+                                 ]
+    ];
 
     /**
      * Returns SQL query for data to fetc

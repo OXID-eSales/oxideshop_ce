@@ -45,33 +45,33 @@ class SelectListMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
-        array('oxartnum', 'oxarticles', 1, 0, 0),
-        array('oxtitle', 'oxarticles', 1, 1, 0),
-        array('oxean', 'oxarticles', 0, 0, 0),
-        array('oxmpn', 'oxarticles', 0, 0, 0),
-        array('oxprice', 'oxarticles', 0, 0, 0),
-        array('oxstock', 'oxarticles', 0, 0, 0),
-        array('oxid', 'oxarticles', 0, 0, 1)
-    ),
-                                 'container2' => array(
-                                     array('oxartnum', 'oxarticles', 1, 0, 0),
-                                     array('oxtitle', 'oxarticles', 1, 1, 0),
-                                     array('oxean', 'oxarticles', 0, 0, 0),
-                                     array('oxmpn', 'oxarticles', 0, 0, 0),
-                                     array('oxprice', 'oxarticles', 0, 0, 0),
-                                     array('oxstock', 'oxarticles', 0, 0, 0),
-                                     array('oxid', 'oxobject2selectlist', 0, 0, 1),
-                                     array('oxid', 'oxarticles', 0, 0, 1)
-                                 ),
-                                 'container3' => array(
-                                     array('oxtitle', 'oxselectlist', 1, 1, 0),
-                                     array('oxsort', 'oxobject2selectlist', 1, 0, 0),
-                                     array('oxident', 'oxselectlist', 0, 0, 0),
-                                     array('oxvaldesc', 'oxselectlist', 0, 0, 0),
-                                     array('oxid', 'oxselectlist', 0, 0, 1)
-                                 )
-    );
+    protected $_aColumns = ['container1' => [ // field , table,         visible, multilanguage, ident
+        ['oxartnum', 'oxarticles', 1, 0, 0],
+        ['oxtitle', 'oxarticles', 1, 1, 0],
+        ['oxean', 'oxarticles', 0, 0, 0],
+        ['oxmpn', 'oxarticles', 0, 0, 0],
+        ['oxprice', 'oxarticles', 0, 0, 0],
+        ['oxstock', 'oxarticles', 0, 0, 0],
+        ['oxid', 'oxarticles', 0, 0, 1]
+    ],
+                                 'container2' => [
+                                     ['oxartnum', 'oxarticles', 1, 0, 0],
+                                     ['oxtitle', 'oxarticles', 1, 1, 0],
+                                     ['oxean', 'oxarticles', 0, 0, 0],
+                                     ['oxmpn', 'oxarticles', 0, 0, 0],
+                                     ['oxprice', 'oxarticles', 0, 0, 0],
+                                     ['oxstock', 'oxarticles', 0, 0, 0],
+                                     ['oxid', 'oxobject2selectlist', 0, 0, 1],
+                                     ['oxid', 'oxarticles', 0, 0, 1]
+                                 ],
+                                 'container3' => [
+                                     ['oxtitle', 'oxselectlist', 1, 1, 0],
+                                     ['oxsort', 'oxobject2selectlist', 1, 0, 0],
+                                     ['oxident', 'oxselectlist', 0, 0, 0],
+                                     ['oxvaldesc', 'oxselectlist', 0, 0, 0],
+                                     ['oxid', 'oxselectlist', 0, 0, 1]
+                                 ]
+    ];
 
     /**
      * Returns SQL query for data to fetc

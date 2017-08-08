@@ -57,7 +57,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @var array
      * @access protected
      */
-    protected $_aChannel = array();
+    protected $_aChannel = [];
 
     /**
      * Give back the cache file name for the given oxActionId.
@@ -68,11 +68,11 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      */
     public function mapOxActionToFileCache($sOxActionId)
     {
-        $aOxActionToCacheIds = array(
+        $aOxActionToCacheIds = [
             'oxbargain' => 'RSS_BARGAIN',
             'oxtop5' => 'RSS_TopShop',
             'oxnewest' => 'RSS_NewArts'
-        );
+        ];
 
         $sFileCacheName = $aOxActionToCacheIds[$sOxActionId];
 
@@ -213,7 +213,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      */
     protected function _saveToCache($name, $aContent)
     {
-        $aData = array('timestamp' => time(), 'content' => $aContent);
+        $aData = ['timestamp' => time(), 'content' => $aContent];
 
         return Registry::getUtils()->toFileCache($this->_getCacheId($name), $aData);
     }
@@ -230,7 +230,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
     protected function _getArticleItems(\OxidEsales\Eshop\Application\Model\ArticleList $oList)
     {
         $myUtilsUrl = Registry::getUtilsUrl();
-        $aItems = array();
+        $aItems = [];
         $oLang = Registry::getLang();
         $oStr = getStr();
 
@@ -788,7 +788,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
     protected function _getRecommListItems($oList)
     {
         $myUtilsUrl = Registry::getUtilsUrl();
-        $aItems = array();
+        $aItems = [];
         foreach ($oList as $oRecommList) {
             $oItem = new stdClass();
             $oItem->title = $oRecommList->oxrecommlists__oxtitle->value;
@@ -820,7 +820,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('iNrofCrossellArticles', $oConfig->getConfigParam('iRssItemsCount'));
 
-        $oList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class)->getRecommListsByIds(array($oArticle->getId()));
+        $oList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class)->getRecommListsByIds([$oArticle->getId()]);
         if ($oList == null) {
             $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         }

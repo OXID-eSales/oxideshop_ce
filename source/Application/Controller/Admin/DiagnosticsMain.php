@@ -193,13 +193,13 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     protected function _getFileCheckReport($oFileCheckerResult)
     {
-        $aViewData = array(
+        $aViewData = [
             "sVersion"       => $this->getConfig()->getVersion(),
             "sEdition"       => $this->getConfig()->getEdition(),
             "sRevision"      => $this->getConfig()->getRevision(),
             "aResultSummary" => $oFileCheckerResult->getResultSummary(),
             "aResultOutput"  => $oFileCheckerResult->getResult(),
-        );
+        ];
 
         return $this->_oRenderer->renderTemplate("version_checker_result.tpl", $aViewData);
     }
@@ -241,7 +241,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     protected function _runBasicDiagnostics()
     {
-        $aViewData = array();
+        $aViewData = [];
         $oDiagnostics = oxNew(\OxidEsales\Eshop\Application\Model\Diagnostics::class);
 
         $oDiagnostics->setShopLink(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopURL'));
@@ -321,10 +321,10 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     public function getSupportContactForm()
     {
-        $aLinks = array(
+        $aLinks = [
             "de" => "http://www.oxid-esales.com/de/support-services/supportanfrage.html",
             "en" => "http://www.oxid-esales.com/en/support-services/support-request.html"
-        );
+        ];
 
         $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $aLanguages = $oLang->getLanguageArray();

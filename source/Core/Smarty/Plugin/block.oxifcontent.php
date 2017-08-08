@@ -49,7 +49,7 @@ function smarty_block_oxifcontent( $params, $content, &$smarty, &$repeat)
     if ($repeat) {
         if ( $sIdent || $sOxid ) {
 
-            static $aContentCache = array();
+            static $aContentCache = [];
 
             if ( ( $sIdent && isset( $aContentCache[$sIdent] ) ) ||
                  ( $sOxid && isset( $aContentCache[$sOxid] ) ) ) {

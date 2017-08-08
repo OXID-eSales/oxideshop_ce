@@ -98,7 +98,7 @@ class ModuleMetadataValidator implements \OxidEsales\Eshop\Core\Contract\IModule
      *
      * @return string
      */
-    protected function prepareMessage($languageConstant, $incorrect = array())
+    protected function prepareMessage($languageConstant, $incorrect = [])
     {
         $additionalInformation = '';
         foreach ($incorrect as $patchee => $patch) {

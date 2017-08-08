@@ -42,7 +42,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @var array
      */
-    protected $_aSkipSaveFields = array('oxcreate', 'oxtimestamp');
+    protected $_aSkipSaveFields = ['oxcreate', 'oxtimestamp'];
 
     /**
      * Current object class name
@@ -136,7 +136,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getArticles()
     {
-        $aRes = array();
+        $aRes = [];
         $aItems = $this->getItems();
         if (is_array($aItems)) {
             foreach ($aItems as $sId => $oItem) {
@@ -164,7 +164,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         // initializing
-        $this->_aBasketItems = array();
+        $this->_aBasketItems = [];
 
         // loading basket items
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
@@ -262,7 +262,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _getItemKey($sProductId, $aSel = null, $aPersParam = null)
     {
-        $aSel = ($aSel != null) ? $aSel : array(0 => '0');
+        $aSel = ($aSel != null) ? $aSel : [0 => '0'];
 
         return md5($sProductId . '|' . serialize($aSel) . '|' . serialize($aPersParam));
     }

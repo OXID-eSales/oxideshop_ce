@@ -32,21 +32,21 @@ use oxDb;
 class ShopViewValidator
 {
 
-    protected $_aMultiLangTables = array();
+    protected $_aMultiLangTables = [];
 
-    protected $_aMultiShopTables = array();
+    protected $_aMultiShopTables = [];
 
-    protected $_aLanguages = array();
+    protected $_aLanguages = [];
 
-    protected $_aAllShopLanguages = array();
+    protected $_aAllShopLanguages = [];
 
     protected $_iShopId = null;
 
-    protected $_aAllViews = array();
+    protected $_aAllViews = [];
 
-    protected $_aShopViews = array();
+    protected $_aShopViews = [];
 
-    protected $_aValidShopViews = array();
+    protected $_aValidShopViews = [];
 
     /**
      * Sets multi language tables.
@@ -197,7 +197,7 @@ class ShopViewValidator
     protected function _getShopViews()
     {
         if (empty($this->_aShopViews)) {
-            $this->_aShopViews = array();
+            $this->_aShopViews = [];
             $aAllViews = $this->_getAllViews();
 
             foreach ($aAllViews as $sView) {
@@ -219,7 +219,7 @@ class ShopViewValidator
     {
         if (empty($this->_aValidShopViews)) {
             $aTables = $this->getShopTables();
-            $this->_aValidShopViews = array();
+            $this->_aValidShopViews = [];
 
             foreach ($aTables as $sTable) {
                 $this->prepareShopTableViewNames($sTable);
@@ -276,7 +276,7 @@ class ShopViewValidator
      */
     public function getInvalidViews()
     {
-        $aInvalidViews = array();
+        $aInvalidViews = [];
         $aShopViews = $this->_getShopViews();
 
         foreach ($aShopViews as $sView) {

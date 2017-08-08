@@ -38,14 +38,14 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aPosDir = array('asc', 'desc');
+    protected $_aPosDir = ['asc', 'desc'];
 
     /**
      * Array of DB table columns which are loaded from DB
      *
      * @var array
      */
-    protected $_aColumns = array();
+    protected $_aColumns = [];
 
     /**
      * Default limit of DB entries to load from DB
@@ -218,7 +218,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
     protected function _getIdentColNames()
     {
         $aColNames = $this->_getColNames();
-        $aCols = array();
+        $aCols = [];
         foreach ($aColNames as $iKey => $aCol) {
             // ident ?
             if ($aCol[4]) {
@@ -238,7 +238,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
     {
         $aColNames = $this->_getColNames();
         $aUserCols = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aCols');
-        $aVisibleCols = array();
+        $aVisibleCols = [];
 
         // user defined some cols to load ?
         if (is_array($aUserCols)) {
@@ -392,7 +392,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
                     }
 
                     // escaping special characters
-                    $sValue = str_replace(array('%', '_'), array('\%', '\_'), $sValue);
+                    $sValue = str_replace(['%', '_'], ['\%', '\_'], $sValue);
 
                     // possibility to search in the middle ..
                     $sValue = $oStr->preg_replace('/^\*/', '%', $sValue);
@@ -431,7 +431,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getAll($sQ)
     {
-        $aReturn = array();
+        $aReturn = [];
         $rs = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->select($sQ);
         if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
@@ -554,7 +554,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
             $aResponse['countsql'] = $sCountQ;
         }
 
-        $aResponse['records'] = array();
+        $aResponse['records'] = [];
 
         // skip further execution if no records were found ...
         if (($iTotal = $this->_getTotalCount($sCountQ))) {
@@ -588,7 +588,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
         }
 
         if (!is_array($aArtIds)) {
-            $aArtIds = array($aArtIds);
+            $aArtIds = [$aArtIds];
         }
 
         $sShopId = $this->getConfig()->getShopId();

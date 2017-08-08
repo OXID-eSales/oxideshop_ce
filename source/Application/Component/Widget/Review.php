@@ -34,7 +34,7 @@ class Review extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContro
      *
      * @var array
      */
-    protected $_aComponentNames = array('oxcmp_user' => 1);
+    protected $_aComponentNames = ['oxcmp_user' => 1];
 
     /**
      * Current class template name.

@@ -132,8 +132,8 @@ class AccountNewsletterController extends \OxidEsales\Eshop\Application\Controll
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
         $oUtils = \OxidEsales\Eshop\Core\Registry::getUtilsUrl();
         $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $sSelfLink = $this->getViewConfig()->getSelfLink();
@@ -143,7 +143,7 @@ class AccountNewsletterController extends \OxidEsales\Eshop\Application\Controll
         $aPaths[] = $aPath;
 
         $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('NEWSLETTER_SETTINGS', $iBaseLanguage, false);
-        $aPath['link'] = $oUtils->cleanUrl($this->getLink(), array('fnc'));
+        $aPath['link'] = $oUtils->cleanUrl($this->getLink(), ['fnc']);
         $aPaths[] = $aPath;
 
         return $aPaths;

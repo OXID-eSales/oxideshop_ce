@@ -165,7 +165,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
         // counting pages
         $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrOfCatArticles);
 
-        return array($oArtList, $this->_iAllArtCnt);
+        return [$oArtList, $this->_iAllArtCnt];
     }
 
     /**
@@ -248,7 +248,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
     public function getSubCatList()
     {
         if ($this->_oSubCatList === null) {
-            $this->_oSubCatList = array();
+            $this->_oSubCatList = [];
             if ($this->hasVisibleSubCats()) {
                 return $this->_oSubCatList;
             }
@@ -265,7 +265,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
     public function getArticleList()
     {
         if ($this->_aArticleList === null) {
-            $this->_aArticleList = array();
+            $this->_aArticleList = [];
             if (($oVendor = $this->getActVendor()) && ($oVendor->getId() != 'root')) {
                 list($aArticleList, $iAllArtCnt) = $this->_loadArticles($oVendor);
                 if ($iAllArtCnt) {
@@ -429,12 +429,12 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
+        $aPaths = [];
         $oCatTree = $this->getVendorTree();
 
         if ($oCatTree) {
             foreach ($oCatTree->getPath() as $oCat) {
-                $aCatPath = array();
+                $aCatPath = [];
 
                 $aCatPath['link'] = $oCat->getLink();
                 $aCatPath['title'] = $oCat->oxcategories__oxtitle->value;

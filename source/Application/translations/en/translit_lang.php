@@ -24,7 +24,7 @@
  * Character list for replacement in SEO URL's
  * @var array SEO replacement list
  */
-$aSeoReplaceChars = array(
+$aSeoReplaceChars = [
     'ä' => 'ae',
     'ö' => 'oe',
     'ü' => 'ue',
@@ -32,8 +32,8 @@ $aSeoReplaceChars = array(
     'Ö' => 'Oe',
     'Ü' => 'Ue',
     'ß' => 'ss',
-);
+];
 
-$aLang = array(
+$aLang = [
     'charset' => "UTF-8",
-);
+];

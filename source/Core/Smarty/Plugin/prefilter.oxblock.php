@@ -61,7 +61,7 @@ function smarty_prefilter_oxblock($sSource, &$oSmartyCompiler)
         }
         if ($blDebugTemplateBlocks) {
             $sTplDir = trim(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('_sTemplateDir'), '/\\');
-            $sFile = str_replace(array('\\', '//'), '/', $oSmartyCompiler->_current_file);
+            $sFile = str_replace(['\\', '//'], '/', $oSmartyCompiler->_current_file);
             if (preg_match('@/'.preg_quote($sTplDir, '@').'/(.*)$@', $sFile, $m)) {
                 $sFile = $m[1];
             }

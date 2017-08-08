@@ -38,11 +38,11 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @var array
      */
-    protected $_aSumType = array(
+    protected $_aSumType = [
         0 => 'abs',
         1 => '%',
         2 => 'itm'
-    );
+    ];
 
     /**
      * Current class template name.
@@ -332,7 +332,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         // store navigation history
         $aHistory = explode('|', $myUtilsServer->getOxCookie('oxidadminhistory'));
         if (!is_array($aHistory)) {
-            $aHistory = array();
+            $aHistory = [];
         }
 
         if (!in_array($sNode, $aHistory)) {
@@ -417,7 +417,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         }
 
         // formatting
-        $aMarkers = array('KB', 'MB', 'GB');
+        $aMarkers = ['KB', 'MB', 'GB'];
         $sFormattedMaxSize = '';
 
         $iSize = floor($iMaxFileSize / 1024);
@@ -427,7 +427,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
             next($aMarkers);
         }
 
-        return array($iMaxFileSize, $sFormattedMaxSize);
+        return [$iMaxFileSize, $sFormattedMaxSize];
     }
 
     /**
@@ -598,7 +598,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function resetSeoData($sShopId)
     {
-        $aTypes = array('oxarticle', 'oxcategory', 'oxvendor', 'oxcontent', 'dynamic', 'oxmanufacturer');
+        $aTypes = ['oxarticle', 'oxcategory', 'oxvendor', 'oxcontent', 'dynamic', 'oxmanufacturer'];
         $oEncoder = \OxidEsales\Eshop\Core\Registry::getSeoEncoder();
         foreach ($aTypes as $sType) {
             $oEncoder->markAsExpired(null, $sShopId, 1, null, "oxtype = '{$sType}'");

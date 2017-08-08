@@ -108,7 +108,7 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
      */
     protected function _fetchCurVersionInfo($sUrl)
     {
-        $aParams = array("myversion" => $this->getConfig()->getVersion());
+        $aParams = ["myversion" => $this->getConfig()->getVersion()];
         $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $iLang = $oLang->getTplLanguage();
         $sLang = $oLang->getLanguageAbbr($iLang);

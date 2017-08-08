@@ -38,7 +38,7 @@ class Recommendation extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      *
      * @var array
      */
-    protected $_aComponentNames = array('oxcmp_cur' => 1);
+    protected $_aComponentNames = ['oxcmp_cur' => 1];
 
     /**
      * Current class template name.

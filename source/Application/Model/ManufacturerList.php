@@ -45,7 +45,7 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @var array
      */
-    protected $_aPath = array();
+    protected $_aPath = [];
 
     /**
      * To show manufacturer article count or not

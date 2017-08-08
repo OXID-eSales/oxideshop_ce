@@ -37,7 +37,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      *
      * @var array
      */
-    protected $_aComponentNames = array('oxcmp_user' => 1, 'oxcmp_basket' => 1, 'oxcmp_cur' => 1);
+    protected $_aComponentNames = ['oxcmp_user' => 1, 'oxcmp_basket' => 1, 'oxcmp_cur' => 1];
 
     /**
      * Current class template name.

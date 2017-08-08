@@ -22,9 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxDb;
-use oxRegistry;
-
 /**
  * Including pictures generator functions file
  */
@@ -41,7 +38,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aImageTypes = array("GIF" => IMAGETYPE_GIF, "JPG" => IMAGETYPE_JPEG, "PNG" => IMAGETYPE_PNG, "JPEG" => IMAGETYPE_JPEG);
+    protected $_aImageTypes = ["GIF" => IMAGETYPE_GIF, "JPG" => IMAGETYPE_JPEG, "PNG" => IMAGETYPE_PNG, "JPEG" => IMAGETYPE_JPEG];
 
     /**
      * Resizes image to desired width and height, returns true on success.

@@ -120,12 +120,12 @@ class CurrencyComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $oParentView->setActCurrency($this->_oActCur);
 
         $oUrlUtils = \OxidEsales\Eshop\Core\Registry::getUtilsUrl();
-        $sUrl = $oUrlUtils->cleanUrl($this->getConfig()->getTopActiveView()->getLink(), array("cur"));
+        $sUrl = $oUrlUtils->cleanUrl($this->getConfig()->getTopActiveView()->getLink(), ["cur"]);
 
         if ($this->getConfig()->getConfigParam('bl_perfLoadCurrency')) {
             reset($this->aCurrencies);
             while (list(, $oItem) = each($this->aCurrencies)) {
-                $oItem->link = $oUrlUtils->processUrl($sUrl, true, array("cur" => $oItem->id));
+                $oItem->link = $oUrlUtils->processUrl($sUrl, true, ["cur" => $oItem->id]);
             }
         }
 

@@ -26,7 +26,7 @@ $sLangName = 'Deutsch';
 // -------------------------------
 // RESOURCE IDENTIFIER = STRING
 // -------------------------------
-$aLang = array(
+$aLang = [
 
     'charset'          => 'UTF-8',
     'fullDateFormat'   => 'd.m.Y H:i:s',
@@ -2012,7 +2012,7 @@ $aLang = array(
     'VERSION_UPDATE_LINK' => 'http://www.oxid-esales.com/de/support-services/dokumentation-und-hilfe/oxid-eshop/installation/oxid-eshop-aktualisieren/update-vorbereiten.html',
 
     'ERROR_METADATA_CONTROLLERS_NOT_UNIQUE' => 'Fehler: Modul nicht aktiviert.<br />In einem Shop oder Sub-Shop müssen Schüssel und Werte für "controllers" eindeutig sein.<br />Folgende Schlüssel oder Werte für "controllers", die in der Datei metadata.php dieses Moduls definiert sind, existieren schon im Shop:<br /> %s'
-);
+];
 
 /*
 [{ oxmultilang ident='ACTIONS_MAIN_YOUWANTTODELETE' }]

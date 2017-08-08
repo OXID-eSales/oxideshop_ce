@@ -200,7 +200,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
             $this->_aSimilarRecommListIds = false;
 
             if ($oProduct = $this->getFirstBasketProduct()) {
-                $this->_aSimilarRecommListIds = array($oProduct->getId());
+                $this->_aSimilarRecommListIds = [$oProduct->getId()];
             }
         }
 
@@ -369,8 +369,8 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
 
         $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('CART', $iBaseLanguage, false);

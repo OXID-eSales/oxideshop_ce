@@ -30,7 +30,7 @@ namespace OxidEsales\EshopCommunity\Core;
 class Header
 {
 
-    protected $_aHeader = array();
+    protected $_aHeader = [];
 
     /**
      * Sets header.
@@ -39,7 +39,7 @@ class Header
      */
     public function setHeader($header)
     {
-        $header = str_replace(array("\n", "\r"), '', $header);
+        $header = str_replace(["\n", "\r"], '', $header);
         $this->_aHeader[] = (string) $header . "\r\n";
     }
 

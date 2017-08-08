@@ -126,7 +126,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
     public function getSelectionList()
     {
         if ($this->_aSelectionList === null) {
-            $this->_aSelectionList = array();
+            $this->_aSelectionList = [];
 
             $oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             $oProduct->load($this->getEditObjectId());
@@ -161,7 +161,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
             $sMainCatId = $oMainCat->getId();
         }
 
-        $aCatList = array();
+        $aCatList = [];
         $iLang = $this->getEditLang();
 
         // adding categories
@@ -204,7 +204,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
         if ($oArticle->oxarticles__oxvendorid->value) {
             $oVendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
             if ($oVendor->loadInLang($this->getEditLang(), $oArticle->oxarticles__oxvendorid->value)) {
-                return array($oVendor);
+                return [$oVendor];
             }
         }
     }
@@ -221,7 +221,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
         if ($oArticle->oxarticles__oxmanufacturerid->value) {
             $oManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
             if ($oManufacturer->loadInLang($this->getEditLang(), $oArticle->oxarticles__oxmanufacturerid->value)) {
-                return array($oManufacturer);
+                return [$oManufacturer];
             }
         }
     }

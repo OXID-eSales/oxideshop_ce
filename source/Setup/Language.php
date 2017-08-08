@@ -58,7 +58,7 @@ class Language extends Core
                 $_GET['istep'] = $_POST['istep'] = $this->getInstance("Setup")->getStep('STEP_WELCOME');
             }
         } elseif ($oSession->getSessionParam('setup_lang') === null) {
-            $aLangs = array('en', 'de');
+            $aLangs = ['en', 'de'];
             $sBrowserLang = strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
             $sBrowserLang = (in_array($sBrowserLang, $aLangs)) ? $sBrowserLang : $aLangs[0];
             $oSession->setSessionParam('setup_lang', $sBrowserLang);
@@ -77,10 +77,10 @@ class Language extends Core
     public function getText($sTextIdent)
     {
         if ($this->_aLangData === null) {
-            $this->_aLangData = array();
+            $this->_aLangData = [];
             $sLangFilePath = getShopBasePath() . EditionPathProvider::SETUP_DIRECTORY . '/' . ucfirst($this->getLanguage()) . '/lang.php';
             if (file_exists($sLangFilePath) && is_readable($sLangFilePath)) {
-                $aLang = array();
+                $aLang = [];
                 include $sLangFilePath;
                 $this->_aLangData = array_merge($aLang, $this->getAdditionalMessages());
             }
@@ -108,6 +108,6 @@ class Language extends Core
      */
     protected function getAdditionalMessages()
     {
-        return array();
+        return [];
     }
 }

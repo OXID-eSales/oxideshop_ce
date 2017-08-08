@@ -38,25 +38,25 @@ class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Adm
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
-        array('oxtitle', 'oxcategories', 1, 1, 0),
-        array('oxdesc', 'oxcategories', 1, 1, 0),
-        array('oxid', 'oxcategories', 0, 0, 0),
-        array('oxid', 'oxcategories', 0, 0, 1)
-    ),
-                                 'container2' => array(
-                                     array('oxtitle', 'oxcategories', 1, 1, 0),
-                                     array('oxdesc', 'oxcategories', 1, 1, 0),
-                                     array('oxid', 'oxcategories', 0, 0, 0),
-                                     array('oxid', 'oxcategory2attribute', 0, 0, 1),
-                                     array('oxid', 'oxcategories', 0, 0, 1)
-                                 ),
-                                 'container3' => array(
-                                     array('oxtitle', 'oxattribute', 1, 1, 0),
-                                     array('oxsort', 'oxcategory2attribute', 1, 0, 0),
-                                     array('oxid', 'oxcategory2attribute', 0, 0, 1)
-                                 )
-    );
+    protected $_aColumns = ['container1' => [ // field , table,         visible, multilanguage, ident
+        ['oxtitle', 'oxcategories', 1, 1, 0],
+        ['oxdesc', 'oxcategories', 1, 1, 0],
+        ['oxid', 'oxcategories', 0, 0, 0],
+        ['oxid', 'oxcategories', 0, 0, 1]
+    ],
+                                 'container2' => [
+                                     ['oxtitle', 'oxcategories', 1, 1, 0],
+                                     ['oxdesc', 'oxcategories', 1, 1, 0],
+                                     ['oxid', 'oxcategories', 0, 0, 0],
+                                     ['oxid', 'oxcategory2attribute', 0, 0, 1],
+                                     ['oxid', 'oxcategories', 0, 0, 1]
+                                 ],
+                                 'container3' => [
+                                     ['oxtitle', 'oxattribute', 1, 1, 0],
+                                     ['oxsort', 'oxcategory2attribute', 1, 0, 0],
+                                     ['oxid', 'oxcategory2attribute', 0, 0, 1]
+                                 ]
+    ];
 
     /**
      * Returns SQL query for data to fetc

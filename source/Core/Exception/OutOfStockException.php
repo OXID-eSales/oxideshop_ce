@@ -22,8 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core\Exception;
 
-use oxRegistry;
-
 /**
  * exception class for an article which is out of stock
  */

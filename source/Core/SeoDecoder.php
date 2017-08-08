@@ -22,12 +22,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxDb;
-use oxRegistry;
-
 /**
  * Seo encoder base
- *
  */
 class SeoDecoder extends \OxidEsales\Eshop\Core\Base
 {
@@ -43,7 +39,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
     public function parseStdUrl($sUrl)
     {
         $oStr = getStr();
-        $aRet = array();
+        $aRet = [];
         $sUrl = $oStr->html_entity_decode($sUrl);
 
         if (($iPos = strpos($sUrl, '?')) !== false) {

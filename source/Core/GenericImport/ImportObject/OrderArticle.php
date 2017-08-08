@@ -22,8 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core\GenericImport\ImportObject;
 
-use oxBase;
-
 /**
  * Import object for Order Articles.
  */

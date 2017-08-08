@@ -70,7 +70,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @var array
      */
-    protected $_aPsAllowedContents = array("oxagb", "oxrightofwithdrawal", "oximpressum");
+    protected $_aPsAllowedContents = ["oxagb", "oxrightofwithdrawal", "oximpressum"];
 
     /**
      * Current view content title
@@ -113,13 +113,13 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @var array
      */
-    protected $_aBusinessEntityExtends = array("sRDFaLogoUrl",
+    protected $_aBusinessEntityExtends = ["sRDFaLogoUrl",
                                                "sRDFaLongitude",
                                                "sRDFaLatitude",
                                                "sRDFaGLN",
                                                "sRDFaNAICS",
                                                "sRDFaISIC",
-                                               "sRDFaDUNS");
+                                               "sRDFaDUNS"];
 
     /**
      * Returns prefix ID used by template engine.
@@ -372,8 +372,8 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     {
         $oContent = $this->getContent();
 
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
 
         $aPath['title'] = $oContent->oxcontents__oxtitle->value;
         $aPath['link'] = $this->getLink();
@@ -415,7 +415,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function getContentPageTpl()
     {
-        $aTemplate = array();
+        $aTemplate = [];
         $sContentId = $this->getContent()->oxcontents__oxloadid->value;
         $myConfig = $this->getConfig();
         if ($sContentId == $myConfig->getConfigParam('sRDFaBusinessEntityLoc')) {
@@ -439,7 +439,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getBusinessEntityExtends()
     {
         $myConfig = $this->getConfig();
-        $aExtends = array();
+        $aExtends = [];
 
         foreach ($this->_aBusinessEntityExtends as $sExtend) {
             $aExtends[$sExtend] = $myConfig->getConfigParam($sExtend);
@@ -485,7 +485,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function getDeliveryChargeSpecs()
     {
-        $aDeliveryChargeSpecs = array();
+        $aDeliveryChargeSpecs = [];
         $oDeliveryChargeSpecs = $this->getDeliveryList();
         foreach ($oDeliveryChargeSpecs as $oDeliveryChargeSpec) {
             if ($oDeliveryChargeSpec->oxdelivery__oxaddsumtype->value == "abs") {
@@ -534,7 +534,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $iDays = $this->getConfig()->getConfigParam('iRDFaPriceValidity');
         $iFrom = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $iThrough = $iFrom + ($iDays * 24 * 60 * 60);
-        $oPriceValidity = array();
+        $oPriceValidity = [];
         $oPriceValidity['validfrom'] = date('Y-m-d\TH:i:s', $iFrom) . "Z";
         $oPriceValidity['validthrough'] = date('Y-m-d\TH:i:s', $iThrough) . "Z";
 

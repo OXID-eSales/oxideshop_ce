@@ -197,8 +197,8 @@ class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
 
         $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('FORGOT_PASSWORD', $iBaseLanguage, false);

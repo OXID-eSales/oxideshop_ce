@@ -150,7 +150,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
         $myConfig = $this->getConfig();
         $myLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $iCounter = 0;
-        $aVarselect = array(); //multilanguage names of existing variants
+        $aVarselect = []; //multilanguage names of existing variants
         //iterating through all select list values (eg. $oValue->name = S, M, X, XL)
         for ($i = 0; $i < count($aValues); $i++) {
             $oValue = $aValues[$i][0];
@@ -322,7 +322,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      */
     protected function _fillVariantSelections($oVariantList, $iVarSelCnt, &$aFilter, $sActVariantId)
     {
-        $aSelections = array();
+        $aSelections = [];
 
         // filling selections
         foreach ($oVariantList as $oVariant) {
@@ -338,7 +338,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
                         $aFilter[$i] = $sHash;
                     }
 
-                    $aSelections[$oVariant->getId()][$i] = array('name' => $sName, 'disabled' => null, 'active' => false, 'hash' => $sHash);
+                    $aSelections[$oVariant->getId()][$i] = ['name' => $sName, 'disabled' => null, 'active' => false, 'hash' => $sHash];
                 }
             }
         }
@@ -415,7 +415,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-        return array($aSelections, $sMostSuitableVariantId, $blPerfectFit);
+        return [$aSelections, $sMostSuitableVariantId, $blPerfectFit];
     }
 
     /**
@@ -457,7 +457,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
         if ($this->getConfig()->getConfigParam('blUseMultidimensionVariants')) {
             $aSelections = explode($this->_sMdSeparator, $sTitle);
         } else {
-            $aSelections = array($sTitle);
+            $aSelections = [$sTitle];
         }
 
         return $aSelections;
@@ -476,9 +476,6 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      */
     public function buildVariantSelections($sVarName, $oVariantList, $aFilter, $sActVariantId, $iLimit = 0)
     {
-        $aReturn = false;
-
-
         // assigning variants
         $aVarSelects = $this->_getSelections($sVarName);
 
@@ -499,13 +496,12 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
                 $oCurrentVariant = $oVariantList[$sActVariantId];
             }
 
-
-            return array(
+            return [
                 'selections'     => $aVariantSelections,
                 'rawselections'  => $aRawVariantSelections,
                 'oActiveVariant' => $oCurrentVariant,
                 'blPerfectFit'   => $blPerfectFit
-            );
+            ];
         }
 
         return false;

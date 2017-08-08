@@ -36,27 +36,27 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      *
      * @var array
      */
-    protected $_aColumns = array(
+    protected $_aColumns = [
         // field , table, visible, multilanguage, id
-        'container1' => array(
-            array('oxartnum', 'oxarticles', 1, 0, 0),
-            array('oxtitle', 'oxarticles', 1, 1, 0),
-            array('oxean', 'oxarticles', 1, 0, 0),
-            array('oxmpn', 'oxarticles', 0, 0, 0),
-            array('oxprice', 'oxarticles', 0, 0, 0),
-            array('oxstock', 'oxarticles', 0, 0, 0),
-            array('oxid', 'oxarticles', 0, 0, 1)
-        ),
-         'container2' => array(
-             array('oxartnum', 'oxarticles', 1, 0, 0),
-             array('oxtitle', 'oxarticles', 1, 1, 0),
-             array('oxean', 'oxarticles', 1, 0, 0),
-             array('oxmpn', 'oxarticles', 0, 0, 0),
-             array('oxprice', 'oxarticles', 0, 0, 0),
-             array('oxstock', 'oxarticles', 0, 0, 0),
-             array('oxitmartid', 'oxdiscount', 0, 0, 1)
-         )
-    );
+        'container1' => [
+            ['oxartnum', 'oxarticles', 1, 0, 0],
+            ['oxtitle', 'oxarticles', 1, 1, 0],
+            ['oxean', 'oxarticles', 1, 0, 0],
+            ['oxmpn', 'oxarticles', 0, 0, 0],
+            ['oxprice', 'oxarticles', 0, 0, 0],
+            ['oxstock', 'oxarticles', 0, 0, 0],
+            ['oxid', 'oxarticles', 0, 0, 1]
+        ],
+         'container2' => [
+             ['oxartnum', 'oxarticles', 1, 0, 0],
+             ['oxtitle', 'oxarticles', 1, 1, 0],
+             ['oxean', 'oxarticles', 1, 0, 0],
+             ['oxmpn', 'oxarticles', 0, 0, 0],
+             ['oxprice', 'oxarticles', 0, 0, 0],
+             ['oxstock', 'oxarticles', 0, 0, 0],
+             ['oxitmartid', 'oxdiscount', 0, 0, 1]
+         ]
+    ];
 
     /**
      * Returns SQL query for data to fetc
@@ -125,7 +125,7 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
         $aChosenArt = $this->_getActionIds('oxdiscount.oxitmartid');
         if (is_array($aChosenArt)) {
             $sQ = "update oxdiscount set oxitmartid = '' where oxid = ? and oxitmartid = ?";
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($sQ, array($soxId, reset($aChosenArt)));
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($sQ, [$soxId, reset($aChosenArt)]);
         }
     }
 
@@ -138,7 +138,7 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
         $soxId = $this->getConfig()->getRequestParameter('synchoxid');
         if ($soxId && $soxId != "-1" && is_array($aChosenArt)) {
             $sQ = "update oxdiscount set oxitmartid = ? where oxid = ?";
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($sQ, array(reset($aChosenArt), $soxId));
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($sQ, [reset($aChosenArt), $soxId]);
         }
     }
 

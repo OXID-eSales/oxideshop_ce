@@ -37,17 +37,17 @@ class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
-        array('oxtitle', 'oxattribute', 1, 1, 0),
-        array('oxid', 'oxattribute', 0, 0, 1)
-    ),
-                                 'container2' => array(
-                                     array('oxtitle', 'oxattribute', 1, 1, 0),
-                                     array('oxid', 'oxobject2attribute', 0, 0, 1),
-                                     array('oxvalue', 'oxobject2attribute', 0, 1, 1),
-                                     array('oxattrid', 'oxobject2attribute', 0, 0, 1),
-                                 )
-    );
+    protected $_aColumns = ['container1' => [ // field , table,         visible, multilanguage, ident
+        ['oxtitle', 'oxattribute', 1, 1, 0],
+        ['oxid', 'oxattribute', 0, 0, 1]
+    ],
+                                 'container2' => [
+                                     ['oxtitle', 'oxattribute', 1, 1, 0],
+                                     ['oxid', 'oxobject2attribute', 0, 0, 1],
+                                     ['oxvalue', 'oxobject2attribute', 0, 1, 1],
+                                     ['oxattrid', 'oxobject2attribute', 0, 0, 1],
+                                 ]
+    ];
 
     /**
      * Returns SQL query for data to fetc

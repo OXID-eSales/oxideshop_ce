@@ -24,11 +24,8 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use Exception;
 use oxConnectionException;
-use oxDb;
-use oxException;
 use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Application\Model\Shop;
-use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
 use stdClass;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
@@ -165,13 +162,13 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $aMultiShopTables = array('oxarticles', 'oxdiscount', 'oxcategories', 'oxattribute',
+    protected $aMultiShopTables = ['oxarticles', 'oxdiscount', 'oxcategories', 'oxattribute',
                                         'oxlinks', 'oxvoucherseries', 'oxmanufacturers',
                                         // @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
                                         'oxnews',
                                         // END deprecated
                                         'oxselectlist', 'oxwrapping',
-                                        'oxdeliveryset', 'oxdelivery', 'oxvendor', 'oxobject2category');
+                                        'oxdeliveryset', 'oxdelivery', 'oxvendor', 'oxobject2category'];
 
     /**
      * Application starter instance
@@ -194,28 +191,28 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aActiveViews = array();
+    protected $_aActiveViews = [];
 
     /**
      * Array of global parameters.
      *
      * @var array
      */
-    protected $_aGlobalParams = array();
+    protected $_aGlobalParams = [];
 
     /**
      * Shop config parameters storage array
      *
      * @var array
      */
-    protected $_aConfigParams = array();
+    protected $_aConfigParams = [];
 
     /**
      * Theme config parameters storage array
      *
      * @var array
      */
-    protected $_aThemeConfigParams = array();
+    protected $_aThemeConfigParams = [];
 
     /**
      * Current language Id
@@ -292,7 +289,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aAbsDynImageDir = array();
+    protected $_aAbsDynImageDir = [];
 
     /**
      * Active currency object
@@ -933,11 +930,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getSslShopUrl($lang = null)
     {
-        $url = null;
-
-        if (!$url) {
-            $url = $this->getShopUrlByLanguage($lang, true);
-        }
+        $url = $this->getShopUrlByLanguage($lang, true);
 
         if (!$url) {
             $url = $this->getMallShopUrl(true);
@@ -1038,7 +1031,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    public function getWidgetUrl($languageId = null, $inAdmin = null, $urlParameters = array())
+    public function getWidgetUrl($languageId = null, $inAdmin = null, $urlParameters = [])
     {
         $utilsUrl = Registry::getUtilsUrl();
         $widgetUrl = $this->isSsl() ? $this->getSslShopUrl($languageId) : $this->getShopUrl($languageId, $inAdmin);
@@ -1633,11 +1626,11 @@ class Config extends \OxidEsales\Eshop\Core\Base
     {
         $confCurrencies = $this->getConfigParam('aCurrencies');
         if (!is_array($confCurrencies)) {
-            return array();
+            return [];
         }
 
         // processing currency configuration data
-        $currencies = array();
+        $currencies = [];
         reset($confCurrencies);
         while (list($key, $val) = each($confCurrencies)) {
             if ($val) {
@@ -2060,7 +2053,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getActiveViewsNames()
     {
-        $names = array();
+        $names = [];
 
         if (is_array($this->getActiveViewsList())) {
             foreach ($this->getActiveViewsList() as $view) {
@@ -2078,7 +2071,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getActiveViewsIds()
     {
-        $ids = array();
+        $ids = [];
 
         if (is_array($this->getActiveViewsList())) {
             foreach ($this->getActiveViewsList() as $view) {

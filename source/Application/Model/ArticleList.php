@@ -82,7 +82,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string $sql        SQL select statement or prepared statement
      * @param array  $parameters Parameters to be used in a prepared statement
      */
-    public function selectString($sql, array $parameters = array())
+    public function selectString($sql, array $parameters = [])
     {
         startProfile("loadinglists");
         parent::selectString($sql, $parameters);
@@ -158,7 +158,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function sortByIds($aIds)
     {
         $this->_aOrderMap = array_flip($aIds);
-        uksort($this->_aArray, array($this, '_sortByOrderMapCallback'));
+        uksort($this->_aArray, [$this, '_sortByOrderMapCallback']);
     }
 
     /**
@@ -210,7 +210,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
             $this->getBaseObject()->disablePriceLoad();
         }
 
-        $this->_aArray = array();
+        $this->_aArray = [];
         switch ($myConfig->getConfigParam('iNewestArticlesMode')) {
             case 0:
                 // switched off, do nothing
@@ -1011,7 +1011,6 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $myConfig = $this->getConfig();
-        $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
         $sArticleTable = $this->getBaseObject()->getViewName();
 
         $aSearch = explode(' ', $sSearchString);
@@ -1027,7 +1026,6 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         }
 
         $aSearchCols = $myConfig->getConfigParam('aSearchCols');
-        $oBaseObject = $this->getBaseObject();
         $myUtilsString = \OxidEsales\Eshop\Core\Registry::getUtilsString();
         foreach ($aSearch as $sSearchString) {
             if (!strlen($sSearchString)) {
@@ -1076,8 +1074,6 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $oBaseObject = $this->getBaseObject();
         $sArticleTable = $oBaseObject->getViewName();
         $sSelectFields = $oBaseObject->getSelectFields();
-
-        $sSubSelect = "";
 
         $sSelect = "select {$sSelectFields} from {$sArticleTable} where oxvarminprice >= 0 ";
         $sSelect .= $dPriceTo ? "and oxvarminprice <= " . (double) $dPriceTo . " " : " ";

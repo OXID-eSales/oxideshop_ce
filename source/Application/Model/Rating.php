@@ -112,7 +112,6 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
                    . $sQuerySnipet . "
             LIMIT 1";
 
-        $fRating = 0;
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
         if ($fRating = $database->getOne($sSelect)) {
             $fRating = round($fRating, 1);
@@ -150,7 +149,6 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
                    . $sQuerySnipet . "
             LIMIT 1";
 
-        $iCount = 0;
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
         $iCount = $masterDb->getOne($sSelect);

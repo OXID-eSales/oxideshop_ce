@@ -34,7 +34,7 @@ class CreditCardValidator
      *
      * @var array
      */
-    protected $_aCardsInfo = array( // name              // digits     // starting digits
+    protected $_aCardsInfo = [ // name              // digits     // starting digits
         "amx" => '/^3[47].{13}$/', // American Express     16            34, 37
         "dlt" => '/^4.{15}$/', // Delta                16            4
         "dnc" => '/^30[0-5].{11}$|^3[68].{12}$/', // Diners Club          14            300-305, 36, 38
@@ -44,7 +44,7 @@ class CreditCardValidator
         "mcd" => '/^5[1-5].{14}$/', // MasterCard           16            51-55
         "swi" => '/^[456].{15}$|^[456].{17,18}$/', // Switch               16, 18, 19    4-6
         "vis" => '/^4.{15}$|^4.{12}$/', // Visa                 13, 16        4
-    );
+    ];
 
     /**
      * Checks credit card type. Returns TRUE if card is valid

@@ -50,7 +50,7 @@ class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admi
 
         if ($blisMallAdmin && !$myConfig->isDemoShop()) {
             $aClassVars = get_object_vars($myConfig);
-            $aSystemInfo = array();
+            $aSystemInfo = [];
             $aSystemInfo['pkg.info'] = $myConfig->getPackageInfo();
             $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
             while (list($name, $value) = each($aClassVars)) {

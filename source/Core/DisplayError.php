@@ -22,8 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
-
 /**
  * simple class to add a error message to display
  */
@@ -37,7 +35,7 @@ class DisplayError implements \OxidEsales\Eshop\Core\Contract\IDisplayError
     protected $_sMessage;
 
     /** @var array */
-    private $_aFormatParameters = array();
+    private $_aFormatParameters = [];
 
     /**
      * Formats message using vsprintf if property _aFormatParameters was set and returns translated message.

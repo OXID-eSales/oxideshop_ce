@@ -48,7 +48,7 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @var array
      */
-    protected $_aRDFaPayments = array("ByBankTransferInAdvance" => 0,
+    protected $_aRDFaPayments = ["ByBankTransferInAdvance" => 0,
                                       "ByInvoice"               => 0,
                                       "Cash"                    => 0,
                                       "CheckInAdvance"          => 0,
@@ -62,7 +62,7 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
                                       "Discover"                => 1,
                                       "JCB"                     => 1,
                                       "MasterCard"              => 1,
-                                      "VISA"                    => 1);
+                                      "VISA"                    => 1];
 
     /**
      * Saves changed mapping configurations
@@ -93,7 +93,7 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     public function getAllRDFaPayments()
     {
-        $aRDFaPayments = array();
+        $aRDFaPayments = [];
         $aAssignedRDFaPayments = $this->getAssignedRDFaPayments();
         foreach ($this->_aRDFaPayments as $sName => $iType) {
             $oPayment = new stdClass();
@@ -114,7 +114,7 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     public function getAssignedRDFaPayments()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $aRDFaPayments = array();
+        $aRDFaPayments = [];
         $sSelect = 'select oxobjectid from oxobject2payment where oxpaymentid=' . $oDb->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid")) . ' and oxtype = "rdfapayment" ';
         $rs = $oDb->select($sSelect);
         if ($rs && $rs->count()) {

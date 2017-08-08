@@ -119,7 +119,7 @@ class Request
         }
 
         if (is_array($sValue)) {
-            $newValue = array();
+            $newValue = [];
             foreach ($sValue as $sKey => $sVal) {
                 $sValidKey = $sKey;
                 if (!$aRaw || !in_array($sKey, $aRaw)) {
@@ -134,8 +134,8 @@ class Request
             $sValue = $newValue;
         } elseif (is_string($sValue)) {
             $sValue = str_replace(
-                array('&', '<', '>', '"', "'", chr(0), '\\', "\n", "\r"),
-                array('&amp;', '&lt;', '&gt;', '&quot;', '&#039;', '', '&#092;', '&#10;', '&#13;'),
+                ['&', '<', '>', '"', "'", chr(0), '\\', "\n", "\r"],
+                ['&amp;', '&lt;', '&gt;', '&quot;', '&#039;', '', '&#092;', '&#10;', '&#13;'],
                 $sValue
             );
         }

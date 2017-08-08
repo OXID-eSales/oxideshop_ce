@@ -44,7 +44,7 @@ class Remark extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @var array
      */
-    protected $_aSkipSaveFields = array('oxtimestamp');
+    protected $_aSkipSaveFields = ['oxtimestamp'];
 
     /**
      * Class constructor, initiates parent constructor (parent::oxBase()).

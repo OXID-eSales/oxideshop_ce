@@ -187,7 +187,7 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getArticleDiscounts($oArticle, $oUser = null)
     {
-        $aList = array();
+        $aList = [];
         $aDiscList = $this->_getList($oUser)->getArray();
         foreach ($aDiscList as $oDiscount) {
             if ($oDiscount->isForArticle($oArticle)) {
@@ -209,7 +209,7 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getBasketItemDiscounts($oArticle, $oBasket, $oUser = null)
     {
-        $aList = array();
+        $aList = [];
         $aDiscList = $this->_getList($oUser)->getArray();
         /** @var \OxidEsales\Eshop\Application\Model\Discount $oDiscount */
         foreach ($aDiscList as $oDiscount) {
@@ -231,7 +231,7 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getBasketDiscounts($oBasket, $oUser = null)
     {
-        $aList = array();
+        $aList = [];
         $aDiscList = $this->_getList($oUser)->getArray();
         /** @var \OxidEsales\Eshop\Application\Model\Discount $oDiscount */
         foreach ($aDiscList as $oDiscount) {
@@ -254,7 +254,7 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getBasketItemBundleDiscounts($oArticle, $oBasket, $oUser = null)
     {
-        $aList = array();
+        $aList = [];
         $aDiscList = $this->_getList($oUser)->getArray();
         /** @var \OxidEsales\Eshop\Application\Model\Discount $oDiscount */
         foreach ($aDiscList as $oDiscount) {
@@ -276,7 +276,7 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getBasketBundleDiscounts($oBasket, $oUser = null)
     {
-        $aList = array();
+        $aList = [];
         $aDiscList = $this->_getList($oUser)->getArray();
         /** @var \OxidEsales\Eshop\Application\Model\Discount $oDiscount */
         foreach ($aDiscList as $oDiscount) {

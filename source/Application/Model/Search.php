@@ -250,12 +250,10 @@ class Search extends \OxidEsales\Eshop\Core\Base
             return '';
         }
 
-        $oTempArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $sSearchSep = $myConfig->getConfigParam('blSearchUseAND') ? 'and ' : 'or ';
         $aSearch = explode(' ', $sSearchString);
         $sSearch = ' and ( ';
         $myUtilsString = \OxidEsales\Eshop\Core\Registry::getUtilsString();
-        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
 
         foreach ($aSearch as $sSearchString) {
             if (!strlen($sSearchString)) {

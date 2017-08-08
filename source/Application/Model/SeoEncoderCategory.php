@@ -30,7 +30,7 @@ use oxDb;
 class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
 {
     /** @var array _aCatCache cache for categories. */
-    protected $_aCatCache = array();
+    protected $_aCatCache = [];
 
     /**
      * Returns target "extension" (/)
@@ -104,8 +104,8 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
                 $iLang = $oCat->getLanguage();
             }
 
-            $aCacheMap = array();
-            $aStdLinks = array();
+            $aCacheMap = [];
+            $aStdLinks = [];
 
             while ($oCat && !($sSeoUrl = $this->_categoryUrlLoader($oCat, $iLang))) {
                 if ($iLang != $oCat->getLanguage()) {

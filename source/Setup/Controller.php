@@ -377,7 +377,7 @@ class Controller extends Core
         }
 
         //update dyn pages / shop country config options (from first step)
-        $database->saveShopSettings(array());
+        $database->saveShopSettings([]);
 
         // update shop version
         $version = ShopVersion::getVersion();

@@ -22,11 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxCompanyVatIn;
 use stdClass;
-use oxRegistry;
-use oxInputException;
-use oxConnectionException;
 use DOMDocument;
 use Exception;
 use SoapClient;
@@ -50,7 +46,7 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
      *
      * @var array
      */
-    protected static $_aVatCheckCache = array();
+    protected static $_aVatCheckCache = [];
 
     /**
      * How many times to retry check if server is busy
@@ -178,12 +174,12 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
             ini_set('default_socket_timeout', 5);
 
             // setting local error handler to catch possible soap errors
-            set_error_handler(array($this, 'catchWarning'), E_WARNING);
+            set_error_handler([$this, 'catchWarning'], E_WARNING);
 
             do {
                 try {
                     //connection_timeout = how long we should wait to CONNECT to wsdl server
-                    $oSoapClient = new SoapClient($this->getWsdlUrl(), array("connection_timeout" => 5));
+                    $oSoapClient = new SoapClient($this->getWsdlUrl(), ["connection_timeout" => 5]);
                     $this->setError('');
                     $oRes = $oSoapClient->checkVat($oCheckVat);
                     $iTryMoreCnt = 0;

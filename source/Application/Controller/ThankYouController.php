@@ -335,8 +335,8 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
 
 
         $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();

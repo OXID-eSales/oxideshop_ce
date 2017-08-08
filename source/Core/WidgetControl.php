@@ -22,8 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
-
 /**
  * Main shop actions controller. Processes user actions, logs
  * them (if needed), controls output, redirects according to

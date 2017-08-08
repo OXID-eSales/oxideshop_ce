@@ -53,7 +53,7 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         $blisMallAdmin = $oAuthUser->oxuser__oxrights->value == "malladmin";
 
         // User rights
-        $aUserRights = array();
+        $aUserRights = [];
         $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $iTplLang = $oLang->getTplLanguage();
 

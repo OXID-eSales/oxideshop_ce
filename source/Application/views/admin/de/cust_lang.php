@@ -24,11 +24,11 @@ $sLangName  = "Deutsch";
 // -------------------------------
 // RESOURCE IDENTIFIER = STRING
 // -------------------------------
-$aLang = array(
+$aLang = [
 
 'charset'                                  => 'UTF-8',
 
-);
+];
 
 /*
 [{ oxmultilang ident="GENERAL_YOUWANTTODELETE" }]

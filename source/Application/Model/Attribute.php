@@ -195,7 +195,7 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             $sSelect = "select o2a.oxid from oxobject2attribute as o2a ";
             $sSelect .= "where o2a.oxobjectid = " . $oDb->quote($sArtId) . " order by o2a.oxpos";
 
-            $aIds = array();
+            $aIds = [];
             $rs = $oDb->select($sSelect);
             if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {

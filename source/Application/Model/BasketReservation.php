@@ -78,7 +78,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     protected function _loadReservations($sBasketId)
     {
         $oReservations = oxNew(\OxidEsales\Eshop\Application\Model\UserBasket::class);
-        $aWhere = array('oxuserbaskets.oxuserid' => $sBasketId, 'oxuserbaskets.oxtitle' => 'reservations');
+        $aWhere = ['oxuserbaskets.oxuserid' => $sBasketId, 'oxuserbaskets.oxtitle' => 'reservations'];
 
         // creating if it does not exist
         if (!$oReservations->assignRecord($oReservations->buildSelectString($aWhere))) {
@@ -124,10 +124,10 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
 
         $oReserved = $this->getReservations();
         if (!$oReserved) {
-            return array();
+            return [];
         }
 
-        $this->_aCurrentlyReserved = array();
+        $this->_aCurrentlyReserved = [];
         foreach ($oReserved->getItems(false, false) as $oItem) {
             if (!isset($this->_aCurrentlyReserved[$oItem->oxuserbasketitems__oxartid->value])) {
                 $this->_aCurrentlyReserved[$oItem->oxuserbasketitems__oxartid->value] = 0;
@@ -297,7 +297,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
                 $database->commitTransaction();
                 return;
             }
-            $aFinished = array();
+            $aFinished = [];
             while (!$oRs->EOF) {
                 $aFinished[] = $database->quote($oRs->fields['oxid']);
                 $oRs->fetchRow();

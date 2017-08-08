@@ -22,9 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
-use oxConfig;
-
 /**
  * Generates view name for given table name.
  */

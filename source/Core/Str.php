@@ -22,15 +22,12 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
-
 /**
  * Factory class responsible for redirecting string handling functions to specific
  * string handling class. String handler basically is intended for dealing with multibyte string
  * and is NOT supposed to replace all string handling functions.
  * We use the handler for shop data and user input, but prefer not to use it for ascii strings
  * (eg. field or file names).
- *
  */
 class Str
 {

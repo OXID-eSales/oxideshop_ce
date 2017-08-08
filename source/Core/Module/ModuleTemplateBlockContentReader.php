@@ -22,8 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
-use \oxException;
-
 /**
  * Provides a way to get content from module template block file.
  *

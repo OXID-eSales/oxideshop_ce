@@ -22,8 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use \oxDb;
-
 /**
  * Calculates Shop id from request data or shop url.
  *
@@ -95,7 +93,7 @@ class ShopIdCalculator
             return $aMap;
         }
 
-        $aMap = array();
+        $aMap = [];
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sConfKey = $this->_getConfKey();

@@ -37,19 +37,19 @@ class DeliverySetPaymentAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
-        array('oxdesc', 'oxpayments', 1, 1, 0),
-        array('oxaddsum', 'oxpayments', 1, 0, 0),
-        array('oxaddsumtype', 'oxpayments', 0, 0, 0),
-        array('oxid', 'oxpayments', 0, 0, 1)
-    ),
-                                 'container2' => array(
-                                     array('oxdesc', 'oxpayments', 1, 1, 0),
-                                     array('oxaddsum', 'oxpayments', 1, 0, 0),
-                                     array('oxaddsumtype', 'oxpayments', 0, 0, 0),
-                                     array('oxid', 'oxobject2payment', 0, 0, 1)
-                                 )
-    );
+    protected $_aColumns = ['container1' => [ // field , table,         visible, multilanguage, ident
+        ['oxdesc', 'oxpayments', 1, 1, 0],
+        ['oxaddsum', 'oxpayments', 1, 0, 0],
+        ['oxaddsumtype', 'oxpayments', 0, 0, 0],
+        ['oxid', 'oxpayments', 0, 0, 1]
+    ],
+                                 'container2' => [
+                                     ['oxdesc', 'oxpayments', 1, 1, 0],
+                                     ['oxaddsum', 'oxpayments', 1, 0, 0],
+                                     ['oxaddsumtype', 'oxpayments', 0, 0, 0],
+                                     ['oxid', 'oxobject2payment', 0, 0, 1]
+                                 ]
+    ];
 
     /**
      * Returns SQL query for data to fetc

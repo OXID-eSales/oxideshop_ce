@@ -74,14 +74,14 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @var array
      */
-    protected $_aPath = array();
+    protected $_aPath = [];
 
     /**
      * Category update info array
      *
      * @var array
      */
-    protected $_aUpdateInfo = array();
+    protected $_aUpdateInfo = [];
 
     /**
      * Class constructor, initiates parent constructor (parent::oxList()).
@@ -415,7 +415,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function getClickRoot()
     {
         if (count($this->_aPath)) {
-            return array(reset($this->_aPath));
+            return [reset($this->_aPath)];
         }
     }
 
@@ -425,11 +425,11 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
     protected function _ppRemoveInactiveCategories()
     {
         // Collect all items which must be remove
-        $aRemoveList = array();
+        $aRemoveList = [];
         foreach ($this->_aArray as $sId => $oCat) {
             if ($oCat->oxcategories__oxppremove->value) {
                 if (!isset($aRemoveList[$oCat->oxcategories__oxrootid->value])) {
-                    $aRemoveList[$oCat->oxcategories__oxrootid->value] = array();
+                    $aRemoveList[$oCat->oxcategories__oxrootid->value] = [];
                 }
                 $aRemoveList[$oCat->oxcategories__oxrootid->value][$oCat->oxcategories__oxleft->value] = $oCat->oxcategories__oxright->value;
                 unset($this->_aArray[$sId]);
@@ -467,7 +467,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
             return;
         }
 
-        $aPath = array();
+        $aPath = [];
         $sCurrentCat = $this->_sActCat;
 
         while ($sCurrentCat != 'oxrootid' && isset($this[$sCurrentCat])) {
@@ -501,7 +501,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function _ppBuildTree()
     {
-        $aTree = array();
+        $aTree = [];
         foreach ($this->_aArray as $oCat) {
             $sParentId = $oCat->oxcategories__oxparentid->value;
             if ($sParentId != 'oxrootid') {
@@ -522,11 +522,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function _ppAddDepthInformation()
     {
-        $aStack = array();
-        $iDepth = 0;
-        $sPrevParent = '';
-
-        $aTree = array();
+        $aTree = [];
         foreach ($this->_aArray as $oCat) {
             $aTree[$oCat->getId()] = $oCat;
             $aSubCats = $oCat->getSubCats();

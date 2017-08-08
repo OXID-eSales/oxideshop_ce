@@ -38,19 +38,19 @@ class DiscountGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @var array
      */
-    protected $_aColumns = array(
+    protected $_aColumns = [
         // field , table,  visible, multilanguage, id
-        'container1' => array(
-            array('oxtitle', 'oxgroups', 1, 0, 0),
-            array('oxid', 'oxgroups', 0, 0, 0),
-            array('oxid', 'oxgroups', 0, 0, 1),
-        ),
-         'container2' => array(
-             array('oxtitle', 'oxgroups', 1, 0, 0),
-             array('oxid', 'oxgroups', 0, 0, 0),
-             array('oxid', 'oxobject2discount', 0, 0, 1),
-         )
-    );
+        'container1' => [
+            ['oxtitle', 'oxgroups', 1, 0, 0],
+            ['oxid', 'oxgroups', 0, 0, 0],
+            ['oxid', 'oxgroups', 0, 0, 1],
+        ],
+         'container2' => [
+             ['oxtitle', 'oxgroups', 1, 0, 0],
+             ['oxid', 'oxgroups', 0, 0, 0],
+             ['oxid', 'oxobject2discount', 0, 0, 1],
+         ]
+    ];
 
     /**
      * Returns SQL query for data to fetc

@@ -22,11 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxCountry;
-use oxCompanyVatIn;
-use oxICountryAware;
-use oxCompanyVatInChecker;
-
 /**
  * Company VAT identification number validator. Executes added validators on given VATIN.
  */
@@ -43,7 +38,7 @@ class CompanyVatInValidator
      *
      * @var array
      */
-    private $_aCheckers = array();
+    private $_aCheckers = [];
 
     /**
      * Error message

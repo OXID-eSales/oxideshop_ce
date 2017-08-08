@@ -25,7 +25,7 @@ $sLangName  = "Deutsch";
 // -------------------------------
 // RESOURCE IDENTIFIER = STRING
 // -------------------------------
-$aLang = array(
+$aLang = [
 'charset'                                                     => 'UTF-8',
 'fullDateFormat'                                              => 'd.m.Y H:i:s',
 'simpleDateFormat'                                            => 'd.m.Y',
@@ -772,4 +772,4 @@ $aLang = array(
 'INFO_ABOUT_COOKIES'                                          => 'Information über Cookies',
 'PARTNERS'                                                    => 'Partner',
 
-);
+];

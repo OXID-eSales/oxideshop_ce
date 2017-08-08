@@ -36,17 +36,17 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
 {
 
     protected $_sThisTemplate = 'shop_config.tpl';
-    protected $_aSkipMultiline = array('aHomeCountry');
-    protected $_aParseFloat = array('iMinOrderPrice');
+    protected $_aSkipMultiline = ['aHomeCountry'];
+    protected $_aParseFloat = ['iMinOrderPrice'];
 
-    protected $_aConfParams = array(
+    protected $_aConfParams = [
         "bool"   => 'confbools',
         "str"    => 'confstrs',
         "arr"    => 'confarrs',
         "aarr"   => 'confaarrs',
         "select" => 'confselects',
         "num"    => 'confnum',
-    );
+    ];
 
     /**
      * Executes parent method parent::render(), passes shop configuration parameters
@@ -200,15 +200,15 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
     public function loadConfVars($sShopId, $sModule)
     {
         $myConfig = $this->getConfig();
-        $aConfVars = array(
-            "bool"   => array(),
-            "str"    => array(),
-            "arr"    => array(),
-            "aarr"   => array(),
-            "select" => array(),
-        );
-        $aVarConstraints = array();
-        $aGrouping = array();
+        $aConfVars = [
+            "bool"   => [],
+            "str"    => [],
+            "arr"    => [],
+            "aarr"   => [],
+            "select" => [],
+        ];
+        $aVarConstraints = [];
+        $aGrouping = [];
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $rs = $oDb->select(
             "select cfg.oxvarname,
@@ -231,7 +231,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
                 $aVarConstraints[$sName] = $this->_parseConstraint($sType, $sConstraint);
                 if ($sGrouping) {
                     if (!isset($aGrouping[$sGrouping])) {
-                        $aGrouping[$sGrouping] = array($sName => $sType);
+                        $aGrouping[$sGrouping] = [$sName => $sType];
                     } else {
                         $aGrouping[$sGrouping][$sName] = $sType;
                     }
@@ -240,11 +240,11 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
             }
         }
 
-        return array(
+        return [
             'vars'        => $aConfVars,
             'constraints' => $aVarConstraints,
             'grouping'    => $aGrouping,
-        );
+        ];
     }
 
     /**
@@ -438,7 +438,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
     protected function _multilineToAarray($sMultiline)
     {
         $oStr = getStr();
-        $aArr = array();
+        $aArr = [];
         $aLines = explode("\n", $sMultiline);
         foreach ($aLines as $sLine) {
             $sLine = trim($sLine);

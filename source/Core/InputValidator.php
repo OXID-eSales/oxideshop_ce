@@ -23,9 +23,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
-use oxDb;
-
 /**
  * Class for validating input
  */
@@ -47,20 +44,20 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aRequiredCCFields = array('kktype',
+    protected $_aRequiredCCFields = ['kktype',
                                           'kknumber',
                                           'kkmonth',
                                           'kkyear',
                                           'kkname',
                                           'kkpruef'
-    );
+    ];
 
     /**
      * Input validation errors
      *
      * @var array
      */
-    protected $_aInputValidationErrors = array();
+    protected $_aInputValidationErrors = [];
 
 
     protected $_oCompanyVatInValidator = null;
@@ -70,7 +67,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aPossibleCCType = array('mcd', // Master Card
+    protected $_aPossibleCCType = ['mcd', // Master Card
                                         'vis', // Visa
                                         'amx', // American Express
                                         'dsc', // Discover
@@ -79,17 +76,17 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
                                         'swi', // Switch
                                         'dlt', // Delta
                                         'enr' // EnRoute
-    );
+    ];
 
     /**
      * Required fields for debit cards
      *
      * @var array
      */
-    protected $_aRequiredDCFields = array('lsbankname',
+    protected $_aRequiredDCFields = ['lsbankname',
                                           'lsktonr',
                                           'lsktoinhaber'
-    );
+    ];
 
     /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
@@ -306,7 +303,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      */
     private function _setFields($oObject, $aFields)
     {
-        $aFields = is_array($aFields) ? $aFields : array();
+        $aFields = is_array($aFields) ? $aFields : [];
         foreach ($aFields as $sKey => $sValue) {
             $oObject->$sKey = oxNew('oxField', $sValue);
         }

@@ -38,7 +38,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
     /**
      * Order cache
      */
-    protected static $_aOrderCache = array();
+    protected static $_aOrderCache = [];
 
     /**
      * Current class name
@@ -95,7 +95,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      *
      * @var array
      */
-    protected $_aSkipSaveFields = array('oxtimestamp');
+    protected $_aSkipSaveFields = ['oxtimestamp'];
 
     /**
      * Class constructor, initiates class constructor (parent::oxbase()).
@@ -385,7 +385,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      */
     public function getSelectLists($sKeyPrefix = null)
     {
-        $aSelLists = array();
+        $aSelLists = [];
         if ($oArticle = $this->_getOrderArticle()) {
             $aSelLists = $oArticle->getSelectLists();
         }
@@ -406,7 +406,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
         if ($this->_aOrderArticleSelList === null) {
             $sOrderArtSelList = $sOrderArtSelList ? $sOrderArtSelList : $this->oxorderarticles__oxselvariant->value;
 
-            $aRet = array();
+            $aRet = [];
 
             if ($oArticle = $this->_getOrderArticle($sArtId)) {
                 $aList = explode(", ", $sOrderArtSelList);
@@ -495,7 +495,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      */
     public function getCategoryIds($blActCats = false, $blSkipCache = false)
     {
-        $aCatIds = array();
+        $aCatIds = [];
         if ($oOrderArticle = $this->_getOrderArticle()) {
             $aCatIds = $oOrderArticle->getCategoryIds($blActCats, $blSkipCache);
         }

@@ -22,11 +22,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
-
 /**
  * class for output processing
- *
  */
 class Output extends \OxidEsales\Eshop\Core\Base
 {
@@ -60,7 +57,7 @@ class Output extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aBuffer = array();
+    protected $_aBuffer = [];
 
     /**
      * Class constructor. Sets search engine mode according to client info
@@ -109,7 +106,6 @@ class Output extends \OxidEsales\Eshop\Core\Base
         $sVersion = $this->getConfig()->getVersion();
         $sEdition = $this->getConfig()->getFullEdition();
         $sCurYear = date("Y");
-        $sShopMode = "";
 
         // SHOW ONLY MAJOR VERSION NUMBER
         $aVersion = explode('.', $sVersion);

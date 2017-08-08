@@ -46,7 +46,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @var array
      */
-    protected $_aSeoUrls = array();
+    protected $_aSeoUrls = [];
 
     /**
      * Content parent category id
@@ -147,7 +147,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         $sTable = $this->getViewName();
         $sShopId = $this->getShopId();
-        $aParams = array($sTable . '.oxloadid' => $sLoadId, $sTable . '.oxshopid' => $sShopId);
+        $aParams = [$sTable . '.oxloadid' => $sLoadId, $sTable . '.oxshopid' => $sShopId];
 
         $sSelect = $this->buildSelectString($aParams);
 
@@ -348,7 +348,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return string
      */
-    public function getStdLink($iLang = null, $aParams = array())
+    public function getStdLink($iLang = null, $aParams = [])
     {
         if ($iLang === null) {
             $iLang = $this->getLanguage();

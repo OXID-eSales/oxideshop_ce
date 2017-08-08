@@ -22,8 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core\Exception;
 
-use oxRegistry;
-
 /**
  * Basic exception class
  *
@@ -193,7 +191,7 @@ class StandardException extends \Exception
      */
     public function getValues()
     {
-        return array();
+        return [];
     }
 
     /**

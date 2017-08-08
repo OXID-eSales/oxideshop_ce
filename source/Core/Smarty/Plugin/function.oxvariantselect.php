@@ -46,9 +46,9 @@ function smarty_function_oxvariantselect( $params, &$smarty )
     }
 
     //all select boxes
-    $aSelectBoxes = array();
+    $aSelectBoxes = [];
     //real variants to MD variants
-    $aRealVariants = array();
+    $aRealVariants = [];
 
     if (count($oMdVariants->getMdSubvariants())) {
         $sOutput = oxvariantselect_addSubvariants($oMdVariants->getMdSubvariants(), 0, $aSelectBoxes, $aRealVariants, $sSeparator, $sCallMethod, $sArtId);
@@ -75,7 +75,7 @@ function smarty_function_oxvariantselect( $params, &$smarty )
 function oxvariantselect_addSubvariants($oMdVariants, $iLevel, &$aSelectBoxes, &$aRealVariants, $sSeparator, $sCallMethod, $sArtId)
 {
     $sRes = '';
-    $aOptions = array();
+    $aOptions = [];
     if (count($oMdVariants)) {
         $blVisible = false;
         $sSelectedVariant = null;

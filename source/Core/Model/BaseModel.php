@@ -34,9 +34,6 @@ DEFINE('ACTION_UPDATE_STOCK', 4);
 use Exception;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
 use oxObjectException;
-use oxRegistry;
-use oxField;
-use oxDb;
 
 /**
  * Class BaseModel
@@ -92,7 +89,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aFieldNames = array('oxid' => 0);
+    protected $_aFieldNames = ['oxid' => 0];
 
     /**
      * Cache key. Assigned to object depending on active view. Is used for object caching identification in lazy loading mechanism.
@@ -113,7 +110,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aSkipSaveFields = array('oxtimestamp');
+    protected $_aSkipSaveFields = ['oxtimestamp'];
 
     /**
      * Enable skip save fields usage
@@ -146,7 +143,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      *
      * @var bool
      */
-    protected static $_blDisableFieldCaching = array();
+    protected static $_blDisableFieldCaching = [];
 
     /**
      * Marks that current object is managed by SEO
@@ -681,7 +678,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     {
         //getting at least one field before lazy loading the object
         $this->_addField('oxid', 0);
-        $query = $this->buildSelectString(array($this->getViewName() . '.oxid' => $oxid));
+        $query = $this->buildSelectString([$this->getViewName() . '.oxid' => $oxid]);
         $this->_isLoaded = $this->assignRecord($query);
 
         return $this->_isLoaded;
@@ -775,7 +772,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      */
     public function getSelectFields($forceCoreTableUsage = null)
     {
-        $selectFields = array();
+        $selectFields = [];
 
         $viewName = $this->getViewName($forceCoreTableUsage);
 
@@ -1032,7 +1029,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         }
 
         //returning simple array
-        $result = array();
+        $result = [];
         if (is_array($metaFields)) {
             foreach ($metaFields as $valueObject) {
                 $result[strtolower($valueObject->name)] = 0;
@@ -1058,7 +1055,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     protected function _getAllFields($returnSimple = false)
     {
         if (!$this->getCoreTableName()) {
-            return array();
+            return [];
         }
 
         return $this->_getTableFields($this->getCoreTableName(), $returnSimple);
@@ -1146,7 +1143,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         //case 3. (get only oxid field, so we can fetch the rest of the fields over lazy loading mechanism)
         stopProfile('!__CACHABLE__!');
 
-        return array('oxid' => 0);
+        return ['oxid' => 0];
     }
 
     /**

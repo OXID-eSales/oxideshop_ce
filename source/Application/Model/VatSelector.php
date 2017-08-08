@@ -44,7 +44,7 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected static $_aUserVatCache = array();
+    protected static $_aUserVatCache = [];
 
     /**
      * get VAT for user, can NOT be null

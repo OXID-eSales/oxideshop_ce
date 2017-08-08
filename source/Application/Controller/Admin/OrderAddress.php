@@ -75,7 +75,7 @@ class OrderAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $blEmpty = true;
 
         // here we will store names of fields which needs to be cleaned up
-        $aFields = array();
+        $aFields = [];
 
         foreach ($aData as $sName => $sValue) {
             // if field type matches..
@@ -119,7 +119,7 @@ class OrderAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             $aParams['oxorder__oxid'] = null;
         }
 
-        $aParams = $this->_processAddress($aParams, "oxorder__oxdel", array("oxorder__oxdelsal"));
+        $aParams = $this->_processAddress($aParams, "oxorder__oxdel", ["oxorder__oxdelsal"]);
         $oOrder->assign($aParams);
         $oOrder->save();
 

@@ -65,7 +65,7 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @var array
      */
-    protected $_aServiceKeys = array('oximpressum', 'oxagb', 'oxsecurityinfo', 'oxdeliveryinfo', 'oxrightofwithdrawal', 'oxorderinfo', 'oxcredits');
+    protected $_aServiceKeys = ['oximpressum', 'oxagb', 'oxsecurityinfo', 'oxdeliveryinfo', 'oxrightofwithdrawal', 'oxorderinfo', 'oxcredits'];
 
     /**
      * Sets service keys.
@@ -109,13 +109,13 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function loadCatMenues()
     {
         $this->_load(self::TYPE_CATEGORY_MENU);
-        $aArray = array();
+        $aArray = [];
 
         if ($this->count()) {
             foreach ($this as $oContent) {
                 // add into category tree
                 if (!isset($aArray[$oContent->getCategoryId()])) {
-                    $aArray[$oContent->getCategoryId()] = array();
+                    $aArray[$oContent->getCategoryId()] = [];
                 }
 
                 $aArray[$oContent->oxcontents__oxcatid->value][] = $oContent;
@@ -165,7 +165,7 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function _extractListToArray()
     {
-        $aExtractedContents = array();
+        $aExtractedContents = [];
         foreach ($this as $oContent) {
             $aExtractedContents[$oContent->getLoadId()] = $oContent;
         }

@@ -23,11 +23,7 @@
 namespace OxidEsales\EshopCommunity\Core\GenericImport\ImportObject;
 
 use Exception;
-use oxBase;
-use oxDb;
-use oxI18n;
 use OxidEsales\Eshop\Core\GenericImport\GenericImport;
-use oxRegistry;
 
 /**
  * Main import object - includes basic implementations of methods.
@@ -112,7 +108,7 @@ abstract class ImportObject
      */
     public function getRightFields()
     {
-        $accessRightFields = array();
+        $accessRightFields = [];
         if (!$this->fieldList) {
             $this->getFieldList();
         }
@@ -147,7 +143,7 @@ abstract class ImportObject
 
         $viewName = $shopObject->getViewName();
         $fields = str_ireplace('`' . $viewName . "`.", "", strtoupper($shopObject->getSelectFields()));
-        $fields = str_ireplace(array(" ", "`"), array("", ""), $fields);
+        $fields = str_ireplace([" ", "`"], ["", ""], $fields);
         $this->fieldList = explode(",", $fields);
 
         return $this->fieldList;
@@ -312,7 +308,7 @@ abstract class ImportObject
 
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $queryWherePart = array();
+        $queryWherePart = [];
         $allKeysExists = true;
         foreach ($this->getKeyFields() as $key) {
             if (array_key_exists($key, $data)) {

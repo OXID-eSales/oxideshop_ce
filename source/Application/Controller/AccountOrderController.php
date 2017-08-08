@@ -98,7 +98,7 @@ class AccountOrderController extends \OxidEsales\Eshop\Application\Controller\Ac
     public function getOrderList()
     {
         if ($this->_aOrderList === null) {
-            $this->_aOrderList = array();
+            $this->_aOrderList = [];
 
             // Load user Orderlist
             if ($oUser = $this->getUser()) {
@@ -156,8 +156,8 @@ class AccountOrderController extends \OxidEsales\Eshop\Application\Controller\Ac
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
         $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $sSelfLink = $this->getViewConfig()->getSelfLink();
 

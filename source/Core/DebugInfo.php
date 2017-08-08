@@ -22,11 +22,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
-
 /**
  * Debug information formatter
- *
  */
 class DebugInfo
 {
@@ -38,7 +35,7 @@ class DebugInfo
      *
      * @return string
      */
-    public function formatTemplateData($viewData = array())
+    public function formatTemplateData($viewData = [])
     {
         $log = '';
         reset($viewData);

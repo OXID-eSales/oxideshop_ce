@@ -107,7 +107,7 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
                     }
 
                     if ($sPopup) {
-                        $aColumns = array();
+                        $aColumns = [];
                         $oActionsArticleAjax = oxNew($sPopup . '_ajax');
                         $this->_aViewData['oxajax'] = $oActionsArticleAjax->getColumns();
 

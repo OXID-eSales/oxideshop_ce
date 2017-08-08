@@ -40,7 +40,7 @@ class SmartyRenderer
      *
      * @return string
      */
-    public function renderTemplate($sTemplateName, $aViewData = array())
+    public function renderTemplate($sTemplateName, $aViewData = [])
     {
         $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
 

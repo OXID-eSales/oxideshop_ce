@@ -22,8 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
-use \oxDb;
-
 /**
  * Provides a way to get content from module template block file.
  *
@@ -50,7 +48,7 @@ class ModuleTemplateBlockRepository
                                 and oxshopid = ?
                                 and oxmodule in ( " . $modulesIdQuery . " )";
 
-        return $db->getOne($sql, array($shopId));
+        return $db->getOne($sql, [$shopId]);
     }
 
     /**

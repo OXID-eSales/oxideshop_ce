@@ -22,9 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
-use oxPrice;
-
 /**
  * Price calculation class. Responsible for simple price calculations. Basically contains Brutto, Netto prices and VAT values.
  */
@@ -424,7 +421,7 @@ class Price
      */
     public function setDiscount($dValue, $sType)
     {
-        $this->_aDiscounts[] = array('value' => $dValue, 'type' => $sType);
+        $this->_aDiscounts[] = ['value' => $dValue, 'type' => $sType];
     }
 
     /**

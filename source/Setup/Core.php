@@ -36,7 +36,7 @@ class Core
      *
      * @var array
      */
-    protected static $_aInstances = array();
+    protected static $_aInstances = [];
 
     /**
      * Returns requested instance object
@@ -75,7 +75,7 @@ class Core
                 $sMethod = str_replace("UNIT", "_", $sMethod);
             }
             if (method_exists($this, $sMethod)) {
-                return call_user_func_array(array(& $this, $sMethod), $aArgs);
+                return call_user_func_array([& $this, $sMethod], $aArgs);
             }
         }
 

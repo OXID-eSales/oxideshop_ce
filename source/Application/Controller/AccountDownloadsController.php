@@ -57,8 +57,8 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
 
         $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         /** @var \OxidEsales\Eshop\Core\SeoEncoder $oSeoEncoder */
@@ -102,7 +102,7 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
      */
     protected function _prepareForTemplate($oOrderFileList)
     {
-        $oOrderArticles = array();
+        $oOrderArticles = [];
 
         foreach ($oOrderFileList as $oOrderFile) {
             $sOrderArticleIdField = 'oxorderfiles__oxorderarticleid';

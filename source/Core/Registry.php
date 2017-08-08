@@ -32,7 +32,7 @@ class Registry
      *
      * @var array
      */
-    protected static $instances = array();
+    protected static $instances = [];
 
     /**
      * Hold BC class to Unified Namespace class map

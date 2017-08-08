@@ -38,19 +38,19 @@ class DeliverySetMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
-        array('oxtitle', 'oxdelivery', 1, 1, 0),
-        array('oxaddsum', 'oxdelivery', 1, 0, 0),
-        array('oxaddsumtype', 'oxdelivery', 1, 0, 0),
-        array('oxid', 'oxdelivery', 0, 0, 1)
-    ),
-                                 'container2' => array(
-                                     array('oxtitle', 'oxdelivery', 1, 1, 0),
-                                     array('oxaddsum', 'oxdelivery', 1, 0, 0),
-                                     array('oxaddsumtype', 'oxdelivery', 1, 0, 0),
-                                     array('oxid', 'oxdel2delset', 0, 0, 1)
-                                 )
-    );
+    protected $_aColumns = ['container1' => [ // field , table,         visible, multilanguage, ident
+        ['oxtitle', 'oxdelivery', 1, 1, 0],
+        ['oxaddsum', 'oxdelivery', 1, 0, 0],
+        ['oxaddsumtype', 'oxdelivery', 1, 0, 0],
+        ['oxid', 'oxdelivery', 0, 0, 1]
+    ],
+                                 'container2' => [
+                                     ['oxtitle', 'oxdelivery', 1, 1, 0],
+                                     ['oxaddsum', 'oxdelivery', 1, 0, 0],
+                                     ['oxaddsumtype', 'oxdelivery', 1, 0, 0],
+                                     ['oxid', 'oxdel2delset', 0, 0, 1]
+                                 ]
+    ];
 
     /**
      * Returns SQL query for data to fetc

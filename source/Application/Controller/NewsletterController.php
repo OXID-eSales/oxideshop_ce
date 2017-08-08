@@ -304,8 +304,8 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
         $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('STAY_INFORMED', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();

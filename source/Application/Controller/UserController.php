@@ -223,8 +223,8 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
      */
     public function getBreadCrumb()
     {
-        $paths = array();
-        $path = array();
+        $paths = [];
+        $path = [];
 
         $baseLanguageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $path['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('ADDRESS', $baseLanguageId, false);

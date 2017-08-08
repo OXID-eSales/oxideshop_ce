@@ -88,7 +88,7 @@ if (!function_exists("calcImageSize")) {
             $iNewHeight = $iPrefHeight;
         }
 
-        return array($iNewWidth, $iNewHeight);
+        return [$iNewWidth, $iNewHeight];
     }
 }
 
@@ -137,7 +137,7 @@ if (!function_exists("checkSizeAndCopy")) {
         if ($iNewWidth == $iOrigWidth && $iNewHeight == $iOrigHeight) {
             return copy($sSrc, $sTarget);
         } else {
-            return array($iNewWidth, $iNewHeight);
+            return [$iNewWidth, $iNewHeight];
         }
     }
 }

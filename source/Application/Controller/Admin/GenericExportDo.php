@@ -94,7 +94,7 @@ class GenericExportDo extends \OxidEsales\Eshop\Application\Controller\Admin\Dyn
     {
         $sLine = $this->removeSID($sLine);
 
-        $sLine = str_replace(array("\r\n", "\n"), "", $sLine);
+        $sLine = str_replace(["\r\n", "\n"], "", $sLine);
         $sLine = str_replace("<br>", "\n", $sLine);
 
         fwrite($this->fpFile, $sLine . "\n");

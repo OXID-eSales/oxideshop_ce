@@ -47,7 +47,7 @@ class DeliverySetRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\Pay
      *
      * @var array
      */
-    protected $_aRDFaDeliveries = array(
+    protected $_aRDFaDeliveries = [
         "DeliveryModeDirectDownload" => 0,
         "DeliveryModeFreight"        => 0,
         "DeliveryModeMail"           => 0,
@@ -56,7 +56,7 @@ class DeliverySetRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\Pay
         "DHL"                        => 1,
         "FederalExpress"             => 1,
         "UPS"                        => 1
-    );
+    ];
 
     /**
      * Saves changed mapping configurations
@@ -89,7 +89,7 @@ class DeliverySetRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\Pay
      */
     public function getAllRDFaDeliveries()
     {
-        $aRDFaDeliveries = array();
+        $aRDFaDeliveries = [];
         $aAssignedRDFaDeliveries = $this->getAssignedRDFaDeliveries();
         foreach ($this->_aRDFaDeliveries as $sName => $iType) {
             $oDelivery = new stdClass();
@@ -110,7 +110,7 @@ class DeliverySetRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\Pay
     public function getAssignedRDFaDeliveries()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $aRDFaDeliveries = array();
+        $aRDFaDeliveries = [];
         $sSelect = 'select oxobjectid from oxobject2delivery where oxdeliveryid=' . $oDb->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid")) . ' and oxtype = "rdfadeliveryset" ';
         $rs = $oDb->select($sSelect);
         if ($rs && $rs->count()) {

@@ -34,7 +34,7 @@ class PriceList
      *
      * @var array
      */
-    protected $_aList = array();
+    protected $_aList = [];
 
     /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
@@ -100,8 +100,8 @@ class PriceList
      */
     public function getVatInfo($isNettoMode = true)
     {
-        $aVatValues = array();
-        $aPrices = array();
+        $aVatValues = [];
+        $aPrices = [];
         foreach ($this->_aList as $oPrice) {
             $sKey = ( string ) $oPrice->getVat();
             if (!isset($aPrices[$sKey])) {
@@ -131,7 +131,7 @@ class PriceList
      */
     public function getPriceInfo()
     {
-        $aPrices = array();
+        $aPrices = [];
         foreach ($this->_aList as $oPrice) {
             $sVat = ( string ) $oPrice->getVat();
             if (!isset($aPrices[$sVat])) {
@@ -207,7 +207,6 @@ class PriceList
 
         $dNetoTotal = 0;
         $dVatTotal = 0;
-        $dVat = 0;
 
         foreach ($this->_aList as $oPrice) {
             $dNetoTotal += $oPrice->getNettoPrice();

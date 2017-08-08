@@ -36,31 +36,31 @@ class DiscountUsersAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array( // field , table,  visible, multilanguage, ident
-        array('oxusername', 'oxuser', 1, 0, 0),
-        array('oxlname', 'oxuser', 0, 0, 0),
-        array('oxfname', 'oxuser', 0, 0, 0),
-        array('oxstreet', 'oxuser', 0, 0, 0),
-        array('oxstreetnr', 'oxuser', 0, 0, 0),
-        array('oxcity', 'oxuser', 0, 0, 0),
-        array('oxzip', 'oxuser', 0, 0, 0),
-        array('oxfon', 'oxuser', 0, 0, 0),
-        array('oxbirthdate', 'oxuser', 0, 0, 0),
-        array('oxid', 'oxuser', 0, 0, 1),
-    ),
-                                 'container2' => array(
-                                     array('oxusername', 'oxuser', 1, 0, 0),
-                                     array('oxlname', 'oxuser', 0, 0, 0),
-                                     array('oxfname', 'oxuser', 0, 0, 0),
-                                     array('oxstreet', 'oxuser', 0, 0, 0),
-                                     array('oxstreetnr', 'oxuser', 0, 0, 0),
-                                     array('oxcity', 'oxuser', 0, 0, 0),
-                                     array('oxzip', 'oxuser', 0, 0, 0),
-                                     array('oxfon', 'oxuser', 0, 0, 0),
-                                     array('oxbirthdate', 'oxuser', 0, 0, 0),
-                                     array('oxid', 'oxobject2discount', 0, 0, 1),
-                                 )
-    );
+    protected $_aColumns = ['container1' => [ // field , table,  visible, multilanguage, ident
+        ['oxusername', 'oxuser', 1, 0, 0],
+        ['oxlname', 'oxuser', 0, 0, 0],
+        ['oxfname', 'oxuser', 0, 0, 0],
+        ['oxstreet', 'oxuser', 0, 0, 0],
+        ['oxstreetnr', 'oxuser', 0, 0, 0],
+        ['oxcity', 'oxuser', 0, 0, 0],
+        ['oxzip', 'oxuser', 0, 0, 0],
+        ['oxfon', 'oxuser', 0, 0, 0],
+        ['oxbirthdate', 'oxuser', 0, 0, 0],
+        ['oxid', 'oxuser', 0, 0, 1],
+    ],
+                                 'container2' => [
+                                     ['oxusername', 'oxuser', 1, 0, 0],
+                                     ['oxlname', 'oxuser', 0, 0, 0],
+                                     ['oxfname', 'oxuser', 0, 0, 0],
+                                     ['oxstreet', 'oxuser', 0, 0, 0],
+                                     ['oxstreetnr', 'oxuser', 0, 0, 0],
+                                     ['oxcity', 'oxuser', 0, 0, 0],
+                                     ['oxzip', 'oxuser', 0, 0, 0],
+                                     ['oxfon', 'oxuser', 0, 0, 0],
+                                     ['oxbirthdate', 'oxuser', 0, 0, 0],
+                                     ['oxid', 'oxobject2discount', 0, 0, 1],
+                                 ]
+    ];
 
     /**
      * Returns SQL query for data to fetc

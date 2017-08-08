@@ -67,7 +67,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @var array
      */
-    protected $_aHasArticleDiscounts = array();
+    protected $_aHasArticleDiscounts = [];
 
     /**
      * Class constructor, initiates parent constructor (parent::oxBase()).

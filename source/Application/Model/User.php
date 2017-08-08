@@ -65,7 +65,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @var array
      */
-    protected $_aBaskets = array();
+    protected $_aBaskets = [];
 
     /**
      * User groups list
@@ -79,7 +79,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @var oxUserAddressList
      */
-    protected $_aAddresses = array();
+    protected $_aAddresses = [];
 
     /**
      * User payment list
@@ -109,7 +109,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @var array
      */
-    protected static $_aUserCookie = array();
+    protected static $_aUserCookie = [];
 
     /**
      * Notice list item's count
@@ -965,7 +965,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         if (!isset($this->_aBaskets[$sName])) {
             /** @var \OxidEsales\Eshop\Application\Model\UserBasket $oBasket */
             $oBasket = oxNew(\OxidEsales\Eshop\Application\Model\UserBasket::class);
-            $aWhere = array('oxuserbaskets.oxuserid' => $this->getId(), 'oxuserbaskets.oxtitle' => $sName);
+            $aWhere = ['oxuserbaskets.oxuserid' => $this->getId(), 'oxuserbaskets.oxtitle' => $sName];
 
             // creating if it does not exist
             if (!$oBasket->assignRecord($oBasket->buildSelectString($aWhere))) {
@@ -1584,7 +1584,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         //preventing user rights edit for non admin
-        $aRights = array();
+        $aRights = [];
 
         // selecting current users rights ...
         if ($sCurrRights = $oDb->getOne('select oxrights from ' . $this->getViewName() . ' where oxid=' . $oDb->quote($this->getId()))) {

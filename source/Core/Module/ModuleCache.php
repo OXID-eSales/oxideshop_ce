@@ -23,7 +23,6 @@
 namespace OxidEsales\EshopCommunity\Core\Module;
 
 use OxidEsales\Eshop\Core\Registry;
-use oxModule;
 
 /**
  * Module cache events handler class.

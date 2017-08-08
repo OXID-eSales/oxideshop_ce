@@ -35,14 +35,14 @@ class SelectListOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array(
-        array('oxtitle', 'oxselectlist', 1, 1, 0),
-        array('oxsort', 'oxobject2selectlist', 1, 0, 0),
-        array('oxident', 'oxselectlist', 0, 0, 0),
-        array('oxvaldesc', 'oxselectlist', 0, 0, 0),
-        array('oxid', 'oxobject2selectlist', 0, 0, 1)
-    )
-    );
+    protected $_aColumns = ['container1' => [
+        ['oxtitle', 'oxselectlist', 1, 1, 0],
+        ['oxsort', 'oxobject2selectlist', 1, 0, 0],
+        ['oxident', 'oxselectlist', 0, 0, 0],
+        ['oxvaldesc', 'oxselectlist', 0, 0, 0],
+        ['oxid', 'oxobject2selectlist', 0, 0, 1]
+    ]
+    ];
 
     /**
      * Returns SQL query for data to fetc
@@ -82,7 +82,7 @@ class SelectListOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin
 
         // fixing indexes
         $iSelCnt = 0;
-        $aIdx2Id = array();
+        $aIdx2Id = [];
         foreach ($oList as $sKey => $oSel) {
             if ($oSel->oxobject2selectlist__oxsort->value != $iSelCnt) {
                 $oSel->oxobject2selectlist__oxsort->setValue($iSelCnt);

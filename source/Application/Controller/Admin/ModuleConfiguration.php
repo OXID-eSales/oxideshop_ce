@@ -107,16 +107,16 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
     {
         $oConfig = $this->getConfig();
 
-        $aConfVars = array(
-            "bool"     => array(),
-            "str"      => array(),
-            "arr"      => array(),
-            "aarr"     => array(),
-            "select"   => array(),
-            "password" => array(),
-        );
-        $aVarConstraints = array();
-        $aGrouping = array();
+        $aConfVars = [
+            "bool"     => [],
+            "str"      => [],
+            "arr"      => [],
+            "aarr"     => [],
+            "select"   => [],
+            "password" => [],
+        ];
+        $aVarConstraints = [];
+        $aGrouping = [];
 
         $aDbVariables = $this->loadConfVars($oConfig->getShopId(), $this->_getModuleForConfigVars());
 
@@ -159,7 +159,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
                 $aVarConstraints[$sName] = $this->_parseConstraint($sType, $sConstraints);
                 if ($sGroup) {
                     if (!isset($aGrouping[$sGroup])) {
-                        $aGrouping[$sGroup] = array($sName => $sType);
+                        $aGrouping[$sGroup] = [$sName => $sType];
                     } else {
                         $aGrouping[$sGroup][$sName] = $sType;
                     }
@@ -167,11 +167,11 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
             }
         }
 
-        return array(
+        return [
             'vars'        => $aConfVars,
             'constraints' => $aVarConstraints,
             'grouping'    => $aGrouping,
-        );
+        ];
     }
 
     /**

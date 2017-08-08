@@ -56,7 +56,7 @@ class Setup extends Core
      *
      * @var array
      */
-    protected $_aSetupSteps = array(
+    protected $_aSetupSteps = [
         'STEP_SYSTEMREQ'   => 100, // 0
         'STEP_WELCOME'     => 200, // 1
         'STEP_LICENSE'     => 300, // 2
@@ -66,7 +66,7 @@ class Setup extends Core
         'STEP_DIRS_WRITE'  => 510, // 41
         'STEP_DB_CREATE'   => 520, // 42
         'STEP_FINISH'      => 700, // 6
-    );
+    ];
 
     /**
      * Returns current setup step title

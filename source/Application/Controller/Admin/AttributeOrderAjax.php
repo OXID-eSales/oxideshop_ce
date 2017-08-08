@@ -36,12 +36,12 @@ class AttributeOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array(
-        array('oxtitle', 'oxattribute', 1, 1, 0),
-        array('oxsort', 'oxcategory2attribute', 1, 0, 0),
-        array('oxid', 'oxcategory2attribute', 0, 0, 1)
-    )
-    );
+    protected $_aColumns = ['container1' => [
+        ['oxtitle', 'oxattribute', 1, 1, 0],
+        ['oxsort', 'oxcategory2attribute', 1, 0, 0],
+        ['oxid', 'oxcategory2attribute', 0, 0, 1]
+    ]
+    ];
 
     /**
      * Returns SQL query for data to fetc
@@ -81,7 +81,7 @@ class AttributeOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
 
         // fixing indexes
         $iSelCnt = 0;
-        $aIdx2Id = array();
+        $aIdx2Id = [];
         foreach ($oList as $sKey => $oSel) {
             if ($oSel->oxcategory2attribute__oxsort->value != $iSelCnt) {
                 $oSel->oxcategory2attribute__oxsort->setValue($iSelCnt);

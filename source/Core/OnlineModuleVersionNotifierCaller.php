@@ -22,8 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxOnlineModulesNotifierRequest;
-
 /**
  * Class makes call to given URL address and sends request parameter.
  *

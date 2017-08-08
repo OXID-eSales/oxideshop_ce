@@ -43,7 +43,7 @@ class SuggestController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @var array
      */
-    protected $_aReqFields = array('rec_name', 'rec_email', 'send_name', 'send_email', 'send_message', 'send_subject');
+    protected $_aReqFields = ['rec_name', 'rec_email', 'send_name', 'send_email', 'send_message', 'send_subject'];
 
     /**
      * CrossSelling articlelist
@@ -222,7 +222,7 @@ class SuggestController extends \OxidEsales\Eshop\Application\Controller\Fronten
             $this->_oRecommList = false;
             if ($oProduct = $this->getProduct()) {
                 $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
-                $this->_oRecommList = $oRecommList->getRecommListsByIds(array($oProduct->getId()));
+                $this->_oRecommList = $oRecommList->getRecommListsByIds([$oProduct->getId()]);
             }
         }
 
@@ -280,8 +280,8 @@ class SuggestController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
         $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('RECOMMEND_PRODUCT', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();

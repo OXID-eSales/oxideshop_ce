@@ -60,7 +60,7 @@ class OnlineLicenseCheck
      *
      * @var array
      */
-    protected $serialKeys = array();
+    protected $serialKeys = [];
 
     /**
      * Error message for the user.
@@ -184,7 +184,7 @@ class OnlineLicenseCheck
     public function validateNewSerial($serial)
     {
         $serials = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("aSerials");
-        $serials[] = array('attributes' => array('state' => 'new'), 'value' => $serial);
+        $serials[] = ['attributes' => ['state' => 'new'], 'value' => $serial];
 
         return $this->validate($serials);
     }
@@ -289,18 +289,18 @@ class OnlineLicenseCheck
 
         $request->revision = $config->getRevision();
 
-        $request->keys = array('key' => $serials);
+        $request->keys = ['key' => $serials];
 
         $request->productSpecificInformation = new stdClass();
 
         if (!is_null($this->getAppServerExporter())) {
             $servers = $this->getAppServerExporter()->exportAppServerList();
-            $request->productSpecificInformation->servers = array('server' => $servers);
+            $request->productSpecificInformation->servers = ['server' => $servers];
         }
 
         $counters = $this->formCounters();
         if (!empty($counters)) {
-            $request->productSpecificInformation->counters = array('counter' => $counters);
+            $request->productSpecificInformation->counters = ['counter' => $counters];
         }
 
         return $request;
@@ -315,23 +315,23 @@ class OnlineLicenseCheck
     {
         $userCounter = $this->getUserCounter();
 
-        $counters = array();
+        $counters = [];
 
         if (!is_null($this->getUserCounter())) {
-            $counters[] = array(
+            $counters[] = [
                 'name' => 'admin users',
                 'value' => $userCounter->getAdminCount(),
-            );
-            $counters[] = array(
+            ];
+            $counters[] = [
                 'name' => 'active admin users',
                 'value' => $userCounter->getActiveAdminCount(),
-            );
+            ];
         }
 
-        $counters[] = array(
+        $counters[] = [
             'name' => 'subShops',
             'value' => \OxidEsales\Eshop\Core\Registry::getConfig()->getMandateCount(),
-        );
+        ];
 
         return $counters;
     }

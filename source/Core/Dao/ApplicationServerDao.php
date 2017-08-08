@@ -99,10 +99,10 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
 
         $query = "DELETE FROM oxconfig WHERE oxvarname = ? and oxshopid = ?";
 
-        $parameter = array(
+        $parameter = [
             self::CONFIG_NAME_FOR_SERVER_INFO.$id,
             $this->config->getBaseShopId()
-        );
+        ];
 
         $this->database->execute($query, $parameter);
     }
@@ -179,12 +179,12 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
     {
         $query = "UPDATE oxconfig SET oxvarvalue=ENCODE( ?, ?) WHERE oxvarname = ? and oxshopid = ?";
 
-        $parameter = array(
+        $parameter = [
             $this->convertAppServerToConfigOption($appServer),
             $this->config->getConfigParam('sConfigKey'),
             self::CONFIG_NAME_FOR_SERVER_INFO.$appServer->getId(),
             $this->config->getBaseShopId()
-        );
+        ];
 
         $this->database->execute($query, $parameter);
     }
@@ -199,14 +199,14 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
         $query = "insert into oxconfig (oxid, oxshopid, oxmodule, oxvarname, oxvartype, oxvarvalue)
                values(?, ?, '', ?, ?, ENCODE( ?, ?) )";
 
-        $parameter = array(
+        $parameter = [
             \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID(),
             $this->config->getBaseShopId(),
             self::CONFIG_NAME_FOR_SERVER_INFO.$appServer->getId(),
             'arr',
             $this->convertAppServerToConfigOption($appServer),
             $this->config->getConfigParam('sConfigKey')
-        );
+        ];
 
         $this->database->execute($query, $parameter);
     }
@@ -223,10 +223,10 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
         $query = "SELECT " . $this->config->getDecodeValueQuery() .
             " as oxvarvalue FROM oxconfig WHERE oxvarname = ? AND oxshopid = ? FOR UPDATE";
 
-        $parameter = array(
+        $parameter = [
             self::CONFIG_NAME_FOR_SERVER_INFO.$id,
             $this->config->getBaseShopId()
-        );
+        ];
 
         $this->database->setFetchMode(\OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface::FETCH_MODE_ASSOC);
         return $this->database->getOne($query, $parameter);
@@ -242,10 +242,10 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
         $query = "SELECT oxvarname, " . $this->config->getDecodeValueQuery() .
             " as oxvarvalue FROM oxconfig WHERE oxvarname like ? AND oxshopid = ?";
 
-        $parameter = array(
+        $parameter = [
             self::CONFIG_NAME_FOR_SERVER_INFO."%",
             $this->config->getBaseShopId()
-        );
+        ];
 
         $this->database->setFetchMode(\OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface::FETCH_MODE_ASSOC);
         return $this->database->select($query, $parameter);
@@ -320,13 +320,13 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
      */
     private function convertAppServerToConfigOption($appServer)
     {
-        $serverData = array(
+        $serverData = [
             'id'                => $appServer->getId(),
             'timestamp'         => $appServer->getTimestamp(),
             'ip'                => $appServer->getIp(),
             'lastFrontendUsage' => $appServer->getLastFrontendUsage(),
             'lastAdminUsage'    => $appServer->getLastAdminUsage()
-        );
+        ];
 
         return serialize($serverData);
     }

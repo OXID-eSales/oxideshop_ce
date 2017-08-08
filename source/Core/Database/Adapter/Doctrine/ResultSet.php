@@ -60,7 +60,7 @@ class ResultSet implements \IteratorAggregate, ResultSetInterface
      */
     public function __construct(Statement $statement)
     {
-        $this->fields = array();
+        $this->fields = [];
         $this->setStatement($statement);
         $this->EOF = false;
         $this->currentRow = 0;
@@ -78,7 +78,7 @@ class ResultSet implements \IteratorAggregate, ResultSetInterface
     public function close()
     {
         $this->getStatement()->closeCursor();
-        $this->fields = array();
+        $this->fields = [];
     }
 
     /**

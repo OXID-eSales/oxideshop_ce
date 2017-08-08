@@ -22,11 +22,7 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxOnlineModuleVersionNotifierCaller;
-use oxModuleList;
-use oxModule;
 use stdClass;
-use oxRegistry;
 use oxOnlineModulesNotifierRequest;
 
 /**
@@ -84,7 +80,7 @@ class OnlineModuleVersionNotifier
      */
     protected function _prepareModulesInformation()
     {
-        $aPreparedModules = array();
+        $aPreparedModules = [];
         $aModules = $this->_getModules();
         foreach ($aModules as $oModule) {
             /** @var \OxidEsales\Eshop\Core\Module\Module $oModule */
@@ -94,7 +90,7 @@ class OnlineModuleVersionNotifier
             $oPreparedModule->version = $oModule->getInfo('version');
 
             $oPreparedModule->activeInShops = new stdClass();
-            $oPreparedModule->activeInShops->activeInShop = array();
+            $oPreparedModule->activeInShops->activeInShop = [];
             if ($oModule->isActive()) {
                 $oPreparedModule->activeInShops->activeInShop[] = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl();
             }

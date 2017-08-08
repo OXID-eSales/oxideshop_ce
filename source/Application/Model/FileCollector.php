@@ -106,7 +106,7 @@ class FileCollector
      * @throws exception
      * @return null
      */
-    public function addDirectoryFiles($sFolder, $aExtensions = array(), $blRecursive = false)
+    public function addDirectoryFiles($sFolder, $aExtensions = [], $blRecursive = false)
     {
         if (empty($sFolder)) {
             throw new Exception('Parameter $sFolder is empty!');
@@ -116,7 +116,7 @@ class FileCollector
             throw new Exception('Base directory is not set, please use setter setBaseDirectory!');
         }
 
-        $aCurrentList = array();
+        $aCurrentList = [];
 
         if (!is_dir($this->_sBaseDirectory . $sFolder)) {
             return;

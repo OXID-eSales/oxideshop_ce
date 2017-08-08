@@ -92,14 +92,14 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @var array
          */
-        protected $_aHeaders = array();
+        protected $_aHeaders = [];
 
         /**
          * Allowed image types
          *
          * @var array
          */
-        protected $_aAllowedImgTypes = array("jpg", "jpeg", "png", "gif");
+        protected $_aAllowedImgTypes = ["jpg", "jpeg", "png", "gif"];
 
         /**
          * Image info like size and quality is defined in directory
@@ -128,7 +128,7 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @var array
          */
-        protected $_aConfParamToPath = array( // ** product
+        protected $_aConfParamToPath = [ // ** product
             "sIconsize"             => '/.*\/generated\/product\/(icon|\d+)\/\d+\_\d+\_\d+$/', // Icon size
             "sThumbnailsize"        => '/.*\/generated\/product\/(thumb|\d+)\/\d+\_\d+\_\d+$/', // Thumbnail size
             "sZoomImageSize"        => '/.*\/generated\/product\/\d+\/\d+\_\d+\_\d+$/', // Zoom picture size
@@ -141,7 +141,7 @@ namespace OxidEsales\EshopCommunity\Core {
             "sCatThumbnailsize"     => '/.*\/generated\/category\/thumb\/\d+\_\d+\_\d+$/', // Category picture size
             "sCatIconsize"          => '/.*\/generated\/category\/icon\/\d+\_\d+\_\d+$/', // Size of a subcategory's picture
             "sCatPromotionsize"     => '/.*\/generated\/category\/promo_icon\/\d+\_\d+\_\d+$/' // Category picture size for promotion on startpage
-        );
+        ];
 
         /**
          * Creates and returns picture generator instance
@@ -176,7 +176,7 @@ namespace OxidEsales\EshopCommunity\Core {
                     $method = str_replace("UNIT", "_", $method);
                 }
                 if (method_exists($this, $method)) {
-                    return call_user_func_array(array(& $this, $method), $args);
+                    return call_user_func_array([& $this, $method], $args);
                 }
             }
 
@@ -758,9 +758,9 @@ namespace OxidEsales\EshopCommunity\Core {
         {
             try {
                 list($width, $height) = getimagesize($imageFilePath);
-                $imageDimensions = array ($width, $height);
+                $imageDimensions = [$width, $height];
             } catch (\Exception $exception) {
-                $imageDimensions = array (0,0);
+                $imageDimensions = [0,0];
             }
 
             return $imageDimensions;

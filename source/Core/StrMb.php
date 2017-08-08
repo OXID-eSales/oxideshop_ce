@@ -40,14 +40,14 @@ class StrMb
      *
      * @var array
      */
-    protected $_aUmls = array("\xc3\xa4", "\xc3\xb6", "\xc3\xbc", "\xC3\x84", "\xC3\x96", "\xC3\x9C", "\xC3\x9F");
+    protected $_aUmls = ["\xc3\xa4", "\xc3\xb6", "\xc3\xbc", "\xC3\x84", "\xC3\x96", "\xC3\x9C", "\xC3\x9F"];
 
     /**
      * oxUtilsString::$_aUmls equivalent in entities form
      *
      * @var array
      */
-    protected $_aUmlEntities = array('&auml;', '&ouml;', '&uuml;', '&Auml;', '&Ouml;', '&Uuml;', '&szlig;');
+    protected $_aUmlEntities = ['&auml;', '&ouml;', '&uuml;', '&Auml;', '&Ouml;', '&Uuml;', '&szlig;'];
 
     /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
@@ -319,7 +319,7 @@ class StrMb
 
         $i = $iWraps;
         $sReturn = '';
-        $aMatches = array();
+        $aMatches = [];
         while ($i > 0) {
             $iWraps = floor(mb_strlen($sString, $this->_sEncoding) / $iLength);
 
@@ -353,7 +353,7 @@ class StrMb
      *
      * @return string
      */
-    public function recodeEntities($sInput, $blToHtmlEntities = false, $aUmls = array(), $aUmlEntities = array())
+    public function recodeEntities($sInput, $blToHtmlEntities = false, $aUmls = [], $aUmlEntities = [])
     {
         $aUmls = (count($aUmls) > 0) ? array_merge($this->_aUmls, $aUmls) : $this->_aUmls;
         $aUmlEntities = (count($aUmlEntities) > 0) ? array_merge($this->_aUmlEntities, $aUmlEntities) : $this->_aUmlEntities;

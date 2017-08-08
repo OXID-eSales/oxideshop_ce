@@ -39,7 +39,7 @@ class NewsletterSend extends \OxidEsales\Eshop\Application\Controller\Admin\News
      *
      * @var array
      */
-    protected $_aMailErrors = array();
+    protected $_aMailErrors = [];
 
     /**
      * Executes parent method parent::render(), creates oxnewsletter object,

@@ -99,7 +99,7 @@ class Utilities extends Core
      *
      * @return bool
      */
-    public function removeDir($sPath, $blDeleteSuccess, $iMode = 0, $aSkipFiles = array(), $aSkipFolders = array())
+    public function removeDir($sPath, $blDeleteSuccess, $iMode = 0, $aSkipFiles = [], $aSkipFolders = [])
     {
 
         if (is_file($sPath) || is_dir($sPath)) {

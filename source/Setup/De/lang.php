@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-$aLang = array(
+$aLang = [
 
 'charset'                                       => 'UTF-8',
 'HEADER_META_MAIN_TITLE'                        => 'OXID eShop Installationsassistent',
@@ -210,4 +210,4 @@ $aLang = array(
 
 'EXTERNAL_COMMAND_ERROR_1'                      => 'Fehler beim Ausführen des Kommandos \'%s\'. Returncode: \'%d\'.',
 'EXTERNAL_COMMAND_ERROR_2'                      => 'Das Kommando gibt folgende Meldung zurück:',
-);
+];

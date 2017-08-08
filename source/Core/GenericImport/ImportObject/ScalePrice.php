@@ -31,7 +31,7 @@ class ScalePrice extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\Impor
     protected $tableName = 'oxprice2article';
 
     /** @var array List of database key fields (i.e. oxid). */
-    protected $keyFieldList = array(
+    protected $keyFieldList = [
         'OXID' => 'OXID'
-    );
+    ];
 }

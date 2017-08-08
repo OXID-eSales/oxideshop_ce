@@ -38,19 +38,19 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
-        array('oxtitle', 'oxselectlist', 1, 1, 0),
-        array('oxident', 'oxselectlist', 1, 0, 0),
-        array('oxvaldesc', 'oxselectlist', 1, 0, 0),
-        array('oxid', 'oxselectlist', 0, 0, 1)
-    ),
-                                 'container2' => array(
-                                     array('oxtitle', 'oxselectlist', 1, 1, 0),
-                                     array('oxident', 'oxselectlist', 1, 0, 0),
-                                     array('oxvaldesc', 'oxselectlist', 1, 0, 0),
-                                     array('oxid', 'oxobject2selectlist', 0, 0, 1)
-                                 )
-    );
+    protected $_aColumns = ['container1' => [ // field , table,         visible, multilanguage, ident
+        ['oxtitle', 'oxselectlist', 1, 1, 0],
+        ['oxident', 'oxselectlist', 1, 0, 0],
+        ['oxvaldesc', 'oxselectlist', 1, 0, 0],
+        ['oxid', 'oxselectlist', 0, 0, 1]
+    ],
+                                 'container2' => [
+                                     ['oxtitle', 'oxselectlist', 1, 1, 0],
+                                     ['oxident', 'oxselectlist', 1, 0, 0],
+                                     ['oxvaldesc', 'oxselectlist', 1, 0, 0],
+                                     ['oxid', 'oxobject2selectlist', 0, 0, 1]
+                                 ]
+    ];
 
     /**
      * Returns SQL query for data to fetc

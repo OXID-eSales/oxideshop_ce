@@ -111,7 +111,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @var array
      */
-    protected static $_aProductList = array();
+    protected static $_aProductList = [];
 
     /**
      * Delivery VAT config
@@ -504,7 +504,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         if ($this->_aCountriesISO === null) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $this->_aCountriesISO = array();
+            $this->_aCountriesISO = [];
 
             $sSelect = "
                 SELECT

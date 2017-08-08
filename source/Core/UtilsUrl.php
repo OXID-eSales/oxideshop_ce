@@ -22,9 +22,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
-use oxStrRegular;
-
 /**
  * URL utility class
  */
@@ -53,7 +50,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      */
     public function getBaseAddUrlParams()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -117,7 +114,6 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
             $iCur = (int) $oConfig->getShopCurrency();
             if ($iCur) {
                 $sUrl .= "{$sSep}cur=" . $iCur;
-                $sSep = '&amp;';
             }
         }
 
@@ -418,8 +414,8 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
         /** @var \OxidEsales\Eshop\Core\StrRegular $oStrUtils */
         $oStrUtils = getStr();
         $sUrlParams = $oStrUtils->preg_replace(
-            array('@(\&(amp;){1,})@ix', '@\&{1,}@', '@\?&@x'),
-            array('&', '&', '?'),
+            ['@(\&(amp;){1,})@ix', '@\&{1,}@', '@\?&@x'],
+            ['&', '&', '?'],
             $sUrlParams
         );
 
@@ -429,8 +425,8 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
 
         // replace brackets
         $sUrl = str_replace(
-            array('%5B', '%5D'),
-            array('[', ']'),
+            ['%5B', '%5D'],
+            ['[', ']'],
             $sUrl
         );
 
@@ -490,7 +486,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
         $sValue = str_replace("&amp;", "&", $sValue);
         $aNavParams = explode("&", $sValue);
         $aNavParams = array_filter($aNavParams);
-        $aParams = array();
+        $aParams = [];
         foreach ($aNavParams as $sValue) {
             $exp = explode("=", $sValue);
             $aParams[$exp[0]] = $exp[1];
@@ -549,7 +545,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     protected function _getHosts()
     {
         if ($this->_aHosts === null) {
-            $this->_aHosts = array();
+            $this->_aHosts = [];
             $oConfig = $this->getConfig();
 
             $this->_addMallHosts($this->_aHosts);

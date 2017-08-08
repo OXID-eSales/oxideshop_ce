@@ -51,7 +51,7 @@ class ShopSystem extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConf
         $myConfig = $this->getConfig();
         parent::render();
 
-        $aConfArrs = array();
+        $aConfArrs = [];
 
         $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
 

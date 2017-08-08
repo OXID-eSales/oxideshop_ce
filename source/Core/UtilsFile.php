@@ -368,6 +368,10 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     {
         $blDone = false;
 
+        if (!is_dir(dirname($sTarget))) {
+            mkdir(dirname($sTarget), 0744, true);
+        }
+
         if ($sSource === $sTarget) {
             $blDone = true;
         } else {

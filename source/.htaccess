@@ -33,9 +33,7 @@
     RewriteRule (\.jpe?g|\.gif|\.png|\.svg)$ getimg.php [NC]
 
     RewriteRule ^(vendor/) - [F,L,NC]
-
-    RewriteCond %{REQUEST_URI} (^\/migration|^\/migration\/data\/.*\.php)
-    RewriteRule .* index.php [R=403,L]
+    RewriteRule ^migration - [R=403,L]
 </IfModule>
 
 # disabling log file access from outside

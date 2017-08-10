@@ -369,7 +369,7 @@ class oxSeoEncoder extends oxSuperCfg
         }
         $iLang = (int) $iLang;
 
-        if (!isset(self::$_aFixedCache[$sType][$sShopId][$sId][$iLang])) {
+        if (!isset(self::$_aFixedCache[$sType][$iShopId][$sId][$iLang])) {
             $oDb = oxDb::getDb();
 
             $sQ = "SELECT `oxfixed`
@@ -387,10 +387,10 @@ class oxSeoEncoder extends oxSuperCfg
             }
             $sQ .= " LIMIT 1";
 
-            self::$_aFixedCache[$sType][$sShopId][$sId][$iLang] = (bool) $oDb->getOne($sQ);
+            self::$_aFixedCache[$sType][$iShopId][$sId][$iLang] = (bool) $oDb->getOne($sQ);
         }
 
-        return self::$_aFixedCache[$sType][$sShopId][$sId][$iLang];
+        return self::$_aFixedCache[$sType][$iShopId][$sId][$iLang];
     }
 
     /**

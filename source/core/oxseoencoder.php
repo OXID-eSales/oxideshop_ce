@@ -545,7 +545,7 @@ class oxSeoEncoder extends oxSuperCfg
                 if ($oRs->fields['oxexpired'] && ($oRs->fields['oxtype'] == 'static' || $oRs->fields['oxtype'] == 'dynamic')) {
                     // if expired - copying to history, marking as not expired
                     $this->_copyToHistory($sId, $iShopId, $iLang);
-                    $oDb->execute("update oxseo set oxexpired = 0 where oxobjectid = " . $oDb->quote($sId) . " and oxlang = '{$iLang}'");
+                    $oDb->execute("update oxseo set oxexpired = 0 where oxobjectid = " . $oDb->quote($sId) . " and oxshopid = " . $oDb->quote($iShopId) . " and oxlang = '{$iLang}'");
                     $sSeoUrl = $oRs->fields['oxseourl'];
                 } elseif (!$oRs->fields['oxexpired'] || $oRs->fields['oxfixed']) {
                     // if seo url is available and is valid

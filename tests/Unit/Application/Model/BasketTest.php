@@ -2674,8 +2674,14 @@ class BasketTest extends \OxidTestCase
         }
 
         $oBasket = oxNew('oxbasket');
+        $this->assertEquals(0, $oBasket->getProductsCount());
+
         $oBasket->addToBasket($this->oArticle->getId(), 2);
+        $this->assertEquals(1, $oBasket->getProductsCount());
+
         $oBasket->addToBasket($this->oVariant->getId(), 11);
+        $this->assertEquals(2, $oBasket->getProductsCount());
+
         $oBasket->calculateBasket(false);
         $this->assertEquals(2, $oBasket->getProductsCount());
     }
@@ -2693,8 +2699,14 @@ class BasketTest extends \OxidTestCase
         }
 
         $oBasket = oxNew('oxbasket');
+        $this->assertEquals(0, $oBasket->getItemsCount());
+
         $oBasket->addToBasket($this->oArticle->getId(), 7);
+        $this->assertEquals(7, $oBasket->getItemsCount());
+
         $oBasket->addToBasket($this->oVariant->getId(), 6);
+        $this->assertEquals(13, $oBasket->getItemsCount());
+
         $oBasket->calculateBasket(false);
         $this->assertEquals(13, $oBasket->getItemsCount());
     }
@@ -2712,8 +2724,14 @@ class BasketTest extends \OxidTestCase
         }
 
         $oBasket = oxNew('oxbasket');
+        $this->assertEquals(0, $oBasket->getWeight());
+
         $oBasket->addToBasket($this->oArticle->getId(), 10);
+        $this->assertEquals(100, $oBasket->getWeight());
+
         $oBasket->addToBasket($this->oVariant->getId(), 10);
+        $this->assertEquals(200, $oBasket->getWeight());
+
         $oBasket->calculateBasket(false);
         $this->assertEquals(200, $oBasket->getWeight());
     }

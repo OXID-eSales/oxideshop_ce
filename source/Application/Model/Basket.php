@@ -48,21 +48,30 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     protected $_aBasketContents = [];
 
     /**
-     * Number of different product type in basket
+     * Number of different product type in basket.
+     * The value is updated only after recalculating a basket.
+     *
+     * @deprecated since v.6.0.0 (2017-08-17); Use getProductsCount() instead.
      *
      * @var int
      */
     protected $_iProductsCnt = 0;
 
     /**
-     * Number of basket items
+     * Number of basket items.
+     * The value is updated only after recalculating a basket.
+     *
+     * @deprecated since v.6.0.0 (2017-08-17); Use getItemsCount() instead.
      *
      * @var double
      */
     protected $_dItemsCnt = 0.0;
 
     /**
-     * Basket weight
+     * Basket weight.
+     * The value is updated only after recalculating a basket.
+     *
+     * @deprecated since v.6.0.0 (2017-08-17); Use getWeight() instead.
      *
      * @var double
      */
@@ -1985,33 +1994,45 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns number of different products stored in basket
+     * Returns number of different products stored in basket.
      *
      * @return int
      */
     public function getProductsCount()
     {
-        return $this->_iProductsCnt;
+        return count($this->_aBasketContents);
     }
 
     /**
-     * Returns count of items stored in basket
+     * Returns count of items stored in basket.
      *
      * @return double
      */
     public function getItemsCount()
     {
-        return $this->_dItemsCnt;
+        $itemsCount = 0;
+
+        foreach ($this->_aBasketContents as $oBasketItem) {
+            $itemsCount += $oBasketItem->getAmount();
+        }
+
+        return $itemsCount;
     }
 
     /**
-     * Returns total basket weight
+     * Returns total basket weight.
      *
      * @return double
      */
     public function getWeight()
     {
-        return $this->_dWeight;
+        $weight = 0;
+
+        foreach ($this->_aBasketContents as $oBasketItem) {
+            $weight += $oBasketItem->getWeight();
+        }
+
+        return $weight;
     }
 
     /**

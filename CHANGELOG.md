@@ -125,7 +125,7 @@ See
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
 
-[Unreleased]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0-rc.1...HEAD
+[Unreleased]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0-rc.2...HEAD
 [6.0.0-rc.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0-rc.1...v6.0.0-rc.2
 [6.0.0-rc.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0-beta.3...v6.0.0-rc.1
 [6.0-beta.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0-beta.2...v6.0-beta.3

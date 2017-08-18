@@ -2034,7 +2034,7 @@ class oxBasket extends oxSuperCfg
      */
     public function getProductsCount()
     {
-        return $this->_iProductsCnt;
+        return count($this->_aBasketContents);
     }
 
     /**
@@ -2044,7 +2044,13 @@ class oxBasket extends oxSuperCfg
      */
     public function getItemsCount()
     {
-        return $this->_dItemsCnt;
+        $itemsCount = 0;
+
+        foreach ($this->_aBasketContents as $oBasketItem) {
+            $itemsCount += $oBasketItem->getAmount();
+        }
+
+        return $itemsCount;
     }
 
     /**
@@ -2054,7 +2060,13 @@ class oxBasket extends oxSuperCfg
      */
     public function getWeight()
     {
-        return $this->_dWeight;
+        $weight = 0;
+
+        foreach ($this->_aBasketContents as $oBasketItem) {
+            $weight += $oBasketItem->getWeight();
+        }
+
+        return $weight;
     }
 
     /**

@@ -1181,12 +1181,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
      */
     public function testGetItemBundlesItemHasNoBundles()
     {
-        // deleting discounts
-        foreach ($this->aDiscounts as $oDiscount) {
-            $oDiscount->delete();
-        }
-
-        $oBasket = new oxbasket();
+        $oBasket = $this->createBasketWithNoDiscounts();
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1);
         $this->assertEquals(array(), $oBasket->UNITgetItemBundles($oItem));
     }
@@ -1244,12 +1239,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
     // has no bundle items
     public function testGetBasketBundlesHasNoBundledItem()
     {
-        // deleting discounts
-        foreach ($this->aDiscounts as $oDiscount) {
-            $oDiscount->delete();
-        }
-
-        $oBasket = new oxbasket();
+        $oBasket = $this->createBasketWithNoDiscounts();
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 1);
         $this->assertEquals(array(), $oBasket->UNITgetBasketBundles());
     }
@@ -1777,12 +1767,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         // forcing some config params for deeper execution
         modConfig::getInstance()->setConfigParam('blWrappingVatOnTop', true);
 
-        // deleting discounts
-        foreach ($this->aDiscounts as $oDiscount) {
-            $oDiscount->delete();
-        }
-
-        $oBasket = new oxbasket();
+        $oBasket = $this->createBasketWithNoDiscounts();
 
         $this->assertFalse($oBasket->getFWrappingCosts());
         $this->assertFalse($oBasket->getWrappCostNet());
@@ -1833,13 +1818,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
     {
         modConfig::getInstance()->setConfigParam('blEnterNetPrice', true);
 
-        // deleting discounts
-        foreach ($this->aDiscounts as $oDiscount) {
-            $oDiscount->delete();
-        }
-
-        // choosing first payment which is active and has costs
-        $oBasket = new oxbasket();
+        $oBasket = $this->createBasketWithNoDiscounts();
         $oBasket->addToBasket($this->oArticle->getId(), 2);
         $oBasket->addToBasket($this->oVariant->getId(), 3);
         $oBasket->calculateBasket(false);
@@ -1861,13 +1840,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
     {
         modConfig::getInstance()->setConfigParam('blPaymentVatOnTop', true);
 
-        // deleting discounts
-        foreach ($this->aDiscounts as $oDiscount) {
-            $oDiscount->delete();
-        }
-
-        // choosing first payment which is active and has costs
-        $oBasket = new oxbasket();
+        $oBasket = $this->createBasketWithNoDiscounts();
         $oBasket->addToBasket($this->oArticle->getId(), 2);
         $oBasket->addToBasket($this->oVariant->getId(), 3);
         $oBasket->calculateBasket(false);
@@ -1985,12 +1958,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
     public function testGetBasketSummaryPriceDisabled()
     {
         modConfig::getInstance()->setConfigParam('bl_perfLoadPrice', false);
-        // deleting discounts
-        foreach ($this->aDiscounts as $oDiscount) {
-            $oDiscount->delete();
-        }
-
-        $oBasket = new oxbasket();
+        $oBasket = $this->createBasketWithNoDiscounts();
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $oBasket->addToBasket($this->oArticle->getId(), 10);
 
@@ -2011,12 +1979,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
      */
     public function testGetBasketSummaryRawCall()
     {
-        // deleting discounts
-        foreach ($this->aDiscounts as $oDiscount) {
-            $oDiscount->delete();
-        }
-
-        $oBasket = new oxbasket();
+        $oBasket = $this->createBasketWithNoDiscounts();
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $oBasket->addToBasket($this->oArticle->getId(), 10);
 
@@ -2036,12 +1999,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
      */
     public function testGetBasketSummaryIfArtOffline()
     {
-        // deleting discounts
-        foreach ($this->aDiscounts as $oDiscount) {
-            $oDiscount->delete();
-        }
-
-        $oBasket = new oxbasket();
+        $oBasket = $this->createBasketWithNoDiscounts();
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $this->oArticle->oxarticles__oxstock = new oxField(0, oxField::T_RAW);
@@ -2064,12 +2022,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
     public function testAddVoucherNonExistingVoucher()
     {
         modConfig::getInstance()->setConfigParam('blEnterNetPrice', true);
-        // deleting discounts
-        foreach ($this->aDiscounts as $oDiscount) {
-            $oDiscount->delete();
-        }
-
-        $oBasket = new oxbasket();
+        $oBasket = $this->createBasketWithNoDiscounts();
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $oBasket->calculateBasket(false);
@@ -2088,12 +2041,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         $sVoucher = key($this->aVouchers);
         $oVoucher = $this->aVouchers[$sVoucher];
 
-        // deleting discounts
-        foreach ($this->aDiscounts as $oDiscount) {
-            $oDiscount->delete();
-        }
-
-        $oBasket = new oxbasket();
+        $oBasket = $this->createBasketWithNoDiscounts();
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $oBasket->calculateBasket(false);
@@ -2520,11 +2468,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
      */
     public function testGetDiscountProductsPrice()
     {
-        foreach ($this->aDiscounts as $oDiscount) {
-            $oDiscount->delete();
-        }
-
-        $oBasket = new oxbasket();
+        $oBasket = $this->createBasketWithNoDiscounts();
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $oBasket->calculateBasket(false);
@@ -2540,12 +2484,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
      */
     public function testGetProductsPrice()
     {
-        // deleting discounts to ignore bundle problems
-        foreach ($this->aDiscounts as $oDiscount) {
-            $oDiscount->delete();
-        }
-
-        $oBasket = new oxbasket();
+        $oBasket = $this->createBasketWithNoDiscounts();
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $oBasket->calculateBasket();
@@ -2579,12 +2518,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
      */
     public function testGetPrice()
     {
-        // deleting discounts to ignore bundle problems
-        foreach ($this->aDiscounts as $oDiscount) {
-            $oDiscount->delete();
-        }
-
-        $oBasket = new oxbasket();
+        $oBasket = $this->createBasketWithNoDiscounts();
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $oBasket->calculateBasket(false);
@@ -2629,12 +2563,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
     public function testGetCosts()
     {
         modConfig::getInstance()->setConfigParam('blEnterNetPrice', true);
-        // deleting discounts to ignore bundle problems
-        foreach ($this->aDiscounts as $oDiscount) {
-            $oDiscount->delete();
-        }
-
-        $oBasket = new oxbasket();
+        $oBasket = $this->createBasketWithNoDiscounts();
         $oBasket->addToBasket($this->oArticle->getId(), 2);
         $oBasket->addToBasket($this->oVariant->getId(), 11);
         $oBasket->calculateBasket(false);
@@ -2648,11 +2577,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
      */
     public function testGetVouchers()
     {
-        foreach ($this->aDiscounts as $oDiscount) {
-            $oDiscount->delete();
-        }
-
-        $oBasket = new oxbasket();
+        $oBasket = $this->createBasketWithNoDiscounts();
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $oBasket->calculateBasket(false);
@@ -2671,21 +2596,34 @@ class Unit_Core_oxbasketTest extends OxidTestCase
     }
 
     /**
+     * Testing calculateBasket method doesn't change Amount
+     *
+     * @return null
+     */
+    public function testCalculateBasketDoesNotChangeAmount()
+    {
+        $oBasket = $this->createBasketWithNoDiscounts();
+
+        $this->assertEquals(0, $oBasket->getProductsCount());
+
+        $oBasket->calculateBasket(false);
+        $this->assertEquals(0, $oBasket->getProductsCount());
+    }
+
+    /**
      * Testing basket products count getter
      *
      * @return null
      */
     public function testGetProductsCount()
     {
-        // deleting discounts to ignore bundle problems
-        foreach ($this->aDiscounts as $oDiscount) {
-            $oDiscount->delete();
-        }
+        $oBasket = $this->createBasketWithNoDiscounts();
+        $this->assertEquals(0, $oBasket->getProductsCount());
 
-        $oBasket = new oxbasket();
         $oBasket->addToBasket($this->oArticle->getId(), 2);
+        $this->assertEquals(1, $oBasket->getProductsCount());
+
         $oBasket->addToBasket($this->oVariant->getId(), 11);
-        $oBasket->calculateBasket(false);
         $this->assertEquals(2, $oBasket->getProductsCount());
     }
 
@@ -2696,15 +2634,13 @@ class Unit_Core_oxbasketTest extends OxidTestCase
      */
     public function testGetItemsCount()
     {
-        // deleting discounts to ignore bundle problems
-        foreach ($this->aDiscounts as $oDiscount) {
-            $oDiscount->delete();
-        }
+        $oBasket = $this->createBasketWithNoDiscounts();
+        $this->assertEquals(0, $oBasket->getItemsCount());
 
-        $oBasket = new oxbasket();
         $oBasket->addToBasket($this->oArticle->getId(), 7);
+        $this->assertEquals(7, $oBasket->getItemsCount());
+
         $oBasket->addToBasket($this->oVariant->getId(), 6);
-        $oBasket->calculateBasket(false);
         $this->assertEquals(13, $oBasket->getItemsCount());
     }
 
@@ -2715,15 +2651,13 @@ class Unit_Core_oxbasketTest extends OxidTestCase
      */
     public function testGetWeight()
     {
-        // deleting discounts to ignore bundle problems
-        foreach ($this->aDiscounts as $oDiscount) {
-            $oDiscount->delete();
-        }
+        $oBasket = $this->createBasketWithNoDiscounts();
+        $this->assertEquals(0, $oBasket->getWeight());
 
-        $oBasket = new oxbasket();
         $oBasket->addToBasket($this->oArticle->getId(), 10);
+        $this->assertEquals(100, $oBasket->getWeight());
+
         $oBasket->addToBasket($this->oVariant->getId(), 10);
-        $oBasket->calculateBasket(false);
         $this->assertEquals(200, $oBasket->getWeight());
     }
 
@@ -4680,4 +4614,18 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         return $oOrderArticle;
     }
 
+    /**
+     * Creates a basket with no discounts
+     *
+     * @return oxbasket
+     */
+    private function createBasketWithNoDiscounts()
+    {
+        // deleting discounts to ignore bundle problems
+        foreach ($this->aDiscounts as $oDiscount) {
+            $oDiscount->delete();
+        }
+        $oBasket = new oxbasket();
+        return $oBasket;
+    }
 }

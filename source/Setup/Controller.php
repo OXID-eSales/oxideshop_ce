@@ -379,9 +379,8 @@ class Controller extends Core
         //update dyn pages / shop country config options (from first step)
         $database->saveShopSettings([]);
 
-        // update shop version
-        $version = ShopVersion::getVersion();
-        $database->execSql("update `oxshops` set `oxversion` = '{$version}'");
+        // This value will not change, as it's deprecated and will be removed in next major version.
+        $database->execSql("update `oxshops` set `oxversion` = '6.0.0'");
 
         try {
             $adminData = $session->getSessionParam('aAdminData');

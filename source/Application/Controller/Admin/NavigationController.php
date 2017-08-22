@@ -65,8 +65,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
             $this->_aViewData["menustructure"] = $oNavTree->getDomXml()->documentElement->childNodes;
 
             // version patch string
-            $sVersion = str_replace(["EE.", "PE."], "", $this->_sShopVersion);
-            $this->_aViewData["sVersion"] = trim($sVersion);
+            $this->_aViewData["sVersion"] = $this->_sShopVersion;
 
             //checking requirements if this is not nav frame reload
             if (!\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("navReload")) {

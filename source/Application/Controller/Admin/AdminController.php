@@ -23,7 +23,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
-use oxRegistry;
+use OxidEsales\Eshop\Core\ShopVersion;
 use oxDb;
 use oxNavigationTree;
 use oxShop;
@@ -83,6 +83,8 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     /**
      * Shop Version
      *
+     * @deprecated since v6.0.0-rc.2 (2017-08-23); Use  OxidEsales\Eshop\Core\ShopVersion::getVersion() instead.
+     *
      * @var string
      */
     protected $_sShopVersion = null;
@@ -136,7 +138,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         if ($oShop = $this->_getEditShop($myConfig->getShopId())) {
             // passing shop info
             $this->_sShopTitle = $oShop->oxshops__oxname->getRawValue();
-            $this->_sShopVersion = $oShop->oxshops__oxversion->value;
+            $this->_sShopVersion = oxNew(ShopVersion::class)->getVersion();
         }
     }
 
@@ -277,19 +279,13 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     /**
      * Returns shop version
      *
+     * @deprecated since v6.0.0-rc.2 (2017-08-23); Use  OxidEsales\Eshop\Core\ShopVersion::getVersion() instead.
+     *
      * @return string
      */
     protected function _getShopVersionNr()
     {
-        $myConfig = $this->getConfig();
-
-        if ($sShopID = $myConfig->getShopId()) {
-            $sQ = "select oxversion from oxshops where oxid = '$sShopID' ";
-            // Value does not change that often, reading from slave is ok here (see ESDEV-3804 and ESDEV-3822).
-            $sVersion = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ);
-        }
-
-        return trim(preg_replace("/(^[^0-9]+)(.+)$/", "$2", $sVersion));
+        return oxNew(ShopVersion::class)->getVersion();
     }
 
     /**

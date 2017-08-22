@@ -1177,7 +1177,6 @@ class UtfTest extends \OxidTestCase
         $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getActiveShop'));
         $oShop = oxNew('oxShop');
         $oShop->oxshops__oxname = new oxField($sValue);
-        $oShop->oxshops__oxversion = new oxField('oxversion');
         $oCfg->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
 
         $oRss->setConfig($oCfg);

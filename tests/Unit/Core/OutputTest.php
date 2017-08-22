@@ -21,6 +21,7 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
+use OxidEsales\Eshop\Core\ShopVersion;
 use \oxUtils;
 use \oxOutput;
 use \oxconfig;
@@ -83,19 +84,15 @@ class OutputTest extends \OxidTestCase
 
     public function testAddVersionTags()
     {
-        $config = $this->getConfig();
-        $version = new oxField("9.9", oxField::T_RAW);
-        $config->getActiveShop()->oxshops__oxversion = $version;
+        $version = oxNew(ShopVersion::class)->getVersion();
         $currentYear = date("Y");
 
-        $majorVersion = '9';
+        $majorVersion = explode('.', $version)[0];
 
         $output = oxNew('oxOutput');
         // should add tag only to first head item
         $test = "<head>foo</head>bar<head>test2</head>";
         $result = $output->addVersionTags($test);
-        //reset value
-        $config->getActiveShop()->oxshops__oxversion = new oxField($version, oxField::T_RAW);
 
         $editionName = $this->getEditionName();
         $this->assertNotEquals($test, $result);
@@ -107,18 +104,14 @@ class OutputTest extends \OxidTestCase
      */
     public function testAddVersionTagsUpperCase()
     {
-        $config = $this->getConfig();
-        $version = new oxField("9.9", oxField::T_RAW);
-        $config->getActiveShop()->oxshops__oxversion = $version;
+        $version = oxNew(ShopVersion::class)->getVersion();
         $sCurYear = date("Y");
 
-        $sMajorVersion = '9';
+        $sMajorVersion = explode('.', $version)[0];
 
         $oOutput = oxNew('oxOutput');
         $sTest = "<head>foo</Head>bar";
         $sRes = $oOutput->addVersionTags($sTest);
-        //reset value
-        $config->getActiveShop()->oxshops__oxversion = new oxField($version, oxField::T_RAW);
 
         $editionName = $this->getEditionName();
         $this->assertNotEquals($sTest, $sRes);

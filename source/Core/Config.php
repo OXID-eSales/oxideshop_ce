@@ -27,6 +27,7 @@ use oxConnectionException;
 use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
+use OxidEsales\Eshop\Core\ShopVersion;
 use stdClass;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 
@@ -1721,11 +1722,13 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns shops version number (eg. '4.4.2')
      *
+     * @deprecated since v6.0.0-rc.2 (2017-08-23); Use  OxidEsales\Eshop\Core\ShopVersion::getVersion() instead.
+     *
      * @return string
      */
     public function getVersion()
     {
-        return $this->getActiveShop()->oxshops__oxversion->value;
+        return oxNew(ShopVersion::class)->getVersion();
     }
 
     /**

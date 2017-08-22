@@ -51,7 +51,6 @@ class RssfeedTest extends \OxidTestCase
         $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getActiveShop', 'getShopUrl', 'getImageUrl'));
         $oShop = oxNew('oxShop');
         $oShop->oxshops__oxname = new oxField('name');
-        $oShop->oxshops__oxversion = new oxField('oxversion');
         $oShop->oxshops__oxfname = new oxField('John');
         $oShop->oxshops__oxlname = new oxField('Doe');
         $oCfg->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
@@ -427,7 +426,6 @@ class RssfeedTest extends \OxidTestCase
         $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getActiveShop'));
         $oShop = oxNew('oxShop');
         $oShop->oxshops__oxname = new oxField('Test Shop');
-        $oShop->oxshops__oxversion = new oxField('oxversion');
         $oCfg->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
 
         $oRss->setConfig($oCfg);

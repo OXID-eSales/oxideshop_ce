@@ -81,7 +81,7 @@ class OnlineRequest
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $this->clusterId = $this->_getClusterId();
         $this->edition = $oConfig->getEdition();
-        $this->version = $oConfig->getVersion();
+        $this->version = ShopVersion::getVersion();
         $this->shopUrl = $oConfig->getShopUrl();
     }
 

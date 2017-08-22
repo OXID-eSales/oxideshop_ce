@@ -22,6 +22,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\ShopVersion;
+
 /**
  * Admin selectlist list manager.
  *
@@ -52,8 +54,8 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
             $sDir = $myConfig->getConfigParam('sShopURL') . 'documentation/admin';
         } else {
             $languageId = $this->getDocumentationLanguageId();
-            $oShop = $this->_getEditShop(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('actshop'));
-            $sDir = "http://docu.oxid-esales.com/PE/{$oShop->oxshops__oxversion->value}/" . $languageId . '/admin';
+            $shopVersion = oxNew(ShopVersion::class)->getVersion();
+            $sDir = "http://docu.oxid-esales.com/PE/{$shopVersion}/" . $languageId . '/admin';
         }
 
         $this->_aViewData['sHelpURL'] = $sDir;

@@ -1475,7 +1475,7 @@ CREATE TABLE `oxshops` (
   `OXAFFILIWELTID` varchar(64) NOT NULL default '' COMMENT 'Affiliwelt code (affiliwelt.net) - deprecated',
   `OXAFFILI24ID` varchar(64) NOT NULL default '' COMMENT 'Affili24 code (affili24.com) - deprecated',
   `OXEDITION` CHAR( 2 ) NOT NULL COMMENT 'Shop Edition (CE,PE,EE)',
-  `OXVERSION` CHAR( 16 ) NOT NULL COMMENT 'Shop Version',
+  `OXVERSION` CHAR( 16 ) NOT NULL COMMENT 'Shop Version (@deprecated since v6.0.0-RC.2 (2017-08-22))',
   `OXSEOACTIVE` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Seo active (multilanguage)',
   `OXSEOACTIVE_1` tinyint(1) NOT NULL DEFAULT '1',
   `OXSEOACTIVE_2` tinyint(1) NOT NULL DEFAULT '1',

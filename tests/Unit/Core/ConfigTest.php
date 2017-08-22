@@ -22,6 +22,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\ShopVersion;
 use OxidEsales\Eshop\Core\Theme;
 use OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
@@ -1939,9 +1940,7 @@ class ConfigTest extends \OxidTestCase
 
     public function testGetVersion()
     {
-        $sShopId = $this->getConfig()->getShopId();
-        $sVer = oxDb::getDb()->getOne("select oxversion from oxshops where oxid = '$sShopId'");
-        $this->assertEquals($sVer, $this->getConfig()->getVersion());
+        $this->assertEquals(oxNew(ShopVersion::class)->getVersion(), $this->getConfig()->getVersion());
     }
 
     public function testGetVersionNotEmpty()

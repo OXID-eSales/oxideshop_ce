@@ -23,6 +23,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Application\Model\User;
+use OxidEsales\Eshop\Core\ShopVersion;
 use oxRegistry;
 use oxView;
 
@@ -98,8 +99,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
         $oBaseShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         $oBaseShop->load($myConfig->getBaseShopId());
-        $sVersion = $oBaseShop->oxshops__oxversion->value;
-        $this->getViewConfig()->setViewConfigParam('sShopVersion', $sVersion);
+        $this->getViewConfig()->setViewConfigParam('sShopVersion', oxNew(ShopVersion::class)->getVersion());
     }
 
     /**

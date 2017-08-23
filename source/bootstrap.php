@@ -176,7 +176,7 @@ $configFile = new \OxidEsales\Eshop\Core\ConfigFile(OX_BASE_PATH . "config.inc.p
 unset($configFile);
 
 /**
- * Set exception handler before including modules/functions.php so it can be overwritten easliy by shop operators.
+ * Set exception handler before including modules/functions.php so it can be overwritten easiliy by shop operators.
  */
 $debugMode = (bool) \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('iDebug');
 set_exception_handler(

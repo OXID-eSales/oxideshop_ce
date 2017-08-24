@@ -2105,7 +2105,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Creates, calculates and returns oxPrice object for basket product.
      *
      * @param float  $dAmount  Amount
-     * @param string $aSelList Selection list
+     * @param array  $aSelList Selection list
      * @param object $oBasket  User shopping basket object
      *
      * @return \OxidEsales\Eshop\Core\Price

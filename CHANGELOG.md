@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\Eshop\Core\Config::getVersion()`
 - In `oxshops` table field - `OXVERSION` is deprecated. This field value will not be updated anymore and will contain
 "6.0.0" value. To retrieve correct shop version `OxidEsales\Eshop\Core\ShopVersion::getVersion()` must be used.
+- `\OxidEsales\Eshop\Core\Config::getEdition()`
+- In `oxshops` table field - `OXEDITION` is deprecated. To retrieve OXID eShop edition
+facts component should be used: `\OxidEsales\Facts\Facts::getEdition()`.
 
 ### Removed
 

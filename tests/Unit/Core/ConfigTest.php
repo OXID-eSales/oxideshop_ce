@@ -26,7 +26,7 @@ use OxidEsales\Eshop\Core\ShopVersion;
 use OxidEsales\Eshop\Core\Theme;
 use OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
-use \oxubase;
+use OxidEsales\Facts\Facts;
 
 use \oxConfig;
 use \stdClass;
@@ -35,7 +35,6 @@ use \oxRegistry;
 use \oxTestModules;
 
 use OxidEsales\EshopCommunity\Core\Module\ModuleTemplatePathCalculator;
-use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\EshopCommunity\Core\Registry;
 
 class modForTestGetBaseTplDirExpectsDefault extends oxConfig
@@ -1876,8 +1875,7 @@ class ConfigTest extends \OxidTestCase
 
     public function testGetEdition()
     {
-        $sShopId = $this->getConfig()->getShopId();
-        $sEdition = oxDb::getDb()->getOne("select oxedition from oxshops where oxid = '$sShopId'");
+        $sEdition = (new Facts())->getEdition();
         $this->assertEquals($sEdition, $this->getConfig()->getEdition());
     }
 

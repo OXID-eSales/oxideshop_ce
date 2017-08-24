@@ -1695,7 +1695,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns OXID eShop edition
+     * Returns OXID eShop edition.
+     *
+     * @deprecated since v6.0.0-rc.2 (2017-08-24); Use \OxidEsales\Facts\Facts::getEdition() instead.
      *
      * @return string
      */

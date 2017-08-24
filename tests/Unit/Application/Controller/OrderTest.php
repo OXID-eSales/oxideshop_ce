@@ -348,9 +348,9 @@ class OrderTest extends \OxidTestCase
         //basket name in session will be "basket"
         $oConfig->setConfigParam('blMallSharedBasket', 1);
 
-        $oBasket = $this->getProxyClass(\OxidEsales\Eshop\Application\Model\Basket::class);
-        $oBasket->setNonPublicVar('_iProductsCnt', 5);
-        $oBasket->setPayment(null);
+        $oBasket = $this->getMockBuilder(\OxidEsales\Eshop\Application\Model\Basket::class)->getMock();
+        $oBasket->method('getProductsCount')->willReturn(5);
+
         $mySession->setBasket($oBasket);
         //$this->getSession()->setVariable( 'basket', $oBasket );
         $this->getSession()->setVariable('usr', 'oxdefaultadmin');
@@ -490,15 +490,14 @@ class OrderTest extends \OxidTestCase
         //setting active user
         $this->getSession()->setVariable('usr', '_testUserId');
 
-        //setting basket info
-        $oBasket = $this->getProxyClass(\OxidEsales\Eshop\Application\Model\Basket::class);
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\OrderHelper::class, 'oxorder');
 
         $oPrice = $this->getPriceForOrderExecute();
 
-        $oBasket->setNonPublicVar('_oPrice', $oPrice);
-        $oBasket->setNonPublicVar('_iProductsCnt', 1);
-
-        //$this->getSession()->setVariable( 'basket', $oBasket );
+        //setting basket info
+        $oBasket = $this->getMockBuilder(\OxidEsales\Eshop\Application\Model\Basket::class)->getMock();
+        $oBasket->method('getProductsCount')->willReturn(1);
+        $oBasket->method('getPrice')->willReturn($oPrice);
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('onOrderExecute'));
         $oUser->expects($this->once())->method('onOrderExecute')->will($this->returnValue(null));
@@ -506,6 +505,7 @@ class OrderTest extends \OxidTestCase
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         $oSession->setBasket($oBasket);
+
         //on order success must return next step vale
         $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Controller\OrderController::class, array('_getNextStep', 'getSession', 'getUser'));
         $oOrder->expects($this->any())->method('_getNextStep')->will($this->returnValue('nextStepValue'));
@@ -593,13 +593,11 @@ class OrderTest extends \OxidTestCase
 
         oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\OrderHelper::class, 'oxorder');
 
-        //setting basket info
-        $oBasket = $this->getProxyClass(\OxidEsales\Eshop\Application\Model\Basket::class);
-
         $oPrice = $this->getPriceForOrderExecute();
 
-        $oBasket->setNonPublicVar('_oPrice', $oPrice);
-        $oBasket->setNonPublicVar('_iProductsCnt', 1);
+        $oBasket = $this->getMockBuilder(\OxidEsales\Eshop\Application\Model\Basket::class)->getMock();
+        $oBasket->method('getPrice')->willReturn($oPrice);
+        $oBasket->method('getProductsCount')->willReturn(1);
 
 
         // check if onOrderExecute is called once

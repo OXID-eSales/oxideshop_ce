@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 ### Deprecated
+- `\OxidEsales\Eshop\Application\Controller\Admin\AdminController::$_sShopVersion`
+- `\OxidEsales\Eshop\Application\Controller\Admin\AdminController::_getShopVersionNr()`
+- `\OxidEsales\Eshop\Core\Config::getVersion()`
+- In `oxshops` table field - `OXVERSION` is deprecated. This field value will not be updated anymore and will contain
+"6.0.0" value. To retrieve correct shop version `OxidEsales\Eshop\Core\ShopVersion::getVersion()` must be used.
 
 ### Removed
 

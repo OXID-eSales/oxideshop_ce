@@ -364,9 +364,9 @@ class Unit_Views_orderTest extends OxidTestCase
         //basket name in session will be "basket"
         $oConfig->setConfigParam('blMallSharedBasket', 1);
 
-        $oBasket = $this->getProxyClass("oxBasket");
-        $oBasket->setNonPublicVar('_iProductsCnt', 5);
-        $oBasket->setPayment(null);
+        $oBasket = $this->getMockBuilder('oxBasket')->getMock();
+        $oBasket->method('getProductsCount')->will($this->returnValue(5));
+
         $mySession->setBasket($oBasket);
         //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
         oxRegistry::getSession()->setVariable('usr', 'oxdefaultadmin');
@@ -519,26 +519,23 @@ class Unit_Views_orderTest extends OxidTestCase
         oxRegistry::getSession()->setVariable('usr', '_testUserId');
 
         //setting basket info
-        $oBasket = $this->getProxyClass('oxBasket');
-
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(100, 19);
 
-        $oBasket->setNonPublicVar('_oPrice', $oPrice);
-        $oBasket->setNonPublicVar('_iProductsCnt', 1);
-
-        //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
+        $oBasket = $this->getMockBuilder('oxBasket')->getMock();
+        $oBasket->method('getProductsCount')->will($this->returnValue(1));
+        $oBasket->method('getPrice')->will($this->returnValue($oPrice));
 
         $oUser = $this->getMock('oxuser', array('onOrderExecute'));
         $oUser->expects($this->once())->method('onOrderExecute')->will($this->returnValue(null));
 
-        $oS = $this->getMock('oxSession', array('checkSessionChallenge'));
-        $oS->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
-        $oS->setBasket($oBasket);
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oSession->setBasket($oBasket);
         //on order success must return next step vale
         $oOrder = $this->getMock('order', array('_getNextStep', 'getSession', 'getUser'));
         $oOrder->expects($this->any())->method('_getNextStep')->will($this->returnValue('nextStepValue'));
-        $oOrder->expects($this->any())->method('getSession')->will($this->returnValue($oS));
+        $oOrder->expects($this->any())->method('getSession')->will($this->returnValue($oSession));
         $oOrder->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
 
         $this->assertEquals('nextStepValue', $oOrder->execute());
@@ -621,31 +618,29 @@ class Unit_Views_orderTest extends OxidTestCase
         $oConfig->setConfigParam('blConfirmAGB', 0);
         $oConfig->setConfigParam('blConfirmCustInfo', 0);
 
-        //setting basket info
-        $oBasket = $this->getProxyClass('oxBasket');
-
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(100, 19);
 
-        $oBasket->setNonPublicVar('_oPrice', $oPrice);
-        $oBasket->setNonPublicVar('_iProductsCnt', 1);
-
+        //setting basket info
+        $oBasket = $this->getMockBuilder('oxBasket')->getMock();
+        $oBasket->method('getPrice')->will($this->returnValue($oPrice));
+        $oBasket->method('getProductsCount')->will($this->returnValue(1));
 
         // check if onOrderExecute is called once
         $oUser = $this->getMock('oxuser', array('onOrderExecute'));
         $oUser->expects($this->once())->method('onOrderExecute')->with($this->equalTo($oBasket), $this->equalTo(1))->will($this->returnValue(null));
         $this->assertTrue($oUser->load('_testUserId'));
-        //on order success must return next step vale
-        $oS = $this->getMock('oxSession', array('checkSessionChallenge'));
-        $oS->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        //on order success must return next step value
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
 
         $oOrder = $this->getMock('order', array('_getNextStep', 'getSession'));
         $oOrder->expects($this->any())->method('_getNextStep')->will($this->returnValue('nextStepValue'));
-        $oOrder->expects($this->any())->method('getSession')->will($this->returnValue($oS));
+        $oOrder->expects($this->any())->method('getSession')->will($this->returnValue($oSession));
 
         $oOrder->setUser($oUser);
 
-        $oS->setBasket($oBasket);
+        $oSession->setBasket($oBasket);
 
         $this->assertEquals('nextStepValue', $oOrder->execute());
     }

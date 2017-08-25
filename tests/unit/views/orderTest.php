@@ -364,8 +364,10 @@ class Unit_Views_orderTest extends OxidTestCase
         //basket name in session will be "basket"
         $oConfig->setConfigParam('blMallSharedBasket', 1);
 
-        $oBasket = $this->getMockBuilder('oxBasket')->getMock();
-        $oBasket->method('getProductsCount')->will($this->returnValue(5));
+        $oBasket = $this->getMockBuilder('oxBasket')
+            ->setMethods(array('getProductsCount'))
+            ->getMock();
+        $oBasket->expects($this->any())->method('getProductsCount')->will($this->returnValue(5));
 
         $mySession->setBasket($oBasket);
         //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
@@ -522,9 +524,11 @@ class Unit_Views_orderTest extends OxidTestCase
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(100, 19);
 
-        $oBasket = $this->getMockBuilder('oxBasket')->getMock();
-        $oBasket->method('getProductsCount')->will($this->returnValue(1));
-        $oBasket->method('getPrice')->will($this->returnValue($oPrice));
+        $oBasket = $this->getMockBuilder('oxBasket')
+            ->setMethods(array('getProductsCount', 'getPrice'))
+            ->getMock();
+        $oBasket->expects($this->any())->method('getProductsCount')->will($this->returnValue(1));
+        $oBasket->expects($this->any())->method('getPrice')->will($this->returnValue($oPrice));
 
         $oUser = $this->getMock('oxuser', array('onOrderExecute'));
         $oUser->expects($this->once())->method('onOrderExecute')->will($this->returnValue(null));
@@ -622,9 +626,11 @@ class Unit_Views_orderTest extends OxidTestCase
         $oPrice->setPrice(100, 19);
 
         //setting basket info
-        $oBasket = $this->getMockBuilder('oxBasket')->getMock();
-        $oBasket->method('getPrice')->will($this->returnValue($oPrice));
-        $oBasket->method('getProductsCount')->will($this->returnValue(1));
+        $oBasket = $this->getMockBuilder('oxBasket')
+            ->setMethods(array('getProductsCount', 'getPrice'))
+            ->getMock();
+        $oBasket->expects($this->any())->method('getPrice')->will($this->returnValue($oPrice));
+        $oBasket->expects($this->any())->method('getProductsCount')->will($this->returnValue(1));
 
         // check if onOrderExecute is called once
         $oUser = $this->getMock('oxuser', array('onOrderExecute'));

@@ -29,7 +29,8 @@ When checking out this repository or downloading the zip file from this place, c
 
 If you want to install OXID eShop including example data like products, categories etc., you first need to install the demo data package:
 
-1. `$ composer require oxid-esales/oxideshop-demodata-ce:dev-b-6.0`
+1. `$ composer require --no-update oxid-esales/oxideshop-demodata-ce:dev-b-6.0`
+2. `$ composer update --no-dev`
 
 ### IDE code completion
 

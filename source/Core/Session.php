@@ -603,7 +603,11 @@ class Session extends \OxidEsales\Eshop\Core\Base
         $fieldAndClassPattern = '/'. preg_quote($fieldName, '/') . '";((?P<null>N);|O:\d+:"(?P<class>[\w\\\\]+)":)/';
         $matchFound = preg_match($fieldAndClassPattern, $serializedObject, $matches) === 1;
 
-        return $matchFound && ($matches['class'] === $className || $matches['null'] === 'N');
+        return $matchFound &&
+            (
+                (isset($matches['class']) && $matches['class'] === $className) ||
+                (isset($matches['null']) && $matches['null'] === 'N')
+            );
     }
 
     /**

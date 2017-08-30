@@ -34,7 +34,6 @@ use oxField;
  */
 class DeliveryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Executes parent method parent::render(), creates delivery category tree,
      * passes data to Smarty engine and returns name of template file "delivery_main.tpl".

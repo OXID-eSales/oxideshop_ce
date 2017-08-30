@@ -31,7 +31,6 @@ use oxRegistry;
  */
 class RegisterController extends \OxidEsales\Eshop\Application\Controller\UserController
 {
-
     /**
      * Current class template.
      *

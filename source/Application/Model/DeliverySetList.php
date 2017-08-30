@@ -31,7 +31,6 @@ use oxDb;
  */
 class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
-
     /**
      * Session user Id
      *

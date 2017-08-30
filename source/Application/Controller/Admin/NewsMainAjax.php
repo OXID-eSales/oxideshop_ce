@@ -33,7 +33,6 @@ use oxField;
  */
 class NewsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
-
     /**
      * Columns array
      *

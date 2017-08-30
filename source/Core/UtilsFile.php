@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class UtilsFile extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Promotions images upload dir name
      *

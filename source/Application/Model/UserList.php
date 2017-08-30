@@ -30,7 +30,6 @@ use oxDb;
  */
 class UserList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
-
     /**
      * Class constructor
      */

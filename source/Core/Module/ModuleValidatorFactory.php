@@ -30,7 +30,6 @@ namespace OxidEsales\EshopCommunity\Core\Module;
  */
 class ModuleValidatorFactory
 {
-
     /**
      * Return module validator by provided type.
      * Returned validator implements interface oxIModuleValidator.

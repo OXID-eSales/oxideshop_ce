@@ -31,7 +31,6 @@ use oxDb;
  */
 class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-
     /**
      * Calculation rule
      */

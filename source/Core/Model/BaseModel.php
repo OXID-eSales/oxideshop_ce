@@ -41,7 +41,6 @@ use oxObjectException;
  */
 class BaseModel extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Unique object ID. Normally representing record oxid field value
      *

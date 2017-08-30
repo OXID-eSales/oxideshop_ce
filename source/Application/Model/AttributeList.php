@@ -32,7 +32,6 @@ use stdClass;
  */
 class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
-
     /**
      * Class constructor
      */

@@ -30,7 +30,6 @@ use oxDb;
  */
 class Country extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-
     /**
      * Current class name
      *

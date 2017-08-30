@@ -30,7 +30,6 @@ use oxRegistry;
  */
 class MdVariant extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * MD variant identifier
      *

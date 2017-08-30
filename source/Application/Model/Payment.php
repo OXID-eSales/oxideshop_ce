@@ -32,7 +32,6 @@ use oxDb;
  */
 class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-
     /**
      * Consider for calculation of base sum - Value of all goods in basket
      *

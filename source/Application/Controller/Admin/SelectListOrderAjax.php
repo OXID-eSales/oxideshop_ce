@@ -29,7 +29,6 @@ use oxRegistry;
  */
 class SelectListOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
-
     /**
      * Columns array
      *

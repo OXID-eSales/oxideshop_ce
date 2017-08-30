@@ -34,7 +34,6 @@ use stdClass;
  */
 class CategoryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
-
     /**
      * Name of chosen object class (default null).
      *

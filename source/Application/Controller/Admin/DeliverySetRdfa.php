@@ -34,7 +34,6 @@ use stdClass;
  */
 class DeliverySetRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\PaymentRdfa
 {
-
     /**
      * Current class template name.
      *

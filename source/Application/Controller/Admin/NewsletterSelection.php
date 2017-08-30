@@ -32,7 +32,6 @@ use oxDb;
  */
 class NewsletterSelection extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Amount of users assigned to active newsletter receiver group
      *

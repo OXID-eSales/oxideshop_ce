@@ -32,7 +32,6 @@ use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
  */
 class ResultSet implements \IteratorAggregate, ResultSetInterface
 {
-
     /**
      * @var array Holds the retrieved fields of the resultSet row on the current cursor position.
      */

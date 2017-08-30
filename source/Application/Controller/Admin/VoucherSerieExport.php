@@ -30,7 +30,6 @@ use oxDb;
  */
 class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieMain
 {
-
     /**
      * Export class name
      *

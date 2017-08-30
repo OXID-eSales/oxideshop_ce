@@ -34,7 +34,6 @@ use Exception;
  */
 class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     protected $_sThisTemplate = 'shop_config.tpl';
     protected $_aSkipMultiline = ['aHomeCountry'];
     protected $_aParseFloat = ['iMinOrderPrice'];

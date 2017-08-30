@@ -31,7 +31,6 @@ use oxList;
  */
 class WishListController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
-
     /**
      * Current class template name.
      *

@@ -31,7 +31,6 @@ use oxField;
  */
 class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-
     /**
      * Current class name
      *

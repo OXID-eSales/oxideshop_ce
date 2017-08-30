@@ -35,7 +35,6 @@ use oxException;
  */
 class OnlineLicenseCheck
 {
-
     /**
      * Variable name to be used in oxConfig table
      */

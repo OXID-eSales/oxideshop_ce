@@ -31,7 +31,6 @@ use oxDb;
  */
 class ShopViewValidator
 {
-
     protected $_aMultiLangTables = [];
 
     protected $_aMultiShopTables = [];

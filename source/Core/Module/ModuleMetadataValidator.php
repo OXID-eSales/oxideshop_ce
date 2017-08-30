@@ -34,7 +34,6 @@ use OxidEsales\Eshop\Core\NamespaceInformationProvider;
  */
 class ModuleMetadataValidator implements \OxidEsales\Eshop\Core\Contract\IModuleValidator
 {
-
     /**
      * Validates module metadata.
      * Return true if module metadata is valid.

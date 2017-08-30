@@ -33,7 +33,6 @@ use stdClass;
  */
 class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Executes parent method parent::render(), creates article category tree, passes
      * data to Smarty engine and returns name of template file "discount_main.tpl".

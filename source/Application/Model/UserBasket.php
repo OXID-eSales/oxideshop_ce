@@ -36,7 +36,6 @@ use oxDb;
  */
 class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-
     /**
      * Array of fields which must be skipped when updating object data
      *

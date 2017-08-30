@@ -33,7 +33,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  */
 class AdminNews extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
-
     /**
      * Current class template name.
      *

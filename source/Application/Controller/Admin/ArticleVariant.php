@@ -33,7 +33,6 @@ use stdClass;
  */
 class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Variant parent product object
      *

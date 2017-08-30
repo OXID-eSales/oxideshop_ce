@@ -28,7 +28,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
  */
 class VoucherList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
-
     /**
      * Calls parent constructor
      */

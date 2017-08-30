@@ -32,7 +32,6 @@ use oxField;
  */
 class PriceAlarm extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-
     /**
      * Current class name
      *

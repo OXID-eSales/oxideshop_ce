@@ -35,7 +35,6 @@ use stdClass;
  */
 class ArticleStock extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Loads article Inventory information, passes it to Smarty engine and
      * returns name of template file "article_stock.tpl".

@@ -29,7 +29,6 @@ use oxObjectException;
  */
 class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-
     /**
      * Name of class.
      *

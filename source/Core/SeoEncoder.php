@@ -29,7 +29,6 @@ use Exception;
  */
 class SeoEncoder extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Strings that cannot be used in SEO URLs as this may cause
      * compatability/access problems

@@ -29,7 +29,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
  */
 class FileCheckerResult
 {
-
     /**
      * For result output
      *

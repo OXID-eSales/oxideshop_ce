@@ -28,7 +28,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class SepaIBANValidator
 {
-
     const IBAN_ALGORITHM_MOD_VALUE = 97;
 
     protected $_aCodeLengths = [];

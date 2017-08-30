@@ -29,7 +29,6 @@ use oxField;
  */
 class ListObject
 {
-
     /**
      * @var string
      */

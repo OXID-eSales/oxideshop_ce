@@ -34,7 +34,6 @@ use Smarty;
  */
 class UtilsView extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Template processor object (smarty)
      *

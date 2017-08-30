@@ -33,7 +33,6 @@ use oxAdminDetails;
  */
 class NewsletterSend extends \OxidEsales\Eshop\Application\Controller\Admin\NewsletterSelection
 {
-
     /**
      * Mail sending errors array
      *

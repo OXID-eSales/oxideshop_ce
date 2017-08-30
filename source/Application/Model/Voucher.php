@@ -35,7 +35,6 @@ use oxField;
  */
 class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-
     protected $_oSerie = null;
 
     /**

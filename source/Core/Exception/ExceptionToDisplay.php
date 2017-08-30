@@ -28,7 +28,6 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
  */
 class ExceptionToDisplay implements \OxidEsales\Eshop\Core\Contract\IDisplayError
 {
-
     /**
      * Language const of a Message
      *

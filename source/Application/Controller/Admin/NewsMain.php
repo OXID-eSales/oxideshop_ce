@@ -35,7 +35,6 @@ use oxField;
  */
 class NewsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Executes parent method parent::render(), creates oxlist object and
      * collects user groups information, passes data to Smarty engine,

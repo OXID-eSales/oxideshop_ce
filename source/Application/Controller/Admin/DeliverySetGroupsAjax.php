@@ -30,7 +30,6 @@ use oxField;
  */
 class DeliverySetGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
-
     /**
      * Columns array
      *

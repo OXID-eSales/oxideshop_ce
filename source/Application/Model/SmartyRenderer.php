@@ -31,7 +31,6 @@ use oxRegistry;
  */
 class SmartyRenderer
 {
-
     /**
      * Template renderer
      *

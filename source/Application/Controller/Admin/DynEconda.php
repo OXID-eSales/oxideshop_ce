@@ -31,7 +31,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  */
 class DynEconda extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
-
     /**
      * Creates shop object, passes shop data to Smarty engine and returns name of
      * template file "dyn_trusted.tpl".

@@ -37,7 +37,6 @@ use oxDb;
  */
 class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-
     // defining order state constants
     /**
      * Error while sending order notification mail to customer

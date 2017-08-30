@@ -28,7 +28,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  */
 class DiagnosticsController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
-
     /**
      * Current class template name.
      *

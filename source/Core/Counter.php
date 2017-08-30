@@ -30,7 +30,6 @@ use Exception;
  */
 class Counter
 {
-
     /**
      * Return the next counter value for a given type of counter
      *

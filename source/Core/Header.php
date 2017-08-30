@@ -29,7 +29,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class Header
 {
-
     protected $_aHeader = [];
 
     /**

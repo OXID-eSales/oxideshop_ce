@@ -31,7 +31,6 @@ use oxRegistry;
  */
 class MoreDetailsController extends \OxidEsales\Eshop\Application\Controller\ArticleDetailsController
 {
-
     /**
      * Current class template name.
      *

@@ -34,7 +34,6 @@ use oxCategory;
  */
 class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
 {
-
     /**
      * Product parent title cache
      *

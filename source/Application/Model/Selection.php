@@ -28,7 +28,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
  */
 class Selection
 {
-
     /**
      * Selection name
      *

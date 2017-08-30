@@ -31,7 +31,6 @@ use oxDb;
  */
 class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
-
     /**
      * Information content type
      *

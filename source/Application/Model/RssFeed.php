@@ -33,7 +33,6 @@ use stdClass;
  */
 class RssFeed extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * timeout in seconds for regenerating data (3h)
      */

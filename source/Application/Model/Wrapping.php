@@ -32,7 +32,6 @@ use oxDb;
  */
 class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-
     /**
      * Class name
      *

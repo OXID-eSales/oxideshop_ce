@@ -32,7 +32,6 @@ use stdClass;
  */
 class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Executes parent method parent::render(), creates oxwrapping, oxshops and oxlist
      * objects, passes data to Smarty engine and returns name of template

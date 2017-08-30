@@ -27,7 +27,6 @@ namespace  OxidEsales\EshopCommunity\Application\Component\Widget;
  */
 class BetaNote extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
-
     /**
      * Current class template name.
      *

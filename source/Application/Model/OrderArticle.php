@@ -34,7 +34,6 @@ use oxDb;
  */
 class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements ArticleInterface
 {
-
     /**
      * Order cache
      */

@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
  */
 class DatabaseException extends \OxidEsales\Eshop\Core\Exception\StandardException
 {
-
     /**
      * DatabaseException constructor.
      *

@@ -32,7 +32,6 @@ use oxField;
  */
 class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
-
     /**
      * Vendor root.
      *

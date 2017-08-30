@@ -30,7 +30,6 @@ use oxDb;
  */
 class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
-
     /**
      * Home country id
      *

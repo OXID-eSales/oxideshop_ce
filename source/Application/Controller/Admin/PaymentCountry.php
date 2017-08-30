@@ -33,7 +33,6 @@ use oxField;
  */
 class PaymentCountry extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Executes parent method parent::render(), creates oxlist object,
      * passes it's data to Smarty engine and retutns name of template

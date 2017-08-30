@@ -32,7 +32,6 @@ use stdClass;
  */
 class CategoryText extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Loads category object data, pases it to Smarty engine and returns
      * name of template file "category_text.tpl".

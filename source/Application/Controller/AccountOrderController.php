@@ -34,7 +34,6 @@ use oxRegistry;
  */
 class AccountOrderController extends \OxidEsales\Eshop\Application\Controller\AccountController
 {
-
     /**
      * Count of all articles in list.
      *

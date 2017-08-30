@@ -32,7 +32,6 @@ use oxRegistry;
  */
 class ShopComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
-
     /**
      * Marking object as component
      *

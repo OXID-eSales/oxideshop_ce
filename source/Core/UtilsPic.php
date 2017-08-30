@@ -32,7 +32,6 @@ require_once __DIR__ . "/utils/oxpicgenerator.php";
  */
 class UtilsPic extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Image types 'enum'
      *

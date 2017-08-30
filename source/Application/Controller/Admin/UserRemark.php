@@ -33,7 +33,6 @@ use oxField;
  */
 class UserRemark extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Executes parent method parent::render(), creates oxuser, oxlist and
      * oxRemark objects, passes data to Smarty engine and returns name of

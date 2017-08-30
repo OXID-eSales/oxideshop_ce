@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  */
 class GenericImport extends \OxidEsales\Eshop\Application\Controller\Admin\GenericImportMain
 {
-
     /**
      * Current class template name.
      *

@@ -32,7 +32,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class OnlineModulesNotifierRequest extends \OxidEsales\Eshop\Core\OnlineRequest
 {
-
     /**
      * Web service protocol version.
      *

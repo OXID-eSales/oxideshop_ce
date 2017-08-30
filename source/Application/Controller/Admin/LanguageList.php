@@ -31,7 +31,6 @@ use Exception;
  */
 class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
-
     /**
      * Default sorting parameter.
      *

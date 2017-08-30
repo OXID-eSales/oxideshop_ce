@@ -29,7 +29,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  */
 class ArticleController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
-
     /**
      * Current class template name.
      *

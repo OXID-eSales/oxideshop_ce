@@ -30,7 +30,6 @@ use oxDb;
  */
 class DeliverySet extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-
     /**
      * Current object class name
      *

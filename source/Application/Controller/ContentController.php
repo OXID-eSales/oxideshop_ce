@@ -29,7 +29,6 @@ use oxRegistry;
  */
 class ContentController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
-
     /**
      * Content id.
      *

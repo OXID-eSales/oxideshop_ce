@@ -32,7 +32,6 @@ use oxDb;
  */
 class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-
     /**
      * User groups array (default null).
      *

@@ -33,7 +33,6 @@ use \OxidEsales\Eshop\Application\Model\User;
  */
 class Session extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Session parameter name
      *

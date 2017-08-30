@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class UserCounter
 {
-
     /**
      * Returns count of admins (mall and subshops). Only counts active admins.
      *

@@ -33,7 +33,6 @@ use oxDb;
  */
 class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-
     // you can change this if you want more security
     // DO NOT !! CHANGE THIS FILE AND STORE CREDIT CARD INFORMATION
     // THIS IS MORE THAN LIKELY ILLEGAL !!

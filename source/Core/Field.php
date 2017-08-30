@@ -34,7 +34,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class Field // extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * escaping functionality type: expected value is escaped text.
      */

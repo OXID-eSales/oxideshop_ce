@@ -29,7 +29,6 @@ use oxDb;
  */
 class State extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-
     /**
      * Current class name
      *

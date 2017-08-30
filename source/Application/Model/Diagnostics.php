@@ -32,7 +32,6 @@ use oxDb;
  */
 class Diagnostics
 {
-
     /**
      * Edition of THIS OXID eShop
      *

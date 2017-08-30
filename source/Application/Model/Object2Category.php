@@ -29,7 +29,6 @@ use oxField;
  */
 class Object2Category extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-
     /**
      * Current class name
      *

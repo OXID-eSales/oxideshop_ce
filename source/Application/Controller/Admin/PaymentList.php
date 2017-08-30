@@ -29,7 +29,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  */
 class PaymentList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
-
     /**
      * Current class template name.
      *

@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class CompanyVatInValidator
 {
-
     /**
      * @var \OxidEsales\Eshop\Application\Model\Country
      */

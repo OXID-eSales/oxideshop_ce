@@ -33,7 +33,6 @@ use oxField;
  */
 class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-
     /**
      * Subscription marker
      *

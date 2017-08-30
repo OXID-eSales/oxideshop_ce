@@ -29,7 +29,6 @@ use oxRegistry;
  */
 class ContentSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
 {
-
     /**
      * Returns url type
      *

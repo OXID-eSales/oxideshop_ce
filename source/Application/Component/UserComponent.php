@@ -46,7 +46,6 @@ define('USER_LOGOUT', 3);
  */
 class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
-
     /**
      * Boolean - if user is new or not.
      *

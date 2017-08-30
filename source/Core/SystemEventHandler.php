@@ -32,7 +32,6 @@ use Exception;
  */
 class SystemEventHandler
 {
-
     /**
      * @var \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier
      */

@@ -31,7 +31,6 @@ use oxRegistry;
  */
 class UserPayment extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * (default false).
      *

@@ -36,7 +36,6 @@ use oxuserbasket;
  */
 class BasketReservation extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Reservations list
      *

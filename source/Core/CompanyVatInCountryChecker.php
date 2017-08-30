@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class CompanyVatInCountryChecker extends \OxidEsales\Eshop\Core\CompanyVatInChecker implements \OxidEsales\Eshop\Core\Contract\ICountryAware
 {
-
     /**
      * Error string if country mismatch
      */

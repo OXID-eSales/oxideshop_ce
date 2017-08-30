@@ -33,7 +33,6 @@ use Exception;
  */
 class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
-
     /**
      * List Object class name
      *

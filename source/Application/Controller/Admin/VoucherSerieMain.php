@@ -33,7 +33,6 @@ use oxAdminView;
  */
 class VoucherSerieMain extends \OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController
 {
-
     /**
      * Export class name
      *

@@ -31,7 +31,6 @@ use oxDb;
  */
 class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
-
     /**
      * Discount user id
      *

@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class SeoDecoder extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * _parseStdUrl parses given url into array of params
      *

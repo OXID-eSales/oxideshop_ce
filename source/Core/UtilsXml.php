@@ -29,7 +29,6 @@ use DOMDocument;
  */
 class UtilsXml extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Takes XML string and makes DOMDocument
      * Returns DOMDocument or false, if it can't be loaded

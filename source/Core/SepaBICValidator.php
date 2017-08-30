@@ -28,7 +28,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class SepaBICValidator
 {
-
     /**
      * Business identifier code validation
      *

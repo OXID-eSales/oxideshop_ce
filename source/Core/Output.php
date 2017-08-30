@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class Output extends \OxidEsales\Eshop\Core\Base
 {
-
     const OUTPUT_FORMAT_HTML = 'html';
     const OUTPUT_FORMAT_JSON = 'json';
 

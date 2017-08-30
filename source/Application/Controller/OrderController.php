@@ -39,7 +39,6 @@ use oxUtilsObject;
  */
 class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
-
     /**
      * Payment object
      *

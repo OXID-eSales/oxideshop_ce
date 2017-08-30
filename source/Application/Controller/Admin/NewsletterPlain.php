@@ -31,7 +31,6 @@ use oxRegistry;
  */
 class NewsletterPlain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Executes prent method parent::render(), creates oxnewsletter object
      * and passes it's data to smarty. Returns name of template file

@@ -31,7 +31,6 @@ use OxidEsales\Eshop\Core\Edition\EditionSelector;
  */
 class ViewConfig extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Active shop object. Can only be accessed when it is assigned
      *

@@ -34,7 +34,6 @@ use oxField;
  */
 class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Current class template name.
      *

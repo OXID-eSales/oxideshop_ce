@@ -28,7 +28,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 abstract class CompanyVatInChecker
 {
-
     /**
      * Error message
      *

@@ -31,7 +31,6 @@ namespace OxidEsales\EshopCommunity\Core\Routing;
  */
 class ShopControllerMapProvider implements \OxidEsales\Eshop\Core\Contract\ControllerMapProviderInterface
 {
-
     private $controllerMap = [
         'language'                             => \OxidEsales\Eshop\Application\Controller\Admin\LanguageController::class,
         'module'                               => \OxidEsales\Eshop\Application\Controller\Admin\ModuleController::class,

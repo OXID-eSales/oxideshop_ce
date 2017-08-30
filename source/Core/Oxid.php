@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class Oxid
 {
-
     /**
      * Executes main shop controller
      *

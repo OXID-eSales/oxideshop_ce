@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  */
 class CountryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
-
     /**
      * Name of chosen object class (default null).
      *

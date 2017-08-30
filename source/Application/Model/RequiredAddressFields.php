@@ -29,7 +29,6 @@ use oxRegistry;
  */
 class RequiredAddressFields
 {
-
     /**
      * Default required fields for use when not set in config.
      *

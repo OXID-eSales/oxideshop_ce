@@ -33,7 +33,6 @@ use oxRegistry;
  */
 class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
-
     /**
      * Current class template name.
      *

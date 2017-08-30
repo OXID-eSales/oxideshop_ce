@@ -33,7 +33,6 @@ use oxOrder;
  */
 class ThankYouController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
-
     /**
      * User basket object
      *

@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
  */
 class BasketContentMarkGenerator
 {
-
     /**
      * Default value for explanation mark.
      */

@@ -39,7 +39,6 @@ use oxOnlineModulesNotifierRequest;
  */
 class OnlineModuleVersionNotifier
 {
-
     /** @var \OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller */
     private $_oCaller = null;
 

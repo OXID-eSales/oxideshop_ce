@@ -31,7 +31,6 @@ use oxField;
  */
 class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
-
     protected static $_aRootVendor = [];
 
     /**

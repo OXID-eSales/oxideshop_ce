@@ -30,7 +30,6 @@ use oxDb;
  */
 class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
 {
-
     /**
      * Root vendor uri cache
      *

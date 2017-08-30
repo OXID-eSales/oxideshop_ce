@@ -31,7 +31,6 @@ use oxRegistry;
  */
 class ToolsController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
-
     /**
      * Executes parent method parent::render(), prints shop and
      * PHP configuration information.

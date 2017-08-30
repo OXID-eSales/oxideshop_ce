@@ -28,7 +28,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
  */
 class OrderFileList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
-
     /**
      * List Object class name
      *

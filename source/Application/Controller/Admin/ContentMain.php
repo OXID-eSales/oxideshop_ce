@@ -34,7 +34,6 @@ use stdClass;
  */
 class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Loads contents info, passes it to Smarty engine and
      * returns name of template file "content_main.tpl".

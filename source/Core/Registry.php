@@ -26,7 +26,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class Registry
 {
-
     /**
      * Instance array
      *

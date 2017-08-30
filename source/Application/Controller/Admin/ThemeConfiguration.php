@@ -35,7 +35,6 @@ use oxException;
  */
 class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
-
     protected $_sTheme = null;
 
     /**

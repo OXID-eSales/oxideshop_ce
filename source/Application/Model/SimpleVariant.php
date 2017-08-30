@@ -31,7 +31,6 @@ use oxPrice;
  */
 class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
-
     /**
      * Use lazy loading for this item
      *

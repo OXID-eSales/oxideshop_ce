@@ -33,7 +33,6 @@ use oxRegistry;
  */
 class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-
     /**
      * Shop control variable
      *

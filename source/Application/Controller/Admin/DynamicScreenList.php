@@ -34,7 +34,6 @@ use oxRegistry;
  */
 class DynamicScreenList extends \OxidEsales\Eshop\Application\Controller\Admin\DynamicScreenController
 {
-
     /**
      * Executes marent method parent::render() and returns mane of template
      * file "dynscreen_list.tpl".

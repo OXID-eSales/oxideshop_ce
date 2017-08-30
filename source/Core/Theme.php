@@ -30,7 +30,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class Theme extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Theme info array
      *

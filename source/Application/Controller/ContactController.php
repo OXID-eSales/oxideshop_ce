@@ -33,7 +33,6 @@ use oxRegistry;
  */
 class ContactController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
-
     /**
      * Entered user data.
      *

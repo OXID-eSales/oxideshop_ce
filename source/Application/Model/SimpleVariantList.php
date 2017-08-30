@@ -28,7 +28,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
  */
 class SimpleVariantList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
-
     /**
      * Parent article for list variants
      */

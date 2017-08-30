@@ -32,7 +32,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class OnlineRequest
 {
-
     /**
      * OXID eShop servers cluster id.
      *

@@ -29,7 +29,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  */
 class VendorController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
-
     /**
      * Current class template name.
      *

@@ -28,7 +28,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
  */
 class VariantSelectList implements \OxidEsales\Eshop\Core\Contract\ISelectList
 {
-
     /**
      * Variant selection list label
      *

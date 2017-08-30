@@ -34,7 +34,6 @@ use oxUBase;
  */
 class ManufacturerListController extends \OxidEsales\Eshop\Application\Controller\ArticleListController
 {
-
     /**
      * List type
      *

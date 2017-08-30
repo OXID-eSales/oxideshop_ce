@@ -31,7 +31,6 @@ use stdClass;
  */
 class CountryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Executes parent method parent::render(), creates oxCategoryList object,
      * passes it's data to Smarty engine and returns name of template file

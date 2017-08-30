@@ -30,7 +30,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  */
 class ThemeController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
-
     /**
      * Executes parent method parent::render() and returns name of template
      * file "theme.tpl".

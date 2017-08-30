@@ -34,7 +34,6 @@ use oxField;
  */
 class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
-
     /**
      * Subcategories array.
      *

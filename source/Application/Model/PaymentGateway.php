@@ -29,7 +29,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
  */
 class PaymentGateway extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Payment status (active - true/not active - false) (default false).
      *

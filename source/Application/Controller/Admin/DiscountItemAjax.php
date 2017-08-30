@@ -30,7 +30,6 @@ use oxDb;
  */
 class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
-
     /**
      * Columns array
      *

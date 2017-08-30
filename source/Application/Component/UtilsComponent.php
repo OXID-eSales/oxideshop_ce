@@ -33,7 +33,6 @@ use oxRegistry;
  */
 class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
-
     /**
      * Marking object as component
      *

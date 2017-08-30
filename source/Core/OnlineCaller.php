@@ -35,7 +35,6 @@ use \Exception;
  */
 abstract class OnlineCaller
 {
-
     const ALLOWED_HTTP_FAILED_CALLS_COUNT = 4;
 
     /** Amount of seconds for curl execution timeout. */

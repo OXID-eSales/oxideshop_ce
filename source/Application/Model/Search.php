@@ -31,7 +31,6 @@ use oxDb;
  */
 class Search extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Active language id
      *

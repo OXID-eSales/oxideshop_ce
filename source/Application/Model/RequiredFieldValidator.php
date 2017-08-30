@@ -29,7 +29,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
  */
 class RequiredFieldValidator
 {
-
     /**
      * Validates field value.
      *

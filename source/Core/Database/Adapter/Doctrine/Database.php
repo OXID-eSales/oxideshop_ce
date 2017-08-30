@@ -43,7 +43,6 @@ use PDO;
  */
 class Database implements DatabaseInterface
 {
-
     /** @var int code of Mysql duplicated key error. */
     const MYSQL_DUPLICATE_KEY_ERROR_CODE = 1062;
 

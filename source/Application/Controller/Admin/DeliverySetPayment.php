@@ -32,7 +32,6 @@ use oxRegistry;
  */
 class DeliverySetPayment extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Executes parent method parent::render()
      * passes data to Smarty engine and returns name of template file "deliveryset_payment.tpl".

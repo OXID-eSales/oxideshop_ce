@@ -29,7 +29,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  */
 class ShopPerformance extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
-
     /**
      * Current class template name.
      *

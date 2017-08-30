@@ -30,7 +30,6 @@ use stdClass;
  */
 class Basket extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Array or oxbasketitem objects
      *

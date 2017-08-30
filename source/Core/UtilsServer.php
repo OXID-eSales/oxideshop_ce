@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class UtilsServer extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * user cookies
      *

@@ -32,7 +32,6 @@ use oxField;
  */
 class UserExtend extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Executes parent method parent::render(), creates oxuser object and
      * returns name of template file "user_extend.tpl".

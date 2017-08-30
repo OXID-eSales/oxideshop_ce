@@ -33,7 +33,6 @@ use oxDb;
  */
 class ContentList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
-
     /**
      * Name of chosen object class (default null).
      *

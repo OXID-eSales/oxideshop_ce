@@ -31,7 +31,6 @@ use oxRegistry;
  */
 class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * error tag
      *

@@ -33,7 +33,6 @@ use PDOStatement;
  */
 class Database extends Core
 {
-
     /**
      * Connection resource object
      *

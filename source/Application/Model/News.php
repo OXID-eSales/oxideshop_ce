@@ -37,7 +37,6 @@ use oxUtilsView;
  */
 class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-
     /**
      * User group object (default null).
      *

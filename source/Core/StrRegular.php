@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class StrRegular
 {
-
     /**
      * The character encoding.
      *

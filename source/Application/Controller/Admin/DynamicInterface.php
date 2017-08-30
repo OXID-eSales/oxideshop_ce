@@ -31,7 +31,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  */
 class DynamicInterface extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Returns view id
      *

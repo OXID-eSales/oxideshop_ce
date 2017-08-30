@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class Encryptor
 {
-
     /**
      * Encrypts string with given key.
      *

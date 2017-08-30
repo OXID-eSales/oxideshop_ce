@@ -36,7 +36,6 @@ use oxField;
  */
 class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
-
     /**
      * Current object class name
      *

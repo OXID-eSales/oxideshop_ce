@@ -33,7 +33,6 @@ use stdClass;
  */
 class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Loads article actionss info, passes it to Smarty engine and
      * returns name of template file "actions_main.tpl".

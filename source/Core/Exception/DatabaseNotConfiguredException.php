@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
  */
 class DatabaseNotConfiguredException extends \OxidEsales\Eshop\Core\Exception\DatabaseException
 {
-
     /**
      * DatabaseNotConfiguredException constructor.
      *

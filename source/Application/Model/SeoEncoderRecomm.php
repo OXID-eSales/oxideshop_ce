@@ -31,7 +31,6 @@ use oxRegistry;
  */
 class SeoEncoderRecomm extends \OxidEsales\Eshop\Core\SeoEncoder
 {
-
     /**
      * Returns SEO uri for tag.
      *

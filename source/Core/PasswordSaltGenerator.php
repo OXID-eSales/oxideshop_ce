@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class PasswordSaltGenerator
 {
-
     /**
      * @var \OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker
      */

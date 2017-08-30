@@ -36,7 +36,6 @@ use oxField;
  */
 class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller\AccountController
 {
-
     /**
      * Current class template name.
      *

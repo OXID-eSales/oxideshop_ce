@@ -32,7 +32,6 @@ use oxDb;
  */
 class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Possible sort keys
      *

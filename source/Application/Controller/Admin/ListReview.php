@@ -29,7 +29,6 @@ use oxAdminList;
  */
 class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleList
 {
-
     /**
      * Type of list.
      *

@@ -32,7 +32,6 @@ use oxRegistry;
  */
 class ShopRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
-
     /**
      * Template name
      *

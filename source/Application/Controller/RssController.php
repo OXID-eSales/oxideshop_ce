@@ -31,7 +31,6 @@ use oxRssFeed;
  */
 class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
-
     /**
      * current rss object
      *

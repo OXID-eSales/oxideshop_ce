@@ -31,7 +31,6 @@ use oxObjectException;
  */
 class VatSelector extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * State is VAT calculation for category is set
      *

@@ -49,7 +49,6 @@ define('OXARTICLE_LINKTYPE_RECOMM', 5);
  */
 class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Application\Model\Contract\ArticleInterface, \OxidEsales\Eshop\Core\Contract\IUrl
 {
-
     /**
      * Current class name
      *

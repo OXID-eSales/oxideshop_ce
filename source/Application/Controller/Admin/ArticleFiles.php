@@ -33,7 +33,6 @@ use Exception;
  */
 class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Template name
      *

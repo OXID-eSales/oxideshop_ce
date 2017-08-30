@@ -36,7 +36,6 @@ use oxRegistry;
  */
 class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controller\AccountController
 {
-
     /**
      * Current class template name.
      *

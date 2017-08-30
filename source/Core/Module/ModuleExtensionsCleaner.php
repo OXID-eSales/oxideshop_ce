@@ -31,7 +31,6 @@ namespace OxidEsales\EshopCommunity\Core\Module;
  */
 class ModuleExtensionsCleaner
 {
-
     /**
      * Removes garbage ( module not used extensions ) from all installed extensions list.
      * For example: some classes were renamed, so these should be removed.

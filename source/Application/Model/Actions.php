@@ -35,7 +35,6 @@ use oxUtilsFile;
  */
 class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-
     /**
      * Current class name
      *

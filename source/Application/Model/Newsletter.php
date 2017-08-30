@@ -34,7 +34,6 @@ use oxDb;
  */
 class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-
     /**
      * Newsletter HTML format text (default null).
      *

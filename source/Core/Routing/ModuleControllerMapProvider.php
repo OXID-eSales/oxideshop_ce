@@ -33,7 +33,6 @@ use OxidEsales\Eshop\Core\Registry;
  */
 class ModuleControllerMapProvider implements ControllerMapProviderInterface
 {
-
     /**
      * Get the controller map of the modules.
      *

@@ -29,7 +29,6 @@ use oxStr;
  */
 class CompanyVatIn
 {
-
     /**
      * VAT identification number
      *

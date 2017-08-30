@@ -37,7 +37,6 @@ use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
  */
 class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
-
     /**
      * @var string SQL addon for sorting
      */

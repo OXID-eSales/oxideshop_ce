@@ -31,7 +31,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class Str
 {
-
     /**
      * Specific string handler
      *

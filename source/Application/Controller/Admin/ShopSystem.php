@@ -32,7 +32,6 @@ use oxDb;
  */
 class ShopSystem extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
-
     /**
      * Current class template name.
      *

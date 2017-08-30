@@ -32,7 +32,6 @@ use stdClass;
  */
 class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Sets link information data (or leaves empty), returns name of template
      * file "adminlinks_main.tpl".

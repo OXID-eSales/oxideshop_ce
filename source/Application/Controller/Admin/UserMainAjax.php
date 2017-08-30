@@ -31,7 +31,6 @@ use oxField;
  */
 class UserMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
-
     /**
      * Columns array
      *

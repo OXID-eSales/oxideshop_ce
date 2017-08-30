@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class PictureHandler extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Deletes master picture and all images generated from it.
      * If third parameter is false, skips master image delete, only

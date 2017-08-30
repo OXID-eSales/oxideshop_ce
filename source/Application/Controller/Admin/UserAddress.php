@@ -31,7 +31,6 @@ use oxRegistry;
  */
 class UserAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * If true, means that address was deleted
      *

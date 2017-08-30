@@ -30,7 +30,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  */
 class DeliverySetController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
-
     /**
      * Current class template name.
      *

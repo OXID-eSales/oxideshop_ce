@@ -30,7 +30,6 @@ use oxField;
  */
 class Links extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-
     /**
      * Current class name
      *

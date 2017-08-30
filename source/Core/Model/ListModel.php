@@ -28,7 +28,6 @@ namespace OxidEsales\EshopCommunity\Core\Model;
  */
 class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \Iterator, \Countable
 {
-
     /**
      * Array of objects (some object list).
      *

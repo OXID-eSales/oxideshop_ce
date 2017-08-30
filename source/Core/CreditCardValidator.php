@@ -28,7 +28,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class CreditCardValidator
 {
-
     /**
      * Credit card identification check array
      *

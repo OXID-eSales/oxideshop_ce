@@ -34,7 +34,6 @@ use stdClass;
  */
 class BasketItem extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Product ID
      *

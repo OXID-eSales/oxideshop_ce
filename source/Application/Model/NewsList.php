@@ -34,7 +34,6 @@ use oxDb;
  */
 class NewsList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
-
     /**
      * List Object class name
      *

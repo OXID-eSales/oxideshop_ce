@@ -30,7 +30,6 @@ use oxRegistry;
  */
 class CompareController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
-
     /**
      * Number of possible compare pages.
      *

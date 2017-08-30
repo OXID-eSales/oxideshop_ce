@@ -33,7 +33,6 @@ use stdClass;
  */
 class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-
     /**
      * Current class name
      *

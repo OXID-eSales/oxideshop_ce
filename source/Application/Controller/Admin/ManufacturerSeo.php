@@ -30,7 +30,6 @@ use oxField;
  */
 class ManufacturerSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
 {
-
     /**
      * Updating showsuffix field
      *

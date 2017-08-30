@@ -34,7 +34,6 @@ use oxRegistry;
  */
 class AccountPasswordController extends \OxidEsales\Eshop\Application\Controller\AccountController
 {
-
     /**
      * Current class template name.
      *

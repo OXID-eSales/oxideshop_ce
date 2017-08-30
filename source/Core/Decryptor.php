@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class Decryptor
 {
-
     /**
      * Decrypts string with given key.
      *

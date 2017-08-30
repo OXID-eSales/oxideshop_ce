@@ -30,7 +30,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  */
 class ModuleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
-
     /**
      * @var array Loaded modules array
      *

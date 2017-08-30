@@ -29,7 +29,6 @@ use stdClass;
  */
 class Language extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Language parameter name
      *

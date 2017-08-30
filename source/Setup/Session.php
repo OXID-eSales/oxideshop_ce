@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Setup;
  */
 class Session extends Core
 {
-
     /**
      * Session data array
      *

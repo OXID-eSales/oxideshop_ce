@@ -32,7 +32,6 @@ use oxField;
  */
 class PriceAlarmSend extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
-
     /**
      * Default tab number
      *

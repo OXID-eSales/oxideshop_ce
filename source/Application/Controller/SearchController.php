@@ -32,7 +32,6 @@ use oxSearch;
  */
 class SearchController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
-
     /**
      * Count of all found articles.
      *

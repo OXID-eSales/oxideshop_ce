@@ -31,7 +31,6 @@ use oxAdminDetails;
  */
 class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Export class name
      *

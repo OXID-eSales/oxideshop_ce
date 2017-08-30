@@ -30,7 +30,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  */
 class AdminPriceAlarm extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
-
     /**
      * Default active tab number
      *

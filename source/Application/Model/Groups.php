@@ -31,7 +31,6 @@ use oxDb;
  */
 class Groups extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-
     /**
      * Name of current class
      *

@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class UtilsCount extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Users view id, used to identify current state cache
      *

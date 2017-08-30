@@ -29,7 +29,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
  */
 class CountryList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
-
     /**
      * Call parent class constructor
      */

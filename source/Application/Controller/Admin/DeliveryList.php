@@ -30,7 +30,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  */
 class DeliveryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
-
     /**
      * Name of chosen object class (default null).
      *

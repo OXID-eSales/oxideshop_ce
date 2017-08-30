@@ -29,7 +29,6 @@ use oxAdminList;
  */
 class ListUser extends \OxidEsales\Eshop\Application\Controller\Admin\UserList
 {
-
     /**
      * Viewable list size getter
      *

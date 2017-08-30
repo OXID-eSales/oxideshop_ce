@@ -28,7 +28,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class InputValidator extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Invalid account number error code for template.
      */

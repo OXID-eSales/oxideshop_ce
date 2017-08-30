@@ -33,7 +33,6 @@ use oxUser;
  */
 class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleDetailsController
 {
-
     /**
      * Review user object
      *

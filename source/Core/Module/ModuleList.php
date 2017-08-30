@@ -30,7 +30,6 @@ namespace OxidEsales\EshopCommunity\Core\Module;
  */
 class ModuleList extends \OxidEsales\Eshop\Core\Base
 {
-
     const MODULE_KEY_PATHS = 'Paths';
     const MODULE_KEY_EVENTS = 'Events';
     const MODULE_KEY_VERSIONS = 'Versions';

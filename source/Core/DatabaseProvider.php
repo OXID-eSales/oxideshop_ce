@@ -31,7 +31,6 @@ use OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException;
  */
 class DatabaseProvider
 {
-
     /**
      * @var int Fetch mode - numeric
      */

@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 abstract class Hasher
 {
-
     /**
      * Hash string.
      *

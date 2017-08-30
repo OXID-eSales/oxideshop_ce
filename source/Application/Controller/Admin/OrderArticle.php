@@ -33,7 +33,6 @@ use oxField;
  */
 class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Product which was currently found by search
      *

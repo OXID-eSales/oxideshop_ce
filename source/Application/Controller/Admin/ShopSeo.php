@@ -32,7 +32,6 @@ use oxDb;
  */
 class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
-
     /**
      * Active seo url id
      */

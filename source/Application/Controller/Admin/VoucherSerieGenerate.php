@@ -31,7 +31,6 @@ use oxField;
  */
 class VoucherSerieGenerate extends \OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieMain
 {
-
     /**
      * Voucher generator class name
      *

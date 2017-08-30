@@ -31,7 +31,6 @@ use oxDb;
  */
 class VariantHandler extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Variant names
      *

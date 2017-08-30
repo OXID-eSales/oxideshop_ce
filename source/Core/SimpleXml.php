@@ -47,7 +47,6 @@ use SimpleXMLElement;
  */
 class SimpleXml
 {
-
     /**
      * Parses object structure to XML string
      *

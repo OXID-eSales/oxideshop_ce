@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class UtilsString
 {
-
     /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
      */

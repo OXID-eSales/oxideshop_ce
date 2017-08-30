@@ -31,7 +31,6 @@ use oxField;
  */
 class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-
     /**
      * Object core table name
      *

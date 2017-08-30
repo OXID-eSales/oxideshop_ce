@@ -33,7 +33,6 @@ use oxField;
  */
 class OrderRemark extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Executes parent method parent::render(), creates oxorder and
      * oxlist objects, passes it's data to Smarty engine and returns

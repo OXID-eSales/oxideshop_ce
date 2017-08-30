@@ -31,7 +31,6 @@ namespace OxidEsales\EshopCommunity\Core\Autoload;
  */
 class BackwardsCompatibilityAutoload
 {
-
     /**
      * Autoload method.
      *

@@ -37,7 +37,6 @@ use oxField;
  */
 class RecommListController extends \OxidEsales\Eshop\Application\Controller\ArticleListController
 {
-
     /**
      * List type
      *

@@ -92,7 +92,6 @@ register_shutdown_function(
  */
 class BootstrapConfigFileReader
 {
-
     /**
      * BootstrapConfigFileReader constructor.
      */

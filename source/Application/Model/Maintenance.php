@@ -28,7 +28,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
  */
 class Maintenance
 {
-
     /**
      * Executes maintenance tasks. Currently calls oxArticleList::updateUpcomingPrices()
      */

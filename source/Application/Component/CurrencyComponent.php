@@ -31,7 +31,6 @@ use oxRegistry;
  */
 class CurrencyComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
-
     /**
      * Array of available currencies.
      *

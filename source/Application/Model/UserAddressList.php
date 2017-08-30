@@ -29,7 +29,6 @@ use oxDb;
  */
 class UserAddressList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
-
     /**
      * Call parent class constructor
      */

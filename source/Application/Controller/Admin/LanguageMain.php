@@ -33,7 +33,6 @@ use Exception;
  */
 class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Current shop base languages
      *

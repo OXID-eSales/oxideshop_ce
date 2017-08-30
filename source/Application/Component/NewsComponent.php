@@ -32,7 +32,6 @@ namespace OxidEsales\EshopCommunity\Application\Component;
  */
 class NewsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
-
     /**
      * Marking object as component
      *

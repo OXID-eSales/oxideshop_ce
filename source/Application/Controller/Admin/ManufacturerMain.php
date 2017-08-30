@@ -31,7 +31,6 @@ use stdClass;
  */
 class ManufacturerMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Executes parent method parent::render(),
      * and returns name of template file

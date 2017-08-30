@@ -31,7 +31,6 @@ use oxSysRequirements;
  */
 class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
-
     /**
      * Allowed host url
      *

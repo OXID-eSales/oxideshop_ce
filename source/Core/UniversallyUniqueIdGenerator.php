@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class UniversallyUniqueIdGenerator
 {
-
     /**
      * @var \OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker
      */

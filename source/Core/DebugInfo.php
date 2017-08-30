@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class DebugInfo
 {
-
     /**
      * format template data for debug view
      *

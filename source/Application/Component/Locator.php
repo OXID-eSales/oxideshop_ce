@@ -31,7 +31,6 @@ use oxSeoEncoderCategory;
  */
 class Locator extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Locator type
      */

@@ -31,7 +31,6 @@ use oxRegistry;
  */
 class PaymentController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
-
     /**
      * Paymentlist
      *

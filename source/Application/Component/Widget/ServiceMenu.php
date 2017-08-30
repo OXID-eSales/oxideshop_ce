@@ -28,7 +28,6 @@ namespace OxidEsales\EshopCommunity\Application\Component\Widget;
  */
 class ServiceMenu extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
-
     /**
      * Names of components (classes) that are initiated and executed
      * before any other regular operation.

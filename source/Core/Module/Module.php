@@ -30,7 +30,6 @@ namespace OxidEsales\EshopCommunity\Core\Module;
  */
 class Module extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Metadata version as defined in metadata.php
      */

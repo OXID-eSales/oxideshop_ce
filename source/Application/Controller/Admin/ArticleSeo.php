@@ -31,7 +31,6 @@ use oxField;
  */
 class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
 {
-
     /**
      * Chosen category id
      *

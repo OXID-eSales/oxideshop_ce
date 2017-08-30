@@ -37,7 +37,6 @@ use Exception;
  */
 class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Unit array
      *

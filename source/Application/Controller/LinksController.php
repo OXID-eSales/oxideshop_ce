@@ -32,7 +32,6 @@ use oxRegistry;
  */
 class LinksController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
-
     /**
      * Current class template name.
      *

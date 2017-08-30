@@ -41,7 +41,6 @@ DEFINE("ERR_FILEIO", 1);
  */
 class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Export class name
      *

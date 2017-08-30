@@ -30,7 +30,6 @@ use oxDb;
  */
 class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
-
     /**
      * Columns array
      *

@@ -29,7 +29,6 @@ use DateTime;
  */
 class UtilsDate extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Format date to user defined format.
      *

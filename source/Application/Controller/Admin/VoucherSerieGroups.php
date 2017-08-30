@@ -32,7 +32,6 @@ use oxRegistry;
  */
 class VoucherSerieGroups extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Executes parent method parent::render(), creates oxlist and oxvoucherserie
      * objects, passes it's data to Smarty engine and returns name of template

@@ -30,7 +30,6 @@ use oxRegistry;
  */
 class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * It is unsave to use a backslash as HTML id in conjunction with UI.sortable, so it will be replaced in the
      * view and restored in the controller

@@ -28,7 +28,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class SepaValidator
 {
-
     /**
      * @var array IBAN Code Length array
      */

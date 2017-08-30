@@ -32,7 +32,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class OnlineLicenseCheckResponse
 {
-
     /**
      * Serial keys.
      *

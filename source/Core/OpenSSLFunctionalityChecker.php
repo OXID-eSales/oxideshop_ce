@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class OpenSSLFunctionalityChecker
 {
-
     /**
      * Checks if openssl_random_pseudo_bytes function is available.
      *

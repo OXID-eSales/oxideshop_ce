@@ -31,7 +31,6 @@ use oxUBase;
  */
 class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
-
     /**
      * List display type
      *

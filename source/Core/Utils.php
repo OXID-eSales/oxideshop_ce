@@ -30,7 +30,6 @@ use Exception;
  */
 class Utils extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Cached currency precision
      *

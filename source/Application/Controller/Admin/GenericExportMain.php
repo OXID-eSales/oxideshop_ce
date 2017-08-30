@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  */
 class GenericExportMain extends \OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController
 {
-
     /**
      * Export class name
      *

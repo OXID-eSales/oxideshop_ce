@@ -33,7 +33,6 @@ use SoapFault;
  */
 class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
 {
-
     /**
      * Keeps service check state
      *

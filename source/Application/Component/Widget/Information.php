@@ -28,7 +28,6 @@ namespace OxidEsales\EshopCommunity\Application\Component\Widget;
  */
 class Information extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
-
     /**
      * Current class template name
      *

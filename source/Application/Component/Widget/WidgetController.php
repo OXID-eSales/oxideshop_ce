@@ -28,7 +28,6 @@ namespace OxidEsales\EshopCommunity\Application\Component\Widget;
  */
 class WidgetController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
-
     /**
      * Names of components (classes) that are initiated and executed
      * before any other regular operation.

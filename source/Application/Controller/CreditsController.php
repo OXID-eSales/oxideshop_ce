@@ -27,7 +27,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
  */
 class CreditsController extends \OxidEsales\Eshop\Application\Controller\ContentController
 {
-
     /**
      * Content id.
      *

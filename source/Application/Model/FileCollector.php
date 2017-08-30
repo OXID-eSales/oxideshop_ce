@@ -31,7 +31,6 @@ use Exception;
  */
 class FileCollector
 {
-
     /**
      * base directory
      *

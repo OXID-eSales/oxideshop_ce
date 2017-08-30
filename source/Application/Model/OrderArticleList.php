@@ -30,7 +30,6 @@ use oxDb;
  */
 class OrderArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
-
     /**
      * Class constructor, initiates class constructor (parent::oxbase()).
      */

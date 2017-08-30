@@ -31,7 +31,6 @@ use oxRegistry;
  */
 class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
-
     /**
      * More category object.
      *

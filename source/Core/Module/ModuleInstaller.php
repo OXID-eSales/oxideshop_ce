@@ -34,7 +34,6 @@ use OxidEsales\Eshop\Core\SettingsHandler;
  */
 class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * @var \OxidEsales\Eshop\Core\Module\ModuleCache
      */

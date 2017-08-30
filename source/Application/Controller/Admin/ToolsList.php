@@ -34,7 +34,6 @@ use Exception;
  */
 class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
-
     /**
      * Current class template name
      *

@@ -32,7 +32,6 @@ use oxField;
  */
 class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
-
     /**
      * Manufacturer root.
      *

@@ -30,7 +30,6 @@ use oxField;
  */
 class CategorySeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
 {
-
     /**
      * Updating showsuffix field
      *

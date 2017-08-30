@@ -32,7 +32,6 @@ use oxRegistry;
  */
 class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-
     /**
      * Shop control variable
      *

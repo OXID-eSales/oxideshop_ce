@@ -31,7 +31,6 @@ use oxCategory;
  */
 class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
-
     /**
      * List of article variants.
      *

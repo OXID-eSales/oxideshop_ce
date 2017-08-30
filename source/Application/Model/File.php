@@ -33,7 +33,6 @@ use oxException;
  */
 class File extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-
     /**
      * No active user exception code.
      */

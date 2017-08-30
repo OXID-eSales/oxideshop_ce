@@ -31,7 +31,6 @@ use oxRegistry;
  */
 class OrderDownloads extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Active order object
      *

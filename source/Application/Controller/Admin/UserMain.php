@@ -33,7 +33,6 @@ use Exception;
  */
 class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     private $_sSaveError = null;
 
     /**

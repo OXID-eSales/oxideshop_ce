@@ -95,10 +95,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
     {
         // if no active category is loaded - lets check for category passed by post/get
         if (($oCategory = $oLocatorTarget->getActiveCategory())) {
-
-             // Bug 6155: blShowSorting is set in the backend only to allow/deny sorting by user in the frontend - "Users can sort Product Lists"
             $sOrderBy = $oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent());
-
             $oIdList = $this->_loadIdsInList($oCategory, $oCurrArticle, $sOrderBy);
 
             //page number
@@ -147,8 +144,6 @@ class Locator extends \OxidEsales\Eshop\Core\Base
 
             // loading data for article navigation
             $oIdList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
-
-            // Bug 6155: blShowSorting is set in the backend only to allow/deny sorting by user in the frontend - "Users can sort Product Lists"
             $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
             $oIdList->loadVendorIds($sVendorId);
 
@@ -193,7 +188,6 @@ class Locator extends \OxidEsales\Eshop\Core\Base
 
             // loading data for article navigation
             $oIdList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
-            // Bug 6155: blShowSorting is set in the backend only to allow/deny sorting by user in the frontend - "Users can sort Product Lists"
             $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
             $oIdList->loadManufacturerIds($sManufacturerId);
 
@@ -257,7 +251,6 @@ class Locator extends \OxidEsales\Eshop\Core\Base
 
             // loading data for article navigation
             $oIdList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
-            // Bug 6155: blShowSorting is set in the backend only to allow/deny sorting by user in the frontend - "Users can sort Product Lists"
             $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
             $oIdList->loadSearchIds($sSearchParam, $sSearchCat, $sSearchVendor, $sSearchManufacturer);
 

@@ -90,12 +90,7 @@ class oxLocator extends oxSuperCfg
     {
         // if no active category is loaded - lets check for category passed by post/get
         if (($oCategory = $oLocatorTarget->getActiveCategory())) {
-
-            $sOrderBy = null;
-            if ($oLocatorTarget->showSorting()) {
-                $sOrderBy = $oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent());
-            }
-
+            $sOrderBy = $oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent());
             $oIdList = $this->_loadIdsInList($oCategory, $oCurrArticle, $sOrderBy);
 
             //page number
@@ -144,9 +139,7 @@ class oxLocator extends oxSuperCfg
 
             // loading data for article navigation
             $oIdList = oxNew("oxArticleList");
-            if ($oLocatorTarget->showSorting()) {
-                $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
-            }
+            $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
             $oIdList->loadVendorIds($sVendorId);
 
             //page number
@@ -190,9 +183,7 @@ class oxLocator extends oxSuperCfg
 
             // loading data for article navigation
             $oIdList = oxNew("oxarticlelist");
-            if ($oLocatorTarget->showSorting()) {
-                $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
-            }
+            $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
             $oIdList->loadManufacturerIds($sManufacturerId);
 
             //page number
@@ -256,9 +247,7 @@ class oxLocator extends oxSuperCfg
 
             // loading data for article navigation
             $oIdList = oxNew('oxarticlelist');
-            if ($oLocatorTarget->showSorting()) {
-                $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
-            }
+            $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
             $oIdList->loadSearchIds($sSearchParam, $sSearchCat, $sSearchVendor, $sSearchManufacturer);
 
             //page number

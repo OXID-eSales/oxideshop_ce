@@ -104,8 +104,6 @@ class VendorList extends aList
      */
     public function render()
     {
-        oxUBase::render();
-
         // load vendor
         if (($this->_getVendorId() && $this->getVendorTree())) {
             if (($oVendor = $this->getActVendor())) {
@@ -121,6 +119,8 @@ class VendorList extends aList
                 }
             }
         }
+
+        oxUBase::render();
 
         return $this->_sThisTemplate;
     }

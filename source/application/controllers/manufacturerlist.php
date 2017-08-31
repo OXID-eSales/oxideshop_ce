@@ -106,8 +106,6 @@ class ManufacturerList extends aList
      */
     public function render()
     {
-        oxUBase::render();
-
         // load Manufacturer
         if ($this->getManufacturerTree()) {
             if (($oManufacturer = $this->getActManufacturer())) {
@@ -123,6 +121,8 @@ class ManufacturerList extends aList
                 }
             }
         }
+
+        oxUBase::render();
 
         return $this->_sThisTemplate;
     }

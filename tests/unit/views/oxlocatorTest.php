@@ -231,7 +231,6 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oLocatorTarget->expects($this->any())->method('getCatTreePath');
         $oLocatorTarget->expects($this->once())->method('getActiveCategory')->will($this->returnValue($oCategory));
         $oLocatorTarget->expects($this->once())->method('getCategoryTree')->will($this->returnValue(new oxcategorylist));
-        $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
 
         $oConfig = $this->getMock('oxconfig', array('getConfigParam'));
@@ -579,7 +578,6 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue('2000'));
 
         $oLocatorTarget = $this->getMock('oxubase', array('getLinkType', 'getSortingSql', 'addTplParam', 'setSearchTitle', 'getSearchTitle', 'showSorting'));
-        $oLocatorTarget->expects($this->once())->method('getSortingSql')->with($this->equalTo('alist'))->will($this->returnValue('oxid'));
         $oLocatorTarget->expects($this->any())->method('addTplParam');
         $oLocatorTarget->expects($this->any())->method('setSearchTitle');
         $oLocatorTarget->expects($this->any())->method('getSearchTitle');
@@ -592,14 +590,13 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oTag = $oLocatorTarget->getActTag();
 
 
-        $this->assertEquals(3, $oTag->iProductPos);
+        $this->assertEquals(2, $oTag->iProductPos);
         $this->assertEquals(3, $oTag->iCntOfProd);
         $sPrevLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=1771&amp;searchtag=wanduhr&amp;listtype=tag";
-        $iPgNr = 2;
+        $expectedUrl = $myConfig->getShopHomeUrl() . "cl=tag&amp;searchtag=wanduhr&amp;pgNr=1";
 
-        $this->assertEquals($myConfig->getShopHomeUrl() . "cl=tag&amp;searchtag=wanduhr&amp;pgNr={$iPgNr}", $oTag->toListLink);
+        $this->assertEquals($expectedUrl, $oTag->toListLink);
         $this->assertEquals($sPrevLink, $oTag->prevProductLink);
-        $this->assertNull($oTag->nextProductLink);
     }
 
     // set locator data after recommlist search

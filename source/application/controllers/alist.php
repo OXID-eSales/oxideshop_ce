@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -165,9 +165,9 @@ class aList extends oxUBase
             $sParentViewId = parent::getViewId();
 
             // shorten it
-            $this->_sViewId = md5(
-                $sParentViewId . '|' . $sCatId . '|' . $iActPage . '|' . $iArtPerPage . '|' . $sListDisplayType
-            );
+                $this->_sViewId = md5(
+                    $sParentViewId . '|' . $sCatId . '|' . $iActPage . '|' . $iArtPerPage . '|' . $sListDisplayType
+                );
 
         }
 
@@ -250,9 +250,16 @@ class aList extends oxUBase
     protected function _checkRequestedPage()
     {
         $iPageCnt = $this->getPageCount();
-        // redirecting to first page in case requested page does not exist
-        if ($iPageCnt && (($iPageCnt - 1) < $this->getActPage())) {
-            oxRegistry::getUtils()->redirect($this->getActiveCategory()->getLink(), false);
+        $iCurrentPageNumber = $this->getActPage();
+        if ($iCurrentPageNumber && ($iPageCnt - 1) < $iCurrentPageNumber) {
+            // redirecting to first page in case requested page does not exist
+            if ($iPageCnt) {
+                oxRegistry::getUtils()->redirect($this->getActiveCategory()->getLink(), false);
+            } else {
+                // display error if category has no products, but page number is entered
+                $this->_iActPage = 0;
+                oxRegistry::getUtils()->handlePageNotFoundError($this->getActiveCategory()->getLink());
+            }
         }
     }
 
@@ -392,6 +399,11 @@ class aList extends oxUBase
      */
     public function getActPage()
     {
+        //Fake oxmore category has no subpages so we can set the page number to zero
+        if ('oxmore' == oxRegistry::getConfig()->getRequestParameter('cnid')) {
+            return 0;
+        }
+
         return $this->_getRequestPageNr();
     }
 

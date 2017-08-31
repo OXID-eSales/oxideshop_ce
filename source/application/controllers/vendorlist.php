@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2014
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -104,8 +104,6 @@ class VendorList extends aList
      */
     public function render()
     {
-        oxUBase::render();
-
         // load vendor
         if (($this->_getVendorId() && $this->getVendorTree())) {
             if (($oVendor = $this->getActVendor())) {
@@ -121,6 +119,8 @@ class VendorList extends aList
                 }
             }
         }
+
+        oxUBase::render();
 
         return $this->_sThisTemplate;
     }

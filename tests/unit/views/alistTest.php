@@ -334,7 +334,7 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testRender_pageCountIsZero()
     {
-        oxTestModules::addFunction("oxUtils", "handlePageNotFoundError", "{ throw new Exception('OK'); }");
+        oxTestModules::addFunction("oxUtils", "handlePageNotFoundError", "{ throw new Exception('page not found redirect is OK'); }");
         //oxTestModules::addFunction( "oxUtils", "redirect", "{ throw new Exception('OK'); }" );
 
         $oCat = $this->getMock("oxcategory", array('canView'));
@@ -343,15 +343,12 @@ class Unit_Views_alistTest extends OxidTestCase
 
         $oListView = $this->getMock("aList", array('getActiveCategory', 'getArticleList', 'getActPage', 'getPageCount'));
         $oListView->expects($this->atLeastOnce())->method('getActiveCategory')->will($this->returnValue($oCat));
-        $oListView->expects($this->never())->method('getActPage'); //->will( $this->returnValue( 12 ) );
+        $oListView->expects($this->once())->method('getActPage')->will( $this->returnValue( 12 ));
         $oListView->expects($this->once())->method('getPageCount')->will($this->returnValue(0));
         $oListView->expects($this->atLeastOnce())->method('getArticleList');
 
-        try {
-            $oListView->render();
-        } catch (Exception $oExcp) {
-            $this->fail('failed redirect when page count is incorrect');
-        }
+        $this->setExpectedException('Exception', 'page not found redirect is OK');
+        $oListView->render();
     }
 
     /**

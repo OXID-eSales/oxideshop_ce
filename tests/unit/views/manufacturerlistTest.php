@@ -134,7 +134,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
     public function testRenderManufacturerHasNoProductsAssigned()
     {
         modConfig::setRequestParameter("pgNr", 999);
-        oxTestModules::addFunction("oxUtils", "handlePageNotFoundError", "{ throw new Exception('OK'); }");
+        oxTestModules::addFunction("oxUtils", "handlePageNotFoundError", "{ throw new Exception('page not found redirect is OK'); }");
 
         $sActManufacturer = "9434afb379a46d6c141de9c9e5b94fcf";
 
@@ -149,11 +149,8 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
         $oView->expects($this->any())->method('getManufacturerTree')->will($this->returnValue($oManufacturerTree));
         $oView->expects($this->any())->method('getActManufacturer')->will($this->returnValue($oManufacturer));
 
-        try {
-            $oView->render();
-        } catch (Exception $oExcp) {
-            $this->fail('failed redirect on inactive category');
-        }
+        $this->setExpectedException('Exception', 'page not found redirect is OK');
+        $oView->render();
     }
 
     /**

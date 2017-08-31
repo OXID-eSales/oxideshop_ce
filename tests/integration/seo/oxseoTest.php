@@ -378,9 +378,9 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
 
         $data = array(
                  array('Eco-Fashion/', 'Eco-Fashion/', 'HTTP/1.1 200 OK', '3', '0', array()),
-                 array('Eco-Fashion/3/', 'Eco-Fashion/', 'HTTP/1.0 404 Not Found', '3', '0', array('Eco-Fashion/')),
+                 array('Eco-Fashion/3/', 'Eco-Fashion/', '404 Not Found', '3', '0', array('Eco-Fashion/')),
                  array('Eco-Fashion/?pgNr=0', 'Eco-Fashion/', 'HTTP/1.1 200 OK', '3', '0', array('Eco-Fashion/')),
-                 array('Eco-Fashion/?pgNr=34', 'Eco-Fashion/', 'HTTP/1.0 404 Not Found', '3', '0', array()),
+                 array('Eco-Fashion/?pgNr=34', 'Eco-Fashion/', '404 Not Found', '3', '0', array()),
                  array('index.php?cl=alist&cnid=oxmore', 'oxid/', 'HTTP/1.1 200 OK', '2', '0', array()),
                  array('index.php?cl=alist&cnid=oxmore&pgNr=0', 'oxid/', 'HTTP/1.1 200 OK', '2', '0', array()),
                  array('index.php?cl=alist&cnid=oxmore&pgNr=10', 'oxid/', 'HTTP/1.1 200 OK', '2', '0', array()),
@@ -393,17 +393,17 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
 
         if (('EE' == $this->getConfig()->getEdition())) {
             $data[] = array('Fuer-Sie/', 'Fuer-Sie/', 'HTTP/1.1 200 OK', '3', '8', array());
-            $data[] = array('Fuer-Sie/45/', 'Fuer-Sie/', 'HTTP/1.0 404 Not Found', '3', '8', array('Fuer-Sie/'));
+            $data[] = array('Fuer-Sie/45/', 'Fuer-Sie/', '404 Not Found', '3', '8', array('Fuer-Sie/'));
             $data[] = array('Fuer-Sie/?pgNr=0', 'Fuer-Sie/', 'HTTP/1.1 200 OK', '3', '8', array('Fuer-Sie/'));
             $data[] = array('Fuer-Sie/?pgNr=34', 'Fuer-Sie/', 'HTTP/1.1 302 Found', '3', '8', array('Fuer-Sie/'));
         } else {
             $data[] = array('Geschenke/', 'Geschenke/', 'HTTP/1.1 200 OK', '8', '22', array('index.php?cl=alist&cnid=' . $sOxidLiving));
             $data[] = array('Geschenke/?pgNr=0', 'Geschenke/', 'HTTP/1.1 200 OK', '8', '22', array('index.php?cl=alist&cnid=' . $sOxidLiving, 'Geschenke/'));
             $data[] = array('Geschenke/?pgNr=100', 'Geschenke/', 'HTTP/1.1 302 Found', '8', '22', array('index.php?cl=alist&cnid=' . $sOxidLiving, 'Geschenke/'));
-            $data[] = array('Geschenke/30/', 'Geschenke/', 'HTTP/1.0 404 Not Found', '8', '22', array('index.php?cl=alist&cnid=' . $sOxidLiving, 'Geschenke/'));
+            $data[] = array('Geschenke/30/', 'Geschenke/', '404 Not Found', '8', '22', array('index.php?cl=alist&cnid=' . $sOxidLiving, 'Geschenke/'));
             $data[] = array('Geschenke/?pgNr=1', 'Geschenke/', 'HTTP/1.1 200 OK', '8', '29', array('index.php?cl=alist&cnid=' . $sOxidLiving, 'Geschenke/'));
             $data[] = array('Geschenke/4/', 'Geschenke/', 'HTTP/1.1 200 OK', '8', '31', array('index.php?cl=alist&cnid=' . $sOxidLiving, 'Geschenke/', 'Geschenke/?pgNr=0', 'Geschenke/?pgNr=1',));
-            $data[] = array('Geschenke/10/', 'Geschenke/', 'HTTP/1.0 404 Not Found', '8', '31', array('index.php?cl=alist&cnid=' . $sOxidLiving, 'Geschenke/', 'Geschenke/?pgNr=0', 'Geschenke/?pgNr=1', 'Geschenke/4/'));
+            $data[] = array('Geschenke/10/', 'Geschenke/', '404 Not Found', '8', '31', array('index.php?cl=alist&cnid=' . $sOxidLiving, 'Geschenke/', 'Geschenke/?pgNr=0', 'Geschenke/?pgNr=1', 'Geschenke/4/'));
         }
 
         return $data;

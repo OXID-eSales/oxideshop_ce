@@ -1387,9 +1387,13 @@ class oxViewConfig extends oxSuperCfg
     {
         $sUrl = str_replace(
             rtrim($this->getConfig()->getConfigParam('sShopDir'), '/'),
-            rtrim($this->getConfig()->getCurrentShopUrl(false), '/'),
+            rtrim($this->getConfig()->getCurrentShopUrl(), '/'),
             $this->getModulePath($sModule, $sFile)
         );
+
+        if ($this->getConfig()->isAdmin()) {
+            $sUrl = str_replace($this->getConfig()->getConfigParam('sAdminDir') . '/', '', $sUrl);
+        }
 
         return $sUrl;
     }

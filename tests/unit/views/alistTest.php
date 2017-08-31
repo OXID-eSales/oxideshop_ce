@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -334,7 +334,7 @@ class Unit_Views_alistTest extends OxidTestCase
      */
     public function testRender_pageCountIsZero()
     {
-        oxTestModules::addFunction("oxUtils", "handlePageNotFoundError", "{ throw new Exception('OK'); }");
+        oxTestModules::addFunction("oxUtils", "handlePageNotFoundError", "{ throw new Exception('page not found redirect is OK'); }");
         //oxTestModules::addFunction( "oxUtils", "redirect", "{ throw new Exception('OK'); }" );
 
         $oCat = $this->getMock("oxcategory", array('canView'));
@@ -343,15 +343,12 @@ class Unit_Views_alistTest extends OxidTestCase
 
         $oListView = $this->getMock("aList", array('getActiveCategory', 'getArticleList', 'getActPage', 'getPageCount'));
         $oListView->expects($this->atLeastOnce())->method('getActiveCategory')->will($this->returnValue($oCat));
-        $oListView->expects($this->never())->method('getActPage'); //->will( $this->returnValue( 12 ) );
+        $oListView->expects($this->once())->method('getActPage')->will( $this->returnValue( 12 ));
         $oListView->expects($this->once())->method('getPageCount')->will($this->returnValue(0));
         $oListView->expects($this->atLeastOnce())->method('getArticleList');
 
-        try {
-            $oListView->render();
-        } catch (Exception $oExcp) {
-            $this->fail('failed redirect when page count is incorrect');
-        }
+        $this->setExpectedException('Exception', 'page not found redirect is OK');
+        $oListView->render();
     }
 
     /**
@@ -588,7 +585,7 @@ class Unit_Views_alistTest extends OxidTestCase
         $sListType = $this->getConfig()->getConfigParam('sDefaultListDisplayType');
 
 
-        $sViewId = md5($oView->getViewId() . '|xxx|999|100|' . $sListType);
+            $sViewId = md5($oView->getViewId() . '|xxx|999|100|' . $sListType);
 
         $oListView = $this->getMock('alist', array('getActPage'));
         $oListView->expects($this->any())->method('getActPage')->will($this->returnValue('999'));
@@ -731,7 +728,7 @@ class Unit_Views_alistTest extends OxidTestCase
         $this->setConfigParam('blSeoMode', true);
 
         $oCategory = new oxcategory();
-        $oCategory->load('30e44ab83159266c7.83602558');
+            $oCategory->load('30e44ab83159266c7.83602558');
         $sUrl = $oCategory->getLink();
 
         $oListView = $this->getMock('alist', array('getActiveCategory'));
@@ -749,7 +746,7 @@ class Unit_Views_alistTest extends OxidTestCase
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
         $oCategory = new oxcategory();
-        $oCategory->load('30e44ab83159266c7.83602558');
+            $oCategory->load('30e44ab83159266c7.83602558');
         $sUrl = $oCategory->getLink();
 
         $oListView = $this->getMock('alist', array('getActiveCategory'));
@@ -765,7 +762,7 @@ class Unit_Views_alistTest extends OxidTestCase
     public function testAddPageNrParamSeoOff()
     {
         $oCategory = new oxcategory();
-        $oCategory->load('30e44ab83159266c7.83602558');
+            $oCategory->load('30e44ab83159266c7.83602558');
         $sUrl = $oCategory->getStdLink();
 
         $oListView = $this->getMock('alist', array('getActiveCategory'));
@@ -895,15 +892,15 @@ class Unit_Views_alistTest extends OxidTestCase
     {
         $sCatId = '30e44ab83b6e585c9.63147165';
         $iExptCount = 4;
-        $sCatId = '8a142c3e49b5a80c1.23676990';
-        $iExptCount = 10;
+            $sCatId = '8a142c3e49b5a80c1.23676990';
+            $iExptCount = 10;
 
         $oObj = $this->getProxyClass("alist");
         $this->setRequestParam('cnid', $sCatId);
         $this->setConfigParam('iNrofCatArticles', 10);
         $oObj->render();
 
-        $this->assertEquals($iExptCount, $oObj->getArticleList()->count());
+            $this->assertEquals($iExptCount, $oObj->getArticleList()->count());
     }
 
     /**
@@ -961,8 +958,8 @@ class Unit_Views_alistTest extends OxidTestCase
     {
         $sCatId = '30e44ab83b6e585c9.63147165';
         $iExptName = 'Wohnen';
-        $sCatId = '8a142c3e49b5a80c1.23676990';
-        $iExptName = 'Bar-Equipment';
+            $sCatId = '8a142c3e49b5a80c1.23676990';
+            $iExptName = 'Bar-Equipment';
 
         $oCat = new oxcategory();
         $oCat->load($sCatId);
@@ -998,7 +995,7 @@ class Unit_Views_alistTest extends OxidTestCase
         $oObj->setNonPublicVar("_blIsCat", true);
 
         $aList = $oObj->getBargainArticleList();
-        $this->assertEquals(4, $aList->count());
+            $this->assertEquals(4, $aList->count());
     }
 
     /**
@@ -1010,7 +1007,7 @@ class Unit_Views_alistTest extends OxidTestCase
     {
 
 
-        $sCatId = '8a142c3e44ea4e714.31136811';
+            $sCatId = '8a142c3e44ea4e714.31136811';
 
         $this->setRequestParam('cnid', $sCatId);
 
@@ -1033,7 +1030,7 @@ class Unit_Views_alistTest extends OxidTestCase
     public function testViewMetaKeywords()
     {
 
-        $sCatId = '8a142c3e44ea4e714.31136811';
+            $sCatId = '8a142c3e44ea4e714.31136811';
 
         $this->setRequestParam('cnid', $sCatId);
 

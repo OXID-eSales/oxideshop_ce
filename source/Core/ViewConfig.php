@@ -1192,15 +1192,41 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      * @param string $sModule module name (directory name in modules dir)
      * @param string $sFile   file name to lookup
      *
-     * @throws oxFileException
+     * @throws \oxFileException
      *
      * @return string
      */
     public function getModuleUrl($sModule, $sFile = '')
     {
+        $c = $this->getConfig();
+        $shopUrl = null;
+        if ($this->isAdmin()) {
+            if ($c->isSsl()) {
+                // From admin and with SSL we try to use sAdminSSLURL config directive
+                $shopUrl = $c->getConfigParam('sAdminSSLURL');
+                if ($shopUrl) {
+                    // but we don't need the admin directory
+                    $adminDir = '/'.$c->getConfigParam('sAdminDir');
+                    $shopUrl = substr($shopUrl, 0, -strlen($adminDir));
+                } else {
+                    // if no sAdminSSLURL directive were defined we use sSSLShopURL config directive instead
+                    $shopUrl = $c->getConfigParam('sSSLShopURL');
+                }
+            }
+            // From admin and with no config usefull directive, we use the sShopURL directive
+            if (!$shopUrl) {
+                $shopUrl = $c->getConfigParam('sShopURL');
+            }
+        }
+        // We are either in front, or in admin with no $sShopURL defined
+        if (!$shopUrl) {
+            $shopUrl = $c->getCurrentShopUrl();
+        }
+        $shopUrl = rtrim($shopUrl, '/');
+
         $sUrl = str_replace(
-            rtrim($this->getConfig()->getConfigParam('sShopDir'), '/'),
-            rtrim($this->getConfig()->getCurrentShopUrl(false), '/'),
+            rtrim($c->getConfigParam('sShopDir'), '/'),
+            $shopUrl,
             $this->getModulePath($sModule, $sFile)
         );
 

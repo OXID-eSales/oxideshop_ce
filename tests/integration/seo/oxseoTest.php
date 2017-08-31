@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
+ * @copyright (C) OXID eSales AG 2003-2017
  * @version   OXID eShop CE
  */
 
@@ -370,6 +370,82 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         $this->assertEquals($aExp, $aDecoded);
     }
 
+    public function providerCheckSeoUrl()
+    {
+        $sOxidLiving = ('EE' != $this->getConfig()->getEdition()) ? '8a142c3e44ea4e714.31136811' : '30e44ab83b6e585c9.63147165';
+        $iCountLiving = ('EE' != $this->getConfig()->getEdition()) ? '2' : '3';
+        $iCountArtLiving = ('EE' != $this->getConfig()->getEdition()) ? '6' : '5';
+
+        $data = array(
+                 array('Eco-Fashion/', 'Eco-Fashion/', 'HTTP/1.1 200 OK', '3', '0', array()),
+                 array('Eco-Fashion/3/', 'Eco-Fashion/', 'HTTP/1.0 404 Not Found', '3', '0', array('Eco-Fashion/')),
+                 array('Eco-Fashion/?pgNr=0', 'Eco-Fashion/', 'HTTP/1.1 200 OK', '3', '0', array('Eco-Fashion/')),
+                 array('Eco-Fashion/?pgNr=34', 'Eco-Fashion/', 'HTTP/1.0 404 Not Found', '3', '0', array()),
+                 array('index.php?cl=alist&cnid=oxmore', 'oxid/', 'HTTP/1.1 200 OK', '2', '0', array()),
+                 array('index.php?cl=alist&cnid=oxmore&pgNr=0', 'oxid/', 'HTTP/1.1 200 OK', '2', '0', array()),
+                 array('index.php?cl=alist&cnid=oxmore&pgNr=10', 'oxid/', 'HTTP/1.1 200 OK', '2', '0', array()),
+                 array('index.php?cl=alist&cnid=oxmore&pgNr=20', 'oxid/', 'HTTP/1.1 200 OK', '2', '0', array()),
+                 array('index.php?cl=alist&cnid=' . $sOxidLiving, 'Wohnen/', 'HTTP/1.1 200 OK', $iCountLiving, $iCountArtLiving, array()),
+                 array('index.php?cl=alist&cnid=' . $sOxidLiving . '&pgNr=0', 'Wohnen/', 'HTTP/1.1 200 OK', $iCountLiving, $iCountArtLiving, array()),
+                 array('index.php?cl=alist&cnid=' . $sOxidLiving . '&pgNr=100', 'Wohnen/', 'HTTP/1.1 302 Found', $iCountLiving, $iCountArtLiving, array('index.php?cl=alist&cnid=' . $iCountLiving)),
+                 array('index.php?cl=alist&cnid=' . $sOxidLiving . '&pgNr=200', 'Wohnen/', 'HTTP/1.1 302 Found', $iCountLiving, $iCountArtLiving, array('index.php?cl=alist&cnid=' . $iCountLiving))
+        );
+
+        if (('EE' == $this->getConfig()->getEdition())) {
+            $data[] = array('Fuer-Sie/', 'Fuer-Sie/', 'HTTP/1.1 200 OK', '3', '8', array());
+            $data[] = array('Fuer-Sie/45/', 'Fuer-Sie/', 'HTTP/1.0 404 Not Found', '3', '8', array('Fuer-Sie/'));
+            $data[] = array('Fuer-Sie/?pgNr=0', 'Fuer-Sie/', 'HTTP/1.1 200 OK', '3', '8', array('Fuer-Sie/'));
+            $data[] = array('Fuer-Sie/?pgNr=34', 'Fuer-Sie/', 'HTTP/1.1 302 Found', '3', '8', array('Fuer-Sie/'));
+        } else {
+            $data[] = array('Geschenke/', 'Geschenke/', 'HTTP/1.1 200 OK', '8', '22', array('index.php?cl=alist&cnid=' . $sOxidLiving));
+            $data[] = array('Geschenke/?pgNr=0', 'Geschenke/', 'HTTP/1.1 200 OK', '8', '22', array('index.php?cl=alist&cnid=' . $sOxidLiving, 'Geschenke/'));
+            $data[] = array('Geschenke/?pgNr=100', 'Geschenke/', 'HTTP/1.1 302 Found', '8', '22', array('index.php?cl=alist&cnid=' . $sOxidLiving, 'Geschenke/'));
+            $data[] = array('Geschenke/30/', 'Geschenke/', 'HTTP/1.0 404 Not Found', '8', '22', array('index.php?cl=alist&cnid=' . $sOxidLiving, 'Geschenke/'));
+            $data[] = array('Geschenke/?pgNr=1', 'Geschenke/', 'HTTP/1.1 200 OK', '8', '29', array('index.php?cl=alist&cnid=' . $sOxidLiving, 'Geschenke/'));
+            $data[] = array('Geschenke/4/', 'Geschenke/', 'HTTP/1.1 200 OK', '8', '31', array('index.php?cl=alist&cnid=' . $sOxidLiving, 'Geschenke/', 'Geschenke/?pgNr=0', 'Geschenke/?pgNr=1',));
+            $data[] = array('Geschenke/10/', 'Geschenke/', 'HTTP/1.0 404 Not Found', '8', '31', array('index.php?cl=alist&cnid=' . $sOxidLiving, 'Geschenke/', 'Geschenke/?pgNr=0', 'Geschenke/?pgNr=1', 'Geschenke/4/'));
+        }
+
+        return $data;
+    }
+
+    /**
+     * Calling not existing pagenumbers must not result in additional entries in oxseo table.
+     *
+     * @dataProvider providerCheckSeoUrl
+     *
+     * @param string $sUrlToCall     Url to call
+     * @param string $sSeoUrl        Part of seo url to check in database
+     * @param string $sCheckResponse Curl call response
+     * @param string $iSeoCount      Expected count of entries in oxseo table.
+     * @param string $iSeoArtCount   Expected count of entries in oxseo table for product seo urls.
+     * @param array $aPreparUrls     To make test cases independent, call this url first.
+     */
+    public function testCheckSeoUrl($sUrlToCall, $sSeoUrl, $sCheckResponse, $iSeoCount, $iSeoArtCount, $aPreparUrls)
+    {
+        $this->callCurl(''); //call shop startpage
+        foreach ($aPreparUrls as $sUrl) {
+            $this->callCurl($sUrl);
+        }
+        $sResponse = $this->callCurl($sUrlToCall);
+
+        $this->assertContains($sCheckResponse, $sResponse, "Should get $sCheckResponse");
+
+        //Check entries in oxseo table for oxtype = 'oxcategory'
+        $sQuery = "SELECT count(*) FROM `oxseo` WHERE `OXSEOURL` like '%" . $sSeoUrl . "%'" .
+                 " AND oxtype = 'oxcategory'";
+        $iSeoRealCount = oxDb::getDb()->getOne($sQuery);
+
+        $this->assertSame($iSeoCount, $iSeoRealCount);
+
+        //Check entries in oxseo table for oxtype = 'oxarticle'
+        $sQuery = "SELECT count(*) FROM `oxseo` WHERE `OXSEOURL` like '%" . $sSeoUrl . "%'" .
+                 " AND oxtype = 'oxarticle'";
+        $iSeoRealCount = oxDb::getDb()->getOne($sQuery);
+
+        $this->assertSame($iSeoArtCount, $iSeoRealCount);
+    }
+
     /**
      * Adds seo urls
      *
@@ -448,4 +524,26 @@ class  Integration_Seo_oxseoTest extends OxidTestCase
         $sShopId = 'oxbaseshop';
         return $sShopId;
     }
+
+    /**
+     * @param string $sUrlPart Shop url part to call.
+     *
+     * @return string
+     */
+    /**
+     * @param $fileUrlPart
+     *
+     * @return mixed
+     */
+    private function callCurl($sUrlPart)
+    {
+        $sUrl = $this->getConfig()->getShopMainUrl() . $sUrlPart;
+
+        $oCurl = oxNew('oxCurl');
+        $oCurl->setOption('CURLOPT_HEADER', true);
+        $oCurl->setUrl($sUrl);
+
+        return $oCurl->execute();
+    }
+
 }

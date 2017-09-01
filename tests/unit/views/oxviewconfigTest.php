@@ -697,30 +697,62 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
 
     public function testGetModuleUrl()
     {
-        $sBaseUrl = $this->getConfig()->getCurrentShopUrl();
         $sMdir = realpath((dirname(__FILE__) . '/../moduleTestBlock'));
 
-        $myConfig = $this->getConfig();
-        $myConfig->setConfigParam("sShopDir", $sMdir . "/");
-        $myConfig->setConfigParam("iDebug", -1);
+        $config = $this->getConfig();
+        $config->setConfigParam("sShopDir", $sMdir . "/");
+        $config->setConfigParam("iDebug", -1);
 
-        $oVC = $this->getMock('oxViewConfig', array('getConfig'));
-        $oVC->expects($this->any())->method('getConfig')->will($this->returnValue($myConfig));
+        $baseUrl = $config->getCurrentShopUrl();
 
-        $this->assertEquals("{$sBaseUrl}modules/test1/out", $oVC->getModuleUrl('test1', 'out'));
-        $this->assertEquals("{$sBaseUrl}modules/test1/out/", $oVC->getModuleUrl('test1', '/out/'));
+        $viewConfig = $this->getMock('oxViewConfig', array('getConfig'));
+        $viewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($config));
 
-        $this->assertEquals("{$sBaseUrl}modules/test1/out/blocks/test2.tpl", $oVC->getModuleUrl('test1', 'out/blocks/test2.tpl'));
-        $this->assertEquals("{$sBaseUrl}modules/test1/out/blocks/test2.tpl", $oVC->getModuleUrl('test1', '/out/blocks/test2.tpl'));
+        $this->assertEquals("{$baseUrl}modules/test1/out", $viewConfig->getModuleUrl('test1', 'out'));
+        $this->assertEquals("{$baseUrl}modules/test1/out/", $viewConfig->getModuleUrl('test1', '/out/'));
+
+        $this->assertEquals("{$baseUrl}modules/test1/out/blocks/test2.tpl", $viewConfig->getModuleUrl('test1', 'out/blocks/test2.tpl'));
+        $this->assertEquals("{$baseUrl}modules/test1/out/blocks/test2.tpl", $viewConfig->getModuleUrl('test1', '/out/blocks/test2.tpl'));
 
         // check exception throwing
         try {
-            $oVC->getModuleUrl('test1', '/out/blocks/test1.tpl');
+            $viewConfig->getModuleUrl('test1', '/out/blocks/test1.tpl');
             $this->fail("should have thrown");
         } catch (oxFileException $e) {
-            $sBaseUrl = $this->getConfig()->getConfigParam('sShopDir');
             $this->assertEquals("Requested file not found for module test1 (" . $sMdir . "/modules/test1/out/blocks/test1.tpl)", $e->getMessage());
         }
+
+        //test if the subject under test still generates a valid module url in admin mode
+        $config->setAdminMode(true);
+        $viewConfig->setAdminMode(true);
+        $config->setConfigParam('sAdminDir', 'admin');
+
+        //in our test environment the domain for admin area is the normal shopurl
+        //When using subshops it is important that getModuleUrl does not return the subshopurl in admin mode
+        //because of browser security restrictions take effect when loading resources from differt domains
+        $adminUrlWithoutAdminPath = $baseUrl;
+        $this->assertEquals(
+            "{$adminUrlWithoutAdminPath}modules/test1/out/blocks/test2.tpl",
+            $viewConfig->getModuleUrl('test1', 'out/blocks/test2.tpl'));
+
+        //Test when sShopURL is set and not sSSLShopURL, nor sAdminSSLURL
+        $config->setConfigParam('sSSLShopURL', '');
+        $config->setConfigParam('sAdminSSLURL', '');
+        $config->setConfigParam('sShopURL', 'http://shop.localhost.local/');
+        $this->assertEquals("http://shop.localhost.local/modules/test1/", $viewConfig->getModuleUrl('test1'));
+
+        //Test when sSSLShopURL is set and sAdminSSLURL is not set
+        $config->setIsSsl(true);
+        $config->setConfigParam('sSSLShopURL', 'https://shop.localhost.local/');
+        $this->assertEquals("https://shop.localhost.local/modules/test1/", $viewConfig->getModuleUrl('test1'));
+
+        //Test if getModuleUrl returns the right url if adminssl url is set
+        $config->setConfigParam('sAdminSSLURL', 'https://admin.localhost.local/admin/');
+        $config->setIsSsl(true);
+        //Next assert is only to guarantee excpected internal behavior to find problems faster
+        $this->assertEquals("https://admin.localhost.local/admin/", $config->getCurrentShopUrl());
+        //The module url is expected to start with the admin url but without the admin directory
+        $this->assertEquals("https://admin.localhost.local/modules/test1/", $viewConfig->getModuleUrl('test1'));
     }
 
     public function testViewThemeParam()

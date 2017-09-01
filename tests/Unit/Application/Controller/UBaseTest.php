@@ -2449,6 +2449,8 @@ class UBaseTest extends \OxidTestCase
         /** @var BaseController $baseController */
         $baseController = oxNew('oxUBase');
 
+        $this->setConfigParam('aSortCols', ['oxid', 'oxtitle']);
+
         $_GET[$baseController->getSortOrderByParameterName()] = 'oxid';
         $_GET[$baseController->getSortOrderParameterName()] = 'asc';
         $this->assertEquals(
@@ -2459,6 +2461,13 @@ class UBaseTest extends \OxidTestCase
         $_GET[$baseController->getSortOrderParameterName()] = 'desc';
         $this->assertEquals(
             array('sortby' => 'oxid', 'sortdir' => 'desc'),
+            $baseController->getUserSelectedSorting()
+        );
+
+        $_GET[$baseController->getSortOrderByParameterName()] = 'oxtitle';
+        $_GET[$baseController->getSortOrderParameterName()] = 'desc';
+        $this->assertEquals(
+            array('sortby' => 'oxtitle', 'sortdir' => 'desc'),
             $baseController->getUserSelectedSorting()
         );
     }

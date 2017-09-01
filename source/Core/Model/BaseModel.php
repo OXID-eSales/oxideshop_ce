@@ -1100,7 +1100,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      *
      * @param bool $forceFullStructure Whether to force loading of full data structure
      *
-     * @return array
+     * @return array|bool
      */
     protected function _getNonCachedFieldNames($forceFullStructure = false)
     {
@@ -1532,7 +1532,13 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      */
     public function getFieldNames()
     {
-        return array_keys($this->_aFieldNames);
+        $fieldNames = $this->_aFieldNames;
+
+        if (!$this->isAdmin() && $this->_blUseLazyLoading) {
+            $fieldNames = $this->_getNonCachedFieldNames(true);
+        }
+
+        return array_keys($fieldNames);
     }
 
     /**

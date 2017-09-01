@@ -2343,12 +2343,65 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function testGetFieldNames()
+    public function testGetFieldNamesOnBase()
     {
         $oBase = oxNew('oxBase');
         $this->assertEquals(array("oxid"), $oBase->getFieldNames());
 
+        $oBase->init("notExistingTable");
+        $this->assertEquals(array("oxid"), $oBase->getFieldNames());
+    }
+
+    /**
+     * Field names getter test
+     *
+     * @return null
+     */
+    public function testGetFieldNamesNoLazyLoading()
+    {
+        // Content model has NO lazy loading enabled.
+        $oBase = oxNew('oxContent');
+
+        $aFieldNames = $oBase->getFieldNames();
+
+        $this->assertTrue(is_array($aFieldNames) && count($aFieldNames) > 0);
+        $this->assertTrue(
+            in_array("oxtitle", $aFieldNames),
+            "oxtitle expected to be in array:  ". serialize($aFieldNames)
+        );
+    }
+
+    /**
+     * Field names getter test
+     *
+     * @return null
+     */
+    public function testGetFieldNamesWithLazyLoading()
+    {
+        // Article model has lazy loading enabled.
+        $oBase = oxNew('oxArticle');
+
         $oBase->init("oxarticles");
+        $aFieldNames = $oBase->getFieldNames();
+
+        $this->assertTrue(is_array($aFieldNames) && count($aFieldNames) > 0);
+        $this->assertTrue(in_array("oxtitle", $aFieldNames));
+    }
+
+    /**
+     * Field names getter test
+     *
+     * @return null
+     */
+    public function testGetFieldNamesWithLazyLoadingOnAdmin()
+    {
+        $this->setAdminMode(true);
+
+        // Article model has lazy loading enabled.
+        $oBase = oxNew('oxArticle');
+
+        $oBase->init("oxarticles");
+        $oBase->setEnableMultilang(false);
         $aFieldNames = $oBase->getFieldNames();
 
         $this->assertTrue(is_array($aFieldNames) && count($aFieldNames) > 0);

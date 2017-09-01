@@ -24,6 +24,8 @@ facts component should be used: `\OxidEsales\Facts\Facts::getEdition()`.
 ### Removed
 
 ### Fixed
+- https://bugs.oxid-esales.com/view.php?id=6474 with PR#457
+- https://bugs.oxid-esales.com/view.php?id=6155 with PR#431
 
 ### Security
 

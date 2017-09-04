@@ -910,7 +910,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $sortOrder &&
             Registry::getUtils()->isValidAlpha($sortOrder) &&
             in_array(Str::getStr()->strtolower($sortOrder), $sortDirections) &&
-            in_array($sortBy, oxNew(\OxidEsales\Eshop\Application\Model\Article::class)->getFieldNames())
+            in_array($sortBy, $this->getSortColumns())
         ) {
             return ['sortby' => $sortBy, 'sortdir' => $sortOrder];
         }

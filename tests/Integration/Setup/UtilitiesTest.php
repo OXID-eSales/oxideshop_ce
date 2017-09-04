@@ -23,13 +23,36 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Setup;
 
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Setup\Utilities;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 
-class UtilitiesTest extends \OxidTestCase
+class UtilitiesTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->adjustTemplateBlocksOxModuleColumn();
+    }
+
+    public function testExecuteExternalDatabaseMigrationCommand()
+    {
+        $output = new ConsoleOutput();
+        $output->setVerbosity(ConsoleOutputInterface::VERBOSITY_QUIET);
+
+        $this->assertOxModuleColumnHasMaxLength(32);
+
+        $utilities = new Utilities();
+        $utilities->executeExternalDatabaseMigrationCommand($output);
+
+        $this->assertOxModuleColumnHasMaxLength(100);
+    }
+
     protected function getOxModuleColumnInformation()
     {
         $database = DatabaseProvider::getDb();
         $columns = $database->metaColumns('oxtplblocks');
+
         foreach($columns as $column) {
             if ($column->name === 'OXMODULE') {
 
@@ -38,15 +61,23 @@ class UtilitiesTest extends \OxidTestCase
         }
     }
 
-    public function testExecuteExternalDatabaseMigrationCommand()
+    /**
+     * @param int $expectedMaxLength
+     */
+    private function assertOxModuleColumnHasMaxLength($expectedMaxLength)
     {
-        $column = $this->getOxModuleColumnInformation();
-        $this->assertEquals(32, $column->max_length);
+        $columnInformation = $this->getOxModuleColumnInformation();
 
-        $utilities = new Utilities();
-        $utilities->executeExternalDatabaseMigrationCommand();
+        $this->assertEquals($expectedMaxLength, $columnInformation->max_length);
+    }
 
-        $column = $this->getOxModuleColumnInformation();
-        $this->assertEquals(100, $column->max_length);
+    protected function adjustTemplateBlocksOxModuleColumn()
+    {
+        $database = DatabaseProvider::getDb();
+        $sql = "ALTER TABLE `oxtplblocks` 
+          CHANGE `OXMODULE` `OXMODULE` char(32) 
+          character set latin1 collate latin1_general_ci NOT NULL 
+          COMMENT 'Module, which uses this template';";
+        $database->execute($sql);
     }
 }

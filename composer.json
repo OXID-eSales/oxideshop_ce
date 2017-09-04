@@ -13,7 +13,7 @@
         "phpmailer/phpmailer": "^v5.2.22",
         "smarty/smarty": "^v2.6.30",
         "oxid-esales/flow-theme": "dev-master || ^2.2.0",
-        "oxid-esales/oxideshop-doctrine-migration-wrapper": "^v2.0.0",
+        "oxid-esales/oxideshop-doctrine-migration-wrapper": "dev-master-remove_exec_from_setup-OXDEV-46 || ^v2.0.0",
         "oxid-esales/oxideshop-db-views-generator": "^v1.1.0",
         "oxid-esales/eshop-edition-facts": "^v1.0.0",
         "doctrine/dbal": "v2.5.12",

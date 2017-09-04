@@ -31,6 +31,7 @@ use \OxidEsales\Eshop\Core\Edition\EditionSelector;
 use \OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
 use \OxidEsales\DoctrineMigrationWrapper\Migrations;
 use OxidEsales\DoctrineMigrationWrapper\MigrationsBuilder;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
  * Setup utilities class
@@ -467,11 +468,15 @@ class Utilities extends Core
 
     /**
      * Calls external database migration command.
+     *
+     * @param ConsoleOutput $output Add a possibility to provide a custom output handler.
      */
-    public function executeExternalDatabaseMigrationCommand()
+    public function executeExternalDatabaseMigrationCommand(ConsoleOutput $output = null)
     {
         $migrationsBuilder = new MigrationsBuilder();
         $migrations = $migrationsBuilder->build();
+
+        $migrations->setOutput($output);
 
         $editionSelector = new EditionSelector();
 

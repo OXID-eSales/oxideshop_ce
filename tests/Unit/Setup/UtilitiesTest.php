@@ -62,8 +62,6 @@ class UtilitiesTest extends \OxidTestCase
 
     /**
      * Test teardown
-     *
-     * @return null
      */
     protected function tearDown()
     {
@@ -90,8 +88,6 @@ class UtilitiesTest extends \OxidTestCase
 
     /**
      * Testing Utilities::getFileContents()
-     *
-     * @return null
      */
     public function testGetFileContents()
     {
@@ -105,8 +101,6 @@ class UtilitiesTest extends \OxidTestCase
 
     /**
      * Testing Utilities::getDefaultPathParams()
-     *
-     * @return null
      */
     public function testGetDefaultPathParams()
     {
@@ -129,8 +123,6 @@ class UtilitiesTest extends \OxidTestCase
 
     /**
      * test for bug #0002043: System requirements check for "Files/folders access rights" always fails
-     *
-     * @return null
      */
     public function testGetDefaultPathParamsIfPathTranslatedIsEmpty()
     {
@@ -153,8 +145,6 @@ class UtilitiesTest extends \OxidTestCase
 
     /**
      * Testing Utilities::getEnvVar()
-     *
-     * @return null
      */
     public function testGetEnvVar()
     {
@@ -170,8 +160,6 @@ class UtilitiesTest extends \OxidTestCase
 
     /**
      * Testing Utilities::getRequestVar()
-     *
-     * @return null
      */
     public function testGetRequestVar()
     {
@@ -185,8 +173,6 @@ class UtilitiesTest extends \OxidTestCase
 
     /**
      * Testing Utilities::preparePath()
-     *
-     * @return null
      */
     public function testPreparePath()
     {
@@ -198,8 +184,6 @@ class UtilitiesTest extends \OxidTestCase
 
     /**
      * Testing Utilities::extractBasePath()
-     *
-     * @return null
      */
     public function testExtractBasePath()
     {
@@ -213,8 +197,6 @@ class UtilitiesTest extends \OxidTestCase
 
     /**
      * Testing Utilities::isValidEmail()
-     *
-     * @return null
      */
     public function testIsValidEmail()
     {

@@ -33,8 +33,6 @@ class LanguageTest extends \OxidTestCase
 
     /**
      * Test teardown
-     *
-     * @return null
      */
     protected function tearDown()
     {
@@ -70,8 +68,6 @@ class LanguageTest extends \OxidTestCase
 
     /**
      * Testing Language::getSetupLang()
-     *
-     * @return null
      */
     public function testGetSetupLang()
     {
@@ -94,8 +90,6 @@ class LanguageTest extends \OxidTestCase
 
     /**
      * Testing Language::getText()
-     *
-     * @return null
      */
     public function testGetText()
     {
@@ -107,8 +101,6 @@ class LanguageTest extends \OxidTestCase
 
     /**
      * Testing Language::getModuleName()
-     *
-     * @return null
      */
     public function testGetModuleName()
     {

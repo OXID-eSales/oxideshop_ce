@@ -360,8 +360,6 @@ class ControllerTest extends \OxidTestCase
      * Test helper.
      *
      * @param array $parameters
-     *
-     * @return null
      */
     protected function setPostData($parameters)
     {

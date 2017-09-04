@@ -34,8 +34,6 @@ class ViewTest extends \OxidTestCase
 {
     /**
      * Testing view::getTitle()
-     *
-     * @return null
      */
     public function testGetTitle()
     {
@@ -46,8 +44,6 @@ class ViewTest extends \OxidTestCase
 
     /**
      * Testing view::setTitle()
-     *
-     * @return null
      */
     public function testSetTitle()
     {
@@ -59,8 +55,6 @@ class ViewTest extends \OxidTestCase
 
     /**
      * Testing view::getMessages()
-     *
-     * @return null
      */
     public function testGetMessages()
     {
@@ -70,8 +64,6 @@ class ViewTest extends \OxidTestCase
 
     /**
      * Testing view::setMessage()
-     *
-     * @return null
      */
     public function testSetMessage()
     {
@@ -86,8 +78,6 @@ class ViewTest extends \OxidTestCase
 
     /**
      * Testing view::getText()
-     *
-     * @return null
      */
     public function testGetText()
     {
@@ -101,8 +91,6 @@ class ViewTest extends \OxidTestCase
 
     /**
      * Testing view::setViewParam() and view::getViewParam()
-     *
-     * @return null
      */
     public function testSetViewParamGetViewParam()
     {
@@ -113,8 +101,6 @@ class ViewTest extends \OxidTestCase
 
     /**
      * Testing view::getSetupStep()
-     *
-     * @return null
      */
     public function testGetSetupStep()
     {
@@ -128,8 +114,6 @@ class ViewTest extends \OxidTestCase
 
     /**
      * Testing view::getNextSetupStep()
-     *
-     * @return null
      */
     public function testGetNextSetupStep()
     {
@@ -143,8 +127,6 @@ class ViewTest extends \OxidTestCase
 
     /**
      * Testing view::getNextSetupStep()
-     *
-     * @return null
      */
     public function testGetCurrentSetupStep()
     {
@@ -158,8 +140,6 @@ class ViewTest extends \OxidTestCase
 
     /**
      * Testing view::getSetupSteps()
-     *
-     * @return null
      */
     public function testGetSetupSteps()
     {
@@ -173,8 +153,6 @@ class ViewTest extends \OxidTestCase
 
     /**
      * Testing view::getImageDir()
-     *
-     * @return null
      */
     public function testGetImageDir()
     {
@@ -184,8 +162,6 @@ class ViewTest extends \OxidTestCase
 
     /**
      * Testing view::isDeletedSetup()
-     *
-     * @return null
      */
     public function testIsDeletedSetup()
     {
@@ -208,8 +184,6 @@ class ViewTest extends \OxidTestCase
 
     /**
      * Testing view::getReqInfoUrl()
-     *
-     * @return null
      */
     public function testGetReqInfoUrl()
     {
@@ -223,8 +197,6 @@ class ViewTest extends \OxidTestCase
 
     /**
      * Testing view::getSid()
-     *
-     * @return null
      */
     public function testGetSid()
     {

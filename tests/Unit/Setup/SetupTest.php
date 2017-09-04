@@ -39,8 +39,6 @@ class SetupTest extends \OxidTestCase
 {
     /**
      * Testing Setup::setTitle() and Setup::getTitle()
-     *
-     * @return null
      */
     public function testSetTitleAndGetTitle()
     {
@@ -53,8 +51,6 @@ class SetupTest extends \OxidTestCase
 
     /**
      * Testing Setup::setMessage() and Setup::getMessage()
-     *
-     * @return null
      */
     public function testSetMessageAndGetMessage()
     {
@@ -67,8 +63,6 @@ class SetupTest extends \OxidTestCase
 
     /**
      * Testing Setup::getCurrentStep()
-     *
-     * @return null
      */
     public function testGetCurrentStep()
     {
@@ -85,8 +79,6 @@ class SetupTest extends \OxidTestCase
 
     /**
      * Testing Setup::setNextStep() and Setup::getNextStep()
-     *
-     * @return null
      */
     public function testSetNextStepAndGetNextStep()
     {
@@ -99,8 +91,6 @@ class SetupTest extends \OxidTestCase
 
     /**
      * Testing Setup::alreadySetUp()
-     *
-     * @return null
      */
     public function testAlreadySetUp()
     {
@@ -112,8 +102,6 @@ class SetupTest extends \OxidTestCase
 
     /**
      * Testing Setup::getShopId()
-     *
-     * @return null
      */
     public function testGetShopId()
     {
@@ -131,8 +119,6 @@ class SetupTest extends \OxidTestCase
 
     /**
      * Testing Setup::getSteps()
-     *
-     * @return null
      */
     public function testGetSteps()
     {
@@ -150,8 +136,6 @@ class SetupTest extends \OxidTestCase
 
     /**
      * Testing Setup::getStep()
-     *
-     * @return null
      */
     public function testGetStep()
     {
@@ -164,8 +148,6 @@ class SetupTest extends \OxidTestCase
 
     /**
      * Testing Setup::getModuleClass()
-     *
-     * @return null
      */
     public function testGetModuleClass()
     {

@@ -51,8 +51,6 @@ class SessionTest extends \OxidTestCase
 
     /**
      * Testing Session::_validateSession() - new session.
-     *
-     * @return null
      */
     public function testValidateSession_newsession()
     {
@@ -65,8 +63,6 @@ class SessionTest extends \OxidTestCase
 
     /**
      * Testing Session::_validateSession() - old session, key param not set, invalid.
-     *
-     * @return null
      */
     public function testValidateSession_oldsession_invalid()
     {
@@ -80,8 +76,6 @@ class SessionTest extends \OxidTestCase
 
     /**
      * Testing Session::_validateSession() - old session, key param not set, valid.
-     *
-     * @return null
      */
     public function testValidateSession_oldsession_valid()
     {
@@ -102,8 +96,6 @@ class SessionTest extends \OxidTestCase
      * even if output has been already sent.
      *
      * @requires PHP 5.3.9
-     *
-     * @return null
      */
     public function testGetNewSessionID()
     {
@@ -120,8 +112,6 @@ class SessionTest extends \OxidTestCase
 
     /**
      * Testing Session::getSid()
-     *
-     * @return null
      */
     public function testGetSid()
     {
@@ -132,8 +122,6 @@ class SessionTest extends \OxidTestCase
 
     /**
      * Testing Session::setSid()
-     *
-     * @return null
      */
     public function testSetSid()
     {
@@ -144,8 +132,6 @@ class SessionTest extends \OxidTestCase
 
     /**
      * Testing Session::getSessionParam() - non existing key.
-     *
-     * @return null
      */
     public function testGetSessionParam_notfound()
     {
@@ -159,8 +145,6 @@ class SessionTest extends \OxidTestCase
 
     /**
      * Testing Session::getSessionParam() - existing key.
-     *
-     * @return null
      */
     public function testGetSessionParam_found()
     {

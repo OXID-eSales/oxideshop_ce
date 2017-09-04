@@ -30,8 +30,6 @@ class CoreTest extends \OxidTestCase
 {
     /**
      * Test get instance.
-     *
-     * @return null
      */
     public function testGetInstance()
     {

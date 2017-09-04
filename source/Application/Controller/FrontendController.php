@@ -910,10 +910,25 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $sortOrder &&
             Registry::getUtils()->isValidAlpha($sortOrder) &&
             in_array(Str::getStr()->strtolower($sortOrder), $sortDirections) &&
-            in_array($sortBy, oxNew(\OxidEsales\Eshop\Application\Model\Article::class)->getFieldNames())
+            in_array($sortBy, $this->getValidSortingFieldNames())
         ) {
             return ['sortby' => $sortBy, 'sortdir' => $sortOrder];
         }
+    }
+
+    /**
+     * Returns the fields that are allowed for sorting
+     * the set is limited to known field names on the article table and manuel configured field names to avoid
+     * SQL errors and cache floating by manipulating the request parameters.
+     * @return array
+     */
+    public function getValidSortingFieldNames()
+    {
+        //All oxarticle table column names are included because custom themes may make use of it,
+        //(dropping that would be a BC break).
+        //additionally getSortColumns is used to allow custom columns that may not exists on the article table
+        //this is useful if you use some third party search that support extra columns
+        return array_unique(array_merge(oxRegistry::get(\OxidEsales\Eshop\Application\Model\Article::class)->getFieldNames(),$this->getSortColumns()));
     }
 
     /**

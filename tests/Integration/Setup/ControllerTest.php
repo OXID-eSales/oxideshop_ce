@@ -43,23 +43,25 @@ class TestSetupController extends \OxidEsales\EshopCommunity\Setup\Controller
 /**
  * SetupCoreTest tests
  */
-class ControllerTest extends \OxidTestCase
+class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
     /**
-     * Fixture set up.
+     * The standard set up method.
      */
     protected function setUp()
     {
         parent::setUp();
-        $_POST = [];
+
+        $this->unsetPost();
     }
 
     /**
-     * Fixture tear down.
+     * The standard tear down method.
      */
     protected function tearDown()
     {
-        $_POST = [];
+        $this->unsetPost();
+
         parent::tearDown();
     }
 
@@ -69,11 +71,13 @@ class ControllerTest extends \OxidTestCase
     public function testDbConnectNoDataSupplied()
     {
         $controller = $this->getTestController();
-        //NOTE: OxidTestCase::setExpectedException is not what we need here, try/catch is better suited
+
+        // NOTE: OxidTestCase::setExpectedException is not what we need here, try/catch is better suited
         try {
             $controller->dbConnect();
         } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
             $view = $controller->getView();
+
             $this->assertContains('ERROR: Please fill in all needed fields!', $view->getMessages()[0]);
             $this->assertEquals('400', $view->getNextSetupStep()); //STEP_DB_INFO
             $this->assertNull($view->getViewParam('aDB'));
@@ -85,14 +89,16 @@ class ControllerTest extends \OxidTestCase
      */
     public function testDbConnectMySQLVersionDoesNotFitRequirements()
     {
-        $this->setPostData(array('aDB' => $this->getDatabaseCredentials()));
+        $this->setPostDatabase($this->getDatabaseCredentials());
+
         $controller = $this->getTestController('5.4.53-0ubuntu0.14.04.1');
 
-        //NOTE: OxidTestCase::setExpectedException is not what we need here, try/catch is better suited
+        // NOTE: OxidTestCase::setExpectedException is not what we need here, try/catch is better suited
         try {
             $controller->dbConnect();
         } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
             $view = $controller->getView();
+
             $this->assertContains('The installed MySQL version does not fit system requirements!', $view->getMessages()[0]);
             $this->assertEquals('400', $view->getNextSetupStep()); //STEP_DB_INFO
             $this->assertNull($view->getViewParam('aDB'));
@@ -106,19 +112,22 @@ class ControllerTest extends \OxidTestCase
      */
     public function testDbConnectAllIsWellButDatabaseNotYetCreated()
     {
-        $this->setPostData(array('aDB' => $this->getDatabaseCredentials()));
+        $this->setPostDatabase($this->getDatabaseCredentials());
+
         $controller = $this->getTestController('5.5.53-0ubuntu0.14.04.1', false, true);
 
-        //NOTE: OxidTestCase::setExpectedException is not what we need here, try/catch is better suited
+        // NOTE: OxidTestCase::setExpectedException is not what we need here, try/catch is better suited
         try {
             $controller->dbConnect();
         } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
             $view = $controller->getView();
+
             $this->assertContains('ERROR: Database not available and also cannot be created!', $view->getMessages()[0]);
-            $this->assertNull($view->getViewParam('blCreated'));
             $this->assertEquals('400', $view->getNextSetupStep()); //STEP_DB_INFO
-            $this->assertEquals(1, $view->getViewParam('blCreated'));
             $this->assertNotNull($view->getViewParam('aDB'));
+
+            $this->assertNull($view->getViewParam('blCreated'));
+            $this->assertEquals(1, $view->getViewParam('blCreated'));
         }
     }
 
@@ -128,14 +137,16 @@ class ControllerTest extends \OxidTestCase
     public function testDbConnectAllIsWellAndDatabaseAlreadyExists()
     {
         $databaseName = $this->getConfig()->getConfigParam('dbName');
-        $this->setPostData(array('aDB' => $this->getDatabaseCredentials($databaseName)));
+        $this->setPostDatabase($this->getDatabaseCredentials($databaseName));
+
         $controller = $this->getTestController('5.5.53-0ubuntu0.14.04.1');
 
-        //NOTE: OxidTestCase::setExpectedException is not what we need here, try/catch is better suited
+        // NOTE: OxidTestCase::setExpectedException is not what we need here, try/catch is better suited
         try {
             $controller->dbConnect();
         } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
             $view = $controller->getView();
+
             $this->assertContains('ERROR: Seems there is already OXID eShop installed in database', $view->getMessages()[0]);
             $this->assertContains('If you want to overwrite all existing data and install anyway click', $view->getMessages()[1]);
             $this->assertContains('ow=1', $view->getMessages()[1]);
@@ -150,14 +161,16 @@ class ControllerTest extends \OxidTestCase
      */
     public function testDbConnectMySQLVersionDoesNotFitRecommendations()
     {
-        $this->setPostData(array('aDB' => $this->getDatabaseCredentials()));
+        $this->setPostDatabase($this->getDatabaseCredentials());
+
         $controller = $this->getTestController('5.6.53-0ubuntu0.14.04.1');
 
-        //NOTE: OxidTestCase::setExpectedException is not what we need here, try/catch is better suited
+        // NOTE: OxidTestCase::setExpectedException is not what we need here, try/catch is better suited
         try {
             $controller->dbConnect();
         } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
             $view = $controller->getView();
+
             $this->assertContains('WARNING: A bug in MySQL 5.6 may lead to problems in OXID eShop Enterprise Edition', $view->getMessages()[0]);
             $this->assertContains('If you want to install anyway click', $view->getMessages()[1]);
             $this->assertContains('owrec=1', $view->getMessages()[1]);
@@ -172,14 +185,16 @@ class ControllerTest extends \OxidTestCase
     public function testDbConnectMySQLVersionDoesNotFitRecommendationsDatabaseExists()
     {
         $databaseName = $this->getConfig()->getConfigParam('dbName');
-        $this->setPostData(array('aDB' => $this->getDatabaseCredentials($databaseName)));
+        $this->setPostDatabase($this->getDatabaseCredentials($databaseName));
+
         $controller = $this->getTestController('5.6.53-0ubuntu0.14.04.1');
 
-        //NOTE: OxidTestCase::setExpectedException is not what we need here, try/catch is better suited
+        // NOTE: OxidTestCase::setExpectedException is not what we need here, try/catch is better suited
         try {
             $controller->dbConnect();
         } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
             $view = $controller->getView();
+
             $this->assertContains('WARNING: A bug in MySQL 5.6 may lead to problems in OXID eShop Enterprise Edition', $view->getMessages()[0]);
             $this->assertContains('ERROR: Seems there is already OXID eShop installed in database', $view->getMessages()[1]);
             $this->assertContains('If you want to overwrite all existing data and install anyway click', $view->getMessages()[2]);
@@ -195,11 +210,13 @@ class ControllerTest extends \OxidTestCase
      */
     public function testDbConnectMySQLVersionDoesNotFitRecommendationsIgnoreConfirmed()
     {
-        $this->setPostData(array('aDB' => $this->getDatabaseCredentials()));
+        $this->setPostDatabase($this->getDatabaseCredentials());
+
         $controller = $this->getTestController('5.6.53-0ubuntu0.14.04.1', true, true);
         $controller->dbConnect();
 
         $view = $controller->getView();
+
         $this->assertEmpty($view->getMessages());
         $this->assertNotNull($view->getViewParam('aDB'));
     }
@@ -211,14 +228,16 @@ class ControllerTest extends \OxidTestCase
     public function testDbConnectMySQLVersionDoesNotFitRecommendationsDatabaseExistsIgnoreConfirmed()
     {
         $databaseName = $this->getConfig()->getConfigParam('dbName');
-        $this->setPostData(array('aDB' => $this->getDatabaseCredentials($databaseName)));
+        $this->setPostDatabase($this->getDatabaseCredentials($databaseName));
+
         $controller = $this->getTestController('5.6.53-0ubuntu0.14.04.1', true, false);
 
-        //NOTE: OxidTestCase::setExpectedException is not what we need here, try/catch is better suited
+        // NOTE: OxidTestCase::setExpectedException is not what we need here, try/catch is better suited
         try {
             $controller->dbConnect();
         } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
             $view = $controller->getView();
+
             $this->assertContains('ERROR: Seems there is already OXID eShop installed in database', $view->getMessages()[0]);
             $this->assertContains('If you want to overwrite all existing data and install anyway', $view->getMessages()[1]);
             $this->assertNotContains('owrec=1', $view->getMessages()[1]);
@@ -235,9 +254,10 @@ class ControllerTest extends \OxidTestCase
     {
         $databaseName = $this->getConfig()->getConfigParam('dbName');
         $databaseCredentials = $this->getDatabaseCredentials($databaseName);
-        $controller = $this->getTestController('5.6.53-0ubuntu0.14.04.1', false, false, array('aDB' => $databaseCredentials));
 
-        //NOTE: OxidTestCase::setExpectedException is not what we need here, try/catch is better suited
+        $controller = $this->getTestController('5.6.53-0ubuntu0.14.04.1', false, false, ['aDB' => $databaseCredentials]);
+
+        // NOTE: OxidTestCase::setExpectedException is not what we need here, try/catch is better suited
         try {
             $controller->dbCreate();
         } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
@@ -259,13 +279,15 @@ class ControllerTest extends \OxidTestCase
     public function testDbCreateMySQLVersionDoesNotFitRecommendationsDbDoesNotExist()
     {
         $databaseCredentials = $this->getDatabaseCredentials();
-        $controller = $this->getTestController('5.6.53-0ubuntu0.14.04.1', false, false, array('aDB' => $databaseCredentials));
 
-        //NOTE: OxidTestCase::setExpectedException is not what we need here, try/catch is better suited
+        $controller = $this->getTestController('5.6.53-0ubuntu0.14.04.1', false, false, ['aDB' => $databaseCredentials]);
+
+        // NOTE: OxidTestCase::setExpectedException is not what we need here, try/catch is better suited
         try {
             $controller->dbCreate();
         } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
             $view = $controller->getView();
+
             $this->assertContains('WARNING: A bug in MySQL 5.6 may lead to problems in OXID eShop Enterprise Edition', $view->getMessages()[0]);
             $this->assertContains('If you want to install anyway click', $view->getMessages()[1]);
             $this->assertContains('owrec=1', $view->getMessages()[1]);
@@ -280,13 +302,15 @@ class ControllerTest extends \OxidTestCase
     {
         $databaseName = $this->getConfig()->getConfigParam('dbName');
         $databaseCredentials = $this->getDatabaseCredentials($databaseName);
-        $controller = $this->getTestController('5.6.53-0ubuntu0.14.04.1', true, false, array('aDB' => $databaseCredentials));
 
-        //NOTE: OxidTestCase::setExpectedException is not what we need here, try/catch is better suited
+        $controller = $this->getTestController('5.6.53-0ubuntu0.14.04.1', true, false, ['aDB' => $databaseCredentials]);
+
+        // NOTE: OxidTestCase::setExpectedException is not what we need here, try/catch is better suited
         try {
             $controller->dbCreate();
         } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
             $view = $controller->getView();
+
             $this->assertContains('bail out before we do harm while testing', $view->getMessages()[0]);
         }
     }
@@ -298,13 +322,15 @@ class ControllerTest extends \OxidTestCase
     public function testDbCreateMySQLVersionDoesNotFitRecommendationsDbDoesNotExistIgnoreConfirmed()
     {
         $databaseCredentials = $this->getDatabaseCredentials();
-        $controller = $this->getTestController('5.6.53-0ubuntu0.14.04.1', true, true, array('aDB' => $databaseCredentials));
 
-        //NOTE: OxidTestCase::setExpectedException is not what we need here, try/catch is better suited
+        $controller = $this->getTestController('5.6.53-0ubuntu0.14.04.1', true, true, ['aDB' => $databaseCredentials]);
+
+        // NOTE: OxidTestCase::setExpectedException is not what we need here, try/catch is better suited
         try {
             $controller->dbCreate();
         } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
             $view = $controller->getView();
+
             $this->assertContains('bail out before we do harm while testing', $view->getMessages()[0]);
         }
     }
@@ -317,24 +343,25 @@ class ControllerTest extends \OxidTestCase
      * @param bool   $expectDbCreation Expect Database::createDb call.
      * @param array  $sessionData      Store this data in the session.
      *
-     * @return object
+     * @return TestSetupController
      */
-    protected function getTestController($databaseVersion = '5.6.53-0ubuntu0.14.04.1', $ignoreWarning = false, $expectDbCreation = false, $sessionData = array())
+    protected function getTestController($databaseVersion = '5.6.53-0ubuntu0.14.04.1', $ignoreWarning = false, $expectDbCreation = false, $sessionData = [])
     {
-        $sessionMock = $this->getMock(\OxidEsales\EshopCommunity\Setup\Session::class, array('getSid'), array(), '', false);
         if ($ignoreWarning) {
             $_GET['owrec'] = 1;
         }
+
+        $sessionMock = $this->getMock(\OxidEsales\EshopCommunity\Setup\Session::class, ['getSid'], [], '', false);
         if (is_array($sessionData) && !empty($sessionData)) {
-            foreach( $sessionData as $key => $value) {
+            foreach ($sessionData as $key => $value) {
                 $sessionMock->setSessionParam($key, $value);
             }
         }
 
-        $languageMock = $this->getMock(\OxidEsales\EshopCommunity\Setup\Language::class, array('getInstance', 'getLanguage'), array(), '', false);
+        $languageMock = $this->getMock(\OxidEsales\EshopCommunity\Setup\Language::class, ['getInstance', 'getLanguage'], [], '', false);
         $languageMock->expects($this->any())->method('getLanguage')->will($this->returnValue('en'));
 
-        $databaseMock = $this->getMock(\OxidEsales\EshopCommunity\Setup\Database::class, array('getDatabaseVersion', 'createDb', 'testCreateView'));
+        $databaseMock = $this->getMock(\OxidEsales\EshopCommunity\Setup\Database::class, ['getDatabaseVersion', 'createDb', 'testCreateView']);
         $databaseMock->expects($this->any())->method('getDatabaseVersion')->will($this->returnValue($databaseVersion));
         $exception = new \Exception('bail out before we do harm while testing');
         $databaseMock->expects($this->any())->method('testCreateView')->will($this->throwException($exception));
@@ -357,6 +384,14 @@ class ControllerTest extends \OxidTestCase
     }
 
     /**
+     * @param array $databaseSettings The settings we want to write into the POST for the database.
+     */
+    protected function setPostDatabase($databaseSettings)
+    {
+        $this->setPostData(['aDB' => $databaseSettings]);
+    }
+
+    /**
      * Test helper.
      *
      * @param array $parameters
@@ -375,7 +410,9 @@ class ControllerTest extends \OxidTestCase
      */
     protected function getDatabaseCredentials($databaseName = '')
     {
-        $databaseName = $databaseName ?: time();
+        if (!$databaseName) {
+            $databaseName = time();
+        }
 
         $myConfig = $this->getConfig();
         $parameters['dbHost'] = $myConfig->getConfigParam('dbHost');
@@ -387,4 +424,8 @@ class ControllerTest extends \OxidTestCase
         return $parameters;
     }
 
+    protected function unsetPost()
+    {
+        $_POST = [];
+    }
 }

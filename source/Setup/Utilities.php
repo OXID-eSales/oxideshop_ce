@@ -24,6 +24,7 @@ namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
 
+use OxidEsales\DatabaseViewsGenerator\ViewsGenerator;
 use \OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
 use \OxidEsales\Eshop\Core\Edition\EditionPathProvider;
 use \OxidEsales\Facts\Facts;
@@ -44,13 +45,9 @@ class Utilities extends Core
     const DEMODATA_PACKAGE_NAME = 'oxideshop-demodata-%s';
 
     const DEMODATA_PACKAGE_SOURCE_DIRECTORY = 'src';
-    const COMPOSER_VENDOR_BIN_DIRECTORY = 'bin';
 
     const DEMODATA_SQL_FILENAME = 'demodata.sql';
     const LICENSE_TEXT_FILENAME = "lizenz.txt";
-
-    const DATABASE_VIEW_REGENERATION_BINARY_FILENAME = 'oe-eshop-db_views_generate';
-    const DATABASE_MIGRATION_BINARY_FILENAME = 'oe-eshop-doctrine_migration';
 
     /**
      * Unable to find file
@@ -459,11 +456,14 @@ class Utilities extends Core
 
     /**
      * Calls external database views regeneration command.
+     *
+     * @return bool Was the call a success?
      */
     public function executeExternalRegenerateViewsCommand()
     {
-        $regenerateViewsCommand = $this->formCommandToVendor(self::DATABASE_VIEW_REGENERATION_BINARY_FILENAME);
-        $this->executeShellCommand($regenerateViewsCommand);
+        $ViewsGenerator = new ViewsGenerator();
+
+        return $ViewsGenerator->generate();
     }
 
     /**
@@ -500,28 +500,6 @@ class Utilities extends Core
     }
 
     /**
-     * Execute shell command and capture output when return code is non zero.
-     *
-     * @param string $command Command to execute.
-     *
-     * @throws CommandExecutionFailedException When execution returns non zero return code.
-     */
-    private function executeShellCommand($command)
-    {
-        $commandWithStdErrRedirection = $command . " 2>&1";
-
-        exec($commandWithStdErrRedirection, $outputLines, $returnCode);
-
-        if (($returnCode !== 0)) {
-            $exception = new CommandExecutionFailedException($command);
-            $exception->setReturnCode($returnCode);
-            $exception->setCommandOutput($returnCode !== 127 ? $outputLines : ['Impossible to execute the command.']);
-
-            throw $exception;
-        }
-    }
-
-    /**
      * Return path to composer vendor directory.
      *
      * @return string
@@ -529,16 +507,6 @@ class Utilities extends Core
     private function getVendorDirectory()
     {
         return VENDOR_PATH;
-    }
-
-    /**
-     * Return path to composer vendor bin directory.
-     *
-     * @return string
-     */
-    private function getVendorBinaryDirectory()
-    {
-        return $this->getVendorDirectory() . self::COMPOSER_VENDOR_BIN_DIRECTORY;
     }
 
     /**
@@ -664,23 +632,5 @@ class Utilities extends Core
     public static function stripAnsiControlCodes($outputWithAnsiControlCodes)
     {
         return preg_replace('/\x1b(\[|\(|\))[;?0-9]*[0-9A-Za-z]/', "", $outputWithAnsiControlCodes);
-    }
-
-    /**
-     * Form command to script file in Vendor directory.
-     *
-     * @param string $command
-     *
-     * @return string
-     */
-    private function formCommandToVendor($command)
-    {
-        $migrateCommand = implode(
-            DIRECTORY_SEPARATOR,
-            [$this->getVendorBinaryDirectory(), $command]
-        );
-        $migrateCommand = '"' . $migrateCommand . '"';
-
-        return $migrateCommand;
     }
 }

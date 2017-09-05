@@ -353,18 +353,11 @@ class Controller extends Core
                 $this->installShopData($database, $demodataInstallationRequired);
             } catch (CommandExecutionFailedException $exception) {
                 $this->handleCommandExecutionFailedException($exception);
+
                 throw new SetupControllerExitException();
             } catch (Exception $exception) {
                 // there where problems with queries
                 $view->setMessage($language->getText('ERROR_BAD_DEMODATA') . "<br><br>" . $exception->getMessage());
-
-                throw new SetupControllerExitException();
-            }
-
-            try {
-                $this->getUtilitiesInstance()->executeExternalRegenerateViewsCommand();
-            } catch (CommandExecutionFailedException $exception) {
-                $this->handleCommandExecutionFailedException($exception);
 
                 throw new SetupControllerExitException();
             }
@@ -384,6 +377,18 @@ class Controller extends Core
             $adminData = $session->getSessionParam('aAdminData');
             // creating admin user
             $database->writeAdminLoginData($adminData['sLoginName'], $adminData['sPassword']);
+        } catch (Exception $exception) {
+            $view->setMessage($exception->getMessage());
+
+            throw new SetupControllerExitException();
+        }
+
+        try {
+            $this->getUtilitiesInstance()->executeExternalRegenerateViewsCommand();
+        } catch (CommandExecutionFailedException $exception) {
+            $this->handleCommandExecutionFailedException($exception);
+
+            throw new SetupControllerExitException();
         } catch (Exception $exception) {
             $view->setMessage($exception->getMessage());
 

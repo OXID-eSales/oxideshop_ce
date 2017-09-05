@@ -2440,63 +2440,70 @@ class UBaseTest extends \OxidTestCase
         $this->assertEquals($sTitle, $oUBase->getPageTitle());
     }
 
+    public function providerGetUserSelectedSortingValidSorting()
+    {
+        return [
+            ['oxid', 'asc'],
+            ['oxid', 'desc'],
+            ['oxtitle', 'asc'],
+        ];
+    }
+
     /**
+     * Test case for bug fix #0006445 #0006579 #0006083
+     *
      * test for getUserSelectedSorting
-     * @see https://bugs.oxid-esales.com/view.php?id=6083
+     *
+     * @param string $columnName    column name which is used to sort by.
+     * @param string $sortDirection sort direction asc or desc.
+     *
+     * @dataProvider providerGetUserSelectedSortingValidSorting
      */
-    public function testGetUserSelectedSortingValidSorting()
+    public function testGetUserSelectedSortingValidSorting($columnName, $sortDirection)
     {
         /** @var BaseController $baseController */
         $baseController = oxNew('oxUBase');
 
         $this->setConfigParam('aSortCols', ['oxid', 'oxtitle']);
 
-        $_GET[$baseController->getSortOrderByParameterName()] = 'oxid';
-        $_GET[$baseController->getSortOrderParameterName()] = 'asc';
+        $_GET[$baseController->getSortOrderByParameterName()] = $columnName;
+        $_GET[$baseController->getSortOrderParameterName()] = $sortDirection;
         $this->assertEquals(
-            array('sortby' => 'oxid', 'sortdir' => 'asc'),
-            $baseController->getUserSelectedSorting()
-        );
-
-        $_GET[$baseController->getSortOrderParameterName()] = 'desc';
-        $this->assertEquals(
-            array('sortby' => 'oxid', 'sortdir' => 'desc'),
-            $baseController->getUserSelectedSorting()
-        );
-
-        $_GET[$baseController->getSortOrderByParameterName()] = 'oxtitle';
-        $_GET[$baseController->getSortOrderParameterName()] = 'desc';
-        $this->assertEquals(
-            array('sortby' => 'oxtitle', 'sortdir' => 'desc'),
+            ['sortby' => $columnName, 'sortdir' => $sortDirection],
             $baseController->getUserSelectedSorting()
         );
     }
 
+    public function providerGetUserSelectedSortingInvalidSorting()
+    {
+        return [
+            ['oxid', 'notExisting'],
+            ['oxid', null],
+            ['notExisting', 'asc'],
+            [null, 'asc'],
+        ];
+    }
+
     /**
+     * Test case for bug fix #0006445 #0006579 #0006083
+     *
      * test for getUserSelectedSorting
-     * @see https://bugs.oxid-esales.com/view.php?id=6083
+     *
+     * @param string $columnName    column name which is used to sort by.
+     * @param string $sortDirection sort direction asc or desc.
+     *
+     * @dataProvider providerGetUserSelectedSortingInvalidSorting
      */
-    public function testGetUserSelectedSortingInvalidSorting()
+    public function testGetUserSelectedSortingInvalidSorting($columnName, $sortDirection)
     {
         /** @var BaseController $baseController */
         $baseController = oxNew('oxUBase');
 
+        $this->setConfigParam('aSortCols', ['oxid', 'oxtitle']);
+
         //not existing field name
-        $_GET[$baseController->getSortOrderByParameterName()] = 'foobar';
-        $_GET[$baseController->getSortOrderParameterName()] = 'asc';
-        $this->assertNull($baseController->getUserSelectedSorting());
-
-        //empty field name
-        $_GET[$baseController->getSortOrderByParameterName()] = '';
-        $this->assertNull($baseController->getUserSelectedSorting());
-
-        //not existing order direction
-        $_GET[$baseController->getSortOrderByParameterName()] = 'oxid';
-        $_GET[$baseController->getSortOrderParameterName()] = 'foobar';
-        $this->assertNull($baseController->getUserSelectedSorting());
-
-        //empty order direction
-        $_GET[$baseController->getSortOrderParameterName()] = '';
+        $_GET[$baseController->getSortOrderByParameterName()] = $columnName;
+        $_GET[$baseController->getSortOrderParameterName()] = $sortDirection;
         $this->assertNull($baseController->getUserSelectedSorting());
     }
 

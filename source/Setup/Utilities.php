@@ -488,6 +488,8 @@ class Utilities extends Core
 
     /**
      * Calls external demodata assets install command.
+     *
+     * @return int Error code of the install command.
      */
     public function executeExternalDemodataAssetsInstallCommand()
     {

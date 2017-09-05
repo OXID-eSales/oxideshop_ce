@@ -1260,9 +1260,16 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
 
         $shopId = $this->getConfig()->getShopId();
 
-        $query = "SELECT `oxseourl` FROM `oxseo` WHERE `oxstdurl` = ? AND `oxlang` = ? AND `oxshopid` = ? LIMIT 1";
+        $utilsUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl();
+        $urlParameters = $utilsUrl->stringToParamsArray($standardUrl);
+        $noPageNrStandardUrl = $utilsUrl->cleanUrlParams($utilsUrl->cleanUrl($standardUrl, ['pgNr']));
+        $postfix = isset($urlParameters['pgNr']) ? 'pgNr=' . $urlParameters['pgNr'] : '';
 
-        return $database->getOne($query, [$standardUrl, $languageId, $shopId]);
+        $query = "SELECT `oxseourl` FROM `oxseo` WHERE `oxstdurl` = ? AND `oxlang` = ? AND `oxshopid` = ? LIMIT 1";
+        $result = $database->getOne($query, [$noPageNrStandardUrl, $languageId, $shopId]);
+        $result = ((false !== $result) && !empty($postfix)) ? $utilsUrl->appendParamSeparator($result) . $postfix : $result;
+
+        return $result;
     }
 
     /**
@@ -1291,5 +1298,29 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
         );
 
         return $sanitized;
+    }
+
+    /**
+     * Assemble full paginated url.
+     *
+     * @param \OxidEsales\Eshop\Application\Model\ $object     Object, atm category, vendor, manufacturer, recommendationList.
+     * @param string                               $type       Seo identifier, see oxseo.oxtype.
+     * @param string                               $stdUrl     Standard url
+     * @param string                               $seoUrl     Seo url
+     * @param integer                              $pageNumber Number of the page which should be prepared.
+     * @param string                               $parameters Additional parameters, mostly used by mysql for indices.
+     * @param int                                  $languageId Language id.
+     * @param bool                                 $isFixed    Fixed url marker (default is null).
+     *
+     * @return string
+     */
+    protected function assembleFullPageUrl($object, $type, $stdUrl, $seoUrl, $pageNumber, $parameters, $languageId, $isFixed)
+    {
+        $postfix = (int) $pageNumber > 0 ? 'pgNr=' . (int) $pageNumber : '';
+        $urlPart = $this->_getPageUri($object, $type, $stdUrl, $seoUrl, $parameters, $languageId, $isFixed);
+        $fullUrl = $this->_getFullUrl($urlPart, $languageId);
+        $fullUrl = (!empty($postfix)) ? \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendParamSeparator($fullUrl) . $postfix : $fullUrl;
+
+        return $fullUrl;
     }
 }

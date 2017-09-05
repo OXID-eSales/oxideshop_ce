@@ -239,9 +239,15 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     protected function _checkRequestedPage()
     {
         $pageCount = $this->getPageCount();
+        $currentPageNumber = $this->getActPage();
         // redirecting to first page in case requested page does not exist
-        if ($pageCount && (($pageCount - 1) < $this->getActPage())) {
+        if ($pageCount && (($pageCount - 1) < $currentPageNumber)) {
             \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getActiveCategory()->getLink(), false);
+        }
+        if (!$pageCount && $currentPageNumber) {
+            // display error if category has no products, but page number is entered
+            $this->_iActPage = 0;
+            \OxidEsales\Eshop\Core\Registry::getUtils()->handlePageNotFoundError($this->getActiveCategory()->getLink());
         }
     }
 
@@ -382,6 +388,11 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      */
     public function getActPage()
     {
+        //Fake oxmore category has no subpages so we can set the page number to zero
+        if ('oxmore' == \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\Request::class)->getRequestParameter('cnid')) {
+            return 0;
+        }
+
         return $this->_getRequestPageNr();
     }
 

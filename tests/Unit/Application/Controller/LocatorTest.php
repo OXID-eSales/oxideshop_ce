@@ -220,11 +220,11 @@ class LocatorTest extends \OxidTestCase
         $sShopUrl = $this->getConfig()->getShopUrl();
 
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $sToListLink = $sShopUrl . 'Party/3/';
+            $sToListLink = $sShopUrl . 'Party/?pgNr=2';
             $sPrevProdLink = $sShopUrl . 'Party/Bar-Equipment/Kuehlwuerfel-NORDIC-ROCKS-Eiswuerfel-Ersatz.html';
             $sNextProdLink = $sShopUrl . 'Party/Schuerze-BAVARIA.html';
         } else {
-            $sToListLink = $sShopUrl . 'Geschenke/9/';
+            $sToListLink = $sShopUrl . 'Geschenke/?pgNr=8';
             $sNextProdLink = $sShopUrl . 'Geschenke/Wohnen/Uhren/Wanduhr-PHOTOFRAME.html';
             $sPrevProdLink = $sShopUrl . 'Geschenke/Bar-Equipment/Champagnerverschluss-GOLF.html';
         }
@@ -314,7 +314,7 @@ class LocatorTest extends \OxidTestCase
         $this->assertEquals($expectedCount, $oVendor->iCntOfProd);
 
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $sToListLink = $sShopUrl . 'Nach-Lieferant/Hersteller-1/2/';
+            $sToListLink = $sShopUrl . 'Nach-Lieferant/Hersteller-1/?pgNr=1';
             $sPrevProdLink = $sShopUrl . 'Nach-Lieferant/Hersteller-1/Flaschenverschluss-EGO.html';
             $sNextProdLink = $sShopUrl . 'Nach-Lieferant/Hersteller-1/Champagnerverschluss-GOLF.html';
         } else {
@@ -407,7 +407,7 @@ class LocatorTest extends \OxidTestCase
         $this->assertEquals($expectedCount, $oManufacturer->iCntOfProd);
 
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $sToListLink = $sShopUrl . 'Nach-Hersteller/Hersteller-1/2/';
+            $sToListLink = $sShopUrl . 'Nach-Hersteller/Hersteller-1/?pgNr=1';
             $sPrevProdLink = $sShopUrl . 'Nach-Hersteller/Hersteller-1/Flaschenverschluss-EGO.html';
             $sNextProdLink = $sShopUrl . 'Nach-Hersteller/Hersteller-1/Champagnerverschluss-GOLF.html';
         } else {

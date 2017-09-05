@@ -134,9 +134,9 @@ class SeoEncoderRecommTest extends \OxidTestCase
                 0
             )
             ->will($this->returnValue("recommstdlink/"));
-        $this->assertEquals($this->getConfig()->getConfigParam("sShopURL") . "recommstdlink/testTitle/2/", $oEncoder->getRecommPageUrl($oRecomm, 1));
+        $this->assertEquals($this->getConfig()->getConfigParam("sShopURL") . "recommstdlink/testTitle/?pgNr=1", $oEncoder->getRecommPageUrl($oRecomm, 1));
 
-        // now checking if db is filled
-        $this->assertEquals(2, oxDb::getDb()->getOne("select count(*) from oxseo where oxobjectid='testRecommId' and oxtype='dynamic'"));
+        // now checking if db is filled, paginated page is no longer stored
+        $this->assertEquals(1, oxDb::getDb()->getOne("select count(*) from oxseo where oxobjectid='testRecommId' and oxtype='dynamic'"));
     }
 }

@@ -328,24 +328,21 @@ class AlistTest extends \OxidTestCase
      */
     public function testRender_pageCountIsZero()
     {
-        oxTestModules::addFunction("oxUtils", "handlePageNotFoundError", "{ throw new Exception('OK'); }");
-        //oxTestModules::addFunction( "oxUtils", "redirect", "{ throw new Exception('OK'); }" );
+        $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('handlePageNotFoundError'));
+        $utils->expects($this->once())->method('handlePageNotFoundError');
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
 
-        $oCat = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('canView'));
-        $oCat->expects($this->any())->method('canView')->will($this->returnValue(true));
-        $oCat->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
+        $category = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('canView'));
+        $category->expects($this->any())->method('canView')->will($this->returnValue(true));
+        $category->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
 
-        $oListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getActiveCategory', 'getArticleList', 'getActPage', 'getPageCount'));
-        $oListView->expects($this->atLeastOnce())->method('getActiveCategory')->will($this->returnValue($oCat));
-        $oListView->expects($this->never())->method('getActPage'); //->will( $this->returnValue( 12 ) );
-        $oListView->expects($this->once())->method('getPageCount')->will($this->returnValue(0));
-        $oListView->expects($this->atLeastOnce())->method('getArticleList');
+        $listView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getActiveCategory', 'getArticleList', 'getActPage', 'getPageCount'));
+        $listView->expects($this->atLeastOnce())->method('getActiveCategory')->will($this->returnValue($category));
+        $listView->expects($this->once())->method('getActPage')->will( $this->returnValue( 12 ) );
+        $listView->expects($this->once())->method('getPageCount')->will($this->returnValue(0));
+        $listView->expects($this->atLeastOnce())->method('getArticleList');
 
-        try {
-            $oListView->render();
-        } catch (Exception $oExcp) {
-            $this->fail('failed redirect when page count is incorrect');
-        }
+        $listView->render();
     }
 
     /**
@@ -751,7 +748,7 @@ class AlistTest extends \OxidTestCase
 
         $oListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getActiveCategory'));
         $oListView->expects($this->any())->method('getActiveCategory')->will($this->returnValue($oCategory));
-        $this->assertEquals($sUrl . "2/", $oListView->UNITaddPageNrParam($sUrl, 1, 0));
+        $this->assertEquals($sUrl . "?pgNr=1", $oListView->UNITaddPageNrParam($sUrl, 1, 0));
     }
 
     /**

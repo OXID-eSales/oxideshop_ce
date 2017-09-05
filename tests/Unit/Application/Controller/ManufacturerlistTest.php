@@ -113,26 +113,24 @@ class ManufacturerlistTest extends \OxidTestCase
     public function testRenderManufacturerHasNoProductsAssigned()
     {
         $this->setRequestParameter("pgNr", 999);
-        oxTestModules::addFunction("oxUtils", "handlePageNotFoundError", "{ throw new Exception('OK'); }");
+        $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('handlePageNotFoundError'));
+        $utils->expects($this->once())->method('handlePageNotFoundError');
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
 
-        $sActManufacturer = '9434afb379a46d6c141de9c9e5b94fcf';
+        $actManufacturer = '9434afb379a46d6c141de9c9e5b94fcf';
 
-        $oManufacturerTree = oxNew('oxManufacturerList');
-        $oManufacturerTree->buildManufacturerTree('manufacturerlist', $sActManufacturer, $this->getConfig()->getShopHomeURL());
+        $manufacturerTree = oxNew('oxManufacturerList');
+        $manufacturerTree->buildManufacturerTree('manufacturerlist', $actManufacturer, $this->getConfig()->getShopHomeURL());
 
-        $oManufacturer = oxNew('oxManufacturer');
-        $oManufacturer->setId("123");
-        $oManufacturer->setIsVisible(true);
+        $manufacturer = oxNew('oxManufacturer');
+        $manufacturer->setId("123");
+        $manufacturer->setIsVisible(true);
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ManufacturerListController::class, array("getManufacturerTree", "getActManufacturer"));
-        $oView->expects($this->any())->method('getManufacturerTree')->will($this->returnValue($oManufacturerTree));
-        $oView->expects($this->any())->method('getActManufacturer')->will($this->returnValue($oManufacturer));
+        $view = $this->getMock(\OxidEsales\Eshop\Application\Controller\ManufacturerListController::class, array("getManufacturerTree", "getActManufacturer"));
+        $view->expects($this->any())->method('getManufacturerTree')->will($this->returnValue($manufacturerTree));
+        $view->expects($this->any())->method('getActManufacturer')->will($this->returnValue($manufacturer));
 
-        try {
-            $oView->render();
-        } catch (Exception $oExcp) {
-            $this->fail('failed redirect on inactive category');
-        }
+        $view->render();
     }
 
     /**

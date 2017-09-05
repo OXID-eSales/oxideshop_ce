@@ -1126,6 +1126,8 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $this->_iViewIndexState = VIEW_INDEXSTATE_NOINDEXFOLLOW;
         } elseif ($this->getConfig()->getRequestParameter('cur')) {
             $this->_iViewIndexState = VIEW_INDEXSTATE_NOINDEXNOFOLLOW;
+        } elseif (0 < \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\Request::class)->getRequestParameter('pgNr')) {
+            $this->_iViewIndexState = VIEW_INDEXSTATE_NOINDEXFOLLOW;
         } else {
             switch ($this->getConfig()->getRequestParameter('fnc')) {
                 case 'tocomparelist':

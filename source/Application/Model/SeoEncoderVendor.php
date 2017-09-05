@@ -88,17 +88,17 @@ class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
         if (!isset($languageId)) {
             $languageId = $vendor->getLanguage();
         }
-        $stdUrl = $vendor->getBaseStdLink($languageId) . '&amp;pgNr=' . $pageNumber;
-        $parameters = (int) ($pageNumber + 1);
+        $stdUrl = $vendor->getBaseStdLink($languageId);
+        $parameters = null;
 
         $stdUrl = $this->_trimUrl($stdUrl, $languageId);
-        $seoUrl = $this->getVendorUri($vendor, $languageId) . $parameters . "/";
+        $seoUrl = $this->getVendorUri($vendor, $languageId);
 
         if ($isFixed === null) {
             $isFixed = $this->_isFixed('oxvendor', $vendor->getId(), $languageId);
         }
 
-        return $this->_getFullUrl($this->_getPageUri($vendor, 'oxvendor', $stdUrl, $seoUrl, $parameters, $languageId, $isFixed), $languageId);
+        return $this->assembleFullPageUrl($vendor, 'oxvendor', $stdUrl, $seoUrl, $pageNumber, $parameters, $languageId, $isFixed);
     }
 
     /**

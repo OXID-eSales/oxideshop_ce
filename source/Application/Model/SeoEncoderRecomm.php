@@ -66,24 +66,24 @@ class SeoEncoderRecomm extends \OxidEsales\Eshop\Core\SeoEncoder
     /**
      * Returns tag SEO url for specified page
      *
-     * @param \OxidEsales\Eshop\Application\Model\RecommendationList $oRecomm recommendation list object
-     * @param int                                                    $iPage   page tu prepare number
-     * @param int                                                    $iLang   language
-     * @param bool                                                   $blFixed fixed url marker (default is false)
+     * @param \OxidEsales\Eshop\Application\Model\RecommendationList $recomm     Recommendation list object.
+     * @param int                                                    $pageNumber Number of the page which should be prepared.
+     * @param int                                                    $languageId Language id.
+     * @param bool                                                   $isFixed    Fixed url marker (default is null).
      *
      * @return string
      */
-    public function getRecommPageUrl($oRecomm, $iPage, $iLang = null, $blFixed = false)
+    public function getRecommPageUrl($recomm, $pageNumber, $languageId = null, $isFixed = false)
     {
-        if (!isset($iLang)) {
-            $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        if (!isset($languageId)) {
+            $languageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         }
-        $sStdUrl = $oRecomm->getBaseStdLink($iLang) . '&amp;pgNr=' . $iPage;
-        $sParams = (int) ($iPage + 1);
+        $stdUrl = $recomm->getBaseStdLink($languageId);
+        $parameters = null;
 
-        $sStdUrl = $this->_trimUrl($sStdUrl, $iLang);
-        $sSeoUrl = $this->getRecommUri($oRecomm, $iLang) . $sParams . "/";
+        $stdUrl = $this->_trimUrl($stdUrl, $languageId);
+        $seoUrl = $this->getRecommUri($recomm, $languageId);
 
-        return $this->_getFullUrl($this->_getPageUri($oRecomm, 'dynamic', $sStdUrl, $sSeoUrl, $sParams, $iLang, $blFixed), $iLang);
+        return $this->assembleFullPageUrl($recomm, 'dynamic', $stdUrl, $seoUrl, $pageNumber, $parameters, $languageId, $isFixed);
     }
 }

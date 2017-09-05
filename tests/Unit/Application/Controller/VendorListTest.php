@@ -298,10 +298,10 @@ class VendorListTest extends \OxidTestCase
 
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $sVendorId = 'd2e44d9b31fcce448.08890330';
-            $sRez = $this->getConfig()->getShopURL() . "Nach-Lieferant/Hersteller-1/3/";
+            $sRez = $this->getConfig()->getShopURL() . "Nach-Lieferant/Hersteller-1/?pgNr=2";
         } else {
             $sVendorId = '68342e2955d7401e6.18967838';
-            $sRez = $this->getConfig()->getShopURL() . "Nach-Lieferant/Haller-Stahlwaren/3/";
+            $sRez = $this->getConfig()->getShopURL() . "Nach-Lieferant/Haller-Stahlwaren/?pgNr=2";
         }
 
         $oVendor = oxNew('oxVendor');

@@ -31,6 +31,7 @@ use \OxidEsales\Eshop\Core\Edition\EditionSelector;
 use \OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
 use \OxidEsales\DoctrineMigrationWrapper\Migrations;
 use OxidEsales\DoctrineMigrationWrapper\MigrationsBuilder;
+use OxidEsales\DemoDataInstaller\DemoDataInstallerBuilder;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
@@ -50,7 +51,6 @@ class Utilities extends Core
 
     const DATABASE_VIEW_REGENERATION_BINARY_FILENAME = 'oe-eshop-db_views_generate';
     const DATABASE_MIGRATION_BINARY_FILENAME = 'oe-eshop-doctrine_migration';
-    const DEMODATA_ASSETS_INSTALL_BINARY_FILENAME = 'oe-eshop-demodata_install';
 
     /**
      * Unable to find file
@@ -491,8 +491,10 @@ class Utilities extends Core
      */
     public function executeExternalDemodataAssetsInstallCommand()
     {
-        $installDemoDataCommand = $this->formCommandToVendor(self::DEMODATA_ASSETS_INSTALL_BINARY_FILENAME);
-        $this->executeShellCommand($installDemoDataCommand);
+        $demoDataInstallerBuilder = new DemoDataInstallerBuilder();
+        $demoDataInstaller = $demoDataInstallerBuilder->build();
+
+        return $demoDataInstaller->execute();
     }
 
     /**

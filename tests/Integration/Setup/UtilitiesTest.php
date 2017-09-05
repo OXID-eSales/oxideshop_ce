@@ -23,6 +23,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Setup;
 
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Setup\Utilities;
+use OxidEsales\Facts\Facts;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 
@@ -46,6 +47,31 @@ class UtilitiesTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $utilities->executeExternalDatabaseMigrationCommand($output);
 
         $this->assertOxModuleColumnHasMaxLength(100);
+    }
+
+    public function testExecuteExternalDemodataAssetsInstallCommand()
+    {
+        $utilities = new Utilities();
+        $packagePath = $utilities->getActiveEditionDemodataPackagePath();
+        $demodataShouldBeInstalled = file_exists($packagePath);
+
+        if ($demodataShouldBeInstalled) {
+            $errorCode = $utilities->executeExternalDemodataAssetsInstallCommand();
+
+            $this->assertEquals(0, $errorCode);
+
+            $database = DatabaseProvider::getDb();
+
+            $sql = "SELECT OXTITLE FROM oxdelivery WHERE oxid = ?";
+            $oxtitle = $database->getOne($sql, ['1b842e734b62a4775.45738618']);
+
+            $this->assertEquals('Versandkosten für Standard: Versandkostenfrei ab 80,-', $oxtitle);
+
+            $facts = new Facts();
+            $expectedFile = $facts->getOutPath() . '/pictures/media/dir.txt';
+
+            $this->assertFileExists($expectedFile);
+        }
     }
 
     protected function getOxModuleColumnInformation()

@@ -36,6 +36,19 @@ class UtilitiesTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->adjustTemplateBlocksOxModuleColumn();
     }
 
+    public function testExecuteExternalRegenerateViewsCommand()
+    {
+        $this->assertOxDiscountViewExists();
+
+        $this->dropOxDiscountView();
+        $this->assertOxDiscountViewNotExists();
+
+        $utilities = new Utilities();
+        $utilities->executeExternalRegenerateViewsCommand();
+
+        $this->assertOxDiscountViewExists();
+    }
+
     public function testExecuteExternalDatabaseMigrationCommand()
     {
         $output = new ConsoleOutput();
@@ -105,5 +118,31 @@ class UtilitiesTest extends \OxidEsales\TestingLibrary\UnitTestCase
           character set latin1 collate latin1_general_ci NOT NULL 
           COMMENT 'Module, which uses this template';";
         $database->execute($sql);
+    }
+
+    protected function dropOxDiscountView()
+    {
+        if ($this->existsOxDiscountView()) {
+            $database = DatabaseProvider::getDb();
+
+            $database->execute("DROP VIEW oxv_oxdiscount");
+        }
+    }
+
+    protected function assertOxDiscountViewExists()
+    {
+        $this->assertTrue($this->existsOxDiscountView(), 'Expected view oxv_oxdiscount does not exist!');
+    }
+
+    protected function assertOxDiscountViewNotExists()
+    {
+        $this->assertFalse($this->existsOxDiscountView(), 'Expected that view oxv_oxdiscount does not exist, but it does!');
+    }
+
+    protected function existsOxDiscountView()
+    {
+        $sql = "SELECT count(*) FROM INFORMATION_SCHEMA.VIEWS WHERE	TABLE_NAME = 'oxv_oxdiscount'";
+
+        return '1' == DatabaseProvider::getDb()->getOne($sql);
     }
 }

@@ -2277,6 +2277,13 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
             array('sortby' => 'oxid', 'sortdir' => 'desc'),
             $baseController->getUserSelectedSorting()
         );
+
+        $this->setRequestParam($baseController->getSortOrderByParameterName(), 'oxtitle');
+        $this->setRequestParam($baseController->getSortOrderParameterName(), 'desc');
+        $this->assertEquals(
+            array('sortby' => 'oxtitle', 'sortdir' => 'desc'),
+            $baseController->getUserSelectedSorting()
+        );
     }
 
     /**

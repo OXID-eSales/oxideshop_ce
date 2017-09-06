@@ -2446,6 +2446,7 @@ class UBaseTest extends \OxidTestCase
             ['oxid', 'asc'],
             ['oxid', 'desc'],
             ['oxtitle', 'asc'],
+            ['notArticleColumn', 'asc'],
         ];
     }
 
@@ -2464,7 +2465,7 @@ class UBaseTest extends \OxidTestCase
         /** @var BaseController $baseController */
         $baseController = oxNew('oxUBase');
 
-        $this->setConfigParam('aSortCols', ['oxid', 'oxtitle']);
+        $this->setConfigParam('aSortCols', ['oxid', 'oxtitle', 'notArticleColumn']);
 
         $_GET[$baseController->getSortOrderByParameterName()] = $columnName;
         $_GET[$baseController->getSortOrderParameterName()] = $sortDirection;

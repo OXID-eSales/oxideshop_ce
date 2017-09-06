@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+- \OxidEsales\Eshop\Application\Controller\FrontendController::getUserSelectedSorting
+  checks if element to sort is configured in Admin.
+
 ### Deprecated
 - `\OxidEsales\Eshop\Application\Controller\Admin\AdminController::$_sShopVersion`
 - `\OxidEsales\Eshop\Application\Controller\Admin\AdminController::_getShopVersionNr()`

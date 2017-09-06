@@ -2265,6 +2265,8 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         /** @var BaseController $baseController */
         $baseController = oxNew('oxUBase');
 
+        $this->setConfigParam('aSortCols', ['oxid', 'oxtitle', 'notArticleColumn']);
+
         $this->setRequestParam($baseController->getSortOrderByParameterName(), 'oxid');
         $this->setRequestParam($baseController->getSortOrderParameterName(), 'asc');
         $this->assertEquals(
@@ -2282,6 +2284,13 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $this->setRequestParam($baseController->getSortOrderParameterName(), 'desc');
         $this->assertEquals(
             array('sortby' => 'oxtitle', 'sortdir' => 'desc'),
+            $baseController->getUserSelectedSorting()
+        );
+
+        $this->setRequestParam($baseController->getSortOrderByParameterName(), 'notArticleColumn');
+        $this->setRequestParam($baseController->getSortOrderParameterName(), 'desc');
+        $this->assertEquals(
+            array('sortby' => 'notArticleColumn', 'sortdir' => 'desc'),
             $baseController->getUserSelectedSorting()
         );
     }

@@ -1009,7 +1009,7 @@ class oxUBase extends oxView
         if ($sSortBy && oxDb::getInstance()->isValidFieldName($sSortBy) && $sSortDir
             && oxRegistry::getUtils()->isValidAlpha($sSortDir)
             && in_array($oStr->strtolower($sSortDir), $aSortDirections)
-            && in_array($sSortBy, oxNew('oxArticle')->getFieldNames())
+            && (in_array($sSortBy, oxNew('oxArticle')->getFieldNames()) || in_array($sSortBy, $this->getSortColumns()))
         ) {
             $aSorting = array('sortby' => $sSortBy, 'sortdir' => $sSortDir);
         }

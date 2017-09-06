@@ -2255,75 +2255,71 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $aParameters = $oView->getNavigationParams();
         $this->assertEquals(ksort($aParams), ksort($aParameters));
     }
+    
+    public function providerGetUserSelectedSortingValidSorting()
+    {
+        return array(
+            array('oxid', 'asc'),
+            array('oxid', 'desc'),
+            array('oxtitle', 'asc'),
+            array('notArticleColumn', 'asc'),
+        );
+    }
 
     /**
+     * Test case for bug fix #0006445 #0006579 #0006083
+     *
      * test for getUserSelectedSorting
-     * @see https://bugs.oxid-esales.com/view.php?id=6083
+     *
+     * @param string $columnName    column name which is used to sort by.
+     * @param string $sortDirection sort direction asc or desc.
+     *
+     * @dataProvider providerGetUserSelectedSortingValidSorting
      */
-    public function testGetUserSelectedSortingValidSorting()
+    public function testGetUserSelectedSortingValidSorting($columnName, $sortDirection)
     {
         /** @var BaseController $baseController */
         $baseController = oxNew('oxUBase');
 
         $this->setConfigParam('aSortCols', ['oxid', 'oxtitle', 'notArticleColumn']);
 
-        $this->setRequestParam($baseController->getSortOrderByParameterName(), 'oxid');
-        $this->setRequestParam($baseController->getSortOrderParameterName(), 'asc');
+        $this->setRequestParam($baseController->getSortOrderByParameterName(), $columnName);
+        $this->setRequestParam($baseController->getSortOrderParameterName(), $sortDirection);
         $this->assertEquals(
-            array('sortby' => 'oxid', 'sortdir' => 'asc'),
-            $baseController->getUserSelectedSorting()
-        );
-
-        $this->setRequestParam($baseController->getSortOrderParameterName(), 'desc');
-        $this->assertEquals(
-            array('sortby' => 'oxid', 'sortdir' => 'desc'),
-            $baseController->getUserSelectedSorting()
-        );
-
-        $this->setRequestParam($baseController->getSortOrderByParameterName(), 'oxtitle');
-        $this->setRequestParam($baseController->getSortOrderParameterName(), 'desc');
-        $this->assertEquals(
-            array('sortby' => 'oxtitle', 'sortdir' => 'desc'),
-            $baseController->getUserSelectedSorting()
-        );
-
-        $this->setRequestParam($baseController->getSortOrderByParameterName(), 'notArticleColumn');
-        $this->setRequestParam($baseController->getSortOrderParameterName(), 'desc');
-        $this->assertEquals(
-            array('sortby' => 'notArticleColumn', 'sortdir' => 'desc'),
+            array('sortby' => $columnName, 'sortdir' => $sortDirection),
             $baseController->getUserSelectedSorting()
         );
     }
 
+
+    public function providerGetUserSelectedSortingInvalidSorting()
+    {
+        return [
+            ['oxid', 'notExisting'],
+            ['oxid', null],
+            ['notExisting', 'asc'],
+            [null, 'asc'],
+        ];
+    }
+
     /**
+     * Test case for bug fix #0006445 #0006579 #0006083
+     *
      * test for getUserSelectedSorting
-     * @see https://bugs.oxid-esales.com/view.php?id=6083
+     *
+     * @param string $columnName    column name which is used to sort by.
+     * @param string $sortDirection sort direction asc or desc.
+     *
+     * @dataProvider providerGetUserSelectedSortingInvalidSorting
      */
-    public function testGetUserSelectedSortingInvalidSorting()
+    public function testGetUserSelectedSortingInvalidSorting($columnName, $sortDirection)
     {
         /** @var BaseController $baseController */
         $baseController = oxNew('oxUBase');
 
         //not existing field name
-        $this->setRequestParam($baseController->getSortOrderByParameterName(), 'foobar');
-        $this->setRequestParam($baseController->getSortOrderParameterName(), 'asc');
-        $this->assertNull($baseController->getUserSelectedSorting());
-
-        //empty field name
-        $this->setRequestParam($baseController->getSortOrderByParameterName(), '');
-        $this->assertNull($baseController->getUserSelectedSorting());
-
-        //invalid field name
-        $this->setRequestParam($baseController->getSortOrderByParameterName(), 42);
-        $this->assertNull($baseController->getUserSelectedSorting());
-
-        //not existing order direction
-        $this->setRequestParam($baseController->getSortOrderByParameterName(), 'oxid');
-        $this->setRequestParam($baseController->getSortOrderParameterName(), 'foobar');
-        $this->assertNull($baseController->getUserSelectedSorting());
-
-        //empty order direction
-        $this->setRequestParam($baseController->getSortOrderParameterName(), '');
+        $this->setRequestParam($baseController->getSortOrderByParameterName(), $columnName);
+        $this->setRequestParam($baseController->getSortOrderParameterName(), $sortDirection);
         $this->assertNull($baseController->getUserSelectedSorting());
     }
 

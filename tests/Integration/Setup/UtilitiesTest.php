@@ -27,26 +27,32 @@ use OxidEsales\Facts\Facts;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 
+use oxDatabaseHelper;
+require_once TEST_LIBRARY_HELPERS_PATH . 'oxDatabaseHelper.php';
+
 class UtilitiesTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
     public function setUp()
     {
         parent::setUp();
 
-        $this->adjustTemplateBlocksOxModuleColumn();
+        $databaseHelper = new oxDatabaseHelper(DatabaseProvider::getDb());
+        $databaseHelper->adjustTemplateBlocksOxModuleColumn();
+
+        $this->resetMigrationTable();
     }
 
     public function testExecuteExternalRegenerateViewsCommand()
     {
-        $this->assertOxDiscountViewExists();
+        $this->assertViewExists('oxdiscount');
 
         $this->dropOxDiscountView();
-        $this->assertOxDiscountViewNotExists();
+        $this->assertViewNotExists('oxdiscount');
 
         $utilities = new Utilities();
         $utilities->executeExternalRegenerateViewsCommand();
 
-        $this->assertOxDiscountViewExists();
+        $this->assertViewExists('oxdiscount');
     }
 
     public function testExecuteExternalDatabaseMigrationCommand()
@@ -75,7 +81,7 @@ class UtilitiesTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
             $database = DatabaseProvider::getDb();
 
-            $sql = "SELECT OXTITLE FROM oxdelivery WHERE oxid = ?";
+            $sql = "SELECT `OXTITLE` FROM `oxdelivery` WHERE oxid = ?";
             $oxtitle = $database->getOne($sql, ['1b842e734b62a4775.45738618']);
 
             $this->assertEquals('Versandkosten für Standard: Versandkostenfrei ab 80,-', $oxtitle);
@@ -87,62 +93,29 @@ class UtilitiesTest extends \OxidEsales\TestingLibrary\UnitTestCase
         }
     }
 
-    protected function getOxModuleColumnInformation()
-    {
-        $database = DatabaseProvider::getDb();
-        $columns = $database->metaColumns('oxtplblocks');
-
-        foreach($columns as $column) {
-            if ($column->name === 'OXMODULE') {
-
-                return $column;
-            }
-        }
-    }
-
     /**
      * @param int $expectedMaxLength
      */
     private function assertOxModuleColumnHasMaxLength($expectedMaxLength)
     {
-        $columnInformation = $this->getOxModuleColumnInformation();
+        $databaseHelper = new oxDatabaseHelper(DatabaseProvider::getDb());
 
-        $this->assertEquals($expectedMaxLength, $columnInformation->max_length);
-    }
+        $fieldInformation = $databaseHelper->getFieldInformation('oxtplblocks', 'OXMODULE');
 
-    protected function adjustTemplateBlocksOxModuleColumn()
-    {
-        $database = DatabaseProvider::getDb();
-        $sql = "ALTER TABLE `oxtplblocks` 
-          CHANGE `OXMODULE` `OXMODULE` char(32) 
-          character set latin1 collate latin1_general_ci NOT NULL 
-          COMMENT 'Module, which uses this template';";
-        $database->execute($sql);
+        $this->assertEquals($expectedMaxLength, $fieldInformation->max_length);
     }
 
     protected function dropOxDiscountView()
     {
-        if ($this->existsOxDiscountView()) {
-            $database = DatabaseProvider::getDb();
+        $databaseHelper = new oxDatabaseHelper(DatabaseProvider::getDb());
 
-            $database->execute("DROP VIEW oxv_oxdiscount");
-        }
+        $databaseHelper->dropView('oxdiscount');
     }
 
-    protected function assertOxDiscountViewExists()
+    /** @todo: Needs rewrite / will most likely be removed */
+    protected function resetMigrationTable()
     {
-        $this->assertTrue($this->existsOxDiscountView(), 'Expected view oxv_oxdiscount does not exist!');
-    }
-
-    protected function assertOxDiscountViewNotExists()
-    {
-        $this->assertFalse($this->existsOxDiscountView(), 'Expected that view oxv_oxdiscount does not exist, but it does!');
-    }
-
-    protected function existsOxDiscountView()
-    {
-        $sql = "SELECT count(*) FROM INFORMATION_SCHEMA.VIEWS WHERE	TABLE_NAME = 'oxv_oxdiscount'";
-
-        return '1' == DatabaseProvider::getDb()->getOne($sql);
+        $database = DatabaseProvider::getDb();
+        $database->execute("TRUNCATE oxmigrations_ce");
     }
 }

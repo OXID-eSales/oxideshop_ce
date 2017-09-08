@@ -23,7 +23,7 @@
 namespace OxidEsales\EshopCommunity\Setup;
 
 /**
- * Setup manager class
+ * The setup manager class.
  */
 class Setup extends Core
 {

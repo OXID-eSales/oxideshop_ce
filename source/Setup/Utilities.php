@@ -470,20 +470,18 @@ class Utilities extends Core
      * Calls external database migration command.
      *
      * @param ConsoleOutput $output Add a possibility to provide a custom output handler.
+     * @param Facts|null    $facts  A possible facts mock
      */
-    public function executeExternalDatabaseMigrationCommand(ConsoleOutput $output = null)
+    public function executeExternalDatabaseMigrationCommand(ConsoleOutput $output = null, Facts $facts = null)
     {
         $migrationsBuilder = new MigrationsBuilder();
-        $migrations = $migrationsBuilder->build();
+        $migrations = $migrationsBuilder->build($facts);
 
         $migrations->setOutput($output);
 
-        $editionSelector = new EditionSelector();
-
         $command = Migrations::MIGRATE_COMMAND;
-        $edition = $editionSelector->getEdition();
 
-        $migrations->execute($command, $edition);
+        $migrations->execute($command);
     }
 
     /**

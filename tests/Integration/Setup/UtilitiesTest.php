@@ -38,8 +38,6 @@ class UtilitiesTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $databaseHelper = new oxDatabaseHelper(DatabaseProvider::getDb());
         $databaseHelper->adjustTemplateBlocksOxModuleColumn();
-
-        $this->resetMigrationTable();
     }
 
     public function testExecuteExternalRegenerateViewsCommand()
@@ -60,12 +58,14 @@ class UtilitiesTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $output = new ConsoleOutput();
         $output->setVerbosity(ConsoleOutputInterface::VERBOSITY_QUIET);
 
-        $this->assertOxModuleColumnHasMaxLength(32);
+        $factsMock = $this->createFactsMock();
+
+        $this->assertMigrationCreatedTablesDontExist();
 
         $utilities = new Utilities();
-        $utilities->executeExternalDatabaseMigrationCommand($output);
+        $utilities->executeExternalDatabaseMigrationCommand($output, $factsMock);
 
-        $this->assertOxModuleColumnHasMaxLength(100);
+        $this->assertMigrationCreatedTablesExist();
     }
 
     public function testExecuteExternalDemodataAssetsInstallCommand()
@@ -93,16 +93,40 @@ class UtilitiesTest extends \OxidEsales\TestingLibrary\UnitTestCase
         }
     }
 
-    /**
-     * @param int $expectedMaxLength
-     */
-    private function assertOxModuleColumnHasMaxLength($expectedMaxLength)
+    private function tableExists($tableName)
     {
-        $databaseHelper = new oxDatabaseHelper(DatabaseProvider::getDb());
+        $database = DatabaseProvider::getDb();
+        $sql = "SELECT COUNT(TABLE_NAME) FROM information_schema.TABLES WHERE TABLE_NAME = '$tableName'";
 
-        $fieldInformation = $databaseHelper->getFieldInformation('oxtplblocks', 'OXMODULE');
+        $count = $database->getOne($sql);
 
-        $this->assertEquals($expectedMaxLength, $fieldInformation->max_length);
+        return $count > 0;
+    }
+
+    protected function assertMigrationCreatedTablesDontExist()
+    {
+        $editions = ['ce', 'pe', 'ee'];
+
+        foreach ($editions as $edition) {
+            $tableName = 'migrations_test_' . $edition;
+            $this->assertFalse($this->tableExists($tableName), "Expected that the table '$tableName' does not exist! But it exists!");
+        }
+    }
+
+    protected function assertMigrationCreatedTablesExist()
+    {
+        $editions = ['ce', 'pe', 'ee'];
+        $editionSelector = oxNew(\OxidEsales\Facts\Edition\EditionSelector::class);
+        $currentlySelectedEdition = strtolower($editionSelector->getEdition());
+
+        foreach ($editions as $edition) {
+            $tableName = 'migrations_test_' . $edition;
+            $this->assertTrue($this->tableExists($tableName), "Expected that the table '$tableName' exists! But it does not!");
+
+            if ($edition === $currentlySelectedEdition) {
+                break;
+            }
+        }
     }
 
     protected function dropOxDiscountView()
@@ -112,10 +136,24 @@ class UtilitiesTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $databaseHelper->dropView('oxdiscount');
     }
 
-    /** @todo: Needs rewrite / will most likely be removed */
-    protected function resetMigrationTable()
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function createFactsMock()
     {
-        $database = DatabaseProvider::getDb();
-        $database->execute("TRUNCATE oxmigrations_ce");
+        $ceMigrationPath = realpath(dirname(__FILE__) . '/migration/ce/migrations.yml');
+        $peMigrationPath = realpath(dirname(__FILE__) . '/migration/pe/migrations.yml');
+        $eeMigrationPath = realpath(dirname(__FILE__) . '/migration/ee/migrations.yml');
+
+        $factsMock = $this->getMock(Facts::class, ['getMigrationPaths']);
+        $factsMock->expects($this->any())
+            ->method('getMigrationPaths')
+            ->will($this->returnValue([
+                'ce' => $ceMigrationPath,
+                'pe' => $peMigrationPath,
+                'ee' => $eeMigrationPath
+            ]));
+
+        return $factsMock;
     }
 }

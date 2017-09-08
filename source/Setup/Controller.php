@@ -383,18 +383,6 @@ class Controller extends Core
             throw new SetupControllerExitException();
         }
 
-        try {
-            $this->getUtilitiesInstance()->executeExternalRegenerateViewsCommand();
-        } catch (CommandExecutionFailedException $exception) {
-            $this->handleCommandExecutionFailedException($exception);
-
-            throw new SetupControllerExitException();
-        } catch (Exception $exception) {
-            $view->setMessage($exception->getMessage());
-
-            throw new SetupControllerExitException();
-        }
-
         $view->setMessage($language->getText('STEP_4_2_UPDATING_DATABASE'));
         $this->onDirsWriteSetStep($setup);
     }
@@ -510,6 +498,19 @@ class Controller extends Core
         $session = $this->getSessionInstance();
         $pathCollection = $session->getSessionParam("aPath");
 
+        try {
+            $this->getUtilitiesInstance()->executeExternalRegenerateViewsCommand(); // move to last step possible?
+        } catch (CommandExecutionFailedException $exception) {
+            $this->handleCommandExecutionFailedException($exception);
+
+            throw new SetupControllerExitException();
+        } catch (Exception $exception) {
+            $view = $this->getView();
+            $view->setMessage($exception->getMessage());
+
+            throw new SetupControllerExitException();
+        }
+
         $this->setViewOptions(
             'finish.php',
             'STEP_6_TITLE',
@@ -613,24 +614,48 @@ class Controller extends Core
      * Installs demo data or initial, dependent on parameter
      *
      * @param \OxidEsales\EshopCommunity\Setup\Database $database
-     * @param int                                       $demodataRequired
+     * @param int                                       $demoDataRequired
+     *
+     * @throws SetupControllerExitException
      */
-    private function installShopData($database, $demodataRequired = 0)
+    private function installShopData($database, $demoDataRequired = 0)
     {
         $baseSqlDir = $this->getUtilitiesInstance()->getSqlDirectory(EditionSelector::COMMUNITY);
 
-        // If demo data files are provided.
-        if ($demodataRequired && $this->getUtilitiesInstance()->isDemodataPrepared()) {
-            $this->getUtilitiesInstance()->executeExternalDatabaseMigrationCommand();
+        try {
+            // If demo data files are provided.
+            if ($demoDataRequired && $this->getUtilitiesInstance()->isDemodataPrepared()) {
+                $this->getUtilitiesInstance()->executeExternalDatabaseMigrationCommand();
 
-            // Install demo data.
-            $database->queryFile($this->getUtilitiesInstance()->getActiveEditionDemodataPackageSqlFilePath());
-            // Copy demo data files.
-            $this->getUtilitiesInstance()->executeExternalDemodataAssetsInstallCommand();
-        } else {
-            $database->queryFile("$baseSqlDir/initial_data.sql");
+                // Install demo data.
+                $database->queryFile($this->getUtilitiesInstance()->getActiveEditionDemodataPackageSqlFilePath());
+                // Copy demo data files.
+                $this->getUtilitiesInstance()->executeExternalDemodataAssetsInstallCommand();
+            } else {
+                $database->queryFile("$baseSqlDir/initial_data.sql");
 
-            $this->getUtilitiesInstance()->executeExternalDatabaseMigrationCommand();
+                $this->getUtilitiesInstance()->executeExternalDatabaseMigrationCommand();
+            }
+        } catch (Exception $exception) {
+            $language = $this->getLanguageInstance();
+            $view = $this->getView();
+
+            $commandOutput = $exception->getMessage();
+            $htmlCommandOutput = $this->convertCommandOutputToHtmlOutput($commandOutput);
+
+            $errorLines[] = sprintf(
+                $language->getText('EXTERNAL_COMMAND_ERROR_1'),
+                'Migration',
+                $exception->getCode()
+            );
+            $errorLines[] = $language->getText('EXTERNAL_COMMAND_ERROR_2');
+
+            $errorHeader = implode("<br />", $errorLines);
+            $errorMessage = implode("<br /><br />", [$errorHeader, $htmlCommandOutput]);
+
+            $view->setMessage($errorMessage);
+
+            throw new SetupControllerExitException();
         }
     }
 

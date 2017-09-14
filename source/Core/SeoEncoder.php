@@ -646,11 +646,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
         $sUri = $oStr->preg_replace("#^(/*)(" . implode('|', $this->_getReservedEntryKeys()) . ")(/|$)#i", "\$1\$2$sAdd\$3", $sUri);
 
         // cleaning
-        // #0004282 bugfix, php < 5.3 does not escape - char, so we do it manually\
         $sQuotedSeparator = preg_quote(self::$_sSeparator, '/');
-        if (phpversion() < '5.3') {
-            $sQuotedSeparator = str_replace('-', '\-', $sQuotedSeparator);
-        }
 
         return $oStr->preg_replace(
             ['|//+|', '/' . $sQuotedSeparator . $sQuotedSeparator . '+/'],
@@ -1294,11 +1290,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
             return "";
         }
         $oStr = \OxidEsales\Eshop\Core\Str::getStr();
-        // #0004282 bugfix, php <5.3 does not escape - char, so we do it manually
         $sQuotedPrefix = preg_quote(self::$_sSeparator . self::$_sPrefix, '/');
-        if (phpversion() < '5.3') {
-            $sQuotedPrefix = str_replace('-', '\-', $sQuotedPrefix);
-        }
         $sRegExp = '/[^A-Za-z0-9' . $sQuotedPrefix . '\/]+/';
         $sanitized = $oStr->preg_replace(
             ["/\W*\/\W*/", $sRegExp],

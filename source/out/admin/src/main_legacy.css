@@ -1,8 +1,8 @@
 html{height: 100%;}
 body {padding:0;margin:0 20px;background:#fff;height: 100%;}
-body, td {font:12px Trebuchet MS, Tahoma, Verdana, Arial, Helvetica, sans-serif;}
+body, td {font:12px Open Sans, Tahoma, Verdana, Arial, Helvetica, sans-serif;}
 
-input, select, textarea {font:12px Trebuchet MS, Tahoma, Verdana, Arial, Helvetica, sans-serif;margin:1px;padding:0px;margin-left:2px;}
+input, select, textarea {font:12px Open Sans, Tahoma, Verdana, Arial, Helvetica, sans-serif;margin:1px;padding:0px;margin-left:2px;}
 form{margin:0;padding:0;}
 
 a {text-decoration: none;color: #000;outline:0;}
@@ -261,7 +261,7 @@ a.themetitle:hover {color: #000;}
     margin: 0 0 0 5px;;
     font-size: 14px;
     font-weight: bold;
-    font-family: Trebuchet MS, Tahoma, Verdana, Arial, Helvetica, sans-serif;
+    font-family: Open Sans, Tahoma, Verdana, Arial, Helvetica, sans-serif;
     width: 86%;
 }
 

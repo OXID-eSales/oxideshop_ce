@@ -513,7 +513,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-        $loadDynContents = $myConfig->getConfigParam('blLoadDynContents');
+        $loadDynContents = $myConfig->getConfigParam('blSendTechnicalInformationToOxid');
         $shopCountry = $myConfig->getConfigParam('sShopCountry');
 
         // including dyn menu file

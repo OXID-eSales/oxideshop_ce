@@ -156,7 +156,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
         if ($sUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("url")) {
             // Limit external url's only allowed host
             $myConfig = $this->getConfig();
-            if ($myConfig->getConfigParam('blLoadDynContents') && strpos($sUrl, $this->_sAllowedHost) === 0) {
+            if ($myConfig->getConfigParam('blSendTechnicalInformationToOxid') && strpos($sUrl, $this->_sAllowedHost) === 0) {
                 $sPath = $myConfig->getConfigParam('sCompileDir') . "/" . md5($sUrl) . '.html';
                 if ($myUtils->getRemoteCachePath($sUrl, $sPath)) {
                     $oStr = getStr();

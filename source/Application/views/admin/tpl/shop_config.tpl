@@ -908,8 +908,8 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type=hidden name="confbools[blLoadDynContents]" value="false">
-                    <input type=checkbox name="confbools[blLoadDynContents]" value="true"  [{if ($confbools.blLoadDynContents)}]checked[{/if}] [{$readonly}]>
+                    <input type=hidden name="confbools[blSendTechnicalInformationToOxid]" value="false">
+                    <input type=checkbox name="confbools[blSendTechnicalInformationToOxid]" value="true"  [{if ($confbools.blSendTechnicalInformationToOxid)}]checked[{/if}] [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_LOAD_DYNAMIC_PAGES"}]
                 </dt>
                 <dd>

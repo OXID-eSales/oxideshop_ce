@@ -229,7 +229,7 @@ class NavigationTest extends \OxidTestCase
         $this->setRequestParameter("url", $sUrl);
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getConfigParam", "getVersion", "getFullEdition"));
-        $oConfig->expects($this->at(0))->method('getConfigParam')->with($this->equalTo("blLoadDynContents"))->will($this->returnValue(true));
+        $oConfig->expects($this->at(0))->method('getConfigParam')->with($this->equalTo("blSendTechnicalInformationToOxid"))->will($this->returnValue(true));
         $oConfig->expects($this->at(1))->method('getConfigParam')->with($this->equalTo("sCompileDir"))->will($this->returnValue($this->getConfig()->getConfigParam('sCompileDir')));
         $oConfig->expects($this->once())->method('getVersion')->will($this->returnValue("getVersion"));
         $oConfig->expects($this->once())->method('getFullEdition')->will($this->returnValue("getFullEdition"));
@@ -253,13 +253,13 @@ class NavigationTest extends \OxidTestCase
      *
      * @return null
      */
-    public function testExturlUrlDefinedByParamBlLoadDynContentsFalse()
+    public function testExturlUrlDefinedByParamblSendTechnicalInformationToOxidFalse()
     {
         oxTestModules::addFunction('oxUtils', 'redirect', '{ throw new Exception($aA[0]); }');
         $this->setRequestParameter("url", "testUrl");
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getConfigParam"));
-        $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo("blLoadDynContents"))->will($this->returnValue(false));
+        $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo("blSendTechnicalInformationToOxid"))->will($this->returnValue(false));
         $oConfig->expects($this->never())->method('getVersion');
         $oConfig->expects($this->never())->method('getFullEdition');
 

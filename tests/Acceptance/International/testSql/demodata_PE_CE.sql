@@ -383,4 +383,4 @@ UPDATE `oxcountry` SET `OXACTIVE` = 1 WHERE `OXTITLE` = 'Greece';
 
 #additional for features testing
 #UPDATE `oxconfig` SET `OXVARVALUE` = '' WHERE `OXVARNAME` = 'blCheckForUpdates';
-#UPDATE `oxconfig` SET `OXVARVALUE` = '' WHERE `OXVARNAME` = 'blLoadDynContents';
+#UPDATE `oxconfig` SET `OXVARVALUE` = '' WHERE `OXVARNAME` = 'blSendTechnicalInformationToOxid';

@@ -84,7 +84,7 @@
     [{/foreach}]
 [{/block}]
 
-[{if $oViewConf->blLoadDynContents && $oViewConf->sShopCountry}]
+[{if $oViewConf->blSendTechnicalInformationToOxid && $oViewConf->sShopCountry}]
 
 <script>
 function openExchange()

@@ -324,7 +324,7 @@ class Database extends Core
             $oPdo->exec("UPDATE oxuser SET oxcountryid = '$sCountryLang' where OXUSERNAME='admin'");
         }
 
-        $oPdo->exec("delete from oxconfig where oxvarname = 'blLoadDynContents'");
+        $oPdo->exec("delete from oxconfig where oxvarname = 'blSendTechnicalInformationToOxid'");
         $oPdo->exec("delete from oxconfig where oxvarname = 'sShopCountry'");
         $oPdo->exec("delete from oxconfig where oxvarname = 'blCheckForUpdates'");
         $oPdo->exec("delete from oxconfig where oxvarname = 'sDefaultLang'");
@@ -336,7 +336,7 @@ class Database extends Core
             [
                 'oxid' => $oUtils->generateUid(),
                 'shopId' => $sBaseShopId,
-                'name' => 'blLoadDynContents',
+                'name' => 'blSendTechnicalInformationToOxid',
                 'type' => 'bool',
                 'value' => $blUseDynPages
             ]

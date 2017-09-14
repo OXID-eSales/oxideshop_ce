@@ -204,7 +204,7 @@ class SystemEventHandler
      */
     protected function isSendingShopDataEnabled()
     {
-        return (bool) $this->getConfig()->getConfigParam('blLoadDynContents');
+        return (bool) $this->getConfig()->getConfigParam('blSendTechnicalInformationToOxid');
     }
 
     /**

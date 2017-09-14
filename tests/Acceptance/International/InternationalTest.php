@@ -437,7 +437,7 @@ class InternationalTest extends AcceptanceTestCase
             $this->frame("list");
             $this->openTab("Settings");
             $this->click("link=Administration");
-            $this->check("//input[@name='confbools[blLoadDynContents]' and @value='true']");
+            $this->check("//input[@name='confbools[blSendTechnicalInformationToOxid]' and @value='true']");
             $this->clickAndWaitFrame("save", "list");
             $this->frame("header");
             $this->assertElementPresent("link=Logout");

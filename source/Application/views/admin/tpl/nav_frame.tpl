@@ -6,14 +6,14 @@
 </head>
 
 <!-- frames -->
-[{assign var="blLoadDynContents" value=0}]
-[{if $oViewConf->blLoadDynContents && $oViewConf->sShopCountry}]
-    [{assign var="blLoadDynContents" value=1}]
+[{assign var="blSendTechnicalInformationToOxid" value=0}]
+[{if $oViewConf->blSendTechnicalInformationToOxid && $oViewConf->sShopCountry}]
+    [{assign var="blSendTechnicalInformationToOxid" value=1}]
 [{/if}]
-<frameset [{if $blLoadDynContents}]rows="*,150"[{else}]rows="*"[{/if}] border="0">
+<frameset [{if $blSendTechnicalInformationToOxid}]rows="*,150"[{else}]rows="*"[{/if}] border="0">
     <frame src="[{$oViewConf->getSelfLink()}]&cl=navigation&item=navigation.tpl" name="adminnav" id="adminnav" frameborder="0" scrolling="auto" noresize marginwidth="0" marginheight="0">
 
-    [{if $blLoadDynContents}]
+    [{if $blSendTechnicalInformationToOxid}]
     <frame src="[{$oViewConf->getServiceUrl()}]banners/navigation.html"  name="adminfrm" id="adminfrm" frameborder="0" scrolling="auto" noresize marginwidth="0" marginheight="0">
     [{/if}]
 </frameset>

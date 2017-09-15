@@ -22,8 +22,8 @@
 
 namespace OxidEsales\EshopCommunity\Setup;
 
-use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use \OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use \OxidEsales\Facts\Facts;
 use oxSystemComponentException;
 
 /**
@@ -91,15 +91,15 @@ class Core
      */
     protected function getClass($sInstanceName)
     {
-        $editionSelector = new EditionSelector();
+        $facts = new Facts();
         $class =  'OxidEsales\\EshopCommunity\\Setup\\' . $sInstanceName;
 
         $classEnterprise = '\\OxidEsales\\EshopEnterprise\\'.EditionPathProvider::SETUP_DIRECTORY.'\\'.$sInstanceName;
         $classProfessional = '\\OxidEsales\\EshopProfessional\\'.EditionPathProvider::SETUP_DIRECTORY.'\\'.$sInstanceName;
-        if (($editionSelector->isProfessional() || $editionSelector->isEnterprise()) && class_exists($classProfessional)) {
+        if (($facts->isProfessional() || $facts->isEnterprise()) && class_exists($classProfessional)) {
             $class = $classProfessional;
         }
-        if ($editionSelector->isEnterprise() && class_exists($classEnterprise)) {
+        if ($facts->isEnterprise() && class_exists($classEnterprise)) {
             $class = $classEnterprise;
         }
 

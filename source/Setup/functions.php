@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
-use OxidEsales\EshopProfessional\Core\Serial;
+use \OxidEsales\Facts\Facts;
+use \OxidEsales\EshopProfessional\Core\Serial;
 
 if (!function_exists('getInstallPath')) {
     /**
@@ -43,10 +43,10 @@ if (!function_exists('getSystemReqCheck')) {
      */
     function getSystemReqCheck()
     {
-        $editionSelector = new EditionSelector();
-        if ($editionSelector->isEnterprise()) {
+        $facts = new Facts();
+        if ($facts->isEnterprise()) {
             $systemRequirements = new \OxidEsales\EshopEnterprise\Core\SystemRequirements;
-        } elseif ($editionSelector->isProfessional()) {
+        } elseif ($facts->isProfessional()) {
             $systemRequirements = new \OxidEsales\EshopProfessional\Core\SystemRequirements;
         } else {
             $systemRequirements = new \OxidEsales\EshopCommunity\Core\SystemRequirements;

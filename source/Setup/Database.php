@@ -27,6 +27,7 @@ use Exception;
 use PDO;
 use PDOException;
 use PDOStatement;
+use \OxidEsales\Facts\Facts;
 
 /**
  * Setup database manager class
@@ -308,7 +309,7 @@ class Database extends Core
         $oPdo = $this->getConnection();
 
         $blSendTechnicalInformationToOxid = true;
-        $facts = new \OxidEsales\Facts\Facts();
+        $facts = new Facts();
         if ($facts->isCommunity()) {
             $blSendTechnicalInformationToOxid = isset($aParams["send_technical_information_to_oxid"]) ? $aParams["send_technical_information_to_oxid"] : $oSession->getSessionParam('send_technical_information_to_oxid');
         }

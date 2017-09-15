@@ -20,7 +20,8 @@
  * @version   OXID eShop CE
  */
 
-$editionSelector = new \OxidEsales\EshopCommunity\Core\Edition\EditionSelector();
+$facts = new \OxidEsales\Facts\Facts();
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -69,15 +70,15 @@ $editionSelector = new \OxidEsales\EshopCommunity\Core\Edition\EditionSelector()
     <?php
         $iTabWidth = 147;
         $iSepWidth = 3;
-        if ($editionSelector->isEnterprise()) {
+        if ($facts->isEnterprise()) {
             $iTabCount = 7;
             $sHColor = '#006ab4';
         }
-        if ($editionSelector->isProfessional()) {
+        if ($facts->isProfessional()) {
             $iTabCount = 7;
             $sHColor = '#cd0210';
         }
-        if ($editionSelector->isCommunity()) {
+        if ($facts->isCommunity()) {
             $iTabCount = 6;
             $sHColor = '#ff3600';
         }

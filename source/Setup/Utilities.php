@@ -24,11 +24,11 @@ namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
 
-use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
-use OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
-use OxidEsales\DoctrineMigrationWrapper\Migrations;
+use \OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
+use \OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use \OxidEsales\Facts\Facts;
+use \OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
+use \OxidEsales\DoctrineMigrationWrapper\Migrations;
 
 /**
  * Setup utilities class
@@ -570,7 +570,7 @@ class Utilities extends Core
      */
     private function getEditionPathProvider($edition = null)
     {
-        $editionPathSelector = new EditionRootPathProvider(new EditionSelector($edition));
+        $editionPathSelector = new EditionRootPathProvider(new Facts($edition));
         return new EditionPathProvider($editionPathSelector);
     }
 
@@ -609,12 +609,12 @@ class Utilities extends Core
      */
     public function getActiveEditionDemodataPackagePath()
     {
-        $editionSelector = new EditionSelector();
+        $facts = new Facts();
 
         return $this->getUtilitiesInstance()->getVendorDirectory()
             . EditionRootPathProvider::EDITIONS_DIRECTORY
             . DIRECTORY_SEPARATOR
-            . sprintf(self::DEMODATA_PACKAGE_NAME, strtolower($editionSelector->getEdition()));
+            . sprintf(self::DEMODATA_PACKAGE_NAME, strtolower($facts->getEdition()));
     }
 
     /**

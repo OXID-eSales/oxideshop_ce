@@ -52,7 +52,7 @@ require "_header.php"; ?>
                         <?php $this->getText('SELECT_SHOP_LOCATION_HINT'); ?>
                     </div>
                 </td>
-                <?php if ($editionSelector->isCommunity()) { ?>
+                <?php if ($facts->isCommunity()) { ?>
                     <noscript>
                     <td>
                         <input type="submit" name="setup_lang_submit" value="<?php $this->getText('SELECT_SETUP_LANG_SUBMIT'); ?>" style="font-size: 11px;">

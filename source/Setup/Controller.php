@@ -23,13 +23,11 @@
 namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
-use OxidEsales\Eshop\Core\ShopVersion;
-use OxidEsales\Eshop\Core\SystemRequirements;
-use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\EshopCommunity\Setup\Controller\ModuleStateMapGenerator;
-use OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
-use OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException;
+use \OxidEsales\Facts\Edition\EditionSelector;
+use \OxidEsales\Eshop\Core\SystemRequirements;
+use \OxidEsales\EshopCommunity\Setup\Controller\ModuleStateMapGenerator;
+use \OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
+use \OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException;
 
 /**
  * Class holds scripts (controllers) needed to perform shop setup steps

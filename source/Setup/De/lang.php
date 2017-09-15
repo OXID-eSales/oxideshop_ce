@@ -210,4 +210,14 @@ $aLang = [
 
 'EXTERNAL_COMMAND_ERROR_1'                      => 'Fehler beim Ausführen des Kommandos \'%s\'. Returncode: \'%d\'.',
 'EXTERNAL_COMMAND_ERROR_2'                      => 'Das Kommando gibt folgende Meldung zurück:',
+
+'SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID'      => 'Verbindung mit den OXID eSales Servern erlauben, um die Qualität unserer Open-Source-Produkte zu verbessern.',
+'HELP_SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID' => 'Es werden keine geschäftsrelevanten Daten oder Kundeninformationen übermittelt. '
+                                                        .'Die gesammelten Daten sind ausschließlich technologische Informationen. '
+                                                        .'Um unsere Produktqualität zu verbessern, werden Informationen wie diese erhoben:'
+                                                        .'<ul>'
+                                                        .'  <li>Anzahl der installierten OXID eShop Community Editions weltweit</li>'
+                                                        .'  <li>durchschnittliche Anzahl installierter Erweiterungen pro OXID eShop</li>'
+                                                        .'  <li>die meist verbreiteten Erweiterungen für den OXID eShop</li>'
+                                                        .'</ul>',
 ];

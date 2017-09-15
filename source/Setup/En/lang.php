@@ -209,4 +209,14 @@ $aLang = [
 
 'EXTERNAL_COMMAND_ERROR_1'                      => 'Error while executing command \'%s\'. Return code: \'%d\'.',
 'EXTERNAL_COMMAND_ERROR_2'                      => 'The command returns the following message:',
+
+'SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID'      => 'Allow a connection to OXID eSales servers for improving the quality of our open source products.',
+'HELP_SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID' => 'No business relevant date or client information will be transmitted. '
+                                                        .'The collected data exclusively apply to technological information. '
+                                                        .'To improve the quality of our products, information like this will be collected:'
+                                                        .'<ul>'
+                                                        .'  <li>number of the OXID eShop Community Edition installations world wide</li>'
+                                                        .'  <li>average number of installed extensions per OXID eShop</li>'
+                                                        .'  <li>top spread extensions for the OXID eShop</li>'
+                                                        .'</ul>',
 ];

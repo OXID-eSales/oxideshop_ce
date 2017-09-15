@@ -200,7 +200,6 @@ $aLang = [
 'SELECT_SHOP_LANG'                              => 'Shop language',
 'SELECT_SHOP_LANG_HINT'                         => 'If needed, activate easily more languages in admin.',
 'SELECT_SETUP_LANG_SUBMIT'                      => 'Select',
-'USE_DYNAMIC_PAGES'                             => 'Enable connection with the OXID servers. You find more information in our ',
 'PRIVACY_POLICY'                                => 'privacy statements',
 
 'LOAD_DYN_CONTENT_NOTICE'                       => '<p>If checkbox is set, you will see an additional menu in the admin area of your OXID eShop.</p><p>In that menu you get further information about e-commerce services like Google product search.</p> <p>You can change these settings at any time.</p>',

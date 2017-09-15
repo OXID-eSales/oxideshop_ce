@@ -40,19 +40,6 @@ $editionSelector = new \OxidEsales\EshopCommunity\Core\Edition\EditionSelector()
         }
     }
 
-<?php if (!$editionSelector->isEnterprise()) { ?>
-    function update_dynpages_checkbox()
-    {
-        sValue = document.forms[0].location_lang.value;
-        if ( sValue == '' ) {
-            document.getElementById('use_dynamic_pages_ckbox').style.display = 'none';
-            document.getElementById('use_dynamic_pages_desc').style.display = 'none';
-        } else {
-            document.getElementById('use_dynamic_pages_ckbox').style.display = '';
-            document.getElementById('use_dynamic_pages_desc').style.display = '';
-        }
-    }
-<?php } ?>
     /**
      * Replaces password type field into plain and vice versa
      */

@@ -139,15 +139,18 @@ class ShopSetUpTest extends FrontendTestCase
         $this->select("country_lang", "Germany");
         $this->checkForErrors();
 
-        if ($this->getTestConfig()->getShopEdition() === 'PE' && getenv('OXID_LOCALE') == 'germany') {
+        if ($this->getTestConfig()->getShopEdition() === 'CE') {
             //there is no such checkbox for EE or utf mode
-            $this->assertElementPresent("use_dynamic_pages_ckbox");
-            $this->assertElementVisible("use_dynamic_pages_ckbox");
-            $this->assertEquals("off", $this->getValue("use_dynamic_pages_ckbox"));
-            $this->check("use_dynamic_pages_ckbox");
-            $this->assertEquals("on", $this->getValue("use_dynamic_pages_ckbox"));
+            $this->assertElementPresent("send_technical_information_to_oxid_checkbox");
+            $this->assertElementVisible("send_technical_information_to_oxid_checkbox");
+            $this->assertEquals("off", $this->getValue("send_technical_information_to_oxid_checkbox"));
+            $this->check("send_technical_information_to_oxid_checkbox");
+            $this->assertEquals("on", $this->getValue("send_technical_information_to_oxid_checkbox"));
             $this->checkForErrors();
+        } else {
+            $this->assertElementNotPresent("send_technical_information_to_oxid_checkbox");
         }
+
         $this->clickContinueAndProceedTo(self::LICENSE_STEP);
 
         // Step 3

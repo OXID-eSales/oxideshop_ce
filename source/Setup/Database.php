@@ -307,9 +307,11 @@ class Database extends Core
 
         $oPdo = $this->getConnection();
 
-        $this->setIfDynamicPagesShouldBeUsed($oSession);
-
-        $blUseDynPages = isset($aParams["use_dyn_pages"]) ? $aParams["use_dyn_pages"] : $oSession->getSessionParam('use_dynamic_pages');
+        $blSendTechnicalInformationToOxid = true;
+        $facts = new \OxidEsales\Facts\Facts();
+        if ($facts->isCommunity()) {
+            $blSendTechnicalInformationToOxid = isset($aParams["send_technical_information_to_oxid"]) ? $aParams["send_technical_information_to_oxid"] : $oSession->getSessionParam('send_technical_information_to_oxid');
+        }
         $sLocationLang = isset($aParams["location_lang"]) ? $aParams["location_lang"] : $oSession->getSessionParam('location_lang');
         $blCheckForUpdates = isset($aParams["check_for_updates"]) ? $aParams["check_for_updates"] : $oSession->getSessionParam('check_for_updates');
         $sCountryLang = isset($aParams["country_lang"]) ? $aParams["country_lang"] : $oSession->getSessionParam('country_lang');
@@ -338,7 +340,7 @@ class Database extends Core
                 'shopId' => $sBaseShopId,
                 'name' => 'blSendTechnicalInformationToOxid',
                 'type' => 'bool',
-                'value' => $blUseDynPages
+                'value' => $blSendTechnicalInformationToOxid
             ]
         );
 
@@ -493,18 +495,5 @@ class Database extends Core
             "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
                              values('$sID', '$baseShopId', 'blSendShopDataToOxid', 'bool', ENCODE( '$blSendShopDataToOxid', '" . $configKey->sConfigKey . "'))"
         );
-    }
-
-    /**
-     * Set to session if dynamic pages should be used.
-     *
-     * @param Session $session
-     */
-    protected function setIfDynamicPagesShouldBeUsed($session)
-    {
-        // disabling usage of dynamic pages if shop country is international
-        if ($session->getSessionParam('location_lang') === null) {
-            $session->setSessionParam('use_dynamic_pages', 'false');
-        }
     }
 }

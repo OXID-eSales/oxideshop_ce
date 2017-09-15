@@ -376,7 +376,7 @@ class Controller extends Core
             throw new SetupControllerExitException();
         }
 
-        //update dyn pages / shop country config options (from first step)
+        //update if send information to OXID / shop country config options (from first step)
         $database->saveShopSettings([]);
 
         // This value will not change, as it's deprecated and will be removed in next major version.

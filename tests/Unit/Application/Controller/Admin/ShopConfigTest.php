@@ -274,4 +274,15 @@ class ShopConfigTest extends \OxidTestCase
         $this->assertGreaterThan(100, $iVarSum);
         $this->assertEquals($iVarSum, count($aDbConfig['constraints']));
     }
+
+    public function testInformationSendingToOxidConfigurable()
+    {
+        if ($this->getTestConfig()->getShopEdition() !== 'CE') {
+            $this->markTestSkipped('This test is for Community editions only.');
+        }
+
+        $shopConfig = oxNew('Shop_Config');
+
+        $this->assertTrue($shopConfig->informationSendingToOxidConfigurable());
+    }
 }

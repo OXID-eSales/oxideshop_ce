@@ -247,6 +247,22 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
     }
 
     /**
+     * If allow to configure information sending to OXID.
+     * For PE and EE users it is always turned on.
+     *
+     * @return bool
+     */
+    public function informationSendingToOxidConfigurable()
+    {
+        $facts = new \OxidEsales\Facts\Facts();
+        if (!$facts->isCommunity()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * parse constraint from type and serialized values
      *
      * @param string $sType       variable type

@@ -906,6 +906,7 @@ function editThis(sID)
                 <div class="spacer"></div>
             </dl>
 
+            [{if $oView->informationSendingToOxidConfigurable()}]
             <dl>
                 <dt>
                     <input type=hidden name="confbools[blSendTechnicalInformationToOxid]" value="false">
@@ -917,6 +918,7 @@ function editThis(sID)
                 </dd>
                 <div class="spacer"></div>
             </dl>
+            [{/if}]
 
             <dl>
                 <dt>

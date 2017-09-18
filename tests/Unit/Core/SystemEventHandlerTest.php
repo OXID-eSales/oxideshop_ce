@@ -43,14 +43,7 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     {
         $systemEventHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
 
-        $moduleNotifierMock = $this->getMockBuilder(\OxidEsales\Eshop\Core\OnlineModuleVersionNotifier::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $moduleNotifierMock->expects($this->once())->method("versionNotify");
-
-        /** @var \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier $moduleNotifier */
-        $moduleNotifier = $moduleNotifierMock;
-        $systemEventHandler->setOnlineModuleVersionNotifier($moduleNotifier);
+        $this->assertModuleVersionNotifierCalled($systemEventHandler);
 
         $systemEventHandler->onAdminLogin(1);
     }
@@ -287,5 +280,20 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     private function prepareCurrentTime($currentTime)
     {
         $this->setTime($currentTime);
+    }
+
+    /**
+     * @param $systemEventHandler
+     */
+    private function assertModuleVersionNotifierCalled($systemEventHandler)
+    {
+        $moduleNotifierMock = $this->getMockBuilder(\OxidEsales\Eshop\Core\OnlineModuleVersionNotifier::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $moduleNotifierMock->expects($this->once())->method("versionNotify");
+
+        /** @var \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier $moduleNotifier */
+        $moduleNotifier = $moduleNotifierMock;
+        $systemEventHandler->setOnlineModuleVersionNotifier($moduleNotifier);
     }
 }

@@ -161,7 +161,9 @@ class SystemEventHandler
         // Will be used by the upcoming online one click installer.
         // Is still under development - still changes at the remote server are necessary - therefore ignoring the results for now
         try {
-            $this->getOnlineModuleVersionNotifier()->versionNotify();
+            if ($this->isSendingShopDataEnabled()) {
+                $this->getOnlineModuleVersionNotifier()->versionNotify();
+            }
         } catch (Exception $o) {
         }
     }

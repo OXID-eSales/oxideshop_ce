@@ -39,11 +39,26 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->getConfig()->setConfigParam('blSendTechnicalInformationToOxid', true);
     }
 
-    public function testOnAdminLoginOnlineModuleVersionNotifier()
+    public function testOnAdminLoginSendModuleInformation()
     {
         $systemEventHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
 
-        $this->assertModuleVersionNotifierCalled($systemEventHandler);
+        $this->assertModuleVersionNotifierCalled($systemEventHandler, 'once');
+
+        $systemEventHandler->onAdminLogin(1);
+    }
+
+    public function testOnAdminLoginDoNotSendModuleInformationWhenNotConfigured()
+    {
+        if ($this->getTestConfig()->getShopEdition() !== 'CE') {
+            $this->markTestSkipped('This test is for Community edition only');
+        }
+
+        $this->getConfig()->setConfigParam('blSendTechnicalInformationToOxid', false);
+
+        $systemEventHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
+
+        $this->assertModuleVersionNotifierCalled($systemEventHandler, 'never');
 
         $systemEventHandler->onAdminLogin(1);
     }
@@ -283,14 +298,18 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     }
 
     /**
-     * @param $systemEventHandler
+     * Inject mock to check if version notifier triggered correct number of times.
+     * Etc. once or never.
+     *
+     * @param SystemEventHandler $systemEventHandler object in which mock is injected.
+     * @param string $timesCalled PHPUnit method name of how many times method should be called.
      */
-    private function assertModuleVersionNotifierCalled($systemEventHandler)
+    private function assertModuleVersionNotifierCalled($systemEventHandler, $timesCalled)
     {
         $moduleNotifierMock = $this->getMockBuilder(\OxidEsales\Eshop\Core\OnlineModuleVersionNotifier::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $moduleNotifierMock->expects($this->once())->method("versionNotify");
+        $moduleNotifierMock->expects($this->$timesCalled())->method("versionNotify");
 
         /** @var \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier $moduleNotifier */
         $moduleNotifier = $moduleNotifierMock;

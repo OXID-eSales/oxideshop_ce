@@ -27,6 +27,7 @@ use Exception;
 use \OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
 use \OxidEsales\Eshop\Core\Edition\EditionPathProvider;
 use \OxidEsales\Facts\Facts;
+use \OxidEsales\Eshop\Core\Edition\EditionSelector;
 use \OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
 use \OxidEsales\DoctrineMigrationWrapper\Migrations;
 
@@ -570,7 +571,7 @@ class Utilities extends Core
      */
     private function getEditionPathProvider($edition = null)
     {
-        $editionPathSelector = new EditionRootPathProvider(new Facts($edition));
+        $editionPathSelector = new EditionRootPathProvider(new EditionSelector($edition));
         return new EditionPathProvider($editionPathSelector);
     }
 

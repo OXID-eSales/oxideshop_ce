@@ -96,10 +96,10 @@ class Core
 
         $classEnterprise = '\\OxidEsales\\EshopEnterprise\\'.EditionPathProvider::SETUP_DIRECTORY.'\\'.$sInstanceName;
         $classProfessional = '\\OxidEsales\\EshopProfessional\\'.EditionPathProvider::SETUP_DIRECTORY.'\\'.$sInstanceName;
-        if (($facts->isProfessional() || $facts->isEnterprise()) && class_exists($classProfessional)) {
+        if (($facts->isProfessional() || $facts->isEnterprise()) && $this->classExists($classProfessional)) {
             $class = $classProfessional;
         }
-        if ($facts->isEnterprise() && class_exists($classEnterprise)) {
+        if ($facts->isEnterprise() && $this->classExists($classEnterprise)) {
             $class = $classEnterprise;
         }
 
@@ -182,5 +182,24 @@ class Core
         }
 
         return $userDecidedIgnoreDBWarning;
+    }
+
+    /**
+     * Check if class exists.
+     * Ignore autoloader exceptions which might appear if database does not exist.
+     *
+     * @param string $className
+     *
+     * @return bool
+     */
+    private function classExists($className)
+    {
+        try {
+            $classExists = class_exists($className);
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return $classExists;
     }
 }

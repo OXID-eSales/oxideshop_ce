@@ -53,11 +53,6 @@ require "_header.php"; ?>
                     </div>
                 </td>
                 <?php if ($facts->isCommunity()) { ?>
-                    <noscript>
-                    <td>
-                        <input type="submit" name="setup_lang_submit" value="<?php $this->getText('SELECT_SETUP_LANG_SUBMIT'); ?>" style="font-size: 11px;">
-                    </td>
-                    </noscript>
                     <td>
                     &nbsp;&nbsp;
                         <input type="hidden" value="false" name="send_technical_information_to_oxid">

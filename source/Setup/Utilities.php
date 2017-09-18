@@ -612,7 +612,7 @@ class Utilities extends Core
     {
         $facts = new Facts();
 
-        return $this->getUtilitiesInstance()->getVendorDirectory()
+        return $this->getVendorDirectory()
             . EditionRootPathProvider::EDITIONS_DIRECTORY
             . DIRECTORY_SEPARATOR
             . sprintf(self::DEMODATA_PACKAGE_NAME, strtolower($facts->getEdition()));

@@ -83,49 +83,6 @@
     [{/if}]
     [{/foreach}]
 [{/block}]
-
-[{if $oViewConf->blSendTechnicalInformationToOxid && $oViewConf->sShopCountry}]
-
-<script>
-function openExchange()
-{
-    [{assign var="sExchangeUrl" value=false}]
-    [{assign var="mn" value=1}]
-    [{foreach from=$menustructure item=menuholder}]
-      [{if $menuholder->nodeType == XML_ELEMENT_NODE && $menuholder->childNodes->length}]
-        [{assign var="smn" value=1}]
-        [{foreach from=$menuholder->childNodes item=menuitem}]
-          [{if $menuitem->nodeType == XML_ELEMENT_NODE && $menuitem->childNodes->length}]
-            [{if $menuitem->getAttribute('id') == 'dyn_menu' && $menuitem->getAttribute('name') == 'mxoxexchange'}]
-            [{assign var="sExchangeUrl" value=$menuitem->getAttribute('url')}]
-
-            if ( top && top.navigation && top.navigation.adminnav ) {
-                var _sbli = top.navigation.adminnav.document.getElementById( 'nav-[{$mn}]-[{$smn}]' );
-                var _sba = _sbli.getElementsByTagName( 'a' );
-                top.navigation.adminnav._navAct( _sba[0] );
-            }
-
-            [{/if}]
-          [{assign var="smn" value=`$smn+1`}]
-          [{/if}]
-        [{/foreach}]
-        [{assign var="mn" value=`$mn+1`}]
-      [{/if}]
-    [{/foreach}]
-}
-</script>
-[{if $sExchangeUrl}]
-<tr>
-  <td colspan="2"></td>
-  <td colspan="3">
-    <a href="[{$sExchangeUrl}]" onclick="return openExchange();"><img border="0" src="[{$oViewConf->getImageUrl()}]/oxid-exchange-banner.jpg" target="_top"></a>
-  </td>
-</tr>
-[{/if}]
-<tr><td colspan="5" valign="bottom">
-    <iframe src="[{$oViewConf->getServiceUrl()}]banners/home.html" width="100%" frameborder="0" scrolling="auto" noresize marginwidth="0" marginheight="0">oxid</iframe>
-</td></tr>
-[{/if}]
 </table>
 <script type="text/javascript">
     <!--

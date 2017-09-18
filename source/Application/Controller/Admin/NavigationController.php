@@ -154,29 +154,8 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
     {
         $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
         if ($sUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("url")) {
-            // Limit external url's only allowed host
-            $myConfig = $this->getConfig();
-            if ($myConfig->getConfigParam('blSendTechnicalInformationToOxid') && strpos($sUrl, $this->_sAllowedHost) === 0) {
-                $sPath = $myConfig->getConfigParam('sCompileDir') . "/" . md5($sUrl) . '.html';
-                if ($myUtils->getRemoteCachePath($sUrl, $sPath)) {
-                    $oStr = getStr();
-                    $sVersion = $myConfig->getVersion();
-                    $sEdition = $myConfig->getFullEdition();
-                    $sCurYear = date("Y");
-
-                    // Get ceontent
-                    $sOutput = file_get_contents($sPath);
-
-                    // Fix base path
-                    $sOutput = $oStr->preg_replace("/<\/head>/i", "<base href=\"" . dirname($sUrl) . '/' . "\"></head>\n  <!-- OXID eShop {$sEdition}, Version {$sVersion}, Shopping Cart System (c) OXID eSales AG 2003 - {$sCurYear} - http://www.oxid-esales.com -->", $sOutput);
-
-                    // Fix self url's
-                    $myUtils->showMessageAndExit($oStr->preg_replace("/href=\"#\"/i", 'href="javascript::void();"', $sOutput));
-                }
-            } else {
-                // Caching not allowed, redirecting
-                $myUtils->redirect($sUrl, true, 302);
-            }
+            // Caching not allowed, redirecting
+            $myUtils->redirect($sUrl, true, 302);
         }
 
         $myUtils->showMessageAndExit("");

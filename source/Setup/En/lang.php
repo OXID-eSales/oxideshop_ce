@@ -200,7 +200,6 @@ $aLang = [
 'SELECT_SHOP_LANG'                              => 'Shop language',
 'SELECT_SHOP_LANG_HINT'                         => 'If needed, activate easily more languages in admin.',
 'SELECT_SETUP_LANG_SUBMIT'                      => 'Select',
-'USE_DYNAMIC_PAGES'                             => 'Enable connection with the OXID servers. You find more information in our ',
 'PRIVACY_POLICY'                                => 'privacy statements',
 
 'LOAD_DYN_CONTENT_NOTICE'                       => '<p>If checkbox is set, you will see an additional menu in the admin area of your OXID eShop.</p><p>In that menu you get further information about e-commerce services like Google product search.</p> <p>You can change these settings at any time.</p>',
@@ -209,4 +208,14 @@ $aLang = [
 
 'EXTERNAL_COMMAND_ERROR_1'                      => 'Error while executing command \'%s\'. Return code: \'%d\'.',
 'EXTERNAL_COMMAND_ERROR_2'                      => 'The command returns the following message:',
+
+'SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID'      => 'Allow a connection to OXID eSales servers for improving the quality of our open source products.',
+'HELP_SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID' => 'No business relevant date or client information will be transmitted. '
+                                                        .'The collected data exclusively apply to technological information. '
+                                                        .'To improve the quality of our products, information like this will be collected:'
+                                                        .'<ul>'
+                                                        .'  <li>number of the OXID eShop Community Edition installations world wide</li>'
+                                                        .'  <li>average number of installed extensions per OXID eShop</li>'
+                                                        .'  <li>top spread extensions for the OXID eShop</li>'
+                                                        .'</ul>',
 ];

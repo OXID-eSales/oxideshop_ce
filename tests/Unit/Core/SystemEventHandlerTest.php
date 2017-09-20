@@ -36,21 +36,29 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         parent::setUp();
         $this->getConfig()->saveShopConfVar('str', 'sOnlineLicenseNextCheckTime', null);
         $this->getConfig()->saveShopConfVar('str', 'sOnlineLicenseCheckTime', null);
-        $this->getConfig()->setConfigParam('blLoadDynContents', true);
+        $this->getConfig()->setConfigParam('blSendTechnicalInformationToOxid', true);
     }
 
-    public function testOnAdminLoginOnlineModuleVersionNotifier()
+    public function testOnAdminLoginSendModuleInformation()
     {
         $systemEventHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
 
-        $moduleNotifierMock = $this->getMockBuilder(\OxidEsales\Eshop\Core\OnlineModuleVersionNotifier::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $moduleNotifierMock->expects($this->once())->method("versionNotify");
+        $this->assertModuleVersionNotifierCalled($systemEventHandler, 'once');
 
-        /** @var \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier $moduleNotifier */
-        $moduleNotifier = $moduleNotifierMock;
-        $systemEventHandler->setOnlineModuleVersionNotifier($moduleNotifier);
+        $systemEventHandler->onAdminLogin(1);
+    }
+
+    public function testOnAdminLoginDoNotSendModuleInformationWhenNotConfigured()
+    {
+        if ($this->getTestConfig()->getShopEdition() !== 'CE') {
+            $this->markTestSkipped('This test is for Community edition only');
+        }
+
+        $this->getConfig()->setConfigParam('blSendTechnicalInformationToOxid', false);
+
+        $systemEventHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
+
+        $this->assertModuleVersionNotifierCalled($systemEventHandler, 'never');
 
         $systemEventHandler->onAdminLogin(1);
     }
@@ -245,7 +253,7 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testShopInformationSendingWhenSendingIsAllowed()
     {
         $this->prepareCurrentTime(1400000000);
-        $this->getConfig()->setConfigParam('blLoadDynContents', true);
+        $this->getConfig()->setConfigParam('blSendTechnicalInformationToOxid', true);
 
         $systemEventHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
 
@@ -266,7 +274,7 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
             $this->markTestSkipped('This test is for Community edition only.');
         }
         $this->prepareCurrentTime(1400000000);
-        $this->getConfig()->setConfigParam('blLoadDynContents', false);
+        $this->getConfig()->setConfigParam('blSendTechnicalInformationToOxid', false);
 
         $systemEventHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
 
@@ -287,5 +295,24 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     private function prepareCurrentTime($currentTime)
     {
         $this->setTime($currentTime);
+    }
+
+    /**
+     * Inject mock to check if version notifier triggered correct number of times.
+     * Etc. once or never.
+     *
+     * @param SystemEventHandler $systemEventHandler object in which mock is injected.
+     * @param string $timesCalled PHPUnit method name of how many times method should be called.
+     */
+    private function assertModuleVersionNotifierCalled($systemEventHandler, $timesCalled)
+    {
+        $moduleNotifierMock = $this->getMockBuilder(\OxidEsales\Eshop\Core\OnlineModuleVersionNotifier::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $moduleNotifierMock->expects($this->$timesCalled())->method("versionNotify");
+
+        /** @var \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier $moduleNotifier */
+        $moduleNotifier = $moduleNotifierMock;
+        $systemEventHandler->setOnlineModuleVersionNotifier($moduleNotifier);
     }
 }

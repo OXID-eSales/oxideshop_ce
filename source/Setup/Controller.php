@@ -23,13 +23,11 @@
 namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
-use OxidEsales\Eshop\Core\ShopVersion;
-use OxidEsales\Eshop\Core\SystemRequirements;
-use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\EshopCommunity\Setup\Controller\ModuleStateMapGenerator;
-use OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
-use OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException;
+use \OxidEsales\Facts\Edition\EditionSelector;
+use \OxidEsales\Eshop\Core\SystemRequirements;
+use \OxidEsales\EshopCommunity\Setup\Controller\ModuleStateMapGenerator;
+use \OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
+use \OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException;
 
 /**
  * Class holds scripts (controllers) needed to perform shop setup steps
@@ -376,7 +374,7 @@ class Controller extends Core
             throw new SetupControllerExitException();
         }
 
-        //update dyn pages / shop country config options (from first step)
+        //update if send information to OXID / shop country config options (from first step)
         $database->saveShopSettings([]);
 
         // This value will not change, as it's deprecated and will be removed in next major version.

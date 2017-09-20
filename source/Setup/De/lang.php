@@ -201,7 +201,6 @@ $aLang = [
 'SELECT_SHOP_LANG'                              => 'Sprache für Shop',
 'SELECT_SHOP_LANG_HINT'                         => 'Aktivieren Sie weitere Sprachen im Administrationsbereich, falls gewünscht.',
 'SELECT_SETUP_LANG_SUBMIT'                      => 'Auswählen',
-'USE_DYNAMIC_PAGES'                             => 'Verbindung mit den OXID Servern erlauben. Mehr Informationen in unseren ',
 'PRIVACY_POLICY'                                => 'Datenschutzerläuterungen',
 
 'LOAD_DYN_CONTENT_NOTICE'                       => '<p>Wenn diese Option gesetzt ist, sehen Sie ein zusätzliches Menü im Administrationsbereich Ihres OXID eShop.</p><p>Über dieses Menü erhalten Sie weitere Informationen über E-Commerce Services, wie z.B. Google Produktsuche oder econda.</p> <p>Sie können diese Einstellung im Administrationsbereich jederzeit wieder ändern.</p>',
@@ -210,4 +209,14 @@ $aLang = [
 
 'EXTERNAL_COMMAND_ERROR_1'                      => 'Fehler beim Ausführen des Kommandos \'%s\'. Returncode: \'%d\'.',
 'EXTERNAL_COMMAND_ERROR_2'                      => 'Das Kommando gibt folgende Meldung zurück:',
+
+'SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID'      => 'Verbindung mit den OXID eSales Servern erlauben, um die Qualität unserer Open-Source-Produkte zu verbessern.',
+'HELP_SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID' => 'Es werden keine geschäftsrelevanten Daten oder Kundeninformationen übermittelt. '
+                                                        .'Die gesammelten Daten sind ausschließlich technologische Informationen. '
+                                                        .'Um unsere Produktqualität zu verbessern, werden Informationen wie diese erhoben:'
+                                                        .'<ul>'
+                                                        .'  <li>Anzahl der installierten OXID eShop Community Editions weltweit</li>'
+                                                        .'  <li>durchschnittliche Anzahl installierter Erweiterungen pro OXID eShop</li>'
+                                                        .'  <li>die meist verbreiteten Erweiterungen für den OXID eShop</li>'
+                                                        .'</ul>',
 ];

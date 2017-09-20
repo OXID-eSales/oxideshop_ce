@@ -350,9 +350,9 @@ class DatabaseTest extends \OxidTestCase
             array('country_lang', null),
         );
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $map[] = array('use_dynamic_pages', true);
+            $map[] = array('send_technical_information_to_oxid', true);
         } else {
-            $map[] = array('use_dynamic_pages', false);
+            $map[] = array('send_technical_information_to_oxid', false);
         }
         $session->expects($this->any())->method("getSessionParam")->will($this->returnValueMap($map));
 

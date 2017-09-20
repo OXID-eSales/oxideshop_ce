@@ -906,17 +906,19 @@ function editThis(sID)
                 <div class="spacer"></div>
             </dl>
 
+            [{if $oView->informationSendingToOxidConfigurable()}]
             <dl>
                 <dt>
-                    <input type=hidden name="confbools[blLoadDynContents]" value="false">
-                    <input type=checkbox name="confbools[blLoadDynContents]" value="true"  [{if ($confbools.blLoadDynContents)}]checked[{/if}] [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_CONFIG_LOAD_DYNAMIC_PAGES"}]
+                    <input type=hidden name="confbools[blSendTechnicalInformationToOxid]" value="false">
+                    <input type=checkbox name="confbools[blSendTechnicalInformationToOxid]" value="true"  [{if ($confbools.blSendTechnicalInformationToOxid)}]checked[{/if}] [{$readonly}]>
+                    [{oxinputhelp ident="HELP_SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID"}]
                 </dt>
                 <dd>
-                    [{oxmultilang ident="SHOP_CONFIG_LOAD_DYNAMIC_PAGES"}]
+                    [{oxmultilang ident="SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID"}]
                 </dd>
                 <div class="spacer"></div>
             </dl>
+            [{/if}]
 
             <dl>
                 <dt>

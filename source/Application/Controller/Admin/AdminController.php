@@ -217,7 +217,6 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         $oViewConf->setViewConfigParam('selflink', \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($sURL . 'index.php?editlanguage=' . $this->_iEditLang, false));
         $oViewConf->setViewConfigParam('ajaxlink', str_replace('&amp;', '&', \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($sURL . 'oxajax.php?editlanguage=' . $this->_iEditLang, false)));
         $oViewConf->setViewConfigParam('sServiceUrl', $this->getServiceUrl());
-        $oViewConf->setViewConfigParam('blLoadDynContents', $myConfig->getConfigParam('blLoadDynContents'));
         $oViewConf->setViewConfigParam('sShopCountry', $myConfig->getConfigParam('sShopCountry'));
 
         // set langugae in admin

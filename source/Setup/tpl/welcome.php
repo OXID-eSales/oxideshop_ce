@@ -30,11 +30,7 @@ require "_header.php"; ?>
             <table cellpadding="0" cellspacing="0" border="0" height="29">
               <tr>
                 <td style="padding-right: 3px;">
-                    <select name="location_lang" style="font-size: 11px;"
-                    <?php if (!$editionSelector->isEnterprise()) { ?>
-                    onChange="update_dynpages_checkbox();"
-                    <?php } ?>
-                    >
+                    <select name="location_lang" style="font-size: 11px;">
                         <option value=""><?php $this->getText('SELECT_PLEASE_CHOOSE'); ?></option>
                         <?php
                         $aLocations   = $this->getViewParam( "aLocations" );
@@ -56,21 +52,6 @@ require "_header.php"; ?>
                         <?php $this->getText('SELECT_SHOP_LOCATION_HINT'); ?>
                     </div>
                 </td>
-                <?php if (!$editionSelector->isEnterprise()) { ?>
-                <noscript>
-                <td>
-                    <input type="submit" name="setup_lang_submit" value="<?php $this->getText('SELECT_SETUP_LANG_SUBMIT'); ?>" style="font-size: 11px;">
-                </td>
-                </noscript>
-               <td>
-                &nbsp;&nbsp;
-                    <input type="hidden" value="false" name="use_dynamic_pages">
-                    <input type="checkbox" id="use_dynamic_pages_ckbox" value="true" name="use_dynamic_pages" valign="" style="vertical-align:middle; width:20px; height:22px;<?php  if ( $sLocationLang === null ) echo " display: none;"?>" >
-              </td>
-              <td id="use_dynamic_pages_desc" style="<?php  if ( $sLocationLang === null ) echo "display: none;"?>">
-                    <?php $this->getText('USE_DYNAMIC_PAGES'); ?><a href="<?php echo $sLanguage; ?>/dyn_content_notice.php" onClick="showPopUp('<?php echo $sLanguage; ?>/dyn_content_notice.php', 400, 200, 1); return false;" target="_blank"><u><?php $this->getText('PRIVACY_POLICY'); ?></u></a>.
-              </td>
-                <?php } ?>
             </tr>
           </table>
         </td>
@@ -139,6 +120,23 @@ require "_header.php"; ?>
     <input type="hidden" value="false" name="check_for_updates">
     <input type="checkbox" id="check_for_updates_ckbox" value="true" name="check_for_updates" valign="" style="vertical-align:middle; width:20px; height:22px;" >
     <?php $this->getText('STEP_1_CHECK_UPDATES'); ?>
+
+    <?php if ($facts->isCommunity()) { ?>
+    <table cellpadding="0" cellspacing="0" border="0" height="29">
+        <td>
+            <input type="hidden" value="false" name="send_technical_information_to_oxid">
+            <input type="checkbox" value="true" id="send_technical_information_to_oxid_checkbox" name="send_technical_information_to_oxid" valign="" style="vertical-align:middle; width:20px; height:22px;" >
+            <?php $this->getText('SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID'); ?>
+            &nbsp;
+        </td>
+        <td>
+            <a href="#" style="display:block;width:18px;height:18px;background: #ddd;border: 1px solid #ccc;border-radius: 5px;line-height: 18px;text-align: center;font-weight: bold;color: #777;" onmouseover="document.getElementById('send_technical_information_to_oxid_description').style.display = '';" onmouseout="document.getElementById('send_technical_information_to_oxid_description').style.display = 'none';">?</a>
+            <div id="send_technical_information_to_oxid_description" style="position: absolute;margin-top:5px;border: 1px solid #c1c1c1; background: #ddd;padding: 10px;border-radius: 5px;display: none;width:300px;">
+                <?php $this->getText('HELP_SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID'); ?>
+            </div>
+        </td>
+    </table>
+    <?php } ?>
 
     <br><br>
     <?php $this->getText('STEP_1_TEXT'); ?>

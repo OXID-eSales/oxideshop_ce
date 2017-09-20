@@ -22,8 +22,8 @@
 
 namespace OxidEsales\EshopCommunity\Setup;
 
-use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use \OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use \OxidEsales\Facts\Facts;
 use oxSystemComponentException;
 
 /**
@@ -91,15 +91,15 @@ class Core
      */
     protected function getClass($sInstanceName)
     {
-        $editionSelector = new EditionSelector();
+        $facts = new Facts();
         $class =  'OxidEsales\\EshopCommunity\\Setup\\' . $sInstanceName;
 
         $classEnterprise = '\\OxidEsales\\EshopEnterprise\\'.EditionPathProvider::SETUP_DIRECTORY.'\\'.$sInstanceName;
         $classProfessional = '\\OxidEsales\\EshopProfessional\\'.EditionPathProvider::SETUP_DIRECTORY.'\\'.$sInstanceName;
-        if (($editionSelector->isProfessional() || $editionSelector->isEnterprise()) && class_exists($classProfessional)) {
+        if (($facts->isProfessional() || $facts->isEnterprise()) && $this->classExists($classProfessional)) {
             $class = $classProfessional;
         }
-        if ($editionSelector->isEnterprise() && class_exists($classEnterprise)) {
+        if ($facts->isEnterprise() && $this->classExists($classEnterprise)) {
             $class = $classEnterprise;
         }
 
@@ -182,5 +182,24 @@ class Core
         }
 
         return $userDecidedIgnoreDBWarning;
+    }
+
+    /**
+     * Check if class exists.
+     * Ignore autoloader exceptions which might appear if database does not exist.
+     *
+     * @param string $className
+     *
+     * @return bool
+     */
+    private function classExists($className)
+    {
+        try {
+            $classExists = class_exists($className);
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return $classExists;
     }
 }

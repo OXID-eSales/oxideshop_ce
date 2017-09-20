@@ -513,35 +513,6 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-        $loadDynContents = $myConfig->getConfigParam('blLoadDynContents');
-        $shopCountry = $myConfig->getConfigParam('sShopCountry');
-
-        // including dyn menu file
-        $dynPath = null;
-
-        if ($loadDynContents) {
-            if ($shopCountry) {
-                $remoteDynUrl = $this->_getDynMenuUrl($dynLang, $loadDynContents);
-
-                // loading remote file from server only once
-                $loadRemote = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("loadedremotexml");
-
-                // very basic check if its valid xml file
-                if ((!isset($loadRemote) || $loadRemote) && ($dynPath = $myOxUtlis->getRemoteCachePath($remoteDynUrl, $localDynPath))) {
-                    $dynPath = $this->_checkDynFile($dynPath);
-                }
-
-                // caching last load state
-                \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("loadedremotexml", $dynPath ? true : false);
-            }
-        }
-
-        // loading dynpages
-        if ($dynPath) {
-            // for not loading/showing the dynpages, we set don't add the dyn path to the files to load:
-            // $filesToLoad[] = $dynPath;
-        }
-
         return $filesToLoad;
     }
 

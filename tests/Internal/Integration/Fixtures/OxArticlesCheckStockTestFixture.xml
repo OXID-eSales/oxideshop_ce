@@ -1,0 +1,164 @@
+<!DOCTYPE dataset>
+<dataset>
+    <!-- Current time (provided by stub) in tests is always 2017-07-24 10:00:00-->
+    <!-- In stock via stock flag -->
+    <oxarticles
+            OXID="1"
+            OXSHOPID="1"
+            OXPARENTID=""
+            OXSTOCKFLAG="1"
+            OXSTOCK="0"
+            OXVARSTOCK="0"
+            OXVARCOUNT="0"
+            OXACTIVE="1"
+            OXHIDDEN="0"
+            OXACTIVEFROM="2017-07-24 05:00:00"
+            OXACTIVETO="2017-07-24 15:00:00"
+    />
+    <!-- Out of stock flag set -->
+    <oxarticles
+            OXID="2"
+            OXSHOPID="1"
+            OXPARENTID=""
+            OXSTOCKFLAG="2"
+            OXSTOCK="0"
+            OXVARSTOCK="0"
+            OXVARCOUNT="0"
+            OXACTIVE="1"
+            OXHIDDEN="0"
+            OXACTIVEFROM="2017-07-23 05:00:00"
+            OXACTIVETO="2017-07-23 15:00:00"
+    />
+    <!-- Out of stock flag set, but stock set -->
+    <oxarticles
+            OXID="3"
+            OXSHOPID="1"
+            OXPARENTID=""
+            OXSTOCKFLAG="2"
+            OXSTOCK="1"
+            OXVARSTOCK="0"
+            OXVARCOUNT="0"
+            OXACTIVE="1"
+            OXHIDDEN="0"
+            OXACTIVEFROM="2017-07-23 05:00:00"
+            OXACTIVETO="2017-07-23 15:00:00"
+    />
+
+    <!-- Here start the articles with variants -->
+
+    <!-- In stock, but variant is out of stock, although active -->
+    <oxarticles
+            OXID="4"
+            OXSHOPID="1"
+            OXPARENTID=""
+            OXSTOCKFLAG="1"
+            OXSTOCK="0"
+            OXVARSTOCK="0"
+            OXVARCOUNT="1"
+            OXACTIVE="1"
+            OXHIDDEN="0"
+            OXACTIVEFROM="2017-07-24 05:00:00"
+            OXACTIVETO="2017-07-24 15:00:00"
+    />
+    <!-- Variant, out of stock but active -->
+    <oxarticles
+            OXID="5"
+            OXSHOPID="1"
+            OXPARENTID="4"
+            OXSTOCKFLAG="2"
+            OXSTOCK="0"
+            OXVARSTOCK="0"
+            OXVARCOUNT="0"
+            OXACTIVE="1"
+            OXHIDDEN="0"
+            OXACTIVEFROM="2017-07-24 05:00:00"
+            OXACTIVETO="2017-07-24 15:00:00"
+    />
+
+    <!-- In stock, variant is in stock and active -->
+    <oxarticles
+            OXID="6"
+            OXSHOPID="1"
+            OXPARENTID=""
+            OXSTOCKFLAG="1"
+            OXSTOCK="0"
+            OXVARSTOCK="0"
+            OXVARCOUNT="1"
+            OXACTIVE="1"
+            OXHIDDEN="0"
+            OXACTIVEFROM="2017-07-24 05:00:00"
+            OXACTIVETO="2017-07-24 15:00:00"
+    />
+    <!-- Variant, in stock and active -->
+    <oxarticles
+            OXID="7"
+            OXSHOPID="1"
+            OXPARENTID="6"
+            OXSTOCKFLAG="1"
+            OXSTOCK="1"
+            OXVARSTOCK="0"
+            OXVARCOUNT="0"
+            OXACTIVE="1"
+            OXHIDDEN="0"
+            OXACTIVEFROM="2017-07-24 05:00:00"
+            OXACTIVETO="2017-07-24 15:00:00"
+    />
+
+    <!-- In stock, but variant is not active at all (flag and timestamp) -->
+    <oxarticles
+            OXID="8"
+            OXSHOPID="1"
+            OXPARENTID=""
+            OXSTOCKFLAG="1"
+            OXSTOCK="0"
+            OXVARSTOCK="0"
+            OXVARCOUNT="1"
+            OXACTIVE="0"
+            OXHIDDEN="0"
+            OXACTIVEFROM="2017-07-24 05:00:00"
+            OXACTIVETO="2017-07-24 15:00:00"
+    />
+    <!-- Variant, in stock but not active at all (flag and timestamp) -->
+    <oxarticles
+            OXID="9"
+            OXSHOPID="1"
+            OXPARENTID="8"
+            OXSTOCKFLAG="1"
+            OXSTOCK="0"
+            OXVARSTOCK="1"
+            OXVARCOUNT="0"
+            OXACTIVE="0"
+            OXHIDDEN="0"
+            OXACTIVEFROM="2017-07-23 05:00:00"
+            OXACTIVETO="2017-07-23 15:00:00"
+    />
+    <!-- In stock, variant is in stock active due to timestamp, but not due to flag -->
+    <oxarticles
+            OXID="10"
+            OXSHOPID="1"
+            OXPARENTID=""
+            OXSTOCKFLAG="1"
+            OXSTOCK="0"
+            OXVARSTOCK="0"
+            OXVARCOUNT="1"
+            OXACTIVE="0"
+            OXHIDDEN="0"
+            OXACTIVEFROM="2017-07-24 05:00:00"
+            OXACTIVETO="2017-07-24 15:00:00"
+    />
+    <!-- Variant, in stock and active due to timestamp, but not due to flag -->
+    <oxarticles
+            OXID="11"
+            OXSHOPID="1"
+            OXPARENTID="10"
+            OXSTOCKFLAG="1"
+            OXSTOCK="0"
+            OXVARSTOCK="1"
+            OXVARCOUNT="0"
+            OXACTIVE="0"
+            OXHIDDEN="0"
+            OXACTIVEFROM="2017-07-24 05:00:00"
+            OXACTIVETO="2017-07-24 15:00:00"
+    />
+
+</dataset>

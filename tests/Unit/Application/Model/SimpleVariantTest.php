@@ -298,24 +298,34 @@ class SimpleVariantTest extends \OxidTestCase
         $oDiscount->save();
 
         $oSubj = oxNew('oxSimpleVariant');
+        $oSubj->setId('_test_variant');
         $oSubj->oxarticles__oxprice = new oxField(10);
 
         $oParent = oxNew('oxArticle');
         $oParent->oxarticles__oxprice = new oxField(10);
+        $oParent->setId('_test_parent');
+        $oParent->save();
         $oSubj->setParent($oParent);
+        $oSubj->save();
 
         $this->assertEquals(9, $oSubj->getPrice()->getBruttoPrice());
         $this->cleanUpTable('oxdiscount');
+        $this->cleanUpTable('oxarticles');
     }
 
     public function testGetPriceFromParent()
     {
         oxTestModules::addFunction("oxarticle", "skipDiscounts", "{return true;}");
         $oSubj = oxNew('oxSimpleVariant');
+        $oSubj->setId('_test_variant');
         $oParent = oxNew('oxArticle');
+        $oParent->setId('_test_parent');
         $oParent->oxarticles__oxprice = new oxField(10);
         $oSubj->setParent($oParent);
+        $oSubj->save();
+        $oParent->save();
         $this->assertEquals(10, $oSubj->getPrice()->getBruttoPrice());
+        $this->cleanUpTable('oxarticles');
     }
 
     public function testIsLazyLoaded()

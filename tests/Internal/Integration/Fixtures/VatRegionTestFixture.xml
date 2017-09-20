@@ -1,0 +1,57 @@
+<!DOCTYPE dataset>
+<dataset>
+    <oxuser
+            OXID="1"
+            OXUSERNAME="User1"
+            OXUSTID=""
+            OXCOUNTRYID="1"
+    />
+    <oxuser
+            OXID="2"
+            OXUSERNAME="User2"
+            OXUSTID="TAXID"
+            OXCOUNTRYID="2"
+    />
+    <oxuser
+            OXID="3"
+            OXUSERNAME="User3"
+            OXUSTID="TAXID"
+            OXCOUNTRYID="3"
+    />
+    <oxuser
+            OXID="4"
+            OXUSERNAME="User4"
+            OXUSTID="TAXID"
+            OXCOUNTRYID=""
+    />
+
+    <!-- Inside EU and home country -->
+    <oxcountry
+            OXID="1"
+            OXVATSTATUS="1"
+    />
+    <!-- Inside EU and not home country -->
+    <oxcountry
+            OXID="2"
+            OXVATSTATUS="1"
+    />
+    <!-- Outside EU -->
+    <oxcountry
+            OXID="3"
+            OXVATSTATUS="0"
+    />
+
+    <!-- An address for each country -->
+    <oxaddress
+            OXID="1"
+            OXCOUNTRYID="1"
+    />
+    <oxaddress
+            OXID="2"
+            OXCOUNTRYID="2"
+    />
+    <oxaddress
+            OXID="3"
+            OXCOUNTRYID="3"
+    />
+</dataset>

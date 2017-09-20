@@ -33,6 +33,7 @@ DEFINE('ACTION_UPDATE_STOCK', 4);
 
 use Exception;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
+use OxidEsales\EshopCommunity\Internal\ServiceFactory;
 use oxObjectException;
 
 /**
@@ -237,6 +238,15 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         }
 
         $this->setShopId($myConfig->getShopId());
+    }
+
+    /**
+     * @return ServiceFactory
+     */
+    protected function getServiceFactory() 
+    {
+	return ServiceFactory::getInstance();
+
     }
 
     /**

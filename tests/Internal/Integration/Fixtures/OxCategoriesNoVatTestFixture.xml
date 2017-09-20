@@ -1,0 +1,9 @@
+<!DOCTYPE dataset>
+<dataset>
+    <oxcategories
+        OXID="1"
+    />
+    <oxcategories
+            OXID="2"
+    />
+</dataset>

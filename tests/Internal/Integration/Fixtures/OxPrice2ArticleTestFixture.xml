@@ -1,0 +1,36 @@
+<!DOCTYPE dataset>
+<dataset>
+    <oxarticles
+        OXID="1"
+    />
+    <oxarticles
+            OXID="2"
+    />
+    <oxprice2article
+            OXID="1"
+            OXSHOPID="1"
+            OXARTID="1"
+            OXADDABS="9.98"
+            OXADDPERC="0"
+            OXAMOUNT="10"
+            OXAMOUNTTO="19"
+    />
+    <oxprice2article
+            OXID="2"
+            OXSHOPID="1"
+            OXARTID="2"
+            OXADDABS="0"
+            OXADDPERC="14"
+            OXAMOUNT="20"
+            OXAMOUNTTO="50"
+    />
+    <oxprice2article
+            OXID="3"
+            OXSHOPID="1"
+            OXARTID="2"
+            OXADDABS="0"
+            OXADDPERC="20"
+            OXAMOUNT="50"
+            OXAMOUNTTO="100"
+    />
+</dataset>

@@ -1,0 +1,40 @@
+<!DOCTYPE dataset>
+<dataset>
+    <!-- Current time (provided by stub) in tests is always 2017-07-24 10:00:00-->
+    <oxarticles
+            OXID="00000000000000000000000000000001"
+            OXSHOPID="1"
+            OXPARENTID=""
+            OXACTIVE="1"
+            OXHIDDEN="0"
+            OXACTIVEFROM="2017-07-24 05:00:00"
+            OXACTIVETO="2017-07-24 15:00:00"
+    />
+    <oxarticles
+            OXID="00000000000000000000000000000002"
+            OXSHOPID="1"
+            OXPARENTID=""
+            OXACTIVE="1"
+            OXHIDDEN="1"
+            OXACTIVEFROM="2017-07-23 05:00:00"
+            OXACTIVETO="2017-07-23 15:00:00"
+    />
+    <oxarticles
+            OXID="00000000000000000000000000000003"
+            OXSHOPID="1"
+            OXPARENTID=""
+            OXACTIVE="1"
+            OXHIDDEN="1"
+            OXACTIVEFROM="2017-07-24 05:00:00"
+            OXACTIVETO="2017-07-24 15:00:00"
+    />
+    <oxarticles
+            OXID="00000000000000000000000000000004"
+            OXSHOPID="1"
+            OXPARENTID=""
+            OXACTIVE="0"
+            OXHIDDEN="0"
+            OXACTIVEFROM="2017-07-24 05:00:00"
+            OXACTIVETO="2017-07-24 15:00:00"
+    />
+</dataset>

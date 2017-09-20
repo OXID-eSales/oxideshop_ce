@@ -1,0 +1,160 @@
+<!DOCTYPE dataset>
+<dataset>
+
+    <oxdiscount
+            OXID="D1"
+            OXSORT="1"
+            OXACTIVE="0"
+            OXACTIVEFROM="2017-07-24 05:00:00"
+            OXACTIVETO="2017-07-24 15:00:00"
+            OXAMOUNT="0"
+            OXAMOUNTTO="5"
+            OXPRICE="0.0"
+            OXPRICETO="12.0"
+    />
+    <oxdiscount
+            OXID="D2"
+            OXSORT="2"
+            OXACTIVE="0"
+            OXACTIVEFROM="2017-07-24 05:00:00"
+            OXACTIVETO="2017-07-24 15:00:00"
+            OXAMOUNT="0"
+            OXAMOUNTTO="0"
+            OXPRICE="0.0"
+            OXPRICETO="0.0"
+    />
+    <oxdiscount
+            OXID="D3"
+            OXSORT="3"
+            OXACTIVE="0"
+            OXACTIVEFROM="2017-07-24 05:00:00"
+            OXACTIVETO="2017-07-24 15:00:00"
+            OXAMOUNT="0"
+            OXAMOUNTTO="0"
+            OXPRICE="0.0"
+            OXPRICETO="0.0"
+    />
+    <oxdiscount
+            OXID="D4"
+            OXSORT="4"
+            OXACTIVE="0"
+            OXACTIVEFROM="2017-07-24 05:00:00"
+            OXACTIVETO="2017-07-24 15:00:00"
+            OXAMOUNT="0"
+            OXAMOUNTTO="0"
+            OXPRICE="0.0"
+            OXPRICETO="0.0"
+    />
+    <oxdiscount
+            OXID="D5"
+            OXSORT="5"
+            OXACTIVE="0"
+            OXACTIVEFROM="2017-07-22 05:00:00"
+            OXACTIVETO="2017-07-22 15:00:00"
+            OXAMOUNT="0"
+            OXAMOUNTTO="0"
+            OXPRICE="0.0"
+            OXPRICETO="0.0"
+    />
+    <oxdiscount
+            OXID="D6"
+            OXSORT="6"
+            OXACTIVE="0"
+            OXACTIVEFROM="2017-07-24 05:00:00"
+            OXACTIVETO="2017-07-24 15:00:00"
+            OXAMOUNT="0"
+            OXAMOUNTTO="0"
+            OXPRICE="0.0"
+            OXPRICETO="0.0"
+    />
+
+    <oxdiscount
+            OXID="D7"
+            OXSORT="7"
+            OXACTIVE="0"
+            OXACTIVEFROM="2017-07-24 05:00:00"
+            OXACTIVETO="2017-07-24 15:00:00"
+            OXAMOUNT="5"
+            OXAMOUNTTO="999999"
+            OXPRICE="3.00"
+            OXPRICETO="1000000.00"
+    />
+
+    <oxobject2discount
+            OXID="J1"
+            OXOBJECTID="A1"
+            OXDISCOUNTID="D1"
+            OXTYPE="oxarticles"
+    />
+
+    <oxobject2discount
+            OXID="J2"
+            OXOBJECTID="U1"
+            OXDISCOUNTID="D2"
+            OXTYPE="oxuser"
+    />
+
+    <oxobject2discount
+            OXID="J3"
+            OXOBJECTID="C1"
+            OXDISCOUNTID="D3"
+            OXTYPE="oxcountry"
+    />
+
+    <oxobject2discount
+            OXID="J4"
+            OXOBJECTID="G1"
+            OXDISCOUNTID="D4"
+            OXTYPE="oxgroups"
+    />
+
+    <oxobject2discount
+            OXID="J5"
+            OXOBJECTID="G2"
+            OXDISCOUNTID="D5"
+            OXTYPE="oxgroups"
+    />
+
+    <oxobject2discount
+            OXID="J6"
+            OXOBJECTID="CAT1"
+            OXDISCOUNTID="D6"
+            OXTYPE="oxcategories"
+    />
+
+    <oxobject2group
+            OXID="JJ1"
+            OXOBJECTID="U2"
+            OXGROUPSID="G1"
+    />
+
+    <oxobject2group
+            OXID="JJ2"
+            OXOBJECTID="U2"
+            OXGROUPSID="G2"
+    />
+
+    <oxobject2group
+            OXID="JJ3"
+            OXOBJECTID="U2"
+            OXGROUPSID="G3"
+    />
+
+    <oxarticles
+            OXID="A2"
+            OXPARENTID="A1"
+            OXPRICE="0.0"
+    />
+
+    <oxarticles
+            OXID="A1"
+            OXPARENTID=""
+            OXPRICE="10.0"
+    />
+
+    <oxobject2category
+            OXCATNID="CAT1"
+            OXOBJECTID="A3"
+    />
+
+</dataset>

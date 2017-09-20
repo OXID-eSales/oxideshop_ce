@@ -166,6 +166,8 @@ class VatSelectorTest extends \OxidTestCase
     // article has custom VAT stored in oxarticle
     public function testFindArticleVatArticleHasCustomVat()
     {
+        $this->markTestSkipped('Remove enventually. This is now done in the PriceCalculationService');
+
         $oVatSelector1 = $this->getMock(\OxidEsales\Eshop\Application\Model\VatSelector::class, array('_getVatForArticleCategory'));
         $oVatSelector1->expects($this->once())->method('_getVatForArticleCategory')->will($this->returnValue(69));
 

@@ -1,0 +1,11 @@
+<!DOCTYPE dataset>
+<dataset>
+    <oxcategories
+        OXID="1"
+        OXVAT="14.0"
+    />
+    <oxcategories
+            OXID="2"
+            OXVAT="12.2"
+    />
+</dataset>

@@ -1,0 +1,10 @@
+<!DOCTYPE dataset SYSTEM "my-dataset.dtd">
+<dataset>
+    <oxarticles
+            OXID="1"
+            OXSHOPID="1"
+            OXPRICEA="10.50"
+            OXPRICEB="11.60"
+            OXPRICEC="12.70"
+    />
+</dataset>

@@ -32,6 +32,11 @@ use oxEmail;
 use oxField;
 use oxGroups;
 use OxidEsales\EshopCommunity\Application\Model\RssFeed;
+use OxidEsales\EshopCommunity\Internal\Dao\ArticleDao;
+use OxidEsales\EshopCommunity\Internal\Dao\PriceInformationDao;
+use OxidEsales\EshopCommunity\Internal\Dao\PriceInformationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\DataObject\BasicPriceInformation;
+use OxidEsales\EshopCommunity\Internal\ServiceFactory;
 use oxLinks;
 use oxList;
 use oxObject2Category;
@@ -1153,6 +1158,18 @@ class UtfTest extends \OxidTestCase
         $articleMock->oxarticles__oxprice = new oxField(10);
         $articleMock->oxarticles__oxshortdesc = new oxField($shortDescription);
         $articleMock->oxarticles__oxtimestamp = new oxField('2011-09-06 09:46:42');
+
+        // Mocking the dao for refactored code
+        $info = ['oxid' => 'ANYID', 'oxprice' => 10.0, 'oxpricea' => 0, 'oxpriceb' => 0, 'oxpricec' => 0, 'oxtprice' => 0];
+        $priceInfo = new BasicPriceInformation($info, $info);
+        $priceInformationDaoMock = $this->getMockBuilder(PriceInformationDaoInterface::class)->getMock();
+        $priceInformationDaoMock->expects($this->any())->method('getBasicPriceInformation')->will($this->returnValue($priceInfo));
+        $priceInformationDaoMock->expects($this->any())->method('getArticleDiscounts')->will($this->returnValue([]));
+        $serviceFactory = ServiceFactory::getInstance();
+        $property = new \ReflectionProperty(ServiceFactory::class, 'priceInformationDao');
+        $property->setAccessible(true);
+        $property->setValue($serviceFactory, $priceInformationDaoMock);
+        // End mocking dao
 
         $articleList = new oxarticlelist();
         $articleList->assign(array($articleMock));

@@ -27,6 +27,7 @@ use oxDb;
 use oxField;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Exception\ObjectException;
+use OxidEsales\EshopCommunity\Internal\DAOs\ArticleDaoInterface;
 use oxList;
 use oxPrice;
 use oxRegistry;
@@ -577,7 +578,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getActiveCheckQuery($blForceCoreTable = null)
     {
-        $sTable = $this->getViewName($blForceCoreTable);
+        /** @var ArticleDaoInterface $articleDao */
+        $articleDao = $this->getServiceFactory()->getArticleDao();
+        return $articleDao->getIsActiveSqlSnippet($blForceCoreTable);
 
         // check if article is still active
         $sQ = " $sTable.oxactive = 1 ";
@@ -607,25 +610,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getStockCheckQuery($blForceCoreTable = null)
     {
-        $myConfig = $this->getConfig();
-        $sTable = $this->getViewName($blForceCoreTable);
-
-        $sQ = "";
-
-        //do not check for variants
-        if ($myConfig->getConfigParam('blUseStock')) {
-            $sQ = " and ( $sTable.oxstockflag != 2 or ( $sTable.oxstock + $sTable.oxvarstock ) > 0  ) ";
-            //V #M513: When Parent article is not purchasable, it's visibility should be displayed in shop only if any of Variants is available.
-            if (!$myConfig->getConfigParam('blVariantParentBuyable')) {
-                $activeCheck = 'art.oxactive = 1';
-                if ($myConfig->getConfigParam('blUseTimeCheck')) {
-                    $activeCheck = $this->addSqlActiveRangeSnippet($activeCheck, 'art');
-                }
-                $sQ = " $sQ and IF( $sTable.oxvarcount = 0, 1, ( select 1 from $sTable as art where art.oxparentid=$sTable.oxid and $activeCheck and ( art.oxstockflag != 2 or art.oxstock > 0 ) limit 1 ) ) ";
-            }
-        }
-
-        return $sQ;
+        /** @var ArticleDaoInterface $articleDao */
+        $articleDao = $this->getServiceFactory()->getArticleDao();
+        return $articleDao->getStockCheckQuerySnippet($blForceCoreTable);
     }
 
     /**
@@ -2008,21 +1995,16 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return double
      */
+    
     public function getBasePrice($dAmount = 1)
     {
-        // override this function if you want e.g. different prices
-        // for diff. user groups.
-
-        // Performance
         $myConfig = $this->getConfig();
         if (!$myConfig->getConfigParam('bl_perfLoadPrice') || !$this->_blLoadPrice) {
             return;
         }
 
-        // GroupPrice or DB price ajusted by AmountPrice
-        $dPrice = $this->_getModifiedAmountPrice($dAmount);
+        return $this->getServiceFactory()->getPriceCalculationService()->getBasePrice($this->getId(), $this->getShopId(), $dAmount);
 
-        return $dPrice;
     }
 
     /**
@@ -2060,14 +2042,17 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
             $oPrice = $this->_getPriceObject();
 
-            $oPrice->setPrice($dBasePrice);
+            $priceCalculationFacade = $this->getServiceFactory()->getPriceCalculationFacade();
+            $oPrice = $priceCalculationFacade->getLegacyPrice($this->getId(), $this->getUserId(), $this->getShopId(), $dAmount);
 
             // price handling
             if (!$this->_blCalcPrice && $dAmount == 1) {
                 return $this->_oPrice = $oPrice;
             }
 
-            $this->_calculatePrice($oPrice);
+            $oPrice = $priceCalculationFacade->applyDiscounts($oPrice, $this->getId(), $dAmount, $this->getUserId(), $this->getShopId());
+
+            //$this->_calculatePrice($oPrice);
             if ($dAmount != 1) {
                 return $oPrice;
             }
@@ -2076,6 +2061,15 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         }
 
         return $this->_oPrice;
+    }
+
+    private function getUserId() {
+
+        if ($user = $this->getUser()) {
+            return $user->getId();
+        }
+        return null;
+
     }
 
     /**
@@ -2117,7 +2111,12 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $oBasketPrice = $this->_getPriceObject($oBasket->isCalculationModeNetto());
 
         // get base price
+        // The context setting is needed for the refacored code
+        if ($oUser) {
+           $this->getServiceFactory()->getContext()->setUser(new \OxidEsales\EshopCommunity\Internal\DataObject\User($oUser));
+        }
         $dBasePrice = $this->getBasePrice($dAmount);
+        $this->getServiceFactory()->getContext()->resetUser();
 
         $dBasePrice = $this->_modifySelectListPrice($dBasePrice, $aSelList);
         $dBasePrice = $this->_preparePrice($dBasePrice, $this->getArticleVat(), $oBasket->isCalculationModeNetto());
@@ -2127,11 +2126,17 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         // setting price
         $oBasketPrice->setPrice($dBasePrice);
 
-        $dVat = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\VatSelector::class)->getBasketItemVat($this, $oBasket);
+        $dVat = $this->getBasketItemVat($oBasket);
         $this->_calculatePrice($oBasketPrice, $dVat);
 
         // returning final price object
         return $oBasketPrice;
+    }
+
+    protected function getBasketItemVat($oBasket) {
+
+        return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\VatSelector::class)->getBasketItemVat($this, $oBasket);
+
     }
 
     /**

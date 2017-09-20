@@ -578,21 +578,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getActiveCheckQuery($blForceCoreTable = null)
     {
-        /** @var ArticleDaoInterface $articleDao */
         $articleDao = $this->getServiceFactory()->getArticleDao();
         return $articleDao->getIsActiveSqlSnippet($blForceCoreTable);
-
-        // check if article is still active
-        $sQ = " $sTable.oxactive = 1 ";
-
-        $sQ .= " and $sTable.oxhidden = 0 ";
-
-        // enabled time range check ?
-        if ($this->getConfig()->getConfigParam('blUseTimeCheck')) {
-            $sQ = $this->addSqlActiveRangeSnippet($sQ, $sTable);
-        }
-
-        return $sQ;
     }
 
     /**
@@ -610,7 +597,6 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getStockCheckQuery($blForceCoreTable = null)
     {
-        /** @var ArticleDaoInterface $articleDao */
         $articleDao = $this->getServiceFactory()->getArticleDao();
         return $articleDao->getStockCheckQuerySnippet($blForceCoreTable);
     }

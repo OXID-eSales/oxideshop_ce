@@ -1544,10 +1544,14 @@ class OxSetupUtils extends oxSetupCore
 
         // overwriting settings
         foreach ($aParams as $sParamName => $sParamValue) {
+            // non integer type variables must be surrounded by quotes
+            if ($sParamName[0] != 'i') {
+                $sParamValue = "'{$sParamValue}'";
+            }
             if (0 != preg_match("/(this->{$sParamName}).*" . preg_quote($sVerPrefix) . ".*;/", $sConfFile)) {
-                $sConfFile = str_replace("<{$sParamName}{$sVerPrefix}>", $sParamValue, $sConfFile);
+                $sConfFile = preg_replace("/(this->{$sParamName}).*" . preg_quote($sVerPrefix) . ".*;/", "\\1 = " . $sParamValue . ";", $sConfFile);
             } else {
-                $sConfFile = str_replace("<{$sParamName}>", $sParamValue, $sConfFile);
+                $sConfFile = preg_replace("/(this->{$sParamName}).*/", "\\1 = " . $sParamValue . ";", $sConfFile);
             }
         }
 

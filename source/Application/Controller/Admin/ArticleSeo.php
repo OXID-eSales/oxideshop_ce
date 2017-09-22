@@ -351,16 +351,6 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
     }
 
     /**
-     * Returns id of object which must be saved
-     *
-     * @return string
-     */
-    protected function _getSaveObjectId()
-    {
-        return $this->getEditObjectId();
-    }
-
-    /**
      * Returns TRUE if current seo entry has fixed state
      *
      * @return bool

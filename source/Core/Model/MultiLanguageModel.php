@@ -408,18 +408,6 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * If needed, check if field can be updated
-     *
-     * @param string $fieldName
-     *
-     * @return bool
-     */
-    protected function checkFieldCanBeUpdated($fieldName)
-    {
-        return true;
-    }
-
-    /**
      * Get object fields sql part for base table
      * used for updates or inserts:
      * return e.g.  fldName1 = 'value1',fldName2 = 'value2'...

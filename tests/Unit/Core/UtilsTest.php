@@ -138,7 +138,6 @@ class UtilsTest extends \OxidTestCase
     {
         $aLangCache = array("ggg" => "bbb");
         $sCacheName = 'tmp_testCacheName';
-        $sCache = "<?php\n\$aLangCache = " . var_export($aLangCache, true) . ";";
 
         $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('getCacheFilePath'));
         $oUtils->expects($this->once())->method('getCacheFilePath')->with($this->equalTo($sCacheName))->will($this->returnValue("tmp_testCacheName"));
@@ -582,7 +581,6 @@ class UtilsTest extends \OxidTestCase
 
         $sName = "SomeName";
         $mContent = "SomeContent";
-        $sKey = "SomeKey";
 
         $oUtils->toStaticCache($sName, $mContent);
         $this->assertEquals($mContent, $oUtils->fromStaticCache($sName));
@@ -605,11 +603,9 @@ class UtilsTest extends \OxidTestCase
 
         $sName1 = "SomeName";
         $mContent1 = "SomeContent";
-        $sKey1 = "SomeKey";
 
         $sName2 = "SomeName2";
         $mContent2 = "SomeContent2";
-        $sKey2 = "SomeKey2";
 
         $oUtils->toStaticCache($sName1, $mContent1);
         $oUtils->toStaticCache($sName2, $mContent2);
@@ -627,11 +623,9 @@ class UtilsTest extends \OxidTestCase
 
         $sName1 = "SomeName";
         $mContent1 = "SomeContent";
-        $sKey1 = "SomeKey";
 
         $sName2 = "SomeName2";
         $mContent2 = "SomeContent2";
-        $sKey2 = "SomeKey2";
 
         $oUtils->toStaticCache($sName1, $mContent1);
         $oUtils->toStaticCache($sName2, $mContent2);
@@ -796,11 +790,7 @@ class UtilsTest extends \OxidTestCase
 
     public function testResetLanguageCache()
     {
-        $myConfig = $this->getConfig();
-
         $oUtils = oxRegistry::getUtils();
-        $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty(true);
-        $sTmpDir = $myConfig->getConfigParam('sCompileDir');
 
         $aFiles = array('langcache_1_a', 'langcache_1_b', 'langcache_1_c');
         foreach ($aFiles as $sFile) {

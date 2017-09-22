@@ -264,7 +264,6 @@ class EmailTest extends \OxidTestCase
      */
     public function testSendOrderEMailToOwnerAddsHistoryRecord()
     {
-        $myConfig = $this->getConfig();
         $myDb = oxDb::getDb();
 
         $oPayment = oxNew('oxPayment');
@@ -303,8 +302,6 @@ class EmailTest extends \OxidTestCase
      */
     public function testSendForgotPwdEmailToNotExistingUser()
     {
-        $myConfig = $this->getConfig();
-
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
         $oEmail->expects($this->never())->method('_sendMail');
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));

@@ -40,14 +40,24 @@ class OxSelectListTest extends AbstractDaoTests
         $this->selectListDao = new SelectListDao($this->getDoctrineConnection(), $this->context, $this->legacyService);
     }
 
-    public function testGetAbsoluteSelectList() {
+    /**
+     * @dataProvider articleIdProvider
+     */
+    public function testGetAbsoluteSelectList($articleId) {
 
-        $list = $this->selectListDao->getSelectListForArticle('A1');
+        $list = $this->selectListDao->getSelectListForArticle($articleId);
         $this->assertEquals(3, sizeof($list));
         $this->assertEquals('Feld3', $list[2]->getFieldKey());
-        $this->assertEquals('A1', $list[2]->getArticleId());
+        $this->assertEquals($articleId, $list[2]->getArticleId());
         $this->assertEquals(30.0, $list[2]->getPriceDelta());
         $this->assertEquals(SelectListItem::DELTA_TYPE_ABSOLUTE, $list[2]->getDeltaType());
+    }
+
+    public function articleIdProvider() {
+        return [
+            ['articleId' => 'A1'],
+            ['articleId' => 'A3']
+        ];
     }
 
     public function testGetPercentageSelectList() {

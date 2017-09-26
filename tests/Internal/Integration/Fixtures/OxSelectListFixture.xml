@@ -28,4 +28,9 @@
             OXSORT="2"
     />
 
+    <oxarticles
+        OXID="A3"
+        OXPARENTID="A1"
+    />
+
 </dataset>

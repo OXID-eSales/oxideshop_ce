@@ -378,3 +378,52 @@ CREATE TABLE `oxobject2category` (
   KEY (`OXPOS`),
   KEY `OXTIME` (`OXTIME`)
 ) ENGINE=MEMORY COMMENT 'Shows many-to-many relationship between articles and categories';
+
+DROP TABLE IF EXISTS `oxobject2selectlist`;
+
+CREATE TABLE `oxobject2selectlist` (
+  `OXID` char(32) character set latin1 collate latin1_general_ci NOT NULL COMMENT 'Record id',
+  `OXOBJECTID` char(32) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Article id (oxarticles)',
+  `OXSELNID` char(32) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Selection list id (oxselectlist)',
+  `OXSORT` int(5) NOT NULL default '0' COMMENT 'Sorting',
+  `OXTIMESTAMP` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT 'Timestamp',
+  PRIMARY KEY  (`OXID`),
+  KEY `OXOBJECTID` (`OXOBJECTID`),
+  KEY `OXSELNID` (`OXSELNID`)
+) ENGINE=MEMORY COMMENT 'Shows many-to-many relationship between articles and selection lists';
+
+DROP TABLE IF EXISTS `oxselectlist`;
+
+CREATE TABLE `oxselectlist` (
+  `OXID` char(32) character set latin1 collate latin1_general_ci NOT NULL COMMENT 'Selection list id',
+  `OXSHOPID` int(11) NOT NULL default '1' COMMENT 'Shop id (oxshops)',
+  `OXTITLE` varchar(254) NOT NULL default '' COMMENT 'Title (multilanguage)',
+  `OXIDENT` varchar(255) NOT NULL default '' COMMENT 'Working Title',
+  `OXVALDESC` varchar(1024) NOT NULL COMMENT 'List fields, separated by "[field_name]!P![price]__@@[field_name]__@@" (multilanguage)',
+  `OXTITLE_1` varchar(255) NOT NULL default '',
+  `OXVALDESC_1` varchar(1024) NOT NULL,
+  `OXTITLE_2` varchar(255) NOT NULL default '',
+  `OXVALDESC_2` varchar(1024) NOT NULL,
+  `OXTITLE_3` varchar(255) NOT NULL default '',
+  `OXVALDESC_3` varchar(1024) NOT NULL,
+  `OXTIMESTAMP` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT 'Timestamp',
+  PRIMARY KEY  (`OXID`)
+) ENGINE=MEMORY COMMENT 'Selection lists';
+
+DROP VIEW IF EXISTS `oxv_oxselectlist_de`;
+
+CREATE VIEW oxv_oxselectlist_de AS select `oxselectlist`.`OXID` AS `OXID`,
+  `oxselectlist`.`OXSHOPID` AS `OXSHOPID`,
+  `oxselectlist`.`OXTITLE` AS `OXTITLE`,
+  `oxselectlist`.`OXIDENT` AS `OXIDENT`,
+  `oxselectlist`.`OXVALDESC` AS `OXVALDESC`,
+  `oxselectlist`.`OXTIMESTAMP` AS `OXTIMESTAMP` from `oxselectlist`;
+
+DROP VIEW IF EXISTS `oxv_oxselectlist_en`;
+
+CREATE VIEW oxv_oxselectlist_en AS select `oxselectlist`.`OXID` AS `OXID`,
+  `oxselectlist`.`OXSHOPID` AS `OXSHOPID`,
+  `oxselectlist`.`OXTITLE_1` AS `OXTITLE`,
+  `oxselectlist`.`OXIDENT` AS `OXIDENT`,
+  `oxselectlist`.`OXVALDESC_1` AS `OXVALDESC`,
+  `oxselectlist`.`OXTIMESTAMP` AS `OXTIMESTAMP` from `oxselectlist`;

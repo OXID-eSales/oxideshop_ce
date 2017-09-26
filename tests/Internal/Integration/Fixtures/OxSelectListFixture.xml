@@ -1,0 +1,31 @@
+<!DOCTYPE dataset SYSTEM "my-dataset.dtd">
+<dataset>
+
+    <oxselectlist
+        OXID="SL1"
+        OXSHOPID="1"
+        OXVALDESC="Feld1!P!10__@@Feld2!P!20__@@Feld3!P!30__@@"
+        OXVALDESC_1="Field1!P!10__@@Field2!P!20__@@Field3!P!30__@@"
+    />
+    <oxselectlist
+        OXID="SL2"
+        OXSHOPID="1"
+        OXVALDESC="Feld1!P!10%__@@Feld2!P!20%__@@Feld3!P!30%__@@"
+        OXVALDESC_1="Field1!P!10%__@@Field2!P!20%__@@Field3!P!30%__@@"
+    />
+
+    <oxobject2selectlist
+        OXID="J1"
+        OXOBJECTID="A1"
+        OXSELNID="SL1"
+        OXSORT="1"
+    />
+
+    <oxobject2selectlist
+            OXID="J2"
+            OXOBJECTID="A2"
+            OXSELNID="SL2"
+            OXSORT="2"
+    />
+
+</dataset>

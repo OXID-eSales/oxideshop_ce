@@ -29,7 +29,6 @@ use \OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
 use \OxidEsales\Eshop\Core\Edition\EditionPathProvider;
 use \OxidEsales\Facts\Facts;
 use \OxidEsales\Eshop\Core\Edition\EditionSelector;
-use \OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
 use \OxidEsales\DoctrineMigrationWrapper\Migrations;
 use OxidEsales\DoctrineMigrationWrapper\MigrationsBuilder;
 use OxidEsales\DemoDataInstaller\DemoDataInstallerBuilder;
@@ -474,9 +473,7 @@ class Utilities extends Core
      */
     public function executeExternalDatabaseMigrationCommand(ConsoleOutput $output = null, Facts $facts = null)
     {
-        $migrationsBuilder = new MigrationsBuilder();
-        $migrations = $migrationsBuilder->build($facts);
-
+        $migrations = $this->createMigrations($facts);
         $migrations->setOutput($output);
 
         $command = Migrations::MIGRATE_COMMAND;
@@ -491,8 +488,7 @@ class Utilities extends Core
      */
     public function executeExternalDemodataAssetsInstallCommand()
     {
-        $demoDataInstallerBuilder = new DemoDataInstallerBuilder();
-        $demoDataInstaller = $demoDataInstallerBuilder->build();
+        $demoDataInstaller = $this->createDemoDataInstaller();
 
         return $demoDataInstaller->execute();
     }
@@ -630,5 +626,27 @@ class Utilities extends Core
     public static function stripAnsiControlCodes($outputWithAnsiControlCodes)
     {
         return preg_replace('/\x1b(\[|\(|\))[;?0-9]*[0-9A-Za-z]/', "", $outputWithAnsiControlCodes);
+    }
+
+    /**
+     * @param Facts $facts The facts object to use for the creation of the migrations.
+     *
+     * @return Migrations
+     */
+    protected function createMigrations(Facts $facts = null)
+    {
+        $migrationsBuilder = new MigrationsBuilder();
+
+        return $migrationsBuilder->build($facts);
+    }
+
+    /**
+     * @return \OxidEsales\DemoDataInstaller\DemoDataInstaller
+     */
+    protected function createDemoDataInstaller()
+    {
+        $demoDataInstallerBuilder = new DemoDataInstallerBuilder();
+
+        return $demoDataInstallerBuilder->build();
     }
 }

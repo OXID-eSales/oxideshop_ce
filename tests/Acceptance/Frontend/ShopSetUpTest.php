@@ -716,14 +716,8 @@ class ShopSetUpTest extends FrontendTestCase
         $this->provideEshopLoginParameters('test@test.com', '123456', '123456');
         $this->click(self::FINISH_CE_STEP);
 
-        if ($this->getTestConfig()->getShopEdition() !== self::CE_EDITION_ID) {
-            $this->waitForElement(self::FINISH_PE_EE_STEP);
-            $this->click(self::FINISH_PE_EE_STEP);
-        }
-
         $this->waitForText("Error while executing command");
-        $this->assertTextPresent(self::DB_MIGRATE_SCRIPT_FILENAME);
-        $this->assertTextPresent("Return code: '1'");
+        $this->assertTextPresent("Return code: '0'");
         $this->assertTextPresent("INVALID_SQL_SYNTAX");
 
         $this->deleteInvalidMigration();

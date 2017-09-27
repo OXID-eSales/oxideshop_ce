@@ -637,23 +637,10 @@ class Controller extends Core
                 $this->getUtilitiesInstance()->executeExternalDatabaseMigrationCommand();
             }
         } catch (Exception $exception) {
-            $language = $this->getLanguageInstance();
-            $view = $this->getView();
+            $commandException = new CommandExecutionFailedException('Migration', $exception->getCode(), $exception);
+            $commandException->setCommandOutput([$exception->getMessage()]);
 
-            $commandOutput = $exception->getMessage();
-            $htmlCommandOutput = $this->convertCommandOutputToHtmlOutput($commandOutput);
-
-            $errorLines[] = sprintf(
-                $language->getText('EXTERNAL_COMMAND_ERROR_1'),
-                'Migration',
-                $exception->getCode()
-            );
-            $errorLines[] = $language->getText('EXTERNAL_COMMAND_ERROR_2');
-
-            $errorHeader = implode("<br />", $errorLines);
-            $errorMessage = implode("<br /><br />", [$errorHeader, $htmlCommandOutput]);
-
-            $view->setMessage($errorMessage);
+            $this->handleCommandExecutionFailedException($commandException);
 
             throw new SetupControllerExitException();
         }

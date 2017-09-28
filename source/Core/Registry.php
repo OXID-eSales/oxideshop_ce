@@ -312,6 +312,17 @@ class Registry
     }
 
     /**
+     * Return instance of \OxidEsales\Eshop\Core\Logger
+     *
+     * @static
+     * @return \OxidEsales\Eshop\Core\Logger
+     */
+    public static function getLogger()
+    {
+        return self::getObject(\OxidEsales\Eshop\Core\Logger::class);
+    }
+
+    /**
      * Return all class instances, which are currently set in the registry
      *
      * @return array

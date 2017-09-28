@@ -226,20 +226,3 @@ function oxTriggerOfflinePageDisplay()
         };
     }
 }
-
-/**
- * @deprecated since v6.3 (2018-04-18); This method will be removed completely. Use OxidEsales\Eshop\Core\Registry::getLogger() in the future.
- *
- * @param string $message
- */
-function writeToLog($message)
-{
-    $time = microtime(true);
-    $micro = sprintf("%06d", ($time - floor($time)) * 1000000);
-    $date = new \DateTime(date('Y-m-d H:i:s.' . $micro, $time));
-    $timestamp = $date->format('d M H:i:s.u Y');
-
-    $message = "[$timestamp] " . $message . PHP_EOL;
-
-    file_put_contents(OX_LOG_FILE, $message, FILE_APPEND);
-}

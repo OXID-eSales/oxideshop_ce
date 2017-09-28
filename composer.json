@@ -20,6 +20,7 @@
         "oxid-esales/flow-theme": "^v3.0.0",
         "oxid-esales/oxideshop-doctrine-migration-wrapper": "^v2.1.0",
         "oxid-esales/oxideshop-db-views-generator": "^v1.1.1",
+        "doctrine/dbal": "^v2.5.12",
         "oxid-esales/oxideshop-demodata-installer": "^v1.1.0",
         "oxid-esales/oxideshop-composer-plugin": "^v2.0.0",
         "oxid-esales/oxideshop-unified-namespace-generator": "^1.0.0",

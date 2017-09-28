@@ -474,8 +474,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         // check if this order is already stored
         $sGetChallenge = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('sess_challenge');
         if ($this->_checkOrderExist($sGetChallenge)) {
-            \OxidEsales\Eshop\Core\Registry::getUtils()->logger('BLOCKER');
-
+            \OxidEsales\Eshop\Core\Registry::getLogger()->debug('BLOCKER');
             // we might use this later, this means that somebody clicked like mad on order button
             return self::ORDER_STATE_ORDEREXISTS;
         }

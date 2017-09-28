@@ -20,13 +20,14 @@
         "oxid-esales/oxideshop-db-views-generator": "^v1.1.1",
         "oxid-esales/oxideshop-demodata-installer": "^v1.1.0",
         "oxid-esales/oxideshop-composer-plugin": "^v2.0.0",
-        "oxid-esales/oxideshop-unified-namespace-generator": "^1.0.0",
+        "oxid-esales/oxideshop-unified-namespace-generator": "dev-master || ^1.0.0",
         "oxid-esales/testing-library": "dev-master",
         "oxid-esales/coding-standards": "^v3.0.2",
         "oxid-esales/coding-standards-wrapper": "dev-master",
         "incenteev/composer-parameter-handler": "~v2.0",
         "oxid-esales/oxideshop-ide-helper": "^3.0",
-        "oxid-esales/azure-theme": "dev-b-1.4"
+        "oxid-esales/azure-theme": "dev-b-1.4",
+        "monolog/monolog": "^v1.23.0"
     },
     "autoload": {
         "psr-4": {

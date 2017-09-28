@@ -201,7 +201,8 @@ if (!function_exists('getLogger')) {
      *
      * @return \OxidEsales\Eshop\Core\Logger
      */
-    function getLogger() {
+    function getLogger()
+    {
         $logger = new Monolog\Monolog('OxidEsales');
         $logger->pushHandler(
             new Monolog\Handler\StreamHandler(

@@ -198,6 +198,11 @@ ini_set('session.use_cookies', 0);
 ini_set('session.use_trans_sid', 0);
 ini_set('url_rewriter.tags', '');
 
+/***
+ * setup logger
+ */
+\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Logger::class, getLogger());
+
 /**
  * Bulletproof offline page loader
  */

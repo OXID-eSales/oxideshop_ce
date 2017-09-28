@@ -26,8 +26,8 @@ use OxidEsales\EshopCommunity\Setup\Utilities;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
-
 use oxDatabaseHelper;
+
 require_once TEST_LIBRARY_HELPERS_PATH . 'oxDatabaseHelper.php';
 
 class UtilitiesTest extends \OxidEsales\TestingLibrary\UnitTestCase
@@ -95,12 +95,9 @@ class UtilitiesTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     private function tableExists($tableName)
     {
-        $database = DatabaseProvider::getDb();
-        $sql = "SELECT COUNT(TABLE_NAME) FROM information_schema.TABLES WHERE TABLE_NAME = '$tableName'";
+        $databaseHelper = new oxDatabaseHelper(DatabaseProvider::getDb());
 
-        $count = $database->getOne($sql);
-
-        return $count > 0;
+        return $databaseHelper->existsTable($tableName);
     }
 
     protected function assertMigrationCreatedTablesDontExist()

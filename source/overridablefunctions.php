@@ -194,3 +194,22 @@ if (!function_exists('getRequestUrl')) {
         return Registry::get(Request::class)->getRequestUrl($sParams, $blReturnUrl);
     }
 }
+
+if (!function_exists('getLogger')) {
+    /**
+     * Returns the Logger class to use
+     *
+     * @return \Monolog\Logger
+     */
+    function getLogger()
+    {
+        $logger = new Monolog\Logger('OxidEsales');
+        $logger->pushHandler(
+            new Monolog\Handler\StreamHandler(
+                \OxidEsales\Eshop\Core\Registry::getConfig()->getLogsDir() . 'logs.txt'
+            ),
+            Monolog\Logger::WARNING
+        );
+        return $logger;
+    }
+}

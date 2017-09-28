@@ -183,18 +183,14 @@ class Session extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Starts shop session, generates unique session ID, extracts user IP.
+     * retrieves the session id from the request if any
+     *
+     * @return string|null
      */
-    public function start()
+    protected function getSidFromRequest()
     {
         $myConfig = $this->getConfig();
         $sid = null;
-
-        if ($this->isAdmin()) {
-            $this->setName("admin_sid");
-        } else {
-            $this->setName("sid");
-        }
 
         $sForceSidParam = $myConfig->getRequestParameter($this->getForcedName());
         $sSidParam = $myConfig->getRequestParameter($this->getName());
@@ -207,6 +203,24 @@ class Session extends \OxidEsales\Eshop\Core\Base
         } elseif ($sSidParam) {
             $sid = $sSidParam;
         }
+
+        return $sid;
+    }
+
+    /**
+     * Starts shop session, generates unique session ID, extracts user IP.
+     */
+    public function start()
+    {
+        $myConfig = $this->getConfig();
+
+        if ($this->isAdmin()) {
+            $this->setName("admin_sid");
+        } else {
+            $this->setName("sid");
+        }
+
+        $sid = $this->getSidFromRequest();
 
         //starting session if only we can
         if ($this->_allowSessionStart()) {

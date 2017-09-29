@@ -199,17 +199,17 @@ if (!function_exists('getLogger')) {
     /**
      * Returns the Logger class to use
      *
-     * @return \OxidEsales\Eshop\Core\Logger
+     * @return \Monolog\Logger
      */
     function getLogger()
     {
-        $logger = new Monolog\Monolog('OxidEsales');
+        $logger = new Monolog\Logger('OxidEsales');
         $logger->pushHandler(
             new Monolog\Handler\StreamHandler(
                 \OxidEsales\Eshop\Core\Registry::getConfig()->getLogsDir() . 'logs.txt'
             ),
             Monolog\Logger::WARNING
         );
-        return oxNew(\OxidEsales\Eshop\Core\Logger::class, $logger);
+        return $logger;
     }
 }

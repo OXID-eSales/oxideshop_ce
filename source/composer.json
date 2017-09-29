@@ -11,7 +11,8 @@
     "require-dev": {
         "oxid-esales/testing-library": "^1.0.5",
         "oxid-esales/coding-standards": "^2.0.0",
-        "incenteev/composer-parameter-handler": "~2.0"
+        "incenteev/composer-parameter-handler": "~2.0",
+        "etsy/phpunit-extensions": "~0.7"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -25,7 +26,7 @@
     },
     "config": {
         "platform": {
-            "php": "5.3.3"
+            "php": "5.3.25"
         }
     },
     "extra": {

@@ -22,6 +22,8 @@
 
 /**
  * Class handeling csv import
+ *
+ * @deprecated since v5.3.5 (2017-10-02); This class will be completely removed in v6.0. In v6.0 use \OxidEsales\EshopCommunity\Core\GenericImport\GenericImport instead.
  */
 class oxErpCsv extends oxERPBase
 {

@@ -26,6 +26,8 @@ require_once 'oxerptype.php';
  * Objects of this class represent associations between oxarticle
  * and oxattribute objects. Each of these associations also has
  * a value.
+ *
+ * @deprecated since v5.3.5 (2017-10-02); This class will be completely removed in v6.0. In v6.0 use \OxidEsales\EshopCommunity\Core\GenericImport\GenericImport instead.
  */
 class oxERPType_Article2Attribute extends oxERPType
 {

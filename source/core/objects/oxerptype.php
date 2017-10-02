@@ -23,6 +23,8 @@
 /**
  * main erp type superclass - includes methods abstraction and basic implementation
  * for all erp object types
+ *
+ * @deprecated since v5.3.5 (2017-10-02); This class will be completely removed in v6.0. In v6.0 use \OxidEsales\EshopCommunity\Core\GenericImport\GenericImport instead.
  */
 class oxERPType
 {

@@ -31,6 +31,8 @@ eval("class oxErpArticle450_parent extends $sArticleClass {};");
 /**
  * article class, used inside erp for 4.5.0 eShop version
  * hotfixe for article long description saving (bug#0002741)
+ *
+ * @deprecated since v5.3.5 (2017-10-02); This class will be completely removed in v6.0. In v6.0 use \OxidEsales\EshopCommunity\Core\GenericImport\GenericImport instead.
  */
 class oxErpArticle450 extends oxErpArticle450_parent
 {

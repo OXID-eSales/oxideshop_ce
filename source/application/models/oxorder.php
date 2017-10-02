@@ -74,6 +74,8 @@ class oxOrder extends oxBase
     /**
      * Protection parameters used for some data in order are invalid
      *
+     * @deprecated since v5.3.5 (2017-10-02); Use Trusted Shops Module instead.
+     *
      * @var int
      */
     const ORDER_STATE_INVALIDTSPROTECTION = 6;
@@ -185,6 +187,8 @@ class oxOrder extends oxBase
 
     /**
      * Order TS protection costs price object
+     *
+     * @deprecated since v5.3.5 (2017-10-02); Use Trusted Shops Module instead.
      *
      * @var oxprice
      */
@@ -447,6 +451,8 @@ class oxOrder extends oxBase
 
     /**
      * Returns order TS protection price object
+     *
+     * @deprecated since v5.3.5 (2017-10-02); Use Trusted Shops Module instead.
      *
      * @return oxprice
      */
@@ -2176,6 +2182,9 @@ class oxOrder extends oxBase
      * Assigns Trusted Shops Protection product id and costs
      *
      * @param oxBasket $oBasket basket object
+     *
+     * @deprecated since v5.3.5 (2017-10-02); Use Trusted Shops Module instead.
+     *
      */
     protected function _setTsProtection(oxBasket $oBasket)
     {
@@ -2192,6 +2201,8 @@ class oxOrder extends oxBase
      * Executes Trusted shops protection order.
      *
      * @param oxBasket $oBasket basket object
+     *
+     * @deprecated since v5.3.5 (2017-10-02); Use Trusted Shops Module instead.
      *
      * @return bool
      */

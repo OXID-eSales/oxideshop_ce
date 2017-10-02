@@ -100,12 +100,16 @@ class oxView extends oxSuperCfg
     /**
      * Trusted shop id
      *
+     * @deprecated since v5.3.5. Use Trusted Shops module instead.
+     *
      * @var string
      */
     protected $_sTrustedShopId = null;
 
     /**
      * Trusted shop id for excellence product
+     *
+     * @deprecated since v5.3.5. Use Trusted Shops module instead.
      *
      * @var string
      */

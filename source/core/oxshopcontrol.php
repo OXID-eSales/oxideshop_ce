@@ -141,6 +141,9 @@ class oxShopControl extends oxSuperCfg
      * Sets default exception handler.
      * Ideally all exceptions should be handled with try catch and default exception should never be reached.
      *
+     * @deprecated since v5.3.5 (2017-10-04). Exception handling will change in v6.0. You will be able set your own
+     *             default exception handler in modules/functions.php in v6.0.
+     *
      * @return null;
      */
     protected function _setDefaultExceptionHandler()
@@ -684,6 +687,8 @@ class oxShopControl extends oxSuperCfg
      * Shows exception message if debug mode is enabled, redirects otherwise.
      *
      * @param oxConnectionException $oEx message to show on exit
+     *
+     * @deprecated since v5.3.5 (2017-10-04). Exception handling will change in v6.0.
      */
     protected function _handleDbConnectionException($oEx)
     {

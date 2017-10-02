@@ -66,6 +66,8 @@ class oxViewConfig extends oxSuperCfg
     /**
      * Trusted shop ratings
      *
+     * @deprecated since v5.3.5. Use Trusted Shops module instead.
+     *
      * @var null
      */
     protected $_aTrustedShopRatings = null;

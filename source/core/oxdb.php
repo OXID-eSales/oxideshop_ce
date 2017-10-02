@@ -48,6 +48,8 @@ class oxDb
      * Configuration value
      *
      * @var mixed
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This property will be removed in v6.0.
      */
     public static $configSet = false;
 
@@ -55,6 +57,8 @@ class oxDb
      * oxDb instance.
      *
      * @var oxdb
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This property will be renamed in v6.0.
      */
     protected static $_instance = null;
 
@@ -62,6 +66,8 @@ class oxDb
      * Database connection object
      *
      * @var oxdb
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This property will be renamed in v6.0.
      */
     protected static $_oDB = null;
 
@@ -69,6 +75,8 @@ class oxDb
      * Database tables descriptions cache array
      *
      * @var array
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This property will be renamed in v6.0.
      */
     protected static $_aTblDescCache = array();
 
@@ -76,6 +84,8 @@ class oxDb
      * Database type
      *
      * @var string
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This property will be removed in v6.0.
      */
     private static $_dbType = '';
 
@@ -83,6 +93,8 @@ class oxDb
      * Database user name
      *
      * @var string
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This property will be removed in v6.0.
      */
     private static $_dbUser = '';
 
@@ -90,6 +102,8 @@ class oxDb
      * Database password
      *
      * @var string
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This property will be removed in v6.0.
      */
     private static $_dbPwd = '';
 
@@ -97,6 +111,8 @@ class oxDb
      * Database table name
      *
      * @var string
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This property will be removed in v6.0.
      */
     private static $_dbName = '';
 
@@ -104,6 +120,8 @@ class oxDb
      * Database hostname
      *
      * @var string
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This property will be removed in v6.0.
      */
     private static $_dbHost = '';
 
@@ -111,6 +129,8 @@ class oxDb
      * Debug option value
      *
      * @var int
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This property will be removed in v6.0.
      */
     private static $_iDebug = 0;
 
@@ -118,6 +138,8 @@ class oxDb
      * Should changes be logged in admin
      *
      * @var bool
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This property will be removed in v6.0.
      */
     private static $_blLogChangesInAdmin = false;
 
@@ -125,6 +147,8 @@ class oxDb
      * UTF mode
      *
      * @var int
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This property will be removed in v6.0.
      */
     private static $_iUtfMode = 0;
 
@@ -132,6 +156,8 @@ class oxDb
      * Default database connection value
      *
      * @var string
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This property will be removed in v6.0.
      */
     private static $_sDefaultDatabaseConnection = null;
 
@@ -139,6 +165,8 @@ class oxDb
      * Array of slave hosts
      *
      * @var array
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This property will be removed in v6.0.
      */
     private static $_aSlaveHosts;
 
@@ -146,6 +174,8 @@ class oxDb
      * Admin email value
      *
      * @var string
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This property will be removed in v6.0.
      */
     private static $_sAdminEmail;
 
@@ -155,6 +185,8 @@ class oxDb
      * Value for master slave balance
      *
      * @var int
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This property will be removed in v6.0.
      */
     private static $_iMasterSlaveBalance;
 
@@ -162,6 +194,8 @@ class oxDb
      * Local time format  value
      *
      * @var string
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This property will be removed in v6.0.
      */
     private static $_sLocalTimeFormat;
 
@@ -169,6 +203,8 @@ class oxDb
      * Local date format value
      *
      * @var string
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This property will be removed in v6.0.
      */
     private static $_sLocalDateFormat;
 
@@ -176,6 +212,8 @@ class oxDb
      * Sets configs object with method getVar() and properties needed for successful connection.
      *
      * @param object $oConfig configs.
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This method will be removed in v6.0.
      */
     public static function setConfig($oConfig)
     {
@@ -201,6 +239,8 @@ class oxDb
      * Return local config value by given name.
      *
      * @param string $sConfigName returning config name.
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This method will be removed in v6.0.
      *
      * @return mixed
      */
@@ -251,6 +291,8 @@ class oxDb
     /**
      * Returns adodb modules string
      *
+     * @deprecated since v5.3.5 (2017-10-05); This method will be removed in v6.0.
+     *
      * @return string
      */
     protected function _getModules()
@@ -274,6 +316,8 @@ class oxDb
 
     /**
      * Registers AdoDb exceptions handler for SQL errors
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This method will be removed in v6.0.
      */
     protected function _registerAdoDbExceptionHandler()
     {
@@ -287,6 +331,8 @@ class oxDb
      * Setting up connection parameters - sql mode, encoding, logging etc
      *
      * @param ADOConnection $oDb database connection instance
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This method will be removed in v6.0.
      */
     protected function _setUp($oDb)
     {
@@ -327,6 +373,8 @@ class oxDb
      * @param string $sSubject subject
      * @param string $sBody    email body
      *
+     * @deprecated since v5.3.5 (2017-10-05); This method will be removed in v6.0.
+     *
      * @return phpmailer
      */
     protected function _sendMail($sEmail, $sSubject, $sBody)
@@ -348,6 +396,8 @@ class oxDb
      * Notifying shop owner about connection problems
      *
      * @param ADOConnection $oDb database connection instance
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This method will be removed in v6.0.
      */
     protected function _notifyConnectionErrors($oDb)
     {
@@ -387,6 +437,8 @@ class oxDb
      * or send notification message for shop owner
      *
      * @param ADOConnection $oDb database connection instance
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This method will be removed in v6.0.
      */
     protected function _onConnectionError($oDb)
     {
@@ -418,6 +470,8 @@ class oxDb
      * Returns database instance object for given type
      *
      * @param int $iInstType instance type
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This method will be removed in v6.0.
      *
      * @return ADONewConnection
      */
@@ -569,6 +623,8 @@ class oxDb
 
     /**
      * Get connection ID
+     *
+     * @deprecated since v5.3.5 (2017-10-05); This method will be removed in v6.0.
      *
      * @return link identifier
      */

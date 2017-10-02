@@ -112,6 +112,8 @@ class oxExceptionHandler
      *
      * @param oxException $oEx Exception to handle
      *
+     * @deprecated since v5.3.5 (2017-10-04). Exception handling will change in v6.0.
+     *
      * @return null
      */
     protected function _uncaughtException(oxException $oEx)
@@ -139,6 +141,8 @@ class oxExceptionHandler
      * No oxException, just write log file.
      *
      * @param Exception $oEx exception object
+     *
+     * @deprecated since v5.3.5 (2017-10-04). Exception handling will change in v6.0.
      *
      * @return null
      */

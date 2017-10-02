@@ -142,6 +142,8 @@ function smarty_function_oxscript($params, &$smarty)
  * @param array  $aInclude string files to include.
  * @param string $sWidget  widget name.
  *
+ * @deprecated since v5.3.5 (2017-10-04). This method will be completely removed in v6.0.
+ *
  * @return string
  */
 function _oxscript_include( $aInclude, $sWidget )
@@ -186,6 +188,8 @@ function _oxscript_include( $aInclude, $sWidget )
  * @param string $sWidget     widget name.
  * @param bool $blAjaxRequest is ajax request
  *
+ * @deprecated since v5.3.5 (2017-10-04). This method will be completely removed in v6.0.
+ *
  * @return string
  */
 function _oxscript_execute( $aScript, $sWidget, $blAjaxRequest )
@@ -213,6 +217,8 @@ function _oxscript_execute( $aScript, $sWidget, $blAjaxRequest )
  * @param string $sScriptsOutput javascript to be enclosed.
  * @param string $sWidget        widget name.
  * @param bool $blAjaxRequest    is ajax request
+ *
+ * @deprecated since v5.3.5 (2017-10-04). This method will be completely removed in v6.0.
  *
  * @return string
  */

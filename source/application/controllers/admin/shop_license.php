@@ -40,6 +40,8 @@ class Shop_License extends Shop_Config
      * Getting current shop version links for editions
      *
      * @var array
+     *
+     * @deprecated since v5.3.5 (2017-10-04). This property will be called $versionCheckLink in v6.0.
      */
     protected $_aVersionCheckLinks = array(
         "EE" => "http://admin.oxid-esales.com/EE/onlinecheck.php",

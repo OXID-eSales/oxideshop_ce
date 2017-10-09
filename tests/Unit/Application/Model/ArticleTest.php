@@ -3426,6 +3426,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testGetBasketPrice()
     {
+        $this->markTestSkipped('MK: Remove this test. This is a heavy implementation test that tests nothing at all.');
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class,
             array('getBasePrice', '_applyVAT', 'skipDiscounts', 'getArticleVat', 'getBasketItemVat'));
         $oArticle->expects($this->any())->method('getBasePrice')->will($this->returnValue(90));
@@ -3444,6 +3445,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testGetBasketPriceSetsBasketUser()
     {
+        $this->markTestSkipped('MK: Remove this test. Besides testing implementation it tests something that is not done anymore.');
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class,
             array('getBasePrice', '_applyVAT', 'skipDiscounts', 'getArticleVat', 'getBasketItemVat'));
         $oArticle->expects($this->any())->method('getBasePrice')->will($this->returnValue(90));
@@ -3467,6 +3469,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testGetBasketPriceWithDiscount()
     {
+        $this->markTestSkipped('MK: Remove this test. It virtually tests nothing and just boosts test coverage.');
         oxRegistry::get("oxDiscountList")->forceReload();
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class,
             array('getBasePrice', '_applyVAT', 'skipDiscounts', 'getArticleVat', 'getBasketItemVat'));
@@ -3486,6 +3489,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testGetBasketPriceWithTheSameDiscount()
     {
+        $this->markTestSkipped('MK: Remove this test. It virtually tests nothing and just boosts test coverage.');
         oxRegistry::get("oxDiscountList")->forceReload();
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class,
             array('getBasePrice', '_applyVAT', 'skipDiscounts', 'getArticleVat', 'getBasketItemVat'));

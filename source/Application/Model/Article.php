@@ -27,7 +27,6 @@ use oxDb;
 use oxField;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Exception\ObjectException;
-use OxidEsales\EshopCommunity\Internal\DAOs\ArticleDaoInterface;
 use oxList;
 use oxPrice;
 use oxRegistry;
@@ -1989,7 +1988,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             return;
         }
 
-        return $this->getServiceFactory()->getPriceCalculationService()->getBasePrice($this->getId(), $this->getShopId(), $dAmount);
+        return $this->getServiceFactory()->getPriceCalculationService()->getRawDatabasePrice(
+            $this->getId(),
+            $this->getArticleUser() ? $this->getArticleUser()->getId() : null,
+            $this->getShopId(),
+            $dAmount);
 
     }
 
@@ -2023,22 +2026,17 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         // return cached result, since oPrice is created ONLY in this function [or function of EQUAL level]
         if ($dAmount != 1 || $this->_oPrice === null) {
             // module
-            $dBasePrice = $this->getBasePrice($dAmount);
-            $dBasePrice = $this->_preparePrice($dBasePrice, $this->getArticleVat());
-
-            $oPrice = $this->_getPriceObject();
 
             $priceCalculationFacade = $this->getServiceFactory()->getPriceCalculationFacade();
             $oPrice = $priceCalculationFacade->getLegacyPrice($this->getId(), $this->getUserId(), $this->getShopId(), $dAmount);
 
-            // price handling
+            // caching stuff
             if (!$this->_blCalcPrice && $dAmount == 1) {
                 return $this->_oPrice = $oPrice;
             }
 
             $oPrice = $priceCalculationFacade->applyDiscounts($oPrice, $this->getId(), $dAmount, $this->getUserId(), $this->getShopId());
 
-            //$this->_calculatePrice($oPrice);
             if ($dAmount != 1) {
                 return $oPrice;
             }
@@ -2089,23 +2087,18 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return \OxidEsales\Eshop\Core\Price
      */
-    public function getBasketPrice($dAmount, $aSelList, $oBasket)
+    public function getBasketPriceOld($dAmount, $aSelList, $oBasket)
     {
         $oUser = $oBasket->getBasketUser();
         $this->setArticleUser($oUser);
 
         $oBasketPrice = $this->_getPriceObject($oBasket->isCalculationModeNetto());
 
-        // get base price
-        // The context setting is needed for the refacored code
-        if ($oUser) {
-           $this->getServiceFactory()->getContext()->setUser(new \OxidEsales\EshopCommunity\Internal\DataObject\User($oUser));
-        }
         $dBasePrice = $this->getBasePrice($dAmount);
-        $this->getServiceFactory()->getContext()->resetUser();
 
         $dBasePrice = $this->_modifySelectListPrice($dBasePrice, $aSelList);
-        $dBasePrice = $this->_preparePrice($dBasePrice, $this->getArticleVat(), $oBasket->isCalculationModeNetto());
+        $basketCalculationMode = $oBasket->isCalculationModeNetto();
+        $dBasePrice = $this->_preparePrice($dBasePrice, $this->getArticleVat(), $basketCalculationMode);
 
         // applying select list price
 
@@ -2117,6 +2110,34 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         // returning final price object
         return $oBasketPrice;
+    }
+
+    /**
+     * @param float  $dAmount
+     * @param string $aSelList
+     * @param Basket $oBasket
+     *
+     * @return \OxidEsales\Eshop\Core\Price
+     */
+    public function getBasketPrice($dAmount, $aSelList, $oBasket)
+    {
+        $priceCalculationFacade = $this->getServiceFactory()->getPriceCalculationFacade();
+
+        /** @var User $user */
+        $user = $oBasket->getBasketUser();
+        $userId = null;
+        if ($user) {
+            $userId = $user->getId();
+        }
+
+        $priceWithoutDiscounts = $priceCalculationFacade->getLegacyPrice(
+            $this->getId(), $userId, $this->getShopId(), $dAmount, $aSelList, $oBasket->isCalculationModeNetto());
+
+        $priceWithDiscounts = $priceCalculationFacade->applyDiscounts(
+            $priceWithoutDiscounts, $this->getId(), $dAmount, $this->getUserId(), $this->getShopId());
+
+        return $priceWithDiscounts;
+
     }
 
     protected function getBasketItemVat($oBasket) {

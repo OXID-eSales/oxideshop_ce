@@ -67,4 +67,17 @@ class SelectListItem
         return $this->deltaType;
     }
 
+    public function modifyPrice($price) {
+
+        if ($this->deltaType == self::DELTA_TYPE_ABSOLUTE) {
+            return $price + $this->priceDelta;
+        }
+
+        if ($this->deltaType == self::DELTA_TYPE_PERCENT) {
+            return $price + ($this->priceDelta / 100.0) * $price;
+        }
+
+        return $price;
+    }
+
 }

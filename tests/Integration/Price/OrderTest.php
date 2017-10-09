@@ -23,6 +23,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Price;
 
 use oxDb;
 use oxField;
+use OxidEsales\EshopCommunity\Internal\ServiceFactory;
 use oxOrder;
 use oxOrderArticle;
 use oxRegistry;

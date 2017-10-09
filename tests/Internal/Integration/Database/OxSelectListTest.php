@@ -41,42 +41,40 @@ class OxSelectListTest extends AbstractDaoTests
     }
 
     /**
-     * @dataProvider articleIdProvider
+     * @dataProvider dataProvider
      */
-    public function testGetAbsoluteSelectList($articleId) {
+    public function testGetAbsoluteSelectList($articleId, $language, $startprice, $selections, $result, $message) {
+
+        $this->context->setCurrentLanguageAbbrevitation($language);
 
         $list = $this->selectListDao->getSelectListForArticle($articleId);
-        $this->assertEquals(3, sizeof($list));
-        $this->assertEquals('Feld3', $list[2]->getFieldKey());
-        $this->assertEquals($articleId, $list[2]->getArticleId());
-        $this->assertEquals(30.0, $list[2]->getPriceDelta());
-        $this->assertEquals(SelectListItem::DELTA_TYPE_ABSOLUTE, $list[2]->getDeltaType());
+        $this->assertEquals($result, $list->modifyPriceForSelection($startprice, $selections), $message);
     }
 
-    public function articleIdProvider() {
+    public function dataProvider() {
         return [
-            ['articleId' => 'A1'],
-            ['articleId' => 'A3']
+            // Reduce by 20 absolute
+            ['articleId' => 'A1', 'language' => 'de', 'startprice' => 40, 'selections' => [1], 20,
+             'message' => 'Reducing absolute is not working.'],
+            // This really is a data error - the english reduction is 10 absolute, not 20
+            // But that's how the code is supposed to work
+            ['articleId' => 'A1', 'language' => 'en', 'startprice' => 40, 'selections' => [1], 30,
+             'message' => 'Second language is not working.'],
+            // Reduce by 20 absolute, then 10%
+            ['articleId' => 'A2', 'language' => 'de', 'startprice' => 40, 'selections' => [1, 0], 18,
+             'message' => 'Absolute / percentage combination not working.'],
+            // Like A2, but with reversed sorting - first 10% , then 20 absolute
+            ['articleId' => 'A3', 'language' => 'de', 'startprice' => 40, 'selections' => [0, 1], 16,
+             'message' => 'Percent / absolute combination not working.'],
+            // Use a child of A2 without direct selections - should be like A2
+            ['articleId' => 'A2_CHILD', 'language' => 'de', 'startprice' => 40, 'selections' => [1, 0], 18,
+             'message' => 'Parent select list not working.'],
+            ['articleId' => 'A4', 'language' => 'de', 'startprice' => 40, 'selections' => [1], 40,
+             'message' => 'Missing price tag not working.'],
+            // Article without select lists
+            ['articleId' => 'A5', 'language' => 'de', 'startprice' => 40, 'selections' => [], 40,
+             'message' => 'Empty select list not working.']
         ];
-    }
-
-    public function testGetPercentageSelectList() {
-
-        $list = $this->selectListDao->getSelectListForArticle('A2');
-        $this->assertEquals(3, sizeof($list));
-        $this->assertEquals('Feld3', $list[2]->getFieldKey());
-        $this->assertEquals('A2', $list[2]->getArticleId());
-        $this->assertEquals(30.0, $list[2]->getPriceDelta());
-        $this->assertEquals(SelectListItem::DELTA_TYPE_PERCENT, $list[2]->getDeltaType());
-    }
-
-    public function testChangeLanguage() {
-
-        $this->context->setCurrentLanguageAbbrevitation('en');
-
-        $list = $this->selectListDao->getSelectListForArticle('A2');
-        $this->assertEquals(3, sizeof($list));
-        $this->assertEquals('Field3', $list[2]->getFieldKey());
     }
 
     public function getFixtureFile()

@@ -410,6 +410,19 @@ CREATE TABLE `oxselectlist` (
   PRIMARY KEY  (`OXID`)
 ) ENGINE=MEMORY COMMENT 'Selection lists';
 
+DROP TABLE IF EXISTS `oxobject2group`;
+
+CREATE TABLE `oxobject2group` (
+  `OXID` char(32) character set latin1 collate latin1_general_ci NOT NULL COMMENT 'Record id',
+  `OXSHOPID` int(11) NOT NULL default '1' COMMENT 'Shop id (oxshops)',
+  `OXOBJECTID` char(32) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'User id',
+  `OXGROUPSID` char(32) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Group id',
+  `OXTIMESTAMP` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT 'Timestamp',
+  PRIMARY KEY  (`OXID`),
+  KEY `OXOBJECTID` (`OXOBJECTID`),
+  UNIQUE INDEX `UNIQ_OBJECTGROUP` (`OXGROUPSID`, `OXOBJECTID`, `OXSHOPID`)
+) ENGINE=MEMORY COMMENT 'Shows many-to-many relationship between users and groups';
+
 DROP VIEW IF EXISTS `oxv_oxselectlist_de`;
 
 CREATE VIEW oxv_oxselectlist_de AS select `oxselectlist`.`OXID` AS `OXID`,

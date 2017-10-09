@@ -9,15 +9,14 @@
 namespace OxidEsales\EshopCommunity\Internal\Service;
 
 
-use OxidEsales\Eshop\Core\Price;
 use OxidEsales\EshopCommunity\Internal\Dao\DiscountDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Dao\PriceInformationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Dao\SelectListDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Dao\UserDaoInterface;
-use OxidEsales\EshopCommunity\Internal\DataObject\BasicPriceInformation;
 use OxidEsales\EshopCommunity\Internal\DataObject\Discount;
+use OxidEsales\EshopCommunity\Internal\DataObject\SelectList;
 use OxidEsales\EshopCommunity\Internal\DataObject\SimplePrice;
 use OxidEsales\EshopCommunity\Internal\DataObject\User;
-use OxidEsales\EshopCommunity\Internal\Utilities\Context;
 use OxidEsales\EshopCommunity\Internal\Utilities\ContextInterface;
 use OxidEsales\EshopCommunity\Internal\Utilities\OxidLegacyServiceInterface;
 
@@ -33,6 +32,9 @@ class PriceCalculationService implements PriceCalculationServiceInterface
     /** @var DiscountDaoInterface */
     private $discountDao;
 
+    /** @var  SelectListDaoInterface */
+    private $selectListDao;
+
     /** @var ContextInterface $context */
     private $context;
 
@@ -42,12 +44,14 @@ class PriceCalculationService implements PriceCalculationServiceInterface
     public function __construct(PriceInformationDaoInterface $priceInformationDao,
                                 UserDaoInterface $userDao,
                                 DiscountDaoInterface $discountDao,
+                                SelectListDaoInterface $selectListDao,
                                 ContextInterface $context,
                                 OxidLegacyServiceInterface $legacyService)
     {
         $this->priceInformationDao = $priceInformationDao;
         $this->userDao = $userDao;
         $this->discountDao = $discountDao;
+        $this->selectListDao = $selectListDao;
         $this->context = $context;
         $this->legacyService = $legacyService;
     }
@@ -73,14 +77,14 @@ class PriceCalculationService implements PriceCalculationServiceInterface
      *
      * @return double
      */
-    public function getBasePrice($articleId, $shopId = 1, $amount = 1)
+    public function getRawDatabasePrice($articleId, $userId, $shopId = 1, $amount = 1)
     {
 
         $basicPriceInformation = $this->priceInformationDao->getBasicPriceInformation($articleId, $shopId);
 
         $basePrice = $basicPriceInformation->getBasePrice();
 
-        $userPriceGroup = $this->getUserPriceGroup();
+        $userPriceGroup = $this->getUserPriceGroup($userId);
 
         if ($userPriceGroup) {
             $groupPrice = $basicPriceInformation->getGroupPrice($userPriceGroup);
@@ -126,15 +130,15 @@ class PriceCalculationService implements PriceCalculationServiceInterface
     public function getSimplePrice($articleId, $userId, $shopId = 1, $amount = 1)
     {
 
-        $databasePrice = $this->getBasePrice($articleId, $shopId, $amount);
-        $articleVat = 0.0;
-
-        if (!$userId || $this->isUserVatTaxable($userId)) {
-            // TODO mk: insert userid as parameter
-            $articleVat = $this->getArticleVat($articleId, $shopId);
-        }
-
-        return new SimplePrice($databasePrice, $articleVat, $this->context->dbPricesAreNetPrices());
+        return new SimplePrice(
+            $this->getRawDatabasePrice($articleId, $userId, $shopId, $amount),
+            $this->getArticleVat($articleId),
+            $this->isUserVatTaxable($userId),
+            $this->context->dbPricesAreNetPrices(),
+            $articleId,
+            $userId,
+            $shopId,
+            $amount);
     }
 
 
@@ -151,12 +155,21 @@ class PriceCalculationService implements PriceCalculationServiceInterface
         return $this->discountDao->getArticleDiscounts($articleId, $amount, $userId, $shopId);
     }
 
-    private function getUserPriceGroup()
+    private function getUserPriceGroup($userId)
     {
+        if ($userId === null) {
+            return null;
+        }
 
+        // No need to query the database if user is already loaded
         $currentUser = $this->context->getUser();
+        if ($currentUser && $currentUser->getId() == $userId) {
+        //if ($currentUser) {
+            return $currentUser->getPriceGroup();
+        }
 
-        return $currentUser ? $currentUser->getPriceGroup() : null;
+        return $this->userDao->getPriceGroup($userId);
+
     }
 
     public function getArticleVat($articleId, $shopId = 1)
@@ -204,6 +217,9 @@ class PriceCalculationService implements PriceCalculationServiceInterface
      */
     public function isUserVatTaxable($userId)
     {
+        if (! $userId) {
+            return true;
+        }
 
         $region = $this->userDao->getVatRegion($userId);
         if ($region == UserDaoInterface::VAT_REGION_HOME_COUNTRY) {
@@ -214,5 +230,16 @@ class PriceCalculationService implements PriceCalculationServiceInterface
         }
 
         return $this->userDao->ustIdExist($userId);
+    }
+
+    /**
+     * @param $articleId
+     *
+     * @return SelectList
+     */
+    public function getSelectList($articleId) {
+
+        return $this->selectListDao->getSelectListForArticle($articleId);
+
     }
 }

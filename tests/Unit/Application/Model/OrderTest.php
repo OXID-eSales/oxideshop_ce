@@ -672,6 +672,7 @@ class OrderTest extends \OxidTestCase
         $oUser = oxNew('oxuser');
         $oUser->setId("_testUserId");
         $oUser->oxuser__oxcountryid = new oxField('a7c40f631fc920687.20179984', oxField::T_RAW);
+        $oUser->save();
 
         $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('getOrderUser'));
         $oOrder->expects($this->once())->method('getOrderUser')->will($this->returnValue($oUser));

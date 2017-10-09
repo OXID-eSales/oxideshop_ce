@@ -21,4 +21,5 @@ interface UserDaoInterface
 
     public function ustIdExist($userId);
 
+    public function getPriceGroup($userId);
 }

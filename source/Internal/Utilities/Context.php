@@ -188,6 +188,10 @@ class Context implements ContextInterface
     }
 
     /**
+     * For some reasons (during basket calculation) it is necessary
+     * to overwrite the config option (I don't understand the
+     * rationale of this, but tests do check it)
+     *
      * @return bool
      */
     public function dbPricesAreNetPrices()
@@ -201,6 +205,11 @@ class Context implements ContextInterface
     public function useShippingAddressForVatCountry()
     {
         return $this->getConfigParam('blShippingCountryVat');
+    }
+
+    public function loadPriceInformation() {
+
+        return $this->getConfigParam('bl_perfLoadPrice');
     }
 
     /**

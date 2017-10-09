@@ -9,6 +9,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Dao;
 
 use Doctrine\DBAL\Connection;
+use OxidEsales\EshopCommunity\Internal\DataObject\SelectList;
 use OxidEsales\EshopCommunity\Internal\DataObject\SelectListItem;
 use OxidEsales\EshopCommunity\Internal\Utilities\ContextInterface;
 use OxidEsales\EshopCommunity\Internal\Utilities\OxidLegacyServiceInterface;
@@ -33,22 +34,26 @@ class SelectListDao extends BaseDao implements SelectListDaoInterface
     /**
      * @param $articleId
      *
-     * @return SelectListItem[]
+     * @return SelectList
      */
     public function getSelectListForArticle($articleId)
     {
 
-        $selectListValues = $this->getSelectListValuesForChild($articleId);
-        if (sizeof($selectListValues) == 0) {
-            $selectListValues = $this->getSelectListValuesForParent($articleId);
+        $selectionValues = $this->getSelectListValuesForChild($articleId);
+        if (sizeof($selectionValues) == 0) {
+            $selectionValues = $this->getSelectListValuesForParent($articleId);
         }
 
-        $items = [];
-        foreach ($selectListValues as $values) {
-            $items[] = $this->valuesToItem($articleId, $values);
+        $selections = [];
+        foreach ($selectionValues as $selection) {
+            $items = [];
+            foreach ($selection as $values) {
+                $items[] = $this->valuesToItem($articleId, $values);
+            }
+            $selections[] = $items;
         }
 
-        return $items;
+        return new SelectList($selections);
     }
 
     private function getSelectListValuesForChild($articleId)
@@ -59,13 +64,13 @@ class SelectListDao extends BaseDao implements SelectListDaoInterface
             ->from($this->getViewName(false), 'sl')
             ->join('sl', 'oxobject2selectlist', 'j', 'sl.oxid = j.oxselnid')
             ->where($query->expr()->eq('j.oxobjectid', ':articleid'))
-            ->setParameter(':articleid', $articleId);
+            ->setParameter(':articleid', $articleId)
+            ->orderBy('j.oxsort');
 
         $sth = $query->execute();
 
-        return $this->parseListResult($sth->fetchAll());
+        return $this->prepareSelectList($sth->fetchAll());
 
-        return $items;
     }
 
     private function getSelectListValuesForParent($articleId)
@@ -77,19 +82,24 @@ class SelectListDao extends BaseDao implements SelectListDaoInterface
             ->join('sl', 'oxobject2selectlist', 'j', 'sl.oxid = j.oxselnid')
             ->join('j', 'oxarticles', 'ja', 'ja.oxparentid = j.oxobjectid')
             ->where($query->expr()->eq('ja.oxid', ':articleid'))
-            ->setParameter(':articleid', $articleId);
+            ->setParameter(':articleid', $articleId)
+            ->orderBy('j.oxsort');
 
         $sth = $query->execute();
 
-        return $this->parseListResult($sth->fetchAll());
+        return $this->prepareSelectList($sth->fetchAll());
     }
 
     private function valuesToItem($articleId, $values)
     {
+        if (sizeof($values) == 2) {
+            // No price delta given
+            return new SelectListItem($articleId, $values[1], 0, SelectListItem::DELTA_TYPE_ABSOLUTE);
+        }
 
         return new SelectListItem(
-            $articleId, $values[1], $values[2],
-            $values[3] == '%' ? SelectListItem::DELTA_TYPE_PERCENT : SelectListItem::DELTA_TYPE_ABSOLUTE
+            $articleId, $values[1], $values[3],
+            $values[4] == '%' ? SelectListItem::DELTA_TYPE_PERCENT : SelectListItem::DELTA_TYPE_ABSOLUTE
         );
     }
 
@@ -99,25 +109,25 @@ class SelectListDao extends BaseDao implements SelectListDaoInterface
      *
      * @return array[]
      */
-    private function parseListResult($rows)
+    private function prepareSelectList($rows)
     {
-
-        $items = [];
+        $selections = [];
 
         foreach ($rows as $row) {
 
             $itemDescriptions = $this->explodeToTwoDimensionalArray($row['OXVALDESC']);
-
+            $items = [];
             foreach ($itemDescriptions as $itemDescription) {
                 $matches = [];
                 // The string looks like '[field key]!P![price][%]' where the % is optional
-                if (preg_match('/^(.*?)!P!(.*?)(%?)$/', trim($itemDescription[0]), $matches)) {
+                if (preg_match('/^(.*?)(!P!(.*?)(%?))?$/', trim($itemDescription[0]), $matches)) {
                     $items[] = $matches;
                 }
-            }
+            };
+            $selections[] = $items;
         }
 
-        return $items;
+        return $selections;
     }
 
     private function explodeToTwoDimensionalArray($input, $delimiters = ['@@', '__'])

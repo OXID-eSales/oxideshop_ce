@@ -8,8 +8,15 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Dao;
 
+use OxidEsales\EshopCommunity\Internal\DataObject\SelectList;
+
 interface SelectListDaoInterface
 {
 
+    /**
+     * @param string $articleId
+     *
+     * @return SelectList
+     */
     public function getSelectListForArticle($articleId);
 }

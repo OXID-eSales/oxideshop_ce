@@ -1,0 +1,53 @@
+<!DOCTYPE dataset SYSTEM "my-dataset.dtd">
+<dataset>
+
+    <oxobject2group
+        OXID="I1"
+        OXSHOPID="1"
+        OXOBJECTID="U1"
+        OXGROUPSID="somegroup"
+    />
+
+    <oxobject2group
+            OXID="I2"
+            OXSHOPID="1"
+            OXOBJECTID="U1"
+            OXGROUPSID="oxidpriceb"
+    />
+
+    <oxobject2group
+            OXID="I3"
+            OXSHOPID="1"
+            OXOBJECTID="U2"
+            OXGROUPSID="othergroup"
+    />
+
+    <oxobject2group
+            OXID="I4"
+            OXSHOPID="1"
+            OXOBJECTID="U3"
+            OXGROUPSID="oxidpriceb"
+    />
+
+    <oxobject2group
+            OXID="I5"
+            OXSHOPID="1"
+            OXOBJECTID="U3"
+            OXGROUPSID="oxidpricea"
+    />
+
+    <oxobject2group
+            OXID="I6"
+            OXSHOPID="1"
+            OXOBJECTID="U4"
+            OXGROUPSID="oxidpricea"
+    />
+
+    <oxobject2group
+            OXID="I7"
+            OXSHOPID="1"
+            OXOBJECTID="U4"
+            OXGROUPSID="oxidpriceb"
+    />
+
+</dataset>

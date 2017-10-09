@@ -12,4 +12,6 @@ interface PriceCalculationFacadeInterface
 {
 
     public function getLegacyPrice($articleId, $userId, $shopId = 1, $amount = 1);
+    public function applyDiscounts($price, $articleId, $amount, $userId, $shopId);
+
 }

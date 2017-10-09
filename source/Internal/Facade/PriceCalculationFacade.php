@@ -10,6 +10,8 @@
 namespace OxidEsales\EshopCommunity\Internal\Facade;
 
 use OxidEsales\Eshop\Core\Price;
+use OxidEsales\EshopCommunity\Application\Model\Basket;
+use OxidEsales\EshopCommunity\Internal\DataObject\SimplePrice;
 use OxidEsales\EshopCommunity\Internal\Service\PriceCalculationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Utilities\ContextInterface;
 use OxidEsales\EshopCommunity\Internal\Utilities\OxidLegacyServiceInterface;
@@ -40,33 +42,115 @@ class PriceCalculationFacade implements PriceCalculationFacadeInterface
         $this->priceCalculationService = $priceCalculationService;
     }
 
-    public function getLegacyPrice($articleId, $userId, $shopId = 1, $amount = 1)
+    /**
+     * This is still, after refactoring, a terrible method, because so many
+     * sick parameters influence the price calculation. And the result object,
+     * the legacy price object, is hardly understandable - due to mixing
+     * view logic with calculation logic. This can't be disentangled unless
+     * the legacy price object is completely discarded.
+     *
+     * @param       $articleId
+     * @param       $userId
+     * @param int   $shopId
+     * @param int   $amount
+     * @param array $selectList
+     * @param null  $viewPricesAreNetPrices
+     *
+     * @return Price
+     */
+    public function getLegacyPrice($articleId, $userId, $shopId = 1, $amount = 1, $selectList = [], $viewPricesAreNetPrices = null)
     {
-        // get the configuration
-        $viewModeIsNet = $this->context->displayNetPrices();
-        $currencyRate = $this->context->getCurrencyRate();
+        $simplePrice = $this->getSimplePrice($articleId, $userId, $shopId, $amount);
+        $simplePrice = $this->applySelectListModifications($articleId, $simplePrice, $selectList);
 
-        $simplePrice = $this->priceCalculationService->getSimplePrice($articleId, $userId, $shopId, $amount);
+        // How do we want the price to be displayed by the consumer of this method?
+        if ($viewPricesAreNetPrices !== null) {
+            $viewModeIsNet = $viewPricesAreNetPrices;
+        } else {
+            $viewModeIsNet = $this->context->displayNetPrices();
+        }
+        $viewModePrice = $this->calculateViewModePrice($viewModeIsNet, $simplePrice);
 
         /** @var Price $price */
         $price = oxNew(Price::class);
-        $price->setVat($simplePrice->getVat());
+        if ($simplePrice->isUserVatTaxable()) {
+            $price->setVat($simplePrice->getVat());
+        }
+        else {
+            $price->setVat(0.0);
+        }
         $price->setNettoMode($viewModeIsNet);
-
-        // View mode and database mode match
-        if ($viewModeIsNet == $simplePrice->isNetPrice()) {
-            $price->setPrice($simplePrice->getValue() * $currencyRate);
-        } else
-            // View mode and database mode differ, so recalculate the price
-            if ($viewModeIsNet) {
-                // The database price is in pre-tax mode
-                $price->setPrice($this->legacyService->calculateBruttoToNetto($simplePrice) * $currencyRate);
-            } else {
-                // The database is in net mode
-                $price->setPrice($this->legacyService->calculateNettoToBrutto($simplePrice) * $currencyRate);
-            }
+        $price->setPrice($viewModePrice);
+        $price->multiply($this->context->getCurrencyRate());
 
         return $price;
+    }
+
+    private function calculateViewModePrice($viewModeIsNet, SimplePrice $simplePrice) {
+
+        // This calculation logic is really, really sick - it depends on three parameters
+        // - if the view mode is netto or brutto
+        // - if the database mode is netto or brutto
+        // - if the user needs to pay VAT
+
+        // So the cases are (regardless if they makes sense or not):
+        //
+        // view mode | database mode | user taxable | calculation method
+        // netto     | netto         | true         | None
+        // netto     | netto         | false        | None
+        // netto     | brutto        | true         | brutto -> netto
+        // netto     | brutto        | false        | brutto -> netto
+        // brutto    | netto         | true         | netto -> brutto
+        // brutto    | netto         | false        | None
+        // brutto    | brutto        | true         | None
+        // brutto    | brutto        | false        | brutto -> netto
+
+        if ($viewModeIsNet) {
+            if ($simplePrice->isNetValue()) {
+                return $simplePrice->getValue();
+            }
+            else {
+                return $this->legacyService->calculateBruttoToNetto($simplePrice);
+            }
+        }
+        else {
+            if ($simplePrice->isNetValue()) {
+                if ($simplePrice->isUserVatTaxable()) {
+                    return $this->legacyService->calculateNettoToBrutto($simplePrice);
+                }
+                else {
+                    return $simplePrice->getValue();
+                }
+            }
+            else {
+                if ($simplePrice->isUserVatTaxable()) {
+                    return $simplePrice->getValue();
+                }
+                else {
+                    return $this->legacyService->calculateBruttoToNetto($simplePrice);
+                }
+            }
+        }
+    }
+
+    public function getSimplePrice($articleId, $userId, $shopId, $amount)
+    {
+
+        if (!$this->context->loadPriceInformation()) {
+            return new SimplePrice(0, 0, true, false, $articleId, $userId, $shopId, $amount);
+        }
+
+        $price = $this->priceCalculationService->getSimplePrice($articleId, $userId, $shopId, $amount);
+
+        return $price;
+    }
+
+    public function getBasketPrice($articleId, $userId, $shopId, $amount, $selections)
+    {
+
+        $legacyPrice = $this->getLegacyPrice($articleId, $userId, $shopId, $amount, $selections);
+
+        return $legacyPrice;
     }
 
     /**
@@ -92,6 +176,29 @@ class PriceCalculationFacade implements PriceCalculationFacadeInterface
         $price->calculateDiscount();
 
         return $price;
+    }
+
+    /**
+     * @param SimplePrice $price
+     * @param string      $articleId
+     * @param array       $selections
+     *
+     * @return SimplePrice
+     */
+    private function applySelectListModifications($articleId, $price, $selections)
+    {
+
+        if ($selections == null || sizeof($selections) == 0) {
+            // No need to access the database
+            return $price;
+        }
+
+        $selectList = $this->priceCalculationService->getSelectList($articleId);
+
+        $modifiedPrice = $selectList->modifyPriceForSelection($price->getValue(), $selections);
+
+        return new SimplePrice($modifiedPrice, $price->getVat(), $price->isUserVatTaxable(), $price->isNetValue(),
+            $price->getArticleId(), $price->getUserId(), $price->getShopId(), $price->getAmount());
     }
 
 }

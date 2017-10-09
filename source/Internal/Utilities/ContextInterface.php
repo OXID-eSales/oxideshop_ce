@@ -53,6 +53,9 @@ interface ContextInterface
     /** @return bool */
     public function useShippingAddressForVatCountry();
 
+    /** @return bool */
+    public function loadPriceInformation();
+
     /** @return [string] */
     public function getHomeCountryIds();
 

@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Internal\Unit\Service;
 use OxidEsales\EshopCommunity\Internal\Dao\DiscountDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Dao\PriceInformationDao;
 use OxidEsales\EshopCommunity\Internal\Dao\PriceInformationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Dao\SelectListDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Dao\UserDao;
 use OxidEsales\EshopCommunity\Internal\Dao\UserDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Service\PriceCalculationService;
@@ -29,6 +30,9 @@ class PriceCalculationServiceTest extends \PHPUnit_Framework_TestCase
 
     /** @var  UserDaoInterface */
     private $userDaoMock;
+
+    /** @var  SelectListDaoInterface */
+    private $selectListDaoMock;
 
     /** @var  ContextStub $context */
     private $context;
@@ -53,11 +57,14 @@ class PriceCalculationServiceTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $this->discountDaoMock = $this->getMockBuilder(DiscountDaoInterface::class)
             ->getMock();
+        $this->selectListDaoMock = $this->getMockBuilder(SelectListDaoInterface::class)
+            ->getMock();
 
         $this->priceCalculationService = new PriceCalculationService(
             $this->priceInformationDaoMock,
             $this->userDaoMock,
             $this->discountDaoMock,
+            $this->selectListDaoMock,
             $this->context,
             $this->legacyService
         );

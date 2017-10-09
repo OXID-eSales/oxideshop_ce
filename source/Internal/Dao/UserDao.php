@@ -122,4 +122,26 @@ class UserDao extends BaseDao implements UserDaoInterface
 
         return sizeof($res) == 1;
     }
+
+    public function getPriceGroup($userId) {
+
+        $query = $this->createQueryBuilder();
+        $query->select('oxgroupsid')
+            ->from('oxobject2group')
+            ->where(
+                $query->expr()->eq('oxobjectid', ':userid')
+            )
+            ->orderBy('oxgroupsid', 'DESC')
+            ->setParameter(':userid', $userId);
+
+        $sth = $query->execute();
+        foreach($sth->fetchAll() as $row) {
+            $matches = [];
+            if (preg_match('/^oxidprice([abc])$/', $row['oxgroupsid'], $matches)) {
+                return $matches[1];
+            }
+        }
+        return null;
+
+    }
 }

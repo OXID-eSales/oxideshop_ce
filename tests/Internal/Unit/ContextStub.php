@@ -27,6 +27,7 @@ class ContextStub implements ContextInterface
     private $shopUsesCategoryVat = false;
     private $displayNetPrices = true;
     private $dbPricesAreNetPrices = true;
+    private $loadPriceInformation = true;
     private $useShippingAddressForVatCountry = false;
     private $homeCountryIds = [1];
 
@@ -189,6 +190,21 @@ class ContextStub implements ContextInterface
     public function setDbPricesAreNetPrices($dbPricesAreNetPrices)
     {
         $this->dbPricesAreNetPrices = $dbPricesAreNetPrices;
+    }
+
+    /**
+     * @return bool
+     */
+    public function loadPriceInformation()
+    {
+        return $this->loadPriceInformation;
+    }
+
+    /**
+     * @param $loadPriceInformation
+     */
+    public function setLoadPriceInformation($loadPriceInformation) {
+        $this->loadPriceInformation = $loadPriceInformation;
     }
 
     /** @return bool */

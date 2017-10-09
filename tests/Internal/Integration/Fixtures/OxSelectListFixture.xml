@@ -4,14 +4,20 @@
     <oxselectlist
         OXID="SL1"
         OXSHOPID="1"
-        OXVALDESC="Feld1!P!10__@@Feld2!P!20__@@Feld3!P!30__@@"
-        OXVALDESC_1="Field1!P!10__@@Field2!P!20__@@Field3!P!30__@@"
+        OXVALDESC="Feld1!P!-10__@@Feld2!P!-20__@@Feld3!P!-30__@@"
+        OXVALDESC_1="Field1!P!-10__@@Field2!P!-10__@@Field3!P!-30__@@"
     />
     <oxselectlist
         OXID="SL2"
         OXSHOPID="1"
-        OXVALDESC="Feld1!P!10%__@@Feld2!P!20%__@@Feld3!P!30%__@@"
-        OXVALDESC_1="Field1!P!10%__@@Field2!P!20%__@@Field3!P!30%__@@"
+        OXVALDESC="Feld1!P!-10%__@@Feld2!P!-20%__@@Feld3!P!-30%__@@"
+        OXVALDESC_1="Field1!P!-10%__@@Field2!P!-20%__@@Field3!P!-30%__@@"
+    />
+    <oxselectlist
+            OXID="SL3"
+            OXSHOPID="1"
+            OXVALDESC="Feld1__@@Feld2__@@Feld3__@@"
+            OXVALDESC_1="Field1__@@Field2__@@Field3__@@"
     />
 
     <oxobject2selectlist
@@ -28,9 +34,37 @@
             OXSORT="2"
     />
 
+    <oxobject2selectlist
+            OXID="J3"
+            OXOBJECTID="A2"
+            OXSELNID="SL1"
+            OXSORT="1"
+    />
+
+    <oxobject2selectlist
+            OXID="J4"
+            OXOBJECTID="A3"
+            OXSELNID="SL2"
+            OXSORT="1"
+    />
+
+    <oxobject2selectlist
+            OXID="J5"
+            OXOBJECTID="A3"
+            OXSELNID="SL1"
+            OXSORT="2"
+    />
+
+    <oxobject2selectlist
+            OXID="J6"
+            OXOBJECTID="A4"
+            OXSELNID="SL3"
+            OXSORT="1"
+    />
+
     <oxarticles
-        OXID="A3"
-        OXPARENTID="A1"
+        OXID="A2_CHILD"
+        OXPARENTID="A2"
     />
 
 </dataset>

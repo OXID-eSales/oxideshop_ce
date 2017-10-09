@@ -18,6 +18,8 @@ use OxidEsales\EshopCommunity\Internal\Dao\DiscountDao;
 use OxidEsales\EshopCommunity\Internal\Dao\DiscountDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Dao\PriceInformationDao;
 use OxidEsales\EshopCommunity\Internal\Dao\PriceInformationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Dao\SelectListDao;
+use OxidEsales\EshopCommunity\Internal\Dao\SelectListDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Dao\UserDao;
 use OxidEsales\EshopCommunity\Internal\Dao\UserDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Facade\PriceCalculationFacade;
@@ -60,6 +62,9 @@ class ServiceFactory
 
     /** @var  DiscountDaoInterface $priceInformationDao */
     private $discountDao;
+
+    /** @var  SelectListDaoInterface $selectListDao */
+    private $selectListDao;
 
     /** @var  PriceCalculationServiceInterface $priceCalculationService */
     private $priceCalculationService;
@@ -184,6 +189,21 @@ class ServiceFactory
     }
 
     /**
+     * @return SelectListDaoInterface
+     */
+    public function getSelectListDao()
+    {
+        if (!$this->selectListDao) {
+            $this->selectListDao = new SelectListDao(
+                $this->getConnection(),
+                $this->getContext(),
+                $this->getLegacyService()
+            );
+        }
+        return $this->selectListDao;
+    }
+
+    /**
      * @return DiscountDaoInterface
      */
     public function getDiscountDao()
@@ -213,6 +233,7 @@ class ServiceFactory
                 $this->getPriceInformationDao(),
                 $this->getUserDao(),
                 $this->getDiscountDao(),
+                $this->getSelectListDao(),
                 $this->getContext(),
                 $this->getLegacyService()
             );

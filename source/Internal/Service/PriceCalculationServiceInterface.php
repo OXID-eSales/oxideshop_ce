@@ -8,8 +8,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Service;
 
-use OxidEsales\Eshop\Core\Price;
 use OxidEsales\EshopCommunity\Internal\DataObject\Discount;
+use OxidEsales\EshopCommunity\Internal\DataObject\SelectList;
 use OxidEsales\EshopCommunity\Internal\DataObject\SimplePrice;
 use OxidEsales\EshopCommunity\Internal\DataObject\User;
 
@@ -37,7 +37,7 @@ interface PriceCalculationServiceInterface
      *
      * @return double
      */
-    public function getBasePrice($articleId, $shopId = 1, $amount = 1);
+    public function getRawDatabasePrice($articleId, $userId, $shopId = 1, $amount = 1);
 
     /**
      * This methods gets the price from the database as some sort
@@ -113,4 +113,10 @@ interface PriceCalculationServiceInterface
      */
     public function getArticleDiscounts($articleId, $amount, $userId, $shopId);
 
+    /**
+     * @param $articleId
+     *
+     * @return SelectList
+     */
+    public function getSelectList($articleId);
 }

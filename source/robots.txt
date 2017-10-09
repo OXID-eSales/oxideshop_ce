@@ -10,8 +10,8 @@ Disallow: /newsletter/
 Disallow: /en/newsletter/
 Disallow: /index.php?cl=newsletter
 #
-Disallow: /agb/
-Disallow: /en/terms/
+Disallow: /AGB/
+Disallow: /en/Terms-and-Conditions/
 #
 Disallow: /warenkorb/
 Disallow: /en/cart/

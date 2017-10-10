@@ -3,5 +3,5 @@
  * Shop version
  */
 
-$this->version = '4.10.5';
+$this->version = '4.10.6';
 

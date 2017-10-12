@@ -61,7 +61,7 @@ facts component should be used: `\OxidEsales\Facts\Facts::getEdition()`.
 - Class Core/Email: Rename $SMTP_PORT to $smtpPort, [Pull Request 563](https://github.com/OXID-eSales/oxideshop_ce/pull/563)
 
 ### Removed
-- Azure theme was extracted from the OXID eShop CE repository to [separate repository](https://github.com/OXID-eSales/azure-theme).
+- Azure theme was extracted from OXID eShop CE repository to [separate repository](https://github.com/OXID-eSales/azure-theme).
   - Azure theme should not be used for new projects.
   - In case there is a need to use azure theme, install it via command: `composer require oxid-esales/azure-theme:^1.4.1`.
 

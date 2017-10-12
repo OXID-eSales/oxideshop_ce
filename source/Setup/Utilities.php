@@ -174,43 +174,40 @@ class Utilities extends Core
     /**
      * Updates config.inc.php file contents.
      *
-     * @param array $aParams paths parameters
+     * @param array $parameters Configuration parameters as submitted by the user
      *
      * @throws Exception File can't be found, opened for reading or written.
      */
-    public function updateConfigFile($aParams)
+    public function updateConfigFile($parameters)
     {
-        $sConfPath = $aParams['sShopDir'] . "/config.inc.php";
+        $configFile = '';
+        $language = $this->getInstance("Language");
 
-        $oLang = $this->getInstance("Language");
-
-        $this->handleMissingConfigFileException($sConfPath);
+        if (isset($parameters['sShopDir'])) {
+            $configFile = $parameters['sShopDir'] . "/config.inc.php";
+        }
+        $this->handleMissingConfigFileException($configFile);
 
         clearstatcache();
-        @chmod($sConfPath, getDefaultFileMode());
-        if (($fp = fopen($sConfPath, "r"))) {
-            $sConfFile = fread($fp, filesize($sConfPath));
-            fclose($fp);
-        } else {
-            throw new Exception(sprintf($oLang->getText('ERROR_COULD_NOT_OPEN_CONFIG_FILE'), $sConfPath));
+        // Make config file writable, as it may be write protected
+        @chmod($configFile, getDefaultFileMode());
+        if (!$configFileContent = file_get_contents($configFile)) {
+            throw new Exception(sprintf($language->getText('ERROR_COULD_NOT_OPEN_CONFIG_FILE'), $configFile));
         }
 
         // overwriting settings
-        foreach ($aParams as $sParamName => $sParamValue) {
-            // non integer type variables must be surrounded by quotes
-            if ($sParamName[0] != 'i') {
-                $sParamValue = "'{$sParamValue}'";
-            }
-            $sConfFile = str_replace("<$sParamName>", $sParamValue, $sConfFile);
+        foreach ($parameters as $configOption => $value) {
+            $search = ["\'", "'" ];
+            $replace = ["\\\'", "\'"];
+            $escapedValue = str_replace($search, $replace, $value);
+            $configFileContent = str_replace("<{$configOption}>", $escapedValue, $configFileContent);
         }
 
-        if (($fp = fopen($sConfPath, "w"))) {
-            fwrite($fp, $sConfFile);
-            fclose($fp);
-            @chmod($sConfPath, getDefaultConfigFileMode());
-        } else {
-            throw new Exception(sprintf($oLang->getText('ERROR_CONFIG_FILE_IS_NOT_WRITABLE'), $aParams['sShopDir']));
+        if (!file_put_contents($configFile, $configFileContent)) {
+            throw new Exception(sprintf($language->getText('ERROR_CONFIG_FILE_IS_NOT_WRITABLE'), $configFile));
         }
+        // Make config file read-only, this is our recomnedation for config.inc.php
+        @chmod($configFile, getDefaultConfigFileMode());
     }
 
     /**

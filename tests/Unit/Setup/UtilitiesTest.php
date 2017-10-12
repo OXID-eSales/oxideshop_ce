@@ -201,29 +201,52 @@ class UtilitiesTest extends \OxidTestCase
         $this->assertTrue(function_exists('getDefaultConfigFileMode'), 'missing function getDefaultConfigFileMode');
 
         $utilities = new Utilities();
-        $password = 'l3$z4f#buzhdc$1\1\\1\2v5745XC$lic';
+        $password = 'l3$z4f#bu\'xyz\\\'zh"ad\\"dc$1\1\\1\2v5745XC$lic';
         $url = 'http://test.myoxidshop.com';
 
-        $originalFile = $this->configTestPath . '/config.inc.php.dist';
-        $destination = $this->configTestPath . '/config.inc.php';
+        /** @var  $originalFile take the real config.inc.php.dist for testing as this is the blueprint for config.inc.php */
+        $originalFile = OX_BASE_PATH . 'config.inc.php.dist';
+        if (!realpath($originalFile)) {
+            $originalFile = VENDOR_PATH .
+                            'oxid-esales' . DIRECTORY_SEPARATOR .
+                            'oxideshop-ce' . DIRECTORY_SEPARATOR .
+                            'source' . DIRECTORY_SEPARATOR .
+                            'config.inc.php.dist';
+        }
+        if (!realpath($originalFile)) {
+            throw new Exception('Configuration file template \'config.inc.php.dist\' not found');
+        }
+        $destinationDirectory = realpath($this->configTestPath);
+        if (!is_writable(realpath($destinationDirectory))) {
+            throw new Exception($destinationDirectory . ' is not writable');
+        }
 
-        file_put_contents($destination, file_get_contents($originalFile));
-        $this->assertNotContains($password, $destination);
+        $destinationFile = $destinationDirectory . '/config.inc.php';
+        file_put_contents($destinationFile, file_get_contents($originalFile));
+        $this->assertNotContains($password, $destinationFile);
 
-        $parameters = ['sShopDir' => $this->configTestPath,
-                       'testPassword' => $password,
-                       'testUrl' => $url];
+        $configParameters = [
+            'sShopDir' => $destinationDirectory,
+            'dbPwd'    => $password,
+            'sShopURL' => $url
+        ];
 
         //check
         try {
-            $utilities->updateConfigFile($parameters);
+            $utilities->updateConfigFile($configParameters);
         } catch (Exception $exception) {
             $this->fail($exception->getMessage());
         }
 
-        $content = file_get_contents($this->configTestPath . '/config.inc.php');
-        $this->assertContains($url, $content);
-        $this->assertContains($password, $content);
+        /**
+         * Test if the _values_ are assigned correctly:
+         * - file can be parsed without problems
+         * - the properties are set to the correct values
+         */
+        include $destinationFile;
+        foreach ($configParameters as $key => $value) {
+            $this->assertEquals($value, $this->{$key}, "The value for the parameter $key was not updated as expected");
+        }
     }
 
     /**

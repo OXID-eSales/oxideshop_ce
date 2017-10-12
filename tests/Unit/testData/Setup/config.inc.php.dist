@@ -1,4 +1,0 @@
-<?php
-
-$this->testPassword  = '<testPassword>'; // test user password
-$this->testUrl       = '<testUrl>';      // test url

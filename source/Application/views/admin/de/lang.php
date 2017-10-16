@@ -1828,7 +1828,6 @@ $aLang = [
     'SHOP_RDFA_30_DAYS'               => '30 Tage (1 Monat)',
     'SHOP_RDFA_178_DAYS'              => '178 Tage (6 Monate)',
     'SHOP_RDFA_356_DAYS'              => '356 Tage (1 Jahr)',
-    'SHOP_RDFA_SUBMIT_URL'            => 'URL übertragen',
     'SHOP_RDFA_URL'                   => 'Shop URL',
     'SHOP_RDFA_EMAIL'                 => 'Kontakt (E-Mail)',
     'SHOP_RDFA_SUBMITED_SUCCESSFULLY' => 'Ihre Shop-Daten wurden erfolgreich übertragen',

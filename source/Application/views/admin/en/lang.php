@@ -1833,7 +1833,6 @@ $aLang = [
     'SHOP_RDFA_30_DAYS'               => '30 days (1 month)',
     'SHOP_RDFA_178_DAYS'              => '178 days (6 months)',
     'SHOP_RDFA_356_DAYS'              => '356 days (1 year)',
-    'SHOP_RDFA_SUBMIT_URL'            => 'Submit URL',
     'SHOP_RDFA_URL'                   => 'Shop URL',
     'SHOP_RDFA_EMAIL'                 => 'Contact (e-mail)',
     'SHOP_RDFA_SUBMITED_SUCCESSFULLY' => 'Your shop data were successfully submitted',

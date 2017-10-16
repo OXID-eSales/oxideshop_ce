@@ -88,7 +88,9 @@ class ShopRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfig
     }
 
     /**
-     * Submits shop main page to web search engines
+     * Submits shop main page to web search engines.
+     *
+     * @deprecated since v6.0-rc.3 (2017-10-16); GR-Notify registration feature is removed.
      */
     public function submitUrl()
     {
@@ -113,6 +115,8 @@ class ShopRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfig
      * Returns an array with the headers
      *
      * @param string $sURL target URL
+     *
+     * @deprecated since v6.0-rc.3 (2017-10-16); GR-Notify registration feature is removed.
      *
      * @return array
      */

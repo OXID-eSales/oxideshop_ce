@@ -10,7 +10,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-
 - \OxidEsales\Eshop\Application\Controller\FrontendController::getUserSelectedSorting
   checks if element to sort is configured in Admin.
 
@@ -23,10 +22,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\Eshop\Core\Config::getEdition()`
 - In `oxshops` table field - `OXEDITION` is deprecated. To retrieve OXID eShop edition
 facts component should be used: `\OxidEsales\Facts\Facts::getEdition()`.
+- `\OxidEsales\Eshop\Application\Controller\Admin\ShopRdfa::submitUrl()`
+- `\OxidEsales\Eshop\Application\Controller\Admin\ShopRdfa::getHttpResponseCode()`
+- Template block in *Application/views/admin/tpl/shop_rdfa.tpl* - `admin_shop_rdfa_submiturl`.
 
 ### Removed
-
 - Dynamic pages related code including config option blLoadDynContents.
+- GR-Notify page feature.
 
 ### Fixed
 - https://bugs.oxid-esales.com/view.php?id=6474 with PR#457

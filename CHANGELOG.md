@@ -27,9 +27,10 @@ facts component should be used: `\OxidEsales\Facts\Facts::getEdition()`.
 removed.
 - Template block in *Application/views/admin/tpl/shop_rdfa.tpl* - `admin_shop_rdfa_submiturl`, because GR-Notify page
 feature was removed.
+- Config option blLoadDynContents as it's part of dynamic pages.
 
 ### Removed
-- Dynamic pages related code including config option blLoadDynContents.
+- Dynamic pages related code including.
 - GR-Notify page feature.
 
 ### Fixed

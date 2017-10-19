@@ -267,7 +267,7 @@ class Database extends Core
     public function createDb($sDbName)
     {
         try {
-            $this->execSql("CREATE DATABASE `$sDbName`");
+            $this->execSql("CREATE DATABASE `$sDbName` CHARACTER SET utf8 COLLATE utf8_general_ci;");
             $this->connectDb($sDbName);
         } catch (Exception $e) {
             $oSetup = $this->getInstance("Setup");

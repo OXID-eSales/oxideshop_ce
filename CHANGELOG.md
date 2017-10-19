@@ -22,9 +22,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\Eshop\Core\Config::getEdition()`
 - In `oxshops` table field - `OXEDITION` is deprecated. To retrieve OXID eShop edition
 facts component should be used: `\OxidEsales\Facts\Facts::getEdition()`.
-- `\OxidEsales\Eshop\Application\Controller\Admin\ShopRdfa::submitUrl()`
-- `\OxidEsales\Eshop\Application\Controller\Admin\ShopRdfa::getHttpResponseCode()`
-- Template block in *Application/views/admin/tpl/shop_rdfa.tpl* - `admin_shop_rdfa_submiturl`.
+- `\OxidEsales\Eshop\Application\Controller\Admin\ShopRdfa::submitUrl()`, because GR-Notify page feature was removed.
+- `\OxidEsales\Eshop\Application\Controller\Admin\ShopRdfa::getHttpResponseCode()`, because GR-Notify page feature was
+removed.
+- Template block in *Application/views/admin/tpl/shop_rdfa.tpl* - `admin_shop_rdfa_submiturl`, because GR-Notify page
+feature was removed.
 
 ### Removed
 - Dynamic pages related code including config option blLoadDynContents.

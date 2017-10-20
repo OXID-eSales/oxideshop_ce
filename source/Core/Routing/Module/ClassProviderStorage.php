@@ -40,10 +40,6 @@ class ClassProviderStorage implements ClassProviderStorageInterface
     {
         $value = $this->toLowercase($value);
 
-        /**
-         * @todo see Implementation of \OxidEsales\Eshop\Core\Module\ModuleInstaller::_saveToConfig
-         *       setConfigParam and saveShopConfVar is called there. Ask someone (Vilma) why ;-)
-         */
         $this->getConfig()->saveShopConfVar('aarr', self::STORAGE_KEY, $value);
     }
 

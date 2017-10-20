@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Core;
  * @internal Do not make a module extension for this class.
  * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
-class SubShopSpecificFileCache extends FileCache
+class SubShopSpecificFileCache extends \OxidEsales\Eshop\Core\FileCache
 {
     /** @var ShopIdCalculator */
     private $shopIdCalculator;

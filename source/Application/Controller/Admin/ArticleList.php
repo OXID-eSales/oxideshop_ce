@@ -14,8 +14,6 @@ use oxDb;
  * Collects base article information (according to filtering rules), performs sorting,
  * deletion of articles, etc.
  * Admin Menu: Manage Products -> Articles.
- *
- * @internal This class should not be directly extended, instead of it oxAdminList class should be used.
  */
 class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {

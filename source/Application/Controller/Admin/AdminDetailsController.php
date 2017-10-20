@@ -10,8 +10,6 @@ use OxidEsales\Eshop\Core\ShopVersion;
 
 /**
  * Admin selectlist list manager.
- *
- * @internal This class should not be directly extended, instead of it oxAdminDetails class should be used.
  */
 class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {

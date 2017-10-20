@@ -151,7 +151,7 @@ class Theme extends \OxidEsales\Eshop\Core\Base
     /**
      * Return loaded parent
      *
-     * @return oxTheme
+     * @return \OxidEsales\Eshop\Core\Theme
      */
     public function getParent()
     {

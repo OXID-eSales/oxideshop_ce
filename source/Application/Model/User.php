@@ -1493,7 +1493,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _ldapLogin($sUser, $sPassword, $sShopID, $sShopSelect)
     {
         $aLDAPParams = $this->getConfig()->getConfigParam('aLDAPParams');
-        $oLDAP = oxNew("oxLDAP", $aLDAPParams['HOST'], $aLDAPParams['PORT']);
+        $oLDAP = oxNew(\OxidEsales\Eshop\Core\LDAP::class, $aLDAPParams['HOST'], $aLDAPParams['PORT']);
 
         // maybe this is LDAP user but supplied email Address instead of LDAP login
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();

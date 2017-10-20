@@ -145,7 +145,7 @@ class SelectList extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impleme
             $aList = \OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($this->oxselectlist__oxvaldesc->getRawValue(), $this->getVat());
             foreach ($aList as $sKey => $oField) {
                 if ($oField->name) {
-                    $this->_aList[$sKey] = oxNew("oxSelection", getStr()->strip_tags($oField->name), $sKey, false, $this->_aList === false ? true : false);
+                    $this->_aList[$sKey] = oxNew(\OxidEsales\Eshop\Application\Model\Selection::class, getStr()->strip_tags($oField->name), $sKey, false, $this->_aList === false ? true : false);
                 }
             }
         }

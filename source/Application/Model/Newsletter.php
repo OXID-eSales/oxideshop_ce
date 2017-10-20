@@ -102,7 +102,7 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         // usergroups
-        $this->_oGroups = oxNew("oxList", "oxgroups");
+        $this->_oGroups = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class, "oxgroups");
         $sViewName = getViewName("oxgroups");
 
         // performance

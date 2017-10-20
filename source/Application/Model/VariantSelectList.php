@@ -79,7 +79,7 @@ class VariantSelectList implements \OxidEsales\Eshop\Core\Contract\ISelectList
 
             // creating new
             if (!isset($this->_aList[$sKey])) {
-                $this->_aList[$sKey] = oxNew("oxSelection", $sName, $sValue, $blDisabled, $blActive);
+                $this->_aList[$sKey] = oxNew(\OxidEsales\Eshop\Application\Model\Selection::class, $sName, $sValue, $blDisabled, $blActive);
             } else {
                 // overriding states
                 if ($this->_aList[$sKey]->isDisabled() && !$blDisabled) {

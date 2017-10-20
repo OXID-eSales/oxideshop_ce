@@ -555,17 +555,17 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
 
         //checking params
         if (!isset($aFileInfo['name']) || !isset($aFileInfo['tmp_name'])) {
-            throw oxNew("oxException", 'EXCEPTION_NOFILE');
+            throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_NOFILE');
         }
 
         //wrong chars in file name?
         if (!getStr()->preg_match('/^[\-_a-z0-9\.]+$/i', $aFileInfo['name'])) {
-            throw oxNew("oxException", 'EXCEPTION_FILENAMEINVALIDCHARS');
+            throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_FILENAMEINVALIDCHARS');
         }
 
         // error uploading file ?
         if (isset($aFileInfo['error']) && $aFileInfo['error']) {
-            throw oxNew("oxException", 'EXCEPTION_FILEUPLOADERROR_' . ((int) $aFileInfo['error']));
+            throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_FILEUPLOADERROR_' . ((int) $aFileInfo['error']));
         }
 
         $aPathInfo = pathinfo($aFileInfo['name']);
@@ -577,7 +577,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         $aAllowedUploadTypes = array_map("strtolower", $aAllowedUploadTypes);
 
         if (!in_array(strtolower($sExt), $aAllowedUploadTypes)) {
-            throw oxNew("oxException", 'EXCEPTION_NOTALLOWEDTYPE');
+            throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_NOTALLOWEDTYPE');
         }
 
         $sFileName = $this->_getUniqueFileName($sBasePath . $sUploadPath, $sFileName, $sExt);

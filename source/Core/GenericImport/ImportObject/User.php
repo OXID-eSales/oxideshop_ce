@@ -34,7 +34,7 @@ class User extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObjec
             $id = $data['OXID'];
             $userName = $data['OXUSERNAME'];
 
-            $user = oxNew("oxUser", "core");
+            $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class, "core");
             $user->oxuser__oxusername = new \OxidEsales\Eshop\Core\Field($userName, \OxidEsales\Eshop\Core\Field::T_RAW);
 
             if ($user->exists($id) && $id != $user->getId()) {

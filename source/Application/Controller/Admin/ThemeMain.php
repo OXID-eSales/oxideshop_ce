@@ -37,7 +37,7 @@ class ThemeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         if ($oTheme->load($soxId)) {
             $this->_aViewData["oTheme"] = $oTheme;
         } else {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew("oxException", 'EXCEPTION_THEME_NOT_LOADED'));
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_THEME_NOT_LOADED'));
         }
 
         parent::render();
@@ -74,7 +74,7 @@ class ThemeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         /** @var \OxidEsales\Eshop\Core\Theme $oTheme */
         $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
         if (!$oTheme->load($sTheme)) {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew("oxException", 'EXCEPTION_THEME_NOT_LOADED'));
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_THEME_NOT_LOADED'));
 
             return;
         }

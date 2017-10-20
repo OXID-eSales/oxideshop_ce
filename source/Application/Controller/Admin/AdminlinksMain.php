@@ -31,7 +31,7 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oLinks = oxNew("oxlinks", getViewName('oxlinks'));
+            $oLinks = oxNew(\OxidEsales\Eshop\Application\Model\Links::class, getViewName('oxlinks'));
             $oLinks->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oLinks->getAvailableInLangs();
@@ -101,7 +101,7 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         }
 
         $iEditLanguage = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editlanguage");
-        $oLinks = oxNew("oxlinks", getViewName('oxlinks'));
+        $oLinks = oxNew(\OxidEsales\Eshop\Application\Model\Links::class, getViewName('oxlinks'));
 
         if ($soxId != "-1") {
             //$oLinks->load( $soxId );
@@ -142,7 +142,7 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             $aParams['oxlinks__oxactive'] = 0;
         }
 
-        $oLinks = oxNew("oxlinks", getViewName('oxlinks'));
+        $oLinks = oxNew(\OxidEsales\Eshop\Application\Model\Links::class, getViewName('oxlinks'));
         $iEditLanguage = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editlanguage");
 
         if ($soxId != "-1") {

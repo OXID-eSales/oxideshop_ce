@@ -7,7 +7,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 /**
- * Class EditionSelector
+ * Class NamespaceInformationProvider
  *
  * @package OxidEsales\EshopCommunity\Core
  *

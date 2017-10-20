@@ -1592,7 +1592,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oBasket->calculateBasket(true);
 
         // load fitting deliveries list
-        $oDeliveryList = oxNew("oxDeliveryList", "core");
+        $oDeliveryList = oxNew(\OxidEsales\Eshop\Application\Model\DeliveryList::class, "core");
         $oDeliveryList->setCollectFittingDeliveriesSets(true);
 
         return $oDeliveryList->getDeliveryList($oBasket, $this->getOrderUser(), $sShipId);

@@ -232,7 +232,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
 
                 // passing notification about session problems
                 if ($this->_sErrorMsg && $myConfig->getConfigParam('iDebug')) {
-                    \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew("oxException", $this->_sErrorMsg));
+                    \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, $this->_sErrorMsg));
                 }
             } elseif (!$blSwapped) {
                 // transferring cookies between hosts

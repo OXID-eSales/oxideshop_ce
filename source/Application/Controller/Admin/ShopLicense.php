@@ -37,7 +37,7 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
         $myConfig = $this->getConfig();
         if ($myConfig->isDemoShop()) {
             /** @var \OxidEsales\Eshop\Core\Exception\SystemComponentException $oSystemComponentException */
-            $oSystemComponentException = oxNew("oxSystemComponentException", "license");
+            $oSystemComponentException = oxNew(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class, "license");
             throw $oSystemComponentException;
         }
 

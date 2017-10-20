@@ -413,7 +413,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
     {
         // creating selection lists
         foreach ($aVarSelects as $iKey => $sLabel) {
-            $aVariantSelections[$iKey] = oxNew("oxVariantSelectList", $sLabel, $iKey);
+            $aVariantSelections[$iKey] = oxNew(\OxidEsales\Eshop\Application\Model\VariantSelectList::class, $sLabel, $iKey);
         }
 
         // building variant selections

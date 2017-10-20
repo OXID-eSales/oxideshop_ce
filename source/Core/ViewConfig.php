@@ -1161,7 +1161,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
             return $sFile;
         } else {
             /** @var \OxidEsales\Eshop\Core\Exception\FileException $oEx */
-            $oEx = oxNew("oxFileException", "Requested file not found for module $sModule ($sFile)");
+            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\FileException::class, "Requested file not found for module $sModule ($sFile)");
             $oEx->debugOut();
             if (!$this->getConfig()->getConfigParam('iDebug')) {
                 return '';

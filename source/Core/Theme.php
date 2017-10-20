@@ -59,7 +59,7 @@ class Theme extends \OxidEsales\Eshop\Core\Base
         $sError = $this->checkForActivationErrors();
         if ($sError) {
             /** @var \OxidEsales\Eshop\Core\Exception\StandardException $oException */
-            $oException = oxNew("oxException", $sError);
+            $oException = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, $sError);
             throw $oException;
         }
         $sParent = $this->getInfo('parentTheme');

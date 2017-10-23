@@ -3,6 +3,15 @@
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+/**
+ * Metadata version
+ */
+$sMetadataVersion = '2.0';
+
+/**
+ * Module information
+ */
 $aModule = array(
     'id'           => 'test_module_controller_routing',
     'title'        => 'Test metadata_controllers_feature',

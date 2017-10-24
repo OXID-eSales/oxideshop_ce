@@ -464,6 +464,7 @@ return [
     'oxccvalidator'                       => 'OxidEsales\\Eshop\\Core\\CreditCardValidator',
     'oxcurl'                              => 'OxidEsales\\Eshop\\Core\\Curl',
     'oxdb'                                => 'OxidEsales\\Eshop\\Core\\DatabaseProvider',
+    'DatabaseInterface'                   => 'OxidEsales\\Eshop\\Core\\Database\\Adapter\\DatabaseInterface',
     'oxdbmetadatahandler'                 => 'OxidEsales\\Eshop\\Core\\DbMetaDataHandler',
     'oxdebuginfo'                         => 'OxidEsales\\Eshop\\Core\\DebugInfo',
     'oxdecryptor'                         => 'OxidEsales\\Eshop\\Core\\Decryptor',

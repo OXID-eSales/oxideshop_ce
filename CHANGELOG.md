@@ -4,14 +4,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-
 ## [Unreleased]
 
 ### Added
 
 ### Changed
-- \OxidEsales\Eshop\Application\Controller\FrontendController::getUserSelectedSorting
-  checks if element to sort is configured in Admin.
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [6.0.0-rc.3] - 2017-11-01
+
+### Added
+
+### Changed
+- `\OxidEsales\Eshop\Application\Controller\FrontendController::getUserSelectedSorting()`
+checks if element to sort is configured in Admin.
+- Removed `exec()` calls in setup.
 
 ### Deprecated
 - `\OxidEsales\Eshop\Application\Controller\Admin\AdminController::$_sShopVersion`
@@ -28,6 +42,8 @@ removed.
 - Template block in *Application/views/admin/tpl/shop_rdfa.tpl* - `admin_shop_rdfa_submiturl`, because GR-Notify page
 feature was removed.
 - Config option blLoadDynContents as it's part of dynamic pages.
+- `\OxidEsales\Eshop\Core\ShopControl::$_blHandlerSet`. This property is not used anymore.
+- `\OxidEsales\Eshop\Core\WidgetControl::$_blHandlerSet`. This property is not used anymore.
 
 ### Removed
 - Dynamic pages related code including.
@@ -36,6 +52,10 @@ feature was removed.
 ### Fixed
 - https://bugs.oxid-esales.com/view.php?id=6474 with PR#457
 - https://bugs.oxid-esales.com/view.php?id=6155 with PR#431
+- https://bugs.oxid-esales.com/view.php?id=6579 with PR#487
+- https://bugs.oxid-esales.com/view.php?id=6465 with PR #458
+- https://bugs.oxid-esales.com/view.php?id=6683
+- https://bugs.oxid-esales.com/view.php?id=6695
 
 ### Security
 
@@ -145,7 +165,8 @@ See
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
 
-[Unreleased]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0-rc.2...HEAD
+[Unreleased]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0-rc.3...HEAD
+[6.0.0-rc.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0-rc.2...v6.0.0-rc.3
 [6.0.0-rc.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0-rc.1...v6.0.0-rc.2
 [6.0.0-rc.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0-beta.3...v6.0.0-rc.1
 [6.0-beta.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0-beta.2...v6.0-beta.3

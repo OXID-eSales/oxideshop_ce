@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Security
 
-## [6.0.0-rc.3] - 2017-11-01
+## [6.0.0-rc.3] - 2017-11-02
 
 ### Added
 
@@ -26,6 +26,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\Eshop\Application\Controller\FrontendController::getUserSelectedSorting()`
 checks if element to sort is configured in Admin.
 - Removed `exec()` calls in setup.
+- Pagination has been changed:
+for example previously it was "Geschenke/100/", now it will be "Geschenke?pgNr=99".
+In addition these pages come with "robots" meta tag "noindex, follow".
 
 ### Deprecated
 - `\OxidEsales\Eshop\Application\Controller\Admin\AdminController::$_sShopVersion`
@@ -58,6 +61,7 @@ feature was removed.
 - https://bugs.oxid-esales.com/view.php?id=6695
 
 ### Security
+- https://bugs.oxid-esales.com/view.php?id=6678
 
 
 ## [6.0.0-rc.2] - 2017-08-15

@@ -59,6 +59,7 @@ feature was removed.
 - https://bugs.oxid-esales.com/view.php?id=6465 with PR #458
 - https://bugs.oxid-esales.com/view.php?id=6683
 - https://bugs.oxid-esales.com/view.php?id=6695
+- https://bugs.oxid-esales.com/view.php?id=6716
 
 ### Security
 - https://bugs.oxid-esales.com/view.php?id=6678

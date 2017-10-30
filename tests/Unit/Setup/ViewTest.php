@@ -151,9 +151,8 @@ class ViewTest extends \OxidTestCase
     {
         $sPath = getShopBasePath();
 
-        $oInst1 = $this->getMock(SetupSession::class, array("getSessionParam"), array(), '', null);
-        $oInst1->expects($this->at(0))->method("getSessionParam")->will($this->returnValue(array("dbiDemoData" => 0)));
-        $oInst1->expects($this->at(1))->method("getSessionParam")->will($this->returnValue(array("blDelSetupDir" => true)));
+        $aDB = ["dbiDemoData" => 0];
+        $blDelSetupDir = ["blDelSetupDir" => true];
 
         $oInst2 = $this->getMock("Utilities", array("removeDir"));
         $oInst2->expects($this->at(0))->method("removeDir")->with($this->equalTo($sPath . "out/pictures/generated"), $this->equalTo(true))->will($this->returnValue(true));
@@ -161,9 +160,8 @@ class ViewTest extends \OxidTestCase
         $oInst2->expects($this->at(2))->method("removeDir")->with($this->equalTo($sPath . "Setup"), $this->equalTo(true))->will($this->returnValue(true));
 
         $oSetupView = $this->getMock(\OxidEsales\EshopCommunity\Setup\View::class, array("getInstance"));
-        $oSetupView->expects($this->at(0))->method("getInstance")->with($this->equalTo("Session"))->will($this->returnValue($oInst1));
-        $oSetupView->expects($this->at(1))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oInst2));
-        $this->assertTrue($oSetupView->isDeletedSetup());
+        $oSetupView->expects($this->atLeastOnce())->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oInst2));
+        $this->assertTrue($oSetupView->isDeletedSetup($blDelSetupDir, $aDB));
     }
 
     /**

@@ -244,19 +244,17 @@ class View extends Core
      * checks if setup deletion is ON and deletes setup files if possible,
      * return deletion status
      *
+     * @param array $aSetupConfig if to delete setup directory.
+     * @param array $aDemoConfig  database and demo data configuration.
+     *
      * @return bool
      */
-    public function isDeletedSetup()
+    public function isDeletedSetup($aSetupConfig, $aDemoConfig)
     {
-        //finalizing installation
-        $blDeleted = true;
-        /** @var Session $oSession */
-        $oSession = $this->getInstance("Session");
         /** @var Utilities $oUtils */
         $oUtils = $this->getInstance("Utilities");
         $sPath = getShopBasePath();
 
-        $aDemoConfig = $oSession->getSessionParam("aDB");
         if (!isset($aDemoConfig['dbiDemoData']) || $aDemoConfig['dbiDemoData'] != '1') {
             // "/generated" cleanup
             $oUtils->removeDir($sPath . "out/pictures/generated", true);
@@ -265,10 +263,11 @@ class View extends Core
             $oUtils->removeDir($sPath . "out/pictures/master", true, 1, ["nopic.jpg"]);
         }
 
-        $aSetupConfig = $oSession->getSessionParam("aSetupConfig");
         if (isset($aSetupConfig['blDelSetupDir']) && $aSetupConfig['blDelSetupDir']) {
             // removing setup files
             $blDeleted = $oUtils->removeDir($sPath . EditionPathProvider::SETUP_DIRECTORY, true);
+        } else {
+            $blDeleted = false;
         }
 
         return $blDeleted;

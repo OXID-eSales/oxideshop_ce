@@ -14,8 +14,10 @@ ob_clean();
 $this->getText('STEP_6_DESC');
 $aPath = $this->getViewParam( "aPath" );
 $aSetupConfig = $this->getViewParam( "aSetupConfig" );
+$aDB = $this->getViewParam( "aDB" );
 $blWritableConfig  = $this->getViewParam( "blWritableConfig" );
-$blRemoved = ( isset( $aSetupConfig['blDelSetupDir'] ) && $aSetupConfig['blDelSetupDir'] ) ? $this->isDeletedSetup() : true;
+// This must be done here as it deletes setup and nothing can't be displayed after that.
+$blRemoved = $this->isDeletedSetup($aSetupConfig, $aDB);
 ?>
 <br><br>
 <table cellspacing="5" cellpadding="5">

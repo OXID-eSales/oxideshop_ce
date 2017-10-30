@@ -481,6 +481,8 @@ class Controller extends Core
     {
         $session = $this->getSessionInstance();
         $pathCollection = $session->getSessionParam("aPath");
+        $aSetupConfig = $session->getSessionParam("aSetupConfig");
+        $aDB = $session->getSessionParam("aDB");
 
         try {
             $this->getUtilitiesInstance()->executeExternalRegenerateViewsCommand(); // move to last step possible?
@@ -500,7 +502,8 @@ class Controller extends Core
             'STEP_6_TITLE',
             [
                 "aPath" => $pathCollection,
-                "aSetupConfig" => $session->getSessionParam("aSetupConfig"),
+                "aSetupConfig" => $aSetupConfig,
+                "aDB" => $aDB,
                 "blWritableConfig" => is_writable($pathCollection['sShopDir'] . "/config.inc.php")
             ]
         );

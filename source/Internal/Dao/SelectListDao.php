@@ -11,8 +11,8 @@ namespace OxidEsales\EshopCommunity\Internal\Dao;
 use Doctrine\DBAL\Connection;
 use OxidEsales\EshopCommunity\Internal\DataObject\SelectList;
 use OxidEsales\EshopCommunity\Internal\DataObject\SelectListItem;
-use OxidEsales\EshopCommunity\Internal\Utilities\ContextInterface;
-use OxidEsales\EshopCommunity\Internal\Utilities\OxidLegacyServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\OxidLegacyServiceInterface;
 
 class SelectListDao extends BaseDao implements SelectListDaoInterface
 {

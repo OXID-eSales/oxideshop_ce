@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Internal\Unit\utilities;
 
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Utilities\OxidLegacyService;
+use OxidEsales\EshopCommunity\Internal\Utility\OxidLegacyService;
 use OxidEsales\EshopCommunity\Tests\Internal\Unit\ContextStub;
 
 

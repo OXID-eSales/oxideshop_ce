@@ -6,7 +6,7 @@
  * Time: 15:32
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Utilities;
+namespace OxidEsales\EshopCommunity\Internal\Utility;
 
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Price;

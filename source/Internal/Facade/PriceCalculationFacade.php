@@ -13,8 +13,8 @@ use OxidEsales\Eshop\Core\Price;
 use OxidEsales\EshopCommunity\Application\Model\Basket;
 use OxidEsales\EshopCommunity\Internal\DataObject\SimplePrice;
 use OxidEsales\EshopCommunity\Internal\Service\PriceCalculationServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Utilities\ContextInterface;
-use OxidEsales\EshopCommunity\Internal\Utilities\OxidLegacyServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\OxidLegacyServiceInterface;
 
 class PriceCalculationFacade implements PriceCalculationFacadeInterface
 {

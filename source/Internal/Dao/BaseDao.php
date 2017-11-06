@@ -11,8 +11,8 @@ namespace OxidEsales\EshopCommunity\Internal\Dao;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\Expression\CompositeExpression;
 use Doctrine\DBAL\Query\QueryBuilder;
-use OxidEsales\EshopCommunity\Internal\Utilities\ContextInterface;
-use OxidEsales\EshopCommunity\Internal\Utilities\OxidLegacyServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\OxidLegacyServiceInterface;
 
 class BaseDao implements BaseDaoInterface
 {

@@ -12,8 +12,8 @@ namespace OxidEsales\EshopCommunity\Internal\Dao;
 use Doctrine\DBAL\Connection;
 use OxidEsales\EshopCommunity\Internal\DataObject\BasicPriceInformation;
 use OxidEsales\EshopCommunity\Internal\DataObject\BulkPriceInfo;
-use OxidEsales\EshopCommunity\Internal\Utilities\ContextInterface;
-use OxidEsales\EshopCommunity\Internal\Utilities\OxidLegacyServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\OxidLegacyServiceInterface;
 
 class PriceInformationDao extends BaseDao implements PriceInformationDaoInterface
 {

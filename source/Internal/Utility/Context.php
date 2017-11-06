@@ -6,7 +6,7 @@
  * Time: 10:21
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Utilities;
+namespace OxidEsales\EshopCommunity\Internal\Utility;
 
 
 use Doctrine\DBAL\Connection;

@@ -6,7 +6,7 @@
  * Time: 10:22
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Utilities;
+namespace OxidEsales\EshopCommunity\Internal\Utility;
 
 
 use OxidEsales\EshopCommunity\Internal\DataObject\User;

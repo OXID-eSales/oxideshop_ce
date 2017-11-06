@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Internal\Unit;
 
 use OxidEsales\Eshop\Core\Price;
 use OxidEsales\EshopCommunity\Internal\DataObject\SimplePrice;
-use OxidEsales\EshopCommunity\Internal\Utilities\OxidLegacyServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\OxidLegacyServiceInterface;
 
 class OxidLegacyServiceStub implements OxidLegacyServiceInterface
 {

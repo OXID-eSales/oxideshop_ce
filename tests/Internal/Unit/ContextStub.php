@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Internal\Unit;
 
 
 use OxidEsales\EshopCommunity\Internal\DataObject\User;
-use OxidEsales\EshopCommunity\Internal\Utilities\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 
 class ContextStub implements ContextInterface
 {

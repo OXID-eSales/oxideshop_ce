@@ -26,10 +26,10 @@ use OxidEsales\EshopCommunity\Internal\Facade\PriceCalculationFacade;
 use OxidEsales\EshopCommunity\Internal\Facade\PriceCalculationFacadeInterface;
 use OxidEsales\EshopCommunity\Internal\Service\PriceCalculationService;
 use OxidEsales\EshopCommunity\Internal\Service\PriceCalculationServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Utilities\Context;
-use OxidEsales\EshopCommunity\Internal\Utilities\ContextInterface;
-use OxidEsales\EshopCommunity\Internal\Utilities\OxidLegacyService;
-use OxidEsales\EshopCommunity\Internal\Utilities\OxidLegacyServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\Context;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\OxidLegacyService;
+use OxidEsales\EshopCommunity\Internal\Utility\OxidLegacyServiceInterface;
 
 class ServiceFactory
 {

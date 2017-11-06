@@ -17,8 +17,8 @@ use OxidEsales\EshopCommunity\Internal\DataObject\Discount;
 use OxidEsales\EshopCommunity\Internal\DataObject\SelectList;
 use OxidEsales\EshopCommunity\Internal\DataObject\SimplePrice;
 use OxidEsales\EshopCommunity\Internal\DataObject\User;
-use OxidEsales\EshopCommunity\Internal\Utilities\ContextInterface;
-use OxidEsales\EshopCommunity\Internal\Utilities\OxidLegacyServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\OxidLegacyServiceInterface;
 
 class PriceCalculationService implements PriceCalculationServiceInterface
 {

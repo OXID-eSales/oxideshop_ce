@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Internal\Integration\Utilities;
 
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Language;
-use OxidEsales\EshopCommunity\Internal\Utilities\Context;
+use OxidEsales\EshopCommunity\Internal\Utility\Context;
 use OxidEsales\EshopCommunity\Tests\Internal\Integration\Database\AbstractDaoTests;
 
 abstract class AbstractContextTest extends AbstractDaoTests

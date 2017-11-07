@@ -94,10 +94,10 @@ class SeoEncoderManufacturer extends \OxidEsales\Eshop\Core\SeoEncoder
         $seoUrl = $this->getManufacturerUri($manufacturer, $languageId);
 
         if ($isFixed === null) {
-            $isFixed = $this->_isFixed('oxmanufacturers', $manufacturer->getId(), $languageId);
+            $isFixed = $this->_isFixed('oxmanufacturer', $manufacturer->getId(), $languageId);
         }
 
-        return $this->assembleFullPageUrl($manufacturer, 'oxmanufacturers', $stdUrl, $seoUrl, $pageNumber, $parameters, $languageId, $isFixed);
+        return $this->assembleFullPageUrl($manufacturer, 'oxmanufacturer', $stdUrl, $seoUrl, $pageNumber, $parameters, $languageId, $isFixed);
     }
 
     /**

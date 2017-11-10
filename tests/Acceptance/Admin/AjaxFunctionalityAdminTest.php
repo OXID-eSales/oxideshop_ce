@@ -1854,4 +1854,31 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
         $this->assertElementText("[last] user Group šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[21]/td[1]");
         $this->close();
     }
+
+    /**
+     * Test case for bugfix 0006711 and 0006668
+     *
+     * Activates module with ajax functionality.
+     * Checks that ajax call succeed.
+     */
+    public function testOxAjaxContainerClassResolution()
+    {
+        $this->loginAdmin("Extensions", "Modules");
+
+        $this->activateModule("Test module #11");
+
+        $this->frame("list");
+        $this->clickAndWait('link=test_11_tab');
+
+        $this->frame("edit");
+        $this->assertElementText("success", "//div[@id='test_11_ajax_controller_result']");
+    }
+
+    private function activateModule($moduleName)
+    {
+        $this->clickAndWait("link={$moduleName}");
+        $this->frame("edit");
+        $this->clickAndWait("//form[@id='myedit']//input[@value='Activate']");
+        $this->assertElementPresent("//form[@id='myedit']//input[@value='Deactivate']");
+    }
 }

@@ -40,10 +40,15 @@ if ($blAjaxCall) {
         $sContainer = trim(strtolower(basename($sContainer)));
 
         try {
-            $oAjaxComponent = oxNew($sContainer . '_ajax');
+            // Controller name for ajax class is automatically done from the request.
+            // Request comes from the same named class without _ajax.
+            $ajaxContainerClassName = $sContainer . '_ajax';
+            // Ensures that the right name is returned when a module introduce an ajax class.
+            $containerClass = \OxidEsales\Eshop\Core\Registry::getControllerClassNameResolver()->getClassNameById($ajaxContainerClassName);
+            $oAjaxComponent = oxNew($containerClass);
         } catch (\OxidEsales\Eshop\Core\Exception\SystemComponentException $oCe) {
             $oEx = new \OxidEsales\Eshop\Core\Exception\FileException();
-            $oEx->setMessage('EXCEPTION_FILENOTFOUND' . ' ' . $sContainer . '_ajax.php');
+            $oEx->setMessage('EXCEPTION_FILENOTFOUND' . ' ' . $ajaxContainerClassName);
             $oEx->debugOut();
             throw $oEx;
         }

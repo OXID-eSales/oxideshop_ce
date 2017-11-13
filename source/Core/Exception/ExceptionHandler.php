@@ -107,7 +107,7 @@ class ExceptionHandler
     /**
      * Handler for uncaught exceptions. As this is the las resort no fancy business logic should be applied here.
      *
-     * @param $exception throwable object
+     * @param $exception throwable
      *
      * @return void
      **/
@@ -189,7 +189,7 @@ class ExceptionHandler
     /**
      * Print a debug message to the screen.
      *
-     * @param throwable $exception  The exception to be treated
+     * @param throwable $exception
      * @param bool       $logWritten True, if an entry was written to the log file
      *
      * @return null

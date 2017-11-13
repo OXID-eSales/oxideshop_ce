@@ -107,7 +107,7 @@ class ExceptionHandler
     /**
      * Handler for uncaught exceptions. As this is the las resort no fancy business logic should be applied here.
      *
-     * @param $exception throwable
+     * @param Throwable $exception
      *
      * @return void
      **/
@@ -151,7 +151,7 @@ class ExceptionHandler
     /**
      * Write a formatted log entry to the log file.
      *
-     * @param throwable $exception
+     * @param Throwable $exception
      *
      * @return int|false The function returns the number of bytes that were written to the file, or false on failure.
      */
@@ -189,7 +189,7 @@ class ExceptionHandler
     /**
      * Print a debug message to the screen.
      *
-     * @param throwable $exception
+     * @param Throwable $exception
      * @param bool       $logWritten True, if an entry was written to the log file
      *
      * @return null
@@ -217,7 +217,7 @@ class ExceptionHandler
     /**
      * Return a formatted exception to be written to the log file.
      *
-     * @param throwable $exception
+     * @param Throwable $exception
      *
      * @return string
      */

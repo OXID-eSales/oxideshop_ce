@@ -107,11 +107,11 @@ class ExceptionHandler
     /**
      * Handler for uncaught exceptions. As this is the las resort no fancy business logic should be applied here.
      *
-     * @param \Exception $exception exception object
+     * @param Throwable $exception
      *
      * @return void
      **/
-    public function handleUncaughtException(\Exception $exception)
+    public function handleUncaughtException($exception)
     {
         /**
          * Report the exception
@@ -151,11 +151,11 @@ class ExceptionHandler
     /**
      * Write a formatted log entry to the log file.
      *
-     * @param \Exception $exception
+     * @param Throwable $exception
      *
      * @return int|false The function returns the number of bytes that were written to the file, or false on failure.
      */
-    public function writeExceptionToLog(\Exception $exception)
+    public function writeExceptionToLog($exception)
     {
         /** self::_sFileName is @deprecated since v6.0 (2017-03-30); Logging mechanism will change in the future. */
         $logFile = dirname(OX_LOG_FILE) . DIRECTORY_SEPARATOR . $this->_sFileName;
@@ -189,12 +189,12 @@ class ExceptionHandler
     /**
      * Print a debug message to the screen.
      *
-     * @param \Exception $exception  The exception to be treated
+     * @param Throwable $exception
      * @param bool       $logWritten True, if an entry was written to the log file
      *
      * @return null
      */
-    protected function displayDebugMessage(\Exception $exception, $logWritten)
+    protected function displayDebugMessage($exception, $logWritten)
     {
         $loggingErrorMessage = $logWritten ? '' : 'Could not write log file' . PHP_EOL;
 
@@ -217,11 +217,11 @@ class ExceptionHandler
     /**
      * Return a formatted exception to be written to the log file.
      *
-     * @param \Exception $exception
+     * @param Throwable $exception
      *
      * @return string
      */
-    protected function getFormattedException(\Exception $exception)
+    protected function getFormattedException($exception)
     {
         $time = microtime(true);
         $micro = sprintf("%06d", ($time - floor($time)) * 1000000);

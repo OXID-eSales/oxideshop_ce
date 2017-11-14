@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- https://bugs.oxid-esales.com/view.php?id=6668
+- https://bugs.oxid-esales.com/view.php?id=6711
 
 ### Security
 

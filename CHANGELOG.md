@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - https://bugs.oxid-esales.com/view.php?id=6668
 - https://bugs.oxid-esales.com/view.php?id=6711
 
+- [Disabled controls are not clearly visible as not writable](https://bugs.oxid-esales.com/view.php?id=6702)
+
 ### Security
 
 ## [6.0.0-rc.3] - 2017-11-02

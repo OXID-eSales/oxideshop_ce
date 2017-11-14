@@ -151,11 +151,15 @@ input[type="text"], select {
     padding: 3px;
     font-size: 12px;
     transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
-    background: #fff
+    background: #fff;
 }
 
 select {
     min-height: 25px
+}
+
+input:disabled, select:disabled, textarea:disabled {
+    background-color: rgb(235, 235, 228);
 }
 
 .saveButton, input[type="submit"], input[type="button"] {

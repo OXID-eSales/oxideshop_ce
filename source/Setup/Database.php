@@ -297,7 +297,6 @@ class Database extends Core
         if ($facts->isCommunity()) {
             $blSendTechnicalInformationToOxid = isset($aParams["send_technical_information_to_oxid"]) ? $aParams["send_technical_information_to_oxid"] : $oSession->getSessionParam('send_technical_information_to_oxid');
         }
-        $sLocationLang = isset($aParams["location_lang"]) ? $aParams["location_lang"] : $oSession->getSessionParam('location_lang');
         $blCheckForUpdates = isset($aParams["check_for_updates"]) ? $aParams["check_for_updates"] : $oSession->getSessionParam('check_for_updates');
         $sCountryLang = isset($aParams["country_lang"]) ? $aParams["country_lang"] : $oSession->getSessionParam('country_lang');
         $sShopLang = isset($aParams["sShopLang"]) ? $aParams["sShopLang"] : $oSession->getSessionParam('sShopLang');
@@ -305,11 +304,6 @@ class Database extends Core
 
         $oPdo->exec("update oxcountry set oxactive = '0'");
         $oPdo->exec("update oxcountry set oxactive = '1' where oxid = '$sCountryLang'");
-
-        // if it is international eshop, setting admin user country to selected one
-        if ($oSession->getSessionParam('location_lang') != "de") {
-            $oPdo->exec("UPDATE oxuser SET oxcountryid = '$sCountryLang' where OXUSERNAME='admin'");
-        }
 
         $oPdo->exec("delete from oxconfig where oxvarname = 'blSendTechnicalInformationToOxid'");
         $oPdo->exec("delete from oxconfig where oxvarname = 'sShopCountry'");
@@ -326,16 +320,6 @@ class Database extends Core
                 'name' => 'blSendTechnicalInformationToOxid',
                 'type' => 'bool',
                 'value' => $blSendTechnicalInformationToOxid
-            ]
-        );
-
-        $oInsert->execute(
-            [
-                'oxid' => $oUtils->generateUid(),
-                'shopId' => $sBaseShopId,
-                'name' => 'sShopCountry',
-                'type' => 'str',
-                'value' => $sLocationLang
             ]
         );
 

@@ -176,9 +176,7 @@ $aLang = [
 'SETUP_CONFIG_PERMISSIONS'                      => 'Due to security reasons put your config.inc.php file to read-only mode!',
 
 'SELECT_SETUP_LANG'                             => 'Installation language',
-'SELECT_SHOP_LOCATION'                          => 'Your market',
 'SELECT_PLEASE_CHOOSE'                          => 'Please choose',
-'SELECT_SHOP_LOCATION_HINT'                     => 'Please choose the market to which shop is focused. According to it, additional e-commerce Services will be loaded from OXID server, if you allow that.',
 'SELECT_DELIVERY_COUNTRY'                       => 'Main delivery country',
 'SELECT_DELIVERY_COUNTRY_HINT'                  => 'If needed, activate easily more delivery countries in admin.',
 'SELECT_SHOP_LANG'                              => 'Shop language',

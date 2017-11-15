@@ -139,12 +139,6 @@ class Session extends Core
         $oUtils = $this->getInstance("Utilities");
 
         //storing country value settings to session
-        $sLocationLang = $oUtils->getRequestVar("location_lang", "post");
-        if (isset($sLocationLang)) {
-            $this->setSessionParam('location_lang', $sLocationLang);
-        }
-
-        //storing country value settings to session
         $sCountryLang = $oUtils->getRequestVar("country_lang", "post");
         if (isset($sCountryLang)) {
             $this->setSessionParam('country_lang', $sCountryLang);

@@ -100,21 +100,15 @@ class ShopSetUpTest extends FrontendTestCase
 
         // Step 2
         $this->assertTextPresent("Welcome to OXID eShop installation wizard");
-        $this->assertElementPresent("location_lang");
-        $this->assertEquals("Please choose Germany, Austria, SwitzerlandAny other", trim(preg_replace("/[ \r\n]*[\r\n][ \r\n]*/", ' ', $this->getText("location_lang"))));
         $this->assertElementPresent("check_for_updates_ckbox");
         $this->assertEquals("off", $this->getValue("check_for_updates_ckbox"));
 
         $this->check("check_for_updates_ckbox");
 
         if (getenv('OXID_LOCALE') == 'international') {
-            $this->select("location_lang", "Any other");
-            $this->assertEquals("Any other", $this->getSelectedLabel("location_lang"));
             $this->assertElementPresent("sShopLang");
             $this->select("sShopLang", "English");
         } else {
-            $this->select("location_lang", "Germany, Austria, Switzerland");
-            $this->assertEquals("Germany, Austria, Switzerland", $this->getSelectedLabel("location_lang"));
             $this->assertElementPresent("sShopLang");
             $this->select("sShopLang", "Deutsch");
         }
@@ -1187,7 +1181,6 @@ class ShopSetUpTest extends FrontendTestCase
 
     private function selectEshopLanguage()
     {
-        $this->select("location_lang", "Germany, Austria, Switzerland");
         $this->select("sShopLang", "English");
         $this->select("country_lang", "Germany");
     }

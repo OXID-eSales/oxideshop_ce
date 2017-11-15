@@ -300,22 +300,6 @@ function editThis( sID )
 
             <dl>
                 <dt>
-                    <select class="select" name=confstrs[sShopCountry] [{$readonly}]>
-                        <option value="">[{oxmultilang ident="SHOP_SYSTEM_PLEASE_CHOOSE"}]</option>
-                        [{foreach from=$shop_countries item=sShopCountry key=sCountryCode}]
-                        <option value="[{$sCountryCode}]"[{if $sCountryCode == $confstrs.sShopCountry}] selected[{/if}]>[{$sShopCountry}]</option>
-                        [{/foreach}]
-                    </select>
-                    [{oxinputhelp ident="HELP_SHOP_SYSTEM_SHOP_LOCATION"}]
-                </dt>
-                <dd>
-                    [{oxmultilang ident="SHOP_SYSTEM_SHOP_LOCATION"}]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-                    
-            <dl>
-                <dt>
                     <input type=text class="txt" style="width: 430px;" name=confstrs[sUtilModule] value="[{$confstrs.sUtilModule}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_SYSTEM_UTILMODULE"}]
                 </dt>

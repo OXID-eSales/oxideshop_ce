@@ -329,7 +329,6 @@ class DatabaseTest extends \OxidTestCase
         $session = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Session', array("setSessionParam", "getSessionParam"), array(), '', null);
 
         $map = array(
-            array('location_lang', null),
             array('check_for_updates', null),
             array('country_lang', null),
         );

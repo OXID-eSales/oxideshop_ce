@@ -9,38 +9,6 @@ require "_header.php"; ?>
 <form action="index.php" method="post">
 <table cellpadding="1" cellspacing="0">
     <tr>
-        <td style="padding-top: 5px;"><?php $this->getText('SELECT_SHOP_LOCATION'); ?>: </td>
-        <td>
-            <table cellpadding="0" cellspacing="0" border="0" height="29">
-              <tr>
-                <td style="padding-right: 3px;">
-                    <select name="location_lang" style="font-size: 11px;">
-                        <option value=""><?php $this->getText('SELECT_PLEASE_CHOOSE'); ?></option>
-                        <?php
-                        $aLocations   = $this->getViewParam( "aLocations" );
-                        $sLanguage   = $this->getViewParam( "sLanguage" );
-                        $sLocationLang = $this->getViewParam( "sLocationLang" );
-
-                        if ( isset( $aLocations[$sLanguage] ) ) {
-                            foreach ( $aLocations[$sLanguage] as $sKey => $sValue ) {
-                                $sSelected = ( $sLocationLang !== null && $sLocationLang == $sKey ) ? 'selected' : '';
-                                ?><option value="<?php echo $sKey; ?>" <?php echo $sSelected; ?>><?php echo $sValue; ?></option><?php
-                            }
-                        }
-                        ?>
-                    </select>
-                </td>
-                <td style="padding: 0px 5px;">
-                    <a href="#" style="display:block;width:18px;height:18px;background: #ddd;border: 1px solid #ccc;border-radius: 5px;line-height: 18px;text-align: center;font-weight: bold;color: #777;" onmouseover="document.getElementById('marketHelpBox').style.display = '';" onmouseout="document.getElementById('marketHelpBox').style.display = 'none';">?</a>
-                    <div id="marketHelpBox" style="position: absolute;margin-top:5px;border: 1px solid #c1c1c1; background: #ddd;padding: 10px;border-radius: 5px;display: none;width:300px;">
-                        <?php $this->getText('SELECT_SHOP_LOCATION_HINT'); ?>
-                    </div>
-                </td>
-            </tr>
-          </table>
-        </td>
-    </tr>
-    <tr>
         <td style="padding-top: 5px;"><?php $this->getText('SELECT_DELIVERY_COUNTRY'); ?>: </td>
         <td>
             <table cellpadding="0" cellspacing="0" border="0" height="29">

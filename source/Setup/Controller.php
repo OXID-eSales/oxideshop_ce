@@ -79,7 +79,6 @@ class Controller extends Core
                 "aLanguages" => getLanguages(),
                 "sShopLang" => $session->getSessionParam('sShopLang'),
                 "sLanguage" => $this->getLanguageInstance()->getLanguage(),
-                "sLocationLang" => $session->getSessionParam('location_lang'),
                 "sCountryLang" => $session->getSessionParam('country_lang')
             ]
         );

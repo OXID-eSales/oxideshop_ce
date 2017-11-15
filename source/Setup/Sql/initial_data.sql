@@ -104,7 +104,6 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('2b7f0b7ba625f0fe61993c66f21b13f3', 1, '', 'bl_rssNewest', 'bool', 0x07),
 ('2b7eccdd7027feb7367a6edc668164c5', 1, '', 'bl_rssCategories', 'bool', 0x07),
 ('fd770460540c32422b415a65fefb8f90', 1, '', 'blSendTechnicalInformationToOxid', 'bool', ''),
-('fd7a064bbb64466f8e6ba847902b2005', 1, '', 'sShopCountry', 'str', ''),
 ('44bcd90bd1d059.053753111', 1, '', 'sTagList', 'str', 0x071d33336bce8dbe0606),
 ('603a1a28ff2a421b64c631ffaf97f324', 1, '', 'sGiCsvFieldEncloser', 'str', 0x95),
 ('9135a582a6971656110b9a98ca5be6d2', 1, '', 'blShippingCountryVat', 'bool', ''),

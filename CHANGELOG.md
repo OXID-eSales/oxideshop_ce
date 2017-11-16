@@ -13,6 +13,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+- \OxidEsales\EshopCommunity\Application\Controller\Admin\AdminController::getServiceUrl()
+- class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynEconda
+- class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicInterface
+- class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicScreenController
+- class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicScreenList
+- class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicScreenLocal
+- \OxidEsales\EshopCommunity\Application\Controller\Admin\NavigationTree::_addDynLinks()
+- \OxidEsales\EshopCommunity\Application\Controller\Admin\NavigationTree::_checkDynFile()
+- \OxidEsales\EshopCommunity\Application\Controller\Admin\NavigationTree::_getDynMenuLang()
+- \OxidEsales\EshopCommunity\Application\Controller\Admin\NavigationTree::_getDynMenuUrl()
+- template source/Application/views/admin/tpl/dyn_econda.tpl
+- template source/Application/views/admin/tpl/dynscreen.tpl
+- template source/Application/views/admin/tpl/dynscreen_list.tpl
+- template source/Application/views/admin/tpl/dynscreen_local.tpl
 
 ### Fixed
 

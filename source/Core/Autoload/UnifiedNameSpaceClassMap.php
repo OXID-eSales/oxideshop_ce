@@ -704,16 +704,6 @@ return [
         'isAbstract'       => false,
         'isInterface'      => false
     ],
-    'OxidEsales\Eshop\Application\Controller\Admin\DynamicScreenController'      => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicScreenController::class,
-        'isAbstract'       => false,
-        'isInterface'      => false
-    ],
-    'OxidEsales\Eshop\Application\Controller\Admin\DynamicScreenList'            => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicScreenList::class,
-        'isAbstract'       => false,
-        'isInterface'      => false
-    ],
     'OxidEsales\Eshop\Application\Controller\Admin\DynamicScreenLocal'           => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicScreenLocal::class,
         'isAbstract'       => false,

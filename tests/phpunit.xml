@@ -23,7 +23,6 @@
             <directory suffix=".php">Application/Controller/Admin/Report/</directory>
             <directory suffix=".php">Application/views/</directory>
             <directory suffix=".php">Core/Smarty</directory>
-            <directory suffix=".php">Core/wysiwigpro/</directory>
             <directory suffix=".php">Core/jpgraph/</directory>
             <directory suffix=".php">Core/phpmailer/</directory>
             <directory suffix=".php">Core/Smarty/</directory>

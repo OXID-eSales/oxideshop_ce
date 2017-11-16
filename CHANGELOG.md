@@ -15,16 +15,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-- https://bugs.oxid-esales.com/view.php?id=6668
-- https://bugs.oxid-esales.com/view.php?id=6711
-
-- [Disabled controls are not clearly visible as not writable](https://bugs.oxid-esales.com/view.php?id=6702)
 
 ### Security
 
-## [6.0.0-rc.3] - 2017-11-02
+## [6.0.0] - 2017-11-17
 
-### Added
+### Fixed
+- [in source/admin/oxajax.php ControllerClassNameResolver is not used for resolving container. Can't create custom drag&drop in mod](https://bugs.oxid-esales.com/view.php?id=6668)
+- [admin/oxajax.php needs to handle module namespaced ajax container classes](https://bugs.oxid-esales.com/view.php?id=6711)
+- [Disabled controls are not clearly visible as not writable](https://bugs.oxid-esales.com/view.php?id=6702)
+
+## [6.0.0-rc.3] - 2017-11-02
 
 ### Changed
 - `\OxidEsales\Eshop\Application\Controller\FrontendController::getUserSelectedSorting()`
@@ -111,9 +112,6 @@ feature was removed.
 - Deactivating a module which extends basket causes shop maintenance mode, [#0006659](https://bugs.oxid-esales.com/view.php?id=6659)
 - Pass along shopid to call to _loadFromDb(), [Pull Request 571](https://github.com/OXID-eSales/oxideshop_ce/pull/571)
 
-### Security
-
-
 ## [6.0.0-rc.1] - 2017-04-07
 
 ### Added
@@ -174,7 +172,8 @@ See
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
 
-[Unreleased]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0-rc.3...HEAD
+[Unreleased]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0...HEAD
+[6.0.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0-rc.3...v6.0.0
 [6.0.0-rc.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0-rc.2...v6.0.0-rc.3
 [6.0.0-rc.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0-rc.1...v6.0.0-rc.2
 [6.0.0-rc.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0-beta.3...v6.0.0-rc.1

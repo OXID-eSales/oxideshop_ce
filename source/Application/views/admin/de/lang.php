@@ -1153,7 +1153,6 @@ $aLang = [
     'SHOP_SYSTEM_ORDERDISNOREG'                          => 'Benutzer müssen sich registrieren, um bestellen zu können',
     'SHOP_SYSTEM_OTHERCOUNTRYORDER'                      => 'Bestellungen aus dem Ausland auch dann erlauben, wenn keine Versandkosten für das Land vorhanden sind',
     'SHOP_SYSTEM_SEARCHENGINEURLS'                       => 'Suchmaschinenfeste URLs verwenden. Dies ist wichtig für Google & Co., funktioniert jedoch nicht auf jedem Webserver',
-    'SHOP_SYSTEM_SHOP_LOCATION'                          => 'Region des Shops',
     'SHOP_SYSTEM_SHOWVARIANTREVIEWS'                     => 'Varianten-Bewertungen beim "Vater"-Artikel anzeigen',
     'SHOP_SYSTEM_STOREIPS'                               => 'IP-Adressen speichern. Die ist u.U. ein Verstoß gegen den Datenschutz.',
     'SHOP_SYSTEM_UTILMODULE'                             => 'Zusätzliches Util-Modul',

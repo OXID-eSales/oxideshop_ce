@@ -1161,7 +1161,6 @@ $aLang = [
     'SHOP_SYSTEM_SEARCHENGINEURLS'                       => "Static URL's. Important for optimal Product search-engine recognition, but doesn't work on all web-servers.",
     'SHOP_SYSTEM_SHOWVARIANTREVIEWS'                     => 'Show Variant Ratings for "Parent" Product',
     'SHOP_SYSTEM_STOREIPS'                               => 'Store User IP Addresses (check your local laws if legal)',
-    'SHOP_SYSTEM_SHOP_LOCATION'                          => 'Shop market',
     'SHOP_SYSTEM_UTILMODULE'                             => 'Additional Utility Module',
     'SHOP_SYSTEM_VARIANTSSELECTION'                      => 'Display Variants in Assignment Lists in eShop admin',
     'SHOP_SYSTEM_VARIANTPARENTBUYABLE'                   => '"Parent" Products can be purchased',

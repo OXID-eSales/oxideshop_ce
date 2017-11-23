@@ -97,6 +97,9 @@ input[type="text"], select {
 select {
     min-height: 25px;
 }
+input:disabled, select:disabled, textarea:disabled {
+    background-color: rgb(235, 235, 228);
+}
 
 /* Tabs */
 .tabs .tab {

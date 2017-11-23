@@ -67,6 +67,8 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     /**
      * Shop Version
      *
+     * @deprecated since v6.0.0-rc.2 (2017-08-23); Use  OxidEsales\Eshop\Core\ShopVersion::getVersion() instead.
+     *
      * @var string
      */
     protected $_sShopVersion = null;

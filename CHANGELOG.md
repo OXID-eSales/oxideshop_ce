@@ -29,6 +29,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - template source/Application/views/admin/tpl/dynscreen_local.tpl
 
 ### Fixed
+
+### Security
+
+## [6.1.0] - unreleased
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+- 'Your market' selection was removed from Setup wizard, as this value is no longer evaluated
+
+### Fixed
 - [Missing translations](https://bugs.oxid-esales.com/view.php?id=6721)
 - [Manufacturer Seo urls not properly stored in database](https://bugs.oxid-esales.com/view.php?id=6694)
 - [Change robots.txt entry from "Disallow: /agb/" to "Disallow: /AGB/"](https://bugs.oxid-esales.com/view.php?id=6703)

@@ -306,7 +306,6 @@ class Database extends Core
         $oPdo->exec("update oxcountry set oxactive = '1' where oxid = '$sCountryLang'");
 
         $oPdo->exec("delete from oxconfig where oxvarname = 'blSendTechnicalInformationToOxid'");
-        $oPdo->exec("delete from oxconfig where oxvarname = 'sShopCountry'");
         $oPdo->exec("delete from oxconfig where oxvarname = 'blCheckForUpdates'");
         $oPdo->exec("delete from oxconfig where oxvarname = 'sDefaultLang'");
         // $this->execSql( "delete from oxconfig where oxvarname = 'aLanguageParams'" );

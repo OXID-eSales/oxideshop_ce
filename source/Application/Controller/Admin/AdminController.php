@@ -201,7 +201,6 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         $oViewConf->setViewConfigParam('selflink', \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($sURL . 'index.php?editlanguage=' . $this->_iEditLang, false));
         $oViewConf->setViewConfigParam('ajaxlink', str_replace('&amp;', '&', \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($sURL . 'oxajax.php?editlanguage=' . $this->_iEditLang, false)));
         $oViewConf->setViewConfigParam('sServiceUrl', $this->getServiceUrl());
-        $oViewConf->setViewConfigParam('sShopCountry', $myConfig->getConfigParam('sShopCountry'));
 
         // set langugae in admin
         $iDynInterfaceLanguage = $myConfig->getConfigParam('iDynInterfaceLanguage');
@@ -242,7 +241,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
             $editionSelector = new EditionSelector();
             $sUrl = $sProtocol . '://admin.oxid-esales.com/' . $editionSelector->getEdition() . '/';
 
-            $sCountry = $this->_getCountryByCode($this->getConfig()->getConfigParam('sShopCountry'));
+            $sCountry = 'international';
 
             if (!$sLangAbbr) {
                 $oLang = \OxidEsales\Eshop\Core\Registry::getLang();

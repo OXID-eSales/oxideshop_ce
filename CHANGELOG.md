@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [6.1.0] - unreleased
 
 ### Added
 
@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+- 'Your market' selection was removed from Setup wizard, as this value is no longer evaluated
 
 ### Fixed
 - [Missing translations](https://bugs.oxid-esales.com/view.php?id=6721)

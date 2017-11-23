@@ -414,11 +414,6 @@ class InternationalTest extends AcceptanceTestCase
             $this->frame("edit");
             //testing list frame for errors
             $this->frame("list");
-            $this->openTab("System");
-            $this->click("link=Other settings");
-            $this->select("confstrs[sShopCountry]", "label=Germany, Austria, Switzerland");
-            $this->clickAndWaitFrame("save", "list");
-            $this->frame("list");
             $this->openTab("Settings");
             $this->click("link=Administration");
 

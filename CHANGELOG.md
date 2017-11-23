@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - template source/Application/views/admin/tpl/dynscreen_local.tpl
 
 ### Fixed
+- [Missing translations](https://bugs.oxid-esales.com/view.php?id=6721)
 
 ### Security
 

@@ -36,7 +36,7 @@ if ($blAjaxCall) {
         \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("");
     }
 
-    if ($sContainer = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('container')) {
+    if ($sContainer = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\Request::class)->getRequestParameter('container')) {
         $sContainer = trim(strtolower(basename($sContainer)));
 
         try {
@@ -45,6 +45,11 @@ if ($blAjaxCall) {
             $ajaxContainerClassName = $sContainer . '_ajax';
             // Ensures that the right name is returned when a module introduce an ajax class.
             $containerClass = \OxidEsales\Eshop\Core\Registry::getControllerClassNameResolver()->getClassNameById($ajaxContainerClassName);
+
+            // Fallback in case controller could not be resolved (modules using metadata version 1).
+            if (!class_exists($containerClass)) {
+                $containerClass = $ajaxContainerClassName;
+            }
             $oAjaxComponent = oxNew($containerClass);
         } catch (\OxidEsales\Eshop\Core\Exception\SystemComponentException $oCe) {
             $oEx = new \OxidEsales\Eshop\Core\Exception\FileException();
@@ -54,7 +59,7 @@ if ($blAjaxCall) {
         }
 
         $oAjaxComponent->setName($sContainer);
-        $oAjaxComponent->processRequest(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('fnc'));
+        $oAjaxComponent->processRequest(\OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\Request::class)->getRequestParameter('fnc'));
     }
 
     $myConfig->pageClose();

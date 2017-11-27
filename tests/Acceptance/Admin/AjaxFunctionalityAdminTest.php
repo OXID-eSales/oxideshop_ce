@@ -1869,9 +1869,52 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
 
         $this->frame("list");
         $this->clickAndWait('link=test_11_tab');
-
         $this->frame("edit");
-        $this->assertElementText("success", "//div[@id='test_11_ajax_controller_result']");
+        $this->click("//input[@value='CLICK_HERE']");
+
+        $this->selectWindow("ajaxpopup");
+        $this->assertTextPresent('POPUP_HERE');
+        $this->close();
+
+        $this->frame("list");
+        $this->clickAndWait('link=test_11_tab');
+        $this->frame("edit");
+        $this->click("//input[@value='CLICK_HERE']");
+
+        $this->selectWindow("ajaxpopup");
+        $this->assertTextPresent('test_11_ajax_controller successfully called');
+        $this->close();
+    }
+
+    /**
+     * Test case for bugfix 0006711 and 0006668
+     *
+     * Activates module with ajax functionality.
+     * Checks that ajax call succeed.
+     */
+    public function testOxAjaxContainerClassResolutionMetadata1Module()
+    {
+        $this->loginAdmin("Extensions", "Modules");
+
+        $this->activateModule("Test module #12");
+
+        $this->frame("list");
+        $this->clickAndWait('link=test_12_tab');
+        $this->frame("edit");
+        $this->click("//input[@value='CLICK_HERE']");
+
+        $this->selectWindow("ajaxpopup");
+        $this->assertTextPresent('POPUP_HERE');
+        $this->close();
+
+        $this->frame("list");
+        $this->clickAndWait('link=test_12_tab');
+        $this->frame("edit");
+        $this->click("//input[@value='CLICK_HERE']");
+
+        $this->selectWindow("ajaxpopup");
+        $this->assertTextPresent('test_12_ajax_controller successfully called');
+        $this->close();
     }
 
     private function activateModule($moduleName)

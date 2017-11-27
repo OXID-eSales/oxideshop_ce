@@ -20,17 +20,21 @@
  * @version       OXID eShop CE
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin\testData\modules\oxid\test11\Application\Controller;
-
-
-class Test11TabController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
+class test_12_ajax_controller extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
     public function render()
     {
         parent::render();
-        $this->setViewData(['shopUrl' => $this->getConfig()->getShopUrl()]);
 
-        return 'test_11_tab.tpl';
+        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
+            $ajax = oxNew("test_12_ajax_controller_ajax");
+            $this->_aViewData['oxajax_result'] = oxRegistry::getConfig()->getConfigParam('testModule12AjaxCalledSuccessfully');
+            $this->_aViewData['oxajax'] = $ajax->getFeedback();
+
+            return "test_12_popup.tpl";
+        }
+
+        return "test_12_ajax_controller.tpl";
     }
 
 }

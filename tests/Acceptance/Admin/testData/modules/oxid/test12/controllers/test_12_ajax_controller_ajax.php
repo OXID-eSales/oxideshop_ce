@@ -20,25 +20,22 @@
  * @version       OXID eShop CE
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin\testData\modules\oxid\test11\Application\Controller;
-
-class Test11AjaxController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
+class test_12_ajax_controller_ajax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
     /**
      * @inheritdoc
      */
-    public function render()
+    public function processRequest($function = null)
     {
-        parent::render();
+        $response = 'test_12_ajax_controller successfully called';
+        oxRegistry::getConfig()->saveShopConfVar('str', 'testModule12AjaxCalledSuccessfully', $response);
 
-        if (\OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\Request::class)->getRequestParameter("aoc")) {
-            $ajax = oxNew(\OxidEsales\EshopCommunity\Tests\Acceptance\Admin\testData\modules\oxid\test11\Application\Controller\Test11AjaxControllerAjax::class);
-            $this->_aViewData['oxajax_result'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('testModule11AjaxCalledSuccessfully');
-            $this->_aViewData['oxajax'] = $ajax->getFeedback();
+        $this->_outputResponse('test_12_ajax_controller successfully called');
+    }
 
-            return "test_11_popup.tpl";
-        }
-
-        return "test_11_ajax_controller.tpl";
+    public function getFeedback()
+    {
+        oxRegistry::getConfig()->saveShopConfVar('str', 'testModule12AjaxCalledSuccessfully', '');
+        $this->_output('test_12_ajax_controller getFeedback');
     }
 }

@@ -185,8 +185,14 @@
             [{oxhasrights object=$edit field='oxlongdesc' readonly=$readonly }]
                 <div>
                     <p>[{ oxmultilang ident="PAYMENT_MAIN_LONGDESC" }]</p>
+                    [{if $readonly }]
+                    <div id="disabledEditor">
+                        [{$edit->oxpayments__oxlongdesc->value}]
+                    </div>
+                    [{else}]
                     [{ $editor }]
                     <div class="messagebox">[{ oxmultilang ident="EDITOR_PLAINTEXT_HINT" }]</div>
+                    [{/if}]
                 </div>
             [{/oxhasrights}]
         [{/block}]

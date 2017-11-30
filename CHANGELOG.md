@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 - 'Your market' selection was removed from Setup wizard, as this value is no longer evaluated
+- Database transaction was removed from finalizeOrder method
 
 ### Fixed
 - [Missing translations](https://bugs.oxid-esales.com/view.php?id=6721)

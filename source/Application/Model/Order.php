@@ -458,109 +458,98 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param object                                     $oUser                Current User object
      * @param bool                                       $blRecalculatingOrder Order recalculation
      *
-     * @throws Exception
-     *
      * @return integer
      */
     public function finalizeOrder(\OxidEsales\Eshop\Application\Model\Basket $oBasket, $oUser, $blRecalculatingOrder = false)
     {
-        \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->startTransaction();
-        try {
-            // check if this order is already stored
-            $sGetChallenge = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('sess_challenge');
-            if ($this->_checkOrderExist($sGetChallenge)) {
-                \OxidEsales\Eshop\Core\Registry::getUtils()->logger('BLOCKER');
+        // check if this order is already stored
+        $sGetChallenge = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('sess_challenge');
+        if ($this->_checkOrderExist($sGetChallenge)) {
+            \OxidEsales\Eshop\Core\Registry::getUtils()->logger('BLOCKER');
 
-                // we might use this later, this means that somebody clicked like mad on order button
-                return self::ORDER_STATE_ORDEREXISTS;
+            // we might use this later, this means that somebody clicked like mad on order button
+            return self::ORDER_STATE_ORDEREXISTS;
+        }
+
+        // if not recalculating order, use sess_challenge id, else leave old order id
+        if (!$blRecalculatingOrder) {
+            // use this ID
+            $this->setId($sGetChallenge);
+
+            // validating various order/basket parameters before finalizing
+            if ($iOrderState = $this->validateOrder($oBasket, $oUser)) {
+                return $iOrderState;
             }
+        }
 
-            // if not recalculating order, use sess_challenge id, else leave old order id
-            if (!$blRecalculatingOrder) {
-                // use this ID
-                $this->setId($sGetChallenge);
+        // copies user info
+        $this->_setUser($oUser);
 
-                // validating various order/basket parameters before finalizing
-                if ($iOrderState = $this->validateOrder($oBasket, $oUser)) {
-                    return $iOrderState;
-                }
+        // copies basket info
+        $this->_loadFromBasket($oBasket);
+
+        // payment information
+        $oUserPayment = $this->_setPayment($oBasket->getPaymentId());
+
+        // set folder information, if order is new
+        // #M575 in recalculating order case folder must be the same as it was
+        if (!$blRecalculatingOrder) {
+            $this->_setFolder();
+        }
+
+        // marking as not finished
+        $this->_setOrderStatus('NOT_FINISHED');
+
+        //saving all order data to DB
+        $this->save();
+
+        // executing payment (on failure deletes order and returns error code)
+        // in case when recalculating order, payment execution is skipped
+        if (!$blRecalculatingOrder) {
+            $blRet = $this->_executePayment($oBasket, $oUserPayment);
+            if ($blRet !== true) {
+                return $blRet;
             }
+        }
 
-            // copies user info
-            $this->_setUser($oUser);
+        if (!$this->oxorder__oxordernr->value) {
+            $this->_setNumber();
+        } else {
+            oxNew(\OxidEsales\Eshop\Core\Counter::class)->update($this->_getCounterIdent(), $this->oxorder__oxordernr->value);
+        }
 
-            // copies basket info
-            $this->_loadFromBasket($oBasket);
+        // deleting remark info only when order is finished
+        \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable('ordrem');
 
-            // payment information
-            $oUserPayment = $this->_setPayment($oBasket->getPaymentId());
+        //#4005: Order creation time is not updated when order processing is complete
+        if (!$blRecalculatingOrder) {
+            $this->_updateOrderDate();
+        }
 
-            // set folder information, if order is new
-            // #M575 in recalculating order case folder must be the same as it was
-            if (!$blRecalculatingOrder) {
-                $this->_setFolder();
-            }
+        // updating order trans status (success status)
+        $this->_setOrderStatus('OK');
 
-            // marking as not finished
-            $this->_setOrderStatus('NOT_FINISHED');
+        // store orderid
+        $oBasket->setOrderId($this->getId());
 
-            //saving all order data to DB
-            $this->save();
+        // updating wish lists
+        $this->_updateWishlist($oBasket->getContents(), $oUser);
 
-            // executing payment (on failure deletes order and returns error code)
-            // in case when recalculating order, payment execution is skipped
-            if (!$blRecalculatingOrder) {
-                $blRet = $this->_executePayment($oBasket, $oUserPayment);
-                if ($blRet !== true) {
-                    return $blRet;
-                }
-            }
+        // updating users notice list
+        $this->_updateNoticeList($oBasket->getContents(), $oUser);
 
-            if (!$this->oxorder__oxordernr->value) {
-                $this->_setNumber();
-            } else {
-                oxNew(\OxidEsales\Eshop\Core\Counter::class)->update($this->_getCounterIdent(), $this->oxorder__oxordernr->value);
-            }
+        // marking vouchers as used and sets them to $this->_aVoucherList (will be used in order email)
+        // skipping this action in case of order recalculation
+        if (!$blRecalculatingOrder) {
+            $this->_markVouchers($oBasket, $oUser);
+        }
 
-            // deleting remark info only when order is finished
-            \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable('ordrem');
-
-            //#4005: Order creation time is not updated when order processing is complete
-            if (!$blRecalculatingOrder) {
-                $this->_updateOrderDate();
-            }
-
-            // updating order trans status (success status)
-            $this->_setOrderStatus('OK');
-
-            // store orderid
-            $oBasket->setOrderId($this->getId());
-
-            // updating wish lists
-            $this->_updateWishlist($oBasket->getContents(), $oUser);
-
-            // updating users notice list
-            $this->_updateNoticeList($oBasket->getContents(), $oUser);
-
-            // marking vouchers as used and sets them to $this->_aVoucherList (will be used in order email)
-            // skipping this action in case of order recalculation
-            if (!$blRecalculatingOrder) {
-                $this->_markVouchers($oBasket, $oUser);
-            }
-
-            // send order by email to shop owner and current user
-            // skipping this action in case of order recalculation
-            if (!$blRecalculatingOrder) {
-                $iRet = $this->_sendOrderByEmail($oUser, $oBasket, $oUserPayment);
-            } else {
-                $iRet = self::ORDER_STATE_OK;
-            }
-
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->commitTransaction();
-        } catch (Exception $exception) {
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
-
-            throw $exception;
+        // send order by email to shop owner and current user
+        // skipping this action in case of order recalculation
+        if (!$blRecalculatingOrder) {
+            $iRet = $this->_sendOrderByEmail($oUser, $oBasket, $oUserPayment);
+        } else {
+            $iRet = self::ORDER_STATE_OK;
         }
 
         return $iRet;

@@ -8,6 +8,9 @@ namespace OxidEsales\EshopCommunity\Application\Component;
 
 use oxDb;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Form\FormFields;
+use OxidEsales\Eshop\Core\Form\FormFieldsNormalizer;
+use OxidEsales\Eshop\Core\Form\FormFieldsTrimmer;
 use OxidEsales\Eshop\Core\Form\UpdatableFieldsConstructor;
 use oxRegistry;
 use oxUser;
@@ -418,9 +421,11 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $aInvAdress = $oConfig->getRequestParameter('invadr', true);
 
         $aInvAdress = $this->cleanAddress($aInvAdress, oxNew(UserUpdatableFields::class));
+        $aInvAdress = $this->normalizeAddress($aInvAdress);
 
         $aDelAdress = $this->_getDelAddressData();
         $aDelAdress = $this->cleanAddress($aDelAdress, oxNew(UserShippingAddressUpdatableFields::class));
+        $aDelAdress = $this->normalizeAddress($aDelAdress);
 
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $database->startTransaction();
@@ -639,10 +644,12 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         // collecting values to check
         $aDelAdress = $this->_getDelAddressData();
         $aDelAdress = $this->cleanAddress($aDelAdress, oxNew(UserShippingAddressUpdatableFields::class));
+        $aDelAdress = $this->normalizeAddress($aDelAdress);
 
         // if user company name, user name and additional info has special chars
         $aInvAdress = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('invadr', true);
         $aInvAdress = $this->cleanAddress($aInvAdress, oxNew(UserUpdatableFields::class));
+        $aInvAdress = $this->normalizeAddress($aInvAdress);
 
         $sUserName = $oUser->oxuser__oxusername->value;
         $sPassword = $sPassword2 = $oUser->oxuser__oxpassword->value;
@@ -818,6 +825,26 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             $updatableFieldsConstructor = oxNew(UpdatableFieldsConstructor::class);
             $cleaner = $updatableFieldsConstructor->getAllowedFieldsCleaner($updatableFields);
             return $cleaner->filterByUpdatableFields($address);
+        }
+
+        return $address;
+    }
+
+    /**
+     * Returns normalized address.
+     *
+     * @param  array $address
+     *
+     * @return array
+     */
+    private function normalizeAddress($address)
+    {
+        if (is_array($address)) {
+            $addressFormFields  = oxNew(FormFields::class, $address);
+            $trimmer            = oxNew(FormFieldsTrimmer::class);
+            $normalizer         = oxNew(FormFieldsNormalizer::class, $trimmer);
+
+            $address = (array)$normalizer->normalize($addressFormFields);
         }
 
         return $address;

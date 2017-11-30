@@ -3,7 +3,7 @@
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
-namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Component;
 
 use \oxcmp_user;
 use \Exception;
@@ -43,7 +43,7 @@ class modcmp_user extends oxcmp_user
 
 }
 
-class CmpUserTest extends \OxidTestCase
+class UserComponentTest extends \OxidTestCase
 {
     /**
      * Tear down the fixture.
@@ -353,7 +353,7 @@ class CmpUserTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getShopHomeUrl')->will($this->returnValue('shopurl/?'));
         $oConfig->expects($this->any())->method('isSsl')->will($this->returnValue(false));
 
-        $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\modcmp_user::class, array('getConfig'));
+        $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Integration\Application\Component\modcmp_user::class, array('getConfig'));
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         $this->setRequestParameter('cl', 'testclass');
@@ -376,7 +376,7 @@ class CmpUserTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getShopSecureHomeUrl')->will($this->returnValue('sslshopurl/?'));
         $oConfig->expects($this->any())->method('isSsl')->will($this->returnValue(true));
 
-        $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\modcmp_user::class, array('getConfig'));
+        $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Integration\Application\Component\modcmp_user::class, array('getConfig'));
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
         $this->setRequestParameter('cl', 'testclass');
         $this->setRequestParameter('cnid', 'catid');
@@ -1449,5 +1449,163 @@ class CmpUserTest extends \OxidTestCase
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array('setLoginStatus'));
         $oView->login();
+    }
+
+    /**
+     * Test address trimming oxcmp_user::changeUserNoRedirect()
+     *
+     * #0006693
+     */
+    public function testChangeUserNoRedirectAddressTrimming()
+    {
+        if ($this->getConfig()->getEdition() === 'EE') {
+            $this->markTestSkipped("Skip CE/PE related tests for EE edition");
+        }
+
+        $untrimmedInvoiceAddress = [
+            'oxuser__oxfname'   => ' Simon ',
+            'oxuser__oxlname'   => ' de la Serna ',
+        ];
+
+        $trimmedInvoiceAddress = [
+            'oxuser__oxfname'   => 'Simon',
+            'oxuser__oxlname'   => 'de la Serna',
+        ];
+
+        $untrimmedDeliveryAddress = [
+            'oxaddress__oxfname'   => ' Simon ',
+            'oxaddress__oxlname'   => ' de la Serna ',
+        ];
+
+        $trimmedDeliveryAddress = [
+            'oxaddress__oxfname'   => 'Simon',
+            'oxaddress__oxlname'   => 'de la Serna',
+        ];
+
+        $this->setRequestParameter('invadr', $untrimmedInvoiceAddress);
+        $this->setRequestParameter('deladr', $untrimmedDeliveryAddress);
+        $this->setRequestParameter('blshowshipaddress', true);
+
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
+        $session
+            ->expects($this->once())
+            ->method('checkSessionChallenge')
+            ->will($this->returnValue(true));
+
+        $userComponent = $this->getMock(
+            $this->getProxyClassName("oxcmp_user"),
+            [
+                'getSession',
+                'getUser'
+            ]
+        );
+
+        $userComponent
+            ->expects($this->any())
+            ->method('getSession')
+            ->will($this->returnValue($session));
+
+        $user = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['changeUserData']);
+        $user
+            ->expects($this->once())
+            ->method('changeUserData')
+            ->with(
+                null,
+                null,
+                null,
+                $this->equalTo($trimmedInvoiceAddress),
+                $this->equalTo($trimmedDeliveryAddress)
+            );
+
+        $userComponent
+            ->expects($this->once())
+            ->method('getUser')
+            ->will($this->returnValue($user));
+
+        $userComponent->UNITchangeUser_noRedirect();
+    }
+
+    /**
+     * Test address trimming oxcmp_user::createUser()
+     *
+     * #0006693
+     */
+    public function testCreateUserAddressTrimming()
+    {
+        oxTestModules::addFunction("oxemail", "sendRegisterEmail", "{ return true;}");
+
+        $this->setRequestParameter('lgn_usr', 'testAddressTrimming@oxid-esales.com');
+        $this->setRequestParameter('lgn_pwd', 'Test@oxid-esales.com');
+        $this->setRequestParameter('lgn_pwd2', 'Test@oxid-esales.com');
+        $this->setRequestParameter('option', 3);
+
+        $untrimmedInvoiceAddress = [
+            'oxuser__oxfname'       => ' Simon ',
+            'oxuser__oxlname'       => ' de la Serna ',
+            'oxuser__oxstreetnr'    => 'nr',
+            'oxuser__oxstreet'      => 'street ',
+            'oxuser__oxzip'         => 'zip',
+            'oxuser__oxcity'        => 'city',
+            'oxuser__oxcountryid'   => 'a7c40f631fc920687.20179984',
+        ];
+
+        $untrimmedDeliveryAddress = [
+            'oxaddress__oxfname'        => ' Simon ',
+            'oxaddress__oxlname'        => ' de la Serna ',
+            'oxaddress__oxstreetnr'     => 'nr',
+            'oxaddress__oxstreet'       => 'street ',
+            'oxaddress__oxzip'          => 'zip',
+            'oxaddress__oxcity'         => 'city',
+            'oxaddress__oxcountryid'    => 'a7c40f631fc920687.20179984',
+        ];
+
+        $trimmedAddressValues = [
+            'Simon',
+            'de la Serna',
+        ];
+
+        $this->setRequestParameter('invadr', $untrimmedInvoiceAddress);
+        $this->setRequestParameter('deladr', $untrimmedDeliveryAddress);
+        $this->setRequestParameter('blshowshipaddress', true);
+
+        $parent = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
+
+        $userComponent = $this->getMock(
+            $this->getProxyClassName("oxcmp_user"),
+            ['getParent']
+        );
+
+        $userComponent
+            ->expects($this->any())
+            ->method('getParent')
+            ->will($this->returnValue($parent));
+
+        $this->assertEquals('payment?new_user=1&success=1', $userComponent->createUser());
+
+        $userId = oxRegistry::getSession()->getVariable('usr');
+
+        $user = oxNew('oxuser');
+        $user->load($userId);
+
+        $this->assertEquals(
+            $trimmedAddressValues,
+            [
+                $user->oxuser__oxfname->value,
+                $user->oxuser__oxlname->value,
+            ]
+        );
+
+        $deliveryAddressId = oxRegistry::getSession()->getVariable('deladrid');
+
+        $deliveryAddress = oxNew('oxaddress');
+        $deliveryAddress->load($deliveryAddressId);
+
+        $this->assertEquals(
+            $trimmedAddressValues,
+            [
+                $deliveryAddress->oxaddress__oxfname->value,
+                $deliveryAddress->oxaddress__oxlname->value,
+            ]
+        );
     }
 }

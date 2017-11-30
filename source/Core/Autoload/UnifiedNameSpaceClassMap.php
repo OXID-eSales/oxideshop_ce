@@ -2299,6 +2299,26 @@ return [
         'isAbstract'       => false,
         'isInterface'      => false
     ],
+    'OxidEsales\Eshop\Core\Form\FormFieldsNormalizerInterface'                   => [
+        'editionClassName' => \OxidEsales\EshopCommunity\Core\Form\FormFieldsNormalizerInterface::class,
+        'isAbstract'       => false,
+        'isInterface'      => true
+    ],
+    'OxidEsales\Eshop\Core\Form\FormFieldsNormalizer'                            => [
+        'editionClassName' => \OxidEsales\EshopCommunity\Core\Form\FormFieldsNormalizer::class,
+        'isAbstract'       => false,
+        'isInterface'      => false
+    ],
+    'OxidEsales\Eshop\Core\Form\FormFieldsTrimmerInterface'                      => [
+        'editionClassName' => \OxidEsales\EshopCommunity\Core\Form\FormFieldsTrimmerInterface::class,
+        'isAbstract'       => false,
+        'isInterface'      => true
+    ],
+    'OxidEsales\Eshop\Core\Form\FormFieldsTrimmer'                               => [
+        'editionClassName' => \OxidEsales\EshopCommunity\Core\Form\FormFieldsTrimmer::class,
+        'isAbstract'       => false,
+        'isInterface'      => false
+    ],
     'OxidEsales\Eshop\Core\Form\UpdatableFieldsConstructor'                      => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Form\UpdatableFieldsConstructor::class,
         'isAbstract'       => false,

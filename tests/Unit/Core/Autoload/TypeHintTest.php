@@ -40,6 +40,18 @@ class TypeHintTestOrder extends \OxidEsales\Eshop\Application\Model\Order
 class TypeHintTest extends UnitTestCase
 {
     /**
+     * Executed after test is down.
+    **/
+    protected function tearDown()
+    {
+        if (\OxidEsales\Eshop\Core\DatabaseProvider::getDb()->isTransactionActive()) {
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
+        }
+
+        parent::tearDown();
+    }
+
+    /**
      * Test type hints with backwards compatibility aliases.
      */
     public function testTypeHintAliasingUnifiedNamespace()

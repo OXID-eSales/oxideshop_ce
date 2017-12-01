@@ -71,6 +71,7 @@ function editThis( sID )
 [{assign var="listclass" value=listitem$blWhite}]
   <table border="0">
     <tr>
+      [{block name="admin_article_variant_selectlist"}]
       <td class="edittext">
         <table cellspacing="0" cellpadding="0" border="0">
 
@@ -117,6 +118,7 @@ function editThis( sID )
 
         </table>
       </td>
+      [{/block}]
       <td>&nbsp;</td>
       <td class="edittext" valign=top>
 
@@ -230,6 +232,8 @@ function editThis( sID )
           [{/if}]
           </form>
 
+          [{block name="admin_article_variant_extended"}][{/block}]
+
           <tr>
 
             [{assign var="listclass" value=listitem$blWhite}]
@@ -267,6 +271,7 @@ function editThis( sID )
           </form>
 
           <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
+          [{block name="admin_article_variant_language_edit"}]
           <tr>
             <td  colspan=9><br>
 
@@ -292,6 +297,7 @@ function editThis( sID )
 
             </td>
           </tr>
+          [{/block}]
         </table>
         </div>
 
@@ -310,6 +316,7 @@ function editThis( sID )
         </table>
 
         </form>
+        [{block name="admin_article_variant_bottom_extended"}][{/block}]
 
       </td>
     </tr>

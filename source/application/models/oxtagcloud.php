@@ -169,6 +169,9 @@ class oxTagCloud extends oxSuperCfg
      */
     public function formCloudArray(oxITagList $oTagList)
     {
+        $aCloudArray = null;
+        $sCacheIdent = null;
+
         // checking if current data is already loaded
         if ($oTagList->getCacheId()) {
             $sCacheIdent = $this->_formCacheKey($oTagList->getCacheId());

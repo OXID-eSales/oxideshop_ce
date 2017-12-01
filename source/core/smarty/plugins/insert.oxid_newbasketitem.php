@@ -47,10 +47,10 @@ function smarty_insert_oxid_newbasketitem($params, &$smarty)
     }
 
     //name of template file where is stored message text
-    $sTemplate = $params['tpl']?$params['tpl']:'inc_newbasketitem.snippet.tpl';
+    $sTemplate = isset($params['tpl']) ? $params['tpl'] : 'inc_newbasketitem.snippet.tpl';
 
-    //allways render for ajaxstyle popup
-    $blRender = $params['ajax'] && ($iType == 2);
+    //always render for ajaxstyle popup
+    $blRender = isset($params['ajax']) && ($iType == 2);
 
     //fetching article data
     $oNewItem = oxRegistry::getSession()->getVariable( '_newitem' );

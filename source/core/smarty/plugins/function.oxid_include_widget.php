@@ -27,19 +27,15 @@
  * Use [{ oxid_include_dynamic file="..." }] instead of include
  * -------------------------------------------------------------
  *
- * @param array  $params   params
- * @param Smarty &$oSmarty clever simulation of a method
+ * @param array $params params
  *
  * @return string
  */
-function smarty_function_oxid_include_widget($params, &$oSmarty)
+function smarty_function_oxid_include_widget($params)
 {
-    $myConfig = oxRegistry::getConfig();
-    $blNoScript = ($params['noscript']?$params['noscript']:false);
     $sClass     = strtolower($params['cl']);
     $params['cl'] = $sClass;
     $aParentViews = null;
-
 
     unset($params['cl']);
 

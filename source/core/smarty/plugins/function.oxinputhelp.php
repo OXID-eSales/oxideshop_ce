@@ -40,7 +40,7 @@ function smarty_function_oxinputhelp($params, &$smarty)
     $iLang  = $oLang->getTplLanguage();
 
     try {
-        $sTranslation = $oLang->translateString( $sIdent, $iLang, $blAdmin );
+        $sTranslation = $oLang->translateString( $sIdent, $iLang, $myConfig->isAdmin() );
     } catch ( oxLanguageException $oEx ) {
         // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
     }

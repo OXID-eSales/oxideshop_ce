@@ -57,7 +57,6 @@ function smarty_function_oxid_include_dynamic($params, &$smarty)
 
         foreach ($params as $key => $val) {
             if ($key != 'type' && $key != 'file') {
-                $sContent .= " $key='$val'";
                 $smarty->assign($sPrefix.$key, $val);
             }
         }

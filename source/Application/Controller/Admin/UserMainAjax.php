@@ -33,7 +33,7 @@ class UserMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListCo
     ];
 
     /**
-     * Returns SQL query for data to fetc
+     * Returns SQL query for data to fetch
      *
      * @return string
      */

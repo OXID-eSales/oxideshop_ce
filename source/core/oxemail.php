@@ -1360,7 +1360,7 @@ class oxEmail extends PHPMailer
         $oSmarty = $this->_getSmarty();
         $this->setViewData("product", $oArticle);
         $this->setViewData("email", $aParams['email']);
-        $this->setViewData("bidprice", $oLang->formatCurrency($oAlarm->oxpricealarm__oxprice->value, $oCur));
+        $this->setViewData("bidprice", $oLang->formatCurrency($oAlarm->oxpricealarm__oxprice->value));
 
         // Process view data array through oxOutput processor
         $this->_processViewArray();

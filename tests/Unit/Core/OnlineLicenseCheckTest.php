@@ -42,7 +42,7 @@ class OnlineLicenseCheckTest extends \OxidEsales\TestingLibrary\UnitTestCase
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
 
         $request = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest::class);
-        $request->revision = $this->getConfig()->getRevision();
+        $request->revision = false;
         $request->pVersion = '1.1';
         $request->productId = 'eShop';
         $request->keys = array('key' => array('validSerial'));
@@ -169,7 +169,7 @@ class OnlineLicenseCheckTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $request = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest::class);
         $request->edition = $this->getConfig()->getEdition();
         $request->version = $this->getConfig()->getVersion();
-        $request->revision = $this->getConfig()->getRevision();
+        $request->revision = false;
         $request->shopUrl = $this->getConfig()->getShopUrl();
         $request->pVersion = '1.1';
         $request->productId = 'eShop';
@@ -221,7 +221,7 @@ class OnlineLicenseCheckTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $request = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest::class);
         $request->edition = $this->getConfig()->getEdition();
         $request->version = $this->getConfig()->getVersion();
-        $request->revision = $this->getConfig()->getRevision();
+        $request->revision = false;
         $request->shopUrl = $this->getConfig()->getShopUrl();
         $request->pVersion = '1.1';
         $request->productId = 'eShop';

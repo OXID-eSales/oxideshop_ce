@@ -34,17 +34,6 @@ class DiagnosticsTest extends \OxidTestCase
     }
 
     /**
-     * Testing revision getter and setter
-     */
-    public function testGetRevision()
-    {
-        $oChecker = oxNew("oxDiagnostics");
-        $oChecker->setRevision("r123");
-
-        $this->assertEquals("r123", $oChecker->getRevision());
-    }
-
-    /**
      * Testing base directory getter and setter
      */
     public function testGetShopLink()
@@ -127,20 +116,18 @@ class DiagnosticsTest extends \OxidTestCase
     {
         $this->_setUpTestGetShopDetails();
 
-        $oDiagnostics = oxNew('oxDiagnostics');
+        $oDiagnostics = new \OxidEsales\Eshop\Application\Model\Diagnostics();
 
         $oDiagnostics->setShopLink('someShopURL');
         $oDiagnostics->setEdition('someEdition');
         $oDiagnostics->setVersion('someVersion');
-        $oDiagnostics->setRevision('someRevision');
 
         $aResult = $oDiagnostics->getShopDetails();
 
-        $this->assertEquals(12, count($aResult));
+        $this->assertEquals(11, count($aResult));
         $this->assertEquals('someShopURL', $aResult['URL']);
         $this->assertEquals('someEdition', $aResult['Edition']);
         $this->assertEquals('someVersion', $aResult['Version']);
-        $this->assertEquals('someRevision', $aResult['Revision']);
         $this->assertEquals(4, $aResult['Subshops (Total)']);
         $this->assertEquals(2, $aResult['Subshops (Active)']);
         $this->assertEquals(9, $aResult['Categories (Total)']);

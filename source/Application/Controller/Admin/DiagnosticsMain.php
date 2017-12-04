@@ -145,7 +145,6 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         $oFileChecker->setBaseDirectory($this->_sShopDir);
         $oFileChecker->setVersion($this->getConfig()->getVersion());
         $oFileChecker->setEdition($this->getConfig()->getEdition());
-        $oFileChecker->setRevision($this->getConfig()->getRevision());
 
         if (!$oFileChecker->init()) {
             $this->_blError = true;
@@ -179,7 +178,6 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         $aViewData = [
             "sVersion"       => $this->getConfig()->getVersion(),
             "sEdition"       => $this->getConfig()->getEdition(),
-            "sRevision"      => $this->getConfig()->getRevision(),
             "aResultSummary" => $oFileCheckerResult->getResultSummary(),
             "aResultOutput"  => $oFileCheckerResult->getResult(),
         ];
@@ -230,7 +228,6 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         $oDiagnostics->setShopLink(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopURL'));
         $oDiagnostics->setEdition(\OxidEsales\Eshop\Core\Registry::getConfig()->getFullEdition());
         $oDiagnostics->setVersion(\OxidEsales\Eshop\Core\Registry::getConfig()->getVersion());
-        $oDiagnostics->setRevision(\OxidEsales\Eshop\Core\Registry::getConfig()->getRevision());
 
         /**
          * Shop

@@ -129,7 +129,6 @@
                 <li>[{oxmultilang ident="OXDIAG_INTROINFORMATION_FILENAME_TO_BE_CHECKED"}]</li>
                 <li>[{oxmultilang ident="OXDIAG_INTROINFORMATION_MD5_CHECKSUM"}]</li>
                 <li>[{oxmultilang ident="OXDIAG_INTROINFORMATION_VERSION_DETECTED"}]</li>
-                <li>[{oxmultilang ident="OXDIAG_INTROINFORMATION_REVISION_DETECTED"}]</li>
             </ul>
             <p>[{oxmultilang ident="OXDIAG_INTROINFORMATION_MORE_INFORMATION"}] <strong><a class="underlined" href="http://www.oxid-esales.com/de/news/blog/shop-checking-tool-oxchkversion-v3" target=_blank>[{oxmultilang ident="OXDIAG_INTROINFORMATION_OXID_ESALES_BLOG"}]</a></strong>.</p>
             </div>

@@ -645,17 +645,8 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function getShopEdition()
     {
+        $category = oxNew(\OxidEsales\EshopCommunity\Application\Model\Category::class);
         return $this->getConfig()->getEdition();
-    }
-
-    /**
-     * Returns shop revision
-     *
-     * @return string
-     */
-    public function getRevision()
-    {
-        return $this->getConfig()->getRevision();
     }
 
     /**

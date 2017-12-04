@@ -55,50 +55,6 @@ class RestrictedAddressTest extends \OxidTestCase
     }
 
     /**
-     * DataProvider returns shop URL list to call.
-     *
-     * @return array
-     */
-    public function providerRequestGetRevisionThatResultsInNoValidNewActionGetsRedirectedToStart()
-    {
-        $shopUrl = $this->getConfig()->getShopMainUrl();
-
-        return array(
-                array($shopUrl . '?fnc=getRevision'),
-                array($shopUrl . 'Startseite/?fnc=getRevision'),
-                array($shopUrl . '?fnc=getRevision&n2=v2'),
-                array($shopUrl . 'Startseite/?fnc=getRevision&n2=v2'),
-                array($shopUrl . '?name=value&fnc=getRevision'),
-                array($shopUrl . 'Startseite/?name=value&fnc=getRevision'),
-                array($shopUrl . '?name=value&fnc=getRevision&n2=v2'),
-                array($shopUrl . 'Startseite/?name=value&fnc=getRevision&n2=v2')
-        );
-    }
-
-    /**
-     * Same test as before for function call to getRevision. In case we have no revision
-     * no new action is called, if function getRevision returns a value, shop redirects
-     * to start page as the return value is no valid view class.
-     *
-     * @dataProvider providerRequestGetRevisionThatResultsInNoValidNewActionGetsRedirectedToStart
-     */
-    public function testRequestGetRevisionThatResultsInNoValidNewActionGetsRedirectedToStart($forbiddenUrl)
-    {
-        $shopUrl = $this->getConfig()->getShopMainUrl();
-
-        $result = $this->callPage($forbiddenUrl);
-
-        $location = "Location: " .  $shopUrl . 'index.php?force_sid=' . $this->extractSessionId($result) .
-                     "&cl=start&redirected=1\r\n";
-        if (false == $this->getConfig()->getRevision()) {
-            $this->assertNotContains("Location:", $result, 'No revision means no redirect, no Location header');
-        } else {
-            $this->assertContains($location, $result, 'User should be redirected to shop front page.');
-        }
-
-    }
-
-    /**
      * Fix for bug 0005565: Accessing config.inc.php directly results in Fatal error
      */
     public function test_configCalled_notAccessed()

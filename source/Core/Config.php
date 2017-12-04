@@ -1718,28 +1718,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns build revision number or false on read error.
-     *
-     * @return bool|string
-     */
-    public function getRevision()
-    {
-        $fileName = $this->getConfigParam('sShopDir') . "/pkg.rev";
-
-        $rev = false;
-
-        if (file_exists($fileName) && is_readable($fileName)) {
-            $rev = trim(file_get_contents($fileName));
-        }
-
-        if (!$rev) {
-            return false;
-        }
-
-        return $rev;
-    }
-
-    /**
      * Returns build package info file content.
      *
      * @return bool|string

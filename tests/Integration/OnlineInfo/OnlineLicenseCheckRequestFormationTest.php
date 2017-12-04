@@ -57,18 +57,13 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidEsales\TestingLibrary\
         $edition = $config->getEdition();
         $version = $config->getVersion();
         $shopUrl = $config->getShopUrl();
-        $revision = $config->getRevision();
         $iAdminUsers = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 1;
 
         $xml = '<?xml version="1.0" encoding="utf-8"?>'."\n";
         $xml .= '<olcRequest>';
         $xml .=   '<pVersion>1.1</pVersion>';
         $xml .=   '<keys><key>license_key</key></keys>';
-        if ($revision) {
-            $xml .= "<revision>$revision</revision>";
-        } else {
-            $xml .= '<revision></revision>';
-        }
+        $xml .=   '<revision></revision>';
         $xml .=   '<productSpecificInformation>';
         $xml .=     '<servers>';
         $xml .=       '<server>';
@@ -145,7 +140,6 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidEsales\TestingLibrary\
         $edition = $config->getEdition();
         $version = $config->getVersion();
         $shopUrl = $config->getShopUrl();
-        $revision = $config->getRevision();
         $adminUsers = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 1;
 
         $sXml = '<?xml version="1.0" encoding="utf-8"?>'."\n";
@@ -155,11 +149,7 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidEsales\TestingLibrary\
         $sXml .=   '<key>license_key</key>';
         $sXml .=   '<key state="new">new_serial</key>';
         $sXml .=   '</keys>';
-        if ($revision) {
-            $sXml .= "<revision>$revision</revision>";
-        } else {
-            $sXml .= '<revision></revision>';
-        }
+        $sXml .=   '<revision></revision>';
         $sXml .=   '<productSpecificInformation>';
         $sXml .=     '<servers>';
         $sXml .=       '<server>';

@@ -17,20 +17,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
 class OnlineLicenseCheckRequestFormationTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
     /**
-     * imitating package revision file and return shop dir
-     *
-     * @return string path to virtual shop directory with pkg.rev file
-     */
-    private function mockPackageRevisionFile()
-    {
-        $vfsStream = $this->getVfsStreamWrapper();
-        $shopDir = "shopdir";
-        $vfsStream->createFile($shopDir . DIRECTORY_SEPARATOR . 'pkg.rev', 'somerevisionstring');
-        $fakeShopDir = $vfsStream->getRootPath() . $shopDir . DIRECTORY_SEPARATOR;
-        return $fakeShopDir;
-    }
-
-    /**
      *
      */
     public function testRequestFormationWithExistingSerials()
@@ -51,9 +37,6 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidEsales\TestingLibrary\
             'lastAdminUsage' => $validNodeTime
         ));
 
-        // imitating package revision file
-        $config->setConfigParam('sShopDir', $this->mockPackageRevisionFile());
-
         $edition = $config->getEdition();
         $version = $config->getVersion();
         $shopUrl = $config->getShopUrl();
@@ -63,7 +46,6 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidEsales\TestingLibrary\
         $xml .= '<olcRequest>';
         $xml .=   '<pVersion>1.1</pVersion>';
         $xml .=   '<keys><key>license_key</key></keys>';
-        $xml .=   '<revision></revision>';
         $xml .=   '<productSpecificInformation>';
         $xml .=     '<servers>';
         $xml .=       '<server>';
@@ -134,9 +116,6 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidEsales\TestingLibrary\
             'isValid' => true,
         ));
 
-        // imitating package revision file
-        $config->setConfigParam('sShopDir', $this->mockPackageRevisionFile());
-
         $edition = $config->getEdition();
         $version = $config->getVersion();
         $shopUrl = $config->getShopUrl();
@@ -149,7 +128,6 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidEsales\TestingLibrary\
         $sXml .=   '<key>license_key</key>';
         $sXml .=   '<key state="new">new_serial</key>';
         $sXml .=   '</keys>';
-        $sXml .=   '<revision></revision>';
         $sXml .=   '<productSpecificInformation>';
         $sXml .=     '<servers>';
         $sXml .=       '<server>';

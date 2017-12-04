@@ -268,8 +268,6 @@ class OnlineLicenseCheck
         /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheckRequest $request */
         $request = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest::class);
 
-        $request->revision = false;
-
         $request->keys = ['key' => $serials];
 
         $request->productSpecificInformation = new stdClass();

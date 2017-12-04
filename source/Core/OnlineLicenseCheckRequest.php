@@ -31,13 +31,6 @@ class OnlineLicenseCheckRequest extends \OxidEsales\Eshop\Core\OnlineRequest
     public $keys;
 
     /**
-     * Build revision number.
-     *
-     * @var string
-     */
-    public $revision;
-
-    /**
      * Product related specific information
      * like amount of sub shops and amount of admin users.
      *

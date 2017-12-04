@@ -60,6 +60,8 @@ class FileChecker
     /**
      * Revision of THIS OXID eShop
      *
+     * @deprecated since v6.0.0 (2017-12-04); This functionality will be removed completely
+     *
      * @var string
      */
     protected $_sRevision = "";
@@ -148,6 +150,8 @@ class FileChecker
     /**
      * Revision setter
      *
+     * @deprecated since v6.0.0 (2017-12-04); This functionality will be removed completely
+     *
      * @param string $sRevision Revision
      */
     public function setRevision($sRevision)
@@ -159,6 +163,8 @@ class FileChecker
 
     /**
      * Revision getter
+     *
+     * @deprecated since v6.0.0 (2017-12-04); This functionality will be removed completely
      *
      * @return string
      */

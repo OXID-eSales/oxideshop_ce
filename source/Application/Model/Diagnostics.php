@@ -33,6 +33,8 @@ class Diagnostics
     /**
      * Revision of THIS OXID eShop
      *
+     * @deprecated since v6.0.0 (2017-12-04); This functionality will be removed completely
+     *
      * @var string
      */
     protected $_sRevision = "";
@@ -156,6 +158,8 @@ class Diagnostics
     /**
      * Revision setter
      *
+     * @deprecated since v6.0.0 (2017-12-04); This functionality will be removed completely
+     *
      * @param string $sRevision revision.
      */
     public function setRevision($sRevision)
@@ -168,7 +172,9 @@ class Diagnostics
     /**
      * Revision getter
      *
-     * @return string
+     * @deprecated since v6.0.0 (2017-12-04); This functionality will be removed completely
+     *
+     * @return bool|string
      */
     public function getRevision()
     {

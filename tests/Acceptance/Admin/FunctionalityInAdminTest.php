@@ -840,7 +840,7 @@ class FunctionalityInAdminTest extends AdminTestCase
     public function testLoginToAdminInOtherLang()
     {
         $this->loginAdmin();
-        $this->waitForText("Welcome to the OXID eShop Admin");
+        $this->waitForText("Welcome to OXID eShop Admin");
         $this->frame("navigation");
         $this->checkForErrors();
         $this->assertElementPresent("link=Master Settings");

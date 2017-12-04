@@ -24,15 +24,6 @@ class AdditionalTablesTest extends MultilanguageTestCase
     protected $additionalTables = array();
 
     /**
-     * Fixture setUp.
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-
-    }
-
-    /**
      * Fixture tearDown.
      */
     protected function tearDown()

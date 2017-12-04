@@ -10,16 +10,6 @@ use \oxDb;
 class DbMetaDataHandlerTest extends \OxidTestCase
 {
     /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-    }
-
-    /**
      * Tear down the fixture.
      *
      * @return null

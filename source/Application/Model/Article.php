@@ -496,17 +496,6 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Sets article parameter
-     *
-     * @param string $sName  name of parameter to set
-     * @param mixed  $sValue parameter value
-     */
-    public function __set($sName, $sValue)
-    {
-        parent::__set($sName, $sValue);
-    }
-
-    /**
      * @param \OxidEsales\Eshop\Application\Model\AmountPriceList $amountPriceList
      */
     public function setAmountPriceList($amountPriceList)

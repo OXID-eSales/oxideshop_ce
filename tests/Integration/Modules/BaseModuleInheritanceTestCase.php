@@ -34,7 +34,9 @@ abstract class BaseModuleInheritanceTestCase extends BaseModuleTestCase
      */
     public function tearDown()
     {
-        $this->environment->clean();
+        if ($this->environment) {
+            $this->environment->clean();
+        }
 
         parent::tearDown();
     }

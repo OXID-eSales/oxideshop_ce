@@ -222,7 +222,6 @@ class UtilsObject
                 $exception =  new \OxidEsales\Eshop\Core\Exception\SystemComponentException();
                 /** Use setMessage here instead of passing it in constructor in order to test exception message */
                 $exception->setMessage('EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND' . ' ' . $realClassName);
-                $exception->debugOut();
                 throw $exception;
             }
 

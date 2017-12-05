@@ -54,7 +54,6 @@ if ($blAjaxCall) {
         } catch (\OxidEsales\Eshop\Core\Exception\SystemComponentException $oCe) {
             $oEx = new \OxidEsales\Eshop\Core\Exception\FileException();
             $oEx->setMessage('EXCEPTION_FILENOTFOUND' . ' ' . $ajaxContainerClassName);
-            $oEx->debugOut();
             throw $oEx;
         }
 

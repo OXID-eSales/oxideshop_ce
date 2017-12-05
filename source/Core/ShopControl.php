@@ -719,16 +719,16 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Handle routing exception.
-     * Reason: requested controller id has not matching class --> log if in debug mode and redirect to start page.
+     * Handle routing exception, which is thrown, if the class name for the requested controller id could not be resolved.
      *
      * @param RoutingException $exception
      */
     protected function handleRoutingException($exception)
     {
-        if ($this->_isDebugMode()) {
-            $exception->debugOut();
-        }
+        /**
+         * @todo after removal of the BC layer this method will retrow the exception
+         * throw $exception
+         */
     }
 
     /**

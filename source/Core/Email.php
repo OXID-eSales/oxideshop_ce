@@ -2087,9 +2087,10 @@ class Email extends \PHPMailer
         } catch (Exception $exception) {
             $ex = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
             $ex->setMessage($exception->getMessage());
-            $ex->debugOut();
-            if ($this->getConfig()->getConfigParam('iDebug') != 0) {
+            if ($this->isDebugModeEnabled()) {
                 throw $ex;
+            } else {
+                $ex->debugOut();
             }
         }
 
@@ -2276,5 +2277,15 @@ class Email extends \PHPMailer
     protected function getUtilsObjectInstance()
     {
         return \OxidEsales\Eshop\Core\Registry::getUtilsObject();
+    }
+
+    /**
+     * Return true if debug mode is enabled.
+     *
+     * @return bool
+     */
+    private function isDebugModeEnabled()
+    {
+        return $this->getConfig()->getConfigParam('iDebug') != 0;
     }
 }

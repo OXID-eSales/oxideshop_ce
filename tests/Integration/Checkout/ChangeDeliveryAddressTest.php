@@ -13,14 +13,6 @@ class ChangeDeliveryAddressTest extends \OxidTestCase
     const TEST_ARTICLE_ID = '1951';
 
     /**
-     * Fixture setUp.
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-    }
-
-    /**
      * Fixture tearDown.
      */
     protected function tearDown()

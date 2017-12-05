@@ -1050,7 +1050,7 @@ class LangTest extends \OxidTestCase
         $oConfig = $this->getConfig();
         $aLangParams = $oConfig->getConfigParam('aLanguageParams');
         $aLangParams["de"]["active"] = false;
-        $aLangParams = $oConfig->setConfigParam('aLanguageParams', $aLangParams);
+        $oConfig->setConfigParam('aLanguageParams', $aLangParams);
 
         $oLang = oxNew('oxLang');
         $aLanguages = $oLang->getLanguageArray(1, true);

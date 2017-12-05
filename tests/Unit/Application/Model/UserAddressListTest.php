@@ -20,16 +20,6 @@ class UserAddressListTest extends \OxidTestCase
     private $_iAddressCounter = 0;
 
     /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-    }
-
-    /**
      * Tear down the fixture.
      *
      * @return null

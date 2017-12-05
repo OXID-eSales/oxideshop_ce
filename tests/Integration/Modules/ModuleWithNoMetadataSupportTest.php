@@ -60,9 +60,6 @@ class ModuleWithNoMetadataSupportTest extends BaseModuleTestCase
         $oEnvironment = new Environment();
         $oEnvironment->prepare($aInstallModules);
 
-        $aModules = $this->getConfig()->getConfigParam('aModules');
-        $aModules['oxClass'] = 'extending_1_class/myClass';
-
         $aModuleFiles = $this->getConfig()->getConfigParam('aModuleFiles');
         $aModuleFiles['with_2_files']['myconnection'] = 'with_2_files/core/exception/myconnectionwrong.php';
 

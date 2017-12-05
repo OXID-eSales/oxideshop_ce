@@ -182,18 +182,6 @@ class OnlineCallerTest extends \OxidTestCase
     }
 
     /**
-     * @return string
-     */
-    private function _getResponseXML()
-    {
-        $sResultXML = '<?xml version="1.0" encoding="utf-8"?>
-<onlineRequest><clusterId>_testClusterId</clusterId><edition>_testEdition</edition><version>_testVersion</version><shopUrl>_testUrl</shopUrl><pVersion/><productId>eShop</productId></onlineRequest>
-';
-
-        return $sResultXML;
-    }
-
-    /**
      * @return oxSimpleXml
      */
     private function _getMockedSimpleXML()

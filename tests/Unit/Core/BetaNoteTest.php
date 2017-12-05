@@ -10,27 +10,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
  */
 class BetaNoteTest extends \OxidTestCase
 {
-
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-    }
-
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
-    protected function tearDown()
-    {
-        parent::tearDown();
-    }
-
     /**
      * Provides links and expected links
      *

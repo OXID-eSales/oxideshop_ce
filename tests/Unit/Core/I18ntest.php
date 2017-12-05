@@ -979,7 +979,6 @@ class I18ntest extends \OxidTestCase
             if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {
                     $sValue = $rs->fields["Default"];
-                    $sType = $rs->fields["Type"];
                     $sField = $rs->fields["Field"];
 
                     // overwriting default values

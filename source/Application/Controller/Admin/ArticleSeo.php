@@ -353,6 +353,8 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
     /**
      * Returns id of object which must be saved
      *
+     * @deprecated since v6.0.0 (2017-12-05); Use getEditObjectId() instead.
+     *
      * @return string
      */
     protected function _getSaveObjectId()

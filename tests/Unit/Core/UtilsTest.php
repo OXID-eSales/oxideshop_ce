@@ -952,13 +952,6 @@ class UtilsTest extends \OxidTestCase
         $this->assertEquals(false, $oUtils->oxMimeContentType(''));
     }
 
-    public function testStrRot13()
-    {
-        $sTests = "myblaaFooString!";
-        $sCode = oxRegistry::getUtils()->strRot13($sTests);
-        $this->assertEquals($sCode, "zloynnSbbFgevat!");
-    }
-
     public function testShowOfflinePage()
     {
         $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('setHeader','showMessageAndExit'));

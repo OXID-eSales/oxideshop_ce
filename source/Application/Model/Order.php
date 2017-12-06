@@ -470,6 +470,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
             $sGetChallenge = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('sess_challenge');
             if ($this->_checkOrderExist($sGetChallenge)) {
                 \OxidEsales\Eshop\Core\Registry::getUtils()->logger('BLOCKER');
+                \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->commitTransaction();
 
                 // we might use this later, this means that somebody clicked like mad on order button
                 return self::ORDER_STATE_ORDEREXISTS;
@@ -482,6 +483,8 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
 
                 // validating various order/basket parameters before finalizing
                 if ($iOrderState = $this->validateOrder($oBasket, $oUser)) {
+                    \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
+
                     return $iOrderState;
                 }
             }
@@ -512,6 +515,8 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
             if (!$blRecalculatingOrder) {
                 $blRet = $this->_executePayment($oBasket, $oUserPayment);
                 if ($blRet !== true) {
+                    \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
+
                     return $blRet;
                 }
             }

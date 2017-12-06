@@ -220,7 +220,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
             $this->setName("sid");
         }
 
-        $sid = $this->_getSidFromRequest();
+        $sid = $this->getSidFromRequest();
 
         //starting session if only we can
         if ($this->_allowSessionStart()) {

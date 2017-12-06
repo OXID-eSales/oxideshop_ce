@@ -187,7 +187,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      *
      * @return string|null
      */
-    protected function _getSidFromRequest()
+    protected function getSidFromRequest()
     {
         $myConfig = $this->getConfig();
         $sid = null;

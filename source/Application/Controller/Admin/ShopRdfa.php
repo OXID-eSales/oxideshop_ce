@@ -44,10 +44,12 @@ class ShopRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfig
         $oContentList = oxNew(\OxidEsales\Eshop\Application\Model\ContentList::class);
         $sTable = getViewName("oxcontents", $this->_iEditLang);
         $oContentList->selectString(
-            "SELECT * FROM {$sTable} WHERE OXACTIVE = 1 AND OXTYPE = 0
-                                    AND OXLOADID IN ('oxagb', 'oxdeliveryinfo', 'oximpressum', 'oxrightofwithdrawal')
-                                    AND OXSHOPID = '" . \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid") . "'"
-        ); // $this->getEditObjectId()
+            "SELECT * 
+             FROM {$sTable} 
+             WHERE OXACTIVE = 1 AND OXTYPE = 0
+                AND OXLOADID IN ('oxagb', 'oxdeliveryinfo', 'oximpressum', 'oxrightofwithdrawal')
+                AND OXSHOPID = '" . \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid") . "'"
+        );
 
         return $oContentList;
     }

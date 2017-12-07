@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [6.1.0] - unreleased
 
 ### Added
+- Added classes:
+  - Core\Form\FormFieldsNormalizer
+  - Core\Form\FormFieldsNormalizerInterface
+  - Core\Form\FormFieldsTrimmer
+  - Core\Form\FormFieldsTrimmerInterface
 
 ### Changed
 

@@ -312,14 +312,17 @@ class Registry
     }
 
     /**
-     * Return instance of \OxidEsales\Eshop\Core\Logger
+     * Return instance of \Monolog\Logger or whatever getLogger() returns
      *
      * @static
-     * @return \OxidEsales\Eshop\Core\Logger
+     * @return \Psr\Log\LoggerInterface
      */
     public static function getLogger()
     {
-        return self::getObject(\OxidEsales\Eshop\Core\Logger::class);
+        if (!self::instanceExists('logger')) {
+            self::set('logger', getLogger());
+        }
+        return self::get('logger');
     }
 
     /**

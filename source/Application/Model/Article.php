@@ -206,6 +206,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     protected $_oAttributeList = null;
 
     /**
+     * Object holding the list of attributes and attribute values associated with this article and displayable in basket
+     */
+    protected $_oAttributeListDisplayableInBasket = null;
+    
+    /**
      * Indicates whether the price is "From" price
      *
      * @var bool
@@ -2561,12 +2566,12 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getAttributesDisplayableInBasket()
     {
-        if ($this->_oAttributeList === null) {
-            $this->_oAttributeList = oxNew(\OxidEsales\Eshop\Application\Model\AttributeList::class);
-            $this->_oAttributeList->loadAttributesDisplayableInBasket($this->getId(), $this->getParentId());
+        if ($this->_oAttributeListDisplayableInBasket === null) {
+            $this->_oAttributeListDisplayableInBasket = oxNew(\OxidEsales\Eshop\Application\Model\AttributeList::class);
+            $this->_oAttributeListDisplayableInBasket->loadAttributesDisplayableInBasket($this->getId(), $this->getParentId());
         }
 
-        return $this->_oAttributeList;
+        return $this->_oAttributeListDisplayableInBasket;
     }
 
 

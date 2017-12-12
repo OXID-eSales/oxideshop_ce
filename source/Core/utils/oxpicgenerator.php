@@ -149,16 +149,17 @@ if (!function_exists("resizeGif")) {
             list($iNewWidth, $iNewHeight) = $aResult;
             $hDestinationImage = ($iGDVer == 1) ? imagecreate($iNewWidth, $iNewHeight) : imagecreatetruecolor($iNewWidth, $iNewHeight);
             $hSourceImage = imagecreatefromgif($sSrc);
-            $iTransparentColor = imagecolorresolve($hSourceImage, 255, 255, 255);
+
             $iFillColor = imagecolorresolve($hDestinationImage, 255, 255, 255);
             imagefill($hDestinationImage, 0, 0, $iFillColor);
-            imagecolortransparent($hSourceImage, $iTransparentColor);
+            imagecolortransparent($hDestinationImage, $iFillColor);
+
             if ($iGDVer == 1) {
                 imagecopyresized($hDestinationImage, $hSourceImage, 0, 0, 0, 0, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeight);
             } else {
                 imagecopyresampled($hDestinationImage, $hSourceImage, 0, 0, 0, 0, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeight);
             }
-            imagecolortransparent($hDestinationImage, $iFillColor);
+
             imagegif($hDestinationImage, $sTarget);
             imagedestroy($hDestinationImage);
             imagedestroy($hSourceImage);

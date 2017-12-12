@@ -2955,4 +2955,16 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     {
         return \OxidEsales\Eshop\Core\Registry::getConfig()->getWidgetUrl();
     }
+
+    /**
+     * Template variable getter. Returns article list count in comparison.
+     *
+     * @return integer
+     */
+    public function getCompareItemsCnt()
+    {
+        $compareController = oxNew(\OxidEsales\Eshop\Application\Controller\CompareController::class);
+
+        return $compareController->getCompareItemsCnt();
+    }
 }

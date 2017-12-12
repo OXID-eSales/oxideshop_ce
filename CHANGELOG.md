@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Deprecated
 - `OxidEsales\EshopCommunity\Application\Controller\Admin\ArticleSeo::_getSaveObjectId`
+- `OxidEsales\EshopCommunity\Application\Component\Widget\ServiceMenu::getCompareItemsCnt`
 
 ### Removed
 - 'Your market' selection was removed from Setup wizard, as this value is no longer evaluated
@@ -29,6 +30,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - [Change robots.txt entry from "Disallow: /agb/" to "Disallow: /AGB/"](https://bugs.oxid-esales.com/view.php?id=6703)
 - [Not trimmed ZIP-Codes"](https://bugs.oxid-esales.com/view.php?id=6693)
 - [admin/oxajax.php needs to handle module not namespaced ajax container classes](https://bugs.oxid-esales.com/view.php?id=6729)
+- [Compare links in lists do not work correctly](https://bugs.oxid-esales.com/view.php?id=5354)
 - [Transparent gif looses transparency when generated to different size](https://bugs.oxid-esales.com/view.php?id=3194)
 
 ### Security

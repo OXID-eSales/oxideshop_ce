@@ -31,12 +31,13 @@ class ServiceMenu extends \OxidEsales\Eshop\Application\Component\Widget\WidgetC
     /**
      * Template variable getter. Returns article list count in comparison.
      *
+     * @deprecated since v6.1.0 (2017-12-12); Use OxidEsales\Eshop\Application\Controller\FrontendController::getCompareItemsCnt().
+     *
      * @return integer
      */
     public function getCompareItemsCnt()
     {
-        $oCompare = oxNew(\OxidEsales\Eshop\Application\Controller\CompareController::class);
-        return $oCompare->getCompareItemsCnt();
+        return parent::getCompareItemsCnt();
     }
 
     /**

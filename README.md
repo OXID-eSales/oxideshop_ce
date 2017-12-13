@@ -17,20 +17,13 @@ OXID eShop is just e-commerce software for agencies with deadlines :-)
 
 ### Installation
 
-Please note: if you don't know what the following is about, please download the OXID eShop package from this place: https://www.oxid-esales.com/en/community/download-oxid-eshop.html and follow the [installation instruction](https://www.oxid-esales.com/en/support-services/documentation-and-help/oxid-eshop/installation/oxid-eshop-new-installation/server-and-system-requirements.html "OXID eShop installation instruction").
+#### Compilation installation
 
-When checking out this repository or downloading the zip file from this place, composer is required for setting up OXID eShop.
+For full installation instructions, please check the [OXID eShop compilation installation manual](https://docs.oxid-esales.com/developer/en/6.0/getting_started/installation/eshop_installation.html).
 
-1. make sure [composer](https://getcomposer.org/) is installed on your system
-2. `$ git clone https://github.com/OXID-eSales/oxideshop_ce.git`
-3. `$ cd oxideshop_ce`
-4. `$ composer install --no-dev`
-5. `$ cp source/config.inc.php.dist source/config.inc.php`
+#### Installation for Contributors
 
-If you want to install OXID eShop including example data like products, categories etc., you first need to install the demo data package:
-
-1. `$ composer require --no-update oxid-esales/oxideshop-demodata-ce:dev-b-6.0`
-2. `$ composer update --no-dev`
+Information how to install development version and make a pull request can be found in [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
 ### IDE code completion
 

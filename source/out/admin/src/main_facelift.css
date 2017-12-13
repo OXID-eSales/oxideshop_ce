@@ -221,11 +221,3 @@ form fieldset {
     margin-left: 20px;
 }
 /*border-collapse: collapse;*/
-
-td.edittext.readonly {
-    white-space: normal;
-}
-
-#disabledEditor {
-    margin-left: 20px;
-}

@@ -29,9 +29,9 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
+        $oLinks = oxNew(\OxidEsales\Eshop\Application\Model\Links::class, getViewName('oxlinks'));
+
         if (isset($soxId) && $soxId != "-1") {
-            // load object
-            $oLinks = oxNew(\OxidEsales\Eshop\Application\Model\Links::class, getViewName('oxlinks'));
             $oLinks->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oLinks->getAvailableInLangs();

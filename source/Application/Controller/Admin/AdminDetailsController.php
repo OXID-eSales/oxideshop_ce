@@ -156,9 +156,11 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
     protected function generateTextEditor($width, $height, $object, $field, $stylesheet = null)
     {
         $objectValue = $this->_getEditValue($object, $field);
-        $textEditor = oxNew(\OxidEsales\Eshop\Application\Controller\TextEditorHandler::class);
-        $textEditor->setStyleSheet($stylesheet);
-        return $textEditor->renderTextEditor($width, $height, $objectValue, $field);
+
+        $textEditorHandler = $this->createTextEditorHandler();
+        $this->configureTextEditorHandler($textEditorHandler, $object, $field, $stylesheet);
+
+        return $textEditorHandler->renderTextEditor($width, $height, $objectValue, $field);
     }
 
     /**
@@ -328,5 +330,41 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
                 }
             }
         }
+    }
+
+    /**
+     * Create the handler for the text editor.
+     *
+     * Note: the parameters editedObject and field are not used here but in the enterprise edition.
+     *
+     * @param \OxidEsales\Eshop\Application\Controller\TextEditorHandler $textEditorHandler
+     * @param mixed                                                      $editedObject      The object we want to edit.
+     *                                                                                      Either type of
+     *                                                                                      \OxidEsales\Eshop\Core\BaseModel
+     *                                                                                      if you want to persist or
+     *                                                                                      anything else
+     * @param string                                                     $field             The input field we want to edit
+     * @param string                                                     $stylesheet        The name of the CSS file
+     *
+     */
+    protected function configureTextEditorHandler(
+        \OxidEsales\Eshop\Application\Controller\TextEditorHandler $textEditorHandler,
+        $editedObject,
+        $field,
+        $stylesheet
+    ) {
+        $textEditorHandler->setStyleSheet($stylesheet);
+    }
+
+    /**
+     * Create the handler for the text editor.
+     *
+     * @return \OxidEsales\Eshop\Application\Controller\TextEditorHandler The text editor handler
+     */
+    protected function createTextEditorHandler()
+    {
+        $textEditorHandler = oxNew(\OxidEsales\Eshop\Application\Controller\TextEditorHandler::class);
+
+        return $textEditorHandler;
     }
 }

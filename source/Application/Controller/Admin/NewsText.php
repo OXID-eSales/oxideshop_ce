@@ -27,9 +27,9 @@ class NewsText extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
+        $oNews = oxNew(\OxidEsales\Eshop\Application\Model\News::class);
+
         if (isset($soxId) && $soxId != "-1") {
-            // load object
-            $oNews = oxNew(\OxidEsales\Eshop\Application\Model\News::class);
             $iNewsLang = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("newslang");
 
             if (!isset($iNewsLang)) {

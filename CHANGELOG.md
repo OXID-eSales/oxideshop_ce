@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - Core\Form\FormFieldsTrimmerInterface
 
 ### Changed
+- In voucher series generation, if Coupon Number radio button checked, the number is marked as Required now.
 
 ### Deprecated
 

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- [Pull Request 592: Use getAdminTplLanguageArray() in Admin only](https://github.com/OXID-eSales/oxideshop_ce/pull/592)
 
 ### Deprecated
 

@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - [Pull Request 592: Use getAdminTplLanguageArray() in Admin only](https://github.com/OXID-eSales/oxideshop_ce/pull/592)
+- [Pull Request 543: Delivery dates from past shouldn't be displayed](https://github.com/OXID-eSales/oxideshop_ce/pull/543)
 
 ### Deprecated
 

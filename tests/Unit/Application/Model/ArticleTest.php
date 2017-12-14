@@ -5556,26 +5556,32 @@ class ArticleTest extends \OxidTestCase
     public function testGetDeliveryDate()
     {
         $oArticle = $this->_createArticle('_testArt');
-        $oArticle->oxarticles__oxdelivery = new oxField('2008-01-01', oxField::T_RAW);
+        $oArticle->oxarticles__oxdelivery = new oxField(date('Y-m-d'), oxField::T_RAW);
         $oArticle->save();
 
-        $sDelDate = '01.01.2008';
-        if ($oArticle->getLanguage() == 1) {
-            $sDelDate = '2008-01-01';
-        }
+        $sDelDate = date('m.d.Y');
 
         $this->assertEquals($sDelDate, $oArticle->getDeliveryDate());
     }
 
     /**
      * Test get delivery date when not set.
-     *
-     * @return null
      */
     public function testGetDeliveryDateIfNotSet()
     {
         $oArticle = $this->_createArticle('_testArt');
         $oArticle->oxarticles__oxdelivery = new oxField('0000-00-00', oxField::T_RAW);
+        $oArticle->save();
+        $this->assertFalse($oArticle->getDeliveryDate());
+    }
+
+    /**
+     * Test get delivery date is false if in past.
+     */
+    public function testGetDeliveryDateIfInPast()
+    {
+        $oArticle = $this->_createArticle('_testArt');
+        $oArticle->oxarticles__oxdelivery = new oxField('2017-12-13', oxField::T_RAW);
         $oArticle->save();
         $this->assertFalse($oArticle->getDeliveryDate());
     }

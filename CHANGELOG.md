@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - In voucher series generation, if Coupon Number radio button checked, the number is marked as Required now.
+- [Pull Request 592: Use getAdminTplLanguageArray() in Admin only](https://github.com/OXID-eSales/oxideshop_ce/pull/592)
 
 ### Deprecated
 - `OxidEsales\EshopCommunity\Application\Controller\Admin\ArticleSeo::_getSaveObjectId`

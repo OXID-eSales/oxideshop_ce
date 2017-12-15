@@ -9,17 +9,17 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Database\Adapter\Doct
 use oxDb;
 use OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\ResultSet;
-use OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database;
 use OxidEsales\EshopCommunity\Tests\Integration\Core\Database\Adapter\DatabaseInterfaceImplementationBaseTest;
 
 /**
- * Tests for our database object.
+ * Class ResultSetTest
+ *
+ * @package OxidEsales\EshopCommunity\Tests\integration\Core\Database\Adapter|Doctrine
  *
  * @group database-adapter
  */
-abstract class ResultSetBaseTest extends DatabaseInterfaceImplementationBaseTest
+class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
 {
-
     /**
      * @var string The name of the class, including the complete namespace.
      */
@@ -442,6 +442,16 @@ abstract class ResultSetBaseTest extends DatabaseInterfaceImplementationBaseTest
         }
 
         return $count;
+    }
+
+    /**
+     * Create the database object under test.
+     *
+     * @return Doctrine The database object under test.
+     */
+    protected function createDatabase()
+    {
+        return \oxDb::getDb();
     }
 
     /**

@@ -5559,7 +5559,7 @@ class ArticleTest extends \OxidTestCase
         $oArticle->oxarticles__oxdelivery = new oxField(date('Y-m-d'), oxField::T_RAW);
         $oArticle->save();
 
-        $sDelDate = date('m.d.Y');
+        $sDelDate = date('d.m.Y');
 
         $this->assertEquals($sDelDate, $oArticle->getDeliveryDate());
     }

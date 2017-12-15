@@ -6,8 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Database\Adapter\Doctrine;
 
-use OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database;
-
 /**
  * Class DoctrineResultSetTest
  *

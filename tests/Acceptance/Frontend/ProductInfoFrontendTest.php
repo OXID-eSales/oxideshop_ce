@@ -55,7 +55,7 @@ class ProductInfoFrontendTest extends FrontendTestCase
         $this->_assertArticle('Test product 1 [EN] šÄßüл', 'Test product 1 short desc [EN] šÄßüл', '1001', '100,00 € *');
         $this->assertTextPresent("%MESSAGE_NOT_ON_STOCK%");
 
-        $this->assertTextPresent("%AVAILABLE_ON% 2008-01-01");
+        $this->assertTextPresent("%AVAILABLE_ON% 2030-01-01");
         $this->assertElementPresent("productSelections");
         $this->assertElementPresent("//div[@id='productSelections']//ul");
         $this->assertEquals("selvar1 [EN] šÄßüл +1,00 € selvar2 [EN] šÄßüл selvar3 [EN] šÄßüл -2,00 € selvar4 [EN] šÄßüл +2%", $this->getText("//div[@id='productSelections']//ul"));

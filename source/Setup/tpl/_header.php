@@ -49,7 +49,21 @@ $facts = new \OxidEsales\Facts\Facts();
 
     -->
     </script>
-    <link rel="stylesheet" href="out/src/main.css" />
+    <style type="text/css">
+        <?php
+            $cssPath = str_replace('/', DIRECTORY_SEPARATOR, __DIR__ . '/../out/src/');
+            $imgPath = str_replace('/', DIRECTORY_SEPARATOR, __DIR__ . '/../out/src/img/');
+            $imgLogo = 'data:image/svg+xml;base64,' . base64_encode(file_get_contents($imgPath . 'logo_dark.svg'));
+            $cssData = file_get_contents($cssPath . 'main.css');
+            preg_match_all("/url\('img\/([^']+)'\);/", $cssData, $matches);
+            $images = array_unique($matches[1]);
+            foreach ($images as $image) {
+                $imgData = 'data:image/png;base64,' . base64_encode(file_get_contents($imgPath . $image));
+                $cssData = str_replace('img/' . $image, $imgData, $cssData);
+            }
+            echo $cssData;
+        ?>
+    </style>
     <style type="text/css">
         <?php
             $iTabWidth = 147;
@@ -77,9 +91,8 @@ $facts = new \OxidEsales\Facts\Facts();
 </head>
 
 <body>
-
 <div id="page">
-    <a href="index.php?istep=<?php $this->getSetupStep('STEP_SYSTEMREQ' ); ?>&sid=<?php $this->getSid(); ?>"><img src="out/src/img/logo_dark.svg" class="oxid_eshop_logo" alt="OXID eSales"></a>
+    <a href="index.php?istep=<?php $this->getSetupStep('STEP_SYSTEMREQ' ); ?>&sid=<?php $this->getSid(); ?>"><img src="<?php echo $imgLogo; ?>" class="oxid_eshop_logo" alt="OXID eSales"></a>
     <div id="header">
         <?php
         $iCntr = 0;

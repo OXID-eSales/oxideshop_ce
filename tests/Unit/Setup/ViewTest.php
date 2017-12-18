@@ -136,15 +136,6 @@ class ViewTest extends \OxidTestCase
     }
 
     /**
-     * Testing view::getImageDir()
-     */
-    public function testGetImageDir()
-    {
-        $oSetupView = new View();
-        $this->assertEquals(getInstallPath() . 'out/admin/img', $oSetupView->getImageDir());
-    }
-
-    /**
      * Testing view::isDeletedSetup()
      */
     public function testIsDeletedSetup()

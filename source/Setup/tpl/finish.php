@@ -34,14 +34,14 @@ $blRemoved = $this->isDeletedSetup($aSetupConfig, $aDB);
 <?php
 //finalizing installation
 if ( !$blRemoved || $blWritableConfig ) {
-    ?><strong style="font-size:16px;color:red;"><?php $this->getText('ATTENTION'); ?>:</strong><br><br><?php
+    ?><strong class="attention-title"><?php $this->getText('ATTENTION'); ?>:</strong><br><br><?php
 }
 if ( !$blRemoved ) {
-    ?><strong style="font-size:16px;color:red;"><?php $this->getText('SETUP_DIR_DELETE_NOTICE'); ?></strong><br><br><?php
+    ?><strong class="attention-item"><?php $this->getText('SETUP_DIR_DELETE_NOTICE'); ?></strong><br><br><?php
 }
 
 if ( $blWritableConfig ) {
-    ?><strong style="font-size:16px;color:red;"><?php $this->getText('SETUP_CONFIG_PERMISSIONS'); ?></strong><br><?php
+    ?><strong class="attention-item"><?php $this->getText('SETUP_CONFIG_PERMISSIONS'); ?></strong><br><?php
 }
 ob_flush();
 echo $sFooter;

@@ -230,16 +230,6 @@ class View extends Core
     }
 
     /**
-     * Returns image file path
-     *
-     * @return string
-     */
-    public function getImageDir()
-    {
-        return getInstallPath() . 'out/admin/img';
-    }
-
-    /**
      * If demo data installation is OFF, tries to delete demo pictures also
      * checks if setup deletion is ON and deletes setup files if possible,
      * return deletion status

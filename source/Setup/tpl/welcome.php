@@ -30,8 +30,8 @@ require "_header.php"; ?>
                         </select>
                     </td>
                     <td style="padding: 0px 5px;">
-                        <a href="#" style="display:block;width:18px;height:18px;background: #ddd;border: 1px solid #ccc;border-radius: 5px;line-height: 18px;text-align: center;font-weight: bold;color: #777;" onmouseover="document.getElementById('countryHelpBox').style.display = '';" onmouseout="document.getElementById('countryHelpBox').style.display = 'none';">?</a>
-                        <div id="countryHelpBox" style="position: absolute;margin-top:5px;border: 1px solid #c1c1c1; background: #ddd;padding: 10px;border-radius: 5px;display: none;width:300px;">
+                        <a href="#" class="helpicon" onmouseover="document.getElementById('countryHelpBox').style.display = 'block';" onmouseout="document.getElementById('countryHelpBox').style.display = 'none';">?</a>
+                        <div id="countryHelpBox" class="helpbox">
                             <?php $this->getText('SELECT_DELIVERY_COUNTRY_HINT'); ?>
                         </div>
                     </td>
@@ -57,8 +57,8 @@ require "_header.php"; ?>
                         </select>
                     </td>
                     <td style="padding: 0px 5px;">
-                        <a href="#" style="display:block;width:18px;height:18px;background: #ddd;border: 1px solid #ccc;border-radius: 5px;line-height: 18px;text-align: center;font-weight: bold;color: #777;" onmouseover="document.getElementById('langHelpBox').style.display = '';" onmouseout="document.getElementById('langHelpBox').style.display = 'none';">?</a>
-                        <div id="langHelpBox" style="position: absolute;margin-top:5px;border: 1px solid #c1c1c1; background: #ddd;padding: 10px;border-radius: 5px;display: none;width:300px;">
+                        <a href="#" class="helpicon" onmouseover="document.getElementById('langHelpBox').style.display = 'block';" onmouseout="document.getElementById('langHelpBox').style.display = 'none';">?</a>
+                        <div id="langHelpBox" class="helpbox">
                             <?php $this->getText('SELECT_SHOP_LANG_HINT'); ?>
                         </div>
                     </td>
@@ -82,8 +82,8 @@ require "_header.php"; ?>
             &nbsp;
         </td>
         <td>
-            <a href="#" style="display:block;width:18px;height:18px;background: #ddd;border: 1px solid #ccc;border-radius: 5px;line-height: 18px;text-align: center;font-weight: bold;color: #777;" onmouseover="document.getElementById('send_technical_information_to_oxid_description').style.display = '';" onmouseout="document.getElementById('send_technical_information_to_oxid_description').style.display = 'none';">?</a>
-            <div id="send_technical_information_to_oxid_description" style="position: absolute;margin-top:5px;border: 1px solid #c1c1c1; background: #ddd;padding: 10px;border-radius: 5px;display: none;width:300px;">
+            <a href="#" class="helpicon" onmouseover="document.getElementById('send_technical_information_to_oxid_description').style.display = 'block';" onmouseout="document.getElementById('send_technical_information_to_oxid_description').style.display = 'none';">?</a>
+            <div id="send_technical_information_to_oxid_description" class="helpbox">
                 <?php $this->getText('HELP_SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID'); ?>
             </div>
         </td>

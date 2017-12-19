@@ -319,6 +319,7 @@ $aLang = [
     'GENERAL_LINK_EXPIRATION_TIME_UNREGISTERED' => 'Maximum count of downloads for not registered users',
     'GENERAL_LINK_EXPIRATION_TIME'              => 'Expiration time of download link',
     'GENERAL_DOWNLOAD_EXPIRATION_TIME'          => 'Expiration time of download link after the first download',
+    'ACCESS_TO_EDIT_ACTION_FOR_MALL_ADMIN_ONLY' => 'Only Mall Admin is permitted to change promotions globally.',
     'ACTIONS_MAIN_NOTSELECTED'                  => 'Please select one from above list to make changes',
     'ACTIONS_MAIN_ALLARTICLES'                  => 'All available Products',
     'ACTIONS_MAIN_ALLARTICLESWITHATTR'          => 'Promoted Products',

@@ -270,4 +270,14 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         return $sUrl;
     }
+
+    /**
+     * Returns true if Action is default.
+     *
+     * @return bool
+     */
+    public function isDefault()
+    {
+        return '0' === $this->oxactions__oxtype->value;
+    }
 }

@@ -6,8 +6,10 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
 use stdClass;
+use \OxidEsales\Eshop\Application\Model\Actions;
+use \OxidEsales\Eshop\Core\Registry;
+use \OxidEsales\Eshop\Core\Request;
 
 /**
  * Admin article main actions manager.
@@ -27,23 +29,21 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     {
         parent::render();
 
-        // check if we right now saved a new entry
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if (isset($soxId) && $soxId != "-1") {
-            // load object
-            $oAction = oxNew(\OxidEsales\Eshop\Application\Model\Actions::class);
+
+        if ($this->isNewEditObject() !== true) {
+            $oAction = oxNew(Actions::class);
             $oAction->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oAction->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
-                // echo "language entry doesn't exist! using: ".key($oOtherLang);
                 $oAction->loadInLang(key($oOtherLang), $soxId);
             }
 
             $this->_aViewData["edit"] = $oAction;
 
             // remove already created languages
-            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
+            $aLang = array_diff(Registry::getLang()->getLanguageNames(), $oOtherLang);
 
             if (count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
@@ -57,7 +57,7 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             }
         }
 
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc")) {
+        if (Registry::getConfig()->getRequestParameter("aoc")) {
             // generating category tree for select list
             $this->_createCategoryTree("artcattree", $soxId);
 
@@ -70,7 +70,7 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
         if (($oPromotion = $this->getViewDataElement("edit"))) {
             if (($oPromotion->oxactions__oxtype->value == 2) || ($oPromotion->oxactions__oxtype->value == 3)) {
-                if ($iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxpromotionaoc")) {
+                if ($iAoc = Registry::getConfig()->getRequestParameter("oxpromotionaoc")) {
                     $sPopup = false;
                     switch ($iAoc) {
                         case 'article':
@@ -90,7 +90,6 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
                     }
 
                     if ($sPopup) {
-                        $aColumns = [];
                         $oActionsArticleAjax = oxNew($sPopup . '_ajax');
                         $this->_aViewData['oxajax'] = $oActionsArticleAjax->getColumns();
 
@@ -120,28 +119,19 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     {
         parent::save();
 
-        $soxId = $this->getEditObjectId();
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $action = oxNew(Actions::class);
 
-        $oPromotion = oxNew(\OxidEsales\Eshop\Application\Model\Actions::class);
-        if ($soxId != "-1") {
-            $oPromotion->load($soxId);
-        } else {
-            $aParams['oxactions__oxid'] = null;
+        if ($this->isNewEditObject() !== true) {
+            $action->load($this->getEditObjectId());
         }
 
-        if (!$aParams['oxactions__oxactive']) {
-            $aParams['oxactions__oxactive'] = 0;
+        if ($this->checkAccessToEditAction($action) === true) {
+            $action->assign($this->getActionFormData());
+            $action->setLanguage($this->_iEditLang);
+            $action->save();
+
+            $this->setEditObjectId($action->getId());
         }
-
-        $oPromotion->setLanguage(0);
-        $oPromotion->assign($aParams);
-        $oPromotion->setLanguage($this->_iEditLang);
-        $oPromotion = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oPromotion);
-        $oPromotion->save();
-
-        // set oxid if inserted
-        $this->setEditObjectId($oPromotion->getId());
     }
 
     /**
@@ -150,5 +140,51 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     public function saveinnlang()
     {
         $this->save();
+    }
+
+    /**
+     * Checks access to edit Action.
+     *
+     * @param Actions $action
+     *
+     * @return bool
+     */
+    protected function checkAccessToEditAction(Actions $action)
+    {
+        return true;
+    }
+
+    /**
+     * Returns form data for Action.
+     *
+     * @return array
+     */
+    private function getActionFormData()
+    {
+        $request    = oxNew(Request::class);
+        $formData   = $request->getRequestEscapedParameter("editval");
+        $formData   = $this->normalizeActionFormData($formData);
+
+        return $formData;
+    }
+
+    /**
+     * Normalizes form data for Action.
+     *
+     * @param   array $formData
+     *
+     * @return  array
+     */
+    private function normalizeActionFormData($formData)
+    {
+        if ($this->isNewEditObject() === true) {
+            $formData['oxactions__oxid'] = null;
+        }
+
+        if (!$formData['oxactions__oxactive']) {
+            $formData['oxactions__oxactive'] = 0;
+        }
+
+        return $formData;
     }
 }

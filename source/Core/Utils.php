@@ -1307,21 +1307,6 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Applies ROT13 encoding to $sStr
-     *
-     * @param string $sStr to encoding string
-     *
-     * @return string
-     */
-    public function strRot13($sStr)
-    {
-        $sFrom = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $sTo = 'nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM';
-
-        return strtr($sStr, $sFrom, $sTo);
-    }
-
-    /**
      * Returns full path (including file name) to cache file
      *
      * @todo: test

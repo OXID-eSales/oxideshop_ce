@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 - `OxidEsales\EshopCommunity\Application\Controller\Admin\ArticleSeo::_getSaveObjectId`
 - `OxidEsales\EshopCommunity\Application\Component\Widget\ServiceMenu::getCompareItemsCnt`
+- `OxidEsales\EshopCommunity\Core\Utils::strRot13`
 
 ### Removed
 - 'Your market' selection was removed from Setup wizard, as this value is no longer evaluated

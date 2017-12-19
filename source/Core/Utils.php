@@ -1309,16 +1309,15 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     /**
      * Applies ROT13 encoding to $sStr
      *
+     * @deprecated since v6.1.0 (2017-12-19); Use standard str_rot13 method.
+     *
      * @param string $sStr to encoding string
      *
      * @return string
      */
     public function strRot13($sStr)
     {
-        $sFrom = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $sTo = 'nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM';
-
-        return strtr($sStr, $sFrom, $sTo);
+        return str_rot13($sStr);
     }
 
     /**

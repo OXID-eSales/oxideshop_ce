@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - [admin/oxajax.php needs to handle module not namespaced ajax container classes](https://bugs.oxid-esales.com/view.php?id=6729)
 - [Compare links in lists do not work correctly](https://bugs.oxid-esales.com/view.php?id=5354)
 - [Transparent gif looses transparency when generated to different size](https://bugs.oxid-esales.com/view.php?id=3194)
+- Additional cache variable for Article::getAttributesDisplayableInBasket [PR-616](https://github.com/OXID-eSales/oxideshop_ce/pull/616)
 
 ### Security
 

@@ -68,7 +68,7 @@ window.onload = function ()
                     [{foreach from=$pwrsearchfields key=field item=desc}]
                     [{assign var="ident" value=GENERAL_ARTICLE_$desc}]
                     [{assign var="ident" value=$ident|oxupper}]
-                    <option value="[{$desc}]" [{if $pwrsearchfld == $desc|oxupper}]SELECTED[{/if}]>[{oxmultilang|oxtruncate:20:"..":true noerror=true alternative=$desc ident=$ident}]</option>
+                    <option value="[{$desc}]" [{if $pwrsearchfld == $desc|oxupper}]SELECTED[{/if}]>[{oxmultilang noerror=true alternative=$desc ident=$ident}]</option>
                     [{/foreach}]
                 </select>
                 <input class="listedit" type="text" size="20" maxlength="128" name="where[oxarticles][[{$pwrsearchfld|oxlower}]]" value="[{$pwrsearchinput}]" [{include file="help.tpl" helpid=searchfieldoxdynamic}]>

@@ -2540,14 +2540,23 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
+     * the uninitilized list of attributes
+     * use getAttributes
+     * @return \OxidEsales\Eshop\Application\Model\AttributeList
+     */
+    protected function newAttributeList(){
+        return oxNew(\OxidEsales\Eshop\Application\Model\AttributeList::class);
+    }
+
+    /**
      * Loads and returns attribute list associated with this article
      *
-     * @return object
+     * @return \OxidEsales\Eshop\Application\Model\AttributeList
      */
     public function getAttributes()
     {
         if ($this->_oAttributeList === null) {
-            $this->_oAttributeList = oxNew(\OxidEsales\Eshop\Application\Model\AttributeList::class);
+            $this->_oAttributeList = $this->newAttributelist();
             $this->_oAttributeList->loadAttributes($this->getId(), $this->getParentId());
         }
 
@@ -2557,12 +2566,12 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Loads and returns displayable in basket/order attributes list associated with this article
      *
-     * @return object
+     * @return oxattributelist
      */
     public function getAttributesDisplayableInBasket()
     {
         if ($this->_oAttributeList === null) {
-            $this->_oAttributeList = oxNew(\OxidEsales\Eshop\Application\Model\AttributeList::class);
+            $this->_oAttributeList = $this->newAttributelist();
             $this->_oAttributeList->loadAttributesDisplayableInBasket($this->getId(), $this->getParentId());
         }
 

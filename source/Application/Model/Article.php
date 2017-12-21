@@ -202,9 +202,16 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * Object holding the list of attributes and attribute values associated with this article
+     * @var \OxidEsales\Eshop\Application\Model\AttributeList
      */
     protected $_oAttributeList = null;
 
+    /**
+     * Object holding the list of attributes and attribute values associated with this article and displayable in basket
+     * @var \OxidEsales\Eshop\Application\Model\AttributeList
+     */
+    protected $basketAttributeList = null;
+    
     /**
      * Indicates whether the price is "From" price
      *
@@ -2542,7 +2549,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Loads and returns attribute list associated with this article
      *
-     * @return object
+     * @return \OxidEsales\Eshop\Application\Model\AttributeList
      */
     public function getAttributes()
     {
@@ -2555,18 +2562,18 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Loads and returns displayable in basket/order attributes list associated with this article
+     * Loads and returns attribute list for display in basket
      *
-     * @return object
+     * @return \OxidEsales\Eshop\Application\Model\AttributeList
      */
     public function getAttributesDisplayableInBasket()
     {
-        if ($this->_oAttributeList === null) {
-            $this->_oAttributeList = oxNew(\OxidEsales\Eshop\Application\Model\AttributeList::class);
-            $this->_oAttributeList->loadAttributesDisplayableInBasket($this->getId(), $this->getParentId());
+        if ($this->basketAttributeList === null) {
+            $this->basketAttributeList = oxNew(\OxidEsales\Eshop\Application\Model\AttributeList::class);
+            $this->basketAttributeList->loadAttributesDisplayableInBasket($this->getId(), $this->getParentId());
         }
 
-        return $this->_oAttributeList;
+        return $this->basketAttributeList;
     }
 
 

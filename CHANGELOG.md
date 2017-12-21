@@ -19,10 +19,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - admin_article_variant_bottom_extended
 
 ### Changed
-- [Pull request 676: In voucher series generation, if Coupon Number radio button checked, the number is marked as Required now.](https://github.com/OXID-eSales/oxideshop_ce/pull/676)
-- [Pull Request 592: Display full field names in product filter dropdown](https://github.com/OXID-eSales/oxideshop_ce/pull/614)
-- [Pull Request 592: Use getAdminTplLanguageArray() in Admin only](https://github.com/OXID-eSales/oxideshop_ce/pull/592)
-- [Pull Request 543: Delivery dates from past shouldn't be displayed](https://github.com/OXID-eSales/oxideshop_ce/pull/543)
+- In voucher series generation, if Coupon Number radio button checked, the number is marked as Required now. [PR-676](https://github.com/OXID-eSales/oxideshop_ce/pull/676)
+- Display full field names in product filter dropdown. [PR-614](https://github.com/OXID-eSales/oxideshop_ce/pull/614)
+- Use getAdminTplLanguageArray() in Admin only. [PR-592](https://github.com/OXID-eSales/oxideshop_ce/pull/592)
+- Delivery dates from past shouldn't be displayed. [PR-543](https://github.com/OXID-eSales/oxideshop_ce/pull/543)
 - Readme.md and Contributing.md files are updated.
 
 ### Deprecated

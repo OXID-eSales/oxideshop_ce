@@ -2566,7 +2566,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return \OxidEsales\Eshop\Application\Model\AttributeList
      */
-    public function getAttributesDisplayableInBasket()
+    public function getBasketAttributeList()
     {
         if ($this->basketAttributeList === null) {
             $this->basketAttributeList = oxNew(\OxidEsales\Eshop\Application\Model\AttributeList::class);

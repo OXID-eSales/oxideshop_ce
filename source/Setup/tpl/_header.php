@@ -49,56 +49,24 @@ $facts = new \OxidEsales\Facts\Facts();
 
     -->
     </script>
-
+    <link rel="stylesheet" href="out/src/main.css" />
     <style type="text/css">
-    <?php
-        $iTabWidth = 147;
-        $iSepWidth = 3;
-        if ($facts->isEnterprise()) {
-            $iTabCount = 7;
-            $sHColor = '#006ab4';
-        }
-        if ($facts->isProfessional()) {
-            $iTabCount = 7;
-            $sHColor = '#cd0210';
-        }
-        if ($facts->isCommunity()) {
-            $iTabCount = 6;
-            $sHColor = '#ff3600';
-        }
-        $iDocWidth = ($iTabWidth + $iSepWidth)*$iTabCount;
-    ?>
-        body, p , form {margin:0; }
-        body, p, td, tr, ol, ul, input, textarea {font:11px/130% Trebuchet MS, Tahoma, Verdana, Arial, Helvetica, sans-serif;}
-
-        a {text-decoration: none;color: #000;}
-        a:hover {text-decoration: underline;}
-
-        #page {width:<?php echo $iDocWidth; ?>px;margin:5% auto;}
-        #header {clear:both;margin-top:10px;}
-        #body   {clear:both;padding:20px 10px;background: #e4e4e4 url(setup.png) 0 -80px repeat-x;border:1px solid #ccc;border-top:none;margin:-10px 1px 0 0;min-height: 350px;}
-        #footer {clear:both;background:#888;color:#fff;padding:5px 10px;margin-right:1px;}
-
-        dl.tab {float:left;width: <?php echo $iTabWidth; ?>px;height:80px;margin:0;margin-right:1px;background:#ccc url(setup.png);border:1px solid #ccc;border-bottom:none;margin-bottom:-1px;}
-        dl.tab dt{display:block;padding:0;margin:0;padding:10px 5px 0 5px;font-weight: bold;}
-        dl.tab a{color:#888;}
-        dl.tab dd{display:block;padding:0;margin:0;padding:5px;height: 50px;}
-
-        dl.tab.act {border-color:<?php echo $sHColor; ?>;}
-        dl.tab.act dt a{color: <?php echo $sHColor; ?>;}
-        dl.tab.act dd{}
-        dl.tab.act dd a{color: #000;}
-
-        .exclamation-icon {background-image:url('./out/src/img/pmin.png');background-repeat: no-repeat;width:12px;height:12px;display:inline-block;}
-        ul.req {padding:0 5px;border:1px solid #888;margin:5px 0;clear:both;display:block;}
-        ul.req li{list-style:none;margin:5px 0;padding-left:1.5em;}
-        ul.req li.pass{background-image:url('./out/src/img/pass.png');background-repeat: no-repeat;}
-        ul.req li.pmin{background-image:url('./out/src/img/pmin.png');background-repeat: no-repeat;}
-        ul.req li.fail{background-image:url('./out/src/img/fail.png');background-repeat: no-repeat;}
-        ul.req li.null{background-image:url('./out/src/img/null.png');background-repeat: no-repeat;}
-        ul.req ul{padding:0;margin:0;}
-        ul.req li.group {border:none;float:left;font-weight:bold;width:28%;}
-        ul.req li.clear{clear:left;diplay:none;border:none;visibility:collapse;height:0px;padding:0;margin:0;display:block;line-height: 0;}
+        <?php
+            $iTabWidth = 147;
+            $iSepWidth = 3;
+            if ($facts->isEnterprise()) {
+                $iTabCount = 7;
+            }
+            if ($facts->isProfessional()) {
+                $iTabCount = 7;
+            }
+            if ($facts->isCommunity()) {
+                $iTabCount = 6;
+            }
+            $iDocWidth = ($iTabWidth + $iSepWidth)*$iTabCount;
+        ?>
+        #page { width: <?php echo $iDocWidth; ?>px; }
+        dl.tab { width: <?php echo $iTabWidth; ?>px; }
     </style>
 
     <?php
@@ -111,7 +79,7 @@ $facts = new \OxidEsales\Facts\Facts();
 <body>
 
 <div id="page">
-    <a href="index.php?istep=<?php $this->getSetupStep('STEP_SYSTEMREQ' ); ?>&sid=<?php $this->getSid(); ?>"><img src="<?php echo $this->getImageDir(); ?>/setup_logo.png" alt="OXID eSales" hspace="5" vspace="5" border="0"></a>
+    <a href="index.php?istep=<?php $this->getSetupStep('STEP_SYSTEMREQ' ); ?>&sid=<?php $this->getSid(); ?>"><img src="out/src/img/logo_dark.svg" class="oxid_eshop_logo" alt="OXID eSales"></a>
     <div id="header">
         <?php
         $iCntr = 0;

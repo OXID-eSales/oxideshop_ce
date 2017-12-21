@@ -41,6 +41,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - Core\Form\FormFieldsNormalizerInterface
   - Core\Form\FormFieldsTrimmer
   - Core\Form\FormFieldsTrimmerInterface
+- Template blocks:
+  - admin_article_variant_selectlist
+  - admin_article_variant_extended
+  - admin_article_variant_language_edit
+  - admin_article_variant_bottom_extended
 
 ### Changed
 - [Pull request 676: In voucher series generation, if Coupon Number radio button checked, the number is marked as Required now.](https://github.com/OXID-eSales/oxideshop_ce/pull/676)

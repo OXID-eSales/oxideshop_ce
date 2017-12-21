@@ -449,14 +449,28 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      *
      * @param string    $sFieldName field name
      * @param exception $oErr       exception
-     *
+     * @deprecated since 5.3 use addValidationError
      * @return exception
      */
     protected function _addValidationError($sFieldName, $oErr)
     {
-        return $this->_aInputValidationErrors[$sFieldName][] = $oErr;
+        return $this->addValidationError($sFieldName, $oErr);
     }
 
+    /**
+     * Used to collect user validation errors. This method is called from all of
+     * the input checking functionality to report found error.
+     *
+     * @param string    $sFieldName field name
+     * @param exception $oErr       exception
+     *
+     * @return exception
+     */
+    public function addValidationError($sFieldName, $oErr)
+    {
+        return $this->_aInputValidationErrors[$sFieldName][] = $oErr;
+    }
+    
     /**
      * Validates debit note.
      *

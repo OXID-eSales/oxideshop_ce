@@ -175,9 +175,6 @@
     // If default 30 seconds is not enougth
     // @set_time_limit(3000);
 
-    // Disable views usage
-    $this->blSkipViewUsage = false;
-
     /**
      * Database master-slave configuration:
      * aSlaveHosts - array of slave hosts: array('localhost', '10.2.3.12')

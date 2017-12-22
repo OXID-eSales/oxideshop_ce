@@ -207,22 +207,13 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     {
         $blAdd = false;
         if ($sOXID) {
-            // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
-            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
+            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
-            $database->startTransaction();
-            try {
-                if (!$database->getOne("select oxid from oxobject2list where oxobjectid=" . $database->quote($sOXID) . " and oxlistid=" . $database->quote($this->getId()))) {
-                    $sUid = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID();
-                    $sQ = "insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( '$sUid', " . $database->quote($sOXID) . ", " . $database->quote($this->getId()) . ", " . $database->quote($sDesc) . " )";
-                    $blAdd = $database->execute($sQ);
-                }
-
-                $database->commitTransaction();
-            } catch (Exception $exception) {
-                $database->rollbackTransaction();
-
-                throw $exception;
+            if (!$database->getOne("select oxid from oxobject2list where oxobjectid=" . $database->quote($sOXID) . " and oxlistid=" . $database->quote($this->getId()))) {
+                $sUid = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID();
+                $sQ = "insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( '$sUid', " . $database->quote($sOXID) . ", " . $database->quote($this->getId()) . ", " . $database->quote($sDesc) . " )";
+                $blAdd = $database->execute($sQ);
             }
         }
 

@@ -297,9 +297,9 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->assertEquals(array(), $oValidator->getFieldValidationErrors());
         $this->assertNull($oValidator->getFirstValidationError());
 
-        $oValidator->UNITaddValidationError("userid", "err");
-        $oValidator->UNITaddValidationError("fieldname", "err");
-        $oValidator->UNITaddValidationError("error", "err");
+        $oValidator->addValidationError("userid", "err");
+        $oValidator->addValidationError("fieldname", "err");
+        $oValidator->addValidationError("error", "err");
 
         $this->assertEquals(array("userid" => array("err"), "fieldname" => array("err"), "error" => array("err")), $oValidator->getFieldValidationErrors());
         $this->assertEquals("err", $oValidator->getFirstValidationError());

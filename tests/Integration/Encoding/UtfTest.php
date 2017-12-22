@@ -1354,8 +1354,8 @@ class UtfTest extends \OxidTestCase
     {
         $sValue = 'ūЛü';
 
-        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array("_addValidationError"));
-        $oValidator->expects($this->once())->method('_addValidationError')->with($this->equalTo("oxuser__oxpassword"));
+        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array("addValidationError"));
+        $oValidator->expects($this->once())->method('addValidationError')->with($this->equalTo("oxuser__oxpassword"));
         $oValidator->checkPassword(new oxUser(), $sValue, $sValue, true);
     }
 

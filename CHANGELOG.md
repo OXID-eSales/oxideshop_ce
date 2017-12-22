@@ -46,6 +46,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - admin_article_variant_extended
   - admin_article_variant_language_edit
   - admin_article_variant_bottom_extended
+- New methods:
+  - `OxidEsales\EshopCommunity\Core\InputValidator::addValidationError`
 
 ### Changed
 - In voucher series generation, if Coupon Number radio button checked, the number is marked as Required now. [PR-676](https://github.com/OXID-eSales/oxideshop_ce/pull/676)
@@ -56,6 +58,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - CSS adapted in OXID eShop Setup to reflect new design, extracted styles to separate file `Setup/out/src/main.css`
 
 ### Deprecated
+- `OxidEsales\EshopCommunity\Application\Controller\Admin\ArticleSeo::_getSaveObjectId`
+- `OxidEsales\EshopCommunity\Application\Component\Widget\ServiceMenu::getCompareItemsCnt`
+- `OxidEsales\EshopCommunity\Core\Utils::strRot13`
+- `OxidEsales\EshopCommunity\Core\InputValidator::_addValidationError`
 
 ### Removed
 - 'Your market' selection was removed from Setup wizard, as this value is no longer evaluated

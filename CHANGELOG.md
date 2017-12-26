@@ -51,6 +51,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - [Transparent gif looses transparency when generated to different size](https://bugs.oxid-esales.com/view.php?id=3194)
 - Additional cache variable for Article::getAttributesDisplayableInBasket [PR-616](https://github.com/OXID-eSales/oxideshop_ce/pull/616)
 - [RSS feed for categories not sorted desc by time](https://bugs.oxid-esales.com/view.php?id=6739)
+- [VariantHandler always uses brutto price for MD Variants](https://bugs.oxid-esales.com/view.php?id=6761)
 
 ### Security
 

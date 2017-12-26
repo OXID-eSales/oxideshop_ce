@@ -67,7 +67,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
             $oMdVariants->addNames(
                 $sKey,
                 $aNames,
-                ($this->getConfig()->getConfigParam('bl_perfLoadPrice')) ? $oVariant->getPrice()->getBruttoPrice() : null,
+                ($this->getConfig()->getConfigParam('bl_perfLoadPrice')) ? $oVariant->getPrice()->getPrice() : null,
                 $oVariant->getLink()
             );
         }

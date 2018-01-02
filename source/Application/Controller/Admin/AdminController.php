@@ -573,4 +573,14 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         $this->_sEditObjectId = $sId;
         $this->_aViewData["updatelist"] = 1;
     }
+
+    /**
+     * Returns true if editable object is new.
+     *
+     * @return bool
+     */
+    protected function isNewEditObject()
+    {
+        return '-1' === (string) $this->getEditObjectId();
+    }
 }

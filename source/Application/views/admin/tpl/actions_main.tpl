@@ -54,7 +54,15 @@ function DeletePic(sField)
                 [{oxmultilang ident="GENERAL_NAME"}]
                 </td>
                 <td class="edittext">
-                <input type="text" class="editinput" size="32" maxlength="[{$edit->oxactions__oxtitle->fldmax_length}]" name="editval[oxactions__oxtitle]" value="[{$edit->oxactions__oxtitle->value}]" [{$readonly}] [{$disableSharedEdit}]>
+                <input
+                    type="text"
+                    class="editinput"
+                    size="32"
+                    maxlength="[{$edit->oxactions__oxtitle->fldmax_length}]"
+                    name="editval[oxactions__oxtitle]"
+                    value="[{$edit->oxactions__oxtitle->value}]"
+                    [{$readonly}]
+                >
                 [{oxinputhelp ident="HELP_GENERAL_NAME"}]
                 </td>
             </tr>
@@ -117,8 +125,15 @@ function DeletePic(sField)
             <td class="edittext">
             </td>
             <td class="edittext"><br>
-            <input type="submit" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'" [{$readonly}] [{$disableSharedEdit}]><br><br>
-
+            <input
+                type="submit"
+                class="edittext"
+                name="save"
+                value="[{oxmultilang ident="GENERAL_SAVE"}]"
+                onClick="Javascript:document.myedit.fnc.value='save'"
+                [{$readonly}]
+            >
+            <br><br>
 
             [{if $oxid != "-1"}]
 

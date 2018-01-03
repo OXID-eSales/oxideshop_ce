@@ -447,7 +447,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * Used to collect user validation errors. This method is called from all of
      * the input checking functionality to report found error.
      *
-     * @param string    $sFieldName field name
+     * @param string     $sFieldName field name
      * @param \Exception $oErr       exception
      *
      * @return \Exception

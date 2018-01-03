@@ -221,7 +221,7 @@ class ExceptionHandler
      *
      * @return string
      */
-    protected function getFormattedException(\Exception $exception)
+    public function getFormattedException(\Exception $exception)
     {
         $time = microtime(true);
         $micro = sprintf("%06d", ($time - floor($time)) * 1000000);

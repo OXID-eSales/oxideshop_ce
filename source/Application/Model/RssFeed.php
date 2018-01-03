@@ -540,7 +540,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         }
 
         $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
-        $oArtList->setCustomSorting('oc.oxtime desc');
+        $oArtList->setCustomSorting('oc.oxtimestamp desc');
         $oArtList->loadCategoryArticles($oCat->getId(), null, $this->getConfig()->getConfigParam('iRssItemsCount'));
 
         $oLang = Registry::getLang();

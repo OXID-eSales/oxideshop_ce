@@ -87,7 +87,7 @@ abstract class OnlineCaller
             $statusCode = $this->_getCurl()->getStatusCode();
             if ($statusCode != 200) {
                 /** @var \OxidEsales\Eshop\Core\Exception\StandardException $oException */
-                $oException = new StandardException();
+                $oException = new StandardException('cUrl call to ' . $this->_getCurl()->getUrl() . ' failed with HTTP status '. $statusCode);
                 throw $oException;
             }
             $this->_resetFailedCallsCount($iFailedCallsCount);

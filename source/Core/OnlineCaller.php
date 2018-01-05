@@ -92,8 +92,8 @@ abstract class OnlineCaller
             }
             $this->_resetFailedCallsCount($iFailedCallsCount);
         } catch (Exception $oEx) {
-            $this->_castExceptionAndWriteToLog($oEx);
             if ($iFailedCallsCount > self::ALLOWED_HTTP_FAILED_CALLS_COUNT) {
+                $this->_castExceptionAndWriteToLog($oEx);
                 $sXml = $this->_formEmail($oRequest);
                 $this->_sendEmail($sXml);
                 $this->_resetFailedCallsCount($iFailedCallsCount);

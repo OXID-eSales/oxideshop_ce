@@ -34,7 +34,7 @@ class FileChecker
      *
      * @var string
      */
-    public $_sWebServiceUrl = 'http://oxchkversion.oxid-esales.com/webService.php';
+    protected $_sWebServiceUrl = 'http://oxchkversion.oxid-esales.com/webService.php';
 
     /**
      * CURL handler

@@ -137,8 +137,6 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
      */
     public function testCalculateModuleTemplatePathWithNoActiveModules()
     {
-        $this->setExpectedException('oxException');
-
         /** @var oxModuleList|PHPUnit_Framework_MockObject_MockObject $moduleListMock */
         $moduleListMock = $this->getMock(oxModuleList::class, ['getActiveModuleInfo']);
         $moduleListMock->method('getActiveModuleInfo')->willReturn([]);
@@ -148,9 +146,9 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
 
         try {
             $templatePathCalculator->calculateModuleTemplatePath('someTemplateName.tpl');
-        } catch (Exception $e) {
-            $this->assertRegExp("@^Cannot find template@i", $e->getMessage());
-            throw $e;
+            $this->fail('An exception should have been thrown');
+        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
+            $this->assertRegExp("@^Cannot find template@i", $exception->getMessage());
         }
     }
 

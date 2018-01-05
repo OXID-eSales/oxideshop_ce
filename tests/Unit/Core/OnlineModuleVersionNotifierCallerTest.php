@@ -21,8 +21,6 @@ class OnlineModuleVersionNotifierCallerTest extends \OxidTestCase
 {
     public function testGetWebServiceUrl()
     {
-        $this->stubExceptionToNotWriteToLog();
-
         /** @var oxCurl $oCurl */
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute'));
         /** @var OnlineServerEmailBuilder $oEmailBuilder */
@@ -35,8 +33,6 @@ class OnlineModuleVersionNotifierCallerTest extends \OxidTestCase
 
     public function testDoRequestAndCheckDocumentName()
     {
-        $this->stubExceptionToNotWriteToLog();
-
         $this->getConfig()->setConfigParam('sClusterId', 'generated_unique_cluster_id');
 
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute', 'setParameters'));

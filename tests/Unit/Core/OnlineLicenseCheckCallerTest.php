@@ -24,8 +24,6 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
 
     public function testIfCorrectRequestPassedToXmlFormatter()
     {
-        $this->stubExceptionToNotWriteToLog();
-
         /** @var oxOnlineLicenseCheckRequest $oRequest */
         $oRequest = $this->getMock(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest::class, array(), array(), '', false);
 
@@ -46,8 +44,6 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
 
     public function testServiceCallWithCorrectRequest()
     {
-        $this->stubExceptionToNotWriteToLog();
-
         $oSimpleXml = $this->getMock('oxSimpleXml');
         $oSimpleXml->expects($this->any())->method('objectToXml')->will($this->returnValue('formed_xml'));
         /** @var oxSimpleXml $oSimpleXml */
@@ -106,8 +102,6 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
 
     public function testCorrectResponseReturned()
     {
-        $this->stubExceptionToNotWriteToLog();
-
         $oExpectedResponse = oxNew('oxOnlineLicenseCheckResponse');
         $oExpectedResponse->code = 0;
         $oExpectedResponse->message = 'ACK';
@@ -129,31 +123,48 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
         $this->assertEquals($oExpectedResponse, $oOnlineLicenseCaller->doRequest($oRequest));
     }
 
-    public function testCheckIfKeyWasRemovedWhenSendEmail()
+    public function testLicenseKeysWereRemovedFromEmailBody()
     {
-        $this->stubExceptionToNotWriteToLog();
+        /** A normal request would among other things contain the license keys  */
+        $oRequest = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest::class);
+        $oRequest->keys = ['key' => ['license_key_1', 'license_key_2',]];
+
+        /**
+         * The business logic sets the removes the license keys in the request, which is passed to the email builder.
+         * The request is converted to a XML string and passed to the email builder as  email body.
+         */
+        $emailRequest = clone $oRequest;
+        $emailRequest->keys = null;
+        $simpleXml = new \OxidEsales\Eshop\Core\SimpleXml();
+        $expectedEmailBody = $simpleXml->objectToXml($emailRequest,'olcRequest');
 
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute'));
-        $oCurl->expects($this->any())->method('execute')->will($this->throwException(new Exception()));
-        /** @var oxCurl $oCurl */
+        $stubbedExceptionMessage = 'This is a stubbed exception';
+        $oCurl->expects($this->any())->method('execute')->will($this->throwException(new Exception($stubbedExceptionMessage)));
 
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('send'));
         $oEmail->expects($this->any())->method('send');
-        /** @var oxEmail $oEmail */
 
         $oEmailBuilder = $this->getMock(\OxidEsales\Eshop\Core\OnlineServerEmailBuilder::class, array('build'));
-        $oEmailBuilder->expects($this->any())->method('build')->will($this->returnValue($oEmail));
-        /** @var OnlineServerEmailBuilder $oEmailBuilder */
+        $oEmailBuilder->expects($this->any())
+            ->method('build')
+            ->with($expectedEmailBody)
+            ->will($this->returnValue($oEmail));
 
-        $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, new oxSimpleXml());
-        $oRequest = oxNew('oxOnlineLicenseCheckRequest');
-        $oRequest->keys = '_testKeys';
+        $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $simpleXml);
 
         $this->getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 5);
-        $this->setExpectedException('oxException', 'OLC_ERROR_RESPONSE_NOT_VALID');
-        $oOnlineLicenseCaller->doRequest($oRequest);
+        try {
+            $oOnlineLicenseCaller->doRequest($oRequest);
+        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
+            $this->assertSame('OLC_ERROR_RESPONSE_NOT_VALID', $exception->getMessage());
+        }
 
-        $this->assertEquals($oCurl->getParameters(), $oRequest->keys);
+        /**
+         * The business logic will log the to the exception log, whenever an email is sent, but will not re-throw the error
+         */
+        $expectedExceptionClass = \OxidEsales\Eshop\Core\Exception\StandardException::class;
+        $this->assertLoggedException($expectedExceptionClass, $stubbedExceptionMessage);
     }
 
     /**

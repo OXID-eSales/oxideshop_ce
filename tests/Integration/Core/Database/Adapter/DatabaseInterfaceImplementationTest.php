@@ -1012,10 +1012,17 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     {
         $this->truncateTestTable();
 
+        /**
+         * An exception will be logged as part of the BC layer, when calling the getRow with a wrong SQL statement
+         * The exception log will be cleared at the end of this test
+         */
         $result = $this->database->getRow('INSERT INTO ' . self::TABLE_NAME . " (oxid) VALUES ('" . self::FIXTURE_OXID_1 . "')");
 
         $this->assertInternalType('array', $result);
         $this->assertEmpty($result);
+
+        $expectedExceptionClass = \OxidEsales\Eshop\Core\Exception\DatabaseErrorException::class;
+        $this->assertLoggedException($expectedExceptionClass);
     }
 
     /**

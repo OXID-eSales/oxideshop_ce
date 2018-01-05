@@ -832,6 +832,7 @@ class UtilsTest extends \OxidTestCase
         $this->assertEquals($tempFile, oxRegistry::getUtils()->GetRemoteCachePath('http://www.blafoo.null', $tempFile));
 
         //ensure that file is older than 24h
+        $this->activateTheme('azure');
         $file->lastModified(time() - 90000);
         $this->assertEquals($tempFile, oxRegistry::getUtils()->GetRemoteCachePath($this->getConfig()->getShopURL(), $tempFile));
 

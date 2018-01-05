@@ -535,9 +535,10 @@ class ViewConfigTest extends \OxidTestCase
     }
 
     /**
-     * test that no exception is thrown even if the file does not exists
-     * because shop should be robust against errors when running in production
-     * (btw. should be refactored: error should be logged into error log anyway, no need to abuse debug mode for this)
+     * Test that _no_ exception is thrown even if the file does not exist,
+     * because shop should be stable against errors when running in production.
+     * The error will be logged anyway.
+     *
      * @return void
      */
     public function testGetModulePathNoExceptionThrownWhenPathNotFoundAndDebugDisabled()
@@ -545,11 +546,17 @@ class ViewConfigTest extends \OxidTestCase
         $config = $this->fakeModuleStructure();
         $config->setConfigParam("iDebug", 0);
 
-        /** @var oxViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
+        /** @var \OxidEsales\EshopEnterprise\Core\ViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
         $viewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig'));
         $viewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($config));
 
         $this->assertEquals('', $viewConfig->getModulePath('test1', '/out/blocks/non_existing_template.tpl'));
+
+        /**
+         * Although no exception is thrown, the underlying error will be logged in EXCEPTION_LOG.txt
+         */
+        $expectedExceptionClass = \OxidEsales\Eshop\Core\Exception\FileException::class;
+        $this->assertLoggedException($expectedExceptionClass);
     }
 
     /**
@@ -617,9 +624,9 @@ class ViewConfigTest extends \OxidTestCase
         $fakeShopDirectory = $config->getConfigParam('sShopDir');
         $message = "Requested file not found for module test1 (" . $fakeShopDirectory .
             "modules/test1/out/blocks/non_existing_template.tpl)";
-        $this->setExpectedException('oxFileException', $message);
+        $this->setExpectedException(\OxidEsales\Eshop\Core\Exception\FileException::class, $message);
 
-        /** @var oxViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
+        /** @var \OxidEsales\Eshop\Core\ViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
         $viewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig'));
         $viewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($config));
 

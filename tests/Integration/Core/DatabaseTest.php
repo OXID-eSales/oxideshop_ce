@@ -8,11 +8,10 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
 use oxDb;
 use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\EshopCommunity\Core\DatabaseProvider;
-use OxidEsales\EshopCommunity\Core\Registry;
-use OxidEsales\TestingLibrary\UnitTestCase;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseNotConfiguredException;
+use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**
  * Class DatabaseTest
@@ -86,14 +85,18 @@ class DatabaseTest extends UnitTestCase
         Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $configFile);
         $this->setProtectedClassProperty(oxDb::getInstance(), 'db', null);
 
-        $this->setExpectedException('OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException');
-
+        $exceptionThrown = false;
         try {
             oxDb::getDb();
         } catch (DatabaseConnectionException $exception) {
+            $exceptionThrown = true;
+        } finally {
             /** Restore original configFile object */
             Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $configFileBackup);
-            throw $exception;
+        }
+
+        if (!$exceptionThrown) {
+            $this->fail('A DatabaseConnectionException should have been thrown, as the ConfigFile object does contain proper credentials.');
         }
     }
 
@@ -107,14 +110,12 @@ class DatabaseTest extends UnitTestCase
         Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $configFile);
         $this->setProtectedClassProperty(oxDb::getInstance(), 'db', null);
 
-        $this->setExpectedException('OxidEsales\EshopCommunity\Core\Exception\DatabaseNotConfiguredException');
-
         try {
             oxDb::getDb();
+            $this->fail('A DatabaseNotConfiguredException should have been thrown, as the ConfigFile object does does not pass validation.');
         } catch (DatabaseNotConfiguredException $exception) {
             /** Restore original configFile object */
             Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $configFileBackup);
-            throw $exception;
         }
     }
 

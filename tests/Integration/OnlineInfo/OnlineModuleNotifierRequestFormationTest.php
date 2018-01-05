@@ -27,8 +27,6 @@ class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
 {
     public function testRequestFormation()
     {
-        $this->stubExceptionToNotWriteToLog(SystemComponentException::class);
-
         $oConfig = oxRegistry::getConfig();
         $oConfig->setConfigParam('sClusterId', array('generated_unique_cluster_id'));
         $sEdition = $oConfig->getEdition();
@@ -57,13 +55,15 @@ class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
         $sXml .=   '<productId>eShop</productId>';
         $sXml .= '</omvnRequest>'."\n";
 
-        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('setParameters', 'execute'));
-        $oCurl->expects($this->atLeastOnce())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $sXml)));
-        $oCurl->expects($this->any())->method('execute')->will($this->returnValue(true));
-        /** @var oxCurl $oCurl */
+        $curlMock = $this->getMockBuilder(\OxidEsales\Eshop\Core\Curl::class)
+            ->setMethods(['execute','getStatusCode','setParameters'])
+            ->getMock();
+        $curlMock->expects($this->any())->method('execute')->will($this->returnValue(true));
+        $curlMock->expects($this->any())->method('getStatusCode')->will($this->returnValue(200));
+        $curlMock->expects($this->atLeastOnce())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $sXml)));
 
         $oEmailBuilder = oxNew(OnlineServerEmailBuilder::class);
-        $oOnlineModuleVersionNotifierCaller = new oxOnlineModuleVersionNotifierCaller($oCurl, $oEmailBuilder, new oxSimpleXml());
+        $oOnlineModuleVersionNotifierCaller = new oxOnlineModuleVersionNotifierCaller($curlMock, $oEmailBuilder, new oxSimpleXml());
 
         $oModule1 = oxNew('oxModule');
         $oModule1->setModuleData(array(

@@ -38,8 +38,6 @@ class OnlineCallerTest extends \OxidTestCase
 
     public function testCallWhenFailsAndItsLastAllowedCall()
     {
-        $this->stubExceptionToNotWriteToLog();
-
         /** @var oxOnlineCaller $oCaller */
         $oCaller = $this->getMockForAbstractClass(
             'oxOnlineCaller',
@@ -54,8 +52,6 @@ class OnlineCallerTest extends \OxidTestCase
 
     public function testCallWhenFailsAndThereAreNotAllowedCallsCount()
     {
-        $this->stubExceptionToNotWriteToLog();
-
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('send'));
         // Email send function must be called.
         $oEmail->expects($this->once())->method('send')->will($this->returnValue(true));
@@ -73,12 +69,16 @@ class OnlineCallerTest extends \OxidTestCase
 
         $oCaller->call($this->_getRequest());
         $this->assertSame(0, $this->getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
+
+        /**
+         * Although no exception is thrown, the underlying error will be logged in EXCEPTION_LOG.txt
+         */
+        $expectedExceptionClass = \OxidEsales\Eshop\Core\Exception\StandardException::class;
+        $this->assertLoggedException($expectedExceptionClass);
     }
 
     public function testCallWhenStatusCodeIndicatesError()
     {
-        $this->stubExceptionToNotWriteToLog();
-
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute', 'getStatusCode'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue('_testResult'));
         $oCurl->expects($this->any())->method('getStatusCode')->will($this->returnValue(500));
@@ -100,8 +100,6 @@ class OnlineCallerTest extends \OxidTestCase
      */
     public function testCallSetsTimeoutOptionForCurlExecution()
     {
-        $this->stubExceptionToNotWriteToLog();
-
         // Arrange
         $curlDouble = new oxOnlineCallerOxCurlOptionDouble();
 
@@ -126,6 +124,12 @@ class OnlineCallerTest extends \OxidTestCase
         );
 
         $this->assertSame($expectedOptionValue, $actualOptionValue);
+
+        /**
+         * Although no exception is thrown, the underlying error will be logged in EXCEPTION_LOG.txt
+         */
+        $expectedExceptionClass = \OxidEsales\Eshop\Core\Exception\StandardException::class;
+        $this->assertLoggedException($expectedExceptionClass);
     }
 
     /**

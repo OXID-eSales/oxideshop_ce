@@ -1145,7 +1145,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      * @param string $sModule module name (directory name in modules dir)
      * @param string $sFile   file name to lookup
      *
-     * @throws oxFileException
+     * @throws \OxidEsales\EshopCommunity\Core\Exception\FileException
      *
      * @return string
      */
@@ -1160,13 +1160,20 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         if (file_exists($sFile) || is_dir($sFile)) {
             return $sFile;
         } else {
-            /** @var \OxidEsales\Eshop\Core\Exception\FileException $oEx */
-            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\FileException::class, "Requested file not found for module $sModule ($sFile)");
-            if (!$this->getConfig()->getConfigParam('iDebug')) {
-                $oEx->debugOut();
-                return '';
+            /**
+             * Do not call oxNew in the exception handling of the module subsystem system, as the same module system will be
+             * involved when calling oxNew
+             */
+            $exception = new \OxidEsales\Eshop\Core\Exception\FileException("Requested file not found for module $sModule ($sFile)");
+            if ($this->getConfig()->getConfigParam('iDebug')) {
+                throw $exception;
             } else {
-                throw $oEx;
+                /**
+                 * This error should be reported, as it will be the cause of an unexpected behavior of the shop an the
+                 * operator should be given a chance to analyse the issue.
+                 */
+                $exception->debugOut();
+                return '';
             }
         }
     }

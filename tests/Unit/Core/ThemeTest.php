@@ -46,7 +46,7 @@ class ThemeTest extends \OxidTestCase
     {
         $oTheme = $this->getMock(\OxidEsales\Eshop\Core\Theme::class, array('checkForActivationErrors'));
         $oTheme->expects($this->once())->method('checkForActivationErrors')->will($this->returnValue('Error Message'));
-        $this->setExpectedException('oxException', 'Error Message');
+        $this->setExpectedException(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'Error Message');
         $oTheme->activate();
     }
 

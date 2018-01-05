@@ -94,8 +94,6 @@ class FunctionsTest extends \OxidTestCase
 
     public function testOxNewWithNonExistingClassName()
     {
-        $this->stubExceptionToNotWriteToLog(SystemComponentException::class,  SystemComponentException::class);
-
         $this->setExpectedException(SystemComponentException::class, 'non_existing_class');
 
         oxNew("non_existing_class");

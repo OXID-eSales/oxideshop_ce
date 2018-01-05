@@ -18,8 +18,6 @@ class OnlineLicenseCheckResponseHandlingTest extends \OxidEsales\TestingLibrary\
 {
     public function testRequestHandlingWithPositiveResponse()
     {
-        $this->stubExceptionToNotWriteToLog(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class);
-
         $config = $this->getConfig();
         $config->setConfigParam('blShopStopped', false);
         $config->setConfigParam('sShopVar', '');
@@ -30,16 +28,16 @@ class OnlineLicenseCheckResponseHandlingTest extends \OxidEsales\TestingLibrary\
         $xml .=   '<message>ACK</message>';
         $xml .= '</olc>'."\n";
 
-        $curl = $this->getMockBuilder(\OxidEsales\Eshop\Core\Curl::class)
-            ->setMethods(['execute'])
+        $curlMock = $this->getMockBuilder(\OxidEsales\Eshop\Core\Curl::class)
+            ->setMethods(['execute','getStatusCode'])
             ->getMock();
-        $curl->expects($this->any())->method('execute')->will($this->returnValue($xml));
-        /** @var \OxidEsales\Eshop\Core\Curl $curl */
+        $curlMock->expects($this->any())->method('execute')->will($this->returnValue($xml));
+        $curlMock->expects($this->any())->method('getStatusCode')->will($this->returnValue(200));
 
         $emailBuilder = oxNew(\OxidEsales\Eshop\Core\OnlineServerEmailBuilder::class);
 
         $simpleXml = oxNew(\OxidEsales\Eshop\Core\SimpleXml::class);
-        $licenseCaller = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckCaller::class, $curl, $emailBuilder, $simpleXml);
+        $licenseCaller = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckCaller::class, $curlMock, $emailBuilder, $simpleXml);
 
         $userCounter = oxNew(\OxidEsales\Eshop\Core\UserCounter::class);
         $licenseCheck = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheck::class, $licenseCaller, $userCounter);
@@ -52,8 +50,6 @@ class OnlineLicenseCheckResponseHandlingTest extends \OxidEsales\TestingLibrary\
 
     public function testRequestHandlingWithNegativeResponse()
     {
-        $this->stubExceptionToNotWriteToLog(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class);
-
         if ($this->getTestConfig()->getShopEdition() !== 'CE') {
             $this->markTestSkipped('This test is for Community edition only.');
         }
@@ -68,15 +64,15 @@ class OnlineLicenseCheckResponseHandlingTest extends \OxidEsales\TestingLibrary\
         $xml .=   '<message>NACK</message>';
         $xml .= '</olc>'."\n";
 
-        $curl = $this->getMockBuilder(\OxidEsales\Eshop\Core\Curl::class)
-            ->setMethods(['execute'])
+        $curlMock = $this->getMockBuilder(\OxidEsales\Eshop\Core\Curl::class)
+            ->setMethods(['execute','getStatusCode'])
             ->getMock();
-        $curl->expects($this->any())->method('execute')->will($this->returnValue($xml));
-        /** @var \OxidEsales\Eshop\Core\Curl $curl */
+        $curlMock->expects($this->any())->method('execute')->will($this->returnValue($xml));
+        $curlMock->expects($this->any())->method('getStatusCode')->will($this->returnValue(200));
 
         $emailBuilder = oxNew(\OxidEsales\Eshop\Core\OnlineServerEmailBuilder::class);
         $simpleXml = oxNew(\OxidEsales\Eshop\Core\SimpleXml::class);
-        $licenseCaller= oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckCaller::class, $curl, $emailBuilder, $simpleXml);
+        $licenseCaller= oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckCaller::class, $curlMock, $emailBuilder, $simpleXml);
 
         $userCounter = oxNew(\OxidEsales\Eshop\Core\UserCounter::class);
         $licenseCheck = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheck::class, $licenseCaller, $userCounter);
@@ -89,8 +85,6 @@ class OnlineLicenseCheckResponseHandlingTest extends \OxidEsales\TestingLibrary\
 
     public function testRequestHandlingWithInvalidResponse()
     {
-        $this->stubExceptionToNotWriteToLog(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class);
-
         $config = $this->getConfig();
         $config->setConfigParam('blShopStopped', false);
         $config->setConfigParam('sShopVar', '');
@@ -98,15 +92,15 @@ class OnlineLicenseCheckResponseHandlingTest extends \OxidEsales\TestingLibrary\
         $xml = '<?xml version="1.0" encoding="utf-8"?>'."\n";
         $xml .= 'Some random XML'."\n";
 
-        $curl = $this->getMockBuilder(\OxidEsales\Eshop\Core\Curl::class)
-            ->setMethods(['execute'])
+        $curlMock = $this->getMockBuilder(\OxidEsales\Eshop\Core\Curl::class)
+            ->setMethods(['execute','getStatusCode'])
             ->getMock();
-        $curl->expects($this->any())->method('execute')->will($this->returnValue($xml));
-        /** @var \OxidEsales\Eshop\Core\Curl $curl */
+        $curlMock->expects($this->any())->method('execute')->will($this->returnValue($xml));
+        $curlMock->expects($this->any())->method('getStatusCode')->will($this->returnValue(200));
 
         $emailBuilder = oxNew(\OxidEsales\Eshop\Core\OnlineServerEmailBuilder::class);
         $simpleXml = oxNew(\OxidEsales\Eshop\Core\SimpleXml::class);
-        $licenseCaller = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckCaller::class, $curl, $emailBuilder, $simpleXml);
+        $licenseCaller = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckCaller::class, $curlMock, $emailBuilder, $simpleXml);
 
         $userCounter = oxNew(\OxidEsales\Eshop\Core\UserCounter::class);
         $licenseCheck = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheck::class, $licenseCaller, $userCounter);

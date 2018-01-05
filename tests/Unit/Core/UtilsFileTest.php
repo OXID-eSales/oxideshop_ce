@@ -68,6 +68,7 @@ class UtilsFileTest extends \OxidTestCase
         $this->assertFalse($oUtilsFile->urlValidate("test/notvalid"));
         $this->assertFalse($oUtilsFile->urlValidate("http://www.oxid_non_existing_page.com"));
 
+        $this->activateTheme('azure');
         $shopUrl = $this->getTestConfig()->getShopUrl();
         $this->assertTrue($oUtilsFile->urlValidate($shopUrl ."?param=value"));
     }

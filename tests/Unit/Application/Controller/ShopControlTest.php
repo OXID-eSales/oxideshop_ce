@@ -3,31 +3,25 @@
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
+use Exception;
 use modDB;
-use \Exception;
-use \oxException;
+use oxException;
 use OxidEsales\EshopCommunity\Core\Exception\ConnectionException;
 use OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay;
 use OxidEsales\EshopCommunity\Core\Output;
 use oxOutput;
-use \oxSystemComponentException;
-use \oxRegistry;
-use \oxTestModules;
+use oxRegistry;
+use oxSystemComponentException;
+use oxTestModules;
 
 // Force autoloading of Smarty class, so that mocking would work correctly.
 class_exists('Smarty');
 
 class ShopControlTest extends \OxidTestCase
 {
-
-    protected function tearDown()
-    {
-        parent::tearDown();
-
-        modDB::getInstance()->cleanup();
-    }
 
     /**
      * Testing oxShopControl::start()
@@ -75,7 +69,6 @@ class ShopControlTest extends \OxidTestCase
         $oControl->expects($this->once())->method('isAdmin')->will($this->returnValue(true));
         $oControl->expects($this->once())->method('_process')->with($this->equalTo(\OxidEsales\Eshop\Application\Controller\Admin\LoginController::class), $this->equalTo("testFnc"));
         $oControl->start();
-
         //$this->assertEquals( $this->getConfig()->getBaseShopId(), $this->getSession()->getVariable( "actshop" ) );
     }
 
@@ -275,20 +268,21 @@ class ShopControlTest extends \OxidTestCase
      */
     public function testStartConnectionExceptionHandled()
     {
-        $exception = $this->stubExceptionToNotWriteToLog(ConnectionException::class);
+        $exceptionMock = $this->getMock(ConnectionException::class, ['debugOut']);
+        $exceptionMock->expects($this->any())->method('debugOut');
 
         $oxUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array("redirect"));
         $oxUtils->expects($this->never())->method("redirect");
         oxTestModules::addModuleObject("oxUtils", $oxUtils);
 
         $oxUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array("addErrorToDisplay"));
-        $oxUtilsView->expects($this->atLeastOnce())->method("addErrorToDisplay")->with($exception);
+        $oxUtilsView->expects($this->atLeastOnce())->method("addErrorToDisplay")->with($exceptionMock);
         oxTestModules::addModuleObject("oxUtilsView", $oxUtilsView);
 
         $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, array("_runOnce", "isAdmin", "_process", "_isDebugMode"), array(), '', false);
         $oControl->expects($this->any())->method('_runOnce');
         $oControl->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-        $oControl->expects($this->any())->method('_process')->will($this->throwException($exception));
+        $oControl->expects($this->any())->method('_process')->will($this->throwException($exceptionMock));
         $oControl->expects($this->any())->method('_isDebugMode')->will($this->returnValue(true));
 
         try {
@@ -300,11 +294,10 @@ class ShopControlTest extends \OxidTestCase
 
     /**
      * Testing oxShopControl::_render()
+     * An Exception is caught and reported to the exception log.
      */
     public function testRenderTemplateNotFound()
     {
-        $this->stubExceptionToNotWriteToLog(oxSystemComponentException::class, oxSystemComponentException::class);
-
         $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('render'));
         $oView->expects($this->once())->method('render')->will($this->returnValue('wrongTpl'));
 
@@ -327,6 +320,12 @@ class ShopControlTest extends \OxidTestCase
         $oControl->UNITrender($oView);
         \OxidEsales\Eshop\Core\Registry::getUtilsView()->passAllErrorsToView($aViewData, $oControl->UNITgetErrors('oxubase'));
         $this->assertTrue($aViewData["Errors"]["default"][0] instanceof ExceptionToDisplay);
+
+        /**
+         * Although no exception is thrown, the underlying error will be logged in EXCEPTION_LOG.txt
+         */
+        $expectedExceptionClass = \OxidEsales\Eshop\Core\Exception\SystemComponentException::class;
+        $this->assertLoggedException($expectedExceptionClass);
     }
 
     /**
@@ -448,11 +447,11 @@ class ShopControlTest extends \OxidTestCase
         $oOut->expects($this->at(0))->method('setOutputFormat')->with($this->equalTo(oxOutput::OUTPUT_FORMAT_JSON));
         $oOut->expects($this->at(1))->method('output')->with(
             $this->equalTo('errors'), $this->equalTo(
-                array(
-                     'other' => array('test1', 'test3'),
-                     'default' => array('test2', 'test4'),
-                )
+            array(
+                'other'   => array('test1', 'test3'),
+                'default' => array('test2', 'test4'),
             )
+        )
         );
         $oOut->expects($this->at(2))->method('sendHeaders')->will($this->returnValue(null));
         $oOut->expects($this->at(3))->method('output')->with($this->equalTo($controllerClassName), $this->anything());
@@ -654,6 +653,13 @@ class ShopControlTest extends \OxidTestCase
         $control->expects($this->once())->method('handleRoutingException')->with($this->equalTo($routingException));
 
         $control->start();
+    }
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+
+        modDB::getInstance()->cleanup();
     }
 
     /**

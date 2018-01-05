@@ -191,8 +191,6 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     public function testOxNewCreationOfNonExistingClassContainsClassNameInExceptionMessage()
     {
-        $this->stubExceptionToNotWriteToLog(SystemComponentException::class,  SystemComponentException::class);
-
         $this->setExpectedException(SystemComponentException::class, 'non_existing_class');
 
         oxNew("non_existing_class");

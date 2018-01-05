@@ -67,9 +67,18 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Protection parameters used for some data in order are invalid
      *
+     * @deprecated since v6.0.0 (2018-01-05); Use ORDER_STATE_INVALIDDELADDRESSCHANGED instead.
+     *
      * @var int
      */
     const ORDER_STATE_INVALIDDElADDRESSCHANGED = 7;
+
+    /**
+     * Protection parameters used for some data in order are invalid
+     *
+     * @var int
+     */
+    const ORDER_STATE_INVALIDDELADDRESSCHANGED = 7;
 
     /**
      * Basket price < minimum order price

@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\EshopCommunity\Application\Component\Widget\ServiceMenu::getCompareItemsCnt`
 - `OxidEsales\EshopCommunity\Core\Utils::strRot13`
 - `OxidEsales\EshopCommunity\Core\InputValidator::_addValidationError`
+- `OxidEsales\EshopCommunity\Application\Model\Order::ORDER_STATE_INVALIDDElADDRESSCHANGED`
 
 ### Removed
 - 'Your market' selection was removed from Setup wizard, as this value is no longer evaluated

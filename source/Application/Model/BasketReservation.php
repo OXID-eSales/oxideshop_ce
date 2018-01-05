@@ -268,24 +268,23 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      */
     public function discardUnusedReservations($iLimit)
     {
-        // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
-        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+
+        $iStartTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - (int) $this->getConfig()->getConfigParam('iPsBasketReservationTimeout');
+
+        $oRs = $database->select("select oxid from oxuserbaskets where oxtitle = 'reservations' and oxupdate <= $iStartTime limit $iLimit", false);
+        if ($oRs->EOF) {
+            return;
+        }
+        $aFinished = [];
+        while (!$oRs->EOF) {
+            $aFinished[] = $database->quote($oRs->fields['oxid']);
+            $oRs->fetchRow();
+        }
 
         $database->startTransaction();
         try {
-            $iStartTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - (int) $this->getConfig()->getConfigParam('iPsBasketReservationTimeout');
-            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-            $oRs = $database->select("select oxid from oxuserbaskets where oxtitle = 'reservations' and oxupdate <= $iStartTime limit $iLimit", false);
-            if ($oRs->EOF) {
-                $database->commitTransaction();
-                return;
-            }
-            $aFinished = [];
-            while (!$oRs->EOF) {
-                $aFinished[] = $database->quote($oRs->fields['oxid']);
-                $oRs->fetchRow();
-            }
-            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
             $oRs = $database->select("select oxartid, oxamount from oxuserbasketitems where oxbasketid in (" . implode(",", $aFinished) . ")", false);
             while (!$oRs->EOF) {
                 $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);

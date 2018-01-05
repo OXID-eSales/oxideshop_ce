@@ -131,24 +131,18 @@ class SelectListMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
         }
 
         if ($soxId && $soxId != "-1" && is_array($aAddArticle)) {
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->startTransaction();
-            try {
-                $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-                foreach ($aAddArticle as $sAdd) {
-                    $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
-                    $oNewGroup->init("oxobject2selectlist");
-                    $oNewGroup->oxobject2selectlist__oxobjectid = new \OxidEsales\Eshop\Core\Field($sAdd);
-                    $oNewGroup->oxobject2selectlist__oxselnid = new \OxidEsales\Eshop\Core\Field($soxId);
-                    $oNewGroup->oxobject2selectlist__oxsort = new \OxidEsales\Eshop\Core\Field(( int ) $database->getOne("select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  " . $database->quote($sAdd) . " "));
-                    $oNewGroup->save();
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
+            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
+            foreach ($aAddArticle as $sAdd) {
+                $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
+                $oNewGroup->init("oxobject2selectlist");
+                $oNewGroup->oxobject2selectlist__oxobjectid = new \OxidEsales\Eshop\Core\Field($sAdd);
+                $oNewGroup->oxobject2selectlist__oxselnid = new \OxidEsales\Eshop\Core\Field($soxId);
+                $oNewGroup->oxobject2selectlist__oxsort = new \OxidEsales\Eshop\Core\Field(( int ) $database->getOne("select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  " . $database->quote($sAdd) . " "));
+                $oNewGroup->save();
 
-                    $this->onArticleAddToSelectionList($sAdd);
-                }
-            } catch (Exception $exception) {
-                \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
-                throw $exception;
+                $this->onArticleAddToSelectionList($sAdd);
             }
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->commitTransaction();
         }
     }
 

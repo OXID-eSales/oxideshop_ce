@@ -427,8 +427,6 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $aDelAdress = $this->cleanAddress($aDelAdress, oxNew(UserShippingAddressUpdatableFields::class));
         $aDelAdress = $this->normalizeAddress($aDelAdress);
 
-        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $database->startTransaction();
         try {
             /** @var \OxidEsales\Eshop\Application\Model\User $oUser */
             $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
@@ -444,14 +442,24 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             // used for checking if user email currently subscribed
             $iSubscriptionStatus = $oUser->getNewsSubscription()->getOptInStatus();
 
-            $oUser->createUser();
-            $oUser = $this->configureUserBeforeCreation($oUser);
-            $oUser->load($oUser->getId());
-            $oUser->changeUserData($oUser->oxuser__oxusername->value, $sPassword, $sPassword, $aInvAdress, $aDelAdress);
+            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+            $database->startTransaction();
+            try {
+                $oUser->createUser();
+                $oUser = $this->configureUserBeforeCreation($oUser);
+                $oUser->load($oUser->getId());
+                $oUser->changeUserData($oUser->oxuser__oxusername->value, $sPassword, $sPassword, $aInvAdress, $aDelAdress);
 
-            if ($blActiveLogin) {
-                // accepting terms..
-                $oUser->acceptTerms();
+                if ($blActiveLogin) {
+                    // accepting terms..
+                    $oUser->acceptTerms();
+                }
+
+                $database->commitTransaction();
+            } catch (Exception $exception) {
+                $database->rollbackTransaction();
+
+                throw $exception;
             }
 
             $sUserId = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("su");
@@ -477,31 +485,22 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
             $oUser->addToGroup('oxidnotyetordered');
             $oUser->logout();
-            $database->commitTransaction();
         } catch (\OxidEsales\Eshop\Core\Exception\UserException $exception) {
             Registry::getUtilsView()->addErrorToDisplay($exception, false, true);
-            $database->rollbackTransaction();
 
             return false;
         } catch (\OxidEsales\Eshop\Core\Exception\InputException $exception) {
             Registry::getUtilsView()->addErrorToDisplay($exception, false, true);
-            $database->rollbackTransaction();
 
             return false;
         } catch (\OxidEsales\Eshop\Core\Exception\DatabaseConnectionException $exception) {
             Registry::getUtilsView()->addErrorToDisplay($exception, false, true);
-            $database->rollbackTransaction();
 
             return false;
         } catch (\OxidEsales\Eshop\Core\Exception\ConnectionException $exception) {
             Registry::getUtilsView()->addErrorToDisplay($exception, false, true);
-            $database->rollbackTransaction();
 
             return false;
-        } catch (Exception $exception) {
-            $database->rollbackTransaction();
-
-            throw $exception;
         }
 
         if (!$blActiveLogin) {

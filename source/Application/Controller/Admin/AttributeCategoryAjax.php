@@ -116,29 +116,24 @@ class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Adm
         }
 
         if ($oAttribute->load($soxId) && is_array($aAddCategory)) {
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->startTransaction();
-            try {
-                $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-                foreach ($aAddCategory as $sAdd) {
-                    $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
-                    $oNewGroup->init("oxcategory2attribute");
-                    $sOxSortField = 'oxcategory2attribute__oxsort';
-                    $sObjectIdField = 'oxcategory2attribute__oxobjectid';
-                    $sAttributeIdField = 'oxcategory2attribute__oxattrid';
-                    $sOxIdField = 'oxattribute__oxid';
-                    $oNewGroup->$sObjectIdField = new \OxidEsales\Eshop\Core\Field($sAdd);
-                    $oNewGroup->$sAttributeIdField = new \OxidEsales\Eshop\Core\Field($oAttribute->$sOxIdField->value);
-                    $sSql = "select max(oxsort) + 1 from oxcategory2attribute where oxobjectid = '$sAdd' ";
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
+            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
+            foreach ($aAddCategory as $sAdd) {
+                $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
+                $oNewGroup->init("oxcategory2attribute");
+                $sOxSortField = 'oxcategory2attribute__oxsort';
+                $sObjectIdField = 'oxcategory2attribute__oxobjectid';
+                $sAttributeIdField = 'oxcategory2attribute__oxattrid';
+                $sOxIdField = 'oxattribute__oxid';
+                $oNewGroup->$sObjectIdField = new \OxidEsales\Eshop\Core\Field($sAdd);
+                $oNewGroup->$sAttributeIdField = new \OxidEsales\Eshop\Core\Field($oAttribute->$sOxIdField->value);
 
-                    $oNewGroup->$sOxSortField = new \OxidEsales\Eshop\Core\Field(( int ) $database->getOne($sSql));
-                    $oNewGroup->save();
-                }
-            } catch (Exception $exception) {
-                \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
-                throw $exception;
+                $sSql = "select max(oxsort) + 1 from oxcategory2attribute where oxobjectid = '$sAdd' ";
+
+                $oNewGroup->$sOxSortField = new \OxidEsales\Eshop\Core\Field(( int ) $database->getOne($sSql));
+                $oNewGroup->save();
             }
         }
-        \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->commitTransaction();
 
         $this->resetContentCache();
     }

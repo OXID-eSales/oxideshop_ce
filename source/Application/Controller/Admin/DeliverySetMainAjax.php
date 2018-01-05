@@ -95,26 +95,20 @@ class DeliverySetMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin
             $aChosenSets = $this->_getAll($this->_addFilter("select $sDeliveryViewName.oxid " . $this->_getQuery()));
         }
         if ($soxId && $soxId != "-1" && is_array($aChosenSets)) {
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->startTransaction();
-            try {
-                $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-                foreach ($aChosenSets as $sChosenSet) {
-                    // check if we have this entry already in
-                    // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-                    $sID = $database->getOne("select oxid from oxdel2delset where oxdelid =  " . $database->quote($sChosenSet) . " and oxdelsetid = " . $database->quote($soxId));
-                    if (!isset($sID) || !$sID) {
-                        $oDel2delset = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
-                        $oDel2delset->init('oxdel2delset');
-                        $oDel2delset->oxdel2delset__oxdelid = new \OxidEsales\Eshop\Core\Field($sChosenSet);
-                        $oDel2delset->oxdel2delset__oxdelsetid = new \OxidEsales\Eshop\Core\Field($soxId);
-                        $oDel2delset->save();
-                    }
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
+            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
+            foreach ($aChosenSets as $sChosenSet) {
+                // check if we have this entry already in
+                // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+                $sID = $database->getOne("select oxid from oxdel2delset where oxdelid =  " . $database->quote($sChosenSet) . " and oxdelsetid = " . $database->quote($soxId));
+                if (!isset($sID) || !$sID) {
+                    $oDel2delset = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
+                    $oDel2delset->init('oxdel2delset');
+                    $oDel2delset->oxdel2delset__oxdelid = new \OxidEsales\Eshop\Core\Field($sChosenSet);
+                    $oDel2delset->oxdel2delset__oxdelsetid = new \OxidEsales\Eshop\Core\Field($soxId);
+                    $oDel2delset->save();
                 }
-            } catch (Exception $exception) {
-                \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
-                throw $exception;
             }
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->commitTransaction();
         }
     }
 }

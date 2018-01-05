@@ -176,37 +176,31 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
             $aArticles = $this->_getAll($this->_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }
 
-        \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->startTransaction();
-        try {
-            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sArtTable = $this->_getViewName('oxarticles');
-            $sQ = "select max(oxactions2article.oxsort) from oxactions2article join {$sArtTable} " .
-                  "on {$sArtTable}.oxid=oxactions2article.oxartid " .
-                  "where oxactions2article.oxactionid = " . $database->quote($soxId) .
-                  " and oxactions2article.oxshopid = '" . $myConfig->getShopId() .
-                  "'and $sArtTable.oxid is not null";
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
+        $sArtTable = $this->_getViewName('oxarticles');
+        $sQ = "select max(oxactions2article.oxsort) from oxactions2article join {$sArtTable} " .
+              "on {$sArtTable}.oxid=oxactions2article.oxartid " .
+              "where oxactions2article.oxactionid = " . $database->quote($soxId) .
+              " and oxactions2article.oxshopid = '" . $myConfig->getShopId() .
+              "'and $sArtTable.oxid is not null";
 
-            $iSort = ((int) $database->getOne($sQ)) + 1;
+        $iSort = ((int) $database->getOne($sQ)) + 1;
 
-            $articleAdded = false;
-            if ($soxId && $soxId != "-1" && is_array($aArticles)) {
-                $sShopId = $myConfig->getShopId();
-                foreach ($aArticles as $sAdd) {
-                    $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
-                    $oNewGroup->init('oxactions2article');
-                    $oNewGroup->oxactions2article__oxshopid = new \OxidEsales\Eshop\Core\Field($sShopId);
-                    $oNewGroup->oxactions2article__oxactionid = new \OxidEsales\Eshop\Core\Field($soxId);
-                    $oNewGroup->oxactions2article__oxartid = new \OxidEsales\Eshop\Core\Field($sAdd);
-                    $oNewGroup->oxactions2article__oxsort = new \OxidEsales\Eshop\Core\Field($iSort++);
-                    $oNewGroup->save();
-                }
-                $articleAdded = true;
+        $articleAdded = false;
+        if ($soxId && $soxId != "-1" && is_array($aArticles)) {
+            $sShopId = $myConfig->getShopId();
+            foreach ($aArticles as $sAdd) {
+                $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
+                $oNewGroup->init('oxactions2article');
+                $oNewGroup->oxactions2article__oxshopid = new \OxidEsales\Eshop\Core\Field($sShopId);
+                $oNewGroup->oxactions2article__oxactionid = new \OxidEsales\Eshop\Core\Field($soxId);
+                $oNewGroup->oxactions2article__oxartid = new \OxidEsales\Eshop\Core\Field($sAdd);
+                $oNewGroup->oxactions2article__oxsort = new \OxidEsales\Eshop\Core\Field($iSort++);
+                $oNewGroup->save();
             }
-        } catch (Exception $exception) {
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
-            throw $exception;
+            $articleAdded = true;
         }
-        \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->commitTransaction();
 
         return $articleAdded;
     }

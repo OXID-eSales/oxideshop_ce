@@ -53,7 +53,7 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
         $sQ = "select oxparentid from {$sArtViewName} where oxid = " . $oDb->quote($sOxid) . " and oxparentid != '' ";
         $sQ .= "and (select count(oxobjectid) from oxobject2selectlist " .
                "where oxobjectid = " . $oDb->quote($sOxid) . ") = 0";
-        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
         $sParentId = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sQ);
 
         // all selectlists article is in
@@ -109,27 +109,23 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
         }
 
         if ($soxId && $soxId != "-1" && is_array($aAddSel)) {
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->startTransaction();
-            try {
-                $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-                foreach ($aAddSel as $sAdd) {
-                    $oNew = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
-                    $oNew->init("oxobject2selectlist");
-                    $sObjectIdField = 'oxobject2selectlist__oxobjectid';
-                    $sSelectetionIdField = 'oxobject2selectlist__oxselnid';
-                    $sOxSortField = 'oxobject2selectlist__oxsort';
-                    $oNew->$sObjectIdField = new \OxidEsales\Eshop\Core\Field($soxId);
-                    $oNew->$sSelectetionIdField = new \OxidEsales\Eshop\Core\Field($sAdd);
-                    $sSql = "select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  {$database->quote($soxId)} ";
-                    // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-                    $oNew->$sOxSortField = new \OxidEsales\Eshop\Core\Field(( int ) $database->getOne($sSql));
-                    $oNew->save();
-                }
-            } catch (Exception $exception) {
-                \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
-                throw $exception;
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
+            foreach ($aAddSel as $sAdd) {
+                $oNew = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
+                $oNew->init("oxobject2selectlist");
+                $sObjectIdField = 'oxobject2selectlist__oxobjectid';
+                $sSelectetionIdField = 'oxobject2selectlist__oxselnid';
+                $sOxSortField = 'oxobject2selectlist__oxsort';
+
+                $oNew->$sObjectIdField = new \OxidEsales\Eshop\Core\Field($soxId);
+                $oNew->$sSelectetionIdField = new \OxidEsales\Eshop\Core\Field($sAdd);
+
+                $sSql = "select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  {$database->quote($soxId)} ";
+
+                $oNew->$sOxSortField = new \OxidEsales\Eshop\Core\Field(( int ) $database->getOne($sSql));
+                $oNew->save();
             }
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->commitTransaction();
 
             $this->onArticleSelectionListChange($soxId);
         }

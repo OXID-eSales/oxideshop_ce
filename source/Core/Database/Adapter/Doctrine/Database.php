@@ -883,6 +883,7 @@ class Database implements DatabaseInterface
     {
         $message = $exception->getMessage();
         $code = $exception->getCode();
+        $exceptionClass = DatabaseErrorException::class;
 
         switch (true) {
             case $exception instanceof Exception\ConnectionException:
@@ -898,7 +899,7 @@ class Database implements DatabaseInterface
                 // ConnectionException will be mapped to DatabaseConnectionException::class
                 // no break
             case is_a($exception->getPrevious(), '\Exception') && in_array($exception->getPrevious()->getCode(), ['2003']):
-                $exceptionClass = \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException::class;
+                $exceptionClass = DatabaseConnectionException::class;
                 break;
             case $exception instanceof DBALException:
                 /**
@@ -910,13 +911,10 @@ class Database implements DatabaseInterface
                 /** @var $pdoException PDOException */
                 $pdoException = $exception->getPrevious();
 
-                if ($pdoException->errorInfo[1]) {
+                if ($pdoException instanceof PDOException) {
                     $code = $this->convertErrorCode($pdoException->errorInfo[1]);
-                }
-                if ($pdoException->errorInfo[2]) {
                     $message = $pdoException->errorInfo[2];
                 }
-                $exceptionClass = DatabaseErrorException::class;
 
                 break;
             case $exception instanceof PDOException:
@@ -925,22 +923,15 @@ class Database implements DatabaseInterface
                  * See http://php.net/manual/de/class.pdoexception.php For details and discussion.
                  * Fortunately in some cases we can access PDOException and recover the original SQL error code and message.
                  */
-                if ($exception->errorInfo[1]) {
-                    $code = $this->convertErrorCode($exception->errorInfo[1]);
-                }
-                if ($exception->errorInfo[2]) {
-                    $message = $exception->errorInfo[2];
-                }
+                $code = $this->convertErrorCode($exception->errorInfo[1]);
+                $message = $exception->errorInfo[2];
+
                 /** In case the original code (int) cannot be recovered, code is set to 0 */
                 if (!is_integer($code)) {
                     $code = 0;
                 }
 
-                $exceptionClass = DatabaseErrorException::class;
-
                 break;
-            default:
-                $exceptionClass = DatabaseErrorException::class;
         }
 
         /** @var \oxException $convertedException */

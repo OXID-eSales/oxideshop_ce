@@ -69,7 +69,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @var int
      */
-    const ORDER_STATE_INVALIDDElADDRESSCHANGED = 7;
+    const ORDER_STATE_INVALIDDELADDRESSCHANGED = 7;
 
     /**
      * Basket price < minimum order price
@@ -2058,7 +2058,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         $iState = 0;
         if ($sDelAddressMD5 != $sDeliveryAddress || !$blFieldsValid) {
-            $iState = self::ORDER_STATE_INVALIDDElADDRESSCHANGED;
+            $iState = self::ORDER_STATE_INVALIDDELADDRESSCHANGED;
         }
 
         return $iState;

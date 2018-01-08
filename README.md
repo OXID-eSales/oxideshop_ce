@@ -31,8 +31,8 @@ You can easily enable code completion in your IDE by installing [this script](ht
 
 ### Useful links
 
-* Project home page - http://oxidforge.org
-* Vendor home page - http://www.oxid-esales.com
+* Project home page - https://oxidforge.org
+* Vendor home page - https://www.oxid-esales.com
 * Bug tracker - https://bugs.oxid-esales.com
 * VM and SDK - https://github.com/OXID-eSales/oxvm_eshop
 
@@ -40,6 +40,6 @@ You can easily enable code completion in your IDE by installing [this script](ht
 ### Contact us
 
  * [Open a new issue on our bug tracker](https://bugs.oxid-esales.com)
- * [Join our community forum](http://forum.oxid-esales.com/)
+ * [Join our community forum](https://forum.oxid-esales.com/)
  * [Join our mailing list](https://oxidforge.org/en/mailinglists)
  * [Use the contact form](https://www.oxid-esales.com/en/contact/contact-us.html)

@@ -141,9 +141,9 @@ class oxWidgetControl extends oxShopControl
         }
 
         $oWidgetViewObject = parent::_initializeViewObject($sClass, $sFunction, $aParams);
-        if (!is_a($oWidgetViewObject, oxWidget::class)) {
+        if (!is_a($oWidgetViewObject, 'oxWidget')) {
             /** @var oxObjectException $exception */
-            $exception = oxNew(oxObjectException::class, get_class($oWidgetViewObject) . ' is not an instance of ' . oxWidget::class);
+            $exception = oxNew('oxObjectException', get_class($oWidgetViewObject) . ' is not an instance of oxWidget');
             throw $exception;
         }
 

@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Core\Module;
  * Module class.
  *
  * @internal Do not make a module extension for this class.
- * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
+ * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class Module extends \OxidEsales\Eshop\Core\Base
 {

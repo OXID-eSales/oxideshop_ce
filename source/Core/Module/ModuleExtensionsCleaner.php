@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Core\Module;
  *
  * @package  OxidEsales\EshopCommunity\Core\Module
  * @internal Do not make a module extension for this class.
- * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
+ * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ModuleExtensionsCleaner
 {

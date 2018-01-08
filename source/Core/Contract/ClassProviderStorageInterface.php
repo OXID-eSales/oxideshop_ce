@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Core\Contract;
  * Interface for Handling the storing/loading of the metadata controller field of the modules.
  *
  * @internal Do not make a module extension for this class.
- * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      https://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
 interface ClassProviderStorageInterface
 {

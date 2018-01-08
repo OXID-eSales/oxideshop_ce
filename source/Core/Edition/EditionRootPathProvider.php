@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Core\Registry;
  * Class is responsible for returning edition directory path.
  *
  * @internal Do not make a module extension for this class.
- * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
+ * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  *
  * @deprecated since v6.0.0-rc.2 (2017-08-24); Use \OxidEsales\Facts\Facts instead.
  */

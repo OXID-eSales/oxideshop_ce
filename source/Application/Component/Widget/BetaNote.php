@@ -23,7 +23,7 @@ class BetaNote extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCont
      *
      * @var string
      */
-    protected $_sBetaNoteLink = 'http://oxidforge.org/en/beta-releases.html';
+    protected $_sBetaNoteLink = 'https://oxidforge.org/en/beta-releases.html';
 
     /**
      * Gets beta note link

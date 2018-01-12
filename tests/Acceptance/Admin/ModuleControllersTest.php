@@ -73,6 +73,11 @@ class ModuleControllersTest extends AdminTestCase
         $this->openShop();
         $this->open(shopURL . '/index.php?cl=test_module_controller_routing_ns_MyModuleController');
         $this->assertTextNotPresent('Test module for controller routing');
+
+        $this->assertLoggedException(
+            \OxidEsales\Eshop\Core\Exception\SystemComponentException::class,
+            "EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND test_module_controller_routing_ns_mymodulecontroller"
+        );
     }
 
     /**

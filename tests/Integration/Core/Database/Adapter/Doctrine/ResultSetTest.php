@@ -451,7 +451,7 @@ class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
      */
     protected function createDatabase()
     {
-        return \oxDb::getDb();
+        return \oxDb::getMaster();
     }
 
     /**

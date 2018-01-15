@@ -4753,14 +4753,14 @@ class ArticleTest extends \OxidTestCase
         $oArticle->load("09646538b54bac72b4ccb92fb5e3649f");
         $oArticle->zz = true;
 
-        $this->assertFalse(isset($oArticle->oxarticles__oxpic1));
-        $this->assertFalse(isset($oArticle->oxarticles__oxzoom1));
+        $this->assertFalse($oArticle->isPropertyLoaded('oxarticles__oxpic1'));
+        $this->assertFalse($oArticle->isPropertyLoaded('oxarticles__oxzoom1'));
 
         //first time access
-        $sPic = $oArticle->oxarticles__oxpic1->value;
-        $sZoomPic = $oArticle->oxarticles__oxzoom1->value;
+        $picture    = $oArticle->oxarticles__oxpic1->value;
+        $zoom       = $oArticle->oxarticles__oxzoom1->value;
 
-        $this->assertTrue(isset($oArticle->oxarticles__oxpic1));
+        $this->assertTrue($oArticle->isPropertyLoaded('oxarticles__oxpic1'));
         $this->assertEquals("front_z1.jpg", $oArticle->oxarticles__oxpic1->value);
     }
 
@@ -4774,13 +4774,13 @@ class ArticleTest extends \OxidTestCase
         $oArticle = oxNew('oxArticleHelper');
         $oArticle->load("2000");
 
-        $this->assertFalse(isset($oArticle->oxarticles__oxthumb));
+        $this->assertFalse($oArticle->isPropertyLoaded('oxarticles__oxthumb'));
 
         //first time access
-        $sPic = $oArticle->oxarticles__oxthumb->value;
+        $thumb = $oArticle->oxarticles__oxthumb->value;
 
-        $this->assertTrue(isset($oArticle->oxarticles__oxthumb));
-        $this->assertEquals("2000_th.jpg", $oArticle->oxarticles__oxthumb->value);
+        $this->assertTrue($oArticle->isPropertyLoaded('oxarticles__oxthumb'));
+        $this->assertEquals("2000_th.jpg", $thumb);
     }
 
     /**
@@ -4793,13 +4793,13 @@ class ArticleTest extends \OxidTestCase
         $oArticle = oxNew('oxArticleHelper');
         $oArticle->load("2000");
 
-        $this->assertFalse(isset($oArticle->oxarticles__oxicon));
+        $this->assertFalse($oArticle->isPropertyLoaded('oxarticles__oxicon'));
 
         //first time access
-        $sPic = $oArticle->oxarticles__oxicon->value;
+        $icon = $oArticle->oxarticles__oxicon->value;
 
-        $this->assertTrue(isset($oArticle->oxarticles__oxicon));
-        $this->assertEquals("2000_ico.jpg", $oArticle->oxarticles__oxicon->value);
+        $this->assertTrue($oArticle->isPropertyLoaded('oxarticles__oxicon'));
+        $this->assertEquals("2000_ico.jpg", $icon);
     }
 
     /**

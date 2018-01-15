@@ -1740,8 +1740,8 @@ EOT;
         $oTest = $this->getProxyClass("oxArticleList");
         $oTest->selectString("select oxid from oxarticles where oxid = '2000'");
         $this->assertEquals('2000', $oTest['2000']->getId());
-        //this should be lazy loaded
-        $this->assertFalse(isset($oTest['2000']->oxarticles__oxinsert));
+
+        $this->assertFalse($oTest['2000']->isPropertyLoaded('oxarticles__oxinsert'));
         $this->assertEquals($sDate, $oTest['2000']->oxarticles__oxinsert->value);
     }
 
@@ -1757,11 +1757,11 @@ EOT;
         $oTest = $this->getProxyClass("oxArticleList");
         $oTest->selectString("select oxid from oxarticles where oxid = '2000' or oxid = '1354'");
         $this->assertEquals('2000', $oTest['2000']->getId());
-        //this should be lazy loaded
-        $this->assertFalse(isset($oTest['2000']->oxarticles__oxinsert));
+
+        $this->assertFalse($oTest['2000']->isPropertyLoaded('oxarticles__oxinsert'));
         $this->assertEquals($sDate, $oTest['2000']->oxarticles__oxinsert->value);
-        //article 2
-        $this->assertFalse(isset($oTest['1354']->oxarticles__oxinsert));
+
+        $this->assertFalse($oTest['1354']->isPropertyLoaded('oxarticles__oxinsert'));
         $this->assertEquals($sDate, $oTest['1354']->oxarticles__oxinsert->value);
     }
 

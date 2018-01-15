@@ -458,12 +458,15 @@ class BasketitemTest extends \OxidTestCase
 
         $oBasketItem = oxNew('oxbasketitem');
         $oBasketItem->init($article->getId(), 1);
+
         $oArticle = $oBasketItem->getArticle();
-        $this->assertFalse(isset($oArticle->oxarticles__oxpic12));
+
+        $this->assertFalse($oArticle->isPropertyLoaded('oxarticles__oxpic12'));
+
         $oArticle = $oBasketItem->getArticle(true, null, true);
         $this->assertTrue($oArticle instanceof article);
 
-        $this->assertTrue(isset($oArticle->oxarticles__oxpic12));
+        $this->assertTrue($oArticle->isPropertyLoaded('oxarticles__oxpic12'));
     }
 
     /**

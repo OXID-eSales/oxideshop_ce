@@ -476,27 +476,4 @@ class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
     {
         $this->assertSame(sort($resultArray), sort($expectedArray));
     }
-
-    /**
-     * Assert, that the given object is a doctrine result set.
-     *
-     * @param ResultSet $resultSet The object to check.
-     */
-    private function assertDoctrineResultSet($resultSet)
-    {
-        $resultSetClassName = $this->getResultSetClassName();
-
-        $this->assertSame($resultSetClassName, get_class($resultSet));
-    }
-
-    /**
-     * Assert, that the given arrays have the same content. Useful, if the content is not ordered as expected.
-     *
-     * @param array $resultArray   The array we got.
-     * @param array $expectedArray The array we expect.
-     */
-    private function assertArrayContentSame($resultArray, $expectedArray)
-    {
-        $this->assertSame(sort($resultArray), sort($expectedArray));
-    }
 }

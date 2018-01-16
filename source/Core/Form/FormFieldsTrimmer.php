@@ -7,52 +7,39 @@
 namespace OxidEsales\EshopCommunity\Core\Form;
 
 use OxidEsales\Eshop\Core\Form\FormFieldsTrimmerInterface as EshopFormFieldsTrimmerInterface;
+use OxidEsales\Eshop\Core\Form\FormFields as EshopFormFields;
 
 /**
- * Trimm FormFields.
+ * Trim FormFields.
  */
 class FormFieldsTrimmer implements EshopFormFieldsTrimmerInterface
 {
     /**
      * Returns trimmed fields.
      *
-     * @param  array $fields
+     * @param EshopFormFields $fields to trim.
      *
-     * @return mixed
+     * @return array
      */
-    public function trim($fields)
+    public function trim(EshopFormFields $fields)
     {
-        foreach ($fields as $index => $value) {
-            if ($this->isTrimmableField($value)) {
-                $fields[$index] = $this->trimField($value);
-            }
+        $updatableFields = $fields->getUpdatableFields();
 
-            if ($this->isSetOfFields($value)) {
-                $fields[$index] = $this->trim($value);
-            }
-        }
+        array_walk_recursive($updatableFields, function (&$value) {
+            $value = $this->isTrimmableField($value) ? $this->trimField($value) : $value;
+        });
 
-        return $fields;
+        return $updatableFields;
     }
 
     /**
-     * @param  mixed $value
+     * @param mixed $value
      *
      * @return bool
      */
     private function isTrimmableField($value)
     {
         return is_string($value);
-    }
-
-    /**
-     * @param   mixed $value
-     *
-     * @return  bool
-     */
-    private function isSetOfFields($value)
-    {
-        return is_array($value);
     }
 
     /**

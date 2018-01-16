@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Core\Form;
 
+use OxidEsales\Eshop\Core\Form\FormFields as EshopFormFields;
+
 /**
  * Trimm FormFields.
  */
@@ -14,7 +16,7 @@ interface FormFieldsTrimmerInterface
     /**
      * Returns trimmed fields.
      *
-     * @param  array $fields
+     * @param  FormFields $formFields
      */
-    public function trim($fields);
+    public function trim(EshopFormFields $formFields);
 }

@@ -40,7 +40,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         parent::render();
 
         /** @var \OxidEsales\Eshop\Application\Model\Category $oCategory */
-        $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
+        $oCategory = $this->createCategory();
 
         $categoryId = $this->getEditObjectId();
 
@@ -148,7 +148,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         );
 
         /** @var \OxidEsales\Eshop\Application\Model\Category $oCategory */
-        $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
+        $oCategory = $this->createCategory();
 
         if ($soxId != self::NEW_CATEGORY_ID) {
             $this->resetCounter("catArticle", $soxId);
@@ -354,5 +354,15 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $utilsFile = \OxidEsales\Eshop\Core\Registry::getUtilsFile();
 
         return $utilsFile->processFiles($category);
+    }
+
+    /**
+     * @return \OxidEsales\Eshop\Application\Model\Category
+     */
+    protected function createCategory()
+    {
+        $category = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
+
+        return $category;
     }
 }

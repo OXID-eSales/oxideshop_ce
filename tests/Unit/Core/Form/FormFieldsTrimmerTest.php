@@ -9,17 +9,16 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Form;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 use OxidEsales\Eshop\Core\Form\FormFields;
-use OxidEsales\Eshop\Core\Form\FormFieldsNormalizer;
 use OxidEsales\Eshop\Core\Form\FormFieldsTrimmer;
 
 /**
- * Class FormFieldsNormalizerTest
+ * Class FormFieldsTrimmerTest
  *
  * @package OxidEsales\EshopCommunity\Tests\Unit\Core\Form
  */
-class FormFieldsNormalizerTest extends UnitTestCase
+class FormFieldsTrimmerTest extends UnitTestCase
 {
-    public function testFormFieldsTrimming()
+    public function testTrimming()
     {
         $untrimmedFields = oxNew(FormFields::class, [
             'zip'   => '  79098 ',
@@ -39,12 +38,35 @@ class FormFieldsNormalizerTest extends UnitTestCase
             ],
         ]);
 
-        $trimmer    = oxNew(FormFieldsTrimmer::class);
-        $normalizer = oxNew(FormFieldsNormalizer::class, $trimmer);
+        $trimmer = oxNew(FormFieldsTrimmer::class);
+        $fieldsAfterTrimming = $trimmer->trim($untrimmedFields);
 
         $this->assertEquals(
             $trimmedFields,
-            $normalizer->normalize($untrimmedFields)
+            $fieldsAfterTrimming
+        );
+    }
+
+    public function testMustTrimStringFieldsOnly()
+    {
+        $untrimmedFields = oxNew(FormFields::class, [
+            'string'    => ' to trim',
+            'bool'      => true,
+            'int'       => 5,
+        ]);
+
+        $trimmedFields = [
+            'string'    => 'to trim',
+            'bool'      => true,
+            'int'       => 5,
+        ];
+
+        $trimmer = oxNew(FormFieldsTrimmer::class);
+        $fieldsAfterTrimming = (array) $trimmer->trim($untrimmedFields);
+
+        $this->assertSame(
+            $trimmedFields,
+            $fieldsAfterTrimming
         );
     }
 }

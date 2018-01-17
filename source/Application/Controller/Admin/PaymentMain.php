@@ -37,9 +37,9 @@ class PaymentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         unset($this->_aViewData["sumtype"][2]);
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
+        $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
+
         if (isset($soxId) && $soxId != "-1") {
-            // load object
-            $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
             $oPayment->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oPayment->getAvailableInLangs();

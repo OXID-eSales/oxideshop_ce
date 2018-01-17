@@ -32,7 +32,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
         $this->getConfig()->setConfigParam('bl_perfLoadPrice', true);
 
-        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
+        $oArticle = $this->createArticle();
         $oArticle->enablePriceLoad();
 
         $this->_aViewData['edit'] = $oArticle;
@@ -149,7 +149,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             unset($aParams['oxarticles__oxparentid']);
         }
 
-        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
+        $oArticle = $this->createArticle();
         $oArticle->setLanguage($this->_iEditLang);
 
         if ($soxId != "-1") {
@@ -745,5 +745,15 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     protected function saveAdditionalArticleData($article, $parameters)
     {
         return $article;
+    }
+
+    /**
+     * @return \OxidEsales\Eshop\Application\Model\Article
+     */
+    protected function createArticle()
+    {
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
+
+        return $oArticle;
     }
 }

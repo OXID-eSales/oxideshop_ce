@@ -27,9 +27,9 @@ class NewsletterMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
+        $oNewsletter = oxNew(\OxidEsales\Eshop\Application\Model\Newsletter::class);
+
         if (isset($soxId) && $soxId != "-1") {
-            // load object
-            $oNewsletter = oxNew(\OxidEsales\Eshop\Application\Model\Newsletter::class);
             $oNewsletter->load($soxId);
             $this->_aViewData["edit"] = $oNewsletter;
         }

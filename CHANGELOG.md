@@ -21,6 +21,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `OxidEsales\EshopCommunity\Application\Controller\Admin\AdminController::isNewEditObject()`
   - `OxidEsales\EshopCommunity\Application\Model\Actions::isDefault()`
   - `OxidEsales\EshopCommunity\Core\Model\BaseModel::isPropertyLoaded()`
+  - `OxidEsales\EshopCommunity\Application\Controller\TextEditorHandler::disableTextEditor()`
+  - `OxidEsales\EshopCommunity\Application\Controller\TextEditorHandler::isTextEditorDisabled()`
+  - `OxidEsales\EshopCommunity\Application\Controller\Admin\AdminDetailsController::configureTextEditorHandler()`
+  - `OxidEsales\EshopCommunity\Application\Controller\Admin\AdminDetailsController::getTextEditorHandler()`
 
 ### Changed
 - In voucher series generation, if Coupon Number radio button checked, the number is marked as Required now. [PR-676](https://github.com/OXID-eSales/oxideshop_ce/pull/676)
@@ -30,6 +34,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Readme.md and Contributing.md files are updated.
 - CSS adapted in OXID eShop Setup to reflect new design, extracted styles to separate file `Setup/out/src/main.css`
 - The function isset on a not loaded property of a model with lazy loading loads the property if it's possible and returns true. To check if property is loaded use BaseModel::isPropertyLoaded()
+- admin template `article_main.tpl`
 
 ### Deprecated
 - `OxidEsales\EshopCommunity\Application\Controller\Admin\ArticleSeo::_getSaveObjectId`

@@ -291,7 +291,7 @@ class ConfigTest extends \OxidTestCase
     /**
      * When a DatabaseException is thrown, method handleDatabaseException on the ExceptionHandler is called
      *
-     * @covers Config::init()
+     * @covers \OxidEsales\Eshop\Core\Config::init()
      */
     public function testInitCallesExceptionHandlerOnDatabaseException()
     {
@@ -2497,7 +2497,7 @@ class ConfigTest extends \OxidTestCase
     }
 
     /**
-     * @covers Config::getExceptionHandler()
+     * @covers \OxidEsales\Eshop\Core\Config::getExceptionHandler()
      */
     public function testGetExceptionHandlerReturnsInstanceOfExceptionHandler ()
     {

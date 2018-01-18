@@ -5,22 +5,16 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
 
-use \oxCurl;
 use OxidEsales\Eshop\Core\OnlineServerEmailBuilder;
 use OxidEsales\EshopCommunity\Core\Exception\SystemComponentException;
-use \oxModule;
 use \oxOnlineModuleVersionNotifier;
 use \oxOnlineModuleVersionNotifierCaller;
 use \oxRegistry;
 use \oxSimpleXml;
-use \oxSystemComponentException;
-use \oxTestModules;
 
 /**
  * Class Integration_OnlineInfo_FrontendServersInformationStoringTest
  *
- * @covers oxServerProcessor
- * @covers oxApplicationServer
  * @covers \OxidEsales\Eshop\Core\Service\ApplicationServerService
  */
 class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
@@ -81,7 +75,7 @@ class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
 
         $oModuleList = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, array('getList'));
         $oModuleList->expects($this->any())->method('getList')->will($this->returnValue(array($oModule1, $oModule2)));
-        /** @var oxModule $oModuleList */
+        /** @var \OxidEsales\Eshop\Core\Module\ModuleList $oModuleList */
 
         $oOnlineModuleVersionNotifier = new oxOnlineModuleVersionNotifier($oOnlineModuleVersionNotifierCaller, $oModuleList);
 

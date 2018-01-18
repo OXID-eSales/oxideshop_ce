@@ -530,7 +530,10 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
                 if ($oRs->fields['oxexpired'] && ($oRs->fields['oxtype'] == 'static' || $oRs->fields['oxtype'] == 'dynamic')) {
                     // if expired - copying to history, marking as not expired
                     $this->_copyToHistory($sId, $iShopId, $iLang);
-                    $oDb->execute("update oxseo set oxexpired = 0 where oxobjectid = " . $oDb->quote($sId) . " and oxlang = '{$iLang}'");
+                    $oDb->execute(
+                        "update oxseo set oxexpired = 0 where oxobjectid = ? and oxlang = ? and oxshopid = ?",
+                        [$sId, $iLang, $iShopId]
+                    );
                     $sSeoUrl = $oRs->fields['oxseourl'];
                 } elseif (!$oRs->fields['oxexpired'] || $oRs->fields['oxfixed']) {
                     // if seo url is available and is valid

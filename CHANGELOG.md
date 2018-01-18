@@ -66,6 +66,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Additional cache variable for Article::getAttributesDisplayableInBasket [PR-616](https://github.com/OXID-eSales/oxideshop_ce/pull/616)
 - [RSS feed for categories not sorted desc by time](https://bugs.oxid-esales.com/view.php?id=6739)
 - [VariantHandler always uses brutto price for MD Variants](https://bugs.oxid-esales.com/view.php?id=6761)
+- Expire SEO links for correct shop id [PR-594](https://github.com/OXID-eSales/oxideshop_ce/pull/594)
 
 ### Security
 

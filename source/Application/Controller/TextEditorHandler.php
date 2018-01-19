@@ -19,12 +19,6 @@ class TextEditorHandler
     private $stylesheet = null;
 
     /**
-     * @var bool Information in the text editor is editable by default.
-     *           In some cases it should not be etc. when product is derived.
-     */
-    protected $textEditorDisabled = false;
-
-    /**
      * Render text editor.
      *
      * @param int    $width       The editor width.
@@ -62,9 +56,7 @@ class TextEditorHandler
             $height .= 'px';
         }
 
-        $disabledTextEditor = $this->isTextEditorDisabled() ? 'disabled ' : '';
-
-        return "<textarea ${disabledTextEditor}id='editor_{$fieldName}' style='width:{$width}; height:{$height};'>{$objectValue}</textarea>";
+        return "<textarea id='editor_{$fieldName}' style='width:{$width}; height:{$height};'>{$objectValue}</textarea>";
     }
 
     /**
@@ -100,23 +92,5 @@ class TextEditorHandler
     public function getStyleSheet()
     {
         return $this->stylesheet;
-    }
-
-    /**
-     * Mark text editor disabled: information in it should not be editable.
-     */
-    public function disableTextEditor()
-    {
-        $this->textEditorDisabled = true;
-    }
-
-    /**
-     * If information in text editor is not editable.
-     *
-     * @return bool
-     */
-    public function isTextEditorDisabled()
-    {
-        return $this->textEditorDisabled;
     }
 }

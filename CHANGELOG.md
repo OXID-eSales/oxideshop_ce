@@ -48,6 +48,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - admin_article_variant_extended
   - admin_article_variant_language_edit
   - admin_article_variant_bottom_extended
+  - admin_order_remark_type
+  - admin_user_remark_type
 - New methods:
   - `OxidEsales\EshopCommunity\Core\InputValidator::addValidationError`
   - `OxidEsales\EshopCommunity\Application\Controller\Admin\ActionsMain::checkAccessToEditAction()`

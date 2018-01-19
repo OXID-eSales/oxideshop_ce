@@ -22,7 +22,7 @@ class TextEditorHandler
      * @var bool Information in the text editor is editable by default.
      *           In some cases it should not be etc. when product is derived.
      */
-    private $textEditorDisabled = false;
+    protected $textEditorDisabled = false;
 
     /**
      * Render text editor.

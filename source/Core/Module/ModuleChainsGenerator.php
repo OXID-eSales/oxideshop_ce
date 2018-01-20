@@ -236,8 +236,14 @@ class ModuleChainsGenerator
             $extensionPath = str_replace(chr(0), '', $extensionPath);
 
             if ($this->createClassExtension($parentClass, $extensionPath)) {
-                $parentClass = basename($extensionPath);
-                $lastClass = basename($extensionPath);
+                if (\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($extensionPath)) {
+                    $parentClass = $extensionPath;
+                    $lastClass = $extensionPath;
+                }
+                else {
+                    $parentClass = basename($extensionPath);
+                    $lastClass = basename($extensionPath);
+                }
             }
         }
 

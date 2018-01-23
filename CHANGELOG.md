@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [6.1.0] - unreleased
+## [6.1.0] - 2018-01-23
 
 ### Added
 - Added classes:
@@ -70,8 +70,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - [VariantHandler always uses brutto price for MD Variants](https://bugs.oxid-esales.com/view.php?id=6761)
 - Expire SEO links for correct shop id [PR-594](https://github.com/OXID-eSales/oxideshop_ce/pull/594)
 - [Module with namespaces not working on Windows](https://bugs.oxid-esales.com/view.php?id=6737)
-
-### Security
 
 ## [6.0.0] - 2017-11-17
 
@@ -227,7 +225,7 @@ See
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
 
-[Unreleased]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0...HEAD
+[6.1.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0...v6.1.0
 [6.0.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0-rc.3...v6.0.0
 [6.0.0-rc.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0-rc.2...v6.0.0-rc.3
 [6.0.0-rc.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0-rc.1...v6.0.0-rc.2

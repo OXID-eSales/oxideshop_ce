@@ -102,6 +102,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - [RSS feed for categories not sorted desc by time](https://bugs.oxid-esales.com/view.php?id=6739)
 - [VariantHandler always uses brutto price for MD Variants](https://bugs.oxid-esales.com/view.php?id=6761)
 - Expire SEO links for correct shop id [PR-594](https://github.com/OXID-eSales/oxideshop_ce/pull/594)
+- [Module with namespaces not working on Windows](https://bugs.oxid-esales.com/view.php?id=6737)
 
 ### Security
 

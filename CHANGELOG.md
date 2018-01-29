@@ -29,7 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `OxidEsales\EshopCommunity\Application\Controller\Admin\AdminDetailsController::getTextEditorHandler()`
 
 ### Changed
-- In voucher series generation, if Coupon Number radio button checked, the number is marked as Required now. [PR-676](https://github.com/OXID-eSales/oxideshop_ce/pull/676)
+- In voucher series generation, if Coupon Number radio button checked, the number is marked as Required now. [PR-476](https://github.com/OXID-eSales/oxideshop_ce/pull/476)
 - Display full field names in product filter dropdown. [PR-614](https://github.com/OXID-eSales/oxideshop_ce/pull/614)
 - Use getAdminTplLanguageArray() in Admin only. [PR-592](https://github.com/OXID-eSales/oxideshop_ce/pull/592)
 - Delivery dates from past shouldn't be displayed. [PR-543](https://github.com/OXID-eSales/oxideshop_ce/pull/543)
@@ -39,11 +39,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - admin template `article_main.tpl`
 
 ### Deprecated
-- `OxidEsales\EshopCommunity\Application\Controller\Admin\ArticleSeo::_getSaveObjectId`
-- `OxidEsales\EshopCommunity\Application\Component\Widget\ServiceMenu::getCompareItemsCnt`
-- `OxidEsales\EshopCommunity\Core\Utils::strRot13`
-- `OxidEsales\EshopCommunity\Core\InputValidator::_addValidationError`
-- `OxidEsales\EshopCommunity\Application\Model\Order::ORDER_STATE_INVALIDDElADDRESSCHANGED`
+- \OxidEsales\EshopCommunity\Application\Controller\Admin\ArticleSeo::_getSaveObjectId
+- \OxidEsales\EshopCommunity\Application\Component\Widget\ServiceMenu::getCompareItemsCnt
+- \OxidEsales\EshopCommunity\Core\Utils::strRot13
+- \OxidEsales\EshopCommunity\Core\InputValidator::_addValidationError
+- \OxidEsales\EshopCommunity\Application\Model\Order::ORDER_STATE_INVALIDDElADDRESSCHANGED
 - \OxidEsales\EshopCommunity\Application\Model\Diagnostics::$_sRevision
 - \OxidEsales\EshopCommunity\Application\Model\Diagnostics::getRevision()
 - \OxidEsales\EshopCommunity\Application\Model\Diagnostics::setRevision()

@@ -128,6 +128,7 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         if ($this->checkAccessToEditAction($action) === true) {
             $action->assign($this->getActionFormData());
             $action->setLanguage($this->_iEditLang);
+            $action = Registry::getUtilsFile()->processFiles($action);
             $action->save();
 
             $this->setEditObjectId($action->getId());

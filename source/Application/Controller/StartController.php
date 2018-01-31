@@ -374,7 +374,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
 
         $oList = null;
 
-        if ($this->getConfig()->getConfigParam('bl_perfLoadAktion')) {
+        if ($this->getConfig()->getConfigParam('bl_perfLoadManufacturerTree')) {
             $oList = $this->getManufacturerlist();
         }
 

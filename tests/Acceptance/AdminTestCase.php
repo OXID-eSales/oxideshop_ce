@@ -8,6 +8,14 @@ namespace OxidEsales\EshopCommunity\Tests\Acceptance;
 
 abstract class AdminTestCase extends AcceptanceTestCase
 {
+    /**
+     * Restores database after every test.
+     */
+    protected function tearDown()
+    {
+        $this->waitForFrameToLoad('basefrm');
+        parent::tearDown();
+    }
 
     /**
      * Assert that the given text is in the table at the wished position.

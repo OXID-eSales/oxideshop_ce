@@ -156,6 +156,18 @@ class Registry
     }
 
     /**
+     * Return an instance of \OxidEsales\Eshop\Core\Request
+     *
+     * @static
+     *
+     * @return \OxidEsales\Eshop\Core\Request
+     */
+    public static function getRequest()
+    {
+        return self::getObject(\OxidEsales\Eshop\Core\Request::class);
+    }
+
+    /**
      * Return an instance of \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @static

@@ -293,6 +293,15 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
     }
 
     /**
+     * Test Registry::getRequest().
+     */
+    public function testRegistryGetRequest()
+    {
+        $object = Registry::getRequest();
+        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\Request::class));
+    }
+
+    /**
      * Test Registry::getSeoDecoder().
      */
     public function testRegistryGetSeoDecoder()
@@ -438,6 +447,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
         return [
             ['getInputValidator', \OxidEsales\Eshop\Core\InputValidator::class],
             ['getPictureHandler', \OxidEsales\Eshop\Core\PictureHandler::class],
+            ['getRequest', \OxidEsales\Eshop\Core\Request::class],
             ['getSeoDecoder', \OxidEsales\Eshop\Core\SeoDecoder::class],
             ['getSeoEncoder', \OxidEsales\Eshop\Core\SeoEncoder::class],
             ['getUtilsCount', \OxidEsales\Eshop\Core\UtilsCount::class],
@@ -478,6 +488,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
         return [
             ['getInputValidator'],
             ['getPictureHandler'],
+            ['getRequest'],
             ['getSeoDecoder'],
             ['getSeoEncoder'],
             ['getUtilsCount'],

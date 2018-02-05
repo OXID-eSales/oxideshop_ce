@@ -33,8 +33,8 @@ abstract class AcceptanceTestCase extends \OxidEsales\TestingLibrary\AcceptanceT
      */
     public function setUpTestsSuite($testSuitePath)
     {
-        parent::setUpTestsSuite($testSuitePath);
         $this->activateTheme('azure');
+        parent::setUpTestsSuite($testSuitePath);
     }
 
     /**

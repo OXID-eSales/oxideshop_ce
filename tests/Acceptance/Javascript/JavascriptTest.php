@@ -10,6 +10,14 @@ use OxidEsales\EshopCommunity\Tests\Acceptance\JavascriptTestCase;
 
 class JavascriptTest extends JavascriptTestCase
 {
+    public function setUpTestsSuite($sTestSuitePath)
+    {
+        if ($this->getTestConfig()->isSubShop()) {
+            $this->markTestSkipped('No need to run javascript tests on subshop.');
+        }
+        parent::setUpTestsSuite($sTestSuitePath);
+    }
+
     /**
      * Selenium test for all javascript qunit test
      *

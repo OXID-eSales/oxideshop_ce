@@ -855,7 +855,9 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->frame("edit");
         $this->waitForElement("btn.new");
         $this->checkForErrors();
+
         $this->logoutAdmin("link=Logout");
+        $this->assertElementPresent("usr");
 
         $this->loginAdmin(null, null, false, "admin@myoxideshop.com", "admin0303", "Deutsch");
         $this->waitForText("Willkommen im OXID eShop Administrationsbereich");
@@ -864,8 +866,6 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->checkForErrors();
         $this->assertElementPresent("link=Stammdaten");
         $this->assertElementPresent("link=Shopeinstellungen");
-        $this->logoutAdmin("link=Abmelden");
-        $this->assertElementPresent("usr");
     }
 
     /**

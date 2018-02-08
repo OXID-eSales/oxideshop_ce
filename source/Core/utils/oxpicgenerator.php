@@ -241,7 +241,7 @@ if (!function_exists("resizeJpeg")) {
             if ($hDestinationImage === null) {
                 $hDestinationImage = $iGdVer == 1 ? imagecreate($iNewWidth, $iNewHeight) : imagecreatetruecolor($iNewWidth, $iNewHeight);
             }
-            $hSourceImage = imagecreatefromjpeg($sSrc);
+            $hSourceImage = imagecreatefromstring(file_get_contents($sSrc));
             if (copyAlteredImage($hDestinationImage, $hSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer)) {
                 imagejpeg($hDestinationImage, $sTarget, $iDefQuality);
                 imagedestroy($hDestinationImage);

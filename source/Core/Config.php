@@ -364,7 +364,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @throws \OxidEsales\Eshop\Core\Exception\DatabaseException
      * @param int $shopID
-     * @return void
      */
     public function initVars($shopID)
     {

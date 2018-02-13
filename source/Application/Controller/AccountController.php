@@ -391,4 +391,35 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
     {
         return $this->getSession()->checkSessionChallenge() && $this->isUserAllowedToDeleteOwnAccount();
     }
+
+    /**
+     * Return true, if the product review manager should be shown
+     *
+     * @return bool
+     */
+    public function getShowProductReviewList()
+    {
+        return (bool) $this
+            ->getConfig()
+            ->getConfigParam('allowUsersToManageTheirProductReviews');
+    }
+
+    /**
+     * Get the total number of reviews for the active user.
+     *
+     * @return integer Number of reviews
+     */
+    public function getProductReviewItemsCnt()
+    {
+        $totalNrOfReviews = 0;
+
+        if ($user = $this->getUser()) {
+            $userId = $user->getId();
+
+            $review = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
+            $totalNrOfReviews = $review->getProductReviewItemsCntByUserId($userId);
+        }
+
+        return $totalNrOfReviews;
+    }
 }

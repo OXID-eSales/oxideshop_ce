@@ -1048,6 +1048,7 @@ $aLang = [
     'SHOP_MAIN_VATNUMBER'                                => 'USt.-ID',
     'SHOP_MAIN_TAXNUMBER'                                => 'Steuernummer',
     'SHOP_MAIN_PRODUCTIVE'                               => 'Produktivmodus',
+    'SHOP_CONFIG_ALLOW_USERS_MANAGE_PRODUCT_REVIEWS'     => 'Shopkunden erlauben, ihre Artikel-Bewertungen zu verwalten',
     'SHOP_CONFIG_ALLOW_USERS_TO_DELETE_THEIR_ACCOUNT'    => 'Shopkunden erlauben, ihr Konto zu löschen',
     'SHOP_CONFIG_CSVSEPARATOR'                           => 'CSV-Trennzeichen beim Im- und Export',
     'SHOP_CONFIG_CSVFIELDENCLOSER'                       => 'Zeichen, um CSV-Daten beim Im/Export einzufassen',

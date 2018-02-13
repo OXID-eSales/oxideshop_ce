@@ -259,6 +259,7 @@ class ShopControllerMapProvider implements \OxidEsales\Eshop\Core\Contract\Contr
         'account_newsletter'                   => \OxidEsales\Eshop\Application\Controller\AccountNewsletterController::class,
         'account_password'                     => \OxidEsales\Eshop\Application\Controller\AccountPasswordController::class,
         'account_recommlist'                   => \OxidEsales\Eshop\Application\Controller\AccountRecommlistController::class,
+        'account_reviewlist'                   => \OxidEsales\Eshop\Application\Controller\AccountReviewController::class,
         'contact'                              => \OxidEsales\Eshop\Application\Controller\ContactController::class,
         'credits'                              => \OxidEsales\Eshop\Application\Controller\CreditsController::class,
         'download'                             => \OxidEsales\Eshop\Application\Controller\DownloadController::class,

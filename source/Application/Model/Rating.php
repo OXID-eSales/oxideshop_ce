@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-use oxRegistry;
-
 /**
  * Article rate manager.
  * Performs loading, updating, inserting of article rates.
@@ -157,5 +154,33 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getObjectId()
     {
         return $this->oxratings__oxobjectid->value;
+    }
+
+    /**
+     * Return the id of a rating for a given product for a given user in a given shop
+     *
+     * @param string $articleId Id of the product rating
+     * @param string $userId    Id of the user, who did rate the product
+     * @param string $shopId    Id of the shop, where the rating was done
+     *
+     * @return string
+     *
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseErrorException
+     */
+    public function getProductRatingByUserId($articleId, $userId, $shopId)
+    {
+        $ratingType = 'oxarticle';
+        $query = '
+                  SELECT OXID FROM oxratings 
+                  WHERE 1 
+                  AND OXOBJECTID = ?
+                  AND OXUSERID = ?
+                  AND OXSHOPID = ?
+                  AND OXTYPE = ?
+                  ';
+        $db = \OxidEsales\EshopCommunity\Core\DatabaseProvider::getDb();
+
+        return $db->getOne($query, [$articleId, $userId, $shopId, $ratingType]);
     }
 }

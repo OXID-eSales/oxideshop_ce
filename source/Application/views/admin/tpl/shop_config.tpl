@@ -1180,6 +1180,20 @@ function editThis(sID)
                 </dd>
                 <div class="spacer"></div>
             </dl>
+            <dl>
+                <dt>
+                    <input type=hidden name=confbools[allowUsersToManageTheirProductReviews] value=false>
+                    <input
+                            type=checkbox
+                            name=confbools[allowUsersToManageTheirProductReviews]
+                            value=true [{if ($confbools.allowUsersToManageTheirProductReviews)}]checked[{/if}] [{$readonly}]
+                    >
+                </dt>
+                <dd>
+                    [{oxmultilang ident="SHOP_CONFIG_ALLOW_USERS_MANAGE_PRODUCT_REVIEWS"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
         </div>
     </div>
 [{/block}]

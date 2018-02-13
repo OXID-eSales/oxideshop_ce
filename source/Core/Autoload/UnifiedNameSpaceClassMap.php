@@ -179,6 +179,11 @@ return [
         'isAbstract'       => false,
         'isInterface'      => false
     ],
+    'OxidEsales\Eshop\Application\Controller\AccountReviewController'        => [
+        'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\AccountReviewController::class,
+        'isAbstract'       => false,
+        'isInterface'      => false
+    ],
     'OxidEsales\Eshop\Application\Controller\AccountUserController'              => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\AccountUserController::class,
         'isAbstract'       => false,

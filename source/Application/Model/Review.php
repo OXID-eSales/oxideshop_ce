@@ -6,10 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-use oxField;
-use oxRegistry;
-
 /**
  * Article review manager.
  * Performs loading, updating, inserting of article review.
@@ -17,6 +13,7 @@ use oxRegistry;
  */
 class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
+
     /**
      * Shop control variable
      *
@@ -53,7 +50,7 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         if (isset($this->oxreviews__oxuserid) && $this->oxreviews__oxuserid->value) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $this->oxuser__oxfname = new \OxidEsales\Eshop\Core\Field($oDb->getOne("select oxfname from oxuser where oxid=" . $oDb->quote($this->oxreviews__oxuserid->value)));
+            $this->oxuser__oxfname = new \OxidEsales\Eshop\Core\Field($oDb->getOne("SELECT oxfname FROM oxuser WHERE oxid=" . $oDb->quote($this->oxreviews__oxuserid->value)));
         }
 
         return $blRet;
@@ -159,5 +156,92 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getObjectId()
     {
         return $this->oxreviews__oxobjectid->value;
+    }
+
+    /**
+     * Get the total number of
+     *
+     * @param string $userId
+     *
+     * @return false|string
+     *
+     * @throws \InvalidArgumentException
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     */
+    public function getProductReviewItemsCntByUserId($userId)
+    {
+        if (empty($userId)) {
+            throw new \InvalidArgumentException('Parameter userId must not be empty');
+        }
+
+        $reviewType = 'oxarticle';
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+
+        $query = 'SELECT COUNT(*) FROM oxreviews ' .
+                 'WHERE 1 ' .
+                 'AND oxuserid = ? ' .
+                 'AND oxtype = ? ';
+
+        $totalItems = (int) $db->getOne($query, [$userId, $reviewType]);
+
+        return $totalItems;
+    }
+
+    /**
+     * Get a range of reviews for a given user
+     *
+     * @param string $userId   An ID of a given user
+     * @param int    $offset   MySQL LIMIT offset
+     * @param int    $rowCount MySQL LIMIT row_count
+     *
+     * @return \OxidEsales\Eshop\Core\Model\ListModel
+     *
+     * @throws \InvalidArgumentException
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     * @throws \OxidEsales\Eshop\Core\Exception\SystemComponentException
+     */
+    public function getProductReviewsByUserId($userId, $offset = 0, $rowCount = 25)
+    {
+        if (empty($userId)) {
+            throw new \InvalidArgumentException('Parameter userId must not be empty');
+        }
+
+        $reviewType = 'oxarticle';
+        $orderKey = 'oxcreate';
+        $orderDirection = 'DESC';
+
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $query = 'SELECT * FROM oxreviews ' .
+                 'WHERE 1 ' .
+                 'AND oxuserid = ? ' .
+                 'AND oxtype = ? ' .
+                 'ORDER BY ' . $db->quoteIdentifier($orderKey) . ' ' . $orderDirection . ' ';
+
+        $reviews = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
+        $reviews->init('oxreview');
+        $reviews->setSqlLimit((integer) $offset, (integer) $rowCount);
+        $reviews->selectString($query, [$userId, $reviewType]);
+
+        // change date
+        foreach ($reviews as $item) {
+            $item->oxreviews__oxcreate->convertToFormattedDbDate();
+            $item->oxreviews__oxtext->convertToPseudoHtml();
+        }
+
+        return $reviews;
+    }
+
+    /**
+     * Return the article objet the review was made for.
+     *
+     * @return object|Article
+     * @throws \OxidEsales\Eshop\Core\Exception\SystemComponentException
+     */
+    public function getArticle()
+    {
+        $article = oxNew(Article::class);
+        $article->load($this->getObjectId());
+
+        return $article;
     }
 }

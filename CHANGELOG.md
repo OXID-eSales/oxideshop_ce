@@ -12,6 +12,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Possibility to delete user account via new methods:
   - `OxidEsales\EshopCommunity\Application\Controller\AccountController::deleteAccount()`
   - `OxidEsales\EshopCommunity\Application\Controller\AccountController::isUserAllowedToDeleteOwnAccount()`
+- Possibility for shop users to manage their product reviews, configurable by admin:
+  - New classes:
+    - `OxidEsales\EshopCommunity\Application\Controller\AccountReviewController`
+  - New methods:
+    - `OxidEsales\EshopCommunity\Application\Controller\AccountController::getShowProductReviewList`
+    - `OxidEsales\EshopCommunity\Application\Controller\AccountController::getProductReviewItemsCnt`
+    - `OxidEsales\EshopCommunity\Application\Model\Rating::getProductRatingByUserId`
+    - `OxidEsales\EshopCommunity\Application\Model\Review::getProductReviewItemsCntByUserId`
+    - `OxidEsales\EshopCommunity\Application\Model\Review::getProductReviewsByUserId`
+    - `OxidEsales\EshopCommunity\Application\Model\Review::getArticle`
+  - New language constants in `Application/translations/[de/en]/lang.php`:
+    - `ERROR_PRODUCT_REVIEW_AND_RATING_NOT_DELETED`
+    - `MY_PRODUCT_REVIEWS`
+  - New language constants in `Application/views/admin/[de/en]/lang.php`:
+    - `SHOP_CONFIG_ALLOW_USERS_MANAGE_PRODUCT_REVIEWS`
 - For displaying recommendations feature new method introduced:
   - `OxidEsales\EshopCommunity\Core\ViewConfig::getShowSuggest()`
 - New settings:
@@ -29,6 +44,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 via `widget.php` it must extend `\OxidEsales\Eshop\Application\Component\Widget\WidgetController`.
 - `SeoEncoderArticle::_prepareArticleTitle` now uses `_getUrlExtension()` method in place of hardcoded `.html` extension [PR-634](https://github.com/OXID-eSales/oxideshop_ce/pull/634). 
 - Add ^ to version constraint on doctrine/dbal [PR-635](https://github.com/OXID-eSales/oxideshop_ce/pull/635)
+- Application/views/admin/tpl/shop_config.tpl: New control element to configure possibility for users to manage their reviews
 
 ### Deprecated
 - Recommendations feature will be moved to separate module:

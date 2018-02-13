@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsDate;
@@ -583,30 +584,21 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $blDeleted = parent::delete($sOXID);
 
         if ($blDeleted) {
-            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sOXIDQuoted = $oDb->quote($sOXID);
+            $database       = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+            $quotedUserId   = $database->quote($sOXID);
 
-            // deleting stored payment, address, group dependencies, remarks info
-            $oDb->execute("delete from oxaddress where oxaddress.oxuserid = {$sOXIDQuoted}");
-            $oDb->execute("delete from oxobject2group where oxobject2group.oxobjectid = {$sOXIDQuoted}");
+            $this->deleteAddresses($database);
+            $this->deleteUserFromGroups($database);
+            $this->deleteBasket($database);
+            $this->deleteNewsletterSubscriptions($database);
+            $this->deleteDeliveries($database);
+            $this->deleteDiscounts($database);
+            $this->deleteRecommendationLists($database);
+            $this->deleteReviews($database);
 
-            // deleting notice/wish lists
-            $oDb->execute("delete oxuserbasketitems.* from oxuserbasketitems, oxuserbaskets where oxuserbasketitems.oxbasketid = oxuserbaskets.oxid and oxuserid = {$sOXIDQuoted}");
-            $oDb->execute("delete from oxuserbaskets where oxuserid = {$sOXIDQuoted}");
+            $this->deleteAdditionally($quotedUserId);
 
-            // deleting newsletter subscription
-            $oDb->execute("delete from oxnewssubscribed where oxuserid = {$sOXIDQuoted}");
-
-            // delivery and delivery sets
-            $oDb->execute("delete from oxobject2delivery where oxobjectid = {$sOXIDQuoted}");
-
-            // discounts
-            $oDb->execute("delete from oxobject2discount where oxobjectid = {$sOXIDQuoted}");
-
-            $this->deleteAdditionally($sOXIDQuoted);
-
-            // and leaving all order related information
-            $oDb->execute("delete from oxremark where oxparentid = {$sOXIDQuoted} and oxtype !='o'");
+            $this->deleteNotOrderRelatedRemarks($database);
         }
 
         return $blDeleted;
@@ -2284,5 +2276,154 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function getUtilsObjectInstance()
     {
         return Registry::getUtilsObject();
+    }
+
+
+    /**
+     * Deletes not Order related remarks.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteNotOrderRelatedRemarks(DatabaseInterface $database)
+    {
+        $database->execute(
+            'delete from oxremark where oxparentid = ? and oxtype !=\'o\'',
+            [$this->getId()]
+        );
+    }
+
+    /**
+     * Deletes User addresses.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteAddresses(DatabaseInterface $database)
+    {
+        $database->execute(
+            'delete from oxaddress where oxaddress.oxuserid = ?',
+            [$this->getId()]
+        );
+    }
+
+    /**
+     * Deletes User from groups.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteUserFromGroups(DatabaseInterface $database)
+    {
+        $database->execute(
+            'delete from oxobject2group where oxobject2group.oxobjectid = ?',
+            [$this->getId()]
+        );
+    }
+
+    /**
+     * Deletes deliveries.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteDeliveries(DatabaseInterface $database)
+    {
+        $database->execute(
+            'delete from oxobject2delivery where oxobjectid = ?',
+            [$this->getId()]
+        );
+    }
+
+    /**
+     * Deletes newsletter subscriptions.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteNewsletterSubscriptions(DatabaseInterface $database)
+    {
+        $database->execute(
+            'delete from oxnewssubscribed where oxuserid = ?',
+            [$this->getId()]
+        );
+    }
+
+    /**
+     * Deletes discounts.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteDiscounts(DatabaseInterface $database)
+    {
+        $database->execute(
+            'delete from oxobject2discount where oxobjectid = ?',
+            [$this->getId()]
+        );
+    }
+
+    /**
+     * Deletes Basket.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteBasket(DatabaseInterface $database)
+    {
+        $database->execute(
+            'delete 
+                    oxuserbasketitems.* 
+                
+                from 
+                    oxuserbasketitems,
+                    oxuserbaskets 
+                    
+                where 
+                    oxuserbasketitems.oxbasketid = oxuserbaskets.oxid
+                    and oxuserid = ?
+            ',
+            [$this->getId()]
+        );
+
+        $database->execute(
+            'delete from oxuserbaskets where oxuserid = ?',
+            [$this->getId()]
+        );
+    }
+
+    /**
+     * Deletes recommendation lists.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteRecommendationLists(DatabaseInterface $database)
+    {
+        $database->execute(
+            'delete 
+                    oxobject2list
+            
+                from
+                    oxobject2list
+                
+                inner join oxrecommlists 
+                    on oxobject2list.oxlistid = oxrecommlists.oxid 
+                
+                where 
+                    oxrecommlists.oxuserid = ?
+            ',
+            [$this->getId()]
+        );
+
+        $database->execute(
+            'delete from oxrecommlists where oxuserid = ?',
+            [$this->getId()]
+        );
+    }
+
+    /**
+     * Deletes User reviews.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteReviews(DatabaseInterface $database)
+    {
+        $database->execute(
+            'delete from oxreviews where oxuserid = ?',
+            [$this->getId()]
+        );
     }
 }

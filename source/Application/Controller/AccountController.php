@@ -5,8 +5,7 @@
  */
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxRegistry;
-use oxUtilsUrl;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Current user "My account" window.
@@ -351,5 +350,39 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
         }
 
         return $title;
+    }
+
+    /**
+     * Deletes User account.
+     */
+    public function deleteAccount()
+    {
+        $user = $this->getUser();
+
+        if ($user && $this->isUserAllowedToDeleteOwnAccount()) {
+            $user->delete();
+            $user->logout();
+
+            $session = $this->getSession();
+            $session->destroy();
+
+            if ($this->getConfig()->getConfigParam('blClearCacheOnLogout')) {
+                $this->resetContentCache(true);
+            }
+
+            Registry::getUtils()->redirect('index.php', true, 302);
+        }
+    }
+
+    /**
+     * Returns true if User is allowed to delete own account.
+     *
+     * @return bool
+     */
+    public function isUserAllowedToDeleteOwnAccount()
+    {
+        return $this
+            ->getConfig()
+            ->getConfigParam('allowUsersToDeleteTheirAccount');
     }
 }

@@ -613,8 +613,11 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $curl = oxNew(\OxidEsales\Eshop\Core\Curl::class);
         $curl->setOption('CURLOPT_HEADER', true);
         $curl->setUrl($url);
+        $return = $curl->execute();
 
-        return $curl->execute();
+        sleep(0.5); // for master slave: please wait before checking the results.
+
+        return $return;
     }
 
     /**

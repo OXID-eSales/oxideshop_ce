@@ -1052,6 +1052,7 @@ $aLang = [
     'SHOP_MAIN_VATNUMBER'                                => 'Sales Tax ID',
     'SHOP_MAIN_TAXNUMBER'                                => 'Tax ID',
     'SHOP_MAIN_PRODUCTIVE'                               => 'Productive Mode',
+    'SHOP_CONFIG_ALLOW_USERS_TO_DELETE_THEIR_ACCOUNT'    => 'Allow shop users to delete their account',
     'SHOP_CONFIG_CSVSEPARATOR'                           => 'CSV Separation Char for Im/Export',
     'SHOP_CONFIG_CSVFIELDENCLOSER'                       => 'CSV-Encloser for Im/Export',
     'SHOP_CONFIG_DISABLEARTDUBLICATES'                   => 'When Products are copied: Do not set copied Product to active',
@@ -1746,6 +1747,7 @@ $aLang = [
     'SHOP_OPTIONS_GROUP_INVITATIONS'               => 'Invitations',
     'SHOP_OPTIONS_GROUP_SHOP_DOWNLOADABLEARTICLES' => 'Downloadable products',
     'SHOP_OPTIONS_BANK_INFORMATION'                => 'Bank account information (SEPA)',
+    'SHOP_OPTIONS_GROUP_ACCOUNT_SETTINGS'          => 'Account settings',
 
     'PROMOTION_USERS_SETGROUPS'   => 'Assigned User Groups',
     'PROMOTION_LIST_ALL'          => 'All',

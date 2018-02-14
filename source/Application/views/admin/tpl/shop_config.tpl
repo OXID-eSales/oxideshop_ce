@@ -1152,6 +1152,25 @@ function editThis(sID)
             </dl>
         </div>
     </div>
+    <div class="groupExp">
+        <div>
+            <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="SHOP_OPTIONS_GROUP_ACCOUNT_SETTINGS"}]</b></a>
+            <dl>
+                <dt>
+                    <input type=hidden name=confbools[allowUsersToDeleteTheirAccount] value=false>
+                    <input
+                        type=checkbox
+                        name=confbools[allowUsersToDeleteTheirAccount]
+                        value=true [{if ($confbools.allowUsersToDeleteTheirAccount)}]checked[{/if}] [{$readonly}]
+                    >
+                </dt>
+                <dd>
+                    [{oxmultilang ident="SHOP_CONFIG_ALLOW_USERS_TO_DELETE_THEIR_ACCOUNT"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+        </div>
+    </div>
 [{/block}]
 
     <br>

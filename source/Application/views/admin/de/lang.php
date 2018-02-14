@@ -1048,6 +1048,7 @@ $aLang = [
     'SHOP_MAIN_VATNUMBER'                                => 'USt.-ID',
     'SHOP_MAIN_TAXNUMBER'                                => 'Steuernummer',
     'SHOP_MAIN_PRODUCTIVE'                               => 'Produktivmodus',
+    'SHOP_CONFIG_ALLOW_USERS_TO_DELETE_THEIR_ACCOUNT'    => 'Shopkunden erlauben, ihr Konto zu löschen',
     'SHOP_CONFIG_CSVSEPARATOR'                           => 'CSV-Trennzeichen beim Im- und Export',
     'SHOP_CONFIG_CSVFIELDENCLOSER'                       => 'Zeichen, um CSV-Daten beim Im/Export einzufassen',
     'SHOP_CONFIG_DISABLEARTDUBLICATES'                   => 'Wenn Artikel kopiert werden: Kopierten Artikel <b>nicht</b> auf "Aktiv" setzen',
@@ -1740,6 +1741,7 @@ $aLang = [
     'SHOP_OPTIONS_GROUP_INVITATIONS'               => 'Einladungen',
     'SHOP_OPTIONS_GROUP_SHOP_DOWNLOADABLEARTICLES' => 'Download-Artikel',
     'SHOP_OPTIONS_BANK_INFORMATION'                => 'Bankinformationen (SEPA)',
+    'SHOP_OPTIONS_GROUP_ACCOUNT_SETTINGS'          => 'Kontoeinstellungen',
 
 
     'PROMOTION_USERS_SETGROUPS'   => 'Zugeordnete Benutzergruppen',

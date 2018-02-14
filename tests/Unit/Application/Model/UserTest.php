@@ -6,6 +6,9 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use oxEmailHelper;
+use OxidEsales\Eshop\Application\Model\RecommendationList;
+use OxidEsales\Eshop\Application\Model\Review;
+use OxidEsales\Eshop\Core\Field;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseErrorException;
 use OxidEsales\Eshop\Core\UtilsObject;
 use \oxnewssubscribed;
@@ -1233,6 +1236,19 @@ class UserTest extends \OxidTestCase
         $oRemark->oxremark__oxtype = new oxField('r');
         $oRemark->save();
 
+        $recommendationList = oxNew(RecommendationList::class);
+        $recommendationList->setId("_testRecommendationList");
+        $recommendationList->oxrecommlists__oxuserid = new Field($sUserId);
+        $recommendationList->oxrecommlists__oxshopid = new Field(1);
+        $recommendationList->oxrecommlists__oxtitle = new Field("Test title");
+        $recommendationList->save();
+
+        $review = oxNew(Review::class);
+        $review->setId("_testReview");
+        $review->oxreviews__oxuserid = new Field($sUserId);
+        $review->oxreviews__oxtext = new Field("Supergood");
+        $review->save();
+
         $oUser = oxNew('oxUser');
         $oUser->load($sUserId);
         $bSuccess = $oUser->delete();
@@ -1243,6 +1259,8 @@ class UserTest extends \OxidTestCase
                        'oxaddress'         => 'oxuserid',
                        'oxuserbaskets'     => 'oxuserid',
                        'oxnewssubscribed'  => 'oxuserid',
+                       'oxrecommlists'     => 'oxuserid',
+                       'oxreviews'         => 'oxuserid',
                        'oxobject2delivery' => 'oxobjectid',
                        'oxobject2discount' => 'oxobjectid',
                        'oxobject2group'    => 'oxobjectid',

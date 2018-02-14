@@ -132,6 +132,8 @@ $aLang =  [
 
 'HELP_SHOP_CONFIG_NEWARTBYINSERT'             => 'On the front page of your eShop the newest products are shown in <span class="filename_filepath_or_italic">Just arrived!</span>.  This setting determines how the newest products are calculated: by date of creation or by date of last change in admin/last order.',
 
+'HELP_SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE'      => 'On the product page "Recommend product" feature will be enabled.',
+
 'HELP_SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID' => 'No business relevant date or client information will be transmitted. '
                                                         .'The collected data exclusively apply to technological information. '
                                                         .'To improve the quality of our products, information like this will be collected:'

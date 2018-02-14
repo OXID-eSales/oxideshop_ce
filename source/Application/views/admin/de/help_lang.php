@@ -132,6 +132,8 @@ $aLang =  [
 
 'HELP_SHOP_CONFIG_NEWARTBYINSERT'             => 'Auf der Startseite Ihres eShops werden die unter <span class="filename_filepath_or_italic">Frisch eingetroffen!</span> die neusten Artikel in Ihrem eShop angezeigt. Sie können die Artikel, die hier angezeigt werden, manuell einstellen oder automatisch berechnen lassen. Mit dieser Einstellung wählen Sie, wie die neusten Artikel berechnet werden sollen: Nach dem Datum, an dem die Artikel erstellt wurden, oder nach dem Datum der letzten Änderung im Administrationsbereich/der letzten Bestellung im Shop.',
 
+'HELP_SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE'      => 'Auf der Produktseite wird das "Empfehlen" Feature aktiviert.',
+
 'HELP_SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID' => 'Es werden keine geschäftsrelevanten Daten oder Kundeninformationen übermittelt. '
                                                         .'Die gesammelten Daten sind ausschließlich technologische Informationen. '
                                                         .'Um unsere Produktqualität zu verbessern, werden Informationen wie diese erhoben:'

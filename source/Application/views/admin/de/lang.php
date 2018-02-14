@@ -1052,6 +1052,7 @@ $aLang = [
     'SHOP_CONFIG_CSVSEPARATOR'                           => 'CSV-Trennzeichen beim Im- und Export',
     'SHOP_CONFIG_CSVFIELDENCLOSER'                       => 'Zeichen, um CSV-Daten beim Im/Export einzufassen',
     'SHOP_CONFIG_DISABLEARTDUBLICATES'                   => 'Wenn Artikel kopiert werden: Kopierten Artikel <b>nicht</b> auf "Aktiv" setzen',
+    'SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE'                  => 'Artikel-Empfehlungen erlauben',
     'SHOP_CONFIG_EXPORTNUMBEROFLINES'                    => 'Anzahl von Zeilen im CSV, die pro Tick exportiert werden',
     'SHOP_CONFIG_MWSTSETTING'                            => 'MwSt.-Einstellungen für XML-Export',
     'SHOP_CONFIG_NUMBEROFEMAILSPERTICK'                  => 'Anzahl von E-Mails, die der Newsletter pro Tick verschickt',

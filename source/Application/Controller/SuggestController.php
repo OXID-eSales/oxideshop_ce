@@ -12,6 +12,8 @@ use OxidEsales\Eshop\Core\Registry;
  * Article suggestion page.
  * Collects some article base information, sets default recommendation text,
  * sends suggestion mail to user.
+ *
+ * @deprecated since v6.2.0 (2017-02-15); Recommendations feature will be moved to an own module.
  */
 class SuggestController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {

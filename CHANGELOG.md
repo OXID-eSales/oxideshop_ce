@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 ### Deprecated
+- Recommendations feature will be moved to separate module:
+  - `OxidEsales\EshopCommunity\Application\Controller\SuggestController`
+  - `OxidEsales\EshopCommunity\Core\ViewConfig::getShowSuggest()`
+  - Language constants: `SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE`, `HELP_SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE`
 
 ### Removed
 

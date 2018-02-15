@@ -370,7 +370,11 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
                 $this->resetContentCache(true);
             }
 
-            Registry::getUtils()->redirect('index.php', true, 302);
+            Registry::getUtils()->redirect(
+                $this->getConfig()->getShopHomeUrl(),
+                true,
+                302
+            );
         }
     }
 

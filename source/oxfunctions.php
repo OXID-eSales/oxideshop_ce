@@ -92,8 +92,6 @@ function cmpart($a, $b)
  * @param string $className Name of class
  * @param mixed  ...$args   constructor arguments
  *
- * @throws SystemComponentException in case that class does not exists
- *
  * @return object
  */
 function oxNew($className)

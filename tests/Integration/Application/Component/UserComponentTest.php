@@ -8,10 +8,9 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Component;
 use \oxcmp_user;
 use \Exception;
 use \oxField;
-use \oxUserException;
-use \oxCookieException;
-use \oxInputException;
-use \oxConnectionException;
+use OxidEsales\Eshop\Application\Component\UserComponent;
+use OxidEsales\Eshop\Application\Model\Address;
+use OxidEsales\Eshop\Application\Model\User;
 use \oxUser;
 use \oxException;
 use \oxDb;
@@ -1607,5 +1606,63 @@ class UserComponentTest extends \OxidTestCase
                 $deliveryAddress->oxaddress__oxlname->value,
             ]
         );
+    }
+
+    /**
+     * @return array
+     */
+    public function providerDeleteShippingAddress()
+    {
+        return [
+            ['oxdefaultadmin', false],
+            ['differentUserId', true],
+        ];
+    }
+
+    /**
+     * @param string $userId
+     * @param bool $isPossibleToLoadAddressAfterDeletion
+     * @throws Exception
+     *
+     * @dataProvider providerDeleteShippingAddress
+     */
+    public function testDeleteShippingAddress($userId, $isPossibleToLoadAddressAfterDeletion)
+    {
+        $addressId = '_testAddressId';
+        $this->addShippingAddress($userId, $addressId);
+        $this->loadUserForShippingAddressDeletion();
+        $this->makeSessionTokenToPassValidation();
+
+        $this->setRequestParameter('oxaddressid', $addressId);
+        $userComponent = oxNew(UserComponent::class);
+        $userComponent->deleteShippingAddress();
+
+        $this->assertSame($isPossibleToLoadAddressAfterDeletion, oxNew(Address::class)->load($addressId));
+    }
+
+    /**
+     * @param string $userId
+     * @param string $addressId
+     * @throws Exception
+     */
+    private function addShippingAddress($userId, $addressId)
+    {
+        $address = oxNew(Address::class);
+        $address->setId($addressId);
+        $address->oxaddress__oxuserid = new \OxidEsales\Eshop\Core\Field($userId);
+        $address->save();
+    }
+
+    private function loadUserForShippingAddressDeletion()
+    {
+        $user = oxNew(User::class);
+        $user->load('oxdefaultadmin');
+        $this->getSession()->setUser($user);
+    }
+
+    private function makeSessionTokenToPassValidation()
+    {
+        $this->setSessionParam('sess_stoken', 'testToken');
+        $this->setRequestParameter('stoken', 'testToken');
     }
 }

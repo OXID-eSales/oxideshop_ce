@@ -40,7 +40,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [6.2.0] - Unreleased
 
 ### Added
-- New methods:
+- Possibility to delete shipping address via new method:
+  - `OxidEsales\Eshop\Application\Component\UserComponent::deleteShippingAddress`
+- Possibility to delete user account via new methods:
   - `OxidEsales\EshopCommunity\Application\Controller\AccountController::deleteAccount()`
   - `OxidEsales\EshopCommunity\Application\Controller\AccountController::isUserAllowedToDeleteOwnAccount()`
 

@@ -1057,7 +1057,7 @@ $aLang = [
     'SHOP_CONFIG_CSVFIELDENCLOSER'                       => 'CSV-Encloser for Im/Export',
     'SHOP_CONFIG_DISABLEARTDUBLICATES'                   => 'When Products are copied: Do not set copied Product to active',
     // @deprecated since v6.2.0 (2017-02-15); Recommendations feature will be moved to an own module.
-    'SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE'                  => 'Allow product recommendations',
+    'SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE'                  => 'Allow the recommendation of products',
     // END deprecated
     'SHOP_CONFIG_EXPORTNUMBEROFLINES'                    => 'Number of Lines which are exported per Tick in CSV Export',
     'SHOP_CONFIG_MWSTSETTING'                            => 'VAT Settings for XML export',

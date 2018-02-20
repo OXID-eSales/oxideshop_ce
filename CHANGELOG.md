@@ -45,10 +45,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Possibility to delete user account via new methods:
   - `OxidEsales\EshopCommunity\Application\Controller\AccountController::deleteAccount()`
   - `OxidEsales\EshopCommunity\Application\Controller\AccountController::isUserAllowedToDeleteOwnAccount()`
+  - `OxidEsales\EshopCommunity\Core\ViewConfig::getShowSuggest()`
+- New settings:
+  - `blAllowSuggestArticle` - now it's possible to disable recommendation feature in admin.
 
 ### Changed
 
 ### Deprecated
+- Recommendations feature will be moved to separate module:
+  - `OxidEsales\EshopCommunity\Application\Controller\SuggestController`
+  - `OxidEsales\EshopCommunity\Core\ViewConfig::getShowSuggest()`
+  - Language constants: `SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE`, `HELP_SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE`
 
 ### Removed
 

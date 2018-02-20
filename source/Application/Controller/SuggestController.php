@@ -6,12 +6,14 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxRegistry;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Article suggestion page.
- * Collects some article base information, sets default recomendation text,
+ * Collects some article base information, sets default recommendation text,
  * sends suggestion mail to user.
+ *
+ * @deprecated since v6.2.0 (2017-02-15); Recommendations feature will be moved to an own module.
  */
 class SuggestController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
@@ -60,6 +62,15 @@ class SuggestController extends \OxidEsales\Eshop\Application\Controller\Fronten
      * @var object
      */
     protected $_aSuggestData = null;
+
+    /**
+     * Assures, that controller would not be accessed if functionality disabled.
+     */
+    public function init()
+    {
+        $this->redirectToHomeIfDisabled();
+        parent::init();
+    }
 
     /**
      * Sends product suggestion mail and returns a URL according to
@@ -273,5 +284,15 @@ class SuggestController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $aPaths[] = $aPath;
 
         return $aPaths;
+    }
+
+    /**
+     * In case functionality disabled, redirects to home page.
+     */
+    private function redirectToHomeIfDisabled()
+    {
+        if ($this->getConfig()->getConfigParam('blAllowSuggestArticle') !== true) {
+            Registry::getUtils()->redirect($this->getConfig()->getShopHomeUrl(), true, 301);
+        }
     }
 }

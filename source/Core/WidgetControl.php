@@ -6,6 +6,9 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Application\Component\Widget\WidgetController;
+use OxidEsales\Eshop\Core\Exception\ObjectException;
+
 /**
  * Main shop actions controller. Processes user actions, logs
  * them (if needed), controls output, redirects according to
@@ -91,6 +94,8 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
      * @param array  $parameters Parameters array
      * @param array  $viewsChain Array of views keys that should be initialized as well
      *
+     * @throws ObjectException
+     *
      * @return \OxidEsales\Eshop\Core\Controller\BaseController Current active view
      */
     protected function _initializeViewObject($class, $function, $parameters = null, $viewsChain = null)
@@ -119,6 +124,12 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
         }
 
         $widgetViewObject = parent::_initializeViewObject($class, $function, $parameters, null);
+
+        if (!is_a($widgetViewObject, WidgetController::class)) {
+            /** @var ObjectException $exception */
+            $exception = oxNew(ObjectException::class, get_class($widgetViewObject) . ' is not an instance of ' . WidgetController::class);
+            throw $exception;
+        }
 
         // Set template name for current widget.
         if (!empty($parameters['oxwtemplate'])) {

@@ -50,6 +50,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `blAllowSuggestArticle` - now it's possible to disable recommendation feature in admin.
 
 ### Changed
+- Loading for non widget classes via `widget.php` entry point have been declined. To allow a class to be loaded
+via `widget.php` it must extend `\OxidEsales\Eshop\Application\Component\Widget\WidgetController`.
 
 ### Deprecated
 - Recommendations feature will be moved to separate module:

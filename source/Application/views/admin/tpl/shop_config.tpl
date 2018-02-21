@@ -323,7 +323,7 @@ function editThis(sID)
             <dl>
                 <dt>
                     <input type=hidden name=confbools[blAllowSuggestArticle] value=false>
-                    <input type=checkbox name=confbools[blAllowSuggestArticle] value=true [{if ($confbools.blAllowSuggestArticle !== false)}]checked[{/if}]>
+                    <input type=checkbox name=confbools[blAllowSuggestArticle] value=true [{if ($confbools.blAllowSuggestArticle)}]checked[{/if}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE"}]
                 </dt>
                 <dd>

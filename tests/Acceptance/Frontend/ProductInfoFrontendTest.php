@@ -220,6 +220,10 @@ class ProductInfoFrontendTest extends FrontendTestCase
     {
         //In admin Set option (Installed GDLib Version) if "value" => ""
         $this->callShopSC("oxConfig", null, null, array("iUseGDVersion" => array("type" => "str", "value" => 0)));
+        // Config exists in main shop, but does not exists in sub shop data, so it must be created.
+        if ($this->getTestConfig()->isSubShop()) {
+            $this->callShopSC("oxConfig", null, null, array("blAllowSuggestArticle" => array("type" => "bool", "value" => true)));
+        }
 
         $this->clearCache();
         $this->openShop();

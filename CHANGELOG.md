@@ -25,6 +25,7 @@ via `widget.php` it must extend `\OxidEsales\Eshop\Application\Component\Widget\
 - Recommendations feature will be moved to separate module:
   - `OxidEsales\EshopCommunity\Application\Controller\SuggestController`
   - `OxidEsales\EshopCommunity\Core\ViewConfig::getShowSuggest()`
+  - Config option - `blAllowSuggestArticle`
   - Language constants: `SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE`, `HELP_SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE`
 
 ### Removed

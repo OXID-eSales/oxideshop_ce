@@ -19,6 +19,10 @@ class Version20171018144650 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
+        /// set server collation variables
+        $this->addSql("SET @@session.collation_connection = 'utf8_general_ci';");
+        $this->addSql("SET @@session.collation_server = 'utf8_general_ci';");
+
         // All tables should have the same default character set and collation
         $this->addSql("ALTER table `oxinvitations` COLLATE utf8_general_ci;");
 

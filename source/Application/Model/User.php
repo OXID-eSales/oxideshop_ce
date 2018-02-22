@@ -2117,6 +2117,16 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
+     * Returns true if User is mall admin.
+     *
+     * @return bool
+     */
+    public function isMallAdmin()
+    {
+        return 'malladmin' === $this->oxuser__oxrights->value;
+    }
+
+    /**
      * Initiates user login against data in DB.
      *
      * @param string $sUser     User

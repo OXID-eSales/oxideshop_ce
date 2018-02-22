@@ -2848,4 +2848,19 @@ class UserTest extends \OxidTestCase
         );
         $this->assertSame($sExpected, $oUserMock->getStateTitle(), "State title is correct when ID is not passed");
     }
+
+    public function testIsMallAdminReturnsTrueIfUserIsMallAdmin()
+    {
+        $user = oxNew('oxUser');
+        $user->load('oxdefaultadmin');
+
+        $this->assertTrue($user->isMallAdmin());
+    }
+
+    public function testIsMallAdminReturnsFalseIfUserIsNotMallAdmin()
+    {
+        $user = $this->createUser();
+
+        $this->assertFalse($user->isMallAdmin());
+    }
 }

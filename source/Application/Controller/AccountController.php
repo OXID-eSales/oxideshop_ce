@@ -385,8 +385,12 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function isUserAllowedToDeleteOwnAccount()
     {
-        return $this
+        $allowUsersToDeleteTheirAccount = $this
             ->getConfig()
             ->getConfigParam('allowUsersToDeleteTheirAccount');
+
+        $user = $this->getUser();
+
+        return $allowUsersToDeleteTheirAccount && !$user->isMallAdmin();
     }
 }

@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `OxidEsales\EshopCommunity\Core\ViewConfig::getShowSuggest()`
 - New settings:
   - `blAllowSuggestArticle` - now it's possible to disable recommendation feature in admin.
+- New methods:
+  - `OxidEsales\EshopCommunity\Application\Model\User::isMallAdmin()`
 
 ### Changed
 - Loading for non widget classes via `widget.php` entry point have been declined. To allow a class to be loaded

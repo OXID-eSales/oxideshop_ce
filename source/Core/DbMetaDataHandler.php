@@ -546,8 +546,9 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $configFile = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class);
+
         $originalSkipViewUsageStatus = $configFile->getVar('blSkipViewUsage');
-        $config->setConfigParam('blSkipViewUsage', 1);
+        $this->setConfigToDoNotUseViews($config);
 
         $this->safeGuardAdditionalMultiLanguageTables();
 
@@ -574,6 +575,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
 
         return $success;
     }
+
 
     /**
      * Make sure that e.g. OXID is always used from core table when creating views.
@@ -669,5 +671,21 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
     protected function validateTableName($tableName)
     {
         return true;
+    }
+
+    /**
+     * Forces shop to do not use views.
+     *
+     * @param Config $config
+     */
+    private function setConfigToDoNotUseViews(Config $config)
+    {
+        /**
+         * If Config property is not null before calling Config::setConfigParam()
+         * the value will be overwritten in Config::getConfigParam by value from
+         * the config file.
+         */
+        $config->blSkipViewUsage = null;
+        $config->setConfigParam('blSkipViewUsage', 1);
     }
 }

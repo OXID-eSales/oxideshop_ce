@@ -30,13 +30,6 @@
     date_default_timezone_set('Europe/Berlin');
 
     /**
-     * Search engine friendly URL processor.
-     * After changing this value, you should rename oxid.php file as well
-     * Always leave .php extension here unless you know what you are doing
-     */
-    $this->sOXIDPHP = "oxid.php";
-
-    /**
      * Enable debug mode for template development or bugfixing
      * -1 = Log more messages and throw exceptions on errors (not recommended for production)
      * 0 = off

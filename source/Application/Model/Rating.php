@@ -179,7 +179,7 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
                   AND OXSHOPID = ?
                   AND OXTYPE = ?
                   ';
-        $db = \OxidEsales\EshopCommunity\Core\DatabaseProvider::getDb();
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         return $db->getOne($query, [$articleId, $userId, $shopId, $ratingType]);
     }

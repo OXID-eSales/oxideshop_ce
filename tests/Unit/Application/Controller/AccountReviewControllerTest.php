@@ -20,13 +20,13 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
      */
     public function testInitDoesNotRedirectIfFeatureIsEnabled()
     {
-        $getShowProductReviewList = true;
+        $isUserAllowedToManageHisProductReviews = true;
 
         $accountReviewControllerMock = $this->getMock(
             \OxidEsales\Eshop\Application\Controller\AccountReviewController::class,
-            ['getShowProductReviewList', 'redirectToAccountDashboard']
+            ['isUserAllowedToManageHisProductReviews', 'redirectToAccountDashboard']
         );
-        $accountReviewControllerMock->expects($this->once())->method('getShowProductReviewList')->will($this->returnValue($getShowProductReviewList));
+        $accountReviewControllerMock->expects($this->once())->method('isUserAllowedToManageHisProductReviews')->will($this->returnValue($isUserAllowedToManageHisProductReviews));
         $accountReviewControllerMock->expects($this->never())->method('redirectToAccountDashboard');
 
         $accountReviewControllerMock->init();
@@ -37,13 +37,13 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
      */
     public function testInitRedirectsIfFeatureIsDisabled()
     {
-        $getShowProductReviewList = false;
+        $isUserAllowedToManageHisProductReviews = false;
 
         $accountReviewControllerMock = $this->getMock(
             \OxidEsales\Eshop\Application\Controller\AccountReviewController::class,
-            ['getShowProductReviewList', 'redirectToAccountDashboard']
+            ['isUserAllowedToManageHisProductReviews', 'redirectToAccountDashboard']
         );
-        $accountReviewControllerMock->expects($this->once())->method('getShowProductReviewList')->will($this->returnValue($getShowProductReviewList));
+        $accountReviewControllerMock->expects($this->once())->method('isUserAllowedToManageHisProductReviews')->will($this->returnValue($isUserAllowedToManageHisProductReviews));
         $accountReviewControllerMock->expects($this->once())->method('redirectToAccountDashboard');
 
         $accountReviewControllerMock->init();
@@ -56,9 +56,9 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
     public function testRenderReturnsParentTemplateNameIfFeatureNotEnabled()
     {
         /**
-         * method getShowProductReviewList() will return false
+         * method isUserAllowedToManageHisProductReviews() will return false
          */
-        $getShowProductReviewList = false;
+        $isUserAllowedToManageHisProductReviews = false;
 
         $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $user->oxuser__oxpassword = new \oxField(1);
@@ -83,9 +83,9 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
          */
         $accountReviewControllerMock = $this->getMock(
             \OxidEsales\Eshop\Application\Controller\AccountReviewController::class,
-            ['getShowProductReviewList', 'redirectAfterLogin', 'getUser', 'isEnabledPrivateSales']
+            ['isUserAllowedToManageHisProductReviews', 'redirectAfterLogin', 'getUser', 'isEnabledPrivateSales']
         );
-        $accountReviewControllerMock->expects($this->any())->method('getShowProductReviewList')->will($this->returnValue($getShowProductReviewList));
+        $accountReviewControllerMock->expects($this->any())->method('isUserAllowedToManageHisProductReviews')->will($this->returnValue($isUserAllowedToManageHisProductReviews));
         $accountReviewControllerMock->expects($this->once())->method("redirectAfterLogin")->will($this->returnValue(1));
         $accountReviewControllerMock->expects($this->once())->method("getUser")->will($this->returnValue($user));
         $accountReviewControllerMock->expects($this->any())->method('isEnabledPrivateSales')->will($this->returnValue(false));
@@ -101,9 +101,9 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
     public function testRenderReturnsOwnTemplateNameIfFeatureIsEnabled()
     {
         /**
-         * method getShowProductReviewList() will return false
+         * method isUserAllowedToManageHisProductReviews() will return false
          */
-        $getShowProductReviewList = true;
+        $isUserAllowedToManageHisProductReviews = true;
         $expectedTemplateName = 'page/account/productreviews.tpl';
 
         $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
@@ -115,9 +115,9 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
          */
         $accountReviewControllerMock = $this->getMock(
             \OxidEsales\Eshop\Application\Controller\AccountReviewController::class,
-            ['getShowProductReviewList', 'redirectAfterLogin', 'getUser', 'isEnabledPrivateSales']
+            ['isUserAllowedToManageHisProductReviews', 'redirectAfterLogin', 'getUser', 'isEnabledPrivateSales']
         );
-        $accountReviewControllerMock->expects($this->any())->method('getShowProductReviewList')->will($this->returnValue($getShowProductReviewList));
+        $accountReviewControllerMock->expects($this->any())->method('isUserAllowedToManageHisProductReviews')->will($this->returnValue($isUserAllowedToManageHisProductReviews));
         $accountReviewControllerMock->expects($this->once())->method("getUser")->will($this->returnValue($user));
         $accountReviewControllerMock->expects($this->any())->method('isEnabledPrivateSales')->will($this->returnValue(false));
 
@@ -131,15 +131,15 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
      */
     public function testGetBreadCrumbReturnsOwnBreadcrumbIfFeatureIsEnabled()
     {
-        $getShowProductReviewList = true;
+        $isUserAllowedToManageHisProductReviews = true;
         $languageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $expectedBreadCrumbTitle = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_PRODUCT_REVIEWS', $languageId, false);
 
         $accountReviewControllerMock = $this->getMock(
             \OxidEsales\Eshop\Application\Controller\AccountReviewController::class,
-            ['getShowProductReviewList',]
+            ['isUserAllowedToManageHisProductReviews',]
         );
-        $accountReviewControllerMock->expects($this->once())->method('getShowProductReviewList')->will($this->returnValue($getShowProductReviewList));
+        $accountReviewControllerMock->expects($this->once())->method('isUserAllowedToManageHisProductReviews')->will($this->returnValue($isUserAllowedToManageHisProductReviews));
 
         $result = $accountReviewControllerMock->getBreadCrumb();
 
@@ -153,15 +153,15 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
      */
     public function testGetBreadIfFeatureIsDisabled()
     {
-        $getShowProductReviewList = false;
+        $isUserAllowedToManageHisProductReviews = false;
         $languageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $expectedBreadCrumbTitle = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_PRODUCT_REVIEWS', $languageId, false);
 
         $accountReviewControllerMock = $this->getMock(
             \OxidEsales\Eshop\Application\Controller\AccountReviewController::class,
-            ['getShowProductReviewList',]
+            ['isUserAllowedToManageHisProductReviews',]
         );
-        $accountReviewControllerMock->expects($this->once())->method('getShowProductReviewList')->will($this->returnValue($getShowProductReviewList));
+        $accountReviewControllerMock->expects($this->once())->method('isUserAllowedToManageHisProductReviews')->will($this->returnValue($isUserAllowedToManageHisProductReviews));
 
         $result = $accountReviewControllerMock->getBreadCrumb();
 

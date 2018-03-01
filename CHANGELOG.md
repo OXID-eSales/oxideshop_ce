@@ -68,6 +68,7 @@ via `widget.php` it must extend `\OxidEsales\Eshop\Application\Component\Widget\
 ### Fixed
 - Banner image upload is not working [PR-624](https://github.com/OXID-eSales/oxideshop_ce/pull/624)
 - imagecreatefromjpeg can't handle sequential jpeg's correctly [PR-627](https://github.com/OXID-eSales/oxideshop_ce/pull/627)
+- Support large module list in oxconfig table [PR-633](https://github.com/OXID-eSales/oxideshop_ce/pull/633)
 
 ## [6.1.0] - 2018-01-23
 

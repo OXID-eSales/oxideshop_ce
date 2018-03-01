@@ -104,7 +104,7 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
          * method isUserAllowedToManageHisProductReviews() will return false
          */
         $isUserAllowedToManageHisProductReviews = true;
-        $expectedTemplateName = 'page/account/productreviews.tpl';
+        $expectedTemplateName = 'page/account/reviews.tpl';
 
         $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $user->oxuser__oxpassword = new \oxField(1);
@@ -171,24 +171,24 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
     }
 
     /**
-     * @covers \OxidEsales\EshopCommunity\Application\Controller\AccountReviewController::getProductReviewList
+     * @covers \OxidEsales\EshopCommunity\Application\Controller\AccountReviewController::getReviewList
      */
-    public function testGetProductReviewListReturnsNullForNoUser()
+    public function testGetReviewListReturnsNullForNoUser()
     {
         $expectedProductReviewList = null;
 
         $accountReviewControllerMock = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountReviewController::class, ['getUser']);
         $accountReviewControllerMock->expects($this->any())->method('getUser')->will($this->returnValue(false));
 
-        $actualProductReviewList = $accountReviewControllerMock->getProductReviewList();
+        $actualProductReviewList = $accountReviewControllerMock->getReviewList();
 
         $this->assertSame( $expectedProductReviewList, $actualProductReviewList);
     }
 
     /**
-     * @covers \OxidEsales\EshopCommunity\Application\Controller\AccountReviewController::getProductReviewList
+     * @covers \OxidEsales\EshopCommunity\Application\Controller\AccountReviewController::getReviewList
      */
-    public function testGetProductReviewListReturnsExpectedListForActiveUser()
+    public function testGetReviewListReturnsExpectedListForActiveUser()
     {
         $expectedProductReviewsList = new \OxidEsales\Eshop\Core\Model\ListModel();
 
@@ -202,15 +202,15 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
         $reviewsMock->expects($this->any())->method('getProductReviewsByUserId')->will($this->returnValue($expectedProductReviewsList));
         \oxTestModules::addModuleObject(\OxidEsales\Eshop\Application\Model\Review::class, $reviewsMock);
 
-        $actualProductReviewsList = $accountReviewControllerMock->getProductReviewList();
+        $actualProductReviewsList = $accountReviewControllerMock->getReviewList();
 
         $this->assertSame( $expectedProductReviewsList, $actualProductReviewsList);
     }
 
     /**
-     * @covers \OxidEsales\EshopCommunity\Application\Controller\AccountReviewController::deleteProductReviewAndRating
+     * @covers \OxidEsales\EshopCommunity\Application\Controller\AccountReviewController::deleteReviewAndRating
      */
-    public function testDeleteProductReviewReturnsFalseOnNoSessionChallenge()
+    public function testDeleteReviewReturnsFalseOnNoSessionChallenge()
     {
         $sessionMock = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $sessionMock->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(false));
@@ -218,15 +218,15 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
         $accountReviewControllerMock = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountReviewController::class, ['getSession']);
         $accountReviewControllerMock->expects($this->any())->method('getSession')->will($this->returnValue($sessionMock));
 
-        $result = $accountReviewControllerMock->deleteProductReviewAndRating();
+        $result = $accountReviewControllerMock->deleteReviewAndRating();
 
         $this->assertFalse($result);
     }
 
     /**
-     * @covers \OxidEsales\EshopCommunity\Application\Controller\AccountReviewController::deleteProductReviewAndRating
+     * @covers \OxidEsales\EshopCommunity\Application\Controller\AccountReviewController::deleteReviewAndRating
      */
-    public function testDeleteProductReviewReturnsFalseOnNoUser()
+    public function testDeleteReviewReturnsFalseOnNoUser()
     {
         $sessionMock = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $sessionMock->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
@@ -235,7 +235,7 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
         $accountReviewControllerMock->expects($this->any())->method('getSession')->will($this->returnValue($sessionMock));
         $accountReviewControllerMock->expects($this->any())->method('getUser')->will($this->returnValue(false));
 
-        $result = $accountReviewControllerMock->deleteProductReviewAndRating();
+        $result = $accountReviewControllerMock->deleteReviewAndRating();
 
         $this->assertFalse($result);
     }
@@ -244,15 +244,15 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
      * The method must return NULL on success
      * In this test all preconditions for a successful deletion are met
      *
-     * @dataProvider dataProviderTestDeleteProductReview
-     * @covers \OxidEsales\EshopCommunity\Application\Controller\AccountReviewController::deleteProductReviewAndRating
+     * @dataProvider dataProviderTestDeleteReview
+     * @covers \OxidEsales\EshopCommunity\Application\Controller\AccountReviewController::deleteReviewAndRating
      */
-    public function testDeleteProductReview($checkSessionChallenge,
+    public function testDeleteReview($checkSessionChallenge,
                                             $userId,
                                             $articleIdFromRequest,
-                                            $productRatingDeleted,
+                                            $ratingDeleted,
                                             $reviewIdFromRequest,
-                                            $productReviewDeleted,
+                                            $reviewDeleted,
                                             $expectedResult,
                                             $message)
     {
@@ -273,27 +273,27 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
         /** Article Id must be set in the HTTP REQUEST */
         $accountReviewControllerMock->expects($this->any())->method('getArticleIdFromRequest')->will($this->returnValue($articleIdFromRequest));
         /** Rating must be successfully deleted */
-        $accountReviewControllerMock->expects($this->any())->method('deleteProductRating')->will($this->returnValue($productRatingDeleted));
+        $accountReviewControllerMock->expects($this->any())->method('deleteProductRating')->will($this->returnValue($ratingDeleted));
         /** Review Id must be set in the HTTP REQUEST */
         $accountReviewControllerMock->expects($this->any())->method('getReviewIdFromRequest')->will($this->returnValue($reviewIdFromRequest));
         /** AND review must be successfully deleted */
-        $accountReviewControllerMock->expects($this->any())->method('deleteProductReview')->will($this->returnValue($productReviewDeleted));
+        $accountReviewControllerMock->expects($this->any())->method('deleteProductReview')->will($this->returnValue($reviewDeleted));
 
-        $actualResult = $accountReviewControllerMock->deleteProductReviewAndRating();
+        $actualResult = $accountReviewControllerMock->deleteReviewAndRating();
 
         $this->assertSame($expectedResult, $actualResult, $message);
     }
 
-    public function dataProviderTestDeleteProductReview()
+    public function dataProviderTestDeleteReview()
     {
         return [
             'All conditions are met'                => [
                 'checkSessionChallenge' => true,
                 'userId'                => 'someUserId',
                 'articleIdFromRequest'  => 'someArticleId',
-                'productRatingDeleted'  => true,
+                'ratingDeleted'         => true,
                 'reviewIdFromRequest'   => 'someReviewId',
-                'productReviewDeleted'  => true,
+                'reviewDeleted'         => true,
                 'expectedResult'        => null,
                 'message'               => 'Returns null on success'
             ],
@@ -301,9 +301,9 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
                 'checkSessionChallenge' => false,
                 'userId'                => 'someUserId',
                 'articleIdFromRequest'  => 'someArticleId',
-                'productRatingDeleted'  => true,
+                'ratingDeleted'         => true,
                 'reviewIdFromRequest'   => 'someReviewId',
-                'productReviewDeleted'  => true,
+                'reviewDeleted'         => true,
                 'expectedResult'        => false,
                 'message'               => 'Returns false on failed session challenge check'
             ],
@@ -311,9 +311,9 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
                 'checkSessionChallenge' => true,
                 'userId'                => false,
                 'articleIdFromRequest'  => 'someArticleId',
-                'productRatingDeleted'  => true,
+                'ratingDeleted'         => true,
                 'reviewIdFromRequest'   => 'someReviewId',
-                'productReviewDeleted'  => true,
+                'reviewDeleted'         => true,
                 'expectedResult'        => false,
                 'message'               => 'Returns false on failed userid check'
             ],
@@ -321,9 +321,9 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
                 'checkSessionChallenge' => true,
                 'userId'                => 'someUserId',
                 'articleIdFromRequest'  => false,
-                'productRatingDeleted'  => true,
+                'ratingDeleted'         => true,
                 'reviewIdFromRequest'   => 'someReviewId',
-                'productReviewDeleted'  => true,
+                'reviewDeleted'         => true,
                 'expectedResult'        => false,
                 'message'               => 'Returns false, if parameter aid is not given in the HTTP REQUEST'
             ],
@@ -331,19 +331,19 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
                 'checkSessionChallenge' => true,
                 'userId'                => 'someUserId',
                 'articleIdFromRequest'  => 'someArticleId',
-                'productRatingDeleted'  => false,
+                'ratingDeleted'         => false,
                 'reviewIdFromRequest'   => 'someReviewId',
-                'productReviewDeleted'  => true,
+                'reviewDeleted'         => true,
                 'expectedResult'        => false,
-                'message'               => 'Returns false, if product rating could not be deleted'
+                'message'               => 'Returns false, if rating could not be deleted'
             ],
             'No review ID is given in the request'  => [
                 'checkSessionChallenge' => true,
                 'userId'                => 'someUserId',
                 'articleIdFromRequest'  => 'someArticleId',
-                'productRatingDeleted'  => true,
+                'ratingDeleted'         => true,
                 'reviewIdFromRequest'   => false,
-                'productReviewDeleted'  => true,
+                'reviewDeleted'         => true,
                 'expectedResult'        => false,
                 'message'               => 'Returns false, if parameter reviewId is not given in the HTTP REQUEST'
             ],
@@ -351,19 +351,19 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
                 'checkSessionChallenge' => true,
                 'userId'                => 'someUserId',
                 'articleIdFromRequest'  => 'someArticleId',
-                'productRatingDeleted'  => true,
+                'ratingDeleted'         => true,
                 'reviewIdFromRequest'   => 'someReviewId',
-                'productReviewDeleted'  => false,
+                'reviewDeleted'         => false,
                 'expectedResult'        => false,
-                'message'               => 'Returns false, if product rating could not be deleted'
+                'message'               => 'Returns false, if rating could not be deleted'
             ],
         ];
     }
 
     /**
-     * @covers \OxidEsales\EshopCommunity\Application\Controller\AccountReviewController::deleteProductReviewAndRating
+     * @covers \OxidEsales\EshopCommunity\Application\Controller\AccountReviewController::deleteReviewAndRating
      */
-    public function testDeleteProductReviewReturnsFalseOnNoReview()
+    public function testDeleteReviewReturnsFalseOnNoReview()
     {
         $userMock = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['getId']);
         $userMock->expects($this->any())->method('getId')->will($this->returnValue("userId"));
@@ -371,15 +371,15 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
         $accountReviewControllerMock = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountReviewController::class, ['getUser']);
         $accountReviewControllerMock->expects($this->any())->method('getUser')->will($this->returnValue($userMock));
 
-        $result = $accountReviewControllerMock->deleteProductReviewAndRating();
+        $result = $accountReviewControllerMock->deleteReviewAndRating();
 
         $this->assertFalse($result);
     }
 
     /**
-     * @covers \OxidEsales\EshopCommunity\Application\Controller\AccountReviewController::deleteProductReviewAndRating
+     * @covers \OxidEsales\EshopCommunity\Application\Controller\AccountReviewController::deleteReviewAndRating
      */
-    public function testDeleteProductReviewReturnsFalseOnWrongReviewType()
+    public function testDeleteReviewReturnsFalseOnWrongReviewType()
     {
         $userMock = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['getId']);
         $userMock->expects($this->any())->method('getId')->will($this->returnValue("userId"));
@@ -392,15 +392,15 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
         $reviewsMock->expects($this->any())->method('getObjectType')->will($this->returnValue('oxrecommlist'));
         \oxTestModules::addModuleObject(\OxidEsales\Eshop\Application\Model\Review::class, $reviewsMock);
 
-        $result = $accountReviewControllerMock->deleteProductReviewAndRating();
+        $result = $accountReviewControllerMock->deleteReviewAndRating();
 
         $this->assertFalse($result);
     }
 
     /**
-     * @covers \OxidEsales\EshopCommunity\Application\Controller\AccountReviewController::deleteProductReviewAndRating
+     * @covers \OxidEsales\EshopCommunity\Application\Controller\AccountReviewController::deleteReviewAndRating
      */
-    public function testDeleteProductReviewReturnsFalseOnWrongReviewUser()
+    public function testDeleteReviewReturnsFalseOnWrongReviewUser()
     {
         $userMock = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, ['getId']);
         $userMock->expects($this->any())->method('getId')->will($this->returnValue("someId"));
@@ -417,7 +417,7 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
         $reviewsMock->expects($this->any())->method('getUser')->will($this->returnValue($reviewUserMock));
         \oxTestModules::addModuleObject(\OxidEsales\Eshop\Application\Model\Review::class, $reviewsMock);
 
-        $result = $accountReviewControllerMock->deleteProductReviewAndRating();
+        $result = $accountReviewControllerMock->deleteReviewAndRating();
 
         $this->assertFalse($result);
     }

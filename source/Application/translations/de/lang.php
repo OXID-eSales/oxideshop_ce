@@ -155,7 +155,7 @@ $aLang = [
 'ERROR_MESSAGE_PASSWORD_EMAIL_INVALID'                        => 'Bitte geben Sie eine gültige E-Mail-Adresse ein!',
 'ERROR_MESSAGE_PASSWORD_LINK_EXPIRED'                         => 'Diese Seite ist nicht mehr gültig. Bitte benutzen Sie die Funktion "Passwort vergessen?" erneut.',
 'ERROR_MESSAGE_PASSWORD_TOO_SHORT'                            => 'Fehler: Ihr Passwort ist zu kurz.',
-'ERROR_PRODUCT_REVIEW_AND_RATING_NOT_DELETED'                 => 'Artikelbewertung und Sterne-Rating konnten nicht gelöscht werden',
+'ERROR_REVIEW_AND_RATING_NOT_DELETED'                         => 'Bewertung und Sterne-Rating konnten nicht gelöscht werden',
 'ERROR_MESSAGE_CURRENT_PASSWORD_INVALID'                      => 'Fehler: Ihr aktuelles Passwort ist falsch.',
 'ERROR_MESSAGE_RECOMMLIST_NOTITLE'                            => 'Kein Titel angegeben',
 'ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND'                 => 'Class "%s" nicht gefunden',
@@ -763,5 +763,5 @@ $aLang = [
 'INFO_ABOUT_COOKIES'                                          => 'Information über Cookies',
 'PARTNERS'                                                    => 'Partner',
 
-'MY_PRODUCT_REVIEWS'                                          => 'Meine Artikelbewertungen',
+'MY_REVIEWS'                                                  => 'Meine Bewertungen',
 ];

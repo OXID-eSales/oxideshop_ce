@@ -155,7 +155,7 @@ $aLang = [
 'ERROR_MESSAGE_PASSWORD_EMAIL_INVALID'                        => 'Please enter a valid e-mail address!',
 'ERROR_MESSAGE_PASSWORD_LINK_EXPIRED'                         => 'This page is expired. Please use the function "Forgot password?" once again.',
 'ERROR_MESSAGE_PASSWORD_TOO_SHORT'                            => 'Error: your password is too short.',
-'ERROR_PRODUCT_REVIEW_AND_RATING_NOT_DELETED'                 => 'The product review and the star rating could not be deleted',
+'ERROR_REVIEW_AND_RATING_NOT_DELETED'                         => 'The review and the star rating could not be deleted',
 'ERROR_MESSAGE_CURRENT_PASSWORD_INVALID'                      => 'Error: your current password is incorrect.',
 'ERROR_MESSAGE_RECOMMLIST_NOTITLE'                            => 'Title field is empty',
 'ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND'                 => 'Class "%s" not found',
@@ -763,5 +763,5 @@ $aLang = [
 'INFO_ABOUT_COOKIES'                                          => 'Information about cookies',
 'PARTNERS'                                                    => 'Partners',
 
-'MY_PRODUCT_REVIEWS'                                          => 'My product reviews',
+'MY_REVIEWS'                                                  => 'My reviews',
 ];

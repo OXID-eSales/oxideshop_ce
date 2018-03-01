@@ -87,21 +87,21 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
             $this->createReview($user->getId(), $articleIds[$i], 'oxrecommlist');
         }
 
-        $reviewsTotal = $accountReviewController->getProductReviewItemsCnt();
-        $reviewsDisplayed = count($accountReviewController->getProductReviewList());
+        $reviewsTotal = $accountReviewController->getReviewItemsCnt();
+        $reviewsDisplayed = count($accountReviewController->getArticleReviewList());
 
         $this->assertSame($itemsToCreate, $reviewsTotal);
         $this->assertSame($itemsPerPage, $reviewsDisplayed);
     }
 
     /**
-     * Test the deletion of product reviews and ratings
+     * Test the deletion of reviews and ratings
      *
      * @throws \Exception
      * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
      * @throws \OxidEsales\Eshop\Core\Exception\SystemComponentException
      */
-    public function testDeleteProductReviewAndRating()
+    public function testDeleteReviewAndRating()
     {
         $shopId = 1;
         $user = $this->getUser(self::TESTUSER_ID);
@@ -133,7 +133,7 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
         $this->assertTrue($this->productRatingExists($shopId, $userId, $articleId, 'oxarticle'));
 
         $accountReviewController = oxNew(\OxidEsales\Eshop\Application\Controller\AccountReviewController::class);
-        $result = $accountReviewController->deleteProductReviewAndRating();
+        $result = $accountReviewController->deleteReviewAndRating();
 
         $this->assertNull($result);
 

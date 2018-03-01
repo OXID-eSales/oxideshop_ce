@@ -41,6 +41,7 @@ window.onload = function ()
     [{/block}]
     <td valign="top" class="listfilter" height="20" colspan="2">
         <div class="r1"><div class="b1">
+        <input class="listedit" type="text" size="50" maxlength="128" name="where[oxselectlist][oxident]" value="[{$where.oxselectlist.oxident}]">
         <div class="find">
             <select name="changelang" class="editinput" onChange="Javascript:top.oxid.admin.changeLanguage();">
             [{foreach from=$languages item=lang}]

@@ -51,6 +51,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `blAllowSuggestArticle` - now it's possible to disable recommendation feature in admin.
 - New methods:
   - `OxidEsales\EshopCommunity\Application\Model\User::isMallAdmin()`
+  - `OxidEsales\EshopCommunity\Core\Registry::getRequest` [PR-626](https://github.com/OXID-eSales/oxideshop_ce/pull/626)
 - Filter by working title in admin Selection lists list [PR-632](https://github.com/OXID-eSales/oxideshop_ce/pull/632)
 
 ### Changed

@@ -355,7 +355,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
             $sTitle .= ($sTitle ? ' ' : '') . $oArticle->oxarticles__oxartnum->value;
         }
 
-        return $this->_prepareTitle($sTitle, false, $oArticle->getLanguage()) . '.html';
+        return $this->_prepareTitle($sTitle, false, $oArticle->getLanguage()) . $this->_getUrlExtension();
     }
 
     /**

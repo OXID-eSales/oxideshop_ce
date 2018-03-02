@@ -3847,7 +3847,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             }
 
             $aAmPriceList[$sId]->fbrutprice = $oLang->formatCurrency($oItemPrice->getBruttoPrice());
+            $aAmPriceList[$sId]->fbrutamountprice = $oLang->formatCurrency($oItemPrice->getBruttoPrice() / $this->getUnitQuantity());
             $aAmPriceList[$sId]->fnetprice = $oLang->formatCurrency($oItemPrice->getNettoPrice());
+            $aAmPriceList[$sId]->fnetamountprice = $oLang->formatCurrency($oItemPrice->getNettoPrice() / $this->getUnitQuantity());
         }
 
         return $aAmPriceList;

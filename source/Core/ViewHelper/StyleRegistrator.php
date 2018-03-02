@@ -57,7 +57,16 @@ class StyleRegistrator
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $parts = explode('?', $file);
-        $url = $config->getResourceUrl($parts[0], $config->isAdmin());
+        preg_match("/\.min\./", $parts[0], $match);
+        if (!count($match)) {
+            $info = pathinfo($file);
+            $filename = basename($info['filename'] . '.min.' . $info['extension']);
+            $minifiedPath = $info['dirname'] . $filename;
+            $url = $config->getResourceUrl($minifiedPath, $config->isAdmin());
+        }
+        if (!isset($url) || empty($url)) {
+            $url = $config->getResourceUrl($parts[0], $config->isAdmin());
+        }
         $parameters = $parts[1];
         if (empty($parameters)) {
             $path = $config->getResourcePath($file, $config->isAdmin());

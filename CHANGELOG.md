@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Loading for non widget classes via `widget.php` entry point have been declined. To allow a class to be loaded
 via `widget.php` it must extend `\OxidEsales\Eshop\Application\Component\Widget\WidgetController`.
+- `SeoEncoderArticle::_prepareArticleTitle` now uses `_getUrlExtension()` method in place of hardcoded `.html` extension [PR-634](https://github.com/OXID-eSales/oxideshop_ce/pull/634). 
 
 ### Deprecated
 - Recommendations feature will be moved to separate module:

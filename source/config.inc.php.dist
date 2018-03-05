@@ -33,6 +33,8 @@
      * Search engine friendly URL processor.
      * After changing this value, you should rename oxid.php file as well
      * Always leave .php extension here unless you know what you are doing
+     *
+     * @deprecated (2018-03-05);
      */
     $this->sOXIDPHP = "oxid.php";
 

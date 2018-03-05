@@ -35,6 +35,7 @@ via `widget.php` it must extend `\OxidEsales\Eshop\Application\Component\Widget\
   - `OxidEsales\EshopCommunity\Core\ViewConfig::getShowSuggest()`
   - Config option - `blAllowSuggestArticle`
   - Language constants: `SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE`, `HELP_SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE`
+- `sOXIDPHP` parameter in `config.inc.php`
 
 ### Removed
 
@@ -91,7 +92,6 @@ via `widget.php` it must extend `\OxidEsales\Eshop\Application\Component\Widget\
 - \OxidEsales\EshopCommunity\Application\Model\FileChecker::getRevision()
 - \OxidEsales\EshopCommunity\Core\Config::getRevision()
 - \OxidEsales\EshopCommunity\Core\Controller\BaseController::getRevision()
-- `sOXIDPHP` parameter in `config.inc.php`
 
 ### Removed
 - 'Your market' selection was removed from Setup wizard, as this value is no longer evaluated

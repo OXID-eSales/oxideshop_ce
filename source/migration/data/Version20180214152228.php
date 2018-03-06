@@ -22,10 +22,15 @@ class Version20180214152228 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
+
         $facts = new Facts();
         $configFile = new ConfigFile($facts->getSourcePath().'/config.inc.php');
         $configKey = !is_null($configFile->getVar('sConfigKey')) ? $configFile->getVar('sConfigKey') : Config::DEFAULT_CONFIG_KEY;
         $settingName = 'blAllowSuggestArticle';
+
+        /// set server collation variables
+        $this->addSql("SET @@session.collation_connection = 'utf8_general_ci';");
+        $this->addSql("SET @@session.collation_server = 'utf8_general_ci';");
 
         $this->addSql("INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`, `OXVARVALUE`)
                             SELECT SUBSTRING(md5(uuid_short()), 1, 32),  `OXID`, '', '".$settingName."', 'bool', ENCODE('1', '".$configKey."') FROM oxshops

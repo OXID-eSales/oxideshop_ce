@@ -20,6 +20,10 @@ class Version20170718124421 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
+        /// set server collation variables
+        $this->addSql("SET @@session.collation_connection = 'utf8_general_ci';");
+        $this->addSql("SET @@session.collation_server = 'utf8_general_ci';");
+
         $this->addSql("ALTER TABLE `oxtplblocks` 
           CHANGE `OXMODULE` `OXMODULE` varchar(100) 
           character set latin1 collate latin1_general_ci NOT NULL 

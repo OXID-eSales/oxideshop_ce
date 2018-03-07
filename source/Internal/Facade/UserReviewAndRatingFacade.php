@@ -51,18 +51,6 @@ class UserReviewAndRatingFacade implements UserReviewAndRatingFacadeInterface
     }
 
     /**
-     * Get number of reviews by given user.
-     *
-     * @param $userId
-     *
-     * @return int
-     */
-    public function getReviewAndRatingListCount($userId)
-    {
-        return $this->getMergedReviewAndRatingList($userId)->count();
-    }
-
-    /**
      * Returns Collection of User Ratings and Reviews.
      *
      * @param string $userId

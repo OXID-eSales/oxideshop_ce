@@ -15,6 +15,7 @@ use OxidEsales\Eshop\Internal\Dao\ReviewDao;
 use OxidEsales\Eshop\Internal\Facade\UserReviewAndRatingFacade;
 use OxidEsales\Eshop\Internal\Service\ReviewAndRatingMergingService;
 use OxidEsales\Eshop\Internal\Service\UserRatingService;
+use OxidEsales\Eshop\Internal\Service\UserReviewAndRatingService;
 use OxidEsales\Eshop\Internal\Service\UserReviewService;
 use OxidEsales\Eshop\Internal\Service\UserService;
 
@@ -82,12 +83,12 @@ class AccountReviewController extends AccountController
      */
     private function deleteReview()
     {
-        $userReviewAndRatingFacade = $this->getUserReviewAndRatingFacade();
+        $userReviewFacade = $this->getUserReviewFacade();
         $userId = $this->getUser()->getId();
 
         $reviewId = $this->getReviewIdFromRequest();
         if ($reviewId) {
-            $userReviewAndRatingFacade->deleteReview($reviewId, $userId);
+            $userReviewFacade->deleteReview($reviewId, $userId);
         }
     }
 
@@ -96,12 +97,12 @@ class AccountReviewController extends AccountController
      */
     private function deleteRating()
     {
-        $userReviewAndRatingFacade = $this->getUserReviewAndRatingFacade();
+        $userReviewAndRatingFacade = $this->getUserRatingFacade();
         $userId = $this->getUser()->getId();
 
         $ratingId = $this->getRatingIdFromRequest();
         if ($ratingId) {
-            $userReviewAndRatingFacade->deleteRating($ratingId, $userId);
+            $userRatingFacade->deleteRating($ratingId, $userId);
         }
     }
 
@@ -247,6 +248,18 @@ class AccountReviewController extends AccountController
     private function getUserReviewAndRatingFacade()
     {
         return new UserReviewAndRatingFacade(
+            $this->getUserReviewAndRatingService()
+        );
+    }
+
+    /**
+     * Returns UserReviewAndRatingService.
+     *
+     * @return UserReviewAndRatingService
+     */
+    private function getUserReviewAndRatingService()
+    {
+        return new UserReviewAndRatingService(
             $this->getUserReviewService(),
             $this->getUserRatingService(),
             $this->getReviewAndRatingMergingService()

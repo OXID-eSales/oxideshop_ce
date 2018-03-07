@@ -11,10 +11,8 @@ use OxidEsales\Eshop\Application\Model\RecommendationList;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Internal\Facade\UserReviewAndRatingFacadeInterface;
 use OxidEsales\Eshop\Internal\ViewDataObject\ReviewAndRating;
+use OxidEsales\Eshop\Internal\Service\UserReviewAndRatingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Exception\ReviewAndRatingObjectTypeException;
-use OxidEsales\Eshop\Internal\Service\ReviewAndRatingMergingServiceInterface;
-use OxidEsales\Eshop\Internal\Service\UserRatingServiceInterface;
-use OxidEsales\Eshop\Internal\Service\UserReviewServiceInterface;
 
 /**
  * Class UserReviewAndRatingFacade
@@ -24,51 +22,18 @@ use OxidEsales\Eshop\Internal\Service\UserReviewServiceInterface;
 class UserReviewAndRatingFacade implements UserReviewAndRatingFacadeInterface
 {
     /**
-     * @var UserReviewServiceInterface
+     * @var UserReviewAndRatingServiceInterface
      */
-    private $userReviewService;
-
-    /**
-     * @var UserRatingServiceInterface
-     */
-    private $userRatingService;
-
-    /**
-     * @var ReviewAndRatingMergingServiceInterface
-     */
-    private $reviewAndRatingMergingService;
+    private $userReviewAndRatingService;
 
     /**
      * UserReviewAndRatingFacade constructor.
      *
-     * @param UserReviewServiceInterface             $userReviewService
-     * @param UserRatingServiceInterface             $userRatingService
-     * @param ReviewAndRatingMergingServiceInterface $reviewAndRatingMergingService
+     * @param UserReviewAndRatingServiceInterface $userReviewAndRatingService
      */
-    public function __construct(
-        UserReviewServiceInterface $userReviewService,
-        UserRatingServiceInterface $userRatingService,
-        ReviewAndRatingMergingServiceInterface $reviewAndRatingMergingService
-    ) {
-        $this->userReviewService = $userReviewService;
-        $this->userRatingService = $userRatingService;
-        $this->reviewAndRatingMergingService = $reviewAndRatingMergingService;
-    }
-
-    /**
-     * @param string $reviewId
-     * @param string $userId
-     */
-    public function deleteReview($reviewId, $userId)
+    public function __construct(UserReviewAndRatingServiceInterface $userReviewAndRatingService)
     {
-    }
-
-    /**
-     * @param string $ratingId
-     * @param string $userId
-     */
-    public function deleteRating($ratingId, $userId)
-    {
+        $this->userReviewAndRatingService = $userReviewAndRatingService;
     }
 
     /**
@@ -82,66 +47,13 @@ class UserReviewAndRatingFacade implements UserReviewAndRatingFacadeInterface
      */
     public function getReviewAndRatingList($userId, $itemsPerPage, $offset)
     {
-        $reviewAndRatingList = $this->getMergedReviewAndRatingList($userId);
-        $reviewAndRatingList = $this->sortReviewAndRatingList($reviewAndRatingList);
-        $reviewAndRatingList = $this->paginateReviewAndRatingList(
-            $reviewAndRatingList,
-            $itemsPerPage,
-            $offset
-        );
+        $reviewAndRatingList = $this
+            ->userReviewAndRatingService
+            ->getReviewAndRatingList($userId, $itemsPerPage, $offset);
 
         $this->prepareRatingAndReviewPropertiesData($reviewAndRatingList);
 
         return $reviewAndRatingList;
-    }
-
-    /**
-     * Returns merged Rating and Review.
-     *
-     * @param string $userId
-     *
-     * @return ArrayCollection
-     */
-    private function getMergedReviewAndRatingList($userId)
-    {
-        $reviews = $this->userReviewService->getReviews($userId);
-        $ratings = $this->userRatingService->getRatings($userId);
-
-        return $this
-            ->reviewAndRatingMergingService
-            ->mergeReviewAndRating($reviews, $ratings);
-    }
-
-    /**
-     * Sorts ReviewAndRating list.
-     *
-     * @param ArrayCollection $reviewAndRatingList
-     *
-     * @return ArrayCollection
-     */
-    private function sortReviewAndRatingList(ArrayCollection $reviewAndRatingList)
-    {
-        $iterator = $reviewAndRatingList->getIterator();
-
-        $iterator->uasort(function ($first, $second) {
-            return $first->getCreatedAt() < $second->getCreatedAt() ? 1 : -1;
-        });
-
-        return new ArrayCollection(iterator_to_array($iterator));
-    }
-
-    /**
-     * Paginate ReviewAndRating list.
-     *
-     * @param ArrayCollection $reviewAndRatingList
-     * @param int             $itemsCount
-     * @param int             $offset
-     *
-     * @return mixed
-     */
-    private function paginateReviewAndRatingList(ArrayCollection $reviewAndRatingList, $itemsCount, $offset)
-    {
-        return $reviewAndRatingList->slice($offset, $itemsCount);
     }
 
     /**

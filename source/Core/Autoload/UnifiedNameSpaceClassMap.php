@@ -2930,4 +2930,14 @@ return [
         'isAbstract'       => false,
         'isInterface'      => false
     ],
+    'OxidEsales\Eshop\Internal\Service\UserReviewAndRatingService'                        => [
+        'editionClassName' => \OxidEsales\EshopCommunity\Internal\Service\UserReviewAndRatingService::class,
+        'isAbstract'       => false,
+        'isInterface'      => false
+    ],
+    'OxidEsales\Eshop\Internal\Service\UserReviewAndRatingServiceInterface'               => [
+        'editionClassName' => \OxidEsales\EshopCommunity\Internal\Service\UserReviewAndRatingServiceInterface::class,
+        'isAbstract'       => false,
+        'isInterface'      => true
+    ],
 ];

@@ -87,7 +87,7 @@ class AccountReviewController extends AccountController
      */
     private function deleteRating()
     {
-        $userReviewAndRatingFacade = $this->getUserRatingFacade();
+        $userRatingFacade = $this->getUserRatingFacade();
         $userId = $this->getUser()->getId();
 
         $ratingId = $this->getRatingIdFromRequest();

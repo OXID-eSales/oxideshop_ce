@@ -32,6 +32,18 @@ class UserReviewService implements UserReviewServiceInterface
     }
 
     /**
+     * Get number of review items by given user.
+     *
+     * @param string $userId
+     *
+     * @return int
+     */
+    public function getReviewsCount($userId)
+    {
+        return $this->reviewDao->getReviewsCountByUserId($userId);
+    }
+
+    /**
      * Returns User Reviews.
      *
      * @param string $userId

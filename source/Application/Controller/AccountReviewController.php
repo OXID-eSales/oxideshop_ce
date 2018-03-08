@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
@@ -17,7 +18,6 @@ use OxidEsales\Eshop\Internal\Service\ReviewAndRatingMergingService;
 use OxidEsales\Eshop\Internal\Service\UserRatingService;
 use OxidEsales\Eshop\Internal\Service\UserReviewAndRatingService;
 use OxidEsales\Eshop\Internal\Service\UserReviewService;
-use OxidEsales\Eshop\Internal\Service\UserService;
 
 /**
  * Class AccountReviewController
@@ -54,10 +54,12 @@ class AccountReviewController extends AccountController
         $offset         = $currentPage * $itemsPerPage;
 
         $userId = $this->getUser()->getId();
-        $userReviewAndRatingFacade = $this->getUserReviewAndRatingFacade();
 
-        return $userReviewAndRatingFacade->getReviewAndRatingList(
-            $userId,
+        $userReviewAndRatingFacade = $this->getUserReviewAndRatingFacade();
+        $reviewAndRatingList = $userReviewAndRatingFacade->getReviewAndRatingList($userId);
+
+        return $this->getPaginatedReviewAndRatingList(
+            $reviewAndRatingList,
             $itemsPerPage,
             $offset
         );
@@ -238,6 +240,20 @@ class AccountReviewController extends AccountController
             $languageId,
             false
         );
+    }
+
+    /**
+     * Paginate ReviewAndRating list.
+     *
+     * @param ArrayCollection $reviewAndRatingList
+     * @param int             $itemsCount
+     * @param int             $offset
+     *
+     * @return ArrayCollection
+     */
+    private function getPaginatedReviewAndRatingList(ArrayCollection $reviewAndRatingList, $itemsCount, $offset)
+    {
+        return new ArrayCollection($reviewAndRatingList->slice($offset, $itemsCount));
     }
 
     /**

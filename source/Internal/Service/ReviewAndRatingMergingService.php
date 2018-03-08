@@ -10,14 +10,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use OxidEsales\Eshop\Internal\DataObject\Rating;
 use OxidEsales\Eshop\Internal\DataObject\Review;
 use OxidEsales\Eshop\Internal\ViewDataObject\ReviewAndRating;
-use OxidEsales\Eshop\Internal\Service\ReviewAndRatingMergingServiceInterface;
+use OxidEsales\Eshop\Internal\Service\ReviewAndRatingMergingServiceInterface as EshopReviewAndRatingMergingServiceInterface;
 
 /**
  * Class ReviewAndRatingMergingService
  * @internal
  * @package OxidEsales\EshopCommunity\Internal\Service
  */
-class ReviewAndRatingMergingService implements ReviewAndRatingMergingServiceInterface
+class ReviewAndRatingMergingService implements EshopReviewAndRatingMergingServiceInterface
 {
     /**
      * Merges Reviews and Ratings to Collection of ReviewAndRating view objects.
@@ -134,7 +134,8 @@ class ReviewAndRatingMergingService implements ReviewAndRatingMergingServiceInte
     {
         return $rating->getType() === $review->getType()
             && $rating->getObjectId() === $review->getObjectId()
-            && $rating->getRating() === $review->getRating();
+            && $rating->getRating() === $review->getRating()
+            && $rating->getUserId() === $review->getUserId();
     }
 
     /**

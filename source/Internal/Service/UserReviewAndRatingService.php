@@ -6,8 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Service;
 
-use OxidEsales\Eshop\Internal\Service\ReviewAndRatingMergingServiceInterface;
-use OxidEsales\Eshop\Internal\Service\UserReviewAndRatingServiceInterface;
+use OxidEsales\Eshop\Internal\Service\ReviewAndRatingMergingServiceInterface as EshopReviewAndRatingMergingServiceInterface;
+use OxidEsales\Eshop\Internal\Service\UserReviewAndRatingServiceInterface as EshopUserReviewAndRatingServiceInterface;
 use OxidEsales\Eshop\Internal\Service\UserRatingServiceInterface;
 use OxidEsales\Eshop\Internal\Service\UserReviewServiceInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -17,7 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @internal
  * @package OxidEsales\EshopCommunity\Internal\Service
  */
-class UserReviewAndRatingService implements UserReviewAndRatingServiceInterface
+class UserReviewAndRatingService implements EshopUserReviewAndRatingServiceInterface
 {
     /**
      * @var UserReviewServiceInterface
@@ -44,7 +44,7 @@ class UserReviewAndRatingService implements UserReviewAndRatingServiceInterface
     public function __construct(
         UserReviewServiceInterface $userReviewService,
         UserRatingServiceInterface $userRatingService,
-        ReviewAndRatingMergingServiceInterface $reviewAndRatingMergingService
+        EshopReviewAndRatingMergingServiceInterface $reviewAndRatingMergingService
     ) {
         $this->userReviewService = $userReviewService;
         $this->userRatingService = $userRatingService;
@@ -55,20 +55,13 @@ class UserReviewAndRatingService implements UserReviewAndRatingServiceInterface
      * Returns Collection of User Ratings and Reviews.
      *
      * @param string $userId
-     * @param int    $itemsPerPage
-     * @param int    $offset
      *
      * @return ArrayCollection
      */
-    public function getReviewAndRatingList($userId, $itemsPerPage, $offset)
+    public function getReviewAndRatingList($userId)
     {
         $reviewAndRatingList = $this->getMergedReviewAndRatingList($userId);
         $reviewAndRatingList = $this->sortReviewAndRatingList($reviewAndRatingList);
-        $reviewAndRatingList = $this->paginateReviewAndRatingList(
-            $reviewAndRatingList,
-            $itemsPerPage,
-            $offset
-        );
 
         return $reviewAndRatingList;
     }
@@ -99,26 +92,12 @@ class UserReviewAndRatingService implements UserReviewAndRatingServiceInterface
      */
     private function sortReviewAndRatingList(ArrayCollection $reviewAndRatingList)
     {
-        $iterator = $reviewAndRatingList->getIterator();
+        $reviewAndRatingListArray = $reviewAndRatingList->toArray();
 
-        $iterator->uasort(function ($first, $second) {
+        usort($reviewAndRatingListArray, function ($first, $second) {
             return $first->getCreatedAt() < $second->getCreatedAt() ? 1 : -1;
         });
 
-        return new ArrayCollection(iterator_to_array($iterator));
-    }
-
-    /**
-     * Paginate ReviewAndRating list.
-     *
-     * @param ArrayCollection $reviewAndRatingList
-     * @param int             $itemsCount
-     * @param int             $offset
-     *
-     * @return mixed
-     */
-    private function paginateReviewAndRatingList(ArrayCollection $reviewAndRatingList, $itemsCount, $offset)
-    {
-        return $reviewAndRatingList->slice($offset, $itemsCount);
+        return new ArrayCollection($reviewAndRatingListArray);
     }
 }

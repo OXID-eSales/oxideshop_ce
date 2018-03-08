@@ -18,10 +18,8 @@ interface UserReviewAndRatingFacadeInterface
      * Returns Collection of User Ratings and Reviews.
      *
      * @param string $userId
-     * @param int    $itemsPerPage
-     * @param int    $offset
      *
      * @return ArrayCollection
      */
-    public function getReviewAndRatingList($userId, $itemsPerPage, $offset);
+    public function getReviewAndRatingList($userId);
 }

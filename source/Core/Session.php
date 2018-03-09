@@ -555,7 +555,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      * @param string $serializedBasket
      * @return bool
      */
-    private function isSerializedBasketValid($serializedBasket)
+    protected function isSerializedBasketValid($serializedBasket)
     {
         $basketClass = get_class(oxNew(Basket::class));
         $basketItemClass = get_class(oxNew(BasketItem::class));
@@ -579,7 +579,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    private function isClassInSerializedObject($serializedObject, $className)
+    protected function isClassInSerializedObject($serializedObject, $className)
     {
         $quotedClassName = sprintf('"%s"', $className);
 
@@ -595,7 +595,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    private function isClassOrNullInSerializedObjectAfterField($serializedObject, $fieldName, $className)
+    protected function isClassOrNullInSerializedObjectAfterField($serializedObject, $fieldName, $className)
     {
         $fieldAndClassPattern = '/'. preg_quote($fieldName, '/') . '";((?P<null>N);|O:\d+:"(?P<class>[\w\\\\]+)":)/';
         $matchFound = preg_match($fieldAndClassPattern, $serializedObject, $matches) === 1;
@@ -617,7 +617,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    private function isUnserializedBasketValid($basket, $emptyBasket)
+    protected function isUnserializedBasketValid($basket, $emptyBasket)
     {
         return $basket && (get_class($basket) === get_class($emptyBasket));
     }

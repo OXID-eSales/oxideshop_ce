@@ -366,10 +366,6 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
             $session = $this->getSession();
             $session->destroy();
 
-            if ($this->getConfig()->getConfigParam('blClearCacheOnLogout')) {
-                $this->resetContentCache(true);
-            }
-
             Registry::getUtils()->redirect(
                 $this->getConfig()->getShopHomeUrl(),
                 true,

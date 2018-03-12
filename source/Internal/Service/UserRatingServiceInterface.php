@@ -21,4 +21,6 @@ interface UserRatingServiceInterface
      * @return ArrayCollection
      */
     public function getRatings($userId);
+
+    public function deleteRating($userId, $ratingId);
 }

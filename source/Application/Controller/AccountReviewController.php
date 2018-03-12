@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
+use OxidEsales\EshopCommunity\Internal\ServiceFactory\FacadeServiceFactory;
 
 /**
  * Class AccountReviewController
@@ -37,7 +38,7 @@ class AccountReviewController extends AccountController
     /**
      * Returns Review List
      *
-     * @return \OxidEsales\Eshop\Core\Model\ListModel|null
+     * @return \Doctrine\Common\Collections\ArrayCollection|null
      */
     public function getReviewList()
     {
@@ -73,12 +74,12 @@ class AccountReviewController extends AccountController
      */
     private function deleteReview()
     {
-        $userReviewFacade = $this->getUserReviewFacade();
+        $userReviewFacade = $this->getFacadeServiceFactory()->getUserReviewFacade();
         $userId = $this->getUser()->getId();
 
         $reviewId = $this->getReviewIdFromRequest();
         if ($reviewId) {
-            $userReviewFacade->deleteReview($reviewId, $userId);
+            $userReviewFacade->deleteReview($userId, $reviewId);
         }
     }
 
@@ -87,12 +88,12 @@ class AccountReviewController extends AccountController
      */
     private function deleteRating()
     {
-        $userRatingFacade = $this->getUserRatingFacade();
+        $userRatingFacade = $this->getFacadeServiceFactory()->getUserRatingFacade();
         $userId = $this->getUser()->getId();
 
         $ratingId = $this->getRatingIdFromRequest();
         if ($ratingId) {
-            $userRatingFacade->deleteRating($ratingId, $userId);
+            $userRatingFacade->deleteRating($userId, $ratingId);
         }
     }
 
@@ -141,7 +142,7 @@ class AccountReviewController extends AccountController
     /**
      * Retrieve the Review id from the request
      *
-     * @return Review
+     * @return string
      */
     private function getReviewIdFromRequest()
     {
@@ -153,7 +154,7 @@ class AccountReviewController extends AccountController
     /**
      * Retrieve the Rating id from the request
      *
-     * @return Review
+     * @return string
      */
     private function getRatingIdFromRequest()
     {
@@ -163,20 +164,18 @@ class AccountReviewController extends AccountController
     }
 
     /**
-     * Get actual page number.
-     *
-     * @return int
+     * @return string
      */
-    public function getActPage()
+    private function getReviewListUrlPath()
     {
         $lastPage = $this->getPagesCount();
-        $currentPage = parent::getActPage();
+        $currentPage = $this->getActPage();
 
         if ($currentPage >= $lastPage) {
             $currentPage = $lastPage - 1;
         }
 
-        return $currentPage;
+        return $currentPage > 0 ? 'account_reviewlist?pgNr=' . $currentPage : 'account_reviewlist';
     }
 
     /**
@@ -244,5 +243,13 @@ class AccountReviewController extends AccountController
     private function getPaginatedReviewAndRatingList(ArrayCollection $reviewAndRatingList, $itemsCount, $offset)
     {
         return new ArrayCollection($reviewAndRatingList->slice($offset, $itemsCount));
+    }
+
+    /**
+     * @return FacadeServiceFactory
+     */
+    private function getFacadeServiceFactory()
+    {
+        return FacadeServiceFactory::getInstance();
     }
 }

@@ -42,4 +42,17 @@ class UserReviewService implements UserReviewServiceInterface
     {
         return $this->reviewDao->getReviewsByUserId($userId);
     }
+
+    /**
+     * Delete a Review.
+     *
+     * @param string $userId
+     * @param string $reviewId
+     *
+     * @return bool
+     */
+    public function deleteReview($userId, $reviewId)
+    {
+        return $this->reviewDao->deleteReview($userId, $reviewId);
+    }
 }

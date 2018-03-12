@@ -31,4 +31,10 @@ interface RatingDaoInterface
      * @return ArrayCollection
      */
     public function getRatingsByProductId($productId);
+
+    /**
+     * @param string $userId
+     * @param string $ratingId
+     */
+    public function deleteRating($userId, $ratingId);
 }

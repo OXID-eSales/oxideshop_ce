@@ -23,4 +23,6 @@ interface UserReviewServiceInterface
      * @return ArrayCollection
      */
     public function getReviews($userId);
+
+    public function deleteReview($userId, $reviewId);
 }

@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Internal\Service;
 use Doctrine\Common\Collections\ArrayCollection;
 use OxidEsales\Eshop\Internal\Dao\RatingDaoInterface;
 use OxidEsales\Eshop\Internal\Service\UserRatingServiceInterface;
+use OxidEsales\EshopCommunity\Application\Model\Rating;
 
 /**
  * Class UserRatingService
@@ -41,5 +42,18 @@ class UserRatingService implements UserRatingServiceInterface
     public function getRatings($userId)
     {
         return $this->ratingDao->getRatingsByUserId($userId);
+    }
+
+    /**
+     * Delete a Rating.
+     *
+     * @param string $userId
+     * @param string $ratingId
+     *
+     * @return bool
+     */
+    public function deleteRating($userId, $ratingId)
+    {
+        return $this->ratingDao->deleteReview($userId, $ratingId);
     }
 }

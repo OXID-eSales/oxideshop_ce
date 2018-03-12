@@ -46,6 +46,21 @@ class RatingDao implements RatingDaoInterface
         return $this->mapRatings($ratingsData);
     }
 
+    public function deleteRating($userId, $ratingId)
+    {
+        $query = '
+              DELETE 
+              FROM 
+                  oxratings 
+              WHERE 
+                  oxid = ?
+              AND 
+                  oxuserid = ? 
+        ';
+
+        return $this->database->execute($query, [$ratingId, $userId]);
+    }
+
     /**
      * Returns Ratings for a product.
      *

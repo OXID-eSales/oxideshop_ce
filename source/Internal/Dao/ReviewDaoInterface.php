@@ -22,4 +22,6 @@ interface ReviewDaoInterface
      * @return ArrayCollection
      */
     public function getReviewsByUserId($userId);
+
+    public function deleteReview($userId, $reviewId);
 }

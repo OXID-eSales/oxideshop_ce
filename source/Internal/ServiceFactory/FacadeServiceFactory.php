@@ -21,16 +21,6 @@ class FacadeServiceFactory
     private static $instance;
 
     /**
-     * @var UserReviewAndRatingFacadeInterface
-     */
-    private $userReviewAndRatingFacade;
-
-    /**
-     * @var ProductRatingFacadeInterface
-     */
-    private $productRatingFacade;
-
-    /**
      * @var ReviewServiceFactory
      */
     private $reviewServiceFactory;
@@ -59,13 +49,9 @@ class FacadeServiceFactory
      */
     public function getUserReviewAndRatingFacade()
     {
-        if (!$this->userReviewAndRatingFacade) {
-            $this->userReviewAndRatingFacade = $this
-                ->getReviewServiceFactory()
-                ->getUserReviewAndRatingFacade();
-        }
-
-        return $this->userReviewAndRatingFacade;
+        return $this
+            ->getReviewServiceFactory()
+            ->getUserReviewAndRatingFacade();
     }
 
     /**
@@ -73,13 +59,29 @@ class FacadeServiceFactory
      */
     public function getProductRatingFacade()
     {
-        if (!$this->productRatingFacade) {
-            $this->productRatingFacade = $this
-                ->getReviewServiceFactory()
-                ->getProductRatingFacade();
-        }
+        return $this
+            ->getReviewServiceFactory()
+            ->getProductRatingFacade();
+    }
 
-        return $this->productRatingFacade;
+    /**
+     * @return \OxidEsales\EshopCommunity\Internal\Facade\UserRatingFacade
+     */
+    public function getUserRatingFacade()
+    {
+        return $this
+            ->getReviewServiceFactory()
+            ->getUserRatingFacade();
+    }
+
+    /**
+     * @return \OxidEsales\EshopCommunity\Internal\Facade\UserReviewFacade
+     */
+    public function getUserReviewFacade()
+    {
+        return $this
+            ->getReviewServiceFactory()
+            ->getUserReviewFacade();
     }
 
     /**

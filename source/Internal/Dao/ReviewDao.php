@@ -45,6 +45,21 @@ class ReviewDao implements ReviewDaoInterface
         return $this->mapReviews($reviewsData);
     }
 
+    public function deleteReview($userId, $reviewId)
+    {
+        $query = '
+              DELETE 
+              FROM 
+                  oxreviews 
+              WHERE 
+                  oxid = ? 
+              AND 
+                  oxuserid = ? 
+        ';
+
+        return $this->database->execute($query, [$reviewId, $userId]);
+    }
+
     /**
      * Returns User Reviews from database.
      *

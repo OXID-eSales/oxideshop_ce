@@ -14,8 +14,12 @@ use OxidEsales\EshopCommunity\Internal\Dao\ReviewDao;
 use OxidEsales\EshopCommunity\Internal\Dao\ReviewDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Facade\ProductRatingFacade;
 use OxidEsales\EshopCommunity\Internal\Facade\ProductRatingFacadeInterface;
+use OxidEsales\EshopCommunity\Internal\Facade\UserRatingFacade;
+use OxidEsales\EshopCommunity\Internal\Facade\UserRatingFacadeInterface;
 use OxidEsales\EshopCommunity\Internal\Facade\UserReviewAndRatingFacade;
 use OxidEsales\EshopCommunity\Internal\Facade\UserReviewAndRatingFacadeInterface;
+use OxidEsales\EshopCommunity\Internal\Facade\UserReviewFacade;
+use OxidEsales\EshopCommunity\Internal\Facade\UserReviewFacadeInterface;
 use OxidEsales\EshopCommunity\Internal\Service\ProductRatingService;
 use OxidEsales\EshopCommunity\Internal\Service\ProductRatingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Service\RatingCalculatorService;
@@ -45,6 +49,16 @@ class ReviewServiceFactory
      * @var ProductRatingFacadeInterface
      */
     private $productRatingFacade;
+
+    /**
+     * @var UserReviewFacadeInterface
+     */
+    private $userReviewFacade;
+
+    /**
+     * @var UserRatingFacadeInterface
+     */
+    private $userRatingFacade;
 
     /**
      * @var UserReviewAndRatingServiceInterface
@@ -117,6 +131,34 @@ class ReviewServiceFactory
         }
 
         return $this->productRatingFacade;
+    }
+
+    /**
+     * @return UserRatingFacade
+     */
+    public function getUserRatingFacade()
+    {
+        if (!$this->userRatingFacade) {
+            $this->userRatingFacade = new UserRatingFacade(
+                $this->getUserRatingService()
+            );
+        }
+
+        return $this->userRatingFacade;
+    }
+
+    /**
+     * @return UserReviewFacade
+     */
+    public function getUserReviewFacade()
+    {
+        if (!$this->userReviewFacade) {
+            $this->userReviewFacade = new UserReviewFacade(
+                $this->getUserReviewService()
+            );
+        }
+
+        return $this->userReviewFacade;
     }
 
     /**

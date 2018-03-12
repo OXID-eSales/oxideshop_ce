@@ -64,8 +64,8 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
      * More total items are created that the number that is displayed on one page, so
      * number of items on one page will be less that the total number of items.
      *
-     * @covers \OxidEsales\Eshop\Application\Controller\AccountReviewController\getProductReviewItemsCnt()
-     * @covers \OxidEsales\Eshop\Application\Controller\AccountReviewController\getProductReviewList()
+     * @covers \OxidEsales\Eshop\Application\Controller\AccountReviewController\getReviewItemsCount()
+     * @covers \OxidEsales\Eshop\Application\Controller\AccountReviewController\getReviewList()
      *
      * @throws \Exception
      * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
@@ -87,10 +87,10 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
             $this->createReview($user->getId(), $articleIds[$i], 'oxrecommlist');
         }
 
-        $reviewsTotal = $accountReviewController->getReviewItemsCnt();
-        $reviewsDisplayed = count($accountReviewController->getArticleReviewList());
+        $reviewsTotal = $accountReviewController->getReviewItemsCount();
+        $reviewsDisplayed = count($accountReviewController->getReviewList());
 
-        $this->assertSame($itemsToCreate, $reviewsTotal);
+        $this->assertSame($itemsToCreate * 2, $reviewsTotal);
         $this->assertSame($itemsPerPage, $reviewsDisplayed);
     }
 
@@ -107,27 +107,30 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
         $user = $this->getUser(self::TESTUSER_ID);
         $userId = $user->getId();
         $this->getSession()->setUser($user);
-        $csfrToken = $this->getSession()->getSessionChallengeToken();
-        $this->getSession()->setVariable('sess_stoken', $csfrToken);
-        $this->setRequestParameter('stoken', $csfrToken);
+        $csrfToken = $this->getSession()->getSessionChallengeToken();
+        $this->getSession()->setVariable('sess_stoken', $csrfToken);
+        $this->setRequestParameter('stoken', $csrfToken);
 
         $itemsToCreate = 10;
-        $articleIds = $this->getArticleIds($itemsToCreate);
 
+        $articleIds = $this->getArticleIds($itemsToCreate);
         $reviewIds = [];
+        $ratingIds = [];
+
         for ($i = 0; $i < $itemsToCreate; $i++) {
             $reviewIds[] = $this->createReview($user->getId(), $articleIds[$i], 'oxarticle');
+            $ratingIds[] = $this->createRating($shopId, $user->getId(), $articleIds[$i], 'oxarticle');
             $this->createReview('nonexistentuser', $articleIds[$i], 'oxrecommlist');
-            $this->createRating($shopId, $user->getId(), $articleIds[$i], 'oxarticle');
             $this->createRating($shopId, 'nonexistentuser', $articleIds[$i], 'oxrecommlist');
         }
 
         $articleId = $articleIds[0];
         $reviewId = $reviewIds[0];
+        $ratingId = $ratingIds[0];
 
         $this->setRequestParameter('aId', $articleId);
         $this->setRequestParameter('reviewId', $reviewId);
-
+        $this->setRequestParameter('ratingId', $ratingId);
 
         $this->assertTrue($this->productReviewExists($userId, $articleId, 'oxarticle'));
         $this->assertTrue($this->productRatingExists($shopId, $userId, $articleId, 'oxarticle'));
@@ -135,7 +138,7 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
         $accountReviewController = oxNew(\OxidEsales\Eshop\Application\Controller\AccountReviewController::class);
         $result = $accountReviewController->deleteReviewAndRating();
 
-        $this->assertNull($result);
+        $this->assertEquals($result, 'account_reviewlist');
 
         $this->assertFalse($this->productReviewExists($userId, $articleId, 'oxarticle'));
         $this->assertFalse($this->productRatingExists($shopId, $userId, $articleId, 'oxarticle'));
@@ -231,6 +234,7 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
      * @param string $articleId
      * @param string $type
      *
+     * @return string Review ID
      * @throws \Exception
      */
     protected function createReview($userId, $articleId, $type)
@@ -242,9 +246,7 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
         $review->oxreviews__oxobjectid = new \OxidEsales\Eshop\Core\Field($articleId, \OxidEsales\Eshop\Core\Field::T_RAW);
         $review->oxreviews__oxrating = new \OxidEsales\Eshop\Core\Field(2, \OxidEsales\Eshop\Core\Field::T_RAW);
 
-        $reviewId = $review->save();
-
-        return $reviewId;
+        return $review->save();
     }
 
     /**
@@ -255,6 +257,7 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
      * @param string $articleId
      * @param string $type
      *
+     * @return string Rating ID
      * @throws \Exception
      */
     protected function createRating($shopId, $userId, $articleId, $type)
@@ -267,7 +270,7 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
         $rating->oxratings__oxobjectid = new \OxidEsales\Eshop\Core\Field($articleId, \OxidEsales\Eshop\Core\Field::T_RAW);
         $rating->oxratings__oxrating = new \OxidEsales\Eshop\Core\Field(2, \OxidEsales\Eshop\Core\Field::T_RAW);
 
-        $rating->save();
+        return $rating->save();
     }
 
     /**

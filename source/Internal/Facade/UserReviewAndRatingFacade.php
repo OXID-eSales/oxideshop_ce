@@ -71,7 +71,7 @@ class UserReviewAndRatingFacade implements UserReviewAndRatingFacadeInterface
     /**
      * Prepare RatingAndReview properties data.
      *
-     * @param array $reviewAndRatingList
+     * @param ArrayCollection $reviewAndRatingList
      */
     private function prepareRatingAndReviewPropertiesData($reviewAndRatingList)
     {

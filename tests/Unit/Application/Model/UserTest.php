@@ -6,6 +6,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use oxEmailHelper;
+use OxidEsales\Eshop\Application\Model\Rating;
 use OxidEsales\Eshop\Application\Model\RecommendationList;
 use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Core\Field;
@@ -1249,6 +1250,12 @@ class UserTest extends \OxidTestCase
         $review->oxreviews__oxtext = new Field("Supergood");
         $review->save();
 
+        $rating = oxNew(Rating::class);
+        $rating->setId("_testRating");
+        $rating->oxratings__oxuserid = new Field($sUserId);
+        $rating->oxratings__oxrating = new Field(5);
+        $rating->save();
+
         $oUser = oxNew('oxUser');
         $oUser->load($sUserId);
         $bSuccess = $oUser->delete();
@@ -1261,6 +1268,7 @@ class UserTest extends \OxidTestCase
                        'oxnewssubscribed'  => 'oxuserid',
                        'oxrecommlists'     => 'oxuserid',
                        'oxreviews'         => 'oxuserid',
+                       'oxratings'         => 'oxuserid',
                        'oxobject2delivery' => 'oxobjectid',
                        'oxobject2discount' => 'oxobjectid',
                        'oxobject2group'    => 'oxobjectid',

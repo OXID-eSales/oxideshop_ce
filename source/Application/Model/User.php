@@ -595,6 +595,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $this->deleteDiscounts($database);
             $this->deleteRecommendationLists($database);
             $this->deleteReviews($database);
+            $this->deleteRatings($database);
 
             $this->deleteAdditionally($quotedUserId);
 
@@ -2433,6 +2434,19 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $database->execute(
             'delete from oxreviews where oxuserid = ?',
+            [$this->getId()]
+        );
+    }
+
+    /**
+     * Deletes User ratings.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteRatings(DatabaseInterface $database)
+    {
+        $database->execute(
+            'delete from oxratings where oxuserid = ?',
             [$this->getId()]
         );
     }

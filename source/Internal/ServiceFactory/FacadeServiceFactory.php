@@ -32,7 +32,7 @@ class FacadeServiceFactory
     /**
      * FacadeServiceFactory constructor.
      */
-    public function __construct()
+    protected function __construct()
     {
     }
 

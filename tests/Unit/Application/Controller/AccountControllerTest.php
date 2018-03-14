@@ -6,15 +6,20 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \oxField;
+use OxidEsales\Eshop\Application\Controller\AccountController;
+use OxidEsales\Eshop\Application\Model\User;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Session;
+use OxidEsales\TestingLibrary\UnitTestCase;
 use \oxRegistry;
 use \oxTestModules;
+use PHPUnit_Framework_MockObject_MockObject;
 
 /**
  * Tests for Account class
  */
-class AccountTest extends \OxidTestCase
+class AccountControllerTest extends UnitTestCase
 {
-
     /**
      * Test view render().
      *
@@ -343,5 +348,80 @@ class AccountTest extends \OxidTestCase
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         $this->assertEquals(oxRegistry::getLang()->translateString('PAGE_TITLE_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false) . ' - "Jon"', $oView->getTitle());
+    }
+
+    public function testDeleteUserAccountWhenSessionChallengeValidAndFeatureEnabled()
+    {
+        $this->isAccountDeletionEnabled(true);
+        $this->isSessionTokenValid(true);
+
+        $user = $this->getUserMockForDeletion();
+        $user->expects($this->once())->method('delete');
+        $this->executeAccountDeletion($user);
+    }
+
+    public function testDeleteUserAccountWhenSessionChallengeInvalid()
+    {
+        $this->isAccountDeletionEnabled(true);
+        $this->isSessionTokenValid(false);
+
+        $user = $this->getUserMockForDeletion();
+        $user->expects($this->never())->method('delete');
+        $this->executeAccountDeletion($user);
+    }
+
+    public function testDeleteUserAccountWhenFeatureDisabled()
+    {
+        $this->isAccountDeletionEnabled(false);
+        $this->isSessionTokenValid(true);
+
+        $user = $this->getUserMockForDeletion();
+        $user->expects($this->never())->method('delete');
+        $this->executeAccountDeletion($user);
+    }
+
+    /**
+     * @param bool $isValid
+     */
+    private function isSessionTokenValid($isValid)
+    {
+        $sessionToken = $isValid ? 'valid_token' : 'invalid_token';
+        $this->setSessionParam('sess_stoken', $sessionToken);
+        $this->setRequestParameter('stoken', 'valid_token');
+        $this->stubSessionDestroyMethod();
+    }
+
+    /**
+     * @param User $user
+     */
+    private function executeAccountDeletion($user)
+    {
+        $accountController = oxNew(AccountController::class);
+        $accountController->setUser($user);
+        $accountController->deleteAccount();
+    }
+
+    private function stubSessionDestroyMethod()
+    {
+        /** @var PHPUnit_Framework_MockObject_MockObject|Session $session */
+        $session = $this->getMockBuilder(Session::class)->setMethods(['destroy'])->getMock();
+        $session->expects($this->any())->method('destroy');
+        $this->getConfig()->setSession($session);
+    }
+
+    /**
+     * @param bool $isEnabled
+     */
+    private function isAccountDeletionEnabled($isEnabled)
+    {
+        return $this->getConfig()->setConfigParam('allowUsersToDeleteTheirAccount', $isEnabled);
+    }
+
+    /**
+     * @return PHPUnit_Framework_MockObject_MockObject|User
+     */
+    private function getUserMockForDeletion()
+    {
+        return $this->getMockBuilder(User::class)->setMethods(['delete'])->getMock();
     }
 }

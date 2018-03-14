@@ -55,8 +55,8 @@ class AccountReviewController extends AccountController
 
         $userId = $this->getUser()->getId();
 
-        $userReviewAndRatingFacade = $this->getUserReviewAndRatingFacade();
-        $reviewAndRatingList = $userReviewAndRatingFacade->getReviewAndRatingList($userId);
+        $reviewModel = oxNew(Review::class);
+        $reviewAndRatingList = $reviewModel->getReviewAndRatingListByUserId($userId);
 
         return $this->getPaginatedReviewAndRatingList(
             $reviewAndRatingList,
@@ -254,65 +254,5 @@ class AccountReviewController extends AccountController
     private function getPaginatedReviewAndRatingList(ArrayCollection $reviewAndRatingList, $itemsCount, $offset)
     {
         return new ArrayCollection($reviewAndRatingList->slice($offset, $itemsCount));
-    }
-
-    /**
-     * Returns UserReviewAndRatingFacade.
-     *
-     * @return UserReviewAndRatingFacade
-     */
-    private function getUserReviewAndRatingFacade()
-    {
-        return new UserReviewAndRatingFacade(
-            $this->getUserReviewAndRatingService()
-        );
-    }
-
-    /**
-     * Returns UserReviewAndRatingService.
-     *
-     * @return UserReviewAndRatingService
-     */
-    private function getUserReviewAndRatingService()
-    {
-        return new UserReviewAndRatingService(
-            $this->getUserReviewService(),
-            $this->getUserRatingService(),
-            $this->getReviewAndRatingMergingService()
-        );
-    }
-
-    /**
-     * Returns UserReviewService.
-     *
-     * @return UserReviewService
-     */
-    private function getUserReviewService()
-    {
-        return new UserReviewService(
-            new ReviewDao(DatabaseProvider::getDb())
-        );
-    }
-
-    /**
-     * Returns UserRatingService.
-     *
-     * @return UserRatingService
-     */
-    private function getUserRatingService()
-    {
-        return new UserRatingService(
-            new RatingDao(DatabaseProvider::getDb())
-        );
-    }
-
-    /**
-     * Returns ReviewAndRatingMergingService.
-     *
-     * @return ReviewAndRatingMergingService
-     */
-    private function getReviewAndRatingMergingService()
-    {
-        return new ReviewAndRatingMergingService();
     }
 }

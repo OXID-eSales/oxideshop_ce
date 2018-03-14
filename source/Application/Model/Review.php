@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\EshopCommunity\Internal\ServiceFactory\FacadeServiceFactory;
+
 /**
  * Article review manager.
  * Performs loading, updating, inserting of article review.
@@ -185,5 +187,28 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
         $totalItems = (int) $db->getOne($query, [$userId, $reviewType]);
 
         return $totalItems;
+    }
+
+    /**
+     * Returns ReviewAndRating list by User id.
+     *
+     * @param string $userId
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getReviewAndRatingListByUserId($userId)
+    {
+        return $this
+            ->getFacadeServiceFactory()
+            ->getUserReviewAndRatingFacade()
+            ->getReviewAndRatingList($userId);
+    }
+
+    /**
+     * @return FacadeServiceFactory
+     */
+    private function getFacadeServiceFactory()
+    {
+        return FacadeServiceFactory::getInstance();
     }
 }

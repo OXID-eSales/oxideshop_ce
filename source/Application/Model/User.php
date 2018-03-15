@@ -9,12 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\Eshop\Core\UtilsDate;
-use oxDb;
-use OxidEsales\Eshop\Core\UtilsObject;
-use oxInputValidator;
 use oxUserException;
-use oxConnectionException;
 
 /**
  * User manager.
@@ -595,6 +590,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $this->deleteDiscounts($database);
             $this->deleteRecommendationLists($database);
             $this->deleteReviews($database);
+            $this->deleteRatings($database);
 
             $this->deleteAdditionally($quotedUserId);
 
@@ -2402,26 +2398,12 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     private function deleteRecommendationLists(DatabaseInterface $database)
     {
-        $database->execute(
-            'delete 
-                    oxobject2list
-            
-                from
-                    oxobject2list
-                
-                inner join oxrecommlists 
-                    on oxobject2list.oxlistid = oxrecommlists.oxid 
-                
-                where 
-                    oxrecommlists.oxuserid = ?
-            ',
-            [$this->getId()]
-        );
-
-        $database->execute(
-            'delete from oxrecommlists where oxuserid = ?',
-            [$this->getId()]
-        );
+        $recommendationList = $this->getUserRecommLists($this->getId());
+        /** @var \OxidEsales\Eshop\Application\Model\RecommendationList $recommendation */
+        foreach ($recommendationList as $recommendation) {
+            $recommendation->delete();
+        }
+        $database->setFetchMode(DatabaseInterface::FETCH_MODE_NUM);
     }
 
     /**
@@ -2431,9 +2413,28 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     private function deleteReviews(DatabaseInterface $database)
     {
-        $database->execute(
-            'delete from oxreviews where oxuserid = ?',
-            [$this->getId()]
-        );
+        $reviews = $database->getAll('select OXID from oxreviews where oxuserid = ?', [$this->getId()]);
+        foreach ($reviews as $reviewId) {
+            $review = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
+            $review->load($reviewId[0]);
+            $review->delete();
+        }
+        $database->setFetchMode(DatabaseInterface::FETCH_MODE_NUM);
+    }
+
+    /**
+     * Deletes User ratings.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteRatings(DatabaseInterface $database)
+    {
+        $ratings = $database->getAll('select OXID from oxratings where oxuserid = ?', [$this->getId()]);
+        foreach ($ratings as $ratingId) {
+            $rating = oxNew(\OxidEsales\Eshop\Application\Model\Rating::class);
+            $rating->load($ratingId[0]);
+            $rating->delete();
+        }
+        $database->setFetchMode(DatabaseInterface::FETCH_MODE_NUM);
     }
 }

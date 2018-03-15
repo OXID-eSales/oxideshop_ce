@@ -5,8 +5,6 @@
  */
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use OxidEsales\Eshop\Core\Registry;
-
 /**
  * Current user "My account" window.
  * When user is logged in arranges "My account" window, by creating
@@ -359,22 +357,12 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
     {
         $user = $this->getUser();
 
-        if ($user && $this->isUserAllowedToDeleteOwnAccount()) {
+        if ($this->canUserAccountBeDeleted()) {
             $user->delete();
             $user->logout();
 
             $session = $this->getSession();
             $session->destroy();
-
-            if ($this->getConfig()->getConfigParam('blClearCacheOnLogout')) {
-                $this->resetContentCache(true);
-            }
-
-            Registry::getUtils()->redirect(
-                $this->getConfig()->getShopHomeUrl(),
-                true,
-                302
-            );
         }
     }
 
@@ -391,6 +379,16 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
         $user = $this->getUser();
 
-        return $allowUsersToDeleteTheirAccount && !$user->isMallAdmin();
+        return $allowUsersToDeleteTheirAccount && $user && !$user->isMallAdmin();
+    }
+
+    /**
+     * Checks if possible to delete user.
+     *
+     * @return bool
+     */
+    private function canUserAccountBeDeleted()
+    {
+        return $this->getSession()->checkSessionChallenge() && $this->isUserAllowedToDeleteOwnAccount();
     }
 }

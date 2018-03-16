@@ -10,14 +10,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
-use OxidEsales\Eshop\Core\DatabaseProvider;
-use OxidEsales\Eshop\Internal\Dao\RatingDao;
-use OxidEsales\Eshop\Internal\Dao\ReviewDao;
-use OxidEsales\Eshop\Internal\Facade\UserReviewAndRatingFacade;
-use OxidEsales\Eshop\Internal\Service\ReviewAndRatingMergingService;
-use OxidEsales\Eshop\Internal\Service\UserRatingService;
-use OxidEsales\Eshop\Internal\Service\UserReviewAndRatingService;
-use OxidEsales\Eshop\Internal\Service\UserReviewService;
 
 /**
  * Class AccountReviewController
@@ -66,9 +58,7 @@ class AccountReviewController extends AccountController
     }
 
     /**
-     * Delete an review and rating, which belongs to the active user.
-     *
-     * @return string
+     * Delete review and rating, which belongs to the active user.
      */
     public function deleteReviewAndRating()
     {
@@ -76,8 +66,6 @@ class AccountReviewController extends AccountController
             $this->deleteReview();
             $this->deleteRating();
         }
-
-        return $this->getReviewListUrlPath();
     }
 
     /**
@@ -175,18 +163,20 @@ class AccountReviewController extends AccountController
     }
 
     /**
-     * @return string
+     * Get actual page number.
+     *
+     * @return int
      */
-    private function getReviewListUrlPath()
+    public function getActPage()
     {
         $lastPage = $this->getPagesCount();
-        $currentPage = $this->getActPage();
+        $currentPage = parent::getActPage();
 
         if ($currentPage >= $lastPage) {
             $currentPage = $lastPage - 1;
         }
 
-        return $currentPage > 0 ? 'account_reviewlist?pgNr=' . $currentPage : 'account_reviewlist';
+        return $currentPage;
     }
 
     /**

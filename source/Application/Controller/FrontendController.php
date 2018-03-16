@@ -1599,7 +1599,15 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         $class = $this->getClassName();
         $function = $this->getFncName();
 
-        $forbiddenFunctions = ['tobasket', 'login_noredirect', 'addVoucher', 'moveleft', 'moveright'];
+        $forbiddenFunctions = [
+            'tobasket',
+            'login_noredirect',
+            'addVoucher',
+            'moveleft',
+            'moveright',
+            'deleteReviewAndRating',
+        ];
+
         if (in_array($function, $forbiddenFunctions)) {
             $function = '';
         }

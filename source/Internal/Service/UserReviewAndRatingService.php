@@ -52,6 +52,20 @@ class UserReviewAndRatingService implements EshopUserReviewAndRatingServiceInter
     }
 
     /**
+     * Get number of reviews by given user.
+     *
+     * @param string $userId
+     *
+     * @return int
+     */
+    public function getReviewAndRatingListCount($userId)
+    {
+        return $this
+            ->getMergedReviewAndRatingList($userId)
+            ->count();
+    }
+
+    /**
      * Returns Collection of User Ratings and Reviews.
      *
      * @param string $userId

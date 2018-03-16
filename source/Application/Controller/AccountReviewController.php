@@ -199,7 +199,7 @@ class AccountReviewController extends AccountController
      */
     private function getPagesCount()
     {
-        return ceil($this->getReviewItemsCnt() / $this->getItemsPerPage());
+        return ceil($this->getReviewAndRatingItemsCount() / $this->getItemsPerPage());
     }
 
     /**

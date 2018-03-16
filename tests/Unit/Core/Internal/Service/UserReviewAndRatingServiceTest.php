@@ -37,6 +37,28 @@ class UserReviewAndRatingServiceTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testReviewAndRatingListCount()
+    {
+        $reviewAndRatingMergingServiceMock = $this
+            ->getMockBuilder(ReviewAndRatingMergingServiceInterface::class)
+            ->getMock();
+
+        $reviewAndRatingMergingServiceMock
+            ->method('mergeReviewAndRating')
+            ->willReturn($this->getUnsortedReviewAndRatingList());
+
+        $userReviewAndRatingService = new UserReviewAndRatingService(
+            $this->getUserReviewServiceMock(),
+            $this->getUserRatingServiceMock(),
+            $reviewAndRatingMergingServiceMock
+        );
+
+        $this->assertEquals(
+            $this->getSortedReviewAndRatingList()->count(),
+            $userReviewAndRatingService->getReviewAndRatingListCount(1)
+        );
+    }
+
     private function getUserReviewServiceMock()
     {
         $userReviewService = $this

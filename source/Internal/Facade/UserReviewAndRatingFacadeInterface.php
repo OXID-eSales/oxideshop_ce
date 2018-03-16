@@ -15,6 +15,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 interface UserReviewAndRatingFacadeInterface
 {
     /**
+     * Get number of reviews by given user.
+     *
+     * @param string $userId
+     *
+     * @return int
+     */
+    public function getReviewAndRatingListCount($userId);
+
+    /**
      * Returns Collection of User Ratings and Reviews.
      *
      * @param string $userId

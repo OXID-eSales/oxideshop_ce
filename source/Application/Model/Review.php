@@ -161,35 +161,6 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Get the total number of
-     *
-     * @param string $userId
-     *
-     * @return false|string
-     *
-     * @throws \InvalidArgumentException
-     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
-     */
-    public function getProductReviewItemsCntByUserId($userId)
-    {
-        if (empty($userId)) {
-            throw new \InvalidArgumentException('Parameter userId must not be empty');
-        }
-
-        $reviewType = 'oxarticle';
-        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-
-        $query = 'SELECT COUNT(*) FROM oxreviews ' .
-                 'WHERE 1 ' .
-                 'AND oxuserid = ? ' .
-                 'AND oxtype = ? ';
-
-        $totalItems = (int) $db->getOne($query, [$userId, $reviewType]);
-
-        return $totalItems;
-    }
-
-    /**
      * Returns ReviewAndRating list by User id.
      *
      * @param string $userId

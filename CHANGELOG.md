@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `OxidEsales\EshopCommunity\Application\Controller\AccountReviewController`
   - New methods:
     - `OxidEsales\EshopCommunity\Application\Controller\AccountController::isUserAllowedToManageOwnReviews`
-    - `OxidEsales\EshopCommunity\Application\Controller\AccountController::getReviewItemsCnt`
+    - `OxidEsales\EshopCommunity\Application\Controller\AccountController::getReviewAndRatingItemsCount`
     - `OxidEsales\EshopCommunity\Application\Model\Review::getProductReviewItemsCntByUserId`
     - `OxidEsales\EshopCommunity\Application\Model\Review::getReviewAndRatingListByUserId`    
   - New language constants in `Application/translations/[de/en]/lang.php`:

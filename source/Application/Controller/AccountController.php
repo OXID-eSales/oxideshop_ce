@@ -5,6 +5,8 @@
  */
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use OxidEsales\EshopCommunity\Internal\ServiceFactory\FacadeServiceFactory;
+
 /**
  * Current user "My account" window.
  * When user is logged in arranges "My account" window, by creating
@@ -409,17 +411,19 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return integer Number of reviews
      */
-    public function getReviewItemsCnt()
+    public function getReviewAndRatingItemsCount()
     {
-        $totalNrOfReviews = 0;
+        return $this
+            ->getFacadeServiceFactory()
+            ->getUserReviewAndRatingFacade()
+            ->getReviewAndRatingListCount($this->getUser()->getId());
+    }
 
-        if ($user = $this->getUser()) {
-            $userId = $user->getId();
-
-            $review = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
-            $totalNrOfReviews = $review->getProductReviewItemsCntByUserId($userId);
-        }
-
-        return $totalNrOfReviews;
+    /**
+     * @return FacadeServiceFactory
+     */
+    private function getFacadeServiceFactory()
+    {
+        return FacadeServiceFactory::getInstance();
     }
 }

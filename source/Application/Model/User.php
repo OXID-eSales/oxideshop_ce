@@ -591,6 +591,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $this->deleteRecommendationLists($database);
             $this->deleteReviews($database);
             $this->deleteRatings($database);
+            $this->deletePriceAlarms($database);
+            $this->deleteUserPayments($database);
+            $this->deleteAcceptedTerms($database);
 
             $this->deleteAdditionally($quotedUserId);
 
@@ -2436,5 +2439,44 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $rating->delete();
         }
         $database->setFetchMode(DatabaseInterface::FETCH_MODE_NUM);
+    }
+
+    /**
+     * Deletes price alarms.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deletePriceAlarms(DatabaseInterface $database)
+    {
+        $database->execute(
+            'delete from oxpricealarm where oxuserid = ?',
+            [$this->getId()]
+        );
+    }
+
+    /**
+     * Deletes user payments.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteUserPayments(DatabaseInterface $database)
+    {
+        $database->execute(
+            'delete from oxuserpayments where oxuserid = ?',
+            [$this->getId()]
+        );
+    }
+
+    /**
+     * Deletes user accepted terms.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteAcceptedTerms(DatabaseInterface $database)
+    {
+        $database->execute(
+            'delete from oxacceptedterms where oxuserid = ?',
+            [$this->getId()]
+        );
     }
 }

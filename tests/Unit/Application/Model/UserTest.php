@@ -10,6 +10,8 @@ use OxidEsales\Eshop\Application\Model\Rating;
 use OxidEsales\Eshop\Application\Model\RecommendationList;
 use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Core\Field;
+use OxidEsales\EshopCommunity\Application\Model\PriceAlarm;
+use OxidEsales\EshopCommunity\Application\Model\UserPayment;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseErrorException;
 use OxidEsales\Eshop\Core\UtilsObject;
 use \oxnewssubscribed;
@@ -1256,6 +1258,18 @@ class UserTest extends \OxidTestCase
         $rating->oxratings__oxrating = new Field(5);
         $rating->save();
 
+        $priceAlarm = oxNew(PriceAlarm::class);
+        $priceAlarm->setId("_testPriceAlarm");
+        $priceAlarm->oxpricealarm__oxuserid = new Field($sUserId);
+        $priceAlarm->save();
+
+        $userPayment = oxNew(UserPayment::class);
+        $userPayment->setId("_testUserPayment");
+        $userPayment->oxuserpayments__oxuserid = new Field($sUserId);
+        $userPayment->save();
+
+        $oDb->execute("INSERT INTO oxacceptedterms (oxuserid) VALUES(?)", [$sUserId]);
+
         $oUser = oxNew('oxUser');
         $oUser->load($sUserId);
         $bSuccess = $oUser->delete();
@@ -1269,6 +1283,9 @@ class UserTest extends \OxidTestCase
                        'oxrecommlists'     => 'oxuserid',
                        'oxreviews'         => 'oxuserid',
                        'oxratings'         => 'oxuserid',
+                       'oxpricealarm'      => 'oxuserid',
+                       'oxuserpayments'    => 'oxuserid',
+                       'oxacceptedterms'   => 'oxuserid',
                        'oxobject2delivery' => 'oxobjectid',
                        'oxobject2discount' => 'oxobjectid',
                        'oxobject2group'    => 'oxobjectid',

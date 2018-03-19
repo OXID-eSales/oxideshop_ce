@@ -121,8 +121,9 @@ class UserReviewAndRatingFacade implements UserReviewAndRatingFacadeInterface
         $objectModel->load($objectId);
 
         $fieldName = $this->getObjectTitleFieldName($type);
+        $field = $objectModel->$fieldName;
 
-        return $objectModel->$fieldName->value;
+        return $field->value;
     }
 
     /**

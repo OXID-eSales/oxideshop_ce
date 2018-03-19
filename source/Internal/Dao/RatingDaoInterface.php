@@ -22,4 +22,13 @@ interface RatingDaoInterface
      * @return ArrayCollection
      */
     public function getRatingsByUserId($userId);
+
+    /**
+     * Returns Ratings for a product.
+     *
+     * @param string $productId
+     *
+     * @return ArrayCollection
+     */
+    public function getRatingsByProductId($productId);
 }

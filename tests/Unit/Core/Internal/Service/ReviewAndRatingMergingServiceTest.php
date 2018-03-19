@@ -4,7 +4,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Internal\Dao;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Internal\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use OxidEsales\Eshop\Internal\DataObject\Rating;

@@ -6,12 +6,20 @@
 namespace OxidEsales\EshopCommunity\Internal\ServiceFactory;
 
 use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\EshopCommunity\Internal\Dao\ProductRatingDao;
+use OxidEsales\EshopCommunity\Internal\Dao\ProductRatingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Dao\RatingDao;
 use OxidEsales\EshopCommunity\Internal\Dao\RatingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Dao\ReviewDao;
 use OxidEsales\EshopCommunity\Internal\Dao\ReviewDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Facade\ProductRatingFacade;
+use OxidEsales\EshopCommunity\Internal\Facade\ProductRatingFacadeInterface;
 use OxidEsales\EshopCommunity\Internal\Facade\UserReviewAndRatingFacade;
 use OxidEsales\EshopCommunity\Internal\Facade\UserReviewAndRatingFacadeInterface;
+use OxidEsales\EshopCommunity\Internal\Service\ProductRatingService;
+use OxidEsales\EshopCommunity\Internal\Service\ProductRatingServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Service\RatingCalculatorService;
+use OxidEsales\EshopCommunity\Internal\Service\RatingCalculatorServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Service\ReviewAndRatingMergingService;
 use OxidEsales\EshopCommunity\Internal\Service\ReviewAndRatingMergingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Service\UserRatingService;
@@ -34,6 +42,11 @@ class ReviewServiceFactory
     private $userReviewAndRatingFacade;
 
     /**
+     * @var ProductRatingFacadeInterface
+     */
+    private $productRatingFacade;
+
+    /**
      * @var UserReviewAndRatingServiceInterface
      */
     private $userReviewAndRatingService;
@@ -54,6 +67,11 @@ class ReviewServiceFactory
     private $reviewAndRatingMergingService;
 
     /**
+     * @var ProductRatingServiceInterface
+     */
+    private $productRatingService;
+
+    /**
      * @var ReviewDaoInterface
      */
     private $reviewDao;
@@ -62,6 +80,16 @@ class ReviewServiceFactory
      * @var RatingDaoInterface
      */
     private $ratingDao;
+
+    /**
+     * @var ProductRatingDaoInterface
+     */
+    private $productRatingDao;
+
+    /**
+     * @var RatingCalculatorServiceInterface
+     */
+    private $ratingCalculator;
 
     /**
      * @return UserReviewAndRatingFacadeInterface
@@ -75,6 +103,60 @@ class ReviewServiceFactory
         }
 
         return $this->userReviewAndRatingFacade;
+    }
+
+    /**
+     * @return ProductRatingFacadeInterface
+     */
+    public function getProductRatingFacade()
+    {
+        if (!$this->productRatingFacade) {
+            $this->productRatingFacade = new ProductRatingFacade(
+                $this->getProductRatingService()
+            );
+        }
+
+        return $this->productRatingFacade;
+    }
+
+    /**
+     * @return ProductRatingServiceInterface
+     */
+    private function getProductRatingService()
+    {
+        if (!$this->productRatingService) {
+            $this->productRatingService = new ProductRatingService(
+                $this->getRatingDao(),
+                $this->getProductRatingDao(),
+                $this->getRatingCalculator()
+            );
+        }
+
+        return $this->productRatingService;
+    }
+
+    /**
+     * @return ProductRatingDaoInterface
+     */
+    private function getProductRatingDao()
+    {
+        if (!$this->productRatingDao) {
+            $this->productRatingDao = new ProductRatingDao($this->getDatabase());
+        }
+
+        return $this->productRatingDao;
+    }
+
+    /**
+     * @return RatingCalculatorServiceInterface
+     */
+    private function getRatingCalculator()
+    {
+        if (!$this->ratingCalculator) {
+            $this->ratingCalculator = new RatingCalculatorService();
+        }
+
+        return $this->ratingCalculator;
     }
 
     /**

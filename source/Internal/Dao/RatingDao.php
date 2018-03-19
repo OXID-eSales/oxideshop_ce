@@ -47,6 +47,20 @@ class RatingDao implements RatingDaoInterface
     }
 
     /**
+     * Returns Ratings for a product.
+     *
+     * @param string $productId
+     *
+     * @return ArrayCollection
+     */
+    public function getRatingsByProductId($productId)
+    {
+        $ratingsData = $this->getRatingsFromDatabaseByProductId($productId);
+
+        return $this->mapRatings($ratingsData);
+    }
+
+    /**
      * Returns User rating data from database.
      *
      * @param string $userId
@@ -72,6 +86,32 @@ class RatingDao implements RatingDaoInterface
     }
 
     /**
+     * Returns Ratings data for a product from database.
+     *
+     * @param string $productId
+     *
+     * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface
+     */
+    private function getRatingsFromDatabaseByProductId($productId)
+    {
+        $this->database->setFetchMode(DatabaseInterface::FETCH_MODE_ASSOC);
+
+        $query = '
+              SELECT 
+                  *
+              FROM 
+                  oxratings 
+              WHERE 
+                  oxobjectid = ?
+                  AND oxtype = "oxarticle" 
+              ORDER BY 
+                  oxtimestamp DESC
+        ';
+
+        return $this->database->select($query, [$productId]);
+    }
+
+    /**
      * Maps rating data from database to Ratings Collection.
      *
      * @param ResultSetInterface $ratingsData
@@ -83,7 +123,7 @@ class RatingDao implements RatingDaoInterface
         $ratings = new ArrayCollection();
 
         foreach ($ratingsData as $ratingData) {
-            $ratings[] = $this->mapRating($ratingData);
+            $ratings->add($this->mapRating($ratingData));
         }
 
         return $ratings;

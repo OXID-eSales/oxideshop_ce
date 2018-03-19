@@ -43,6 +43,36 @@ class RatingDaoTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testGetRatingsByProductIdReturnType()
+    {
+        $ratingDao = new RatingDao($this->getDatabaseMock());
+        $ratings = $ratingDao->getRatingsByProductId(1);
+
+        $this->assertInstanceOf(
+            ArrayCollection::class,
+            $ratings
+        );
+    }
+
+    public function testGetRatingsByProductIdReturnsCorrectAmountOfEntities()
+    {
+        $ratingDao = new RatingDao($this->getDatabaseMock());
+        $ratings = $ratingDao->getRatingsByProductId(1);
+
+        $this->assertEquals(2, $ratings->count());
+    }
+
+    public function testGetRatingsByProductIdReturnsMappedRatings()
+    {
+        $ratingDao = new RatingDao($this->getDatabaseMock());
+        $ratings = $ratingDao->getRatingsByProductId(1);
+
+        $this->assertEquals(
+            $this->getTestMappedRating(),
+            $ratings->first()
+        );
+    }
+
     private function getDatabaseMock()
     {
         $database = $this

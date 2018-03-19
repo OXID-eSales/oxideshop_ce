@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Internal\ServiceFactory;
 
+use OxidEsales\EshopCommunity\Internal\Facade\ProductRatingFacadeInterface;
 use OxidEsales\EshopCommunity\Internal\Facade\UserReviewAndRatingFacadeInterface;
 use OxidEsales\EshopCommunity\Internal\ServiceFactory\FacadeServiceFactory;
 
@@ -27,6 +28,16 @@ class FacadeServiceFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(
             UserReviewAndRatingFacadeInterface::class,
             $facadeServiceFactory->getUserReviewAndRatingFacade()
+        );
+    }
+
+    public function testGetProductRatingFacade()
+    {
+        $facadeServiceFactory = FacadeServiceFactory::getInstance();
+
+        $this->assertInstanceOf(
+            ProductRatingFacadeInterface::class,
+            $facadeServiceFactory->getProductRatingFacade()
         );
     }
 }

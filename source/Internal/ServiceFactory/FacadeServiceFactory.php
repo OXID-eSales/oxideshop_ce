@@ -5,6 +5,7 @@
  */
 namespace OxidEsales\EshopCommunity\Internal\ServiceFactory;
 
+use OxidEsales\EshopCommunity\Internal\Facade\ProductRatingFacadeInterface;
 use OxidEsales\EshopCommunity\Internal\Facade\UserReviewAndRatingFacadeInterface;
 
 /**
@@ -23,6 +24,11 @@ class FacadeServiceFactory
      * @var UserReviewAndRatingFacadeInterface
      */
     private $userReviewAndRatingFacade;
+
+    /**
+     * @var ProductRatingFacadeInterface
+     */
+    private $productRatingFacade;
 
     /**
      * @var ReviewServiceFactory
@@ -60,6 +66,20 @@ class FacadeServiceFactory
         }
 
         return $this->userReviewAndRatingFacade;
+    }
+
+    /**
+     * @return ProductRatingFacadeInterface
+     */
+    public function getProductRatingFacade()
+    {
+        if (!$this->productRatingFacade) {
+            $this->productRatingFacade = $this
+                ->getReviewServiceFactory()
+                ->getProductRatingFacade();
+        }
+
+        return $this->productRatingFacade;
     }
 
     /**

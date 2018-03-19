@@ -4,7 +4,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Internal\Dao;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Internal\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use OxidEsales\Eshop\Internal\Service\ReviewAndRatingMergingServiceInterface;
@@ -84,8 +84,7 @@ class UserReviewAndRatingServiceTest extends \PHPUnit_Framework_TestCase
     private function getFirstReviewAndRating()
     {
         $reviewAndRating = new ReviewAndRating();
-        $reviewAndRating
-            ->setCreatedAt('2011-02-16 15:21:20');
+        $reviewAndRating->setCreatedAt('2011-02-16 15:21:20');
 
         return $reviewAndRating;
     }
@@ -93,8 +92,7 @@ class UserReviewAndRatingServiceTest extends \PHPUnit_Framework_TestCase
     private function getSecondReviewAndRating()
     {
         $reviewAndRating = new ReviewAndRating();
-        $reviewAndRating
-            ->setCreatedAt('2017-02-16 15:21:20');
+        $reviewAndRating->setCreatedAt('2017-02-16 15:21:20');
 
         return $reviewAndRating;
     }
@@ -102,8 +100,7 @@ class UserReviewAndRatingServiceTest extends \PHPUnit_Framework_TestCase
     private function getThirdReviewAndRating()
     {
         $reviewAndRating = new ReviewAndRating();
-        $reviewAndRating
-            ->setCreatedAt('2018-02-16 15:21:20');
+        $reviewAndRating->setCreatedAt('2018-02-16 15:21:20');
 
         return $reviewAndRating;
     }

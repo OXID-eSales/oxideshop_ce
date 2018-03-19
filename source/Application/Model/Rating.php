@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\EshopCommunity\Internal\ServiceFactory\FacadeServiceFactory;
+
 /**
  * Article rate manager.
  * Performs loading, updating, inserting of article rates.
@@ -154,5 +156,55 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getObjectId()
     {
         return $this->oxratings__oxobjectid->value;
+    }
+
+    /**
+     * Delete this object from the database, returns true if entry was deleted.
+     *
+     * @param string $oxid Object ID(default null)
+     *
+     * @return bool
+     */
+    public function delete($oxid = null)
+    {
+        $isProductRating = $this->isProductObjectType();
+
+        $isDeleted = parent::delete($oxid);
+
+        if ($isProductRating) {
+            $this->updateProductRating();
+        }
+
+        return $isDeleted;
+    }
+
+
+    /**
+     * Returns true if Rating belongs to Product.
+     *
+     * @return bool
+     */
+    private function isProductObjectType()
+    {
+        return $this->getObjectType() === 'oxarticle';
+    }
+
+    /**
+     * Updates Product rating.
+     */
+    private function updateProductRating()
+    {
+        $this
+            ->getFacadeServiceFactory()
+            ->getProductRatingFacade()
+            ->updateProductRating($this->getObjectId());
+    }
+
+    /**
+     * @return FacadeServiceFactory
+     */
+    private function getFacadeServiceFactory()
+    {
+        return FacadeServiceFactory::getInstance();
     }
 }

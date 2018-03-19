@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Facade;
 
 use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\EshopCommunity\Internal\Exception\ReviewPermissionException;
 use OxidEsales\EshopCommunity\Internal\Facade\UserReviewFacade;
 use OxidEsales\Eshop\Internal\Service\UserReviewService;
 use OxidEsales\Eshop\Application\Model\Review;
@@ -18,7 +19,7 @@ class UserReviewFacadeTest extends UnitTestCase
     public function testDeleteReview()
     {
         $userReviewFacade = $this->getUserReviewFacade();
-        $database =  DatabaseProvider::getDb();
+        $database = DatabaseProvider::getDb();
 
         $sql = "select oxid from oxreviews where oxid = 'id1'";
 
@@ -27,6 +28,21 @@ class UserReviewFacadeTest extends UnitTestCase
 
         $userReviewFacade->deleteReview('user1', 'id1');
         $this->assertFalse($database->getOne($sql));
+    }
+
+    public function testDeleteRatingWithWrongUserId()
+    {
+        $this->setExpectedException(ReviewPermissionException::class);
+
+        $userReviewFacade = $this->getUserReviewFacade();
+        $database = DatabaseProvider::getDb();
+
+        $sql = "select oxid from oxreviews where oxid = 'id1'";
+
+        $this->createTestReview();
+        $this->assertEquals('id1', $database->getOne($sql));
+
+        $userReviewFacade->deleteReview('userWithWrongId', 'id1');
     }
 
     private function getUserReviewFacade()

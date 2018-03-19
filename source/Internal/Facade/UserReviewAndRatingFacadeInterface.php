@@ -28,7 +28,7 @@ interface UserReviewAndRatingFacadeInterface
      *
      * @param string $userId
      *
-     * @return ArrayCollection
+     * @return array
      */
     public function getReviewAndRatingList($userId);
 }

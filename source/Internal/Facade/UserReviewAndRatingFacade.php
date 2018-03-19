@@ -55,7 +55,7 @@ class UserReviewAndRatingFacade implements UserReviewAndRatingFacadeInterface
      *
      * @param string $userId
      *
-     * @return ArrayCollection
+     * @return array
      */
     public function getReviewAndRatingList($userId)
     {
@@ -65,7 +65,7 @@ class UserReviewAndRatingFacade implements UserReviewAndRatingFacadeInterface
 
         $this->prepareRatingAndReviewPropertiesData($reviewAndRatingList);
 
-        return $reviewAndRatingList;
+        return $reviewAndRatingList->toArray();
     }
 
     /**

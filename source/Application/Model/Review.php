@@ -165,7 +165,7 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param string $userId
      *
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return array
      */
     public function getReviewAndRatingListByUserId($userId)
     {

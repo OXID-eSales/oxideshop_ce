@@ -44,9 +44,14 @@ class ReviewTest extends UnitTestCase
 
         $reviewAndRatingList = $review->getReviewAndRatingListByUserId('testUser');
 
-        $this->assertEquals(
+        $this->assertInternalType(
+            'array',
+            $reviewAndRatingList
+        );
+
+        $this->assertCount(
             3,
-            count($reviewAndRatingList)
+            $reviewAndRatingList
         );
 
         $this->assertContainsOnlyInstancesOf(

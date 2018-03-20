@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
-use OxidEsales\EshopCommunity\Internal\ServiceFactory\FacadeServiceFactory;
+use OxidEsales\EshopCommunity\Internal\Common\Container\Container;
 
 /**
  * Class AccountReviewController
@@ -37,7 +37,7 @@ class AccountReviewController extends AccountController
     /**
      * Returns Review List
      *
-     * @return ArrayCollection
+     * @return array
      */
     public function getReviewList()
     {
@@ -69,34 +69,6 @@ class AccountReviewController extends AccountController
     }
 
     /**
-     * Deletes Review.
-     */
-    private function deleteReview()
-    {
-        $userReviewFacade = $this->getFacadeServiceFactory()->getUserReviewFacade();
-        $userId = $this->getUser()->getId();
-
-        $reviewId = $this->getReviewIdFromRequest();
-        if ($reviewId) {
-            $userReviewFacade->deleteReview($userId, $reviewId);
-        }
-    }
-
-    /**
-     * Deletes Rating.
-     */
-    private function deleteRating()
-    {
-        $userRatingFacade = $this->getFacadeServiceFactory()->getUserRatingFacade();
-        $userId = $this->getUser()->getId();
-
-        $ratingId = $this->getRatingIdFromRequest();
-        if ($ratingId) {
-            $userRatingFacade->deleteRating($userId, $ratingId);
-        }
-    }
-
-    /**
      * Returns Bread Crumb - you are here page1/page2/page3...
      *
      * @return array
@@ -122,7 +94,7 @@ class AccountReviewController extends AccountController
      */
     public function getPageNavigation()
     {
-        $this->_iCntPages       = $this->getPagesCount();
+        $this->_iCntPages = $this->getPagesCount();
         $this->_oPageNavigation = $this->generatePageNavigation();
 
         return $this->_oPageNavigation;
@@ -136,6 +108,51 @@ class AccountReviewController extends AccountController
     public function getItemsPerPage()
     {
         return $this->itemsPerPage;
+    }
+
+    /**
+     * Get actual page number.
+     *
+     * @return int
+     */
+    public function getActPage()
+    {
+        $lastPage = $this->getPagesCount();
+        $currentPage = parent::getActPage();
+
+        if ($currentPage >= $lastPage) {
+            $currentPage = $lastPage - 1;
+        }
+
+        return $currentPage;
+    }
+
+    /**
+     * Deletes Review.
+     */
+    private function deleteReview()
+    {
+        $userReviewBridge = $this->getContainer()->getUserReviewBridge();
+        $userId = $this->getUser()->getId();
+
+        $reviewId = $this->getReviewIdFromRequest();
+        if ($reviewId) {
+            $userReviewBridge->deleteReview($userId, $reviewId);
+        }
+    }
+
+    /**
+     * Deletes Rating.
+     */
+    private function deleteRating()
+    {
+        $userRatingBridge = $this->getContainer()->getUserRatingBridge();
+        $userId = $this->getUser()->getId();
+
+        $ratingId = $this->getRatingIdFromRequest();
+        if ($ratingId) {
+            $userRatingBridge->deleteRating($userId, $ratingId);
+        }
     }
 
     /**
@@ -163,21 +180,6 @@ class AccountReviewController extends AccountController
     }
 
     /**
-     * @return string
-     */
-    private function getReviewListUrlPath()
-    {
-        $lastPage = $this->getPagesCount();
-        $currentPage = $this->getActPage();
-
-        if ($currentPage >= $lastPage) {
-            $currentPage = $lastPage - 1;
-        }
-
-        return $currentPage > 0 ? 'account_reviewlist?pgNr=' . $currentPage : 'account_reviewlist';
-    }
-
-    /**
      * Redirect to My Account dashboard
      */
     private function redirectToAccountDashboard()
@@ -187,7 +189,6 @@ class AccountReviewController extends AccountController
             true,
             302
         );
-        exit(0);
     }
 
     /**
@@ -253,10 +254,10 @@ class AccountReviewController extends AccountController
     }
 
     /**
-     * @return FacadeServiceFactory
+     * @return Container
      */
-    private function getFacadeServiceFactory()
+    private function getContainer()
     {
-        return FacadeServiceFactory::getInstance();
+        return Container::getInstance();
     }
 }

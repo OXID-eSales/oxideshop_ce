@@ -5,7 +5,7 @@
  */
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use OxidEsales\EshopCommunity\Internal\ServiceFactory\FacadeServiceFactory;
+use OxidEsales\EshopCommunity\Internal\Common\Container\Container;
 
 /**
  * Current user "My account" window.
@@ -414,16 +414,16 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getReviewAndRatingItemsCount()
     {
         return $this
-            ->getFacadeServiceFactory()
-            ->getUserReviewAndRatingFacade()
+            ->getContainer()
+            ->getUserReviewAndRatingBridge()
             ->getReviewAndRatingListCount($this->getUser()->getId());
     }
 
     /**
-     * @return FacadeServiceFactory
+     * @return Container
      */
-    private function getFacadeServiceFactory()
+    private function getContainer()
     {
-        return FacadeServiceFactory::getInstance();
+        return Container::getInstance();
     }
 }

@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use OxidEsales\EshopCommunity\Internal\ServiceFactory\FacadeServiceFactory;
+use OxidEsales\EshopCommunity\Internal\Common\Container\Container;
 
 /**
  * Article review manager.
@@ -170,16 +170,16 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getReviewAndRatingListByUserId($userId)
     {
         return $this
-            ->getFacadeServiceFactory()
-            ->getUserReviewAndRatingFacade()
+            ->getContainer()
+            ->getUserReviewAndRatingBridge()
             ->getReviewAndRatingList($userId);
     }
 
     /**
-     * @return FacadeServiceFactory
+     * @return Container
      */
-    private function getFacadeServiceFactory()
+    private function getContainer()
     {
-        return FacadeServiceFactory::getInstance();
+        return Container::getInstance();
     }
 }

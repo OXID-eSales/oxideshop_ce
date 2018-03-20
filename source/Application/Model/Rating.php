@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use OxidEsales\EshopCommunity\Internal\ServiceFactory\FacadeServiceFactory;
+use OxidEsales\EshopCommunity\Internal\Common\Container\Container;
 
 /**
  * Article rate manager.
@@ -195,16 +195,16 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
     private function updateProductRating()
     {
         $this
-            ->getFacadeServiceFactory()
-            ->getProductRatingFacade()
+            ->getContainer()
+            ->getProductRatingBridge()
             ->updateProductRating($this->getObjectId());
     }
 
     /**
-     * @return FacadeServiceFactory
+     * @return Container
      */
-    private function getFacadeServiceFactory()
+    private function getContainer()
     {
-        return FacadeServiceFactory::getInstance();
+        return Container::getInstance();
     }
 }

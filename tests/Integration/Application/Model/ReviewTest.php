@@ -6,12 +6,11 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Application\Model\Rating;
-use OxidEsales\EshopCommunity\Internal\ViewDataObject\ReviewAndRating;
-use OxidEsales\EshopCommunity\Internal\Exception\ReviewAndRatingObjectTypeException;
+use OxidEsales\EshopCommunity\Internal\Review\Exception\ReviewAndRatingObjectTypeException;
+use OxidEsales\EshopCommunity\Internal\Review\ViewDataObject\ReviewAndRating;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 class ReviewTest extends UnitTestCase
@@ -45,19 +44,14 @@ class ReviewTest extends UnitTestCase
 
         $reviewAndRatingList = $review->getReviewAndRatingListByUserId('testUser');
 
-        $this->assertInstanceOf(
-            ArrayCollection::class,
-            $reviewAndRatingList
-        );
-
         $this->assertEquals(
             3,
-            $reviewAndRatingList->count()
+            count($reviewAndRatingList)
         );
 
-        $this->assertInstanceOf(
+        $this->assertContainsOnlyInstancesOf(
             ReviewAndRating::class,
-            $reviewAndRatingList->first()
+            $reviewAndRatingList
         );
     }
 

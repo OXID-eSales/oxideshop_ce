@@ -29,21 +29,20 @@ class ReviewDaoTest extends UnitTestCase
         $this->createTestReviewsForDeleteReviewTest();
 
         $reviewDao = $this->getReviewDao();
-        $reviewDao->deleteReview('user1', 'id1');
 
-        $this->assertReviewIdNotPresentInDatabase('id1');
-        $this->assertReviewIdPresentInDatabase('id2');
-    }
+        $reviewsBeforeDeletion = $reviewDao->getReviewsByUserId('user1');
+        $reviewToDelete = $reviewsBeforeDeletion->first();
 
-    public function testDeleteReviewWrongUser()
-    {
-        $this->createTestReviewsForDeleteReviewTest();
+        $reviewDao->delete($reviewToDelete);
 
-        $reviewDao = $this->getReviewDao();
-        $reviewDao->deleteReview('userWrongId', 'id1');
+        $reviewsAfterDeletion = $reviewDao->getReviewsByUserId('user1');
 
-        $this->assertReviewIdPresentInDatabase('id1');
-        $this->assertReviewIdPresentInDatabase('id2');
+        $this->assertFalse(
+            in_array(
+                $reviewToDelete,
+                $reviewsAfterDeletion->toArray()
+            )
+        );
     }
 
     private function assertReviewIdPresentInDatabase($id)

@@ -46,24 +46,19 @@ class ReviewDao implements ReviewDaoInterface
     }
 
     /**
-     * @param string $userId
-     * @param string $reviewId
-     *
-     * @return bool
+     * @param Review $review
      */
-    public function deleteReview($userId, $reviewId)
+    public function delete(Review $review)
     {
         $query = '
               DELETE 
               FROM 
                   oxreviews 
               WHERE 
-                  oxid = ? 
-              AND 
-                  oxuserid = ? 
+                  oxid = ?
         ';
 
-        return $this->database->execute($query, [$reviewId, $userId]);
+        $this->database->execute($query, [$review->getId()]);
     }
 
     /**

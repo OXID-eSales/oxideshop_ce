@@ -6,6 +6,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Review\Dao;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use OxidEsales\EshopCommunity\Internal\Review\DataObject\Review;
 
 /**
  * Interface ReviewDaoInterface
@@ -24,10 +25,7 @@ interface ReviewDaoInterface
     public function getReviewsByUserId($userId);
 
     /**
-     * @param string $userId
-     * @param string $reviewId
-     *
-     * @return bool
+     * @param Review $review
      */
-    public function deleteReview($userId, $reviewId);
+    public function delete(Review $review);
 }

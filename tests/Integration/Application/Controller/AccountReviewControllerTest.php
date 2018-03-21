@@ -22,6 +22,13 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller;
 
+use OxidEsales\Eshop\Application\Controller\AccountReviewController;
+use OxidEsales\Eshop\Application\Model\Rating;
+use OxidEsales\Eshop\Application\Model\Review;
+use OxidEsales\Eshop\Application\Model\User;
+use \OxidEsales\Eshop\Core\Field;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Utils;
 
 /**
  * Class AccountReviewControllerTest
@@ -57,147 +64,195 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
         parent::tearDown();
     }
 
-    /**
-     * Ratings and reviews of both types ('oxarticle', 'oxrecommlist') are created.
-     * The proper values should be returned by the tested methods.
-     * Ratings and reviews for type 'oxrecommlist' must not be included.
-     * More total items are created that the number that is displayed on one page, so
-     * number of items on one page will be less that the total number of items.
-     *
-     * @covers \OxidEsales\Eshop\Application\Controller\AccountReviewController\getReviewItemsCount()
-     * @covers \OxidEsales\Eshop\Application\Controller\AccountReviewController\getReviewList()
-     *
-     * @throws \Exception
-     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
-     * @throws \OxidEsales\Eshop\Core\Exception\SystemComponentException
-     */
-    public function testPagination()
-    {
-        $user = $this->getUser(self::TESTUSER_ID);
-        $this->getSession()->setUser($user);
-
-        $accountReviewController = oxNew(\OxidEsales\Eshop\Application\Controller\AccountReviewController::class);
-        $itemsPerPage = $accountReviewController->getItemsPerPage();
-        /** Create more items that the number that is displayed on one page */
-        $itemsToCreate = $itemsPerPage + 1;
-
-        $articleIds = $this->getArticleIds($itemsToCreate);
-        for ($i = 0; $i < $itemsToCreate; $i++) {
-            $this->createReview($user->getId(), $articleIds[$i], 'oxarticle');
-            $this->createReview($user->getId(), $articleIds[$i], 'oxrecommlist');
-        }
-
-        $reviewsTotal = $accountReviewController->getReviewAndRatingItemsCount();
-        $reviewsDisplayed = count($accountReviewController->getReviewList());
-
-        $this->assertSame($itemsToCreate * 2, $reviewsTotal);
-        $this->assertSame($itemsPerPage, $reviewsDisplayed);
-    }
-
-    /**
-     * Test the deletion of reviews and ratings
-     *
-     * @throws \Exception
-     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
-     * @throws \OxidEsales\Eshop\Core\Exception\SystemComponentException
-     */
     public function testDeleteReviewAndRating()
     {
-        $shopId = 1;
-        $user = $this->getUser(self::TESTUSER_ID);
-        $userId = $user->getId();
-        $this->getSession()->setUser($user);
-        $csrfToken = $this->getSession()->getSessionChallengeToken();
-        $this->getSession()->setVariable('sess_stoken', $csrfToken);
-        $this->setRequestParameter('stoken', $csrfToken);
+        $this->createTestDataForDeleteReviewAndRating();
+        $this->setUserToSession();
+        $this->setSessionChallenge();
 
-        $itemsToCreate = 10;
+        $this->doDeleteReviewAndRatingRequest();
 
-        $articleIds = $this->getArticleIds($itemsToCreate);
-        $reviewIds = [];
-        $ratingIds = [];
+        $this->assertFalse($this->reviewToDeleteExists());
+        $this->assertFalse($this->ratingToDeleteExists());
+    }
 
-        for ($i = 0; $i < $itemsToCreate; $i++) {
-            $reviewIds[] = $this->createReview($user->getId(), $articleIds[$i], 'oxarticle');
-            $ratingIds[] = $this->createRating($shopId, $user->getId(), $articleIds[$i], 'oxarticle');
-            $this->createReview('nonexistentuser', $articleIds[$i], 'oxrecommlist');
-            $this->createRating($shopId, 'nonexistentuser', $articleIds[$i], 'oxrecommlist');
+    public function testDeleteReviewAndRatingDoNotDeleteWithInvalidSessionChallenge()
+    {
+        $this->createTestDataForDeleteReviewAndRating();
+        $this->setUserToSession();
+
+        $this->setInvalidSessionChallenge();
+
+        $this->doDeleteReviewAndRatingRequest();
+
+        $this->assertTrue($this->reviewToDeleteExists());
+        $this->assertTrue($this->ratingToDeleteExists());
+    }
+
+    public function testReviewAndRatingListPaginationItemsPerPage()
+    {
+        $accountReviewController = oxNew(AccountReviewController::class);
+        $itemsPerPage = $accountReviewController->getItemsPerPage();
+
+        $this->assertEquals(
+            10,
+            $itemsPerPage
+        );
+    }
+
+    public function testReviewAndRatingListPagination()
+    {
+        $this->setUserToSession();
+        $this->createTestDataForReviewAndRatingList();
+
+        $accountReviewController = oxNew(AccountReviewController::class);
+        $displayedReviews = count($accountReviewController->getReviewList());
+
+        $this->assertSame(
+            $accountReviewController->getItemsPerPage(),
+            $displayedReviews
+        );
+    }
+
+    public function testInitDoesNotRedirect()
+    {
+        $this->setUserToSession();
+        $this->setConfigParam('allowUsersToManageTheirReviews', true);
+        $this->createTestDataForReviewAndRatingList();
+
+        $utilsStub = $this->getMockBuilder(Utils::class)->getMock();
+        $utilsStub->expects($this->never())->method('redirect');
+        Registry::set(Utils::class, $utilsStub);
+
+        $accountReviewController = oxNew(AccountReviewController::class);
+        $accountReviewController->init();
+    }
+
+    public function testInitRedirectsIfFeatureIsDisabled()
+    {
+        $this->setUserToSession();
+        $this->setConfigParam('allowUsersToManageTheirReviews', false);
+        $this->createTestDataForReviewAndRatingList();
+
+        $utilsStub = $this->getMockBuilder(Utils::class)->getMock();
+        $utilsStub->expects($this->once())->method('redirect');
+        Registry::set(Utils::class, $utilsStub);
+
+        $accountReviewController = oxNew(AccountReviewController::class);
+        $accountReviewController->init();
+    }
+
+    public function testInitRedirectsIfUserIsNotLogged()
+    {
+        $this->setConfigParam('allowUsersToManageTheirReviews', true);
+        $this->createTestDataForReviewAndRatingList();
+
+        $utilsStub = $this->getMockBuilder(Utils::class)->getMock();
+        $utilsStub->expects($this->once())->method('redirect');
+        Registry::set(Utils::class, $utilsStub);
+
+        $accountReviewController = oxNew(AccountReviewController::class);
+        $accountReviewController->init();
+    }
+
+    public function testReviewAndRatingListCount()
+    {
+        $this->setUserToSession();
+        $this->createTestDataForReviewAndRatingList();
+
+        $accountReviewController = oxNew(AccountReviewController::class);
+
+        $this->assertSame(
+            20,
+            $accountReviewController->getReviewAndRatingItemsCount()
+        );
+    }
+
+    private function createTestDataForReviewAndRatingList()
+    {
+        for ($i = 0; $i < 10; $i++) {
+            $review = oxNew(Review::class);
+            $review->oxreviews__oxuserid = new Field(self::TESTUSER_ID, Field::T_RAW);
+            $review->oxreviews__oxtype = new Field('oxarticle', Field::T_RAW);
+            $review->oxreviews__oxobjectid = new Field('testArticle', Field::T_RAW);
+            $review->oxreviews__oxrating = new Field(2, Field::T_RAW);
+            $review->save();
         }
 
-        $articleId = $articleIds[0];
-        $reviewId = $reviewIds[0];
-        $ratingId = $ratingIds[0];
+        for ($i = 0; $i < 10; $i++) {
+            $rating = oxNew(Rating::class);
+            $rating->oxratings__oxshopid = new Field(1, Field::T_RAW);
+            $rating->oxratings__oxuserid = new Field(self::TESTUSER_ID, Field::T_RAW);
+            $rating->oxratings__oxtype = new Field('oxrecommlist', Field::T_RAW);
+            $rating->oxratings__oxobjectid = new Field('testArticle', Field::T_RAW);
+            $rating->oxratings__oxrating = new Field(4, Field::T_RAW);
+            $rating->save();
+        }
+    }
 
-        $this->setRequestParameter('aId', $articleId);
-        $this->setRequestParameter('reviewId', $reviewId);
-        $this->setRequestParameter('ratingId', $ratingId);
+    private function createTestDataForDeleteReviewAndRating()
+    {
+        $review = oxNew(Review::class);
+        $review->setId('testReviewToDelete');
+        $review->oxreviews__oxuserid = new Field(self::TESTUSER_ID, Field::T_RAW);
+        $review->oxreviews__oxtype = new Field('oxarticle', Field::T_RAW);
+        $review->oxreviews__oxobjectid = new Field('testArticle', Field::T_RAW);
+        $review->oxreviews__oxrating = new Field(2, Field::T_RAW);
+        $review->save();
 
-        $this->assertTrue($this->productReviewExists($userId, $articleId, 'oxarticle'));
-        $this->assertTrue($this->productRatingExists($shopId, $userId, $articleId, 'oxarticle'));
+        $rating = oxNew(Rating::class);
+        $rating->setId('testRatingToDelete');
+        $rating->oxratings__oxshopid = new Field(1, Field::T_RAW);
+        $rating->oxratings__oxuserid = new Field(self::TESTUSER_ID, Field::T_RAW);
+        $rating->oxratings__oxtype = new Field('oxrecommlist', Field::T_RAW);
+        $rating->oxratings__oxobjectid = new Field('testArticle', Field::T_RAW);
+        $rating->oxratings__oxrating = new Field(4, Field::T_RAW);
+        $rating->save();
+    }
 
-        $accountReviewController = oxNew(\OxidEsales\Eshop\Application\Controller\AccountReviewController::class);
+    private function setUserToSession()
+    {
+        $user = $this->getUser(self::TESTUSER_ID);
+        $this->getSession()->setUser($user);
+    }
+
+    private function setSessionChallenge()
+    {
+        $this->getSession()->setVariable('sess_stoken', 'token');
+        $this->setRequestParameter('stoken', 'token');
+    }
+
+    private function setInvalidSessionChallenge()
+    {
+        $this->getSession()->setVariable('sess_stoken', 'token');
+        $this->setRequestParameter('stoken', 'invalid_token');
+    }
+
+    private function doDeleteReviewAndRatingRequest()
+    {
+        $this->setRequestParameter('reviewId', 'testReviewToDelete');
+        $this->setRequestParameter('ratingId', 'testRatingToDelete');
+
+        $accountReviewController = oxNew(AccountReviewController::class);
         $accountReviewController->deleteReviewAndRating();
-
-        $this->assertFalse($this->productReviewExists($userId, $articleId, 'oxarticle'));
-        $this->assertFalse($this->productRatingExists($shopId, $userId, $articleId, 'oxarticle'));
     }
 
-    /**
-     * Return true, if a review with given parameters exists in the database, else return false
-     *
-     * @param $userId
-     * @param $articleId
-     * @param $type
-     *
-     * @return bool
-     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
-     */
-    protected function productReviewExists($userId, $articleId, $type)
+    private function reviewToDeleteExists()
     {
-        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $query = 'SELECT TRUE FROM oxreviews ' .
-                 'WHERE 1 ' .
-                 'AND oxuserid = ? ' .
-                 'AND oxobjectid = ? ' .
-                 'AND oxtype = ? ';
+        $review = oxNew(Review::class);
+        $exists = $review->load('testReviewToDelete');
 
-        $result = $db->getOne($query, [$userId, $articleId, $type]);
-
-        return (bool) $result;
+        return $exists;
     }
 
-    /**
-     * Return true, if a rating with given parameters exists in the database, else return false
-     *
-     * @param $shopId
-     * @param $userId
-     * @param $articleId
-     * @param $type
-     *
-     * @return bool
-     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
-     */
-    protected function productRatingExists($shopId, $userId, $articleId, $type)
+    private function ratingToDeleteExists()
     {
-        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $query = 'SELECT TRUE FROM oxratings ' .
-                 'WHERE 1 ' .
-                 'AND oxshopid = ? ' .
-                 'AND oxuserid = ? ' .
-                 'AND oxobjectid = ? ' .
-                 'AND oxtype = ? ';
+        $rating = oxNew(Rating::class);
+        $exists = $rating->load('testRatingToDelete');
 
-        $result = $db->getOne($query, [$shopId, $userId, $articleId, $type]);
-
-        return (bool) $result;
+        return $exists;
     }
 
-    /**
-     * Get a user object for a given userId
-     *
-     * @return object|\OxidEsales\EshopCommunity\Application\Model\User
-     * @throws \Exception
-     */
     protected function getUser($userId)
     {
         $user = oxNew(\OxidEsales\EshopCommunity\Application\Model\User::class);
@@ -208,81 +263,13 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
         return $user;
     }
 
-    /**
-     * Create a user with a given ID and return the object
-     *
-     * @param $userId
-     *
-     * @return object|\OxidEsales\EshopCommunity\Application\Model\User
-     */
     protected function createUser($userId)
     {
-        $user = oxNew(\OxidEsales\EshopCommunity\Application\Model\User::class);
+        $user = oxNew(User::class);
         $user->setId($userId);
-        $user->oxuser__oxactive = new \OxidEsales\Eshop\Core\Field(1, \OxidEsales\Eshop\Core\Field::T_RAW);
+        $user->oxuser__oxactive = new Field(1, Field::T_RAW);
         $user->save();
 
         return $user;
-    }
-
-    /**
-     * Create review with given parameters
-     *
-     * @param string $userId
-     * @param string $articleId
-     * @param string $type
-     *
-     * @return string Review ID
-     * @throws \Exception
-     */
-    protected function createReview($userId, $articleId, $type)
-    {
-        $review = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
-
-        $review->oxreviews__oxuserid = new \OxidEsales\Eshop\Core\Field($userId, \OxidEsales\Eshop\Core\Field::T_RAW);
-        $review->oxreviews__oxtype = new \OxidEsales\Eshop\Core\Field($type, \OxidEsales\Eshop\Core\Field::T_RAW);
-        $review->oxreviews__oxobjectid = new \OxidEsales\Eshop\Core\Field($articleId, \OxidEsales\Eshop\Core\Field::T_RAW);
-        $review->oxreviews__oxrating = new \OxidEsales\Eshop\Core\Field(2, \OxidEsales\Eshop\Core\Field::T_RAW);
-
-        return $review->save();
-    }
-
-    /**
-     * Create rating with given parameters
-     *
-     * @param int    $shopId
-     * @param string $userId
-     * @param string $articleId
-     * @param string $type
-     *
-     * @return string Rating ID
-     * @throws \Exception
-     */
-    protected function createRating($shopId, $userId, $articleId, $type)
-    {
-        $rating = oxNew(\OxidEsales\Eshop\Application\Model\Rating::class);
-
-        $rating->oxratings__oxshopid = new \OxidEsales\Eshop\Core\Field($shopId, \OxidEsales\Eshop\Core\Field::T_RAW);
-        $rating->oxratings__oxuserid = new \OxidEsales\Eshop\Core\Field($userId, \OxidEsales\Eshop\Core\Field::T_RAW);
-        $rating->oxratings__oxtype = new \OxidEsales\Eshop\Core\Field($type, \OxidEsales\Eshop\Core\Field::T_RAW);
-        $rating->oxratings__oxobjectid = new \OxidEsales\Eshop\Core\Field($articleId, \OxidEsales\Eshop\Core\Field::T_RAW);
-        $rating->oxratings__oxrating = new \OxidEsales\Eshop\Core\Field(2, \OxidEsales\Eshop\Core\Field::T_RAW);
-
-        return $rating->save();
-    }
-
-    /**
-     * Get a given number of article ID from the shop
-     *
-     * @param int $count Number of IDs to fetch from table
-     *
-     * @return string[] article IDs
-     * @throws \Exception
-     */
-    protected function getArticleIds($count)
-    {
-        $query = 'SELECT oxid FROM oxarticles WHERE 1 LIMIT 0, ' . $count;
-
-        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol($query);
     }
 }

@@ -18,7 +18,7 @@ use OxidEsales\EshopCommunity\Internal\Common\Container\Container;
  */
 class AccountReviewController extends AccountController
 {
-    protected $itemsPerPage = 2;
+    protected $itemsPerPage = 10;
 
     protected $_sThisTemplate = 'page/account/reviews.tpl';
 

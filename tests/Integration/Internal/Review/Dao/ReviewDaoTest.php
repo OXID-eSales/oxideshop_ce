@@ -45,24 +45,6 @@ class ReviewDaoTest extends UnitTestCase
         );
     }
 
-    private function assertReviewIdPresentInDatabase($id)
-    {
-        $database = $this->getDatabase();
-        $sql = "select oxid from oxreviews where oxid = '$id'";
-        if ($database->getOne($sql) !== $id) {
-            $this->fail("Failed asserting that review with ID '$id'' is present in database");
-        }
-    }
-
-    private function assertReviewIdNotPresentInDatabase($id)
-    {
-        $database = $this->getDatabase();
-        $sql = "select oxid from oxreviews where oxid = '$id'";
-        if ($database->getOne($sql) !== false) {
-            $this->fail("Failed asserting that review with ID '$id'' is not present in database");
-        }
-    }
-
     private function createTestReviewsForDeleteReviewTest()
     {
         $review = oxNew(Review::class);
@@ -74,9 +56,6 @@ class ReviewDaoTest extends UnitTestCase
         $review->setId('id2');
         $review->oxreviews__oxuserid = new Field('user1');
         $review->save();
-
-        $this->assertReviewIdPresentInDatabase('id1');
-        $this->assertReviewIdPresentInDatabase('id2');
     }
 
     private function createTestReviewsForGetRatingsByUserIdTest()
@@ -95,10 +74,6 @@ class ReviewDaoTest extends UnitTestCase
         $review->setId('id3');
         $review->oxreviews__oxuserid = new Field('userNotMatched');
         $review->save();
-
-        $this->assertReviewIdPresentInDatabase('id1');
-        $this->assertReviewIdPresentInDatabase('id2');
-        $this->assertReviewIdPresentInDatabase('id3');
     }
 
     private function getReviewDao()

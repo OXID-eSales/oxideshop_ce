@@ -3,6 +3,7 @@
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Review\Bridge;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,11 +11,13 @@ use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridge;
 use OxidEsales\EshopCommunity\Internal\Review\Dao\ProductRatingDao;
 use OxidEsales\EshopCommunity\Internal\Review\Dao\RatingDao;
+use OxidEsales\EshopCommunity\Internal\Review\Dao\RatingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Review\DataObject\Rating;
 use OxidEsales\EshopCommunity\Internal\Review\Service\ProductRatingService;
 use OxidEsales\EshopCommunity\Internal\Review\Service\RatingCalculatorService;
+use OxidEsales\TestingLibrary\UnitTestCase;
 
-class ProductRatingBridgeTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class ProductRatingBridgeTest extends UnitTestCase
 {
     public function testUpdateProductRating()
     {
@@ -60,6 +63,9 @@ class ProductRatingBridgeTest extends \OxidEsales\TestingLibrary\UnitTestCase
         return new ProductRatingDao($database);
     }
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|RatingDaoInterface
+     */
     private function getRatingDaoMock()
     {
         $rating1 = new Rating();

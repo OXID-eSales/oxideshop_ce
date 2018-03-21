@@ -456,7 +456,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
     {
         return (bool) $this
             ->getConfig()
-            ->getConfigParam('allowUsersToManageTheirReviews');
+            ->getConfigParam('blAllowUsersToManageTheirReviews');
     }
 
     /**

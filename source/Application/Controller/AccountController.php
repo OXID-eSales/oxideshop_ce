@@ -377,21 +377,11 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
     {
         $allowUsersToDeleteTheirAccount = $this
             ->getConfig()
-            ->getConfigParam('allowUsersToDeleteTheirAccount');
+            ->getConfigParam('blAllowUsersToDeleteTheirAccount');
 
         $user = $this->getUser();
 
         return $allowUsersToDeleteTheirAccount && $user && !$user->isMallAdmin();
-    }
-
-    /**
-     * Checks if possible to delete user.
-     *
-     * @return bool
-     */
-    private function canUserAccountBeDeleted()
-    {
-        return $this->getSession()->checkSessionChallenge() && $this->isUserAllowedToDeleteOwnAccount();
     }
 
     /**
@@ -403,7 +393,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
     {
         return (bool) $this
             ->getConfig()
-            ->getConfigParam('allowUsersToManageTheirReviews');
+            ->getConfigParam('blAllowUsersToManageTheirReviews');
     }
 
     /**
@@ -417,6 +407,17 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
             ->getContainer()
             ->getUserReviewAndRatingBridge()
             ->getReviewAndRatingListCount($this->getUser()->getId());
+    }
+
+
+    /**
+     * Checks if possible to delete user.
+     *
+     * @return bool
+     */
+    private function canUserAccountBeDeleted()
+    {
+        return $this->getSession()->checkSessionChallenge() && $this->isUserAllowedToDeleteOwnAccount();
     }
 
     /**

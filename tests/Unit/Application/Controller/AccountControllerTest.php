@@ -414,7 +414,7 @@ class AccountControllerTest extends UnitTestCase
      */
     private function isAccountDeletionEnabled($isEnabled)
     {
-        return $this->getConfig()->setConfigParam('allowUsersToDeleteTheirAccount', $isEnabled);
+        return $this->getConfig()->setConfigParam('blAllowUsersToDeleteTheirAccount', $isEnabled);
     }
 
     /**

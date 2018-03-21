@@ -30,8 +30,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `SHOP_CONFIG_ALLOW_USERS_MANAGE_PRODUCT_REVIEWS`
 - For displaying recommendations feature new method introduced:
   - `OxidEsales\EshopCommunity\Core\ViewConfig::getShowSuggest()`
-- New settings:
-  - `blAllowSuggestArticle` - now it's possible to disable recommendation feature in admin.
+- New settings which are configurable in admin area:
+  - `blAllowSuggestArticle` - it's possible to disable recommendation feature.
+  - `blAllowUsersToDeleteTheirAccount` - it's possible to allow users to delete their account.
+  - `blAllowUsersToManageTheirReviews` - it's possible to allow users to manage their reviews.
 - New methods:
   - `OxidEsales\EshopCommunity\Application\Model\User::isMallAdmin()`
   - `OxidEsales\EshopCommunity\Core\Registry::getRequest` [PR-626](https://github.com/OXID-eSales/oxideshop_ce/pull/626)

@@ -117,7 +117,7 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
     public function testInitDoesNotRedirect()
     {
         $this->setUserToSession();
-        $this->setConfigParam('allowUsersToManageTheirReviews', true);
+        $this->setConfigParam('blAllowUsersToManageTheirReviews', true);
         $this->createTestDataForReviewAndRatingList();
 
         $utilsStub = $this->getMockBuilder(Utils::class)->getMock();
@@ -131,7 +131,7 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
     public function testInitRedirectsIfFeatureIsDisabled()
     {
         $this->setUserToSession();
-        $this->setConfigParam('allowUsersToManageTheirReviews', false);
+        $this->setConfigParam('blAllowUsersToManageTheirReviews', false);
         $this->createTestDataForReviewAndRatingList();
 
         $utilsStub = $this->getMockBuilder(Utils::class)->getMock();
@@ -144,7 +144,7 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
 
     public function testInitRedirectsIfUserIsNotLogged()
     {
-        $this->setConfigParam('allowUsersToManageTheirReviews', true);
+        $this->setConfigParam('blAllowUsersToManageTheirReviews', true);
         $this->createTestDataForReviewAndRatingList();
 
         $utilsStub = $this->getMockBuilder(Utils::class)->getMock();

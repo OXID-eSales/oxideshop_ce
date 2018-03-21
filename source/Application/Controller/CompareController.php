@@ -466,10 +466,16 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function getReviewAndRatingItemsCount()
     {
-        return $this
-            ->getContainer()
-            ->getUserReviewAndRatingBridge()
-            ->getReviewAndRatingListCount($this->getUser()->getId());
+        $user = $this->getUser();
+        $count = 0;
+        if ($user) {
+            $count = $this
+                ->getContainer()
+                ->getUserReviewAndRatingBridge()
+                ->getReviewAndRatingListCount($user->getId());
+        }
+
+        return $count;
     }
 
     /**

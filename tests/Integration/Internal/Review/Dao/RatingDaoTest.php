@@ -38,42 +38,23 @@ class RatingDaoTest extends UnitTestCase
 
     public function testDeleteRating()
     {
-        $ratingDao = $this->getRatingDao();
-
-        $database = $this->getDatabase();
-
-        $sqlId1 = "select oxid from oxratings where oxid = 'id1'";
-        $sqlId2 = "select oxid from oxratings where oxid = 'id2'";
-
         $this->createTestRatingsForDeleteRatingTest();
 
-        $this->assertEquals('id1', $database->getOne($sqlId1));
-        $this->assertEquals('id2', $database->getOne($sqlId2));
-
-        $ratingDao->deleteRating('user1', 'id1');
-
-        $this->assertFalse($database->getOne($sqlId1));
-        $this->assertEquals('id2', $database->getOne($sqlId2));
-    }
-
-    public function testDeleteRatingWrongUser()
-    {
         $ratingDao = $this->getRatingDao();
 
-        $database = $this->getDatabase();
+        $ratingsBeforeDeletion = $ratingDao->getRatingsByUserId('user1');
+        $ratingToDelete = $ratingsBeforeDeletion->first();
 
-        $sqlId1 = "select oxid from oxratings where oxid = 'id1'";
-        $sqlId2 = "select oxid from oxratings where oxid = 'id2'";
+        $ratingDao->delete($ratingToDelete);
 
-        $this->createTestRatingsForDeleteRatingTest();
+        $ratingsAfterDeletion = $ratingDao->getRatingsByUserId('user1');
 
-        $this->assertEquals('id1', $database->getOne($sqlId1));
-        $this->assertEquals('id2', $database->getOne($sqlId2));
-
-        $ratingDao->deleteRating('userWrongId', 'id1');
-
-        $this->assertEquals('id1', $database->getOne($sqlId1));
-        $this->assertEquals('id2', $database->getOne($sqlId2));
+        $this->assertFalse(
+            in_array(
+                $ratingToDelete,
+                $ratingsAfterDeletion->toArray()
+            )
+        );
     }
 
     private function createTestRatingsForDeleteRatingTest()

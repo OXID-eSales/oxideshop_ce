@@ -47,12 +47,9 @@ class RatingDao implements RatingDaoInterface
     }
 
     /**
-     * @param string $userId
-     * @param string $ratingId
-     *
-     * @return bool
+     * @param Rating $rating
      */
-    public function deleteRating($userId, $ratingId)
+    public function delete(Rating $rating)
     {
         $query = '
               DELETE 
@@ -60,11 +57,9 @@ class RatingDao implements RatingDaoInterface
                   oxratings 
               WHERE 
                   oxid = ?
-              AND 
-                  oxuserid = ? 
         ';
 
-        return $this->database->execute($query, [$ratingId, $userId]);
+        $this->database->execute($query, [$rating->getId()]);
     }
 
     /**

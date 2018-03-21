@@ -6,6 +6,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Review\Dao;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use OxidEsales\EshopCommunity\Internal\Review\DataObject\Rating;
 
 /**
  * Interface RatingDaoInterface
@@ -33,10 +34,7 @@ interface RatingDaoInterface
     public function getRatingsByProductId($productId);
 
     /**
-     * @param string $userId
-     * @param string $ratingId
-     *
-     * @return bool
+     * @param Rating $rating
      */
-    public function deleteRating($userId, $ratingId);
+    public function delete(Rating $rating);
 }

@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - New methods:
     - `OxidEsales\EshopCommunity\Application\Controller\AccountController::isUserAllowedToManageOwnReviews`
     - `OxidEsales\EshopCommunity\Application\Controller\AccountController::getReviewAndRatingItemsCount`
+    - `OxidEsales\EshopCommunity\Application\Controller\CompareController::isUserAllowedToManageOwnReviews`
+    - `OxidEsales\EshopCommunity\Application\Controller\CompareController::getReviewAndRatingItemsCount`
     - `OxidEsales\EshopCommunity\Application\Model\Review::getProductReviewItemsCntByUserId`
     - `OxidEsales\EshopCommunity\Application\Model\Review::getReviewAndRatingListByUserId`    
   - New language constants in `Application/translations/[de/en]/lang.php`:

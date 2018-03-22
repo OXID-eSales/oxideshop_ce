@@ -6,13 +6,14 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \oxDb;
+use OxidEsales\Eshop\Application\Controller\CompareController;
 use \oxRegistry;
 use \oxTestModules;
 
 /**
  * Tests for compare class
  */
-class CompareTest extends \OxidTestCase
+class CompareControllerTest extends \OxidTestCase
 {
     /**
      * Initialize the fixture.
@@ -298,5 +299,12 @@ class CompareTest extends \OxidTestCase
         $this->assertArrayHasKey("1126", $oResList);
         $this->assertArrayNotHasKey("nonExistingVal", $oResList);
         $this->assertArrayHasKey("1127", $oResList);
+    }
+
+    public function testGetReviewAndRatingItemsCountWhenUserIsNotLoggedIn()
+    {
+        $compareController = oxNew(CompareController::class);
+        $this->getConfig()->setUser(null);
+        $this->assertSame(0, $compareController->getReviewAndRatingItemsCount());
     }
 }

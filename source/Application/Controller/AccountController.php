@@ -5,6 +5,8 @@
  */
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use OxidEsales\EshopCommunity\Internal\Common\Container\Container;
+
 /**
  * Current user "My account" window.
  * When user is logged in arranges "My account" window, by creating
@@ -375,12 +377,44 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
     {
         $allowUsersToDeleteTheirAccount = $this
             ->getConfig()
-            ->getConfigParam('allowUsersToDeleteTheirAccount');
+            ->getConfigParam('blAllowUsersToDeleteTheirAccount');
 
         $user = $this->getUser();
 
         return $allowUsersToDeleteTheirAccount && $user && !$user->isMallAdmin();
     }
+
+    /**
+     * Return true, if the review manager should be shown
+     *
+     * @return bool
+     */
+    public function isUserAllowedToManageOwnReviews()
+    {
+        return (bool) $this
+            ->getConfig()
+            ->getConfigParam('blAllowUsersToManageTheirReviews');
+    }
+
+    /**
+     * Get the total number of reviews for the active user.
+     *
+     * @return integer Number of reviews
+     */
+    public function getReviewAndRatingItemsCount()
+    {
+        $user = $this->getUser();
+        $count = 0;
+        if ($user) {
+            $count = $this
+                ->getContainer()
+                ->getUserReviewAndRatingBridge()
+                ->getReviewAndRatingListCount($user->getId());
+        }
+
+        return $count;
+    }
+
 
     /**
      * Checks if possible to delete user.
@@ -390,5 +424,13 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
     private function canUserAccountBeDeleted()
     {
         return $this->getSession()->checkSessionChallenge() && $this->isUserAllowedToDeleteOwnAccount();
+    }
+
+    /**
+     * @return Container
+     */
+    private function getContainer()
+    {
+        return Container::getInstance();
     }
 }

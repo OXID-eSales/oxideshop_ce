@@ -12,10 +12,28 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Possibility to delete user account via new methods:
   - `OxidEsales\EshopCommunity\Application\Controller\AccountController::deleteAccount()`
   - `OxidEsales\EshopCommunity\Application\Controller\AccountController::isUserAllowedToDeleteOwnAccount()`
+- Possibility for shop users to manage their reviews, configurable by admin:
+  - New classes:
+    - `OxidEsales\EshopCommunity\Application\Controller\AccountReviewController`
+  - New methods:
+    - `OxidEsales\EshopCommunity\Application\Controller\AccountController::isUserAllowedToManageOwnReviews`
+    - `OxidEsales\EshopCommunity\Application\Controller\AccountController::getReviewAndRatingItemsCount`
+    - `OxidEsales\EshopCommunity\Application\Controller\CompareController::isUserAllowedToManageOwnReviews`
+    - `OxidEsales\EshopCommunity\Application\Controller\CompareController::getReviewAndRatingItemsCount`
+    - `OxidEsales\EshopCommunity\Application\Model\Review::getProductReviewItemsCntByUserId`
+    - `OxidEsales\EshopCommunity\Application\Model\Review::getReviewAndRatingListByUserId`    
+  - New language constants in `Application/translations/[de/en]/lang.php`:
+    - `ERROR_REVIEW_AND_RATING_NOT_DELETED`
+    - `MY_REVIEWS`
+  - New language constants in `Application/views/admin/[de/en]/lang.php`:
+    - `SHOP_CONFIG_ALLOW_USERS_MANAGE_REVIEWS`
+    - `SHOP_CONFIG_ALLOW_USERS_MANAGE_PRODUCT_REVIEWS`
 - For displaying recommendations feature new method introduced:
   - `OxidEsales\EshopCommunity\Core\ViewConfig::getShowSuggest()`
-- New settings:
-  - `blAllowSuggestArticle` - now it's possible to disable recommendation feature in admin.
+- New settings which are configurable in admin area:
+  - `blAllowSuggestArticle` - it's possible to disable recommendation feature.
+  - `blAllowUsersToDeleteTheirAccount` - it's possible to allow users to delete their account.
+  - `blAllowUsersToManageTheirReviews` - it's possible to allow users to manage their reviews.
 - New methods:
   - `OxidEsales\EshopCommunity\Application\Model\User::isMallAdmin()`
   - `OxidEsales\EshopCommunity\Core\Registry::getRequest` [PR-626](https://github.com/OXID-eSales/oxideshop_ce/pull/626)

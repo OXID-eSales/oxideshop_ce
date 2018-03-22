@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2018
  * @version   OXID eShop CE
  */
 
@@ -301,7 +301,7 @@ $aLang = array(
 'MESSAGE_INVITE_YOUR_FRIENDS_EMAIL'                           => 'Tragen Sie die E-Mail-Adressen Ihrer Freunde unten ein, um ihnen eine Einladung zu schicken.',
 'MESSAGE_INVITE_YOUR_FRIENDS_INVITATION_SENT'                 => 'Die Einladungen wurden versendet. Danke!',
 'MESSAGE_LOGIN_TO_RATE'                                       => 'Für Bewertung bitte anmelden!',
-'MESSAGE_LOGIN_TO_WRITE_REVIEW'                               => 'Sie müssen angemeldet sein, um einen Kommentar schreiben zu können.',
+'MESSAGE_LOGIN_TO_WRITE_REVIEW'                               => 'Sie müssen angemeldet sein, um eine Bewertung schreiben zu können.',
 'MESSAGE_MAKE_GIFT_REGISTRY_PUBLISH'                          => 'Mein Wunschzettel soll von allen gesucht und angesehen werden können',
 'MESSAGE_NEGATIVE_TOTAL'                                      => 'Negativer Betrag ist nicht erlaubt.',
 'MESSAGE_NEWSLETTER_CONGRATULATIONS'                          => 'Herzlichen Glückwunsch!',
@@ -385,7 +385,7 @@ $aLang = array(
 'NO_ITEMS_FOUND'                                              => 'Leider keine Artikel gefunden.',
 'NO_LISTMANIA_LIST_FOUND'                                     => 'Keine Lieblingslisten gefunden',
 'NO_RATINGS'                                                  => 'Keine Bewertungen',
-'NO_REVIEW_AVAILABLE'                                         => 'Es liegen keine Kommentare zu diesem Artikel vor.',
+'NO_REVIEW_AVAILABLE'                                         => 'Es liegen keine Bewertungen zu diesem Artikel vor.',
 'NO_TAGS'                                                     => 'Zurzeit keine Tags verfügbar',
 'NUMBER'                                                      => 'Nummer',
 'NUMBER_2'                                                    => 'Nr.',
@@ -479,7 +479,7 @@ $aLang = array(
 'REVIEW_YOUR_ORDER'                                           => 'Bitte Bestellung kontrollieren!',
 'ROOT_CATEGORY_CHANGED'                                       => 'Hauptkategorie verändert',
 'SAVE'                                                        => 'Speichern',
-'SAVE_RATING_AND_REVIEW'                                      => 'Bewertung und Kommentar speichern',
+'SAVE_RATING_AND_REVIEW'                                      => 'Bewertung und Sterne-Rating speichern',
 'SEARCH'                                                      => 'Suche',
 'SEARCH_FOR_LISTS'                                            => 'Suche nach weiteren Listen',
 'SEARCH_FOR_PRODUCTS_CATEGORY_VENDOR'                         => 'Artikel aus Suche nach "%s" <TAG_CATEGORY> <TAG_VENDOR>',
@@ -593,8 +593,8 @@ $aLang = array(
 'WRAPPING_NET'                                                => 'Geschenkverpackung/Grußkarte (netto)',
 'WRITES'                                                      => 'schreibt',
 'WRITE_ENTRY'                                                 => 'Eintrag schreiben',
-'WRITE_PRODUCT_REVIEW'                                        => 'Einen Kommentar schreiben',
-'WRITE_REVIEW'                                                => 'Einen Kommentar schreiben.',
+'WRITE_PRODUCT_REVIEW'                                        => 'Artikel bewerten',
+'WRITE_REVIEW'                                                => 'Eine Bewertung schreiben.',
 'WRITE_REVIEW_2'                                              => 'Bewerten Sie unseren Shop!',
 'YES'                                                         => 'Ja',
 'YOUR_EMAIL_ADDRESS'                                          => 'Ihre E-Mail-Adresse',

@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2018
  * @version   OXID eShop CE
  */
 
@@ -385,7 +385,7 @@ $aLang = array(
 'NO_ITEMS_FOUND'                                              => 'Sorry - no items found.',
 'NO_LISTMANIA_LIST_FOUND'                                     => 'No listmania lists found',
 'NO_RATINGS'                                                  => 'No ratings',
-'NO_REVIEW_AVAILABLE'                                         => 'No review available for this item.',
+'NO_REVIEW_AVAILABLE'                                         => 'No review available for this product.',
 'NO_TAGS'                                                     => 'There are no tags at the moment',
 'NUMBER'                                                      => 'Number',
 'NUMBER_2'                                                    => 'No.',
@@ -479,7 +479,7 @@ $aLang = array(
 'REVIEW_YOUR_ORDER'                                           => 'Please check your order!',
 'ROOT_CATEGORY_CHANGED'                                       => 'Main category changed',
 'SAVE'                                                        => 'Save',
-'SAVE_RATING_AND_REVIEW'                                      => 'Save rating and review',
+'SAVE_RATING_AND_REVIEW'                                      => 'Save review and star rating',
 'SEARCH'                                                      => 'Search',
 'SEARCH_FOR_LISTS'                                            => 'Search for more lists',
 'SEARCH_FOR_PRODUCTS_CATEGORY_VENDOR'                         => 'Products by search for "%s" <TAG_CATEGORY> <TAG_VENDOR>',
@@ -593,7 +593,7 @@ $aLang = array(
 'WRAPPING_NET'                                                => 'Gift Wrapping/Greeting Card (net)',
 'WRITES'                                                      => 'writes',
 'WRITE_ENTRY'                                                 => 'Write entry',
-'WRITE_PRODUCT_REVIEW'                                        => 'Write Product Review',
+'WRITE_PRODUCT_REVIEW'                                        => 'Review product',
 'WRITE_REVIEW'                                                => 'Write a review.',
 'WRITE_REVIEW_2'                                              => 'Write a review!',
 'YES'                                                         => 'Yes',

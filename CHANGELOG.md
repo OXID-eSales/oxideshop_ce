@@ -47,7 +47,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 via `widget.php` it must extend `\OxidEsales\Eshop\Application\Component\Widget\WidgetController`.
 - `SeoEncoderArticle::_prepareArticleTitle` now uses `_getUrlExtension()` method in place of hardcoded `.html` extension [PR-634](https://github.com/OXID-eSales/oxideshop_ce/pull/634). 
 - Add ^ to version constraint on doctrine/dbal [PR-635](https://github.com/OXID-eSales/oxideshop_ce/pull/635)
-- Application/views/admin/tpl/shop_config.tpl: New control element to configure possibility for users to manage their reviews
 
 ### Deprecated
 - Recommendations feature will be moved to separate module:

@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Review\Bridge;
 
+use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Review\Service\UserRatingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Exception\RatingPermissionException;
 use OxidEsales\Eshop\Application\Model\Rating;
@@ -43,13 +44,41 @@ class UserRatingBridge implements UserRatingBridgeInterface
      */
     public function deleteRating($userId, $ratingId)
     {
-        $rating = oxNew(Rating::class);
-        $rating->load($ratingId);
+        $rating = $this->getRatingById($ratingId);
 
+        $this->validateUserPermissionsToManageRating($rating, $userId);
+
+        $rating->delete();
+    }
+
+    /**
+     * @param Rating $rating
+     * @param string $userId
+     *
+     * @throws RatingPermissionException
+     */
+    private function validateUserPermissionsToManageRating(Rating $rating, $userId)
+    {
         if ($rating->oxratings__oxuserid->value !== $userId) {
             throw new RatingPermissionException();
         }
+    }
 
-        $rating->delete($ratingId);
+    /**
+     * @param string $ratingId
+     *
+     * @return Rating
+     * @throws EntryDoesNotExistDaoException
+     */
+    private function getRatingById($ratingId)
+    {
+        $rating = oxNew(Rating::class);
+        $doesRatingExist = $rating->load($ratingId);
+
+        if (!$doesRatingExist) {
+            throw new EntryDoesNotExistDaoException();
+        }
+
+        return $rating;
     }
 }

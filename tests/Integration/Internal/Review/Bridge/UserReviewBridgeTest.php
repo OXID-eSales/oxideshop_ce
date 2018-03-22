@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Review\Bridge;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Core\Field;
+use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewBridge;
 use OxidEsales\EshopCommunity\Internal\Review\Exception\ReviewPermissionException;
 use OxidEsales\EshopCommunity\Internal\Review\Service\UserReviewService;
@@ -28,6 +29,14 @@ class UserReviewBridgeTest extends UnitTestCase
 
         $userReviewBridge->deleteReview('user1', 'id1');
         $this->assertFalse($database->getOne($sql));
+    }
+
+    public function testDeleteReviewWithNonExistentReviewId()
+    {
+        $this->setExpectedException(EntryDoesNotExistDaoException::class);
+
+        $userReviewBridge = $this->getUserReviewBridge();
+        $userReviewBridge->deleteReview('user1', 'nonExistentId');
     }
 
     public function testDeleteRatingWithWrongUserId()

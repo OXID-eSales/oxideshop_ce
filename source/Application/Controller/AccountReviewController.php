@@ -10,6 +10,7 @@ use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
 use OxidEsales\EshopCommunity\Internal\Common\Container\Container;
+use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
 
 /**
  * Class AccountReviewController
@@ -63,8 +64,12 @@ class AccountReviewController extends AccountController
     public function deleteReviewAndRating()
     {
         if ($this->getSession()->checkSessionChallenge()) {
-            $this->deleteReview();
-            $this->deleteRating();
+            try {
+                $this->deleteReview();
+                $this->deleteRating();
+            } catch (EntryDoesNotExistDaoException $exception) {
+                //if user reloads the page after deletion
+            }
         }
     }
 
@@ -132,11 +137,11 @@ class AccountReviewController extends AccountController
      */
     private function deleteReview()
     {
-        $userReviewBridge = $this->getContainer()->getUserReviewBridge();
         $userId = $this->getUser()->getId();
-
         $reviewId = $this->getReviewIdFromRequest();
+
         if ($reviewId) {
+            $userReviewBridge = $this->getContainer()->getUserReviewBridge();
             $userReviewBridge->deleteReview($userId, $reviewId);
         }
     }
@@ -146,11 +151,11 @@ class AccountReviewController extends AccountController
      */
     private function deleteRating()
     {
-        $userRatingBridge = $this->getContainer()->getUserRatingBridge();
         $userId = $this->getUser()->getId();
-
         $ratingId = $this->getRatingIdFromRequest();
+
         if ($ratingId) {
+            $userRatingBridge = $this->getContainer()->getUserRatingBridge();
             $userRatingBridge->deleteRating($userId, $ratingId);
         }
     }

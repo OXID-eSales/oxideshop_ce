@@ -59,7 +59,8 @@
                 "Application/Component/**/*",
                 "Application/Controller/**/*",
                 "Application/Model/**/*",
-                "Core/**/*"
+                "Core/**/*",
+                "Internal/**/*"
             ]
         },
         "incenteev-parameters": {

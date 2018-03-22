@@ -6,8 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-use oxRegistry;
+use OxidEsales\EshopCommunity\Internal\Common\Container\Container;
 
 /**
  * Article rate manager.
@@ -157,5 +156,55 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getObjectId()
     {
         return $this->oxratings__oxobjectid->value;
+    }
+
+    /**
+     * Delete this object from the database, returns true if entry was deleted.
+     *
+     * @param string $oxid Object ID(default null)
+     *
+     * @return bool
+     */
+    public function delete($oxid = null)
+    {
+        $isProductRating = $this->isProductObjectType();
+
+        $isDeleted = parent::delete($oxid);
+
+        if ($isProductRating) {
+            $this->updateProductRating();
+        }
+
+        return $isDeleted;
+    }
+
+
+    /**
+     * Returns true if Rating belongs to Product.
+     *
+     * @return bool
+     */
+    private function isProductObjectType()
+    {
+        return $this->getObjectType() === 'oxarticle';
+    }
+
+    /**
+     * Updates Product rating.
+     */
+    private function updateProductRating()
+    {
+        $this
+            ->getContainer()
+            ->getProductRatingBridge()
+            ->updateProductRating($this->getObjectId());
+    }
+
+    /**
+     * @return Container
+     */
+    private function getContainer()
+    {
+        return Container::getInstance();
     }
 }

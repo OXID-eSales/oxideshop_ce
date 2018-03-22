@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxRegistry;
+use OxidEsales\EshopCommunity\Internal\Common\Container\Container;
 
 /**
  * Comparing Products.
@@ -445,5 +445,44 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $aPaths[] = $aPath;
 
         return $aPaths;
+    }
+
+    /**
+     * Return true, if the review manager should be shown.
+     *
+     * @return bool
+     */
+    public function isUserAllowedToManageOwnReviews()
+    {
+        return (bool) $this
+            ->getConfig()
+            ->getConfigParam('blAllowUsersToManageTheirReviews');
+    }
+
+    /**
+     * Get the total number of reviews for the active user.
+     *
+     * @return integer Number of reviews
+     */
+    public function getReviewAndRatingItemsCount()
+    {
+        $user = $this->getUser();
+        $count = 0;
+        if ($user) {
+            $count = $this
+                ->getContainer()
+                ->getUserReviewAndRatingBridge()
+                ->getReviewAndRatingListCount($user->getId());
+        }
+
+        return $count;
+    }
+
+    /**
+     * @return Container
+     */
+    private function getContainer()
+    {
+        return Container::getInstance();
     }
 }

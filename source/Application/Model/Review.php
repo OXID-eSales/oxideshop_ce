@@ -6,9 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-use oxField;
-use oxRegistry;
+use OxidEsales\EshopCommunity\Internal\Common\Container\Container;
 
 /**
  * Article review manager.
@@ -17,6 +15,7 @@ use oxRegistry;
  */
 class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
+
     /**
      * Shop control variable
      *
@@ -53,7 +52,7 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         if (isset($this->oxreviews__oxuserid) && $this->oxreviews__oxuserid->value) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $this->oxuser__oxfname = new \OxidEsales\Eshop\Core\Field($oDb->getOne("select oxfname from oxuser where oxid=" . $oDb->quote($this->oxreviews__oxuserid->value)));
+            $this->oxuser__oxfname = new \OxidEsales\Eshop\Core\Field($oDb->getOne("SELECT oxfname FROM oxuser WHERE oxid=" . $oDb->quote($this->oxreviews__oxuserid->value)));
         }
 
         return $blRet;
@@ -159,5 +158,28 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getObjectId()
     {
         return $this->oxreviews__oxobjectid->value;
+    }
+
+    /**
+     * Returns ReviewAndRating list by User id.
+     *
+     * @param string $userId
+     *
+     * @return array
+     */
+    public function getReviewAndRatingListByUserId($userId)
+    {
+        return $this
+            ->getContainer()
+            ->getUserReviewAndRatingBridge()
+            ->getReviewAndRatingList($userId);
+    }
+
+    /**
+     * @return Container
+     */
+    private function getContainer()
+    {
+        return Container::getInstance();
     }
 }

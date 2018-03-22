@@ -1168,15 +1168,29 @@ function editThis(sID)
             <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="SHOP_OPTIONS_GROUP_ACCOUNT_SETTINGS"}]</b></a>
             <dl>
                 <dt>
-                    <input type=hidden name=confbools[allowUsersToDeleteTheirAccount] value=false>
+                    <input type=hidden name=confbools[blAllowUsersToDeleteTheirAccount] value=false>
                     <input
                         type=checkbox
-                        name=confbools[allowUsersToDeleteTheirAccount]
-                        value=true [{if ($confbools.allowUsersToDeleteTheirAccount)}]checked[{/if}] [{$readonly}]
+                        name=confbools[blAllowUsersToDeleteTheirAccount]
+                        value=true [{if ($confbools.blAllowUsersToDeleteTheirAccount)}]checked[{/if}] [{$readonly}]
                     >
                 </dt>
                 <dd>
                     [{oxmultilang ident="SHOP_CONFIG_ALLOW_USERS_TO_DELETE_THEIR_ACCOUNT"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
+                    <input type=hidden name=confbools[blAllowUsersToManageTheirReviews] value=false>
+                    <input
+                            type=checkbox
+                            name=confbools[blAllowUsersToManageTheirReviews]
+                            value=true [{if ($confbools.blAllowUsersToManageTheirReviews)}]checked[{/if}] [{$readonly}]
+                    >
+                </dt>
+                <dd>
+                    [{oxmultilang ident="SHOP_CONFIG_ALLOW_USERS_MANAGE_REVIEWS"}]
                 </dd>
                 <div class="spacer"></div>
             </dl>

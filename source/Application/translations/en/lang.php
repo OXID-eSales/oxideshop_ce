@@ -155,6 +155,7 @@ $aLang = [
 'ERROR_MESSAGE_PASSWORD_EMAIL_INVALID'                        => 'Please enter a valid e-mail address!',
 'ERROR_MESSAGE_PASSWORD_LINK_EXPIRED'                         => 'This page is expired. Please use the function "Forgot password?" once again.',
 'ERROR_MESSAGE_PASSWORD_TOO_SHORT'                            => 'Error: your password is too short.',
+'ERROR_REVIEW_AND_RATING_NOT_DELETED'                         => 'The review and the star rating could not be deleted',
 'ERROR_MESSAGE_CURRENT_PASSWORD_INVALID'                      => 'Error: your current password is incorrect.',
 'ERROR_MESSAGE_RECOMMLIST_NOTITLE'                            => 'Title field is empty',
 'ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND'                 => 'Class "%s" not found',
@@ -269,7 +270,7 @@ $aLang = [
 'MESSAGE_INVITE_YOUR_FRIENDS_EMAIL'                           => 'Please enter your friend\'s e-mail address to send them an invitation.',
 'MESSAGE_INVITE_YOUR_FRIENDS_INVITATION_SENT'                 => 'An invitation was sent. Thank you!',
 'MESSAGE_LOGIN_TO_RATE'                                       => 'Please log in for rating!',
-'MESSAGE_LOGIN_TO_WRITE_REVIEW'                               => 'You have to be logged in to write a review.',
+'MESSAGE_LOGIN_TO_WRITE_REVIEW'                               => 'You have to be logged in to write a product review.',
 'MESSAGE_MAKE_GIFT_REGISTRY_PUBLISH'                          => 'Everyone shall be able to search and display my gift registry',
 'MESSAGE_NEGATIVE_TOTAL'                                      => 'Negative amount not permitted.',
 'MESSAGE_NEWSLETTER_CONGRATULATIONS'                          => 'Congratulations!',
@@ -762,4 +763,5 @@ $aLang = [
 'INFO_ABOUT_COOKIES'                                          => 'Information about cookies',
 'PARTNERS'                                                    => 'Partners',
 
+'MY_REVIEWS'                                                  => 'My reviews',
 ];

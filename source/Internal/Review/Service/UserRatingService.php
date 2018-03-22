@@ -41,17 +41,4 @@ class UserRatingService implements UserRatingServiceInterface
     {
         return $this->ratingDao->getRatingsByUserId($userId);
     }
-
-    /**
-     * Delete a Rating.
-     *
-     * @param string $userId
-     * @param string $ratingId
-     *
-     * @return bool
-     */
-    public function deleteRating($userId, $ratingId)
-    {
-        return $this->ratingDao->deleteRating($userId, $ratingId);
-    }
 }

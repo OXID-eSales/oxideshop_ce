@@ -23,14 +23,4 @@ interface UserRatingServiceInterface
      * @return ArrayCollection
      */
     public function getRatings($userId);
-
-    /**
-     * Deletes a Rating.
-     *
-     * @param string $userId
-     * @param string $ratingId
-     *
-     * @return bool
-     */
-    public function deleteRating($userId, $ratingId);
 }

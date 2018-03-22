@@ -23,14 +23,4 @@ interface UserReviewServiceInterface
      * @return ArrayCollection
      */
     public function getReviews($userId);
-
-    /**
-     * Delete a Review.
-     *
-     * @param string $userId
-     * @param string $reviewId
-     *
-     * @return bool
-     */
-    public function deleteReview($userId, $reviewId);
 }

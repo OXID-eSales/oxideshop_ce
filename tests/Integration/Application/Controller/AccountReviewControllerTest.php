@@ -100,6 +100,17 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
         );
     }
 
+    public function testReviewAndRatingListIsAnEmptyArrayOnNoRatingsAndReviews()
+    {
+        $this->setUserToSession();
+        $accountReviewController = oxNew(AccountReviewController::class);
+
+        $this->assertSame(
+            [],
+            $accountReviewController->getReviewList()
+        );
+    }
+
     public function testReviewAndRatingListPagination()
     {
         $this->setUserToSession();

@@ -84,7 +84,7 @@ class RdfaFrontendTest extends FrontendTestCase
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
         $this->searchFor("1000");
         $this->clickAndWait("searchList_1");
-        $this->assertTextPresent("No review available for this item.");
+        $this->assertTextPresent("%NO_REVIEW_AVAILABLE%");
         $this->assertEquals("No ratings", $this->getText("itemRatingText"));
         $this->click("writeNewReview");
         $this->click("//ul[@id='reviewRating']/li[@class='s4']/a");

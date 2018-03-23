@@ -572,6 +572,12 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
         );
     }
 
+    public function testGetInstanceOfDoctrineQueryBuilder()
+    {
+        $actualResult = $this->database->createQueryBuilder();
+        $this->assertInstanceOf('\\Doctrine\\DBAL\\Query\\QueryBuilder', $actualResult);
+    }
+
     /**
      * Assert, that the given array is unique.
      *

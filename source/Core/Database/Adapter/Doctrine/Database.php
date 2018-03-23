@@ -1418,4 +1418,19 @@ class Database implements DatabaseInterface
 
         return $code;
     }
+
+    /**
+     * A QueryBuilder to dynamically create SQL queries. Use origin Doctrine's QueryBuilder
+     *
+     * @see http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/query-builder.html
+     * @return \Doctrine\DBAL\Query\QueryBuilder
+     */
+    public function createQueryBuilder()
+    {
+        if (is_null($this->connection)) {
+            $this->connect();
+        }
+
+        return $this->getConnection()->createQueryBuilder();
+    }
 }

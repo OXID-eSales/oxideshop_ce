@@ -46,6 +46,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Possibility to delete user account via new methods:
   - `OxidEsales\EshopCommunity\Application\Controller\AccountController::deleteAccount()`
   - `OxidEsales\EshopCommunity\Application\Controller\AccountController::isUserAllowedToDeleteOwnAccount()`
+  - `OxidEsales\EshopCommunity\Application\Controller\AccountController::getAccountDeletionStatus()`
 - Possibility for shop users to manage their reviews, configurable by admin:
   - New classes:
     - `OxidEsales\EshopCommunity\Application\Controller\AccountReviewController`
@@ -74,7 +75,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Filter by working title in admin Selection lists list [PR-632](https://github.com/OXID-eSales/oxideshop_ce/pull/632)
 - Article _oAmountPriceInfo list have unit prices calculated if quantity set for product [PR-619](https://github.com/OXID-eSales/oxideshop_ce/pull/619)
   - `fbrutamountprice` and `fnetamountprice` available for usage in template
-  - prices already preformatted with current language/currency settings 
+  - prices already preformatted with current language/currency settings
 
 ### Changed
 - Loading for non widget classes via `widget.php` entry point have been declined. To allow a class to be loaded

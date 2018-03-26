@@ -101,6 +101,13 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
     protected $_blBargainAction = true;
 
     /**
+     * Status of the account deletion
+     *
+     * @var bool
+     */
+    private $accountDeletionStatus;
+
+    /**
      * Loads action articles. If user is logged and returns name of
      * template to render account::_sThisTemplate
      *
@@ -365,6 +372,10 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
             $session = $this->getSession();
             $session->destroy();
+
+            $this->accountDeletionStatus = true;
+        } else {
+            $this->accountDeletionStatus = false;
         }
     }
 
@@ -415,6 +426,15 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
         return $count;
     }
 
+    /**
+     * Template variable getter. Returns true, if a user account has been sucessfully deleted, else false.
+     *
+     * @return bool
+     */
+    public function getAccountDeletionStatus()
+    {
+        return $this->accountDeletionStatus;
+    }
 
     /**
      * Checks if possible to delete user.

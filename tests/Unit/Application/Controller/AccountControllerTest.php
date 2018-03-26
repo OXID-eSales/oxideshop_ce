@@ -380,6 +380,33 @@ class AccountControllerTest extends UnitTestCase
         $this->executeAccountDeletion($user);
     }
 
+    public function testAccoutDeletionStatusIsFalse()
+    {
+        $this->isAccountDeletionEnabled(false);
+
+        $user = $this->getUserMockForDeletion();
+        $accountController = oxNew(AccountController::class);
+        $accountController->setUser($user);
+        $accountController->deleteAccount();
+
+        $actualStatus = $accountController->getAccountDeletionStatus();
+        $this->assertFalse($actualStatus);
+    }
+
+    public function testAccoutDeletionStatusIsTrue()
+    {
+        $this->isAccountDeletionEnabled(true);
+        $this->isSessionTokenValid(true);
+
+        $user = $this->getUserMockForDeletion();
+        $accountController = oxNew(AccountController::class);
+        $accountController->setUser($user);
+        $accountController->deleteAccount();
+
+        $actualStatus = $accountController->getAccountDeletionStatus();
+        $this->assertTrue($actualStatus);
+    }
+
     /**
      * @param bool $isValid
      */

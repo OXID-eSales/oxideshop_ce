@@ -38,7 +38,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Security
 
-## [6.2.0] - Unreleased
+## [6.2.0] - 2018-03-27
 
 ### Added
 - Possibility to delete shipping address via new method:

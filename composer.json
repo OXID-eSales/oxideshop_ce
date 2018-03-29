@@ -12,7 +12,7 @@
         "php": ">=5.6",
         "phpmailer/phpmailer": "^v5.2.22",
         "smarty/smarty": "^v2.6.30",
-        "oxid-esales/flow-theme": "dev-master || ^2.2.0",
+        "oxid-esales/flow-theme": "*",
         "oxid-esales/oxideshop-doctrine-migration-wrapper": "^v2.1.0",
         "oxid-esales/oxideshop-db-views-generator": "^v1.1.1",
         "doctrine/dbal": "^v2.5.12",

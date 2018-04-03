@@ -6,7 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Review\Bridge;
 
-use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use OxidEsales\Eshop\Application\Model\Rating;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
@@ -20,16 +19,26 @@ class UserRatingBridgeTest extends UnitTestCase
 {
     public function testDeleteRating()
     {
-        $userRatingBridge = $this->getUserRatingBridge();
-        $database = DatabaseProvider::getDb();
-
-        $sql = "select oxid from oxratings where oxid = 'id1'";
-
         $this->createTestRating();
-        $this->assertEquals('id1', $database->getOne($sql));
 
-        $userRatingBridge->deleteRating('user1', 'id1');
-        $this->assertFalse($database->getOne($sql));
+        $userRatingBridge = $this->getUserRatingBridge();
+        $userRatingBridge->deleteRating('testUserId', 'testRatingId');
+
+        $this->assertFalse(
+            $this->ratingExists('testRatingId')
+        );
+    }
+
+    public function testDeleteRatingForSubShop()
+    {
+        $this->createTestRatingForSubShop();
+
+        $userRatingBridge = $this->getUserRatingBridge();
+        $userRatingBridge->deleteRating('testUserId', 'testSubShopRatingId');
+
+        $this->assertFalse(
+            $this->ratingExists('testSubShopRatingId')
+        );
     }
 
     public function testDeleteRatingWithNonExistentRatingId()
@@ -37,22 +46,24 @@ class UserRatingBridgeTest extends UnitTestCase
         $this->setExpectedException(EntryDoesNotExistDaoException::class);
 
         $userRatingBridge = $this->getUserRatingBridge();
-        $userRatingBridge->deleteRating('user1', 'nonExistentId');
+        $userRatingBridge->deleteRating('testUserId', 'nonExistentId');
     }
 
     public function testDeleteRatingWithWrongUserId()
     {
         $this->setExpectedException(RatingPermissionException::class);
 
-        $userRatingBridge = $this->getUserRatingBridge();
-        $database = DatabaseProvider::getDb();
-
-        $sql = "select oxid from oxratings where oxid = 'id1'";
-
         $this->createTestRating();
-        $this->assertEquals('id1', $database->getOne($sql));
 
-        $userRatingBridge->deleteRating('userWithWrongId', 'id1');
+        $userRatingBridge = $this->getUserRatingBridge();
+        $userRatingBridge->deleteRating('userWithWrongId', 'testRatingId');
+    }
+
+    private function ratingExists($id)
+    {
+        $rating = oxNew(Rating::class);
+
+        return $rating->load($id) !== false;
     }
 
     private function getUserRatingBridge()
@@ -76,8 +87,17 @@ class UserRatingBridgeTest extends UnitTestCase
     private function createTestRating()
     {
         $rating = oxNew(Rating::class);
-        $rating->setId('id1');
-        $rating->oxratings__oxuserid = new Field('user1');
+        $rating->setId('testRatingId');
+        $rating->oxratings__oxuserid = new Field('testUserId');
+        $rating->save();
+    }
+
+    private function createTestRatingForSubShop()
+    {
+        $rating = oxNew(Rating::class);
+        $rating->setId('testSubShopRatingId');
+        $rating->oxratings__oxuserid = new Field('testUserId');
+        $rating->oxratings__oxshopid = new Field(5);
         $rating->save();
     }
 }

@@ -48,7 +48,20 @@ class UserRatingBridge implements UserRatingBridgeInterface
 
         $this->validateUserPermissionsToManageRating($rating, $userId);
 
+        $rating = $this->disableSubShopDeleteProtectionForRating($rating);
         $rating->delete();
+    }
+
+    /**
+     * @param Rating $rating
+     *
+     * @return Rating
+     */
+    private function disableSubShopDeleteProtectionForRating(Rating $rating)
+    {
+        $rating->setIsDerived(false);
+
+        return $rating;
     }
 
     /**

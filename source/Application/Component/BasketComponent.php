@@ -290,7 +290,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         if (!is_array($persistedParameters)) {
             return null;
         }
-        return array_filter($persistedParameters, 'trim') ?: null;
+        return array_filter($persistedParameters) ?: null;
     }
 
     /**

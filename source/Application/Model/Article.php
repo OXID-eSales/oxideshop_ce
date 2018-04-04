@@ -2858,6 +2858,16 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         return $this->_iStockStatus;
     }
+     
+    /**
+     * Get stock
+     *
+     * @return float
+     */
+    protected function getStock()
+    {
+        return $this->oxarticles__oxstock->value;
+    }
 
     /**
      * Returns formatted delivery date. If the date is past or not set ('0000-00-00') returns false.

@@ -2912,14 +2912,15 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         }
 
-        $country = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
         $activeCountry = $user->getActiveCountry();
-        if ($activeCountry !== '' &&
-            $country->load($activeCountry) &&
-            $country->oxcountry__oxvatstatus->value !== null &&
-            $country->oxcountry__oxvatstatus->value == 0
-        ) {
-            return false;
+        if ($activeCountry !== '') {
+            $country = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
+            if ($country->load($activeCountry) &&
+                $country->oxcountry__oxvatstatus->value !== null &&
+                $country->oxcountry__oxvatstatus->value == 0
+            ) {
+                return false;
+            }
         }
 
         return true;

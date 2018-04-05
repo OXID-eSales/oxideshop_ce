@@ -2891,16 +2891,6 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function isVatIncluded()
     {
         $config = $this->getConfig();
-        $user = $this->getUser();
-
-        if ($user === false) {
-            $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
-        }
-
-        $country = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
-        $country->load($user->getActiveCountry());
-        $countryBillsNotVat = $country->oxcountry__oxvatstatus->value !== null && $country->oxcountry__oxvatstatus->value == 0;
-
         /*
          * Do not show "inclusive VAT" when:
          *
@@ -2913,9 +2903,21 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
          * oxcountry__oxvatstatus: Vat status: 0 - Do not bill VAT, 1 - Do not bill VAT only if provided valid VAT ID
          * if country is not available (no session) oxvatstatus->value will return null
          */
-        if ($config->getConfigParam('blShowNetPrice') ||
-            $config->getConfigParam('bl_perfCalcVatOnlyForBasketOrder') ||
-            $countryBillsNotVat
+        if ($config->getConfigParam('blShowNetPrice') || $config->getConfigParam('bl_perfCalcVatOnlyForBasketOrder')) {
+            return false;
+        }
+
+        $user = $this->getUser();
+        if ($user === false) {
+            $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
+        }
+
+        $country = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
+        $activeCountry = $user->getActiveCountry();
+        if ($activeCountry !== '' &&
+            $country->load($activeCountry) &&
+            $country->oxcountry__oxvatstatus->value !== null &&
+            $country->oxcountry__oxvatstatus->value == 0
         ) {
             return false;
         }

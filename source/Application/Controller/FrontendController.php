@@ -391,6 +391,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /** @var string Logged in user name. */
     protected $_sActiveUsername = null;
 
+    /** @var boolean is VAT included in prices */
+    protected $_blIsVatIncluded = null;
+
     /** @var array Components which needs to be initialized/rendered (depending on cache and its cache status). */
     protected static $_aCollectedComponentNames = null;
 
@@ -2890,6 +2893,10 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function isVatIncluded()
     {
+        if ($this->_blIsVatIncluded !== null) {
+            return $this->_blIsVatIncluded;
+        }
+
         $config = $this->getConfig();
         /*
          * Do not show "inclusive VAT" when:
@@ -2904,7 +2911,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
          * if country is not available (no session) oxvatstatus->value will return null
          */
         if ($config->getConfigParam('blShowNetPrice') || $config->getConfigParam('bl_perfCalcVatOnlyForBasketOrder')) {
-            return false;
+            return $this->_blIsVatIncluded = false;
         }
 
         $user = $this->getUser();
@@ -2919,11 +2926,11 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
                 $country->oxcountry__oxvatstatus->value !== null &&
                 $country->oxcountry__oxvatstatus->value == 0
             ) {
-                return false;
+                return $this->_blIsVatIncluded = false;
             }
         }
 
-        return true;
+        return $this->_blIsVatIncluded = true;
     }
 
     /**

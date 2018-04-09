@@ -6,29 +6,27 @@
 namespace OxidEsales\EshopCommunity\Internal\Review\Dao;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
-use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
+use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Review\DataObject\Review;
 
 /**
- * Class ReviewDao
  * @internal
- * @package OxidEsales\EshopCommunity\Internal\Review\Dao
  */
 class ReviewDao implements ReviewDaoInterface
 {
     /**
-     * @var DatabaseInterface
+     * @var QueryBuilderFactoryInterface
      */
-    private $database;
+    private $queryBuilderFactory;
 
     /**
-     * ReviewDao constructor.
-     * @param DatabaseInterface $database
+     * RatingDao constructor.
+     *
+     * @param QueryBuilderFactoryInterface $queryBuilderFactory
      */
-    public function __construct(DatabaseInterface $database)
+    public function __construct(QueryBuilderFactoryInterface $queryBuilderFactory)
     {
-        $this->database = $database;
+        $this->queryBuilderFactory = $queryBuilderFactory;
     }
 
     /**
@@ -40,9 +38,15 @@ class ReviewDao implements ReviewDaoInterface
      */
     public function getReviewsByUserId($userId)
     {
-        $reviewsData = $this->getReviewsFromDatabaseByUserId($userId);
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $queryBuilder
+            ->select('r.*')
+            ->from('oxreviews', 'r')
+            ->where('r.oxuserid = :userId')
+            ->orderBy('r.oxcreate', 'DESC')
+            ->setParameter('userId', $userId);
 
-        return $this->mapReviews($reviewsData);
+        return $this->mapReviews($queryBuilder->execute()->fetchAll());
     }
 
     /**
@@ -50,46 +54,18 @@ class ReviewDao implements ReviewDaoInterface
      */
     public function delete(Review $review)
     {
-        $query = '
-              DELETE 
-              FROM 
-                  oxreviews 
-              WHERE 
-                  oxid = ?
-        ';
-
-        $this->database->execute($query, [$review->getId()]);
-    }
-
-    /**
-     * Returns User Reviews from database.
-     *
-     * @param string $userId
-     *
-     * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface
-     */
-    private function getReviewsFromDatabaseByUserId($userId)
-    {
-        $this->database->setFetchMode(DatabaseInterface::FETCH_MODE_ASSOC);
-
-        $query = '
-              SELECT 
-                  *
-              FROM 
-                  oxreviews 
-              WHERE 
-                  oxuserid = ? 
-              ORDER BY 
-                  oxcreate DESC
-        ';
-
-        return $this->database->select($query, [$userId]);
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $queryBuilder
+            ->delete('oxreviews')
+            ->where('oxid = :id')
+            ->setParameter('id', $review->getId())
+            ->execute();
     }
 
     /**
      * Maps rating data from database to Reviews Collection.
      *
-     * @param ResultSetInterface $reviewsData
+     * @param array $reviewsData
      *
      * @return ArrayCollection
      */

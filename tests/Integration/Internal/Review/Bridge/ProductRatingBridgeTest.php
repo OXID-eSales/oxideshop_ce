@@ -6,28 +6,24 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Review\Bridge;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use OxidEsales\Eshop\Core\DatabaseProvider;
-use OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridge;
-use OxidEsales\EshopCommunity\Internal\Review\Dao\ProductRatingDao;
-use OxidEsales\EshopCommunity\Internal\Review\Dao\RatingDao;
-use OxidEsales\EshopCommunity\Internal\Review\Dao\RatingDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Review\DataObject\Rating;
-use OxidEsales\EshopCommunity\Internal\Review\Service\ProductRatingService;
-use OxidEsales\EshopCommunity\Internal\Review\Service\RatingCalculatorService;
+use OxidEsales\Eshop\Application\Model\Article;
+use OxidEsales\Eshop\Application\Model\Rating;
+use OxidEsales\Eshop\Core\Field;
+use OxidEsales\EshopCommunity\Internal\Review\ServiceFactory\ReviewServiceFactory;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 class ProductRatingBridgeTest extends UnitTestCase
 {
     public function testUpdateProductRating()
     {
-        $productId = '09602cddb5af0aba745293d08ae6bcf6';
-        $productRatingDao = $this->getProductRatingDao();
+        $this->createTestProduct();
+        $this->createTestRatings();
+
         $productRatingBridge = $this->getProductRatingBridge();
+        $productRatingBridge->updateProductRating('testProduct');
 
-        $productRatingBridge->updateProductRating($productId);
-
-        $productRating = $productRatingDao->getProductRatingById($productId);
+        $productRatingDao = $this->getProductRatingDao();
+        $productRating = $productRatingDao->getProductRatingById('testProduct');
 
         $this->assertEquals(
             4,
@@ -40,56 +36,45 @@ class ProductRatingBridgeTest extends UnitTestCase
         );
     }
 
-    private function getProductRatingBridge()
+    private function createTestProduct()
     {
-        return new ProductRatingBridge(
-            $this->getProductRatingService()
-        );
+        $product = oxNew(Article::class);
+        $product->setId('testProduct');
+        $product->save();
     }
 
-    private function getProductRatingService()
+    private function createTestRatings()
     {
-        return new ProductRatingService(
-            $this->getRatingDaoMock(),
-            $this->getProductRatingDao(),
-            new RatingCalculatorService()
-        );
+        $rating = oxNew(Rating::class);
+        $rating->oxratings__oxobjectid = new Field('testProduct');
+        $rating->oxratings__oxtype = new Field('oxarticle');
+        $rating->oxratings__oxrating = new Field(3);
+        $rating->save();
+
+        $rating = oxNew(Rating::class);
+        $rating->oxratings__oxobjectid = new Field('testProduct');
+        $rating->oxratings__oxtype = new Field('oxarticle');
+        $rating->oxratings__oxrating = new Field(4);
+        $rating->save();
+
+        $rating = oxNew(Rating::class);
+        $rating->oxratings__oxobjectid = new Field('testProduct');
+        $rating->oxratings__oxtype = new Field('oxarticle');
+        $rating->oxratings__oxrating = new Field(5);
+        $rating->save();
+    }
+
+    private function getProductRatingBridge()
+    {
+        $reviewServiceFactory = new ReviewServiceFactory();
+
+        return $reviewServiceFactory->getProductRatingBridge();
     }
 
     private function getProductRatingDao()
     {
-        $database = DatabaseProvider::getDb();
+        $reviewServiceFactory = new ReviewServiceFactory();
 
-        return new ProductRatingDao($database);
-    }
-
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|RatingDaoInterface
-     */
-    private function getRatingDaoMock()
-    {
-        $rating1 = new Rating();
-        $rating1->setRating(5);
-
-        $rating2 = new Rating();
-        $rating2->setRating(4);
-
-        $rating3 = new Rating();
-        $rating3->setRating(3);
-
-        $ratingDaoMock = $this->getMockBuilder(RatingDao::class)->disableOriginalConstructor()->getMock();
-        $ratingDaoMock
-            ->method('getRatingsByProductId')
-            ->willReturn(
-                new ArrayCollection(
-                    [
-                        $rating1,
-                        $rating2,
-                        $rating3,
-                    ]
-                )
-            );
-
-        return $ratingDaoMock;
+        return $reviewServiceFactory->getProductRatingDao();
     }
 }

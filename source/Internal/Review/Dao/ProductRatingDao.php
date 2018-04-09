@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Review\Dao;
 
-use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
+use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Review\DataObject\ProductRating;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\InvalidObjectIdDaoException;
 
@@ -18,18 +18,18 @@ use OxidEsales\EshopCommunity\Internal\Common\Exception\InvalidObjectIdDaoExcept
 class ProductRatingDao implements ProductRatingDaoInterface
 {
     /**
-     * @var DatabaseInterface
+     * @var QueryBuilderFactoryInterface
      */
-    private $database;
+    private $queryBuilderFactory;
 
     /**
      * RatingDao constructor.
      *
-     * @param DatabaseInterface $database
+     * @param QueryBuilderFactoryInterface $queryBuilderFactory
      */
-    public function __construct(DatabaseInterface $database)
+    public function __construct(QueryBuilderFactoryInterface $queryBuilderFactory)
     {
-        $this->database = $database;
+        $this->queryBuilderFactory = $queryBuilderFactory;
     }
 
     /**
@@ -37,21 +37,19 @@ class ProductRatingDao implements ProductRatingDaoInterface
      */
     public function update(ProductRating $productRating)
     {
-        $query = '
-            UPDATE
-                oxarticles
-            SET
-                OXRATING = ?,
-                OXRATINGCNT = ?
-            WHERE 
-                OXID = ?
-        ';
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $queryBuilder
+            ->update('oxarticles')
+            ->set('OXRATING', ':OXRATING')
+            ->set('OXRATINGCNT', ':OXRATINGCNT')
+            ->where('OXID = :OXID')
+            ->setParameters([
+                'OXRATING'      => $productRating->getRatingAverage(),
+                'OXRATINGCNT'   => $productRating->getRatingCount(),
+                'OXID'          => $productRating->getProductId(),
+            ]);
 
-        $this->database->execute($query, [
-            $productRating->getRatingAverage(),
-            $productRating->getRatingCount(),
-            $productRating->getProductId(),
-        ]);
+        $queryBuilder->execute();
     }
 
     /**
@@ -63,33 +61,21 @@ class ProductRatingDao implements ProductRatingDaoInterface
     {
         $this->validateProductId($productId);
 
-        $productRatingData = $this->getProductRatingDataById($productId);
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $queryBuilder
+            ->select([
+                'OXID',
+                'OXRATING',
+                'OXRATINGCNT'
+            ])
+            ->from('oxarticles')
+            ->where('oxid = :productId')
+            ->setMaxResults(1)
+            ->setParameter('productId', $productId);
 
-        return $this->mapProductRating($productRatingData);
-    }
-
-    /**
-     * @param string $productId
-     *
-     * @return array
-     */
-    private function getProductRatingDataById($productId)
-    {
-        $this->database->setFetchMode(DatabaseInterface::FETCH_MODE_ASSOC);
-
-        $query = '
-              SELECT
-                  OXID,
-                  OXRATING,
-                  OXRATINGCNT
-              FROM 
-                  oxarticles 
-              WHERE 
-                  oxid = ? 
-              LIMIT 1
-        ';
-
-        return $this->database->getRow($query, [$productId]);
+        return $this->mapProductRating(
+            $queryBuilder->execute()->fetch()
+        );
     }
 
     /**

@@ -5,7 +5,10 @@
  */
 namespace OxidEsales\EshopCommunity\Internal\Review\ServiceFactory;
 
+use Doctrine\DBAL\Connection;
+use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
 use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactory;
 use OxidEsales\EshopCommunity\Internal\Review\Dao\ProductRatingDao;
 use OxidEsales\EshopCommunity\Internal\Review\Dao\ProductRatingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Dao\RatingDao;
@@ -34,9 +37,7 @@ use OxidEsales\EshopCommunity\Internal\Review\Service\UserReviewService;
 use OxidEsales\EshopCommunity\Internal\Review\Service\UserReviewServiceInterface;
 
 /**
- * Class ReviewServiceFactory
  * @internal
- * @package OxidEsales\EshopCommunity\Internal\Review
  */
 class ReviewServiceFactory
 {
@@ -106,6 +107,11 @@ class ReviewServiceFactory
     private $ratingCalculator;
 
     /**
+     * @var QueryBuilderFactory
+     */
+    private $queryBuilderFactory;
+
+    /**
      * @return UserReviewAndRatingBridgeInterface
      */
     public function getUserReviewAndRatingBridge()
@@ -162,6 +168,48 @@ class ReviewServiceFactory
     }
 
     /**
+     * @return ProductRatingDaoInterface
+     */
+    public function getProductRatingDao()
+    {
+        if (!$this->productRatingDao) {
+            $this->productRatingDao = new ProductRatingDao(
+                $this->getQueryBuilderFactory()
+            );
+        }
+
+        return $this->productRatingDao;
+    }
+
+    /**
+     * @return ReviewDaoInterface
+     */
+    public function getReviewDao()
+    {
+        if (!$this->reviewDao) {
+            $this->reviewDao = new ReviewDao(
+                $this->getQueryBuilderFactory()
+            );
+        }
+
+        return $this->reviewDao;
+    }
+
+    /**
+     * @return RatingDaoInterface
+     */
+    public function getRatingDao()
+    {
+        if (!$this->ratingDao) {
+            $this->ratingDao = new RatingDao(
+                $this->getQueryBuilderFactory()
+            );
+        }
+
+        return $this->ratingDao;
+    }
+
+    /**
      * @return ProductRatingServiceInterface
      */
     private function getProductRatingService()
@@ -175,18 +223,6 @@ class ReviewServiceFactory
         }
 
         return $this->productRatingService;
-    }
-
-    /**
-     * @return ProductRatingDaoInterface
-     */
-    private function getProductRatingDao()
-    {
-        if (!$this->productRatingDao) {
-            $this->productRatingDao = new ProductRatingDao($this->getDatabase());
-        }
-
-        return $this->productRatingDao;
     }
 
     /**
@@ -231,19 +267,6 @@ class ReviewServiceFactory
         return $this->userReviewService;
     }
 
-    /**
-     * @return ReviewDaoInterface
-     */
-    private function getReviewDao()
-    {
-        if (!$this->reviewDao) {
-            $this->reviewDao = new ReviewDao(
-                $this->getDatabase()
-            );
-        }
-
-        return $this->reviewDao;
-    }
 
     /**
      * @return UserRatingServiceInterface
@@ -259,19 +282,6 @@ class ReviewServiceFactory
         return $this->userRatingService;
     }
 
-    /**
-     * @return RatingDaoInterface
-     */
-    private function getRatingDao()
-    {
-        if (!$this->ratingDao) {
-            $this->ratingDao = new RatingDao(
-                $this->getDatabase()
-            );
-        }
-
-        return $this->ratingDao;
-    }
 
     /**
      * @return ReviewAndRatingMergingServiceInterface
@@ -286,10 +296,28 @@ class ReviewServiceFactory
     }
 
     /**
-     * @return \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface
+     * @return QueryBuilderFactory
      */
-    private function getDatabase()
+    private function getQueryBuilderFactory()
     {
-        return DatabaseProvider::getDb();
+        if (!$this->queryBuilderFactory) {
+            $this->queryBuilderFactory = new QueryBuilderFactory(
+                $this->getConnection()
+            );
+        }
+
+        return $this->queryBuilderFactory;
+    }
+
+    /**
+     * @return Connection
+     */
+    private function getConnection()
+    {
+        $database = DatabaseProvider::getDb();
+        $r = new \ReflectionMethod(Database::class, 'getConnection');
+        $r->setAccessible(true);
+
+        return $r->invoke($database);
     }
 }

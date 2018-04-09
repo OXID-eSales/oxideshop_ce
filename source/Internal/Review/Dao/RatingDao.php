@@ -6,30 +6,27 @@
 namespace OxidEsales\EshopCommunity\Internal\Review\Dao;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
-use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
+use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Review\DataObject\Rating;
 
 /**
- * Class RatingDao
  * @internal
- * @package OxidEsales\EshopCommunity\Internal\Review\Dao
  */
 class RatingDao implements RatingDaoInterface
 {
     /**
-     * @var DatabaseInterface
+     * @var QueryBuilderFactoryInterface
      */
-    private $database;
+    private $queryBuilderFactory;
 
     /**
      * RatingDao constructor.
      *
-     * @param DatabaseInterface $database
+     * @param QueryBuilderFactoryInterface $queryBuilderFactory
      */
-    public function __construct(DatabaseInterface $database)
+    public function __construct(QueryBuilderFactoryInterface $queryBuilderFactory)
     {
-        $this->database = $database;
+        $this->queryBuilderFactory = $queryBuilderFactory;
     }
 
     /**
@@ -41,9 +38,15 @@ class RatingDao implements RatingDaoInterface
      */
     public function getRatingsByUserId($userId)
     {
-        $ratingsData = $this->getRatingsFromDatabaseByUserId($userId);
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $queryBuilder
+            ->select('r.*')
+            ->from('oxratings', 'r')
+            ->where('r.oxuserid = :userId')
+            ->orderBy('r.oxtimestamp', 'DESC')
+            ->setParameter('userId', $userId);
 
-        return $this->mapRatings($ratingsData);
+        return $this->mapRatings($queryBuilder->execute()->fetchAll());
     }
 
     /**
@@ -51,15 +54,12 @@ class RatingDao implements RatingDaoInterface
      */
     public function delete(Rating $rating)
     {
-        $query = '
-              DELETE 
-              FROM 
-                  oxratings 
-              WHERE 
-                  oxid = ?
-        ';
-
-        $this->database->execute($query, [$rating->getId()]);
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $queryBuilder
+            ->delete('oxratings')
+            ->where('oxid = :id')
+            ->setParameter('id', $rating->getId())
+            ->execute();
     }
 
     /**
@@ -71,66 +71,27 @@ class RatingDao implements RatingDaoInterface
      */
     public function getRatingsByProductId($productId)
     {
-        $ratingsData = $this->getRatingsFromDatabaseByProductId($productId);
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $queryBuilder
+            ->select('r.*')
+            ->from('oxratings', 'r')
+            ->where('r.oxobjectid = :productId')
+            ->andWhere('r.oxtype = :productType')
+            ->orderBy('r.oxtimestamp', 'DESC')
+            ->setParameters(
+                [
+                    'productId'     => $productId,
+                    'productType'   => 'oxarticle',
+                ]
+            );
 
-        return $this->mapRatings($ratingsData);
-    }
-
-    /**
-     * Returns User rating data from database.
-     *
-     * @param string $userId
-     *
-     * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface
-     */
-    private function getRatingsFromDatabaseByUserId($userId)
-    {
-        $this->database->setFetchMode(DatabaseInterface::FETCH_MODE_ASSOC);
-
-        $query = '
-              SELECT 
-                  *
-              FROM 
-                  oxratings 
-              WHERE 
-                  oxuserid = ? 
-              ORDER BY 
-                  oxtimestamp DESC
-        ';
-
-        return $this->database->select($query, [$userId]);
-    }
-
-    /**
-     * Returns Ratings data for a product from database.
-     *
-     * @param string $productId
-     *
-     * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface
-     */
-    private function getRatingsFromDatabaseByProductId($productId)
-    {
-        $this->database->setFetchMode(DatabaseInterface::FETCH_MODE_ASSOC);
-
-        $query = '
-              SELECT 
-                  *
-              FROM 
-                  oxratings 
-              WHERE 
-                  oxobjectid = ?
-                  AND oxtype = "oxarticle" 
-              ORDER BY 
-                  oxtimestamp DESC
-        ';
-
-        return $this->database->select($query, [$productId]);
+        return $this->mapRatings($queryBuilder->execute()->fetchAll());
     }
 
     /**
      * Maps rating data from database to Ratings Collection.
      *
-     * @param ResultSetInterface $ratingsData
+     * @param array $ratingsData
      *
      * @return ArrayCollection
      */

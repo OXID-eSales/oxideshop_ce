@@ -6,11 +6,10 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Review\Dao;
 
+use OxidEsales\EshopCommunity\Internal\Review\ServiceFactory\ReviewServiceFactory;
 use OxidEsales\TestingLibrary\UnitTestCase;
-use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Core\Field;
-use OxidEsales\EshopCommunity\Internal\Review\Dao\ReviewDao;
 
 class ReviewDaoTest extends UnitTestCase
 {
@@ -78,16 +77,8 @@ class ReviewDaoTest extends UnitTestCase
 
     private function getReviewDao()
     {
-        return new ReviewDao(
-            $this->getDatabase()
-        );
-    }
+        $reviewServiceFactory = new ReviewServiceFactory();
 
-    /**
-     * @return \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface
-     */
-    private function getDatabase()
-    {
-        return DatabaseProvider::getDb();
+        return $reviewServiceFactory->getReviewDao();
     }
 }

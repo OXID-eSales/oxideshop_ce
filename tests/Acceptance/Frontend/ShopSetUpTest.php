@@ -30,7 +30,6 @@ class ShopSetUpTest extends FrontendTestCase
     const DEMODATA_SQL_FILENAME = 'demodata.sql';
     const DATABASE_SCHEMA_SQL_FILENAME = 'database_schema.sql';
     const INITIAL_DATA_SQL_FILENAME = 'initial_data.sql';
-    const EN_LANGUAGE_SQL_FILENAME = 'en.sql';
     const HTACCESS_FILENAME = '.htaccess';
     const PACKAGE_INDICATOR_FILENAME = 'pkg.info';
     const DB_MIGRATE_SCRIPT_FILENAME = 'oe-eshop-doctrine_migration';
@@ -442,7 +441,6 @@ class ShopSetUpTest extends FrontendTestCase
      */
     public function testSetupRedirectsToDatabaseEntryPageWhenSetupSqlFileIsMissing($setupSqlFile)
     {
-        $this->skipLanguageSqlFilenameCase($setupSqlFile);
         $this->skipInitialDataSqlCaseIfDemodataPackageIsInUse($setupSqlFile);
 
         $this->hideSetupSqlFile($setupSqlFile);
@@ -507,10 +505,8 @@ class ShopSetUpTest extends FrontendTestCase
         $this->provideEshopLoginParameters('test@test.com', '123456');
         $this->click(self::FINISH_CE_STEP);
 
-        if ($setupSqlFile !== self::EN_LANGUAGE_SQL_FILENAME) {
-            $this->waitForText("ERROR: Issue while inserting this SQL statements:");
-            $this->assertTextPresent("SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax;");
-        }
+        $this->waitForText("ERROR: Issue while inserting this SQL statements:");
+        $this->assertTextPresent("SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax;");
     }
 
     public function setupSqlFilesProvider()
@@ -518,7 +514,6 @@ class ShopSetUpTest extends FrontendTestCase
         return [
             [self::DATABASE_SCHEMA_SQL_FILENAME],
             [self::INITIAL_DATA_SQL_FILENAME],
-            [self::EN_LANGUAGE_SQL_FILENAME],
         ];
     }
 
@@ -1291,13 +1286,6 @@ SCRIPT;
             $this->markTestSkipped(
                 self::INITIAL_DATA_SQL_FILENAME . " file is not available nor used if 'demodata' package is present."
             );
-        }
-    }
-
-    private function skipLanguageSqlFilenameCase($setupSqlFile)
-    {
-        if ($setupSqlFile === self::EN_LANGUAGE_SQL_FILENAME) {
-            $this->markTestSkipped('Skipping this case to match functionality from current Setup implementation.');
         }
     }
 

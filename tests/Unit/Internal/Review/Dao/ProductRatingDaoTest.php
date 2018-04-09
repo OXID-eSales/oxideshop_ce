@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Review\Dao;
 
-use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
+use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Dao\ProductRatingDao;
 
 class ProductRatingDaoTest extends \PHPUnit_Framework_TestCase
@@ -17,8 +17,8 @@ class ProductRatingDaoTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetProductByIdWithInvalidId($invalidProductId)
     {
-        $database = $this->getMockBuilder(DatabaseInterface::class)->getMock();
-        $productRatingDao = new ProductRatingDao($database);
+        $queryBuilderFactory = $this->getMockBuilder(QueryBuilderFactoryInterface::class)->getMock();
+        $productRatingDao = new ProductRatingDao($queryBuilderFactory);
 
         $productRatingDao->getProductRatingById($invalidProductId);
     }

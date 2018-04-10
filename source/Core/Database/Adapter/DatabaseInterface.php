@@ -400,4 +400,11 @@ interface DatabaseInterface
      * @return string|int Row ID
      */
     public function getLastInsertId();
+
+    /**
+     * A QueryBuilder to dynamically create SQL queries.
+     *
+     * @return object
+     */
+    public function createQueryBuilder();
 }

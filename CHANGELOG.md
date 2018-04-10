@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [6.x.x] - Unreleased
+
+### Added
+
+### Changed
+- Persparams filter simplified to allow arrays in persparams [PR-641](https://github.com/OXID-eSales/oxideshop_ce/pull/641)
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
 ## [6.2.0] - 2018-03-27
 
 ### Added

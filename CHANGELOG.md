@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Fixed notices and performance improved in FontendController::isVatIncluded [PR-642](https://github.com/OXID-eSales/oxideshop_ce/pull/642)
 
 ## [6.2.0] - 2018-03-27
 

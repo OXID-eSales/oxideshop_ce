@@ -391,6 +391,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /** @var string Logged in user name. */
     protected $_sActiveUsername = null;
 
+    /** @var boolean is VAT included in prices */
+    protected $_blIsVatIncluded = null;
+
     /** @var array Components which needs to be initialized/rendered (depending on cache and its cache status). */
     protected static $_aCollectedComponentNames = null;
 
@@ -2890,17 +2893,11 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function isVatIncluded()
     {
-        $config = $this->getConfig();
-        $user = $this->getUser();
-
-        if ($user === false) {
-            $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
+        if ($this->_blIsVatIncluded !== null) {
+            return $this->_blIsVatIncluded;
         }
 
-        $country = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
-        $country->load($user->getActiveCountry());
-        $countryBillsNotVat = $country->oxcountry__oxvatstatus->value !== null && $country->oxcountry__oxvatstatus->value == 0;
-
+        $config = $this->getConfig();
         /*
          * Do not show "inclusive VAT" when:
          *
@@ -2913,14 +2910,27 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
          * oxcountry__oxvatstatus: Vat status: 0 - Do not bill VAT, 1 - Do not bill VAT only if provided valid VAT ID
          * if country is not available (no session) oxvatstatus->value will return null
          */
-        if ($config->getConfigParam('blShowNetPrice') ||
-            $config->getConfigParam('bl_perfCalcVatOnlyForBasketOrder') ||
-            $countryBillsNotVat
-        ) {
-            return false;
+        if ($config->getConfigParam('blShowNetPrice') || $config->getConfigParam('bl_perfCalcVatOnlyForBasketOrder')) {
+            return $this->_blIsVatIncluded = false;
         }
 
-        return true;
+        $user = $this->getUser();
+        if ($user === false) {
+            $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
+        }
+
+        $activeCountry = $user->getActiveCountry();
+        if ($activeCountry !== '') {
+            $country = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
+            if ($country->load($activeCountry) &&
+                $country->oxcountry__oxvatstatus->value !== null &&
+                $country->oxcountry__oxvatstatus->value == 0
+            ) {
+                return $this->_blIsVatIncluded = false;
+            }
+        }
+
+        return $this->_blIsVatIncluded = true;
     }
 
     /**

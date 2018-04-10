@@ -2229,11 +2229,7 @@ class UBaseTest extends \OxidTestCase
     {
         $this->getConfig()->setConfigParam('blShowNetPrice', true);
 
-        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getActiveCountry'));
-        $oUser->expects($this->once())->method('getActiveCountry')->will($this->returnValue(''));
-
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getUser'));
-        $oView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
+        $oView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
         $this->assertFalse($oView->isVatIncluded());
     }
 

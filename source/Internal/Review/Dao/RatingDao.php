@@ -7,6 +7,7 @@ namespace OxidEsales\EshopCommunity\Internal\Review\Dao;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Common\DataMapper\IdentifiableObjectMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Review\DataObject\Rating;
 
 /**
@@ -20,13 +21,20 @@ class RatingDao implements RatingDaoInterface
     private $queryBuilderFactory;
 
     /**
-     * RatingDao constructor.
-     *
-     * @param QueryBuilderFactoryInterface $queryBuilderFactory
+     * @var IdentifiableObjectMapperInterface
      */
-    public function __construct(QueryBuilderFactoryInterface $queryBuilderFactory)
-    {
+    private $mapper;
+
+    /**
+     * @param QueryBuilderFactoryInterface      $queryBuilderFactory
+     * @param IdentifiableObjectMapperInterface $mapper
+     */
+    public function __construct(
+        QueryBuilderFactoryInterface        $queryBuilderFactory,
+        IdentifiableObjectMapperInterface   $mapper
+    ) {
         $this->queryBuilderFactory = $queryBuilderFactory;
+        $this->mapper = $mapper;
     }
 
     /**
@@ -100,30 +108,10 @@ class RatingDao implements RatingDaoInterface
         $ratings = new ArrayCollection();
 
         foreach ($ratingsData as $ratingData) {
-            $ratings->add($this->mapRating($ratingData));
+            $rating = new Rating();
+            $ratings->add($this->mapper->map($rating, $ratingData));
         }
 
         return $ratings;
-    }
-
-    /**
-     * Maps data from database to Rating.
-     *
-     * @param array $ratingData
-     *
-     * @return Rating
-     */
-    private function mapRating($ratingData)
-    {
-        $rating = new Rating();
-        $rating
-            ->setId($ratingData['OXID'])
-            ->setRating($ratingData['OXRATING'])
-            ->setObjectId($ratingData['OXOBJECTID'])
-            ->setUserId($ratingData['OXUSERID'])
-            ->setType($ratingData['OXTYPE'])
-            ->setCreatedAt($ratingData['OXTIMESTAMP']);
-
-        return $rating;
     }
 }

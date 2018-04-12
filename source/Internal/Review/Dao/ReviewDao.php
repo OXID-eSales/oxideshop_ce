@@ -7,6 +7,7 @@ namespace OxidEsales\EshopCommunity\Internal\Review\Dao;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Common\DataMapper\IdentifiableObjectMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Review\DataObject\Review;
 
 /**
@@ -20,13 +21,20 @@ class ReviewDao implements ReviewDaoInterface
     private $queryBuilderFactory;
 
     /**
-     * RatingDao constructor.
-     *
-     * @param QueryBuilderFactoryInterface $queryBuilderFactory
+     * @var IdentifiableObjectMapperInterface
      */
-    public function __construct(QueryBuilderFactoryInterface $queryBuilderFactory)
-    {
+    private $mapper;
+
+    /**
+     * @param QueryBuilderFactoryInterface      $queryBuilderFactory
+     * @param IdentifiableObjectMapperInterface $mapper
+     */
+    public function __construct(
+        QueryBuilderFactoryInterface        $queryBuilderFactory,
+        IdentifiableObjectMapperInterface   $mapper
+    ) {
         $this->queryBuilderFactory = $queryBuilderFactory;
+        $this->mapper = $mapper;
     }
 
     /**
@@ -74,31 +82,10 @@ class ReviewDao implements ReviewDaoInterface
         $reviews = new ArrayCollection();
 
         foreach ($reviewsData as $reviewData) {
-            $reviews[] = $this->mapReview($reviewData);
+            $review = new Review();
+            $reviews[] = $this->mapper->map($review, $reviewData);
         }
 
         return $reviews;
-    }
-
-    /**
-     * Maps data from database to Review.
-     *
-     * @param array $reviewData
-     *
-     * @return Review
-     */
-    private function mapReview($reviewData)
-    {
-        $review = new Review();
-        $review
-            ->setId($reviewData['OXID'])
-            ->setRating($reviewData['OXRATING'])
-            ->setText($reviewData['OXTEXT'])
-            ->setObjectId($reviewData['OXOBJECTID'])
-            ->setUserId($reviewData['OXUSERID'])
-            ->setType($reviewData['OXTYPE'])
-            ->setCreatedAt($reviewData['OXTIMESTAMP']);
-
-        return $review;
     }
 }

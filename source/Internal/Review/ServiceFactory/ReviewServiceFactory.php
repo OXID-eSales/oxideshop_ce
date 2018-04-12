@@ -9,6 +9,7 @@ use Doctrine\DBAL\Connection;
 use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactory;
+use OxidEsales\EshopCommunity\Internal\Common\DataMapper\IdentifiableObjectMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Dao\ProductRatingDao;
 use OxidEsales\EshopCommunity\Internal\Review\Dao\ProductRatingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Dao\RatingDao;
@@ -23,6 +24,9 @@ use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewAndRatingBridge;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewAndRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewBridge;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Review\DataMapper\ProductRatingDataMapper;
+use OxidEsales\EshopCommunity\Internal\Review\DataMapper\RatingDataMapper;
+use OxidEsales\EshopCommunity\Internal\Review\DataMapper\ReviewDataMapper;
 use OxidEsales\EshopCommunity\Internal\Review\Service\ProductRatingService;
 use OxidEsales\EshopCommunity\Internal\Review\Service\ProductRatingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Service\RatingCalculatorService;
@@ -112,6 +116,21 @@ class ReviewServiceFactory
     private $queryBuilderFactory;
 
     /**
+     * @var IdentifiableObjectMapperInterface
+     */
+    private $ratingDataMapper;
+
+    /**
+     * @var IdentifiableObjectMapperInterface
+     */
+    private $reviewDataMapper;
+
+    /**
+     * @var IdentifiableObjectMapperInterface
+     */
+    private $productRatingDataMapper;
+
+    /**
      * @return UserReviewAndRatingBridgeInterface
      */
     public function getUserReviewAndRatingBridge()
@@ -174,7 +193,8 @@ class ReviewServiceFactory
     {
         if (!$this->productRatingDao) {
             $this->productRatingDao = new ProductRatingDao(
-                $this->getQueryBuilderFactory()
+                $this->getQueryBuilderFactory(),
+                $this->getProductRatingDataMapper()
             );
         }
 
@@ -188,7 +208,8 @@ class ReviewServiceFactory
     {
         if (!$this->reviewDao) {
             $this->reviewDao = new ReviewDao(
-                $this->getQueryBuilderFactory()
+                $this->getQueryBuilderFactory(),
+                $this->getReviewDataMapper()
             );
         }
 
@@ -202,11 +223,48 @@ class ReviewServiceFactory
     {
         if (!$this->ratingDao) {
             $this->ratingDao = new RatingDao(
-                $this->getQueryBuilderFactory()
+                $this->getQueryBuilderFactory(),
+                $this->getRatingDataMapper()
             );
         }
 
         return $this->ratingDao;
+    }
+
+    /**
+     * @return ReviewDataMapper
+     */
+    private function getReviewDataMapper()
+    {
+        if (!$this->reviewDataMapper) {
+            $this->reviewDataMapper = new ReviewDataMapper();
+        }
+
+        return $this->reviewDataMapper;
+    }
+
+    /**
+     * @return RatingDataMapper
+     */
+    private function getRatingDataMapper()
+    {
+        if (!$this->ratingDataMapper) {
+            $this->ratingDataMapper = new RatingDataMapper();
+        }
+
+        return $this->ratingDataMapper;
+    }
+
+    /**
+     * @return ProductRatingDataMapper
+     */
+    private function getProductRatingDataMapper()
+    {
+        if (!$this->productRatingDataMapper) {
+            $this->productRatingDataMapper = new ProductRatingDataMapper();
+        }
+
+        return $this->productRatingDataMapper;
     }
 
     /**

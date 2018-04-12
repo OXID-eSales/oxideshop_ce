@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use OxidEsales\EshopCommunity\Internal\Common\Container\Container;
+use OxidEsales\EshopCommunity\Internal\Application\Container;
 
 /**
  * Article review manager.

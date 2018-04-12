@@ -8,7 +8,7 @@ namespace OxidEsales\EshopCommunity\Internal\Common\DataMapper;
 /**
  * @internal
  */
-interface IdentifiableObjectMapperInterface extends ObjectMapperInterface
+interface EntityMapperInterface extends ObjectMapperInterface
 {
     /**
      * Returns array with storage primary key of an object in format like storageFieldName => value

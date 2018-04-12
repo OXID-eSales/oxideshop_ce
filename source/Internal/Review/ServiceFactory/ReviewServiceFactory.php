@@ -9,7 +9,7 @@ use Doctrine\DBAL\Connection;
 use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactory;
-use OxidEsales\EshopCommunity\Internal\Common\DataMapper\IdentifiableObjectMapperInterface;
+use OxidEsales\EshopCommunity\Internal\Common\DataMapper\EntityMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Dao\ProductRatingDao;
 use OxidEsales\EshopCommunity\Internal\Review\Dao\ProductRatingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Dao\RatingDao;
@@ -116,17 +116,17 @@ class ReviewServiceFactory
     private $queryBuilderFactory;
 
     /**
-     * @var IdentifiableObjectMapperInterface
+     * @var EntityMapperInterface
      */
     private $ratingDataMapper;
 
     /**
-     * @var IdentifiableObjectMapperInterface
+     * @var EntityMapperInterface
      */
     private $reviewDataMapper;
 
     /**
-     * @var IdentifiableObjectMapperInterface
+     * @var EntityMapperInterface
      */
     private $productRatingDataMapper;
 

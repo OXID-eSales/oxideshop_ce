@@ -6,13 +6,13 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Review\DataMapper;
 
-use OxidEsales\EshopCommunity\Internal\Common\DataMapper\IdentifiableObjectMapperInterface;
+use OxidEsales\EshopCommunity\Internal\Common\DataMapper\EntityMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Review\DataObject\ProductRating;
 
 /**
  * @internal
  */
-class ProductRatingDataMapper implements IdentifiableObjectMapperInterface
+class ProductRatingDataMapper implements EntityMapperInterface
 {
     /**
      * @param ProductRating $object

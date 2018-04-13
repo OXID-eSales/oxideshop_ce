@@ -4,9 +4,9 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Common\ServiceFactory;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Application;
 
-use OxidEsales\EshopCommunity\Internal\Common\Container\Container;
+use OxidEsales\EshopCommunity\Internal\Application\Container;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewAndRatingBridgeInterface;

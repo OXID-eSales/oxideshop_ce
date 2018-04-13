@@ -8,31 +8,32 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Review\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Review\ServiceFactory\ReviewServiceFactory;
 use OxidEsales\TestingLibrary\UnitTestCase;
-use OxidEsales\Eshop\Application\Model\Rating;
+use OxidEsales\Eshop\Application\Model\Rating as EshopRating;
+use OxidEsales\EshopCommunity\Internal\Review\DataObject\Rating;
 use OxidEsales\Eshop\Core\Field;
 
 class RatingDaoTest extends UnitTestCase
 {
     public function testGetRatingsByUserId()
     {
-        $ratingDao = $this->getRatingDao();
-
         $this->createTestRatingsForGetRatingsByUserIdTest();
 
+        $ratingDao = $this->getRatingDao();
         $ratings = $ratingDao->getRatingsByUserId('user1');
 
         $this->assertCount(2, $ratings->toArray());
+        $this->assertInstanceOf(Rating::class, $ratings->first());
     }
 
     public function testGetRatingsByProductId()
     {
-        $ratingDao = $this->getRatingDao();
-
         $this->createTestRatingsForGetRatingsByProductIdTest();
 
+        $ratingDao = $this->getRatingDao();
         $ratings = $ratingDao->getRatingsByProductId('product1');
 
         $this->assertCount(2, $ratings->toArray());
+        $this->assertInstanceOf(Rating::class, $ratings->first());
     }
 
     public function testDeleteRating()
@@ -48,22 +49,20 @@ class RatingDaoTest extends UnitTestCase
 
         $ratingsAfterDeletion = $ratingDao->getRatingsByUserId('user1');
 
-        $this->assertFalse(
-            in_array(
-                $ratingToDelete,
-                $ratingsAfterDeletion->toArray()
-            )
+        $this->assertNotContains(
+            $ratingToDelete,
+            $ratingsAfterDeletion->toArray()
         );
     }
 
     private function createTestRatingsForDeleteRatingTest()
     {
-        $rating = oxNew(Rating::class);
+        $rating = oxNew(EshopRating::class);
         $rating->setId('id1');
         $rating->oxratings__oxuserid = new Field('user1');
         $rating->save();
 
-        $rating = oxNew(Rating::class);
+        $rating = oxNew(EshopRating::class);
         $rating->setId('id2');
         $rating->oxratings__oxuserid = new Field('user1');
         $rating->save();
@@ -71,17 +70,17 @@ class RatingDaoTest extends UnitTestCase
 
     private function createTestRatingsForGetRatingsByUserIdTest()
     {
-        $rating = oxNew(Rating::class);
+        $rating = oxNew(EshopRating::class);
         $rating->setId('id1');
         $rating->oxratings__oxuserid = new Field('user1');
         $rating->save();
 
-        $rating = oxNew(Rating::class);
+        $rating = oxNew(EshopRating::class);
         $rating->setId('id2');
         $rating->oxratings__oxuserid = new Field('user1');
         $rating->save();
 
-        $rating = oxNew(Rating::class);
+        $rating = oxNew(EshopRating::class);
         $rating->setId('id3');
         $rating->oxratings__oxuserid = new Field('userNotMatched');
         $rating->save();
@@ -89,25 +88,25 @@ class RatingDaoTest extends UnitTestCase
 
     private function createTestRatingsForGetRatingsByProductIdTest()
     {
-        $rating = oxNew(Rating::class);
+        $rating = oxNew(EshopRating::class);
         $rating->setId('id1');
         $rating->oxratings__oxobjectid = new Field('product1');
         $rating->oxratings__oxtype = new Field('oxarticle');
         $rating->save();
 
-        $rating = oxNew(Rating::class);
+        $rating = oxNew(EshopRating::class);
         $rating->setId('id2');
         $rating->oxratings__oxobjectid = new Field('product1');
         $rating->oxratings__oxtype = new Field('oxarticle');
         $rating->save();
 
-        $rating = oxNew(Rating::class);
+        $rating = oxNew(EshopRating::class);
         $rating->setId('id3');
         $rating->oxratings__oxobjectid = new Field('productNotMatched');
         $rating->oxratings__oxtype = new Field('oxarticle');
         $rating->save();
 
-        $rating = oxNew(Rating::class);
+        $rating = oxNew(EshopRating::class);
         $rating->setId('id4');
         $rating->oxratings__oxobjectid = new Field('product1');
         $rating->oxratings__oxtype = new Field('oxrecommlist');

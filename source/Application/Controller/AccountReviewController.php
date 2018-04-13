@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
-use OxidEsales\EshopCommunity\Internal\Common\Container\Container;
+use OxidEsales\EshopCommunity\Internal\Application\Container;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
 
 /**

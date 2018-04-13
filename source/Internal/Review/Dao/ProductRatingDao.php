@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Review\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Common\DataMapper\EntityMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Review\DataObject\ProductRating;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\InvalidObjectIdDaoException;
 
@@ -23,13 +24,20 @@ class ProductRatingDao implements ProductRatingDaoInterface
     private $queryBuilderFactory;
 
     /**
-     * RatingDao constructor.
-     *
-     * @param QueryBuilderFactoryInterface $queryBuilderFactory
+     * @var EntityMapperInterface
      */
-    public function __construct(QueryBuilderFactoryInterface $queryBuilderFactory)
-    {
+    private $mapper;
+
+    /**
+     * @param QueryBuilderFactoryInterface $queryBuilderFactory
+     * @param EntityMapperInterface        $mapper
+     */
+    public function __construct(
+        QueryBuilderFactoryInterface    $queryBuilderFactory,
+        EntityMapperInterface           $mapper
+    ) {
         $this->queryBuilderFactory = $queryBuilderFactory;
+        $this->mapper = $mapper;
     }
 
     /**
@@ -43,11 +51,7 @@ class ProductRatingDao implements ProductRatingDaoInterface
             ->set('OXRATING', ':OXRATING')
             ->set('OXRATINGCNT', ':OXRATINGCNT')
             ->where('OXID = :OXID')
-            ->setParameters([
-                'OXRATING'      => $productRating->getRatingAverage(),
-                'OXRATINGCNT'   => $productRating->getRatingCount(),
-                'OXID'          => $productRating->getProductId(),
-            ]);
+            ->setParameters($this->mapper->getData($productRating));
 
         $queryBuilder->execute();
     }
@@ -73,25 +77,10 @@ class ProductRatingDao implements ProductRatingDaoInterface
             ->setMaxResults(1)
             ->setParameter('productId', $productId);
 
-        return $this->mapProductRating(
+        return $this->mapper->map(
+            new ProductRating(),
             $queryBuilder->execute()->fetch()
         );
-    }
-
-    /**
-     * @param array $productRatingData
-     *
-     * @return ProductRating
-     */
-    private function mapProductRating($productRatingData)
-    {
-        $productRating = new ProductRating();
-        $productRating
-            ->setProductId($productRatingData['OXID'])
-            ->setRatingAverage($productRatingData['OXRATING'])
-            ->setRatingCount($productRatingData['OXRATINGCNT']);
-
-        return $productRating;
     }
 
     /**

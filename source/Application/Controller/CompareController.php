@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use OxidEsales\EshopCommunity\Internal\Common\Container\Container;
+use OxidEsales\EshopCommunity\Internal\Application\Container;
 
 /**
  * Comparing Products.

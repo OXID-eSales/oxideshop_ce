@@ -7,15 +7,16 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use oxEmailHelper;
 use OxidEsales\Eshop\Application\Model\Address;
+use OxidEsales\Eshop\Application\Model\Order;
 use OxidEsales\Eshop\Application\Model\Rating;
 use OxidEsales\Eshop\Application\Model\RecommendationList;
+use OxidEsales\Eshop\Application\Model\Remark;
 use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Model\BaseModel;
 use OxidEsales\EshopCommunity\Application\Model\PriceAlarm;
 use OxidEsales\EshopCommunity\Application\Model\UserPayment;
-use OxidEsales\EshopCommunity\Core\Exception\DatabaseErrorException;
 use OxidEsales\Eshop\Core\UtilsObject;
 use \oxnewssubscribed;
 use oxUser;
@@ -1200,7 +1201,6 @@ class UserTest extends \OxidTestCase
             'oxreviews'           => 'oxuserid',
             'oxratings'           => 'oxuserid',
             'oxpricealarm'        => 'oxuserid',
-            'oxuserpayments'      => 'oxuserid',
             'oxacceptedterms'     => 'oxuserid',
             'oxobject2delivery'   => 'oxobjectid',
             'oxobject2discount'   => 'oxobjectid',
@@ -1224,6 +1224,44 @@ class UserTest extends \OxidTestCase
                 $count . ' records were not deleted from "' . $table . '" table'
             );
         }
+    }
+
+    public function testIfDuringUserDeletionOrderRemarkStillExists()
+    {
+        $user = $this->createUser();
+        $userId = $user->getId();
+
+        $remark = oxNew(Remark::class);
+        $remark->setId('_testRemark');
+        $remark->oxremark__oxparentid = new Field($userId);
+        $remark->oxremark__oxtype = new Field('o');
+        $remark->save();
+
+        $this->executeAccountDeletion($userId);
+
+        $this->assertTrue(oxNew(Remark::class)->load('_testRemark'));
+    }
+
+    public function testIfDuringUserDeletionUserPaymentsEntryExists()
+    {
+        $userId = $this->prepareUserDataForDeletion();
+        $this->executeAccountDeletion($userId);
+
+        $userPayment = oxNew(UserPayment::class);
+        $isLoaded = $userPayment->load('_testUserPayment');
+
+        $this->assertTrue($isLoaded, 'During account deletion oxuserpayments entry must not be deleted.');
+    }
+
+    public function testIfDuringUserDeletionOrderEntryExists()
+    {
+        $userId = $this->prepareUserDataForDeletion();
+        $this->executeAccountDeletion($userId);
+
+        $order = oxNew(Order::class);
+        $isLoaded = $order->load('_testOrder');
+
+        $this->assertTrue($isLoaded, 'During account deletion oxorders entry must not be deleted.');
     }
 
     //FS#2578
@@ -2895,7 +2933,12 @@ class UserTest extends \OxidTestCase
         $userPayment->setId('_testUserPayment');
         $userPayment->oxuserpayments__oxuserid = new Field($userId);
         $userPayment->save();
-        
+
+        $order = oxNew(Order::class);
+        $order->setId('_testOrder');
+        $order->oxorderss__oxuserid = new Field($userId);
+        $order->save();
+
         $database = $this->getDb();
         $database->execute('INSERT INTO oxacceptedterms (oxuserid) VALUES(?)', [$userId]);
 

@@ -196,4 +196,4 @@
     /**
      * String PSR3 log level Psr\Log\LogLevel
      */
-    $this->sLogLevel = null;
+    $this->sLogLevel = 'error';

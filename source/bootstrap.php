@@ -9,7 +9,7 @@ ini_set('display_errors', 0);
 
 define('INSTALLATION_ROOT_PATH', dirname(__DIR__));
 define('OX_BASE_PATH', INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'source' . DIRECTORY_SEPARATOR);
-define('OX_LOG_FILE', OX_BASE_PATH . 'log' . DIRECTORY_SEPARATOR . 'EXCEPTION_LOG.txt');
+define('OX_LOG_FILE', OX_BASE_PATH . 'log' . DIRECTORY_SEPARATOR . 'oxideshop.log');
 define('OX_OFFLINE_FILE', OX_BASE_PATH . 'offline.html');
 define('VENDOR_PATH', INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR);
 
@@ -55,11 +55,16 @@ register_shutdown_function(
                                  'Also double-check, if the class file for this very class was created.';
             }
             /** report the error */
-            \OxidEsales\Eshop\Core\Registry::getLogger()->alert($errorMessage, [
-                'file' => $error['file'],
-                'line' => $error['line'],
-                'type' => $errorType
-            ]);
+            $logMessage = "[uncaught error] [type $errorType] [file {$error['file']}] [line {$error['line']}] [code ] [message {$errorMessage}]";
+
+            /** write to log */
+            $time = microtime(true);
+            $micro = sprintf("%06d", ($time - floor($time)) * 1000000);
+            $date = new \DateTime(date('Y-m-d H:i:s.' . $micro, $time));
+            $timestamp = $date->format('d M H:i:s.u Y');
+            $message = "[$timestamp] " . $logMessage . PHP_EOL;
+            file_put_contents(OX_LOG_FILE, $message, FILE_APPEND);
+
 
             $bootstrapConfigFileReader = new \BootstrapConfigFileReader();
             if (!$bootstrapConfigFileReader->isDebugMode()) {
@@ -217,4 +222,21 @@ function oxTriggerOfflinePageDisplay()
             echo file_get_contents(OX_OFFLINE_FILE);
         };
     }
+}
+
+/**
+ * @deprecated since v6.3 (2018-04-18); Use OxidEsales\Eshop\Core\Registry::getLogger()
+ *
+ * @param string $message
+ */
+function writeToLog($message)
+{
+    $time = microtime(true);
+    $micro = sprintf("%06d", ($time - floor($time)) * 1000000);
+    $date = new \DateTime(date('Y-m-d H:i:s.' . $micro, $time));
+    $timestamp = $date->format('d M H:i:s.u Y');
+
+    $message = "[$timestamp] " . $message . PHP_EOL;
+
+    file_put_contents(OX_LOG_FILE, $message, FILE_APPEND);
 }

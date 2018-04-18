@@ -22,28 +22,6 @@ class OnlineVatIdCheckTest extends \OxidTestCase
     }
 
     /**
-     * Tests oxOnlineVatIdCheck::catchWarning()
-     */
-    public function testCatchWarning()
-    {
-        $oLogger = \OxidEsales\Eshop\Core\Registry::getLogger();
-        $oLogger->setHandlers([]); // reset handlers
-        $oHandler = new \Monolog\Handler\TestHandler();
-        $oLogger->pushHandler($oHandler);
-
-        $oOnlineVatIdCheck = oxNew('oxOnlineVatIdCheck');
-        $oOnlineVatIdCheck->catchWarning(1, 2, 3, 4);
-
-        $aRecords = $oHandler->getRecords();
-        $this->assertEquals(2, $aRecords[0]['message']);
-        $this->assertEquals([
-            'code' => 1,
-            'file' => 3,
-            'line' => 4
-        ], $aRecords[0]['context']);
-    }
-
-    /**
      * Testing vat id online checker
      *
      * @group quarantine

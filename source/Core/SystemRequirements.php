@@ -557,7 +557,7 @@ class SystemRequirements
 
         $minimalRequiredVersion = '5.5.0';
         $minimalRecommendedVersion = '5.6.0';
-        $maximalRecommendedVersion = '7.0.9999';
+        $maximalRecommendedVersion = '7.1.9999';
 
         $installedPhpVersion = $this->getPhpVersion();
 

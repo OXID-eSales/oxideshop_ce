@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `admin_voucherserie_groups_form`
   - `admin_voucherserie_categories_form`
   - `admin_voucherserie_articles_form`
+- PSR3 Logger:
+    - New settings:
+        - `sLogLevel` in `config.inc.php`
+    - New methods:
+        - `OxidEsales\EshopCommunity\Core\Registry::getLogger`
+        - `getLogger` in `overridablefunctions.php`
 
 ### Changed
 - Persparams filter simplified to allow arrays in persparams [PR-641](https://github.com/OXID-eSales/oxideshop_ce/pull/641)
@@ -22,6 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `OxidEsales\EshopCommunity\Core\Session::isUnserializedBasketValid`
 
 ### Deprecated
+- `writeToLog` in `bootstrap.php`
 
 ### Removed
 

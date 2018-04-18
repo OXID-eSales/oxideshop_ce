@@ -312,7 +312,7 @@ class Registry
     }
 
     /**
-     * Return instance of \Monolog\Logger or whatever getLogger() returns
+     * Returns Logger
      *
      * @static
      * @return \Psr\Log\LoggerInterface

@@ -13,7 +13,7 @@ use PDO;
 
 class QueryBuilderFactoryTest extends \PHPUnit_Framework_TestCase
 {
-    public function testQueryBuilderCreation1()
+    public function testQueryBuilderCreation()
     {
         $connection = $this
             ->getMockBuilder(Connection::class)

@@ -5,11 +5,15 @@
  */
 namespace OxidEsales\EshopCommunity\Internal\Application;
 
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Logger\ServiceFactory\LoggerServiceFactory;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserRatingBridge;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewAndRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewBridge;
 use OxidEsales\EshopCommunity\Internal\Review\ServiceFactory\ReviewServiceFactory;
+use OxidEsales\EshopCommunity\Internal\Utility\Context;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 
 /**
  * Class Container
@@ -29,6 +33,16 @@ class Container
     private $reviewServiceFactory;
 
     /**
+     * @var LoggerServiceFactory
+     */
+    private $loggerServiceFactory;
+
+    /**
+     * @var ContextInterface
+     */
+    private $context;
+
+    /**
      * Container constructor.
      */
     protected function __construct()
@@ -45,6 +59,16 @@ class Container
         }
 
         return self::$instance;
+    }
+
+    /**
+     * @return \Psr\Log\LoggerInterface
+     */
+    public function getLogger()
+    {
+        return $this
+            ->getLoggerServiceFactory()
+            ->getLogger();
     }
 
     /**
@@ -97,5 +121,33 @@ class Container
         }
 
         return $this->reviewServiceFactory;
+    }
+
+    /**
+     * @return LoggerServiceFactory
+     */
+    private function getLoggerServiceFactory()
+    {
+        if (!$this->loggerServiceFactory) {
+            $this->loggerServiceFactory = new LoggerServiceFactory(
+                $this->getContext()
+            );
+        }
+
+        return $this->loggerServiceFactory;
+    }
+
+    /**
+     * @return ContextInterface
+     */
+    private function getContext()
+    {
+        if (!$this->context) {
+            $this->context = new Context(
+                Registry::getConfig()
+            );
+        }
+
+        return $this->context;
     }
 }

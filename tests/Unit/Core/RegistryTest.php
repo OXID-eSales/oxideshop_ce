@@ -11,6 +11,7 @@ use oxLang;
 use oxSession;
 use oxStr;
 use oxUtils;
+use Psr\Log\LoggerInterface;
 use stdClass;
 
 /**
@@ -464,6 +465,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
             ['getLang', \OxidEsales\Eshop\Core\Language::class],
             ['getUtils', \OxidEsales\Eshop\Core\Utils::class],
             ['getUtilsObject', \OxidEsales\Eshop\Core\UtilsObject::class],
+            ['getLogger', LoggerInterface::class]
         ];
     }
 
@@ -505,6 +507,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
             ['getLang'],
             ['getUtils'],
             ['getUtilsObject'],
+            ['getLogger'],
         ];
     }
 }

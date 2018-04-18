@@ -6,6 +6,7 @@
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
+use OxidEsales\EshopCommunity\Internal\Application\Container;
 
 if (!defined('ESHOP_CONFIG_FILE')) {
     define('ESHOP_CONFIG_FILE', 'config.inc.php');
@@ -197,19 +198,14 @@ if (!function_exists('getRequestUrl')) {
 
 if (!function_exists('getLogger')) {
     /**
-     * Returns the Logger class to use
+     * Returns the Logger
      *
-     * @return \Monolog\Logger
+     * @return \Psr\Log\LoggerInterface
      */
     function getLogger()
     {
-        $logger = new Monolog\Logger('OxidEsales');
-        $logger->pushHandler(
-            new Monolog\Handler\StreamHandler(
-                \OxidEsales\Eshop\Core\Registry::getConfig()->getLogsDir() . 'logs.txt'
-            ),
-            Monolog\Logger::WARNING
-        );
-        return $logger;
+        $container = Container::getInstance();
+
+        return $container->getLogger();
     }
 }

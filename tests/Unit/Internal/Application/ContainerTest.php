@@ -11,6 +11,7 @@ use OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridgeInterfac
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewAndRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewBridgeInterface;
+use Psr\Log\LoggerInterface;
 
 class ContainerTest extends \PHPUnit_Framework_TestCase
 {
@@ -60,6 +61,16 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(
             UserReviewBridgeInterface::class,
             $container->getUserReviewBridge()
+        );
+    }
+
+    public function testGetLogger()
+    {
+        $container = Container::getInstance();
+
+        $this->assertInstanceOf(
+            LoggerInterface::class,
+            $container->getLogger()
         );
     }
 }

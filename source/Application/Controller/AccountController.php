@@ -441,7 +441,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return bool
      */
-    private function canUserAccountBeDeleted()
+    public function canUserAccountBeDeleted()
     {
         return $this->getSession()->checkSessionChallenge() && $this->isUserAllowedToDeleteOwnAccount();
     }

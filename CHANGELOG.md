@@ -56,6 +56,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Fixed notices and performance improved in FontendController::isVatIncluded [PR-642](https://github.com/OXID-eSales/oxideshop_ce/pull/642)
+- Use error_404_handler in article list controller in place of outdated 404 handling [PR-643](https://github.com/OXID-eSales/oxideshop_ce/pull/643)
 
 ## [6.2.0] - 2018-03-27
 

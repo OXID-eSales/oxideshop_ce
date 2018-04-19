@@ -545,6 +545,10 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     public function testCheckSeoUrl($urlToCall, $seoUrl, $responseContains, $responseNotContains, $seoCount, $seoArtCount, $prepareUrls)
     {
+        //prevent creating possible additional seo urls
+        $this->getConfig()->setConfigParam('iNewestArticlesMode', 0);
+        $this->getConfig()->setConfigParam('iTop5Mode', 0);
+
         $this->callCurl(''); //call shop startpage
         foreach ($prepareUrls as $url) {
             $this->callCurl($url);

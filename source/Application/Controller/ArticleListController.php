@@ -247,7 +247,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         if (!$pageCount && $currentPageNumber) {
             // display error if category has no products, but page number is entered
             $this->_iActPage = 0;
-            \OxidEsales\Eshop\Core\Registry::getUtils()->handlePageNotFoundError($this->getActiveCategory()->getLink());
+            error_404_handler($this->getActiveCategory()->getLink());
         }
     }
 

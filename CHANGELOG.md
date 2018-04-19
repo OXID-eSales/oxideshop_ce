@@ -44,6 +44,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Persparams filter simplified to allow arrays in persparams [PR-641](https://github.com/OXID-eSales/oxideshop_ce/pull/641)
+- Method visibility changed from private to protected [PR-636](https://github.com/OXID-eSales/oxideshop_ce/pull/636):
+  - `OxidEsales\EshopCommunity\Core\Session::isSerializedBasketValid`
+  - `OxidEsales\EshopCommunity\Core\Session::isClassInSerializedObject`
+  - `OxidEsales\EshopCommunity\Core\Session::isClassOrNullInSerializedObjectAfterField`
+  - `OxidEsales\EshopCommunity\Core\Session::isUnserializedBasketValid`
 
 ### Deprecated
 

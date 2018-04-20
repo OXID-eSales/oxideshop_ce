@@ -41,6 +41,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [6.x.x] - Unreleased
 
 ### Added
+- New blocks in `admin/tpl/voucherserie_groups.tpl`
+  - `admin_voucherserie_relations`
+  - `admin_voucherserie_groups_form`
+  - `admin_voucherserie_categories_form`
+  - `admin_voucherserie_articles_form`
 
 ### Changed
 - Persparams filter simplified to allow arrays in persparams [PR-641](https://github.com/OXID-eSales/oxideshop_ce/pull/641)

@@ -13,6 +13,7 @@
 
 <table width="100%">
 <colgroup span="3" width="33%">
+[{block name="admin_voucherserie_groups_form"}]
 <tr>
 <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
 [{$oViewConf->getHiddenSid()}]
@@ -46,6 +47,7 @@
 </td>
 </form>
 </tr>
+[{/block}]
 </table>
 
 [{include file="bottomnaviitem.tpl"}]

@@ -5,6 +5,8 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Exception;
 
+use OxidEsales\Eshop\Core\Exception\StandardException;
+
 class ExceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
 
@@ -24,64 +26,25 @@ class ExceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->assertTrue($testObject->getMessage() === $messsage);
     }
 
-    public function testSetGetLogFileName()
-    {
-        $testObject = oxNew('oxException');
-        $testObject->setLogFileName('TEST.log');
-        $this->assertEquals('TEST.log', $testObject->getLogFileName());
-    }
-
     // Test log file output
     public function testDebugOut()
     {
         $message = 'Erik was here..';
-        $fileName = 'oxexceptionsTest_test_debugOut.txt';
-        $testObject = oxNew('oxException', $message);
-        $testObject->setLogFileName($fileName);
-        $this->assertEquals(\OxidEsales\Eshop\Core\Exception\StandardException::class, get_class($testObject));
+        $testObject = oxNew(StandardException::class, $message);
 
         try {
-            $testObject->debugOut(1); // actuall test
+            $testObject->debugOut(); // actuall test
         } catch (Exception $e) {
             // Lets try to delete an eventual left over file
-            unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $fileName);
+            unlink(OX_LOG_FILE);
             $this->fail();
 
             return;
         }
-        $file = file_get_contents($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $fileName);
-        unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $fileName);
-        // we check on class name and message - rest is not checked yet
+        $file = file_get_contents(OX_LOG_FILE);
+        unlink(OX_LOG_FILE);
+
         $this->assertContains($message, $file);
-        $this->assertContains('oxException', $file);
-    }
-
-    /**
-     * A test for bug #1465
-     *
-     */
-    public function testDebugOutNoDebug()
-    {
-        $message = 'Erik was here..';
-        $sFileName = 'oxexceptionsTest_test_debugOut.txt';
-        $oTestObject = oxNew('oxException', $message);
-        $oTestObject->setLogFileName($sFileName);
-        $this->assertEquals(\OxidEsales\Eshop\Core\Exception\StandardException::class, get_class($oTestObject));
-
-        try {
-            $oTestObject->debugOut(0); // actuall test
-        } catch (Exception $e) {
-            // Lets try to delete an eventual left over file
-            unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
-            $this->fail();
-
-            return;
-        }
-        $sFile = file_get_contents($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
-        unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sFileName);
-        // we check on class name and message - rest is not checked yet
-        $this->assertContains($message, $sFile);
-        $this->assertContains('oxException', $sFile);
     }
 
     // Test set & get message

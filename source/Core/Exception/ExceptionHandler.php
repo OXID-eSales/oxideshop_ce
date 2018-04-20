@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Core\Exception;
 
+use OxidEsales\Eshop\Core\Registry;
+
 /**
  * Exception handler, deals with all high level exceptions (caught in oxShopControl)
  */
@@ -153,15 +155,17 @@ class ExceptionHandler
      *
      * @param \Exception $exception
      *
-     * @return int|false The function returns the number of bytes that were written to the file, or false on failure.
+     * @return bool
      */
     public function writeExceptionToLog(\Exception $exception)
     {
-        /** self::_sFileName is @deprecated since v6.0 (2017-03-30); Logging mechanism will change in the future. */
-        $logFile = dirname(OX_LOG_FILE) . DIRECTORY_SEPARATOR . $this->_sFileName;
         $logMessage = $this->getFormattedException($exception);
 
-        return file_put_contents($logFile, $logMessage, FILE_APPEND) !== false ? true : false;
+        $logger = Registry::getLogger();
+        $logger->error($logMessage);
+
+        /** return statement is @deprecated since v6.3 (2018-04-19); The function will be void. */
+        return true;
     }
 
     /**

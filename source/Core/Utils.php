@@ -1414,15 +1414,10 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function writeToLog($logMessage, $logFileName)
     {
-        $logFilePath = $this->getConfig()->getLogsDir() . $logFileName;
-        $writeSucceed = false;
+        $logger = Registry::getLogger();
+        $logger->notice($logMessage);
 
-        if (($logFileResource = fopen($logFilePath, 'a')) !== false) {
-            fwrite($logFileResource, $logMessage);
-            $writeSucceed = fclose($logFileResource);
-        }
-
-        return $writeSucceed;
+        return true;
     }
 
     /**

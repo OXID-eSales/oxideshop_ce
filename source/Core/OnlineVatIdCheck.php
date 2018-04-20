@@ -93,12 +93,12 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
      */
     public function catchWarning($iErrNo, $sErrStr, $sErrFile, $iErrLine)
     {
-        // logs error message
         \OxidEsales\Eshop\Core\Registry::getLogger()->warning($sErrStr, [
             'file' => $sErrFile,
             'line' => $iErrLine,
             'code' => $iErrNo
         ]);
+
         return true;
     }
 

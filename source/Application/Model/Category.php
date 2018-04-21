@@ -985,8 +985,15 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
     {
         //preliminary quick check saves 3% of execution time in category lists by avoiding redundant strtolower() call
-        if ($sFieldName[2] == 'l' || $sFieldName[2] == 'L' || (isset($sFieldName[16]) && ($sFieldName[16] == 'l' || $sFieldName[16] == 'L'))) {
-            if ('oxlongdesc' === strtolower($sFieldName) || 'oxcategories__oxlongdesc' === strtolower($sFieldName)) {
+        if (($sFieldNameIndex2 = $sFieldName[2]) === 'l'
+            || $sFieldNameIndex2 === 'L'
+            || (isset($sFieldName[16])
+                && (($sFieldNameIndex16 = $sFieldName[16]) === 'l'
+                    || $sFieldNameIndex16 === 'L')
+            )
+        ) {
+            $sLoweredFieldName = strtolower($sFieldName);
+            if ('oxlongdesc' === $sLoweredFieldName || 'oxcategories__oxlongdesc' === $sLoweredFieldName) {
                 $iDataType = \OxidEsales\Eshop\Core\Field::T_RAW;
             }
         }

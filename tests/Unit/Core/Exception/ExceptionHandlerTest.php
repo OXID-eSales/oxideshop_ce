@@ -197,6 +197,27 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     }
 
     /**
+     * @covers \OxidEsales\Eshop\Core\Exception\ExceptionHandler::handleUncaughtException
+     */
+    public function testHandleUncaughtExceptionAcceptsThrowables() {
+        if (version_compare(PHP_VERSION, '7.0') < 0) {
+            $this->markTestSkipped('php needs to >= 7.0');
+        }
+
+        $debug = false;
+        /** @var ExceptionHandler|\PHPUnit_Framework_MockObject_MockObject $exceptionHandlerMock */
+        $exceptionHandlerMock = $this->getMock(
+            ExceptionHandler::class,
+            ['writeExceptionToLog','displayOfflinePage'],
+            [$debug]
+        );
+        $exceptionHandlerMock->expects($this->once())->method('displayOfflinePage');
+        $exceptionHandlerMock->expects($this->once())->method('writeExceptionToLog');
+
+        $exceptionHandlerMock->handleUncaughtException(new \Error());
+    }
+
+    /**
      * Data provider for testHandleUncaughtExceptionWillExitApplication
      *
      * @return array
@@ -286,6 +307,34 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     }
 
     /**
+     * @covers \OxidEsales\Eshop\Core\Exception\ExceptionHandler::writeExceptionToLog()
+     */
+    public function testWriteExceptionToLogAcceptsThrowables()
+    {
+        if (version_compare(PHP_VERSION, '7.0') < 0) {
+            $this->markTestSkipped('php needs to >= 7.0');
+        }
+
+        $fileName = dirname(OX_LOG_FILE) . DIRECTORY_SEPARATOR . __FUNCTION__ . '.log';
+
+        /** @var ExceptionHandler|\PHPUnit_Framework_MockObject_MockObject $exceptionHandlerMock */
+        $exceptionHandlerMock = $this->getMock(
+            ExceptionHandler::class,
+            ['getFormattedException']
+        );
+        $exceptionHandlerMock->setLogFileName($fileName);
+
+        $exceptionHandlerMock->expects($this->once())->method('getFormattedException');
+        $exceptionHandlerMock->writeExceptionToLog(new \Error('message', 1));
+
+        if (file_exists($fileName) && !is_dir($fileName)) {
+            unlink($fileName);
+        } else {
+            $this->fail('test file does not exist or is directory: ' . $fileName);
+        }
+    }
+
+    /**
      * @covers \OxidEsales\Eshop\Core\Exception\ExceptionHandler::getFormattedException()
      */
     public function testGetFormattedException()
@@ -319,5 +368,18 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         foreach ($expectedLogContents as $expectedField => $expectedValue) {
             $this->assertContains($expectedValue, $logContent, 'Log formatter puts ' . $expectedField);
         }
+    }
+
+    /**
+     * @covers \OxidEsales\Eshop\Core\Exception\ExceptionHandler::getFormattedException()
+     */
+    public function testGetFormattedExceptionAcceptsThrowables()
+    {
+        if (version_compare(PHP_VERSION, '7.0') < 0) {
+            $this->markTestSkipped('php needs to >= 7.0');
+        }
+        $exceptionHandlerMock = oxNew(ExceptionHandler::class);
+        $error = new \Error('message', 1);
+        $exceptionHandlerMock->getFormattedException($error);
     }
 }

@@ -107,12 +107,20 @@ class ExceptionHandler
     /**
      * Handler for uncaught exceptions. As this is the las resort no fancy business logic should be applied here.
      *
-     * @param \Exception $exception exception object
+     * @param \Exception|\Throwable $exception exception object
+     *
+     * @throw \InvalidArgumentException
      *
      * @return void
      **/
-    public function handleUncaughtException(\Exception $exception)
+    public function handleUncaughtException($exception)
     {
+        if (! $exception instanceof \Exception
+            && (class_exists('\Throwable') && ! $exception instanceof \Throwable)
+        ) {
+            throw new \InvalidArgumentException('First argument needs to be an instanceof \Exception or \Throwable');
+        }
+
         /**
          * Report the exception
          */
@@ -151,12 +159,20 @@ class ExceptionHandler
     /**
      * Write a formatted log entry to the log file.
      *
-     * @param \Exception $exception
+     * @param \Exception|\Throwable $exception
+     *
+     * @throw \InvalidArgumentException
      *
      * @return int|false The function returns the number of bytes that were written to the file, or false on failure.
      */
-    public function writeExceptionToLog(\Exception $exception)
+    public function writeExceptionToLog($exception)
     {
+        if (! $exception instanceof \Exception
+            && (class_exists('\Throwable') && ! $exception instanceof \Throwable)
+        ) {
+            throw new \InvalidArgumentException('$exception needs to be an instanceof \Exception or \Throwable');
+        }
+
         /** self::_sFileName is @deprecated since v6.0 (2017-03-30); Logging mechanism will change in the future. */
         $logFile = dirname(OX_LOG_FILE) . DIRECTORY_SEPARATOR . $this->_sFileName;
         $logMessage = $this->getFormattedException($exception);
@@ -189,13 +205,21 @@ class ExceptionHandler
     /**
      * Print a debug message to the screen.
      *
-     * @param \Exception $exception  The exception to be treated
-     * @param bool       $logWritten True, if an entry was written to the log file
+     * @param \Exception|\Throwable $exception  The exception to be treated
+     * @param bool                  $logWritten True, if an entry was written to the log file
+     *
+     * @throw \InvalidArgumentException
      *
      * @return null
      */
-    protected function displayDebugMessage(\Exception $exception, $logWritten)
+    protected function displayDebugMessage($exception, $logWritten)
     {
+        if (! $exception instanceof \Exception
+            && (class_exists('\Throwable') && ! $exception instanceof \Throwable)
+        ) {
+            throw new \InvalidArgumentException('$exception needs to be an instanceof \Exception or \Throwable');
+        }
+
         $loggingErrorMessage = $logWritten ? '' : 'Could not write log file' . PHP_EOL;
 
         /** Just display a small note in CLI mode */
@@ -217,12 +241,18 @@ class ExceptionHandler
     /**
      * Return a formatted exception to be written to the log file.
      *
-     * @param \Exception $exception
+     * @param \Exception|\Throwable $exception
      *
      * @return string
      */
-    public function getFormattedException(\Exception $exception)
+    public function getFormattedException($exception)
     {
+        if (! $exception instanceof \Exception
+            && (class_exists('\Throwable') && ! $exception instanceof \Throwable)
+        ) {
+            throw new \InvalidArgumentException('$exception needs to be an instanceof \Exception or \Throwable');
+        }
+
         $time = microtime(true);
         $micro = sprintf("%06d", ($time - floor($time)) * 1000000);
         $date = new \DateTime(date('Y-m-d H:i:s.' . $micro, $time));

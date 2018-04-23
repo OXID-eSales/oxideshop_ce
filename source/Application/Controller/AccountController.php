@@ -364,18 +364,22 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function deleteAccount()
     {
+        $this->accountDeletionStatus = false;
         $user = $this->getUser();
 
-        if ($this->canUserAccountBeDeleted()) {
-            $user->delete();
-            $user->logout();
+        /**
+         * Setting derived to false allows mall users to delete their account being in a different shop as the shop
+         * the account was originally created in.
+         */
+        if ($this->getConfig()->getConfigParam('blMallUsers')) {
+            $user->setIsDerived(false);
+        }
 
+        if ($this->canUserAccountBeDeleted() && $user->delete()) {
+            $this->accountDeletionStatus = true;
+            $user->logout();
             $session = $this->getSession();
             $session->destroy();
-
-            $this->accountDeletionStatus = true;
-        } else {
-            $this->accountDeletionStatus = false;
         }
     }
 

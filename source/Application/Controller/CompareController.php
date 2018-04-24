@@ -446,43 +446,4 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
         return $aPaths;
     }
-
-    /**
-     * Return true, if the review manager should be shown.
-     *
-     * @return bool
-     */
-    public function isUserAllowedToManageOwnReviews()
-    {
-        return (bool) $this
-            ->getConfig()
-            ->getConfigParam('blAllowUsersToManageTheirReviews');
-    }
-
-    /**
-     * Get the total number of reviews for the active user.
-     *
-     * @return integer Number of reviews
-     */
-    public function getReviewAndRatingItemsCount()
-    {
-        $user = $this->getUser();
-        $count = 0;
-        if ($user) {
-            $count = $this
-                ->getContainer()
-                ->getUserReviewAndRatingBridge()
-                ->getReviewAndRatingListCount($user->getId());
-        }
-
-        return $count;
-    }
-
-    /**
-     * @return Container
-     */
-    private function getContainer()
-    {
-        return Container::getInstance();
-    }
 }

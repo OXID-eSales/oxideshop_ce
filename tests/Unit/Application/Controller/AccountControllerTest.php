@@ -5,13 +5,12 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
-use \oxField;
+use OxidEsales\EshopCommunity\Core\Field;
 use OxidEsales\Eshop\Application\Controller\AccountController;
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Session;
 use OxidEsales\TestingLibrary\UnitTestCase;
-use \oxRegistry;
 use \oxTestModules;
 use PHPUnit_Framework_MockObject_MockObject;
 
@@ -43,7 +42,7 @@ class AccountControllerTest extends UnitTestCase
     public function testRenderNoTerms()
     {
         $oUser = oxNew('oxUser');
-        $oUser->oxuser__oxpassword = new oxField("psw");
+        $oUser->oxuser__oxpassword = new Field("psw");
         $oUserView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountController::class, array('confirmTerms', 'getUser', 'getOrderCnt', "isEnabledPrivateSales"));
         $oUserView->expects($this->any())->method('confirmTerms')->will($this->returnValue(false));
         $oUserView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
@@ -163,7 +162,7 @@ class AccountControllerTest extends UnitTestCase
      *
      * @return null
      */
-    public function testRedirectAfterLoginSouldNotRedirect()
+    public function testRedirectAfterLoginShouldNotRedirect()
     {
         $this->setRequestParameter('sourcecl', null);
 
@@ -231,7 +230,7 @@ class AccountControllerTest extends UnitTestCase
         $this->setRequestParameter('aid', 'testanid');
 
         $oUser = oxNew('oxuser');
-        $oUser->oxuser__oxpassword = new oxField(1);
+        $oUser->oxuser__oxpassword = new Field(1);
 
         $oView = $this->getMock(
             "account", array("redirectAfterLogin",
@@ -256,7 +255,7 @@ class AccountControllerTest extends UnitTestCase
         $this->getConfig()->setConfigParam("blPsLoginEnabled", true);
 
         $oUser = oxNew('oxuser');
-        $oUser->oxuser__oxpassword = new oxField(1);
+        $oUser->oxuser__oxpassword = new Field(1);
 
         $oView = $this->getMock(
             "account", array("redirectAfterLogin",
@@ -280,7 +279,7 @@ class AccountControllerTest extends UnitTestCase
         $sUsername = 'Username';
         $sLink = 'Link url';
         $oUser = oxNew('oxuser');
-        $oUser->oxuser__oxusername = new oxField($sUsername);
+        $oUser->oxuser__oxusername = new Field($sUsername);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountController::class, array('getUser', 'getLink'));
         $oView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
@@ -334,7 +333,7 @@ class AccountControllerTest extends UnitTestCase
     public function testGetTitle()
     {
         $oUser = oxNew('oxUser');
-        $oUser->oxuser__oxusername = new oxField('Jon');
+        $oUser->oxuser__oxusername = new Field('Jon');
 
         $oActiveView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('getClassName'));
         $oActiveView->expects($this->any())->method('getClassName')->will($this->returnValue('account'));
@@ -347,7 +346,7 @@ class AccountControllerTest extends UnitTestCase
         $oView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
-        $this->assertEquals(oxRegistry::getLang()->translateString('PAGE_TITLE_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false) . ' - "Jon"', $oView->getTitle());
+        $this->assertEquals(Registry::getLang()->translateString('PAGE_TITLE_ACCOUNT', Registry::getLang()->getBaseLanguage(), false) . ' - "Jon"', $oView->getTitle());
     }
 
     public function testDeleteUserAccountWhenSessionChallengeValidAndFeatureEnabled()
@@ -380,7 +379,7 @@ class AccountControllerTest extends UnitTestCase
         $this->executeAccountDeletion($user);
     }
 
-    public function testAccoutDeletionStatusIsFalse()
+    public function testAccountDeletionStatusIsFalse()
     {
         $this->isAccountDeletionEnabled(false);
 
@@ -393,7 +392,7 @@ class AccountControllerTest extends UnitTestCase
         $this->assertFalse($actualStatus);
     }
 
-    public function testAccoutDeletionStatusIsTrue()
+    public function testAccountDeletionStatusIsTrue()
     {
         $this->isAccountDeletionEnabled(true);
         $this->isSessionTokenValid(true);
@@ -405,6 +404,13 @@ class AccountControllerTest extends UnitTestCase
 
         $actualStatus = $accountController->getAccountDeletionStatus();
         $this->assertTrue($actualStatus);
+    }
+
+    public function testGetReviewAndRatingItemsCountWhenUserIsNotLoggedIn()
+    {
+        $controller = oxNew(AccountController::class);
+        $this->getConfig()->setUser(null);
+        $this->assertSame(0, $controller->getReviewAndRatingItemsCount());
     }
 
     /**

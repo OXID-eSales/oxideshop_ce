@@ -96,6 +96,7 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
             'line' => $iErrLine,
             'code' => $iErrNo
         ]);
+        return true;
     }
 
     /**

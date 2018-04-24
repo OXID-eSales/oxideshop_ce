@@ -400,37 +400,6 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Return true, if the review manager should be shown
-     *
-     * @return bool
-     */
-    public function isUserAllowedToManageOwnReviews()
-    {
-        return (bool) $this
-            ->getConfig()
-            ->getConfigParam('blAllowUsersToManageTheirReviews');
-    }
-
-    /**
-     * Get the total number of reviews for the active user.
-     *
-     * @return integer Number of reviews
-     */
-    public function getReviewAndRatingItemsCount()
-    {
-        $user = $this->getUser();
-        $count = 0;
-        if ($user) {
-            $count = $this
-                ->getContainer()
-                ->getUserReviewAndRatingBridge()
-                ->getReviewAndRatingListCount($user->getId());
-        }
-
-        return $count;
-    }
-
-    /**
      * Template variable getter. Returns true, if a user account has been sucessfully deleted, else false.
      *
      * @return bool
@@ -448,13 +417,5 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
     private function canUserAccountBeDeleted()
     {
         return $this->getSession()->checkSessionChallenge() && $this->isUserAllowedToDeleteOwnAccount();
-    }
-
-    /**
-     * @return Container
-     */
-    private function getContainer()
-    {
-        return Container::getInstance();
     }
 }

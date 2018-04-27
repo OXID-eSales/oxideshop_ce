@@ -976,29 +976,24 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     /**
      * Sets data field value
      *
-     * @param string $sFieldName index OR name (eg. 'oxarticles__oxtitle') of a data field to set
-     * @param string $sValue     value of data field
-     * @param int    $iDataType  field type
+     * @param string $fieldName index OR name (eg. 'oxarticles__oxtitle') of a data field to set
+     * @param string $value     value of data field
+     * @param int    $dataType  field type
      *
      * @return null
      */
-    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
+    protected function _setFieldData($fieldName, $value, $dataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
     {
         //preliminary quick check saves 3% of execution time in category lists by avoiding redundant strtolower() call
-        if (($sFieldNameIndex2 = $sFieldName[2]) === 'l'
-            || $sFieldNameIndex2 === 'L'
-            || (isset($sFieldName[16])
-                && (($sFieldNameIndex16 = $sFieldName[16]) === 'l'
-                    || $sFieldNameIndex16 === 'L')
-            )
-        ) {
-            $sLoweredFieldName = strtolower($sFieldName);
-            if ('oxlongdesc' === $sLoweredFieldName || 'oxcategories__oxlongdesc' === $sLoweredFieldName) {
-                $iDataType = \OxidEsales\Eshop\Core\Field::T_RAW;
+        $fieldNameIndex2 = $fieldName[2];
+        if ($fieldNameIndex2 === 'l' || $fieldNameIndex2 === 'L' || (isset($fieldName[16]) && ($fieldName[16] == 'l' || $fieldName[16] == 'L'))) {
+            $loweredFieldName = strtolower($fieldName);
+            if ('oxlongdesc' === $loweredFieldName || 'oxcategories__oxlongdesc' === $loweredFieldName) {
+                $dataType = \OxidEsales\Eshop\Core\Field::T_RAW;
             }
         }
 
-        return parent::_setFieldData($sFieldName, $sValue, $iDataType);
+        return parent::_setFieldData($fieldName, $value, $dataType);
     }
 
     /**

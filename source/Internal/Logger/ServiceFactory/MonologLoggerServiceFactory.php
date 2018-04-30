@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Internal\Logger\ServiceFactory;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
+use Monolog\Formatter\LineFormatter;
 
 /**
  * @internal
@@ -49,14 +50,17 @@ class MonologLoggerServiceFactory implements LoggerServiceFactoryInterface
      */
     public function create()
     {
-        $logger = new Logger($this->loggerName);
+        $lineFormatter = new LineFormatter();
+        $lineFormatter->includeStacktraces(true);
 
-        $logger->pushHandler(
-            new StreamHandler(
-                $this->logFilePath,
-                $this->logLevel
-            )
+        $streamHandler = new StreamHandler(
+            $this->logFilePath,
+            $this->logLevel
         );
+        $streamHandler->setFormatter($lineFormatter);
+
+        $logger = new Logger($this->loggerName);
+        $logger->pushHandler($streamHandler);
 
         return $logger;
     }

@@ -11,8 +11,6 @@ use oxArticleInputException;
 use oxNoArticleException;
 use oxOutOfStockException;
 use oxField;
-use oxRegistry;
-use oxDb;
 
 /**
  * Order manager.
@@ -472,9 +470,9 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function finalizeOrder(\OxidEsales\Eshop\Application\Model\Basket $oBasket, $oUser, $blRecalculatingOrder = false)
     {
         // check if this order is already stored
-        $sGetChallenge = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('sess_challenge');
-        if ($this->_checkOrderExist($sGetChallenge)) {
-            \OxidEsales\Eshop\Core\Registry::getLogger()->debug('BLOCKER');
+        $orderId = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('sess_challenge');
+        if ($this->_checkOrderExist($orderId)) {
+            \OxidEsales\Eshop\Core\Registry::getLogger()->debug('finalizeOrder: Order already exists: ' . $orderId, [$oBasket, $oUser]);
             // we might use this later, this means that somebody clicked like mad on order button
             return self::ORDER_STATE_ORDEREXISTS;
         }
@@ -482,7 +480,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         // if not recalculating order, use sess_challenge id, else leave old order id
         if (!$blRecalculatingOrder) {
             // use this ID
-            $this->setId($sGetChallenge);
+            $this->setId($orderId);
 
             // validating various order/basket parameters before finalizing
             if ($iOrderState = $this->validateOrder($oBasket, $oUser)) {

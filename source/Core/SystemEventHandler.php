@@ -178,8 +178,8 @@ class SystemEventHandler
             if ($this->isSendingShopDataEnabled() && !\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()) {
                 $this->sendShopInformation();
             }
-        } catch (Exception $eException) {
-            \OxidEsales\Eshop\Core\Regsitry::getLogger()->error($eException->getMessage());
+        } catch (Exception $exception) {
+            \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
         }
     }
 

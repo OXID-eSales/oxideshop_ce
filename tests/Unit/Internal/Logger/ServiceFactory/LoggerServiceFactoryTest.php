@@ -28,6 +28,9 @@ class LoggerServiceFactoryTest extends \PHPUnit_Framework_TestCase
         $context
             ->method('getLogFilePath')
             ->willReturn('log.txt');
+        $context
+            ->method('getLogLevel')
+            ->willReturn('error');
 
         return new LoggerServiceFactory($context);
     }

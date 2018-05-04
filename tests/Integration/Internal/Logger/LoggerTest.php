@@ -7,6 +7,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Logger;
 
 use OxidEsales\EshopCommunity\Internal\Utility\Context;
 use OxidEsales\EshopCommunity\Internal\Logger\ServiceFactory\LoggerServiceFactory;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use Psr\Log\LogLevel;
 
 /**
@@ -48,21 +49,13 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testLogsAnyMessagesIfLogLevelIsNotConfigured()
+    public function testAnExceptionIsThrownIfLogLevelIsNotConfigured()
     {
+        $this->setExpectedException(\InvalidArgumentException::class);
+
         $contextStub = $this->getContextStub();
 
-        $logger = $this->getLogger($contextStub);
-        $logger->debug('Log level undefined');
-
-        $this->assertTrue(
-            file_exists($contextStub->getLogFilePath())
-        );
-
-        $this->assertContains(
-            'Log level undefined',
-            file_get_contents($contextStub->getLogFilePath())
-        );
+        $this->getLogger($contextStub);
     }
 
     /**
@@ -70,12 +63,12 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $logLevelFromConfig
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject|\OxidEsales\EshopCommunity\Internal\Utility\ContextInterface
+     * @return \PHPUnit_Framework_MockObject_MockObject|ContextInterface
      */
     private function getContextStub($logLevelFromConfig = null)
     {
         $context = $this
-            ->getMockBuilder(\OxidEsales\EshopCommunity\Internal\Utility\ContextInterface::class)
+            ->getMockBuilder(ContextInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 

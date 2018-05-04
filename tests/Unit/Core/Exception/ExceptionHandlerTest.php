@@ -5,15 +5,11 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Exception;
 
-use \Exception;
 use OxidEsales\Eshop\Core\Exception\ExceptionHandler;
 use OxidEsales\Eshop\Core\Exception\StandardException;
-use oxSystemComponentException;
-use \oxTestModules;
 
 class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
-
     protected $message = 'TEST_EXCEPTION';
 
     public function testCallUnExistingMethod()
@@ -38,7 +34,7 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testExceptionHandlerReportsExceptionInDebugMode($exception)
     {
         $debug = true;
-        $logFileName = 'oxexceptionhandlerTest_NotRenderer.txt';
+        $logFileName = basename(OX_LOG_FILE);
         /** @var ExceptionHandler|\PHPUnit_Framework_MockObject_MockObject $exceptionHandlerMock */
         $exceptionHandlerMock = $this->getMock(
             ExceptionHandler::class,
@@ -46,7 +42,6 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
             [$debug]
         );
         $exceptionHandlerMock->expects($this->once())->method('displayDebugMessage');
-        $exceptionHandlerMock->setLogFileName($logFileName);
 
         try {
             $exceptionHandlerMock->handleUncaughtException($exception);
@@ -62,7 +57,7 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         }
         $logFileContent = file_get_contents($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $logFileName);
         unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $logFileName); // delete file first as assert may return out this function
-        /** Test if the exception message is found in the lof file */
+        /** Test if the exception message is found in the log file */
         $this->assertContains($this->message, $logFileContent);
     }
 
@@ -87,7 +82,7 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
      * @covers \OxidEsales\Eshop\Core\Exception\ExceptionHandler::handleDatabaseException()
      */
     public function testHandleDatabaseExceptionDelegatesToHandleUncaughtException() {
-        /** @var ExceptionHandler $exceptionHandlerMock */
+        /** @var ExceptionHandler|\PHPUnit_Framework_MockObject_MockObject $exceptionHandlerMock */
         $exceptionHandlerMock = $this->getMock(ExceptionHandler::class, ['handleUncaughtException']);
         $exceptionHandlerMock->expects($this->once())->method('handleUncaughtException');
 
@@ -133,7 +128,7 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $exceptionHandlerMock->handleUncaughtException(new \Exception());
         $displayMessage = ob_get_clean();
 
-        $this->assertContains('Uncaught exception. See ' . $exceptionHandlerMock->getLogFileName(), $displayMessage);
+        $this->assertContains('Uncaught exception. See error log for more information.', $displayMessage);
     }
 
     /**
@@ -169,34 +164,6 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     }
 
     /**
-     * This test is incomplete as constant OXID_PHP_UNIT is taken to define if exitApplication should be called or not.
-     * If OXID_PHP_UNIT was a variable, the test could run.
-     *
-     * @covers \OxidEsales\Eshop\Core\Exception\ExceptionHandler::handleUncaughtException
-     *
-     * @dataProvider dataProviderTestHandleUncaughtExceptionDebugStatus
-     *
-     * @param $debug ExceptionHandler constructor parameter $debug i.e. debug level
-     */
-    public function testHandleUncaughtExceptionWillExitApplication($debug)
-    {
-        $this->markTestIncomplete('If OXID_PHP_UNIT was a variable, this test could run');
-
-        /** @var ExceptionHandler|\PHPUnit_Framework_MockObject_MockObject $exceptionHandlerMock */
-        $exceptionHandlerMock = $this->getMock(
-            ExceptionHandler::class,
-            ['writeExceptionToLog','displayOfflinePage','displayDebugMessage', 'exitApplication'],
-            [$debug]
-        );
-        $exceptionHandlerMock->expects($this->once())->method('exitApplication');
-
-        $OXID_PHP_UNIT = false;
-
-        $exceptionHandlerMock->handleUncaughtException(new \Exception());
-        $OXID_PHP_UNIT = true;
-    }
-
-    /**
      * Data provider for testHandleUncaughtExceptionWillExitApplication
      *
      * @return array
@@ -206,47 +173,6 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         return [
             ['debug' => true],
             ['debug' => false],
-        ];
-    }
-
-    /**
-     * @dataProvider dataProviderTestSetLogFileNameSetsFileRelativeToOxLogFileDirectory
-     *
-     * @covers \OxidEsales\Eshop\Core\Exception\ExceptionHandler::setLogFileName()
-     */
-    public function testSetLogFileNameSetsFileRelativeToOxLogFileDirectory($filePath)
-    {
-        $logDir = dirname(OX_LOG_FILE);
-        $expectedFilePath = $logDir . DIRECTORY_SEPARATOR . basename($filePath);
-        /** @var ExceptionHandler|\PHPUnit_Framework_MockObject_MockObject $exceptionHandlerMock */
-        $exceptionHandlerMock = $this->getMock(
-            ExceptionHandler::class,
-            ['displayOfflinePage']
-        );
-
-        $exceptionHandlerMock->setLogFileName($filePath);
-
-        $exceptionHandlerMock->handleUncaughtException(new \Exception('message', 1));
-        if (!file_exists($expectedFilePath) || is_dir($expectedFilePath)) {
-            $testResult = false;
-        } else {
-            unlink($expectedFilePath);
-            $testResult = true;
-        }
-
-        $this->assertTrue($testResult, 'setLogFileName sets file relative to OX_LOG_FILE directory');
-    }
-
-    /**
-     * Dataprovider for testSetLogFileNameSetsFileRelativeToOxLogFileDirectory
-     *
-     * @return array
-     */
-    public function dataProviderTestSetLogFileNameSetsFileRelativeToOxLogFileDirectory()
-    {
-        return [
-            ['filepath' => 'my.log'],
-            ['filepath' =>'/some/place/on/the/file/system/my.log'],
         ];
     }
 
@@ -262,62 +188,5 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $expectedLogFileName = basename($actualLogFileName);
 
         $this->assertEquals($expectedLogFileName, $actualLogFileName, 'getLogFileName returns basename of logFile');
-    }
-
-    /**
-     * @covers \OxidEsales\Eshop\Core\Exception\ExceptionHandler::writeExceptionToLog()
-     */
-    public function testWriteExceptionToLogCallsExceptionFormatter()
-    {
-        $fileName = dirname(OX_LOG_FILE) . DIRECTORY_SEPARATOR . __FUNCTION__ . '.log';
-        /** @var ExceptionHandler|\PHPUnit_Framework_MockObject_MockObject $exceptionHandlerMock */
-        $exceptionHandlerMock = $this->getMock(
-            ExceptionHandler::class,
-            ['getFormattedException', 'displayOfflinePage']
-        );
-        $exceptionHandlerMock->expects($this->once())->method('getFormattedException');
-
-        $exceptionHandlerMock->setLogFileName($fileName);
-
-        $exceptionHandlerMock->handleUncaughtException(new \Exception('message', 1));
-        if (file_exists($fileName) && !is_dir($fileName)) {
-            unlink($fileName);
-        }
-    }
-
-    /**
-     * @covers \OxidEsales\Eshop\Core\Exception\ExceptionHandler::getFormattedException()
-     */
-    public function testGetFormattedException()
-    {
-        $logContent = null;
-        $fileName = dirname(OX_LOG_FILE) . DIRECTORY_SEPARATOR . __FUNCTION__ . '.log';
-        $exceptionHandlerMock = $this->getMock(
-            ExceptionHandler::class,
-            ['displayOfflinePage']
-        );
-        $exceptionHandlerMock->setLogFileName($fileName);
-
-        $handeledException = new \Exception('message', 1);
-        $exceptionHandlerMock->handleUncaughtException($handeledException);
-
-        if (file_exists($fileName) && !is_dir($fileName)) {
-            $logContent = file_get_contents($fileName);
-            unlink($fileName);
-        } else {
-            $this->fail('test file does not exist or is directory: ' . $fileName);
-        }
-        $expectedLogContents = [
-            'error type' => 'exception',
-            'exception type' => 'type',
-            'exception code' => 'code ',
-            'file where the exception has been thrown' => 'file ',
-            'line  where the exception has been thrown' => 'line ',
-            'exception message' => 'message ',
-        ];
-
-        foreach ($expectedLogContents as $expectedField => $expectedValue) {
-            $this->assertContains($expectedValue, $logContent, 'Log formatter puts ' . $expectedField);
-        }
     }
 }

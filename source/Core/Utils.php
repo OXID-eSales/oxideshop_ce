@@ -1301,8 +1301,9 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             if (gettype($sText) != 'string') {
                 $sText = var_export($sText, true);
             }
-            $sLogMsg = "----------------------------------------------\n{$sText}" . (($blNewline) ? "\n" : "") . "\n";
-            $this->writeToLog($sLogMsg, "log.txt");
+            $logMessage = "----------------------------------------------\n{$sText}" . (($blNewline) ? "\n" : "") . "\n";
+            $logger = Registry::getLogger();
+            $logger->debug($logMessage);
         }
     }
 
@@ -1401,7 +1402,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     public function writeToLog($logMessage, $logFileName)
     {
         $logger = Registry::getLogger();
-        $logger->notice($logMessage);
+        $logger->error($logMessage);
 
         return true;
     }

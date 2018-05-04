@@ -29,6 +29,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Deprecated
 - `writeToLog` in `bootstrap.php`
+- `\OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::$_iDebug`
+- `\OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::setIDebug`
+- `\OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::writeExceptionToLog`
+- `\OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::displayOfflinePage`
+- `\OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::displayDebugMessage`
+- `\OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::getFormattedException`
+- `\OxidEsales\EshopCommunity\Core\Exception\StandardException::debugOut`
+- `\OxidEsales\EshopCommunity\Core\OnlineCaller::_castExceptionAndWriteToLog`
 
 ### Removed
 

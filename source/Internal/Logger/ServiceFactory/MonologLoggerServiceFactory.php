@@ -32,17 +32,49 @@ class MonologLoggerServiceFactory implements LoggerServiceFactoryInterface
     private $logLevel;
 
     /**
+     * @var array Valid Monolog log levels
+     */
+    private $validLogLevels = [
+        \Psr\Log\LogLevel::DEBUG,
+        \Psr\Log\LogLevel::INFO,
+        \Psr\Log\LogLevel::NOTICE,
+        \Psr\Log\LogLevel::WARNING,
+        \Psr\Log\LogLevel::ERROR,
+        \Psr\Log\LogLevel::CRITICAL,
+        \Psr\Log\LogLevel::ALERT,
+        \Psr\Log\LogLevel::EMERGENCY,
+    ];
+
+    /**
+     * @var array Map Monolog log levels to \Psr\Log\LogLevel
+     */
+    private $psrLogLevelMap = [
+        \Psr\Log\LogLevel::DEBUG     => \Monolog\Logger::DEBUG,
+        \Psr\Log\LogLevel::INFO      => \Monolog\Logger::INFO,
+        \Psr\Log\LogLevel::NOTICE    => \Monolog\Logger::NOTICE,
+        \Psr\Log\LogLevel::WARNING   => \Monolog\Logger::WARNING,
+        \Psr\Log\LogLevel::ERROR     => \Monolog\Logger::ERROR,
+        \Psr\Log\LogLevel::CRITICAL  => \Monolog\Logger::CRITICAL,
+        \Psr\Log\LogLevel::ALERT     => \Monolog\Logger::ALERT,
+        \Psr\Log\LogLevel::EMERGENCY => \Monolog\Logger::EMERGENCY,
+    ];
+
+    /**
      * MonologLoggerFactory constructor.
      *
-     * @param string $loggerName
-     * @param string $logFilePath
-     * @param string $logLevel
+     * @param string $loggerName  Name of the logger as shown in the log file
+     * @param string $logFilePath Path to the log file
+     * @param string $logLevel    A log level as defined in \Psr\Log\LogLevel
      */
     public function __construct($loggerName, $logFilePath, $logLevel)
     {
+        if (!in_array($logLevel, $this->validLogLevels)) {
+            throw new \InvalidArgumentException('Log level ' . var_export($logLevel, true) . ' is not permitted');
+        }
+        
         $this->loggerName = $loggerName;
         $this->logFilePath = $logFilePath;
-        $this->logLevel = $logLevel;
+        $this->logLevel = $this->psrLogLevelMap[$logLevel];
     }
 
     /**

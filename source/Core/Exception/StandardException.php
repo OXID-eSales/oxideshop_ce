@@ -131,6 +131,8 @@ class StandardException extends \Exception
     /**
      * Write exception to log file
      *
+     * @deprecated since v6.3 (2018-04-25); This method will be removed completely. Use Registry::getLogger() to log error messages in the future.
+     *
      * @return mixed
      */
     public function debugOut()

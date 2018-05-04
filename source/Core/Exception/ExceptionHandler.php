@@ -25,6 +25,8 @@ class ExceptionHandler
     /**
      * Shop debug
      *
+     * @deprecated since v6.3 (2018-04-25); This functionality will be removed completely. Use an appropriate Monolog channel in the future.
+     *
      * @var integer
      */
     protected $_iDebug = 0;
@@ -71,6 +73,8 @@ class ExceptionHandler
      * Set the debug level
      *
      * @param int $iDebug debug level (0== no debug)
+     *
+     * @deprecated since v6.3 (2018-04-25); This method will be removed completely. Use an appropriate Monolog channel in the future.
      */
     public function setIDebug($iDebug)
     {
@@ -86,9 +90,6 @@ class ExceptionHandler
      */
     public function setLogFileName($fileName)
     {
-        /**
-         *  If $fileName !== basename($fileName) throw exception
-         */
         $fileName = basename($fileName);
 
         $this->_sFileName = $fileName;
@@ -109,11 +110,11 @@ class ExceptionHandler
     /**
      * Handler for uncaught exceptions. As this is the las resort no fancy business logic should be applied here.
      *
-     * @param \Exception $exception exception object
+     * @param \Throwable $exception exception object
      *
      * @return void
      **/
-    public function handleUncaughtException(\Exception $exception)
+    public function handleUncaughtException($exception)
     {
         /**
          * Report the exception
@@ -153,18 +154,18 @@ class ExceptionHandler
     /**
      * Write a formatted log entry to the log file.
      *
-     * @param \Exception $exception
+     * @param \Throwable $exception
+     *
+     * @deprecated since v6.3 (2018-04-25); This method will be private. Use Registry::getLogger() to log error messages in the future.
      *
      * @return bool
      */
-    public function writeExceptionToLog(\Exception $exception)
+    public function writeExceptionToLog($exception)
     {
-        $logMessage = $this->getFormattedException($exception);
-
         $logger = Registry::getLogger();
-        $logger->error($logMessage);
+        $logger->error($exception->getMessage(), [$exception]);
 
-        /** return statement is @deprecated since v6.3 (2018-04-19); The function will be void. */
+        /** return statement is @deprecated since v6.3 (2018-04-19); The return value of this method will be void. */
         return true;
     }
 
@@ -174,17 +175,12 @@ class ExceptionHandler
      * Like this the error message is overridable within that file.
      * Do not display an error message, if this file is included during a CLI command
      *
+     * @deprecated since v6.3 (2018-04-25); This method will be removed completely. Use \oxTriggerOfflinePageDisplay() in the future.
+     *
      * @return null
      */
     public function displayOfflinePage()
     {
-        /** Just display a small note in CLI mode */
-        $phpSapiName = strtolower(php_sapi_name());
-        if ('cli' === $phpSapiName) {
-            echo 'Uncaught exception. See ' . $this->getLogFileName() . PHP_EOL;
-            return;
-        }
-
         \oxTriggerOfflinePageDisplay();
 
         return;
@@ -193,18 +189,20 @@ class ExceptionHandler
     /**
      * Print a debug message to the screen.
      *
-     * @param \Exception $exception  The exception to be treated
+     * @param \Throwable $exception  The exception to be treated
      * @param bool       $logWritten True, if an entry was written to the log file
+     *
+     * @deprecated since v6.3 (2018-04-25); This method will be removed completely. Use an appropriate Monolog channel in the future.
      *
      * @return null
      */
-    protected function displayDebugMessage(\Exception $exception, $logWritten)
+    protected function displayDebugMessage($exception, $logWritten = true)
     {
         $loggingErrorMessage = $logWritten ? '' : 'Could not write log file' . PHP_EOL;
 
         /** Just display a small note in CLI mode */
-        $phpSapiName = strtolower(php_sapi_name());
-        if ('cli' === $phpSapiName) {
+        $phpSAPIName = strtolower(php_sapi_name());
+        if ('cli' === $phpSAPIName) {
             echo 'Uncaught exception. See ' . $this->getLogFileName() . PHP_EOL . $loggingErrorMessage;
             return;
         }
@@ -221,11 +219,13 @@ class ExceptionHandler
     /**
      * Return a formatted exception to be written to the log file.
      *
-     * @param \Exception $exception
+     * @param  \Throwable $exception
+     *
+     * @deprecated since v6.3 (2018-04-25); This method will be removed completely. Use an appropriate Monolog channel in the future.
      *
      * @return string
      */
-    public function getFormattedException(\Exception $exception)
+    public function getFormattedException($exception)
     {
         $time = microtime(true);
         $micro = sprintf("%06d", ($time - floor($time)) * 1000000);

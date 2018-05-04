@@ -108,6 +108,8 @@ abstract class OnlineCaller
     /**
      * Depending on the type of exception, first cast the exception and then write it to log.
      *
+     * @deprecated since v6.3 (2018-04-25); This method will be removed completely. Use Registry::getLogger() to log error messages in the future.
+     *
      * @param \Exception $oEx
      */
     protected function _castExceptionAndWriteToLog(\Exception $oEx)
@@ -158,7 +160,7 @@ abstract class OnlineCaller
     /**
      * Gets curl.
      *
-     * @return \oxCurl
+     * @return \OxidEsales\Eshop\Core\Curl
      */
     protected function _getCurl()
     {

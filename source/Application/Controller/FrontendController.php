@@ -416,6 +416,37 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     protected $_blCanAcceptFormData = null;
 
     /**
+     * Return true, if the review manager should be shown.
+     *
+     * @return bool
+     */
+    public function isUserAllowedToManageOwnReviews()
+    {
+        return (bool) $this
+            ->getConfig()
+            ->getConfigParam('blAllowUsersToManageTheirReviews');
+    }
+
+    /**
+     * Get the total number of reviews for the active user.
+     *
+     * @return integer Number of reviews
+     */
+    public function getReviewAndRatingItemsCount()
+    {
+        $user = $this->getUser();
+        $count = 0;
+        if ($user) {
+            $count = $this
+                ->getContainer()
+                ->getUserReviewAndRatingBridge()
+                ->getReviewAndRatingListCount($user->getId());
+        }
+
+        return $count;
+    }
+
+    /**
      * Returns component names.
      *
      * At the moment it is not possible to override $_aCollectedComponentNames in oxUBase,
@@ -2984,5 +3015,13 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         $compareController = oxNew(\OxidEsales\Eshop\Application\Controller\CompareController::class);
 
         return $compareController->getCompareItemsCnt();
+    }
+
+    /**
+     * @return \OxidEsales\EshopCommunity\Internal\Application\Container
+     */
+    private function getContainer()
+    {
+        return \OxidEsales\EshopCommunity\Internal\Application\Container::getInstance();
     }
 }

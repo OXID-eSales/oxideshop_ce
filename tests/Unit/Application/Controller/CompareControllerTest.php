@@ -5,15 +5,14 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
-use \oxDb;
-use OxidEsales\Eshop\Application\Controller\CompareController;
-use \oxRegistry;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use \oxTestModules;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Tests for compare class
  */
-class CompareControllerTest extends \OxidTestCase
+class CompareControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
     /**
      * Initialize the fixture.
@@ -21,7 +20,7 @@ class CompareControllerTest extends \OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $myDB = oxDb::getDB();
+        $myDB = DatabaseProvider::getDb();
         $sShopId = $this->getConfig()->getShopId();
         // adding article to recommend list
         $sQ = 'insert into oxrecommlists ( oxid, oxuserid, oxtitle, oxdesc, oxshopid ) values ( "testlist", "oxdefaultadmin", "oxtest", "oxtest", "' . $sShopId . '" ) ';
@@ -35,7 +34,7 @@ class CompareControllerTest extends \OxidTestCase
      */
     protected function tearDown()
     {
-        $myDB = oxDb::getDB();
+        $myDB = DatabaseProvider::getDb();
         $sDelete = 'delete from oxrecommlists where oxid like "testlist%" ';
         $myDB->execute($sDelete);
 
@@ -151,7 +150,7 @@ class CompareControllerTest extends \OxidTestCase
         $oView = oxNew('compare');
         $oView->setCompareItems(array("testItems2"));
         $this->assertEquals(array("testItems2"), $oView->getCompareItems());
-        $this->assertEquals(array("testItems2"), oxRegistry::getSession()->getVariable('aFiltcompproducts'));
+        $this->assertEquals(array("testItems2"), Registry::getSession()->getVariable('aFiltcompproducts'));
     }
 
     /**
@@ -201,9 +200,9 @@ class CompareControllerTest extends \OxidTestCase
         $aAttributes = $oCompare->getAttributeList();
 
         $sSelect = "select oxattrid, oxvalue from oxobject2attribute where oxobjectid = '1672'";
-        $rs = oxDb::getDB()->select($sSelect);
+        $rs = DatabaseProvider::getDb()->select($sSelect);
         $sSelect = "select oxtitle from oxattribute where oxid = '" . $rs->fields[0] . "'";
-        $sTitle = oxDb::getDB()->getOne($sSelect);
+        $sTitle = DatabaseProvider::getDb()->getOne($sSelect);
 
         $this->assertEquals(9, count($aAttributes));
 
@@ -271,12 +270,12 @@ class CompareControllerTest extends \OxidTestCase
         $aCatPath = array();
         $aResult = array();
 
-        $aCatPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', 0, false);
+        $aCatPath['title'] = Registry::getLang()->translateString('MY_ACCOUNT', 0, false);
         $aCatPath['link'] = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($oCompare->getViewConfig()->getSelfLink() . 'cl=account');
 
         $aResult[] = $aCatPath;
 
-        $aCatPath['title'] = oxRegistry::getLang()->translateString('PRODUCT_COMPARISON', 0, false);
+        $aCatPath['title'] = Registry::getLang()->translateString('PRODUCT_COMPARISON', 0, false);
         $aCatPath['link'] = $oCompare->getLink();
 
         $aResult[] = $aCatPath;
@@ -299,12 +298,5 @@ class CompareControllerTest extends \OxidTestCase
         $this->assertArrayHasKey("1126", $oResList);
         $this->assertArrayNotHasKey("nonExistingVal", $oResList);
         $this->assertArrayHasKey("1127", $oResList);
-    }
-
-    public function testGetReviewAndRatingItemsCountWhenUserIsNotLoggedIn()
-    {
-        $compareController = oxNew(CompareController::class);
-        $this->getConfig()->setUser(null);
-        $this->assertSame(0, $compareController->getReviewAndRatingItemsCount());
     }
 }

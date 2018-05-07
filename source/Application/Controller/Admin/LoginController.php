@@ -131,7 +131,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         }
 
         // success
-        \OxidEsales\Eshop\Core\Registry::getUtils()->logger("login successful");
+        \OxidEsales\Eshop\Core\Registry::getLogger()->info("login successful");
 
         //execute onAdminLogin() event
         $oEvenHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);

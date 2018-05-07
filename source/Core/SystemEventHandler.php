@@ -179,7 +179,7 @@ class SystemEventHandler
                 $this->sendShopInformation();
             }
         } catch (Exception $eException) {
-            \OxidEsales\Eshop\Core\Registry::getUtils()->logger("OLC-Error: " . $eException->getMessage());
+            \OxidEsales\Eshop\Core\Regsitry::getLogger()->error($eException->getMessage());
         }
     }
 

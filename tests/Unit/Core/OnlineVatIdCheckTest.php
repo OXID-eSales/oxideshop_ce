@@ -26,12 +26,21 @@ class OnlineVatIdCheckTest extends \OxidTestCase
      */
     public function testCatchWarning()
     {
-        oxTestModules::addFunction('oxUtils', 'writeToLog', '{ return $aA; }');
+        $oLogger = \OxidEsales\Eshop\Core\Registry::getLogger();
+        $oLogger->setHandlers([]); // reset handlers
+        $oHandler = new \Monolog\Handler\TestHandler();
+        $oLogger->pushHandler($oHandler);
 
         $oOnlineVatIdCheck = oxNew('oxOnlineVatIdCheck');
-        $aResult = $oOnlineVatIdCheck->catchWarning(1, 1, 1, 1);
+        $oOnlineVatIdCheck->catchWarning(1, 2, 3, 4);
 
-        $this->assertEquals(array("Warning: 1 in 1 on line 1", "EXCEPTION_LOG.txt"), $aResult);
+        $aRecords = $oHandler->getRecords();
+        $this->assertEquals(2, $aRecords[0]['message']);
+        $this->assertEquals([
+            'code' => 1,
+            'file' => 3,
+            'line' => 4
+        ], $aRecords[0]['context']);
     }
 
     /**

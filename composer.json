@@ -21,7 +21,7 @@
         "oxid-esales/oxideshop-unified-namespace-generator": "dev-master || ^1.0.0"
     },
     "require-dev": {
-        "oxid-esales/testing-library": "^v4.0.0",
+        "oxid-esales/testing-library": "dev-master",
         "oxid-esales/coding-standards": "^v3.0.2",
         "oxid-esales/coding-standards-wrapper": "dev-master",
         "incenteev/composer-parameter-handler": "~v2.0",

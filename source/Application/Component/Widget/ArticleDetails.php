@@ -6,9 +6,14 @@
 
 namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
-use oxRegistry;
+use OxidEsales\Eshop\Application\Model\Article;
+use OxidEsales\Eshop\Application\Model\ArticleList;
+use OxidEsales\Eshop\Application\Model\Manufacturer;
+use OxidEsales\Eshop\Application\Model\SimpleVariantList;
+use OxidEsales\Eshop\Application\Model\Vendor;
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Utils;
 use stdClass;
-use oxCategory;
 
 /**
  * Article detailed information widget.
@@ -37,70 +42,70 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     protected $_sThisTemplate = 'widget/product/details.tpl';
 
     /**
-     * Current product parent article object
+     * Current product parent article object.
      *
-     * @var oxArticle
+     * @var Article
      */
     protected $_oParentProd = null;
 
     /**
-     * Marker if user can rate current product
+     * Marker if user can rate current product.
      *
      * @var bool
      */
     protected $_blCanRate = null;
 
     /**
-     * Media files
+     * Media files.
      *
      * @var array
      */
     protected $_aMediaFiles = null;
 
     /**
-     * History (last seen) products
+     * History (last seen) products.
      *
      * @var array
      */
     protected $_aLastProducts = null;
 
     /**
-     * Current product's vendor
+     * Current product's vendor.
      *
-     * @var oxVendor
+     * @var Vendor
      */
     protected $_oVendor = null;
 
     /**
-     * Current product's manufacturer
+     * Current product's manufacturer.
      *
-     * @var oxManufacturer
+     * @var Manufacturer
      */
     protected $_oManufacturer = null;
 
     /**
-     * Current product's category
+     * Current product's category.
      *
      * @var object
      */
     protected $_oCategory = null;
 
     /**
-     * Current product's attributes
+     * Current product's attributes.
      *
-     * @var object
+     * @var array
      */
     protected $_aAttributes = null;
 
     /**
-     * Picture gallery
+     * Picture gallery.
      *
      * @var array
      */
     protected $_aPicGallery = null;
 
     /**
-     * Reviews of current article
+     * Reviews of current article.
      *
      * @var array
      */
@@ -114,35 +119,35 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     protected $_oCrossSelling = null;
 
     /**
-     * Similar products article list
+     * Similar products article list.
      *
      * @var object
      */
     protected $_oSimilarProducts = null;
 
     /**
-     * Accessories of current article
+     * Accessories of current article.
      *
      * @var object
      */
     protected $_oAccessoires = null;
 
     /**
-     * List of customer also bought these products
+     * List of customer also bought these products.
      *
      * @var object
      */
     protected $_aAlsoBoughtArts = null;
 
     /**
-     * Search title
+     * Search title.
      *
      * @var string
      */
     protected $_sSearchTitle = null;
 
     /**
-     * Marker if active product was fully initialized before returning it
+     * Marker if active product was fully initialized before returning it.
      * (see details::getProduct())
      *
      * @var bool
@@ -150,28 +155,28 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     protected $_blIsInitialized = false;
 
     /**
-     * Current view link type
+     * Current view link type.
      *
      * @var int
      */
     protected $_iLinkType = null;
 
     /**
-     * Is multi dimension variant view
+     * Is multi dimension variant view.
      *
      * @var bool
      */
     protected $_blMdView = null;
 
     /**
-     * Rating value
+     * Rating value.
      *
      * @var double
      */
     protected $_dRatingValue = null;
 
     /**
-     * Rating count
+     * Rating count.
      *
      * @var integer
      */
@@ -185,7 +190,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     protected $_sBidPrice = null;
 
     /**
-     * Marked which defines if current view is sortable or not
+     * Marked which defines if current view is sortable or not.
      *
      * @var bool
      */
@@ -201,9 +206,9 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     protected $_aSimilarRecommListIds = null;
 
     /**
-     * Template variable getter. Returns active zoom picture id
+     * Template variable getter. Returns active zoom picture id.
      *
-     * @return array
+     * @return int
      */
     public function getActZoomPic()
     {
@@ -211,11 +216,11 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Returns current product parent article object if it is available
+     * Returns current product parent article object if it is available.
      *
      * @param string $sParentId parent product id
      *
-     * @return oxArticle
+     * @return Article
      */
     protected function _getParentProduct($sParentId)
     {
@@ -232,9 +237,9 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * In case list type is "search" returns search parameters which will be added to product details link
+     * In case list type is "search" returns search parameters which will be added to product details link.
      *
-     * @return string | null
+     * @return string|null
      */
     protected function _getAddUrlParams()
     {
@@ -244,9 +249,9 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Processes product by setting link type and in case list type is search adds search parameters to details link
+     * Processes product by setting link type and in case list type is search adds search parameters to details link.
      *
-     * @param object $oProduct product to process
+     * @param object $oProduct Product to process.
      */
     protected function _processProduct($oProduct)
     {
@@ -257,7 +262,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Checks if rating functionality is active
+     * Checks if rating functionality is active.
      *
      * @return bool
      */
@@ -267,7 +272,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Checks if rating functionality is on and allowed to user
+     * Checks if rating functionality is on and allowed to user.
      *
      * @return bool
      */
@@ -286,9 +291,9 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * loading full list of attributes
+     * Loading full list of attributes.
      *
-     * @return array $_aAttributes
+     * @return array
      */
     public function getAttributes()
     {
@@ -312,7 +317,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Returns current view link type
+     * Returns current view link type.
      *
      * @return int
      */
@@ -343,9 +348,9 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
 
     /**
      * Returns variant lists of current product
-     * excludes currently viewed product
+     * excludes currently viewed product.
      *
-     * @return array | oxSimpleVariantList | oxArticleList
+     * @return array|SimpleVariantList|ArticleList
      */
     public function getVariantListExceptCurrent()
     {
@@ -363,10 +368,10 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * loading full list of variants,
-     * if we are child and do not have any variants then let's load all parent variants as ours
+     * Loading full list of variants,
+     * if we are child and do not have any variants then let's load all parent variants as ours.
      *
-     * @return array | oxSimpleVariantList | oxArticleList
+     * @return array|SimpleVariantList|ArticleList
      */
     public function loadVariantInformation()
     {
@@ -402,9 +407,9 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Returns variant lists of current product
+     * Returns variant lists of current product.
      *
-     * @return array | oxsimplevariantlist | oxarticlelist
+     * @return array|SimpleVariantList|ArticleList
      */
     public function getVariantList()
     {
@@ -412,7 +417,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Template variable getter. Returns media files of current product
+     * Template variable getter. Returns media files of current product.
      *
      * @return array
      */
@@ -427,7 +432,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Template variable getter. Returns last seen products
+     * Template variable getter. Returns last seen products.
      *
      * @param int $iCnt product count
      *
@@ -450,7 +455,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Template variable getter. Returns product's vendor
+     * Template variable getter. Returns product's vendor.
      *
      * @return object
      */
@@ -464,7 +469,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Template variable getter. Returns product's vendor
+     * Template variable getter. Returns product's vendor.
      *
      * @return object
      */
@@ -478,7 +483,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Template variable getter. Returns product's root category
+     * Template variable getter. Returns product's root category.
      *
      * @return object
      */
@@ -492,7 +497,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Template variable getter. Returns picture gallery of current article
+     * Template variable getter. Returns picture gallery of current article.
      *
      * @return array
      */
@@ -507,7 +512,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Template variable getter. Returns active picture
+     * Template variable getter. Returns active picture.
      *
      * @return object
      */
@@ -519,7 +524,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Template variable getter. Returns true if there more pictures
+     * Template variable getter. Returns true if there more pictures.
      *
      * @return bool
      */
@@ -531,7 +536,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Template variable getter. Returns icons of current article
+     * Template variable getter. Returns icons of current article.
      *
      * @return array
      */
@@ -543,7 +548,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Template variable getter. Returns if to show zoom pictures
+     * Template variable getter. Returns if to show zoom pictures.
      *
      * @return bool
      */
@@ -555,7 +560,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Template variable getter. Returns zoom pictures
+     * Template variable getter. Returns zoom pictures.
      *
      * @return array
      */
@@ -567,7 +572,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Template variable getter. Returns reviews of current article
+     * Template variable getter. Returns reviews of current article.
      *
      * @return array
      */
@@ -584,7 +589,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Template variable getter. Returns cross selling
+     * Template variable getter. Returns cross selling.
      *
      * @return object
      */
@@ -601,7 +606,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Template variable getter. Returns similar article list
+     * Template variable getter. Returns similar article list.
      *
      * @return object
      */
@@ -638,7 +643,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Template variable getter. Returns accessories of article
+     * Template variable getter. Returns accessories of article.
      *
      * @return object
      */
@@ -655,7 +660,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Template variable getter. Returns list of customer also bought these products
+     * Template variable getter. Returns list of customer also bought these products.
      *
      * @return object
      */
@@ -672,7 +677,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Template variable getter. Returns if price alarm is enabled
+     * Template variable getter. Returns if price alarm is enabled.
      *
      * @return bool
      */
@@ -695,7 +700,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Returns search title. It will be set in oxLocator
+     * Returns search title. It will be set in Locator.
      *
      * @return string
      */
@@ -705,7 +710,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Returns search title setter
+     * Returns search title setter.
      *
      * @param string $sTitle search title
      */
@@ -717,7 +722,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     /**
      * active category path setter
      *
-     * @param string $sActCatPath category tree path
+     * @param string $sActCatPath category tree path.
      */
     public function setCatTreePath($sActCatPath)
     {
@@ -725,7 +730,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Checks should persistent parameter input field be displayed
+     * Checks should persistent parameter input field be displayed.
      *
      * @return bool
      */
@@ -737,7 +742,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Template variable getter. Returns rating value
+     * Template variable getter. Returns rating value.
      *
      * @return double
      */
@@ -756,7 +761,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Template variable getter. Returns if review module is on
+     * Template variable getter. Returns if review module is on.
      *
      * @return bool
      */
@@ -766,7 +771,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Template variable getter. Returns rating count
+     * Template variable getter. Returns rating count.
      *
      * @return integer
      */
@@ -784,7 +789,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Return price alarm status (if it was send)
+     * Return price alarm status (if it was send).
      *
      * @return integer
      */
@@ -794,7 +799,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Template variable getter. Returns bid price
+     * Template variable getter. Returns bid price.
      *
      * @return string
      */
@@ -813,9 +818,9 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Returns variant selection
+     * Returns variant selection.
      *
-     * @return oxVariantSelectList
+     * @return array
      */
     public function getVariantSelections()
     {
@@ -832,9 +837,9 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Returns pictures product object
+     * Returns pictures product object.
      *
-     * @return oxArticle
+     * @return ArticleList
      */
     public function getPicturesProduct()
     {
@@ -849,7 +854,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     /**
      * Get product.
      *
-     * @return oxArticle
+     * @return Article
      */
     public function getProduct()
     {
@@ -889,7 +894,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Set item sorting for widget based of retrieved parameters
+     * Set item sorting for widget based of retrieved parameters.
      */
     protected function _setSortingParameters()
     {
@@ -956,8 +961,8 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     /**
      * Runs additional checks for article.
      *
-     * @param \OxidEsales\Eshop\Core\Utils  $myUtils  General utils
-     * @param \OxidEsales\Eshop\Core\Config $myConfig Main shop configuration
+     * @param Utils  $myUtils  General utils.
+     * @param Config $myConfig Main shop configuration.
      */
     protected function _additionalChecksForArticle($myUtils, $myConfig)
     {
@@ -981,7 +986,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
-     * Returns default category sorting for selected category
+     * Returns default category sorting for selected category.
      *
      * @return array
      */

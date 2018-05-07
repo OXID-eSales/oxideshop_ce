@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Logger\ServiceFactory;
 
+use Monolog\Formatter\FormatterInterface;
+use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
@@ -69,7 +71,7 @@ class MonologLoggerServiceFactory implements LoggerServiceFactoryInterface
     public function __construct($loggerName, $logFilePath, $logLevel)
     {
         if (!in_array($logLevel, $this->validLogLevels)) {
-            throw new \InvalidArgumentException('Log level ' . var_export($logLevel, true) . ' is not permitted');
+            throw new \InvalidArgumentException('Log level "' . var_export($logLevel, true) . '" is not a PSR-3 compliant log level');
         }
         
         $this->loggerName = $loggerName;
@@ -82,17 +84,49 @@ class MonologLoggerServiceFactory implements LoggerServiceFactoryInterface
      */
     public function create()
     {
-        $lineFormatter = new LineFormatter();
-        $lineFormatter->includeStacktraces(true);
+        $formatter = $this->getFormatter();
+        $handler = $this->getHandler($formatter);
 
-        $streamHandler = new StreamHandler(
+        $logger = $this->getLogger($handler);
+
+        return $logger;
+    }
+
+    /**
+     * @return FormatterInterface
+     */
+    private function getFormatter()
+    {
+        $formatter = new LineFormatter();
+        $formatter->includeStacktraces(true);
+
+        return $formatter;
+    }
+
+    /**
+     * @param FormatterInterface $formatter
+     *
+     * @return HandlerInterface
+     */
+    private function getHandler(FormatterInterface $formatter)
+    {
+        $handler = new StreamHandler(
             $this->logFilePath,
             $this->logLevel
         );
-        $streamHandler->setFormatter($lineFormatter);
+        $handler->setFormatter($formatter);
 
+        return $handler;
+    }
+
+    /**
+     * @param HandlerInterface $handler
+     * @return LoggerInterface
+     */
+    private function getLogger(HandlerInterface $handler)
+    {
         $logger = new Logger($this->loggerName);
-        $logger->pushHandler($streamHandler);
+        $logger->pushHandler($handler);
 
         return $logger;
     }

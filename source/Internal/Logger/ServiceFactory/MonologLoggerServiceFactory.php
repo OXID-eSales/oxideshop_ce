@@ -7,11 +7,14 @@
 namespace OxidEsales\EshopCommunity\Internal\Logger\ServiceFactory;
 
 use Monolog\Formatter\FormatterInterface;
+use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use OxidEsales\EshopCommunity\Internal\Logger\DataObject\MonologConfigurationInterface;
+use OxidEsales\EshopCommunity\Internal\Logger\Validator\LoggerConfigurationValidatorInterface;
 use Psr\Log\LoggerInterface;
-use Monolog\Formatter\LineFormatter;
+use Psr\Log\LogLevel;
 
 /**
  * @internal
@@ -19,64 +22,35 @@ use Monolog\Formatter\LineFormatter;
 class MonologLoggerServiceFactory implements LoggerServiceFactoryInterface
 {
     /**
-     * @var string
+     * @var MonologConfigurationInterface $configuration
      */
-    private $loggerName;
+    private $configuration;
 
-    /**
-     * @var string
-     */
-    private $logFilePath;
-
-    /**
-     * @var string
-     */
-    private $logLevel;
-
-    /**
-     * @var array Valid Monolog log levels
-     */
-    private $validLogLevels = [
-        \Psr\Log\LogLevel::DEBUG,
-        \Psr\Log\LogLevel::INFO,
-        \Psr\Log\LogLevel::NOTICE,
-        \Psr\Log\LogLevel::WARNING,
-        \Psr\Log\LogLevel::ERROR,
-        \Psr\Log\LogLevel::CRITICAL,
-        \Psr\Log\LogLevel::ALERT,
-        \Psr\Log\LogLevel::EMERGENCY,
-    ];
 
     /**
      * @var array Map Monolog log levels to \Psr\Log\LogLevel
      */
     private $psrLogLevelMap = [
-        \Psr\Log\LogLevel::DEBUG     => \Monolog\Logger::DEBUG,
-        \Psr\Log\LogLevel::INFO      => \Monolog\Logger::INFO,
-        \Psr\Log\LogLevel::NOTICE    => \Monolog\Logger::NOTICE,
-        \Psr\Log\LogLevel::WARNING   => \Monolog\Logger::WARNING,
-        \Psr\Log\LogLevel::ERROR     => \Monolog\Logger::ERROR,
-        \Psr\Log\LogLevel::CRITICAL  => \Monolog\Logger::CRITICAL,
-        \Psr\Log\LogLevel::ALERT     => \Monolog\Logger::ALERT,
-        \Psr\Log\LogLevel::EMERGENCY => \Monolog\Logger::EMERGENCY,
+        LogLevel::DEBUG     => Logger::DEBUG,
+        LogLevel::INFO      => Logger::INFO,
+        LogLevel::NOTICE    => Logger::NOTICE,
+        LogLevel::WARNING   => Logger::WARNING,
+        LogLevel::ERROR     => Logger::ERROR,
+        LogLevel::CRITICAL  => Logger::CRITICAL,
+        LogLevel::ALERT     => Logger::ALERT,
+        LogLevel::EMERGENCY => Logger::EMERGENCY,
     ];
 
     /**
      * MonologLoggerFactory constructor.
      *
-     * @param string $loggerName  Name of the logger as shown in the log file
-     * @param string $logFilePath Path to the log file
-     * @param string $logLevel    A log level as defined in \Psr\Log\LogLevel
+     * @param MonologConfigurationInterface         $configuration
+     * @param LoggerConfigurationValidatorInterface $configurationValidator
      */
-    public function __construct($loggerName, $logFilePath, $logLevel)
+    public function __construct(MonologConfigurationInterface $configuration, LoggerConfigurationValidatorInterface $configurationValidator)
     {
-        if (!in_array($logLevel, $this->validLogLevels)) {
-            throw new \InvalidArgumentException('Log level "' . var_export($logLevel, true) . '" is not a PSR-3 compliant log level');
-        }
-        
-        $this->loggerName = $loggerName;
-        $this->logFilePath = $logFilePath;
-        $this->logLevel = $this->psrLogLevelMap[$logLevel];
+        $configurationValidator->validate($configuration);
+        $this->configuration = $configuration;
     }
 
     /**
@@ -84,12 +58,37 @@ class MonologLoggerServiceFactory implements LoggerServiceFactoryInterface
      */
     public function create()
     {
-        $formatter = $this->getFormatter();
-        $handler = $this->getHandler($formatter);
-
-        $logger = $this->getLogger($handler);
+        $logger = $this->getLogger();
 
         return $logger;
+    }
+
+    /**
+     * @return LoggerInterface
+     */
+    private function getLogger()
+    {
+        $handler = $this->getHandler();
+
+        $logger = new Logger($this->configuration->getLoggerName());
+        $logger->pushHandler($handler);
+
+        return $logger;
+    }
+
+    /**
+     * @return HandlerInterface
+     */
+    private function getHandler()
+    {
+        $formatter = $this->getFormatter();
+        $handler = new StreamHandler(
+            $this->configuration->getLogFilePath(),
+            $this->getMappedLogLevel()
+        );
+        $handler->setFormatter($formatter);
+
+        return $handler;
     }
 
     /**
@@ -104,30 +103,10 @@ class MonologLoggerServiceFactory implements LoggerServiceFactoryInterface
     }
 
     /**
-     * @param FormatterInterface $formatter
-     *
-     * @return HandlerInterface
+     * @return string
      */
-    private function getHandler(FormatterInterface $formatter)
+    private function getMappedLogLevel()
     {
-        $handler = new StreamHandler(
-            $this->logFilePath,
-            $this->logLevel
-        );
-        $handler->setFormatter($formatter);
-
-        return $handler;
-    }
-
-    /**
-     * @param HandlerInterface $handler
-     * @return LoggerInterface
-     */
-    private function getLogger(HandlerInterface $handler)
-    {
-        $logger = new Logger($this->loggerName);
-        $logger->pushHandler($handler);
-
-        return $logger;
+        return $this->psrLogLevelMap[$this->configuration->getLogLevel()];
     }
 }

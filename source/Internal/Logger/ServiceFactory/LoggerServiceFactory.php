@@ -6,8 +6,10 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Logger\ServiceFactory;
 
-use OxidEsales\EshopCommunity\Internal\Logger\ServiceFactory\MonologLoggerServiceFactory;
+use OxidEsales\EshopCommunity\Internal\Logger\DataObject\MonologConfiguration;
+use OxidEsales\EshopCommunity\Internal\Logger\DataObject\MonologConfigurationInterface;
 use OxidEsales\EshopCommunity\Internal\Logger\ServiceWrapper\LoggerServiceWrapper;
+use OxidEsales\EshopCommunity\Internal\Logger\Validator\PsrLoggerConfigurationValidator;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use Psr\Log\LoggerInterface;
 
@@ -23,6 +25,7 @@ class LoggerServiceFactory
 
     /**
      * LoggerServiceFactory constructor.
+     *
      * @param ContextInterface $context
      */
     public function __construct(ContextInterface $context)
@@ -45,10 +48,29 @@ class LoggerServiceFactory
      */
     private function getMonologLoggerFactory()
     {
-        return new MonologLoggerServiceFactory(
+        $configuration = $this->getMonologConfiguration();
+        $configurationValidator = $this->getLoggerConfigurationValidator();
+
+        return new MonologLoggerServiceFactory($configuration, $configurationValidator);
+    }
+
+    /**
+     * @return MonologConfigurationInterface
+     */
+    private function getMonologConfiguration()
+    {
+        return new MonologConfiguration(
             'OXID Logger',
             $this->context->getLogFilePath(),
             $this->context->getLogLevel()
         );
+    }
+
+    /**
+     * @return PsrLoggerConfigurationValidator
+     */
+    private function getLoggerConfigurationValidator()
+    {
+        return new PsrLoggerConfigurationValidator();
     }
 }

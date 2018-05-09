@@ -175,13 +175,27 @@ class ExceptionHandler
      * Like this the error message is overridable within that file.
      * Do not display an error message, if this file is included during a CLI command
      *
-     * @deprecated since v6.3 (2018-04-25); This method will be removed completely. Use \oxTriggerOfflinePageDisplay() in the future.
+     * @deprecated since v6.3 (2018-04-25); This method will be private. Use \oxTriggerOfflinePageDisplay() in the future.
      *
      * @return null
      */
     public function displayOfflinePage()
     {
-        \oxTriggerOfflinePageDisplay();
+        if ('cli' === strtolower(php_sapi_name())) {
+            echo 'Uncaught exception. See error log for more information.' . PHP_EOL;
+        } else {
+            header("HTTP/1.1 500 Internal Server Error");
+            header("Connection: close");
+
+            /**
+             * Render an error message.
+             * If offline.php exists its content is displayed.
+             * Like this the error message is overridable within that file.
+             */
+            if (file_exists(OX_OFFLINE_FILE) && is_readable(OX_OFFLINE_FILE)) {
+                echo file_get_contents(OX_OFFLINE_FILE);
+            };
+        }
 
         return;
     }

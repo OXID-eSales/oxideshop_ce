@@ -124,6 +124,8 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
             ['writeExceptionToLog'],
             [$debug]
         );
+
+        $exceptionHandlerMock->expects($this->any())->method('writeExceptionToLog')->willReturn(true);
         ob_start();
         $exceptionHandlerMock->handleUncaughtException(new \Exception());
         $displayMessage = ob_get_clean();

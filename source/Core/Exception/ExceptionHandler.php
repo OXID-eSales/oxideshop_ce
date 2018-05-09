@@ -198,12 +198,12 @@ class ExceptionHandler
      */
     protected function displayDebugMessage($exception, $logWritten = true)
     {
-        $loggingErrorMessage = $logWritten ? '' : 'Could not write log file' . PHP_EOL;
+        $loggingErrorMessage = $logWritten ? '' : ' Could not write log file' . PHP_EOL;
 
         /** Just display a small note in CLI mode */
         $phpSAPIName = strtolower(php_sapi_name());
         if ('cli' === $phpSAPIName) {
-            echo 'Uncaught exception. See ' . $this->getLogFileName() . PHP_EOL . $loggingErrorMessage;
+            echo 'Uncaught exception. See error log for more information.' . $loggingErrorMessage;
             return;
         }
         if (method_exists($exception, 'getString')) {

@@ -464,8 +464,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
             return;
         }
 
-        reset($dbRecord);
-        while (list($name, $value) = each($dbRecord)) {
+        foreach ($dbRecord as $name => $value) {
             $this->_setFieldData($name, $value);
         }
 
@@ -1235,7 +1234,8 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
             }
         }
         // if we have a double field we replace "," with "." in case somebody enters it in european format
-        if ($this->isPropertyLoaded($longFieldName)
+        $isPropertyLoaded = $this->isPropertyLoaded($longFieldName);
+        if ($isPropertyLoaded
             && isset($this->$longFieldName->fldtype)
             && $this->$longFieldName->fldtype == 'double'
         ) {
@@ -1243,7 +1243,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         }
 
         // isset is REQUIRED here not to use getter
-        if ($this->isPropertyLoaded($longFieldName)
+        if ($isPropertyLoaded
             && is_object($this->$longFieldName)
         ) {
             $this->$longFieldName->setValue($fieldValue, $dataType);

@@ -2949,6 +2949,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         if ($user === false) {
             $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         }
+        if ($user->oxuser__oxustid->value !== null && $user->oxuser__oxustidstatus->value == 1) {
+            return $this->_blIsVatIncluded = false;
+        }
 
         $activeCountry = $user->getActiveCountry();
         if ($activeCountry !== '') {

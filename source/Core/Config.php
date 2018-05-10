@@ -1068,13 +1068,17 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getActShopCurrencyObject()
     {
-        $cur = $this->getShopCurrency();
-        $currencies = $this->getCurrencyArray();
-        if (!isset($currencies[$cur])) {
-            return $this->_oActCurrencyObject = reset($currencies); // reset() returns the first element
+        if ($this->_oActCurrencyObject === null) {
+            $cur = $this->getShopCurrency();
+            $currencies = $this->getCurrencyArray();
+            if (!isset($currencies[$cur])) {
+                $this->_oActCurrencyObject = reset($currencies); // reset() returns the first element
+            } else {
+                $this->_oActCurrencyObject = $currencies[$cur];
+            }
         }
 
-        return $this->_oActCurrencyObject = $currencies[$cur];
+        return $this->_oActCurrencyObject;
     }
 
     /**

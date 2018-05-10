@@ -107,6 +107,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 via `widget.php` it must extend `\OxidEsales\Eshop\Application\Component\Widget\WidgetController`.
 - `SeoEncoderArticle::_prepareArticleTitle` now uses `_getUrlExtension()` method in place of hardcoded `.html` extension [PR-634](https://github.com/OXID-eSales/oxideshop_ce/pull/634). 
 - Add ^ to version constraint on doctrine/dbal [PR-635](https://github.com/OXID-eSales/oxideshop_ce/pull/635)
+- Model performance micro optimizations [PR-646](https://github.com/OXID-eSales/oxideshop_ce/pull/646)
 
 ### Deprecated
 - Recommendations feature will be moved to separate module:

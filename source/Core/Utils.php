@@ -1073,8 +1073,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
 
         try { //may occur in case db is lost
             $this->getSession()->freeze();
-        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
-            $oEx->debugOut();
+        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
+            \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
             //do nothing else to make sure the redirect takes place
         }
 
@@ -1387,24 +1387,6 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         }
 
         return $sUrl;
-    }
-
-    /**
-     * Writes given log message. Returns write state
-     *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
-     *
-     * @param string $logMessage  log message
-     * @param string $logFileName log file name
-     *
-     * @return bool
-     */
-    public function writeToLog($logMessage, $logFileName)
-    {
-        $logger = Registry::getLogger();
-        $logger->error($logMessage);
-
-        return true;
     }
 
     /**

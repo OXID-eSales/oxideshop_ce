@@ -33,6 +33,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - template source/Application/views/admin/tpl/dynscreen_list.tpl
 - template source/Application/views/admin/tpl/dynscreen_local.tpl
 - `sOXIDPHP` parameter in `config.inc.php`
+- \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::writeExceptionToLog
+- \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::displayOfflinePage
+- \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::setLogFileName
+- \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::getLogFileName
+- \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::setIDebug
+- \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::$_sFileName
+- \OxidEsales\EshopCommunity\Core\Exception\StandardException::debugOut
+- \OxidEsales\EshopCommunity\Core\Exception\StandardException::setLogFileName
+- \OxidEsales\EshopCommunity\Core\Exception\StandardException::getLogFileName
+- \OxidEsales\EshopCommunity\Core\Exception\StandardException::$_sFileName
+- \OxidEsales\EshopCommunity\Core\OnlineCaller::_castExceptionAndWriteToLog
+- \OxidEsales\EshopCommunity\Core\Utils::writeToLog
+- `writeToLog` in `bootstrap.php`
 
 ### Fixed
 

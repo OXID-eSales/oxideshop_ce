@@ -26,27 +26,6 @@ class ExceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->assertTrue($testObject->getMessage() === $messsage);
     }
 
-    // Test log file output
-    public function testDebugOut()
-    {
-        $message = 'Erik was here..';
-        $testObject = oxNew(StandardException::class, $message);
-
-        try {
-            $testObject->debugOut(); // actuall test
-        } catch (Exception $e) {
-            // Lets try to delete an eventual left over file
-            unlink(OX_LOG_FILE);
-            $this->fail();
-
-            return;
-        }
-        $file = file_get_contents(OX_LOG_FILE);
-        unlink(OX_LOG_FILE);
-
-        $this->assertContains($message, $file);
-    }
-
     // Test set & get message
     public function testSetMessage()
     {

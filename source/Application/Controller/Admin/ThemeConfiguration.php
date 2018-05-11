@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 use oxConfig;
 use oxAdminDetails;
@@ -49,9 +50,9 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
                 foreach ($this->_aConfParams as $sType => $sParam) {
                     $this->_aViewData[$sParam] = $aDbVariables['vars'][$sType];
                 }
-            } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
-                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
-                $oEx->debugOut();
+            } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
+                Registry::getUtilsView()->addErrorToDisplay($exception);
+                Registry::getLogger()->error($exception->getMessage(), [$exception]);
             }
         } else {
             \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_THEME_NOT_LOADED'));

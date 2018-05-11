@@ -210,7 +210,7 @@ ini_set('url_rewriter.tags', '');
 function oxTriggerOfflinePageDisplay()
 {
     // Do not display the offline page, if this running in CLI mode
-    if ('cli' !== strtolower(php_sapi_name())) {
+    if ('cli' === strtolower(php_sapi_name())) {
         echo 'Uncaught exception. See error log for more information.' . PHP_EOL;
     } else {
         header("HTTP/1.1 500 Internal Server Error");
@@ -225,21 +225,4 @@ function oxTriggerOfflinePageDisplay()
             echo file_get_contents(OX_OFFLINE_FILE);
         };
     }
-}
-
-/**
- * @deprecated since v6.3 (2018-04-18); Use OxidEsales\Eshop\Core\Registry::getLogger()
- *
- * @param string $message
- */
-function writeToLog($message)
-{
-    $time = microtime(true);
-    $micro = sprintf("%06d", ($time - floor($time)) * 1000000);
-    $date = new \DateTime(date('Y-m-d H:i:s.' . $micro, $time));
-    $timestamp = $date->format('d M H:i:s.u Y');
-
-    $message = "[$timestamp] " . $message . PHP_EOL;
-
-    file_put_contents(OX_LOG_FILE, $message, FILE_APPEND);
 }

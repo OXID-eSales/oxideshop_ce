@@ -20,14 +20,6 @@ class StandardException extends \Exception
     protected $type = 'oxException';
 
     /**
-     * Log file path/name
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
-     *
-     * @var string
-     */
-    protected $_sFileName = OX_LOG_FILE;
-
-    /**
      * Not caught means the exception was not caught and occured in the rendering process,
      * which is not allowed!
      *
@@ -52,32 +44,6 @@ class StandardException extends \Exception
     public function __construct($sMessage = "not set", $iCode = 0, \Exception $previous = null)
     {
         parent::__construct($sMessage, $iCode, $previous);
-    }
-
-    /**
-     * Set log file name. The file will always be relative to the directory of OX_LOG_FILE
-     *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
-     *
-     * @param string $fileName File name
-     */
-    public function setLogFileName($fileName)
-    {
-        $fileName = dirname(OX_LOG_FILE) . DIRECTORY_SEPARATOR . basename($fileName);
-
-        $this->_sFileName = $fileName;
-    }
-
-    /**
-     * Get log file path/name
-     *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
-     *
-     * @return string
-     */
-    public function getLogFileName()
-    {
-        return basename($this->_sFileName);
     }
 
     /**
@@ -126,24 +92,6 @@ class StandardException extends \Exception
     public function isNotCaught()
     {
         return $this->_blNotCaught;
-    }
-
-    /**
-     * Write exception to log file
-     *
-     * @deprecated since v6.3 (2018-04-25); This method will be removed completely. Use Registry::getLogger() to log error messages in the future.
-     *
-     * @return mixed
-     */
-    public function debugOut()
-    {
-        $exceptionHandler = new \OxidEsales\Eshop\Core\Exception\ExceptionHandler();
-        /**
-         * @deprecated since v6.0 (2017-02-27); Logging mechanism will be changed in 6.0.
-         */
-        $exceptionHandler->setLogFileName($this->getLogFileName());
-
-        return $exceptionHandler->writeExceptionToLog($this);
     }
 
     /**

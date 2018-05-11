@@ -464,7 +464,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             if ($this->_isDebugMode()) {
                 \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($ex);
             }
-            $ex->debugOut();
+            \OxidEsales\Eshop\Core\Registry::getLogger()->error($ex->getMessage(), [$ex]);
         }
 
         // Output processing. This is useful for modules. As sometimes you may want to process output manually.
@@ -708,7 +708,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected function _handleSystemException($exception)
     {
-        $exception->debugOut();
+        \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
 
         if ($this->_isDebugMode()) {
             \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($exception);
@@ -807,7 +807,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         if (!$exception instanceof \OxidEsales\Eshop\Core\Exception\StandardException) {
             $exception = new \OxidEsales\Eshop\Core\Exception\StandardException($exception->getMessage(), $exception->getCode(), $exception);
         }
-        $exception->debugOut();
+        \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
     }
 
     /**

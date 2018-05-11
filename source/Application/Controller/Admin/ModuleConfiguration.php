@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxConfig;
+use OxidEsales\EshopCommunity\Core\Registry;
 use oxRegistry;
 use oxException;
 
@@ -53,9 +54,9 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
                     $this->_aViewData[$sParam] = $aDbVariables['vars'][$sType];
                     $iCount += count($aDbVariables['vars'][$sType]);
                 }
-            } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
-                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
-                $oEx->debugOut();
+            } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($exception);
+                Registry::getLogger()->error($exception->getMessage(), [$exception]);
             }
         } else {
             \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_MODULE_NOT_LOADED'));

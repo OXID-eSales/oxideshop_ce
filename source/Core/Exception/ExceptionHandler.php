@@ -181,21 +181,7 @@ class ExceptionHandler
      */
     public function displayOfflinePage()
     {
-        if ('cli' === strtolower(php_sapi_name())) {
-            echo 'Uncaught exception. See error log for more information.' . PHP_EOL;
-        } else {
-            header("HTTP/1.1 500 Internal Server Error");
-            header("Connection: close");
-
-            /**
-             * Render an error message.
-             * If offline.php exists its content is displayed.
-             * Like this the error message is overridable within that file.
-             */
-            if (file_exists(OX_OFFLINE_FILE) && is_readable(OX_OFFLINE_FILE)) {
-                echo file_get_contents(OX_OFFLINE_FILE);
-            };
-        }
+        \oxTriggerOfflinePageDisplay();
 
         return;
     }

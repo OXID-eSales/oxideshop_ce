@@ -9,6 +9,9 @@ namespace OxidEsales\EshopCommunity\Internal\Logger\Validator;
 use OxidEsales\EshopCommunity\Internal\Logger\DataObject\PsrLoggerConfigurationInterface;
 use Psr\Log\LogLevel;
 
+/**
+ * @internal
+ */
 class PsrLoggerConfigurationValidator implements LoggerConfigurationValidatorInterface
 {
     /**
@@ -43,7 +46,9 @@ class PsrLoggerConfigurationValidator implements LoggerConfigurationValidatorInt
         $logLevel = $configuration->getLogLevel();
 
         if (!in_array($logLevel, $this->validLogLevels, true)) {
-            throw new \InvalidArgumentException('Log level "' . var_export($logLevel, true) . '" is not a PSR-3 compliant log level');
+            throw new \InvalidArgumentException(
+                'Log level "' . var_export($logLevel, true) . '" is not a PSR-3 compliant log level'
+            );
         }
     }
 }

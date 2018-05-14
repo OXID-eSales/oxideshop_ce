@@ -958,14 +958,6 @@ class UtilsTest extends \OxidTestCase
         $this->assertEquals($sCode, "zloynnSbbFgevat!");
     }
 
-    public function testShowOfflinePage()
-    {
-        $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('setHeader','showMessageAndExit'));
-        $utils->expects($this->once())->method('showMessageAndExit');
-
-        $utils->showOfflinePage();
-    }
-
     public function testRedirect()
     {
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('freeze'));

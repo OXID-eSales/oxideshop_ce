@@ -172,6 +172,7 @@ class ProductInfoFrontendTest extends FrontendTestCase
 
     /**
      * Check is Compare options works corectly
+     *TODO: do not exists in flow
      *
      * @group product
      */
@@ -213,7 +214,7 @@ class ProductInfoFrontendTest extends FrontendTestCase
 
     /**
      * Product details. Sending recommendation of product
-     *
+     *TODO: SKIPP THIS TEST
      * @group product
      */
     public function testFrontendDetailsRecommend()
@@ -490,6 +491,10 @@ class ProductInfoFrontendTest extends FrontendTestCase
 
         $this->type("amountToBasket", "2");
         $this->clickAndWait("toBasket");
+
+        /**
+         * Azure specific case: begin
+         */
         //reset button
         $this->click("//a[text()='%RESET_SELECTION%']");
         $this->waitForTextDisappear("%SELECTED_COMBINATION%");
@@ -498,6 +503,9 @@ class ProductInfoFrontendTest extends FrontendTestCase
         $this->assertEquals("13 EN description šÄßüл", $this->getText("productShortdesc"));
         $this->assertEquals("%PRICE_FROM% 15,00 € *", $this->getText("productPrice"));
         $this->assertFalse($this->isEditable("toBasket"));
+        /**
+         * Azure specific case: end
+         */
 
         $this->openBasket();
         $this->assertEquals("14 EN product šÄßüл, L | black | lether", $this->clearString($this->getText("//tr[@id='cartItem_1']/td[3]//a")));

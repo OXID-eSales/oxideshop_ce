@@ -1,0 +1,29 @@
+# Codeception Test Suite Configuration
+#
+# Suite for acceptance tests.
+# Perform tests in browser using the WebDriver or PhpBrowser.
+# If you need both WebDriver and PHPBrowser tests - create a separate suite.
+
+actor: AcceptanceTester
+modules:
+    enabled:
+        - Asserts
+        - WebDriver:
+            url: '%SHOP_URL%'
+            browser: firefox
+            port: '%SELENIUM_SERVER_PORT%'
+            window_size: 1920x1080
+            clear_cookies: true
+        - \Helper\Acceptance
+        - \Helper\TranslationsModule:
+            shop_path: '%SHOP_SOURCE_PATH%'
+            paths: 'Application/views/flow'
+        - Db:
+            dsn: 'mysql:host=%DB_HOST%;dbname=%DB_NAME%;charset=utf8'
+            user: '%DB_USERNAME%'
+            password: '%DB_PASSWORD%'
+            port: '%DB_PORT%'
+            dump: '%DUMP_PATH%'
+            populate: true # run populator before all tests
+            cleanup: false # run populator before each test
+            populator: '%VENDOR_PATH%/bin/reset-shop && mysql -u $user -h $host -p$password --default-character-set=utf8 $dbname < $dump'

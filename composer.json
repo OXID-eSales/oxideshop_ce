@@ -80,5 +80,31 @@
                 "partial_module_paths": "PARTIAL_MODULE_PATHS"
             }
         }
+    },
+    "repositories": {
+        "oxid-esales/oxideshop-ee": {
+            "type": "vcs",
+            "url": "https://github.com/OXID-eSales/oxideshop_ee"
+        },
+        "oxid-esales/oxideshop-pe": {
+            "type": "vcs",
+            "url": "https://github.com/OXID-eSales/oxideshop_pe"
+        },
+        "ddoe/visualcms-module": {
+            "type": "vcs",
+            "url": "https://github.com/OXID-eSales/visual_cms_module"
+        },
+        "oxid-esales/b2b-module": {
+            "type": "vcs",
+            "url": "https://github.com/OXID-eSales/oxid-eshop-b2b-edition"
+        },
+        "oxid-esales/erp-module": {
+            "type": "vcs",
+            "url": "https://github.com/OXID-eSales/erp"
+        },
+        "oxid-esales/oxideshop-demodata-ee": {
+            "type": "vcs",
+            "url": "https://github.com/OXID-eSales/oxideshop_demodata_ee"
+        }
     }
 }

@@ -13,7 +13,7 @@ class UserRegistrationFrontendTest extends FrontendTestCase
 {
     /**
      * simple user account opening
-     *
+     * +
      * @group main
      */
     public function testStandardUserRegistration()

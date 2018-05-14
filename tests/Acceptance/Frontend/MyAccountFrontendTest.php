@@ -826,6 +826,8 @@ class MyAccountFrontendTest extends FrontendTestCase
     /**
      * creating listmania
      *
+     * Vilma: skipped
+     *
      * @group myAccount
      */
     public function testListmaniaCreating()
@@ -882,6 +884,8 @@ class MyAccountFrontendTest extends FrontendTestCase
 
     /**
      * Checking Listmania
+     *
+     * Vilma: skipped
      *
      * @group myAccount
      */
@@ -956,6 +960,8 @@ class MyAccountFrontendTest extends FrontendTestCase
 
     /**
      * Checking Listmania
+     *
+     * Vilma: skipped
      *
      * @group myAccount
      */
@@ -1041,6 +1047,8 @@ class MyAccountFrontendTest extends FrontendTestCase
 
     /**
      * Checking Listmania
+     *
+     * Vilma: skipped
      *
      * @group myAccount
      */

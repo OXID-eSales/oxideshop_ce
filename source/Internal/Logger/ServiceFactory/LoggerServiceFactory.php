@@ -8,6 +8,8 @@ namespace OxidEsales\EshopCommunity\Internal\Logger\ServiceFactory;
 
 use OxidEsales\EshopCommunity\Internal\Logger\DataObject\MonologConfiguration;
 use OxidEsales\EshopCommunity\Internal\Logger\DataObject\MonologConfigurationInterface;
+use OxidEsales\EshopCommunity\Internal\Logger\Mapper\LogLevelMapperInterface;
+use OxidEsales\EshopCommunity\Internal\Logger\Mapper\MonologLogLevelMapper;
 use OxidEsales\EshopCommunity\Internal\Logger\ServiceWrapper\LoggerServiceWrapper;
 use OxidEsales\EshopCommunity\Internal\Logger\Validator\PsrLoggerConfigurationValidator;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
@@ -48,10 +50,10 @@ class LoggerServiceFactory
      */
     private function getMonologLoggerFactory()
     {
-        $configuration = $this->getMonologConfiguration();
-        $configurationValidator = $this->getLoggerConfigurationValidator();
-
-        return new MonologLoggerServiceFactory($configuration, $configurationValidator);
+        return new MonologLoggerServiceFactory(
+            $this->getMonologConfiguration(),
+            $this->getMonologLogLevelMapper()
+        );
     }
 
     /**
@@ -63,6 +65,16 @@ class LoggerServiceFactory
             'OXID Logger',
             $this->context->getLogFilePath(),
             $this->context->getLogLevel()
+        );
+    }
+
+    /**
+     * @return LogLevelMapperInterface
+     */
+    private function getMonologLogLevelMapper()
+    {
+        return new MonologLogLevelMapper(
+            $this->getLoggerConfigurationValidator()
         );
     }
 

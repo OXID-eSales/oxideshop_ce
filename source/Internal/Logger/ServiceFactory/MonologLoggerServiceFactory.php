@@ -12,9 +12,8 @@ use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use OxidEsales\EshopCommunity\Internal\Logger\DataObject\MonologConfigurationInterface;
-use OxidEsales\EshopCommunity\Internal\Logger\Validator\LoggerConfigurationValidatorInterface;
+use OxidEsales\EshopCommunity\Internal\Logger\Mapper\LogLevelMapperInterface;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 
 /**
  * @internal
@@ -26,47 +25,30 @@ class MonologLoggerServiceFactory implements LoggerServiceFactoryInterface
      */
     private $configuration;
 
-
     /**
-     * @var array Map Monolog log levels to \Psr\Log\LogLevel
+     * @var LogLevelMapperInterface
      */
-    private $psrLogLevelMap = [
-        LogLevel::DEBUG     => Logger::DEBUG,
-        LogLevel::INFO      => Logger::INFO,
-        LogLevel::NOTICE    => Logger::NOTICE,
-        LogLevel::WARNING   => Logger::WARNING,
-        LogLevel::ERROR     => Logger::ERROR,
-        LogLevel::CRITICAL  => Logger::CRITICAL,
-        LogLevel::ALERT     => Logger::ALERT,
-        LogLevel::EMERGENCY => Logger::EMERGENCY,
-    ];
+    private $monologLogLevelMapper;
 
     /**
-     * MonologLoggerFactory constructor.
+     * MonologLoggerServiceFactory constructor.
      *
-     * @param MonologConfigurationInterface         $configuration
-     * @param LoggerConfigurationValidatorInterface $configurationValidator
+     * @param MonologConfigurationInterface $configuration
+     * @param LogLevelMapperInterface       $monologLogLevelMapper
      */
-    public function __construct(MonologConfigurationInterface $configuration, LoggerConfigurationValidatorInterface $configurationValidator)
-    {
-        $configurationValidator->validate($configuration);
+    public function __construct(
+        MonologConfigurationInterface $configuration,
+        LogLevelMapperInterface $monologLogLevelMapper
+    ) {
         $this->configuration = $configuration;
+        $this->monologLogLevelMapper = $monologLogLevelMapper;
     }
+
 
     /**
      * @return LoggerInterface
      */
     public function create()
-    {
-        $logger = $this->getLogger();
-
-        return $logger;
-    }
-
-    /**
-     * @return LoggerInterface
-     */
-    private function getLogger()
     {
         $handler = $this->getHandler();
 
@@ -81,11 +63,16 @@ class MonologLoggerServiceFactory implements LoggerServiceFactoryInterface
      */
     private function getHandler()
     {
-        $formatter = $this->getFormatter();
+        $monologLogLevel = $this
+            ->monologLogLevelMapper
+            ->getLoggerLogLevel($this->configuration);
+
         $handler = new StreamHandler(
             $this->configuration->getLogFilePath(),
-            $this->getMappedLogLevel()
+            $monologLogLevel
         );
+
+        $formatter = $this->getFormatter();
         $handler->setFormatter($formatter);
 
         return $handler;
@@ -100,13 +87,5 @@ class MonologLoggerServiceFactory implements LoggerServiceFactoryInterface
         $formatter->includeStacktraces(true);
 
         return $formatter;
-    }
-
-    /**
-     * @return string
-     */
-    private function getMappedLogLevel()
-    {
-        return $this->psrLogLevelMap[$this->configuration->getLogLevel()];
     }
 }

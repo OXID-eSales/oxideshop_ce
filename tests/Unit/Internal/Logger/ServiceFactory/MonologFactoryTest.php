@@ -6,25 +6,30 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Logger\ServiceFactory;
 
-use OxidEsales\EshopCommunity\Internal\Logger\DataObject\MonologConfigurationInterface;
+use OxidEsales\EshopCommunity\Internal\Logger\DataObject\MonologConfiguration;
+use OxidEsales\EshopCommunity\Internal\Logger\Mapper\MonologLogLevelMapper;
 use OxidEsales\EshopCommunity\Internal\Logger\ServiceFactory\MonologLoggerServiceFactory;
-use OxidEsales\EshopCommunity\Internal\Logger\Validator\LoggerConfigurationValidatorInterface;
+use OxidEsales\EshopCommunity\Internal\Logger\Validator\PsrLoggerConfigurationValidator;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 class MonologFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreation()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|MonologConfigurationInterface $configurationMock */
-        $configurationMock = $this->getMock(MonologConfigurationInterface::class);
-        $configurationMock->expects($this->any())->method('getLogFilePath')->willReturn('string');
+        $configuration = new MonologConfiguration(
+            'testLogger',
+            'pathString',
+            LogLevel::ERROR
+        );
 
-        /** @var \PHPUnit_Framework_MockObject_MockObject|LoggerConfigurationValidatorInterface $configurationValidatorMock */
-        $configurationValidatorMock =  $this->getMock(LoggerConfigurationValidatorInterface::class);
-        $configurationValidatorMock->expects($this->any())->method('validate');
+        $validator = new PsrLoggerConfigurationValidator();
+        $mapper = new MonologLogLevelMapper($validator);
 
-        $loggerFactory = new MonologLoggerServiceFactory($configurationMock, $configurationValidatorMock);
-
+        $loggerFactory = new MonologLoggerServiceFactory(
+            $configuration,
+            $mapper
+        );
 
         $this->assertInstanceOf(
             LoggerInterface::class,

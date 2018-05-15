@@ -330,9 +330,7 @@ class ModuleTest extends ModuleBaseTest
         $this->frame("edit");
         $this->clickAndWait("//form[@id='myedit']//input[@value='Activate']");
         $this->assertElementPresent("//form[@id='myedit']//input[@value='Deactivate']");
-        $this->selectMenu("Extensions", "Modules");
-        $this->clickAndWait("link=Test module #6 (in vendor dir)");
-        $this->clickAndWait("link=Test module #6 (in vendor dir)");
+        $this->frame('list');
         $this->waitForElement("link=Test tab EN");
         $this->openTab("Test tab EN");
         $this->clearCache();
@@ -383,8 +381,9 @@ class ModuleTest extends ModuleBaseTest
         $this->frame("edit");
         $this->clickAndWait("//form[@id='myedit']//input[@value='Activate']");
         $this->assertElementPresent("//form[@id='myedit']//input[@value='Deactivate']");
-        $this->selectMenu("Extensions", "Modules");
-        $this->frame("edit");
+        $this->frame('list');
+        $this->waitForElement("link=Test tab EN");
+        $this->openTab("Test tab EN");
         $this->assertTextPresent("oxid/test6/view/myinfo6");
     }
 

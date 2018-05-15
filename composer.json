@@ -12,7 +12,8 @@
         "php": ">=5.6",
         "phpmailer/phpmailer": "^v5.2.22",
         "smarty/smarty": "^v2.6.30",
-        "doctrine/dbal": "^v2.5.12"
+        "doctrine/dbal": "^v2.5.12",
+        "monolog/monolog": "^v1.23.0"
     },
     "require-dev": {
         "oxid-esales/flow-theme": "^v3.0.0",
@@ -27,7 +28,6 @@
         "incenteev/composer-parameter-handler": "~v2.0",
         "oxid-esales/oxideshop-ide-helper": "^3.0",
         "oxid-esales/azure-theme": "dev-b-1.4",
-        "monolog/monolog": "^v1.23.0"
     },
     "autoload": {
         "psr-4": {

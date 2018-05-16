@@ -83,7 +83,7 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
      *
      * @covers \OxidEsales\Eshop\Core\Exception\ExceptionHandler::handleUncaughtException
      */
-    public function testHandleUncaughtExceptionWillDisplayShortDebugMessageInCliMode() {
+    public function testHandleUncaughtExceptionWillDisplayDebugMessageInCliMode() {
 
         Registry::set('logger', new NullLogger());
 

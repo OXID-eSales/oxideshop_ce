@@ -7,7 +7,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use oxDb;
 use oxException;
-use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use oxUtilsView;
 use PHPUnit_Framework_MockObject_MockObject;

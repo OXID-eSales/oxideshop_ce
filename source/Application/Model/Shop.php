@@ -6,10 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
-use oxDb;
-
 /**
  * Shop manager.
  * Performs configuration and object loading or deletion.

@@ -4,21 +4,21 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Logger\ServiceFactory;
+namespace OxidEsales\EshopCommunity\Internal\Logger\Factory;
 
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
-use OxidEsales\EshopCommunity\Internal\Logger\DataObject\MonologConfigurationInterface;
-use OxidEsales\EshopCommunity\Internal\Logger\Mapper\LogLevelMapperInterface;
+use OxidEsales\EshopCommunity\Internal\Logger\Configuration\MonologConfigurationInterface;
+use OxidEsales\EshopCommunity\Internal\Logger\Validator\LoggerConfigurationValidatorInterface;
 use Psr\Log\LoggerInterface;
 
 /**
  * @internal
  */
-class MonologLoggerServiceFactory implements LoggerServiceFactoryInterface
+class MonologLoggerFactory implements LoggerFactoryInterface
 {
     /**
      * @var MonologConfigurationInterface $configuration
@@ -26,22 +26,18 @@ class MonologLoggerServiceFactory implements LoggerServiceFactoryInterface
     private $configuration;
 
     /**
-     * @var LogLevelMapperInterface
-     */
-    private $monologLogLevelMapper;
-
-    /**
-     * MonologLoggerServiceFactory constructor.
+     * MonologLoggerFactory constructor.
      *
-     * @param MonologConfigurationInterface $configuration
-     * @param LogLevelMapperInterface       $monologLogLevelMapper
+     * @param MonologConfigurationInterface         $configuration
+     * @param LoggerConfigurationValidatorInterface $configurationValidator
      */
     public function __construct(
         MonologConfigurationInterface $configuration,
-        LogLevelMapperInterface $monologLogLevelMapper
+        LoggerConfigurationValidatorInterface $configurationValidator
     ) {
+        $configurationValidator->validate($configuration);
+
         $this->configuration = $configuration;
-        $this->monologLogLevelMapper = $monologLogLevelMapper;
     }
 
 
@@ -63,13 +59,9 @@ class MonologLoggerServiceFactory implements LoggerServiceFactoryInterface
      */
     private function getHandler()
     {
-        $monologLogLevel = $this
-            ->monologLogLevelMapper
-            ->getLoggerLogLevel($this->configuration);
-
         $handler = new StreamHandler(
             $this->configuration->getLogFilePath(),
-            $monologLogLevel
+            $this->configuration->getLogLevel()
         );
 
         $formatter = $this->getFormatter();

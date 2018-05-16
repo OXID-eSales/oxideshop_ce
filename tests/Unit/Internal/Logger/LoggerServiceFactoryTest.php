@@ -4,10 +4,9 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Logger\ServiceFactory;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Logger;
 
-use OxidEsales\EshopCommunity\Internal\Logger\ServiceFactory\LoggerServiceFactory;
-use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Logger\LoggerServiceFactory;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use Psr\Log\LoggerInterface;
 

@@ -4,13 +4,12 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Logger\ServiceFactory;
+namespace OxidEsales\EshopCommunity\Internal\Logger;
 
-use OxidEsales\EshopCommunity\Internal\Logger\DataObject\MonologConfiguration;
-use OxidEsales\EshopCommunity\Internal\Logger\DataObject\MonologConfigurationInterface;
-use OxidEsales\EshopCommunity\Internal\Logger\Mapper\LogLevelMapperInterface;
-use OxidEsales\EshopCommunity\Internal\Logger\Mapper\MonologLogLevelMapper;
-use OxidEsales\EshopCommunity\Internal\Logger\ServiceWrapper\LoggerServiceWrapper;
+use OxidEsales\EshopCommunity\Internal\Logger\Configuration\MonologConfiguration;
+use OxidEsales\EshopCommunity\Internal\Logger\Configuration\MonologConfigurationInterface;
+use OxidEsales\EshopCommunity\Internal\Logger\Factory\MonologLoggerFactory;
+use OxidEsales\EshopCommunity\Internal\Logger\Wrapper\LoggerWrapper;
 use OxidEsales\EshopCommunity\Internal\Logger\Validator\PsrLoggerConfigurationValidator;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use Psr\Log\LoggerInterface;
@@ -40,19 +39,19 @@ class LoggerServiceFactory
      */
     public function getLogger()
     {
-        return new LoggerServiceWrapper(
+        return new LoggerWrapper(
             $this->getMonologLoggerFactory()->create()
         );
     }
 
     /**
-     * @return MonologLoggerServiceFactory
+     * @return MonologLoggerFactory
      */
     private function getMonologLoggerFactory()
     {
-        return new MonologLoggerServiceFactory(
+        return new MonologLoggerFactory(
             $this->getMonologConfiguration(),
-            $this->getMonologLogLevelMapper()
+            $this->getLoggerConfigurationValidator()
         );
     }
 
@@ -65,16 +64,6 @@ class LoggerServiceFactory
             'OXID Logger',
             $this->context->getLogFilePath(),
             $this->context->getLogLevel()
-        );
-    }
-
-    /**
-     * @return LogLevelMapperInterface
-     */
-    private function getMonologLogLevelMapper()
-    {
-        return new MonologLogLevelMapper(
-            $this->getLoggerConfigurationValidator()
         );
     }
 

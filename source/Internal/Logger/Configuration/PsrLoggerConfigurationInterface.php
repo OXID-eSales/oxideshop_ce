@@ -4,7 +4,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Logger\DataObject;
+namespace OxidEsales\EshopCommunity\Internal\Logger\Configuration;
 
 /**
  * @internal
@@ -15,5 +15,4 @@ interface PsrLoggerConfigurationInterface
      * @return string
      */
     public function getLogLevel();
-
 }

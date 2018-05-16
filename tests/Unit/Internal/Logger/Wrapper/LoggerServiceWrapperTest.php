@@ -4,14 +4,14 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Logger\ServiceWrapper;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Logger\Wrapper;
 
-use OxidEsales\EshopCommunity\Internal\Logger\ServiceWrapper\LoggerServiceWrapper;
+use OxidEsales\EshopCommunity\Internal\Logger\Wrapper\LoggerWrapper;
 
 /**
  * Class LoggerServiceWrapperTest
  *
- * @package OxidEsales\EshopCommunity\Tests\Unit\Internal\Logger\ServiceWrapper
+ * @package OxidEsales\EshopCommunity\Tests\Unit\Internal\Logger\Wrapper
  */
 class LoggerServiceWrapperTest extends \PHPUnit_Framework_TestCase
 {
@@ -33,7 +33,7 @@ class LoggerServiceWrapperTest extends \PHPUnit_Framework_TestCase
                 $this->equalTo($contextToLog)
             );
 
-        $loggerServiceWrapper = new LoggerServiceWrapper($loggerMock);
+        $loggerServiceWrapper = new LoggerWrapper($loggerMock);
         $loggerServiceWrapper->$methodName($messageToLog, $contextToLog);
     }
 
@@ -69,7 +69,7 @@ class LoggerServiceWrapperTest extends \PHPUnit_Framework_TestCase
                 $this->equalTo($contextToLog)
             );
 
-        $loggerServiceWrapper = new LoggerServiceWrapper($loggerMock);
+        $loggerServiceWrapper = new LoggerWrapper($loggerMock);
         $loggerServiceWrapper->log($levelToLog, $messageToLog, $contextToLog);
     }
 

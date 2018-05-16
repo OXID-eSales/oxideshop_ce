@@ -4,11 +4,10 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Logger\ServiceFactory;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Logger\Factory;
 
-use OxidEsales\EshopCommunity\Internal\Logger\DataObject\MonologConfiguration;
-use OxidEsales\EshopCommunity\Internal\Logger\Mapper\MonologLogLevelMapper;
-use OxidEsales\EshopCommunity\Internal\Logger\ServiceFactory\MonologLoggerServiceFactory;
+use OxidEsales\EshopCommunity\Internal\Logger\Configuration\MonologConfiguration;
+use OxidEsales\EshopCommunity\Internal\Logger\Factory\MonologLoggerFactory;
 use OxidEsales\EshopCommunity\Internal\Logger\Validator\PsrLoggerConfigurationValidator;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -24,11 +23,10 @@ class MonologFactoryTest extends \PHPUnit_Framework_TestCase
         );
 
         $validator = new PsrLoggerConfigurationValidator();
-        $mapper = new MonologLogLevelMapper($validator);
 
-        $loggerFactory = new MonologLoggerServiceFactory(
+        $loggerFactory = new MonologLoggerFactory(
             $configuration,
-            $mapper
+            $validator
         );
 
         $this->assertInstanceOf(

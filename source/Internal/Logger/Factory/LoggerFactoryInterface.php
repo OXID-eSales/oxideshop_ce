@@ -4,14 +4,14 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Logger\ServiceFactory;
+namespace OxidEsales\EshopCommunity\Internal\Logger\Factory;
 
 use Psr\Log\LoggerInterface;
 
 /**
  * @internal
  */
-interface LoggerServiceFactoryInterface
+interface LoggerFactoryInterface
 {
     /**
      * @return LoggerInterface

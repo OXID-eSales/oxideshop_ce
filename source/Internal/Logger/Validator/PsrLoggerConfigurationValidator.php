@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Logger\Validator;
 
-use OxidEsales\EshopCommunity\Internal\Logger\DataObject\PsrLoggerConfigurationInterface;
+use OxidEsales\EshopCommunity\Internal\Logger\Configuration\PsrLoggerConfigurationInterface;
 use Psr\Log\LogLevel;
 
 /**

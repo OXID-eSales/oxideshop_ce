@@ -4,14 +4,14 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Logger\ServiceWrapper;
+namespace OxidEsales\EshopCommunity\Internal\Logger\Wrapper;
 
 use Psr\Log\LoggerInterface;
 
 /**
  * @internal
  */
-class LoggerServiceWrapper implements LoggerInterface
+class LoggerWrapper implements LoggerInterface
 {
     /**
      * @var LoggerInterface

@@ -4,7 +4,7 @@
  * See LICENSE file for license details.
  */
 
-use OxidEsales\EshopCommunity\Internal\Logger\DataObject\PsrLoggerConfigurationInterface;
+use OxidEsales\EshopCommunity\Internal\Logger\Configuration\PsrLoggerConfigurationInterface;
 use OxidEsales\EshopCommunity\Internal\Logger\Validator\PsrLoggerConfigurationValidator;
 use Psr\Log\LogLevel;
 

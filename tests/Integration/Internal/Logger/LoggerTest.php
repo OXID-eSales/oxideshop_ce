@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Logger;
 
-use OxidEsales\EshopCommunity\Internal\Logger\ServiceFactory\LoggerServiceFactory;
+use OxidEsales\EshopCommunity\Internal\Logger\LoggerServiceFactory;
 use OxidEsales\EshopCommunity\Internal\Utility\Context;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use Psr\Log\LogLevel;

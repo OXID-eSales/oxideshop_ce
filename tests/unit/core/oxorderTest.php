@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2018
  * @version   OXID eShop CE
  */
 
@@ -346,6 +346,11 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $sPaymentId = oxDb::getDb()->getOne('select oxid from oxpayments where oxactive = 1');
         $oBasket = $this->getMock("oxbasket", array("getPaymentId"));
         $oBasket->expects($this->once())->method("getPaymentId")->will($this->returnValue($sPaymentId));
+
+        $paymentControllerMock = $this->getMock('Payment', array('validatePayment'));
+        $paymentControllerMock->expects($this->any())->method('validatePayment')->will($this->returnValue('order'));
+
+        oxTestModules::addModuleObject('Payment', $paymentControllerMock);
 
         $this->assertNull($oOrder->validatePayment($oBasket));
     }
@@ -3759,3 +3764,4 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $this->assertTrue((bool) oxDb::getDb()->getOne($query));
     }
 }
+

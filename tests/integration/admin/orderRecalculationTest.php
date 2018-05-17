@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2018
  * @version   OXID eShop CE
  */
 
@@ -662,6 +662,11 @@ class Integration_Admin_OrderRecalculationTest extends OxidTestCase
 
         $order = $this->createOrder();
         oxRegistry::getSession()->setVariable('sess_challenge', $this->testOrderId);
+
+        $paymentControllerMock = $this->getMock('Payment', array('validatePayment'));
+        $paymentControllerMock->expects($this->any())->method('validatePayment')->will($this->returnValue('order'));
+
+        oxTestModules::addModuleObject('Payment', $paymentControllerMock);
 
         $blRecalculatingOrder = false;
         $result = $order->finalizeOrder($basket, $user, $blRecalculatingOrder);

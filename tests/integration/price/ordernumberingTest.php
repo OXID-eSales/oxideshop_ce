@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2018
  * @version   OXID eShop CE
  */
 
@@ -136,6 +136,11 @@ class Integration_Price_OrderNumberingTest extends OxidTestCase
 
         // if basket has products
         if ($oBasket->getProductsCount()) {
+            $paymentControllerMock = $this->getMock('Payment', array('validatePayment'));
+            $paymentControllerMock->expects($this->any())->method('validatePayment')->will($this->returnValue('order'));
+
+            oxTestModules::addModuleObject('Payment', $paymentControllerMock);
+
             $iSuccess = $oOrder2->finalizeOrder($oBasket, $oUser, $blRecalculatingOrder = false);
         }
 
@@ -166,6 +171,12 @@ class Integration_Price_OrderNumberingTest extends OxidTestCase
         $oBasket = $oBasketConstruct->calculateBasket($aTestCase);
 
         $oUser = $oBasket->getBasketUser();
+
+        /** Mock payment controller */
+        $paymentControllerMock = $this->getMock('Payment', array('validatePayment'));
+        $paymentControllerMock->expects($this->any())->method('validatePayment')->will($this->returnValue('order'));
+
+        oxTestModules::addModuleObject('Payment', $paymentControllerMock);
 
         // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
         $oOrder1 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
@@ -260,6 +271,11 @@ class Integration_Price_OrderNumberingTest extends OxidTestCase
 
         // if basket has products
         if ($oBasket->getProductsCount()) {
+            $paymentControllerMock = $this->getMock('Payment', array('validatePayment'));
+            $paymentControllerMock->expects($this->any())->method('validatePayment')->will($this->returnValue('order'));
+
+            oxTestModules::addModuleObject('Payment', $paymentControllerMock);
+
             $iSuccess = $oOrder3->finalizeOrder($oBasket, $oUser, $blRecalculatingOrder = false);
         }
 

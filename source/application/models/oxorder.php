@@ -16,7 +16,7 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2018
  * @version   OXID eShop CE
  */
 
@@ -2173,7 +2173,11 @@ class oxOrder extends oxBase
         $sQ = "select 1 from {$sTable} where {$sTable}.oxid=" .
               $oDb->quote($oBasket->getPaymentId()) . " and " . $oPayment->getSqlActiveSnippet();
 
-        if (!$oDb->getOne($sQ, false, false)) {
+        $paymentController = oxNew('Payment');
+        if (
+            !$oDb->getOne($sQ, false, false) ||
+            'order' !== $paymentController->validatePayment()
+        ) {
             return self::ORDER_STATE_INVALIDPAYMENT;
         }
     }

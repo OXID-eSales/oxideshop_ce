@@ -96,6 +96,15 @@ class ExceptionHandler
         $this->handleUncaughtException($exception);
     }
 
+
+    /**
+     * Exit the application with error status 1
+     */
+    protected function exitApplication()
+    {
+        exit(1);
+    }
+
     /**
      * Print a debug message to the screen.
      *
@@ -103,7 +112,7 @@ class ExceptionHandler
      *
      * @deprecated since v6.3 (2018-04-25); This method will be removed completely. Use an appropriate Monolog channel in the future.
      */
-    protected function displayDebugMessage(\Throwable $exception)
+    private function displayDebugMessage(\Throwable $exception)
     {
         if (method_exists($exception, 'getString')) {
             $displayMessage = $exception->getString();
@@ -123,7 +132,7 @@ class ExceptionHandler
      *
      * @return string
      */
-    public function getFormattedException(\Throwable $exception)
+    private function getFormattedException(\Throwable $exception)
     {
         $time = microtime(true);
         $micro = sprintf("%06d", ($time - floor($time)) * 1000000);
@@ -141,14 +150,6 @@ class ExceptionHandler
         }
 
         return $logMessage;
-    }
-
-    /**
-     * Exit the application with error status 1
-     */
-    protected function exitApplication()
-    {
-        exit(1);
     }
 
     /**

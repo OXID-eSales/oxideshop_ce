@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Exception;
 use OxidEsales\Eshop\Core\Exception\ExceptionHandler;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\EshopCommunity\Core\Registry;
+use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
@@ -26,34 +27,19 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
      *
      * @param $exception
      */
-    public function testExceptionHandlerReportsExceptionInDebugMode($exception)
+    public function testExceptionHandlerLogExceptionInDebugMode($exception)
     {
-        $debug = true;
-        $logFileName = basename(OX_LOG_FILE);
-        /** @var ExceptionHandler|\PHPUnit_Framework_MockObject_MockObject $exceptionHandlerMock */
-        $exceptionHandlerMock = $this->getMock(
-            ExceptionHandler::class,
-            ['displayDebugMessage'], // Mock rendering of message in order not to print anything to the console
-            [$debug]
-        );
-        $exceptionHandlerMock->expects($this->once())->method('displayDebugMessage');
+        $logger = $this->getMock(LoggerInterface::class);
+        $logger
+            ->expects($this->once())
+            ->method('error');
 
-        try {
-            $exceptionHandlerMock->handleUncaughtException($exception);
-        } catch (\Exception $e) {
-            // Lets try to delete an possible left over file
-            if (file_exists($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $logFileName)) {
-                unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $logFileName);
-            }
-            $this->fail('handleUncaughtException() throws an exception.');
-        }
-        if (!file_exists($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $logFileName)) {
-            $this->fail('No log file written');
-        }
-        $logFileContent = file_get_contents($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $logFileName);
-        unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $logFileName); // delete file first as assert may return out this function
-        /** Test if the exception message is found in the log file */
-        $this->assertContains($this->testExceptionMessage, $logFileContent);
+        Registry::set('logger', $logger);
+
+        $debug = true;
+
+        $exceptionHandler = oxNew(ExceptionHandler::class, $debug);
+        $exceptionHandler->handleUncaughtException($exception);
     }
 
     public function dataProviderExceptions()
@@ -87,7 +73,7 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         Registry::set('logger', new NullLogger());
 
-        $debug = true;
+        $debug = false;
         /** @var ExceptionHandler|\PHPUnit_Framework_MockObject_MockObject $exceptionHandlerMock */
         $exceptionHandlerMock = $this->getMock(
             ExceptionHandler::class,
@@ -95,10 +81,10 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
             [$debug]
         );
         ob_start();
-        $exceptionHandlerMock->handleUncaughtException(new \Exception($this->testExceptionMessage));
+        $exceptionHandlerMock->handleUncaughtException(new \Exception());
         $displayMessage = ob_get_clean();
 
-        $this->assertContains($this->testExceptionMessage, $displayMessage);
+        $this->assertContains('Uncaught exception. See error log for more information.', $displayMessage);
     }
 
     /**
@@ -115,8 +101,11 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
             ['displayDebugMessage'],
             [$debug]
         );
-        $exceptionHandlerMock->expects($this->once())->method('displayDebugMessage');
 
-        $exceptionHandlerMock->handleUncaughtException(new \Exception());
+        ob_start();
+        $exceptionHandlerMock->handleUncaughtException(new \Exception($this->testExceptionMessage));
+        $displayMessage = ob_get_clean();
+
+        $this->assertContains($this->testExceptionMessage, $displayMessage);
     }
 }

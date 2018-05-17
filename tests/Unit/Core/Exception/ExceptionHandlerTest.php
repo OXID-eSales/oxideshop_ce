@@ -37,9 +37,13 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         Registry::set('logger', $logger);
 
         $debug = true;
-
         $exceptionHandler = oxNew(ExceptionHandler::class, $debug);
+
+        ob_start();
         $exceptionHandler->handleUncaughtException($exception);
+        $displayMessage = ob_get_clean();
+
+        $this->assertContains($this->testExceptionMessage, $displayMessage);
     }
 
     public function dataProviderExceptions()

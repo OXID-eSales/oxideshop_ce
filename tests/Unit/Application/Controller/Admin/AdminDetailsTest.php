@@ -35,7 +35,7 @@ class AdminDetailsTest extends \OxidTestCase
     public function testGetPlainEditor()
     {
         $oObject = new stdClass;
-        $sEditorHtml = "<textarea id='editor_sField' style='width:100px; height:100px;'>sEditObjectValue</textarea>";
+        $sEditorHtml = "<textarea id='editor_sField' name='sField' style='width:100px; height:100px;'>sEditObjectValue</textarea>";
 
         $oAdminDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController::class, array('_getEditValue'));
         $oAdminDetails->expects($this->once())->method('_getEditValue')->with($this->equalTo($oObject), $this->equalTo('sField'))->will($this->returnValue('sEditObjectValue'));

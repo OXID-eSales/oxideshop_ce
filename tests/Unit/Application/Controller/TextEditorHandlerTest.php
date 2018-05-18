@@ -15,7 +15,7 @@ class TextEditorHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     public function testRenderTextEditorNoRichTextEditor()
     {
-        $expEditorHtml = "<textarea id='editor_sField' style='width:100px; height:100px;'>sEditObjectValue</textarea>";
+        $expEditorHtml = "<textarea id='editor_sField' name='sField' style='width:100px; height:100px;'>sEditObjectValue</textarea>";
 
         $textEditorHandler = $this->getMock(\OxidEsales\EshopCommunity\Application\Controller\TextEditorHandler::class, array('renderRichTextEditor'));
         $textEditorHandler->expects($this->any())->method('renderRichTextEditor')->will($this->returnValue(''));
@@ -62,10 +62,10 @@ class TextEditorHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function renderPlainTextEditorDataProvider()
     {
         return array(
-            array(100, 100, "<textarea id='editor_sField' style='width:100px; height:100px;'>sEditObjectValue</textarea>"),
-            array('100%', '100%', "<textarea id='editor_sField' style='width:100%; height:100%;'>sEditObjectValue</textarea>"),
-            array(100, '100%', "<textarea id='editor_sField' style='width:100px; height:100%;'>sEditObjectValue</textarea>"),
-            array('100%', 100, "<textarea id='editor_sField' style='width:100%; height:100px;'>sEditObjectValue</textarea>"),
+            array(100, 100, "<textarea id='editor_sField' name='sField' style='width:100px; height:100px;'>sEditObjectValue</textarea>"),
+            array('100%', '100%', "<textarea id='editor_sField' name='sField' style='width:100%; height:100%;'>sEditObjectValue</textarea>"),
+            array(100, '100%', "<textarea id='editor_sField' name='sField' style='width:100px; height:100%;'>sEditObjectValue</textarea>"),
+            array('100%', 100, "<textarea id='editor_sField' name='sField' style='width:100%; height:100px;'>sEditObjectValue</textarea>"),
         );
     }
 

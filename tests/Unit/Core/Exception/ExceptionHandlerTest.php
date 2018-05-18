@@ -7,8 +7,9 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Exception;
 
 use OxidEsales\Eshop\Core\Exception\ExceptionHandler;
 use OxidEsales\Eshop\Core\Exception\StandardException;
-use oxSystemComponentException;
-use \oxTestModules;
+use OxidEsales\Eshop\Core\Registry;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {

@@ -7,9 +7,8 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Exception;
 
 use OxidEsales\Eshop\Core\Exception\ExceptionHandler;
 use OxidEsales\Eshop\Core\Exception\StandardException;
-use OxidEsales\EshopCommunity\Core\Registry;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
+use oxSystemComponentException;
+use \oxTestModules;
 
 class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
@@ -84,6 +83,8 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
             null,
             [$debug]
         );
+
+        $exceptionHandlerMock->expects($this->any())->method('writeExceptionToLog')->willReturn(true);
         ob_start();
         $exceptionHandlerMock->handleUncaughtException(new \Exception());
         $displayMessage = ob_get_clean();

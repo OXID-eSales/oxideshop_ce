@@ -3,10 +3,11 @@
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Logger;
 
+use OxidEsales\EshopCommunity\Internal\Logger\LoggerServiceFactory;
 use OxidEsales\EshopCommunity\Internal\Utility\Context;
-use OxidEsales\EshopCommunity\Internal\Logger\ServiceFactory\LoggerServiceFactory;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use Psr\Log\LogLevel;
 
@@ -17,7 +18,7 @@ use Psr\Log\LogLevel;
  */
 class LoggerTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var \OxidEsales\TestingLibrary\VfsStreamWrapper  */
+    /** @var \OxidEsales\TestingLibrary\VfsStreamWrapper */
     private $vfsStreamWrapper = null;
 
     public function testLogging()
@@ -47,15 +48,6 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(
             strpos(file_get_contents($contextStub->getLogFilePath()), $infoMessage)
         );
-    }
-
-    public function testAnExceptionIsThrownIfLogLevelIsNotConfigured()
-    {
-        $this->setExpectedException(\InvalidArgumentException::class);
-
-        $contextStub = $this->getContextStub();
-
-        $this->getLogger($contextStub);
     }
 
     /**
@@ -92,9 +84,10 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $relativeLogFilePath = 'logs/vfsLogFile.txt';
         $logFilePath = $vfsStreamWrapper->getRootPath() . $relativeLogFilePath;
 
-        if(!is_file($logFilePath)){
+        if (!is_file($logFilePath)) {
             $vfsStreamWrapper->createFile($relativeLogFilePath);
         }
+
         return $logFilePath;
     }
 
@@ -113,7 +106,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     /**
      * @return \OxidEsales\TestingLibrary\VfsStreamWrapper
      */
-    public function getVfsStreamWrapper()
+    private function getVfsStreamWrapper()
     {
         if (is_null($this->vfsStreamWrapper)) {
             $this->vfsStreamWrapper = new \OxidEsales\TestingLibrary\VfsStreamWrapper();

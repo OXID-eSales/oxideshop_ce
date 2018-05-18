@@ -27,7 +27,7 @@
         "oxid-esales/coding-standards-wrapper": "dev-master",
         "incenteev/composer-parameter-handler": "~v2.0",
         "oxid-esales/oxideshop-ide-helper": "^3.0",
-        "oxid-esales/azure-theme": "dev-b-1.4",
+        "oxid-esales/azure-theme": "dev-b-1.4"
     },
     "autoload": {
         "psr-4": {

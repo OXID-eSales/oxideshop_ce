@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `OxidEsales\EshopCommunity\Core\Session::isClassInSerializedObject`
   - `OxidEsales\EshopCommunity\Core\Session::isClassOrNullInSerializedObjectAfterField`
   - `OxidEsales\EshopCommunity\Core\Session::isUnserializedBasketValid`
+- Name attribute added to no wysiwyg textarea fields in admin
 
 ### Deprecated
 - `writeToLog` in `bootstrap.php`

@@ -965,7 +965,7 @@ class Database implements DatabaseInterface
     {
         /** The exception has to be converted into an instance of oxException in order to be logged like this */
         $exception = $this->convertException($exception);
-        $exception->debugOut();
+        \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
     }
 
     /**

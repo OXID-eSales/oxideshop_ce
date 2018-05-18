@@ -120,20 +120,6 @@ class UtilsTest extends \OxidTestCase
         $oUtils->showMessageAndExit("");
     }
 
-    public function testWriteToLog()
-    {
-        $sLogMessage = $sLogFileName = md5(uniqid(rand(), true));
-
-        $oUtils = oxNew('oxUtils');
-        $oUtils->writeToLog($sLogMessage, $sLogFileName);
-
-        $this->_sTestLogFileName = $this->getConfig()->getConfigParam('sShopDir') . 'log/' . $sLogFileName;
-
-        clearstatcache();
-        $this->assertTrue(file_exists($this->_sTestLogFileName));
-        $this->assertEquals($sLogMessage, file_get_contents($this->_sTestLogFileName));
-    }
-
     public function testSetLangCache()
     {
         $aLangCache = array("ggg" => "bbb");
@@ -951,14 +937,6 @@ class UtilsTest extends \OxidTestCase
         $sFile = 'asdnasd/asdasd.asd.ad.ad.asdjpeg';
         $this->assertEquals(false, $oUtils->oxMimeContentType($sFile));
         $this->assertEquals(false, $oUtils->oxMimeContentType(''));
-    }
-
-    public function testShowOfflinePage()
-    {
-        $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('setHeader','showMessageAndExit'));
-        $utils->expects($this->once())->method('showMessageAndExit');
-
-        $utils->showOfflinePage();
     }
 
     public function testRedirect()

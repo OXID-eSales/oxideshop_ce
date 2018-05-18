@@ -11,8 +11,6 @@ use oxArticleInputException;
 use oxNoArticleException;
 use oxOutOfStockException;
 use oxField;
-use oxRegistry;
-use oxDb;
 
 /**
  * Order manager.
@@ -88,28 +86,28 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * oxList of oxarticle objects
      *
-     * @var oxList
+     * @var \oxlist
      */
     protected $_oArticles = null;
 
     /**
      * Oxdeliveryset object
      *
-     * @var oxDeliverySet
+     * @var \oxdeliveryset
      */
     protected $_oDelSet = null;
 
     /**
      * Gift card
      *
-     * @var oxWrapping
+     * @var \oxWrapping
      */
     protected $_oGiftCard = null;
 
     /**
      * Payment type
      *
-     * @var oxPayment
+     * @var \oxpayment
      */
     protected $_oPaymentType = null;
 
@@ -130,7 +128,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Order delivery costs price object
      *
-     * @var oxprice
+     * @var \oxprice
      */
     protected $_oDelPrice = null;
 
@@ -304,7 +302,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param bool $blExcludeCanceled excludes canceled items from list
      *
-     * @return oxList
+     * @return \oxlist
      */
     protected function _getArticles($blExcludeCanceled = false)
     {
@@ -326,7 +324,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param bool $blExcludeCanceled excludes canceled items from list
      *
-     * @return oxList
+     * @return \oxlist
      */
     public function getOrderArticles($blExcludeCanceled = false)
     {
@@ -353,7 +351,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Returns order delivery expenses price object
      *
-     * @return oxprice
+     * @return \oxprice
      */
     public function getOrderDeliveryPrice()
     {
@@ -371,7 +369,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Returns order wrapping expenses price object
      *
-     * @return oxprice
+     * @return \oxprice
      */
     public function getOrderWrappingPrice()
     {
@@ -463,10 +461,9 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function finalizeOrder(\OxidEsales\Eshop\Application\Model\Basket $oBasket, $oUser, $blRecalculatingOrder = false)
     {
         // check if this order is already stored
-        $sGetChallenge = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('sess_challenge');
-        if ($this->_checkOrderExist($sGetChallenge)) {
-            \OxidEsales\Eshop\Core\Registry::getUtils()->logger('BLOCKER');
-
+        $orderId = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('sess_challenge');
+        if ($this->_checkOrderExist($orderId)) {
+            \OxidEsales\Eshop\Core\Registry::getLogger()->debug('finalizeOrder: Order already exists: ' . $orderId, [$oBasket, $oUser]);
             // we might use this later, this means that somebody clicked like mad on order button
             return self::ORDER_STATE_ORDEREXISTS;
         }
@@ -474,7 +471,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         // if not recalculating order, use sess_challenge id, else leave old order id
         if (!$blRecalculatingOrder) {
             // use this ID
-            $this->setId($sGetChallenge);
+            $this->setId($orderId);
 
             // validating various order/basket parameters before finalizing
             if ($iOrderState = $this->validateOrder($oBasket, $oUser)) {
@@ -616,7 +613,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Additionally stores general discount and wrapping. Sets order status to "error"
      * and creates oxOrderArticle objects and assigns to them basket articles.
      *
-     * @param \OxidEsales\EshopCommunity\Application\Model\Basket $oBasket Shopping basket object
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket Shopping basket object
      */
     protected function _loadFromBasket(\OxidEsales\Eshop\Application\Model\Basket $oBasket)
     {
@@ -768,7 +765,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Assigns wrapping VAT and card price + card message info
      *
-     * @param \OxidEsales\EshopCommunity\Application\Model\Basket $oBasket basket object
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket basket object
      */
     protected function _setWrapping(\OxidEsales\Eshop\Application\Model\Basket $oBasket)
     {
@@ -892,7 +889,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * and finally executes it (oxPaymentGateway::executePayment()). On failure -
      * deletes order and returns * error code 2.
      *
-     * @param \OxidEsales\EshopCommunity\Application\Model\Basket $oBasket      basket object
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket      basket object
      * @param object                                              $oUserpayment user payment object
      *
      * @return  integer 2 or an error code

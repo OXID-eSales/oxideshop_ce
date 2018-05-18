@@ -1569,7 +1569,7 @@ class OrderTest extends \OxidTestCase
         $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('_checkOrderExist'));
         $oOrder->expects($this->any())
             ->method('_checkOrderExist')
-            ->will($this->returnValue(true));
+            ->will($this->returnValue('EXISTINGORDERID'));
 
         $oBasket = oxNew('oxBasket');
 

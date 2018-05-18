@@ -73,7 +73,7 @@ class OnlineCallerTest extends \OxidTestCase
         /**
          * Although no exception is thrown, the underlying error will be logged in EXCEPTION_LOG.txt
          */
-        $expectedExceptionClass = \OxidEsales\Eshop\Core\Exception\StandardException::class;
+        $expectedExceptionClass = Exception::class;
         $this->assertLoggedException($expectedExceptionClass);
     }
 

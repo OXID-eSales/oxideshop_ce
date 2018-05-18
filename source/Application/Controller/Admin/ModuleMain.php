@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 use oxException;
 use oxModule;
@@ -83,9 +84,9 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
             if ($oModuleInstaller->activate($oModule)) {
                 $this->_aViewData["updatenav"] = "1";
             }
-        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
-            $oEx->debugOut();
+        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
+            Registry::getUtilsView()->addErrorToDisplay($exception);
+            Registry::getLogger()->error($exception->getMessage(), [$exception]);
         }
     }
 
@@ -119,9 +120,9 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
             if ($oModuleInstaller->deactivate($oModule)) {
                 $this->_aViewData["updatenav"] = "1";
             }
-        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
-            $oEx->debugOut();
+        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
+            Registry::getUtilsView()->addErrorToDisplay($exception);
+            Registry::getLogger()->error($exception->getMessage(), [$exception]);
         }
     }
 }

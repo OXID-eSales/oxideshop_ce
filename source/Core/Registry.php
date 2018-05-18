@@ -312,6 +312,20 @@ class Registry
     }
 
     /**
+     * Returns Logger
+     *
+     * @static
+     * @return \Psr\Log\LoggerInterface
+     */
+    public static function getLogger()
+    {
+        if (!self::instanceExists('logger')) {
+            self::set('logger', getLogger());
+        }
+        return self::get('logger');
+    }
+
+    /**
      * Return all class instances, which are currently set in the registry
      *
      * @return array

@@ -389,7 +389,7 @@ class ModuleChainsGenerator
                 $moduleId = $module->getIdByPath($moduleClass);
                 $message = sprintf('Module class %s not found. Module ID %s disabled', $moduleClass, $moduleId);
                 $exception = new \OxidEsales\Eshop\Core\Exception\SystemComponentException($message);
-                $exception->debugOut();
+                \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
             }
         } else {
             $exception =  new \OxidEsales\Eshop\Core\Exception\SystemComponentException();

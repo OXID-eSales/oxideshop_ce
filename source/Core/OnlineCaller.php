@@ -93,7 +93,8 @@ abstract class OnlineCaller
             $this->_resetFailedCallsCount($iFailedCallsCount);
         } catch (Exception $oEx) {
             if ($iFailedCallsCount > self::ALLOWED_HTTP_FAILED_CALLS_COUNT) {
-                $this->_castExceptionAndWriteToLog($oEx);
+                \OxidEsales\Eshop\Core\Registry::getLogger()->error($oEx->getMessage(), [$oEx]);
+
                 $sXml = $this->_formEmail($oRequest);
                 $this->_sendEmail($sXml);
                 $this->_resetFailedCallsCount($iFailedCallsCount);
@@ -103,22 +104,6 @@ abstract class OnlineCaller
         }
 
         return $sOutputXml;
-    }
-
-    /**
-     * Depending on the type of exception, first cast the exception and then write it to log.
-     *
-     * @param \Exception $oEx
-     */
-    protected function _castExceptionAndWriteToLog(\Exception $oEx)
-    {
-        if (!($oEx instanceof \OxidEsales\Eshop\Core\Exception\StandardException)) {
-            $oOxException = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
-            $oOxException->setMessage($oEx->getMessage());
-            $oOxException->debugOut();
-        } else {
-            $oEx->debugOut();
-        }
     }
 
     /**
@@ -158,7 +143,7 @@ abstract class OnlineCaller
     /**
      * Gets curl.
      *
-     * @return \oxCurl
+     * @return \OxidEsales\Eshop\Core\Curl
      */
     protected function _getCurl()
     {

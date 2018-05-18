@@ -6,6 +6,7 @@
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
+use OxidEsales\EshopCommunity\Internal\Application\Container;
 
 if (!defined('ESHOP_CONFIG_FILE')) {
     define('ESHOP_CONFIG_FILE', 'config.inc.php');
@@ -192,5 +193,19 @@ if (!function_exists('getRequestUrl')) {
     function getRequestUrl($sParams = '', $blReturnUrl = false)
     {
         return Registry::get(Request::class)->getRequestUrl($sParams, $blReturnUrl);
+    }
+}
+
+if (!function_exists('getLogger')) {
+    /**
+     * Returns the Logger
+     *
+     * @return \Psr\Log\LoggerInterface
+     */
+    function getLogger()
+    {
+        $container = Container::getInstance();
+
+        return $container->getLogger();
     }
 }

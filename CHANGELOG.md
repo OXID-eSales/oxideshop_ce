@@ -33,6 +33,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - template source/Application/views/admin/tpl/dynscreen_list.tpl
 - template source/Application/views/admin/tpl/dynscreen_local.tpl
 - `sOXIDPHP` parameter in `config.inc.php`
+- \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::writeExceptionToLog
+- \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::displayOfflinePage
+- \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::setLogFileName
+- \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::getLogFileName
+- \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::setIDebug
+- \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::$_sFileName
+- \OxidEsales\EshopCommunity\Core\Exception\StandardException::debugOut
+- \OxidEsales\EshopCommunity\Core\Exception\StandardException::setLogFileName
+- \OxidEsales\EshopCommunity\Core\Exception\StandardException::getLogFileName
+- \OxidEsales\EshopCommunity\Core\Exception\StandardException::$_sFileName
+- \OxidEsales\EshopCommunity\Core\OnlineCaller::_castExceptionAndWriteToLog
+- \OxidEsales\EshopCommunity\Core\Utils::writeToLog
+- `writeToLog` in `bootstrap.php`
 
 ### Fixed
 
@@ -46,6 +59,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `admin_voucherserie_groups_form`
   - `admin_voucherserie_categories_form`
   - `admin_voucherserie_articles_form`
+- PSR3 Logger:
+    - New settings:
+        - `sLogLevel` in `config.inc.php`
+    - New methods:
+        - `OxidEsales\EshopCommunity\Core\Registry::getLogger`
+        - `getLogger` in `overridablefunctions.php`
 
 ### Changed
 - Persparams filter simplified to allow arrays in persparams [PR-641](https://github.com/OXID-eSales/oxideshop_ce/pull/641)
@@ -54,8 +73,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `OxidEsales\EshopCommunity\Core\Session::isClassInSerializedObject`
   - `OxidEsales\EshopCommunity\Core\Session::isClassOrNullInSerializedObjectAfterField`
   - `OxidEsales\EshopCommunity\Core\Session::isUnserializedBasketValid`
+- Name attribute added to no wysiwyg textarea fields in admin
 
 ### Deprecated
+- `writeToLog` in `bootstrap.php`
+- `\OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::$_iDebug`
+- `\OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::setIDebug`
+- `\OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::writeExceptionToLog`
+- `\OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::displayOfflinePage`
+- `\OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::displayDebugMessage`
+- `\OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::getFormattedException`
+- `\OxidEsales\EshopCommunity\Core\Exception\StandardException::debugOut`
+- `\OxidEsales\EshopCommunity\Core\OnlineCaller::_castExceptionAndWriteToLog`
 
 ### Removed
 

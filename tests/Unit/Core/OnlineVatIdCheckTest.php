@@ -22,19 +22,6 @@ class OnlineVatIdCheckTest extends \OxidTestCase
     }
 
     /**
-     * Tests oxOnlineVatIdCheck::catchWarning()
-     */
-    public function testCatchWarning()
-    {
-        oxTestModules::addFunction('oxUtils', 'writeToLog', '{ return $aA; }');
-
-        $oOnlineVatIdCheck = oxNew('oxOnlineVatIdCheck');
-        $aResult = $oOnlineVatIdCheck->catchWarning(1, 1, 1, 1);
-
-        $this->assertEquals(array("Warning: 1 in 1 on line 1", "EXCEPTION_LOG.txt"), $aResult);
-    }
-
-    /**
      * Testing vat id online checker
      *
      * @group quarantine

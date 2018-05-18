@@ -6,10 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\ShopVersion;
-use oxRegistry;
-use oxView;
 
 /**
  * Administrator login form.
@@ -129,9 +126,6 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         } catch (\OxidEsales\Eshop\Core\Exception\ConnectionException $oEx) {
             $myUtilsView->addErrorToDisplay($oEx);
         }
-
-        // success
-        \OxidEsales\Eshop\Core\Registry::getUtils()->logger("login successful");
 
         //execute onAdminLogin() event
         $oEvenHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);

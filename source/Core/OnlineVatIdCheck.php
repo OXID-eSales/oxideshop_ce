@@ -86,20 +86,14 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
      * @param string $sErrStr  error message
      * @param string $sErrFile error file
      * @param int    $iErrLine error line
-     *
-     * @return bool
      */
     public function catchWarning($iErrNo, $sErrStr, $sErrFile, $iErrLine)
     {
-        // message to write to exception log
-        $sLogMessage = "Warning: $sErrStr in $sErrFile on line $iErrLine";
-
-        // fetching exception log file name
-        $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
-        $sLogFileName = $oEx->getLogFileName();
-
-        // logs error message
-        return \OxidEsales\Eshop\Core\Registry::getUtils()->writeToLog($sLogMessage, $sLogFileName);
+        \OxidEsales\Eshop\Core\Registry::getLogger()->warning($sErrStr, [
+            'file' => $sErrFile,
+            'line' => $iErrLine,
+            'code' => $iErrNo
+        ]);
     }
 
     /**

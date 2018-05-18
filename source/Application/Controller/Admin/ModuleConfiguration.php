@@ -6,9 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxConfig;
-use oxRegistry;
-use oxException;
+use OxidEsales\Eshop\Core\Registry as EshopRegistry;
 
 /**
  * Admin article main deliveryset manager.
@@ -53,12 +51,12 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
                     $this->_aViewData[$sParam] = $aDbVariables['vars'][$sType];
                     $iCount += count($aDbVariables['vars'][$sType]);
                 }
-            } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
-                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
-                $oEx->debugOut();
+            } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
+                EshopRegistry::getUtilsView()->addErrorToDisplay($exception);
+                EshopRegistry::getLogger()->error($exception->getMessage(), [$exception]);
             }
         } else {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_MODULE_NOT_LOADED'));
+            EshopRegistry::getUtilsView()->addErrorToDisplay(new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_MODULE_NOT_LOADED'));
         }
 
         $this->_aViewData["oModule"] = $oModule;

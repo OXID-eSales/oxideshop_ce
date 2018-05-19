@@ -148,7 +148,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         // defining initial filter parameters
         $sUserId = null;
-        $aGroupIds = null;
+        $aGroupIds = [];
 
         // checking for current session user which gives additional restrictions for user itself, users group and country
         if ($oUser) {

@@ -1503,13 +1503,19 @@ class Basket extends \OxidEsales\Eshop\Core\Base
 
                 foreach ($aCatIds as $sCatId) {
                     if (!isset($this->_aBasketSummary->aCategories[$sCatId])) {
-                        $this->_aBasketSummary->aCategories[$sCatId] = new stdClass();
+                        $priceObject = new stdClass();
+                        $priceObject->dPrice = 0;
+                        $priceObject->dDiscountablePrice = 0;
+                        $priceObject->dAmount = 0;
+                        $priceObject->iCount = 0;
+                        $this->_aBasketSummary->aCategories[$sCatId] = $priceObject;
                     }
 
-                    $this->_aBasketSummary->aCategories[$sCatId]->dPrice += $dPrice * $oBasketItem->getAmount();
-                    $this->_aBasketSummary->aCategories[$sCatId]->dDiscountablePrice += $dDiscountablePrice * $oBasketItem->getAmount();
-                    $this->_aBasketSummary->aCategories[$sCatId]->dAmount += $oBasketItem->getAmount();
-                    $this->_aBasketSummary->aCategories[$sCatId]->iCount++;
+                    $categorySummaryPrice = $this->_aBasketSummary->aCategories[$sCatId];
+                    $categorySummaryPrice->dPrice += $dPrice * $oBasketItem->getAmount();
+                    $categorySummaryPrice->dDiscountablePrice += $dDiscountablePrice * $oBasketItem->getAmount();
+                    $categorySummaryPrice->dAmount += $oBasketItem->getAmount();
+                    $categorySummaryPrice->iCount++;
                 }
 
                 // variant handling

@@ -307,6 +307,8 @@ class Database implements DatabaseInterface
                 $exception = $this->convertException($exception);
                 $this->handleException($exception);
             }
+        } else {
+            trigger_error('Given statement does not produce output and was not executed', \E_USER_WARNING);
         }
 
         return false;
@@ -1017,6 +1019,8 @@ class Database implements DatabaseInterface
 
         if ($this->doesStatementProduceOutput($query)) {
             $result = $statement->fetchAll();
+        } else {
+            trigger_error('Given statement does not produce output and was not executed', \E_USER_WARNING);
         }
 
         return $result;

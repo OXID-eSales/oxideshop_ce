@@ -54,8 +54,8 @@ class RecommlistTest extends \OxidTestCase
         $myDB->execute($sDelete);
 
         // testing db for records
-        $myDB->getOne("delete from oxratings where oxobjectid = 'testRecommListId'");
-        $myDB->getOne("delete from oxreviews where oxobjectid = 'testRecommListId'");
+        $myDB->execute("delete from oxratings where oxobjectid = 'testRecommListId'");
+        $myDB->execute("delete from oxreviews where oxobjectid = 'testRecommListId'");
 
         parent::tearDown();
     }

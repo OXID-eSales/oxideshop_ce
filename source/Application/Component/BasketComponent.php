@@ -377,8 +377,11 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         foreach ($products as $addProductId => $productInfo) {
             $data = $this->prepareProductInformation($addProductId, $productInfo);
-            $productAmount = $basketInfo->aArticles[$data['id']];
-            $products[$addProductId]['oldam'] = isset($productAmount) ? $productAmount : 0;
+            $productAmount = 0;
+            if (isset($basketInfo->aArticles[$data['id']])) {
+                $productAmount = $basketInfo->aArticles[$data['id']];
+            }
+            $products[$addProductId]['oldam'] = $productAmount;
 
             //If we already changed articles so they now exactly match existing ones,
             //we need to make sure we get the amounts correct
@@ -388,8 +391,14 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
             $basketItem = $this->addItemToBasket($basket, $data, $errorDestination);
 
-            if (($basketItem instanceof \OxidEsales\Eshop\Application\Model\BasketItem) && $basketItem->getBasketItemKey()) {
-                $basketItemAmounts[$basketItem->getBasketItemKey()] += $data['amount'];
+            if (($basketItem instanceof \OxidEsales\Eshop\Application\Model\BasketItem)) {
+                $basketItemKey = $basketItem->getBasketItemKey();
+                if ($basketItemKey) {
+                    if (! isset($basketItemAmounts[$basketItemKey])) {
+                        $basketItemAmounts[$basketItemKey] = 0;
+                    }
+                    $basketItemAmounts[$basketItemKey] += $data['amount'];
+                }
             }
 
             if (!$basketItem) {

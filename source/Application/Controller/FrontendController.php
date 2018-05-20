@@ -1897,7 +1897,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $languageService = \OxidEsales\Eshop\Core\Registry::getLang();
             if ($this->getConfig()->getConfigParam('bl_perfLoadLanguages')) {
                 $languages = $languageService->getLanguageArray();
-                while (list($key, $language) = each($languages)) {
+                foreach ($languages as $language) {
                     if ($language->selected) {
                         $this->_sActiveLangAbbr = $language->abbr;
                         break;

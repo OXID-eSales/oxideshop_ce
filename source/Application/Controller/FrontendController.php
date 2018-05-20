@@ -6,23 +6,9 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxActionList;
-use oxAddress;
-use oxArticle;
-use oxCategory;
-use oxCategoryList;
-use oxContent;
-use oxDb;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\Eshop\Core\Request;
 use OxidEsales\Eshop\Core\Str;
-use oxManufacturer;
-use oxManufacturerList;
-use oxPrice;
 use oxRecommList;
-use oxRegistry;
-use oxShop;
-use oxVendor;
-use oxViewConfig;
 use stdClass;
 
 // view indexing state for search engines:
@@ -1895,7 +1881,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $languageService = \OxidEsales\Eshop\Core\Registry::getLang();
             if ($this->getConfig()->getConfigParam('bl_perfLoadLanguages')) {
                 $languages = $languageService->getLanguageArray();
-                while (list($key, $language) = each($languages)) {
+                foreach ($languages as $language) {
                     if ($language->selected) {
                         $this->_sActiveLangAbbr = $language->abbr;
                         break;

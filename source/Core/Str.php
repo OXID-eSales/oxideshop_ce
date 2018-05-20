@@ -34,7 +34,7 @@ class Str
     /**
      * Static method initializing new string handler or returning the existing one.
      *
-     * @return oxStrRegular|oxStrMb
+     * @return StrRegular|StrMb
      */
     public static function getStr()
     {

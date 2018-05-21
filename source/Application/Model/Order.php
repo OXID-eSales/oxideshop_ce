@@ -899,7 +899,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * deletes order and returns * error code 2.
      *
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket      basket object
-     * @param object                                              $oUserpayment user payment object
+     * @param object                                     $oUserpayment user payment object
      *
      * @return  integer 2 or an error code
      */

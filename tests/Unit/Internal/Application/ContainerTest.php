@@ -6,71 +6,53 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Application;
 
-use OxidEsales\EshopCommunity\Internal\Application\Container;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewAndRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewBridgeInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
 class ContainerTest extends \PHPUnit_Framework_TestCase
 {
+
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    public function setUp() {
+
+        $this->container = ContainerFactory::getContainer();
+
+    }
+
     public function testGetInstance()
     {
-        $container = Container::getInstance();
         $this->assertInstanceOf(
-            Container::class,
-            $container
+            ContainerInterface::class,
+            $this->container
         );
     }
 
-    public function testGetUserReviewAndRatingBridge()
-    {
-        $container = Container::getInstance();
-
-        $this->assertInstanceOf(
-            UserReviewAndRatingBridgeInterface::class,
-            $container->getUserReviewAndRatingBridge()
-        );
+    /**
+     * @dataProvider interfaceProvider
+     *
+     * @param $interface
+     */
+    public function testConfiguration($interface) {
+        $this->assertInstanceOf($interface, $this->container->get($interface));
     }
 
-    public function testGetProductRatingBridge()
-    {
-        $container = Container::getInstance();
+    public function interfaceProvider() {
 
-        $this->assertInstanceOf(
-            ProductRatingBridgeInterface::class,
-            $container->getProductRatingBridge()
-        );
+        return [[UserReviewAndRatingBridgeInterface::class],
+                [ProductRatingBridgeInterface::class],
+                [UserRatingBridgeInterface::class],
+                [UserReviewBridgeInterface::class],
+                [LoggerInterface::class]];
+
     }
 
-    public function testGetUserRatingBridge()
-    {
-        $container = Container::getInstance();
-
-        $this->assertInstanceOf(
-            UserRatingBridgeInterface::class,
-            $container->getUserRatingBridge()
-        );
-    }
-
-    public function testGetUserReviewBridge()
-    {
-        $container = Container::getInstance();
-
-        $this->assertInstanceOf(
-            UserReviewBridgeInterface::class,
-            $container->getUserReviewBridge()
-        );
-    }
-
-    public function testGetLogger()
-    {
-        $container = Container::getInstance();
-
-        $this->assertInstanceOf(
-            LoggerInterface::class,
-            $container->getLogger()
-        );
-    }
 }

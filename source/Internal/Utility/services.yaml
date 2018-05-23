@@ -1,0 +1,10 @@
+parameters:
+  utility_path: OxidEsales\EshopCommunity\Internal\Utility
+
+services:
+  OxidEsales\Eshop\Core\Config:
+    class: OxidEsales\Eshop\Core\Config
+    factory: ['OxidEsales\Eshop\Core\Registry', getConfig]
+  OxidEsales\EshopCommunity\Internal\Utility\ContextInterface:
+    class: %utility_path%\Context
+    autowire: true

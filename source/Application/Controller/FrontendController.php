@@ -15,6 +15,7 @@ use oxDb;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewAndRatingBridgeInterface;
 use oxManufacturer;
 use oxManufacturerList;
 use oxPrice;
@@ -23,6 +24,7 @@ use oxRegistry;
 use oxShop;
 use oxVendor;
 use oxViewConfig;
+use Psr\Container\ContainerInterface;
 use stdClass;
 
 // view indexing state for search engines:
@@ -439,7 +441,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         if ($user) {
             $count = $this
                 ->getContainer()
-                ->getUserReviewAndRatingBridge()
+                ->get(UserReviewAndRatingBridgeInterface::class)
                 ->getReviewAndRatingListCount($user->getId());
         }
 
@@ -3021,10 +3023,10 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     }
 
     /**
-     * @return \OxidEsales\EshopCommunity\Internal\Application\Container
+     * @return ContainerInterface
      */
     private function getContainer()
     {
-        return \OxidEsales\EshopCommunity\Internal\Application\Container::getInstance();
+        return \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getContainer();
     }
 }

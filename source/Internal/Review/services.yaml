@@ -1,0 +1,62 @@
+parameters:
+  review_path: OxidEsales\EshopCommunity\Internal\Review
+
+services:
+
+  oxid_esales.review.product_rating_mapper:
+    class: %review_path%\DataMapper\ProductRatingDataMapper
+  oxid_esales.review.rating_mapper:
+    class: %review_path%\DataMapper\RatingDataMapper
+  oxid_esales.review.review_mapper:
+    class: %review_path%\DataMapper\ReviewDataMapper
+
+  OxidEsales\EshopCommunity\Internal\Review\Dao\ProductRatingDaoInterface:
+    class: %review_path%\Dao\ProductRatingDao
+    arguments:
+      $queryBuilderFactory: '@OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface'
+      $mapper: '@oxid_esales.review.product_rating_mapper'
+  OxidEsales\EshopCommunity\Internal\Review\Dao\RatingDaoInterface:
+    class: %review_path%\Dao\RatingDao
+    arguments:
+      $queryBuilderFactory: '@OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface'
+      $mapper: '@oxid_esales.review.rating_mapper'
+  OxidEsales\EshopCommunity\Internal\Review\Dao\ReviewDaoInterface:
+    class: %review_path%\Dao\ReviewDao
+    arguments:
+      $queryBuilderFactory: '@OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface'
+      $mapper: '@oxid_esales.review.review_mapper'
+
+  OxidEsales\EshopCommunity\Internal\Review\Service\UserRatingServiceInterface:
+    class: %review_path%\Service\UserRatingService
+    autowire: true
+  OxidEsales\EshopCommunity\Internal\Review\Service\UserReviewServiceInterface:
+    class: %review_path%\Service\UserReviewService
+    autowire: true
+  OxidEsales\EshopCommunity\Internal\Review\Service\ReviewAndRatingMergingServiceInterface:
+    class: %review_path%\Service\ReviewAndRatingMergingService
+    autowire: true
+  OxidEsales\EshopCommunity\Internal\Review\Service\UserReviewAndRatingServiceInterface:
+    class: %review_path%\Service\UserReviewAndRatingService
+    autowire: true
+  OxidEsales\EshopCommunity\Internal\Review\Service\RatingCalculatorServiceInterface:
+    class: %review_path%\Service\RatingCalculatorService
+  OxidEsales\EshopCommunity\Internal\Review\Service\ProductRatingServiceInterface:
+    class: %review_path%\Service\ProductRatingService
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewBridgeInterface:
+    class: %review_path%\Bridge\UserReviewBridge
+    public: true
+    autowire: true
+  OxidEsales\EshopCommunity\Internal\Review\Bridge\UserRatingBridgeInterface:
+    class: %review_path%\Bridge\UserRatingBridge
+    public: true
+    autowire: true
+  OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridgeInterface:
+    class: %review_path%\Bridge\ProductRatingBridge
+    public: true
+    autowire: true
+  OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewAndRatingBridgeInterface:
+    class: %review_path%\Bridge\UserReviewAndRatingBridge
+    public: true
+    autowire: true

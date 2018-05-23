@@ -1,0 +1,8 @@
+services:
+
+  Doctrine\DBAL\Connection:
+    factory: ['OxidEsales\EshopCommunity\Internal\Common\Factory\ConnectionFactory', get]
+    class: Doctrine\DBAL\Connection
+  OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactory
+    autowire: true

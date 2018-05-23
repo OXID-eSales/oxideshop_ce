@@ -420,7 +420,11 @@ class BasketReservationStockUpdateTest extends \OxidTestCase
      */
     private function createOrder()
     {
-        $order = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('validateDeliveryAddress', '_sendOrderByEmail'));
+        $order = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array(
+            'validateDeliveryAddress',
+            '_sendOrderByEmail',
+            'validatePayment',
+        ));
         // sending order by email is always successful for tests
         $order->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(1));
         //mocked to circumvent delivery address change md5 check from requestParameter

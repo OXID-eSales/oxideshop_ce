@@ -10,6 +10,8 @@ use oxArticleHelper;
 use \oxdeliverylist;
 use oxEmailHelper;
 use \oxField;
+use OxidEsales\Eshop\Application\Model\Payment;
+use OxidEsales\Eshop\Core\UtilsObject;
 use oxOrder;
 use \stdClass;
 use \oxDb;
@@ -295,6 +297,17 @@ class OrderTest extends \OxidTestCase
 
     public function testValidatePayment()
     {
+        $paymentModel = $this
+            ->getMockBuilder(Payment::class)
+            ->setMethods(['isValidPayment'])
+            ->getMock();
+
+        $paymentModel
+            ->method('isValidPayment')
+            ->willReturn(true);
+
+        UtilsObject::setClassInstance(Payment::class, $paymentModel);
+
         $oOrder = oxNew('oxorder');
 
         // non existing payment

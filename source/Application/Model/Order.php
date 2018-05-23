@@ -8,11 +8,11 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
 use oxArticleInputException;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use oxNoArticleException;
 use oxOutOfStockException;
 use oxField;
-use oxRegistry;
-use oxDb;
+use OxidEsales\Eshop\Application\Model\Payment as EshopPayment;
 
 /**
  * Order manager.
@@ -2115,16 +2115,9 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function validatePayment($oBasket)
     {
-        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
+        $paymentId = $oBasket->getPaymentId();
 
-        $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
-        $sTable = $oPayment->getViewName();
-
-        $sQ = "select 1 from {$sTable} where {$sTable}.oxid=" .
-              $masterDb->quote($oBasket->getPaymentId()) . " and " . $oPayment->getSqlActiveSnippet();
-
-        if (!$masterDb->getOne($sQ)) {
+        if (!$this->isValidPaymentId($paymentId) || !$this->isValidPayment($oBasket)) {
             return self::ORDER_STATE_INVALIDPAYMENT;
         }
     }
@@ -2258,5 +2251,60 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         return $this->_sShipTrackUrl;
+    }
+
+    /**
+     * Returns true if paymentId is valid.
+     *
+     * @param int $paymentId
+     *
+     * @return bool
+     */
+    private function isValidPaymentId($paymentId)
+    {
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = DatabaseProvider::getMaster();
+
+        $paymentModel = oxNew(EshopPayment::class);
+        $tableName = $paymentModel->getViewName();
+
+        $sql = "
+            select
+                1 
+            from 
+                {$tableName}
+            where 
+                {$tableName}.oxid = {$masterDb->quote($paymentId)}
+                and {$paymentModel->getSqlActiveSnippet()}
+        ";
+
+        return (bool) $masterDb->getOne($sql);
+    }
+
+    /**
+     * Returns true if payment is valid.
+     *
+     * @param \OxidEsales\Eshop\Application\Model\Basket $basket
+     *
+     * @return bool
+     */
+    private function isValidPayment($basket)
+    {
+        $paymentModel = oxNew(EshopPayment::class);
+        $session = $this->getSession();
+
+        $dynValue = $session->getVariable('dynvalue');
+        $shopId = $this->getConfig()->getShopId();
+        $user = $this->getUser();
+        $basketPrice = $basket->getPriceForPayment();
+        $shipSetId = $session->getVariable('sShipSet');
+
+        return $paymentModel->isValidPayment(
+            $dynValue,
+            $shopId,
+            $user,
+            $basketPrice,
+            $shipSetId
+        );
     }
 }

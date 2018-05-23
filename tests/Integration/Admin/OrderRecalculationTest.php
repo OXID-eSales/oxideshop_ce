@@ -8,9 +8,10 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Admin;
 use oxBasket;
 use oxDb;
 use oxField;
+use OxidEsales\Eshop\Application\Model\Order;
+use OxidEsales\Eshop\Core\UtilsObject;
 use oxOrder;
 use oxRegistry;
-use oxUtilsObject;
 
 class OrderRecalculationTest extends \OxidTestCase
 {
@@ -446,7 +447,11 @@ class OrderRecalculationTest extends \OxidTestCase
      */
     private function createOrder()
     {
-        $order = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('validateDeliveryAddress', '_sendOrderByEmail'));
+        $order = $this->getMock(Order::class, array(
+            'validateDeliveryAddress',
+            '_sendOrderByEmail',
+            'validatePayment',
+        ));
         // sending order by email is always successful for tests
         $order->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(1));
         //mocked to circumvent delivery address change md5 check from requestParameter

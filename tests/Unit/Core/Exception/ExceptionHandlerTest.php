@@ -34,11 +34,10 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testExceptionHandlerReportsExceptionInDebugMode($exception)
     {
         $debug = true;
-        $logFileName = basename(OX_LOG_FILE);
-        /** @var ExceptionHandler|\PHPUnit_Framework_MockObject_MockObject $exceptionHandlerMock */
+
         $exceptionHandlerMock = $this->getMock(
             ExceptionHandler::class,
-            ['displayDebugMessage'], // Mock rendering of message in order not to print anything to the console
+            ['displayDebugMessage'],
             [$debug]
         );
         $exceptionHandlerMock->expects($this->once())->method('displayDebugMessage');
@@ -46,18 +45,12 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         try {
             $exceptionHandlerMock->handleUncaughtException($exception);
         } catch (\Exception $e) {
-            // Lets try to delete an possible left over file
-            if (file_exists($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $logFileName)) {
-                unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $logFileName);
-            }
             $this->fail('handleUncaughtException() throws an exception.');
         }
-        if (!file_exists($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $logFileName)) {
-            $this->fail('No log file written');
-        }
-        $logFileContent = file_get_contents($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $logFileName);
-        unlink($this->getConfig()->getConfigParam('sShopDir') . 'log/' . $logFileName); // delete file first as assert may return out this function
-        /** Test if the exception message is found in the log file */
+
+        $logFileContent = file_get_contents(OX_LOG_FILE);
+        file_put_contents(OX_LOG_FILE, '');
+
         $this->assertContains($this->message, $logFileContent);
     }
 

@@ -2290,8 +2290,11 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     private function isValidPayment($basket)
     {
-        $paymentModel = oxNew(EshopPayment::class);
         $session = $this->getSession();
+
+        $paymentId = $session->getVariable('paymentid');
+        $paymentModel = oxNew(EshopPayment::class);
+        $paymentModel->load($paymentId);
 
         $dynValue = $session->getVariable('dynvalue');
         $shopId = $this->getConfig()->getShopId();

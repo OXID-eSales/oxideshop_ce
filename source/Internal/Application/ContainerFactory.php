@@ -26,22 +26,18 @@ class ContainerFactory
     /**
      * @var \Symfony\Component\DependencyInjection\Container
      */
-    private static $symfonyContainer;
-    /**
-     * @var ContainerWrapper
-     */
-    private static $container = null;
+    private static $symfonyContainer = null;
 
     /**
      * @return ContainerInterface
      */
     public static function getContainer()
     {
-        if (ContainerFactory::$container === null) {
+        if (ContainerFactory::$symfonyContainer === null) {
             ContainerFactory::initializeContainer();
         }
 
-        return ContainerFactory::$container;
+        return new ContainerWrapper(ContainerFactory::$symfonyContainer);
     }
 
     private static function initializeContainer() {
@@ -59,7 +55,15 @@ class ContainerFactory
 
         require_once ContainerFactory::$containerCache;
         ContainerFactory::$symfonyContainer = new \ProjectServiceContainer();
-        ContainerFactory::$container = new ContainerWrapper(ContainerFactory::$symfonyContainer);
+
+    }
+
+    private static function createAndCompileSymfonyContainer() {
+
+        ContainerFactory::$symfonyContainer = new ContainerBuilder();
+        $loader = new YamlFileLoader(ContainerFactory::$symfonyContainer, new FileLocator(__DIR__));
+        $loader->load('services.yaml');
+        ContainerFactory::$symfonyContainer->compile();
 
     }
 
@@ -70,13 +74,4 @@ class ContainerFactory
 
     }
 
-    private static function createAndCompileSymfonyContainer() {
-
-        ContainerFactory::$symfonyContainer = new ContainerBuilder();
-        $loader = new YamlFileLoader(ContainerFactory::$symfonyContainer, new FileLocator(__DIR__));
-        $loader->load('services.yaml');
-        ContainerFactory::$symfonyContainer->compile();
-        ContainerFactory::$container = new ContainerWrapper(ContainerFactory::$symfonyContainer);
-
-    }
 }

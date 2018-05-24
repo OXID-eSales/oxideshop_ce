@@ -4,8 +4,9 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Application;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Application;
 
+use Monolog\Logger;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserRatingBridgeInterface;
@@ -53,6 +54,16 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
                 [UserReviewBridgeInterface::class],
                 [LoggerInterface::class]];
 
+    }
+
+    /**
+     * Checks that a private service may not be accessed
+     */
+    public function testPrivateServices() {
+
+        $this->setExpectedException(\Exception::class, 'You have requested a non-existent service "monolog\logger".');
+
+        $this->container->get(Logger::class);
     }
 
 }

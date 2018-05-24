@@ -5,6 +5,8 @@ services:
   OxidEsales\Eshop\Core\Config:
     class: OxidEsales\Eshop\Core\Config
     factory: ['OxidEsales\Eshop\Core\Registry', getConfig]
+    public: false
   OxidEsales\EshopCommunity\Internal\Utility\ContextInterface:
     class: %utility_path%\Context
     autowire: true
+    public: false

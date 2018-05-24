@@ -38,4 +38,4 @@
 .DS_Store
 
 # DI cache
-/source/Interal/Application/containercache.php
+/source/Internal/Application/containercache.php

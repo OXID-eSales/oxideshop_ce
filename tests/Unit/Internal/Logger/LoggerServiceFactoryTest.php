@@ -23,12 +23,12 @@ class LoggerServiceFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
 
-    public function testAnExceptionIsThrownIfLogLevelIsNotConfigured()
+    public function testAnExceptionIsThrownIfLogLevelIsWrong()
     {
         $this->setExpectedException(\InvalidArgumentException::class);
 
         $context = new ContextStub();
-        $context->setLogLevel(NULL);
+        $context->setLogLevel('wrongLogLevel');
 
         $loggerServiceFactory = new LoggerServiceFactory($context);
 

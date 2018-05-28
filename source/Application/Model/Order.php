@@ -7,10 +7,8 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
-use oxArticleInputException;
-use oxNoArticleException;
-use oxOutOfStockException;
 use oxField;
+use OxidEsales\Eshop\Core\Price as ShopPrice;
 
 /**
  * Order manager.
@@ -128,7 +126,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Order delivery costs price object
      *
-     * @var \oxprice
+     * @var ShopPrice
      */
     protected $_oDelPrice = null;
 
@@ -149,21 +147,21 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Order wrapping costs price object
      *
-     * @var oxprice
+     * @var ShopPrice
      */
     protected $_oWrappingPrice = null;
 
     /**
      * Order gift card price object
      *
-     * @var oxprice
+     * @var ShopPrice
      */
     protected $_oGiftCardPrice = null;
 
     /**
      * Order payment costs price object
      *
-     * @var oxprice
+     * @var ShopPrice
      */
     protected $_oPaymentPrice = null;
 
@@ -351,7 +349,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Returns order delivery expenses price object
      *
-     * @return \oxprice
+     * @return ShopPrice
      */
     public function getOrderDeliveryPrice()
     {
@@ -369,7 +367,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Returns order wrapping expenses price object
      *
-     * @return \oxprice
+     * @return ShopPrice
      */
     public function getOrderWrappingPrice()
     {
@@ -387,7 +385,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Returns order wrapping expenses price object
      *
-     * @return oxprice
+     * @return ShopPrice
      */
     public function getOrderGiftCardPrice()
     {
@@ -406,7 +404,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Returns order payment expenses price object
      *
-     * @return oxprice
+     * @return ShopPrice
      */
     public function getOrderPaymentPrice()
     {
@@ -890,7 +888,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * deletes order and returns * error code 2.
      *
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket      basket object
-     * @param object                                              $oUserpayment user payment object
+     * @param object                                     $oUserpayment user payment object
      *
      * @return  integer 2 or an error code
      */
@@ -1172,9 +1170,9 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param object $oBasket basket object
      *
-     * @throws oxNoArticleException
-     * @throws oxArticleInputException
-     * @throws oxOutOfStockException
+     * @throws \OxidEsales\Eshop\Core\Exception\NoArticleException
+     * @throws \OxidEsales\Eshop\Core\Exception\ArticleInputException
+     * @throws \OxidEsales\Eshop\Core\Exception\OutOfStockException
      */
     public function validateStock($oBasket)
     {

@@ -2290,24 +2290,19 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     private function isValidPayment($basket)
     {
-        $session = $this->getSession();
-
-        $paymentId = $session->getVariable('paymentid');
+        $paymentId = $basket->getPaymentId();
         $paymentModel = oxNew(EshopPayment::class);
         $paymentModel->load($paymentId);
 
-        $dynValue = $session->getVariable('dynvalue');
+        $dynValue = $this->getPaymentType()->getDynValues();
         $shopId = $this->getConfig()->getShopId();
-        $user = $this->getUser();
-        $basketPrice = $basket->getPriceForPayment();
-        $shipSetId = $session->getVariable('sShipSet');
 
         return $paymentModel->isValidPayment(
             $dynValue,
             $shopId,
-            $user,
-            $basketPrice,
-            $shipSetId
+            $this->getUser(),
+            $basket->getPriceForPayment(),
+            $basket->getShippingId()
         );
     }
 }

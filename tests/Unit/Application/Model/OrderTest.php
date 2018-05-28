@@ -10,7 +10,9 @@ use oxArticleHelper;
 use \oxdeliverylist;
 use oxEmailHelper;
 use \oxField;
+use OxidEsales\Eshop\Application\Model\Order;
 use OxidEsales\Eshop\Application\Model\Payment;
+use OxidEsales\Eshop\Application\Model\UserPayment;
 use OxidEsales\Eshop\Core\UtilsObject;
 use oxOrder;
 use \stdClass;
@@ -308,20 +310,27 @@ class OrderTest extends \OxidTestCase
 
         UtilsObject::setClassInstance(Payment::class, $paymentModel);
 
-        $oOrder = oxNew('oxorder');
+        $order = $this->getMockBuilder(Order::class)
+            ->setMethods(['getPaymentType'])
+            ->getMock();
+        $order
+            ->method('getPaymentType')
+            ->willReturn(
+                oxNew(UserPayment::class)
+            );
 
         // non existing payment
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array("getPaymentId"));
-        $oBasket->expects($this->once())->method("getPaymentId")->will($this->returnValue("xxx"));
+        $oBasket->method("getPaymentId")->will($this->returnValue("xxx"));
 
-        $this->assertEquals(oxOrder::ORDER_STATE_INVALIDPAYMENT, $oOrder->validatePayment($oBasket));
+        $this->assertEquals(oxOrder::ORDER_STATE_INVALIDPAYMENT, $order->validatePayment($oBasket));
 
         // existing payment
         $sPaymentId = oxDb::getDb()->getOne('select oxid from oxpayments where oxactive = 1');
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array("getPaymentId"));
-        $oBasket->expects($this->once())->method("getPaymentId")->will($this->returnValue($sPaymentId));
+        $oBasket->method("getPaymentId")->will($this->returnValue($sPaymentId));
 
-        $this->assertNull($oOrder->validatePayment($oBasket));
+        $this->assertNull($order->validatePayment($oBasket));
     }
 
     /**

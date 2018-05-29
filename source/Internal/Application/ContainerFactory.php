@@ -8,70 +8,113 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Application;
 
-
+use OxidEsales\EshopCommunity\Internal\Application\PSR11Compliance\ContainerWrapper;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
+/**
+ * Class ContainerFactory
+ *
+ * Class to generate a PSR11 complient DI container
+ *
+ * @package OxidEsales\EshopCommunity\Internal\Application
+ */
 class ContainerFactory
 {
+
+    private static $instance = null;
 
     /**
      * @var string
      */
-    private static $containerCache = __DIR__ .'/containercache.php';
+    public static $containerCache = __DIR__ .'/containercache.php';
 
     /**
      * @var \Symfony\Component\DependencyInjection\Container
      */
-    private static $symfonyContainer = null;
+    private $symfonyContainer = null;
+
+    /**
+     * ContainerFactory constructor.
+     *
+     * Make the constructor private
+     */
+    private function __construct()
+    {
+    }
 
     /**
      * @return ContainerInterface
      */
-    public static function getContainer()
+    public function getContainer()
     {
-        if (ContainerFactory::$symfonyContainer === null) {
-            ContainerFactory::initializeContainer();
+        if ($this->symfonyContainer === null) {
+            $this->initializeContainer();
         }
 
-        return new ContainerWrapper(ContainerFactory::$symfonyContainer);
+        return new ContainerWrapper($this->symfonyContainer);
     }
 
-    private static function initializeContainer() {
+    /**
+     * Loads container from cache if available, otherwise
+     * create the container from scratch.
+     */
+    private function initializeContainer()
+    {
 
         if (file_exists(ContainerFactory::$containerCache)) {
-            ContainerFactory::loadContainerFromCache();
+            $this->loadContainerFromCache(ContainerFactory::$containerCache);
         } else {
-            ContainerFactory::createAndCompileSymfonyContainer();
-            ContainerFactory::saveContainerToCache();
+            $this->createAndCompileSymfonyContainer();
+            $this->saveContainerToCache(ContainerFactory::$containerCache);
         }
-
     }
 
-    private static function loadContainerFromCache() {
-
-        require_once ContainerFactory::$containerCache;
-        ContainerFactory::$symfonyContainer = new \ProjectServiceContainer();
-
+    /**
+     * @param string $cachefile
+     */
+    private function loadContainerFromCache($cachefile)
+    {
+        include_once $cachefile;
+        $this->symfonyContainer = new \ProjectServiceContainer();
     }
 
-    private static function createAndCompileSymfonyContainer() {
+    /**
+     * Builds the container from services.yaml and compiles it
+     */
+    private function createAndCompileSymfonyContainer()
+    {
 
-        ContainerFactory::$symfonyContainer = new ContainerBuilder();
-        $loader = new YamlFileLoader(ContainerFactory::$symfonyContainer, new FileLocator(__DIR__));
+        $this->symfonyContainer = new ContainerBuilder();
+        $loader = new YamlFileLoader($this->symfonyContainer, new FileLocator(__DIR__));
         $loader->load('services.yaml');
-        ContainerFactory::$symfonyContainer->compile();
-
+        $this->symfonyContainer->compile();
     }
 
-    private static function saveContainerToCache() {
+    /**
+     * @param string $cachefile
+     *
+     * Dumps the compiled container to the cachefile
+     */
+    private function saveContainerToCache($cachefile)
+    {
 
-        $dumper = new PhpDumper(ContainerFactory::$symfonyContainer);
-        file_put_contents(ContainerFactory::$containerCache, $dumper->dump());
-
+        $dumper = new PhpDumper($this->symfonyContainer);
+        file_put_contents($cachefile, $dumper->dump());
     }
 
+    /**
+     * @return ContainerFactory
+     */
+    public static function getInstance()
+    {
+
+        if (self::$instance === null) {
+            self::$instance = new ContainerFactory();
+        }
+        return self::$instance;
+    }
 }

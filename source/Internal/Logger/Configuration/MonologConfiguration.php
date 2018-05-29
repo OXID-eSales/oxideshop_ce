@@ -31,7 +31,7 @@ class MonologConfiguration implements MonologConfigurationInterface
     /**
      * MonologConfiguration constructor.
      *
-     * @param string $loggerName
+     * @param string  $loggerName
      * @param Context $context
      */
     public function __construct($loggerName, $context)

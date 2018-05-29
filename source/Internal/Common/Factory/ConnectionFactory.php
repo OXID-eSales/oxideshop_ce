@@ -8,12 +8,27 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Common\Factory;
 
+use Doctrine\DBAL\Connection;
 use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
 use OxidEsales\Eshop\Core\DatabaseProvider;
-use Ray\Di\ProviderInterface;
 
+/**
+ * Class ConnectionFactory
+ *
+ * Factory for the Symfony DI container to fetch the database
+ * connection.
+ *
+ * @package OxidEsales\EshopCommunity\Internal\Common\Factory
+ */
 class ConnectionFactory
 {
+
+    /**
+     * Uses reflection to fetch the database connection from
+     * the DatabaseProvider.
+     *
+     * @return Connection
+     */
     public static function get()
     {
 

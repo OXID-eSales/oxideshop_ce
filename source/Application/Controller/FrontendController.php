@@ -3023,10 +3023,12 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     }
 
     /**
+     * @internal
+     *
      * @return ContainerInterface
      */
-    private function getContainer()
+    protected function getContainer()
     {
-        return \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getContainer();
+        return \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
     }
 }

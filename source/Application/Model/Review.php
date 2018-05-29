@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use OxidEsales\EshopCommunity\Internal\Application\Container;
+use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewAndRatingBridgeInterface;
 
 /**
  * Article review manager.
@@ -171,15 +171,7 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         return $this
             ->getContainer()
-            ->getUserReviewAndRatingBridge()
+            ->get(UserReviewAndRatingBridgeInterface::class)
             ->getReviewAndRatingList($userId);
-    }
-
-    /**
-     * @return Container
-     */
-    private function getContainer()
-    {
-        return Container::getInstance();
     }
 }

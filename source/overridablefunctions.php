@@ -204,8 +204,8 @@ if (!function_exists('getLogger')) {
      */
     function getLogger()
     {
-        $container = Container::getInstance();
+        $container = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
 
-        return $container->getLogger();
+        return $container->get(\Psr\Log\LoggerInterface::class);
     }
 }

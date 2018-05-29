@@ -17,8 +17,10 @@ DEFINE('ACTION_UPDATE_STOCK', 4);
 
 use Exception;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use oxObjectException;
 use \OxidEsales\Eshop\Core\Field;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class BaseModel
@@ -1609,5 +1611,15 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     private function isPropertyField($name)
     {
         return $this->$name instanceof Field;
+    }
+
+    /**
+     * @internal
+     *
+     * @return ContainerInterface
+     */
+    protected function getContainer()
+    {
+        return ContainerFactory::getInstance()->getContainer();
     }
 }

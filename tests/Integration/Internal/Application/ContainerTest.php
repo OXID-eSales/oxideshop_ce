@@ -102,6 +102,8 @@ class ProjectServiceContainer extends Container
 }
 EOT;
         file_put_contents(ContainerFactory::$containerCache, $cachedummy);
+        $dummyCopy = file_get_contents(ContainerFactory::$containerCache);
+        $this->assertEquals($cachedummy, $dummyCopy);
 
         // Fetch a new instance of the container
         $class = new \ReflectionClass(ContainerFactory::class);

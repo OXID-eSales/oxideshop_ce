@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Logger\Factory;
 use OxidEsales\EshopCommunity\Internal\Logger\Configuration\MonologConfiguration;
 use OxidEsales\EshopCommunity\Internal\Logger\Factory\MonologLoggerFactory;
 use OxidEsales\EshopCommunity\Internal\Logger\Validator\PsrLoggerConfigurationValidator;
+use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
@@ -16,10 +17,10 @@ class MonologFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreation()
     {
+        $context = new ContextStub();
+
         $configuration = new MonologConfiguration(
-            'testLogger',
-            'pathString',
-            LogLevel::ERROR
+            'testLogger', $context
         );
 
         $validator = new PsrLoggerConfigurationValidator();

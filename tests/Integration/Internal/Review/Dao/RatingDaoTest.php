@@ -6,7 +6,10 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Review\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Review\ServiceFactory\ReviewServiceFactory;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserRatingBridge;
+use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserRatingBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Review\Service\UserRatingService;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use OxidEsales\Eshop\Application\Model\Rating as EshopRating;
 use OxidEsales\EshopCommunity\Internal\Review\DataObject\Rating;
@@ -116,8 +119,13 @@ class RatingDaoTest extends UnitTestCase
 
     private function getRatingDao()
     {
-        $reviewServiceFactory = new ReviewServiceFactory();
+        $bridge = ContainerFactory::getInstance()->getContainer()->get(UserRatingBridgeInterface::class);
+        $serviceProperty = new \ReflectionProperty(UserRatingBridge::class, 'userRatingService');
+        $serviceProperty->setAccessible(true);
+        $service = $serviceProperty->getValue($bridge);
+        $daoProperty = new \ReflectionProperty(UserRatingService::class, 'ratingDao');
+        $daoProperty->setAccessible(true);
 
-        return $reviewServiceFactory->getRatingDao();
+        return $daoProperty->getValue($service);
     }
 }

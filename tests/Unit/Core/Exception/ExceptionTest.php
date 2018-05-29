@@ -42,7 +42,7 @@ class ExceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
             return;
         }
         $file = file_get_contents(OX_LOG_FILE);
-        unlink(OX_LOG_FILE);
+        file_put_contents(OX_LOG_FILE, '');
 
         $this->assertContains($message, $file);
     }

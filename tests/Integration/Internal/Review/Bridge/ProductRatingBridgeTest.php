@@ -9,7 +9,12 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Review\Bridge;
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Application\Model\Rating;
 use OxidEsales\Eshop\Core\Field;
-use OxidEsales\EshopCommunity\Internal\Review\ServiceFactory\ReviewServiceFactory;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridge;
+use OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Review\Dao\ProductRatingDao;
+use OxidEsales\EshopCommunity\Internal\Review\Dao\ProductRatingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Review\Service\ProductRatingService;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 class ProductRatingBridgeTest extends UnitTestCase
@@ -66,15 +71,26 @@ class ProductRatingBridgeTest extends UnitTestCase
 
     private function getProductRatingBridge()
     {
-        $reviewServiceFactory = new ReviewServiceFactory();
-
-        return $reviewServiceFactory->getProductRatingBridge();
+        return ContainerFactory::getInstance()->getContainer()->get(ProductRatingBridgeInterface::class);
     }
 
+    /**
+     * Accessing the dao is difficult, because it is a private service.
+     * In newer versions of the Symfony Container (since 4.1) this may be
+     * done more elegant.
+     *
+     * @return ProductRatingDao
+     */
     private function getProductRatingDao()
     {
-        $reviewServiceFactory = new ReviewServiceFactory();
+        $bridge = $this->getProductRatingBridge();
+        $serviceProperty = new \ReflectionProperty(ProductRatingBridge::class, 'productRatingService');
+        $serviceProperty->setAccessible(true);
+        $service = $serviceProperty->getValue($bridge);
+        $daoProperty = new \ReflectionProperty(ProductRatingService::class, 'productRatingDao');
+        $daoProperty->setAccessible(true);
 
-        return $reviewServiceFactory->getProductRatingDao();
+        return $daoProperty->getValue($service);
+
     }
 }

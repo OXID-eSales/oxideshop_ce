@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 use Exception;
 use oxArticleInputException;
 use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Registry;
 use oxNoArticleException;
 use oxOutOfStockException;
 use oxField;
@@ -954,25 +955,13 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _setPayment($sPaymentid)
     {
-        // copying payment info fields
-        $aDynvalue = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('dynvalue');
-        $aDynvalue = $aDynvalue ? $aDynvalue : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('dynvalue');
-
-        // loading payment object
         $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
 
         if (!$oPayment->load($sPaymentid)) {
             return null;
         }
 
-        // #756M Preserve already stored payment information
-        if (!$aDynvalue && ($oUserpayment = $this->getPaymentType())) {
-            if (is_array($aStoredDynvalue = $oUserpayment->getDynValues())) {
-                foreach ($aStoredDynvalue as $oVal) {
-                    $aDynvalue[$oVal->name] = $oVal->value;
-                }
-            }
-        }
+        $aDynvalue = $this->getDynamicValues();
 
         $oPayment->setDynValues(\OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($oPayment->oxpayments__oxvaldesc->value));
 
@@ -2311,10 +2300,31 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     private function getDynamicValues()
     {
-        if ($this->getPaymentType()) {
-            $dynamicValues = $this->getPaymentType()->getDynValues();
-        } else {
-            $dynamicValues = $this->getSession()->getVariable('dynvalue');
+        $dynamicValues = $this->getSession()->getVariable('dynvalue');
+
+        if (!$dynamicValues) {
+            $dynamicValues = Registry::getRequest()->getRequestParameter('dynvalue');
+        }
+
+        if (!$dynamicValues && $this->getPaymentType()) {
+            $dynamicValues = $this->getDynamicValuesFromPaymentType();
+        }
+
+        return $dynamicValues;
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getDynamicValuesFromPaymentType()
+    {
+        $dynamicValues = null;
+        $dynamicValuesList = $this->getPaymentType()->getDynValues();
+
+        if (is_array($dynamicValuesList)) {
+            foreach ($dynamicValuesList as $value) {
+                $dynamicValues[$value->name] = $value->value;
+            }
         }
 
         return $dynamicValues;

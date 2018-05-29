@@ -2294,15 +2294,29 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         $paymentModel = oxNew(EshopPayment::class);
         $paymentModel->load($paymentId);
 
-        $dynValue = $this->getPaymentType()->getDynValues();
+        $dynamicValues = $this->getDynamicValues();
         $shopId = $this->getConfig()->getShopId();
 
         return $paymentModel->isValidPayment(
-            $dynValue,
+            $dynamicValues,
             $shopId,
             $this->getUser(),
             $basket->getPriceForPayment(),
             $basket->getShippingId()
         );
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getDynamicValues()
+    {
+        if ($this->getPaymentType()) {
+            $dynamicValues = $this->getPaymentType()->getDynValues();
+        } else {
+            $dynamicValues = $this->getSession()->getVariable('dynvalue');
+        }
+
+        return $dynamicValues;
     }
 }

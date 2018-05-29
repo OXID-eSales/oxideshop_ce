@@ -10,6 +10,7 @@ use oxArticleHelper;
 use \oxdeliverylist;
 use oxEmailHelper;
 use \oxField;
+use OxidEsales\Eshop\Application\Model\Basket;
 use OxidEsales\Eshop\Application\Model\Order;
 use OxidEsales\Eshop\Application\Model\Payment;
 use OxidEsales\Eshop\Application\Model\UserPayment;
@@ -297,40 +298,86 @@ class OrderTest extends \OxidTestCase
         $this->assertNull($oOrder->validateDelivery($oBasket));
     }
 
-    public function testValidatePayment()
+    public function testValidatePaymentWhenPaymentIsValid()
     {
-        $paymentModel = $this
-            ->getMockBuilder(Payment::class)
-            ->setMethods(['isValidPayment'])
-            ->getMock();
-
+        $paymentModel = $this->getMock(Payment::class, ['isValidPayment']);
         $paymentModel
             ->method('isValidPayment')
             ->willReturn(true);
 
         UtilsObject::setClassInstance(Payment::class, $paymentModel);
 
-        $order = $this->getMockBuilder(Order::class)
-            ->setMethods(['getPaymentType'])
-            ->getMock();
+        $order = $this->getMock(Order::class, ['getPaymentType']);
         $order
             ->method('getPaymentType')
             ->willReturn(
                 oxNew(UserPayment::class)
             );
 
-        // non existing payment
-        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array("getPaymentId"));
-        $oBasket->method("getPaymentId")->will($this->returnValue("xxx"));
+        $paymentId = oxDb::getDb()->getOne('select oxid from oxpayments where oxactive = 1');
 
-        $this->assertEquals(oxOrder::ORDER_STATE_INVALIDPAYMENT, $order->validatePayment($oBasket));
+        $basket = $this->getMock(Basket::class, array("getPaymentId"));
+        $basket
+            ->method("getPaymentId")
+            ->willReturn($paymentId);
 
-        // existing payment
-        $sPaymentId = oxDb::getDb()->getOne('select oxid from oxpayments where oxactive = 1');
-        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array("getPaymentId"));
-        $oBasket->method("getPaymentId")->will($this->returnValue($sPaymentId));
+        $this->assertNull($order->validatePayment($basket));
+    }
 
-        $this->assertNull($order->validatePayment($oBasket));
+    public function testValidatePaymentWithWrongPaymentId()
+    {
+        $paymentModel = $this->getMock(Payment::class, ['isValidPayment']);
+        $paymentModel
+            ->method('isValidPayment')
+            ->willReturn(true);
+
+        UtilsObject::setClassInstance(Payment::class, $paymentModel);
+
+        $order = $this->getMock(Order::class, ['getPaymentType']);
+        $order
+            ->method('getPaymentType')
+            ->willReturn(
+                oxNew(UserPayment::class)
+            );
+
+        $basket = $this->getMock(Basket::class, array("getPaymentId"));
+        $basket
+            ->method("getPaymentId")
+            ->willReturn('wrongPaymentId');
+
+        $this->assertEquals(
+            oxOrder::ORDER_STATE_INVALIDPAYMENT,
+            $order->validatePayment($basket)
+        );
+    }
+
+    public function testValidatePaymentWhenPaymentIsInvalid()
+    {
+        $paymentModel = $this->getMock(Payment::class, ['isValidPayment']);
+        $paymentModel
+            ->method('isValidPayment')
+            ->willReturn(false);
+
+        UtilsObject::setClassInstance(Payment::class, $paymentModel);
+
+        $order = $this->getMock(Order::class, ['getPaymentType']);
+        $order
+            ->method('getPaymentType')
+            ->willReturn(
+                oxNew(UserPayment::class)
+            );
+
+        $paymentId = oxDb::getDb()->getOne('select oxid from oxpayments where oxactive = 1');
+
+        $basket = $this->getMock(Basket::class, array("getPaymentId"));
+        $basket
+            ->method("getPaymentId")
+            ->willReturn($paymentId);
+
+        $this->assertEquals(
+            oxOrder::ORDER_STATE_INVALIDPAYMENT,
+            $order->validatePayment($basket)
+        );
     }
 
     /**

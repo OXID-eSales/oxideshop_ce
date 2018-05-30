@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Application;
 
 use Monolog\Logger;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserRatingBridgeInterface;
@@ -25,8 +26,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        if (file_exists(ContainerFactory::$containerCache)){
-            unlink(ContainerFactory::$containerCache);
+        if (file_exists($this->getCacheFilePath())){
+            unlink($this->getCacheFilePath());
         }
 
         // Ensure that we always have a new instance
@@ -37,8 +38,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
-        if (file_exists(ContainerFactory::$containerCache)){
-            unlink(ContainerFactory::$containerCache);
+        if (file_exists($this->getCacheFilePath())){
+            unlink($this->getCacheFilePath());
         }
     }
 
@@ -102,8 +103,8 @@ class ProjectServiceContainer extends Container
     }
 }
 EOT;
-        file_put_contents(ContainerFactory::$containerCache, $cachedummy);
-        $dummyCopy = file_get_contents(ContainerFactory::$containerCache);
+        file_put_contents($this->getCacheFilePath(), $cachedummy);
+        $dummyCopy = file_get_contents($this->getCacheFilePath());
         $this->assertEquals($cachedummy, $dummyCopy);
 
         // Fetch a new instance of the container
@@ -120,6 +121,16 @@ EOT;
      */
     public function testCacheIsCreated()
     {
-        $this->assertTrue(file_exists(ContainerFactory::$containerCache));
+        $this->assertTrue(file_exists($this->getCacheFilePath()));
+    }
+
+    /**
+     * @return string
+     */
+    private function getCacheFilePath()
+    {
+        $compileDir = Registry::getConfig()->getConfigParam('sCompileDir');
+
+        return $compileDir . '/containercache.php';
     }
 }

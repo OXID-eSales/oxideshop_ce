@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Application;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Application\PSR11Compliance\ContainerWrapper;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Config\FileLocator;
@@ -26,11 +27,6 @@ class ContainerFactory
      * @var self
      */
     private static $instance = null;
-
-    /**
-     * @var string
-     */
-    public static $containerCache = __DIR__ .'/containercache.php';
 
     /**
      * @var \Symfony\Component\DependencyInjection\Container
@@ -64,11 +60,13 @@ class ContainerFactory
      */
     private function initializeContainer()
     {
-        if (file_exists(ContainerFactory::$containerCache)) {
-            $this->loadContainerFromCache(ContainerFactory::$containerCache);
+        $cacheFilePath = $this->getCacheFilePath();
+
+        if (file_exists($cacheFilePath)) {
+            $this->loadContainerFromCache($cacheFilePath);
         } else {
             $this->createAndCompileSymfonyContainer();
-            $this->saveContainerToCache(ContainerFactory::$containerCache);
+            $this->saveContainerToCache($cacheFilePath);
         }
     }
 
@@ -93,14 +91,26 @@ class ContainerFactory
     }
 
     /**
-     * @param string $cachefile
+     * Dumps the compiled container to the cachefile.
      *
-     * Dumps the compiled container to the cachefile
+     * @param string $cachefile
      */
     private function saveContainerToCache($cachefile)
     {
         $dumper = new PhpDumper($this->symfonyContainer);
         file_put_contents($cachefile, $dumper->dump());
+    }
+
+    /**
+     * @todo: move it to another place.
+     *
+     * @return string
+     */
+    private function getCacheFilePath()
+    {
+        $compileDir = Registry::getConfig()->getConfigParam('sCompileDir');
+
+        return $compileDir . '/containercache.php';
     }
 
     /**

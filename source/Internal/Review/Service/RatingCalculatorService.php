@@ -10,9 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use OxidEsales\EshopCommunity\Internal\Review\DataObject\Rating;
 
 /**
- * Class RatingCalculatorService
- * @internal
- * @package OxidEsales\EshopCommunity\Internal\Review\Service
+  * @internal
  */
 class RatingCalculatorService implements RatingCalculatorServiceInterface
 {

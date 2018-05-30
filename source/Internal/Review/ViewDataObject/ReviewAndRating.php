@@ -6,9 +6,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Review\ViewDataObject;
 
 /**
- * Class ReviewAndRating
- * @internal
- * @package OxidEsales\EshopCommunity\Internal\Review\ViewDataObject
+  * @internal
  */
 class ReviewAndRating
 {

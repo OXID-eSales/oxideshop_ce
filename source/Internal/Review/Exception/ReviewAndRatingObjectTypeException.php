@@ -7,9 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Review\Exception;
 
 /**
- * Class ReviewAndRatingTypeException
- * @internal
- * @package OxidEsales\EshopCommunity\Internal\Review\Exception
+  * @internal
  */
 class ReviewAndRatingObjectTypeException extends \Exception
 {

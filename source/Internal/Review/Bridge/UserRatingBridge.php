@@ -12,9 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Review\Exception\RatingPermissionExceptio
 use OxidEsales\Eshop\Application\Model\Rating;
 
 /**
- * Class UserRatingBridge
- * @internal
- * @package OxidEsales\EshopCommunity\Internal\Review\Bridge
+  * @internal
  */
 class UserRatingBridge implements UserRatingBridgeInterface
 {

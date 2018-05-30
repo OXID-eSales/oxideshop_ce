@@ -10,9 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use OxidEsales\EshopCommunity\Internal\Review\Dao\RatingDaoInterface;
 
 /**
- * Class UserRatingService
- * @internal
- * @package OxidEsales\EshopCommunity\Internal\Review\Service
+  * @internal
  */
 class UserRatingService implements UserRatingServiceInterface
 {

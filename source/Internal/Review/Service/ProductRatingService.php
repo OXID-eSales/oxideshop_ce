@@ -10,9 +10,7 @@ use OxidEsales\EshopCommunity\Internal\Review\Dao\RatingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Dao\ProductRatingDaoInterface;
 
 /**
- * Class ProductRatingService
- * @internal
- * @package OxidEsales\EshopCommunity\Internal\Review\Service
+  * @internal
  */
 class ProductRatingService implements ProductRatingServiceInterface
 {

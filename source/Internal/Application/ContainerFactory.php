@@ -1,13 +1,12 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: michael
- * Date: 22.05.18
- * Time: 15:03
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Internal\Application;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Application\PSR11Compliance\ContainerWrapper;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Config\FileLocator;
@@ -16,21 +15,15 @@ use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
- * Class ContainerFactory
- *
- * Class to generate a PSR11 complient DI container
- *
- * @package OxidEsales\EshopCommunity\Internal\Application
+  *
+ * @internal
  */
 class ContainerFactory
 {
-
-    private static $instance = null;
-
     /**
-     * @var string
+     * @var self
      */
-    public static $containerCache = __DIR__ .'/containercache.php';
+    private static $instance = null;
 
     /**
      * @var \Symfony\Component\DependencyInjection\Container
@@ -64,12 +57,13 @@ class ContainerFactory
      */
     private function initializeContainer()
     {
+        $cacheFilePath = $this->getCacheFilePath();
 
-        if (file_exists(ContainerFactory::$containerCache)) {
-            $this->loadContainerFromCache(ContainerFactory::$containerCache);
+        if (file_exists($cacheFilePath)) {
+            $this->loadContainerFromCache($cacheFilePath);
         } else {
             $this->createAndCompileSymfonyContainer();
-            $this->saveContainerToCache(ContainerFactory::$containerCache);
+            $this->saveContainerToCache($cacheFilePath);
         }
     }
 
@@ -87,7 +81,6 @@ class ContainerFactory
      */
     private function createAndCompileSymfonyContainer()
     {
-
         $this->symfonyContainer = new ContainerBuilder();
         $loader = new YamlFileLoader($this->symfonyContainer, new FileLocator(__DIR__));
         $loader->load('services.yaml');
@@ -95,15 +88,26 @@ class ContainerFactory
     }
 
     /**
-     * @param string $cachefile
+     * Dumps the compiled container to the cachefile.
      *
-     * Dumps the compiled container to the cachefile
+     * @param string $cachefile
      */
     private function saveContainerToCache($cachefile)
     {
-
         $dumper = new PhpDumper($this->symfonyContainer);
         file_put_contents($cachefile, $dumper->dump());
+    }
+
+    /**
+     * @todo: move it to another place.
+     *
+     * @return string
+     */
+    private function getCacheFilePath()
+    {
+        $compileDir = Registry::getConfig()->getConfigParam('sCompileDir');
+
+        return $compileDir . '/containercache.php';
     }
 
     /**
@@ -111,7 +115,6 @@ class ContainerFactory
      */
     public static function getInstance()
     {
-
         if (self::$instance === null) {
             self::$instance = new ContainerFactory();
         }

@@ -8,8 +8,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Application;
 
 use Monolog\Logger;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Application\PSR11Compliance\ContainerWrapper;
-use OxidEsales\EshopCommunity\Internal\Application\PSR11Compliance\NotFoundException;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewAndRatingBridgeInterface;
@@ -20,14 +18,13 @@ use Psr\Log\LoggerInterface;
 
 class ContainerTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var ContainerInterface
      */
     private $container;
 
-    public function setUp() {
-
+    public function setUp()
+    {
         if (file_exists(ContainerFactory::$containerCache)){
             unlink(ContainerFactory::$containerCache);
         }
@@ -36,7 +33,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $class = new \ReflectionClass(ContainerFactory::class);
         $factory = $class->newInstanceWithoutConstructor();
         $this->container = $factory->getContainer();
-
     }
 
     public function tearDown()
@@ -59,25 +55,30 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      *
      * @param $interface
      */
-    public function testConfiguration($interface) {
-        $this->assertInstanceOf($interface, $this->container->get($interface));
+    public function testConfiguration($interface)
+    {
+        $this->assertInstanceOf(
+            $interface,
+            $this->container->get($interface)
+        );
     }
 
-    public function interfaceProvider() {
-
-        return [[UserReviewAndRatingBridgeInterface::class],
-                [ProductRatingBridgeInterface::class],
-                [UserRatingBridgeInterface::class],
-                [UserReviewBridgeInterface::class],
-                [LoggerInterface::class]];
-
+    public function interfaceProvider()
+    {
+        return [
+            [UserReviewAndRatingBridgeInterface::class],
+            [ProductRatingBridgeInterface::class],
+            [UserRatingBridgeInterface::class],
+            [UserReviewBridgeInterface::class],
+            [LoggerInterface::class]
+        ];
     }
 
     /**
      * Checks that a private service may not be accessed
      */
-    public function testPrivateServices() {
-
+    public function testPrivateServices()
+    {
         $this->setExpectedException(NotFoundExceptionInterface::class);
 
         $this->container->get(Logger::class);
@@ -86,8 +87,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     /**
      * Checks that the cachefile is used if it exists
      */
-    public function testCacheIsUsed() {
-
+    public function testCacheIsUsed()
+    {
         // Prepare the dummy cache
         $cachedummy = <<<EOT
 <?php
@@ -117,10 +118,8 @@ EOT;
     /**
      * Checks that the cachefile has been created
      */
-    public function testCacheIsCreated() {
-
+    public function testCacheIsCreated()
+    {
         $this->assertTrue(file_exists(ContainerFactory::$containerCache));
-
     }
-
 }

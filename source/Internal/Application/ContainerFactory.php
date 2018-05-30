@@ -1,9 +1,7 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: michael
- * Date: 22.05.18
- * Time: 15:03
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Internal\Application;
@@ -24,7 +22,9 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
  */
 class ContainerFactory
 {
-
+    /**
+     * @var self
+     */
     private static $instance = null;
 
     /**
@@ -64,7 +64,6 @@ class ContainerFactory
      */
     private function initializeContainer()
     {
-
         if (file_exists(ContainerFactory::$containerCache)) {
             $this->loadContainerFromCache(ContainerFactory::$containerCache);
         } else {
@@ -87,7 +86,6 @@ class ContainerFactory
      */
     private function createAndCompileSymfonyContainer()
     {
-
         $this->symfonyContainer = new ContainerBuilder();
         $loader = new YamlFileLoader($this->symfonyContainer, new FileLocator(__DIR__));
         $loader->load('services.yaml');
@@ -101,7 +99,6 @@ class ContainerFactory
      */
     private function saveContainerToCache($cachefile)
     {
-
         $dumper = new PhpDumper($this->symfonyContainer);
         file_put_contents($cachefile, $dumper->dump());
     }
@@ -111,7 +108,6 @@ class ContainerFactory
      */
     public static function getInstance()
     {
-
         if (self::$instance === null) {
             self::$instance = new ContainerFactory();
         }

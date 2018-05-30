@@ -7,9 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Common\Exception;
 
 /**
- * Class InvalidObjectIdDaoException
- * @internal
- * @package OxidEsales\EshopCommunity\Internal\Exception
+  * @internal
  */
 class InvalidObjectIdDaoException extends \Exception
 {

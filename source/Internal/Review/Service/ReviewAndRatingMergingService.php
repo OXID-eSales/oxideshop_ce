@@ -12,9 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Review\DataObject\Review;
 use OxidEsales\EshopCommunity\Internal\Review\ViewDataObject\ReviewAndRating;
 
 /**
- * Class ReviewAndRatingMergingService
- * @internal
- * @package OxidEsales\EshopCommunity\Internal\Review\Service
+  * @internal
  */
 class ReviewAndRatingMergingService implements ReviewAndRatingMergingServiceInterface
 {

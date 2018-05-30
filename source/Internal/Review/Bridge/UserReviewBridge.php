@@ -12,9 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Review\Exception\ReviewPermissionExceptio
 use OxidEsales\Eshop\Application\Model\Review;
 
 /**
- * Class UserReviewBridge
- * @internal
- * @package OxidEsales\EshopCommunity\Internal\Review\Bridge
+  * @internal
  */
 class UserReviewBridge implements UserReviewBridgeInterface
 {

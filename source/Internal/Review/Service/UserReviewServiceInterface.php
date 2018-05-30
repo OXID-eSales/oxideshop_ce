@@ -11,7 +11,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Interface UserReviewServiceInterface
  * @internal
- * @package OxidEsales\EshopCommunity\Internal\Review\Service
  */
 interface UserReviewServiceInterface
 {

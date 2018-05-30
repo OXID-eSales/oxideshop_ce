@@ -14,9 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Review\Service\UserReviewAndRatingService
 use OxidEsales\EshopCommunity\Internal\Review\Exception\ReviewAndRatingObjectTypeException;
 
 /**
- * Class UserReviewAndRatingBridge
- * @internal
- * @package OxidEsales\EshopCommunity\Internal\Review\Bridge
+  * @internal
  */
 class UserReviewAndRatingBridge implements UserReviewAndRatingBridgeInterface
 {

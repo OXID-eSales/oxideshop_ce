@@ -1,9 +1,7 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: michael
- * Date: 18.04.18
- * Time: 13:38
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Internal\Common\Factory;
@@ -13,12 +11,10 @@ use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 
 /**
- * Class ConnectionFactory
- *
  * Factory for the Symfony DI container to fetch the database
  * connection.
  *
- * @package OxidEsales\EshopCommunity\Internal\Common\Factory
+ * @internal
  */
 class ConnectionFactory
 {

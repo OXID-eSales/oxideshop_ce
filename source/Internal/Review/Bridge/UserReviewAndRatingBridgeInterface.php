@@ -8,7 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Review\Bridge;
 /**
  * Interface UserReviewAndRatingBridgeInterface
  * @internal
- * @package OxidEsales\EshopCommunity\Internal\Review\Bridge
  */
 interface UserReviewAndRatingBridgeInterface
 {

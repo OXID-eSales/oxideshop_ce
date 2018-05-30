@@ -7,9 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Review\DataObject;
 
 /**
- * Class ProductRating
- * @internal
- * @package OxidEsales\EshopCommunity\Internal\Review\DataObject
+  * @internal
  */
 class ProductRating
 {

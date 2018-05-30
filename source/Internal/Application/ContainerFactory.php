@@ -15,11 +15,8 @@ use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
- * Class ContainerFactory
- *
- * Class to generate a PSR11 complient DI container
- *
- * @package OxidEsales\EshopCommunity\Internal\Application
+  *
+ * @internal
  */
 class ContainerFactory
 {

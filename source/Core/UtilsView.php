@@ -724,7 +724,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
                 }
                 $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']][] = $this->_getTemplateBlock($activeBlockTemplate['OXMODULE'], $activeBlockTemplate['OXFILE']);
             } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
-                $exception->debugOut();
+                \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
             }
         }
 

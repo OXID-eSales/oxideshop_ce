@@ -10,27 +10,6 @@ use oxStr;
 
 class EmailUtf8Test extends \OxidTestCase
 {
-
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-    }
-
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
-    protected function tearDown()
-    {
-        parent::tearDown();
-    }
-
     /**
      * Testing email charset
      *

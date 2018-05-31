@@ -319,9 +319,6 @@ class VatSelectorTest extends \OxidTestCase
         $oAddress->setId('_testAddress');
         $oAddress->oxaddress__oxcountryid = new oxField($sSwitzerlandId);
 
-        $oAddressList = oxNew('oxList');
-        $oAddressList['_testAddress'] = $oAddress;
-
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array("getUserAddresses", "getSelectedAddressId"));
         $oUser->oxuser__oxcountryid = new oxField($sGermanyId);
         $oUser->expects($this->never())->method("getUserAddresses");

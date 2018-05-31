@@ -58,15 +58,6 @@ class FileChecker
     protected $_sVersion = "";
 
     /**
-     * Revision of THIS OXID eShop
-     *
-     * @deprecated since v6.0.0 (2017-12-04); This functionality will be removed completely
-     *
-     * @var string
-     */
-    protected $_sRevision = "";
-
-    /**
      * base directory
      *
      * @var mixed
@@ -145,32 +136,6 @@ class FileChecker
     public function getEdition()
     {
         return $this->_sEdition;
-    }
-
-    /**
-     * Revision setter
-     *
-     * @deprecated since v6.0.0 (2017-12-04); This functionality will be removed completely
-     *
-     * @param string $sRevision Revision
-     */
-    public function setRevision($sRevision)
-    {
-        if (!empty($sRevision)) {
-            $this->_sRevision = $sRevision;
-        }
-    }
-
-    /**
-     * Revision getter
-     *
-     * @deprecated since v6.0.0 (2017-12-04); This functionality will be removed completely
-     *
-     * @return string
-     */
-    public function getRevision()
-    {
-        return $this->_sRevision;
     }
 
     /**
@@ -294,7 +259,7 @@ class FileChecker
         $aParams = [
             'job' => 'existsversion',
             'ver' => $this->getVersion(),
-            'rev' => $this->getRevision(),
+            'rev' => false,
             'edi' => $this->getEdition(),
         ];
 
@@ -314,7 +279,7 @@ class FileChecker
             \OxidEsales\Eshop\Core\Registry::getLang()->translateString('OXDIAG_ERRORMESSAGEVERSIONDOESNOTEXIST'),
             $this->getEdition(),
             $this->getVersion(),
-            $this->getRevision()
+            false
         );
 
         $this->_sErrorMessage .= $sError;
@@ -407,7 +372,7 @@ class FileChecker
         $aParams = [
             'job' => 'md5check',
             'ver' => $this->getVersion(),
-            'rev' => $this->getRevision(),
+            'rev' => false,
             'edi' => $this->getEdition(),
             'fil' => $sFile,
             'md5' => $sMD5,

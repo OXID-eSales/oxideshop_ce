@@ -10,9 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use OxidEsales\EshopCommunity\Internal\Review\ViewDataObject\ReviewAndRating;
 
 /**
- * Class UserReviewAndRatingService
- * @internal
- * @package OxidEsales\EshopCommunity\Internal\Review\Service
+  * @internal
  */
 class UserReviewAndRatingService implements UserReviewAndRatingServiceInterface
 {

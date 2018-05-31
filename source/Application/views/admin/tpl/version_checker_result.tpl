@@ -3,7 +3,6 @@
 <tr><td colspan=2><h3><a id="chkversion"></a>[{oxmultilang ident='OXDIAG_VERSIONCHECKER'}]</h3></td></tr>
 <tr><td><b>[{oxmultilang ident='OXDIAG_EDITION'}]</b></td><td>[{$sEdition}]</td></tr>
 <tr><td><b>[{oxmultilang ident='OXDIAG_VERSION'}]</b></td><td>[{$sVersion}]</td></tr>
-<tr><td><b>[{oxmultilang ident='OXDIAG_REVISION'}]</b></td><td>[{$sRevision}]</td></tr>
 
 <tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>
 <tr><td colspan="2"><h4>[{oxmultilang ident='OXDIAG_SUMMARY'}]</h4></td></tr>
@@ -18,7 +17,7 @@
 [{if $aResultSummary.SHOP_OK}]
 <tr><td colspan="2"><b><span style="color:green">[{oxmultilang ident='OXDIAG_SHOP_ORIGINAL'}]</span></b></td></tr>
 [{else}]
-<tr><td colspan="2"><b><span style="color:red">[{oxmultilang ident='OXDIAG_SHOP_DOES_NOT_FIT'}] [{$sEdition}]_[{$sVersion}]_[{$sRevision}]</span></b></td></tr>
+<tr><td colspan="2"><b><span style="color:red">[{oxmultilang ident='OXDIAG_SHOP_DOES_NOT_FIT'}] [{$sEdition}]_[{$sVersion}]</span></b></td></tr>
 [{/if}]
 
 [{if ( $aResultSummary.MODIFIED > 0 ) || ( $aResultSummary.VERSIONMISMATCH  > 0 )}]

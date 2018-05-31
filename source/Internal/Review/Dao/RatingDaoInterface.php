@@ -11,7 +11,6 @@ use OxidEsales\EshopCommunity\Internal\Review\DataObject\Rating;
 /**
  * Interface RatingDaoInterface
  * @internal
- * @package OxidEsales\EshopCommunity\Internal\Review\Dao
  */
 interface RatingDaoInterface
 {

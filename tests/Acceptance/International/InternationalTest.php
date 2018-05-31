@@ -433,7 +433,7 @@ class InternationalTest extends AcceptanceTestCase
             $this->clickAndWait("//input[@type='submit']");
 
             $this->frame("basefrm");
-            $this->waitForText("Welcome to the OXID eShop Admin");
+            $this->waitForText("Welcome to OXID eShop Admin");
             $this->checkForErrors();
             $this->frame("navigation");
             $this->checkForErrors();

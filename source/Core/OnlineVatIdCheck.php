@@ -82,14 +82,10 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
      * Catches soap warning which is usually thrown due to service problems.
      * Return true and allows to continue process
      *
-     * @deprecated since v6.3.0 (2018-04-24); This method won't return a value in future.
-     *
      * @param int    $iErrNo   error type number
      * @param string $sErrStr  error message
      * @param string $sErrFile error file
      * @param int    $iErrLine error line
-     *
-     * @return bool
      */
     public function catchWarning($iErrNo, $sErrStr, $sErrFile, $iErrLine)
     {
@@ -98,8 +94,6 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
             'line' => $iErrLine,
             'code' => $iErrNo
         ]);
-
-        return true;
     }
 
     /**

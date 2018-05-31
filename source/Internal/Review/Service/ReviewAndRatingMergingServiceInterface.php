@@ -11,7 +11,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Interface ReviewAndRatingMergingServiceInterface
  * @internal
- * @package OxidEsales\EshopCommunity\Internal\Review\Service
  */
 interface ReviewAndRatingMergingServiceInterface
 {

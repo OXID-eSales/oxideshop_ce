@@ -29,18 +29,6 @@ class ServiceMenu extends \OxidEsales\Eshop\Application\Component\Widget\WidgetC
     protected $_sThisTemplate = 'widget/header/servicemenu.tpl';
 
     /**
-     * Template variable getter. Returns article list count in comparison.
-     *
-     * @deprecated since v6.1.0 (2017-12-12); Use OxidEsales\Eshop\Application\Controller\FrontendController::getCompareItemsCnt().
-     *
-     * @return integer
-     */
-    public function getCompareItemsCnt()
-    {
-        return parent::getCompareItemsCnt();
-    }
-
-    /**
      * Template variable getter. Returns comparison article list.
      *
      * @param bool $blJson return json encoded array

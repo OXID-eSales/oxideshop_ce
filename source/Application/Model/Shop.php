@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxDb;
-
 /**
  * Shop manager.
  * Performs configuration and object loading or deletion.
@@ -359,7 +356,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             try {
                 $oDb->execute($sQuery);
             } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
-                $exception->debugOut();
+                \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
                 $bSuccess = false;
             }
         }

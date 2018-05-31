@@ -10,7 +10,6 @@ use OxidEsales\EshopCommunity\Internal\Review\DataObject\ProductRating;
 /**
  * Interface ProductDaoInterface
  * @internal
- * @package OxidEsales\EshopCommunity\Internal\Review\Dao
  */
 interface ProductRatingDaoInterface
 {

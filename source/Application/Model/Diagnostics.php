@@ -33,15 +33,6 @@ class Diagnostics
     /**
      * Revision of THIS OXID eShop
      *
-     * @deprecated since v6.0.0 (2017-12-04); This functionality will be removed completely
-     *
-     * @var string
-     */
-    protected $_sRevision = "";
-
-    /**
-     * Revision of THIS OXID eShop
-     *
      * @var string
      */
     protected $_sShopLink = "";
@@ -156,33 +147,6 @@ class Diagnostics
     }
 
     /**
-     * Revision setter
-     *
-     * @deprecated since v6.0.0 (2017-12-04); This functionality will be removed completely
-     *
-     * @param string $sRevision revision.
-     */
-    public function setRevision($sRevision)
-    {
-        if (!empty($sRevision)) {
-            $this->_sRevision = $sRevision;
-        }
-    }
-
-    /**
-     * Revision getter
-     *
-     * @deprecated since v6.0.0 (2017-12-04); This functionality will be removed completely
-     *
-     * @return bool|string
-     */
-    public function getRevision()
-    {
-        return $this->_sRevision;
-    }
-
-
-    /**
      * ShopLink setter
      *
      * @param string $sShopLink Shop link.
@@ -216,7 +180,6 @@ class Diagnostics
             'URL'                 => $this->getShopLink(),
             'Edition'             => $this->getEdition(),
             'Version'             => $this->getVersion(),
-            'Revision'            => $this->getRevision(),
             'Subshops (Total)'    => $this->_countRows('oxshops', true),
             'Subshops (Active)'   => $this->_countRows('oxshops', false),
             'Categories (Total)'  => $this->_countRows('oxcategories', true),

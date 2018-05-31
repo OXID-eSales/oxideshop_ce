@@ -163,7 +163,7 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
         /**
          * The business logic will log the to the exception log, whenever an email is sent, but will not re-throw the error
          */
-        $expectedExceptionClass = \OxidEsales\Eshop\Core\Exception\StandardException::class;
+        $expectedExceptionClass = Exception::class;
         $this->assertLoggedException($expectedExceptionClass, $stubbedExceptionMessage);
     }
 

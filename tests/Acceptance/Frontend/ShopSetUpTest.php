@@ -231,7 +231,7 @@ class ShopSetUpTest extends FrontendTestCase
         $this->frame("navigation");
         $this->frame("basefrm");
         $this->waitForText("Home");
-        $this->assertTextPresent("Welcome to the OXID eShop Admin.", "Missing text: Welcome to the OXID eShop Admin.");
+        $this->assertTextPresent("Welcome to OXID eShop Admin.", "Missing text: Welcome to the OXID eShop Admin.");
     }
 
     /**

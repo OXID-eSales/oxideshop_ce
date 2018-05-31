@@ -37,20 +37,6 @@ class _oxBase extends oxBase
     }
 
     /**
-     * Sets the names to main and view tables, loads metadata of each table.
-     *
-     * @param string $sTableName       Name of DB object table
-     * @param bool   $blForceAllFields Forces initialisation of all fields overriding lazy loading functionality
-     *
-     * @return null
-     */
-    public function init($sTableName = null, $blForceAllFields = false)
-    {
-        //$this->_sCacheKey = null;
-        return parent::init($sTableName, $blForceAllFields);
-    }
-
-    /**
      * Get any field value.
      *
      * @param string $sName Field name

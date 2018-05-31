@@ -132,7 +132,7 @@ class UserpaymentTest extends \OxidTestCase
     {
         $oUpay = oxNew('oxuserpayment');
         $this->assertEquals('oxuserpayment', $oUpay->getClassName());
-        $this->assertEquals(oxRegistry::getUtils()->strRot13('fq45QS09_fqyx09239QQ'), $oUpay->getPaymentKey('_sPaymentKey'));
+        $this->assertEquals(str_rot13('fq45QS09_fqyx09239QQ'), $oUpay->getPaymentKey('_sPaymentKey'));
     }
 
     /**
@@ -164,7 +164,7 @@ class UserpaymentTest extends \OxidTestCase
     public function testGetPaymentKey()
     {
         $oUpay = oxNew('oxuserpayment');
-        $this->assertEquals(oxRegistry::getUtils()->strRot13('fq45QS09_fqyx09239QQ'), $oUpay->getPaymentKey());
+        $this->assertEquals(str_rot13('fq45QS09_fqyx09239QQ'), $oUpay->getPaymentKey());
     }
 
     /**

@@ -96,8 +96,6 @@ class UtilsFileTest extends \OxidTestCase
         $oObject->testfield = $this->getMock(\OxidEsales\Eshop\Core\Field::class, array('setValue'));
         $oObject->testfield->expects($this->once())->method('setValue')->with($this->equalTo('testfilename'));
 
-        $sProcessPath = $this->getConfig()->getConfigParam("sCompileDir");
-
         $aFiles = array();
         $aFiles['myfile']['name']['gif@testfield'] = 'testfilename.gif';
         $aFiles['myfile']['tmp_name']['gif@testfield'] = 'testimagesource/testfilename';

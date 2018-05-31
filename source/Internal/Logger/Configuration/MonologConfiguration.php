@@ -6,6 +6,9 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Logger\Configuration;
 
+use Psr\Log\LogLevel;
+use OxidEsales\EshopCommunity\Internal\Utility\Context;
+
 /**
  * @internal
  */
@@ -27,17 +30,21 @@ class MonologConfiguration implements MonologConfigurationInterface
     private $logLevel;
 
     /**
+     * @var string
+     */
+    private $defaultLogLevel = LogLevel::ERROR;
+
+    /**
      * MonologConfiguration constructor.
      *
-     * @param string $loggerName
-     * @param string $logFilePath
-     * @param string $logLevel
+     * @param string  $loggerName
+     * @param Context $context
      */
-    public function __construct($loggerName, $logFilePath, $logLevel)
+    public function __construct($loggerName, $context)
     {
         $this->loggerName = $loggerName;
-        $this->logFilePath = $logFilePath;
-        $this->logLevel = $logLevel;
+        $this->logFilePath = $context->getLogFilePath();
+        $this->logLevel = $context->getLogLevel();
     }
 
 
@@ -62,6 +69,8 @@ class MonologConfiguration implements MonologConfigurationInterface
      */
     public function getLogLevel()
     {
-        return $this->logLevel;
+        return $this->logLevel !== null
+            ? $this->logLevel
+            : $this->defaultLogLevel;
     }
 }

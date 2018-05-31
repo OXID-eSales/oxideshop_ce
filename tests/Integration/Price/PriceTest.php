@@ -35,14 +35,6 @@ class PriceTest extends BaseTestCase
     }
 
     /**
-     * Tear down the fixture.
-     */
-    protected function tearDown()
-    {
-        parent::tearDown();
-    }
-
-    /**
      * Resets db tables, required configs
      */
     protected function resetDatabase()

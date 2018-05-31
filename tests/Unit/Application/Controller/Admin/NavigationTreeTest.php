@@ -14,131 +14,6 @@ use \oxTestModules;
 
 class NavigationTreeTest extends \OxidTestCase
 {
-
-    protected $_sWrongDynfile = 'wrongfile.xml';
-    protected $_sValidDynfile = 'goodfile.xml';
-
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-
-        // files for test
-        switch ($this->getName()) {
-            case 'testCheckDynFileWrongFileContent' :
-                // creating wrong file
-                if ($rHandle = @fopen($this->getConfig()->getConfigParam('sCompileDir') . "{$this->_sWrongDynfile}", 'w')) {
-                    fwrite($rHandle, 'some wrong content');
-                    fclose($rHandle);
-                }
-                break;
-            case 'testCheckDynFileFileIsValidXml' :
-                // creating valid file
-                if ($rHandle = @fopen($this->getConfig()->getConfigParam('sCompileDir') . "{$this->_sValidDynfile}", 'w')) {
-                    fwrite($rHandle, '<?xml version="1.0" encoding="UTF-8"?><OX>');
-                    fclose($rHandle);
-                }
-                break;
-        }
-    }
-
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
-    protected function tearDown()
-    {
-        // deleting test files
-        switch ($this->getName()) {
-            case 'testCheckDynFileWrongFileContent' :
-                @unlink($this->getConfig()->getConfigParam('sCompileDir') . "{$this->_sWrongDynfile}");
-                break;
-            case 'testCheckDynFileFileIsValidXml' :
-                // creating valid file
-                @unlink($this->getConfig()->getConfigParam('sCompileDir') . "{$this->_sValidDynfile}");
-                break;
-        }
-        return parent::tearDown();
-    }
-
-    /**
-     * OxNavigationTree::_addDynLinks() test case
-     *
-     * @return null
-     */
-    public function testAddDynLinks()
-    {
-        oxTestModules::addFunction("oxUtilsFile", "checkFile", "{ return true; }");
-        $this->getConfig()->setConfigParam('sAdminDir', "admin");
-
-        $sXml = '<?xml version="1.0" encoding="UTF-8"?>
-                 <OXMENU type="dyn">
-                   <MAINMENU>
-                     <SUBMENU cl="login" clparam="loginParam"></SUBMENU>
-                   </MAINMENU>
-                   <MAINMENU>
-                     <SUBMENU cl="oxadminview" clparam="oxadminviewParam"></SUBMENU>
-                   </MAINMENU>
-                   <MAINMENU>
-                     <SUBMENU cl="oxadmindetails" clparam="oxadmindetailsParam"></SUBMENU>
-                   </MAINMENU>
-                   <MAINMENU>
-                     <SUBMENU cl="oxadminlist" clparam="oxadminlistParam"></SUBMENU>
-                   </MAINMENU>
-                 </OXMENU>';
-
-        $sRezXml = '<?xml version="1.0" encoding="UTF-8"?>
-                 <OXMENU type="dyn">
-                   <MAINMENU id="dyn_menu">
-                     <SUBMENU cl="login" clparam="loginParam" list="dynscreen_list" listparam="menu=login" link="index.php?cl=dynscreen&amp;menu=login&amp;loginParam">
-                       <TAB external="true" location="pages/login_about.php" id="dyn_about" />
-                       <TAB external="true" location="pages/login_technics.php" id="dyn_interface" />
-                       <TAB id="dyn_interface" cl="login" />
-                     </SUBMENU>
-                   </MAINMENU>
-                   <MAINMENU id="dyn_menu">
-                     <SUBMENU cl="oxadminview" clparam="oxadminviewParam" list="dynscreen_list" listparam="menu=oxadminview" link="index.php?cl=dynscreen&amp;menu=oxadminview&amp;oxadminviewParam">
-                       <TAB external="true" location="pages/oxadminview_about.php" id="dyn_about" />
-                       <TAB external="true" location="pages/oxadminview_technics.php" id="dyn_interface" />
-                       <TAB id="dyn_interface" cl="oxadminview" />
-                     </SUBMENU>
-                   </MAINMENU>
-                   <MAINMENU id="dyn_menu">
-                     <SUBMENU cl="oxadmindetails" clparam="oxadmindetailsParam" list="dynscreen_list" listparam="menu=oxadmindetails" link="index.php?cl=dynscreen&amp;menu=oxadmindetails&amp;oxadmindetailsParam">
-                       <TAB external="true" location="pages/oxadmindetails_about.php" id="dyn_about" />
-                       <TAB external="true" location="pages/oxadmindetails_technics.php" id="dyn_interface" />
-                       <TAB id="dyn_interface" cl="oxadmindetails" />
-                     </SUBMENU>
-                   </MAINMENU>
-                   <MAINMENU id="dyn_menu">
-                     <SUBMENU cl="oxadminlist" clparam="oxadminlistParam" list="dynscreen_list" listparam="menu=oxadminlist" link="index.php?cl=dynscreen&amp;menu=oxadminlist&amp;oxadminlistParam">
-                       <TAB external="true" location="pages/oxadminlist_about.php" id="dyn_about" />
-                       <TAB external="true" location="pages/oxadminlist_technics.php" id="dyn_interface" />
-                       <TAB id="dyn_interface" cl="oxadminlist" />
-                     </SUBMENU>
-                   </MAINMENU>
-                 </OXMENU>';
-
-        $oDom = new DOMDocument();
-        $oDom->formatOutput = true;
-        $oDom->loadXML($sXml);
-
-        $oRezDom = new DOMDocument();
-        $oRezDom->formatOutput = true;
-        $oRezDom->loadXML($sRezXml);
-
-        $oNavTree = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationTree::class, array("_getAdminUrl"));
-        $oNavTree->expects($this->never())->method('_getAdminUrl');
-        $oNavTree->UNITaddDynLinks($oDom);
-        $this->assertEquals(str_replace(array("\t", " ", "\n", "\r"), "", $oRezDom->saveXML()), str_replace(array("\t", " ", "\n", "\r"), "", $oDom->saveXML()));
-
-    }
-
     /**
      * OxNavigationTree::getDomXml() test case
      *
@@ -157,24 +32,6 @@ class NavigationTreeTest extends \OxidTestCase
         $oNavTree->expects($this->exactly(2))->method('_cleanEmptyParents');
 
         $oNavTree->getDomXml();
-    }
-
-    /**
-     * OxNavigationTree::_getDynMenuUrl() test case
-     *
-     * @return null
-     */
-    public function testGetDynMenuUrl()
-    {
-        $iLang = 0;
-
-        $oAdminView = oxNew('oxadminview');
-        $sDynscreenUrl = $oAdminView->getServiceUrl($iLang) . "menue/dynscreen.xml";
-        $sDynscreenLocalUrl = getShopBasePath() . "Application/views/admin/dynscreen_local.xml";
-
-        $oNavTree = oxNew('oxnavigationtree');
-        $this->assertEquals($sDynscreenUrl, $oNavTree->UNITgetDynMenuUrl($iLang, true));
-        $this->assertEquals($sDynscreenLocalUrl, $oNavTree->UNITgetDynMenuUrl($iLang, false));
     }
 
     /**
@@ -624,47 +481,6 @@ class NavigationTreeTest extends \OxidTestCase
         $oNavTree->expects($this->at(1))->method('_hasRights')->will($this->returnValue(true));
         $oNavTree->UNITcheckRights($oDom);
         $this->assertEquals(str_replace(array("\t", " ", "\n", "\r"), "", $sResXml), str_replace(array("\t", " ", "\n", "\r"), "", $oDom->saveXML()));
-    }
-
-    /**
-     * OxNavigationTree::_checkDynFile() test case
-     * testing new functionality
-     * dyn file must not be created if content is empty
-     *
-     * @return null
-     */
-    public function testCheckDynFileFileDoesNotExist()
-    {
-        $sFilePath = $this->getConfig()->getConfigParam('sCompileDir') . "xxx.file";
-        $oNavTree = oxNew('oxnavigationtree');
-        $this->assertNull($oNavTree->UNITcheckDynFile($sFilePath));
-
-    }
-
-    /**
-     * OxNavigationTree::_checkDynFile() test case
-     * dyn file must not be created if content is not valid
-     *
-     * @return null
-     */
-    public function testCheckDynFileWrongFileContent()
-    {
-        $sFilePath = $this->getConfig()->getConfigParam('sCompileDir') . "{$this->_sWrongDynfile}";
-        $oNavTree = oxNew('oxnavigationtree');
-        $this->assertNull($oNavTree->UNITcheckDynFile($sFilePath));
-    }
-
-    /**
-     * OxNavigationTree::_checkDynFile() test case
-     * wheter content is a valid xml file, same content will return
-     *
-     * @return null
-     */
-    public function testCheckDynFileFileIsValidXml()
-    {
-        $sFilePath = $this->getConfig()->getConfigParam('sCompileDir') . "{$this->_sValidDynfile}";
-        $oNavTree = oxNew('oxnavigationtree');
-        $this->assertEquals($sFilePath, $oNavTree->UNITcheckDynFile($sFilePath));
     }
 
     /**

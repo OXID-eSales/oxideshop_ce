@@ -292,7 +292,7 @@ class UtilsPicTest extends \OxidTestCase
         $oObject = new stdclass();
         $oObject->oxtbl__oxpic = new oxField('testPictureName', oxField::T_RAW);
 
-        $blTrue = $oUtilsPic->overwritePic($oObject, 'oxtbl', 'oxpic', 'testType', 'testPath', array('oxtbl__oxpic' => 'xxx'), 'testAbsPath');
+        $oUtilsPic->overwritePic($oObject, 'oxtbl', 'oxpic', 'testType', 'testPath', array('oxtbl__oxpic' => 'xxx'), 'testAbsPath');
     }
 
     /**

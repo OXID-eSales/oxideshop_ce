@@ -12,9 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Review\DataObject\ProductRating;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\InvalidObjectIdDaoException;
 
 /**
- * Class ProductRatingDao
  * @internal
- * @package OxidEsales\EshopCommunity\Internal\Review\Dao
  */
 class ProductRatingDao implements ProductRatingDaoInterface
 {

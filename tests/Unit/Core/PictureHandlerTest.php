@@ -203,8 +203,6 @@ class PictureHandlerTest extends \OxidTestCase
      */
     public function testDeleteArticleMasterPicture_emptyPic()
     {
-        $sAbsImageDir = $this->getConfig()->getPictureDir(false);
-
         //test article
         $oArticle = oxNew('oxArticle');
         $oArticle->oxarticles__oxpic1 = new oxField("nopic.jpg");

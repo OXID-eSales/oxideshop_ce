@@ -12,7 +12,7 @@ use Exception;
 
 /**
  * Admin article main user manager.
- * Performs collection and updatind (on user submit) main item information.
+ * Performs collection and updating (on user submit) main item information.
  * Admin Menu: User Administration -> Users -> Main.
  */
 class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController

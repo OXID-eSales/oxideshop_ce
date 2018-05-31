@@ -259,8 +259,6 @@ class OnlineLicenseCheck
      *
      * @param array $serials Array of serials to add to request.
      *
-     * @throws oxException
-     *
      * @return \OxidEsales\Eshop\Core\OnlineLicenseCheckRequest
      */
     protected function formRequest($serials)
@@ -269,8 +267,6 @@ class OnlineLicenseCheck
 
         /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheckRequest $request */
         $request = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest::class);
-
-        $request->revision = $config->getRevision();
 
         $request->keys = ['key' => $serials];
 

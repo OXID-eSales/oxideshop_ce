@@ -142,7 +142,7 @@ $aLang =  [
                                                         .'<ul>'
                                                         .'  <li>number of the OXID eShop Community Edition installations world wide</li>'
                                                         .'  <li>average number of installed extensions per OXID eShop</li>'
-                                                        .'  <li>top spread extensions for the OXID eShop</li>'
+                                                        .'  <li>top spread extensions for OXID eShop</li>'
                                                         .'</ul>',
 
 'HELP_SHOP_CONFIG_DELETERATINGLOGS'           => 'If users rate a product, they cannot rate the product again. Here you can set after how many days users are allowed to rate a product again. Leave empty to disable - products can be rated only once per user.',

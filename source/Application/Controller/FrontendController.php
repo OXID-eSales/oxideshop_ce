@@ -8,8 +8,11 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 use oxActionList;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewAndRatingBridgeInterface;
 use oxRecommList;
+use Psr\Container\ContainerInterface;
 use stdClass;
+
 
 // view indexing state for search engines:
 define('VIEW_INDEXSTATE_INDEX', 0); //  index without limitations
@@ -425,7 +428,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         if ($user) {
             $count = $this
                 ->getContainer()
-                ->getUserReviewAndRatingBridge()
+                ->get(UserReviewAndRatingBridgeInterface::class)
                 ->getReviewAndRatingListCount($user->getId());
         }
 
@@ -3008,10 +3011,12 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     }
 
     /**
-     * @return \OxidEsales\EshopCommunity\Internal\Application\Container
+     * @internal
+     *
+     * @return ContainerInterface
      */
-    private function getContainer()
+    protected function getContainer()
     {
-        return \OxidEsales\EshopCommunity\Internal\Application\Container::getInstance();
+        return \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
     }
 }

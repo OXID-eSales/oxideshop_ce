@@ -1184,7 +1184,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
                  * This error should be reported, as it will be the cause of an unexpected behavior of the shop an the
                  * operator should be given a chance to analyse the issue.
                  */
-                $exception->debugOut();
+                \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
                 return '';
             }
         }

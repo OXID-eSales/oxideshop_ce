@@ -1,0 +1,5 @@
+imports:
+    - { resource: ../Utility/services.yaml }
+    - { resource: ../Logger/services.yaml }
+    - { resource: ../Common/services.yaml }
+    - { resource: ../Review/services.yaml }

@@ -74,15 +74,6 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     protected $_sShopVersion = null;
 
     /**
-     * Shop dynamic pages url
-     *
-     * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
-     *
-     * @var string
-     */
-    protected $_sServiceUrl = null;
-
-    /**
      * Session user rights
      *
      * @var string
@@ -200,12 +191,9 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         $oViewConf = $this->getViewConfig();
         $oViewConf->setViewConfigParam('selflink', \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($sURL . 'index.php?editlanguage=' . $this->_iEditLang, false));
         $oViewConf->setViewConfigParam('ajaxlink', str_replace('&amp;', '&', \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($sURL . 'oxajax.php?editlanguage=' . $this->_iEditLang, false)));
-        $oViewConf->setViewConfigParam('sServiceUrl', $this->getServiceUrl());
 
-        // set langugae in admin
-        $iDynInterfaceLanguage = $myConfig->getConfigParam('iDynInterfaceLanguage');
-        //$this->_aViewData['adminlang'] = isset( $iDynInterfaceLanguage )?$iDynInterfaceLanguage:$myConfig->getConfigParam( 'iAdminLanguage' );
-        $this->_aViewData['adminlang'] = isset($iDynInterfaceLanguage) ? $iDynInterfaceLanguage : $oLang->getTplLanguage();
+        // set language of admin backend
+        $this->_aViewData['adminlang'] = $oLang->getTplLanguage();
         $this->_aViewData['charset'] = $this->getCharSet();
 
         //setting active currency object
@@ -222,40 +210,6 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     protected function _getServiceProtocol()
     {
         return $this->getConfig()->isSsl() ? 'https' : 'http';
-    }
-
-    /**
-     * Returns service URL
-     *
-     * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
-     *
-     * @param string $sLangAbbr language abbr.
-     *
-     * @return string
-     */
-    public function getServiceUrl($sLangAbbr = null)
-    {
-        if ($this->_sServiceUrl === null) {
-            $sProtocol = $this->_getServiceProtocol();
-
-            $editionSelector = new EditionSelector();
-            $sUrl = $sProtocol . '://admin.oxid-esales.com/' . $editionSelector->getEdition() . '/';
-
-            $sCountry = 'international';
-
-            if (!$sLangAbbr) {
-                $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
-                $sLangAbbr = $oLang->getLanguageAbbr($oLang->getTplLanguage());
-            }
-
-            if ($sLangAbbr != "de") {
-                $sLangAbbr = "en";
-            }
-
-            $this->_sServiceUrl = $sUrl . $this->_getShopVersionNr() . "/{$sCountry}/{$sLangAbbr}/";
-        }
-
-        return $this->_sServiceUrl;
     }
 
     /**

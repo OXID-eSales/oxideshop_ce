@@ -62,8 +62,7 @@ class LoggerServiceFactory
     {
         return new MonologConfiguration(
             'OXID Logger',
-            $this->context->getLogFilePath(),
-            $this->context->getLogLevel()
+            $this->context
         );
     }
 

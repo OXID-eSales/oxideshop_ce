@@ -63,35 +63,6 @@ class AdminViewTest extends \OxidTestCase
     }
 
     /**
-     * Test get service url.
-     *
-     * @return null
-     */
-    public function testGetServiceUrl()
-    {
-        $sPref = $this->getConfig()->getEdition();
-
-        // no lang abbr
-        $this->getProxyClass(AdminController::class);
-        $oAdminView = $this->getMock("OxidEsales_Eshop_Application_Controller_Admin_AdminControllerProxy", array("_getServiceProtocol", "_getCountryByCode", "_getShopVersionNr"), array(), '', false);
-        $oAdminView->expects($this->any())->method('_getServiceProtocol')->will($this->returnValue("testprotocol"));
-        $oAdminView->expects($this->any())->method('_getShopVersionNr')->will($this->returnValue("testshopversion"));
-
-        $this->getSession()->setVariable('tpllanguage', 'de');
-
-        $sTestUrl = "testprotocol://admin.oxid-esales.com/$sPref/testshopversion/international/de/";
-        $this->assertEquals($sTestUrl, $oAdminView->getServiceUrl());
-
-        $oAdminView->setNonPublicVar('_sServiceUrl', null);
-        $sTestUrl = "testprotocol://admin.oxid-esales.com/$sPref/testshopversion/international/en/";
-        $this->assertEquals($sTestUrl, $oAdminView->getServiceUrl('fr'));
-
-        $oAdminView->setNonPublicVar('_sServiceUrl', null);
-        $sTestUrl = "testprotocol://admin.oxid-esales.com/$sPref/testshopversion/international/en/";
-        $this->assertEquals($sTestUrl, $oAdminView->getServiceUrl("en"));
-    }
-
-    /**
      * Test get preview id.
      *
      * @return null

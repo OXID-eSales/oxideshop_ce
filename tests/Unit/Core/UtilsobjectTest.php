@@ -81,23 +81,6 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
         parent::tearDown();
     }
 
-    private function getOrderClassName()
-    {
-        $orderClassName = 'oxorder';
-
-        if ($this->getConfig()->getEdition() === 'EE') {
-            $orderClassName = 'OxidEsales\EshopEnterprise\Application\Model\Order';
-        }
-        if ($this->getConfig()->getEdition() === 'PE') {
-            $orderClassName = 'OxidEsales\EshopProfessional\Application\Model\Order';
-        }
-        if ($this->getConfig()->getEdition() === 'CE') {
-            $orderClassName = 'OxidEsales\EshopCommunity\Application\Model\Order';
-        }
-
-        return $orderClassName;
-    }
-
     /**
      * Test, that the method getInstance creates the object of the correct current edition namespace.
      */

@@ -374,25 +374,6 @@ class ActionsTest extends \OxidTestCase
     }
 
     /**
-     * Helper function for testGetBannerArticle_notAssigned, testGetBannerArticle_notExisting, testGetBannerArticle_Existing
-     *
-     * @param $valueToReturn
-     *
-     * @return PHPUnit_Framework_MockObject_MockObject
-     */
-    private function getBannerArticleMockWithSpecificReturn($valueToReturn)
-    {
-        $dbMock = $this->getDbObjectMock();
-        $dbMock->expects($this->any())
-            ->method('getOne')
-            ->with($this->equalTo('select oxobjectid from oxobject2action where oxactionid=\'promoid\' and oxclass="oxarticle"'))
-            ->will($this->returnValue($valueToReturn));
-
-        return $dbMock;
-    }
-
-
-    /**
      * test
      */
     public function testGetBannerPictureUrl()

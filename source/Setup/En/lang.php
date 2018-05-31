@@ -94,8 +94,8 @@ $aLang = [
 'STEP_0_ERROR_URL'                              => 'http://www.oxid-esales.com/en/products/community-edition/system-requirements',
 'STEP_0_TEXT'                                   => '<ul class="req">'.
                                                    '<li class="pass"> - Your system fits the requirement.</li>'.
-                                                   '<li class="pmin"> - The requirement is not or only partly fit. The OXID eShop will work anyway and can be installed.</li>'.
-                                                   '<li class="fail"> - Your system doesn\'t fit the requirement. The OXID eShop will not work without it and cannot be installed.</li>'.
+                                                   '<li class="pmin"> - The requirement is not or only partly fit. OXID eShop will work anyway and can be installed.</li>'.
+                                                   '<li class="fail"> - Your system doesn\'t fit the requirement. OXID eShop will not work without it and cannot be installed.</li>'.
                                                    '<li class="null"> - The requirement could  not be checked.'.
                                                    '</ul>',
 'STEP_0_DESC'                                   => 'In this step we check if your system fits the requirements:',
@@ -198,6 +198,6 @@ $aLang = [
                                                         .'<ul>'
                                                         .'  <li>number of the OXID eShop Community Edition installations world wide</li>'
                                                         .'  <li>average number of installed extensions per OXID eShop</li>'
-                                                        .'  <li>top spread extensions for the OXID eShop</li>'
+                                                        .'  <li>top spread extensions for OXID eShop</li>'
                                                         .'</ul>',
 ];

@@ -124,7 +124,6 @@ class UtilsTest extends \OxidTestCase
     {
         $aLangCache = array("ggg" => "bbb");
         $sCacheName = 'tmp_testCacheName';
-        $sCache = "<?php\n\$aLangCache = " . var_export($aLangCache, true) . ";";
 
         $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('getCacheFilePath'));
         $oUtils->expects($this->once())->method('getCacheFilePath')->with($this->equalTo($sCacheName))->will($this->returnValue("tmp_testCacheName"));
@@ -308,10 +307,9 @@ class UtilsTest extends \OxidTestCase
     public function testAssignValuesFromTextFullIfPriceIsZero()
     {
         $myConfig = $this->getConfig();
-        $oCurrency = $myConfig->getActShopCurrencyObject();
 
-        $this->getConfig()->setConfigParam('bl_perfLoadSelectLists', true);
-        $this->getConfig()->setConfigParam('bl_perfUseSelectlistPrice', true);
+        $myConfig->setConfigParam('bl_perfLoadSelectLists', true);
+        $myConfig->setConfigParam('bl_perfUseSelectlistPrice', true);
 
         $sTestString = "one__oneValue@@two!P!0.00__twoValue@@";
         $aResult = oxRegistry::getUtils()->assignValuesFromText($sTestString);
@@ -375,10 +373,9 @@ class UtilsTest extends \OxidTestCase
     public function testAssignValuesFromTextLite()
     {
         $myConfig = $this->getConfig();
-        $oCurrency = $myConfig->getActShopCurrencyObject();
 
-        $this->getConfig()->setConfigParam('bl_perfLoadSelectLists', false);
-        $this->getConfig()->setConfigParam('bl_perfUseSelectlistPrice', false);
+        $myConfig->setConfigParam('bl_perfLoadSelectLists', false);
+        $myConfig->setConfigParam('bl_perfUseSelectlistPrice', false);
 
         $sTestString = "one!P!99.5%__oneValue@@two!P!12,41__twoValue@@three!P!-5,99__threeValue@@Lagerort__Lager 1@@";
         $aResult = oxRegistry::getUtils()->assignValuesFromText($sTestString);
@@ -461,8 +458,8 @@ class UtilsTest extends \OxidTestCase
         // cleaning ..
         $myConfig = $this->getConfig();
 
-        $this->getConfig()->setConfigParam('iDebug', 1);
-        $this->getConfig()->setConfigParam('aRobots', array());
+        $myConfig->setConfigParam('iDebug', 1);
+        $myConfig->setConfigParam('aRobots', array());
 
         $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('isAdmin'));
         $oUtils->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
@@ -476,8 +473,8 @@ class UtilsTest extends \OxidTestCase
         // cleaning ..
         $myConfig = $this->getConfig();
 
-        $this->getConfig()->setConfigParam('iDebug', 0);
-        $this->getConfig()->setConfigParam('aRobots', array('googlebot', 'xxx'));
+        $myConfig->setConfigParam('iDebug', 0);
+        $myConfig->setConfigParam('aRobots', array('googlebot', 'xxx'));
 
         $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('isAdmin'));
         $oUtils->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
@@ -491,8 +488,8 @@ class UtilsTest extends \OxidTestCase
         // cleaning ..
         $myConfig = $this->getConfig();
 
-        $this->getConfig()->setConfigParam('iDebug', 1);
-        $this->getConfig()->setConfigParam('aRobots', array('googlebot', 'xxx'));
+        $myConfig->setConfigParam('iDebug', 1);
+        $myConfig->setConfigParam('aRobots', array('googlebot', 'xxx'));
 
         $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('isAdmin'));
         $oUtils->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
@@ -506,8 +503,8 @@ class UtilsTest extends \OxidTestCase
         // cleaning ..
         $myConfig = $this->getConfig();
 
-        $this->getConfig()->setConfigParam('iDebug', 1);
-        $this->getConfig()->setConfigParam('aRobots', array('googlebot', 'xxx'));
+        $myConfig->setConfigParam('iDebug', 1);
+        $myConfig->setConfigParam('aRobots', array('googlebot', 'xxx'));
 
         $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('isAdmin'));
         $oUtils->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
@@ -568,7 +565,6 @@ class UtilsTest extends \OxidTestCase
 
         $sName = "SomeName";
         $mContent = "SomeContent";
-        $sKey = "SomeKey";
 
         $oUtils->toStaticCache($sName, $mContent);
         $this->assertEquals($mContent, $oUtils->fromStaticCache($sName));
@@ -591,11 +587,9 @@ class UtilsTest extends \OxidTestCase
 
         $sName1 = "SomeName";
         $mContent1 = "SomeContent";
-        $sKey1 = "SomeKey";
 
         $sName2 = "SomeName2";
         $mContent2 = "SomeContent2";
-        $sKey2 = "SomeKey2";
 
         $oUtils->toStaticCache($sName1, $mContent1);
         $oUtils->toStaticCache($sName2, $mContent2);
@@ -613,11 +607,9 @@ class UtilsTest extends \OxidTestCase
 
         $sName1 = "SomeName";
         $mContent1 = "SomeContent";
-        $sKey1 = "SomeKey";
 
         $sName2 = "SomeName2";
         $mContent2 = "SomeContent2";
-        $sKey2 = "SomeKey2";
 
         $oUtils->toStaticCache($sName1, $mContent1);
         $oUtils->toStaticCache($sName2, $mContent2);
@@ -782,11 +774,7 @@ class UtilsTest extends \OxidTestCase
 
     public function testResetLanguageCache()
     {
-        $myConfig = $this->getConfig();
-
         $oUtils = oxRegistry::getUtils();
-        $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty(true);
-        $sTmpDir = $myConfig->getConfigParam('sCompileDir');
 
         $aFiles = array('langcache_1_a', 'langcache_1_b', 'langcache_1_c');
         foreach ($aFiles as $sFile) {
@@ -949,13 +937,6 @@ class UtilsTest extends \OxidTestCase
         $sFile = 'asdnasd/asdasd.asd.ad.ad.asdjpeg';
         $this->assertEquals(false, $oUtils->oxMimeContentType($sFile));
         $this->assertEquals(false, $oUtils->oxMimeContentType(''));
-    }
-
-    public function testStrRot13()
-    {
-        $sTests = "myblaaFooString!";
-        $sCode = oxRegistry::getUtils()->strRot13($sTests);
-        $this->assertEquals($sCode, "zloynnSbbFgevat!");
     }
 
     public function testRedirect()

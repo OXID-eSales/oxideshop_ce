@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use OxidEsales\EshopCommunity\Internal\Application\Container;
+use OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridgeInterface;
 
 /**
  * Article rate manager.
@@ -196,15 +196,7 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $this
             ->getContainer()
-            ->getProductRatingBridge()
+            ->get(ProductRatingBridgeInterface::class)
             ->updateProductRating($this->getObjectId());
-    }
-
-    /**
-     * @return Container
-     */
-    private function getContainer()
-    {
-        return Container::getInstance();
     }
 }

@@ -31,17 +31,6 @@ class FileCheckerTest extends \OxidTestCase
     }
 
     /**
-     * Testing revision getter and setter
-     */
-    public function testGetRevision()
-    {
-        $oChecker = oxNew("oxFileChecker");
-        $oChecker->setRevision("r123");
-
-        $this->assertEquals("r123", $oChecker->getRevision());
-    }
-
-    /**
      * Testing base directory getter and setter
      */
     public function testGetBaseDirectory()

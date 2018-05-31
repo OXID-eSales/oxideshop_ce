@@ -672,26 +672,6 @@ class ViewTest extends \OxidTestCase
         $this->assertEquals($sTest2, $oView->getBelboonParam());
     }
 
-    /**
-     * oxView::getRevision() test case
-     *
-     * @return null
-     */
-
-    public function testGetRevision()
-    {
-        $sTest = "testRevision";
-        $this->getConfig()->setConfigParam("blStockOnDefaultMessage", $sTest);
-
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getRevision"));
-        $oConfig->expects($this->once())->method("getRevision")->will($this->returnValue($sTest));
-
-        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getConfig"));
-        $oView->expects($this->once())->method("getConfig")->will($this->returnValue($oConfig));
-
-        $this->assertEquals($sTest, $oView->getRevision());
-    }
-
     public function testGetSidForWidget()
     {
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('isActualSidInCookie', 'getId'));

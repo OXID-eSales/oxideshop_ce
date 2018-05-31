@@ -291,7 +291,7 @@ class ConfigTest extends \OxidTestCase
     /**
      * When a DatabaseException is thrown, method handleDatabaseException on the ExceptionHandler is called
      *
-     * @covers Config::init()
+     * @covers \OxidEsales\Eshop\Core\Config::init()
      */
     public function testInitCallesExceptionHandlerOnDatabaseException()
     {
@@ -1863,25 +1863,6 @@ class ConfigTest extends \OxidTestCase
         $this->assertEquals($sEdition, $this->getConfig()->getEdition());
     }
 
-    public function testGetRevision_FileExists()
-    {
-        $oConfig = oxNew('oxConfig');
-        $sFileName = 'pkg.rev';
-        $iRevisionNum = 12345;
-        $sFilePath = $this->createFile($sFileName, $iRevisionNum);
-        $oConfig->setConfigParam('sShopDir', dirname($sFilePath));
-        $this->assertEquals($iRevisionNum, $oConfig->getRevision());
-        unlink($sFilePath);
-    }
-
-    public function testGetRevision_NoFile()
-    {
-        $oConfig = oxNew('oxConfig');
-        $sDir = $this->getConfig()->getConfigParam('sShopDir') . '/out/downloads/';
-        $oConfig->setConfigParam('sShopDir', $sDir);
-        $this->assertFalse($oConfig->getRevision());
-    }
-
     public function testGetPackageInfo_FileExists()
     {
         $oConfig = oxNew('oxConfig');
@@ -2516,7 +2497,7 @@ class ConfigTest extends \OxidTestCase
     }
 
     /**
-     * @covers Config::getExceptionHandler()
+     * @covers \OxidEsales\Eshop\Core\Config::getExceptionHandler()
      */
     public function testGetExceptionHandlerReturnsInstanceOfExceptionHandler ()
     {

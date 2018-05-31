@@ -39,7 +39,7 @@ function smarty_function_oxcontent( $params, &$smarty )
         if ( $blLoaded && $oContent->oxcontents__oxactive->value ) {
             // set value
             $sField = "oxcontent";
-            if ( $params['field'] ) {
+            if (isset($params['field'])) {
                 $sField = $params['field'];
             }
             // set value

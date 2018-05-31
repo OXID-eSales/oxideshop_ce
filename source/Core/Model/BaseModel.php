@@ -469,7 +469,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         }
 
         $oxidField = $this->_getFieldLongName('oxid');
-        $this->_sOXID = $this->$oxidField->value;
+        if ($this->$oxidField instanceof Field) {
+            $this->_sOXID = $this->$oxidField->value;
+        }
     }
 
     /**

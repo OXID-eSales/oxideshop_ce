@@ -116,7 +116,7 @@ class Integration_Price_OrderNumberingTest extends OxidTestCase
         $oUser = $oBasket->getBasketUser();
 
         // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
-        $oOrder1 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
+        $oOrder1 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery', 'validatePayment'));
         $oOrder1->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
         $oOrder1->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $oOrder1->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
@@ -127,7 +127,7 @@ class Integration_Price_OrderNumberingTest extends OxidTestCase
         }
 
         // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
-        $oOrder2 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
+        $oOrder2 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery', 'validatePayment'));
         $oOrder2->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
         $oOrder2->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $oOrder2->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
@@ -136,11 +136,6 @@ class Integration_Price_OrderNumberingTest extends OxidTestCase
 
         // if basket has products
         if ($oBasket->getProductsCount()) {
-            $paymentControllerMock = $this->getMock('Payment', array('validatePayment'));
-            $paymentControllerMock->expects($this->any())->method('validatePayment')->will($this->returnValue('order'));
-
-            oxTestModules::addModuleObject('Payment', $paymentControllerMock);
-
             $iSuccess = $oOrder2->finalizeOrder($oBasket, $oUser, $blRecalculatingOrder = false);
         }
 
@@ -172,14 +167,8 @@ class Integration_Price_OrderNumberingTest extends OxidTestCase
 
         $oUser = $oBasket->getBasketUser();
 
-        /** Mock payment controller */
-        $paymentControllerMock = $this->getMock('Payment', array('validatePayment'));
-        $paymentControllerMock->expects($this->any())->method('validatePayment')->will($this->returnValue('order'));
-
-        oxTestModules::addModuleObject('Payment', $paymentControllerMock);
-
         // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
-        $oOrder1 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
+        $oOrder1 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery', 'validatePayment'));
         $oOrder1->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
         $oOrder1->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $oOrder1->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
@@ -190,7 +179,7 @@ class Integration_Price_OrderNumberingTest extends OxidTestCase
         }
 
         // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
-        $oOrder2 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
+        $oOrder2 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery', 'validatePayment'));
         $oOrder2->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
         $oOrder2->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $oOrder2->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
@@ -203,7 +192,7 @@ class Integration_Price_OrderNumberingTest extends OxidTestCase
         $oOrder2->delete();
 
         // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
-        $oOrder3 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
+        $oOrder3 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery', 'validatePayment'));
         $oOrder3->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
         $oOrder3->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $oOrder3->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
@@ -244,7 +233,7 @@ class Integration_Price_OrderNumberingTest extends OxidTestCase
         $oUser = $oBasket->getBasketUser();
 
         // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
-        $oOrder1 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
+        $oOrder1 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery', 'validatePayment'));
         $oOrder1->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
         $oOrder1->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $oOrder1->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
@@ -255,14 +244,14 @@ class Integration_Price_OrderNumberingTest extends OxidTestCase
         }
 
         // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
-        $oOrder2 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
+        $oOrder2 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery', 'validatePayment'));
         $oOrder2->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
         $oOrder2->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $oOrder2->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
         $oOrder2->save();
 
         // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
-        $oOrder3 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
+        $oOrder3 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery', 'validatePayment'));
         $oOrder3->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
         $oOrder3->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $oOrder3->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
@@ -271,11 +260,6 @@ class Integration_Price_OrderNumberingTest extends OxidTestCase
 
         // if basket has products
         if ($oBasket->getProductsCount()) {
-            $paymentControllerMock = $this->getMock('Payment', array('validatePayment'));
-            $paymentControllerMock->expects($this->any())->method('validatePayment')->will($this->returnValue('order'));
-
-            oxTestModules::addModuleObject('Payment', $paymentControllerMock);
-
             $iSuccess = $oOrder3->finalizeOrder($oBasket, $oUser, $blRecalculatingOrder = false);
         }
 

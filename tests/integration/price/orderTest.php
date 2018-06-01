@@ -113,7 +113,7 @@ class Integration_Price_OrderTest extends OxidTestCase
         $oUser = $oBasket->getBasketUser();
 
         // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
-        $oOrder = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
+        $oOrder = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery', 'validatePayment'));
         $oOrder->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
         $oOrder->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
         $oOrder->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
@@ -121,12 +121,6 @@ class Integration_Price_OrderTest extends OxidTestCase
 
         // if basket has products
         if ($oBasket->getProductsCount()) {
-
-            $paymentControllerMock = $this->getMock('Payment', array('validatePayment'));
-            $paymentControllerMock->expects($this->any())->method('validatePayment')->will($this->returnValue('order'));
-
-            oxTestModules::addModuleObject('Payment', $paymentControllerMock);
-
             $iSuccess = $oOrder->finalizeOrder($oBasket, $oUser, $blRecalculatingOrder = false);
         }
 

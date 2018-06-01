@@ -453,7 +453,7 @@ class Integration_Admin_OrderRecalculationTest extends OxidTestCase
      */
     private function createOrder()
     {
-        $order = $this->getMock('oxOrder', array('validateDeliveryAddress', '_sendOrderByEmail'));
+        $order = $this->getMock('oxOrder', array('validateDeliveryAddress', '_sendOrderByEmail', 'validatePayment'));
         // sending order by email is always successful for tests
         $order->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(1));
         //mocked to circumvent delivery address change md5 check from requestParameter
@@ -662,11 +662,6 @@ class Integration_Admin_OrderRecalculationTest extends OxidTestCase
 
         $order = $this->createOrder();
         oxRegistry::getSession()->setVariable('sess_challenge', $this->testOrderId);
-
-        $paymentControllerMock = $this->getMock('Payment', array('validatePayment'));
-        $paymentControllerMock->expects($this->any())->method('validatePayment')->will($this->returnValue('order'));
-
-        oxTestModules::addModuleObject('Payment', $paymentControllerMock);
 
         $blRecalculatingOrder = false;
         $result = $order->finalizeOrder($basket, $user, $blRecalculatingOrder);

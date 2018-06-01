@@ -1007,25 +1007,13 @@ class oxOrder extends oxBase
      */
     protected function _setPayment($sPaymentid)
     {
-        // copying payment info fields
-        $aDynvalue = oxRegistry::getSession()->getVariable('dynvalue');
-        $aDynvalue = $aDynvalue ? $aDynvalue : oxRegistry::getConfig()->getRequestParameter('dynvalue');
-
-        // loading payment object
         $oPayment = oxNew('oxpayment');
 
         if (!$oPayment->load($sPaymentid)) {
             return null;
         }
 
-        // #756M Preserve already stored payment information
-        if (!$aDynvalue && ($oUserpayment = $this->getPaymentType())) {
-            if (is_array($aStoredDynvalue = $oUserpayment->getDynValues())) {
-                foreach ($aStoredDynvalue as $oVal) {
-                    $aDynvalue[$oVal->name] = $oVal->value;
-                }
-            }
-        }
+        $aDynvalue = $this->getDynamicValues();
 
         $oPayment->setDynValues(oxRegistry::getUtils()->assignValuesFromText($oPayment->oxpayments__oxvaldesc->value));
 
@@ -2165,19 +2153,9 @@ class oxOrder extends oxBase
      */
     public function validatePayment($oBasket)
     {
-        $oDb = oxDb::getDb();
+        $paymentId = $oBasket->getPaymentId();
 
-        $oPayment = oxNew("oxpayment");
-        $sTable = $oPayment->getViewName();
-
-        $sQ = "select 1 from {$sTable} where {$sTable}.oxid=" .
-              $oDb->quote($oBasket->getPaymentId()) . " and " . $oPayment->getSqlActiveSnippet();
-
-        $paymentController = oxNew('Payment');
-        if (
-            !$oDb->getOne($sQ, false, false) ||
-            'order' !== $paymentController->validatePayment()
-        ) {
+        if (!$this->isValidPaymentId($paymentId) || !$this->isValidPayment($oBasket)) {
             return self::ORDER_STATE_INVALIDPAYMENT;
         }
     }
@@ -2358,5 +2336,93 @@ class oxOrder extends oxBase
         }
 
         return $this->_sShipTrackUrl;
+    }
+
+    /**
+     * Returns true if paymentId is valid.
+     *
+     * @param int $paymentId
+     *
+     * @return bool
+     */
+    private function isValidPaymentId($paymentId)
+    {
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $db = oxDb::getDb();
+
+        $paymentModel = oxNew("oxpayment");
+        $tableName = $paymentModel->getViewName();
+
+        $sql = "
+            select
+                1 
+            from 
+                {$tableName}
+            where 
+                {$tableName}.oxid = {$db->quote($paymentId)}
+                and {$paymentModel->getSqlActiveSnippet()}
+        ";
+
+        return (bool) $db->getOne($sql);
+    }
+
+    /**
+     * Returns true if payment is valid.
+     *
+     * @param oxBasket $basket
+     *
+     * @return bool
+     */
+    private function isValidPayment($basket)
+    {
+        $paymentId = $basket->getPaymentId();
+        $paymentModel = oxNew("oxpayment");
+        $paymentModel->load($paymentId);
+
+        $dynamicValues = $this->getDynamicValues();
+        $shopId = $this->getConfig()->getShopId();
+
+        return $paymentModel->isValidPayment(
+            $dynamicValues,
+            $shopId,
+            $this->getUser(),
+            $basket->getPriceForPayment(),
+            $basket->getShippingId()
+        );
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getDynamicValues()
+    {
+        $dynamicValues = $this->getSession()->getVariable('dynvalue');
+
+        if (!$dynamicValues) {
+            $dynamicValues = oxRegistry::getConfig()->getRequestParameter('dynvalue');
+        }
+
+        if (!$dynamicValues && $this->getPaymentType()) {
+            $dynamicValues = $this->getDynamicValuesFromPaymentType();
+        }
+
+        return $dynamicValues;
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getDynamicValuesFromPaymentType()
+    {
+        $dynamicValues = null;
+        $dynamicValuesList = $this->getPaymentType()->getDynValues();
+
+        if (is_array($dynamicValuesList)) {
+            foreach ($dynamicValuesList as $value) {
+                $dynamicValues[$value->name] = $value->value;
+            }
+        }
+
+        return $dynamicValues;
     }
 }

@@ -334,23 +334,36 @@ class Unit_Core_oxorderTest extends OxidTestCase
 
     public function testValidatePayment()
     {
+        $paymentModel = $this
+            ->getMockBuilder('oxpayment')
+            ->setMethods(array('isValidPayment'))
+            ->getMock();
+
+        $paymentModel
+            ->method('isValidPayment')
+            ->willReturn(true);
+
+        oxTestModules::addModuleObject('oxpayment', $paymentModel);
+
+        $oOrder = $this->getMock('oxorder', array('getPaymentType'));
+        $oOrder
+            ->method('getPaymentType')
+            ->willReturn(
+                oxNew('oxUserPayment')
+            );
+        
         $oOrder = new oxorder();
 
         // non existing payment
         $oBasket = $this->getMock("oxbasket", array("getPaymentId"));
-        $oBasket->expects($this->once())->method("getPaymentId")->will($this->returnValue("xxx"));
+        $oBasket->expects($this->any())->method("getPaymentId")->will($this->returnValue("xxx"));
 
         $this->assertEquals(oxOrder::ORDER_STATE_INVALIDPAYMENT, $oOrder->validatePayment($oBasket));
 
         // existing payment
         $sPaymentId = oxDb::getDb()->getOne('select oxid from oxpayments where oxactive = 1');
         $oBasket = $this->getMock("oxbasket", array("getPaymentId"));
-        $oBasket->expects($this->once())->method("getPaymentId")->will($this->returnValue($sPaymentId));
-
-        $paymentControllerMock = $this->getMock('Payment', array('validatePayment'));
-        $paymentControllerMock->expects($this->any())->method('validatePayment')->will($this->returnValue('order'));
-
-        oxTestModules::addModuleObject('Payment', $paymentControllerMock);
+        $oBasket->expects($this->any())->method("getPaymentId")->will($this->returnValue($sPaymentId));
 
         $this->assertNull($oOrder->validatePayment($oBasket));
     }

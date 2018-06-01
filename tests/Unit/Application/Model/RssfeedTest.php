@@ -266,9 +266,8 @@ class RssfeedTest extends \OxidTestCase
         $oRss = oxNew('oxRssFeed');
         $oRss->setConfig($oCfg);
 
-        $oLongDesc = new stdClass();
-        $oLongDesc->value = "artlogndesc";
-
+        $oLongDesc = new oxField("artlogndesc");
+        
         $oArt1 = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getLink", "getLongDescription", "getPrice"));
         $oArt1->expects($this->any())->method('getLink')->will($this->returnValue("artlink"));
         $oArt1->expects($this->any())->method('getLongDescription')->will($this->returnValue($oLongDesc));
@@ -277,8 +276,7 @@ class RssfeedTest extends \OxidTestCase
         $oArt1->oxarticles__oxprice = new oxField(20);
         $oArt1->oxarticles__oxtimestamp = new oxField('2011-09-06 09:46:42');
 
-        $oLongDesc2 = new stdClass();
-        $oLongDesc2->value = " &nbsp;<div>";
+        $oLongDesc2 = new oxField(" &nbsp;<div>");
 
         $oArt2 = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getLink", "getLongDescription", "getPrice"));
         $oArt2->expects($this->any())->method('getLink')->will($this->returnValue("artlink"));

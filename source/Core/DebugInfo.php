@@ -79,7 +79,7 @@ class DebugInfo
     {
         $log = 'Execution time:' . round($dTotalTime, 4) . '<br />';
         global $aProfileTimes;
-        global $executionCounts;
+        global $aExecutionCounts;
         if (is_array($aProfileTimes)) {
             $log .= "----------------------------------------------------------<br>" . PHP_EOL;
             arsort($aProfileTimes);
@@ -89,10 +89,10 @@ class DebugInfo
                 if ($dTotalTime) {
                     $log .= "<td style='border-bottom: 1px dotted #000;min-width:100px;'>" . round($val * 100 / $dTotalTime, 2) . "%</td>";
                 }
-                if ($executionCounts[$key]) {
-                    $log .= " <td style='border-bottom: 1px dotted #000;min-width:50px;padding-right:30px;' align='right'>" . $executionCounts[$key] . "</td>"
+                if ($aExecutionCounts[$key]) {
+                    $log .= " <td style='border-bottom: 1px dotted #000;min-width:50px;padding-right:30px;' align='right'>" . $aExecutionCounts[$key] . "</td>"
                              . "<td style='border-bottom: 1px dotted #000;min-width:15px; '>*</td>"
-                             . "<td style='border-bottom: 1px dotted #000;min-width:100px;'>" . round($val / $executionCounts[$key], 5) . "s</td>" . PHP_EOL;
+                             . "<td style='border-bottom: 1px dotted #000;min-width:100px;'>" . round($val / $aExecutionCounts[$key], 5) . "s</td>" . PHP_EOL;
                 } else {
                     $log .= " <td colspan=3 style='border-bottom: 1px dotted #000;min-width:100px;'> not stopped correctly! </td>" . PHP_EOL;
                 }

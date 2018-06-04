@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Application\Model;
  * File checker result class
  * Structures and keeps the result of shop file check diagnostics
  *
+ * @deprecated since v6.3 (2018-06-04); This functionality will be removed completely.
  */
 class FileCheckerResult
 {

@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxDb;
-
 /**
  * Diagnostic tool model
  * Stores configuration and public diagnostic methods for shop diagnostics
@@ -49,6 +46,8 @@ class Diagnostics
     /**
      * Array of all files and folders in shop root folder which are to be checked
      *
+     * @deprecated since v6.3 (2018-06-04); This functionality will be removed completely.
+     *
      * @var array
      */
     protected $_aFileCheckerPathList = [
@@ -66,6 +65,8 @@ class Diagnostics
     /**
      * Array of file extensions which are to be checked
      *
+     * @deprecated since v6.3 (2018-06-04); This functionality will be removed completely.
+     *
      * @var array
      */
     protected $_aFileCheckerExtensionList = ['php', 'tpl'];
@@ -74,6 +75,9 @@ class Diagnostics
      * Setter for list of files and folders to check
      *
      * @param array $aPathList Path list.
+     *
+     * @deprecated since v6.3 (2018-06-04); This functionality will be removed completely.
+     *
      */
     public function setFileCheckerPathList($aPathList)
     {
@@ -83,7 +87,10 @@ class Diagnostics
     /**
      * getter for list of files and folders to check
      *
-     * @return $this->_aFileCheckerPathList array
+     * @return array
+     *
+     * @deprecated since v6.3 (2018-06-04); This functionality will be removed completely.
+     *
      */
     public function getFileCheckerPathList()
     {
@@ -94,6 +101,9 @@ class Diagnostics
      * Setter for extensions of files to check
      *
      * @param array $aExtList List of extensions.
+     *
+     * @deprecated since v6.3 (2018-06-04); This functionality will be removed completely.
+     *
      */
     public function setFileCheckerExtensionList($aExtList)
     {
@@ -103,7 +113,9 @@ class Diagnostics
     /**
      * getter for extensions of files to check
      *
-     * @return $this->_aFileCheckerExtensionList array
+     * @deprecated since v6.3 (2018-06-04); This functionality will be removed completely.
+     *
+     * @return array
      */
     public function getFileCheckerExtensionList()
     {
@@ -311,7 +323,7 @@ class Diagnostics
     public function getServerInfo()
     {
         // init empty variables (can be filled if exec is allowed)
-        $iCpuAmnt = $iCpuMhz = $iBogo = $iMemTotal = $iMemFree = $sCpuModelName = $sCpuModel = $sCpuFreq = $iCpuCores = null;
+        $iMemTotal = $iMemFree = $sCpuModelName = $sCpuModel = $sCpuFreq = $iCpuCores = null;
 
         // fill, if exec is allowed
         if ($this->isExecAllowed()) {

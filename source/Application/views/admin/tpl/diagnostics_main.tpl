@@ -19,9 +19,6 @@
 		[{if $oxdiag_frm_server}]
 			<li><a href="#serverinfo">[{oxmultilang ident='OXDIAG_SERVERINFO'}]</a></li>
 		[{/if}]
-		[{if $oxdiag_frm_chkvers}]
-			<li><a href="#chkversion">[{oxmultilang ident='OXDIAG_CHKVERSION'}]</a></li>
-		[{/if}]
 	</ul>
 <hr>
 

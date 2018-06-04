@@ -30,6 +30,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Deprecated
 - `writeToLog` in `bootstrap.php`
+- `\OxidEsales\Eshop\Application\Model\FileChecker::class`
+- `\OxidEsales\Eshop\Application\Model\FileCheckerResult::class`
+- `\OxidEsales\EshopCommunity\Application\Controller\Admin\DiagnosticsMain::_checkOxidFiles`
+- `\OxidEsales\EshopCommunity\Application\Controller\Admin\DiagnosticsMain::_getFileCheckReport`
+- `\OxidEsales\EshopCommunity\Application\Controller\Admin\DiagnosticsMain::_getFilesToCheck`
+- `\OxidEsales\EshopCommunity\Application\Model\Diagnostics::$_aFileCheckerExtensionList`
+- `\OxidEsales\EshopCommunity\Application\Model\Diagnostics::$_aFileCheckerPathList`
+- `\OxidEsales\EshopCommunity\Application\Model\Diagnostics::getFileCheckerExtensionList`
+- `\OxidEsales\EshopCommunity\Application\Model\Diagnostics::getFileCheckerPathList`
+- `\OxidEsales\EshopCommunity\Application\Model\Diagnostics::setFileCheckerExtensionList`
+- `\OxidEsales\EshopCommunity\Application\Model\Diagnostics::setFileCheckerPathList`
+- `\OxidEsales\EshopCommunity\Application\Model\FileChecker::class`
+- `\OxidEsales\EshopCommunity\Application\Model\FileCheckerResult::class`
+- `\OxidEsales\EshopCommunity\Core\Base::$_oConfig`
 - `\OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::$_iDebug`
 - `\OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::setIDebug`
 - `\OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::writeExceptionToLog`
@@ -38,7 +52,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::getFormattedException`
 - `\OxidEsales\EshopCommunity\Core\Exception\StandardException::debugOut`
 - `\OxidEsales\EshopCommunity\Core\OnlineCaller::_castExceptionAndWriteToLog`
-- `\OxidEsales\EshopCommunity\Core\Base::$_oConfig`
 
 ### Removed
 

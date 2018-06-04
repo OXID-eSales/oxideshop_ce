@@ -340,16 +340,20 @@ class Unit_Core_oxorderTest extends OxidTestCase
             ->getMock();
 
         $paymentModel
+            ->expects($this->any())
             ->method('isValidPayment')
-            ->willReturn(true);
+            ->will(
+                $this->returnValue(true)
+            );
 
         oxTestModules::addModuleObject('oxpayment', $paymentModel);
 
         $oOrder = $this->getMock('oxorder', array('getPaymentType'));
         $oOrder
+            ->expects($this->any())
             ->method('getPaymentType')
-            ->willReturn(
-                oxNew('oxUserPayment')
+            ->will(
+                $this->returnValue(oxNew('oxUserPayment'))
             );
         
         $oOrder = new oxorder();

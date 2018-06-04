@@ -46,6 +46,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - \OxidEsales\EshopCommunity\Core\OnlineCaller::_castExceptionAndWriteToLog
 - \OxidEsales\EshopCommunity\Core\Utils::writeToLog
 - `writeToLog` in `bootstrap.php`
+- \OxidEsales\EshopCommunity\Core\Base::$_oConfig
 
 ### Fixed
 
@@ -85,6 +86,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::getFormattedException`
 - `\OxidEsales\EshopCommunity\Core\Exception\StandardException::debugOut`
 - `\OxidEsales\EshopCommunity\Core\OnlineCaller::_castExceptionAndWriteToLog`
+- `\OxidEsales\EshopCommunity\Core\Base::$_oConfig`
 
 ### Removed
 

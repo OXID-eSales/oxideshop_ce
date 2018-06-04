@@ -78,7 +78,7 @@ class Base
 
     /**
      * oxConfig instance getter
-     * @deprecated use Registry::getConfig()
+     *
      * @return \OxidEsales\Eshop\Core\Config
      */
     public function getConfig()
@@ -88,7 +88,7 @@ class Base
 
     /**
      * oxConfig instance setter
-     * @deprecated use Registry::set(Config::class, $config)
+     *
      * @param \OxidEsales\Eshop\Core\Config $config config object
      */
     public function setConfig($config)

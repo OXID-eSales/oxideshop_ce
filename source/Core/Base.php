@@ -17,6 +17,8 @@ class Base
     /**
      * oxconfig instance
      *
+     * @deprecated since v6.3 (2018-06-04); This attribute will be removed completely at 7.0, use Registry to get config.
+     *
      * @var \OxidEsales\Eshop\Core\Config
      */
     protected static $_oConfig = null;

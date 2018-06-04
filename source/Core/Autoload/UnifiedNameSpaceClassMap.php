@@ -1875,18 +1875,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Application\Model\FileChecker'                             => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\FileChecker::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
-    ],
-    'OxidEsales\Eshop\Application\Model\FileCheckerResult'                       => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\FileCheckerResult::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
-    ],
     'OxidEsales\Eshop\Application\Model\FileCollector'                           => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\FileCollector::class,
         'isAbstract'       => false,

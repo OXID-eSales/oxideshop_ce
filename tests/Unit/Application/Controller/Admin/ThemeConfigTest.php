@@ -63,8 +63,9 @@ class ThemeConfigTest extends \OxidTestCase
             array('arr', $sName, $sValue, $iShopId, 'theme:' . $sThemeName, true),
             array('aarr', $sName, $sValue, $iShopId, 'theme:' . $sThemeName, true),
             array('select', $sName, $sValue, $iShopId, 'theme:' . $sThemeName, true),
+            array('num', $sName, $sValue, $iShopId, 'theme:' . $sThemeName, true),
         );
-        $oConfig->expects($this->exactly(6))->method('saveShopConfVar')->will($this->returnValueMap($valueMap));
+        $oConfig->expects($this->any())->method('saveShopConfVar')->will($this->returnValueMap($valueMap));
 
         /** @var Theme_Config|PHPUnit_Framework_MockObject_MockObject $oTheme_Config */
         $oTheme_Config = $this->getMock(

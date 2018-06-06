@@ -7,8 +7,14 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
+use oxArticleInputException;
+use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Registry;
+use oxNoArticleException;
+use oxOutOfStockException;
 use oxField;
 use OxidEsales\Eshop\Core\Price as ShopPrice;
+use OxidEsales\Eshop\Application\Model\Payment as EshopPayment;
 
 /**
  * Order manager.
@@ -940,25 +946,13 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _setPayment($sPaymentid)
     {
-        // copying payment info fields
-        $aDynvalue = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('dynvalue');
-        $aDynvalue = $aDynvalue ? $aDynvalue : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('dynvalue');
-
-        // loading payment object
         $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
 
         if (!$oPayment->load($sPaymentid)) {
             return null;
         }
 
-        // #756M Preserve already stored payment information
-        if (!$aDynvalue && ($oUserpayment = $this->getPaymentType())) {
-            if (is_array($aStoredDynvalue = $oUserpayment->getDynValues())) {
-                foreach ($aStoredDynvalue as $oVal) {
-                    $aDynvalue[$oVal->name] = $oVal->value;
-                }
-            }
-        }
+        $aDynvalue = $this->getDynamicValues();
 
         $oPayment->setDynValues(\OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($oPayment->oxpayments__oxvaldesc->value));
 
@@ -2101,16 +2095,9 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function validatePayment($oBasket)
     {
-        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
+        $paymentId = $oBasket->getPaymentId();
 
-        $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
-        $sTable = $oPayment->getViewName();
-
-        $sQ = "select 1 from {$sTable} where {$sTable}.oxid=" .
-              $masterDb->quote($oBasket->getPaymentId()) . " and " . $oPayment->getSqlActiveSnippet();
-
-        if (!$masterDb->getOne($sQ)) {
+        if (!$this->isValidPaymentId($paymentId) || !$this->isValidPayment($oBasket)) {
             return self::ORDER_STATE_INVALIDPAYMENT;
         }
     }
@@ -2244,5 +2231,93 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         return $this->_sShipTrackUrl;
+    }
+
+    /**
+     * Returns true if paymentId is valid.
+     *
+     * @param int $paymentId
+     *
+     * @return bool
+     */
+    private function isValidPaymentId($paymentId)
+    {
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+        $masterDb = DatabaseProvider::getMaster();
+
+        $paymentModel = oxNew(EshopPayment::class);
+        $tableName = $paymentModel->getViewName();
+
+        $sql = "
+            select
+                1 
+            from 
+                {$tableName}
+            where 
+                {$tableName}.oxid = {$masterDb->quote($paymentId)}
+                and {$paymentModel->getSqlActiveSnippet()}
+        ";
+
+        return (bool) $masterDb->getOne($sql);
+    }
+
+    /**
+     * Returns true if payment is valid.
+     *
+     * @param \OxidEsales\Eshop\Application\Model\Basket $basket
+     *
+     * @return bool
+     */
+    private function isValidPayment($basket)
+    {
+        $paymentId = $basket->getPaymentId();
+        $paymentModel = oxNew(EshopPayment::class);
+        $paymentModel->load($paymentId);
+
+        $dynamicValues = $this->getDynamicValues();
+        $shopId = $this->getConfig()->getShopId();
+
+        return $paymentModel->isValidPayment(
+            $dynamicValues,
+            $shopId,
+            $this->getUser(),
+            $basket->getPriceForPayment(),
+            $basket->getShippingId()
+        );
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getDynamicValues()
+    {
+        $dynamicValues = $this->getSession()->getVariable('dynvalue');
+
+        if (!$dynamicValues) {
+            $dynamicValues = Registry::getRequest()->getRequestParameter('dynvalue');
+        }
+
+        if (!$dynamicValues && $this->getPaymentType()) {
+            $dynamicValues = $this->getDynamicValuesFromPaymentType();
+        }
+
+        return $dynamicValues;
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getDynamicValuesFromPaymentType()
+    {
+        $dynamicValues = null;
+        $dynamicValuesList = $this->getPaymentType()->getDynValues();
+
+        if (is_array($dynamicValuesList)) {
+            foreach ($dynamicValuesList as $value) {
+                $dynamicValues[$value->name] = $value->value;
+            }
+        }
+
+        return $dynamicValues;
     }
 }

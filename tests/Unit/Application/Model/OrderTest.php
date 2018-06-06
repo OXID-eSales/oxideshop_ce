@@ -10,6 +10,11 @@ use oxArticleHelper;
 use \oxdeliverylist;
 use oxEmailHelper;
 use \oxField;
+use OxidEsales\Eshop\Application\Model\Basket;
+use OxidEsales\Eshop\Application\Model\Order;
+use OxidEsales\Eshop\Application\Model\Payment;
+use OxidEsales\Eshop\Application\Model\UserPayment;
+use OxidEsales\Eshop\Core\UtilsObject;
 use oxOrder;
 use \stdClass;
 use \oxDb;
@@ -293,22 +298,86 @@ class OrderTest extends \OxidTestCase
         $this->assertNull($oOrder->validateDelivery($oBasket));
     }
 
-    public function testValidatePayment()
+    public function testValidatePaymentWhenPaymentIsValid()
     {
-        $oOrder = oxNew('oxorder');
+        $paymentModel = $this->getMock(Payment::class, ['isValidPayment']);
+        $paymentModel
+            ->method('isValidPayment')
+            ->willReturn(true);
 
-        // non existing payment
-        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array("getPaymentId"));
-        $oBasket->expects($this->once())->method("getPaymentId")->will($this->returnValue("xxx"));
+        UtilsObject::setClassInstance(Payment::class, $paymentModel);
 
-        $this->assertEquals(oxOrder::ORDER_STATE_INVALIDPAYMENT, $oOrder->validatePayment($oBasket));
+        $order = $this->getMock(Order::class, ['getPaymentType']);
+        $order
+            ->method('getPaymentType')
+            ->willReturn(
+                oxNew(UserPayment::class)
+            );
 
-        // existing payment
-        $sPaymentId = oxDb::getDb()->getOne('select oxid from oxpayments where oxactive = 1');
-        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array("getPaymentId"));
-        $oBasket->expects($this->once())->method("getPaymentId")->will($this->returnValue($sPaymentId));
+        $paymentId = oxDb::getDb()->getOne('select oxid from oxpayments where oxactive = 1');
 
-        $this->assertNull($oOrder->validatePayment($oBasket));
+        $basket = $this->getMock(Basket::class, array("getPaymentId"));
+        $basket
+            ->method("getPaymentId")
+            ->willReturn($paymentId);
+
+        $this->assertNull($order->validatePayment($basket));
+    }
+
+    public function testValidatePaymentWithWrongPaymentId()
+    {
+        $paymentModel = $this->getMock(Payment::class, ['isValidPayment']);
+        $paymentModel
+            ->method('isValidPayment')
+            ->willReturn(true);
+
+        UtilsObject::setClassInstance(Payment::class, $paymentModel);
+
+        $order = $this->getMock(Order::class, ['getPaymentType']);
+        $order
+            ->method('getPaymentType')
+            ->willReturn(
+                oxNew(UserPayment::class)
+            );
+
+        $basket = $this->getMock(Basket::class, array("getPaymentId"));
+        $basket
+            ->method("getPaymentId")
+            ->willReturn('wrongPaymentId');
+
+        $this->assertEquals(
+            oxOrder::ORDER_STATE_INVALIDPAYMENT,
+            $order->validatePayment($basket)
+        );
+    }
+
+    public function testValidatePaymentWhenPaymentIsInvalid()
+    {
+        $paymentModel = $this->getMock(Payment::class, ['isValidPayment']);
+        $paymentModel
+            ->method('isValidPayment')
+            ->willReturn(false);
+
+        UtilsObject::setClassInstance(Payment::class, $paymentModel);
+
+        $order = $this->getMock(Order::class, ['getPaymentType']);
+        $order
+            ->method('getPaymentType')
+            ->willReturn(
+                oxNew(UserPayment::class)
+            );
+
+        $paymentId = oxDb::getDb()->getOne('select oxid from oxpayments where oxactive = 1');
+
+        $basket = $this->getMock(Basket::class, array("getPaymentId"));
+        $basket
+            ->method("getPaymentId")
+            ->willReturn($paymentId);
+
+        $this->assertEquals(
+            oxOrder::ORDER_STATE_INVALIDPAYMENT,
+            $order->validatePayment($basket)
+        );
     }
 
     /**

@@ -15,13 +15,6 @@ use oxSystemComponentException;
 class Base
 {
     /**
-     * oxconfig instance
-     *
-     * @var \OxidEsales\Eshop\Core\Config
-     */
-    protected static $_oConfig = null;
-
-    /**
      * oxsession instance
      *
      * @var \OxidEsales\Eshop\Core\Session
@@ -90,11 +83,7 @@ class Base
      */
     public function getConfig()
     {
-        if (self::$_oConfig == null) {
-            self::$_oConfig = Registry::getConfig();
-        }
-
-        return self::$_oConfig;
+        return \OxidEsales\Eshop\Core\Registry::getConfig();
     }
 
     /**
@@ -104,7 +93,7 @@ class Base
      */
     public function setConfig($config)
     {
-        self::$_oConfig = $config;
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
     }
 
     /**

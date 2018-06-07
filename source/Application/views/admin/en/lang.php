@@ -1899,7 +1899,6 @@ $aLang = [
     'OXDIAG_LIST_MENUSUBITEM' => 'Diagnostics tool',
 
     'OXDIAG_MAIN_TITLE'                              => 'Diagnostics of your OXID eShop',
-    'OXDIAG_VERSIONCHECKER'                          => 'Version checker',
     'OXDIAG_INTROINFORMATION_CONTACT_US'             => 'You can contact us using',
     'OXDIAG_INTROINFORMATION_ONLINE_CONTACT_FORM'    => 'Online Contact Form',
 
@@ -1909,34 +1908,15 @@ $aLang = [
     'OXDIAG_RESULT'                       => 'Diagnostics check result',
     'OXDIAG_DOWNLOAD_FILE'                => 'Click here to download the result file',
     'OXDIAG_ERRORMESSAGETEMPLATE'         => 'These error(s) occured',
-    'OXDIAG_VERSION'                      => 'Version',
-    'OXDIAG_EDITION'                      => 'Edition',
-    'OXDIAG_SUMMARY'                      => 'Summary',
-    'OXDIAG_HINTS'                        => 'Hints',
-    'OXDIAG_OK'                           => 'OK',
-    'OXDIAG_MODIFIED'                     => 'Modified',
-    'OXDIAG_VERSION_MISMATCH'             => 'Version mismatch',
-    'OXDIAG_UNKNOWN'                      => 'Unknown',
-    'OXDIAG_NUMBER_OF_INVESTIGATED_FILES' => 'Number of investigated files in total',
-    'OXDIAG_SHOP_DOES_NOT_FIT'            => 'This OXID eShop does not fit 100%',
-    'OXDIAG_SHOP_ORIGINAL'                => 'This OXID eShop was not modified and is fully original',
-
-    'OXDIAG_MODIFIEDHINTS1'                       => 'OXID eShop has sophisticated possibility to extend it by modules without changing shipped files. It\'s not recommended and not needed to change shop files. See also our <a href="http://blog.oxid-esales.com/2009/02/how-extend-oxid-eshop-with-modules-part-1/" target=_blank>tutorials</a>.',
-    'OXDIAG_MODIFIEDHINTS2'                       => 'Since OXID eShop 4.2.0 it\'s possible to use <a href="https://oxidforge.org/en/oxid-eshop-version-4-2-0.html#New_Features" target=_blank>your own templates without changing shipped ones</a>.',
-    'OXDIAG_VERSIONMISMATCHHINTS'                 => 'Apparently one or more updates went wrong. See details link for more information about more details for each file. A left over file which is not any longer included in OXID eShop could also be a <u>possible</u> reason for version mismatch. Find information about update in our <a href="http://www.oxid-esales.com/en/support-services/documentation-and-help/oxid-eshop/installation/oxid-eshop-update-installation" target=_blank>Documentation and help</a>.',
-
 
     'OXDIAG_HOME'                     => 'OXID Diagnostics',
     'OXDIAG_ABOUT'                    => 'This Diagnostics tool collects technical information about your shop and server. This information might be useful before updating, installing modules or on diagnostics.',
-    'OXDIAG_DOWNLOADLOG'              => 'Download report',
 
     //initial form
     'OXDIAG_COLLECT_MODULES'          => 'Fetch modules',
     'OXDIAG_COLLECT_HEALTH'           => 'Poll system health status',
     'OXDIAG_COLLECT_PHP'              => 'Poll PHP configuration (selected parameters)',
     'OXDIAG_COLLECT_SERVER'           => 'Poll system information (if possible)',
-    'OXDIAG_STORE_ANALYSIS'           => 'Store results',
-    'OXDIAG_COLLECT_START'            => 'Start analysis!',
 
     //index
     'OXDIAG_GOTO'                     => 'Go to',
@@ -1945,9 +1925,7 @@ $aLang = [
     'OXDIAG_HEALTH'                   => 'System health',
     'OXDIAG_PHPINFO'                  => 'PHP information',
     'OXDIAG_SERVERINFO'               => 'Server information',
-    'OXDIAG_RESTART'                  => 'Start new analysis',
 
-    'OXDIAG_DISCL'                    => 'The analysis below the line has been stored in a report file.',
     'OXDIAG_HEALTH_OK'                => 'OK',
     'OXDIAG_HEALTH_MIN'               => 'MIN',
     'OXDIAG_HEALTH_FAIL'              => 'FAIL',
@@ -1972,9 +1950,6 @@ $aLang = [
     'OXDIAG_SERVERINFO_NOT_DETECTED'  => 'not detected',
     'OXDIAG_SERVERINFO_COMPONENT'     => 'Component',
     'SUBJECT_UNABLE_TO_SEND_VIA_CURL' => 'Information cannot be sent to OXID server via CURL',
-
-    //final note
-    'OXDIAG_FINALNOTE'                => 'End of analysis.',
 
     'OLC_ERROR_SERIAL_NOT_VALID'    => 'License key check failed. Try again or contact support if this occurs permanently.',
     'OLC_ERROR_RESPONSE_NOT_VALID'  => 'Error: service unavailable, try again later... If this persists, please check that your shop can make outgoing connections.',

@@ -84,6 +84,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Article _oAmountPriceInfo list have unit prices calculated if quantity set for product [PR-619](https://github.com/OXID-eSales/oxideshop_ce/pull/619)
   - `fbrutamountprice` and `fnetamountprice` available for usage in template
   - prices already preformatted with current language/currency settings
+- `\OxidEsales\Eshop\Application\Model\Order::finalizeOrder` triggers a complete re-validation of the selected payment 
+   method.  
+   New private methods: 
+  - `\OxidEsales\EshopCommunity\Application\Model\Order::isValidPaymentId`
+  - `\OxidEsales\EshopCommunity\Application\Model\Order::isValidPayment`
 
 ### Changed
 - Loading for non widget classes via `widget.php` entry point have been declined. To allow a class to be loaded

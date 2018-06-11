@@ -100,18 +100,7 @@ function editThis(sID)
     <div class="groupExp">
         <div>
             <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="SHOP_OPTIONS_GROUP_SEARCH"}]</b></a>
-            <dl>
-                <dt>
-                    <input type=hidden name=confbools[blAutoSearchOnCat] value=false>
-                    <input type=checkbox name=confbools[blAutoSearchOnCat] value=true  [{if ($confbools.blAutoSearchOnCat)}]checked[{/if}] [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_CONFIG_AUTOSEARCHONCAT"}]
-                </dt>
-                <dd>
-                    [{oxmultilang ident="SHOP_CONFIG_AUTOSEARCHONCAT"}]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-
+          
             <dl>
                 <dt>
                     <textarea class="txtfield" name=confarrs[aSearchCols] [{$readonly}]>[{$confarrs.aSearchCols}]</textarea>

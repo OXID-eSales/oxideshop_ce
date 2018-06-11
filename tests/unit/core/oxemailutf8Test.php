@@ -16,13 +16,12 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
+ * @copyright (C) OXID eSales AG 2003-2018
  * @version   OXID eShop CE
  */
 
 class Unit_core_oxemailUtf8Test extends OxidTestCase
 {
-
     /**
      * Initialize the fixture.
      *
@@ -149,6 +148,44 @@ class Unit_core_oxemailUtf8Test extends OxidTestCase
         // strings, that comes from oxcontent
         $this->assertTrue($oStr->strpos($sBody, "Vielen Dank für Ihre Bestellung!") > 0);
         $this->assertTrue($oStr->strpos($sBody, "Bitte fügen Sie hier Ihre vollständige Anbieterkennzeichnung ein.") > 0);
+    }
+
+    /**
+     * Test for bug #0008618
+     *
+     * @dataProvider dataProviderTestSendForgotPwdEmailSendsToEmailAddressStoredInDatabase
+     */
+    public function testSendForgotPwdEmailSendsToEmailAddressStoredInDatabase($bogusEmailAddress)
+    {
+        $realEmailAddress = 'admin';
+
+        $oEmailMock = $this->getMock('oxEmail', array("send", "setRecipient"));
+        $oEmailMock->expects($this->once())->method("setRecipient")->with($realEmailAddress, 'John Doe');
+        $oEmailMock->expects($this->once())->method("send")->will($this->returnValue(true));
+
+        $oEmailMock->sendForgotPwdEmail($bogusEmailAddress);
+    }
+
+    public function dataProviderTestSendForgotPwdEmailSendsToEmailAddressStoredInDatabase()
+    {
+        return array(
+            array('Admin'),
+            array('Àdmin'),
+            array('Ádmin'),
+            array('Âdmin'),
+            array('Ãdmin'),
+            array('Ädmin'),
+            array('Ådmin'),
+            array('àdmin'),
+            array('ádmin'),
+            array('âdmin'),
+            array('ãdmin'),
+            array('ädmin'),
+            array('ådmin'),
+            array('Ādmin'),
+            array('Ądmin'),
+            array('ądmin'),
+        );
     }
 }
 

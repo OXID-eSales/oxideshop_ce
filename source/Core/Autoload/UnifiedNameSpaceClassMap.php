@@ -831,29 +831,11 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Application\Controller\Admin\DynEconda'                    => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\Admin\DynEconda::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
-    ],
     'OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController'  => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicExportBaseController::class,
         'isAbstract'       => false,
         'isInterface'      => false,
         'isDeprecated'     => false
-    ],
-    'OxidEsales\Eshop\Application\Controller\Admin\DynamicInterface'             => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicInterface::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
-    ],
-    'OxidEsales\Eshop\Application\Controller\Admin\DynamicScreenLocal'           => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicScreenLocal::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Application\Controller\Admin\GenericExport'                => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\Admin\GenericExport::class,
@@ -1015,7 +997,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\Admin\NewsMainAjax::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Application\Controller\Admin\NewsText'                     => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\Admin\NewsText::class,
@@ -1591,7 +1573,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\NewsController::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Application\Controller\NewsletterController'               => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\NewsletterController::class,
@@ -1627,7 +1609,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\RecommListController::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Application\Controller\RecommendationAddController'        => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\RecommendationAddController::class,
@@ -1963,13 +1945,13 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\News::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Application\Model\NewsList'                                => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\NewsList::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Application\Model\NewsSubscribed'                          => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\NewsSubscribed::class,
@@ -2059,7 +2041,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\RecommendationList::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Application\Model\Remark'                                  => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\Remark::class,

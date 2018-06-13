@@ -6,12 +6,11 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-
 /**
  * Shop file checker
  * Performs version check of shop file
  *
+ * @deprecated since v6.3 (2018-06-04); This functionality will be removed completely.
  */
 class FileChecker
 {

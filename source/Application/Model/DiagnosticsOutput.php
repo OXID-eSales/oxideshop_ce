@@ -6,8 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-
 /**
  * Diagnostic tool result outputer
  * Performs OutputKey check of shop files and generates report file.
@@ -129,7 +127,7 @@ class DiagnosticsOutput
         $this->_oUtils->setHeader("Expires: 0");
         $this->_oUtils->setHeader("Cache-Control: must-revalidate, post-check=0, pre-check=0, private");
         $this->_oUtils->setHeader('Content-Disposition: attachment;filename=' . $this->_sOutputFileName);
-        $this->_oUtils->setHeader("Content-Type: application/octet-stream");
+        $this->_oUtils->setHeader("Content-Type:text/html;charset=utf-8");
         if ($iFileSize) {
             $this->_oUtils->setHeader("Content-Length: " . $iFileSize);
         }

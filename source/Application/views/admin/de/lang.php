@@ -1895,19 +1895,10 @@ $aLang = [
 
     'OXDIAG_MAIN_TITLE'                              => 'Diagnose Ihres OXID Shops',
     'OXDIAG_VERSIONCHECKER'                          => 'Versionsprüfung',
-    'OXDIAG_INTROINFORMATION'                        => 'Dieses Skript dient der Überprüfung der Konsistenz Ihres OXID eShop. Es ermittelt die Namen aller .php-Dateien und Templates. Für jede Datei wird eine Verbindung zum OXID Webservice hergestellt um zu prüfen, ob deren MD5-Checksumme zur Shop-Version passt.',
-    'OXDIAG_INTROINFORMATION_NO_PERSONAL_INFO'       => 'Es werden weder Lizenzangaben, noch persönliche Informationen ermittelt und übertragen.',
-    'OXDIAG_INTROINFORMATION_DATA_TRANSMITTED'       => 'Daten, die zu OXID übertragen werden',
-    'OXDIAG_INTROINFORMATION_FILENAME_TO_BE_CHECKED' => 'Dateiname, der geprüft wird',
-    'OXDIAG_INTROINFORMATION_MD5_CHECKSUM'           => 'MD5-Checksumme',
-    'OXDIAG_INTROINFORMATION_VERSION_DETECTED'       => 'Erkannte Version',
-    'OXDIAG_INTROINFORMATION_MORE_INFORMATION'       => 'Für detailliertere Informationen hier prüfen',
-    'OXDIAG_INTROINFORMATION_OXID_ESALES_BLOG'       => 'OXID eSales\' Blog',
     'OXDIAG_INTROINFORMATION_CONTACT_US'             => 'Sie können sich mit uns in Verbindung setzen. Verwenden Sie das ',
     'OXDIAG_INTROINFORMATION_ONLINE_CONTACT_FORM'    => 'Online Kontaktformular',
 
-    'OXDIAG_FORM_LIST_ALL_FILES' => 'Liste aller Dateien (auch die, welche OK sind)',
-    'OXDIAG_FORM_START_CHECK'    => 'Prüfung des eShop wird jetzt gestartet (kann eine Weile dauern)',
+    'OXDIAG_FORM_START_CHECK'    => 'Diagnose starten',
 
     'OXDIAG_RESULT_SUCCESSFUL'            => 'Diagnoseprüfung erfolgreich.',
     'OXDIAG_RESULT'                       => 'Diagnose-Prüfergebnis',
@@ -1919,17 +1910,12 @@ $aLang = [
     'OXDIAG_HINTS'                        => 'Hinweise',
     'OXDIAG_OK'                           => 'OK',
     'OXDIAG_MODIFIED'                     => 'Geändert',
-    'OXDIAG_OBSOLETE'                     => 'Veraltet',
     'OXDIAG_VERSION_MISMATCH'             => 'Versionsungleichheit',
     'OXDIAG_UNKNOWN'                      => 'Unbekannt',
     'OXDIAG_NUMBER_OF_INVESTIGATED_FILES' => 'Anzahl der insgesamt überprüften Dateien',
     'OXDIAG_SHOP_DOES_NOT_FIT'            => 'Dieser OXID eShop ist nicht 100% original',
     'OXDIAG_SHOP_ORIGINAL'                => 'Dieser OXID eShop wurde nicht verändert und ist original',
 
-    'OXDIAG_ERRORMESSAGEWEBSERVICEISNOTREACHABLE' => 'Der Webservice ist momentan nicht erreichbar. Bitte versuchen Sie es später noch einmal.',
-    'OXDIAG_ERRORMESSAGEWEBSERVICERETURNEDNOXML'  => 'Der Webservice lieferte kein XML.',
-    'OXDIAG_ERRORMESSAGEVERSIONDOESNOTEXIST'      => 'Es gibt keine OXID eShop %s Version %s.',
-    'OXDIAG_ERRORVERSIONCOMPARE'                  => 'Dieser Text sollte hier nicht erscheinen. Versuchen Sie es erneut.',
     'OXDIAG_MODIFIEDHINTS1'                       => 'OXID eShop kann durch Module funktional erweitert werden, ohne dass dabei die  ausgelieferten Dateien angepasst werden müssen. Shopdateien sollten niemals geändert werden. Siehe dazu unsere englischen <a href="http://blog.oxid-esales.com/2009/02/how-extend-oxid-eshop-with-modules-part-1/" target=_blank>Tutorials</a>.',
     'OXDIAG_MODIFIEDHINTS2'                       => 'Seit OXID eShop 4.2.0 ist es möglich, <a href="https://oxidforge.org/en/oxid-eshop-version-4-2-0.html#New_Features" target=_blank>eigene Templates zu verwenden</a>, ohne die ausgelieferten Templates zu ändern.',
     'OXDIAG_VERSIONMISMATCHHINTS'                 => 'Offenbar schlug ein Update oder auch mehrere fehl. Klicken Sie auf den Details-Link, um mehr Informationen zu jeder einzelnen Datei zu erhalten. Eine übrig gebliebene Datei, die nicht mehr länger zum OXID eShop gehört, kann auch ein <u>möglicher</u> Grund für eine Versionsungleichheit sein. Informationen zum Update finden Sie in unserer <a href="http://www.oxid-esales.com/de/support-services/dokumentation-und-hilfe/oxid-eshop/installation/oxid-eshop-aktualisieren" target=_blank>Dokumentation und Hilfe</a>.',
@@ -1945,10 +1931,6 @@ $aLang = [
     'OXDIAG_COLLECT_HEALTH'           => 'Systemgesundheit abfragen',
     'OXDIAG_COLLECT_PHP'              => 'PHP-Konfiguration (Auswahl) abfragen',
     'OXDIAG_COLLECT_SERVER'           => 'Serverinformationen abfragen (sofern m&ouml;glich)',
-    'OXDIAG_COLLECT_CHKVERS'          => '<i>Versionsprüfung</i> ausf&uuml;hren und abfragen',
-    'OXDIAG_COLLECT_CHKVERS_DURATION' => 'Dadurch kann die Ausf&uuml;hrung dieses Moduls erheblich l&auml;nger dauern oder fehlschlagen.',
-    'OXDIAG_COLL_CHKV_NOTINST'        => '<i>Versionsprüfung</i> ist auf diesem System nicht vorhanden. Sie k&ouml;nnen die <a href="http://exchange.oxid-esales.com/de/OXID/Weitere-OXID-Extensions/Oxchkversion-CE-3-1-0-Stable-CE-4-0-x-4-7-x.html">Datei aus OXID eXchange herunterladen</a> und im Wurzelverzeichnis des Shops ablegen.',
-    'OXDIAG_COLL_CHKV_FILE_GET'       => 'Die Funktion <i>file_get_contents</i> ist nicht verf&uuml;gbar, deshalb kann <i>Versionsprüfung</i> nicht abgefragt werden.',
     'OXDIAG_STORE_ANALYSIS'           => 'Auswertung speichern',
     'OXDIAG_COLLECT_START'            => 'Analyse starten!',
 
@@ -1985,8 +1967,6 @@ $aLang = [
     'OXDIAG_SRVINF_NOTE'              => 'Bemerkung: Diese Informationen beziehen sich auf den aktuellen Runtime-Frontend-Server. Sollten Sie mehr als einen Frontend-Server in Betrieb haben, können Sie deren Informationen durch direkten Zugriff auf die entsprechenden Server abrufen.',
     'OXDIAG_SERVERINFO_NOT_DETECTED'  => 'nicht erkannt',
     'OXDIAG_SERVERINFO_COMPONENT'     => 'Komponente',
-    'OXDIAG_CHKVERSION'               => 'Oxchkversion-Ausgabe',
-    'OXDIAG_CHKVERS_FULLREP'          => 'Vollst&auml;ndige Auswertung von <i>Oxchkversion</i> durchf&uuml;hlren',
     'SUBJECT_UNABLE_TO_SEND_VIA_CURL' => 'Informationen können nicht via CURL an den OXID Server gesendet werden',
 
     //final note

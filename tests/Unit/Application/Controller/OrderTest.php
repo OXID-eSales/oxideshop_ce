@@ -5,6 +5,8 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
+use OxidEsales\Eshop\Application\Model\Article;
+use OxidEsales\Eshop\Application\Model\BasketItem;
 use OxidEsales\EshopCommunity\Application\Model\Payment;
 use oxOutOfStockException;
 use \oxUtils;
@@ -542,24 +544,23 @@ class OrderTest extends \OxidTestCase
         $this->setupConfigForOrderExecute();
         $this->getPriceForOrderExecute();
 
-        $product = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("checkForStock"));
-        $product->expects($this->once())->method("checkForStock")->with($this->equalTo(999))->will($this->returnValue($product));
+        $product = $this->getMock(Article::class, ['checkForStock']);
+        $product
+            ->method("checkForStock")
+            ->with($this->equalTo(999))
+            ->will($this->returnValue($product));
 
-        $basketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array("getArticle", "getAmount"));
-        $basketItem->expects($this->once())->method("getArticle")->will($this->returnValue($product));
-        $basketItem->expects($this->once())->method("getAmount")->will($this->returnValue(999));
+        $basketItem = $this->getMock(BasketItem::class, ['getArticle', 'getAmount']);
+        $basketItem->method('getArticle')->will($this->returnValue($product));
+        $basketItem->method('getAmount')->will($this->returnValue(999));
 
-        //setting basket info
         $basket = $this->getBasketMock($basketItem);
-        $basket->expects($this->never())->method("getPaymentId");
-        $basket->expects($this->never())->method("getShippingId");
 
         $session = $this->getSessionMock($basket);
-        $session->expects($this->once())->method("checkSessionChallenge")->will($this->returnValue(true));
+        $session->method('checkSessionChallenge')->will($this->returnValue(true));
 
         $order = $this->getOrderMock($session);
-        //on order success must return next step value
-        $order->expects($this->never())->method('_getNextStep')->will($this->returnValue('nextStepValue'));
+        $order->expects($this->never())->method('_getNextStep');
 
         $this->setExpectedException('oxOutOfStockException');
         $this->assertNull($order->execute());

@@ -1004,7 +1004,7 @@ class BaseTest extends \OxidTestCase
         $oBase = new _oxBase();
         $oBase->init("oxactions");
         $rs = array("oxid" => "oxstart", "oxtitle" => "Startseite unten");
-        while (list($name, $value) = each($rs)) {
+        foreach ($rs as $name => $value) {
             $oBase->setFieldData($name, $value);
         }
         $this->assertEquals($oBase->oxactions__oxid->value, "oxstart");
@@ -1021,7 +1021,7 @@ class BaseTest extends \OxidTestCase
         $oBase = new _oxBase();
         $oBase->init("oxactions");
         $rs = array("oxid" => "oxstart", "oxactions__oxtitle" => "Startseite unten");
-        while (list($name, $value) = each($rs)) {
+        foreach ($rs as $name => $value) {
             $oBase->setFieldData($name, $value);
         }
         $this->assertEquals($oBase->oxactions__oxid->value, "oxstart");
@@ -1039,7 +1039,7 @@ class BaseTest extends \OxidTestCase
         $oBase->setClassVar("_blUseLazyLoading", true);
         $oBase->init("oxactions");
         $rs = array("oxid" => "oxstart", "oxactions__oxtestval" => "Startseite unten", "oxtestval2" => "TestVal2");
-        while (list($name, $value) = each($rs)) {
+        foreach ($rs as $name => $value) {
             $oBase->setFieldData($name, $value);
         }
         //standard field
@@ -1065,7 +1065,7 @@ class BaseTest extends \OxidTestCase
         $aFieldNames = $oBase->getNonPublicVar('_aFieldNames');
         $this->assertFalse(isset($aFieldNames['oxtitle']));
         $rs = array("oxid" => "oxstart", "oxtitle" => "Startseite unten");
-        while (list($name, $value) = each($rs)) {
+        foreach ($rs as $name => $value) {
             $oBase->UNITsetFieldData($name, $value);
         }
         //standard field

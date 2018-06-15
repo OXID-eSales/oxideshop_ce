@@ -619,7 +619,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     protected function _clearBundles()
     {
         reset($this->_aBasketContents);
-        while (list($sItemKey, $oBasketItem) = each($this->_aBasketContents)) {
+        foreach ($this->_aBasketContents as $sItemKey => $oBasketItem) {
             if ($oBasketItem->isBundle()) {
                 $this->removeItem($sItemKey);
             }
@@ -1852,7 +1852,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
                     $aSelList = $oBasketItem->getSelList();
                     if (is_array($aSelList) && ($aSelectlist = $oProduct->getSelectLists($sItemKey))) {
                         reset($aSelList);
-                        while (list($conkey, $iSel) = each($aSelList)) {
+                        foreach ($aSelList as $conkey => $iSel) {
                             $aSelectlist[$conkey][$iSel]->selected = 1;
                         }
                         $oProduct->setSelectlist($aSelectlist);

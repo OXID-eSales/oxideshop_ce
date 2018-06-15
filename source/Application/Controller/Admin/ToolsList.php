@@ -126,7 +126,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
     {
         if (isset($_FILES['myfile']['name'])) {
             // process all files
-            while (list($key, $value) = each($_FILES['myfile']['name'])) {
+            foreach ($_FILES['myfile']['name'] as $key => $value) {
                 $aSource = $_FILES['myfile']['tmp_name'];
                 $sSource = $aSource[$key];
                 $aFiletype = explode("@", $key);

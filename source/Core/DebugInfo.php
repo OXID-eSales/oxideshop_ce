@@ -22,7 +22,7 @@ class DebugInfo
     {
         $log = '';
         reset($viewData);
-        while (list($viewName, $viewDataObject) = each($viewData)) {
+        foreach ($viewData as $viewName => $viewDataObject) {
             // show debbuging information
             $log .= "TemplateData[$viewName] : <br />\n";
             $log .= print_r($viewDataObject, 1);

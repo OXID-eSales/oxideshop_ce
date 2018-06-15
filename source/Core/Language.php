@@ -303,7 +303,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
         if (is_array($aConfLanguages)) {
             $i = 0;
             reset($aConfLanguages);
-            while (list($key, $val) = each($aConfLanguages)) {
+            foreach ($aConfLanguages as $key => $val) {
                 if ($blOnlyActive && is_array($aLangParams)) {
                     //skipping non active languages
                     if (!$aLangParams[$key]['active']) {

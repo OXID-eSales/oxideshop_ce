@@ -36,8 +36,8 @@ class LanguageComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         if ($this->getConfig()->getConfigParam('bl_perfLoadLanguages')) {
             $aLanguages = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageArray(null, true, true);
             reset($aLanguages);
-            while (list($sKey, $oVal) = each($aLanguages)) {
-                $aLanguages[$sKey]->link = $this->getConfig()->getTopActiveView()->getLink($oVal->id);
+            foreach ($aLanguages as $oVal) {
+                $oVal->link = $this->getConfig()->getTopActiveView()->getLink($oVal->id);
             }
 
             return $aLanguages;

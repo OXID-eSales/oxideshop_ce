@@ -64,7 +64,7 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
             if (!($oUser->oxuser__oxrights->value == "malladmin" && !$blisMallAdmin)) {
                 // generate selected right
                 reset($aUserRights);
-                while (list(, $val) = each($aUserRights)) {
+                foreach ($aUserRights as $val) {
                     if ($val->id == $oUser->oxuser__oxrights->value) {
                         $val->selected = 1;
                         break;

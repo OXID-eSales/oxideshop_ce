@@ -413,7 +413,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
     {
         if (count($whereQuery)) {
             $myUtilsString = \OxidEsales\Eshop\Core\Registry::getUtilsString();
-            while (list($identifierName, $fieldValue) = each($whereQuery)) {
+            foreach ($whereQuery as $identifierName => $fieldValue) {
                 $fieldValue = trim($fieldValue);
 
                 //check if this is search string (contains % sign at beginning and end of string)

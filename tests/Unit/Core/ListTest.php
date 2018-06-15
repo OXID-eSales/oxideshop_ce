@@ -428,7 +428,7 @@ class ListTest extends \OxidTestCase
         $iTotal = count($oList);
         $this->assertEquals(4, $iTotal);
         reset($oList);
-        while (list($sKey, $sVal) = each($oList->aList)) {
+        foreach ($oList->aList as $sKey => $sVal) {
             $this->assertEquals($iTotal, count($oList));
             $this->assertEquals('cnt' . $iTotal, $sVal);
 

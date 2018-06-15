@@ -14,6 +14,7 @@ use OxidEsales\Eshop\Application\Model\Basket;
 use OxidEsales\Eshop\Application\Model\Order;
 use OxidEsales\Eshop\Application\Model\Payment;
 use OxidEsales\Eshop\Application\Model\UserPayment;
+use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\UtilsObject;
 use oxOrder;
 use \stdClass;
@@ -1635,16 +1636,18 @@ class OrderTest extends \OxidTestCase
 
     public function testFinalizeOrderReturnsErrorCodeWhenOrderAlreadyExist()
     {
-        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('_checkOrderExist'));
-        $oOrder->expects($this->any())
+        $order = $this->getMock(Order::class, array('_checkOrderExist'));
+        $order->expects($this->any())
             ->method('_checkOrderExist')
             ->will($this->returnValue(true));
 
-        $oBasket = oxNew('oxBasket');
+        $basket = oxNew(Basket::class);
+        $user = oxNew(User::class);
 
-        $iRet = $oOrder->finalizeOrder($oBasket, null);
-
-        $this->assertEquals(3, $iRet);
+        $this->assertEquals(
+            3,
+            $order->finalizeOrder($basket, $user)
+        );
     }
 
     /**
@@ -1655,39 +1658,41 @@ class OrderTest extends \OxidTestCase
      */
     public function testFinalizeOrderCallsAllRequiredMethods()
     {
-        $oBasket = oxNew('oxBasket');
+        $basket = oxNew(Basket::class);
+        $user = oxNew(User::class);
 
-        $aMethods = array('setId',
-                          '_loadFromBasket',
-                          '_setPayment',
-                          '_setFolder',
-                          'save',
-                          '_executePayment',
-                          '_updateWishlist',
-                          '_updateNoticeList',
-                          '_markVouchers',
-                          '_sendOrderByEmail',
-                          '_updateOrderDate'
-        );
+        $methods = [
+            'setId',
+            '_loadFromBasket',
+            '_setPayment',
+            '_setFolder',
+            'save',
+            '_executePayment',
+            '_updateWishlist',
+            '_updateNoticeList',
+            '_markVouchers',
+            '_sendOrderByEmail',
+            '_updateOrderDate',
+        ];
 
-        $aTestMethods = array_unique($aMethods);
-        $aTestMethods[] = '_setUser';
-        $aTestMethods[] = 'validateOrder';
-        $aTestMethods[] = '_setOrderStatus';
-        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, $aTestMethods);
+        $testMethods = array_unique($methods);
+        $testMethods[] = '_setUser';
+        $testMethods[] = 'validateOrder';
+        $testMethods[] = '_setOrderStatus';
+        $order = $this->getMock(Order::class, $testMethods);
 
-        foreach ($aMethods AS $iKey => $sMethod) {
-            $oOrder->expects($this->once())
-                ->method($sMethod)
+        foreach ($methods AS $key => $method) {
+            $order->expects($this->once())
+                ->method($method)
                 ->will($this->returnValue(true));
         }
 
-        $oOrder->expects($this->atLeastOnce())->method('_setUser');
-        $oOrder->expects($this->atLeastOnce())->method('_setOrderStatus');
-        $oOrder->expects($this->once())->method('validateOrder');
-        $oOrder->expects($this->once())->method('_updateOrderDate');
+        $order->expects($this->atLeastOnce())->method('_setUser');
+        $order->expects($this->atLeastOnce())->method('_setOrderStatus');
+        $order->expects($this->once())->method('validateOrder');
+        $order->expects($this->once())->method('_updateOrderDate');
 
-        $oOrder->finalizeOrder($oBasket, null);
+        $order->finalizeOrder($basket, $user);
     }
 
     /**
@@ -1698,31 +1703,32 @@ class OrderTest extends \OxidTestCase
      */
     public function testFinalizeOrderFromRecalculateOrder()
     {
-        $oBasket = oxNew('oxBasket');
+        $basket = oxNew(Basket::class);
+        $user = oxNew(User::class);
 
-        $aMethods = array('_setUser',
-                          '_loadFromBasket',
-                          '_setPayment',
-                          '_setOrderStatus',
-                          'save',
-                          '_setOrderStatus',
-                          '_updateWishlist',
-                          '_updateNoticeList',
-        );
-        $aTestMethods = array_unique($aMethods);
-        $aTestMethods[] = '_updateOrderDate';
-        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, $aTestMethods);
+        $methods = [
+            '_setUser',
+            '_loadFromBasket',
+            '_setPayment',
+            '_setOrderStatus',
+            'save',
+            '_updateWishlist',
+            '_updateNoticeList',
+        ];
+        $testMethods = array_unique($methods);
+        $testMethods[] = '_updateOrderDate';
+        $order = $this->getMock(Order::class, $testMethods);
 
 
-        foreach ($aMethods AS $iKey => $sMethod) {
-            $oOrder->expects($this->at($iKey))
-                ->method($sMethod)
+        foreach ($methods AS $key => $method) {
+            $order
+                ->method($method)
                 ->will($this->returnValue(true));
         }
 
-        $oOrder->expects($this->never())->method('_updateOrderDate');
+        $order->expects($this->never())->method('_updateOrderDate');
 
-        $oOrder->finalizeOrder($oBasket, null, true);
+        $order->finalizeOrder($basket, $user, true);
     }
 
     /**
@@ -1730,41 +1736,45 @@ class OrderTest extends \OxidTestCase
      */
     public function testFinalizeOrderReturnsMailingStatusOnSuccess()
     {
-        $oBasket = oxNew('oxBasket');
+        $basket = oxNew(Basket::class);
+        $user = oxNew(User::class);
 
-        $aMethods = array('setId',
-                          '_setUser',
-                          '_loadFromBasket',
-                          '_setPayment',
-                          '_setFolder',
-                          'save',
-                          '_setOrderStatus',
-                          '_executePayment',
-                          '_setOrderStatus',
-                          '_updateWishlist',
-                          '_updateNoticeList',
-                          '_markVouchers',
-                          '_sendOrderByEmail',
-                          'validateOrder'
+        $methods = [
+            'setId',
+            '_setUser',
+            '_loadFromBasket',
+            '_setPayment',
+            '_setFolder',
+            'save',
+            '_setOrderStatus',
+            '_executePayment',
+            '_setOrderStatus',
+            '_updateWishlist',
+            '_updateNoticeList',
+            '_markVouchers',
+            '_sendOrderByEmail',
+            'validateOrder',
+        ];
+
+        $order = $this->getMock(Order::class, array_unique($methods));
+
+
+        $order->expects($this->once())->method('setId')->will($this->returnValue(true));
+        $order->expects($this->once())->method('_setUser')->will($this->returnValue(true));
+        $order->expects($this->once())->method('_loadFromBasket')->will($this->returnValue(true));
+        $order->expects($this->once())->method('_setPayment')->will($this->returnValue(true));
+        $order->expects($this->once())->method('save')->will($this->returnValue(true));
+        $order->expects($this->once())->method('_executePayment')->will($this->returnValue(true));
+        $order->expects($this->atLeastOnce())->method('_setOrderStatus')->will($this->returnValue(true));
+        $order->expects($this->once())->method('_updateWishlist')->will($this->returnValue(true));
+        $order->expects($this->once())->method('_markVouchers')->will($this->returnValue(true));
+        $order->expects($this->once())->method('_sendOrderByEmail')->will($this->returnValue(1));
+        $order->expects($this->once())->method('validateOrder');
+
+        $this->assertEquals(
+            1,
+            $order->finalizeOrder($basket, $user)
         );
-
-        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array_unique($aMethods));
-
-
-        $oOrder->expects($this->once())->method('setId')->will($this->returnValue(true));
-        $oOrder->expects($this->once())->method('_setUser')->will($this->returnValue(true));
-        $oOrder->expects($this->once())->method('_loadFromBasket')->will($this->returnValue(true));
-        $oOrder->expects($this->once())->method('_setPayment')->will($this->returnValue(true));
-        $oOrder->expects($this->once())->method('save')->will($this->returnValue(true));
-        $oOrder->expects($this->once())->method('_executePayment')->will($this->returnValue(true));
-        $oOrder->expects($this->atLeastOnce())->method('_setOrderStatus')->will($this->returnValue(true));
-        $oOrder->expects($this->once())->method('_updateWishlist')->will($this->returnValue(true));
-        $oOrder->expects($this->once())->method('_markVouchers')->will($this->returnValue(true));
-        $oOrder->expects($this->once())->method('_sendOrderByEmail')->will($this->returnValue(1));
-        $oOrder->expects($this->once())->method('validateOrder');
-
-        $iRet = $oOrder->finalizeOrder($oBasket, null);
-        $this->assertEquals(1, $iRet);
     }
 
     /**
@@ -1772,30 +1782,34 @@ class OrderTest extends \OxidTestCase
      */
     public function testFinalizeOrderReturnsErrorCodeOnPaymentFailure()
     {
-        $oBasket = oxNew('oxBasket');
+        $basket = oxNew(Basket::class);
+        $user = oxNew(User::class);
 
-        $aMethods = array('setId',
-                          '_setUser',
-                          '_loadFromBasket',
-                          '_setPayment',
-                          '_setFolder',
-                          'save',
-                          '_executePayment',
-                          'validateOrder'
+        $methods = [
+            'setId',
+            '_setUser',
+            '_loadFromBasket',
+            '_setPayment',
+            '_setFolder',
+            'save',
+            '_executePayment',
+            'validateOrder',
+        ];
+
+        $order = $this->getMock(Order::class, $methods);
+
+        $order->expects($this->once())->method('setId')->will($this->returnValue(true));
+        $order->expects($this->once())->method('_setUser')->will($this->returnValue(true));
+        $order->expects($this->once())->method('_loadFromBasket')->will($this->returnValue(true));
+        $order->expects($this->once())->method('_setPayment')->will($this->returnValue(true));
+        $order->expects($this->once())->method('save')->will($this->returnValue(true));
+        $order->expects($this->once())->method('_executePayment')->will($this->returnValue(2));
+        $order->expects($this->once())->method('validateOrder');
+
+        $this->assertEquals(
+            2,
+            $order->finalizeOrder($basket, $user)
         );
-
-        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, $aMethods);
-
-        $oOrder->expects($this->once())->method('setId')->will($this->returnValue(true));
-        $oOrder->expects($this->once())->method('_setUser')->will($this->returnValue(true));
-        $oOrder->expects($this->once())->method('_loadFromBasket')->will($this->returnValue(true));
-        $oOrder->expects($this->once())->method('_setPayment')->will($this->returnValue(true));
-        $oOrder->expects($this->once())->method('save')->will($this->returnValue(true));
-        $oOrder->expects($this->once())->method('_executePayment')->will($this->returnValue(2));
-        $oOrder->expects($this->once())->method('validateOrder');
-
-        $iRet = $oOrder->finalizeOrder($oBasket, null);
-        $this->assertEquals(2, $iRet);
     }
 
 

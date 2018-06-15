@@ -207,7 +207,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     {
         $aLinks = [
             "de" => "https://www.oxid-esales.com/oxid-welt/support/supportanfrage/",
-            "en" => "http://www.oxid-esales.com/en/support-services/support-request.html"
+            "en" => "https://www.oxid-esales.com/en/oxid-world/support/support-offer/"
         ];
 
         $oLang = Registry::getLang();

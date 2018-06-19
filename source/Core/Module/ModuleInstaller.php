@@ -6,9 +6,15 @@
 namespace OxidEsales\EshopCommunity\Core\Module;
 
 use OxidEsales\Eshop\Core\Exception\ModuleValidationException;
+use OxidEsales\Eshop\Core\FileCache;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Routing\Module\ClassProviderStorage;
 use OxidEsales\Eshop\Core\SettingsHandler;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\Eshop\Core\SubShopSpecificFileCache;
+use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryRepository as EshopModuleSmartyPluginDirectoryRepository;
+use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator as EshopModuleVariablesLocator;
+use OxidEsales\Eshop\Core\Module\Module as EshopModule;
 
 /**
  * Modules installer class.
@@ -104,6 +110,10 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
                 }
             }
 
+            if (version_compare($module->getMetaDataVersion(), '2.1', '>=')) {
+                $this->addModuleSmartyPluginDirectories($module);
+            }
+
             $this->resetCache();
 
             $this->_callEvent('onActivate', $moduleId);
@@ -136,6 +146,8 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
             $this->_deleteModuleEvents($moduleId);
             $this->_deleteModuleVersions($moduleId);
             $this->deleteModuleControllers($moduleId);
+            $this->deleteModuleSmartyPluginDirectories($moduleId);
+
 
             $this->resetCache();
 
@@ -679,5 +691,68 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     protected function getModuleMetadataValidator()
     {
         return oxNew(\OxidEsales\Eshop\Core\Module\ModuleMetadataValidator::class);
+    }
+
+    /**
+     * @param EshopModule $module
+     */
+    private function addModuleSmartyPluginDirectories(EshopModule $module)
+    {
+        $moduleSmartyPluginDirectoryRepository = $this->getModuleSmartyPluginDirectoryRepository();
+
+        $smartyPluginDirectories = $moduleSmartyPluginDirectoryRepository->get();
+        $smartyPluginDirectories->add(
+            $module->getSmartyPluginDirectories(),
+            $module->getId()
+        );
+
+        $moduleSmartyPluginDirectoryRepository->save($smartyPluginDirectories);
+    }
+
+    /**
+     * @param string $moduleId
+     */
+    private function deleteModuleSmartyPluginDirectories($moduleId)
+    {
+        $moduleSmartyPluginDirectoryRepository = $this->getModuleSmartyPluginDirectoryRepository();
+
+        $smartyPluginDirectories = $moduleSmartyPluginDirectoryRepository->get();
+        $smartyPluginDirectories->remove($moduleId);
+
+        $moduleSmartyPluginDirectoryRepository->save($smartyPluginDirectories);
+    }
+
+    /**
+     * @return EshopModuleSmartyPluginDirectoryRepository
+     */
+    private function getModuleSmartyPluginDirectoryRepository()
+    {
+        $subShopSpecificCache = oxNew(
+            SubShopSpecificFileCache::class,
+            $this->getShopIdCalculator()
+        );
+
+        $moduleVariablesLocator = oxNew(
+            EshopModuleVariablesLocator::class,
+            $subShopSpecificCache,
+            $this->getShopIdCalculator()
+        );
+
+        return oxNew(
+            EshopModuleSmartyPluginDirectoryRepository::class,
+            $this->getConfig(),
+            $moduleVariablesLocator,
+            oxNew(EshopModule::class)
+        );
+    }
+
+    /**
+     * @return ShopIdCalculator
+     */
+    private function getShopIdCalculator()
+    {
+        $moduleVariablesCache = oxNew(FileCache::class);
+
+        return oxNew(ShopIdCalculator::class, $moduleVariablesCache);
     }
 }

@@ -21,6 +21,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Possibility to configure contact form required fields:
     - New settings:
         - `contactFormRequiredFields`
+- Possibility for modules to add new smarty plugins:
+    - New settings:
+        - `moduleSmartyPluginDirectories`
 
 ### Changed
 - Persparams filter simplified to allow arrays in persparams [PR-641](https://github.com/OXID-eSales/oxideshop_ce/pull/641)

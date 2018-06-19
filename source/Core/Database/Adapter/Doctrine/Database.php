@@ -308,7 +308,7 @@ class Database implements DatabaseInterface
                 $this->handleException($exception);
             }
         } else {
-            trigger_error('Given statement does not produce output and was not executed', \E_USER_WARNING);
+            \OxidEsales\Eshop\Core\Registry::getLogger()->warning('Given statement does not produce output and was not executed');
         }
 
         return false;
@@ -1020,7 +1020,7 @@ class Database implements DatabaseInterface
         if ($this->doesStatementProduceOutput($query)) {
             $result = $statement->fetchAll();
         } else {
-            trigger_error('Given statement does not produce output and was not executed', \E_USER_WARNING);
+            \OxidEsales\Eshop\Core\Registry::getLogger()->warning('Given statement does not produce output and was not executed');
         }
 
         return $result;

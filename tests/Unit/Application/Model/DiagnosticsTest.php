@@ -44,33 +44,6 @@ class DiagnosticsTest extends \OxidTestCase
         $this->assertEquals("somelink", $oChecker->getShopLink());
     }
 
-
-    /**
-     * Testing FileCheckerPathList getter and setter
-     */
-    public function testGetFileCheckerPathList()
-    {
-        $oDiagnostics = oxNew("oxDiagnostics");
-        $oDiagnostics->setFileCheckerPathList(array("admin", "views"));
-
-        $this->assertEquals(2, count($oDiagnostics->getFileCheckerPathList()));
-        $this->assertContains("admin", $oDiagnostics->getFileCheckerPathList());
-        $this->assertContains("views", $oDiagnostics->getFileCheckerPathList());
-    }
-
-    /**
-     * Testing FileCheckerPathList getter and setter
-     */
-    public function testGetFileCheckerExtensionList()
-    {
-        $oDiagnostics = oxNew("oxDiagnostics");
-        $oDiagnostics->setFileCheckerExtensionList(array("ex1", "ex2"));
-
-        $this->assertEquals(2, count($oDiagnostics->getFileCheckerExtensionList()));
-        $this->assertContains("ex1", $oDiagnostics->getFileCheckerExtensionList());
-        $this->assertContains("ex2", $oDiagnostics->getFileCheckerExtensionList());
-    }
-
     /**
      * Setting up test for getShopDetails
      */

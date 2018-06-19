@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - template source/Application/views/admin/tpl/dynscreen.tpl
 - template source/Application/views/admin/tpl/dynscreen_list.tpl
 - template source/Application/views/admin/tpl/dynscreen_local.tpl
+- template source/Application/views/admin/tpl/version_checker_result.tpl
 - `sOXIDPHP` parameter in `config.inc.php`
 - \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::writeExceptionToLog
 - \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::displayOfflinePage
@@ -47,6 +48,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - \OxidEsales\EshopCommunity\Core\Utils::writeToLog
 - `writeToLog` in `bootstrap.php`
 - \OxidEsales\EshopCommunity\Core\Base::$_oConfig
+- class `\OxidEsales\Eshop\Application\Model\FileChecker`
+- class `\OxidEsales\Eshop\Application\Model\FileCheckerResult`
+- class `\OxidEsales\EshopCommunity\Application\Model\FileChecker`
+- class `\OxidEsales\EshopCommunity\Application\Model\FileCheckerResult`
+- `\OxidEsales\EshopCommunity\Application\Controller\Admin\DiagnosticsMain::_checkOxidFiles`
+- `\OxidEsales\EshopCommunity\Application\Controller\Admin\DiagnosticsMain::_getFileCheckReport`
+- `\OxidEsales\EshopCommunity\Application\Controller\Admin\DiagnosticsMain::_getFilesToCheck`
+- `\OxidEsales\EshopCommunity\Application\Model\Diagnostics::$_aFileCheckerExtensionList`
+- `\OxidEsales\EshopCommunity\Application\Model\Diagnostics::$_aFileCheckerPathList`
+- `\OxidEsales\EshopCommunity\Application\Model\Diagnostics::getFileCheckerExtensionList`
+- `\OxidEsales\EshopCommunity\Application\Model\Diagnostics::getFileCheckerPathList`
+- `\OxidEsales\EshopCommunity\Application\Model\Diagnostics::setFileCheckerExtensionList`
+- `\OxidEsales\EshopCommunity\Application\Model\Diagnostics::setFileCheckerPathList`
 
 ### Fixed
 

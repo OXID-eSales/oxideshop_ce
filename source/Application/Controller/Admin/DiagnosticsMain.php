@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxFileCheckerResult;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Checks Version of System files.
@@ -78,7 +78,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
 
     /**
-     * Calls parent costructor and initializes checker object
+     * Calls parent constructor and initializes checker object
      *
      */
     public function __construct()
@@ -91,8 +91,6 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     }
 
     /**
-     * Loads oxversioncheck class.
-     *
      * @return string
      */
     public function render()
@@ -107,93 +105,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     }
 
     /**
-     * Gets list of files to be checked
-     *
-     * @deprecated since v6.3 (2018-06-04); This functionality will be removed completely.
-     *
-     * @return array list of shop files to be checked
-     */
-    protected function _getFilesToCheck()
-    {
-        $oDiagnostics = oxNew(\OxidEsales\Eshop\Application\Model\Diagnostics::class);
-        $aFilePathList = $oDiagnostics->getFileCheckerPathList();
-        $aFileExtensionList = $oDiagnostics->getFileCheckerExtensionList();
-
-        $oFileCollector = oxNew(\OxidEsales\Eshop\Application\Model\FileCollector::class);
-        $oFileCollector->setBaseDirectory($this->_sShopDir);
-
-        foreach ($aFilePathList as $sPath) {
-            if (is_file($this->_sShopDir . $sPath)) {
-                $oFileCollector->addFile($sPath);
-            } elseif (is_dir($this->_sShopDir . $sPath)) {
-                $oFileCollector->addDirectoryFiles($sPath, $aFileExtensionList, true);
-            }
-        }
-
-        return $oFileCollector->getFiles();
-    }
-
-    /**
-     * Checks versions for list of oxid files
-     *
-     * @param array $aFileList array list of files to be checked
-     *
-     * @deprecated since v6.3 (2018-06-04); This functionality will be removed completely.
-     *
-     * @return null|oxFileCheckerResult
-     */
-    protected function _checkOxidFiles($aFileList)
-    {
-        $oFileChecker = oxNew(\OxidEsales\Eshop\Application\Model\FileChecker::class);
-        $oFileChecker->setBaseDirectory($this->_sShopDir);
-        $oFileChecker->setVersion($this->getConfig()->getVersion());
-        $oFileChecker->setEdition($this->getConfig()->getEdition());
-
-        if (!$oFileChecker->init()) {
-            $this->_blError = true;
-            $this->_sErrorMessage = $oFileChecker->getErrorMessage();
-
-            return null;
-        }
-
-        $oFileCheckerResult = oxNew(\OxidEsales\Eshop\Application\Model\FileCheckerResult::class);
-
-        $blListAllFiles = ($this->getParam('listAllFiles') == 'listAllFiles');
-        $oFileCheckerResult->setListAllFiles($blListAllFiles);
-
-        foreach ($aFileList as $sFile) {
-            $aCheckResult = $oFileChecker->checkFile($sFile);
-            $oFileCheckerResult->addResult($aCheckResult);
-        }
-
-        return $oFileCheckerResult;
-    }
-
-    /**
-     * Returns body of file check report
-     *
-     * @param \OxidEsales\Eshop\Application\Model\FileCheckerResult $oFileCheckerResult mixed file checker result object
-     *
-     * @deprecated since v6.3 (2018-06-04); This functionality will be removed completely.
-     *
-     * @return string body of report
-     */
-    protected function _getFileCheckReport($oFileCheckerResult)
-    {
-        $aViewData = [
-            "sVersion"       => $this->getConfig()->getVersion(),
-            "sEdition"       => $this->getConfig()->getEdition(),
-            "aResultSummary" => $oFileCheckerResult->getResultSummary(),
-            "aResultOutput"  => $oFileCheckerResult->getResult(),
-        ];
-
-        return $this->_oRenderer->renderTemplate("version_checker_result.tpl", $aViewData);
-    }
-
-    /**
      * Checks system file versions
-     *
-     * @return void
      */
     public function startDiagnostics()
     {
@@ -201,20 +113,6 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
         $aDiagnosticsResult = $this->_runBasicDiagnostics();
         $sReport .= $this->_oRenderer->renderTemplate("diagnostics_main.tpl", $aDiagnosticsResult);
-
-        /**
-         * @deprecated since v6.3 (2018-06-04); This functionality will be removed completely.
-         */
-        if ($this->getParam('oxdiag_frm_chkvers')) {
-            $aFileList = $this->_getFilesToCheck();
-            $oFileCheckerResult = $this->_checkOxidFiles($aFileList);
-
-            if ($this->_hasError()) {
-                return;
-            }
-
-            $sReport .= $this->_getFileCheckReport($oFileCheckerResult);
-        }
 
         $this->_oOutput->storeResult($sReport);
 
@@ -233,9 +131,11 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         $aViewData = [];
         $oDiagnostics = oxNew(\OxidEsales\Eshop\Application\Model\Diagnostics::class);
 
-        $oDiagnostics->setShopLink(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopURL'));
-        $oDiagnostics->setEdition(\OxidEsales\Eshop\Core\Registry::getConfig()->getFullEdition());
-        $oDiagnostics->setVersion(\OxidEsales\Eshop\Core\Registry::getConfig()->getVersion());
+        $oDiagnostics->setShopLink(Registry::getConfig()->getConfigParam('sShopURL'));
+        $oDiagnostics->setEdition(Registry::getConfig()->getFullEdition());
+        $oDiagnostics->setVersion(
+            oxNew(\OxidEsales\Eshop\Core\ShopVersion::class)->getVersion()
+        );
 
         /**
          * Shop
@@ -286,13 +186,6 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             $aViewData['aServerInfo'] = $oDiagnostics->getServerInfo();
         }
 
-        /**
-         * @deprecated since v6.3 (2018-06-04); This functionality will be removed completely.
-         */
-        if ($this->getParam('oxdiag_frm_chkvers')) {
-            $aViewData['oxdiag_frm_chkvers'] = true;
-        }
-
         return $aViewData;
     }
 
@@ -314,10 +207,10 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     {
         $aLinks = [
             "de" => "https://www.oxid-esales.com/oxid-welt/support/supportanfrage/",
-            "en" => "http://www.oxid-esales.com/en/support-services/support-request.html"
+            "en" => "https://www.oxid-esales.com/en/oxid-world/support/support-offer/"
         ];
 
-        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
+        $oLang = Registry::getLang();
         $aLanguages = $oLang->getLanguageArray();
         $iLangId = $oLang->getTplLanguage();
         $sLangCode = $aLanguages[$iLangId]->abbr;
@@ -332,12 +225,14 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     /**
      * Request parameter getter
      *
-     * @param string $sParam
+     * @param string $name
      *
      * @return string
      */
-    public function getParam($sParam)
+    public function getParam($name)
     {
-        return $this->getConfig()->getRequestParameter($sParam);
+        $request = Registry::get(\OxidEsales\Eshop\Core\Request::class);
+
+        return $request->getRequestEscapedParameter($name);
     }
 }

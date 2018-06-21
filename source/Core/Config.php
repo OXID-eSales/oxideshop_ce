@@ -1622,7 +1622,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         // processing currency configuration data
         $currencies = [];
         reset($confCurrencies);
-        while (list($key, $val) = each($confCurrencies)) {
+        foreach ($confCurrencies as $key => $val) {
             if ($val) {
                 $cur = new stdClass();
                 $cur->id = $key;

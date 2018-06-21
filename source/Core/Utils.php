@@ -103,7 +103,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         $aRet = [];
         $aPieces = explode('@@', $sIn);
-        while (list($sKey, $sVal) = each($aPieces)) {
+        foreach ($aPieces as $sVal) {
             if ($sVal) {
                 $aName = explode('__', $sVal);
                 if (isset($aName[0]) && isset($aName[1])) {
@@ -126,7 +126,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         $sRet = "";
         reset($aIn);
-        while (list($sKey, $sVal) = each($aIn)) {
+        foreach ($aIn as $sKey => $sVal) {
             $sRet .= $sKey;
             $sRet .= "__";
             $sRet .= $sVal;

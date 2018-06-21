@@ -787,7 +787,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
         $this->_aSelList = $aSelList;
 
         //
-        if (count($this->_aSelList) && is_array($this->_aSelList)) {
+        if (is_array($this->_aSelList) && count($this->_aSelList)) {
             foreach ($this->_aSelList as $conkey => $iSel) {
                 $this->_aChosenSelectlist[$conkey] = new stdClass();
                 $this->_aChosenSelectlist[$conkey]->name = $aSelectLists[$conkey]['name'];

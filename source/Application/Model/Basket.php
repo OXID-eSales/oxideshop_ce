@@ -619,7 +619,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     protected function _clearBundles()
     {
         reset($this->_aBasketContents);
-        while (list($sItemKey, $oBasketItem) = each($this->_aBasketContents)) {
+        foreach ($this->_aBasketContents as $sItemKey => $oBasketItem) {
             if ($oBasketItem->isBundle()) {
                 $this->removeItem($sItemKey);
             }
@@ -1503,13 +1503,19 @@ class Basket extends \OxidEsales\Eshop\Core\Base
 
                 foreach ($aCatIds as $sCatId) {
                     if (!isset($this->_aBasketSummary->aCategories[$sCatId])) {
-                        $this->_aBasketSummary->aCategories[$sCatId] = new stdClass();
+                        $priceObject = new stdClass();
+                        $priceObject->dPrice = 0;
+                        $priceObject->dDiscountablePrice = 0;
+                        $priceObject->dAmount = 0;
+                        $priceObject->iCount = 0;
+                        $this->_aBasketSummary->aCategories[$sCatId] = $priceObject;
                     }
 
-                    $this->_aBasketSummary->aCategories[$sCatId]->dPrice += $dPrice * $oBasketItem->getAmount();
-                    $this->_aBasketSummary->aCategories[$sCatId]->dDiscountablePrice += $dDiscountablePrice * $oBasketItem->getAmount();
-                    $this->_aBasketSummary->aCategories[$sCatId]->dAmount += $oBasketItem->getAmount();
-                    $this->_aBasketSummary->aCategories[$sCatId]->iCount++;
+                    $categorySummaryPrice = $this->_aBasketSummary->aCategories[$sCatId];
+                    $categorySummaryPrice->dPrice += $dPrice * $oBasketItem->getAmount();
+                    $categorySummaryPrice->dDiscountablePrice += $dDiscountablePrice * $oBasketItem->getAmount();
+                    $categorySummaryPrice->dAmount += $oBasketItem->getAmount();
+                    $categorySummaryPrice->iCount++;
                 }
 
                 // variant handling
@@ -1846,7 +1852,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
                     $aSelList = $oBasketItem->getSelList();
                     if (is_array($aSelList) && ($aSelectlist = $oProduct->getSelectLists($sItemKey))) {
                         reset($aSelList);
-                        while (list($conkey, $iSel) = each($aSelList)) {
+                        foreach ($aSelList as $conkey => $iSel) {
                             $aSelectlist[$conkey][$iSel]->selected = 1;
                         }
                         $oProduct->setSelectlist($aSelectlist);

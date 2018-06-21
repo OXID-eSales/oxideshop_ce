@@ -1897,7 +1897,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $languageService = \OxidEsales\Eshop\Core\Registry::getLang();
             if ($this->getConfig()->getConfigParam('bl_perfLoadLanguages')) {
                 $languages = $languageService->getLanguageArray();
-                while (list($key, $language) = each($languages)) {
+                foreach ($languages as $language) {
                     if ($language->selected) {
                         $this->_sActiveLangAbbr = $language->abbr;
                         break;
@@ -2948,11 +2948,12 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         }
 
         $user = $this->getUser();
-        if ($user === false) {
+        if ($user !== false) {
+            if ($user->oxuser__oxustid->value !== null && $user->oxuser__oxustidstatus->value == 1) {
+                return $this->_blIsVatIncluded = false;
+            }
+        } else {
             $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
-        }
-        if ($user->oxuser__oxustid->value !== null && $user->oxuser__oxustidstatus->value == 1) {
-            return $this->_blIsVatIncluded = false;
         }
 
         $activeCountry = $user->getActiveCountry();

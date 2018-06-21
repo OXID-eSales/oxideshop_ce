@@ -424,7 +424,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
 
             $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             // process all files
-            while (list($sKey, $sValue) = each($aFiles['myfile']['name'])) {
+            foreach ($aFiles['myfile']['name'] as $sKey => $sValue) {
                 $sSource = $aSource[$sKey];
                 $iError = $aError[$sKey];
                 $aFiletype = explode("@", $sKey);

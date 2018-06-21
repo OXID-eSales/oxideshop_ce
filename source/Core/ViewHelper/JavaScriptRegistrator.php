@@ -70,8 +70,9 @@ class JavaScriptRegistrator
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $parts = explode('?', $file);
         $url = $config->getResourceUrl($parts[0], $config->isAdmin());
-        $parameters = $parts[1];
-        if (empty($parameters)) {
+        if (isset($parts[1])) {
+            $parameters = $parts[1];
+        } else {
             $path = $config->getResourcePath($file, $config->isAdmin());
             $parameters = filemtime($path);
         }

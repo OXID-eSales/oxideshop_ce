@@ -107,7 +107,7 @@ class CurrencyComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         if ($this->getConfig()->getConfigParam('bl_perfLoadCurrency')) {
             reset($this->aCurrencies);
-            while (list(, $oItem) = each($this->aCurrencies)) {
+            foreach ($this->aCurrencies as $oItem) {
                 $oItem->link = $oUrlUtils->processUrl($sUrl, true, ["cur" => $oItem->id]);
             }
         }

@@ -233,7 +233,7 @@ class UserTest extends \OxidTestCase
         $oPayment->setDynValues($oUtils->assignValuesFromText($oPayment->oxpayments__oxvaldesc->value, true, true, true));
 
         $aDynValues = $oPayment->getDynValues();
-        while (list($key, $oVal) = each($aDynValues)) {
+        foreach ($aDynValues as $key => $oVal) {
             $oVal = new oxField($aDynValue[$oVal->name], oxField::T_RAW);
             $oPayment->setDynValue($key, $oVal);
             $aDynVal[$oVal->name] = $oVal->value;

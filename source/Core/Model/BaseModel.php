@@ -381,7 +381,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     public function oxClone($object)
     {
         $classVariables = get_object_vars($object);
-        while (list($name, $value) = each($classVariables)) {
+        foreach ($classVariables as $name => $value) {
             if (is_object($object->$name)) {
                 $this->$name = clone $object->$name;
             } else {
@@ -471,7 +471,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         }
 
         $oxidField = $this->_getFieldLongName('oxid');
-        $this->_sOXID = $this->$oxidField->value;
+        if ($this->$oxidField instanceof Field) {
+            $this->_sOXID = $this->$oxidField->value;
+        }
     }
 
     /**
@@ -695,7 +697,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
 
         if ($whereCondition) {
             reset($whereCondition);
-            while (list($name, $value) = each($whereCondition)) {
+            foreach ($whereCondition as $name => $value) {
                 $query .= ' and ' . $name . ' = ' . $database->quote($value);
             }
         }

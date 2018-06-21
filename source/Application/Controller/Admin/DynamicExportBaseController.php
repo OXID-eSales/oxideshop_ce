@@ -133,7 +133,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
 
         // assign all member variables to template
         $aClassVars = get_object_vars($this);
-        while (list($name, $value) = each($aClassVars)) {
+        foreach ($aClassVars as $name => $value) {
             $this->_aViewData[$name] = $value;
         }
 

@@ -500,10 +500,6 @@ class Email extends \PHPMailer
                     $smtpPort = (int) $match[3];
                 }
             }
-            if ($isSmtp = (bool) ($rHandle = @fsockopen($smtpHost, $smtpPort, $errNo, $errStr, 30))) {
-                // closing connection ..
-                fclose($rHandle);
-            }
         }
 
         return $isSmtp;

@@ -3,6 +3,7 @@
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 /**
@@ -10,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
  */
 class ThemeConfigTest extends \OxidTestCase
 {
-
     /**
      * Shop_Config::Render() test case
      *
@@ -42,7 +42,7 @@ class ThemeConfigTest extends \OxidTestCase
      */
     public function testSaveConfVars()
     {
-        $iShopId = 125;
+        $iShopId = 1;
         $sName = 'someName';
         $sValue = 'someValue';
         $sThemeName = 'testtheme';
@@ -57,16 +57,6 @@ class ThemeConfigTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('_loadVarsFromDb')->will($this->returnValue(true));
         $oConfig->setConfigParam('blClearCacheOnLogout', true);
 
-        $valueMap = array(
-            array('bool', $sName, $sValue, $iShopId, 'theme:' . $sThemeName, true),
-            array('str', $sName, $sValue, $iShopId, 'theme:' . $sThemeName, true),
-            array('arr', $sName, $sValue, $iShopId, 'theme:' . $sThemeName, true),
-            array('aarr', $sName, $sValue, $iShopId, 'theme:' . $sThemeName, true),
-            array('select', $sName, $sValue, $iShopId, 'theme:' . $sThemeName, true),
-            array('num', $sName, $sValue, $iShopId, 'theme:' . $sThemeName, true),
-        );
-        $oConfig->expects($this->any())->method('saveShopConfVar')->will($this->returnValueMap($valueMap));
-
         /** @var Theme_Config|PHPUnit_Framework_MockObject_MockObject $oTheme_Config */
         $oTheme_Config = $this->getMock(
             'Theme_Config', array('getEditObjectId', '_serializeConfVar')
@@ -78,5 +68,4 @@ class ThemeConfigTest extends \OxidTestCase
 
         $oTheme_Config->saveConfVars();
     }
-
 }

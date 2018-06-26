@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Core\Controller;
 
 use OxidEsales\EshopCommunity\Core\ShopVersion;
+use Psr\Container\ContainerInterface;
 
 /**
  * Base view class. Collects and passes data to template engine, sets some global
@@ -890,5 +891,15 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     public function showPersParam($persParamKey)
     {
         return true;
+    }
+
+    /**
+     * @internal
+     *
+     * @return ContainerInterface
+     */
+    protected function getContainer()
+    {
+        return \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
     }
 }

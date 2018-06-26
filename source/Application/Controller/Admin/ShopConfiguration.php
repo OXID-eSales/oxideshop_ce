@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormBridgeInterface;
 use oxRegistry;
 use oxDb;
 use oxAdminDetails;
@@ -97,6 +98,12 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
         // checking if cUrl is enabled
         $this->_aViewData["blCurlIsActive"] = (!function_exists('curl_init')) ? false : true;
+
+        /** @var ContactFormBridgeInterface $contactFormBridge */
+        $contactFormBridge = $this->getContainer()->get(ContactFormBridgeInterface::class);
+
+        $form = $contactFormBridge->getContactForm();
+        $this->_aViewData['contactFormFields'] = $form->getFields();
 
         return $this->_sThisTemplate;
     }

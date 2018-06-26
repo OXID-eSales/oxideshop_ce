@@ -960,6 +960,23 @@ function editThis(sID)
 
             <dl>
                 <dt>
+                </dt>
+                <dd>
+                    [{oxmultilang ident="SHOP_CONFIG_FIELDS_CONTACTFORM"}]
+                    [{oxinputhelp ident="HELP_SHOP_CONFIG_FIELDS_CONTACTFORM"}]
+                    [{foreach from=$contactFormFields item=field}]
+                    <div style="margin-left:10px;">
+                        <input type=checkbox name=confbools[requiredContactFormField[{$field->getName()}]] value=true  [{if $confbools.requiredContactFormFieldemail}]checked[{/if}] [{$readonly}]>
+                        <label for="confbools[requiredContactFormField[{$field->getName()}]]">[{oxmultilang ident=$field->getLabel()}]</label>
+                        <br />
+                    </div>
+                    [{/foreach}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+
+            <dl>
+                <dt>
                     <textarea class="txtfield" name=confarrs[aCurrencies] [{$readonly}]>[{$confarrs.aCurrencies}]</textarea>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_SETORDELETECURRENCY"}]
                 </dt>

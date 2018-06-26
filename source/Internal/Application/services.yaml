@@ -3,3 +3,4 @@ imports:
     - { resource: ../Logger/services.yaml }
     - { resource: ../Common/services.yaml }
     - { resource: ../Review/services.yaml }
+    - { resource: ../Form/services.yaml }

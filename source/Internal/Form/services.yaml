@@ -1,0 +1,18 @@
+services:
+  OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormBridgeInterface:
+      class: OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormBridge
+      arguments:
+        $contactFormFactory: '@form.contact_form.contact_form_factory'
+      autowire: true
+      public: true
+
+  form.contact_form.contact_form_factory:
+      class: OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormFactory
+      arguments:
+        $requiredFieldsProvider: '@form.contact_form.contact_form_requider_fields_provider'
+        $formBuilder: '@OxidEsales\EshopCommunity\Internal\Common\Form\FormBuilderInterface'
+      public: false
+
+  form.contact_form.contact_form_requider_fields_provider:
+      class: OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormRequiredFieldsProvider
+      public: false

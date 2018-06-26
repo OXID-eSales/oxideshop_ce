@@ -54,7 +54,7 @@ class ContainerWrapper implements ContainerInterface
         } catch (ServiceNotFoundException $e) {
             throw new NotFoundException($e->getMessage());
         } catch (\Exception $e) {
-            throw new ContainerException();
+            throw new ContainerException($e->getMessage());
         }
         return $service;
     }

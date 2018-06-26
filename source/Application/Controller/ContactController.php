@@ -6,7 +6,10 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use OxidEsales\Eshop\Core\Email;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\MailValidator;
+use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormBridgeInterface;
 
 /**
  * Contact window.
@@ -67,20 +70,69 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function send()
     {
-        $aParams = Registry::getConfig()->getRequestParameter('editval');
+        $contactFormBridge = $this->getContainer()->get(ContactFormBridgeInterface::class);
 
-        // checking email address
-        if (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams['oxuser__oxusername'])) {
+        $form = $contactFormBridge->getContactForm();
+        $form->handleRequest($this->getMappedContactFormRequest());
+
+        if ($form->isValid()) {
+            $email = oxNew(Email::class);
+
+            /**
+            $message =  $lang->translateString('MESSAGE_FROM') . " " .
+                $lang->translateString($requestParameters['oxuser__oxsal']) . " " .
+                $requestParameters['oxuser__oxfname'] . " " .
+                $requestParameters['oxuser__oxlname'] . "(" . $requestParameters['oxuser__oxusername'] . ")<br /><br />" .
+                nl2br(Registry::getConfig()->getRequestParameter('c_message'));
+             */
+
+            if ($email->sendContactMail($form->email, $form->subject, $form->message)) {
+                $this->_blContactSendStatus = 1;
+            } else {
+                Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL');
+            }
+        } else {
+            foreach ($form->getErrors() as $error) {
+                Registry::getUtilsView()->addErrorToDisplay($error);
+            }
+
+            return false;
+        }
+
+        $this->_aViewData['contactForm'] = $form;
+
+
+
+        $requestParameters = Registry::getConfig()->getRequestParameter('editval');
+
+        $emailValidator = oxNew(MailValidator::class);
+
+        if (!$emailValidator->isValidEmail($requestParameters['oxuser__oxusername'])) {
             Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_INPUT_NOVALIDEMAIL');
 
             return false;
         }
 
         $sSubject = Registry::getConfig()->getRequestParameter('c_subject');
-        $sMessage = $this->getContactFormMessage($aParams);
+        if (!$requestParameters['oxuser__oxfname']
+            || !$requestParameters['oxuser__oxlname']
+            || !$requestParameters['oxuser__oxusername']
+            || !$sSubject
+        ) {
+            Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_INPUT_NOTALLFIELDS');
 
-        $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
-        if ($oEmail->sendContactMail($aParams['oxuser__oxusername'], $sSubject, $sMessage)) {
+            return false;
+        }
+
+        $lang = Registry::getLang();
+        $message =  $lang->translateString('MESSAGE_FROM') . " " .
+                    $lang->translateString($requestParameters['oxuser__oxsal']) . " " .
+                    $requestParameters['oxuser__oxfname'] . " " .
+                    $requestParameters['oxuser__oxlname'] . "(" . $requestParameters['oxuser__oxusername'] . ")<br /><br />" .
+                    nl2br(Registry::getConfig()->getRequestParameter('c_message'));
+
+        $email = oxNew(\OxidEsales\Eshop\Core\Email::class);
+        if ($email->sendContactMail($requestParameters['oxuser__oxusername'], $sSubject, $message)) {
             $this->_blContactSendStatus = 1;
         } else {
             Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL');
@@ -146,14 +198,18 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function getBreadCrumb()
     {
-        $aPaths = [];
-        $aPath = [];
+        $title = Registry::getLang()->translateString(
+            'CONTACT',
+            Registry::getLang()->getBaseLanguage(),
+            false
+        );
 
-        $aPath['title'] = Registry::getLang()->translateString('CONTACT', Registry::getLang()->getBaseLanguage(), false);
-        $aPath['link'] = $this->getLink();
-        $aPaths[] = $aPath;
-
-        return $aPaths;
+        return [
+            [
+                'title' => $title,
+                'link'  => $this->getLink(),
+            ]
+        ];
     }
 
     /**
@@ -167,37 +223,20 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Returns contact form message.
-     *
-     * @param array $parameters
-     *
-     * @return string
+     * @return array
      */
-    private function getContactFormMessage($parameters)
+    private function getMappedContactFormRequest()
     {
-        $lang = Registry::getLang();
+        $request = Registry::getRequest();
+        $personData = $request->getRequestEscapedParameter('editval');
 
-        $message = $lang->translateString('MESSAGE_FROM') . ' ';
-
-        if ($parameters['oxuser__oxsal']) {
-            $message .= $lang->translateString($parameters['oxuser__oxsal']) . ' ';
-        }
-
-        if ($parameters['oxuser__oxfname']) {
-            $message .= $parameters['oxuser__oxfname'] . ' ';
-        }
-
-        if ($parameters['oxuser__oxlname']) {
-            $message .= $parameters['oxuser__oxlname'] . ' ';
-        }
-
-        $message .= '(' . $parameters['oxuser__oxusername'] . ")<br /><br />";
-
-        $messageBody = Registry::getConfig()->getRequestParameter('c_message');
-        if ($messageBody) {
-            $message .= nl2br($messageBody);
-        }
-
-        return $message;
+        return [
+            'email'         => $personData['oxuser__oxusername'],
+            'firstName'     => $personData['oxuser__oxfname'],
+            'lastName'      => $personData['oxuser__oxlname'],
+            'salutation'    => $personData['oxuser__oxsal'],
+            'subject'       => $request->getRequestEscapedParameter('c_subject'),
+            'message'       => $request->getRequestEscapedParameter('c_message'),
+        ];
     }
 }

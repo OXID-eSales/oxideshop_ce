@@ -7,8 +7,9 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Email;
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\MailValidator;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Common\Form\FormField;
 use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormBridgeInterface;
 
 /**
@@ -62,6 +63,23 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     protected $_iViewIndexState = VIEW_INDEXSTATE_NOINDEXNOFOLLOW;
 
+    public function render()
+    {
+        /** @var ContactFormBridgeInterface $contactFormBridge */
+        $contactFormBridge = $this->getContainer()->get(ContactFormBridgeInterface::class);
+        $form = $contactFormBridge->getContactForm();
+        /** @var FormField $formField */
+        foreach ($form->getFields() as $key => $formField) {
+            $this->_aViewData['contactFormFields'][$key] = [
+                'name' => $formField->getName(),
+                'label' => $formField->getLabel(),
+                'isRequired' => $formField->isRequired(),
+            ];
+        }
+
+        return parent::render();
+    }
+
     /**
      * Composes and sends user written message, returns false if some parameters
      * are missing.
@@ -100,7 +118,6 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
         }
 
         $this->_aViewData['contactForm'] = $form;
-
 
 
         $requestParameters = Registry::getConfig()->getRequestParameter('editval');

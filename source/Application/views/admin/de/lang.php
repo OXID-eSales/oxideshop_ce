@@ -1982,6 +1982,12 @@ $aLang = [
     'ERROR_METADATA_CONTROLLERS_NOT_UNIQUE' => 'Fehler: Modul nicht aktiviert.<br />In einem Shop oder Sub-Shop müssen Schüssel und Werte für "controllers" eindeutig sein.<br />Folgende Schlüssel oder Werte für "controllers", die in der Datei metadata.php dieses Moduls definiert sind, existieren schon im Shop:<br /> %s',
 
     'SHOP_CONFIG_FIELDS_CONTACTFORM' => 'Lorem ipsum dolor',
+    'EMAIL'                          => 'E-Mail',
+    'FIRST_NAME'                     => 'Vorname',
+    'LAST_NAME'                      => 'Nachname',
+    'TITLE'                          => 'Anrede',
+    'SUBJECT'                        => 'Betreff',
+    'MESSAGE'                        => 'Nachricht',
 ];
 
 /*

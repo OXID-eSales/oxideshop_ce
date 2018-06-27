@@ -1986,6 +1986,13 @@ $aLang = [
     'ERROR_METADATA_CONTROLLERS_NOT_UNIQUE' => 'Error: Module not activated.<br />All controller keys and values must be unique throughout a shop or a sub-shop.<br />The following controller keys or values defined in metadata.php of this module are not unique:<br /> %s',
 
     'SHOP_CONFIG_FIELDS_CONTACTFORM' => 'Lorem ipsum dolor',
+    'EMAIL'                          => 'Email',
+    'FIRST_NAME'                     => 'First name',
+    'LAST_NAME'                      => 'Last name',
+    'TITLE'                          => 'Salutation',
+    'SUBJECT'                        => 'Subject',
+    'MESSAGE'                        => 'Message',
+
 ];
 
 /*

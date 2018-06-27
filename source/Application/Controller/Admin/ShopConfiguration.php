@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\EshopCommunity\Internal\Common\Form\FormField;
 use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormBridgeInterface;
 use oxRegistry;
 use oxDb;
@@ -101,9 +102,15 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
         /** @var ContactFormBridgeInterface $contactFormBridge */
         $contactFormBridge = $this->getContainer()->get(ContactFormBridgeInterface::class);
-
         $form = $contactFormBridge->getContactForm();
-        $this->_aViewData['contactFormFields'] = $form->getFields();
+        /** @var FormField $formField */
+        foreach ($form->getFields() as $formField) {
+            $this->_aViewData['contactFormFields'][] = [
+                'name' => $formField->getName(),
+                'label' => $formField->getLabel(),
+                'isRequired' => $formField->isRequired(),
+            ];
+        }
 
         return $this->_sThisTemplate;
     }

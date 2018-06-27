@@ -20,4 +20,9 @@ interface ContextInterface
      * @return string
      */
     public function getLogFilePath();
+
+    /**
+     * @return array
+     */
+    public function getRequiredContactFormFields();
 }

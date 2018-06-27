@@ -15,4 +15,7 @@ services:
 
   form.contact_form.contact_form_requider_fields_provider:
       class: OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormRequiredFieldsProvider
+      arguments:
+        $context: '@OxidEsales\EshopCommunity\Internal\Utility\ContextInterface'
+      autowire: true
       public: false

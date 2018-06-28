@@ -15,13 +15,6 @@ use oxSystemComponentException;
 class Base
 {
     /**
-     * oxsession instance
-     *
-     * @var \OxidEsales\Eshop\Core\Session
-     */
-    protected static $_oSession = null;
-
-    /**
      * oxrights instance
      *
      * @var oxrights
@@ -77,27 +70,23 @@ class Base
     }
 
     /**
-     * oxSession instance getter
+     * Session instance getter
      *
      * @return \OxidEsales\Eshop\Core\Session
      */
     public function getSession()
     {
-        if (self::$_oSession == null) {
-            self::$_oSession = \OxidEsales\Eshop\Core\Registry::getSession();
-        }
-
-        return self::$_oSession;
+        return \OxidEsales\Eshop\Core\Registry::getSession();
     }
 
     /**
-     * oxSession instance setter
+     * Session instance setter
      *
      * @param \OxidEsales\Eshop\Core\Session $session session object
      */
     public function setSession($session)
     {
-        self::$_oSession = $session;
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
     }
 
     /**

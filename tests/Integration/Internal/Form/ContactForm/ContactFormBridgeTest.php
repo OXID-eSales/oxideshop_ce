@@ -23,10 +23,26 @@ class ContactFormBridgeTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testFormMessageGetter()
+    {
+        $container = $this->getContainer();
+        $bridge = $container->get(ContactFormBridgeInterface::class);
+
+        $form = $bridge->getContactForm();
+        $form->handleRequest(['email' => 'marina.ginesta@bcn.cat']);
+
+        $message = $bridge->getContactFormMessage($form);
+
+        $this->assertContains(
+            'marina.ginesta@bcn.cat',
+            $message
+        );
+
+    }
+
     private function getContainer()
     {
-        $class = new \ReflectionClass(ContainerFactory::class);
-        $factory = $class->newInstanceWithoutConstructor();
+        $factory = ContainerFactory::getInstance();
 
         return $factory->getContainer();
     }

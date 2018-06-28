@@ -6,6 +6,9 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Form\ContactForm;
 
+use OxidEsales\EshopCommunity\Internal\Common\Form\FormFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Common\Form\FormInterface;
+
 /**
  * Class ContactFormBridge
  * @package OxidEsales\EshopCommunity\Internal\Form\ContactForm
@@ -13,17 +16,26 @@ namespace OxidEsales\EshopCommunity\Internal\Form\ContactForm;
 class ContactFormBridge implements ContactFormBridgeInterface
 {
     /**
-     * @var ContactFormFactory
+     * @var FormFactoryInterface
      */
     private $contactFormFactory;
 
     /**
-     * ContactFormBridge constructor.
-     * @param ContactFormFactory $contactFormFactory
+     * @var ContactFormMessageBuilderInterface
      */
-    public function __construct(ContactFormFactory $contactFormFactory)
-    {
+    private $contactFormMessageBuilder;
+
+    /**
+     * ContactFormBridge constructor.
+     * @param FormFactoryInterface               $contactFormFactory
+     * @param ContactFormMessageBuilderInterface $contactFormMessageBuilder
+     */
+    public function __construct(
+        FormFactoryInterface $contactFormFactory,
+        ContactFormMessageBuilderInterface $contactFormMessageBuilder
+    ) {
         $this->contactFormFactory = $contactFormFactory;
+        $this->contactFormMessageBuilder = $contactFormMessageBuilder;
     }
 
     /**
@@ -32,5 +44,14 @@ class ContactFormBridge implements ContactFormBridgeInterface
     public function getContactForm()
     {
         return $this->contactFormFactory->getForm();
+    }
+
+    /**
+     * @param FormInterface $form
+     * @return string
+     */
+    public function getContactFormMessage(FormInterface $form)
+    {
+        return $this->contactFormMessageBuilder->getContent($form);
     }
 }

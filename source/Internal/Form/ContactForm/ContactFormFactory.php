@@ -6,15 +6,16 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Form\ContactForm;
 
-use OxidEsales\EshopCommunity\Internal\Common\Form\Form;
 use OxidEsales\EshopCommunity\Internal\Common\Form\FormBuilderInterface;
+use OxidEsales\EshopCommunity\Internal\Common\Form\FormFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Common\Form\FormInterface;
+use OxidEsales\EshopCommunity\Internal\Common\Form\FormValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Form\RequiredFieldsProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Common\Form\RequiredFieldsValidator;
 
 /**
  * Class ContactFormFactory
  */
-class ContactFormFactory
+class ContactFormFactory implements FormFactoryInterface
 {
     /**
      * @var RequiredFieldsProviderInterface
@@ -27,21 +28,37 @@ class ContactFormFactory
     private $formBuilder;
 
     /**
+     * @var FormValidatorInterface
+     */
+    private $contactFormEmailValidator;
+
+    /**
+     * @var FormValidatorInterface
+     */
+    private $requiredFieldsValidator;
+
+    /**
      * ContactFormFactory constructor.
      * @param RequiredFieldsProviderInterface $requiredFieldsProvider
      * @param FormBuilderInterface            $formBuilder
+     * @param FormValidatorInterface          $contactFormEmailValidator
+     * @param FormValidatorInterface          $requiredFieldsValidator
      */
     public function __construct(
         RequiredFieldsProviderInterface $requiredFieldsProvider,
-        FormBuilderInterface            $formBuilder
+        FormBuilderInterface            $formBuilder,
+        FormValidatorInterface          $contactFormEmailValidator,
+        FormValidatorInterface          $requiredFieldsValidator
     ) {
         $this->requiredFieldsProvider = $requiredFieldsProvider;
         $this->formBuilder = $formBuilder;
+        $this->contactFormEmailValidator = $contactFormEmailValidator;
+        $this->requiredFieldsValidator = $requiredFieldsValidator;
     }
 
 
     /**
-     * @return Form
+     * @return FormInterface
      */
     public function getForm()
     {
@@ -73,7 +90,8 @@ class ContactFormFactory
             ]);
 
         $form = $this->formBuilder->getForm();
-        $form->addValidator(new RequiredFieldsValidator());
+        $form->addValidator($this->requiredFieldsValidator);
+        $form->addValidator($this->contactFormEmailValidator);
 
         return $form;
     }

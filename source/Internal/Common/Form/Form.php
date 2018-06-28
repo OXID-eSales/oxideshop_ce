@@ -52,6 +52,16 @@ class Form implements FormInterface
     }
 
     /**
+     * @param array $request
+     */
+    public function handleRequest($request)
+    {
+        foreach ($request as $fieldName => $value) {
+            $this->$fieldName->setValue($value);
+        }
+    }
+
+    /**
      * @param FormValidatorInterface $validator
      */
     public function addValidator(FormValidatorInterface $validator)
@@ -78,16 +88,6 @@ class Form implements FormInterface
         }
 
         return $isValid;
-    }
-
-    /**
-     * @param array $request
-     */
-    public function handleRequest($request)
-    {
-        foreach ($request as $fieldName => $value) {
-            $this->$fieldName->setValue($value);
-        }
     }
 
     /**

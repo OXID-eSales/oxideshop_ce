@@ -6,6 +6,9 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Form\ContactForm;
 
+use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Common\Form\RequiredFieldsValidator;
+use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormEmailValidator;
 use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormFactory;
 use OxidEsales\EshopCommunity\Internal\Common\Form\RequiredFieldsProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Form\FormBuilder;
@@ -23,14 +26,11 @@ class ContactFormFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('getRequiredFields')
             ->willReturn(['email']);
 
-        $formFactory = new ContactFormFactory(
-            $requiredFieldsProvider,
-            new FormBuilder()
-        );
+        $contactFormFactory = $this->getContactFormFactoryWithRequiredFields($requiredFieldsProvider);
 
         $this->assertInstanceOf(
             FormInterface::class,
-            $formFactory->getForm()
+            $contactFormFactory->getForm()
         );
     }
 
@@ -41,10 +41,7 @@ class ContactFormFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('getRequiredFields')
             ->willReturn(['lastName']);
 
-        $contactFormFactory = new ContactFormFactory(
-            $requiredFieldsProvider,
-            new FormBuilder()
-        );
+        $contactFormFactory = $this->getContactFormFactoryWithRequiredFields($requiredFieldsProvider);
 
         $form = $contactFormFactory->getForm();
 
@@ -55,5 +52,19 @@ class ContactFormFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(
             $form->email->isRequired()
         );
+    }
+
+    private function getContactFormFactoryWithRequiredFields($requiredFieldsProvider)
+    {
+        $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
+
+        $contactFormFactory = new ContactFormFactory(
+            $requiredFieldsProvider,
+            new FormBuilder(),
+            new RequiredFieldsValidator(),
+            new ContactFormEmailValidator($shopAdapter)
+        );
+
+        return $contactFormFactory;
     }
 }

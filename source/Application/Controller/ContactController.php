@@ -7,7 +7,6 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Email;
-use OxidEsales\Eshop\Core\MailValidator;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Common\Form\FormField;
 use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormBridgeInterface;
@@ -94,65 +93,17 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $form->handleRequest($this->getMappedContactFormRequest());
 
         if ($form->isValid()) {
-            $email = oxNew(Email::class);
-
-            /**
-            $message =  $lang->translateString('MESSAGE_FROM') . " " .
-                $lang->translateString($requestParameters['oxuser__oxsal']) . " " .
-                $requestParameters['oxuser__oxfname'] . " " .
-                $requestParameters['oxuser__oxlname'] . "(" . $requestParameters['oxuser__oxusername'] . ")<br /><br />" .
-                nl2br(Registry::getConfig()->getRequestParameter('c_message'));
-             */
-
-            if ($email->sendContactMail($form->email, $form->subject, $form->message)) {
-                $this->_blContactSendStatus = 1;
-            } else {
-                Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL');
-            }
+            $this->sendContactMail(
+                $form->email->getValue(),
+                $form->subject->getValue(),
+                $contactFormBridge->getContactFormMessage($form)
+            );
         } else {
             foreach ($form->getErrors() as $error) {
                 Registry::getUtilsView()->addErrorToDisplay($error);
             }
 
             return false;
-        }
-
-        $this->_aViewData['contactForm'] = $form;
-
-
-        $requestParameters = Registry::getConfig()->getRequestParameter('editval');
-
-        $emailValidator = oxNew(MailValidator::class);
-
-        if (!$emailValidator->isValidEmail($requestParameters['oxuser__oxusername'])) {
-            Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_INPUT_NOVALIDEMAIL');
-
-            return false;
-        }
-
-        $sSubject = Registry::getConfig()->getRequestParameter('c_subject');
-        if (!$requestParameters['oxuser__oxfname']
-            || !$requestParameters['oxuser__oxlname']
-            || !$requestParameters['oxuser__oxusername']
-            || !$sSubject
-        ) {
-            Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_INPUT_NOTALLFIELDS');
-
-            return false;
-        }
-
-        $lang = Registry::getLang();
-        $message =  $lang->translateString('MESSAGE_FROM') . " " .
-                    $lang->translateString($requestParameters['oxuser__oxsal']) . " " .
-                    $requestParameters['oxuser__oxfname'] . " " .
-                    $requestParameters['oxuser__oxlname'] . "(" . $requestParameters['oxuser__oxusername'] . ")<br /><br />" .
-                    nl2br(Registry::getConfig()->getRequestParameter('c_message'));
-
-        $email = oxNew(\OxidEsales\Eshop\Core\Email::class);
-        if ($email->sendContactMail($requestParameters['oxuser__oxusername'], $sSubject, $message)) {
-            $this->_blContactSendStatus = 1;
-        } else {
-            Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL');
         }
     }
 
@@ -255,5 +206,23 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
             'subject'       => $request->getRequestEscapedParameter('c_subject'),
             'message'       => $request->getRequestEscapedParameter('c_message'),
         ];
+    }
+
+    /**
+     * Send a contact mail.
+     *
+     * @param string $email
+     * @param string $subject
+     * @param string $message
+     */
+    private function sendContactMail($email, $subject, $message)
+    {
+        $mailer = oxNew(Email::class);
+
+        if ($mailer->sendContactMail($email, $subject, $message)) {
+            $this->_blContactSendStatus = 1;
+        } else {
+            Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL');
+        }
     }
 }

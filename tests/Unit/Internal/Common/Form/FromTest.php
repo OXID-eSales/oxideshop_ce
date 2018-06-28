@@ -105,4 +105,22 @@ class FromTest extends \PHPUnit_Framework_TestCase
             ]
         );
     }
+
+    public function testRequestHandling()
+    {
+        $form = new Form();
+
+        $field = new FormField();
+        $field->setName('testField');
+
+        $form->add($field);
+        $form->handleRequest([
+            'testField' => 'testValue',
+        ]);
+
+        $this->assertSame(
+            'testValue',
+            $form->testField->getValue()
+        );
+    }
 }

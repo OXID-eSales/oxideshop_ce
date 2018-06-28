@@ -9,18 +9,13 @@ namespace OxidEsales\EshopCommunity\Internal\Form\ContactForm;
 use OxidEsales\EshopCommunity\Internal\Common\Form\FormInterface;
 
 /**
- * Interface ContactFormBridgeInterface
+ * Class ContactFormMessageInterface
  */
-interface ContactFormBridgeInterface
+interface ContactFormMessageBuilderInterface
 {
-    /**
-     * @return FormInterface
-     */
-    public function getContactForm();
-
     /**
      * @param FormInterface $form
      * @return string
      */
-    public function getContactFormMessage(FormInterface $form);
+    public function getContent(FormInterface $form);
 }

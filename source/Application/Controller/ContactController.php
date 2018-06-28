@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxRegistry;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Contact window.
@@ -67,35 +67,23 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function send()
     {
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval');
+        $aParams = Registry::getConfig()->getRequestParameter('editval');
 
         // checking email address
         if (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams['oxuser__oxusername'])) {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_INPUT_NOVALIDEMAIL');
+            Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_INPUT_NOVALIDEMAIL');
 
             return false;
         }
 
-        $sSubject = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('c_subject');
-        if (!$aParams['oxuser__oxfname'] || !$aParams['oxuser__oxlname'] || !$aParams['oxuser__oxusername'] || !$sSubject) {
-            // even if there is no exception, use this as a default display method
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_INPUT_NOTALLFIELDS');
-
-            return false;
-        }
-
-        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
-        $sMessage = $oLang->translateString('MESSAGE_FROM') . " " .
-                    $oLang->translateString($aParams['oxuser__oxsal']) . " " .
-                    $aParams['oxuser__oxfname'] . " " .
-                    $aParams['oxuser__oxlname'] . "(" . $aParams['oxuser__oxusername'] . ")<br /><br />" .
-                    nl2br(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('c_message'));
+        $sSubject = Registry::getConfig()->getRequestParameter('c_subject');
+        $sMessage = $this->getContactFormMessage($aParams);
 
         $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
         if ($oEmail->sendContactMail($aParams['oxuser__oxusername'], $sSubject, $sMessage)) {
             $this->_blContactSendStatus = 1;
         } else {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL');
+            Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL');
         }
     }
 
@@ -107,7 +95,7 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getUserData()
     {
         if ($this->_oUserData === null) {
-            $this->_oUserData = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval');
+            $this->_oUserData = Registry::getConfig()->getRequestParameter('editval');
         }
 
         return $this->_oUserData;
@@ -121,7 +109,7 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getContactSubject()
     {
         if ($this->_sContactSubject === null) {
-            $this->_sContactSubject = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('c_subject');
+            $this->_sContactSubject = Registry::getConfig()->getRequestParameter('c_subject');
         }
 
         return $this->_sContactSubject;
@@ -135,7 +123,7 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getContactMessage()
     {
         if ($this->_sContactMessage === null) {
-            $this->_sContactMessage = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('c_message');
+            $this->_sContactMessage = Registry::getConfig()->getRequestParameter('c_message');
         }
 
         return $this->_sContactMessage;
@@ -161,7 +149,7 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $aPaths = [];
         $aPath = [];
 
-        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('CONTACT', \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage(), false);
+        $aPath['title'] = Registry::getLang()->translateString('CONTACT', Registry::getLang()->getBaseLanguage(), false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
@@ -176,5 +164,40 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getTitle()
     {
         return $this->getConfig()->getActiveShop()->oxshops__oxcompany->value;
+    }
+
+    /**
+     * Returns contact form message.
+     *
+     * @param array $parameters
+     *
+     * @return string
+     */
+    private function getContactFormMessage($parameters)
+    {
+        $lang = Registry::getLang();
+
+        $message = $lang->translateString('MESSAGE_FROM') . ' ';
+
+        if ($parameters['oxuser__oxsal']) {
+            $message .= $lang->translateString($parameters['oxuser__oxsal']) . ' ';
+        }
+
+        if ($parameters['oxuser__oxfname']) {
+            $message .= $parameters['oxuser__oxfname'] . ' ';
+        }
+
+        if ($parameters['oxuser__oxlname']) {
+            $message .= $parameters['oxuser__oxlname'] . ' ';
+        }
+
+        $message .= '(' . $parameters['oxuser__oxusername'] . ")<br /><br />";
+
+        $messageBody = Registry::getConfig()->getRequestParameter('c_message');
+        if ($messageBody) {
+            $message .= nl2br($messageBody);
+        }
+
+        return $message;
     }
 }

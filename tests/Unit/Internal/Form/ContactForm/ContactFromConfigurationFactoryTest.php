@@ -48,13 +48,14 @@ class ContactFromConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('getFormFieldsConfiguration')
             ->willReturn([
                 [
-                    'name'  => 'email',
-                    'label' => 'EMAIL',
-                    'alwaysRequired' => true,
+                    'name'              => 'email',
+                    'label'             => 'EMAIL',
+                    'alwaysRequired'    => true,
                 ],
                 [
-                    'name'  => 'firstName',
-                    'label' => 'FIRST_NAME',
+                    'name'              => 'firstName',
+                    'label'             => 'FIRST_NAME',
+                    'required'          => true,
                 ],
             ]);
 
@@ -74,7 +75,8 @@ class ContactFromConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
         $firstNameConfiguration = new FieldConfiguration();
         $firstNameConfiguration
             ->setName('firstName')
-            ->setLabel('FIRST_NAME');
+            ->setLabel('FIRST_NAME')
+            ->isRequired();
 
         $this->assertEquals(
             [

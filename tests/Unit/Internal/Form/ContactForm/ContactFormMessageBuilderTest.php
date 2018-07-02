@@ -7,22 +7,19 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Form\ContactForm;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
-use OxidEsales\EshopCommunity\Internal\Common\Form\RequiredFieldsValidator;
-use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormEmailValidator;
-use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormFactory;
-use OxidEsales\EshopCommunity\Internal\Common\Form\RequiredFieldsProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Common\Form\FormBuilder;
+use OxidEsales\EshopCommunity\Internal\Common\Form\Form;
+use OxidEsales\EshopCommunity\Internal\Common\Form\FormField;
 use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormMessageBuilder;
 
 class ContactFormMessageBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @dataProvider contactFormRequestProvider
+     * @dataProvider fieldsProvider
      */
-    public function testContentGetter($contactFormRequest)
+    public function testContentGetter($name, $value)
     {
-        $form = $this->getContactFormFactory()->getForm();
-        $form->handleRequest($contactFormRequest);
+        $form = $this->getContactForm();
+        $form->handleRequest([$name => $value]);
 
         $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
         $shopAdapter
@@ -35,38 +32,55 @@ class ContactFormMessageBuilderTest extends \PHPUnit_Framework_TestCase
         $contactFormMessageBuilder = new ContactFormMessageBuilder($shopAdapter);
 
         $this->assertContains(
-            current($contactFormRequest),
+            $value,
             $contactFormMessageBuilder->getContent($form)
         );
     }
 
-    public function contactFormRequestProvider()
+    public function fieldsProvider()
     {
         return [
-            [['email'       => 'marina.ginesta@bcn.cat']],
-            [['firstName'   => 'Marina']],
-            [['lastName'    => 'Ginestà']],
-            [['salutation'  => 'MRS']],
-            [['message'     => 'I\'m standing on the rooftop']],
+            [
+                'email',
+                'marina.ginesta@bcn.cat'
+            ],
+            [
+                'firstName',
+                'Marina'
+            ],
+            [
+                'lastName',
+                'Ginestà'
+            ],
+            [
+                'salutation',
+                'MRS'
+            ],
+            [
+                'message',
+                'I\'m standing on the rooftop'
+            ],
         ];
     }
 
-    private function getContactFormFactory()
+    private function getContactForm()
     {
-        $requiredFieldsProvider = $this->getMockBuilder(RequiredFieldsProviderInterface::class)->getMock();
-        $requiredFieldsProvider
-            ->method('getRequiredFields')
-            ->willReturn([]);
+        $form = new Form();
 
-        $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
+        $fieldNames = [
+            'email',
+            'firstName',
+            'lastName',
+            'salutation',
+            'message',
+        ];
 
-        $contactFormFactory = new ContactFormFactory(
-            $requiredFieldsProvider,
-            new FormBuilder(),
-            new RequiredFieldsValidator(),
-            new ContactFormEmailValidator($shopAdapter)
-        );
+        foreach ($fieldNames as $fieldName) {
+            $field = new FormField();
+            $field->setName($fieldName);
+            $form->add($field);
+        }
 
-        return $contactFormFactory;
+        return $form;
     }
 }

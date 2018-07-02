@@ -8,13 +8,16 @@ namespace OxidEsales\EshopCommunity\Internal\Form\ContactForm;
 
 use OxidEsales\EshopCommunity\Internal\Common\Form\Form;
 use OxidEsales\EshopCommunity\Internal\Common\Form\FormFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Common\Form\FormField;
+use OxidEsales\EshopCommunity\Internal\Common\Form\FormFieldInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Form\FormInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Form\FormValidatorInterface;
-use OxidEsales\EshopCommunity\Internal\Common\Form\RequiredFieldsProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FieldConfigurationInterface;
 use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormConfigurationInterface;
 
 /**
  * Class ContactFormFactory
+ * @internal
  */
 class ContactFormFactory implements FormFactoryInterface
 {
@@ -57,9 +60,32 @@ class ContactFormFactory implements FormFactoryInterface
     {
         $form = new Form();
 
+        foreach ($this->contactFormConfiguration->getFieldConfigurations() as $fieldConfiguration) {
+            $field = $this->getFormField($fieldConfiguration);
+            $form->add($field);
+        }
+
         $form->addValidator($this->requiredFieldsValidator);
         $form->addValidator($this->contactFormEmailValidator);
 
         return $form;
+    }
+
+    /**
+     * @param FieldConfigurationInterface $fieldConfiguration
+     * @return FormFieldInterface
+     */
+    private function getFormField(FieldConfigurationInterface $fieldConfiguration)
+    {
+        $field = new FormField();
+        $field
+            ->setName($fieldConfiguration->getName())
+            ->setLabel($fieldConfiguration->getLabel());
+
+        if ($fieldConfiguration->isRequired() === true || $fieldConfiguration->isAlwaysRequired() === true) {
+            $field->setIsRequired(true);
+        }
+
+        return $field;
     }
 }

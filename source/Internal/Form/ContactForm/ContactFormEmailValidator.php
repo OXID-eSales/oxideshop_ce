@@ -12,6 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 
 /**
  * Class ContactFormEmailValidator
+ * @internal
  */
 class ContactFormEmailValidator implements FormValidatorInterface
 {

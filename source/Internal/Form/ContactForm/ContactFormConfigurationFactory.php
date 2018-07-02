@@ -16,6 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 
 /**
  * Class ContactFormConfigurationFactory
+ * @internal
  */
 class ContactFormConfigurationFactory implements FormConfigurationFactoryInterface
 {

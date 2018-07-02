@@ -10,6 +10,7 @@ use OxidEsales\EshopCommunity\Internal\Common\Form\FormInterface;
 
 /**
  * Class ContactFormMessageInterface
+ * @internal
  */
 interface ContactFormMessageBuilderInterface
 {

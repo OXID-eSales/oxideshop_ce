@@ -7,7 +7,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Form;
 
 use OxidEsales\EshopCommunity\Internal\Common\Form\Form;
-use OxidEsales\EshopCommunity\Internal\Common\Form\FieldConfiguration;
+use OxidEsales\EshopCommunity\Internal\Common\Form\FormField;
 use OxidEsales\EshopCommunity\Internal\Common\Form\FormValidatorInterface;
 
 class FromTest extends \PHPUnit_Framework_TestCase
@@ -16,7 +16,7 @@ class FromTest extends \PHPUnit_Framework_TestCase
     {
         $form = new Form();
 
-        $field = new FieldConfiguration();
+        $field = new FormField();
         $field->setName('testField');
 
         $form->add($field);
@@ -88,10 +88,10 @@ class FromTest extends \PHPUnit_Framework_TestCase
     {
         $form = new Form();
 
-        $field = new FieldConfiguration();
+        $field = new FormField();
         $field->setName('testField');
 
-        $anotherField = new FieldConfiguration();
+        $anotherField = new FormField();
         $anotherField->setName('anotherTestField');
 
         $form->add($field);
@@ -110,7 +110,7 @@ class FromTest extends \PHPUnit_Framework_TestCase
     {
         $form = new Form();
 
-        $field = new FieldConfiguration();
+        $field = new FormField();
         $field->setName('testField');
 
         $form->add($field);

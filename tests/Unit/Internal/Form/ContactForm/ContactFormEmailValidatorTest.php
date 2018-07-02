@@ -7,7 +7,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Form\ContactForm;
 
 use OxidEsales\EshopCommunity\Internal\Common\Form\Form;
-use OxidEsales\EshopCommunity\Internal\Common\Form\FieldConfiguration;
+use OxidEsales\EshopCommunity\Internal\Common\Form\FormField;
 use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormEmailValidator;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapter;
 
@@ -17,7 +17,7 @@ class ContactFormEmailValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $validator = $this->getContactFormEmailValidator();
 
-        $invalidEmailField = new FieldConfiguration();
+        $invalidEmailField = new FormField();
         $invalidEmailField->setName('email');
         $invalidEmailField->setValue('ImSoInvalid');
 
@@ -38,7 +38,7 @@ class ContactFormEmailValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $validator = $this->getContactFormEmailValidator();
 
-        $validEmailField = new FieldConfiguration();
+        $validEmailField = new FormField();
         $validEmailField->setName('email');
         $validEmailField->setValue('someemail@validEmailsClub.com');
 

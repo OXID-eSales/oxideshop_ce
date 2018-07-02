@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Internal\Common\Form;
 
 /**
  * Class FormFieldInterface
+ * @internal
  */
 interface FormFieldInterface
 {

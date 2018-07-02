@@ -7,13 +7,13 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Form\ContactForm;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Common\Form\FormField;
 use OxidEsales\EshopCommunity\Internal\Common\Form\RequiredFieldsValidator;
+use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FieldConfiguration;
 use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormConfiguration;
 use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormConfigurationInterface;
-use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormFieldsConfigurationDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormEmailValidator;
 use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormFactory;
-use OxidEsales\EshopCommunity\Internal\Common\Form\RequiredFieldsProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Form\FormInterface;
 
 class ContactFormFactoryTest extends \PHPUnit_Framework_TestCase
@@ -30,23 +30,53 @@ class ContactFormFactoryTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testRequiredFields()
+    public function testFromConfigurationHandling()
     {
-        $requiredFieldsProvider = $this->getMockBuilder(RequiredFieldsProviderInterface::class)->getMock();
-        $requiredFieldsProvider
-            ->method('getRequiredFields')
-            ->willReturn(['lastName']);
+        $emailField =  new FormField();
+        $emailField
+            ->setName('email')
+            ->setLabel('EMAIL')
+            ->setIsRequired(true);
 
-        $contactFormFactory = $this->getContactFormFactory($requiredFieldsProvider);
+        $firstNameField = new FormField();
+        $firstNameField->setName('firstName');
 
+        $lastNameField = new FormField();
+        $lastNameField
+            ->setName('lastName')
+            ->setIsRequired(true);
+
+        $emailConfiguration = new FieldConfiguration();
+        $emailConfiguration
+            ->setName('email')
+            ->setLabel('EMAIL')
+            ->setIsAlwaysRequired(true);
+
+        $firstNameConfiguration = new FieldConfiguration();
+        $firstNameConfiguration
+            ->setName('firstName');
+
+        $lastNameConfiguration = new FieldConfiguration();
+        $lastNameConfiguration
+            ->setName('lastName')
+            ->setIsRequired(true);
+
+        $formConfiguration = new FormConfiguration();
+        $formConfiguration
+            ->addFieldConfiguration($emailConfiguration)
+            ->addFieldConfiguration($firstNameConfiguration)
+            ->addFieldConfiguration($lastNameConfiguration);
+
+        $contactFormFactory = $this->getContactFormFactory($formConfiguration);
         $form = $contactFormFactory->getForm();
 
-        $this->assertTrue(
-            $form->lastName->isRequired()
-        );
-
-        $this->assertFalse(
-            $form->email->isRequired()
+        $this->assertEquals(
+            [
+                'email'     => $emailField,
+                'firstName' => $firstNameField,
+                'lastName'  => $lastNameField,
+            ],
+            $form->getFields()
         );
     }
 

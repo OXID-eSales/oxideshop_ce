@@ -12,7 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormConfiguratio
 
 /**
  * Class ContactFormBridge
- * @package OxidEsales\EshopCommunity\Internal\Form\ContactForm
+ * @internal
  */
 class ContactFormBridge implements ContactFormBridgeInterface
 {

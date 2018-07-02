@@ -55,7 +55,7 @@ class ContextStub implements ContextInterface
     /**
      * @return array
      */
-    public function getRequiredContactFormFields(): array
+    public function getRequiredContactFormFields()
     {
         return $this->requiredContactFormFields;
     }
@@ -63,7 +63,7 @@ class ContextStub implements ContextInterface
     /**
      * @param array $requiredContactFormFields
      */
-    public function setRequiredContactFormFields(array $requiredContactFormFields): void
+    public function setRequiredContactFormFields(array $requiredContactFormFields)
     {
         $this->requiredContactFormFields = $requiredContactFormFields;
     }

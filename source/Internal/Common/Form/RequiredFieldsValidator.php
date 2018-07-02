@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Internal\Common\Form;
 
 /**
  * Class RequiredFieldsValidator
+ * @internal
  */
 class RequiredFieldsValidator implements FormValidatorInterface
 {

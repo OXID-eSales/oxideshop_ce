@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Internal\Common\FormConfiguration;
 
 /**
  * Class FieldConfiguration
+ * @internal
  */
 class FieldConfiguration implements FieldConfigurationInterface
 {

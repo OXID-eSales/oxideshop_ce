@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Internal\Common\Form;
 
 /**
  * Class Form
+ * @internal
  */
 class Form implements FormInterface
 {

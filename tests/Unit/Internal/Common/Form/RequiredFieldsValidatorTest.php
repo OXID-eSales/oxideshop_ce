@@ -7,7 +7,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Form;
 
 use OxidEsales\EshopCommunity\Internal\Common\Form\Form;
-use OxidEsales\EshopCommunity\Internal\Common\Form\FormField;
+use OxidEsales\EshopCommunity\Internal\Common\Form\FieldConfiguration;
 use OxidEsales\EshopCommunity\Internal\Common\Form\RequiredFieldsValidator;
 
 class RequiredFieldsValidatorTest extends \PHPUnit_Framework_TestCase
@@ -16,7 +16,7 @@ class RequiredFieldsValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $form = new Form();
 
-        $field = new FormField();
+        $field = new FieldConfiguration();
         $field->setName('requiredField');
         $field->setIsRequired(true);
 
@@ -31,7 +31,7 @@ class RequiredFieldsValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $form = new Form();
 
-        $field = new FormField();
+        $field = new FieldConfiguration();
         $field->setName('requiredField');
         $field->setIsRequired(true);
         $field->setValue('123');
@@ -47,7 +47,7 @@ class RequiredFieldsValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $form = new Form();
 
-        $field = new FormField();
+        $field = new FieldConfiguration();
         $field->setName('requiredField');
         $field->setIsRequired(true);
 

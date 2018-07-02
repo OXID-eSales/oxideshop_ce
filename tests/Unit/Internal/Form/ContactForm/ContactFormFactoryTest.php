@@ -8,25 +8,21 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Form\ContactForm;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Form\RequiredFieldsValidator;
+use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormConfiguration;
+use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormConfigurationInterface;
+use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormFieldsConfigurationDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormEmailValidator;
 use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormFactory;
 use OxidEsales\EshopCommunity\Internal\Common\Form\RequiredFieldsProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Common\Form\FormBuilder;
 use OxidEsales\EshopCommunity\Internal\Common\Form\FormInterface;
 
 class ContactFormFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testFormGetter()
     {
-        $requiredFieldsProvider = $this
-            ->getMockBuilder(RequiredFieldsProviderInterface::class)
-            ->getMock();
+        $formConfiguration = new FormConfiguration();
 
-        $requiredFieldsProvider
-            ->method('getRequiredFields')
-            ->willReturn(['email']);
-
-        $contactFormFactory = $this->getContactFormFactoryWithRequiredFields($requiredFieldsProvider);
+        $contactFormFactory = $this->getContactFormFactory($formConfiguration);
 
         $this->assertInstanceOf(
             FormInterface::class,
@@ -41,7 +37,7 @@ class ContactFormFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('getRequiredFields')
             ->willReturn(['lastName']);
 
-        $contactFormFactory = $this->getContactFormFactoryWithRequiredFields($requiredFieldsProvider);
+        $contactFormFactory = $this->getContactFormFactory($requiredFieldsProvider);
 
         $form = $contactFormFactory->getForm();
 
@@ -54,13 +50,12 @@ class ContactFormFactoryTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    private function getContactFormFactoryWithRequiredFields($requiredFieldsProvider)
+    private function getContactFormFactory(FormConfigurationInterface $formConfiguration)
     {
         $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
 
         $contactFormFactory = new ContactFormFactory(
-            $requiredFieldsProvider,
-            new FormBuilder(),
+            $formConfiguration,
             new RequiredFieldsValidator(),
             new ContactFormEmailValidator($shopAdapter)
         );

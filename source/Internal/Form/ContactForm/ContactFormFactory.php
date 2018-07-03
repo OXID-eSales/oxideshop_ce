@@ -80,11 +80,8 @@ class ContactFormFactory implements FormFactoryInterface
         $field = new FormField();
         $field
             ->setName($fieldConfiguration->getName())
-            ->setLabel($fieldConfiguration->getLabel());
-
-        if ($fieldConfiguration->isRequired() === true || $fieldConfiguration->isAlwaysRequired() === true) {
-            $field->setIsRequired(true);
-        }
+            ->setLabel($fieldConfiguration->getLabel())
+            ->setIsRequired($fieldConfiguration->isRequired());
 
         return $field;
     }

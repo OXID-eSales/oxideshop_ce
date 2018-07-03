@@ -43,15 +43,4 @@ interface FieldConfigurationInterface
      * @return FieldConfiguration
      */
     public function setIsRequired($isRequired);
-
-    /**
-     * @return bool
-     */
-    public function isAlwaysRequired();
-
-    /**
-     * @param bool $isAlwaysRequired
-     * @return FieldConfiguration
-     */
-    public function setIsAlwaysRequired($isAlwaysRequired);
 }

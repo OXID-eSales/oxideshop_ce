@@ -28,11 +28,6 @@ class FieldConfiguration implements FieldConfigurationInterface
     private $isRequired;
 
     /**
-     * @var bool
-     */
-    private $isAlwaysRequired;
-
-    /**
      * @return string
      */
     public function getName()
@@ -83,24 +78,6 @@ class FieldConfiguration implements FieldConfigurationInterface
     public function setIsRequired($isRequired)
     {
         $this->isRequired = $isRequired;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isAlwaysRequired()
-    {
-        return $this->isAlwaysRequired;
-    }
-
-    /**
-     * @param bool $isAlwaysRequired
-     * @return FieldConfiguration
-     */
-    public function setIsAlwaysRequired($isAlwaysRequired)
-    {
-        $this->isAlwaysRequired = $isAlwaysRequired;
         return $this;
     }
 }

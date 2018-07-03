@@ -50,7 +50,6 @@ class ContactFromConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
                 [
                     'name'              => 'email',
                     'label'             => 'EMAIL',
-                    'alwaysRequired'    => true,
                 ],
                 [
                     'name'              => 'firstName',
@@ -69,8 +68,7 @@ class ContactFromConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
         $emailConfiguration = new FieldConfiguration();
         $emailConfiguration
             ->setName('email')
-            ->setLabel('EMAIL')
-            ->setIsAlwaysRequired(true);
+            ->setLabel('EMAIL');
 
         $firstNameConfiguration = new FieldConfiguration();
         $firstNameConfiguration

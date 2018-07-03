@@ -103,13 +103,11 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
         /** @var FieldConfigurationInterface $fieldConfiguration */
         foreach ($contactFormConfiguration->getFieldConfigurations() as $fieldConfiguration) {
-            if ($fieldConfiguration->isAlwaysRequired() !== true) {
-                $this->_aViewData['contactFormFieldConfigurations'][] = [
-                    'name' => $fieldConfiguration->getName(),
-                    'label' => $fieldConfiguration->getLabel(),
-                    'isRequired' => $fieldConfiguration->isRequired(),
-                ];
-            }
+            $this->_aViewData['contactFormFieldConfigurations'][] = [
+                'name' => $fieldConfiguration->getName(),
+                'label' => $fieldConfiguration->getLabel(),
+                'isRequired' => $fieldConfiguration->isRequired(),
+            ];
         }
 
         return $this->_sThisTemplate;

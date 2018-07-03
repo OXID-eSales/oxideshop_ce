@@ -77,10 +77,6 @@ class ContactFormConfigurationFactory implements FormConfigurationFactoryInterfa
             $fieldConfiguration->setIsRequired(true);
         }
 
-        if (isset($fieldConfigurationData['alwaysRequired'])) {
-            $fieldConfiguration->setIsAlwaysRequired(true);
-        }
-
         return $fieldConfiguration;
     }
 

@@ -22,7 +22,6 @@ class ContactFormFieldsConfigurationDataProvider implements FormFieldsConfigurat
             [
                 'name'  => 'email',
                 'label' => 'EMAIL',
-                'alwaysRequired' => true,
             ],
             [
                 'name'  => 'firstName',

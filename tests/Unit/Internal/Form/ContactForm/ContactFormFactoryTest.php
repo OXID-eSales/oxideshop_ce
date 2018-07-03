@@ -35,8 +35,7 @@ class ContactFormFactoryTest extends \PHPUnit_Framework_TestCase
         $emailField =  new FormField();
         $emailField
             ->setName('email')
-            ->setLabel('EMAIL')
-            ->setIsRequired(true);
+            ->setLabel('EMAIL');
 
         $firstNameField = new FormField();
         $firstNameField->setName('firstName');
@@ -49,8 +48,7 @@ class ContactFormFactoryTest extends \PHPUnit_Framework_TestCase
         $emailConfiguration = new FieldConfiguration();
         $emailConfiguration
             ->setName('email')
-            ->setLabel('EMAIL')
-            ->setIsAlwaysRequired(true);
+            ->setLabel('EMAIL');
 
         $firstNameConfiguration = new FieldConfiguration();
         $firstNameConfiguration

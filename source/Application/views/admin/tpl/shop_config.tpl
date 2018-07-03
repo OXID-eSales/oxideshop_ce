@@ -965,16 +965,10 @@ function editThis(sID)
                     [{oxmultilang ident="SHOP_CONFIG_FIELDS_CONTACTFORM"}]
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_FIELDS_CONTACTFORM"}]
                     <input type="hidden" name="confarrs[contactFormRequiredFields][]" value="">
-                    [{foreach from=$contactFormFields item=formField}]
+                    [{foreach from=$contactFormFieldConfigurations item=formFieldConfiguration}]
                     <div style="margin-left:10px;">
-                        [{* TODO: Move this business logic out of template *}]
-                        [{if "email" === $formField.name}]
-                            [{assign var="disabled" value="disabled='disabled'"}]
-                        [{else}]
-                            [{assign var="disabled" value=""}]
-                        [{/if}]
-                        <input type="checkbox" name="confarrs[contactFormRequiredFields][]" value=[{$formField.name}] [{if $formField.isRequired}]checked[{/if}] [{$readonly}] [{$disabled}]>
-                        <label>[{oxmultilang ident=$formField.label}]</label>
+                        <input type="checkbox" name="confarrs[contactFormRequiredFields][]" value=[{$formFieldConfiguration.name}] [{if $formFieldConfiguration.isRequired}]checked[{/if}] [{$readonly}] [{$disabled}]>
+                        <label>[{oxmultilang ident=$formFieldConfiguration.label}]</label>
                         <br />
                     </div>
                     [{/foreach}]

@@ -6,11 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FieldConfiguration;
+use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FieldConfigurationInterface;
 use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormBridgeInterface;
-use oxRegistry;
-use oxDb;
-use oxAdminDetails;
 use Exception;
 
 /**
@@ -102,14 +99,17 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
         /** @var ContactFormBridgeInterface $contactFormBridge */
         $contactFormBridge = $this->getContainer()->get(ContactFormBridgeInterface::class);
-        $form = $contactFormBridge->getContactForm();
-        /** @var FieldConfiguration $formField */
-        foreach ($form->getFields() as $formField) {
-            $this->_aViewData['contactFormFields'][] = [
-                'name' => $formField->getName(),
-                'label' => $formField->getLabel(),
-                'isRequired' => $formField->isRequired(),
-            ];
+        $contactFormConfiguration = $contactFormBridge->getContactFormConfiguration();
+
+        /** @var FieldConfigurationInterface $fieldConfiguration */
+        foreach ($contactFormConfiguration->getFieldConfigurations() as $fieldConfiguration) {
+            if ($fieldConfiguration->isAlwaysRequired() !== true) {
+                $this->_aViewData['contactFormFieldConfigurations'][] = [
+                    'name' => $fieldConfiguration->getName(),
+                    'label' => $fieldConfiguration->getLabel(),
+                    'isRequired' => $fieldConfiguration->isRequired(),
+                ];
+            }
         }
 
         return $this->_sThisTemplate;

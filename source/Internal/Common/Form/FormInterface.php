@@ -31,4 +31,9 @@ interface FormInterface
      * @return bool
      */
     public function isValid();
+
+    /**
+     * @return array
+     */
+    public function getErrors();
 }

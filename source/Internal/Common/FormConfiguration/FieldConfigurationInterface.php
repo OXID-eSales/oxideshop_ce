@@ -11,6 +11,9 @@ namespace OxidEsales\EshopCommunity\Internal\Common\FormConfiguration;
  */
 interface FieldConfigurationInterface
 {
+    /**
+     * @return string
+     */
     public function getName();
 
     /**

@@ -46,7 +46,7 @@ class RequiredFieldsValidator implements FormValidatorInterface
     }
 
     /**
-     * @return void
+     * Add error.
      */
     private function addError()
     {

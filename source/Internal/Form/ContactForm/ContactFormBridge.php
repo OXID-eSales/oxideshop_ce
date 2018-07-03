@@ -48,7 +48,7 @@ class ContactFormBridge implements ContactFormBridgeInterface
     }
 
     /**
-     * @inheritDoc
+     * @return FormInterface
      */
     public function getContactForm()
     {

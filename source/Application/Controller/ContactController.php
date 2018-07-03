@@ -62,11 +62,15 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     protected $_iViewIndexState = VIEW_INDEXSTATE_NOINDEXNOFOLLOW;
 
+    /**
+     * @inheritdoc
+     */
     public function render()
     {
         /** @var ContactFormBridgeInterface $contactFormBridge */
         $contactFormBridge = $this->getContainer()->get(ContactFormBridgeInterface::class);
         $form = $contactFormBridge->getContactForm();
+
         /** @var FormField $formField */
         foreach ($form->getFields() as $key => $formField) {
             $this->_aViewData['contactFormFields'][$key] = [

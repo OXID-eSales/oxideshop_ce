@@ -7,6 +7,10 @@
 namespace OxidEsales\EshopCommunity\Tests\Acceptance\Frontend;
 
 
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\ConfigFile;
+use OxidEsales\Facts\Facts;
+
 class ContactFormFrontendTest extends \OxidEsales\EshopCommunity\Tests\Acceptance\FlowThemeTestCase
 {
     private $requiredClass = 'req';
@@ -24,21 +28,19 @@ class ContactFormFrontendTest extends \OxidEsales\EshopCommunity\Tests\Acceptanc
     /**
      * @group flow-theme
      */
-    public function testContactFormRequiresEmailFieldToBeFilled()
+    public function testContactFormRequiresEmailFieldToBeFilledWithoutConfiguration()
     {
         $this->openContactForm();
 
-        $emailInputField = $this->getElement($this->emailInputFieldXpathLocator);
-        $this->assertTrue($emailInputField->hasAttribute('required'), 'The email field is always marked as required');
+        $this->assertFieldIsRequired(
+            $this->emailInputFieldXpathLocator,
+            $this->emailLabelXpathLocator
+        );
 
-        $emailLabel = $this->getElement($this->emailLabelXpathLocator);
-        $this->assertTrue($emailLabel->hasClass($this->requiredClass), 'The email field is always marked as required');
-
-        $configuredInputField = $this->getElement($this->configuredRequiredInputFieldXpathLocator);
-        $this->assertNull($configuredInputField->getAttribute('required'), 'The configured field is not marked as required without configuration');
-
-        $configuredLabel = $this->getElement($this->configuredRequiredFieldLabelXpathLocator);
-        $this->assertFalse(in_array($this->requiredClass, explode(' ', $configuredLabel->getAttribute('class'))), 'The configured field is not marked as required without configuration');
+        $this->assertFieldIsNotRequired(
+            $this->configuredRequiredInputFieldXpathLocator,
+            $this->configuredRequiredFieldLabelXpathLocator
+        );
     }
 
     /**
@@ -46,20 +48,18 @@ class ContactFormFrontendTest extends \OxidEsales\EshopCommunity\Tests\Acceptanc
      */
     public function testContactFormRequiresConfiguredFieldToBeFilled()
     {
-        $this->insertRequiredFirstName();
+        $this->insertRequiredFields(['firstName']);
         $this->openContactForm();
 
-        $emailInputField = $this->getElement($this->emailInputFieldXpathLocator);
-        $this->assertTrue($emailInputField->hasAttribute('required'), 'The email field is always marked as required');
+        $this->assertFieldIsRequired(
+            $this->configuredRequiredInputFieldXpathLocator,
+            $this->configuredRequiredFieldLabelXpathLocator
+        );
 
-        $emailLabel = $this->getElement($this->emailLabelXpathLocator);
-        $this->assertTrue($emailLabel->hasClass($this->requiredClass), 'The email field is always marked as required');
-
-        $configuredInputField = $this->getElement($this->configuredRequiredInputFieldXpathLocator);
-        $this->assertTrue($configuredInputField->hasAttribute('required'), 'The configured field is marked as required after configuration');
-
-        $configuredLabel = $this->getElement($this->configuredRequiredFieldLabelXpathLocator);
-        $this->assertTrue($configuredLabel->hasClass($this->requiredClass), 'The configured field is marked as required after configuration');
+        $this->assertFieldIsNotRequired(
+            $this->emailInputFieldXpathLocator,
+            $this->emailLabelXpathLocator
+        );
     }
 
     private function openContactForm()
@@ -67,20 +67,52 @@ class ContactFormFrontendTest extends \OxidEsales\EshopCommunity\Tests\Acceptanc
         $this->openNewWindow($this->contactUrl);
     }
 
-    private function insertRequiredFirstName()
+    private function insertRequiredFields(array $requiredFields)
     {
+        $facts = new Facts();
+        $configFile = new ConfigFile($facts->getSourcePath() . '/config.inc.php');
+        $configKey = is_null($configFile->getVar('sConfigKey')) ? Config::DEFAULT_CONFIG_KEY : $configFile->getVar('sConfigKey');
+        $rawValue = serialize($requiredFields);
+
         $query = "
-        INSERT INTO `oxconfig`
+        UPDATE `oxconfig`
         SET
-          `OXID`       = REPLACE( UUID( ) , '-', '' ),
-          `OXSHOPID`   = 1,
-          `OXVARNAME`  = 'contactFormRequiredFields',
-          `OXVARTYPE`  = 'arr',
-          `OXVARVALUE` = 0x4DBA832F74E74DF4CDD5AFCA153F15E216AEA9086F4AD4A5BA4EB0D02C47B1AE3E82287D75
+          `OXVARVALUE` = ENCODE(?,?)
+        WHERE `OXSHOPID`= 1
+        AND   `OXVARNAME` = 'contactFormRequiredFields'
         ";
 
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $database->execute($query);
+        $database->execute($query, [$rawValue, $configKey]);
+    }
 
+    private function assertFieldIsNotRequired(string $notRequiredInputFieldLocator, string $notRequiredFieldLabelLocator)
+    {
+        $configuredInputField = $this->getElement($notRequiredInputFieldLocator);
+        $this->assertNull(
+            $configuredInputField->getAttribute('required'),
+            'The input field ' . $notRequiredInputFieldLocator . ' does not have the attribute "required"'
+        );
+
+        $configuredLabel = $this->getElement($notRequiredFieldLabelLocator);
+        $this->assertFalse(
+            in_array($this->requiredClass, explode(' ', $configuredLabel->getAttribute('class'))),
+            'The field label ' . $notRequiredFieldLabelLocator . ' is not marked as "required"'
+        );
+    }
+
+    private function assertFieldIsRequired(string $requiredInputFieldLocator, string $requiredFieldLabelLocator)
+    {
+        $requiredInputField = $this->getElement($requiredInputFieldLocator);
+        $this->assertTrue(
+            $requiredInputField->hasAttribute('required'),
+            'The input field ' . $requiredInputFieldLocator . ' has the attribute "required"'
+        );
+
+        $requiredLabel = $this->getElement($requiredFieldLabelLocator);
+        $this->assertTrue(
+            $requiredLabel->hasClass($this->requiredClass),
+            'The field label ' . $requiredFieldLabelLocator . ' is marked as "required"'
+        );
     }
 }

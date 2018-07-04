@@ -1384,7 +1384,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         $sCache = "<?php\n\$aLangCache = " . var_export($aLangCache, true) . ";\n?>";
         $sFileName = $this->getCacheFilePath($sCacheName);
-        $sTmpFile = 'tmp/' . basename($sFileName) . '.' . uniqid('', true) . '.tmp';
+        $sTmpFile = '/tmp/' . basename($sFileName) . '.' . uniqid('', true) . '.tmp';
         $blRes = file_put_contents($sTmpFile, $sCache, LOCK_EX);
 
         rename($sTmpFile, $sFileName);

@@ -53,7 +53,10 @@ class FileCache
     public function setToCache($key, $value)
     {
         $fileName = $this->getCacheFilePath($key);
-        file_put_contents($fileName, serialize($value), LOCK_EX);
+        $tmpFile = '/tmp/' . basename($fileName) . '.' . uniqid('', true) . '.tmp';
+        file_put_contents($tmpFile, serialize($value), LOCK_EX);
+
+        rename($tmpFile, $fileName);
     }
 
     /**

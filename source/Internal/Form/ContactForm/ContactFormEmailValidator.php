@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Form\ContactForm;
 
+use OxidEsales\EshopCommunity\Internal\Common\Form\FormFieldInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Form\FormInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Form\FormValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
@@ -41,14 +42,38 @@ class ContactFormEmailValidator implements FormValidatorInterface
      */
     public function isValid(FormInterface $form)
     {
-        $email = $form->email->getValue();
-        $isValid = $this->shopAdapter->isValidEmail($email);
+        $isValid = true;
+        $email = $form->email;
 
-        if ($isValid !== true) {
-            $this->errors[] = 'ERROR_MESSAGE_INPUT_NOVALIDEMAIL';
+        if ($this->isValidationNeeded($email)) {
+            $isValid = $this
+                ->shopAdapter
+                ->isValidEmail($email->getValue());
+
+            if ($isValid !== true) {
+                $this->errors[] = 'ERROR_MESSAGE_INPUT_NOVALIDEMAIL';
+            }
         }
 
         return $isValid;
+    }
+
+    /**
+     * @param FormFieldInterface $email
+     * @return bool
+     */
+    private function isValidationNeeded(FormFieldInterface $email)
+    {
+        return $this->isNotEmptyEmail($email) || $email->isRequired();
+    }
+
+    /**
+     * @param FormFieldInterface $email
+     * @return bool
+     */
+    private function isNotEmptyEmail(FormFieldInterface $email)
+    {
+        return $email->getValue() !== '';
     }
 
     /**

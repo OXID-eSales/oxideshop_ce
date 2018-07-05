@@ -50,6 +50,41 @@ class ContactFormEmailValidatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testEmptyEmailIsNotValidIfEmailIsRequired()
+    {
+        $validator = $this->getContactFormEmailValidator();
+
+        $emailField = new FormField();
+        $emailField
+            ->setName('email')
+            ->setValue('')
+            ->setIsRequired(true);
+
+        $form = new Form();
+        $form->add($emailField);
+
+        $this->assertFalse(
+            $validator->isValid($form)
+        );
+    }
+
+    public function testEmptyEmailIsValidIfEmailIsRequired()
+    {
+        $validator = $this->getContactFormEmailValidator();
+
+        $emailField = new FormField();
+        $emailField
+            ->setName('email')
+            ->setValue('');
+
+        $form = new Form();
+        $form->add($emailField);
+
+        $this->assertTrue(
+            $validator->isValid($form)
+        );
+    }
+
     private function getContactFormEmailValidator()
     {
         return new ContactFormEmailValidator(

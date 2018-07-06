@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Application;
 use Monolog\Logger;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewAndRatingBridgeInterface;
@@ -71,7 +72,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             [ProductRatingBridgeInterface::class],
             [UserRatingBridgeInterface::class],
             [UserReviewBridgeInterface::class],
-            [LoggerInterface::class]
+            [LoggerInterface::class],
+            [ContactFormBridgeInterface::class],
         ];
     }
 

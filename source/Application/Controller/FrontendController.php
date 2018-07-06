@@ -3022,14 +3022,4 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
 
         return $compareController->getCompareItemsCnt();
     }
-
-    /**
-     * @internal
-     *
-     * @return ContainerInterface
-     */
-    protected function getContainer()
-    {
-        return \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
-    }
 }

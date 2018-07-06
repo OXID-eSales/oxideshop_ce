@@ -44,6 +44,16 @@ class Context implements ContextInterface
     }
 
     /**
+     * @return array
+     */
+    public function getRequiredContactFormFields()
+    {
+        $contactFormRequiredFields = $this->getConfigParameter('contactFormRequiredFields');
+
+        return $contactFormRequiredFields === null ? [] : $contactFormRequiredFields;
+    }
+
+    /**
      * @param string $name
      * @return mixed
      */

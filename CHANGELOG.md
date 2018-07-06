@@ -80,6 +80,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - New methods:
         - `OxidEsales\EshopCommunity\Core\Registry::getLogger`
         - `getLogger` in `overridablefunctions.php`
+- Possibility to configure contact form required fields:
+    - New settings:
+        - `contactFormRequiredFields`
 
 ### Changed
 - Persparams filter simplified to allow arrays in persparams [PR-641](https://github.com/OXID-eSales/oxideshop_ce/pull/641)

@@ -584,4 +584,6 @@ $aLang =  [
 
 'HELP_SHOP_CONFIG_DEBIT_OLD_BANK_INFORMATION_NOT_ALLOWED' => 'Im Bestellprozess können nur IBAN und BIC angegeben werden. Die Eingabe von Kontonummer und BLZ ist nur möglich, wenn das Kontrollkästchen nicht aktiviert ist.',
 'HELP_SHOP_CONFIG_ENABLE_INTANGIBLE_PRODUCTS_AGREEMENT'   => 'Ist diese Option aktiviert, müssen Benutzer die AGB für immaterielle oder Downloadartikel im vierten Bestellschritt bestätigen. Bitte aktivieren Sie diese Option auch für die spezifischen Produkte!',
+
+'HELP_SHOP_CONFIG_FIELDS_CONTACTFORM'         => 'Hier können Sie angeben, welche Felder im Kontaktformular von Benutzern mindestens ausgefüllt sein müssen.',
 ];

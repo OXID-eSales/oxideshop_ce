@@ -53,6 +53,27 @@ class ContactTest extends \OxidTestCase
     }
 
     /**
+     * Test if send mail is not executed if user data is not entered
+     * and warning message is displayed
+     *
+     * @return null
+     */
+    public function testSave_withoutUserData()
+    {
+        oxRegistry::getSession()->deleteVariable('Errors');
+        $oContact = oxNew('Contact');
+
+        $this->assertFalse($oContact->send());
+
+        //checking if warning was added to errors list
+        $sErr = oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS');
+        $aEx = oxRegistry::getSession()->getVariable('Errors');
+        $oErr = unserialize($aEx['default'][0]);
+
+        $this->assertEquals($sErr, $oErr->getOxMessage());
+    }
+
+    /**
      * Test send mail
      *
      * @return null
@@ -153,7 +174,16 @@ class ContactTest extends \OxidTestCase
 
         /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("sendContactMail"));
-        $oEmail->expects($this->once())->method('sendContactMail')->with($this->equalTo('user@oxid-esales.com'), $this->equalTo('subject'), $this->equalTo($sMessage))->will($this->returnValue(true));
+        $oEmail
+            ->expects($this->once())
+            ->method('sendContactMail')
+            ->with(
+                $this->equalTo('user@oxid-esales.com'),
+                $this->equalTo('subject'),
+                $this->equalTo($sMessage)
+            )->will(
+                $this->returnValue(true)
+            );
 
         oxTestModules::addModuleObject('oxemail', $oEmail);
 

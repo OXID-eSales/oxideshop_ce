@@ -1952,7 +1952,15 @@ $aLang = [
 
     'VERSION_UPDATE_LINK' => 'http://www.oxid-esales.com/de/support-services/dokumentation-und-hilfe/oxid-eshop/installation/oxid-eshop-aktualisieren/update-vorbereiten.html',
 
-    'ERROR_METADATA_CONTROLLERS_NOT_UNIQUE' => 'Fehler: Modul nicht aktiviert.<br />In einem Shop oder Sub-Shop müssen Schlüssel und Werte für "controllers" eindeutig sein.<br />Folgende Schlüssel oder Werte für "controllers", die in der Datei metadata.php dieses Moduls definiert sind, existieren schon im Shop:<br /> %s'
+    'ERROR_METADATA_CONTROLLERS_NOT_UNIQUE' => 'Fehler: Modul nicht aktiviert.<br />In einem Shop oder Sub-Shop müssen Schlüssel und Werte für "controllers" eindeutig sein.<br />Folgende Schlüssel oder Werte für "controllers", die in der Datei metadata.php dieses Moduls definiert sind, existieren schon im Shop:<br /> %s',
+
+    'SHOP_CONFIG_FIELDS_CONTACTFORM' => 'Pflichtfelder des Kontaktformulars',
+    'EMAIL'                          => 'E-Mail',
+    'FIRST_NAME'                     => 'Vorname',
+    'LAST_NAME'                      => 'Nachname',
+    'TITLE'                          => 'Anrede',
+    'SUBJECT'                        => 'Betreff',
+    'MESSAGE'                        => 'Nachricht',
 ];
 
 /*

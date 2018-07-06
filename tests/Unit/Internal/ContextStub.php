@@ -16,6 +16,11 @@ class ContextStub implements ContextInterface
     private $logFilePath = 'log.txt';
 
     /**
+     * @var array
+     */
+    private $requiredContactFormFields;
+
+    /**
      * @param string $logLevel
      */
     public function setLogLevel($logLevel)
@@ -45,5 +50,21 @@ class ContextStub implements ContextInterface
     public function getLogFilePath()
     {
         return $this->logFilePath;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRequiredContactFormFields()
+    {
+        return $this->requiredContactFormFields;
+    }
+
+    /**
+     * @param array $requiredContactFormFields
+     */
+    public function setRequiredContactFormFields(array $requiredContactFormFields)
+    {
+        $this->requiredContactFormFields = $requiredContactFormFields;
     }
 }

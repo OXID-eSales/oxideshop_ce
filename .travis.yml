@@ -1,13 +1,15 @@
 language: php
+dist: precise
 
 notifications:
   email: false
 
-php:
-  - "5.3"
-  - "5.4"
-  - "5.5"
-  - "5.6"
+matrix:
+  include:
+    - php: 5.3
+    - php: 5.4
+    - php: 5.5
+    - php: 5.6
 
 # TRAVIS_ERROR_LEVEL = E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_STRICT
 env: TRAVIS_ERROR_LEVEL=22519 oxINSTALLSHOP=0 oxSKIPSHOPSETUP=1 OXID_VERSION=CE OXID_EDITION=CE oxPATH="$TRAVIS_BUILD_DIR/source/"
@@ -43,4 +45,4 @@ before_script:
   # replace configuration values in config.inc.php
   - sed -i 's|<dbHost_ce>|localhost|; s|<dbName_ce>|oxidehop_ce|; s|<dbUser_ce>|root|; s|<dbPwd_ce>||; s|<sShopURL_ce>|http://localhost|; s|<sShopDir_ce>|'$TRAVIS_BUILD_DIR'/source|; s|<sCompileDir_ce>|'$TRAVIS_BUILD_DIR'/source/tmp|; s|<iUtfMode>|0|; s|$this->iDebug = 0|$this->iDebug = 1|' source/config.inc.php
 
-script: cd tests && phpunit --verbose --bootstrap bootstrap.php AllTestsUnit
+script: cd tests && phpunit --verbose --bootstrap bootstrap.php AllTestsForTravis

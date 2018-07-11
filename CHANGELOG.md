@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [6.4.0] - Unreleased
+
+### Added
+- New methods:
+  - `OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay::getValues` [PR-660](https://github.com/OXID-eSales/oxideshop_ce/pull/660)
+
 ## [6.3.0] - Unreleased
 
 ### Added

@@ -22,9 +22,9 @@ class ModuleSmartyPluginDirectoriesTest extends \OxidEsales\TestingLibrary\UnitT
     public function testModuleSmartyPluginDirectoryIsIncludedOnModuleActivation()
     {
         $modules = ['with_metadata_v21'];
-        $oEnvironment = new Environment();
-        $oEnvironment->prepare($modules);
-        $oEnvironment->activateModules($modules);
+        $environment = new Environment();
+        $environment->prepare($modules);
+        $environment->activateModules($modules);
 
         $utilsView = oxNew(UtilsView::class);
         $smarty = $utilsView->getSmarty(true);

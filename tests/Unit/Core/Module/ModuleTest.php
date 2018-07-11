@@ -784,6 +784,8 @@ class ModuleTest extends \OxidTestCase
     /**
      * @expectedException \InvalidArgumentException
      *
+     * @param string $invalidValue
+     *
      * @dataProvider invalidSmartyPluginDirectoriesValueProvider
      */
     public function testGetSmartyPluginDirectoriesWithInvalidValue($invalidValue)

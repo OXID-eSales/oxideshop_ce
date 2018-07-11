@@ -116,6 +116,8 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
                 try {
                     $this->addModuleSmartyPluginDirectories($module);
                 } catch (\Exception $exception) {
+                    $this->deactivate($module);
+
                     throw oxNew(StandardException::class, $exception->getMessage());
                 }
             }

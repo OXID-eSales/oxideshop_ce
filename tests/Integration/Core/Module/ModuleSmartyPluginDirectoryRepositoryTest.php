@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Module;
 
 use OxidEsales\Eshop\Core\FileCache;
 use OxidEsales\Eshop\Core\Module\Module;
+use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryRepository;
 use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
@@ -51,7 +52,7 @@ class ModuleSmartyPluginDirectoryRepositoryTest extends UnitTestCase
         );
 
         return oxNew(
-            ModuleSmartyPluginDirectoryRepositoryTest::class,
+            ModuleSmartyPluginDirectoryRepository::class,
             Registry::getConfig(),
             $moduleVariablesLocator,
             oxNew(Module::class)

@@ -86,6 +86,11 @@ class ModuleSmartyPluginDirectoryRepository
             self::STORAGE_KEY,
             $moduleSmartyPluginDirectories->getWithRelativePath()
         );
+
+        $this->moduleVariablesLocator->setModuleVariable(
+            self::STORAGE_KEY,
+            $moduleSmartyPluginDirectories->getWithRelativePath()
+        );
     }
 
     /**

@@ -4,11 +4,10 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Module;
 
 use OxidEsales\Eshop\Core\FileCache;
 use OxidEsales\Eshop\Core\Module\Module;
-use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryRepository;
 use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
@@ -16,7 +15,7 @@ use OxidEsales\Eshop\Core\SubShopSpecificFileCache;
 use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectories;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
-class ModuleSmartyPluginDirectoriesRepository extends UnitTestCase
+class ModuleSmartyPluginDirectoryRepositoryTest extends UnitTestCase
 {
     public function testSaving()
     {
@@ -52,7 +51,7 @@ class ModuleSmartyPluginDirectoriesRepository extends UnitTestCase
         );
 
         return oxNew(
-            ModuleSmartyPluginDirectoryRepository::class,
+            ModuleSmartyPluginDirectoryRepositoryTest::class,
             Registry::getConfig(),
             $moduleVariablesLocator,
             oxNew(Module::class)

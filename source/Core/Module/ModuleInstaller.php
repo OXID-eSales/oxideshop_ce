@@ -6,6 +6,7 @@
 namespace OxidEsales\EshopCommunity\Core\Module;
 
 use OxidEsales\Eshop\Core\Exception\ModuleValidationException;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\FileCache;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Routing\Module\ClassProviderStorage;
@@ -15,6 +16,7 @@ use OxidEsales\Eshop\Core\SubShopSpecificFileCache;
 use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryRepository as EshopModuleSmartyPluginDirectoryRepository;
 use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator as EshopModuleVariablesLocator;
 use OxidEsales\Eshop\Core\Module\Module as EshopModule;
+use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryValidator as EshopModuleSmartyPluginDirectoryValidator;
 
 /**
  * Modules installer class.
@@ -103,7 +105,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
                     $lang = Registry::getLang();
                     $message = sprintf($lang->translateString('ERROR_METADATA_CONTROLLERS_NOT_UNIQUE', null, true), $exception->getMessage());
 
-                    $standardException = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
+                    $standardException = oxNew(StandardException::class);
                     $standardException->setMessage($message);
 
                     throw $standardException;
@@ -111,7 +113,11 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
             }
 
             if (version_compare($module->getMetaDataVersion(), '2.1', '>=')) {
-                $this->addModuleSmartyPluginDirectories($module);
+                try {
+                    $this->addModuleSmartyPluginDirectories($module);
+                } catch (\Exception $exception) {
+                    throw oxNew(StandardException::class, $exception->getMessage());
+                }
             }
 
             $this->resetCache();
@@ -705,6 +711,9 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
             $module->getSmartyPluginDirectories(),
             $module->getId()
         );
+
+        $validator = oxNew(EshopModuleSmartyPluginDirectoryValidator::class);
+        $validator->validate($smartyPluginDirectories);
 
         $moduleSmartyPluginDirectoryRepository->save($smartyPluginDirectories);
     }

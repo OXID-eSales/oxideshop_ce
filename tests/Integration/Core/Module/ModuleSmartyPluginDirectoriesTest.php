@@ -4,7 +4,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Module;
 
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\Environment;
 use OxidEsales\Eshop\Core\UtilsView;

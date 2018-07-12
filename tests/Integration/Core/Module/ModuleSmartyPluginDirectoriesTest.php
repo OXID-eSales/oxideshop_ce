@@ -8,23 +8,19 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Module;
 
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\Environment;
 use OxidEsales\Eshop\Core\UtilsView;
+use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**
  * Class ModuleSmartyPluginDirectoryTest
- *
- * @package OxidEsales\EshopCommunity\Tests\Integration\Core
  */
-class ModuleSmartyPluginDirectoriesTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class ModuleSmartyPluginDirectoriesTest extends UnitTestCase
 {
     /**
      * Smarty should know about the smarty plugin directories of the modules being activated.
      */
     public function testModuleSmartyPluginDirectoryIsIncludedOnModuleActivation()
     {
-        $modules = ['with_metadata_v21'];
-        $environment = new Environment();
-        $environment->prepare($modules);
-        $environment->activateModules($modules);
+        $this->activateTestModule();
 
         $utilsView = oxNew(UtilsView::class);
         $smarty = $utilsView->getSmarty(true);
@@ -38,6 +34,38 @@ class ModuleSmartyPluginDirectoriesTest extends \OxidEsales\TestingLibrary\UnitT
         );
     }
 
+    public function testSmartyPluginDirectoriesOrder()
+    {
+        $this->activateTestModule();
+
+        $utilsView = oxNew(UtilsView::class);
+        $smarty = $utilsView->getSmarty(true);
+
+        $this->assertModuleSmartyPluginDirectoriesFirst($smarty->plugins_dir);
+        $this->assertShopSmartyPluginDirectorySecond($smarty->plugins_dir);
+    }
+
+    private function assertModuleSmartyPluginDirectoriesFirst($directories)
+    {
+        $this->assertContains(
+            'Smarty/PluginDirectory1WithMetadataVersion21',
+            $directories[0]
+        );
+
+        $this->assertContains(
+            'Smarty/PluginDirectory2WithMetadataVersion21',
+            $directories[1]
+        );
+    }
+
+    private function assertShopSmartyPluginDirectorySecond($directories)
+    {
+        $this->assertContains(
+            'Core/Smarty/Plugin',
+            $directories[2]
+        );
+    }
+
     private function isPathInSmartyDirectories($smarty, $path)
     {
         foreach ($smarty->plugins_dir as $directory) {
@@ -47,5 +75,13 @@ class ModuleSmartyPluginDirectoriesTest extends \OxidEsales\TestingLibrary\UnitT
         }
 
         return false;
+    }
+
+    private function activateTestModule()
+    {
+        $modules = ['with_metadata_v21'];
+        $environment = new Environment();
+        $environment->prepare($modules);
+        $environment->activateModules($modules);
     }
 }

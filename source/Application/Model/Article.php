@@ -2864,7 +2864,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return float
      */
-    protected function getStock()
+    public function getStock()
     {
         return $this->oxarticles__oxstock->value;
     }

@@ -185,6 +185,18 @@ class Module extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @return array
+     */
+    public function getSmartyPluginDirectories()
+    {
+        if (isset($this->_aModule['smartyPluginDirectories']) && !is_array($this->_aModule['smartyPluginDirectories'])) {
+            throw new \InvalidArgumentException('Value for metadata key "smartyPluginDirectories" must be an array');
+        }
+
+        return isset($this->_aModule['smartyPluginDirectories']) ? $this->_aModule['smartyPluginDirectories'] : [];
+    }
+
+    /**
      * Returns array of module PHP files.
      *
      * @return array

@@ -8,9 +8,13 @@ namespace OxidEsales\EshopCommunity\Core;
 use oxException;
 use OxidEsales\Eshop\Core\Contract\IDisplayError;
 use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockContentReader;
 use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter;
 use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository;
+use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
+use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryRepository;
+use OxidEsales\Eshop\Core\ShopIdCalculator as EshopShopIdCalculator;
 use Smarty;
 
 /**
@@ -45,6 +49,9 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      * @var array
      */
     protected $_aActiveModuleInfo = null;
+
+    /** @var \OxidEsales\Eshop\Core\ShopIdCalculator */
+    private $shopIdCalculator;
 
     /**
      * returns existing or creates smarty object
@@ -353,8 +360,13 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         $smarty->compile_id = $this->getTemplateCompileId();
         $smarty->default_template_handler_func = [\OxidEsales\Eshop\Core\Registry::getUtilsView(), '_smartyDefaultTemplateHandler'];
 
-        $coreDirectory = $config->getConfigParam('sCoreDir');
-        array_unshift($smarty->plugins_dir, $coreDirectory . 'Smarty/Plugin');
+        $smarty->plugins_dir = array_merge(
+            $this->getModuleSmartyPluginDirectories(),
+            $this->getShopSmartyPluginDirectories(),
+            $smarty->plugins_dir
+        );
+
+        $coreDirectory = $this->getConfig()->getConfigParam('sCoreDir');
 
         include_once $coreDirectory . 'Smarty/Plugin/prefilter.oxblock.php';
         $smarty->register_prefilter('smarty_prefilter_oxblock');
@@ -387,6 +399,20 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
             $smarty->security_settings['ALLOW_CONSTANTS'] = true;
             $smarty->secure_dir = $smarty->template_dir;
         }
+    }
+
+    /**
+     * @return array
+     */
+    protected function getShopSmartyPluginDirectories()
+    {
+        $coreDirectory = $this
+            ->getConfig()
+            ->getConfigParam('sCoreDir');
+
+        return [
+            $coreDirectory . 'Smarty/Plugin',
+        ];
     }
 
     /**
@@ -775,5 +801,56 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     private function prepareBlockKey($activeBlockTemplate)
     {
         return $activeBlockTemplate['OXTEMPLATE'] . $activeBlockTemplate['OXBLOCKNAME'];
+    }
+
+    /**
+     * @return array
+     */
+    private function getModuleSmartyPluginDirectories()
+    {
+        $moduleSmartyPluginDirectoryRepository = $this->getSmartyPluginDirectoryRepository();
+        $moduleSmartyPluginDirectories = $moduleSmartyPluginDirectoryRepository->get();
+
+        return $moduleSmartyPluginDirectories->getWithFullPath();
+    }
+
+    /**
+     * @return ModuleSmartyPluginDirectoryRepository
+     */
+    private function getSmartyPluginDirectoryRepository()
+    {
+        $subShopSpecificCache = oxNew(
+            \OxidEsales\Eshop\Core\SubShopSpecificFileCache::class,
+            $this->getShopIdCalculator()
+        );
+
+        $moduleVariablesLocator = oxNew(
+            ModuleVariablesLocator::class,
+            $subShopSpecificCache,
+            $this->getShopIdCalculator()
+        );
+
+        return oxNew(
+            ModuleSmartyPluginDirectoryRepository::class,
+            $this->getConfig(),
+            $moduleVariablesLocator,
+            oxNew(Module::class)
+        );
+    }
+
+    /**
+     * @return EshopShopIdCalculator
+     */
+    private function getShopIdCalculator()
+    {
+        if (is_null($this->shopIdCalculator)) {
+            $moduleVariablesCache = oxNew(\OxidEsales\Eshop\Core\FileCache::class);
+
+            $this->shopIdCalculator = oxNew(
+                EshopShopIdCalculator::class,
+                $moduleVariablesCache
+            );
+        }
+        return $this->shopIdCalculator;
     }
 }

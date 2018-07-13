@@ -83,6 +83,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Possibility to configure contact form required fields:
     - New settings:
         - `contactFormRequiredFields`
+- Possibility for modules to add new smarty plugins:
+    - New settings:
+        - `moduleSmartyPluginDirectories`
+    - New setting in module metadata.php
+        - `smartyPluginDirectories`
+- [Module metadata version 2.1](https://docs.oxid-esales.com/developer/en/6.0/modules/skeleton/metadataphp/version21.html)
 
 ### Changed
 - Persparams filter simplified to allow arrays in persparams [PR-641](https://github.com/OXID-eSales/oxideshop_ce/pull/641)

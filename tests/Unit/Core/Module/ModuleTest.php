@@ -738,8 +738,8 @@ class ModuleTest extends \OxidTestCase
         $module->getControllers();
     }
 
-    public function dataProviderTestGetControllersWithWrongMetadataValue () {
-
+    public function dataProviderTestGetControllersWithWrongMetadataValue()
+    {
         $expectedException = \InvalidArgumentException::class;
 
         return [
@@ -763,6 +763,46 @@ class ModuleTest extends \OxidTestCase
               'metaDataControllers' => new \stdClass(),
               'expectedException' => $expectedException
           ],
+        ];
+    }
+
+    public function testGetSmartyPluginDirectories()
+    {
+        $directories = [
+            'first'      => '\first',
+            'and second' => 'second',
+        ];
+        $module = oxNew(Module::class);
+        $module->setModuleData(['smartyPluginDirectories' => $directories]);
+
+        $this->assertSame(
+            $directories,
+            $module->getSmartyPluginDirectories()
+        );
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     *
+     * @param string $invalidValue
+     *
+     * @dataProvider invalidSmartyPluginDirectoriesValueProvider
+     */
+    public function testGetSmartyPluginDirectoriesWithInvalidValue($invalidValue)
+    {
+        $module = oxNew(Module::class);
+        $module->setModuleData(['smartyPluginDirectories' => $invalidValue]);
+
+        $module->getSmartyPluginDirectories();
+    }
+
+    public function invalidSmartyPluginDirectoriesValueProvider()
+    {
+        return [
+            [false],
+            ['string'],
+            [''],
+            [0],
         ];
     }
 

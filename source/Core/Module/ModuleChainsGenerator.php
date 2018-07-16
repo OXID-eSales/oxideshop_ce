@@ -343,7 +343,7 @@ class ModuleChainsGenerator
             /**
              * Test if the class could be loaded
              */
-            if (!class_exists($moduleClass)) {
+            if (!class_exists($moduleClass, false)) {
                 $this->handleSpecialCases($parentClass);
                 $this->onModuleExtensionCreationError($moduleClassPath);
 
@@ -398,27 +398,11 @@ class ModuleChainsGenerator
      */
     protected function onModuleExtensionCreationError($moduleClass)
     {
-        $disableModuleOnError = !$this->getConfigBlDoNotDisableModuleOnError();
-        if ($disableModuleOnError) {
-            if ($this->disableModule($moduleClass)) {
-                /**
-                 * The business logic does allow to throw an exception here, but just at least the disabling of the
-                 * module must be logged
-                 */
-                $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
-                $moduleId = $module->getIdByPath($moduleClass);
-                $message = sprintf('Module class %s not found. Module ID %s disabled', $moduleClass, $moduleId);
-                $exception = new \OxidEsales\Eshop\Core\Exception\SystemComponentException($message);
-                $exception->debugOut();
-            }
-        } else {
-            $exception =  new \OxidEsales\Eshop\Core\Exception\SystemComponentException();
-            /** Use setMessage here instead of passing it in constructor in order to test exception message */
-            $exception->setMessage('EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND' . ' ' . $moduleClass);
-            $exception->setComponent($moduleClass);
-
-            throw $exception;
-        }
+        $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
+        $moduleId = $module->getIdByPath($moduleClass);
+        $message = sprintf('Module class %s not found. Module ID %s', $moduleClass, $moduleId);
+        $exception = new \OxidEsales\Eshop\Core\Exception\SystemComponentException($message);
+        \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
     }
 
     /**

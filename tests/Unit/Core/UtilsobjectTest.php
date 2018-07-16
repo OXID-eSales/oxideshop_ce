@@ -266,23 +266,12 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $sClassNameWhichExtends = 'oemodulenameoxorder_different2';
         $oUtilsObject = $this->prepareFakeModuleNonExistentClass($sClassName, $sClassNameWhichExtends);
-
         $this->assertSame($sClassNameExpect, $oUtilsObject->getClassName($sClassName));
+        $expectedExceptionClass = SystemComponentException::class;
+        $this->assertLoggedException($expectedExceptionClass);
     }
-
-    public function testGetClassName_classNotExistDoDisableModuleOnError_originalClassReturn()
-    {
-        $sClassName = 'oxorder';
-        $sClassNameExpect = 'oxorder';
-
-        oxRegistry::get("oxConfigFile")->setVar('blDoNotDisableModuleOnError', false);
-
-        $sClassNameWhichExtends = 'oemodulenameoxorder_different3';
-        $oUtilsObject = $this->prepareFakeModuleNonExistentClass($sClassName, $sClassNameWhichExtends);
-
-        $this->assertSame($sClassNameExpect, $oUtilsObject->getClassName($sClassName));
-    }
-
+    
+    
     public function testGetClassName_classNotExistDoNotDisableModuleOnError_errorThrow()
     {
         oxRegistry::get("oxConfigFile")->setVar('blDoNotDisableModuleOnError', true);

@@ -1695,7 +1695,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
                 $database->startTransaction();
                 $oldSavedBasket->save();
                 $oSavedBasket->save();
-                $databse->commitTransaction();
+                $database->commitTransaction();
 
                 $oUser->setBasket('savedbasket', $oSavedBasket);
                 $oldSavedBasket->delete();

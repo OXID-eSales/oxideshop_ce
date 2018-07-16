@@ -1691,10 +1691,11 @@ class Basket extends \OxidEsales\Eshop\Core\Base
                 $oSavedBasket->oxuserbaskets__oxtitle = new \oxField('savedbasket');
 
                 //switching baskets within transaction to avoid race conditions
-                oxDb::getDb()->startTransaction();
+                $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+                $database->startTransaction();
                 $oldSavedBasket->save();
                 $oSavedBasket->save();
-                oxDb::getDb()->commitTransaction();
+                $databse->commitTransaction();
 
                 $oUser->setBasket('savedbasket', $oSavedBasket);
                 $oldSavedBasket->delete();

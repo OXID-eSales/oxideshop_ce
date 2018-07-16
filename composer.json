@@ -13,6 +13,7 @@
         "phpmailer/phpmailer": "^v5.2.22",
         "smarty/smarty": "^v2.6.30",
         "doctrine/dbal": "^v2.5.12",
+        "doctrine/collections": "^1.0",
         "monolog/monolog": "^v1.23.0",
         "psr/container": "1.0.*",
         "symfony/config": "~2.8|~3.0",

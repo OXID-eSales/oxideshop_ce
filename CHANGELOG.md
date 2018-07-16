@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [6.x.x] - Unreleased
+## [6.3.0] - Unreleased
 
 ### Added
 - New blocks in `admin/tpl/voucherserie_groups.tpl`
@@ -29,7 +29,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - [Module metadata version 2.1](https://docs.oxid-esales.com/developer/en/6.0/modules/skeleton/metadataphp/version21.html)
 
 ### Changed
-- Persparams filter simplified to allow arrays in persparams [PR-641](https://github.com/OXID-eSales/oxideshop_ce/pull/641)
 - Method visibility changed from private to protected [PR-636](https://github.com/OXID-eSales/oxideshop_ce/pull/636):
   - `OxidEsales\EshopCommunity\Core\Session::isSerializedBasketValid`
   - `OxidEsales\EshopCommunity\Core\Session::isClassInSerializedObject`
@@ -87,8 +86,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `OXDIAG_OBSOLETE`
 
 ### Fixed
-- Fixed notices and performance improved in FontendController::isVatIncluded [PR-642](https://github.com/OXID-eSales/oxideshop_ce/pull/642)
 - Use error_404_handler in article list controller in place of outdated 404 handling [PR-643](https://github.com/OXID-eSales/oxideshop_ce/pull/643)
+
+## [6.2.1] - Unreleased
+
+### Added
+
+### Changed
+-  `\OxidEsales\EshopCommunity\Application\Component\BasketComponent::getPersistedParameters` filter simplified to allow 
+arrays in persparams [PR-641](https://github.com/OXID-eSales/oxideshop_ce/pull/641)
+
+### Deprecated
+
+### Removed
+
+### Fixed
+- `\OxidEsales\EshopCommunity\Application\Controller\FrontendController::isVatIncluded` Fixed notices and performance 
+improved [PR-642](https://github.com/OXID-eSales/oxideshop_ce/pull/642)
 
 ## [6.2.0] - 2018-03-27
 

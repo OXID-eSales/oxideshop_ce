@@ -580,5 +580,5 @@ $aLang =  [
 'HELP_SHOP_CONFIG_DEBIT_OLD_BANK_INFORMATION_NOT_ALLOWED' => 'Only IBAN and BIC can be entered during the checkout. Bank account number and the bank code can only be entered if this check box is not activated.',
 'HELP_SHOP_CONFIG_ENABLE_INTANGIBLE_PRODUCTS_AGREEMENT'   => 'If this option is activated, users have to confirm terms and conditions for intangible or downloadable products in the fourth step of the check-out process. Please make sure this option is enabled for the specific item as well!',
 
-'HELP_SHOP_CONFIG_FIELDS_CONTACTFORM'         => 'Here you can set the mandatory fields of the contact form.',
+'HELP_SHOP_CONFIG_FIELDS_CONTACTFORM'         => 'Here you can define the contact form fields a user necessarily has to fill.',
 ];

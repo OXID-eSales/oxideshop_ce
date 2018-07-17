@@ -422,10 +422,14 @@ class OrderTest extends \OxidTestCase
         $oConfig->setConfigParam('blConfirmCustInfo', 1);
         $this->setRequestParameter('ord_custinfo', 1);
 
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getEncodedDeliveryAddress'));
+        $oUser->expects($this->any())->method('getEncodedDeliveryAddress')->will($this->returnValue('encodedAddress'));
+
         $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oS->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         $oO = $this->getMock(\OxidEsales\Eshop\Application\Controller\OrderController::class, array('getSession'));
         $oO->expects($this->any())->method('getSession')->will($this->returnValue($oS));
+        $oO->setUser($oUser);
 
         $this->assertNull($oO->execute());
 
@@ -448,7 +452,7 @@ class OrderTest extends \OxidTestCase
         // test new tpl, when option (ord_custinfo) was removed
         $this->setRequestParameter('ord_custinfo', null);
         $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
-        $oS->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oS->expects($this->any())->method('checkSessionChallenge')->will($this->returnValue(true));
         $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Controller\OrderController::class, array('getSession'));
         $oOrder->expects($this->any())->method('getSession')->will($this->returnValue($oS));
 
@@ -457,7 +461,7 @@ class OrderTest extends \OxidTestCase
         $this->setRequestParameter('ord_custinfo', 0);
 
         $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
-        $oS->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oS->expects($this->any())->method('checkSessionChallenge')->will($this->returnValue(true));
         $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Controller\OrderController::class, array('getSession'));
         $oOrder->expects($this->any())->method('getSession')->will($this->returnValue($oS));
 
@@ -496,7 +500,7 @@ class OrderTest extends \OxidTestCase
         $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Controller\OrderController::class, array('_getNextStep', 'getSession', 'getUser'));
         $oOrder->expects($this->any())->method('_getNextStep')->will($this->returnValue('nextStepValue'));
         $oOrder->expects($this->any())->method('getSession')->will($this->returnValue($oSession));
-        $oOrder->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
+        $oOrder->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
 
         $this->assertEquals('nextStepValue', $oOrder->execute());
     }
@@ -834,10 +838,14 @@ class OrderTest extends \OxidTestCase
      */
     public function testIsConfirmAGBError()
     {
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getEncodedDeliveryAddress'));
+        $oUser->expects($this->any())->method('getEncodedDeliveryAddress')->will($this->returnValue('encodedAddress'));
+
         $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oS->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Controller\OrderController::class, array('getSession'));
         $oOrder->expects($this->any())->method('getSession')->will($this->returnValue($oS));
+        $oOrder->setUser($oUser);
 
         $oConfig = $this->getConfig();
 
@@ -857,6 +865,9 @@ class OrderTest extends \OxidTestCase
      */
     public function testIsConfirmAGBErrorWhenBasketHasIntangibleProducts()
     {
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getEncodedDeliveryAddress'));
+        $oUser->expects($this->any())->method('getEncodedDeliveryAddress')->will($this->returnValue('encodedAddress'));
+
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
 
@@ -866,6 +877,7 @@ class OrderTest extends \OxidTestCase
         $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Controller\OrderController::class, array('getSession', 'getBasket'));
         $oOrder->expects($this->any())->method('getSession')->will($this->returnValue($oSession));
         $oOrder->expects($this->any())->method('getBasket')->will($this->returnValue($oBasket));
+        $oOrder->setUser($oUser);
 
         $oConfig = $this->getConfig();
 
@@ -884,6 +896,9 @@ class OrderTest extends \OxidTestCase
      */
     public function testIsConfirmAGBErrorWhenBasketHasDownloadableProducts()
     {
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getEncodedDeliveryAddress'));
+        $oUser->expects($this->any())->method('getEncodedDeliveryAddress')->will($this->returnValue('encodedAddress'));
+
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
 
@@ -893,6 +908,7 @@ class OrderTest extends \OxidTestCase
         $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Controller\OrderController::class, array('getSession', 'getBasket'));
         $oOrder->expects($this->any())->method('getSession')->will($this->returnValue($oSession));
         $oOrder->expects($this->any())->method('getBasket')->will($this->returnValue($oBasket));
+        $oOrder->setUser($oUser);
 
         $oConfig = $this->getConfig();
 
@@ -918,11 +934,15 @@ class OrderTest extends \OxidTestCase
 
     public function testExecuteChecksSessionChallenge()
     {
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getEncodedDeliveryAddress'));
+        $oUser->expects($this->any())->method('getEncodedDeliveryAddress')->will($this->returnValue('encodedAddress'));
+
         $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oS->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(false));
-        $oO = $this->getMock(\OxidEsales\Eshop\Application\Controller\OrderController::class, array('getUser', 'getSession'));
+        $oO = $this->getMock(\OxidEsales\Eshop\Application\Controller\OrderController::class, array('getConfig', 'getSession'));
         $oO->expects($this->never())->method('getConfig')->will($this->returnValue(false));
-        $oO->expects($this->once())->method('getSession')->will($this->returnValue($oS));
+        $oO->expects($this->any())->method('getSession')->will($this->returnValue($oS));
+        $oO->setUser($oUser);
 
         $this->assertSame(null, $oO->execute());
         // reverse behavriour when checkSessionChallenge is true is tested in execute functionality tests

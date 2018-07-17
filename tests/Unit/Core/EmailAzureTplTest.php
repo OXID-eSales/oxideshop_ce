@@ -210,7 +210,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $oPrice4->expects($this->any())->method('getBruttoPrice')->will($this->returnValue(true));
         $oPrice4->expects($this->any())->method('getNettoPrice')->will($this->returnValue(7));
 
-        $oPayment = oxNew('oxPayment');
+        $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
         $oPayment->oxpayments__oxdesc = new oxField("testPaymentDesc");
 
         /** @var oxOrder|PHPUnit_Framework_MockObject_MockObject $oOrder */

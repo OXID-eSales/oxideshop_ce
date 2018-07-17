@@ -64,7 +64,7 @@ class EmailUtf8Test extends \OxidTestCase
         $oBasket->expects($this->any())->method('getCosts')->will($this->returnValue($oPrice));
         $oBasket->expects($this->any())->method('getBruttoSum')->will($this->returnValue(7));
 
-        $oPayment = oxNew('oxPayment');
+        $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
         $oPayment->oxpayments__oxdesc = new oxField("testPaymentDesc");
 
         $oUser = oxNew("oxuser");

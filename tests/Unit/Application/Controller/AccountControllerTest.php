@@ -346,7 +346,7 @@ class AccountControllerTest extends UnitTestCase
         $oView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
         $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
-        $this->assertEquals(Registry::getLang()->translateString('PAGE_TITLE_ACCOUNT', Registry::getLang()->getBaseLanguage(), false) . ' - "Jon"', $oView->getTitle());
+        $this->assertEquals(Registry::getLang()->translateString('PAGE_TITLE_ACCOUNT', Registry::getLang()->getBaseLanguage(), false), $oView->getTitle());
     }
 
     public function testDeleteUserAccountWhenSessionChallengeValidAndFeatureEnabled()

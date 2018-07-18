@@ -461,12 +461,6 @@ class Email extends \PHPMailer
 
         $smtpUrl = $this->_setSmtpProtocol($shop->oxshops__oxsmtp->value);
 
-        if (!$this->_isValidSmtpHost($smtpUrl)) {
-            $this->setMailer("mail");
-
-            return;
-        }
-
         $this->setHost($smtpUrl);
         $this->setMailer("smtp");
 
@@ -477,36 +471,6 @@ class Email extends \PHPMailer
         if ($myConfig->getConfigParam('iDebug') == 6) {
             $this->_setSmtpDebug(true);
         }
-    }
-
-    /**
-     * Checks if smtp host is valid (tries to connect to it)
-     *
-     * @param string $smtpHost currently used smtp server host name
-     *
-     * @return bool
-     */
-    protected function _isValidSmtpHost($smtpHost)
-    {
-        $isSmtp = false;
-        if ($smtpHost) {
-            $match = [];
-            $smtpPort = isset($this->SMTP_PORT)
-                ? $this->SMTP_PORT
-                : $this->smtpPort;
-            if (getStr()->preg_match('@^(.*?)(:([0-9]+))?$@i', $smtpHost, $match)) {
-                $smtpHost = $match[1];
-                if (isset($match[3]) && (int) $match[3] !== 0) {
-                    $smtpPort = (int) $match[3];
-                }
-            }
-            if ($isSmtp = (bool) ($rHandle = @fsockopen($smtpHost, $smtpPort, $errNo, $errStr, 30))) {
-                // closing connection ..
-                fclose($rHandle);
-            }
-        }
-
-        return $isSmtp;
     }
 
     /**

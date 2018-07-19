@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `OxidEsales\EshopCommunity\Application\Model\Article::getStock` [PR-640](https://github.com/OXID-eSales/oxideshop_ce/pull/640)
 - Log a warnings for missused db method calls [PR-649](https://github.com/OXID-eSales/oxideshop_ce/pull/649)
 
+### Changed
+- category_main form layout improvements [PR-585](https://github.com/OXID-eSales/oxideshop_ce/pull/585)
+
 ## [6.3.0] - Unreleased
 
 ### Added

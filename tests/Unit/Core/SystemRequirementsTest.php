@@ -149,7 +149,7 @@ class SystemRequirementsTest extends \OxidTestCase
         $sUrl = "https://oxidforge.org/en/system-requirements";
         $systemRequirements = new \OxidEsales\Eshop\Core\SystemRequirements();
 
-        $this->assertEquals($sUrl . "#PHP_version_at_least_5.6", $systemRequirements->getReqInfoUrl("php_version"));
+        $this->assertEquals($sUrl . "#PHP_version_at_least_7.0", $systemRequirements->getReqInfoUrl("php_version"));
         $this->assertEquals($sUrl, $systemRequirements->getReqInfoUrl("none"));
         $this->assertEquals($sUrl . "#Zend_Optimizer", $systemRequirements->getReqInfoUrl("zend_optimizer"));
     }
@@ -416,21 +416,22 @@ class SystemRequirementsTest extends \OxidTestCase
     public function providerCheckPhpVersion()
     {
         return array(
-            array('5.2', 0),
-            array('5.2.3', 0),
-            array('5.3.0', 0),
-            array('5.3', 0),
-            array('5.3.25', 0),
-            array('5.4', 0),
-            array('5.4.2', 0),
-            array('5.5.50', 1),
-            array('5.6.0', 2),
-            array('5.6.27', 2),
-            array('7.0.0', 2),
-            array('7.0.8-0ubuntu0.16.04.3', 2),
-            array('7.0.12-2ubuntu2', 2),
-            array('7.1.0', 1),
-            array('7.1.22', 1),
+            array('5.2', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
+            array('5.2.3', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
+            array('5.3.0', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
+            array('5.3', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
+            array('5.3.25', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
+            array('5.4', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
+            array('5.4.2', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
+            array('5.5.50', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
+            array('5.6.0', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
+            array('5.6.27', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
+            array('7.0.0', SystemRequirements::MODULE_STATUS_OK),
+            array('7.0.8-0ubuntu0.16.04.3', SystemRequirements::MODULE_STATUS_OK),
+            array('7.0.12-2ubuntu2', SystemRequirements::MODULE_STATUS_OK),
+            array('7.1.0', SystemRequirements::MODULE_STATUS_OK),
+            array('7.1.22', SystemRequirements::MODULE_STATUS_OK),
+            array('7.2.0', SystemRequirements::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS)
         );
     }
 

@@ -163,7 +163,7 @@ class ViewTest extends \OxidTestCase
         $sUrl = "https://oxidforge.org/en/system-requirements";
 
         $oSetupView = new View();
-        $this->assertEquals($sUrl . "#PHP_version_at_least_5.6", $oSetupView->getReqInfoUrl("php_version", false));
+        $this->assertEquals($sUrl . "#PHP_version_at_least_7.0", $oSetupView->getReqInfoUrl("php_version", false));
         $this->assertEquals($sUrl, $oSetupView->getReqInfoUrl("none", false));
         $this->assertEquals($sUrl . "#Zend_Optimizer", $oSetupView->getReqInfoUrl("zend_optimizer", false));
     }

@@ -111,7 +111,7 @@ class SystemRequirements
      * @var array
      */
     protected $_aInfoMap = [
-        "php_version"        => "PHP_version_at_least_5.6",
+        "php_version"        => "PHP_version_at_least_7.0",
         "php_xml"            => "DOM",
         "open_ssl"           => "OpenSSL",
         "soap"               => "SOAP",
@@ -555,9 +555,9 @@ class SystemRequirements
     {
         $requirementFits = null;
 
-        $minimalRequiredVersion = '5.5.0';
-        $minimalRecommendedVersion = '5.6.0';
-        $maximalRecommendedVersion = '7.0.9999';
+        $minimalRequiredVersion = '7.0.0';
+        $minimalRecommendedVersion = '7.0.0';
+        $maximalRecommendedVersion = '7.1.9999';
 
         $installedPhpVersion = $this->getPhpVersion();
 

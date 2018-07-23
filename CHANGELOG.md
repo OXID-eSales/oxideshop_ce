@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - [Module metadata version 2.1](https://docs.oxid-esales.com/developer/en/6.0/modules/skeleton/metadataphp/version21.html)
 
 ### Changed
+- Support for PHP 7.0 and 7.1, PHP 5.6 not supported any more
 - Method visibility changed from private to protected [PR-636](https://github.com/OXID-eSales/oxideshop_ce/pull/636):
   - `OxidEsales\EshopCommunity\Core\Session::isSerializedBasketValid`
   - `OxidEsales\EshopCommunity\Core\Session::isClassInSerializedObject`

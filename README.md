@@ -3,7 +3,7 @@ OXID eShop
 
 [![Build Status](https://travis-ci.org/OXID-eSales/oxideshop_ce.svg?branch=master)](https://travis-ci.org/OXID-eSales/oxideshop_ce)
 
-This repository contains the sources of OXID eShop Community Edition.
+This repository contains the sources of OXID eShop Community Edition Core Component.
 
 ### About OXID eShop:
 

@@ -1,4 +1,4 @@
-# Change Log for OXID eShop 6 Community Edition
+# Change Log for OXID eShop Community Edition Core Component
 
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)

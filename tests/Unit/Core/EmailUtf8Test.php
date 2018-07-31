@@ -117,5 +117,54 @@ class EmailUtf8Test extends \OxidTestCase
         $this->assertTrue($oStr->strpos($sBody, "Vielen Dank für Ihre Bestellung!") > 0);
         $this->assertTrue($oStr->strpos($sBody, "Bitte fügen Sie hier Ihre vollständige Anbieterkennzeichnung ein.") > 0);
     }
-}
 
+    public function testSendForgotPwdEmailIsCaseInsensitive()
+    {
+        $realEmailAddress = 'admin';
+        $userProvidedEmailAddress = 'ADMIN';
+
+        $oEmailMock = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("send", "setRecipient"));
+        $oEmailMock->expects($this->once())->method("setRecipient")->with($realEmailAddress, 'John Doe');
+        $oEmailMock->expects($this->once())->method("send")->will($this->returnValue(true));
+
+        $oEmailMock->sendForgotPwdEmail($userProvidedEmailAddress);
+    }
+
+    /**
+     * Test for bug #0008618
+     *
+     * @dataProvider dataProviderTestSendForgotPwdEmailSendsToEmailAddressStoredInDatabase
+     */
+    public function testSendForgotPwdEmailSendsToEmailAddressStoredInDatabase($bogusEmailAddress)
+    {
+        $realEmailAddress = 'admin';
+
+        $oEmailMock = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["send", "setRecipient"]);
+        $oEmailMock->expects($this->atLeastOnce())->method("setRecipient")->with($realEmailAddress, 'John Doe');
+        $oEmailMock->expects($this->atLeastOnce())->method("send")->will($this->returnValue(true));
+
+        $oEmailMock->sendForgotPwdEmail($bogusEmailAddress);
+    }
+
+    public function dataProviderTestSendForgotPwdEmailSendsToEmailAddressStoredInDatabase()
+    {
+        return [
+            ['Admin'],
+            ['Àdmin'],
+            ['Ádmin'],
+            ['Âdmin'],
+            ['Ãdmin'],
+            ['Ädmin'],
+            ['Ådmin'],
+            ['àdmin'],
+            ['ádmin'],
+            ['âdmin'],
+            ['ãdmin'],
+            ['ädmin'],
+            ['ådmin'],
+            ['Ādmin'],
+            ['Ądmin'],
+            ['ądmin']
+        ];
+    }
+}

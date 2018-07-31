@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `moduleSmartyPluginDirectories`
     - New setting in module metadata.php
         - `smartyPluginDirectories`
-- [Module metadata version 2.1](https://docs.oxid-esales.com/developer/en/6.0/modules/skeleton/metadataphp/version21.html)
+- [Module metadata version 2.1](https://docs.oxid-esales.com/developer/en/6.1/modules/skeleton/metadataphp/version21.html)
 
 ### Changed
 - Support for PHP 7.0 and 7.1, PHP 5.6 not supported any more

@@ -6,8 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxSystemComponentException;
 use Exception;
+use oxSystemComponentException;
 
 /**
  * Mailing manager.
@@ -729,59 +729,37 @@ class Email extends \PHPMailer
      */
     public function sendForgotPwdEmail($emailAddress, $subject = null)
     {
-        $myConfig = $this->getConfig();
-        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $result = false;
 
-        // shop info
-        $shop = $this->_getShop();
+        $shop = $this->_addForgotPwdEmail($this->_getShop());
 
-        // add user defined stuff if there is any
-        $shop = $this->_addForgotPwdEmail($shop);
+        $oxid = $this->getUserIdByUserName($emailAddress, $shop->getId());
+        $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
+        if ($oxid && $user->load($oxid)) {
+            // create messages
+            $smarty = $this->_getSmarty();
+            $this->setUser($user);
+            $this->_processViewArray();
 
-        //set mail params (from, fromName, smtp)
-        $this->_setMailParams($shop);
+            $this->_setMailParams($shop);
+            $this->setBody($smarty->fetch($this->_sForgotPwdTemplate));
+            $this->setAltBody($smarty->fetch($this->_sForgotPwdTemplatePlain));
+            $this->setSubject(($subject !== null) ? $subject : $shop->oxshops__oxforgotpwdsubject->getRawValue());
 
-        // user
-        $where = "oxuser.oxactive = 1 and oxuser.oxusername = " . $db->quote($emailAddress) . " and oxuser.oxpassword != ''";
-        $order = "";
-        if ($myConfig->getConfigParam('blMallUsers')) {
-            $order = "order by oxshopid = '" . $shop->getId() . "' desc";
-        } else {
-            $where .= " and oxshopid = '" . $shop->getId() . "'";
-        }
+            $fullName = $user->oxuser__oxfname->getRawValue() . " " . $user->oxuser__oxlname->getRawValue();
+            $recipientAddress = $user->oxuser__oxusername->getRawValue();
 
-        $select = "select oxid from oxuser where $where $order";
-        if (($oxId = $db->getOne($select))) {
-            $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
-            if ($user->load($oxId)) {
-                // create messages
-                $smarty = $this->_getSmarty();
-                $this->setUser($user);
+            $this->setRecipient($recipientAddress, $fullName);
+            $this->setReplyTo($shop->oxshops__oxorderemail->value, $shop->oxshops__oxname->getRawValue());
 
-                // Process view data array through oxoutput processor
-                $this->_processViewArray();
-
-                $this->setBody($smarty->fetch($this->_sForgotPwdTemplate));
-
-                $this->setAltBody($smarty->fetch($this->_sForgotPwdTemplatePlain));
-
-                //sets subject of email
-                $this->setSubject(($subject !== null) ? $subject : $shop->oxshops__oxforgotpwdsubject->getRawValue());
-
-                $fullName = $user->oxuser__oxfname->getRawValue() . " " . $user->oxuser__oxlname->getRawValue();
-
-                $this->setRecipient($emailAddress, $fullName);
-                $this->setReplyTo($shop->oxshops__oxorderemail->value, $shop->oxshops__oxname->getRawValue());
-
-                if (!$this->send()) {
-                    return -1; // failed to send
-                }
-
-                return true; // success
+            if (!$this->send()) {
+                $result = -1; // failed to send
+            } else {
+                $result = true; // success
             }
         }
 
-        return false; // user with this email not found
+        return $result;
     }
 
     /**
@@ -2287,5 +2265,33 @@ class Email extends \PHPMailer
     private function isDebugModeEnabled()
     {
         return $this->getConfig()->getConfigParam('iDebug') != 0;
+    }
+
+    /**
+     * @param string $userName
+     * @param int    $shopId
+     *
+     * @return false|string
+     */
+    private function getUserIdByUserName($userName, $shopId)
+    {
+
+        $select = "SELECT `OXID` 
+          FROM `oxuser` 
+          WHERE `OXACTIVE` = 1 
+          AND `OXUSERNAME` = ? 
+          AND `OXPASSWORD` != ''";
+        if ($this->getConfig()->getConfigParam('blMallUsers')) {
+            $select .= "ORDER BY OXSHOPID = ? DESC";
+        } else {
+            $select .= "AND OXSHOPID = ?";
+        }
+        $sOxId = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne(
+            $select,
+            [$userName,
+             $shopId]
+        );
+
+        return $sOxId;
     }
 }

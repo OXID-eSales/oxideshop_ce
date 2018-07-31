@@ -105,6 +105,9 @@ arrays in persparams [PR-641](https://github.com/OXID-eSales/oxideshop_ce/pull/6
 - `\OxidEsales\EshopCommunity\Application\Controller\FrontendController::isVatIncluded` Fixed notices and performance 
 improved [PR-642](https://github.com/OXID-eSales/oxideshop_ce/pull/642)
 
+### Security
+- [Bug 6818](https://bugs.oxid-esales.com/view.php?id=6818)
+
 ## [6.2.0] - 2018-03-27
 
 ### Added

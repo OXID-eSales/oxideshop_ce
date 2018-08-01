@@ -15,7 +15,7 @@ class Basket extends Page
 
     public static $basketSummary = '#basketGrandTotal';
 
-    public static $basketItemAmount = '#am_%s';
+    public static $basketItemAmount = '#basketcontents_table #am_%s';
 
     public static $basketItemTotalPrice = '//tr[@id="table_cartItem_%s"]/td[@class="totalPrice"]';
 
@@ -24,6 +24,8 @@ class Basket extends Page
     public static $basketItemId = '//tr[@id="table_cartItem_%s"]/td[2]/div[2]/div[1]';
 
     public static $basketBundledItemAmount = '//tr[@id="table_cartItem_%s"]/td[4]';
+
+    public static $basketUpdateButton = '#basketcontents_table #basketUpdate';
 
     /**
      * Declare UI map for this page here. CSS or XPath allowed.
@@ -39,6 +41,22 @@ class Basket extends Page
     public static function route($params)
     {
         return static::$URL.'/index.php?'.http_build_query($params);
+    }
+
+    /**
+     * Update product amount in the basket
+     *
+     * @param int   $itemPosition
+     * @param float $amount
+     *
+     * @return $this
+     */
+    public function updateProductAmount($amount, $itemPosition = 1)
+    {
+        $I = $this->user;
+        $I->fillField('#basketcontents_table #am_1', $amount);
+        $I->click(self::$basketUpdateButton);
+        return $this;
     }
 
     /**
@@ -89,4 +107,14 @@ class Basket extends Page
         return $this;
     }
 
+    /**
+     * @return UserCheckout
+     */
+    public function goToNextStep()
+    {
+        $I = $this->user;
+        $I->click($I->translate('CONTINUE_TO_NEXT_STEP'));
+        $I->waitForElement(self::$breadCrumb);
+        return new UserCheckout($I);
+    }
 }

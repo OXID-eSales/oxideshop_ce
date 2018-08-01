@@ -24,6 +24,13 @@ class OrderCheckout extends Page
         return static::$URL.$param;
     }
 
+    public function clickOnSubmitOrder()
+    {
+        $I = $this->user;
+        $I->click($I->translate('SUBMIT_ORDER'));
+        return $this;
+    }
+
     public function validateUserBillingAddress($userBillAddress)
     {
         $I = $this->user;

@@ -18,6 +18,7 @@ class UserRegistrationFrontendTest extends FrontendTestCase
      */
     public function testStandardUserRegistration()
     {
+        $this->markTestSkipped('implemented with codeception');
         //creating user
         $this->clearCache();
         $this->openShop();
@@ -47,6 +48,7 @@ class UserRegistrationFrontendTest extends FrontendTestCase
      */
     public function testNewsletterRegOwerwriteOptionWithoutRegistration()
     {
+        $this->markTestSkipped('implemented with codeception');
         $this->openShop();
         $this->type("//div[@id='panel']//input[@name='editval[oxuser__oxusername]']", "example01@oxid-esales.dev");
         $this->clickAndWait("//div[@id='panel']//button[text()='%SUBSCRIBE%']");
@@ -95,6 +97,7 @@ class UserRegistrationFrontendTest extends FrontendTestCase
      */
     public function testNewsletterRegOverwriteOptionRegistration()
     {
+        $this->markTestSkipped('implemented with codeception');
         $this->openShop();
         $this->type("//div[@id='panel']//input[@name='editval[oxuser__oxusername]']", "example01@oxid-esales.dev");
         $this->clickAndWait("//div[@id='panel']//button[text()='%SUBSCRIBE%']");
@@ -143,6 +146,7 @@ class UserRegistrationFrontendTest extends FrontendTestCase
      */
     public function testRegOptionNoRegistrationTwice()
     {
+        $this->markTestSkipped('implemented with codeception');
         $this->addToBasket("1001", 1, 'user');
         //option 1
         $this->clickAndWait("//div[@id='optionNoRegistration']//button");
@@ -190,6 +194,7 @@ class UserRegistrationFrontendTest extends FrontendTestCase
      */
     public function testRegOptionNoRegOptionReg()
     {
+        $this->markTestSkipped('implemented with codeception');
         $this->addToBasket("1001", 1, 'user');
         //option 1
         $this->clickAndWait("//div[@id='optionNoRegistration']//button");
@@ -235,6 +240,7 @@ class UserRegistrationFrontendTest extends FrontendTestCase
      */
     public function testRegOptionRegisterTwiceWrongPass()
     {
+        $this->markTestSkipped('implemented with codeception');
         $this->addToBasket("1001", 1, 'user');
         $this->clickAndWait("//div[@id='optionRegistration']//button");
 
@@ -275,6 +281,7 @@ class UserRegistrationFrontendTest extends FrontendTestCase
      */
     public function testRegOptionNoRegNewsletter()
     {
+        $this->markTestSkipped('implemented with codeception');
         $this->addToBasket("1001", 1, 'user');
         $this->clickAndWait("//div[@id='optionNoRegistration']//button");
 
@@ -312,6 +319,7 @@ class UserRegistrationFrontendTest extends FrontendTestCase
      */
     public function testStandardUserRegAndNewsletter()
     {
+        $this->markTestSkipped('implemented with codeception');
         //creating user
         $this->clearCache();
         $this->openShop();
@@ -348,6 +356,7 @@ class UserRegistrationFrontendTest extends FrontendTestCase
      */
     public function testRegOptionsRegistrationTwice()
     {
+        $this->markTestSkipped('implemented with codeception');
         $this->addToBasket("1001", 1, 'user');
         $this->clickAndWait("//div[@id='optionRegistration']//button");
 

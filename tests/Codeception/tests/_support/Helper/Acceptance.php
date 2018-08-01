@@ -17,6 +17,7 @@ class Acceptance extends \Codeception\Module
         $this->getModule('Db')->_cleanup();
     }
 
+
     /**
      * Removes \n signs and it leading spaces from string. Keeps only single space in the ends of each row.
      *

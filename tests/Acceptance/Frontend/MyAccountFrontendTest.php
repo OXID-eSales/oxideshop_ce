@@ -18,6 +18,7 @@ class MyAccountFrontendTest extends FrontendTestCase
      */
     public function testFrontendLoginBox()
     {
+        $this->markTestSkipped('implemented with codeception');
         $this->openShop();
         $this->assertFalse($this->isVisible("loginBox"));
         $this->click("//ul[@id='topMenu']/li[1]/a");
@@ -61,6 +62,7 @@ class MyAccountFrontendTest extends FrontendTestCase
      */
     public function testFrontendUserTopMenu()
     {
+        $this->markTestSkipped('implemented with codeception');
         $this->openShop();
         //Register link
         $this->clickAndWait("//ul[@id='topMenu']/li[2]/a");
@@ -122,6 +124,7 @@ class MyAccountFrontendTest extends FrontendTestCase
      */
     public function testFrontendMyAccountPass()
     {
+        $this->markTestSkipped('implemented with codeception');
         $this->openShop();
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
         $this->clickAndWait("//ul[@id='topMenu']/li/a");
@@ -187,6 +190,7 @@ class MyAccountFrontendTest extends FrontendTestCase
      */
     public function testFrontendRightMyAccountRemindPass()
     {
+        $this->markTestSkipped('implemented with codeception');
         $this->openShop();
         //page for reminding pass
         $this->click("servicesTrigger");
@@ -245,6 +249,7 @@ class MyAccountFrontendTest extends FrontendTestCase
      */
     public function testFrontendMyAccountNewsletter()
     {
+        $this->markTestSkipped('implemented with codeception');
         $this->openShop();
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
         $this->clickAndWait("//ul[@id='topMenu']/li/a");
@@ -276,6 +281,7 @@ class MyAccountFrontendTest extends FrontendTestCase
      */
     public function testFrontendMyAccountAddressBilling()
     {
+        $this->markTestSkipped('implemented with codeception');
         /** Change Germany and Belgium to non EU country to skip online VAT validation. */
         $this->callShopSC('oxCountry', 'save', 'a7c40f632e04633c9.47194042', array('oxcountry__oxvatstatus' => 0));
         $this->callShopSC('oxCountry', 'save', 'a7c40f631fc920687.20179984', array('oxcountry__oxvatstatus' => 0));
@@ -364,6 +370,7 @@ class MyAccountFrontendTest extends FrontendTestCase
      */
     public function testFrontendMyAccountAddressShipping()
     {
+        $this->markTestSkipped('implemented with codeception');
         $this->openShop();
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
         $this->clickAndWait("//ul[@id='topMenu']/li/a");
@@ -454,6 +461,7 @@ class MyAccountFrontendTest extends FrontendTestCase
      */
     public function testFrontendMyAccountWishList()
     {
+        $this->markTestSkipped('implemented with codeception');
         $this->openShop();
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
 
@@ -506,6 +514,7 @@ class MyAccountFrontendTest extends FrontendTestCase
      */
     public function testFrontendMyAccountWishListVariant()
     {
+        $this->markTestSkipped('implemented with codeception');
         $this->openShop();
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
 
@@ -546,6 +555,7 @@ class MyAccountFrontendTest extends FrontendTestCase
      */
     public function testFrontendGiftRegistrySearchable()
     {
+        $this->markTestSkipped('implemented with codeception');
         $this->openShop();
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
 
@@ -611,6 +621,7 @@ class MyAccountFrontendTest extends FrontendTestCase
      */
     public function testFrontendMyAccountGiftRegistry()
     {
+        $this->markTestSkipped('implemented with codeception');
         $this->openShop();
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
 
@@ -657,6 +668,7 @@ class MyAccountFrontendTest extends FrontendTestCase
      */
     public function testFrontendSearchForGiftRegistry()
     {
+        $this->markTestSkipped('implemented with codeception');
         $this->openShop();
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
 
@@ -728,6 +740,7 @@ class MyAccountFrontendTest extends FrontendTestCase
      */
     public function testFrontendDisabledGiftRegistry()
     {
+        $this->markTestSkipped('implemented with codeception');
         //(Use gift registry) is disabled
         $this->callShopSC("oxConfig", null, null, array("bl_showWishlist" => array("type" => "bool", "value" => "false",  "module" => "theme:azure")));
         $this->clearCache();
@@ -754,6 +767,7 @@ class MyAccountFrontendTest extends FrontendTestCase
      */
     public function testFrontendMyAccountCompare()
     {
+        $this->markTestSkipped('implemented with codeception');
         $this->openArticle( 1000, true );
         $this->click("productLinks");
         $this->waitForItemAppear("addToCompare");
@@ -1110,6 +1124,7 @@ class MyAccountFrontendTest extends FrontendTestCase
      */
     public function testFrontendDetailsForLoggedInUsers()
     {
+        $this->markTestSkipped('implemented with codeception');
         if (isSUBSHOP) {
             $this->executeSql("UPDATE `oxrecommlists` SET `OXSHOPID` = ".oxSHOPID."  WHERE 1");
             $this->executeSql("UPDATE `oxratings` SET `OXSHOPID` = ".oxSHOPID."  WHERE 1");

@@ -1,18 +1,13 @@
 <?php
 namespace Page;
 
-use Page\Footer\NewsletterBox;
-use Page\Header\AccountMenu;
-use Page\Header\MiniBasket;
-use Page\Header\Navigation;
-use Page\Header\SearchWidget;
-
-class Home extends Page
+class ThankYou extends Page
 {
-    use AccountMenu, NewsletterBox, SearchWidget, Navigation, MiniBasket;
-
     // include url of current page
-    public static $URL = '/';
+    public static $URL = '';
+
+    // include bread crumb of current page
+    public static $breadCrumb = '#breadcrumb';
 
     /**
      * Basic route example for your current URL

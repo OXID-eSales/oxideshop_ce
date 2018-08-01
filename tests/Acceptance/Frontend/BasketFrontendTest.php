@@ -18,6 +18,7 @@ class BasketFrontendTest extends FrontendTestCase
      */
     public function testFrontendBasketFlyout()
     {
+        $this->markTestSkipped('implemented with codeception');
         $this->openShop();
         $this->assertElementNotPresent("basketFlyout");
 

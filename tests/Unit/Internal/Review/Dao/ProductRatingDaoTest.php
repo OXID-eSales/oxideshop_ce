@@ -18,8 +18,8 @@ class ProductRatingDaoTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetProductByIdWithInvalidId($invalidProductId)
     {
-        $queryBuilderFactory = $this->getMock(QueryBuilderFactoryInterface::class);
-        $mapper = $this->getMock(EntityMapperInterface::class);
+        $queryBuilderFactory = $this->getMockBuilder(QueryBuilderFactoryInterface::class)->getMock();
+        $mapper = $this->getMockBuilder(EntityMapperInterface::class)->getMock();
 
         $productRatingDao = new ProductRatingDao(
             $queryBuilderFactory,

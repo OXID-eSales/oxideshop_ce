@@ -145,11 +145,11 @@ class SeoEncoderContentTest extends \OxidTestCase
     // code call seq. check
     public function testGetContentUriExistingSeqCheck()
     {
-        $oContent = $this->getMock(\OxidEsales\Eshop\Application\Model\Content::class, array('getLanguage', 'getId'));
+        $oContent = $this->getMock(\OxidEsales\Eshop\Application\Model\Content::class, array('getLanguage', 'getId', '_prepareTitle', '_getUniqueSeoUrl', '_saveToDb'));
         $oContent->expects($this->once())->method('getLanguage')->will($this->returnValue(1));
         $oContent->expects($this->once())->method('getId')->will($this->returnValue('contentid'));
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderContent::class, array('_loadFromDb', '_prepareTitle', '_getUniqueSeoUrl', '_saveToDb'));
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderContent::class, array('_loadFromDb'));
         $oEncoder->expects($this->once())->method('_loadFromDb')->with($this->equalTo('oxContent'), $this->equalTo('contentid'), $this->equalTo(1))->will($this->returnValue('seocontenturl'));
         $oContent->expects($this->never())->method('_prepareTitle');
         $oContent->expects($this->never())->method('_getUniqueSeoUrl');
@@ -160,11 +160,11 @@ class SeoEncoderContentTest extends \OxidTestCase
 
     public function testGetContentUriExistingSeqCheckWithLangParam()
     {
-        $oContent = $this->getMock(\OxidEsales\Eshop\Application\Model\Content::class, array('getLanguage', 'getId'));
+        $oContent = $this->getMock(\OxidEsales\Eshop\Application\Model\Content::class, array('getLanguage', 'getId', '_prepareTitle', '_getUniqueSeoUrl', '_saveToDb'));
         $oContent->expects($this->never())->method('getLanguage')->will($this->returnValue(1));
         $oContent->expects($this->once())->method('getId')->will($this->returnValue('contentid'));
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderContent::class, array('_loadFromDb', '_prepareTitle', '_getUniqueSeoUrl', '_saveToDb'));
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderContent::class, array('_loadFromDb'));
         $oEncoder->expects($this->once())->method('_loadFromDb')->with($this->equalTo('oxContent'), $this->equalTo('contentid'), $this->equalTo(0))->will($this->returnValue('seocontenturl'));
         $oContent->expects($this->never())->method('_prepareTitle');
         $oContent->expects($this->never())->method('_getUniqueSeoUrl');

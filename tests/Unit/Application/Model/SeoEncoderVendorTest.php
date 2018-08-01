@@ -123,7 +123,7 @@ class SeoEncoderVendorTest extends \OxidTestCase
         $oVendor = oxNew('oxVendor');
         $oVendor->setId('xxx');
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderVendor::class, array('_loadFromDb', '_prepareTitle'));
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderVendor::class, array('_loadFromDb', '_prepareTitle', '_getUniqueSeoUrl', '_saveToDb'));
         $oEncoder->expects($this->once())->method('_loadFromDb')->with($this->equalTo('oxvendor'), $this->equalTo('xxx'), $this->equalTo($oVendor->getLanguage()))->will($this->returnValue('seourl'));
         $oEncoder->expects($this->never())->method('_prepareTitle');
         $oEncoder->expects($this->never())->method('_getUniqueSeoUrl');
@@ -228,7 +228,7 @@ class SeoEncoderVendorTest extends \OxidTestCase
         $oVendor->setLanguage(1);
         $oVendor->setId('xxx');
 
-        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderVendor::class, array('_loadFromDb', '_prepareTitle'));
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderVendor::class, array('_loadFromDb', '_prepareTitle', '_getUniqueSeoUrl', '_saveToDb'));
         $oEncoder->expects($this->once())->method('_loadFromDb')->with($this->equalTo('oxvendor'), $this->equalTo('xxx'), $this->equalTo(0))->will($this->returnValue('seourl'));
         $oEncoder->expects($this->never())->method('_prepareTitle');
         $oEncoder->expects($this->never())->method('_getUniqueSeoUrl');

@@ -81,7 +81,7 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         /** @var ExceptionHandler|\PHPUnit_Framework_MockObject_MockObject $exceptionHandlerMock */
         $exceptionHandlerMock = $this->getMock(
             ExceptionHandler::class,
-            null,
+            ['writeExceptionToLog'],
             [$debug]
         );
 

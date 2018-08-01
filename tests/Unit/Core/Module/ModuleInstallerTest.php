@@ -419,7 +419,7 @@ class ModuleInstallerTest extends \OxidTestCase
         $secondModule->setModuleData(['extend' => ['oxarticle' => 'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor2\ModuleChainExtension37a\MyClass37a']]);
         $secondModule->expects($this->any())->method('getId')->will($this->returnValue('test2'));
 
-        $thirdModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getId'));
+        $thirdModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getId', 'getExtensions'));
         $thirdExtends = [\OxidEsales\Eshop\Application\Model\Article::class
                           => 'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\ModuleChainExtension37b\MyClass37b'];
         $thirdModule->setModuleData(['extend' => $thirdExtends]);

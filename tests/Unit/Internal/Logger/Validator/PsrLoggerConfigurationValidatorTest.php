@@ -17,7 +17,7 @@ class PsrLoggerConfigurationValidatorTest extends PHPUnit_Framework_TestCase
     public function testValidLogLevelValidation($logLevel)
     {
         /** @var PHPUnit_Framework_MockObject_MockObject|PsrLoggerConfigurationInterface $configurationMock */
-        $configurationMock = $this->getMock(PsrLoggerConfigurationInterface::class);
+        $configurationMock = $this->getMockBuilder(PsrLoggerConfigurationInterface::class)->getMock();
         $configurationMock
             ->expects($this->any())
             ->method('getLogLevel')
@@ -49,7 +49,7 @@ class PsrLoggerConfigurationValidatorTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException(\InvalidArgumentException::class);
 
         /** @var PHPUnit_Framework_MockObject_MockObject|PsrLoggerConfigurationInterface $configurationMock */
-        $configurationMock = $this->getMock(PsrLoggerConfigurationInterface::class);
+        $configurationMock = $this->getMockBuilder(PsrLoggerConfigurationInterface::class)->getMock();
         $configurationMock
             ->expects($this->any())
             ->method('getLogLevel')

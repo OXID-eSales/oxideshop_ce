@@ -1,0 +1,21 @@
+parameters:
+  module_configuration_path: OxidEsales\EshopCommunity\Internal\Configuration\Module
+
+services:
+  OxidEsales\EshopCommunity\Internal\Configuration\Module\Factory\FileFactoryInterface:
+    class: %module_configuration_path%\Factory\LocalFileFactory
+    arguments:
+      $filePath: '/tmp/config.json'
+      $mode: 'r+'
+  ConfigurationFile:
+    class: SplFile
+    factory: 'OxidEsales\EshopCommunity\Internal\Configuration\Module\Factory\FileFactoryInterface:create'
+    public: false
+  OxidEsales\EshopCommunity\Internal\ModuleConfiguration\Storage\ProjectConfigurationDaoInterface:
+    class: %module_configuration_path%\Dao\JsonFileDao
+    arguments:
+      $file: '@ConfigurationFile'
+    public: false
+  OxidEsales\EshopCommunity\Internal\Configuration\Module\Service\RepositoryServiceInterface:
+    class: %module_configuration_path%\Service\RepositoryService
+    autowire: true

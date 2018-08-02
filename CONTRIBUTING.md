@@ -10,11 +10,16 @@ https://oxidforge.org/en/oxid-contribution-and-contributor-agreement-faq
 
 First off, you have to fork the repository OXID-eSales/oxideshop_ce to your list of repositories.
 
-You will find the following branches in *\<github_username\>/oxideshop_ce* repository:
+To find the correct branch to contribute to, read this introduction to our branch naming strategy:
 
-* **master**, presently our main branch on this repo, is the so called **development** branch: All new features will be developed here as well as bug fixes for the next major version.
-* **b-6.x** is the <b>maintenance branch</b> for the present major version. Only Backwards compatible changes as well as new compatible features are possible.
-* **b-5.3-ce** appears as the so called <b>legacy branch</b>: fixes for critical bugs only.
+As the oxideshop_ce core component follows semantic versioning, the version number of the tagged releases differ from the OXID eShop Compilation.
+Understanding this is important, because the branches do not relate to the oxideshop_ce core component version, but to the compilation version.
+
+You will find the three following branch types in *\<github_username\>/oxideshop_ce* repository:
+
+* The **development** branch is always named **master** and represents the next major version: All new features including compatibility breaking changes will be developed here as well as bug fixes.
+* The **maintenance** branch with a name like **b-6.x** for the currently maintained major version, in this case for the OXID eShop Compilation V6. Only Backwards compatible changes as well as new compatible features are possible. From this we can provide the next minor version.
+* The **legacy** branch with a name like **b-6.0.x** for an already released minor version (will only be created if needed): fixes for critical bugs only.
 
 In general, contributions can be taken over for all branches. Bug fixes committed to only one branch will be pushed to the other branches manually. Of course you can also consider to commit e.g. bug fixes to more than one branch.
 

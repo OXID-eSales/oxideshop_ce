@@ -14,6 +14,7 @@ use oxOutput;
 use oxSystemComponentException;
 use PHPMailer;
 use ReflectionMethod;
+use Symfony\Component\Templating\TemplateNameParser;
 
 /**
  * Main shop actions controller. Processes user actions, logs
@@ -446,9 +447,6 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected function _render($view)
     {
-        // get Smarty is important here as it sets template directory correct
-        $smarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
-
         // render it
         $templateName = $view->render();
 
@@ -478,20 +476,25 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             \OxidEsales\Eshop\Core\Registry::getUtilsView()->passAllErrorsToView($viewData, $errors);
         }
 
-        foreach (array_keys($viewData) as $viewName) {
+      /*  foreach (array_keys($viewData) as $viewName) {
             $smarty->assign_by_ref($viewName, $viewData[$viewName]);
-        }
+        }*/
 
         // passing current view object to smarty
-        $smarty->oxobject = $view;
+       // $smarty->oxobject = $view;
 
-        $output = $smarty->fetch($templateName, $view->getViewId());
+        $templating = new TemplateRenderer();
+        $output = $templating->renderTemplate($templateName, $viewData, $view);
+
+
+            //$smarty->fetch($templateName, $view->getViewId());
 
         //Output processing - useful for modules as sometimes you may want to process output manually.
         $output = $outputManager->process($output, $view->getClassName());
 
         return $outputManager->addVersionTags($output);
     }
+
 
     /**
      * Return output handler.

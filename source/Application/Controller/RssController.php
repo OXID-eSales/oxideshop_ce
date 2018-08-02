@@ -6,9 +6,12 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use OxidEsales\EshopCommunity\Core\SmartyEngine;
+use OxidEsales\EshopCommunity\Core\TemplateRenderer;
 use oxRegistry;
 use oxUBase;
 use oxRssFeed;
+use Symfony\Component\Templating\TemplateNameParser;
 
 /**
  * Shop RSS page.
@@ -67,24 +70,13 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     {
         parent::render();
 
-        $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
-
-        // #2873: In demoshop for RSS we set php_handling to SMARTY_PHP_PASSTHRU
-        // as SMARTY_PHP_REMOVE removes not only php tags, but also xml
-        if ($this->getConfig()->isDemoShop()) {
-            $oSmarty->php_handling = SMARTY_PHP_PASSTHRU;
-        }
-
-        foreach (array_keys($this->_aViewData) as $sViewName) {
-            $oSmarty->assign_by_ref($sViewName, $this->_aViewData[$sViewName]);
-        }
-
+        $renderer = new TemplateRenderer();
         // return rss xml, no further processing
         $sCharset = \OxidEsales\Eshop\Core\Registry::getLang()->translateString("charset");
         \OxidEsales\Eshop\Core\Registry::getUtils()->setHeader("Content-Type: text/xml; charset=" . $sCharset);
         \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit(
             $this->_processOutput(
-                $oSmarty->fetch($this->_sThisTemplate, $this->getViewId())
+                $renderer->renderTemplate($this->_sThisTemplate, $this->_aViewData, $this)
             )
         );
     }

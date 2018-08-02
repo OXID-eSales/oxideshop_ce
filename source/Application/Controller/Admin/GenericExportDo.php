@@ -59,8 +59,8 @@ class GenericExportDo extends \OxidEsales\Eshop\Application\Controller\Admin\Dyn
             $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
             $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
             $oSmarty->assign("sCustomHeader", \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("sExportCustomHeader"));
-            $oSmarty->assign_by_ref("linenr", $iCnt);
-            $oSmarty->assign_by_ref("article", $oArticle);
+            $oSmarty->assign("linenr", $iCnt);
+            $oSmarty->assign("article", $oArticle);
             $oSmarty->assign("spr", $myConfig->getConfigParam('sCSVSign'));
             $oSmarty->assign("encl", $myConfig->getConfigParam('sGiCsvFieldEncloser'));
             $this->write($oSmarty->fetch("genexport.tpl", $this->getViewId()));

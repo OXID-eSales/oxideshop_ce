@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject;
 
-use OxidEsales\EshopCommunity\Internal\Common\Exception\InvalidObjectIdException;
+use DomainException;
 
 /**
  * @internal
@@ -29,7 +29,7 @@ class ProjectConfiguration
     /**
      * @param string $name
      *
-     * @throws InvalidObjectIdException
+     * @throws DomainException
      *
      * @return EnvironmentConfiguration
      */
@@ -38,7 +38,7 @@ class ProjectConfiguration
         if (array_key_exists($name, $this->environmentConfigurations)) {
             return $this->environmentConfigurations[$name];
         }
-        throw new InvalidObjectIdException();
+        throw new DomainException('There is no environment configuration with name' . $name);
     }
 
     /**
@@ -53,14 +53,14 @@ class ProjectConfiguration
     /**
      * @param string $name
      *
-     * @throws InvalidObjectIdException
+     * @throws DomainException
      */
     public function deleteEnvironmentConfiguration(string $name)
     {
         if (array_key_exists($name, $this->environmentConfigurations)) {
             unset($this->environmentConfigurations[$name]);
         } else {
-            throw new InvalidObjectIdException();
+            throw new DomainException('There is no environment configuration with name' . $name);
         }
     }
 }

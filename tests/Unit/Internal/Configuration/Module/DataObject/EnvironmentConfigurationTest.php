@@ -6,9 +6,9 @@ declare(strict_types = 1);
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Configuration\Module;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Configuration\Module\DataObject;
 
-use OxidEsales\EshopCommunity\Internal\Common\Exception\InvalidObjectIdException;
+use DomainException;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ShopConfiguration;
 use PHPUnit\Framework\TestCase;
@@ -33,7 +33,7 @@ class EnvironmentConfigurationTest extends TestCase
 
     public function testGetShopConfigurationThrowsExceptionWithNotExistingShopId()
     {
-        $this->expectException(InvalidObjectIdException::class);
+        $this->expectException(DomainException::class);
         $this->environmentConfiguration->getShopConfiguration(0);
     }
 
@@ -56,7 +56,7 @@ class EnvironmentConfigurationTest extends TestCase
 
     public function testDeleteShopConfigurationThrowsExceptionWithNotExistingShopId()
     {
-        $this->expectException(InvalidObjectIdException::class);
+        $this->expectException(DomainException::class);
         $this->environmentConfiguration->deleteShopConfiguration(0);
     }
 

@@ -6,9 +6,9 @@ declare(strict_types = 1);
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Configuration\Module;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Configuration\Module\DataObject;
 
-use OxidEsales\EshopCommunity\Internal\Common\Exception\InvalidObjectIdException;
+use DomainException;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ShopConfiguration;
 use PHPUnit\Framework\TestCase;
@@ -34,13 +34,13 @@ class ShopConfigurationTest extends TestCase
 
     public function testGetModuleConfigurationThrowsExceptionIfModuleIdNotPresent()
     {
-        $this->expectException(InvalidObjectIdException::class);
+        $this->expectException(DomainException::class);
         $this->shopConfiguration->getModuleConfiguration('moduleIdNotPresent');
     }
 
     public function testDeleteModuleConfigurationThrowsExceptionIfModuleIdNotPresent()
     {
-        $this->expectException(InvalidObjectIdException::class);
+        $this->expectException(DomainException::class);
         $this->shopConfiguration->deleteModuleConfiguration('moduleIdNotPresent');
     }
 }

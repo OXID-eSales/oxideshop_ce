@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject;
 
-use OxidEsales\EshopCommunity\Internal\Common\Exception\InvalidObjectIdException;
+use DomainException;
 
 /**
  * @internal
@@ -21,7 +21,7 @@ class EnvironmentConfiguration
     /**
      * @param int $shopId
      *
-     * @throws InvalidObjectIdException
+     * @throws DomainException
      *
      * @return ShopConfiguration
      */
@@ -30,7 +30,7 @@ class EnvironmentConfiguration
         if (array_key_exists($shopId, $this->shopConfigurations)) {
             return $this->shopConfigurations[$shopId];
         }
-        throw new InvalidObjectIdException();
+        throw new DomainException('There is no configuration for shop id ' . $shopId);
     }
 
     /**
@@ -53,14 +53,14 @@ class EnvironmentConfiguration
     /**
      * @param int $shopId
      *
-     * @throws InvalidObjectIdException
+     * @throws DomainException
      */
     public function deleteShopConfiguration(int $shopId)
     {
         if (array_key_exists($shopId, $this->shopConfigurations)) {
             unset($this->shopConfigurations[$shopId]);
         } else {
-            throw new InvalidObjectIdException();
+            throw new DomainException('There is no configuration for shop id ' . $shopId);
         }
     }
 }

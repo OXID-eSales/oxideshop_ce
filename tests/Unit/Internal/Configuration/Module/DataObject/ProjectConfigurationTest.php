@@ -6,9 +6,9 @@ declare(strict_types = 1);
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Configuration\Module\DataObject;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Configuration\Module\DataObject;
 
-use OxidEsales\EshopCommunity\Internal\Common\Exception\InvalidObjectIdException;
+use DomainException;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\EnvironmentConfiguration;
 use PHPUnit\Framework\TestCase;
@@ -44,7 +44,7 @@ class ProjectConfigurationTest extends TestCase
 
     public function testDeleteEnvironmentThrowsExceptionIfEnvironmentDoesNotExist()
     {
-        $this->expectException(InvalidObjectIdException::class);
+        $this->expectException(DomainException::class);
         $this->projectConfiguration->deleteEnvironmentConfiguration('Testing');
     }
 
@@ -57,7 +57,7 @@ class ProjectConfigurationTest extends TestCase
 
     public function testGetEnvironmentConfigurationThrowsExceptionIfEnvironmentDoesNotExist()
     {
-        $this->expectException(InvalidObjectIdException::class);
+        $this->expectException(DomainException::class);
         $this->projectConfiguration->getEnvironmentConfiguration('Testing');
     }
 }

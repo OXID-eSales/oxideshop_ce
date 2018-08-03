@@ -8,6 +8,8 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Application\Component\Widget\WidgetController;
 use OxidEsales\Eshop\Core\Exception\ObjectException;
+use OxidEsales\EshopCommunity\Internal\Templating\BaseEngineInterface;
+use OxidEsales\EshopCommunity\Internal\Templating\TemplateEngineBridgeInterface;
 
 /**
  * Main shop actions controller. Processes user actions, logs
@@ -73,6 +75,7 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
         $oConfig = $this->getConfig();
 
         if ($oConfig->hasActiveViewsChain()) {
+
             // Removing current active view.
             $oConfig->dropLastActiveView();
 
@@ -81,8 +84,10 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
             }
 
             // Setting back last active view.
-            $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
-            $oSmarty->assign('oView', $oConfig->getActiveView());
+            /** @var BaseEngineInterface $engine */
+            $engine = $this->getTemplating()->getEngine();
+
+            $engine->addGlobal('oView', $oConfig->getActiveView());
         }
     }
 

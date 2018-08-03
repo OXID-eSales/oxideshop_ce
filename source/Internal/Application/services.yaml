@@ -6,3 +6,5 @@ imports:
     - { resource: ../Review/services.yaml }
     - { resource: ../Form/services.yaml }
     - { resource: ../Adapter/services.yaml }
+    - { resource: ../Templating/services.yaml }
+    - { resource: ../Smarty/services.yaml }

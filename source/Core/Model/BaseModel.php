@@ -1614,14 +1614,4 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     {
         return $this->$name instanceof Field;
     }
-
-    /**
-     * @internal
-     *
-     * @return ContainerInterface
-     */
-    protected function getContainer()
-    {
-        return ContainerFactory::getInstance()->getContainer();
-    }
 }

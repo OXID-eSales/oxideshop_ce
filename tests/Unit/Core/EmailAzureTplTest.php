@@ -6,6 +6,9 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxField;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\UtilsView;
+use OxidEsales\EshopCommunity\Internal\Templating\TemplateEngineBridgeInterface;
 use \oxPrice;
 use \stdClass;
 use \oxDb;
@@ -28,10 +31,11 @@ class EmailAzureTplTest extends \OxidTestCase
     {
         parent::setUp();
 
+        Registry::set(UtilsView::class, null);
         $this->getConfig()->setConfigParam('sTheme', 'azure');
 
         // reload smarty
-        \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty(true);
+        \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->resetContainer();
 
         $this->_oEmail = oxNew("oxEmail");
 
@@ -96,7 +100,8 @@ class EmailAzureTplTest extends \OxidTestCase
     protected function tearDown()
     {
         // reload smarty
-        \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty(true);
+        \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->resetContainer();
+        Registry::set(UtilsView::class, null);
 
         $oActShop = $this->getConfig()->getActiveShop();
         $oActShop->setLanguage(0);
@@ -869,14 +874,18 @@ class EmailAzureTplTest extends \OxidTestCase
 
         oxTestModules::addModuleObject("oxShop", $this->_oShop);
 
-        $oSmarty = $this->getMock('Smarty', array("fetch"));
-        $oSmarty->expects($this->once())->method('fetch')->will($this->returnValue("body"));
+        $templateEngine = $this->getMockBuilder(TemplateEngineBridgeInterface::class)
+            ->setMethods(['renderTemplate', 'exists', 'getEngine'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $templateEngine->expects($this->any())->method('renderTemplate')->will($this->returnValue("body"));
+        $templateEngine->expects($this->any())->method('exists')->will($this->returnValue(true));
 
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop", "_getUseInlineImages", "_getSmarty"));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop", "_getUseInlineImages", "_getTemplateRenderer"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
         $oEmail->expects($this->any())->method('_getUseInlineImages')->will($this->returnValue(true));
-        $oEmail->expects($this->any())->method('_getSmarty')->will($this->returnValue($oSmarty));
+        $oEmail->expects($this->any())->method('_getTemplateRenderer')->will($this->returnValue($templateEngine));
 
         $blRet = $oEmail->sendPriceAlarmToCustomer('username@useremail.nl', $oAlarm);
         $config->setConfigParam('blAdmin', false);

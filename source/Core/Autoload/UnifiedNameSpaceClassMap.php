@@ -2151,12 +2151,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Application\Model\SmartyRenderer'                          => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\SmartyRenderer::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
     'OxidEsales\Eshop\Application\Model\State'                                   => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\State::class,
         'isAbstract'       => false,

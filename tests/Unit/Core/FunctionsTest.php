@@ -99,7 +99,7 @@ class FunctionsTest extends \OxidTestCase
         oxNew("non_existing_class");
     }
 
-    public function testOx_get_template()
+  /*  public function testOx_get_template()
     {
         $fake = new stdClass;
         $fake->oxidcache = new oxField('test', oxField::T_RAW);
@@ -134,7 +134,7 @@ class FunctionsTest extends \OxidTestCase
         $o = null;
         // in php void functions also return - null
         $this->assertEquals(null, ox_get_trusted("s", $o));
-    }
+    }*/
 
     public function testGetViewName()
     {

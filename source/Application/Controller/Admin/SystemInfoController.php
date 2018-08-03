@@ -6,8 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-
 /**
  * Admin systeminfo manager.
  * Returns template, that arranges two other templates ("delivery_list.tpl"
@@ -35,7 +33,6 @@ class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admi
             $aClassVars = get_object_vars($myConfig);
             $aSystemInfo = [];
             $aSystemInfo['pkg.info'] = $myConfig->getPackageInfo();
-            $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
             foreach ($aClassVars as $name => $value) {
                 if (gettype($value) == "object") {
                     continue;
@@ -50,12 +47,15 @@ class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admi
                 $aSystemInfo[$name] = $value;
                 //echo( "$name = $value <br>");
             }
-            $oSmarty->assign("oViewConf", $this->_aViewData["oViewConf"]);
-            $oSmarty->assign("oView", $this->_aViewData["oView"]);
-            $oSmarty->assign("shop", $this->_aViewData["shop"]);
-            $oSmarty->assign("isdemo", $myConfig->isDemoShop());
-            $oSmarty->assign("aSystemInfo", $aSystemInfo);
-            echo $oSmarty->fetch("systeminfo.tpl");
+            $parameters = [
+                "oViewConf" => $this->_aViewData["oViewConf"],
+                "oView" => $this->_aViewData["oView"],
+                "shop" => $this->_aViewData["shop"],
+                "isdemo" => $myConfig->isDemoShop(),
+                "aSystemInfo" => $aSystemInfo
+            ];
+            $template = $this->getContainer()->get(\OxidEsales\EshopCommunity\Internal\Templating\TemplateEngineBridgeInterface::class);
+            echo $template->renderTemplate("systeminfo.tpl", $parameters);
             echo("<br><br>");
 
             phpinfo();

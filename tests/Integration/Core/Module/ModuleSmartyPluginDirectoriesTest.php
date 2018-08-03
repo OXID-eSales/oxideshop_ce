@@ -6,8 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Module;
 
+use OxidEsales\EshopCommunity\Internal\Templating\TemplateEngineBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\Environment;
-use OxidEsales\Eshop\Core\UtilsView;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**
@@ -22,15 +22,14 @@ class ModuleSmartyPluginDirectoriesTest extends UnitTestCase
     {
         $this->activateTestModule();
 
-        $utilsView = oxNew(UtilsView::class);
-        $smarty = $utilsView->getSmarty(true);
+        $templating = $this->getContainer()->get(TemplateEngineBridgeInterface::class);
 
         $this->assertTrue(
-            $this->isPathInSmartyDirectories($smarty, 'Smarty/PluginDirectory1WithMetadataVersion21')
+            $this->isPathInSmartyDirectories($templating, 'Smarty/PluginDirectory1WithMetadataVersion21')
         );
 
         $this->assertTrue(
-            $this->isPathInSmartyDirectories($smarty, 'Smarty/PluginDirectory2WithMetadataVersion21')
+            $this->isPathInSmartyDirectories($templating, 'Smarty/PluginDirectory2WithMetadataVersion21')
         );
     }
 
@@ -38,11 +37,21 @@ class ModuleSmartyPluginDirectoriesTest extends UnitTestCase
     {
         $this->activateTestModule();
 
-        $utilsView = oxNew(UtilsView::class);
-        $smarty = $utilsView->getSmarty(true);
+        $templating = $this->getContainer()->get(TemplateEngineBridgeInterface::class);
 
-        $this->assertModuleSmartyPluginDirectoriesFirst($smarty->plugins_dir);
-        $this->assertShopSmartyPluginDirectorySecond($smarty->plugins_dir);
+        $this->assertModuleSmartyPluginDirectoriesFirst($templating->getEngine()->plugins_dir);
+        $this->assertShopSmartyPluginDirectorySecond($templating->getEngine()->plugins_dir);
+    }
+
+    /**
+     * @internal
+     *
+     * @return \Psr\Container\ContainerInterface
+     */
+    private function getContainer()
+    {
+        \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->resetContainer();
+        return \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
     }
 
     private function assertModuleSmartyPluginDirectoriesFirst($directories)
@@ -68,7 +77,7 @@ class ModuleSmartyPluginDirectoriesTest extends UnitTestCase
 
     private function isPathInSmartyDirectories($smarty, $path)
     {
-        foreach ($smarty->plugins_dir as $directory) {
+        foreach ($smarty->getEngine()->plugins_dir as $directory) {
             if (strpos($directory, $path)) {
                 return true;
             }

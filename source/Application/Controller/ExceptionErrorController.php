@@ -37,9 +37,7 @@ class ExceptionErrorController extends \OxidEsales\Eshop\Application\Controller\
             \OxidEsales\Eshop\Core\Registry::getUtilsView()->passAllErrorsToView($aViewData, $aErrors);
         }
 
-        $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
-        $oSmarty->assign("Errors", $aViewData["Errors"]);
-
+        $this->addTplParam('Errors', $aViewData['Errors']);
         // resetting errors from session
         \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('Errors', []);
     }

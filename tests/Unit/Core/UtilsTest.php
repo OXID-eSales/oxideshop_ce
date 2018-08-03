@@ -8,8 +8,8 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 use Exception;
 use modDB;
 use oxField;
-use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Templating\TemplateEngineBridgeInterface;
 use oxRegistry;
 use oxSystemComponentException;
 use oxTestModules;
@@ -750,12 +750,12 @@ class UtilsTest extends \OxidTestCase
         $config->setConfigParam('sTheme', 'azure');
 
         $utils = oxRegistry::getUtils();
-        $smarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty(true);
+        $templateEngine = $this->getContainer()->get(TemplateEngineBridgeInterface::class);
         $tmpDir = $config->getConfigParam('sCompileDir') . "/smarty/";
 
         $templates = array('message/success.tpl', 'message/notice.tpl', 'message/errors.tpl',);
         foreach ($templates as $template) {
-            $smarty->fetch($template);
+            $templateEngine->renderTemplate($template, []);
         }
 
         $removeTemplate = basename(reset($templates));
@@ -1412,4 +1412,15 @@ class UtilsTest extends \OxidTestCase
         $oUtils->expects($this->atLeastOnce())->method('_getArticleUser')->will($this->returnValue($oUser));
         $this->assertSame(9.09, $oUtils->_preparePrice(10, 10));
     }
+
+    /**
+     * @internal
+     *
+     * @return \Psr\Container\ContainerInterface
+     */
+    private function getContainer()
+    {
+        return \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
+    }
+
 }

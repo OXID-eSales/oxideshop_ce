@@ -6,12 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use OxidEsales\EshopCommunity\Core\SmartyEngine;
-use OxidEsales\EshopCommunity\Core\TemplateRenderer;
-use oxRegistry;
-use oxUBase;
-use oxRssFeed;
-use Symfony\Component\Templating\TemplateNameParser;
+use OxidEsales\EshopCommunity\Internal\Templating\TemplateEngineBridgeInterface;
 
 /**
  * Shop RSS page.
@@ -70,15 +65,32 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     {
         parent::render();
 
-        $renderer = new TemplateRenderer();
+        $renderer = $this->getTemplating();
         // return rss xml, no further processing
         $sCharset = \OxidEsales\Eshop\Core\Registry::getLang()->translateString("charset");
         \OxidEsales\Eshop\Core\Registry::getUtils()->setHeader("Content-Type: text/xml; charset=" . $sCharset);
         \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit(
             $this->_processOutput(
-                $renderer->renderTemplate($this->_sThisTemplate, $this->_aViewData, $this)
+                $renderer->renderTemplate($this->_sThisTemplate, $this->_aViewData, $this->getViewId())
             )
         );
+    }
+
+    protected function getTemplating()
+    {
+
+        return $this->getContainer()->get(\OxidEsales\EshopCommunity\Internal\Templating\TemplateRenderer::class);
+
+    }
+
+    /**
+     * @internal
+     *
+     * @return TemplateEngineBridgeInterface
+     */
+    protected function getTemplating()
+    {
+        return $this->getContainer()->get(TemplateEngineBridgeInterface::class);
     }
 
     /**

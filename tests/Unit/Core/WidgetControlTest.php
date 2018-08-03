@@ -6,7 +6,10 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use modDB;
+use OxidEsales\Eshop\Application\Component\Widget\LanguageList;
+use OxidEsales\Eshop\Application\Controller\ContactController;
 use OxidEsales\EshopCommunity\Core\Controller\BaseController;
+use OxidEsales\EshopCommunity\Internal\Templating\TemplateEngineBridgeInterface;
 use \oxRegistry;
 
 class WidgetControlTest extends \OxidTestCase
@@ -40,22 +43,27 @@ class WidgetControlTest extends \OxidTestCase
      */
     public function testRunLast()
     {
+        $view1 = new ContactController();
+        $view2 = new LanguageList();
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("hasActiveViewsChain"));
         $oConfig->expects($this->any())->method('hasActiveViewsChain')->will($this->returnValue(true));
 
-        $oConfig->setActiveView("testView1");
-        $oConfig->setActiveView("testView2");
+        $oConfig->setActiveView($view1);
+        $oConfig->setActiveView($view2);
 
-        $this->assertEquals(array("testView1", "testView2"), $oConfig->getActiveViewsList());
+        $this->assertEquals(array($view1, $view2), $oConfig->getActiveViewsList());
 
-
-        $oControl = $this->getMock(\OxidEsales\Eshop\Core\WidgetControl::class, array("getConfig"));
+        $template = $this->getContainer()->get(TemplateEngineBridgeInterface::class);
+        
+        $oControl = $this->getMock(\OxidEsales\Eshop\Core\WidgetControl::class, array("getConfig", "getTemplating"));
         $oControl->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+        $oControl->expects($this->any())->method('getTemplating')->will($this->returnValue($template));
 
         $oControl->UNITrunLast();
 
-        $this->assertEquals(array("testView1"), $oConfig->getActiveViewsList());
-        $this->assertEquals("testView1", \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty()->get_template_vars("oView"));
+        $this->assertEquals(array($view1), $oConfig->getActiveViewsList());
+        $globals = $template->getEngine()->getGlobals();
+        $this->assertEquals($view1, $globals["oView"]);
     }
 
     /**
@@ -102,6 +110,17 @@ class WidgetControlTest extends \OxidTestCase
         $this->assertEquals("oxwCookieNote", $aActiveViews[2]->getClassName());
 
         $this->assertEquals("oxwCookieNote", $oControl->getConfig()->getActiveView()->getClassName());
+    }
+
+    /**
+     * @internal
+     *
+     * @return \Psr\Container\ContainerInterface
+     */
+    private function getContainer()
+    {
+        \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->resetContainer();
+        return \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
     }
 
 }

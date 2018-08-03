@@ -411,7 +411,6 @@ return [
     'oxshopviewvalidator'                 => 'OxidEsales\\Eshop\\Application\\Model\\ShopViewValidator',
     'oxsimplevariant'                     => 'OxidEsales\\Eshop\\Application\\Model\\SimpleVariant',
     'oxsimplevariantlist'                 => 'OxidEsales\\Eshop\\Application\\Model\\SimpleVariantList',
-    'oxsmartyrenderer'                    => 'OxidEsales\\Eshop\\Application\\Model\\SmartyRenderer',
     'oxstate'                             => 'OxidEsales\\Eshop\\Application\\Model\\State',
     'oxuser'                              => 'OxidEsales\\Eshop\\Application\\Model\\User',
     'oxuseraddresslist'                   => 'OxidEsales\\Eshop\\Application\\Model\\UserAddressList',

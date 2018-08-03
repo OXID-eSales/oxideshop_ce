@@ -362,7 +362,27 @@ class ModuleChainsGenerator
      */
     protected function handleSpecialCases($requestedClass)
     {
-        if (($requestedClass == "oxconfig") || ($requestedClass == \OxidEsales\Eshop\Core\Config::class)) {
+        // We do actually have to check the whole inheritance chain in case two OXID modules each have an extension
+        // on oxconfig. Checking for $requestedClass only would cover only one inheritance step.
+        
+        $isConfigClass = false;
+        $currentClass = $requestedClass;
+        $safetyCount = 0;
+        do {
+            if (($currentClass == "oxconfig") || ($currentClass == \OxidEsales\Eshop\Core\Config::class)) {
+                $isConfigClass = true;
+                break;
+            }
+
+            if ($safetyCount++ === 200) {
+                throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException('Recursion limit reached while traversing class inheritance chain.');
+            }
+
+            // We can be sure that the parent class of the current class is actually defined due to the way
+            // the extension chain is traversed.
+        } while ($currentClass = get_parent_class($currentClass));
+
+        if ($isConfigClass) {
             $config = new \OxidEsales\Eshop\Core\Config();
             \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
         }

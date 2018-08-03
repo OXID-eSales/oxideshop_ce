@@ -87,11 +87,22 @@ class ModuleExtensionsCleaner
     {
         $garbage = $moduleInstalledExtensions;
 
-        foreach ($moduleMetaDataExtensions as $className => $classPath) {
-            if (isset($garbage[$className])) {
-                unset($garbage[$className][array_search($classPath, $garbage[$className])]);
-                if (count($garbage[$className]) == 0) {
-                    unset($garbage[$className]);
+        foreach ($garbage as $installedClassName => $installedClassPaths) {
+            if (isset($moduleMetaDataExtensions[$installedClassName])) {
+                // In case more than one extension is specified per module.
+                $metaDataExtensionPaths = $moduleMetaDataExtensions[$installedClassName];
+                if (!is_array($metaDataExtensionPaths)) {
+                    $metaDataExtensionPaths = [$metaDataExtensionPaths];
+                }
+
+                foreach ($installedClassPaths as $index => $installedClassPath) {
+                    if (in_array($installedClassPath, $metaDataExtensionPaths)) {
+                        unset($garbage[$installedClassName][$index]);
+                    }
+                }
+
+                if (count($garbage[$installedClassName]) == 0) {
+                    unset($garbage[$installedClassName]);
                 }
             }
         }

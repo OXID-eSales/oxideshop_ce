@@ -21,12 +21,11 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Seo;
 
-use oxBase;
-use oxDb;
-use oxField;
-use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
-use oxRegistry;
-use oxSeoEncoder;
+use OxidEsales\Eshop\Application\Model\Article;
+use OxidEsales\Eshop\Application\Model\Category;
+use OxidEsales\Eshop\Application\Model\Object2Category;
+use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Field;
 
 /**
  * Class PaginationSeoTest
@@ -493,38 +492,37 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
     {
         $facts = new \OxidEsales\Facts\Facts;
         $oxidLiving = ('EE' != $facts->getEdition()) ? '8a142c3e44ea4e714.31136811' : '30e44ab83b6e585c9.63147165';
-        $countLiving = ('EE' != $facts->getEdition()) ? '2' : '3';
-        $countArtLiving = ('EE' != $facts->getEdition()) ? '6' : '5';
 
-        $data = [['Eco-Fashion/', 'Eco-Fashion/', ['HTTP/1.1 200 OK'], ['ROBOTS'], '4', '0', []],
-                 ['Eco-Fashion/3/', 'Eco-Fashion/', ['404 Not Found'], [], '4', '0', ['Eco-Fashion/']],
-                 ['Eco-Fashion/?pgNr=0', 'Eco-Fashion/', ['HTTP/1.1 200 OK'], ['ROBOTS', 'Location'], '4', '0', []],
-                 ['Eco-Fashion/?pgNr=34', 'Eco-Fashion/', ['404 Not Found'],[], '4', '0', []],
-                 ['index.php?cl=alist&cnid=oxmore', 'oxid/', ['HTTP/1.1 200 OK'], ['Location'], '2', '0', []],
-                 ['index.php?cl=alist&cnid=oxmore&pgNr=0', 'oxid/', ['HTTP/1.1 200 OK'], ['Location'], '2', '0', []],
-                 ['index.php?cl=alist&cnid=oxmore&pgNr=10', 'oxid/', ['HTTP/1.1 200 OK'], ['Location'], '2', '0', []],
-                 ['index.php?cl=alist&cnid=oxmore&pgNr=20', 'oxid/', ['HTTP/1.1 200 OK'], ['Location'], '2', '0', []],
-                 ['index.php?cl=alist&cnid=' . $oxidLiving, 'Wohnen/', ['HTTP/1.1 200 OK'], ['ROBOTS'], $countLiving, $countArtLiving, []],
-                 ['index.php?cl=alist&cnid=' . $oxidLiving . '&pgNr=0', 'Wohnen/', ['HTTP/1.1 200 OK'], ['ROBOTS'], $countLiving, $countArtLiving, []],
-                 ['index.php?cl=alist&cnid=' . $oxidLiving . '&pgNr=100', 'Wohnen/', ['HTTP/1.1 302 Found'], [], $countLiving, $countArtLiving, ['index.php?cl=alist&cnid=' . $oxidLiving]],
-                 ['index.php?cl=alist&cnid=' . $oxidLiving . '&pgNr=200', 'Wohnen/', ['HTTP/1.1 302 Found'], [], $countLiving, $countArtLiving, ['index.php?cl=alist&cnid=' . $oxidLiving]]
+        $data = [
+            ['Eco-Fashion/', ['HTTP/1.1 200 OK'], ['ROBOTS'], []],
+            ['Eco-Fashion/3/', ['404 Not Found'], [], ['Eco-Fashion/']],
+            ['Eco-Fashion/?pgNr=0', ['HTTP/1.1 200 OK'], ['ROBOTS', 'Location'], []],
+            ['Eco-Fashion/?pgNr=34', ['404 Not Found'],[], []],
+            ['index.php?cl=alist&cnid=oxmore', ['HTTP/1.1 200 OK'], ['Location'], []],
+            ['index.php?cl=alist&cnid=oxmore&pgNr=0', ['HTTP/1.1 200 OK'], ['Location'], []],
+            ['index.php?cl=alist&cnid=oxmore&pgNr=10', ['HTTP/1.1 200 OK'], ['Location'], []],
+            ['index.php?cl=alist&cnid=oxmore&pgNr=20', ['HTTP/1.1 200 OK'], ['Location'], []],
+            ['index.php?cl=alist&cnid=' . $oxidLiving, ['HTTP/1.1 200 OK'], ['ROBOTS'], []],
+            ['index.php?cl=alist&cnid=' . $oxidLiving . '&pgNr=0', ['HTTP/1.1 200 OK'], ['ROBOTS'], []],
+            ['index.php?cl=alist&cnid=' . $oxidLiving . '&pgNr=100', ['HTTP/1.1 302 Found'], [], ['index.php?cl=alist&cnid=' . $oxidLiving]],
+            ['index.php?cl=alist&cnid=' . $oxidLiving . '&pgNr=200', ['HTTP/1.1 302 Found'], [], ['index.php?cl=alist&cnid=' . $oxidLiving]]
         ];
 
         if (('EE' == $facts->getEdition())) {
-            $data[] = ['Fuer-Sie/', 'Fuer-Sie/', ['HTTP/1.1 200 OK'], ['ROBOTS'], '3', '9', []];
-            $data[] = ['Fuer-Sie/45/', 'Fuer-Sie/', ['HTTP/1.1 302 Found', 'Location'], ['ROBOTS'],'3', '9', ['Fuer-Sie/']];
-            $data[] = ['Fuer-Sie/?pgNr=0', 'Fuer-Sie/', ['HTTP/1.1 200 OK'], [ 'Location', 'ROBOTS'], '3', '9', []];
-            $data[] = ['Fuer-Sie/?pgNr=34', 'Fuer-Sie/', ['HTTP/1.1 302 Found', 'Location'], ['ROBOTS'], '3', '9', ['Fuer-Sie/']];
+            $data[] = ['Fuer-Sie/', ['HTTP/1.1 200 OK'], ['ROBOTS'], []];
+            $data[] = ['Fuer-Sie/45/', ['HTTP/1.1 302 Found', 'Location'], ['ROBOTS'], ['Fuer-Sie/']];
+            $data[] = ['Fuer-Sie/?pgNr=0', ['HTTP/1.1 200 OK'], [ 'Location', 'ROBOTS'], []];
+            $data[] = ['Fuer-Sie/?pgNr=34', ['HTTP/1.1 302 Found', 'Location'], ['ROBOTS'], ['Fuer-Sie/']];
         } else {
-            $data[] = ['Geschenke/', 'Geschenke/', ['HTTP/1.1 200 OK'], ['ROBOTS', 'Location'], '5', '22', ['index.php?cl=alist&cnid=' . $oxidLiving]];
-            $data[] = ['Geschenke/?pgNr=0', 'Geschenke/', ['HTTP/1.1 200 OK'], ['ROBOTS', 'Location'], '5', '22', ['index.php?cl=alist&cnid=' . $oxidLiving, 'Geschenke/']];
-            $data[] = ['Geschenke/?pgNr=100', 'Geschenke/', ['HTTP/1.1 302 Found', 'Location'], [], '5', '22', ['index.php?cl=alist&cnid=' . $oxidLiving, 'Geschenke/']];
-            $data[] = ['Geschenke/30/', 'Geschenke/', ['HTTP/1.1 302 Found', 'Location'], [], '5', '22', ['index.php?cl=alist&cnid=' . $oxidLiving, 'Geschenke/']];
-            $data[] = ['Geschenke/?pgNr=1', 'Geschenke/', ['HTTP/1.1 200 OK', 'ROBOTS', 'NOINDEX'], ['Location'], '5', '29', ['index.php?cl=alist&cnid=' . $oxidLiving, 'Geschenke/']];
-            $data[] = ['Geschenke/?pgNr=3', 'Geschenke/', ['HTTP/1.1 200 OK', 'ROBOTS', 'NOINDEX'], ['Location'], '5', '24', ['index.php?cl=alist&cnid=' . $oxidLiving, 'Geschenke/']];
-            $data[] = ['Geschenke/?pgNr=4', 'Geschenke/', ['HTTP/1.1 302 Found', 'Location'], [], '5', '22', ['index.php?cl=alist&cnid=' . $oxidLiving, 'Geschenke/']];
-            $data[] = ['Geschenke/4/', 'Geschenke/', ['HTTP/1.1 200 OK', 'ROBOTS', 'NOINDEX'], ['Location'], '5', '31', ['index.php?cl=alist&cnid=' . $oxidLiving, 'Geschenke/', 'Geschenke/?pgNr=0', 'Geschenke/?pgNr=1',]];
-            $data[] = ['Geschenke/10/', 'Geschenke/', ['HTTP/1.1 302 Found', 'Location'], [], '5', '31', ['index.php?cl=alist&cnid=' . $oxidLiving, 'Geschenke/', 'Geschenke/?pgNr=0', 'Geschenke/?pgNr=1', 'Geschenke/4/']];
+            $data[] = ['Geschenke/', ['HTTP/1.1 200 OK'], ['ROBOTS', 'Location'], ['index.php?cl=alist&cnid=' . $oxidLiving]];
+            $data[] = ['Geschenke/?pgNr=0', ['HTTP/1.1 200 OK'], ['ROBOTS', 'Location'], ['index.php?cl=alist&cnid=' . $oxidLiving, 'Geschenke/']];
+            $data[] = ['Geschenke/?pgNr=100', ['HTTP/1.1 302 Found', 'Location'], [], ['index.php?cl=alist&cnid=' . $oxidLiving, 'Geschenke/']];
+            $data[] = ['Geschenke/30/', ['HTTP/1.1 302 Found', 'Location'], [], ['index.php?cl=alist&cnid=' . $oxidLiving, 'Geschenke/']];
+            $data[] = ['Geschenke/?pgNr=1', ['HTTP/1.1 200 OK', 'ROBOTS', 'NOINDEX'], ['Location'], ['index.php?cl=alist&cnid=' . $oxidLiving, 'Geschenke/']];
+            $data[] = ['Geschenke/?pgNr=3', ['HTTP/1.1 200 OK', 'ROBOTS', 'NOINDEX'], ['Location'], ['index.php?cl=alist&cnid=' . $oxidLiving, 'Geschenke/']];
+            $data[] = ['Geschenke/?pgNr=4', ['HTTP/1.1 302 Found', 'Location'], [], ['index.php?cl=alist&cnid=' . $oxidLiving, 'Geschenke/']];
+            $data[] = ['Geschenke/4/', ['HTTP/1.1 200 OK', 'ROBOTS', 'NOINDEX'], ['Location'], ['index.php?cl=alist&cnid=' . $oxidLiving, 'Geschenke/', 'Geschenke/?pgNr=0', 'Geschenke/?pgNr=1',]];
+            $data[] = ['Geschenke/10/', ['HTTP/1.1 302 Found', 'Location'], [], ['index.php?cl=alist&cnid=' . $oxidLiving, 'Geschenke/', 'Geschenke/?pgNr=0', 'Geschenke/?pgNr=1', 'Geschenke/4/']];
         }
 
         return $data;
@@ -536,20 +534,18 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
      * @dataProvider providerCheckSeoUrl
      *
      * @param string $urlToCall           Url to call
-     * @param string $seoUrl              Part of seo url to check in database
      * @param array  $responseContains    Curl call response must contain.
      * @param array  $responseNotContains Curl call response must not contain.
-     * @param string $seoCount            Expected count of entries in oxseo table.
-     * @param string $seoArtCount         Expected count of entries in oxseo table for product seo urls.
      * @param array  $prepareUrls         To make test cases independent, call this url first.
      */
-    public function testCheckSeoUrl($urlToCall, $seoUrl, $responseContains, $responseNotContains, $seoCount, $seoArtCount, $prepareUrls)
-    {
-        //prevent creating possible additional seo urls
-        $this->getConfig()->setConfigParam('iNewestArticlesMode', 0);
-        $this->getConfig()->setConfigParam('iTop5Mode', 0);
+    public function testCheckSeoUrl(
+        $urlToCall,
+        $responseContains,
+        $responseNotContains,
+        $prepareUrls
+    ) {
+        $this->initSeoUrlGeneration();
 
-        $this->callCurl(''); //call shop startpage
         foreach ($prepareUrls as $url) {
             $this->callCurl($url);
         }
@@ -561,21 +557,108 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         foreach ($responseNotContains as $checkFor){
             $this->assertNotContains($checkFor, $response, "Should not get $checkFor");
         }
+    }
 
-        //Check entries in oxseo table for oxtype = 'oxcategory'
-        $query = "SELECT count(*) FROM `oxseo` WHERE `OXSEOURL` like '%" . $seoUrl . "%'" .
-                 " AND oxtype = 'oxcategory'";
-        $seoRealCount = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($query);
+    public function testCreateProductSeoUrlsOnProductListPageRequest()
+    {
+        $this->prepareSeoUrlTestData();
+        $this->initSeoUrlGeneration();
 
-        $this->assertSame($seoCount, $seoRealCount);
+        $seoUrl = 'testSeoUrl/';
 
-        //Check entries in oxseo table for oxtype = 'oxarticle'
-        $query = "SELECT count(*) FROM `oxseo` WHERE `OXSEOURL` like '%" . $seoUrl . "%'" .
-                 " AND oxtype = 'oxarticle'";
-        $seoRealCount = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($query);
+        $productSeoUrlsCountBeforeRequest = $this->getProductSeoUrlsCount($seoUrl);
 
-        $this->assertSame($seoArtCount, $seoRealCount);
+        $this->callCurl($seoUrl . '?pgNr=0');
 
+        $productSeoUrlsCountAfterRequest = $this->getProductSeoUrlsCount($seoUrl);
+
+        $productsPerPage = 10;
+
+        $this->assertEquals(
+            $productSeoUrlsCountBeforeRequest + $productsPerPage,
+            $productSeoUrlsCountAfterRequest
+        );
+    }
+
+    public function testDoNotCreateAnotherCategorySeoUrlsOnProductListPageRequest()
+    {
+        $this->prepareSeoUrlTestData();
+
+        $seoUrl = 'testSeoUrl/';
+
+        $this->callCurl($seoUrl);
+
+        $this->assertCount(
+            1,
+            $this->getCategorySeoUrls($seoUrl)
+        );
+
+        $this->callCurl($seoUrl . '?pgNr=0');
+        $this->callCurl($seoUrl . '1');
+
+        $this->assertCount(
+            1,
+            $this->getCategorySeoUrls($seoUrl)
+        );
+    }
+
+    private function initSeoUrlGeneration()
+    {
+        $this->callCurl(''); //call shop startpage
+    }
+
+    private function getProductSeoUrlsCount($url)
+    {
+        $query = "
+          SELECT 
+              count(*)
+          FROM 
+              `oxseo`
+          WHERE 
+              oxseourl LIKE '%" . $url . "%'
+              AND oxtype = 'oxarticle'
+        ";
+
+        return DatabaseProvider::getDb()->getOne($query);
+    }
+
+    private function getCategorySeoUrls($url)
+    {
+        $query = "
+          SELECT 
+              oxseourl
+          FROM 
+              `oxseo`
+          WHERE 
+              oxseourl LIKE '%" . $url . "%'
+              AND oxtype = 'oxcategory'
+        ";
+
+        return DatabaseProvider::getDb()->getAll($query);
+    }
+
+    private function prepareSeoUrlTestData()
+    {
+        $seoUrl = 'testSeoUrl';
+        $shopId = $this->getConfig()->getBaseShopId();
+
+        $category = oxNew(Category::class);
+        $category->oxcategories__oxactive       = new Field(1, Field::T_RAW);
+        $category->oxcategories__oxparentid     = new Field('oxrootid', Field::T_RAW);
+        $category->oxcategories__oxshopid       = new Field($shopId, Field::T_RAW);
+        $category->oxcategories__oxtitle        = new Field($seoUrl, Field::T_RAW);
+        $category->save();
+
+        for ($i = 1; $i <= 20; $i++) {
+            $product = oxNew(Article::class);
+            $product->oxarticles__oxtitle = new Field($seoUrl, Field::T_RAW);
+            $product->save();
+
+            $relation = oxNew(Object2Category::class);
+            $relation->setCategoryId($category->getId());
+            $relation->setProductId($product->getId());
+            $relation->save();
+        }
     }
 
     /**

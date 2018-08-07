@@ -66,7 +66,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Security
 
-## [6.3.0] - Unreleased
+## [6.3.0] - 2018-07-31
 
 ### Added
 - New blocks in `admin/tpl/voucherserie_groups.tpl`
@@ -88,7 +88,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `moduleSmartyPluginDirectories`
     - New setting in module metadata.php
         - `smartyPluginDirectories`
-- [Module metadata version 2.1](https://docs.oxid-esales.com/developer/en/6.0/modules/skeleton/metadataphp/version21.html)
+- [Module metadata version 2.1](https://docs.oxid-esales.com/developer/en/6.1/modules/skeleton/metadataphp/version21.html)
 
 ### Changed
 - Support for PHP 7.0 and 7.1, PHP 5.6 not supported any more
@@ -151,7 +151,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Use error_404_handler in article list controller in place of outdated 404 handling [PR-643](https://github.com/OXID-eSales/oxideshop_ce/pull/643)
 
-## [6.2.1] - Unreleased
+## [6.2.1] - 2018-07-31
 
 ### Added
 
@@ -460,6 +460,8 @@ See
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
 
+[6.3.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.1...v6.3.0
+[6.2.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.0...v6.2.1
 [6.2.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.1.0...v6.2.0
 [6.1.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0...v6.1.0
 [6.0.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.0.0-rc.3...v6.0.0

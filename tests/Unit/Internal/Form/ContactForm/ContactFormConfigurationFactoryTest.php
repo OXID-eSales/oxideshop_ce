@@ -12,13 +12,14 @@ use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormFieldsConfig
 use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormConfigurationFactory;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 
-class ContactFromConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
+class ContactFormConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testConfigurationGetter()
     {
-        $context = $this->getMock(ContextInterface::class);
+        $context = $this->getMockBuilder(ContextInterface::class)->getMock();
 
-        $formFieldsConfigurationDataProvider = $this->getMock(FormFieldsConfigurationDataProviderInterface::class);
+        $formFieldsConfigurationDataProvider = $this->getMockBuilder(
+            FormFieldsConfigurationDataProviderInterface::class)->getMock();
         $formFieldsConfigurationDataProvider
             ->method('getFormFieldsConfiguration')
             ->willReturn([]);
@@ -36,14 +37,15 @@ class ContactFromConfigurationFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testFormFieldsConfiguration()
     {
-        $context = $this->getMock(ContextInterface::class);
+        $context = $this->getMockBuilder(ContextInterface::class)->getMock();
         $context
             ->method('getRequiredContactFormFields')
             ->willReturn([
                 'name',
             ]);
 
-        $formFieldsConfigurationDataProvider = $this->getMock(FormFieldsConfigurationDataProviderInterface::class);
+        $formFieldsConfigurationDataProvider = $this->getMockBuilder(
+            FormFieldsConfigurationDataProviderInterface::class)->getMock();
         $formFieldsConfigurationDataProvider
             ->method('getFormFieldsConfiguration')
             ->willReturn([

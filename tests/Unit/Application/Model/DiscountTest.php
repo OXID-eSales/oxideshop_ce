@@ -925,7 +925,7 @@ class DiscountTest extends \OxidTestCase
 
     public function testIsForBasketAmountForAmountDiscountIfSimpleDiscountType()
     {
-        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getBasePrice', 'getId'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getBasePrice', 'getId', 'getPrice'));
         $oArticle->expects($this->never())->method('getPrice');
 
         $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array('getArticle', 'getAmount'));

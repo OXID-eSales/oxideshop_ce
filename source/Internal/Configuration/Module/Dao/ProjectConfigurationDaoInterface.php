@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Configuration\Module\Dao;
 
-use OxidEsales\EshopCommunity\Internal\ModuleConfiguration\DataObject\ProjectConfiguration;
+use \OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ProjectConfiguration;
 
 /**
  * @internal

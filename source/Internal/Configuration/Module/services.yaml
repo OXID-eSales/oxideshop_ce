@@ -5,14 +5,14 @@ services:
   OxidEsales\EshopCommunity\Internal\Configuration\Module\Factory\FileFactoryInterface:
     class: %module_configuration_path%\Factory\LocalFileFactory
     arguments:
-      $filePath: '/tmp/config.json'
+      $filePath: '/tmp/configuration.yaml'
       $mode: 'r+'
   ConfigurationFile:
     class: SplFile
     factory: 'OxidEsales\EshopCommunity\Internal\Configuration\Module\Factory\FileFactoryInterface:create'
     public: false
-  OxidEsales\EshopCommunity\Internal\ModuleConfiguration\Storage\ProjectConfigurationDaoInterface:
-    class: %module_configuration_path%\Dao\JsonFileDao
+  OxidEsales\EshopCommunity\Internal\Configuration\Module\Dao\ProjectConfigurationDaoInterface:
+    class: %module_configuration_path%\Dao\YamlFileDao
     arguments:
       $file: '@ConfigurationFile'
     public: false

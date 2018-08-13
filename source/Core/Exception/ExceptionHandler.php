@@ -110,7 +110,7 @@ class ExceptionHandler
     /**
      * Handler for uncaught exceptions. As this is the las resort no fancy business logic should be applied here.
      *
-     * @param \Throwable $exception exception object
+     * @param \Throwable|\Exception $exception exception object
      *
      * @return void
      **/

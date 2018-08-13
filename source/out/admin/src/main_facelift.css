@@ -198,7 +198,7 @@ div.actions {
     background: transparent url("bg/facelift/ico_help_facelift.png") no-repeat scroll 1px 0 !important;
 }
 .edittext select.editinput {
-    width: 100%;
+    width: auto;
 }
 
 .listTable th {

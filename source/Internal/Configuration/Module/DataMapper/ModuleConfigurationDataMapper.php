@@ -6,37 +6,30 @@ declare(strict_types=1);
  * See LICENSE file for license details.
  */
 
-
 namespace OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper;
-
 
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ModuleConfiguration;
 
 /**
- * Class ModuleConfigurationMapper
- *
- * @package OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper
+ * @internal
  */
-class ModuleConfigurationMapper
+class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInterface
 {
-
     /**
-     * @param $object
-     *
+     * @param ModuleConfiguration $configuration
      * @return array
      */
-    public function toData($object): array
+    public function toData(ModuleConfiguration $configuration): array
     {
-        return [];
+        // TODO: Implement toData() method.
     }
 
     /**
      * @param array $data
-     *
-     * @return mixed|ModuleConfiguration
+     * @return ModuleConfiguration
      */
-    public function fromData(array $data)
+    public function fromData(array $data): ModuleConfiguration
     {
-        return new ModuleConfiguration();
+        // TODO: Implement fromData() method.
     }
 }

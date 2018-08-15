@@ -7,14 +7,14 @@ services:
     arguments:
       $filePath: '/tmp/configuration.yaml'
       $mode: 'r+'
-  ConfigurationFile:
+  oxid_esales.configuration.module.project_configuration_file:
     class: SplFile
     factory: 'OxidEsales\EshopCommunity\Internal\Configuration\Module\Factory\FileFactoryInterface:create'
     public: false
   OxidEsales\EshopCommunity\Internal\Configuration\Module\Dao\ProjectConfigurationDaoInterface:
     class: %module_configuration_path%\Dao\YamlFileDao
     arguments:
-      $file: '@ConfigurationFile'
+      $file: '@oxid_esales.configuration.module.project_configuration_file'
     public: false
   OxidEsales\EshopCommunity\Internal\Configuration\Module\Service\RepositoryServiceInterface:
     class: %module_configuration_path%\Service\RepositoryService

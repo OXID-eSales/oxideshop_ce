@@ -29,7 +29,10 @@ class ProjectConfigurationTest extends TestCase
         $this->projectConfiguration->setEnvironmentConfiguration('Testing', $environmentConfiguration);
         $this->projectConfiguration->setEnvironmentConfiguration('Production', $environmentConfiguration);
 
-        $this->assertEquals(['Testing', 'Production'], $this->projectConfiguration->getNamesOfEnvironmentConfigurations());
+        $this->assertEquals(
+            ['Testing', 'Production'],
+            $this->projectConfiguration->getNamesOfEnvironmentConfigurations()
+        );
     }
 
     public function testDeleteEnvironment()
@@ -52,7 +55,11 @@ class ProjectConfigurationTest extends TestCase
     {
         $environmentConfiguration = new EnvironmentConfiguration();
         $this->projectConfiguration->setEnvironmentConfiguration('Testing', $environmentConfiguration);
-        $this->assertSame($environmentConfiguration, $this->projectConfiguration->getEnvironmentConfiguration('Testing'));
+
+        $this->assertSame(
+            $environmentConfiguration,
+            $this->projectConfiguration->getEnvironmentConfiguration('Testing')
+        );
     }
 
     public function testGetEnvironmentConfigurationThrowsExceptionIfEnvironmentDoesNotExist()

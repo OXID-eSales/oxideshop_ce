@@ -59,5 +59,4 @@ class EnvironmentConfigurationTest extends TestCase
         $this->expectException(DomainException::class);
         $this->environmentConfiguration->deleteShopConfiguration(0);
     }
-
 }

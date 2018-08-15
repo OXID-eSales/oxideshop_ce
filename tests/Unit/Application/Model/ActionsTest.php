@@ -378,7 +378,7 @@ class ActionsTest extends \OxidTestCase
      *
      * @param $valueToReturn
      *
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return PHPUnit\Framework\MockObject\MockObject
      */
     private function getBannerArticleMockWithSpecificReturn($valueToReturn)
     {

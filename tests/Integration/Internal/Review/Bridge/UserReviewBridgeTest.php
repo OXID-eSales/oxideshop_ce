@@ -33,7 +33,7 @@ class UserReviewBridgeTest extends UnitTestCase
 
     public function testDeleteReviewWithNonExistentReviewId()
     {
-        $this->setExpectedException(EntryDoesNotExistDaoException::class);
+        $this->expectException(EntryDoesNotExistDaoException::class);
 
         $userReviewBridge = $this->getUserReviewBridge();
         $userReviewBridge->deleteReview('user1', 'nonExistentId');
@@ -41,7 +41,7 @@ class UserReviewBridgeTest extends UnitTestCase
 
     public function testDeleteRatingWithWrongUserId()
     {
-        $this->setExpectedException(ReviewPermissionException::class);
+        $this->expectException(ReviewPermissionException::class);
 
         $userReviewBridge = $this->getUserReviewBridge();
         $database = DatabaseProvider::getDb();

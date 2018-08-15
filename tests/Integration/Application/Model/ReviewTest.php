@@ -62,7 +62,7 @@ class ReviewTest extends UnitTestCase
 
     public function testReviewAndRatingListByUserIdWithWrongRatingType()
     {
-        $this->setExpectedException(ReviewAndRatingObjectTypeException::class);
+        $this->expectException(ReviewAndRatingObjectTypeException::class);
 
         $rating = oxNew(Rating::class);
         $rating->oxratings__oxuserid = new Field('testUser');

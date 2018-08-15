@@ -7,8 +7,9 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Setup\Controller;
 
 use OxidEsales\EshopCommunity\Setup\Controller\ModuleStateMapGenerator;
+use \PHPUnit\Framework\TestCase;
 
-class ModuleStateMapGeneratorTest extends \PHPUnit_Framework_TestCase
+class ModuleStateMapGeneratorTest extends TestCase
 {
     public function testCanCreateSUT()
     {
@@ -208,7 +209,7 @@ class ModuleStateMapGeneratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionRaisedWithInvalidStateClassFilter($function)
     {
-        $this->setExpectedException(\Exception::class);
+        $this->expectException(\Exception::class);
 
         $sut = $this->getSUT([]);
         $sut->setModuleStateHtmlClassConvertFunction($function);
@@ -219,7 +220,7 @@ class ModuleStateMapGeneratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionRaisedWithInvalidModuleNameTranslateFilter($function)
     {
-        $this->setExpectedException(\Exception::class);
+        $this->expectException(\Exception::class);
 
         $sut = $this->getSUT([]);
         $sut->setModuleNameTranslateFunction($function);
@@ -230,7 +231,7 @@ class ModuleStateMapGeneratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionRaisedWithInvalidModuleGroupNameTranslateFilter($function)
     {
-        $this->setExpectedException(\Exception::class);
+        $this->expectException(\Exception::class);
 
         $sut = $this->getSUT([]);
         $sut->setModuleGroupNameTranslateFunction($function);

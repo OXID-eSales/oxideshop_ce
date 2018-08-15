@@ -11,7 +11,7 @@ use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use OxidTestCase;
 use oxUser;
 use oxUtilsServer;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Without this class it is not possible to fake log in without errors.
@@ -58,7 +58,7 @@ class GenericImportTest extends OxidTestCase
      */
     public function testInitWhenUserIsNotLoggedIn()
     {
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
 
         $oImport = new GenericImport();
         $oImport->init();

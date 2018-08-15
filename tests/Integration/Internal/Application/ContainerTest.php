@@ -18,7 +18,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
 
-class ContainerTest extends \PHPUnit_Framework_TestCase
+class ContainerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ContainerInterface
@@ -82,7 +82,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testPrivateServices()
     {
-        $this->setExpectedException(NotFoundExceptionInterface::class);
+        $this->expectException(NotFoundExceptionInterface::class);
 
         $this->container->get(Logger::class);
     }

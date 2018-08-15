@@ -689,7 +689,7 @@ class PaymentTest extends \OxidTestCase
     public function testRenderNoUserWithBasket()
     {
         $sRedirUrl = $this->getConfig()->getShopHomeURL() . 'cl=basket';
-        $this->setExpectedException('oxException', $sRedirUrl);
+        $this->expectException('oxException'); $this->expectExceptionMessage( $sRedirUrl);
 
         oxTestModules::addFunction('oxUtils', 'redirect($url, $blAddRedirectParam = true, $iHeaderCode = 301)', '{throw new oxException($url);}');
         $this->setConfigParam('blPsBasketReservationEnabled', false);
@@ -711,7 +711,7 @@ class PaymentTest extends \OxidTestCase
     public function testRenderNoUserEmptyBasket()
     {
         $sRedirUrl = $this->getConfig()->getShopHomeURL() . 'cl=start';
-        $this->setExpectedException('oxException', $sRedirUrl);
+        $this->expectException('oxException'); $this->expectExceptionMessage( $sRedirUrl);
 
         oxTestModules::addFunction('oxUtils', 'redirect($url, $blAddRedirectParam = true, $iHeaderCode = 301)', '{throw new oxException($url);}');
         $this->setConfigParam('blPsBasketReservationEnabled', false);

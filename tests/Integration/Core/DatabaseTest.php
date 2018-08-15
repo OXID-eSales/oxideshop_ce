@@ -59,7 +59,7 @@ class DatabaseTest extends UnitTestCase
 
         $this->setProtectedClassProperty(oxDb::getInstance(), 'db', $dbMock);
 
-        $this->setExpectedException('Exception', $exceptionMessage);
+        $this->expectException('Exception'); $this->expectExceptionMessage( $exceptionMessage);
 
         oxDb::getDb()->connect();
     }
@@ -182,7 +182,7 @@ class DatabaseTest extends UnitTestCase
     /**
      * Create mock of the connection. Only the connect method is mocked.
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit\Framework\MockObject\MockObject
      */
     protected function createConnectionMock()
     {
@@ -198,7 +198,7 @@ class DatabaseTest extends UnitTestCase
      *
      * @param string $exceptionMessage The optional method of the maybe thrown exception.
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit\Framework\MockObject\MockObject
      */
     protected function createDatabaseMock($exceptionMessage = '')
     {

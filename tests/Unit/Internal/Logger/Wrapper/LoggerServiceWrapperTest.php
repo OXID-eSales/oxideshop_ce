@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Logger\Wrapper\LoggerWrapper;
  *
  * @package OxidEsales\EshopCommunity\Tests\Unit\Internal\Logger\Wrapper
  */
-class LoggerServiceWrapperTest extends \PHPUnit_Framework_TestCase
+class LoggerServiceWrapperTest extends \PHPUnit\Framework\TestCase
 {
 
     /**
@@ -74,7 +74,7 @@ class LoggerServiceWrapperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|\Psr\Log\LoggerInterface
+     * @return \PHPUnit\Framework\MockObject\MockObject|\Psr\Log\LoggerInterface
      */
     private function getLoggerMock()
     {

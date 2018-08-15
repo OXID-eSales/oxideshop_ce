@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Autoload\BackwardsCompatibility;
 
-class BackwardsCompatibleInstanceOfOxNewClass_2_Test extends \PHPUnit_Framework_TestCase
+class BackwardsCompatibleInstanceOfOxNewClass_2_Test extends \PHPUnit\Framework\TestCase
 {
 
     /**

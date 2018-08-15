@@ -10,7 +10,7 @@ use OxidEsales\EshopCommunity\Internal\Common\Form\Form;
 use OxidEsales\EshopCommunity\Internal\Common\Form\FormField;
 use OxidEsales\EshopCommunity\Internal\Common\Form\RequiredFieldsValidator;
 
-class RequiredFieldsValidatorTest extends \PHPUnit_Framework_TestCase
+class RequiredFieldsValidatorTest extends \PHPUnit\Framework\TestCase
 {
     public function testInvalidFormValidation()
     {

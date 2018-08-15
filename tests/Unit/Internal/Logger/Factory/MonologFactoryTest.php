@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
-class MonologFactoryTest extends \PHPUnit_Framework_TestCase
+class MonologFactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreation()
     {

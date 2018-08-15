@@ -12,7 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Review\DataObject\Review;
 use OxidEsales\EshopCommunity\Internal\Review\Service\ReviewAndRatingMergingService;
 use OxidEsales\EshopCommunity\Internal\Review\ViewDataObject\ReviewAndRating;
 
-class ReviewAndRatingMergingServiceTest extends \PHPUnit_Framework_TestCase
+class ReviewAndRatingMergingServiceTest extends \PHPUnit\Framework\TestCase
 {
     public function testMergingReviewWithRatingAndRatingWithReview()
     {

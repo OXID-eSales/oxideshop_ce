@@ -10,7 +10,7 @@ use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterf
 use OxidEsales\EshopCommunity\Internal\Common\DataMapper\EntityMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Dao\ProductRatingDao;
 
-class ProductRatingDaoTest extends \PHPUnit_Framework_TestCase
+class ProductRatingDaoTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider invalidProductIdsProvider

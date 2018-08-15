@@ -473,7 +473,7 @@ class ModuleListTest extends \OxidTestCase
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("saveShopConfVar"));
         $oConfig->expects($this->once())->method('saveShopConfVar')->with($this->equalTo('aarr'), $this->equalTo('aModulePaths'), $this->equalTo($aResult));
 
-        /** @var \oxModuleList|\PHPUnit_Framework_MockObject_MockObject $oModuleList */
+        /** @var \oxModuleList|\PHPUnit\Framework\MockObject\MockObject $oModuleList */
         $oModuleList = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, array('getConfig', 'getModuleConfigParametersByKey'));
         $oModuleList->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
         $oModuleList->expects($this->once())->method('getModuleConfigParametersByKey')->with('Paths')->will($this->returnValue($aModulePaths));
@@ -503,7 +503,7 @@ class ModuleListTest extends \OxidTestCase
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("saveShopConfVar"));
         $oConfig->expects($this->once())->method('saveShopConfVar')->with($this->equalTo('aarr'), $this->equalTo('aModuleVersions'), $this->equalTo($aResult));
 
-        /** @var \oxModuleList|\PHPUnit_Framework_MockObject_MockObject $oModuleList */
+        /** @var \oxModuleList|\PHPUnit\Framework\MockObject\MockObject $oModuleList */
         $oModuleList = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, array('getConfig', 'getModuleConfigParametersByKey'));
         $oModuleList->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
         $oModuleList->expects($this->once())->method('getModuleConfigParametersByKey')->with('Versions')->will($this->returnValue($aModuleVersions));
@@ -532,7 +532,7 @@ class ModuleListTest extends \OxidTestCase
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("saveShopConfVar"));
         $oConfig->expects($this->once())->method('saveShopConfVar')->with($this->equalTo('aarr'), $this->equalTo('aModuleEvents'), $this->equalTo($aResult));
 
-        /** @var \oxModuleList|\PHPUnit_Framework_MockObject_MockObject $oModuleList */
+        /** @var \oxModuleList|\PHPUnit\Framework\MockObject\MockObject $oModuleList */
         $oModuleList = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, array('getConfig', 'getModuleConfigParametersByKey'));
         $oModuleList->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
         $oModuleList->expects($this->once())->method('getModuleConfigParametersByKey')->with('Events')->will($this->returnValue($aModuleEvents));
@@ -561,7 +561,7 @@ class ModuleListTest extends \OxidTestCase
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("saveShopConfVar"));
         $oConfig->expects($this->once())->method('saveShopConfVar')->with($this->equalTo('aarr'), $this->equalTo('aModuleFiles'), $this->equalTo($aResult));
 
-        /** @var \oxModuleList|\PHPUnit_Framework_MockObject_MockObject $oModuleList */
+        /** @var \oxModuleList|\PHPUnit\Framework\MockObject\MockObject $oModuleList */
         $oModuleList = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, array('getConfig', 'getModuleConfigParametersByKey'));
         $oModuleList->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
         $oModuleList->expects($this->once())->method('getModuleConfigParametersByKey')->with('Files')->will($this->returnValue($aModuleFiles));
@@ -590,7 +590,7 @@ class ModuleListTest extends \OxidTestCase
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("saveShopConfVar"));
         $oConfig->expects($this->once())->method('saveShopConfVar')->with($this->equalTo('aarr'), $this->equalTo('aModuleTemplates'), $this->equalTo($aResult));
 
-        /** @var \oxModuleList|\PHPUnit_Framework_MockObject_MockObject $oModuleList */
+        /** @var \oxModuleList|\PHPUnit\Framework\MockObject\MockObject $oModuleList */
         $oModuleList = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, array('getConfig', 'getModuleConfigParametersByKey'));
         $oModuleList->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
         $oModuleList->expects($this->once())->method('getModuleConfigParametersByKey')->with('Templates')->will($this->returnValue($aModuleTemplates));
@@ -903,7 +903,7 @@ class ModuleListTest extends \OxidTestCase
         );
         $moduleValidatorFactoryMock->expects($this->any())->method('getModuleMetadataValidator')->will($this->returnValue($moduleMetadataValidatorMock));
 
-        /** @var \OxidEsales\EshopCommunity\Core\Module\ModuleList|\PHPUnit_Framework_MockObject_MockObject $moduleListMock  */
+        /** @var \OxidEsales\EshopCommunity\Core\Module\ModuleList|\PHPUnit\Framework\MockObject\MockObject $moduleListMock  */
         $moduleListMock = $this->getMock(
             \OxidEsales\EshopCommunity\Core\Module\ModuleList::class,
             ['getModuleValidatorFactory']

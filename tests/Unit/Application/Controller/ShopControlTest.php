@@ -154,7 +154,8 @@ class ShopControlTest extends \OxidTestCase
      */
     public function testStartExceptionWithDebug()
     {
-        $this->setExpectedException('oxException', 'log debug');
+        $this->expectException('oxException');
+        $this->expectExceptionMessage('log debug');
 
         $this->setRequestParameter('cl', 'basket');
 
@@ -181,7 +182,8 @@ class ShopControlTest extends \OxidTestCase
      */
     public function testStartExceptionNoDebug()
     {
-        $this->setExpectedException('oxException', 'log debug');
+        $this->expectException('oxException');
+        $this->expectExceptionMessage('log debug');
 
         $this->setRequestParameter('cl', 'testClassId');
         $this->setRequestParameter('fnc', 'testFnc');
@@ -668,7 +670,7 @@ class ShopControlTest extends \OxidTestCase
      *
      * @param $expectedTemplate
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit\Framework\MockObject\MockObject
      */
     private function getSmartyMock($expectedTemplate)
     {

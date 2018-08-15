@@ -578,7 +578,7 @@ class UtilsViewTest extends \OxidTestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit\Framework\MockObject\MockObject
      */
     private function getUtilsViewMockNotAdmin()
     {
@@ -588,7 +588,7 @@ class UtilsViewTest extends \OxidTestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit\Framework\MockObject\MockObject
      */
     private function getUtilsViewMockBeAdmin()
     {
@@ -686,7 +686,7 @@ class UtilsViewTest extends \OxidTestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit\Framework\MockObject\MockObject
      */
     private function getSmartyMock()
     {

@@ -480,7 +480,7 @@ class I18ntest extends \OxidTestCase
 
         $sTable = 'oxi18n';
 
-        /** @var oxI18n|PHPUnit_Framework_MockObject_MockObject $oI18n */
+        /** @var oxI18n|PHPUnit\Framework\MockObject\MockObject $oI18n */
         $oI18n = $this->getMock(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class, array('getCoreTableName', 'getViewName', 'isMultilingualField', 'getLanguage'));
         $oI18n->expects($this->any())->method('getCoreTableName')->will($this->returnValue($sTable));
         $oI18n->expects($this->once())->method('getViewName')->will($this->returnValue('oxi18n'));

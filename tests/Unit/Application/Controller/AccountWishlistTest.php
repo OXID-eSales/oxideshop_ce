@@ -176,7 +176,7 @@ class AccountWishlistTest extends \OxidTestCase
         $this->setRequestParameter("editval", $aParams);
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ return "addErrorToDisplay"; }');
 
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
@@ -200,18 +200,18 @@ class AccountWishlistTest extends \OxidTestCase
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ return "addErrorToDisplay"; }');
         oxTestModules::addFunction('oxemail', 'sendWishlistMail', '{ return false; }');
 
-        /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUser */
+        /** @var oxUser|PHPUnit\Framework\MockObject\MockObject $oUser */
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array("getId"));
         $oUser->expects($this->once())->method('getId')->will($this->returnValue("testId"));
         $oUser->oxuser__oxusername = new oxField("testName");
         $oUser->oxuser__oxfname = new oxField("testFName");
         $oUser->oxuser__oxlname = new oxField("testLName");
 
-        /** @var Account_Wishlist|PHPUnit_Framework_MockObject_MockObject $oView */
+        /** @var Account_Wishlist|PHPUnit\Framework\MockObject\MockObject $oView */
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountWishlistController::class, array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
 
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
@@ -230,20 +230,20 @@ class AccountWishlistTest extends \OxidTestCase
     {
         $this->setRequestParameter("blpublic", 1);
 
-        /** @var oxBasket|PHPUnit_Framework_MockObject_MockObject $oBasket */
+        /** @var oxBasket|PHPUnit\Framework\MockObject\MockObject $oBasket */
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array("save"));
         $oBasket->expects($this->once())->method('save');
 
-        /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUser */
+        /** @var oxUser|PHPUnit\Framework\MockObject\MockObject $oUser */
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array("getBasket"));
         $oUser->expects($this->once())->method('getBasket')->with($this->equalTo("wishlist"))->will($this->returnValue($oBasket));
 
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
-        /** @var Account_Wishlist|PHPUnit_Framework_MockObject_MockObject $oView */
+        /** @var Account_Wishlist|PHPUnit\Framework\MockObject\MockObject $oView */
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountWishlistController::class, array("getUser"));
         $oView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
         $oView->togglePublic();

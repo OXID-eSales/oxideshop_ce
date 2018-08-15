@@ -9,7 +9,7 @@ use oxException;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockContentReader;
 use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @group module
@@ -24,7 +24,7 @@ class ModuleTemplateBlockContentReaderTest extends UnitTestCase
 
     public function testGetContentThrowExceptionWithoutPathFormatter()
     {
-        $this->setExpectedException(oxException::class);
+        $this->expectException(oxException::class);
 
         $content = oxNew(ModuleTemplateBlockContentReader::class);
         $content->getContent(null);
@@ -68,7 +68,7 @@ class ModuleTemplateBlockContentReaderTest extends UnitTestCase
         $filePath = $vfsStreamWrapper->getRootPath() . DIRECTORY_SEPARATOR . 'someFile';
 
         $exceptionMessage = "Template block file (%s) was not found for module '%s'.";
-        $this->setExpectedException(oxException::class, sprintf($exceptionMessage, $filePath, 'myModuleId'));
+        $this->expectException(oxException::class); $this->expectExceptionMessage( sprintf($exceptionMessage, $filePath, 'myModuleId'));
 
         $pathFormatter = $this->getMock(ModuleTemplateBlockPathFormatter::class, ['getPath', 'getModuleId']);
         $pathFormatter->method('getPath')->willReturn($filePath);
@@ -86,7 +86,7 @@ class ModuleTemplateBlockContentReaderTest extends UnitTestCase
         chmod($filePath, $notReadableMode);
 
         $exceptionMessage = "Template block file (%s) is not readable for module '%s'.";
-        $this->setExpectedException(oxException::class, sprintf($exceptionMessage, $filePath, 'myModuleId'));
+        $this->expectException(oxException::class); $this->expectExceptionMessage( sprintf($exceptionMessage, $filePath, 'myModuleId'));
 
         $pathFormatter = $this->getMock(ModuleTemplateBlockPathFormatter::class, ['getPath', 'getModuleId']);
         $pathFormatter->method('getPath')->willReturn($filePath);

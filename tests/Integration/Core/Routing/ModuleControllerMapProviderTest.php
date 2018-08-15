@@ -76,7 +76,7 @@ class ModuleControllerMapProviderTest extends UnitTestCase
         $this->getConfig()->saveShopConfVar('aarr', ClassProviderStorage::STORAGE_KEY, $controllerKeysFromStorage);
         $this->assertModuleControllersNotCached();
 
-        /** @var \OxidEsales\EshopCommunity\Core\Routing\ModuleControllerMapProvider|\PHPUnit_Framework_MockObject_MockObject $moduleControllerMapProviderMock */
+        /** @var \OxidEsales\EshopCommunity\Core\Routing\ModuleControllerMapProvider|\PHPUnit\Framework\MockObject\MockObject $moduleControllerMapProviderMock */
         $moduleControllerMapProviderMock = oxNew(ModuleControllerMapProvider::class);
 
         $this->assertSame($expectedControllerKeys, $moduleControllerMapProviderMock->getControllerMap());

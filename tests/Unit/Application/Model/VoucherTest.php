@@ -803,7 +803,7 @@ class VoucherTest extends \OxidTestCase
 
     public function testIsValidDate_WhenDateIsInFuture()
     {
-        $this->setExpectedException('oxVoucherException', 'ERROR_MESSAGE_VOUCHER_NOVOUCHER');
+        $this->expectException('oxVoucherException'); $this->expectExceptionMessage( 'ERROR_MESSAGE_VOUCHER_NOVOUCHER');
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($this->_aSerieOxid[0]);
         $oSerie->oxvoucherseries__oxbegindate = new oxField(date('Y-m-d H:i:s', time() + 3600), oxField::T_RAW);
@@ -823,7 +823,7 @@ class VoucherTest extends \OxidTestCase
 
     public function testIsValidDate_WhenEndDateIsAutoSetInFuture()
     {
-        $this->setExpectedException('oxVoucherException', 'ERROR_MESSAGE_VOUCHER_NOVOUCHER');
+        $this->expectException('oxVoucherException'); $this->expectExceptionMessage( 'ERROR_MESSAGE_VOUCHER_NOVOUCHER');
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($this->_aSerieOxid[0]);
         $oSerie->oxvoucherseries__oxbegindate = new oxField(date('Y-m-d H:i:s', time() + 3600), oxField::T_RAW);
@@ -1351,7 +1351,7 @@ class VoucherTest extends \OxidTestCase
         }
         $oNewVoucher->oxvouchers__oxvoucherserieid = new oxField('aaa');
         $oNewVoucher->save();
-        $this->setExpectedException('oxObjectException');
+        $this->expectException('oxObjectException');
         $oNewVoucher->getSerie();
     }
 

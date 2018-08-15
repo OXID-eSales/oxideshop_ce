@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use \oxRegistry;
 use \oxTestModules;
 use \oxUser;
-use \PHPUnit_Framework_MockObject_MockObject as MockObject;
+use \PHPUnit\Framework\MockObject\MockObject as MockObject;
 
 class oxDeliveryListTestClass extends oxdeliverylist
 {

@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Review\DataMapper;
 use OxidEsales\EshopCommunity\Internal\Review\DataMapper\RatingDataMapper;
 use OxidEsales\EshopCommunity\Internal\Review\DataObject\Rating;
 
-class RatingDataMapperTest extends \PHPUnit_Framework_TestCase
+class RatingDataMapperTest extends \PHPUnit\Framework\TestCase
 {
     public function testMapping()
     {

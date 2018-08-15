@@ -169,7 +169,7 @@ class VendorTest extends \OxidTestCase
         $article->oxarticles__oxvendorid = new oxField($this->testVendorId, oxField::T_RAW);
         $article->save();
 
-        /** @var Vendor|\PHPUnit_Framework_MockObject_MockObject $vendor */
+        /** @var Vendor|\PHPUnit\Framework\MockObject\MockObject $vendor */
         $vendor = $this->getMock(\OxidEsales\Eshop\Application\Model\Vendor::class, array('isAdmin'));
         $vendor->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $vendor->setShowArticleCnt(true);

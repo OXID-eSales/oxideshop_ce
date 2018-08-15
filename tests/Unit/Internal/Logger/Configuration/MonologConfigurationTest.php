@@ -8,7 +8,7 @@ use OxidEsales\EshopCommunity\Internal\Logger\Configuration\MonologConfiguration
 use \OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use Psr\Log\LogLevel;
 
-class MonologConfigurationTest extends PHPUnit_Framework_TestCase
+class MonologConfigurationTest extends PHPUnit\Framework\TestCase
 {
     public function testDefaultLogLevel()
     {

@@ -169,11 +169,11 @@ class SuggestTest extends \OxidTestCase
 
         oxTestModules::addModuleObject('oxemail', $oEmail);
 
-        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
+        /** @var oxArticle|PHPUnit\Framework\MockObject\MockObject $oProduct */
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId'));
         $oProduct->expects($this->once())->method('getId')->will($this->returnValue('XProduct'));
 
-        /** @var Suggest|PHPUnit_Framework_MockObject_MockObject $oSuggest */
+        /** @var Suggest|PHPUnit\Framework\MockObject\MockObject $oSuggest */
         $oSuggest = $this->getMock(\OxidEsales\Eshop\Application\Controller\SuggestController::class, array("getProduct"));
         $oSuggest->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
 
@@ -211,7 +211,7 @@ class SuggestTest extends \OxidTestCase
         $oProduct = $this->getMock("stdclass", array('getId'));
         $oProduct->expects($this->never())->method('getId');
 
-        /** @var Suggest|PHPUnit_Framework_MockObject_MockObject $oSuggest */
+        /** @var Suggest|PHPUnit\Framework\MockObject\MockObject $oSuggest */
         $oSuggest = $this->getMock(\OxidEsales\Eshop\Application\Controller\SuggestController::class, array("getProduct"));
         $oSuggest->expects($this->never())->method('getProduct')->will($this->returnValue($oProduct));
 

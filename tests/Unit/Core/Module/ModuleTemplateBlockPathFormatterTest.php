@@ -37,7 +37,7 @@ class ModuleTemplateBlockPathFormatterTest extends UnitTestCase
      */
     public function testGetPathThrowExceptionWhenNoParametersAreSet($moduleId, $fileName)
     {
-        $this->setExpectedException('oxException');
+        $this->expectException('oxException');
 
         $pathFormatter = $this->getModuleTemplateBlockPathFormatter($moduleId, $fileName);
 
@@ -123,7 +123,7 @@ class ModuleTemplateBlockPathFormatterTest extends UnitTestCase
 
     public function testGetPathThrowExceptionIfModuleIsNotActiveOrIsNotAvailable()
     {
-        $this->setExpectedException('oxException');
+        $this->expectException('oxException');
 
         $pathFormatter = $this->getModuleTemplateBlockPathFormatter('myTestModule', 'pathToFile/filePathForBlock.tpl');
         $pathFormatter->getPath();

@@ -10,7 +10,7 @@ use OxidEsales\EshopCommunity\Internal\Common\Form\Form;
 use OxidEsales\EshopCommunity\Internal\Common\Form\FormField;
 use OxidEsales\EshopCommunity\Internal\Common\Form\FormValidatorInterface;
 
-class FromTest extends \PHPUnit_Framework_TestCase
+class FromTest extends \PHPUnit\Framework\TestCase
 {
     public function testAddField()
     {

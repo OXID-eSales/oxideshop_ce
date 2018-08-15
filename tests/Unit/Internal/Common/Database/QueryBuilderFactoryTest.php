@@ -11,7 +11,7 @@ use Doctrine\DBAL\Query\QueryBuilder;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactory;
 use PDO;
 
-class QueryBuilderFactoryTest extends \PHPUnit_Framework_TestCase
+class QueryBuilderFactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function testQueryBuilderCreation()
     {

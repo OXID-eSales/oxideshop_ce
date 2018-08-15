@@ -8,7 +8,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Setup\Exception;
 
 use OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
 
-class CommandExecutionFailedExceptionTest extends \PHPUnit_Framework_TestCase
+class CommandExecutionFailedExceptionTest extends \PHPUnit\Framework\TestCase
 {
     public function testCanCreateSut()
     {
@@ -17,7 +17,7 @@ class CommandExecutionFailedExceptionTest extends \PHPUnit_Framework_TestCase
 
     public function testProvidesInformationAboutFailedCommand()
     {
-        $this->setExpectedException(
+        $this->expectException(
             CommandExecutionFailedException::class,
             "There was an error while executing 'test_string'."
         );

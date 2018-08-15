@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use OxidEsales\EshopCommunity\Internal\Review\DataObject\Rating;
 use OxidEsales\EshopCommunity\Internal\Review\Service\RatingCalculatorService;
 
-class RatingCalculatorServiceTest extends \PHPUnit_Framework_TestCase
+class RatingCalculatorServiceTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetAverage()
     {

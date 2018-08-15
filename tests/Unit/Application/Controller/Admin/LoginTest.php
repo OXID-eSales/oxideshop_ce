@@ -83,7 +83,7 @@ class LoginTest extends \OxidTestCase
      */
     public function testLoginNotAdmin()
     {
-        $this->setExpectedException('oxException', 'LOGIN_ERROR');
+        $this->expectException('oxException'); $this->expectExceptionMessage( 'LOGIN_ERROR');
 
         $this->setAdminMode(true);
 

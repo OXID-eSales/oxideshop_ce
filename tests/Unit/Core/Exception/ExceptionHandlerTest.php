@@ -14,7 +14,7 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     public function testCallUnExistingMethod()
     {
-        $this->setExpectedException( \OxidEsales\Eshop\Core\Exception\SystemComponentException::class);
+        $this->expectException( \OxidEsales\Eshop\Core\Exception\SystemComponentException::class);
         $exceptionHandler = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionHandler::class);
         $exceptionHandler->__NotExistingFunction__();
     }
@@ -75,7 +75,7 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
      * @covers \OxidEsales\Eshop\Core\Exception\ExceptionHandler::handleDatabaseException()
      */
     public function testHandleDatabaseExceptionDelegatesToHandleUncaughtException() {
-        /** @var ExceptionHandler|\PHPUnit_Framework_MockObject_MockObject $exceptionHandlerMock */
+        /** @var ExceptionHandler|\PHPUnit\Framework\MockObject\MockObject $exceptionHandlerMock */
         $exceptionHandlerMock = $this->getMock(ExceptionHandler::class, ['handleUncaughtException']);
         $exceptionHandlerMock->expects($this->once())->method('handleUncaughtException');
 
@@ -91,7 +91,7 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     public function testHandleUncaughtExceptionWillAlwaysWriteToLogFile($debug)
     {
-        /** @var ExceptionHandler|\PHPUnit_Framework_MockObject_MockObject $exceptionHandlerMock */
+        /** @var ExceptionHandler|\PHPUnit\Framework\MockObject\MockObject $exceptionHandlerMock */
         $exceptionHandlerMock = $this->getMock(
             ExceptionHandler::class,
             ['writeExceptionToLog','displayOfflinePage','displayDebugMessage'],
@@ -111,7 +111,7 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
      * @covers \OxidEsales\Eshop\Core\Exception\ExceptionHandler::handleUncaughtException
      */
     public function testHandleUncaughtExceptionWillDisplayShortDebugMessageInCliMode($debug) {
-        /** @var ExceptionHandler|\PHPUnit_Framework_MockObject_MockObject $exceptionHandlerMock */
+        /** @var ExceptionHandler|\PHPUnit\Framework\MockObject\MockObject $exceptionHandlerMock */
         $exceptionHandlerMock = $this->getMock(
             ExceptionHandler::class,
             ['writeExceptionToLog'],
@@ -131,7 +131,7 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     public function testHandleUncaughtExceptionWillDisplayDebugMessageIfDebugIsTrue() {
         $debug = true;
-        /** @var ExceptionHandler|\PHPUnit_Framework_MockObject_MockObject $exceptionHandlerMock */
+        /** @var ExceptionHandler|\PHPUnit\Framework\MockObject\MockObject $exceptionHandlerMock */
         $exceptionHandlerMock = $this->getMock(
             ExceptionHandler::class,
             ['writeExceptionToLog','displayDebugMessage'],
@@ -147,7 +147,7 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     public function testHandleUncaughtExceptionWillDisplayOfflinePageIfDebugIsFalse() {
         $debug = false;
-        /** @var ExceptionHandler|\PHPUnit_Framework_MockObject_MockObject $exceptionHandlerMock */
+        /** @var ExceptionHandler|\PHPUnit\Framework\MockObject\MockObject $exceptionHandlerMock */
         $exceptionHandlerMock = $this->getMock(
             ExceptionHandler::class,
             ['writeExceptionToLog','displayOfflinePage'],

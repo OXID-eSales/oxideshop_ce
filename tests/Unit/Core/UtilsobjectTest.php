@@ -172,7 +172,7 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
          * Real error handling on missing files is disabled for the tests, but when the shop tries to include that not
          * existing file we expect an error to be thrown
          */
-        $this->setExpectedException(\PHPUnit_Framework_Error_Warning::class);
+        $this->expectException(\PHPUnit\Framework\Error\Warning::class);
 
         $structure = array(
             'modules' => array(
@@ -208,7 +208,7 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     public function testOxNewCreationOfNonExistingClassContainsClassNameInExceptionMessage()
     {
-        $this->setExpectedException(SystemComponentException::class, 'non_existing_class');
+        $this->expectException(SystemComponentException::class); $this->expectExceptionMessage( 'non_existing_class');
 
         oxNew("non_existing_class");
     }

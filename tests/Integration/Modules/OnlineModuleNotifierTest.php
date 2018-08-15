@@ -8,7 +8,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 use oxOnlineModulesNotifierRequest;
 use oxOnlineModuleVersionNotifier;
 use oxOnlineModuleVersionNotifierCaller;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @group module

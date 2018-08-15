@@ -149,7 +149,7 @@ class ModuleMetadataValidatorTest extends \OxidTestCase
         $validator = oxNew(\OxidEsales\EshopCommunity\Core\Module\ModuleMetadataValidator::class);
 
         $message = sprintf(Registry::getLang()->translateString('MODULE_METADATA_PROBLEMATIC_DATA_IN_EXTEND', null, true), $expected);
-        $this->setExpectedException(\OxidEsales\Eshop\Core\Exception\ModuleValidationException::class, $message);
+        $this->expectException(\OxidEsales\Eshop\Core\Exception\ModuleValidationException::class); $this->expectExceptionMessage( $message);
 
         $validator->checkModuleExtensionsForIncorrectNamespaceClasses($moduleMock);
     }

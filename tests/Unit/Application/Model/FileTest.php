@@ -43,12 +43,12 @@ class FileTest extends \OxidTestCase
     {
         $sFilePath = $this->createFile('out/downloads/test.jpg', 'test jpg file');
 
-        /** @var oxFile|PHPUnit_Framework_MockObject_MockObject $oFile */
+        /** @var oxFile|PHPUnit\Framework\MockObject\MockObject $oFile */
         $oFile = $this->getMock(\OxidEsales\Eshop\Application\Model\File::class, array('getStoreLocation', 'isUnderDownloadFolder'));
         $oFile->expects($this->any())->method('getStoreLocation')->will($this->returnValue($sFilePath));
         $oFile->expects($this->any())->method('isUnderDownloadFolder')->will($this->returnValue(true));
 
-        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $oUtils */
+        /** @var oxUtils|PHPUnit\Framework\MockObject\MockObject $oUtils */
         $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('setHeader', 'showMessageAndExit'));
         $oUtils->expects($this->any())->method('setHeader');
         $oUtils->expects($this->once())->method('showMessageAndExit');
@@ -65,9 +65,9 @@ class FileTest extends \OxidTestCase
 
     public function testDownloadThrowExceptionWhenAboveDownloadFolder()
     {
-        $this->setExpectedException('oxException');
+        $this->expectException('oxException');
 
-        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $utils */
+        /** @var oxUtils|PHPUnit\Framework\MockObject\MockObject $utils */
         $utils = $this->getMock('oxUtils');
         $utils->expects($this->any())->method('setHeader')->will($this->returnValue(true));
         $utils->expects($this->any())->method('showMessageAndExit')->will($this->returnValue(true));
@@ -83,9 +83,9 @@ class FileTest extends \OxidTestCase
 
     public function testDownloadThrowExceptionWhenFileDoesNotExist()
     {
-        $this->setExpectedException('oxException');
+        $this->expectException('oxException');
 
-        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $utils */
+        /** @var oxUtils|PHPUnit\Framework\MockObject\MockObject $utils */
         $utils = $this->getMock('oxUtils');
         $utils->expects($this->any())->method('setHeader')->will($this->returnValue(true));
         $utils->expects($this->any())->method('showMessageAndExit')->will($this->returnValue(true));
@@ -242,7 +242,7 @@ class FileTest extends \OxidTestCase
      */
     public function testProcessFileUploadBad()
     {
-        $this->setExpectedException('oxException', "EXCEPTION_COULDNOTWRITETOFILE");
+        $this->expectException('oxException'); $this->expectExceptionMessage( "EXCEPTION_COULDNOTWRITETOFILE");
 
         $filePath = $this->createFile('out/downloads/testFile', 'test jpg file');
 

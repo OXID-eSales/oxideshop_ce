@@ -9,7 +9,7 @@ use Exception;
 use oxDb;
 use OxidEsales\EshopCommunity\Setup\Database;
 use PDO;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 use StdClass;
 
 require_once getShopBasePath() . '/Setup/functions.php';
@@ -73,11 +73,11 @@ class DatabaseTest extends \OxidTestCase
      */
     public function testExecSqlBadConnection()
     {
-        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit\Framework\MockObject\MockObject $database */
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("getConnection"));
         $database->expects($this->any())->method("getConnection")->will($this->throwException(new Exception('Test')));
 
-        $this->setExpectedException('Exception', 'Test');
+        $this->expectException('Exception'); $this->expectExceptionMessage( 'Test');
         $database->execSql("select 1 + 1");
     }
 
@@ -86,7 +86,7 @@ class DatabaseTest extends \OxidTestCase
      */
     public function testExecSql()
     {
-        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit\Framework\MockObject\MockObject $database */
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("getConnection"));
         $database->expects($this->once())->method("getConnection")->will($this->returnValue($this->createConnection()));
 
@@ -106,14 +106,14 @@ class DatabaseTest extends \OxidTestCase
         $language = $this->getMock("Language", array("getText"));
         $language->expects($this->once())->method("getText");
 
-        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit\Framework\MockObject\MockObject $database */
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("getInstance"));
 
         $at = 0;
         $database->expects($this->at($at++))->method("getInstance")->with($this->equalTo("Setup"))->will($this->returnValue($setup));
         $database->expects($this->at($at++))->method("getInstance")->with($this->equalTo("Language"))->will($this->returnValue($language));
 
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
         $database->queryFile(time());
     }
 
@@ -122,7 +122,7 @@ class DatabaseTest extends \OxidTestCase
      */
     public function testQueryFile()
     {
-        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit\Framework\MockObject\MockObject $database */
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("getDatabaseVersion", "parseQuery", "execSql"));
 
         $at = 0;
@@ -144,7 +144,7 @@ class DatabaseTest extends \OxidTestCase
         $versionInfo = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->getAll("SHOW VARIABLES LIKE 'version'");
         $version = $versionInfo[0]["Value"];
 
-        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit\Framework\MockObject\MockObject $database */
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("getConnection"));
         $database->expects($this->once())->method("getConnection")->will($this->returnValue($this->createConnection()));
         $this->assertEquals($version, $database->getDatabaseVersion());
@@ -155,7 +155,7 @@ class DatabaseTest extends \OxidTestCase
      */
     public function testGetConnection()
     {
-        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit\Framework\MockObject\MockObject $database */
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("openDatabase"));
         $database->expects($this->once())->method("openDatabase")->will($this->returnValue("testConnection"));
 
@@ -173,11 +173,11 @@ class DatabaseTest extends \OxidTestCase
 
         $sessionMock = $this->getMockBuilder('OxidEsales\\EshopCommunity\\Setup\\Session')->disableOriginalConstructor()->getMock();
 
-        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit\Framework\MockObject\MockObject $database */
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("getInstance"));
         $database->expects($this->any())->method("getInstance")->will($this->returnValue($sessionMock));
 
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
 
         $database->openDatabase($parameters);
     }
@@ -194,7 +194,7 @@ class DatabaseTest extends \OxidTestCase
         $parameters['dbPwd'] = $config->getConfigParam('dbPwd');
         $parameters['dbName'] = "wrong_database_name";
 
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
 
         $sessionMock = $this->getMockBuilder('OxidEsales\\EshopCommunity\\Setup\\Session')->disableOriginalConstructor()->getMock();
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("getInstance"));
@@ -215,10 +215,10 @@ class DatabaseTest extends \OxidTestCase
         $aParams['dbPwd'] = $myConfig->getConfigParam('dbPwd');
         $aParams['dbName'] = time();
 
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
 
         $sessionMock = $this->getMockBuilder('OxidEsales\\EshopCommunity\\Setup\\Session')->disableOriginalConstructor()->getMock();
-        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit\Framework\MockObject\MockObject $database */
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("getDatabaseVersion", 'getInstance', 'userDecidedIgnoreDBWarning'));
         $database->expects($this->any())->method("getDatabaseVersion")->will($this->returnValue('5.6.53-0ubuntu0.14.04.1'));
         $database->expects($this->any())->method("getInstance")->will($this->returnValue($sessionMock));
@@ -239,13 +239,13 @@ class DatabaseTest extends \OxidTestCase
         $aParams['dbName'] = time();
 
         $message = 'WARNING: A bug in MySQL 5.6 may lead to problems in OXID eShop Enterprise Edition. Hence, we do not recommend MySQL 5.6.';
-        $this->setExpectedException('Exception', $message);
+        $this->expectException('Exception'); $this->expectExceptionMessage( $message);
 
         $sessionMock = $this->getMockBuilder('OxidEsales\\EshopCommunity\\Setup\\Language')->disableOriginalConstructor()->getMock();
         $languageMock = $this->getMock(\OxidEsales\EshopCommunity\Setup\Language::class, array('getInstance', 'getLanguage'), array(), '', false);
         $languageMock->expects($this->any())->method('getLanguage')->will($this->returnValue('en'));
 
-        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit\Framework\MockObject\MockObject $database */
         $database = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Setup\TestSetupDatabase::class,  array('getDatabaseVersion', 'userDecidedIgnoreDBWarning'), array($sessionMock, $languageMock));
         $database->expects($this->any())->method('getDatabaseVersion')->will($this->returnValue('5.6.53-0ubuntu0.14.04.1'));
         $database->expects($this->any())->method('userDecidedIgnoreDBWarning')->will($this->returnValue(false));
@@ -266,13 +266,13 @@ class DatabaseTest extends \OxidTestCase
         $aParams['dbPwd'] = $myConfig->getConfigParam('dbPwd');
         $aParams['dbName'] = time();
 
-        $this->setExpectedException('Exception', 'ERROR: Database not available and also cannot be created!');
+        $this->expectException('Exception'); $this->expectExceptionMessage( 'ERROR: Database not available and also cannot be created!');
 
         $sessionMock = $this->getMockBuilder('OxidEsales\\EshopCommunity\\Setup\\Language')->disableOriginalConstructor()->getMock();
         $languageMock = $this->getMock(\OxidEsales\EshopCommunity\Setup\Language::class, array('getInstance', 'getLanguage'), array(), '', false);
         $languageMock->expects($this->any())->method('getLanguage')->will($this->returnValue('en'));
 
-        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit\Framework\MockObject\MockObject $database */
         $database = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Setup\TestSetupDatabase::class,  array('getDatabaseVersion', 'userDecidedIgnoreDBWarning'), array($sessionMock, $languageMock));
         $database->expects($this->any())->method('getDatabaseVersion')->will($this->returnValue('5.6.53-0ubuntu0.14.04.1'));
         $database->expects($this->any())->method('userDecidedIgnoreDBWarning')->will($this->returnValue(true));
@@ -307,13 +307,13 @@ class DatabaseTest extends \OxidTestCase
         $oLang = $this->getMock("Language", array("getText"));
         $oLang->expects($this->once())->method("getText")->with($this->equalTo("ERROR_COULD_NOT_CREATE_DB"));
 
-        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit\Framework\MockObject\MockObject $database */
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("execSql", "getInstance"));
         $database->expects($this->at(0))->method("execSql")->will($this->throwException(new Exception()));
         $database->expects($this->at(1))->method("getInstance")->with($this->equalTo("Setup"))->will($this->returnValue($oSetup));
         $database->expects($this->at(2))->method("getInstance")->with($this->equalTo("Language"))->will($this->returnValue($oLang));
 
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
 
         $database->createDb("");
     }
@@ -343,7 +343,7 @@ class DatabaseTest extends \OxidTestCase
         $setup = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Setup', array("getShopId"));
         $setup->expects($this->any())->method("getShopId");
 
-        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit\Framework\MockObject\MockObject $database */
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("execSql", "getInstance", "getConnection"));
         $map = array(
             array('Utilities', $utils),
@@ -369,7 +369,7 @@ class DatabaseTest extends \OxidTestCase
         $oUtils->expects($this->once())->method("generateUID")->will($this->returnValue($passwordSalt));
 
         $at = 0;
-        /** @var Database|PHPUnit_Framework_MockObject_MockObject $database */
+        /** @var Database|PHPUnit\Framework\MockObject\MockObject $database */
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("getInstance", "execSql"));
         $database->expects($this->at($at++))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
         $database->expects($this->at($at++))->method("execSql")->with($this->equalTo("update oxuser set oxusername='{$loginName}', oxpassword='" . hash('sha512', $password . $passwordSalt) . "', oxpasssalt='{$passwordSalt}' where OXUSERNAME='admin'"));

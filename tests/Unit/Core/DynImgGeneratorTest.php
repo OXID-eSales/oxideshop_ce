@@ -244,7 +244,7 @@ class DynImgGeneratorTest extends \OxidTestCase
         $expectedException = StandardException::class;
         $expectedExceptionMessage = 'imageTarget path and generatedImage path differ';
 
-        $this->setExpectedException($expectedException, $expectedExceptionMessage);
+        $this->expectException($expectedException); $this->expectExceptionMessage( $expectedExceptionMessage);
 
         $oGen = $this->getMock(
             DynamicImageGenerator::class,

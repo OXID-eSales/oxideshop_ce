@@ -153,7 +153,7 @@ class EmailTest extends \OxidTestCase
         $utilsObjectMock = $this->getMock(\OxidEsales\Eshop\Core\UtilsObject::class, ['generateUId']);
         $utilsObjectMock->expects($this->any())->method('generateUId')->will($this->returnValue('xxx'));
 
-        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $email */
+        /** @var oxEmail|PHPUnit\Framework\MockObject\MockObject $email */
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('getBody', 'addEmbeddedImage', 'setBody', 'getUtilsObjectInstance'));
         $email->expects($this->at(1))->method('getUtilsObjectInstance')->will($this->returnValue($utilsObjectMock));
         $email->expects($this->at(2))->method('addEmbeddedImage')->with($this->equalTo($imageDirectory . 'stars.jpg'), $this->equalTo('xxx'), $this->equalTo("image"), $this->equalTo("base64"), $this->equalTo('image/jpeg'))->will($this->returnValue(true));
@@ -337,7 +337,7 @@ class EmailTest extends \OxidTestCase
         $status = array();
         $errors = array();
 
-        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $email */
+        /** @var oxEmail|PHPUnit\Framework\MockObject\MockObject $email */
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
         $email->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $email->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
@@ -360,7 +360,7 @@ class EmailTest extends \OxidTestCase
         $status = array();
         $errors = array();
 
-        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $email */
+        /** @var oxEmail|PHPUnit\Framework\MockObject\MockObject $email */
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
         $email->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $email->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
@@ -387,7 +387,7 @@ class EmailTest extends \OxidTestCase
         $status = array();
         $errors = array();
 
-        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $email */
+        /** @var oxEmail|PHPUnit\Framework\MockObject\MockObject $email */
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
         $oEmail->expects($this->never())->method('_sendMail');
         $oEmail->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));

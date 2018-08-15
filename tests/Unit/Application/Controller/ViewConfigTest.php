@@ -101,7 +101,7 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testGetHomeLink($iDefaultShopLanguage, $iDefaultBrowserLanguage, $sExpectedUrl)
     {
-        /** @var $oLang oxLang | PHPUnit_Framework_MockObject_MockObject */
+        /** @var $oLang oxLang | PHPUnit\Framework\MockObject\MockObject */
         $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array('detectLanguageByBrowser'));
         $oLang
             ->expects($this->any())
@@ -498,7 +498,7 @@ class ViewConfigTest extends \OxidTestCase
     {
         $config = $this->fakeModuleStructure();
 
-        /** @var oxViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
+        /** @var oxViewConfig|PHPUnit\Framework\MockObject\MockObject $viewConfig */
         $viewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig'));
         $viewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($config));
         $fakeShopDirectory = $config->getConfigParam('sShopDir');
@@ -529,9 +529,9 @@ class ViewConfigTest extends \OxidTestCase
         $fakeShopDirectory = $config->getConfigParam('sShopDir');
         $message = "Requested file not found for module test1 (" .
                    $fakeShopDirectory . "modules/test1/out/blocks/non_existing_template.tpl)";
-        $this->setExpectedException('\OxidEsales\EshopCommunity\Core\Exception\FileException', $message);
+        $this->expectException('\OxidEsales\EshopCommunity\Core\Exception\FileException'); $this->expectExceptionMessage( $message);
 
-        /** @var oxViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
+        /** @var oxViewConfig|PHPUnit\Framework\MockObject\MockObject $viewConfig */
         $viewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig'));
         $viewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($config));
 
@@ -550,7 +550,7 @@ class ViewConfigTest extends \OxidTestCase
         $config = $this->fakeModuleStructure();
         $config->setConfigParam("iDebug", 0);
 
-        /** @var \OxidEsales\EshopEnterprise\Core\ViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
+        /** @var \OxidEsales\EshopEnterprise\Core\ViewConfig|PHPUnit\Framework\MockObject\MockObject $viewConfig */
         $viewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig'));
         $viewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($config));
 
@@ -572,7 +572,7 @@ class ViewConfigTest extends \OxidTestCase
     {
         $config = $this->fakeModuleStructure();
 
-        /** @var oxViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
+        /** @var oxViewConfig|PHPUnit\Framework\MockObject\MockObject $viewConfig */
         $viewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig'));
         $viewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($config));
 
@@ -630,9 +630,9 @@ class ViewConfigTest extends \OxidTestCase
         $fakeShopDirectory = $config->getConfigParam('sShopDir');
         $message = "Requested file not found for module test1 (" . $fakeShopDirectory .
                    "modules/test1/out/blocks/non_existing_template.tpl)";
-        $this->setExpectedException(\OxidEsales\Eshop\Core\Exception\FileException::class, $message);
+        $this->expectException(\OxidEsales\Eshop\Core\Exception\FileException::class); $this->expectExceptionMessage( $message);
 
-        /** @var \OxidEsales\Eshop\Core\ViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
+        /** @var \OxidEsales\Eshop\Core\ViewConfig|PHPUnit\Framework\MockObject\MockObject $viewConfig */
         $viewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig'));
         $viewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($config));
 
@@ -2250,7 +2250,7 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testGetSessionChallengeToken($isSessionStarted, $callTimes, $token)
     {
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $session */
+        /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $session */
         $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('isSessionStarted', 'getSessionChallengeToken'));
 
         $session->expects($this->once())->method('isSessionStarted')->will($this->returnValue($isSessionStarted));

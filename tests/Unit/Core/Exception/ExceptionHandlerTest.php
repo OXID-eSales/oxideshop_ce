@@ -17,7 +17,7 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     public function testCallUnExistingMethod()
     {
-        $this->setExpectedException( \OxidEsales\Eshop\Core\Exception\SystemComponentException::class);
+        $this->expectException( \OxidEsales\Eshop\Core\Exception\SystemComponentException::class);
         $exceptionHandler = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionHandler::class);
         $exceptionHandler->__NotExistingFunction__();
     }
@@ -58,7 +58,7 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
      * @covers \OxidEsales\Eshop\Core\Exception\ExceptionHandler::handleDatabaseException()
      */
     public function testHandleDatabaseExceptionDelegatesToHandleUncaughtException() {
-        /** @var ExceptionHandler|\PHPUnit_Framework_MockObject_MockObject $exceptionHandlerMock */
+        /** @var ExceptionHandler|\PHPUnit\Framework\MockObject\MockObject $exceptionHandlerMock */
         $exceptionHandlerMock = $this->getMock(ExceptionHandler::class, ['handleUncaughtException']);
         $exceptionHandlerMock->expects($this->once())->method('handleUncaughtException');
 
@@ -78,7 +78,7 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         Registry::set('logger', new NullLogger());
 
         $debug = false;
-        /** @var ExceptionHandler|\PHPUnit_Framework_MockObject_MockObject $exceptionHandlerMock */
+        /** @var ExceptionHandler|\PHPUnit\Framework\MockObject\MockObject $exceptionHandlerMock */
         $exceptionHandlerMock = $this->getMock(
             ExceptionHandler::class,
             ['writeExceptionToLog'],
@@ -101,7 +101,7 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         Registry::set('logger', new NullLogger());
 
         $debug = true;
-        /** @var ExceptionHandler|\PHPUnit_Framework_MockObject_MockObject $exceptionHandlerMock */
+        /** @var ExceptionHandler|\PHPUnit\Framework\MockObject\MockObject $exceptionHandlerMock */
         $exceptionHandlerMock = $this->getMock(
             ExceptionHandler::class,
             ['displayDebugMessage'],

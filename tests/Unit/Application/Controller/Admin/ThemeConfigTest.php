@@ -30,4 +30,5 @@ class ThemeConfigTest extends \OxidTestCase
         $oTheme_Config->expects($this->any())->method('getEditObjectId')->will($this->returnValue($sThemeName));
         $this->assertEquals('theme:' . $sThemeName, $oTheme_Config->UNITgetModuleForConfigVars());
     }
+
 }

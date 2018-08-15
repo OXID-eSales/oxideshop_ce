@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\FormConfiguration;
 use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FieldConfiguration;
 use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormConfiguration;
 
-class FromConfigurationTest extends \PHPUnit_Framework_TestCase
+class FromConfigurationTest extends \PHPUnit\Framework\TestCase
 {
     public function testAddFieldConfiguration()
     {

@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Review\Service\UserReviewAndRatingService
 use OxidEsales\EshopCommunity\Internal\Review\Service\UserReviewServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Review\ViewDataObject\ReviewAndRating;
 
-class UserReviewAndRatingServiceTest extends \PHPUnit_Framework_TestCase
+class UserReviewAndRatingServiceTest extends \PHPUnit\Framework\TestCase
 {
     public function testReviewAndRatingListSorting()
     {

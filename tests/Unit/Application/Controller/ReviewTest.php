@@ -248,12 +248,12 @@ class ReviewTest extends \OxidTestCase
         $this->setRequestParameter('artrating', '4');
         $this->setRequestParameter('anid', 'test');
 
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
-        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
+        /** @var oxArticle|PHPUnit\Framework\MockObject\MockObject $oProduct */
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->once())->method('addToRatingAverage');
@@ -261,7 +261,7 @@ class ReviewTest extends \OxidTestCase
         $oUser = oxNew('oxUser');
         $oUser->load("oxdefaultadmin");
 
-        /** @var Review|PHPUnit_Framework_MockObject_MockObject $oReview */
+        /** @var Review|PHPUnit\Framework\MockObject\MockObject $oReview */
         $oReview = $this->getMock(\OxidEsales\Eshop\Application\Controller\ReviewController::class, array('getReviewUser', '_getActiveObject', 'canAcceptFormData', "_getActiveType"));
         $oReview->expects($this->once())->method('getReviewUser')->will($this->returnValue($oUser));
         $oReview->expects($this->once())->method('canAcceptFormData')->will($this->returnValue(true));
@@ -275,12 +275,12 @@ class ReviewTest extends \OxidTestCase
 
     public function testSaveReviewIfUserNotSet()
     {
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
-        /** @var Review|PHPUnit_Framework_MockObject_MockObject $oReview */
+        /** @var Review|PHPUnit\Framework\MockObject\MockObject $oReview */
         $oReview = $this->getMock(\OxidEsales\Eshop\Application\Controller\ReviewController::class, array('getReviewUser', '_getActiveObject', 'canAcceptFormData', "_getActiveType"));
         $oReview->expects($this->once())->method('getReviewUser')->will($this->returnValue(false));
         $oReview->expects($this->never())->method('canAcceptFormData');
@@ -298,7 +298,7 @@ class ReviewTest extends \OxidTestCase
         $this->setRequestParameter('artrating', null);
         $this->setRequestParameter('anid', 'test');
 
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
@@ -306,12 +306,12 @@ class ReviewTest extends \OxidTestCase
         $oUser = oxNew('oxUser');
         $oUser->load("oxdefaultadmin");
 
-        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
+        /** @var oxArticle|PHPUnit\Framework\MockObject\MockObject $oProduct */
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->never())->method('addToRatingAverage');
 
-        /** @var Review|PHPUnit_Framework_MockObject_MockObject $oReview */
+        /** @var Review|PHPUnit\Framework\MockObject\MockObject $oReview */
         $oReview = $this->getMock(\OxidEsales\Eshop\Application\Controller\ReviewController::class, array('getReviewUser', '_getActiveObject', 'canAcceptFormData', "_getActiveType"));
         $oReview->expects($this->once())->method('getReviewUser')->will($this->returnValue($oUser));
         $oReview->expects($this->once())->method('canAcceptFormData')->will($this->returnValue(true));
@@ -329,7 +329,7 @@ class ReviewTest extends \OxidTestCase
         $this->setRequestParameter('artrating', 6);
         $this->setRequestParameter('anid', 'test');
 
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
@@ -337,12 +337,12 @@ class ReviewTest extends \OxidTestCase
         $oUser = oxNew('oxUser');
         $oUser->load("oxdefaultadmin");
 
-        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
+        /** @var oxArticle|PHPUnit\Framework\MockObject\MockObject $oProduct */
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->never())->method('addToRatingAverage');
 
-        /** @var Review|PHPUnit_Framework_MockObject_MockObject $oReview */
+        /** @var Review|PHPUnit\Framework\MockObject\MockObject $oReview */
         $oReview = $this->getMock(\OxidEsales\Eshop\Application\Controller\ReviewController::class, array('getReviewUser', '_getActiveObject', 'canAcceptFormData', "_getActiveType"));
         $oReview->expects($this->once())->method('getReviewUser')->will($this->returnValue($oUser));
         $oReview->expects($this->once())->method('canAcceptFormData')->will($this->returnValue(true));
@@ -360,7 +360,7 @@ class ReviewTest extends \OxidTestCase
         $this->setRequestParameter('artrating', '4');
         $this->setRequestParameter('anid', 'test');
 
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
@@ -368,12 +368,12 @@ class ReviewTest extends \OxidTestCase
         $oUser = oxNew('oxUser');
         $oUser->load("oxdefaultadmin");
 
-        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
+        /** @var oxArticle|PHPUnit\Framework\MockObject\MockObject $oProduct */
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->once())->method('addToRatingAverage');
 
-        /** @var Review|PHPUnit_Framework_MockObject_MockObject $oReview */
+        /** @var Review|PHPUnit\Framework\MockObject\MockObject $oReview */
         $oReview = $this->getMock(\OxidEsales\Eshop\Application\Controller\ReviewController::class, array('getReviewUser', '_getActiveObject', 'canAcceptFormData', "_getActiveType"));
         $oReview->expects($this->once())->method('getReviewUser')->will($this->returnValue($oUser));
         $oReview->expects($this->once())->method('canAcceptFormData')->will($this->returnValue(true));

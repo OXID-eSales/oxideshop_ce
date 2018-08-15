@@ -16,7 +16,7 @@ use Psr\Log\LogLevel;
  *
  * @package OxidEsales\EshopCommunity\Tests\Integration\Internal\Logger
  */
-class LoggerTest extends \PHPUnit_Framework_TestCase
+class LoggerTest extends \PHPUnit\Framework\TestCase
 {
     /** @var \OxidEsales\TestingLibrary\VfsStreamWrapper */
     private $vfsStreamWrapper = null;
@@ -55,7 +55,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $logLevelFromConfig
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject|ContextInterface
+     * @return \PHPUnit\Framework\MockObject\MockObject|ContextInterface
      */
     private function getContextStub($logLevelFromConfig = null)
     {

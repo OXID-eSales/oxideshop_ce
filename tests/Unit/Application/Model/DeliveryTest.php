@@ -689,12 +689,12 @@ class DeliveryTest extends \OxidTestCase
         $oDelivery->oxdelivery__oxdeltype = new oxField('w', oxField::T_RAW);
         $oDelivery->oxdelivery__oxfixed = new oxField('2', oxField::T_RAW);
 
-        /** @var oxOrderArticle|PHPUnit_Framework_MockObject_MockObject $oOrderArticle */
+        /** @var oxOrderArticle|PHPUnit\Framework\MockObject\MockObject $oOrderArticle */
         $oOrderArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\OrderArticle::class, array(), array(), '', false);
         $oOrderArticle->expects($this->any())->method('getArticle')->will($this->returnValue($this->_oBasketItem->getArticle()));
         $oOrderArticle->expects($this->any())->method('isOrderArticle')->will($this->returnValue(true));
 
-        /** @var oxBasketItem $oBasketItem|PHPUnit_Framework_MockObject_MockObject */
+        /** @var oxBasketItem $oBasketItem|PHPUnit\Framework\MockObject\MockObject */
         $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array(), array(), '', false);
         $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($oOrderArticle));
 
@@ -737,12 +737,12 @@ class DeliveryTest extends \OxidTestCase
         $oDelivery->oxdelivery__oxdeltype = new oxField('s', oxField::T_RAW);
         $oDelivery->oxdelivery__oxfixed = new oxField('2', oxField::T_RAW);
 
-        /** @var oxOrderArticle|PHPUnit_Framework_MockObject_MockObject $oOrderArticle */
+        /** @var oxOrderArticle|PHPUnit\Framework\MockObject\MockObject $oOrderArticle */
         $oOrderArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\OrderArticle::class, array(), array(), '', false);
         $oOrderArticle->expects($this->any())->method('getArticle')->will($this->returnValue($this->_oBasketItem->getArticle()));
         $oOrderArticle->expects($this->any())->method('isOrderArticle')->will($this->returnValue(true));
 
-        /** @var oxBasketItem $oBasketItem|PHPUnit_Framework_MockObject_MockObject */
+        /** @var oxBasketItem $oBasketItem|PHPUnit\Framework\MockObject\MockObject */
         $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array(), array(), '', false);
         $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($oOrderArticle));
 

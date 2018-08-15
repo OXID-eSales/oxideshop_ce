@@ -148,7 +148,7 @@ class ArticleStockTest extends \OxidTestCase
 
         $oDb = oxDb::getDb();
 
-        /** @var Article_Stock|PHPUnit_Framework_MockObject_MockObject $oView */
+        /** @var Article_Stock|PHPUnit\Framework\MockObject\MockObject $oView */
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleStock::class, array("resetContentCache"), array(), '', false);
         $oView->expects($this->atLeastOnce())->method('resetContentCache');
 

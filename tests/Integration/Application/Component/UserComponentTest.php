@@ -1372,7 +1372,7 @@ class UserComponentTest extends \OxidTestCase
      */
     public function testCreateUser_setPasswordWithSpecChars()
     {
-        $this->setExpectedException('oxException', 'Create user test');
+        $this->expectException('oxException'); $this->expectExceptionMessage( 'Create user test');
 
         $sPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';
         $this->setRequestParameter('lgn_usr', 'test_username');
@@ -1402,7 +1402,7 @@ class UserComponentTest extends \OxidTestCase
      */
     public function testChangeUser_noRedirect_setPasswordWithSpecChars()
     {
-        $this->setExpectedException('oxException', 'Change user test');
+        $this->expectException('oxException'); $this->expectExceptionMessage( 'Change user test');
 
         $sPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';
         $this->setRequestParameter('invadr', null);
@@ -1432,7 +1432,7 @@ class UserComponentTest extends \OxidTestCase
      */
     public function testLogin_setPasswordWithSpecChars()
     {
-        $this->setExpectedException('oxException', 'Login user test');
+        $this->expectException('oxException'); $this->expectExceptionMessage( 'Login user test');
 
         $sPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';
         $this->setRequestParameter('lgn_usr', 'test_username');

@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Autoload\BackwardsCompatibility;
 
-class ForwardCompatibleCatchingCommunityStandardException_2_Test extends \PHPUnit_Framework_TestCase
+class ForwardCompatibleCatchingCommunityStandardException_2_Test extends \PHPUnit\Framework\TestCase
 {
 
     /**

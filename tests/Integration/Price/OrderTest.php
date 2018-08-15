@@ -10,7 +10,7 @@ use oxField;
 use oxOrder;
 use oxOrderArticle;
 use oxRegistry;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 
 require_once __DIR__. '/BasketConstruct.php';
 

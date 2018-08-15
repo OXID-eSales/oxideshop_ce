@@ -7,7 +7,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use oxTestModules;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @group module
@@ -78,7 +78,9 @@ class ModuleChainsGeneratorTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     public function testOnModuleExtensionCreationError($blDoNotDisableModuleOnError, $expectedException, $message)
     {
-        $this->setExpectedException($expectedException);
+        if ($expectedException) {
+            $this->expectException($expectedException);
+        }
 
         $moduleChainsGeneratorMock = $this->generateModuleChainsGeneratorWithNonExistingFileConfiguration($blDoNotDisableModuleOnError);
 

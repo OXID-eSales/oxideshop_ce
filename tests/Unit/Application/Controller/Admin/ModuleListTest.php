@@ -6,7 +6,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use oxConfig;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class ModuleListTest extends \OxidTestCase
 {

@@ -192,7 +192,7 @@ class DiscountTest extends \OxidTestCase
      */
     public function testSaveOxSortNotNumeric()
     {
-        $this->setExpectedException('OxidEsales\EshopCommunity\Core\Exception\InputException', 'DISCOUNT_ERROR_OXSORT_NOT_A_NUMBER');
+        $this->expectException('OxidEsales\EshopCommunity\Core\Exception\InputException'); $this->expectExceptionMessage( 'DISCOUNT_ERROR_OXSORT_NOT_A_NUMBER');
 
         $id = '_testSaveOxSortNotNumeric';
         $shopId = 1;
@@ -211,7 +211,7 @@ class DiscountTest extends \OxidTestCase
      */
     public function testSaveOxSortNotUnique()
     {
-        $this->setExpectedException('OxidEsales\EshopCommunity\Core\Exception\InputException', 'DISCOUNT_ERROR_OXSORT_NOT_UNIQUE');
+        $this->expectException('OxidEsales\EshopCommunity\Core\Exception\InputException'); $this->expectExceptionMessage( 'DISCOUNT_ERROR_OXSORT_NOT_UNIQUE');
         $oxSort = 1;
 
        /** Save the first record */

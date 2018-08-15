@@ -10,7 +10,7 @@ use oxException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use oxUtilsView;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 
 class oxUtilsViewGetTemplateBlocksTest extends UnitTestCase
@@ -220,10 +220,10 @@ class oxUtilsViewGetTemplateBlocksTest extends UnitTestCase
         $config->expects($this->atLeastOnce())->method('getShopId')->will($this->returnValue('15'));
         $aInfo = array('module1' => 'module1', 'module2' => 'module2');
 
-        /** @var oxException|PHPUnit_Framework_MockObject_MockObject $exception */
+        /** @var oxException|PHPUnit\Framework\MockObject\MockObject $exception */
         $exception = $this->getMockBuilder(\OxidEsales\Eshop\Core\Exception\StandardException::class)->getMock();
 
-        /** @var oxUtilsView|PHPUnit_Framework_MockObject_MockObject $utilsView */
+        /** @var oxUtilsView|PHPUnit\Framework\MockObject\MockObject $utilsView */
         $utilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getConfig', '_getActiveModuleInfo', '_getTemplateBlock'));
         $utilsView->expects($this->any())->method('getConfig')->will($this->returnValue($config));
         $utilsView->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($aInfo));

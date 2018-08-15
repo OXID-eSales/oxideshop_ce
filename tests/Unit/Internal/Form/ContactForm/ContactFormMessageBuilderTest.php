@@ -11,7 +11,7 @@ use OxidEsales\EshopCommunity\Internal\Common\Form\Form;
 use OxidEsales\EshopCommunity\Internal\Common\Form\FormField;
 use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormMessageBuilder;
 
-class ContactFormMessageBuilderTest extends \PHPUnit_Framework_TestCase
+class ContactFormMessageBuilderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider fieldsProvider

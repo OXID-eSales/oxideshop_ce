@@ -6,7 +6,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 use oxModuleList;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class ModuleRemoveTest extends BaseModuleTestCase
 {

@@ -6,7 +6,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \exception;
-use \PHPUnit_Framework_AssertionFailedError;
+use \PHPUnit\Framework\AssertionFailedError;
 use \oxDb;
 use \oxRegistry;
 use \oxTestModules;
@@ -330,8 +330,8 @@ class SeoDecoderTest extends \OxidTestCase
         $aS = $_SERVER;
         $aG = $_GET;
         try {
-            oxTestModules::addFunction('oxSeoDecoder', '_getParams', create_function('$sR, $sP', 'if ($sR != "sRe" || $sP != "sPa" ) throw new PHPUnit_Framework_AssertionFailedError("bad params"); return "sParam";'));
-            oxTestModules::addFunction('oxSeoDecoder', 'decodeUrl', create_function('$sU', 'if ($sU != "sParam" ) throw new PHPUnit_Framework_AssertionFailedError("bad params"); return array("test"=>"test");'));
+            oxTestModules::addFunction('oxSeoDecoder', '_getParams', create_function('$sR, $sP', 'if ($sR != "sRe" || $sP != "sPa" ) throw new PHPUnit\Framework\AssertionFailedError("bad params"); return "sParam";'));
+            oxTestModules::addFunction('oxSeoDecoder', 'decodeUrl', create_function('$sU', 'if ($sU != "sParam" ) throw new PHPUnit\Framework\AssertionFailedError("bad params"); return array("test"=>"test");'));
             $oD = oxNew('oxSeoDecoder');
             $_GET = array('was' => 'was');
             $_SERVER = array('REQUEST_URI' => 'sRe', 'SCRIPT_NAME' => 'sPoxseo.phpa');

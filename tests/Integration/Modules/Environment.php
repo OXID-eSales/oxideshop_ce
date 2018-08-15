@@ -39,7 +39,7 @@ class Environment
     protected $fixtureDirectory = 'TestData';
 
     /**
-     * @var \PHPUnit_Framework_TestCase
+     * @var \PHPUnit\Framework\TestCase
      */
     protected $phpUnit;
 
@@ -78,9 +78,9 @@ class Environment
      * If you use this method, a mock prevents the validation of modules. This method has to be called
      * before the method prepare()
      *
-     * @param \PHPUnit_Framework_TestCase
+     * @param \PHPUnit\Framework\TestCase
      */
-    public function doNotValidateModules(\PHPUnit_Framework_TestCase $phpUnit)
+    public function doNotValidateModules(\PHPUnit\Framework\TestCase $phpUnit)
     {
         $this->phpUnit = $phpUnit;
     }
@@ -267,7 +267,7 @@ class Environment
      *
      * @param \OxidEsales\Eshop\Core\Module\Module $module
      *
-     * @return \OxidEsales\Eshop\Core\Module\ModuleInstaller|\PHPUnit_Framework_MockObject_MockObject
+     * @return \OxidEsales\Eshop\Core\Module\ModuleInstaller|\PHPUnit\Framework\MockObject\MockObject
      */
     protected function getModuleInstaller($module)
     {

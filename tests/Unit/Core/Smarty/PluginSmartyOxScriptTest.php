@@ -21,7 +21,7 @@ class PluginSmartyOxScriptTest extends \OxidTestCase
     /**
      * Check for error if not existing file for include given.
      *
-     * @expectedException PHPUnit_Framework_Error
+     * @expectedException PHPUnit\Framework\Error\Warning
      */
     public function testSmartyFunctionOxScript_includeNotExist()
     {

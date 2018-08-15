@@ -5,7 +5,7 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class TableViewNameGeneratorTest extends \OxidTestCase
 {

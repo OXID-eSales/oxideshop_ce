@@ -50,7 +50,7 @@ class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCa
 
     public function testLoadAppServerDoesNotExists()
     {
-        $this->setExpectedException(\OxidEsales\Eshop\Core\Exception\NoResultException::class);
+        $this->expectException(\OxidEsales\Eshop\Core\Exception\NoResultException::class);
         $id = 'testId';
 
         $appServerDao = $this->getApplicationServerDaoMock("findAppServer", null);

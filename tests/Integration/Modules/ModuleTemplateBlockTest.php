@@ -40,7 +40,7 @@ class ModuleTemplateBlockTest extends UnitTestCase
 
     public function testThrowExcpetionWhenModuleTemplateBlockFileDoesNotExist()
     {
-        $this->setExpectedException(oxException::class);
+        $this->expectException(oxException::class);
 
         $shopPath = implode(DIRECTORY_SEPARATOR, [__DIR__, 'TestData', 'shop']);
         $moduleId = 'oeTestTemplateBlockModuleId';

@@ -172,7 +172,7 @@ class ContactTest extends \OxidTestCase
         $oLang = oxRegistry::getLang();
         $sMessage = $oLang->translateString('MESSAGE_FROM') . " " . $oLang->translateString('MR') . " admin admin (user@oxid-esales.com)<br /><br />message";
 
-        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
+        /** @var oxEmail|PHPUnit\Framework\MockObject\MockObject $oEmail */
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("sendContactMail"));
         $oEmail
             ->expects($this->once())
@@ -187,7 +187,7 @@ class ContactTest extends \OxidTestCase
 
         oxTestModules::addModuleObject('oxemail', $oEmail);
 
-        /** @var Contact|PHPUnit_Framework_MockObject_MockObject $oContact */
+        /** @var Contact|PHPUnit\Framework\MockObject\MockObject $oContact */
         $oContact = oxNew('Contact');
         $oContact->send();
     }
@@ -199,7 +199,7 @@ class ContactTest extends \OxidTestCase
      */
     public function testSendEmailNotSend()
     {
-        /** @var oxUtilsView|PHPUnit_Framework_MockObject_MockObject $oUtils */
+        /** @var oxUtilsView|PHPUnit\Framework\MockObject\MockObject $oUtils */
         $oUtils = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('addErrorToDisplay'));
         $oUtils->expects($this->once())->method('addErrorToDisplay')->with($this->equalTo("ERROR_MESSAGE_CHECK_EMAIL"));
         oxTestModules::addModuleObject('oxUtilsView', $oUtils);
@@ -213,13 +213,13 @@ class ContactTest extends \OxidTestCase
         $this->setRequestParameter("c_message", "message");
         $this->setRequestParameter("c_subject", "subject");
 
-        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
+        /** @var oxEmail|PHPUnit\Framework\MockObject\MockObject $oEmail */
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("sendContactMail"));
         $oEmail->expects($this->once())->method('sendContactMail')->will($this->returnValue(false));
 
         oxTestModules::addModuleObject('oxemail', $oEmail);
 
-        /** @var Contact|PHPUnit_Framework_MockObject_MockObject $oContact */
+        /** @var Contact|PHPUnit\Framework\MockObject\MockObject $oContact */
         $oContact = oxNew('Contact');
         $oContact->send();
     }

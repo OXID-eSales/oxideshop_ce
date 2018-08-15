@@ -21,7 +21,7 @@ class StateTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     public function testInsertingDuplicateStatesIsNotPossible()
     {
-        $this->setExpectedException(\OxidEsales\Eshop\Core\Exception\DatabaseErrorException::class);
+        $this->expectException(\OxidEsales\Eshop\Core\Exception\DatabaseErrorException::class);
         $database = $this->getDb();
         $sql = "INSERT INTO `oxstates` (`OXID`, `OXCOUNTRYID`) VALUES (?, ?)";
         $database->execute($sql, ['duplicateOxid', 'duplicateCountryId']);

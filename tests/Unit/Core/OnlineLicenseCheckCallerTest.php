@@ -81,7 +81,7 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
      */
     public function testUnexpectedExceptionIsThrownOnIncorrectResponse($sMessage, $sResponseXml)
     {
-        $this->setExpectedException('oxException', $sMessage);
+        $this->expectException('oxException'); $this->expectExceptionMessage( $sMessage);
 
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute', 'getStatusCode'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($sResponseXml));

@@ -119,7 +119,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $sSubject = 'testSubject';
 
         $sBody = 'testBody';
-        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
+        /** @var oxEmail|PHPUnit\Framework\MockObject\MockObject $oEmail */
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
@@ -147,7 +147,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(256);
 
-        /** @var oxBasketItem|PHPUnit_Framework_MockObject_MockObject $oBasketItem */
+        /** @var oxBasketItem|PHPUnit\Framework\MockObject\MockObject $oBasketItem */
         $oBasketItem = $this->getMock(
             'oxBasketItem',
             array('getRegularUnitPrice', 'getVatPercent', 'getAmount', 'getTitle', 'getProductId')
@@ -172,7 +172,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $oPriceTotal->expects($this->any())->method('getPrice')->will($this->returnValue(999));
         $oPriceTotal->expects($this->any())->method('getBruttoPrice')->will($this->returnValue(999));
 
-        /** @var oxBasket|PHPUnit_Framework_MockObject_MockObject $oBasket */
+        /** @var oxBasket|PHPUnit\Framework\MockObject\MockObject $oBasket */
         $oBasket = $this->getMock(
             'oxBasket',
             array("getBasketArticles", "getContents", "getPrice", "getBruttoSum", "getNettoSum", "getProductVats")
@@ -186,25 +186,25 @@ class EmailAzureTplTest extends \OxidTestCase
         $oBasket->expects($this->any())->method('getProductVats')->will($this->returnValue(array('19' => 14.35, '5' => 0.38)));
 
 
-        /** @var oxPrice|PHPUnit_Framework_MockObject_MockObject $oPrice1 */
+        /** @var oxPrice|PHPUnit\Framework\MockObject\MockObject $oPrice1 */
         $oPrice1 = $this->getMock('oxPrice');
         $oPrice1->expects($this->any())->method('getPrice')->will($this->returnValue(256));
         $oPrice1->expects($this->any())->method('getBruttoPrice')->will($this->returnValue(666));
         $oBasket->setCost('oxdelivery', $oPrice1);
 
-        /** @var oxPrice|PHPUnit_Framework_MockObject_MockObject $oPrice2 */
+        /** @var oxPrice|PHPUnit\Framework\MockObject\MockObject $oPrice2 */
         $oPrice2 = $this->getMock('oxPrice');
         $oPrice2->expects($this->any())->method('getPrice')->will($this->returnValue(256));
         $oPrice2->expects($this->any())->method('getBruttoPrice')->will($this->returnValue(5));
         $oBasket->setCost('oxwrapping', $oPrice2);
 
-        /** @var oxPrice|PHPUnit_Framework_MockObject_MockObject $oPrice3 */
+        /** @var oxPrice|PHPUnit\Framework\MockObject\MockObject $oPrice3 */
         $oPrice3 = $this->getMock('oxPrice');
         $oPrice3->expects($this->any())->method('getPrice')->will($this->returnValue(256));
         $oPrice3->expects($this->any())->method('getBruttoPrice')->will($this->returnValue(6));
         $oBasket->setCost('oxgiftcard', $oPrice3);
 
-        /** @var oxPrice|PHPUnit_Framework_MockObject_MockObject $oPrice4 */
+        /** @var oxPrice|PHPUnit\Framework\MockObject\MockObject $oPrice4 */
         $oPrice4 = $this->getMock('oxPrice');
         $oPrice4->expects($this->any())->method('getPrice')->will($this->returnValue(256));
         $oPrice4->expects($this->any())->method('getBruttoPrice')->will($this->returnValue(true));
@@ -213,7 +213,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
         $oPayment->oxpayments__oxdesc = new oxField("testPaymentDesc");
 
-        /** @var oxOrder|PHPUnit_Framework_MockObject_MockObject $oOrder */
+        /** @var oxOrder|PHPUnit\Framework\MockObject\MockObject $oOrder */
         $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array("getOrderUser", "getBasket", "getPayment"));
         $oOrder->expects($this->any())->method('getOrderUser')->will($this->returnValue($this->_oUser));
         $oOrder->expects($this->any())->method('getBasket')->will($this->returnValue($oBasket));
@@ -230,7 +230,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $oOrder->oxorder__oxbillcompany = new oxField('');
         $oOrder->oxorder__oxdeltype = new oxField("oxidstandard");
 
-        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
+        /** @var oxEmail|PHPUnit\Framework\MockObject\MockObject $oEmail */
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop", "_getUseInlineImages", 'getOrderFileList'));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
@@ -521,7 +521,7 @@ class EmailAzureTplTest extends \OxidTestCase
     {
         $this->getSession()->setId('xsessx');
 
-        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
+        /** @var oxEmail|PHPUnit\Framework\MockObject\MockObject $oEmail */
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop", "_getUseInlineImages", "isSessionStarted"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
@@ -802,7 +802,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $oParams->send_name = 'testShopName';
         $oParams->send_id = '123456789';
 
-        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
+        /** @var oxEmail|PHPUnit\Framework\MockObject\MockObject $oEmail */
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop", "_getUseInlineImages"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
@@ -901,7 +901,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $aParams['aid'] = $this->_oArticle->getId();
         $aParams['email'] = 'user@oxid-esales.com';
 
-        /** @var oxShop|PHPUnit_Framework_MockObject_MockObject $oShop */
+        /** @var oxShop|PHPUnit\Framework\MockObject\MockObject $oShop */
         $oShop = $this->getMock(\OxidEsales\Eshop\Application\Model\OxidEsalesshopApplicationControllerAdminShopController::class, array('getImageUrl'));
         $oShop->expects($this->any())->method('getImageUrl');
         //$oShop->loadInLang( 1, $this->getConfig()->getBaseShopId() );

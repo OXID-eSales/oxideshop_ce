@@ -8,7 +8,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Edition;
 use OxidEsales\EshopCommunity\Core\Edition\EditionRootPathProvider;
 use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
 use OxidEsales\TestingLibrary\UnitTestCase;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class EditionRootPathProviderTest extends UnitTestCase
 {
@@ -38,7 +38,7 @@ class EditionRootPathProviderTest extends UnitTestCase
 
     /**
      * @param $edition
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return PHPUnit\Framework\MockObject\MockObject
      */
     protected function getEditionSelectorMock($edition)
     {

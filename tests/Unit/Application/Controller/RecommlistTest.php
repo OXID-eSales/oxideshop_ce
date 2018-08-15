@@ -96,16 +96,16 @@ class RecommlistTest extends \OxidTestCase
     {
         $this->setRequestParameter("recommlistrating", 3);
 
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
-        /** @var oxRecommList|PHPUnit_Framework_MockObject_MockObject $oRecommList */
+        /** @var oxRecommList|PHPUnit\Framework\MockObject\MockObject $oRecommList */
         $oRecommList = $this->getMock(\OxidEsales\Eshop\Application\Model\RecommendationList::class, array("addToRatingAverage"));
         $oRecommList->expects($this->never())->method('addToRatingAverage');
 
-        /** @var RecommList|PHPUnit_Framework_MockObject_MockObject $oView */
+        /** @var RecommList|PHPUnit\Framework\MockObject\MockObject $oView */
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\RecommListController::class, array("getActiveRecommList", "getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
         $oView->expects($this->any())->method('getActiveRecommList')->will($this->returnValue($oRecommList));
@@ -123,21 +123,21 @@ class RecommlistTest extends \OxidTestCase
         $this->setRequestParameter("recommlistrating", 3);
         $this->setRequestParameter("rvw_txt", "testRecommId");
 
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
-        /** @var oxRecommList|PHPUnit_Framework_MockObject_MockObject $oRecommList */
+        /** @var oxRecommList|PHPUnit\Framework\MockObject\MockObject $oRecommList */
         $oRecommList = $this->getMock(\OxidEsales\Eshop\Application\Model\RecommendationList::class, array("addToRatingAverage", "getId"));
         $oRecommList->expects($this->once())->method('addToRatingAverage');
         $oRecommList->expects($this->any())->method('getId')->will($this->returnValue("testRecommListId"));
 
-        /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUser */
+        /** @var oxUser|PHPUnit\Framework\MockObject\MockObject $oUser */
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array("getId"));
         $oUser->expects($this->any())->method('getId')->will($this->returnValue("testUserId"));
 
-        /** @var RecommList|PHPUnit_Framework_MockObject_MockObject $oView */
+        /** @var RecommList|PHPUnit\Framework\MockObject\MockObject $oView */
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\RecommListController::class, array("getActiveRecommList", "getUser", "canAcceptFormData"));
         $oView->expects($this->any())->method('canAcceptFormData')->will($this->returnValue(true));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));

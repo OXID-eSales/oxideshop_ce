@@ -91,7 +91,7 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testValidateBasketAmountBadInput($notAllowedAmount)
     {
         $this->getConfig()->setConfigParam('blAllowUnevenAmounts', false);
-        $this->setExpectedException(\OxidEsales\Eshop\Core\Exception\ArticleInputException::class);
+        $this->expectException(\OxidEsales\Eshop\Core\Exception\ArticleInputException::class);
         $this->_oValidator->validateBasketAmount($notAllowedAmount);
     }
 

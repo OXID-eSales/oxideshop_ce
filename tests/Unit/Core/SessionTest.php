@@ -1076,7 +1076,7 @@ class SessionTest extends \OxidTestCase
         $utils->expects($this->any())->method('isSearchEngine')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
 
-        /** @var testSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        /** @var testSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\testSession::class, array('_getCookieSid', 'isAdmin'));
         $oSession->expects($this->any())->method('_getCookieSid')->will($this->returnValue('admin_sid'));
         $oSession->expects($this->any())->method('isAdmin')->will($this->returnValue(false));

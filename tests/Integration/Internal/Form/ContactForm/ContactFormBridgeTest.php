@@ -11,7 +11,7 @@ use OxidEsales\EshopCommunity\Internal\Common\Form\FormInterface;
 use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormConfigurationInterface;
 use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormBridgeInterface;
 
-class ContactFormBridgeTest extends \PHPUnit_Framework_TestCase
+class ContactFormBridgeTest extends \PHPUnit\Framework\TestCase
 {
     public function testFormGetter()
     {

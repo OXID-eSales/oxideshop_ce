@@ -117,7 +117,7 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
     public function testModuleInheritanceTestPhpInheritanceForbidden($moduleToActivate, $moduleClassName, $shopClassNames, $expectedException)
     {
         $message = sprintf(Registry::getLang()->translateString('MODULE_METADATA_PROBLEMATIC_DATA_IN_EXTEND', null, true), $expectedException);
-        $this->setExpectedException(\OxidEsales\EshopCommunity\Core\Exception\ModuleValidationException::class, $message);
+        $this->expectException(\OxidEsales\EshopCommunity\Core\Exception\ModuleValidationException::class); $this->expectExceptionMessage( $message);
 
         parent::moduleInheritanceByPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames);
     }

@@ -40,7 +40,7 @@ class ModuleSortListTest extends \OxidTestCase
 
         $aModules = array("oxarticle" => "dir1/module1&dir2/module2");
 
-        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
+        /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $oConfig */
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('saveShopConfVar'));
         $oConfig->expects($this->once())->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("aModules"), $this->equalTo($aModules));
 

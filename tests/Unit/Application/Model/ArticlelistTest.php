@@ -1556,7 +1556,7 @@ EOT;
      */
     public function testLoadHistoryArticlesSingleArticle()
     {
-        /** @var oxArticleList|PHPUnit_Framework_MockObject_MockObject $articleList */
+        /** @var oxArticleList|PHPUnit\Framework\MockObject\MockObject $articleList */
         $articleList = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('loadIds', 'sortByIds'));
         $articleList->expects($this->any())->method("loadIds")->will($this->returnValue(true));
         $articleList->expects($this->any())->method("sortByIds")->will($this->returnValue(true));

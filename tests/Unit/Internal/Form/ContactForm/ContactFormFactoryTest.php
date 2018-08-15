@@ -16,7 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormEmailValidato
 use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormFactory;
 use OxidEsales\EshopCommunity\Internal\Common\Form\FormInterface;
 
-class ContactFormFactoryTest extends \PHPUnit_Framework_TestCase
+class ContactFormFactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function testFormGetter()
     {

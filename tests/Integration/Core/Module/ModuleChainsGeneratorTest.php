@@ -39,13 +39,13 @@ class ModuleChainsGeneratorTest extends UnitTestCase
             $this->assertNotFalse(current($classFilePaths), 'Class file could not be created');
         }
 
-        /** @var ModuleVariablesLocator|\PHPUnit_Framework_MockObject_MockObject $moduleVariablesLocatorMock */
+        /** @var ModuleVariablesLocator|\PHPUnit\Framework\MockObject\MockObject $moduleVariablesLocatorMock */
         $moduleVariablesLocatorMock = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::class, array(), array(), '', false);
 
         /**
          * Create a Mock with disabled constructor
          *
-         * @var ModuleChainsGenerator|\PHPUnit_Framework_MockObject_MockObject $moduleChainsGeneratorMock
+         * @var ModuleChainsGenerator|\PHPUnit\Framework\MockObject\MockObject $moduleChainsGeneratorMock
          */
         $moduleChainsGeneratorMock = $this->getMock(ModuleChainsGenerator::class, ['getModulesArray'], [$moduleVariablesLocatorMock]);
         $moduleChainsGeneratorMock->expects($this->any())->method('getModulesArray')->will($this->returnValue($modulesArray));
@@ -76,13 +76,13 @@ class ModuleChainsGeneratorTest extends UnitTestCase
             $this->assertNotFalse(current($classFilePaths), 'Class file could not be created');
         }
 
-        /** @var ModuleVariablesLocator|\PHPUnit_Framework_MockObject_MockObject $moduleVariablesLocatorMock */
+        /** @var ModuleVariablesLocator|\PHPUnit\Framework\MockObject\MockObject $moduleVariablesLocatorMock */
         $moduleVariablesLocatorMock = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::class, array(), array(), '', false);
 
         /**
          * Create a Mock with disabled constructor
          *
-         * @var ModuleChainsGenerator|\PHPUnit_Framework_MockObject_MockObject $moduleChainsGeneratorMock
+         * @var ModuleChainsGenerator|\PHPUnit\Framework\MockObject\MockObject $moduleChainsGeneratorMock
          */
         $moduleChainsGeneratorMock = $this->getMock(ModuleChainsGenerator::class, ['getModulesArray'], [$moduleVariablesLocatorMock]);
         $moduleChainsGeneratorMock->expects($this->any())->method('getModulesArray')->will($this->returnValue($modulesArray));

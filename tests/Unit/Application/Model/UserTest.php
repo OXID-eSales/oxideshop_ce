@@ -2778,7 +2778,7 @@ class UserTest extends \OxidTestCase
         $iStateId = 'CA';
         $iAlternateStateId = 'AK';
 
-        /** @var oxState|PHPUnit_Framework_MockObject_MockObject $oStateMock */
+        /** @var oxState|PHPUnit\Framework\MockObject\MockObject $oStateMock */
         $oStateMock = $this->getMock(\OxidEsales\Eshop\Application\Model\State::class, array('getTitleById'));
 
         $oStateMock->expects($this->at(0))
@@ -2801,7 +2801,7 @@ class UserTest extends \OxidTestCase
             ->with($iAlternateStateId)
             ->will($this->returnValue('Alaska'));
 
-        /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUserMock */
+        /** @var oxUser|PHPUnit\Framework\MockObject\MockObject $oUserMock */
         $oUserMock = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('_getStateObject', 'getStateId'));
 
         $oUserMock->expects($this->any())

@@ -151,7 +151,7 @@ class UserMainTest extends \OxidTestCase
         $oUser->expects($this->once())->method('checkIfEmailExists')->will($this->returnValue(true));
         oxTestModules::addModuleObject('oxuser', $oUser);
 
-        /** @var User_Main|PHPUnit_Framework_MockObject_MockObject $oView */
+        /** @var User_Main|PHPUnit\Framework\MockObject\MockObject $oView */
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserMain::class, array('getEditObjectId', '_allowAdminEdit'));
         $oView->expects($this->once())->method('_allowAdminEdit')->will($this->returnValue(true));
 

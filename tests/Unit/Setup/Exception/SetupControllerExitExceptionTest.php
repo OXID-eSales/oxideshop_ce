@@ -8,7 +8,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Setup\Exception;
 
 use OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException;
 
-class SetupControllerExitExceptionTest extends \PHPUnit_Framework_TestCase
+class SetupControllerExitExceptionTest extends \PHPUnit\Framework\TestCase
 {
     public function testCanCreateSut()
     {
@@ -17,7 +17,7 @@ class SetupControllerExitExceptionTest extends \PHPUnit_Framework_TestCase
 
     public function testIsThrowable()
     {
-        $this->setExpectedException(SetupControllerExitException::class);
+        $this->expectException(SetupControllerExitException::class);
 
         throw new SetupControllerExitException();
     }

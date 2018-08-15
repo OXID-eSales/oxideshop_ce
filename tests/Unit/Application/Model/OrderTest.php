@@ -2710,7 +2710,7 @@ class OrderTest extends \OxidTestCase
 
         $oOrder = oxNew('oxOrder');
 
-        $this->setExpectedException(\OxidEsales\Eshop\Core\Exception\NoArticleException::class);
+        $this->expectException(\OxidEsales\Eshop\Core\Exception\NoArticleException::class);
         $oOrder->validateStock($oBasket);
     }
 
@@ -2732,7 +2732,7 @@ class OrderTest extends \OxidTestCase
         $oArticle->save();
 
         $oOrder = oxNew('oxOrder');
-        $this->setExpectedException(\OxidEsales\Eshop\Core\Exception\ArticleInputException::class);
+        $this->expectException(\OxidEsales\Eshop\Core\Exception\ArticleInputException::class);
         $oOrder->validateStock($oBasket);
     }
 

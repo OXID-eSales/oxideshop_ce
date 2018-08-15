@@ -797,17 +797,17 @@ class DetailsTest extends \OxidTestCase
         $this->setRequestParameter('anid', 'test');
         $this->setSessionParam('usr', 'oxdefaultadmin');
 
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
-        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
+        /** @var oxArticle|PHPUnit\Framework\MockObject\MockObject $oProduct */
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->any())->method('addToRatingAverage');
 
-        /** @var Details|PHPUnit_Framework_MockObject_MockObject $oDetails */
+        /** @var Details|PHPUnit\Framework\MockObject\MockObject $oDetails */
         $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct', 'canAcceptFormData'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
         $oDetails->expects($this->any())->method('canAcceptFormData')->will($this->returnValue(true));
@@ -829,17 +829,17 @@ class DetailsTest extends \OxidTestCase
         $this->setRequestParameter('anid', 'test');
         $this->setSessionParam('usr', null);
 
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
-        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
+        /** @var oxArticle|PHPUnit\Framework\MockObject\MockObject $oProduct */
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->any())->method('addToRatingAverage');
 
-        /** @var Details|PHPUnit_Framework_MockObject_MockObject $oDetails */
+        /** @var Details|PHPUnit\Framework\MockObject\MockObject $oDetails */
         $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
         $oDetails->saveReview();
@@ -859,12 +859,12 @@ class DetailsTest extends \OxidTestCase
         $this->setRequestParameter('artrating', null);
         $this->setRequestParameter('anid', 'test');
 
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
-        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
+        /** @var oxArticle|PHPUnit\Framework\MockObject\MockObject $oProduct */
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->any())->method('addToRatingAverage');
@@ -872,7 +872,7 @@ class DetailsTest extends \OxidTestCase
         $oUser = oxNew('oxUser');
         $oUser->load('oxdefaultadmin');
 
-        /** @var Details|PHPUnit_Framework_MockObject_MockObject $oDetails */
+        /** @var Details|PHPUnit\Framework\MockObject\MockObject $oDetails */
         $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct', 'getUser', 'canAcceptFormData'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
         $oDetails->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
@@ -894,12 +894,12 @@ class DetailsTest extends \OxidTestCase
         $this->setRequestParameter('artrating', 6);
         $this->setRequestParameter('anid', 'test');
 
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
-        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
+        /** @var oxArticle|PHPUnit\Framework\MockObject\MockObject $oProduct */
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->any())->method('addToRatingAverage');
@@ -907,7 +907,7 @@ class DetailsTest extends \OxidTestCase
         $oUser = oxNew('oxUser');
         $oUser->load('oxdefaultadmin');
 
-        /** @var Details|PHPUnit_Framework_MockObject_MockObject $oDetails */
+        /** @var Details|PHPUnit\Framework\MockObject\MockObject $oDetails */
         $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct', 'getUser', 'canAcceptFormData'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
         $oDetails->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
@@ -930,17 +930,17 @@ class DetailsTest extends \OxidTestCase
         $this->setRequestParameter('anid', 'test');
         $this->setSessionParam('usr', 'oxdefaultadmin');
 
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
-        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
+        /** @var oxArticle|PHPUnit\Framework\MockObject\MockObject $oProduct */
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->any())->method('addToRatingAverage');
 
-        /** @var Details|PHPUnit_Framework_MockObject_MockObject $oDetails */
+        /** @var Details|PHPUnit\Framework\MockObject\MockObject $oDetails */
         $oDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getProduct', 'canAcceptFormData'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
         $oDetails->expects($this->any())->method('canAcceptFormData')->will($this->returnValue(true));
@@ -960,12 +960,12 @@ class DetailsTest extends \OxidTestCase
         $oCfg = $this->getMock("stdClass", array("getShowListmania"));
         $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(false));
 
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
-        /** @var Details|PHPUnit_Framework_MockObject_MockObject $oRecomm */
+        /** @var Details|PHPUnit\Framework\MockObject\MockObject $oRecomm */
         $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getViewConfig", 'getArticleList'));
         $oRecomm->expects($this->once())->method('getViewConfig')->will($this->returnValue($oCfg));
         $oRecomm->expects($this->never())->method('getArticleList');
@@ -986,24 +986,24 @@ class DetailsTest extends \OxidTestCase
         $oCfg = $this->getMock("stdClass", array("getShowListmania"));
         $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(true));
 
-        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
+        /** @var oxArticle|PHPUnit\Framework\MockObject\MockObject $oProduct */
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId'));
         $oProduct->expects($this->once())->method('getId')->will($this->returnValue('test_artid'));
 
         $this->setRequestParameter('recomm', 'test_recomm');
         $this->setRequestParameter('recomm_txt', 'test_recommtext');
 
-        /** @var oxRecommList|PHPUnit_Framework_MockObject_MockObject $oRecommList */
+        /** @var oxRecommList|PHPUnit\Framework\MockObject\MockObject $oRecommList */
         $oRecommList = $this->getMock(\OxidEsales\Eshop\Application\Model\RecommendationList::class, array('load', 'addArticle'));
         $oRecommList->expects($this->once())->method('load')->with($this->equalTo('test_recomm'));
         $oRecommList->expects($this->once())->method('addArticle')->with($this->equalTo('test_artid'), $this->equalTo('test_recommtext'));
 
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
-        /** @var Details|PHPUnit_Framework_MockObject_MockObject $oRecomm */
+        /** @var Details|PHPUnit\Framework\MockObject\MockObject $oRecomm */
         $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array("getViewConfig", 'getProduct'));
         $oRecomm->expects($this->once())->method('getViewConfig')->will($this->returnValue($oCfg));
         $oRecomm->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
@@ -1187,17 +1187,17 @@ class DetailsTest extends \OxidTestCase
 
     public function testAddme_invalidEmail()
     {
-        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
+        /** @var oxEmail|PHPUnit\Framework\MockObject\MockObject $oEmail */
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('sendPricealarmNotification'));
         $oEmail->expects($this->never())->method('sendPricealarmNotification');
         oxTestModules::addModuleObject('oxEmail', $oEmail);
 
-        /** @var oxPriceAlarm|PHPUnit_Framework_MockObject_MockObject $oPriceAlarm */
+        /** @var oxPriceAlarm|PHPUnit\Framework\MockObject\MockObject $oPriceAlarm */
         $oPriceAlarm = $this->getMock(\OxidEsales\Eshop\Application\Model\PriceAlarm::class, array('save'));
         $oPriceAlarm->expects($this->never())->method('save');
         oxTestModules::addModuleObject('oxpricealarm', $oPriceAlarm);
 
-        /** @var Details|PHPUnit_Framework_MockObject_MockObject $oView */
+        /** @var Details|PHPUnit\Framework\MockObject\MockObject $oView */
         $oView = $this->getProxyClass('Details');
 
         $aParams = array();
@@ -1210,21 +1210,21 @@ class DetailsTest extends \OxidTestCase
 
     public function testAddme_mailsent()
     {
-        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $oEmail */
+        /** @var oxEmail|PHPUnit\Framework\MockObject\MockObject $oEmail */
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('sendPricealarmNotification'));
         $oEmail->expects($this->once())->method('sendPricealarmNotification')->will($this->returnValue(123));
         oxTestModules::addModuleObject('oxEmail', $oEmail);
 
-        /** @var oxPriceAlarm|PHPUnit_Framework_MockObject_MockObject $oPriceAlarm */
+        /** @var oxPriceAlarm|PHPUnit\Framework\MockObject\MockObject $oPriceAlarm */
         $oPriceAlarm = $this->getMock(\OxidEsales\Eshop\Application\Model\PriceAlarm::class, array('save'));
         $oPriceAlarm->expects($this->once())->method('save');
         oxTestModules::addModuleObject('oxpricealarm', $oPriceAlarm);
 
-        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
+        /** @var oxArticle|PHPUnit\Framework\MockObject\MockObject $oProduct */
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId'));
         $oProduct->expects($this->once())->method('getId')->will($this->returnValue('test_artid'));
 
-        /** @var Details|PHPUnit_Framework_MockObject_MockObject $oView */
+        /** @var Details|PHPUnit\Framework\MockObject\MockObject $oView */
         $oView = $this->getMock($this->getProxyClassName('Details'), array('getProduct'));
         $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
 

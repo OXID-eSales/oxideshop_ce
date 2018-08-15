@@ -8,7 +8,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Price;
 use oxDb;
 use OxidEsales\Eshop\Application\Model\Order;
 use oxOrder;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 
 require_once __DIR__. '/BasketConstruct.php';
 

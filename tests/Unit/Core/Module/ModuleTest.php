@@ -726,7 +726,7 @@ class ModuleTest extends \OxidTestCase
      * @param $expectedException
      */
     public function testGetControllersWithWrongMetadataValue($metaDataControllers, $expectedException) {
-        $this->setExpectedException($expectedException);
+        $this->expectException($expectedException);
         $metaData = array(
             'id' => 'testModuleId',
             'controllers' => $metaDataControllers

@@ -37,7 +37,7 @@ class ActionListTest extends \OxidTestCase
             "select * from $sView where oxtype=2 and oxactive=1 and oxshopid='" . $sShopId . "' and oxactiveto>0 and oxactiveto < '$sNow'
                (user group filter)
                order by oxactiveto desc, oxactivefrom desc limit 5"
-        )->will($this->evalFunction('{$invocation->object->assign(array("asd", "dsa", "aaa"));}'));
+        )->will($this->evalFunction('{$invocation->getObject()->assign(array("asd", "dsa", "aaa"));}'));
         $oL->loadFinishedByCount(5);
         $this->assertEquals(array("asd", "dsa", "aaa"), $oL->getArray());
         $this->assertEquals(array(2, 1, 0), array_keys($oL->getArray()));

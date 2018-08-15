@@ -535,7 +535,7 @@ class PictureHandlerTest extends \OxidTestCase
 
     public function testGetAltImageUrlSslAltUrlIsSsl()
     {
-        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
+        /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $config */
         $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isSsl'));
         $config->expects($this->any())->method('isSsl')->will($this->returnValue(true));
 
@@ -550,7 +550,7 @@ class PictureHandlerTest extends \OxidTestCase
 
     public function testGetAltImageUrlSslAltUrlIsNotSsl()
     {
-        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
+        /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $config */
         $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isSsl'));
         $config->expects($this->any())->method('isSsl')->will($this->returnValue(false));
 
@@ -565,7 +565,7 @@ class PictureHandlerTest extends \OxidTestCase
 
     public function testGetAltImageUrlSslAltUrlForseSsl()
     {
-        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
+        /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $config */
         $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isSsl'));
         $config->expects($this->any())->method('isSsl')->will($this->returnValue(false));
 
@@ -580,7 +580,7 @@ class PictureHandlerTest extends \OxidTestCase
 
     public function testGetAltImageUrlSslAltUrlForseNoSsl()
     {
-        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
+        /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $config */
         $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isSsl'));
         $config->expects($this->any())->method('isSsl')->will($this->returnValue(true));
 

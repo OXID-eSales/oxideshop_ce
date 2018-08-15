@@ -8,7 +8,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Setup\Exception;
 
 use OxidEsales\EshopCommunity\Setup\Exception\TemplateNotFoundException;
 
-class TemplateNotFoundExceptionTest extends \PHPUnit_Framework_TestCase
+class TemplateNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
 {
     public function testCanCreateSut()
     {
@@ -17,7 +17,7 @@ class TemplateNotFoundExceptionTest extends \PHPUnit_Framework_TestCase
 
     public function testProvidesInformationAboutMissingFile()
     {
-        $this->setExpectedException(
+        $this->expectException(
             TemplateNotFoundException::class,
             "Template named 'template_file.php' was not found."
         );

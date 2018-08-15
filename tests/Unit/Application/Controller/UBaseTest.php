@@ -1444,7 +1444,7 @@ class UBaseTest extends \OxidTestCase
         $utils->expects($this->never())->method('redirect');
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
 
-        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
+        /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $config */
         $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isProductiveMode'));
         $config->expects($this->any())->method('isProductiveMode')->will($this->returnValue(1));
 
@@ -1472,7 +1472,7 @@ class UBaseTest extends \OxidTestCase
         $utils->expects($this->never())->method('redirect');
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
 
-        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
+        /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $config */
         $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isProductiveMode'));
         $config->expects($this->any())->method('isProductiveMode')->will($this->returnValue(1));
         $config->setConfigParam('blSeoLogging', 1);

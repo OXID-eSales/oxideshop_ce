@@ -43,7 +43,7 @@ class UserRatingBridgeTest extends UnitTestCase
 
     public function testDeleteRatingWithNonExistentRatingId()
     {
-        $this->setExpectedException(EntryDoesNotExistDaoException::class);
+        $this->expectException(EntryDoesNotExistDaoException::class);
 
         $userRatingBridge = $this->getUserRatingBridge();
         $userRatingBridge->deleteRating('testUserId', 'nonExistentId');
@@ -51,7 +51,7 @@ class UserRatingBridgeTest extends UnitTestCase
 
     public function testDeleteRatingWithWrongUserId()
     {
-        $this->setExpectedException(RatingPermissionException::class);
+        $this->expectException(RatingPermissionException::class);
 
         $this->createTestRating();
 
@@ -74,7 +74,7 @@ class UserRatingBridgeTest extends UnitTestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|UserRatingServiceInterface
+     * @return \PHPUnit\Framework\MockObject\MockObject|UserRatingServiceInterface
      */
     private function getUserRatingServiceMock()
     {

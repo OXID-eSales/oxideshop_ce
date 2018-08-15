@@ -2117,7 +2117,7 @@ class ArticleTest extends \OxidTestCase
         $amountPriceList = oxNew('oxAmountPriceList');
         $amountPriceList->assign(array($item));
 
-        /** @var oxArticle|PHPUnit_Framework_TestCase $article */
+        /** @var oxArticle|PHPUnit\Framework\TestCase $article */
         $article = oxNew('oxArticle');
         $article->setAmountPriceList($amountPriceList);
         $article->oxarticles__oxprice = new oxField(10, oxField::T_RAW);

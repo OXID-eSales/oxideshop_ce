@@ -453,7 +453,7 @@ class NewsletterTest extends \OxidTestCase
 
         $oTestNews->oxnewsletter__oxsubject->value = "TestSubject";
 
-        $this->setExpectedException('oxException', "TestSubject");
+        $this->expectException('oxException'); $this->expectExceptionMessage( "TestSubject");
 
         $oTestNews->UNITsetUser('oxdefaultadmin');
         $blMailWasSent = $oTestNews->send();

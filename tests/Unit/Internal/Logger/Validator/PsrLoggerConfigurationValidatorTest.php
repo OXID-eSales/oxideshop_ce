@@ -8,7 +8,7 @@ use OxidEsales\EshopCommunity\Internal\Logger\Configuration\PsrLoggerConfigurati
 use OxidEsales\EshopCommunity\Internal\Logger\Validator\PsrLoggerConfigurationValidator;
 use Psr\Log\LogLevel;
 
-class PsrLoggerConfigurationValidatorTest extends PHPUnit_Framework_TestCase
+class PsrLoggerConfigurationValidatorTest extends PHPUnit\Framework\TestCase
 {
 
     /**
@@ -16,7 +16,7 @@ class PsrLoggerConfigurationValidatorTest extends PHPUnit_Framework_TestCase
      */
     public function testValidLogLevelValidation($logLevel)
     {
-        /** @var PHPUnit_Framework_MockObject_MockObject|PsrLoggerConfigurationInterface $configurationMock */
+        /** @var PHPUnit\Framework\MockObject\MockObject|PsrLoggerConfigurationInterface $configurationMock */
         $configurationMock = $this->getMockBuilder(PsrLoggerConfigurationInterface::class)->getMock();
         $configurationMock
             ->expects($this->any())
@@ -46,9 +46,9 @@ class PsrLoggerConfigurationValidatorTest extends PHPUnit_Framework_TestCase
      */
     public function testInvalidLogLevelValidation($logLevel)
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
-        /** @var PHPUnit_Framework_MockObject_MockObject|PsrLoggerConfigurationInterface $configurationMock */
+        /** @var PHPUnit\Framework\MockObject\MockObject|PsrLoggerConfigurationInterface $configurationMock */
         $configurationMock = $this->getMockBuilder(PsrLoggerConfigurationInterface::class)->getMock();
         $configurationMock
             ->expects($this->any())

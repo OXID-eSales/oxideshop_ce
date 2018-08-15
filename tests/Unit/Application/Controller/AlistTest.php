@@ -1020,7 +1020,7 @@ class AlistTest extends \OxidTestCase
 
         $this->setRequestParameter('cnid', $sCatId);
 
-        /** @var AList|PHPUnit_Framework_MockObject_MockObject $oSubj */
+        /** @var AList|PHPUnit\Framework\MockObject\MockObject $oSubj */
         $oSubj = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('_prepareMetaKeyword'));
         $oSubj->expects($this->any())->method('_prepareMetaKeyword')->will($this->returnValue("aaa"));
 

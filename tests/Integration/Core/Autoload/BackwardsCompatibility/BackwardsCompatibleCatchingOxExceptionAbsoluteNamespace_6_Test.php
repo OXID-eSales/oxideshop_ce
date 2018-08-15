@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Autoload\BackwardsCompatibility;
 
-class BackwardsCompatibleCatchingOxExceptionAbsoluteNamespace_6_Test extends \PHPUnit_Framework_TestCase
+class BackwardsCompatibleCatchingOxExceptionAbsoluteNamespace_6_Test extends \PHPUnit\Framework\TestCase
 {
 
     /**

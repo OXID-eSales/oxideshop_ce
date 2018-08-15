@@ -14,7 +14,7 @@ use Psr\Log\LoggerInterface;
  *
  * @package OxidEsales\EshopCommunity\Tests\Unit\Internal\Logger\Wrapper
  */
-class LoggerWrapperTest extends \PHPUnit_Framework_TestCase
+class LoggerWrapperTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

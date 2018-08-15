@@ -11,7 +11,7 @@ use OxidEsales\EshopCommunity\Internal\Common\Form\FormField;
 use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormEmailValidator;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapter;
 
-class ContactFormEmailValidatorTest extends \PHPUnit_Framework_TestCase
+class ContactFormEmailValidatorTest extends \PHPUnit\Framework\TestCase
 {
     public function testInvalidEmailValidation()
     {

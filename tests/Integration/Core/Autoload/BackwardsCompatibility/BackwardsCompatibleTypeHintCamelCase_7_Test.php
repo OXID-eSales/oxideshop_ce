@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Autoload\BackwardsCompatibility;
 
-class BackwardsCompatibleTypeHintCamelCase_7_Test extends \PHPUnit_Framework_TestCase
+class BackwardsCompatibleTypeHintCamelCase_7_Test extends \PHPUnit\Framework\TestCase
 {
 
     /**

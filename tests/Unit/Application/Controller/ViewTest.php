@@ -347,7 +347,7 @@ class ViewTest extends \OxidTestCase
         $view = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('getConfig'));
         $view->expects($this->once())->method('getConfig')->will($this->returnValue($config));
 
-        $this->setExpectedException('oxSystemComponentException', 'ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND' . ' testAction');
+        $this->expectException('oxSystemComponentException'); $this->expectExceptionMessage( 'ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND' . ' testAction');
         $view->_executeNewAction("testAction");
     }
 
@@ -733,7 +733,7 @@ class ViewTest extends \OxidTestCase
         $this->assertEmpty(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('ViewTestModuleControllerResult'));
         $view = oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\ViewTestFirstModuleController::class);
 
-        $this->setExpectedException(\Exception::class, 'Bail out before redirect, all is well.');
+        $this->expectException(\Exception::class); $this->expectExceptionMessage( 'Bail out before redirect, all is well.');
         $view->executeFunction('doSomething');
     }
 

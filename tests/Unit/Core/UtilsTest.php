@@ -105,7 +105,7 @@ class UtilsTest extends \OxidTestCase
     public function testShowMessageAndExit()
     {
         // This Exception is used to avoid exit() in method showMessageAndExit, which would stop running tests.
-        $this->setExpectedException(
+        $this->expectException(
             'Exception', 'Stop process before PHP exit() is called.'
         );
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("freeze"));
@@ -1362,7 +1362,7 @@ class UtilsTest extends \OxidTestCase
         $this->setConfigParam('blShowNetPrice', false);
 
         // Mocking not necessary method for testing method to be called. Leaving mock empty would stub all class methods.
-        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $oUtils */
+        /** @var oxUtils|PHPUnit\Framework\MockObject\MockObject $oUtils */
         $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_getArticleUser'));
         $this->assertSame(10, $oUtils->_preparePrice(10, 10));
     }
@@ -1374,7 +1374,7 @@ class UtilsTest extends \OxidTestCase
     {
         $this->setConfigParam('blShowNetPrice', true);
         // Mocking not necessary method for testing method to be called. Leaving mock empty would stub all class methods.
-        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $oUtils */
+        /** @var oxUtils|PHPUnit\Framework\MockObject\MockObject $oUtils */
         $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_getArticleUser'));
         $this->assertSame(9.09, $oUtils->_preparePrice(10, 10));
     }
@@ -1390,7 +1390,7 @@ class UtilsTest extends \OxidTestCase
         $oUser->expects($this->any())->method('isPriceViewModeNetto')->will($this->returnValue(false));
 
         // Mocking not necessary method for testing method to be called. Leaving mock empty would stub all class methods.
-        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $oUtils */
+        /** @var oxUtils|PHPUnit\Framework\MockObject\MockObject $oUtils */
         $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_getArticleUser'));
         $oUtils->expects($this->atLeastOnce())->method('_getArticleUser')->will($this->returnValue($oUser));
         $this->assertSame(10, $oUtils->_preparePrice(10, 10));
@@ -1407,7 +1407,7 @@ class UtilsTest extends \OxidTestCase
         $oUser->expects($this->any())->method('isPriceViewModeNetto')->will($this->returnValue(true));
 
         // Mocking not necessary method for testing method to be called. Leaving mock empty would stub all class methods.
-        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $oUtils */
+        /** @var oxUtils|PHPUnit\Framework\MockObject\MockObject $oUtils */
         $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_getArticleUser'));
         $oUtils->expects($this->atLeastOnce())->method('_getArticleUser')->will($this->returnValue($oUser));
         $this->assertSame(9.09, $oUtils->_preparePrice(10, 10));

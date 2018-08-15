@@ -9,7 +9,7 @@ use \Exception;
 use Language_Main;
 use \oxRegistry;
 use \oxTestModules;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Tests for Language_Main class

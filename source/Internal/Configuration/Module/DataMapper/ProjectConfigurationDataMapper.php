@@ -9,10 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper;
 
-use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ProjectConfiguration;
-use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ShopConfiguration;
 
 /**
  * @internal
@@ -20,17 +18,17 @@ use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ShopConfi
 class ProjectConfigurationDataMapper implements ProjectConfigurationDataMapperInterface
 {
     /**
-     * @var ModuleConfigurationDataMapperInterface
+     * @var ShopConfigurationDataMapperInterface
      */
-    private $moduleConfigurationDataMapper;
+    private $shopConfigurationDataMapper;
 
     /**
      * ProjectConfigurationDataMapper constructor.
-     * @param ModuleConfigurationDataMapperInterface $moduleConfigurationDataMapper
+     * @param ShopConfigurationDataMapperInterface $shopConfigurationDataMapper
      */
-    public function __construct(ModuleConfigurationDataMapperInterface $moduleConfigurationDataMapper)
+    public function __construct(ShopConfigurationDataMapperInterface $shopConfigurationDataMapper)
     {
-        $this->moduleConfigurationDataMapper = $moduleConfigurationDataMapper;
+        $this->shopConfigurationDataMapper = $shopConfigurationDataMapper;
     }
 
     /**
@@ -83,26 +81,9 @@ class ProjectConfigurationDataMapper implements ProjectConfigurationDataMapperIn
     private function setShopsConfiguration(EnvironmentConfiguration $environmentConfiguration, array $shopsData)
     {
         foreach ($shopsData as $shopId => $shopData) {
-            $shopConfiguration = new ShopConfiguration();
-
-            if (isset($shopData['modules'])) {
-                $this->setModulesConfiguration($shopConfiguration, $shopData['modules']);
-            }
-
-            $environmentConfiguration->setShopConfiguration($shopId, $shopConfiguration);
-        }
-    }
-
-    /**
-     * @param ShopConfiguration $shopConfiguration
-     * @param array             $modulesData
-     */
-    private function setModulesConfiguration(ShopConfiguration $shopConfiguration, array $modulesData)
-    {
-        foreach ($modulesData as $moduleId => $moduleData) {
-            $shopConfiguration->setModuleConfiguration(
-                $moduleId,
-                $this->moduleConfigurationDataMapper->fromData($moduleData)
+            $environmentConfiguration->setShopConfiguration(
+                $shopId,
+                $this->shopConfigurationDataMapper->fromData($shopsData)
             );
         }
     }

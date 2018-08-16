@@ -18,14 +18,10 @@ class ShopConfiguration
     /** @var ModuleConfiguration[] */
     private $moduleConfigurations = [];
 
-    /** @var array */
-    private $extensionChain = [];
-
-    /** @var array */
-    private $blockChain = [];
-
-    /** @var array */
-    private $moduleSmartyPluginDirectories = [];
+    /**
+     * @var array
+     */
+    private $chainGroups;
 
     /**
      * @param string $moduleId
@@ -74,50 +70,20 @@ class ShopConfiguration
     }
 
     /**
-     * @return array
+     * @param string     $name
+     * @param ChainGroup $group
      */
-    public function getExtensionChain() : array
+    public function setChainGroup(string $name, ChainGroup $group)
     {
-        return $this->extensionChain;
+        $this->chainGroups[$name] = $group;
     }
 
     /**
-     * @param array $extensionChain
+     * @param string $name
+     * @return ChainGroup
      */
-    public function setExtensionChain(array $extensionChain)
+    public function getChainGroup(string $name): ChainGroup
     {
-        $this->extensionChain = $extensionChain;
-    }
-
-    /**
-     * @return array
-     */
-    public function getBlockChain() : array
-    {
-        return $this->extensionChain;
-    }
-
-    /**
-     * @param array $blockChain
-     */
-    public function setBlockChain(array $blockChain)
-    {
-        $this->blockChain = $blockChain;
-    }
-
-    /**
-     * @return array
-     */
-    public function getModuleSmartyPluginDirectories() : array
-    {
-        return $this->moduleSmartyPluginDirectories;
-    }
-
-    /**
-     * @param array $moduleSmartyPluginDirectories
-     */
-    public function setModuleSmartyPluginDirectories(array $moduleSmartyPluginDirectories)
-    {
-        $this->moduleSmartyPluginDirectories = $moduleSmartyPluginDirectories;
+        return $this->chainGroups[$name];
     }
 }

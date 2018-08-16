@@ -8,13 +8,29 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper;
 
+use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\Validator\SettingValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ModuleSetting;
 
 /**
  * @internal
  */
 class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInterface
 {
+    /**
+     * @var SettingValidatorInterface
+     */
+    private $settingValidator;
+
+    /**
+     * ModuleConfigurationDataMapper constructor.
+     * @param SettingValidatorInterface $settingValidator
+     */
+    public function __construct(SettingValidatorInterface $settingValidator)
+    {
+        $this->settingValidator = $settingValidator;
+    }
+
     /**
      * @param ModuleConfiguration $configuration
      * @return array
@@ -30,6 +46,33 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
      */
     public function fromData(array $data): ModuleConfiguration
     {
-        // TODO: Implement fromData() method.
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration
+            ->setVersion($data['version'])
+            ->setState($data['state']);
+
+        if (isset($data['settings'])) {
+            $this->setSettings($moduleConfiguration, $data['settings']);
+        }
+
+        return $moduleConfiguration;
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     * @param array               $settingsData
+     */
+    private function setSettings(ModuleConfiguration $moduleConfiguration, array $settingsData)
+    {
+        foreach ($settingsData as $settingName => $settingValue) {
+            $setting = new ModuleSetting($settingName, $settingValue);
+
+            $this->settingValidator->validate(
+                $moduleConfiguration->getVersion(),
+                $setting
+            );
+
+            $moduleConfiguration->setModuleSetting($settingName, $setting);
+        }
     }
 }

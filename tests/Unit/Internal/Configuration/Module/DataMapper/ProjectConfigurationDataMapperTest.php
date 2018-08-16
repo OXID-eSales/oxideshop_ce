@@ -64,8 +64,8 @@ class ProjectConfigurationDataMapperTest extends TestCase
         $projectConfiguration->setProjectName('Module structure 2018');
 
         $environmentConfiguration = new EnvironmentConfiguration();
-        $environmentConfiguration->setShopConfiguration('1', new ShopConfiguration());
-        $environmentConfiguration->setShopConfiguration('2', new ShopConfiguration());
+        $environmentConfiguration->setShopConfiguration(1, new ShopConfiguration());
+        $environmentConfiguration->setShopConfiguration(2, new ShopConfiguration());
 
         $projectConfiguration->setEnvironmentConfiguration(
             'dev',

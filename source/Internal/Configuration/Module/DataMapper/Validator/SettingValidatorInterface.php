@@ -8,16 +8,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\Validator;
 
-use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ModuleSetting;
-
 /**
  * @internal
  */
 interface SettingValidatorInterface
 {
     /**
-     * @param string        $metadataVersion
-     * @param ModuleSetting $moduleSetting
+     * @param string $metadataVersion
+     * @param array  $moduleSettings
      */
-    public function validate(string $metadataVersion, ModuleSetting $moduleSetting);
+    public function validate(string $metadataVersion, array $moduleSettings);
 }

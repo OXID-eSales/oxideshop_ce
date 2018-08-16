@@ -64,15 +64,21 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
      */
     private function setSettings(ModuleConfiguration $moduleConfiguration, array $settingsData)
     {
+        $settings = [];
         foreach ($settingsData as $settingName => $settingValue) {
-            $setting = new ModuleSetting($settingName, $settingValue);
+            $settings[] = new ModuleSetting($settingName, $settingValue);
+        }
 
-            $this->settingValidator->validate(
-                $moduleConfiguration->getVersion(),
+        $this->settingValidator->validate(
+            $moduleConfiguration->getVersion(),
+            $settings
+        );
+
+        foreach ($settings as $setting) {
+            $moduleConfiguration->setModuleSetting(
+                $setting->getName(),
                 $setting
             );
-
-            $moduleConfiguration->setModuleSetting($settingName, $setting);
         }
     }
 }

@@ -31,6 +31,22 @@ class EnvironmentConfigurationTest extends TestCase
         $this->assertSame($shopConfiguration, $this->environmentConfiguration->getShopConfiguration(0));
     }
 
+    public function testGetShopConfigurations()
+    {
+        $shopConfiguration = new ShopConfiguration();
+        $this->environmentConfiguration->setShopConfiguration(0, $shopConfiguration);
+        $this->environmentConfiguration->setShopConfiguration(1, $shopConfiguration);
+
+        $this->assertSame(
+            [
+                0 => $shopConfiguration,
+                1 => $shopConfiguration,
+            ],
+            $this->environmentConfiguration->getShopConfigurations()
+        );
+    }
+
+
     public function testGetShopConfigurationThrowsExceptionWithNotExistingShopId()
     {
         $this->expectException(DomainException::class);

@@ -33,6 +33,22 @@ class ShopConfigurationTest extends TestCase
         $this->assertSame($moduleConfiguration, $this->shopConfiguration->getModuleConfiguration($testModuleId));
     }
 
+    public function testGetModuleConfigurations()
+    {
+        $moduleConfiguration = new ModuleConfiguration();
+
+        $this->shopConfiguration->setModuleConfiguration('firstModule', $moduleConfiguration);
+        $this->shopConfiguration->setModuleConfiguration('secondModule', $moduleConfiguration);
+
+        $this->assertSame(
+            [
+                'firstModule'   => $moduleConfiguration,
+                'secondModule'  => $moduleConfiguration,
+            ],
+            $this->shopConfiguration->getModuleConfigurations()
+        );
+    }
+
     public function testGetModuleConfigurationThrowsExceptionIfModuleIdNotPresent()
     {
         $this->expectException(DomainException::class);

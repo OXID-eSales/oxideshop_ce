@@ -20,13 +20,17 @@ use PHPUnit\Framework\TestCase;
  */
 class ProjectConfigurationDataMapperTest extends TestCase
 {
-    public function testEnvironmentsMappingFromData()
+    public function testEnvironmentsMapping()
     {
         $configurationData = [
             'project_name'  => 'Module structure 2018',
             'environments'  => [
-                'dev' => [],
-                'prod' => [],
+                'dev' => [
+                    'shops' => [],
+                ],
+                'prod' => [
+                    'shops' => [],
+                ],
             ],
         ];
 
@@ -44,9 +48,14 @@ class ProjectConfigurationDataMapperTest extends TestCase
             $projectConfiguration,
             $projectConfigurationDataMapper->fromData($configurationData)
         );
+
+        $this->assertEquals(
+            $configurationData,
+            $projectConfigurationDataMapper->toData($projectConfiguration)
+        );
     }
 
-    public function testShopsMappingFromData()
+    public function testShopsMapping()
     {
         $configurationData = [
             'project_name'  => 'Module structure 2018',
@@ -85,6 +94,11 @@ class ProjectConfigurationDataMapperTest extends TestCase
         $this->assertEquals(
             $projectConfiguration,
             $projectConfigurationDataMapper->fromData($configurationData)
+        );
+
+        $this->assertEquals(
+            $configurationData,
+            $projectConfigurationDataMapper->toData($projectConfiguration)
         );
     }
 }

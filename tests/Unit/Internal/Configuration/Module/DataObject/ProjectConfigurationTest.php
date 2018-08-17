@@ -62,6 +62,21 @@ class ProjectConfigurationTest extends TestCase
         );
     }
 
+    public function testGetEnvironmentConfigurations()
+    {
+        $environmentConfiguration = new EnvironmentConfiguration();
+        $this->projectConfiguration->setEnvironmentConfiguration('Testing', $environmentConfiguration);
+        $this->projectConfiguration->setEnvironmentConfiguration('Once more', $environmentConfiguration);
+
+        $this->assertSame(
+            [
+                'Testing'   => $environmentConfiguration,
+                'Once more' => $environmentConfiguration,
+            ],
+            $this->projectConfiguration->getEnvironmentConfigurations()
+        );
+    }
+
     public function testGetEnvironmentConfigurationThrowsExceptionIfEnvironmentDoesNotExist()
     {
         $this->expectException(DomainException::class);

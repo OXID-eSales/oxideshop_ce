@@ -21,7 +21,7 @@ class ShopConfiguration
     /**
      * @var array
      */
-    private $chainGroups;
+    private $chainGroups = [];
 
     /**
      * @param string $moduleId
@@ -36,6 +36,14 @@ class ShopConfiguration
             return $this->moduleConfigurations[$moduleId];
         }
         throw new DomainException('There is no module configuration with id ' . $moduleId);
+    }
+
+    /**
+     * @return array
+     */
+    public function getModuleConfigurations() : array
+    {
+        return $this->moduleConfigurations;
     }
 
     /**
@@ -85,5 +93,13 @@ class ShopConfiguration
     public function getChainGroup(string $name): ChainGroup
     {
         return $this->chainGroups[$name];
+    }
+
+    /**
+     * @return ChainGroup
+     */
+    public function getChainGroups(): array
+    {
+        return $this->chainGroups;
     }
 }

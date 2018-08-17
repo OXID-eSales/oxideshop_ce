@@ -37,7 +37,11 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
      */
     public function toData(ModuleConfiguration $configuration): array
     {
-        // TODO: Implement toData() method.
+        $data['version']    = $configuration->getVersion();
+        $data['state']      = $configuration->getState();
+        $data['settings']   = $this->getSettingsData($configuration);
+
+        return $data;
     }
 
     /**
@@ -77,6 +81,21 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
                 $setting
             );
         }
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     * @return array
+     */
+    private function getSettingsData(ModuleConfiguration $moduleConfiguration): array
+    {
+        $data = [];
+
+        foreach ($moduleConfiguration->getSettings() as $setting) {
+            $data[$setting->getName()] = $setting->getValue();
+        }
+
+        return $data;
     }
 
     /**

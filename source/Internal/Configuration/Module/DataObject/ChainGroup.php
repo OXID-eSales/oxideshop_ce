@@ -28,6 +28,14 @@ class ChainGroup
     }
 
     /**
+     * @return array
+     */
+    public function getChains(): array
+    {
+        return $this->chains;
+    }
+
+    /**
      * @param Chain $chain
      */
     public function setChain(Chain $chain)

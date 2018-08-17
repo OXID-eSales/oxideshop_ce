@@ -36,6 +36,14 @@ class EnvironmentConfiguration
     /**
      * @return array
      */
+    public function getShopConfigurations(): array
+    {
+        return $this->shopConfigurations;
+    }
+
+    /**
+     * @return array
+     */
     public function getShopIdsOfShopConfigurations() :array
     {
         return array_keys($this->shopConfigurations);

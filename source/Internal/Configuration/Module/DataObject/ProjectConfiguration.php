@@ -50,6 +50,14 @@ class ProjectConfiguration
     }
 
     /**
+     * @return array
+     */
+    public function getEnvironmentConfigurations(): array
+    {
+        return $this->environmentConfigurations;
+    }
+
+    /**
      * @param string $name
      *
      * @throws DomainException

@@ -37,7 +37,12 @@ class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterfac
      */
     public function toData(ShopConfiguration $configuration): array
     {
-        // TODO: Implement toData() method.
+        $data = [];
+
+        $data['modules'] = $this->getModulesConfigurationData($configuration);
+        $data['moduleChains'] = $this->getModuleChainGroupsData($configuration);
+
+        return $data;
     }
 
     /**
@@ -75,6 +80,21 @@ class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterfac
 
     /**
      * @param ShopConfiguration $shopConfiguration
+     * @return array
+     */
+    private function getModulesConfigurationData(ShopConfiguration $shopConfiguration): array
+    {
+        $data = [];
+
+        foreach ($shopConfiguration->getModuleConfigurations() as $moduleId => $moduleConfiguration) {
+            $data[$moduleId] = $this->moduleConfigurationDataMapper->toData($moduleConfiguration);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param ShopConfiguration $shopConfiguration
      * @param array             $chainGroupsData
      */
     private function setModuleChainGroups(ShopConfiguration $shopConfiguration, array $chainGroupsData)
@@ -85,6 +105,21 @@ class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterfac
 
             $shopConfiguration->setChainGroup($groupName, $chainGroup);
         }
+    }
+
+    /**
+     * @param ShopConfiguration $shopConfiguration
+     * @return array
+     */
+    private function getModuleChainGroupsData(ShopConfiguration $shopConfiguration): array
+    {
+        $data = [];
+
+        foreach ($shopConfiguration->getChainGroups() as $groupName => $group) {
+            $data[$groupName] = $this->getChainsData($group);
+        }
+
+        return $data;
     }
 
     /**
@@ -101,5 +136,20 @@ class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterfac
 
             $chainGroup->setChain($chain);
         }
+    }
+
+    /**
+     * @param ChainGroup $chainGroup
+     * @return array
+     */
+    private function getChainsData(ChainGroup $chainGroup): array
+    {
+        $data = [];
+
+        foreach ($chainGroup->getChains() as $chain) {
+            $data[$chain->getName()] = $chain->getChain();
+        }
+
+        return $data;
     }
 }

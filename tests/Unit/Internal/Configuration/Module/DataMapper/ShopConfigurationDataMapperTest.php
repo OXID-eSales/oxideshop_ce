@@ -11,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Configuration\Module\Dat
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\ModuleConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\ShopConfigurationDataMapper;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ShopConfiguration;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,32 +18,32 @@ use PHPUnit\Framework\TestCase;
  */
 class ShopConfigurationDataMapperTest extends TestCase
 {
-    public function testModulesMappingFromData()
+    public function testModulesMapping()
     {
         $configurationData = [
             'modules' => [
                 'happyModule' => [],
                 'funnyModule' => [],
             ],
+            'moduleChains' => [],
         ];
-
-        $shopConfiguration = new ShopConfiguration();
-        $shopConfiguration->setModuleConfiguration('happyModule', new ModuleConfiguration());
-        $shopConfiguration->setModuleConfiguration('funnyModule', new ModuleConfiguration());
 
         $shopConfigurationDataMapper = new ShopConfigurationDataMapper(
             $this->getModuleConfigurationMapper()
         );
 
+        $shopConfiguration = $shopConfigurationDataMapper->fromData($configurationData);
+
         $this->assertEquals(
-            $shopConfiguration,
-            $shopConfigurationDataMapper->fromData($configurationData)
+            $configurationData,
+            $shopConfigurationDataMapper->toData($shopConfiguration)
         );
     }
 
-    public function testChainsMappingFromData()
+    public function testChainsMapping()
     {
         $configurationData = [
+            'modules'      => [],
             'moduleChains' => [
                 'blocks' => [
                     'testBlock' => [
@@ -61,17 +60,9 @@ class ShopConfigurationDataMapperTest extends TestCase
 
         $shopConfiguration = $shopConfigurationDataMapper->fromData($configurationData);
 
-        $chain = $shopConfiguration
-            ->getChainGroup('blocks')
-            ->getChain('testBlock');
-
-        $this->assertSame('testBlock', $chain->getName());
         $this->assertSame(
-            [
-                'secondBlock',
-                'thirdBlock',
-            ],
-            $chain->getChain()
+            $configurationData,
+            $shopConfigurationDataMapper->toData($shopConfiguration)
         );
     }
 
@@ -84,6 +75,10 @@ class ShopConfigurationDataMapperTest extends TestCase
         $moduleConfigurationDataMapper
             ->method('fromData')
             ->willReturn(new ModuleConfiguration());
+
+        $moduleConfigurationDataMapper
+            ->method('toData')
+            ->willReturn([]);
 
         return $moduleConfigurationDataMapper;
     }

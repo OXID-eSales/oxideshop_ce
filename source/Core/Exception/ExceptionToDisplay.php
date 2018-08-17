@@ -119,7 +119,17 @@ class ExceptionToDisplay implements \OxidEsales\Eshop\Core\Contract\IDisplayErro
     {
         return $this->_aValues[$sName];
     }
-
+    
+    /**
+     * Returns all exception stored values
+     *
+     * @return  array
+     */
+    public function getValues()
+    {
+        return $this->_aValues;
+    }
+    
     /**
      * Exception debug mode setter
      *

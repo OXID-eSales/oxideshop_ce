@@ -84,14 +84,14 @@ if (!function_exists('startProfile')) {
     function startProfile($sProfileName)
     {
         global $aStartTimes;
-        global $aExecutionCounts;
-        if (!isset($aExecutionCounts[$sProfileName])) {
-            $aExecutionCounts[$sProfileName] = 0;
+        global $executionCounts;
+        if (!isset($executionCounts[$sProfileName])) {
+            $executionCounts[$sProfileName] = 0;
         }
         if (!isset($aStartTimes[$sProfileName])) {
             $aStartTimes[$sProfileName] = 0;
         }
-        $aExecutionCounts[$sProfileName]++;
+        $executionCounts[$sProfileName]++;
         $aStartTimes[$sProfileName] = microtime(true);
     }
 }

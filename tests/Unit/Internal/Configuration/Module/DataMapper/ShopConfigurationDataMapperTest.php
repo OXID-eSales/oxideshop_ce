@@ -65,7 +65,7 @@ class ShopConfigurationDataMapperTest extends TestCase
             ->getChainGroup('blocks')
             ->getChain('testBlock');
 
-        $this->assertSame('testBlock', $chain->getId());
+        $this->assertSame('testBlock', $chain->getName());
         $this->assertSame(
             [
                 'secondBlock',

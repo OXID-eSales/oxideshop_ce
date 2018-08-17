@@ -16,7 +16,7 @@ class Chain
     /**
      * @var string
      */
-    private $id;
+    private $name;
 
     /**
      * @var array
@@ -26,18 +26,18 @@ class Chain
     /**
      * @return string
      */
-    public function getId(): string
+    public function getName(): string
     {
-        return $this->id;
+        return $this->name;
     }
 
     /**
-     * @param string $id
+     * @param string $name
      * @return Chain
      */
-    public function setId(string $id): Chain
+    public function setName(string $name): Chain
     {
-        $this->id = $id;
+        $this->name = $name;
         return $this;
     }
 

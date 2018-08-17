@@ -96,7 +96,7 @@ class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterfac
         foreach ($chainsData as $chainId => $chainData) {
             $chain = new Chain();
             $chain
-                ->setId($chainId)
+                ->setName($chainId)
                 ->setChain($chainData);
 
             $chainGroup->setChain($chain);

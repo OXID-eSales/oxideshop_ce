@@ -32,6 +32,6 @@ class ChainGroup
      */
     public function setChain(Chain $chain)
     {
-        $this->chains[$chain->getId()] = $chain;
+        $this->chains[$chain->getName()] = $chain;
     }
 }

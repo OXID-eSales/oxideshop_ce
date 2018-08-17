@@ -64,10 +64,7 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
      */
     private function setSettings(ModuleConfiguration $moduleConfiguration, array $settingsData)
     {
-        $settings = [];
-        foreach ($settingsData as $settingName => $settingValue) {
-            $settings[] = new ModuleSetting($settingName, $settingValue);
-        }
+        $settings = $this->getMappedSettings($settingsData);
 
         $this->settingValidator->validate(
             $moduleConfiguration->getVersion(),
@@ -80,5 +77,19 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
                 $setting
             );
         }
+    }
+
+    /**
+     * @param array $settingsData
+     * @return array
+     */
+    private function getMappedSettings(array $settingsData): array
+    {
+        $settings = [];
+        foreach ($settingsData as $settingName => $settingValue) {
+            $settings[] = new ModuleSetting($settingName, $settingValue);
+        }
+
+        return $settings;
     }
 }

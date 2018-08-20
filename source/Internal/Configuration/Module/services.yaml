@@ -15,7 +15,7 @@ services:
     arguments:
       - '@oxid_esales.configuration.module.project_configuration_yaml_file_storage'
       - '@OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\ProjectConfigurationDataMapperInterface'
-    public: true
+    public: false
 
   oxid_esales.configuration.module.project_configuration_yaml_file_storage:
     class: OxidEsales\EshopCommunity\Internal\Common\Storage\YamlFileStorage

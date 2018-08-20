@@ -1,21 +1,53 @@
 parameters:
   module_configuration_path: OxidEsales\EshopCommunity\Internal\Configuration\Module
+  oxid_esales.configuration.module.metadata_settings:
+    v2.0:
+      - blocks
+      - controllers
+    v2.1:
+      - blocks
+      - controllers
+      - smartyDirectories
 
 services:
-  OxidEsales\EshopCommunity\Internal\Configuration\Module\Factory\FileFactoryInterface:
-    class: %module_configuration_path%\Factory\LocalFileFactory
-    arguments:
-      $filePath: '/tmp/configuration.yaml'
-      $mode: 'r+'
-  oxid_esales.configuration.module.project_configuration_file:
-    class: SplFile
-    factory: 'OxidEsales\EshopCommunity\Internal\Configuration\Module\Factory\FileFactoryInterface:create'
-    public: false
   OxidEsales\EshopCommunity\Internal\Configuration\Module\Dao\ProjectConfigurationDaoInterface:
-    class: %module_configuration_path%\Dao\YamlFileDao
+    class: %module_configuration_path%\Dao\ProjectConfigurationDao
     arguments:
-      $file: '@oxid_esales.configuration.module.project_configuration_file'
+      - '@oxid_esales.configuration.module.project_configuration_yaml_file_storage'
+      - '@OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\ProjectConfigurationDataMapperInterface'
+    public: true
+
+  oxid_esales.configuration.module.project_configuration_yaml_file_storage:
+    class: OxidEsales\EshopCommunity\Internal\Common\Storage\YamlFileStorage
+    arguments:
+      - '@oxid_esales.configuration.module.project_configuration_yaml_file_locator'
+      - '/tmp/configuration.yaml'
     public: false
-  OxidEsales\EshopCommunity\Internal\Configuration\Module\Service\RepositoryServiceInterface:
-    class: %module_configuration_path%\Service\RepositoryService
-    autowire: true
+
+  oxid_esales.configuration.module.project_configuration_yaml_file_locator:
+    class: Symfony\Component\Config\FileLocator
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\ProjectConfigurationDataMapperInterface:
+    class: %module_configuration_path%\DataMapper\ProjectConfigurationDataMapper
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\ShopConfigurationDataMapperInterface'
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\ShopConfigurationDataMapperInterface:
+    class: %module_configuration_path%\DataMapper\ShopConfigurationDataMapper
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\ModuleConfigurationDataMapperInterface'
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\ModuleConfigurationDataMapperInterface:
+    class: %module_configuration_path%\DataMapper\ModuleConfigurationDataMapper
+    arguments:
+      - '@oxid_esales.configuration.module.data_mapper.validator.metadata_setting_validator'
+    public: false
+
+  oxid_esales.configuration.module.data_mapper.validator.metadata_setting_validator:
+    class: OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\Validator\MetadataSettingValidator
+    arguments:
+      - '%oxid_esales.configuration.module.metadata_settings%'
+    public: false

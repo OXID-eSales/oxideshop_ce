@@ -8,7 +8,8 @@ declare(strict_types = 1);
 
 namespace OxidEsales\EshopCommunity\Internal\Common\Storage;
 
-use SplFileObject;
+use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
+use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -17,16 +18,24 @@ use Symfony\Component\Yaml\Yaml;
 class YamlFileStorage implements ArrayStorageInterface
 {
     /**
-     * @var SplFileObject
+     * @var FileLocatorInterface
      */
-    private $file;
+    private $fileLocator;
 
     /**
-     * @param SplFileObject $file
+     * @var string
      */
-    public function __construct(SplFileObject $file)
+    private $filePath;
+
+    /**
+     * YamlFileStorage constructor.
+     * @param FileLocatorInterface $fileLocator
+     * @param string               $filePath
+     */
+    public function __construct(FileLocatorInterface $fileLocator, string $filePath)
     {
-        $this->file = $file;
+        $this->fileLocator = $fileLocator;
+        $this->filePath = $filePath;
     }
 
     /**
@@ -34,31 +43,34 @@ class YamlFileStorage implements ArrayStorageInterface
      */
     public function get(): array
     {
-        $this->file->rewind();
-
-        $string = '';
-        while (!$this->file->eof()) {
-            $string .= $this->file->fgets();
-        }
-
-        return $string;
+        return Yaml::parse(
+            $this->getLocatedFilePath()
+        );
     }
 
     /**
      * @param array $data
-     * @throws \Exception
      */
     public function save(array $data)
     {
-        $string = Yaml::dump($data);
-        $fileLockAcquired = $this->file->flock(LOCK_EX | LOCK_NB, $wouldBlock) && !$wouldBlock;
-        if (!$fileLockAcquired) {
-            throw new \Exception('Could not acquire file lock');
+        file_put_contents(
+            $this->getLocatedFilePath(),
+            Yaml::dump($data)
+        );
+    }
+
+    /**
+     * @return string
+     */
+    private function getLocatedFilePath()
+    {
+        try {
+            $filePath = $this->fileLocator->locate($this->filePath);
+        } catch (FileLocatorFileNotFoundException $exception) {
+            touch($this->filePath);
+            $filePath = $this->fileLocator->locate($this->filePath);
         }
 
-        $this->file->ftruncate(0);
-        $this->file->fwrite($string);
-        $this->file->rewind();
-        $this->file->flock(LOCK_UN);
+        return $filePath;
     }
 }

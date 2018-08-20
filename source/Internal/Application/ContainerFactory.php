@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -9,10 +11,8 @@ namespace OxidEsales\EshopCommunity\Internal\Application;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Application\PSR11Compliance\ContainerWrapper;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
   *
@@ -26,7 +26,7 @@ class ContainerFactory
     private static $instance = null;
 
     /**
-     * @var \Symfony\Component\DependencyInjection\Container
+     * @var Container
      */
     private $symfonyContainer = null;
 
@@ -62,7 +62,7 @@ class ContainerFactory
         if (file_exists($cacheFilePath)) {
             $this->loadContainerFromCache($cacheFilePath);
         } else {
-            $this->createAndCompileSymfonyContainer();
+            $this->getCompiledSymfonyContainer();
             $this->saveContainerToCache($cacheFilePath);
         }
     }
@@ -77,13 +77,13 @@ class ContainerFactory
     }
 
     /**
-     * Builds the container from services.yaml and compiles it
+     * Returns compiled Container
      */
-    private function createAndCompileSymfonyContainer()
+    private function getCompiledSymfonyContainer()
     {
-        $this->symfonyContainer = new ContainerBuilder();
-        $loader = new YamlFileLoader($this->symfonyContainer, new FileLocator(__DIR__));
-        $loader->load('services.yaml');
+        $containerBuilder = new ContainerBuilder();
+
+        $this->symfonyContainer = $containerBuilder->getContainer();
         $this->symfonyContainer->compile();
     }
 

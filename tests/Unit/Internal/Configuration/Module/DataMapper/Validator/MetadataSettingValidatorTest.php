@@ -22,8 +22,11 @@ class MetadataSettingValidatorTest extends TestCase
      */
     public function testWithInvalidMetadataVersion()
     {
-        $validator = new MetadataSettingValidator();
-        $validator->addAllowableMetadataSettings('v1.2', []);
+        $validator = new MetadataSettingValidator(
+            [
+                'v1.2' => [],
+            ]
+        );
 
         $validator->validate(
             'v3.14',
@@ -38,8 +41,11 @@ class MetadataSettingValidatorTest extends TestCase
      */
     public function testWithNonExistentSetting()
     {
-        $validator = new MetadataSettingValidator();
-        $validator->addAllowableMetadataSettings('v1.2', ['blocks']);
+        $validator = new MetadataSettingValidator(
+            [
+                'v1.2' => ['blocks'],
+            ]
+        );
 
         $setting = new ModuleSetting('invalidSetting', []);
 
@@ -48,11 +54,14 @@ class MetadataSettingValidatorTest extends TestCase
 
     public function testValidCorrectMetadataSettings()
     {
-        $validator = new MetadataSettingValidator();
-        $validator->addAllowableMetadataSettings('v1.2', [
-            'blocks',
-            'controllers',
-        ]);
+        $validator = new MetadataSettingValidator(
+            [
+                'v1.2' => [
+                    'blocks',
+                    'controllers',
+                ]
+            ]
+        );
 
         $setting = new ModuleSetting('blocks', []);
 

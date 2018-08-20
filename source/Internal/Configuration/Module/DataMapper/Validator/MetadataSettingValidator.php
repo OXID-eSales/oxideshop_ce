@@ -21,6 +21,15 @@ class MetadataSettingValidator implements SettingValidatorInterface
     private $allowableSettings;
 
     /**
+     * MetadataSettingValidator constructor.
+     * @param array $allowableSettings
+     */
+    public function __construct(array $allowableSettings)
+    {
+        $this->allowableSettings = $allowableSettings;
+    }
+
+    /**
      * @param string $metadataVersion
      * @param array  $moduleSettings
      *
@@ -34,15 +43,6 @@ class MetadataSettingValidator implements SettingValidatorInterface
         foreach ($moduleSettings as $moduleSetting) {
             $this->validateSettingExistence($metadataVersion, $moduleSetting);
         }
-    }
-
-    /**
-     * @param string $metadataVersion
-     * @param array  $settingList
-     */
-    public function addAllowableMetadataSettings(string $metadataVersion, array $settingList)
-    {
-        $this->allowableSettings[$metadataVersion] = $settingList;
     }
 
     /**

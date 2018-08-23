@@ -38,7 +38,7 @@ class ProjectConfigurationDataMapper implements ProjectConfigurationDataMapperIn
     public function toData(ProjectConfiguration $configuration): array
     {
         $data['project_name'] = $configuration->getProjectName();
-        $data['environments'] = $this->getEnvironmetConfigurationsData($configuration);
+        $data['environments'] = $this->getEnvironmentConfigurationsData($configuration);
 
         return $data;
     }
@@ -95,7 +95,7 @@ class ProjectConfigurationDataMapper implements ProjectConfigurationDataMapperIn
      * @param ProjectConfiguration $configuration
      * @return array
      */
-    private function getEnvironmetConfigurationsData(ProjectConfiguration $configuration): array
+    private function getEnvironmentConfigurationsData(ProjectConfiguration $configuration): array
     {
         $data = [];
 

@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use stdClass;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Language related utility class
@@ -439,6 +440,13 @@ class Language extends \OxidEsales\Eshop\Core\Base
         }
 
         $this->setIsTranslated(false);
+
+        if (!$this->isTranslated()) {
+            Registry::getLogger()->warning(
+                "translation for $sStringToTranslate not found",
+                compact('iLang', 'blAdminMode')
+            );
+        }
 
         return $sStringToTranslate;
     }

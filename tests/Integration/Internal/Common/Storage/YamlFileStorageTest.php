@@ -18,13 +18,6 @@ use Symfony\Component\Config\FileLocator;
  */
 class YamlFileStorageTest extends TestCase
 {
-    public function tearDown()
-    {
-        unlink('/tmp/testStorageFile.yaml');
-
-        parent::tearDown();
-    }
-
     public function testSaving()
     {
         $testData = [

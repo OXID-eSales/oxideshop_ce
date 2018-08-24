@@ -76,13 +76,6 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
         );
     }
 
-    protected function getTemplating()
-    {
-
-        return $this->getContainer()->get(\OxidEsales\EshopCommunity\Internal\Templating\TemplateRenderer::class);
-
-    }
-
     /**
      * @internal
      *

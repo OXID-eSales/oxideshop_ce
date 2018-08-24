@@ -18,3 +18,8 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Common\Form\RequiredFieldsValidator
     autowire: true
     public: false
+
+  OxidEsales\EshopCommunity\Internal\Common\Configuration\ConfigurationSettingDaoInterface:
+      class: OxidEsales\EshopCommunity\Internal\Common\Configuration\ConfigurationSettingDao
+      autowire: true
+      public: false

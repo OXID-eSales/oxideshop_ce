@@ -63,6 +63,30 @@ class Context implements ContextInterface
     }
 
     /**
+     * @return string
+     */
+    public function getShopDir()
+    {
+        return $this->getFacts()->getSourcePath();
+    }
+
+    /**
+     * @return string
+     */
+    public function getContainerCacheFile()
+    {
+        return $this->getConfigParameter('sCompileDir') . DIRECTORY_SEPARATOR . 'containercache.php';
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfigurationEncryptionKey(): string
+    {
+        return $this->getConfigParameter('sConfigKey');
+    }
+
+    /**
      * @param string $name
      * @return mixed
      */

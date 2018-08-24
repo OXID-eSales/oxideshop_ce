@@ -8,3 +8,4 @@ imports:
     - { resource: ../Adapter/services.yaml }
     - { resource: ../Templating/services.yaml }
     - { resource: ../Smarty/services.yaml }
+    - { resource: ../Twig/services.yaml }

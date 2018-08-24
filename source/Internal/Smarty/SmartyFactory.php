@@ -1,9 +1,7 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: vilma
- * Date: 06.08.18
- * Time: 13:43
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Internal\Smarty;

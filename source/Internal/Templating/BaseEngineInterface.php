@@ -6,9 +6,11 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Templating;
 
-
 use Symfony\Component\Templating\EngineInterface;
 
+/**
+ * Interface BaseEngineInterface
+ */
 interface BaseEngineInterface extends EngineInterface
 {
     /**

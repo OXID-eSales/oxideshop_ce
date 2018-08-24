@@ -12,7 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Smarty\SmartyContextInterface;
 use OxidEsales\EshopCommunity\Internal\Smarty\SmartyFactory;
 use OxidEsales\EshopCommunity\Internal\Smarty\SmartyEngineConfiguration;
 
-class SmartyFactoryTest extends \PHPUnit_Framework_TestCase
+class SmartyFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider smartySettingsProvider

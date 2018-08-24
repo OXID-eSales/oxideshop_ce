@@ -20,7 +20,8 @@
         "symfony/event-dispatcher": "^3.4",
         "symfony/dependency-injection": "^3.4",
         "symfony/templating": "^3.3",
-        "symfony/expression-language": "~2.8|~3.0"
+        "symfony/expression-language": "~2.8|~3.0",
+        "twig/twig": "^2.0"
     },
     "require-dev": {
         "oxid-esales/flow-theme": "^v3.0.2",

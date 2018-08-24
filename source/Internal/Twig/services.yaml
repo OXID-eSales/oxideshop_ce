@@ -1,0 +1,44 @@
+services:
+  OxidEsales\Eshop\Core\Config:
+    class: OxidEsales\Eshop\Core\Config
+    factory: ['OxidEsales\Eshop\Core\Registry', getConfig]
+    public: false
+
+  OxidEsales\Eshop\Core\UtilsView:
+    class: OxidEsales\Eshop\Core\UtilsView
+    factory: ['OxidEsales\Eshop\Core\Registry', getUtilsView]
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Twig\TwigContextInterface:
+    class: OxidEsales\EshopCommunity\Internal\Twig\TwigContext
+    autowire: true
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Twig\TemplateEngineConfigurationInterface:
+    class: OxidEsales\EshopCommunity\Internal\Twig\TwigEngineConfiguration
+    arguments:
+        - '@OxidEsales\EshopCommunity\Internal\Twig\TwigContextInterface'
+    public: true
+
+  Symfony\Component\Templating\TemplateNameParserInterface:
+    class: Symfony\Component\Templating\TemplateNameParser
+    public: false
+
+  twig.loader.filesystem:
+    class: Twig\Loader\FilesystemLoader
+    arguments: ["@=service('OxidEsales\\\\EshopCommunity\\\\Internal\\\\Twig\\\\TwigContextInterface').getTemplateDirectories()"]
+    public: false
+
+  twig.environment:
+    class: Twig\Environment
+    arguments:
+        - '@twig.loader.filesystem'
+        - "@=service('OxidEsales\\\\EshopCommunity\\\\Internal\\\\Twig\\\\TemplateEngineConfigurationInterface').getParameters()"
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Twig\TwigEngine:
+    class: OxidEsales\EshopCommunity\Internal\Twig\TwigEngine
+    arguments:
+        - '@twig.environment'
+        - '@Symfony\Component\Templating\TemplateNameParserInterface'
+    public: false

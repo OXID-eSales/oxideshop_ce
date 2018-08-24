@@ -16,7 +16,6 @@ use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryRepository;
 use OxidEsales\Eshop\Core\ShopIdCalculator as EshopShopIdCalculator;
 use OxidEsales\EshopCommunity\Internal\Templating\TemplateEngineBridgeInterface;
-use Smarty;
 
 /**
  * View utility class
@@ -199,9 +198,11 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         $templating = $this->getContainer()->get(TemplateEngineBridgeInterface::class);
 
         // save old tpl data
-        $forceRecompile = $templating->getEngine()->force_compile;
+        $smarty = clone $templating->getEngine();
+        $tplVars = $smarty->_tpl_vars;
+        $forceRecompile = $smarty->force_compile;
 
-        $templating->getEngine()->force_compile = $blRecompile;
+        $smarty->force_compile = $blRecompile;
 
         if (!$oActView) {
             $oActView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
@@ -212,16 +213,17 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
         if (is_array($sDesc)) {
             foreach ($sDesc as $name => $aData) {
-                $templating->getEngine()->oxidcache = new \OxidEsales\Eshop\Core\Field($aData[1], \OxidEsales\Eshop\Core\Field::T_RAW);
-                $result[$name] = $templating->renderTemplate("ox:" . $aData[0] . $activeLanguageId, $viewData);
+                $smarty->oxidcache = new \OxidEsales\Eshop\Core\Field($aData[1], \OxidEsales\Eshop\Core\Field::T_RAW);
+                $result[$name] = $smarty->render("ox:" . $aData[0] . $activeLanguageId, $viewData);
             }
         } else {
-            $templating->getEngine()->oxidcache = new \OxidEsales\Eshop\Core\Field($sDesc, \OxidEsales\Eshop\Core\Field::T_RAW);
-            $result = $templating->renderTemplate("ox:{$sOxid}{$activeLanguageId}", $viewData);
+            $smarty->oxidcache = new \OxidEsales\Eshop\Core\Field($sDesc, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $result = $smarty->render("ox:{$sOxid}{$activeLanguageId}", $viewData);
         }
 
         // restore tpl vars for continuing smarty processing if it is in one
-        $templating->getEngine()->force_compile = $forceRecompile;
+        $smarty->_tpl_vars = $tplVars;
+        $smarty->force_compile = $forceRecompile;
 
         stopProfile("parseThroughSmarty");
 

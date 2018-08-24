@@ -1011,6 +1011,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     public function testGetRowIncorrectSqlStatement()
     {
         $this->truncateTestTable();
+        \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->resetContainer();
 
         /**
          * An exception will be logged as part of the BC layer, when calling the getRow with a wrong SQL statement

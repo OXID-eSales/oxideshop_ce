@@ -43,6 +43,7 @@ class WidgetControlTest extends \OxidTestCase
      */
     public function testRunLast()
     {
+        //\OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->resetContainer();
         $view1 = new ContactController();
         $view2 = new LanguageList();
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("hasActiveViewsChain"));
@@ -119,7 +120,6 @@ class WidgetControlTest extends \OxidTestCase
      */
     private function getContainer()
     {
-        \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->resetContainer();
         return \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
     }
 

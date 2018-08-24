@@ -9,9 +9,11 @@
         <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
     </form>
 
-     <div id="infoContent">
+    [{block name="admin_module_sortlist" }][{/block}]
 
-         [{if $aDeletedExt}]
+    <div id="infoContent">
+
+        [{if $aDeletedExt}]
             <div class="msgBox">
 
                 <div class="info">
@@ -29,18 +31,18 @@
                                 <td valign="top" class="[{$listclass}]">[{$sModuleId}]</td>
                                 <td valign="top" class="[{$listclass}]">
                                     <ul>
-                                    [{foreach from=$aModules.extensions item=mFile key=sClassName}]
-                                        [{if is_array($mFile)}]
-                                            [{foreach from=$mFile item=sFile}]
-                                                <li>[{if !is_int($sClassName)}][{$sClassName}] =&gt; [{/if}][{$sFile}]</li>
-                                            [{/foreach}]
-                                        [{else}]
-                                        <li>[{if !is_int($sClassName)}][{$sClassName}] =&gt; [{/if}][{$mFile}]</li>
-                                        [{/if}]
-                                    [{/foreach}]
-                                    [{foreach from=$aModules.files item=sFile key=sClassName}]
-                                        <li>[{if !is_int($sClassName)}][{$sClassName}] =&gt; [{/if}][{$sFile}]</li>
-                                    [{/foreach}]
+                                        [{foreach from=$aModules.extensions item=mFile key=sClassName}]
+                                            [{if is_array($mFile)}]
+                                                [{foreach from=$mFile item=sFile}]
+                                                    <li>[{if !is_int($sClassName)}][{$sClassName}] =&gt; [{/if}][{$sFile}]</li>
+                                                [{/foreach}]
+                                            [{else}]
+                                                <li>[{if !is_int($sClassName)}][{$sClassName}] =&gt; [{/if}][{$mFile}]</li>
+                                            [{/if}]
+                                        [{/foreach}]
+                                        [{foreach from=$aModules.files item=sFile key=sClassName}]
+                                            <li>[{if !is_int($sClassName)}][{$sClassName}] =&gt; [{/if}][{$sFile}]</li>
+                                        [{/foreach}]
                                     </ul>
                                 </td>
                             </tr>
@@ -61,34 +63,36 @@
                         <input type="hidden" name="oxid" value="[{$oxid}]">
                         <input type="hidden" name="aModules" value="">
                         <input type="hidden" name="updatelist" value="1">
-                        <input type="submit" name="yesButton" class="saveButton" value="[{oxmultilang ident="GENERAL_YES"}]">
-                        <input type="submit" name="noButton" class="saveButton" value="[{oxmultilang ident="GENERAL_NO"}]">
+                        <input type="submit" name="yesButton" class="saveButton"
+                               value="[{oxmultilang ident="GENERAL_YES"}]">
+                        <input type="submit" name="noButton" class="saveButton"
+                               value="[{oxmultilang ident="GENERAL_NO"}]">
                     </form>
                 </div>
             </div>
-         [{else}]
+        [{else}]
 
-             [{if $aExtClasses}]
+            [{if $aExtClasses}]
                 <ul class="sortable" id="aModulesList">
-                [{foreach from=$aExtClasses item=aModuleNames key=sClassName}]
-                    <li id="[{$sClassName}]">
-                        <span>[{$sClassName|replace:'---':'&#92;'}]</span>
-                        <ul class="sortable2" id="[{$sClassName}]_modules">
-                            [{foreach from=$aModuleNames item=sModule}]
-                                [{if is_array($aDisabledModules) && in_array($sModule, $aDisabledModules)}]
-                                [{assign var="cssDisabled" value="disabled"}]
-                                [{else}]
-                                [{assign var="cssDisabled" value=""}]
-                                [{/if}]
-                                <li id="[{$sModule}]"><span class="[{$cssDisabled}]">[{$sModule}]</span></li>
-                            [{/foreach}]
-                        </ul>
-                    </li>
-                [{/foreach}]
+                    [{foreach from=$aExtClasses item=aModuleNames key=sClassName}]
+                        <li id="[{$sClassName}]">
+                            <span>[{$sClassName|replace:'---':'&#92;'}]</span>
+                            <ul class="sortable2" id="[{$sClassName}]_modules">
+                                [{foreach from=$aModuleNames item=sModule}]
+                                    [{if is_array($aDisabledModules) && in_array($sModule, $aDisabledModules)}]
+                                        [{assign var="cssDisabled" value="disabled"}]
+                                    [{else}]
+                                        [{assign var="cssDisabled" value=""}]
+                                    [{/if}]
+                                    <li id="[{$sModule}]"><span class="[{$cssDisabled}]">[{$sModule}]</span></li>
+                                [{/foreach}]
+                            </ul>
+                        </li>
+                    [{/foreach}]
                 </ul>
-             [{/if}]
-         [{/if}]
-     </div>
+            [{/if}]
+        [{/if}]
+    </div>
 
 
     [{oxscript add="$('#aModulesList').oxModulesList();" priority=10}]
@@ -110,7 +114,8 @@
                 <input type="hidden" name="fnc" value="save">
                 <input type="hidden" name="oxid" value="[{$oxid}]">
                 <input type="hidden" name="aModules" value="">
-                <input type="button" name="saveButton" class="saveButton" value="[{oxmultilang ident="GENERAL_SAVE"}]" disabled>
+                <input type="button" name="saveButton" class="saveButton" value="[{oxmultilang ident="GENERAL_SAVE"}]"
+                       disabled>
             </form>
         </div>
 

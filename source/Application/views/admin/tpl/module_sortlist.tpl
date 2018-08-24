@@ -9,6 +9,8 @@
         <input type="hidden" name="editlanguage" value="[{$editlanguage}]">
     </form>
 
+    [{block name="admin_module_sortlist" }][{/block}]
+
     <div id="infoContent">
 
         [{if $aDeletedExt}]

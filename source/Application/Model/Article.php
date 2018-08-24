@@ -2562,7 +2562,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * use getAttributes
      * @return \OxidEsales\Eshop\Application\Model\AttributeList
      */
-    protected function newAttributeList(){
+    protected function newAttributeList()
+    {
         return oxNew(\OxidEsales\Eshop\Application\Model\AttributeList::class);
     }
 

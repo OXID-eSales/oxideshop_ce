@@ -1879,7 +1879,7 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
         $this->frame("list");
         $this->clickAndWait('link=test_11_tab');
         $this->frame("edit");
-        $this->click("//input[@value='CLICK_HERE']");
+        $this->clickAndWait("//input[@value='CLICK_HERE']");
 
         $this->selectWindow("ajaxpopup");
         $this->assertTextPresent('test_11_ajax_controller successfully called');

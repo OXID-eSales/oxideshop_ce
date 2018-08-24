@@ -211,7 +211,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @var \OxidEsales\Eshop\Application\Model\AttributeList
      */
     protected $basketAttributeList = null;
-    
+
     /**
      * Indicates whether the price is "From" price
      *
@@ -2558,6 +2558,16 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
+     * the uninitilized list of attributes
+     * use getAttributes
+     * @return \OxidEsales\Eshop\Application\Model\AttributeList
+     */
+    protected function newAttributeList()
+    {
+        return oxNew(\OxidEsales\Eshop\Application\Model\AttributeList::class);
+    }
+
+    /**
      * Loads and returns attribute list associated with this article
      *
      * @return \OxidEsales\Eshop\Application\Model\AttributeList
@@ -2565,7 +2575,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function getAttributes()
     {
         if ($this->_oAttributeList === null) {
-            $this->_oAttributeList = oxNew(\OxidEsales\Eshop\Application\Model\AttributeList::class);
+            $this->_oAttributeList = $this->newAttributelist();
             $this->_oAttributeList->loadAttributes($this->getId(), $this->getParentId());
         }
 
@@ -2580,7 +2590,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function getAttributesDisplayableInBasket()
     {
         if ($this->basketAttributeList === null) {
-            $this->basketAttributeList = oxNew(\OxidEsales\Eshop\Application\Model\AttributeList::class);
+            $this->basketAttributeList = $this->newAttributelist();
             $this->basketAttributeList->loadAttributesDisplayableInBasket($this->getId(), $this->getParentId());
         }
 
@@ -2869,7 +2879,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         return $this->_iStockStatus;
     }
-     
+
     /**
      * Get stock
      *

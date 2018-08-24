@@ -123,7 +123,7 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
             $sAttrViewName = getViewName('oxattribute');
             $sViewName = getViewName('oxobject2attribute');
 
-            $sSelect = "select {$sAttrViewName}.*, o2a.* from {$sViewName} as o2a ";
+            $sSelect = "select o2a.*, {$sAttrViewName}.* from $sViewName as o2a ";
             $sSelect .= "left join {$sAttrViewName} on {$sAttrViewName}.oxid = o2a.oxattrid ";
             $sSelect .= "where o2a.oxobjectid = '%s' and {$sAttrViewName}.oxdisplayinbasket  = 1 and o2a.oxvalue != '' ";
             $sSelect .= "order by o2a.oxpos, {$sAttrViewName}.oxpos";

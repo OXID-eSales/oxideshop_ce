@@ -51,12 +51,14 @@ class ConfigurationSettingDao implements ConfigurationSettingDaoInterface
                 'oxid'          => 'uuid()',
                 'oxshopid'      => ':shopId',
                 'oxvarname'     => ':name',
+                'oxvartype'     => ':type',
                 'oxvarvalue'    => 'encode(:value, :key)',
             ])
             ->setParameters([
                 'shopId'    => $shopId,
                 'name'      => $name,
-                'value'     => $this->serializeValue($value),
+                'type'      => $this->getValueType($value),
+                'value'     => $this->encodeValue($value),
                 'key'       => $this->context->getConfigurationEncryptionKey(),
             ]);
 
@@ -73,7 +75,7 @@ class ConfigurationSettingDao implements ConfigurationSettingDaoInterface
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
-            ->select('decode(oxvarvalue, :key) as value')
+            ->select('decode(oxvarvalue, :key) as value, oxvartype as type')
             ->from('oxconfig')
             ->where('oxshopid = :shopId')
             ->andWhere('oxvarname = :name')
@@ -85,24 +87,81 @@ class ConfigurationSettingDao implements ConfigurationSettingDaoInterface
 
         $result = $queryBuilder->execute()->fetch();
 
-        return $this->unserializeValue($result['value']);
+        return $this->decodeValue(
+            $result['type'],
+            $result['value']
+        );
+    }
+
+    /**
+     * @param string $type
+     * @param string $value
+     *
+     * @return mixed
+     */
+    private function decodeValue(string $type, string $value)
+    {
+        switch ($type) {
+            case 'arr':
+            case 'aarr':
+                $decodedValue = unserialize($value);
+                break;
+            case 'bool':
+                $decodedValue = ($value === 'true' || $value === '1');
+                break;
+            case 'int':
+                $decodedValue = (int) $value;
+                break;
+            default:
+                $decodedValue = $value;
+        }
+
+        return $decodedValue;
     }
 
     /**
      * @param mixed $value
      * @return string
      */
-    private function serializeValue($value): string
+    private function encodeValue($value): string
     {
-        return serialize($value);
+        $encodedValue = $value;
+
+        if (is_array($value)) {
+            $encodedValue = serialize($value);
+        }
+
+        if (is_bool($value)) {
+            $encodedValue = $value === true ? '1' : '';
+        }
+
+        if (is_int($value)) {
+            $encodedValue = (string) $value;
+        }
+
+        return $encodedValue;
     }
 
     /**
-     * @param string $value
-     * @return mixed
+     * @param mixed $value
+     * @return string
      */
-    private function unserializeValue(string $value)
+    private function getValueType($value): string
     {
-        return unserialize($value);
+        $type = 'str';
+
+        if (is_array($value)) {
+            $type = 'arr';
+        }
+
+        if (is_bool($value)) {
+            $type = 'bool';
+        }
+
+        if (is_int($value)) {
+            $type = 'int';
+        }
+
+        return $type;
     }
 }

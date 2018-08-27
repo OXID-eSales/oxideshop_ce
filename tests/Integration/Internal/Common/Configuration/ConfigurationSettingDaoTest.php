@@ -38,6 +38,8 @@ class ConfigurationSettingDaoTest extends TestCase
     }
 
     /**
+     * Checks if DAO is compatible with OxidEsales\Eshop\Core\Config
+     *
      * @dataProvider settingValueDataProvider
      */
     public function testSettingSavingCompatibility(string $name, $value)

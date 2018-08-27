@@ -4,7 +4,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Configuration\Module\Dao;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Configuration\Module\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Common\Storage\ArrayStorageInterface;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\Dao\ProjectConfigurationDao;

@@ -20,8 +20,10 @@ class ModuleConfigurationDataMapperTest extends TestCase
     public function testMapping()
     {
         $configurationData = [
+            'id'        => 'moduleId',
             'state'     => 'active',
             'version'   => '1.0',
+            'path'      => 'relativePath',
             'settings'  => [
                 'templates' => [
                     'shopTemplate' => 'moduleTemplate',

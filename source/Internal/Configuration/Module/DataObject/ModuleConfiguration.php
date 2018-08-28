@@ -16,6 +16,11 @@ class ModuleConfiguration
     /**
      * @var string
      */
+    private $id;
+
+    /**
+     * @var string
+     */
     private $state;
 
     /**
@@ -24,9 +29,32 @@ class ModuleConfiguration
     private $version;
 
     /**
+     * @var string
+     */
+    private $path;
+
+    /**
      * @var array
      */
-    private $settings;
+    private $settings = [];
+
+    /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $id
+     * @return ModuleConfiguration
+     */
+    public function setId(string $id): ModuleConfiguration
+    {
+        $this->id = $id;
+        return $this;
+    }
 
     /**
      * @return string
@@ -61,6 +89,24 @@ class ModuleConfiguration
     public function setVersion(string $version): ModuleConfiguration
     {
         $this->version = $version;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
+    /**
+     * @param string $path
+     * @return ModuleConfiguration
+     */
+    public function setPath(string $path): ModuleConfiguration
+    {
+        $this->path = $path;
         return $this;
     }
 

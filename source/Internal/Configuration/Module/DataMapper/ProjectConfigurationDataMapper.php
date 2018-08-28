@@ -86,7 +86,7 @@ class ProjectConfigurationDataMapper implements ProjectConfigurationDataMapperIn
         foreach ($shopsData as $shopId => $shopData) {
             $environmentConfiguration->setShopConfiguration(
                 $shopId,
-                $this->shopConfigurationDataMapper->fromData($shopsData)
+                $this->shopConfigurationDataMapper->fromData($shopData)
             );
         }
     }

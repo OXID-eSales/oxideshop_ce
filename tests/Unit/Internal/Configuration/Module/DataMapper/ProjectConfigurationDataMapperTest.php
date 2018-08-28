@@ -87,6 +87,7 @@ class ProjectConfigurationDataMapperTest extends TestCase
 
         $shopConfigurationDataMapper
             ->method('fromData')
+            ->with($this->equalTo([]))
             ->willReturn(new ShopConfiguration());
 
         $projectConfigurationDataMapper = new ProjectConfigurationDataMapper($shopConfigurationDataMapper);

@@ -47,7 +47,7 @@ class YamlFileStorage implements ArrayStorageInterface
             $this->getLocatedFilePath()
         );
 
-        return null === $fileContent ?? [];
+        return $fileContent ?? [];
     }
 
     /**

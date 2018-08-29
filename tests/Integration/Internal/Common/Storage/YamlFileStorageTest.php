@@ -65,15 +65,13 @@ class YamlFileStorageTest extends TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Yaml\Exception\ParseException
+     * @expectedException \Symfony\Component\Yaml\Exception\ParseException
      */
     public function testStorageWithCorruptedFile()
     {
         $filePath = $this->getFilePath();
-        $yamlContent = <<<YAML
-bar:
-    <<: *foo
-YAML;
+        $yamlContent = "\t";
+
         file_put_contents($filePath, $yamlContent);
 
         $yamlFileStorage = new YamlFileStorage(
@@ -99,39 +97,6 @@ YAML;
             [],
             $yamlFileStorage->get()
         );
-    }
-
-
-    /**
-     * @expectedException \Symfony\Component\Yaml\Exception\ParseException
-     */
-    public function testinvalidYamlFileThrowsParseException()
-    {
-        $yaml = "\t";
-
-        file_put_contents($this->getFilePath(), $yaml);
-
-        $yamlFileStorage = new YamlFileStorage(
-            new FileLocator(),
-            $this->getFilePath()
-        );
-        $yamlFileStorage->get();
-    }
-
-    /**
-     * @expectedException \TypeError
-     */
-    public function testEmptyYamlFileThrowsTypeError()
-    {
-        $yaml = "";
-
-        file_put_contents($this->getFilePath(), $yaml);
-
-        $yamlFileStorage = new YamlFileStorage(
-            new FileLocator(),
-            $this->getFilePath()
-        );
-        $yamlFileStorage->get();
     }
 
     public function testEmptyYamlArrayThrowsNoError()

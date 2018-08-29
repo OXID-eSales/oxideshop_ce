@@ -1,25 +1,9 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxprice;
 use \oxbasket;
@@ -208,7 +192,7 @@ class DiscountTest extends \OxidTestCase
      */
     public function testSaveOxSortNotNumeric()
     {
-        $this->setExpectedException('OxidEsales\Eshop\Core\Exception\InputException', 'DISCOUNT_ERROR_OXSORT_NOT_A_NUMBER');
+        $this->setExpectedException('OxidEsales\EshopCommunity\Core\Exception\InputException', 'DISCOUNT_ERROR_OXSORT_NOT_A_NUMBER');
 
         $id = '_testSaveOxSortNotNumeric';
         $shopId = 1;
@@ -227,7 +211,7 @@ class DiscountTest extends \OxidTestCase
      */
     public function testSaveOxSortNotUnique()
     {
-        $this->setExpectedException('OxidEsales\Eshop\Core\Exception\InputException', 'DISCOUNT_ERROR_OXSORT_NOT_UNIQUE');
+        $this->setExpectedException('OxidEsales\EshopCommunity\Core\Exception\InputException', 'DISCOUNT_ERROR_OXSORT_NOT_UNIQUE');
         $oxSort = 1;
 
        /** Save the first record */
@@ -264,7 +248,7 @@ class DiscountTest extends \OxidTestCase
     {
         $oDiscount = oxNew('oxDiscount');
         $oDiscount->oxdiscount__oxpriceto = new oxField(10);
-        $oArticle = $this->getMock('oxArticle', array('getBasePrice'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getBasePrice'));
         $oArticle->expects($this->any())->method('getBasePrice')->will($this->returnValue(50));
 
         $this->assertFalse($oDiscount->isForArticle($oArticle));
@@ -612,7 +596,7 @@ class DiscountTest extends \OxidTestCase
 
         oxDb::getDb()->Execute("insert into oxobject2discount (OXID, OXDISCOUNTID, OXOBJECTID, OXTYPE) VALUES( 'testIsForArticle', 'testdid', '{$testAid}', 'oxarticles' )");
 
-        $oDiscount = $this->getMock('oxdiscount', array('_checkForArticleCategories'));
+        $oDiscount = $this->getMock(\OxidEsales\Eshop\Application\Model\Discount::class, array('_checkForArticleCategories'));
         $oDiscount->expects($this->never())->method('_checkForArticleCategories');
 
         // setting up discount
@@ -633,7 +617,7 @@ class DiscountTest extends \OxidTestCase
 
         oxDb::getDb()->Execute("insert into oxobject2discount (OXID, OXDISCOUNTID, OXOBJECTID, OXTYPE) VALUES( 'testIsForArticle', 'testdid', '{$testAid}', 'oxarticles' )");
 
-        $oDiscount = $this->getMock('oxdiscount', array('_checkForArticleCategories'));
+        $oDiscount = $this->getMock(\OxidEsales\Eshop\Application\Model\Discount::class, array('_checkForArticleCategories'));
         $oDiscount->expects($this->never())->method('_checkForArticleCategories');
 
         // setting up discount
@@ -733,7 +717,7 @@ class DiscountTest extends \OxidTestCase
         $oCurr = new stdclass;
         $oCurr->rate = 5;
 
-        $oBasket = $this->getMock("oxBasket", array("getBasketSummary", "getBasketCurrency"));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array("getBasketSummary", "getBasketCurrency"));
         $oBasket->expects($this->atLeastOnce())->method('getBasketSummary')->will($this->returnValue($oSummary));
         $oBasket->expects($this->atLeastOnce())->method('getBasketCurrency')->will($this->returnValue($oCurr));
 
@@ -746,7 +730,7 @@ class DiscountTest extends \OxidTestCase
         $oCurr = new stdclass;
         $oCurr->rate = 1;
 
-        $oBasket = $this->getMock("oxBasket", array("getBasketSummary", "getBasketCurrency"));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array("getBasketSummary", "getBasketCurrency"));
         $oBasket->expects($this->atLeastOnce())->method('getBasketSummary')->will($this->returnValue($oSummary));
         $oBasket->expects($this->atLeastOnce())->method('getBasketCurrency')->will($this->returnValue($oCurr));
 
@@ -776,8 +760,8 @@ class DiscountTest extends \OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->setId($testAid);
 
-        $oDiscount = $this->getMock('oxdiscount', array('_checkForArticleCategories'));
-        $oDiscount->expects($this->once())->method('_checkForArticleCategories')->with($this->isInstanceOf('oxarticle'));
+        $oDiscount = $this->getMock(\OxidEsales\Eshop\Application\Model\Discount::class, array('_checkForArticleCategories'));
+        $oDiscount->expects($this->once())->method('_checkForArticleCategories')->with($this->isInstanceOf('\OxidEsales\EshopCommunity\Application\Model\Article'));
         $oDiscount->oxdiscount__oxaddsumtype = new oxField('itm');
         $oDiscount->setId('testdid');
 
@@ -801,7 +785,7 @@ class DiscountTest extends \OxidTestCase
     {
         $oBasket = oxNew('oxbasket');
 
-        $oDiscount = $this->getMock('oxdiscount', array('isForBasket'));
+        $oDiscount = $this->getMock(\OxidEsales\Eshop\Application\Model\Discount::class, array('isForBasket'));
         $oDiscount->expects($this->once())->method('isForBasket')->with($this->equalTo($oBasket));
         $oDiscount->oxdiscount__oxaddsumtype = new oxField('itm', oxField::T_RAW);
 
@@ -874,17 +858,17 @@ class DiscountTest extends \OxidTestCase
 
     public function testIsForBasketAmountIfnotisforbasket()
     {
-        $oArticle = $this->getMock('oxarticle', array('getBasePrice', 'getId'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getBasePrice', 'getId'));
         $oArticle->expects($this->never())->method('getId')->will($this->returnValue('asd'));
         $oArticle->expects($this->never())->method('getBasePrice')->will($this->returnValue(2));
 
-        $oBasketItem = $this->getMock('oxbasketitem', array('getArticle'));
+        $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array('getArticle'));
         $oBasketItem->expects($this->once())->method('getArticle')->will($this->returnValue($oArticle));
 
-        $oBasket = $this->getMock('oxbasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->once())->method('getContents')->will($this->returnValue(array($oBasketItem)));
 
-        $oDiscount = $this->getMock('oxdiscount', array('isForAmount', 'isForBasketItem', 'isForBundleItem'));
+        $oDiscount = $this->getMock(\OxidEsales\Eshop\Application\Model\Discount::class, array('isForAmount', 'isForBasketItem', 'isForBundleItem'));
         $oDiscount->expects($this->once())->method('isForAmount')->with($this->equalTo(0))->will($this->returnValue(true));
         $oDiscount->expects($this->once())->method('isForBasketItem')->with($this->equalTo($oArticle))->will($this->returnValue(false));
         $oDiscount->expects($this->never())->method('isForBundleItem');
@@ -895,17 +879,17 @@ class DiscountTest extends \OxidTestCase
 
     public function testIsForBasketAmountIfNotIsForBundle()
     {
-        $oArticle = $this->getMock('oxarticle', array('getBasePrice', 'getId'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getBasePrice', 'getId'));
         $oArticle->expects($this->never())->method('getId')->will($this->returnValue('asd'));
         $oArticle->expects($this->never())->method('getBasePrice')->will($this->returnValue(2));
 
-        $oBasketItem = $this->getMock('oxbasketitem', array('getArticle'));
+        $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array('getArticle'));
         $oBasketItem->expects($this->once())->method('getArticle')->will($this->returnValue($oArticle));
 
-        $oBasket = $this->getMock('oxbasket', array('getContents'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->once())->method('getContents')->will($this->returnValue(array($oBasketItem)));
 
-        $oDiscount = $this->getMock('oxdiscount', array('isForAmount', 'isForBundleItem', 'isForBasketItem'));
+        $oDiscount = $this->getMock(\OxidEsales\Eshop\Application\Model\Discount::class, array('isForAmount', 'isForBundleItem', 'isForBasketItem'));
         $oDiscount->oxdiscount__oxaddsumtype = new oxField('itm', oxField::T_RAW);
         $oDiscount->expects($this->once())->method('isForAmount')->with($this->equalTo(0))->will($this->returnValue(true));
         $oDiscount->expects($this->once())->method('isForBundleItem')->with($this->equalTo($oArticle))->will($this->returnValue(false));
@@ -917,17 +901,17 @@ class DiscountTest extends \OxidTestCase
 
     public function testIsForBasketAmountForPricedDiscountIfBundleType()
     {
-        $oArticle = $this->getMock('oxarticle', array('getPrice', 'getId'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getPrice', 'getId'));
         $oArticle->expects($this->once())->method('getPrice')->will($this->returnValue(new oxprice(10)));
 
-        $oBasketItem = $this->getMock('oxbasketitem', array('getArticle', 'getAmount'));
+        $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array('getArticle', 'getAmount'));
         $oBasketItem->expects($this->once())->method('getArticle')->will($this->returnValue($oArticle));
         $oBasketItem->expects($this->once())->method('getAmount')->will($this->returnValue(5));
 
-        $oBasket = $this->getMock('oxbasket', array('getContents', 'getBasketSummary'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents', 'getBasketSummary'));
         $oBasket->expects($this->once())->method('getContents')->will($this->returnValue(array($oBasketItem)));
 
-        $oDiscount = $this->getMock('oxdiscount', array('isForAmount', 'isForBundleItem', 'isForBasketItem'));
+        $oDiscount = $this->getMock(\OxidEsales\Eshop\Application\Model\Discount::class, array('isForAmount', 'isForBundleItem', 'isForBasketItem'));
 
         $oDiscount->oxdiscount__oxaddsumtype = new oxField('itm', oxField::T_RAW);
         $oDiscount->oxdiscount__oxprice = new oxField(5, oxField::T_RAW);
@@ -941,17 +925,17 @@ class DiscountTest extends \OxidTestCase
 
     public function testIsForBasketAmountForAmountDiscountIfSimpleDiscountType()
     {
-        $oArticle = $this->getMock('oxarticle', array('getBasePrice', 'getId'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getBasePrice', 'getId', 'getPrice'));
         $oArticle->expects($this->never())->method('getPrice');
 
-        $oBasketItem = $this->getMock('oxbasketitem', array('getArticle', 'getAmount'));
+        $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array('getArticle', 'getAmount'));
         $oBasketItem->expects($this->once())->method('getArticle')->will($this->returnValue($oArticle));
         $oBasketItem->expects($this->once())->method('getAmount')->will($this->returnValue(5));
 
-        $oBasket = $this->getMock('oxbasket', array('getContents', 'getBasketSummary'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents', 'getBasketSummary'));
         $oBasket->expects($this->once())->method('getContents')->will($this->returnValue(array('asd' => $oBasketItem)));
 
-        $oDiscount = $this->getMock('oxdiscount', array('isForAmount', 'isForBasketItem'));
+        $oDiscount = $this->getMock(\OxidEsales\Eshop\Application\Model\Discount::class, array('isForAmount', 'isForBasketItem'));
 
         $oDiscount->oxdiscount__oxaddsumtype = new oxField('abs', oxField::T_RAW);
         $oDiscount->oxdiscount__oxamount = new oxField(5, oxField::T_RAW);
@@ -978,14 +962,14 @@ class DiscountTest extends \OxidTestCase
         //$oArticle = $this->getMock( 'oxarticle', array( 'getPrice', 'getId' ) );
         //$oArticle->expects( $this->any() )->method( 'getPrice' )->will( $this->returnValue( new oxprice( 150 ) ));
 
-        $oBasketItem = $this->getMock('oxbasketitem', array('getArticle', 'getAmount'));
+        $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array('getArticle', 'getAmount'));
         $oBasketItem->expects($this->once())->method('getArticle')->will($this->returnValue($oArticle));
         $oBasketItem->expects($this->once())->method('getAmount')->will($this->returnValue(1));
 
-        $oBasket = $this->getMock('oxbasket', array('getContents', 'getBasketSummary'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents', 'getBasketSummary'));
         $oBasket->expects($this->once())->method('getContents')->will($this->returnValue(array($oBasketItem)));
 
-        $oDiscount = $this->getMock('oxdiscount', array('isForAmount', 'isForBasketItem'));
+        $oDiscount = $this->getMock(\OxidEsales\Eshop\Application\Model\Discount::class, array('isForAmount', 'isForBasketItem'));
         $oDiscount->expects($this->once())->method("isForBasketItem")->will($this->returnValue(true));
 
         $oDiscount->oxdiscount__oxaddsumtype = new oxField('abs', oxField::T_RAW);
@@ -1006,11 +990,11 @@ class DiscountTest extends \OxidTestCase
      */
     public function testGetProductCheckQuery()
     {
-        $oProduct1 = $this->getMock("oxArticle", array("getParentId", "getProductId"));
+        $oProduct1 = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getParentId", "getProductId"));
         $oProduct1->expects($this->once())->method('getParentId')->will($this->returnValue("ProductParentId"));
         $oProduct1->expects($this->once())->method('getProductId')->will($this->returnValue("ProductId"));
 
-        $oProduct2 = $this->getMock("oxArticle", array("getParentId", "getProductId"));
+        $oProduct2 = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getParentId", "getProductId"));
         $oProduct2->expects($this->once())->method('getParentId')->will($this->returnValue(false));
         $oProduct2->expects($this->once())->method('getProductId')->will($this->returnValue("ProductId"));
 
@@ -1054,15 +1038,15 @@ class DiscountTest extends \OxidTestCase
                ( '_test" . uniqid(rand(), true) . ".', '{$sDiscountId}', 'product3', 'oxarticles' ) ";
         oxDb::getDb()->Execute($query);
 
-        $oParentProduct = $this->getMock("oxArticle", array("getParentId", "getProductId"));
+        $oParentProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getParentId", "getProductId"));
         $oParentProduct->expects($this->once())->method('getParentId')->will($this->returnValue(false));
         $oParentProduct->expects($this->once())->method('getProductId')->will($this->returnValue("product1"));
 
-        $oProduct = $this->getMock("oxArticle", array("getParentId", "getProductId"));
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getParentId", "getProductId"));
         $oProduct->expects($this->once())->method('getParentId')->will($this->returnValue("product1"));
         $oProduct->expects($this->once())->method('getProductId')->will($this->returnValue("product4"));
 
-        $oUnrelatedProduct = $this->getMock("oxArticle", array("getParentId", "getProductId"));
+        $oUnrelatedProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getParentId", "getProductId"));
         $oUnrelatedProduct->expects($this->once())->method('getParentId')->will($this->returnValue(false));
         $oUnrelatedProduct->expects($this->once())->method('getProductId')->will($this->returnValue("UnrelatedProductId"));
 

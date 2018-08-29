@@ -1,27 +1,11 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use \oxvoucherserie;
+use OxidEsales\EshopCommunity\Application\Model\VoucherSerie;
 
 use \Exception;
 use \oxTestModules;
@@ -61,7 +45,7 @@ class VoucherSerieMainTest extends \OxidTestCase
 
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxvoucherserie);
+        $this->assertTrue($aViewData['edit'] instanceof voucherserie);
     }
 
     /**
@@ -122,15 +106,15 @@ class VoucherSerieMainTest extends \OxidTestCase
     public function testGetStatus()
     {
         // no series..
-        $oView = $this->getMock("VoucherSerie_Main", array("_getVoucherSerie"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieMain::class, array("_getVoucherSerie"));
         $oView->expects($this->once())->method('_getVoucherSerie')->will($this->returnValue(false));
         $this->assertNull($oView->getStatus());
 
         // with serie..
-        $oSerie = $this->getMock("oxVoucherSerie", array("countVouchers"));
+        $oSerie = $this->getMock(\OxidEsales\Eshop\Application\Model\VoucherSerie::class, array("countVouchers"));
         $oSerie->expects($this->once())->method('countVouchers')->will($this->returnValue("testCountVouchers"));
 
-        $oView = $this->getMock("VoucherSerie_Main", array("_getVoucherSerie"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieMain::class, array("_getVoucherSerie"));
         $oView->expects($this->once())->method('_getVoucherSerie')->will($this->returnValue($oSerie));
         $this->assertEquals("testCountVouchers", $oView->getStatus());
     }

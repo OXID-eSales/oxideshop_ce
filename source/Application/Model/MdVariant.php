@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxRegistry;
 
@@ -28,9 +12,8 @@ use oxRegistry;
  * Defines an element of multidimentional variant name tree structure. Contains article id, variant name, URL, price, price text, and a subset of MD variants.
  *
  */
-class MdVariant extends \oxSuperCfg
+class MdVariant extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * MD variant identifier
      *
@@ -85,7 +68,7 @@ class MdVariant extends \oxSuperCfg
      *
      * @var array[string]oxMdVariant
      */
-    protected $_aSubvariants = array();
+    protected $_aSubvariants = [];
 
     /**
      * Sets MD variant identifier
@@ -130,7 +113,7 @@ class MdVariant extends \oxSuperCfg
     /**
      * Sets MD subvariants
      *
-     * @param oxMdVariant[] $aSubvariants Subvariants
+     * @param \OxidEsales\Eshop\Application\Model\MdVariant[] $aSubvariants Subvariants
      */
     public function setMdSubvariants($aSubvariants)
     {
@@ -150,7 +133,7 @@ class MdVariant extends \oxSuperCfg
     /**
      * Returns first MD subvariant from subvariant set or null in case variant has no subvariants.
      *
-     * @return OxMdVariant
+     * @return \OxidEsales\Eshop\Application\Model\MdVariant
      */
     public function getFirstMdSubvariant()
     {
@@ -167,7 +150,7 @@ class MdVariant extends \oxSuperCfg
      *
      * @param string $sName Subvariant name
      *
-     * @return OxMdVariant
+     * @return \OxidEsales\Eshop\Application\Model\MdVariant
      */
     public function getMdSubvariantByName($sName)
     {
@@ -178,7 +161,7 @@ class MdVariant extends \oxSuperCfg
             }
         }
 
-        $oNewSubvariant = oxNew("oxMdVariant");
+        $oNewSubvariant = oxNew(\OxidEsales\Eshop\Application\Model\MdVariant::class);
         $oNewSubvariant->setName($sName);
         $oNewSubvariant->setId(md5($sName . $this->getId()));
         $oNewSubvariant->setParentId($this->getId());
@@ -252,7 +235,6 @@ class MdVariant extends \oxSuperCfg
         }
 
         return $dMinPrice;
-
     }
 
     /**
@@ -298,11 +280,11 @@ class MdVariant extends \oxSuperCfg
         $sFromPrefix = '';
 
         if (!$this->_isFixedPrice()) {
-            $sFromPrefix = oxRegistry::getLang()->translateString('PRICE_FROM') . ' ';
+            $sFromPrefix = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('PRICE_FROM') . ' ';
         }
 
         $dMinPrice = $this->getMinDPrice();
-        $sFMinPrice = oxRegistry::getLang()->formatCurrency($dMinPrice);
+        $sFMinPrice = \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($dMinPrice);
         $sCurrency = ' ' . $this->getConfig()->getActShopCurrencyObject()->sign;
         $this->_sFPrice = $sFromPrefix . $sFMinPrice . $sCurrency;
 
@@ -377,7 +359,7 @@ class MdVariant extends \oxSuperCfg
     /**
      * Adds one subvariant to subvariant set
      *
-     * @param OxMdVariant $oSubvariant Subvariant
+     * @param \OxidEsales\Eshop\Application\Model\MdVariant $oSubvariant Subvariant
      */
     protected function _addMdSubvariant($oSubvariant)
     {

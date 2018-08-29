@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -28,9 +12,8 @@ use oxDb;
 /**
  * Class controls article assignment to attributes
  */
-class ArticleBundleAjax extends \ajaxListComponent
+class ArticleBundleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
-
     /**
      * If true extended column selection will be build
      *
@@ -43,16 +26,16 @@ class ArticleBundleAjax extends \ajaxListComponent
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
-        array('oxartnum', 'oxarticles', 1, 0, 0),
-        array('oxtitle', 'oxarticles', 1, 1, 0),
-        array('oxean', 'oxarticles', 1, 0, 0),
-        array('oxmpn', 'oxarticles', 0, 0, 0),
-        array('oxprice', 'oxarticles', 0, 0, 0),
-        array('oxstock', 'oxarticles', 0, 0, 0),
-        array('oxid', 'oxarticles', 0, 0, 1)
-    )
-    );
+    protected $_aColumns = ['container1' => [ // field , table,         visible, multilanguage, ident
+        ['oxartnum', 'oxarticles', 1, 0, 0],
+        ['oxtitle', 'oxarticles', 1, 1, 0],
+        ['oxean', 'oxarticles', 1, 0, 0],
+        ['oxmpn', 'oxarticles', 0, 0, 0],
+        ['oxprice', 'oxarticles', 0, 0, 0],
+        ['oxstock', 'oxarticles', 0, 0, 0],
+        ['oxid', 'oxarticles', 0, 0, 1]
+    ]
+    ];
 
     /**
      * Returns SQL query for data to fetc
@@ -62,12 +45,12 @@ class ArticleBundleAjax extends \ajaxListComponent
     protected function _getQuery()
     {
         $myConfig = $this->getConfig();
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sArticleTable = $this->_getViewName('oxarticles');
         $sView = $this->_getViewName('oxobject2category');
 
-        $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchSelId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $sSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $sSynchSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sSelId) {
@@ -118,8 +101,8 @@ class ArticleBundleAjax extends \ajaxListComponent
      */
     public function removeArticleBundle()
     {
-        $oDb = oxDb::getDb();
-        $sQuotedChosenArt = $oDb->quote(oxRegistry::getConfig()->getRequestParameter('oxid'));
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $sQuotedChosenArt = $oDb->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid'));
 
         $sQ = "update oxarticles set oxarticles.oxbundleid = '' where oxarticles.oxid  =  {$sQuotedChosenArt} ";
         $oDb->Execute($sQ);
@@ -130,9 +113,9 @@ class ArticleBundleAjax extends \ajaxListComponent
      */
     public function addArticleBundle()
     {
-        $oDb = oxDb::getDb();
-        $sQuotedChosenArt = $oDb->quote(oxRegistry::getConfig()->getRequestParameter('oxbundleid'));
-        $sQuotedOxId = $oDb->quote(oxRegistry::getConfig()->getRequestParameter('oxid'));
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $sQuotedChosenArt = $oDb->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxbundleid'));
+        $sQuotedOxId = $oDb->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid'));
 
         $sQ = "update oxarticles set oxarticles.oxbundleid =  {$sQuotedChosenArt} " .
               "where oxarticles.oxid  =  {$sQuotedOxId} ";

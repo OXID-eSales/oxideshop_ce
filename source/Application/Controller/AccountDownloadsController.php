@@ -1,25 +1,9 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxArticleList;
 use oxOrderFileList;
@@ -28,7 +12,7 @@ use oxRegistry;
 /**
  * Account article file download page.
  */
-class AccountDownloadsController extends \Account
+class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controller\AccountController
 {
     /**
      * Current class template name.
@@ -45,7 +29,7 @@ class AccountDownloadsController extends \Account
     protected $_iViewIndexState = VIEW_INDEXSTATE_NOINDEXNOFOLLOW;
 
     /**
-     * @var oxOrderFileList
+     * @var \OxidEsales\Eshop\Application\Model\OrderFileList
      */
     protected $_oOrderFilesList = null;
 
@@ -57,17 +41,17 @@ class AccountDownloadsController extends \Account
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
 
-        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
-        /** @var oxSeoEncoder $oSeoEncoder */
-        $oSeoEncoder = oxRegistry::get("oxSeoEncoder");
-        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
+        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        /** @var \OxidEsales\Eshop\Core\SeoEncoder $oSeoEncoder */
+        $oSeoEncoder = \OxidEsales\Eshop\Core\Registry::getSeoEncoder();
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
         $aPath['link'] = $oSeoEncoder->getStaticUrl($this->getViewConfig()->getSelfLink() . "cl=account");
         $aPaths[] = $aPath;
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('MY_DOWNLOADS', $iBaseLanguage, false);
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_DOWNLOADS', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
@@ -85,7 +69,7 @@ class AccountDownloadsController extends \Account
             return $this->_oOrderFilesList;
         }
 
-        $oOrderFileList = oxNew('oxOrderFileList');
+        $oOrderFileList = oxNew(\OxidEsales\Eshop\Application\Model\OrderFileList::class);
         $oOrderFileList->loadUserFiles($this->getUser()->getId());
 
         $this->_oOrderFilesList = $this->_prepareForTemplate($oOrderFileList);
@@ -96,13 +80,13 @@ class AccountDownloadsController extends \Account
     /**
      * Returns prepared orders files list
      *
-     * @param oxorderfilelist $oOrderFileList - list or orderfiles
+     * @param \OxidEsales\Eshop\Application\Model\OrderFileList $oOrderFileList - list or orderfiles
      *
      * @return array
      */
     protected function _prepareForTemplate($oOrderFileList)
     {
-        $oOrderArticles = array();
+        $oOrderArticles = [];
 
         foreach ($oOrderFileList as $oOrderFile) {
             $sOrderArticleIdField = 'oxorderfiles__oxorderarticleid';

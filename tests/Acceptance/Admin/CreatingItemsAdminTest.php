@@ -1,29 +1,13 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Tests\Acceptance\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin;
 
-use OxidEsales\Eshop\Core\ShopIdCalculator;
-use OxidEsales\Eshop\Tests\Acceptance\AdminTestCase;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Tests\Acceptance\AdminTestCase;
 
 /** Creating and deleting items. */
 class CreatingItemsAdminTest extends AdminTestCase
@@ -491,7 +475,7 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->frame("list");
         $this->type("where[oxpayments][oxdesc]", "create_delete");
         $this->clickAndWait("submitit");
-        $this->assertEquals("create_delete payment [EN]_šÄßüл", $this->getText("//tr[@id='row.1']/td[2]"));
+        $this->assertEquals("create_delete payment [EN]_šÄßüл", $this->getText("//tr[@id='row.1']/td[contains(@class, 'payment_name')]"));
         $this->assertElementNotPresent("//tr[@id='row.2']/td[1]");
     }
 
@@ -1560,70 +1544,49 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->assertElementNotPresent("//tr[@id='test_variant.1']");
         $this->addSelection("allsel[]", "label=test selection list [EN] šÄßüл | test sellist šÄßüл");
         $this->clickAndWait("//b");
-        $this->assertEquals("selvar1 [DE]", $this->getValue("//tr[@id='test_variant.1']/td[3]/input"));
-        $this->assertEquals("10010-1", $this->getValue("//tr[@id='test_variant.1']/td[4]/input"));
-        $this->assertEquals("3.5", $this->getValue("//tr[@id='test_variant.1']/td[5]/input"));
-        $this->assertEquals("selvar2 [DE]", $this->getValue("//tr[@id='test_variant.2']/td[3]/input"));
-        $this->assertEquals("10010-2", $this->getValue("//tr[@id='test_variant.2']/td[4]/input"));
-        $this->assertEquals("2.5", $this->getValue("//tr[@id='test_variant.2']/td[5]/input"));
-        $this->assertEquals("selvar3 [DE]", $this->getValue("//tr[@id='test_variant.3']/td[3]/input"));
-        $this->assertEquals("10010-3", $this->getValue("//tr[@id='test_variant.3']/td[4]/input"));
-        $this->assertEquals("0.5", $this->getValue("//tr[@id='test_variant.3']/td[5]/input"));
-        $this->assertEquals("selvar4 [DE]", $this->getValue("//tr[@id='test_variant.4']/td[3]/input"));
-        $this->assertEquals("10010-4", $this->getValue("//tr[@id='test_variant.4']/td[4]/input"));
-        $this->assertEquals("2.55", $this->getValue("//tr[@id='test_variant.4']/td[5]/input"));
+
+        // String to access variant inputs (d1 = variant id, d2 = table column id)
+        $inputPath = "//tr[@id='test_variant.%d']/td[%d]/input";
+
+        // gets values of all three variant input fields: Title, Code, Price
+        $variantValues = function($index) use ($inputPath) {
+            // 3 = Title, 4 = Code, 5 = Price
+            return [
+                $this->getValue(sprintf($inputPath, $index, 3)),
+                $this->getValue(sprintf($inputPath, $index, 4)),
+                $this->getValue(sprintf($inputPath, $index, 5))
+            ];
+        };
+
+        $this->waitForItemAppear(sprintf($inputPath, 1, 3)."[@value='selvar1 [DE]']");
+        $this->assertEquals(["selvar1 [DE]", "10010-1", "3.5"], $variantValues(1));
+        $this->assertEquals(["selvar2 [DE]", "10010-2", "2.5"], $variantValues(2));
+        $this->assertEquals(["selvar3 [DE]", "10010-3", "0.5"], $variantValues(3));
+
         $this->addSelection("allsel[]", "label=test selection list [EN] šÄßüл | test sellist šÄßüл");
         $this->clickAndWait("//b");
-        $this->assertEquals("selvar1 [DE] | selvar1 [DE]", $this->getValue("//tr[@id='test_variant.1']/td[3]/input"));
-        $this->assertEquals("10010-1", $this->getValue("//tr[@id='test_variant.1']/td[4]/input"));
-        $this->assertEquals("4.5", $this->getValue("//tr[@id='test_variant.1']/td[5]/input"));
-        $this->assertEquals("selvar1 [DE] | selvar2 [DE]", $this->getValue("//tr[@id='test_variant.2']/td[3]/input"));
-        $this->assertEquals("10010-1-1", $this->getValue("//tr[@id='test_variant.2']/td[4]/input"));
-        $this->assertEquals("3.5", $this->getValue("//tr[@id='test_variant.2']/td[5]/input"));
-        $this->assertEquals("selvar1 [DE] | selvar3 [DE]", $this->getValue("//tr[@id='test_variant.3']/td[3]/input"));
-        $this->assertEquals("10010-1-2", $this->getValue("//tr[@id='test_variant.3']/td[4]/input"));
-        $this->assertEquals("1.5", $this->getValue("//tr[@id='test_variant.3']/td[5]/input"));
-        $this->assertEquals("selvar1 [DE] | selvar4 [DE]", $this->getValue("//tr[@id='test_variant.4']/td[3]/input"));
-        $this->assertEquals("10010-1-3", $this->getValue("//tr[@id='test_variant.4']/td[4]/input"));
-        $this->assertEquals("3.55", $this->getValue("//tr[@id='test_variant.4']/td[5]/input"));
-        $this->assertEquals("selvar2 [DE] | selvar1 [DE]", $this->getValue("//tr[@id='test_variant.5']/td[3]/input"));
-        $this->assertEquals("10010-2", $this->getValue("//tr[@id='test_variant.5']/td[4]/input"));
-        $this->assertEquals("3.5", $this->getValue("//tr[@id='test_variant.5']/td[5]/input"));
-        $this->assertEquals("selvar2 [DE] | selvar2 [DE]", $this->getValue("//tr[@id='test_variant.6']/td[3]/input"));
-        $this->assertEquals("10010-2-1", $this->getValue("//tr[@id='test_variant.6']/td[4]/input"));
-        $this->assertEquals("2.5", $this->getValue("//tr[@id='test_variant.6']/td[5]/input"));
-        $this->assertEquals("selvar2 [DE] | selvar3 [DE]", $this->getValue("//tr[@id='test_variant.7']/td[3]/input"));
-        $this->assertEquals("10010-2-2", $this->getValue("//tr[@id='test_variant.7']/td[4]/input"));
-        $this->assertEquals("0.5", $this->getValue("//tr[@id='test_variant.7']/td[5]/input"));
-        $this->assertEquals("selvar2 [DE] | selvar4 [DE]", $this->getValue("//tr[@id='test_variant.8']/td[3]/input"));
-        $this->assertEquals("10010-2-3", $this->getValue("//tr[@id='test_variant.8']/td[4]/input"));
-        $this->assertEquals("2.55", $this->getValue("//tr[@id='test_variant.8']/td[5]/input"));
-        $this->assertEquals("selvar3 [DE] | selvar1 [DE]", $this->getValue("//tr[@id='test_variant.9']/td[3]/input"));
-        $this->assertEquals("10010-3", $this->getValue("//tr[@id='test_variant.9']/td[4]/input"));
-        $this->assertEquals("1.5", $this->getValue("//tr[@id='test_variant.9']/td[5]/input"));
-        $this->assertEquals("selvar3 [DE] | selvar2 [DE]", $this->getValue("//tr[@id='test_variant.10']/td[3]/input"));
-        $this->assertEquals("10010-3-1", $this->getValue("//tr[@id='test_variant.10']/td[4]/input"));
-        $this->assertEquals("0.5", $this->getValue("//tr[@id='test_variant.10']/td[5]/input"));
-        $this->assertEquals("selvar3 [DE] | selvar3 [DE]", $this->getValue("//tr[@id='test_variant.11']/td[3]/input"));
-        $this->assertEquals("10010-3-2", $this->getValue("//tr[@id='test_variant.11']/td[4]/input"));
-        $this->assertEquals("-1.5", $this->getValue("//tr[@id='test_variant.11']/td[5]/input"));
-        $this->assertEquals("selvar3 [DE] | selvar4 [DE]", $this->getValue("//tr[@id='test_variant.12']/td[3]/input"));
-        $this->assertEquals("10010-3-3", $this->getValue("//tr[@id='test_variant.12']/td[4]/input"));
-        $this->assertEquals("0.55", $this->getValue("//tr[@id='test_variant.12']/td[5]/input"));
-        $this->assertEquals("selvar4 [DE] | selvar1 [DE]", $this->getValue("//tr[@id='test_variant.13']/td[3]/input"));
-        $this->assertEquals("10010-4", $this->getValue("//tr[@id='test_variant.13']/td[4]/input"));
-        $this->assertEquals("3.55", $this->getValue("//tr[@id='test_variant.13']/td[5]/input"));
-        $this->assertEquals("selvar4 [DE] | selvar2 [DE]", $this->getValue("//tr[@id='test_variant.14']/td[3]/input"));
-        $this->assertEquals("10010-4-1", $this->getValue("//tr[@id='test_variant.14']/td[4]/input"));
-        $this->assertEquals("2.55", $this->getValue("//tr[@id='test_variant.14']/td[5]/input"));
-        $this->assertEquals("selvar4 [DE] | selvar3 [DE]", $this->getValue("//tr[@id='test_variant.15']/td[3]/input"));
-        $this->assertEquals("10010-4-2", $this->getValue("//tr[@id='test_variant.15']/td[4]/input"));
-        $this->assertEquals("0.55", $this->getValue("//tr[@id='test_variant.15']/td[5]/input"));
-        $this->assertEquals("selvar4 [DE] | selvar4 [DE]", $this->getValue("//tr[@id='test_variant.16']/td[3]/input"));
-        $this->assertEquals("10010-4-3", $this->getValue("//tr[@id='test_variant.16']/td[4]/input"));
-        $this->assertEquals("2.6", $this->getValue("//tr[@id='test_variant.16']/td[5]/input"));
+
+        $this->waitForItemAppear(sprintf($inputPath, 1, 3)."[@value='selvar1 [DE] | selvar1 [DE]']");
+        $this->assertEquals(["selvar1 [DE] | selvar1 [DE]", "10010-1", "4.5"], $variantValues(1));
+        $this->assertEquals(["selvar1 [DE] | selvar2 [DE]", "10010-1-1", "3.5"], $variantValues(2));
+        $this->assertEquals(["selvar1 [DE] | selvar3 [DE]", "10010-1-2", "1.5"], $variantValues(3));
+        $this->assertEquals(["selvar1 [DE] | selvar4 [DE]", "10010-1-3", "3.55"], $variantValues(4));
+        $this->assertEquals(["selvar2 [DE] | selvar1 [DE]", "10010-2", "3.5"], $variantValues(5));
+        $this->assertEquals(["selvar2 [DE] | selvar2 [DE]", "10010-2-1", "2.5"], $variantValues(6));
+        $this->assertEquals(["selvar2 [DE] | selvar3 [DE]", "10010-2-2", "0.5"], $variantValues(7));
+        $this->assertEquals(["selvar2 [DE] | selvar4 [DE]", "10010-2-3", "2.55"], $variantValues(8));
+        $this->assertEquals(["selvar3 [DE] | selvar1 [DE]", "10010-3", "1.5"], $variantValues(9));
+        $this->assertEquals(["selvar3 [DE] | selvar2 [DE]", "10010-3-1", "0.5"], $variantValues(10));
+        $this->assertEquals(["selvar3 [DE] | selvar3 [DE]", "10010-3-2", "-1.5"], $variantValues(11));
+        $this->assertEquals(["selvar3 [DE] | selvar4 [DE]", "10010-3-3", "0.55"], $variantValues(12));
+        $this->assertEquals(["selvar4 [DE] | selvar1 [DE]", "10010-4", "3.55"], $variantValues(13));
+        $this->assertEquals(["selvar4 [DE] | selvar2 [DE]", "10010-4-1", "2.55"], $variantValues(14));
+        $this->assertEquals(["selvar4 [DE] | selvar3 [DE]", "10010-4-2", "0.55"], $variantValues(15));
+        $this->assertEquals(["selvar4 [DE] | selvar4 [DE]", "10010-4-3", "2.6"], $variantValues(16));
+
         $this->changeAdminEditLanguage('English', 'editlanguage');
-        $this->assertEquals("selvar1 [EN] šÄßüл | selvar1 [EN] šÄßüл", $this->getValue("//tr[@id='test_variant.1']/td[3]/input"));
+
+        $this->waitForItemAppear(sprintf($inputPath, 1, 3)."[@value='selvar1 [EN] šÄßüл | selvar1 [EN] šÄßüл']");
         $this->assertEquals("selvar1 [EN] šÄßüл | selvar2 [EN] šÄßüл", $this->getValue("//tr[@id='test_variant.2']/td[3]/input"));
         $this->assertEquals("selvar1 [EN] šÄßüл | selvar3 [EN] šÄßüл", $this->getValue("//tr[@id='test_variant.3']/td[3]/input"));
         $this->assertEquals("selvar1 [EN] šÄßüл | selvar4 [EN] šÄßüл", $this->getValue("//tr[@id='test_variant.4']/td[3]/input"));
@@ -1791,16 +1754,21 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->assertEquals("", $this->getEditorValue("oxcategories__oxlongdesc"));
         $this->typeToEditor("oxcategories__oxlongdesc", "long desc [EN]_šÄßüл");
         $this->clickAndWait("save");
-        $this->assertEquals("long desc [EN]_šÄßüл", $this->getEditorValue("oxcategories__oxlongdesc"));
+
+        $this->waitForElementText("long desc [EN]_šÄßüл", "editor_oxcategories__oxlongdesc");
         $this->changeAdminEditLanguage("Deutsch", "catlang");
-        $this->assertEquals("", $this->getEditorValue("oxcategories__oxlongdesc"));
+
+        $this->waitForElementText("", "editor_oxcategories__oxlongdesc");
         $this->typeToEditor("oxcategories__oxlongdesc", "long desc [DE]");
         $this->clickAndWait("save");
-        $this->assertEquals("long desc [DE]", $this->getEditorValue("oxcategories__oxlongdesc"));
+
+        $this->waitForElementText("long desc [DE]", "editor_oxcategories__oxlongdesc");
         $this->changeAdminEditLanguage("English", "catlang");
-        $this->assertEquals("long desc [EN]_šÄßüл", $this->getEditorValue("oxcategories__oxlongdesc"));
+
+        $this->waitForElementText("long desc [EN]_šÄßüл", "editor_oxcategories__oxlongdesc");
         $this->changeAdminEditLanguage("Deutsch", "catlang");
-        $this->assertEquals("long desc [DE]", $this->getEditorValue("oxcategories__oxlongdesc"));
+
+        $this->waitForElementText("long desc [DE]", "editor_oxcategories__oxlongdesc");
         $this->checkTabs(array('Picture', 'Sorting', 'SEO', 'Rights', 'Mall'));
         $this->frame("list");
         $this->type("where[oxcategories][oxtitle]", "create_delete");
@@ -2247,20 +2215,24 @@ class CreatingItemsAdminTest extends AdminTestCase
      * creating News
      *
      * @group creatingitems
+     * @group quarantine
      */
     public function testCreateNews()
     {
         $this->loginAdmin("Customer Info", "News");
         $this->changeAdminListLanguage("Deutsch");
+
         $this->clickAndWait("link=Title");
         $this->openListItem("link=1 [DE] Test news šÄßüл");
-        $this->assertEquals("1 [DE] Test news šÄßüл", $this->getValue("editval[oxnews__oxshortdesc]"));
+        $this->waitForElementText("1 [DE] Test news šÄßüл", "editval[oxnews__oxshortdesc]");
         $this->assertEquals("Deutsch", $this->getSelectedLabel("test_editlanguage"));
+
         $this->frame("list");
         $this->changeAdminListLanguage('English');
         $this->frame("edit");
-        $this->assertEquals("[last] [EN] Test news šÄßüл", $this->getValue("editval[oxnews__oxshortdesc]"));
+        $this->waitForElementText("[last] [EN] Test news šÄßüл", "editval[oxnews__oxshortdesc]");
         $this->assertEquals("English", $this->getSelectedLabel("test_editlanguage"));
+
         $this->clickCreateNewItem();
         $this->assertEquals("off", $this->getValue("editval[oxnews__oxactive]"));
         $this->check("editval[oxnews__oxactive]");
@@ -2290,12 +2262,14 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->assertEquals("2008-05-01 00:00:00", $this->getValue("editval[oxnews__oxactiveto]"));
         $this->assertEquals("2008-04-22", $this->getValue("editval[oxnews__oxdate]"));
         $this->assertEquals("create_delete news [DE]", $this->getValue("editval[oxnews__oxshortdesc]"));
+
         $this->selectAndWait("test_editlanguage", "label=English");
+        $this->waitForElementText("create_delete news [EN]_šÄßüл", "editval[oxnews__oxshortdesc]");
         $this->assertEquals("on", $this->getValue("editval[oxnews__oxactive]"));
         $this->assertEquals("2008-01-01 00:11:11", $this->getValue("editval[oxnews__oxactivefrom]"));
         $this->assertEquals("2008-05-01 00:00:00", $this->getValue("editval[oxnews__oxactiveto]"));
         $this->assertEquals("2008-04-22", $this->getValue("editval[oxnews__oxdate]"));
-        $this->assertEquals("create_delete news [EN]_šÄßüл", $this->getValue("editval[oxnews__oxshortdesc]"));
+
         $this->openTab("Text");
         $this->assertEquals("English", $this->getSelectedLabel("newslang"));
         $this->assertEquals("", $this->getEditorValue("oxnews__oxlongdesc"));
@@ -2589,23 +2563,27 @@ class CreatingItemsAdminTest extends AdminTestCase
         $this->assertElementNotPresent("nav.page.2");
         $this->frame("edit");
         $this->clickCreateNewItem();
+
         $this->type("editval[oxactions__oxtitle]", "create_delete action");
         $this->check("editval[oxactions__oxactive]");
         $this->type("editval[oxactions__oxactivefrom]", "2010-01-01");
         $this->type("editval[oxactions__oxactiveto]", "2010-12-12");
         $this->select("editval[oxactions__oxtype]", "label=Action");
         $this->clickAndWaitFrame("save", 'edit');
+
         $this->assertEquals("create_delete action", $this->getValue("editval[oxactions__oxtitle]"));
         $this->assertEquals("on", $this->getValue("editval[oxactions__oxactive]"));
         $this->assertEquals("2010-01-01 00:00:00", $this->getValue("editval[oxactions__oxactivefrom]"));
         $this->assertEquals("2010-12-12 00:00:00", $this->getValue("editval[oxactions__oxactiveto]"));
         $this->clickAndWaitFrame("save", 'list');
+
         $this->assertEquals("Deutsch", $this->getSelectedLabel("test_editlanguage"));
         $this->type("editval[oxactions__oxtitle]", "create_delete action1");
         $this->type("editval[oxactions__oxactivefrom]", "2010-02-01 00:00:00");
         $this->type("editval[oxactions__oxactiveto]", "2010-12-31 00:00:00");
         $this->uncheck("editval[oxactions__oxactive]");
         $this->clickAndWaitFrame("save", 'list');
+
         $this->assertEquals("create_delete action1", $this->getValue("editval[oxactions__oxtitle]"));
         $this->assertEquals("2010-02-01 00:00:00", $this->getValue("editval[oxactions__oxactivefrom]"));
         $this->assertEquals("2010-12-31 00:00:00", $this->getValue("editval[oxactions__oxactiveto]"));

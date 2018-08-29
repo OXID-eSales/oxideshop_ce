@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 /**
@@ -36,7 +20,7 @@
  * <ul> and <li> for lists
  */
 
-$aLang =  array(
+$aLang =  [
 'charset'                                     => 'UTF-8',
 
 'HELP_SHOP_SYSTEM_OTHERCOUNTRYORDER'          => 'Here you can set if orders can be made in countries for which no shipping costs are defined:' .
@@ -66,8 +50,6 @@ $aLang =  array(
 
 'HELP_SHOP_SYSTEM_INLINEIMGEMAIL'             => 'If the setting is checked, the pictures in e-mails are sent together with the e-mail. If the setting is unchecked, the pictures are downloaded by the e-mail program when the e-mail is opened.',
 
-'HELP_SHOP_SYSTEM_SHOP_LOCATION'              => 'Please choose the market to which shop is focused. According to it, additional e-commerce Services will be loaded from OXID server. Do not forget to enable option "Load additional Information from OXID server" in Master Settings -> Core Settings -> Settings -> Administration',
-
 'HELP_SHOP_SYSTEM_UTILMODULE'                 => 'Please enter your custom PHP file here, which will overwrite eShop functions at shop start.',
 
 
@@ -80,8 +62,6 @@ $aLang =  array(
 'HELP_SHOP_CACHE_REVERSE_PROXY_ENABLED'       => 'Activates a caching HTTP Reverse Proxy. Note: Do not use "Dynamic Content Caching" at the same time, as it could slow down the performance.',
 
 'HELP_SHOP_CACHE_LAYOUT_CACHE_AGE'            => 'Sets lifetime of page layout in seconds. This will be send via HTTP headers, specifying header value "Age".',
-
-
 
 'HELP_SHOP_CONFIG_ORDEROPTINEMAIL'            => 'If double-opt-in is active, users get an e-mail with a confirmation link when they register for the newsletter. Only if this confirmation link is used the user is registered for the newsletter.<br>' .
                                                  'Double-opt-in protects users from unwanted registrations. Without double-opt-in, any e-mail address can be registered for the newsletter. With double-opt-in, the owner of the e-mail address has to confirm the registration.',
@@ -139,9 +119,31 @@ $aLang =  array(
                                                  '<ul><li>If the setting is checked, negative stock values are calculated if further units are bought.</li>' .
                                                  '<li>If the setting is unchecked, the stock value never falls below 0, even if further units are bought.</li></ul>',
 
+'HELP_SHOP_CONFIG_SETORDELETECURRENCY'        => 'Add or remove currencies. Each line contains currency parameters separated by the symbol @.<br /><br />'.
+                                                 '<ul>'.
+                                                 '<li>currency code according to ISO 4217 (e.g. EUR)</li>'.
+                                                 '<li>currency rate to basic currency with the value 1.00</li>'.
+                                                 '<li>decimal separator</li>'.
+                                                 '<li>thousands separator</li>'.
+                                                 '<li>currency sign</li>'.
+                                                 '<li>number of decimal places</li>'.
+                                                 '<li>optional parameter "Front". If entered, the currency sign shows up in front of the price.</li>'.
+                                                 '</ul>',
+
 'HELP_SHOP_CONFIG_NEWARTBYINSERT'             => 'On the front page of your eShop the newest products are shown in <span class="filename_filepath_or_italic">Just arrived!</span>.  This setting determines how the newest products are calculated: by date of creation or by date of last change in admin/last order.',
 
-'HELP_SHOP_CONFIG_LOAD_DYNAMIC_PAGES'         => 'Activate this option for displaying additional product information at the administration panel and to transmit technical information to OXID servers for statistical purposes as well as for increasing our service quality. No business relevant data (users, orders etc) will be transmitted at any time.',
+// @deprecated since v6.2.0 (2017-02-15); Recommendations feature will be moved to an own module.
+'HELP_SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE'      => 'Activate recommendation of products on product detail pages.',
+// END deprecated
+
+'HELP_SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID' => 'No business relevant date or client information will be transmitted. '
+                                                        .'The collected data exclusively apply to technological information. '
+                                                        .'To improve the quality of our products, information like this will be collected:'
+                                                        .'<ul>'
+                                                        .'  <li>number of the OXID eShop Community Edition installations world wide</li>'
+                                                        .'  <li>average number of installed extensions per OXID eShop</li>'
+                                                        .'  <li>top spread extensions for OXID eShop</li>'
+                                                        .'</ul>',
 
 'HELP_SHOP_CONFIG_DELETERATINGLOGS'           => 'If users rate a product, they cannot rate the product again. Here you can set after how many days users are allowed to rate a product again. Leave empty to disable - products can be rated only once per user.',
 
@@ -268,7 +270,7 @@ $aLang =  array(
 
 'HELP_SHOP_MAIN_PRODUCTIVE'                   => 'Non-productive eShop mode is intended for eShop installation, configuration, template customization and module debugging phase. As soon as productive mode is turned <span class="warning_or_important_hint">ON</span>, the cache handling and the error reporting behavior is optimized for the live shop.<br>' .
                                                  '<span class="warning_or_important_hint">Activate this setting when the eShop is launched.</span><br>' .
-                                                 'Find other important information for going live with OXID eShop in our <a href="http://oxidforge.org/en/check-before-going-live.html" target="_blank">OXIDforge</a>.',
+                                                 'Find other important information for going live with OXID eShop in our <a href="https://oxidforge.org/en/check-before-going-live.html" target="_blank">OXIDforge</a>.',
 
 'HELP_SHOP_MAIN_ACTIVE'                       => 'With <span class="navipath_or_inputname">Active</span> you can enable/disable the complete eShop. If the eShop is disabled, a message saying the eShop is temporary offline is displayed to the users. This can be useful for maintenance.',
 
@@ -284,7 +286,7 @@ $aLang =  array(
 
 'HELP_ARTICLE_MAIN_VAT'                       => 'Here you can enter a special VAT for this product. This VAT is used for this product in all later calculations (cart, order, invoice)',
 
-'HELP_ARTICLE_EXTEND_UNITQUANTITY'            => 'With <span class="navipath_or_inputname">Quantity</span> and <span class="navipath_or_inputname">Unit</span> you can set the price per quantity unit. The price per quantity unit is calculated and displayed with the product (e.g. 1.43 EUR per liter). In <span class="navipath_or_inputname">Quantity</span>, enter the amount of the product (e.g. <span class="userinput_or_code">1.5</span>), in <span class="navipath_or_inputname">Unit</span> define the according quantity unit (e.g. <span class="userinput_or_code">liter</span>). You can choose unit type from given values or, by selecting blank unit type "-", enter unit type manually. If you wish to append existing type list, please follow this <a href="http://oxidforge.org/en/adding-new-unit-types.html" target="_blank">link</a> for instructions.',
+'HELP_ARTICLE_EXTEND_UNITQUANTITY'            => 'With <span class="navipath_or_inputname">Quantity</span> and <span class="navipath_or_inputname">Unit</span> you can set the price per quantity unit. The price per quantity unit is calculated and displayed with the product (e.g. 1.43 EUR per liter). In <span class="navipath_or_inputname">Quantity</span>, enter the amount of the product (e.g. <span class="userinput_or_code">1.5</span>), in <span class="navipath_or_inputname">Unit</span> define the according quantity unit (e.g. <span class="userinput_or_code">liter</span>). You can choose unit type from given values or, by selecting blank unit type "-", enter unit type manually. If you wish to append existing type list, please follow this <a href="https://oxidforge.org/en/adding-new-unit-types.html" target="_blank">link</a> for instructions.',
 
 'HELP_ARTICLE_EXTEND_EXTURL'                  => 'In <span class="navipath_or_inputname">External URL</span> you can enter a link where further information about the product is available (e. g. on the manufacturer\'s website). In <span class="navipath_or_inputname">Text for external URL</span> you can enter the text which is linked, e .g. <span class="userinput_or_code">Further information on the manufacturer\'s website</span>.',
 
@@ -547,7 +549,6 @@ $aLang =  array(
 
 'HELP_ALTERNATIVE_IMAGE_SERVER_NOTE'          => 'Alternative URL to remote image server can be specified in configuration file config.inc.php by setting <i>sAltImageUrl</i> and <i>sSSLAltImageUrl</i>.<br> Thus all product pictures will be loaded from this alternative server instead of the local one. However, uploaded files will be stored locally. In this case synchronization to external server has to be done manually or with custom scripts.',
 
-'HELP_SHOP_RDFA_SUBMIT_URL'                   => 'Submits your shop URL to GR-Notify page. There the URL is saved and forwarded to Linked Open Commerce & Semantic Web search engines and endpoints.',
 'HELP_SHOP_RDFA_CONTENT_OFFERER'              => 'Select here, in which content page eShop main information is displayed, e.g. "About Us".',
 'HELP_SHOP_RDFA_CONTENT_PAYMENT'              => 'Select here, in which content page not to RDFa assigned payment information is displayed, e.g. "Terms and Conditions". To assign your payment methods to RDFa payment methods in general go to: Shop Settings -> Payment Methods -> RDFa.',
 'HELP_SHOP_RDFA_CONTENT_DELIVERY'             => 'Select here, in which content page not to RDFa assigned shipping information is displayed, e.g. "Shipping and charges". To assign your shipping methods to RDFa payment methods in general go to: Shop Settings -> Shipping Methods -> RDFa.',
@@ -579,4 +580,5 @@ $aLang =  array(
 'HELP_SHOP_CONFIG_DEBIT_OLD_BANK_INFORMATION_NOT_ALLOWED' => 'Only IBAN and BIC can be entered during the checkout. Bank account number and the bank code can only be entered if this check box is not activated.',
 'HELP_SHOP_CONFIG_ENABLE_INTANGIBLE_PRODUCTS_AGREEMENT'   => 'If this option is activated, users have to confirm terms and conditions for intangible or downloadable products in the fourth step of the check-out process. Please make sure this option is enabled for the specific item as well!',
 
-);
+'HELP_SHOP_CONFIG_FIELDS_CONTACTFORM'         => 'Here you can define the contact form fields a user necessarily has to fill.',
+];

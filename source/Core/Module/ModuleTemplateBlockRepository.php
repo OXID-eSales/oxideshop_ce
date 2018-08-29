@@ -1,34 +1,16 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core\Module;
-
-use \oxDb;
+namespace OxidEsales\EshopCommunity\Core\Module;
 
 /**
  * Provides a way to get content from module template block file.
  *
  * @internal Do not make a module extension for this class.
- * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
+ * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ModuleTemplateBlockRepository
 {
@@ -42,15 +24,15 @@ class ModuleTemplateBlockRepository
      */
     public function getBlocksCount($modulesId, $shopId)
     {
-        $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-        $modulesIdQuery = implode(", ", oxDb::getDb()->quoteArray($modulesId));
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+        $modulesIdQuery = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($modulesId));
         $sql = "select COUNT(*)
                             from oxtplblocks
                             where oxactive=1
                                 and oxshopid = ?
                                 and oxmodule in ( " . $modulesIdQuery . " )";
 
-        return $db->getOne($sql, array($shopId));
+        return $db->getOne($sql, [$shopId]);
     }
 
     /**
@@ -65,7 +47,7 @@ class ModuleTemplateBlockRepository
      */
     public function getBlocks($shopTemplateName, $activeModulesId, $shopId, $themesId = [])
     {
-        $modulesId = implode(", ", oxDb::getDb()->quoteArray($activeModulesId));
+        $modulesId = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($activeModulesId));
 
         $activeThemesIdQuery = $this->formActiveThemesIdQuery($themesId);
         $sql = "select *
@@ -76,7 +58,7 @@ class ModuleTemplateBlockRepository
                         and oxmodule in ( " . $modulesId . " )
                         and oxtheme in (" . $activeThemesIdQuery . ")
                         order by oxpos asc, oxtheme asc, oxid asc";
-        $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
         return $db->getAll($sql, [$shopId, $shopTemplateName]);
     }
@@ -93,6 +75,6 @@ class ModuleTemplateBlockRepository
         $defaultThemeIndicator = '';
         array_unshift($activeThemeIds, $defaultThemeIndicator);
 
-        return implode(', ', oxDb::getDb()->quoteArray($activeThemeIds));
+        return implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($activeThemeIds));
     }
 }

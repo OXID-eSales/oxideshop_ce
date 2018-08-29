@@ -1,37 +1,18 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
-use oxField;
 use DateTime;
 
 /**
  * Date manipulation utility class
  */
-class UtilsDate extends \oxSuperCfg
+class UtilsDate extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Format date to user defined format.
      *
@@ -75,7 +56,7 @@ class UtilsDate extends \oxSuperCfg
 
         // preparing time array
         $sTime = (isset($aData[1]) && $oStr->strstr($aData[1], ':')) ? $aData[1] : '';
-        $aTime = $sTime ? explode(':', $sTime) : array(0, 0, 0);
+        $aTime = $sTime ? explode(':', $sTime) : [0, 0, 0];
 
         // preparing date array
         $sDate = isset($aData[0]) ? $aData[0] : '';
@@ -83,9 +64,9 @@ class UtilsDate extends \oxSuperCfg
 
         // choosing format..
         if ($sTime) {
-            $sFormat = $blForceEnglishRet ? 'Y-m-d H:i:s' : oxRegistry::getLang()->translateString('fullDateFormat');
+            $sFormat = $blForceEnglishRet ? 'Y-m-d H:i:s' : \OxidEsales\Eshop\Core\Registry::getLang()->translateString('fullDateFormat');
         } else {
-            $sFormat = $blForceEnglishRet ? 'Y-m-d' : oxRegistry::getLang()->translateString('simpleDateFormat');
+            $sFormat = $blForceEnglishRet ? 'Y-m-d' : \OxidEsales\Eshop\Core\Registry::getLang()->translateString('simpleDateFormat');
         }
 
         if (count($aDate) != 3) {
@@ -150,8 +131,8 @@ class UtilsDate extends \oxSuperCfg
 
         $blDateFound = false;
         $blTimeFound = false;
-        $aDateMatches = array();
-        $aTimeMatches = array();
+        $aDateMatches = [];
+        $aTimeMatches = [];
 
         // looking for date field
         foreach ($aDatePatterns as $sPattern => $sType) {
@@ -234,7 +215,7 @@ class UtilsDate extends \oxSuperCfg
         // on this case usually means that we gonna save value, and value is formatted, not plain
         $sSQLTimeStampPattern = "/^([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})$/";
         $sISOTimeStampPattern = "/^([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2}):([0-9]{2})$/";
-        $aMatches = array();
+        $aMatches = [];
         $oStr = getStr();
 
         // preparing value to save
@@ -341,7 +322,7 @@ class UtilsDate extends \oxSuperCfg
     {
         // defining time format
         // checking for default values
-        $sLocalTimeFormat = oxRegistry::getConfig()->getConfigParam('sLocalTimeFormat');
+        $sLocalTimeFormat = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sLocalTimeFormat');
         if (!$sLocalTimeFormat || $blToTimeStamp) {
             $sLocalTimeFormat = "ISO";
         }
@@ -360,7 +341,7 @@ class UtilsDate extends \oxSuperCfg
     {
         // defining time format
         // checking for default values
-        $sLocalDateFormat = oxRegistry::getConfig()->getConfigParam('sLocalDateFormat');
+        $sLocalDateFormat = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sLocalDateFormat');
         if (!$sLocalDateFormat || $blToTimeStamp) {
             $sLocalDateFormat = "ISO";
         }
@@ -375,10 +356,10 @@ class UtilsDate extends \oxSuperCfg
      */
     protected function _defaultDatePattern()
     {
-        return array("/^0000-00-00/"   => "ISO",
+        return ["/^0000-00-00/"   => "ISO",
                      "/^00\.00\.0000/" => "EUR",
                      "/^00\/00\/0000/" => "USA"
-        );
+        ];
     }
 
     /**
@@ -388,10 +369,10 @@ class UtilsDate extends \oxSuperCfg
      */
     protected function _defaultTimePattern()
     {
-        return array("/00:00:00$/"    => "ISO",
+        return ["/00:00:00$/"    => "ISO",
                      "/00\.00\.00$/"  => "EUR",
                      "/00:00:00 AM$/" => "USA"
-        );
+        ];
     }
 
     /**
@@ -401,10 +382,10 @@ class UtilsDate extends \oxSuperCfg
      */
     protected function _regexp2ValidateDateInput()
     {
-        return array("/^([0-9]{4})-([0-9]{2})-([0-9]{2})/"   => "ISO",
+        return ["/^([0-9]{4})-([0-9]{2})-([0-9]{2})/"   => "ISO",
                      "/^([0-9]{2})\.([0-9]{2})\.([0-9]{4})/" => "EUR",
                      "/^([0-9]{2})\/([0-9]{2})\/([0-9]{4})/" => "USA"
-        );
+        ];
     }
 
     /**
@@ -414,10 +395,10 @@ class UtilsDate extends \oxSuperCfg
      */
     protected function _regexp2ValidateTimeInput()
     {
-        return array("/([0-9]{2}):([0-9]{2}):([0-9]{2})$/"                 => "ISO",
+        return ["/([0-9]{2}):([0-9]{2}):([0-9]{2})$/"                 => "ISO",
                      "/([0-9]{2})\.([0-9]{2})\.([0-9]{2})$/"               => "EUR",
                      "/([0-9]{2}):([0-9]{2}):([0-9]{2}) ([AP]{1}[M]{1})$/" => "USA"
-        );
+        ];
     }
 
     /**
@@ -427,10 +408,10 @@ class UtilsDate extends \oxSuperCfg
      */
     protected function _defineDateFormattingRules()
     {
-        return array("ISO" => array("Y-m-d", array(2, 3, 1), "0000-00-00"),
-                     "EUR" => array("d.m.Y", array(2, 1, 3), "00.00.0000"),
-                     "USA" => array("m/d/Y", array(1, 2, 3), "00/00/0000")
-        );
+        return ["ISO" => ["Y-m-d", [2, 3, 1], "0000-00-00"],
+                     "EUR" => ["d.m.Y", [2, 1, 3], "00.00.0000"],
+                     "USA" => ["m/d/Y", [1, 2, 3], "00/00/0000"]
+        ];
     }
 
     /**
@@ -440,10 +421,10 @@ class UtilsDate extends \oxSuperCfg
      */
     protected function _defineTimeFormattingRules()
     {
-        return array("ISO" => array("H:i:s", array(1, 2, 3), "00:00:00"),
-                     "EUR" => array("H.i.s", array(1, 2, 3), "00.00.00"),
-                     "USA" => array("h:i:s A", array(1, 2, 3), "00:00:00 AM")
-        );
+        return ["ISO" => ["H:i:s", [1, 2, 3], "00:00:00"],
+                     "EUR" => ["H.i.s", [1, 2, 3], "00.00.00"],
+                     "USA" => ["h:i:s A", [1, 2, 3], "00:00:00 AM"]
+        ];
     }
 
     /**
@@ -464,7 +445,7 @@ class UtilsDate extends \oxSuperCfg
             $sReturn .= " " . $aTFormats[$sLocalTimeFormat][2];
         }
 
-        if ($oObject instanceof oxField) {
+        if ($oObject instanceof \OxidEsales\Eshop\Core\Field) {
             $oObject->setValue(trim($sReturn));
         } else {
             $oObject->value = trim($sReturn);
@@ -493,7 +474,7 @@ class UtilsDate extends \oxSuperCfg
             $aDateMatches[$aDFields[2]]
         );
 
-        if ($oObject instanceof oxField) {
+        if ($oObject instanceof \OxidEsales\Eshop\Core\Field) {
             $oObject->setValue(@date($sDateFormat, $iTimestamp));
         } else {
             $oObject->value = @date($sDateFormat, $iTimestamp);
@@ -525,7 +506,7 @@ class UtilsDate extends \oxSuperCfg
             (int) $aDateMatches[$aDFields[2]]
         );
 
-        if ($oObject instanceof oxField) {
+        if ($oObject instanceof \OxidEsales\Eshop\Core\Field) {
             $oObject->setValue(trim(@date($sDateFormat . " " . $sTimeFormat, $iTimestamp)));
         } else {
             $oObject->value = trim(@date($sDateFormat . " " . $sTimeFormat, $iTimestamp));

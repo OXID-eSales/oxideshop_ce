@@ -1,31 +1,15 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link          http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version       OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use oxDb;
-use OxidEsales\Eshop\Application\Model\Article;
-use OxidEsales\Eshop\Application\Model\Search;
-use OxidEsales\Eshop\Core\DatabaseProvider;
-use OxidEsales\Eshop\Core\TableViewNameGenerator;
+use OxidEsales\EshopCommunity\Application\Model\Article;
+use OxidEsales\EshopCommunity\Application\Model\Search;
+use OxidEsales\EshopCommunity\Core\DatabaseProvider;
+use OxidEsales\EshopCommunity\Core\TableViewNameGenerator;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use oxRegistry;
 use oxTestModules;
@@ -337,7 +321,7 @@ class SearchTest extends UnitTestCase
         $this->assertEquals(1, $oSearchList->count());
         $this->assertEquals(1, $iAllArtCnt);
 
-        /** @var Article $oArticle */
+        /** @var \OxidEsales\Eshop\Application\Controller\Admin\ArticleController $oArticle */
         $oArticle = $oSearchList->current();
         $this->assertEquals("1142", $oArticle->getId());
     }
@@ -720,7 +704,7 @@ class SearchTest extends UnitTestCase
             $sIDCat = "30e44ab8593023055.23928895";
         }
 
-        /** @var Article $oArticle */
+        /** @var \OxidEsales\Eshop\Application\Controller\Admin\ArticleController $oArticle */
         $oArticle = oxNew('oxArticle');
 
         $sArticleTable = $this->tableViewNameGenerator->getViewName('oxarticles');
@@ -767,7 +751,7 @@ class SearchTest extends UnitTestCase
 
         $this->getConfig()->setConfigParam('aSearchCols', array('oxtitle'));
 
-        /** @var Article $oArticle */
+        /** @var \OxidEsales\Eshop\Application\Controller\Admin\ArticleController $oArticle */
         $oArticle = oxNew('oxArticle');
 
         $sArticleTable = $this->tableViewNameGenerator->getViewName('oxarticles');
@@ -805,10 +789,10 @@ class SearchTest extends UnitTestCase
 
         $iCurrTime = 0;
 
-        $oUtilsDate = $this->getMock('oxUtilsDate', array('getRequestTime'));
+        $oUtilsDate = $this->getMock(\OxidEsales\Eshop\Core\UtilsDate::class, array('getRequestTime'));
         $oUtilsDate->expects($this->any())->method('getRequestTime')->will($this->returnValue($iCurrTime));
         /** @var oxUtilsDate $oUtils */
-        oxRegistry::set('oxUtilsDate', $oUtilsDate);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsDate::class, $oUtilsDate);
 
         $sSearchDate = date('Y-m-d H:i:s', $iCurrTime);
         $sArticleTable = $sTable = $this->tableViewNameGenerator->getViewName('oxarticles');

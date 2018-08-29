@@ -1,16 +1,3 @@
-# In case you want to add a .htpasswd authentification
-# you'll have to add the host of the shop as an allowed entity,
-# so that calls from the host skip the authentification
-# Example:
-# Order Deny,Allow
-# Deny from All
-# AuthType Basic
-# AuthName "Access not allowed"
-# AuthUserFile path_to_htpasswd_file/.htpasswd
-# Require valid-user
-# Allow from localhost
-# Satisfy Any
-
 <IfModule mod_rewrite.c>
     Options +FollowSymLinks
     RewriteEngine On
@@ -46,18 +33,29 @@
     RewriteRule (\.jpe?g|\.gif|\.png|\.svg)$ getimg.php [NC]
 
     RewriteRule ^(vendor/) - [F,L,NC]
+    RewriteRule ^migration - [R=403,L]
 </IfModule>
 
 # disabling log file access from outside
 <FilesMatch "(EXCEPTION_LOG\.txt|\.log|\.tpl|pkg\.rev|\.ini|pkg\.info|\.pem|composer\.json|composer\.lock|test_config\.yml)$">
-    order allow,deny
-    deny from all
+   <IfModule mod_authz_core.c>   
+       Require all denied
+   </IfModule>
+   <IfModule !mod_authz_core.c>
+       Order allow,deny
+       Deny from all   
+   </IfModule>
 </FilesMatch>
 
-# Prevent .ht* files from being sended to outside requests
+# Prevent .ht* files from being sent to outside requests
 <Files ~ "^\.ht">
-    Order allow,deny
-    Deny from all
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
 </Files>
 
 Options -Indexes

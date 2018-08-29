@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 use oxUBase;
@@ -31,9 +15,8 @@ use oxOrder;
  * Thankyou page.
  * Arranges Thankyou page, sets ordering status, other parameters
  */
-class ThankYouController extends oxUBase
+class ThankYouController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
-
     /**
      * User basket object
      *
@@ -106,8 +89,8 @@ class ThankYouController extends oxUBase
 
     /**
      * Executes parent::init(), loads basket from session
-     * (thankyou::_oBasket = oxsession::getBasket()) then destroys
-     * it (oxsession::delBasket()), unsets user session ID, if
+     * (thankyou::_oBasket = \OxidEsales\Eshop\Core\Session::getBasket()) then destroys
+     * it (\OxidEsales\Eshop\Core\Session::delBasket()), unsets user session ID, if
      * this user didn't entered password while ordering.
      */
     public function init()
@@ -116,14 +99,14 @@ class ThankYouController extends oxUBase
 
         // get basket we might need some information from it here
         $oBasket = $this->getSession()->getBasket();
-        $oBasket->setOrderId(oxRegistry::getSession()->getVariable('sess_challenge'));
+        $oBasket->setOrderId(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('sess_challenge'));
 
         // copying basket object
         $this->_oBasket = clone $oBasket;
 
         // delete it from the session
         $oBasket->deleteBasket();
-        oxRegistry::getSession()->deleteVariable('sess_challenge');
+        \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable('sess_challenge');
     }
 
     /**
@@ -136,7 +119,7 @@ class ThankYouController extends oxUBase
     public function render()
     {
         if (!$this->_oBasket || !$this->_oBasket->getProductsCount()) {
-            oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . '&cl=start', true, 302);
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . '&cl=start', true, 302);
         }
 
         parent::render();
@@ -145,14 +128,14 @@ class ThankYouController extends oxUBase
 
         // removing also unregistered user info (#2580)
         if (!$oUser || !$oUser->oxuser__oxpassword->value) {
-            oxRegistry::getSession()->deleteVariable('usr');
-            oxRegistry::getSession()->deleteVariable('dynvalue');
+            \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable('usr');
+            \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable('dynvalue');
         }
 
         // loading order sometimes needed in template
         if ($this->_oBasket->getOrderId()) {
             // owners stock reminder
-            $oEmail = oxNew('oxEmail');
+            $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
             $oEmail->sendStockReminder($this->_oBasket->getContents());
         }
 
@@ -277,7 +260,7 @@ class ThankYouController extends oxUBase
     {
         if ($this->_sMailError === null) {
             $this->_sMailError = false;
-            $this->_sMailError = oxRegistry::getConfig()->getRequestParameter('mailerror');
+            $this->_sMailError = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('mailerror');
         }
 
         return $this->_sMailError;
@@ -291,7 +274,7 @@ class ThankYouController extends oxUBase
     public function getOrder()
     {
         if ($this->_oOrder === null) {
-            $this->_oOrder = oxNew('oxorder');
+            $this->_oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
             // loading order sometimes needed in template
             if ($sOrderId = $this->getBasket()->getOrderId()) {
                 $this->_oOrder->load($sOrderId);
@@ -310,7 +293,7 @@ class ThankYouController extends oxUBase
     {
         $oOrder = $this->getOrder();
         if ($oOrder) {
-            $oCountry = oxNew('oxCountry');
+            $oCountry = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
             $oCountry->load($oOrder->oxorder__oxbillcountryid->value);
 
             return $oCountry->oxcountry__oxisoalpha3->value;
@@ -335,12 +318,12 @@ class ThankYouController extends oxUBase
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
 
 
-        $iLang = oxRegistry::getLang()->getBaseLanguage();
-        $aPath['title'] = oxRegistry::getLang()->translateString('ORDER_COMPLETED', $iLang, false);
+        $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('ORDER_COMPLETED', $iLang, false);
         $aPath['link']  = $this->getLink();
         $aPaths[] = $aPath;
 

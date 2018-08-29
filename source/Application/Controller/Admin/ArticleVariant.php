@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxField;
@@ -31,13 +15,12 @@ use stdClass;
  * Collects and updates article variants data.
  * Admin Menu: Manage Products -> Articles -> Variants.
  */
-class ArticleVariant extends \oxAdminDetails
+class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Variant parent product object
      *
-     * @var oxarticle
+     * @var \OxidEsales\Eshop\Application\Model\Article
      */
     protected $_oProductParent = null;
 
@@ -55,13 +38,13 @@ class ArticleVariant extends \oxAdminDetails
         $sSLViewName = getViewName('oxselectlist');
 
         // all selectlists
-        $oAllSel = oxNew("oxlist");
+        $oAllSel = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oAllSel->init("oxselectlist");
         $sQ = "select * from $sSLViewName";
         $oAllSel->selectString($sQ);
         $this->_aViewData["allsel"] = $oAllSel;
 
-        $oArticle = oxNew("oxArticle");
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $this->_aViewData["edit"] = $oArticle;
 
         if (isset($soxId) && $soxId != "-1") {
@@ -100,7 +83,7 @@ class ArticleVariant extends \oxAdminDetails
             }
             $this->_aViewData["editlanguage"] = $this->_iEditLang;
 
-            $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
+            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
             if (count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
@@ -127,8 +110,8 @@ class ArticleVariant extends \oxAdminDetails
     public function savevariant($sOXID = null, $aParams = null)
     {
         if (!isset($sOXID) && !isset($aParams)) {
-            $sOXID = oxRegistry::getConfig()->getRequestParameter("voxid");
-            $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+            $sOXID = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("voxid");
+            $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
         }
 
         // varianthandling
@@ -138,8 +121,8 @@ class ArticleVariant extends \oxAdminDetails
         } else {
             unset($aParams['oxarticles__oxparentid']);
         }
-        /** @var oxArticle $oArticle */
-        $oArticle = oxNew("oxArticle");
+        /** @var \OxidEsales\Eshop\Application\Model\Article $oArticle */
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
         if ($sOXID != "-1") {
             $oArticle->loadInLang($this->_iEditLang, $sOXID);
@@ -163,11 +146,10 @@ class ArticleVariant extends \oxAdminDetails
 
         if ($sOXID == "-1") {
             if ($oParent = $this->_getProductParent($oArticle->oxarticles__oxparentid->value)) {
-
                 // assign field from parent for new variant
                 // #4406
-                $oArticle->oxarticles__oxisconfigurable = new oxField($oParent->oxarticles__oxisconfigurable->value);
-                $oArticle->oxarticles__oxremindactive = new oxField($oParent->oxarticles__oxremindactive->value);
+                $oArticle->oxarticles__oxisconfigurable = new \OxidEsales\Eshop\Core\Field($oParent->oxarticles__oxisconfigurable->value);
+                $oArticle->oxarticles__oxremindactive = new \OxidEsales\Eshop\Core\Field($oParent->oxarticles__oxremindactive->value);
             }
         }
 
@@ -177,8 +159,8 @@ class ArticleVariant extends \oxAdminDetails
     /**
      * Checks if anything is changed in given data compared with existing product values.
      *
-     * @param oxArticle $oProduct Product to be checked.
-     * @param array     $aData    Data provided for check.
+     * @param \OxidEsales\Eshop\Application\Model\Article $oProduct Product to be checked.
+     * @param array                                       $aData    Data provided for check.
      *
      * @return bool
      */
@@ -201,7 +183,7 @@ class ArticleVariant extends \oxAdminDetails
      *
      * @param string $sParentId parent product id
      *
-     * @return oxarticle
+     * @return \OxidEsales\Eshop\Application\Model\Article
      */
     protected function _getProductParent($sParentId)
     {
@@ -209,7 +191,7 @@ class ArticleVariant extends \oxAdminDetails
             ($this->_oProductParent !== false && $this->_oProductParent->getId() != $sParentId)
         ) {
             $this->_oProductParent = false;
-            $oProduct = oxNew("oxArticle");
+            $oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             if ($oProduct->load($sParentId)) {
                 $this->_oProductParent = $oProduct;
             }
@@ -223,7 +205,7 @@ class ArticleVariant extends \oxAdminDetails
      */
     public function savevariants()
     {
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
         if (is_array($aParams)) {
             foreach ($aParams as $soxId => $aVarParams) {
                 $this->savevariant($soxId, $aVarParams);
@@ -241,7 +223,7 @@ class ArticleVariant extends \oxAdminDetails
     public function deleteVariant()
     {
         $editObjectOxid = $this->getEditObjectId();
-        $editObject = oxNew("oxArticle");
+        $editObject = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $editObject->load($editObjectOxid);
         if ($editObject->isDerived()) {
             return;
@@ -249,8 +231,8 @@ class ArticleVariant extends \oxAdminDetails
 
         $this->resetContentCache();
 
-        $variantOxid = oxRegistry::getConfig()->getRequestRawParameter("voxid");
-        $variant = oxNew("oxArticle");
+        $variantOxid = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestRawParameter("voxid");
+        $variant = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $variant->delete($variantOxid);
     }
 
@@ -260,11 +242,11 @@ class ArticleVariant extends \oxAdminDetails
     public function changename()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
 
         $this->resetContentCache();
 
-        $oArticle = oxNew("oxArticle");
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         if ($soxId != "-1") {
             $oArticle->loadInLang($this->_iEditLang, $soxId);
         }
@@ -283,9 +265,8 @@ class ArticleVariant extends \oxAdminDetails
      */
     public function addsel()
     {
-        $oArticle = oxNew("oxArticle");
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         if ($oArticle->load($this->getEditObjectId())) {
-
             //Disable editing for derived articles
             if ($oArticle->isDerived()) {
                 return;
@@ -293,8 +274,8 @@ class ArticleVariant extends \oxAdminDetails
 
             $this->resetContentCache();
 
-            if ($aSels = oxRegistry::getConfig()->getRequestParameter("allsel")) {
-                $oVariantHandler = oxNew("oxVariantHandler");
+            if ($aSels = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("allsel")) {
+                $oVariantHandler = oxNew(\OxidEsales\Eshop\Application\Model\VariantHandler::class);
                 $oVariantHandler->genVariantFromSell($aSels, $oArticle);
             }
         }

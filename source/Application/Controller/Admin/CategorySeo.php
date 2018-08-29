@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxField;
@@ -28,9 +12,8 @@ use oxField;
 /**
  * Category seo config class
  */
-class CategorySeo extends \Object_Seo
+class CategorySeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
 {
-
     /**
      * Updating showsuffix field
      *
@@ -39,11 +22,11 @@ class CategorySeo extends \Object_Seo
     public function save()
     {
         $sOxid = $this->getEditObjectId();
-        $oCategory = oxNew('oxCategory');
+        $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         if ($oCategory->load($sOxid)) {
-            $blShowSuffixParameter = oxRegistry::getConfig()->getRequestParameter('blShowSuffix');
+            $blShowSuffixParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('blShowSuffix');
             $sShowSuffixField = 'oxcategories__oxshowsuffix';
-            $oCategory->$sShowSuffixField = new oxField((int) $blShowSuffixParameter);
+            $oCategory->$sShowSuffixField = new \OxidEsales\Eshop\Core\Field((int) $blShowSuffixParameter);
             $oCategory->save();
 
             $this->_getEncoder()->markRelatedAsExpired($oCategory);
@@ -59,7 +42,7 @@ class CategorySeo extends \Object_Seo
      */
     protected function _getEncoder()
     {
-        return oxRegistry::get("oxSeoEncoderCategory");
+        return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class);
     }
 
     /**
@@ -89,7 +72,7 @@ class CategorySeo extends \Object_Seo
      */
     public function isEntrySuffixed()
     {
-        $oCategory = oxNew('oxCategory');
+        $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         if ($oCategory->load($this->getEditObjectId())) {
             return (bool) $oCategory->oxcategories__oxshowsuffix->value;
         }
@@ -102,7 +85,7 @@ class CategorySeo extends \Object_Seo
      */
     public function getEntryUri()
     {
-        $oCategory = oxNew('oxCategory');
+        $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         if ($oCategory->load($this->getEditObjectId())) {
             return $this->_getEncoder()->getCategoryUri($oCategory, $this->getEditLang());
         }

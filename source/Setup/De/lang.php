@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-$aLang = array(
+$aLang = [
 
 'charset'                                       => 'UTF-8',
 'HEADER_META_MAIN_TITLE'                        => 'OXID eShop Installationsassistent',
@@ -54,6 +38,8 @@ $aLang = array(
 'ERROR_DB_ALREADY_EXISTS'                       => 'FEHLER: Es scheint, als ob in der Datenbank %s bereits eine OXID Datenbank vorhanden ist. Bitte löschen Sie diese!',
 'ERROR_BAD_SQL'                                 => 'FEHLER: (Tabellen)Probleme mit folgenden SQL Befehlen: ',
 'ERROR_BAD_DEMODATA'                            => 'FEHLER: (Demodaten)Probleme mit folgenden SQL Befehlen: ',
+'ERROR_NO_DEMODATA_INSTALLED'                   => 'ERROR: Demodaten-Paket ist nicht installiert. Bitte installieren Sie zuerst die Demodaten.',
+'NOTICE_NO_DEMODATA_INSTALLED'                  => 'Demodaten-Paket ist nicht installiert. Bitte installieren Sie zuerst die Demodaten. Details dazu finden Sie im Abschnitt Installation der Datei README.md.',
 'ERROR_CONFIG_FILE_IS_NOT_WRITABLE'             => 'FEHLER: %s/config.inc.php'.' nicht beschreibbar!',
 'ERROR_BAD_SERIAL_NUMBER'                       => 'FEHLER: Falsche Serienummer!',
 'ERROR_COULD_NOT_OPEN_CONFIG_FILE'              => 'Konnte config.inc.php nicht öffnen. Bitte in unserer FAQ oder im Forum nachlesen oder den OXID Support kontaktieren.',
@@ -63,7 +49,9 @@ $aLang = array(
 'ERROR_PASSWORD_TOO_SHORT'                      => 'Passwort zu kurz',
 'ERROR_PASSWORDS_DO_NOT_MATCH'                  => 'Passwörter stimmen nicht überein',
 'ERROR_USER_NAME_DOES_NOT_MATCH_PATTERN'        => 'Bitte geben Sie eine gültige E-Mail-Adresse ein!',
-'ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS' => 'Die MySQL Version erfüllt nicht die Systemvoraussetzungen',
+'ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS' => 'Die MySQL Version erfüllt nicht die Systemvoraussetzungen!',
+'ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS' => 'WARNUNG: Ein Bug in MySQL 5.6 kann zu Problemen in der OXID eShop Enterprise Edition führen. MySQL 5.6 wird daher nicht empfohlen. Siehe auch: <a href="https://www.oxid-esales.com/de/support-services/dokumentation-und-hilfe/oxid-eshop/installation/oxid-eshop-neu-installieren/server-und-systemvoraussetzungen/systemvoraussetzungen-ee.html">Systemvoraussetzungen OXID eShop Enterprise Edition</a>.',
+
 
 'ERROR_VIEWS_CANT_CREATE'                       => 'FEHLER: Kann Views nicht erstellen. Bitte prüfen Sie Ihre Benutzerrechte für die Datenbank.',
 'ERROR_VIEWS_CANT_SELECT'                       => 'FEHLER: Kann nicht auf Views zugreifen. Bitte prüfen Sie Ihre Benutzerrechte für die Datenbank.',
@@ -77,7 +65,7 @@ $aLang = array(
 'MOD_SERVER_PERMISSIONS'                        => 'Dateizugriffsrechte',
 'MOD_ALLOW_URL_FOPEN'                           => 'allow_url_fopen und fsockopen auf Port 80',
 'MOD_PHP4_COMPAT'                               => 'Zend Kompatibilitätsmodus muss ausgeschaltet sein',
-'MOD_PHP_VERSION'                               => 'PHP mindestens Version 5.3.25',
+'MOD_PHP_VERSION'                               => 'PHP Version 7.0 oder 7.1',
 'MOD_REQUEST_URI'                               => 'REQUEST_URI vorhanden',
 'MOD_LIB_XML2'                                  => 'LIB XML2',
 'MOD_PHP_XML'                                   => 'DOM',
@@ -85,8 +73,9 @@ $aLang = array(
 'MOD_I_CONV'                                    => 'ICONV',
 'MOD_TOKENIZER'                                 => 'Tokenizer',
 'MOD_BC_MATH'                                   => 'BCMath',
-'MOD_MYSQL_CONNECT'                             => 'MySQL Client Connector für MySQL 5',
-'MOD_GD_INFO'                                   => 'GDlib v2 [v1] incl. JPEG Unterstützung',
+'MOD_MYSQL_CONNECT'                             => 'PDO_MySQL',
+'MOD_MYSQL_VERSION'                             => 'MySQL Version 5.5 oder 5.7',
+'MOD_GD_INFO'                                   => 'GDlib v2 incl. JPEG Unterstützung',
 'MOD_INI_SET'                                   => 'ini_set erlaubt',
 'MOD_REGISTER_GLOBALS'                          => 'register_globals muss ausgeschaltet sein',
 'MOD_MAGIC_QUOTES_GPC'                          => 'magic_quotes_gpc muss ausgeschaltet sein',
@@ -100,7 +89,7 @@ $aLang = array(
 'MOD_FILE_UPLOADS'                              => 'Hochladen von Dateien erlaubt (file_uploads)',
 'MOD_BUG53632'                                  => 'Mögliche Probleme mit Server durch PHP Bugs',
 'MOD_SESSION_AUTOSTART'                         => 'session.auto_start muss ausgeschaltet sein',
-'MOD_MEMORY_LIMIT'                              => 'PHP Memory limit (min. 14MB, 30MB empfohlen)',
+'MOD_MEMORY_LIMIT'                              => 'PHP Memory limit (min. 32MB, 60MB empfohlen)',
 
 'STEP_0_ERROR_TEXT'                             => 'Ihr System erfüllt nicht alle nötigen Systemvoraussetzungen',
 'STEP_0_ERROR_URL'                              => 'http://www.oxid-esales.com/de/support-services/dokumentation-und-hilfe/oxid-eshop/installation/oxid-eshop-neu-installieren/server-und-systemvoraussetzungen/systemvoraussetzungen-ce.html',
@@ -131,7 +120,8 @@ $aLang = array(
 
 'STEP_3_TITLE'                                  => 'Datenbank',
 'STEP_3_DESC'                                   => 'Nun wird die Datenbank erstellt und mit den notwendigen Tabellen befüllt. Dazu benötigen wir einige Angaben von Ihnen:',
-'STEP_3_DB_HOSTNAME'                            => 'Datenbank Hostname oder IP Adresse',
+'STEP_3_DB_HOSTNAME'                            => 'Datenbankserver Hostname oder IP Adresse',
+'STEP_3_DB_PORT'                                => 'Datenbankserver TCP Port',
 'STEP_3_DB_USER_NAME'                           => 'Datenbank Benutzername',
 'STEP_3_DB_PASSWORD'                            => 'Datenbank Passwort',
 'STEP_3_DB_PASSWORD_SHOW'                       => 'Passwort anzeigen',
@@ -161,7 +151,8 @@ $aLang = array(
 'BUTTON_WRITE_DATA'                             => 'Daten jetzt speichern',
 
 'STEP_4_2_TITLE'                                => 'Datenbank - Tabellen erstellen ...',
-'STEP_4_2_OVERWRITE_DB'                         => 'Falls Sie dennoch installieren wollen und die alten Daten überschreiben, klicken Sie',
+'STEP_4_2_OVERWRITE_DB'                         => 'Falls Sie dennoch installieren wollen und die alten Daten überschreiben, klicken Sie ',
+'STEP_4_2_NOT_RECOMMENDED_MYSQL_VERSION'        => 'Falls Sie dennoch installieren wollen, klicken Sie ',
 'STEP_4_2_UPDATING_DATABASE'                    => 'Datenbank erfolgreich aktualisiert. Bitte warten ...',
 
 'STEP_5_TITLE'                                  => 'OXID eShop Lizenz',
@@ -186,18 +177,28 @@ $aLang = array(
 'SETUP_CONFIG_PERMISSIONS'                      => 'WICHTIG: Aus Sicherheitsgründen setzen Sie Ihre config.inc.php Datei auf read-only-Modus!',
 
 'SELECT_SETUP_LANG'                             => 'Sprache für Installation',
-'SELECT_SHOP_LOCATION'                          => 'Ihre Region',
 'SELECT_PLEASE_CHOOSE'                          => 'Bitte auswählen',
-'SELECT_SHOP_LOCATION_HINT'                     => 'Bitte wählen Sie eine Region, auf die der Shop ausgerichtet ist. Abhängig davon werden zusätzliche E-Commerce Services vom OXID Server nachgeladen, wenn Sie das erlauben.',
 'SELECT_DELIVERY_COUNTRY'                       => 'Hauptlieferland',
 'SELECT_DELIVERY_COUNTRY_HINT'                  => 'Aktivieren Sie weitere Lieferländer im Administrationsbereich, falls benötigt.',
 'SELECT_SHOP_LANG'                              => 'Sprache für Shop',
 'SELECT_SHOP_LANG_HINT'                         => 'Aktivieren Sie weitere Sprachen im Administrationsbereich, falls gewünscht.',
 'SELECT_SETUP_LANG_SUBMIT'                      => 'Auswählen',
-'USE_DYNAMIC_PAGES'                             => 'Verbindung mit den OXID Servern erlauben. Mehr Informationen in unseren ',
 'PRIVACY_POLICY'                                => 'Datenschutzerläuterungen',
 
 'LOAD_DYN_CONTENT_NOTICE'                       => '<p>Wenn diese Option gesetzt ist, sehen Sie ein zusätzliches Menü im Administrationsbereich Ihres OXID eShop.</p><p>Über dieses Menü erhalten Sie weitere Informationen über E-Commerce Services, wie z.B. Google Produktsuche oder econda.</p> <p>Sie können diese Einstellung im Administrationsbereich jederzeit wieder ändern.</p>',
 'ERROR_SETUP_CANCELLED'                         => 'Das Setup wurde abgebrochen, weil Sie die Lizenzvereinbarungen nicht akzeptiert haben.',
 'BUTTON_START_INSTALL'                          => 'Setup erneut starten',
-);
+
+'EXTERNAL_COMMAND_ERROR_1'                      => 'Fehler beim Ausführen des Kommandos \'%s\'. Returncode: \'%d\'.',
+'EXTERNAL_COMMAND_ERROR_2'                      => 'Das Kommando gibt folgende Meldung zurück:',
+
+'SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID'      => 'Verbindung mit den OXID eSales Servern erlauben, um die Qualität unserer Open-Source-Produkte zu verbessern.',
+'HELP_SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID' => 'Es werden keine geschäftsrelevanten Daten oder Kundeninformationen übermittelt. '
+                                                        .'Die gesammelten Daten sind ausschließlich technologische Informationen. '
+                                                        .'Um unsere Produktqualität zu verbessern, werden Informationen wie diese erhoben:'
+                                                        .'<ul>'
+                                                        .'  <li>Anzahl der installierten OXID eShop Community Editions weltweit</li>'
+                                                        .'  <li>durchschnittliche Anzahl installierter Erweiterungen pro OXID eShop</li>'
+                                                        .'  <li>die meist verbreiteten Erweiterungen für den OXID eShop</li>'
+                                                        .'</ul>',
+];

@@ -1,36 +1,19 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxRegistry;
+use OxidEsales\EshopCommunity\Internal\Application\Container;
 
 /**
  * Comparing Products.
  * Takes a few products and show attribute values to compare them.
  */
-class CompareController extends \oxUBase
+class CompareController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
-
     /**
      * Number of possible compare pages.
      *
@@ -124,7 +107,7 @@ class CompareController extends \oxUBase
      */
     public function moveLeft() //#777C
     {
-        $sArticleId = oxRegistry::getConfig()->getRequestParameter('aid');
+        $sArticleId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aid');
         if ($sArticleId && ($aItems = $this->getCompareItems())) {
             $sPrevArticleId = null;
 
@@ -139,8 +122,7 @@ class CompareController extends \oxUBase
             }
 
             if ($sPrevArticleId) {
-
-                $aNewItems = array();
+                $aNewItems = [];
                 foreach ($aItems as $sOxid => $sVal) {
                     if ($sOxid == $sPrevArticleId) {
                         $aNewItems[$sArticleId] = true;
@@ -161,7 +143,7 @@ class CompareController extends \oxUBase
      */
     public function moveRight() //#777C
     {
-        $sArticleId = oxRegistry::getConfig()->getRequestParameter('aid');
+        $sArticleId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aid');
         if ($sArticleId && ($aItems = $this->getCompareItems())) {
             $sNextArticleId = 0;
 
@@ -177,8 +159,7 @@ class CompareController extends \oxUBase
             }
 
             if ($sNextArticleId) {
-
-                $aNewItems = array();
+                $aNewItems = [];
                 foreach ($aItems as $sOxid => $sVal) {
                     if ($sOxid == $sArticleId) {
                         $aNewItems[$sNextArticleId] = true;
@@ -237,7 +218,7 @@ class CompareController extends \oxUBase
     public function getCompareItems()
     {
         if ($this->_aCompItems === null) {
-            $aItems = oxRegistry::getSession()->getVariable('aFiltcompproducts');
+            $aItems = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('aFiltcompproducts');
             if (is_array($aItems) && count($aItems)) {
                 $this->_aCompItems = $aItems;
             }
@@ -254,7 +235,7 @@ class CompareController extends \oxUBase
     public function setCompareItems($aItems)
     {
         $this->_aCompItems = $aItems;
-        oxRegistry::getSession()->setVariable('aFiltcompproducts', $aItems);
+        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('aFiltcompproducts', $aItems);
     }
 
     /**
@@ -287,7 +268,7 @@ class CompareController extends \oxUBase
         if ($this->_oArtList === null) {
             if (($aItems = $this->getCompareItems())) {
                 // counts how many pages
-                $oList = oxNew('oxArticleList');
+                $oList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                 $oList->loadIds(array_keys($aItems));
 
                 // cut page articles
@@ -313,14 +294,13 @@ class CompareController extends \oxUBase
         if ($this->_oAttributeList === null) {
             $this->_oAttributeList = false;
             if ($oArtList = $this->getCompArtList()) {
-
                 $aProductIds = array_keys($oArtList);
                 foreach ($oArtList as $oArticle) {
                     if ($oArticle->getParentId()) {
                         $aProductIds[] = $oArticle->getParentId();
                     }
                 }
-                $oAttributeList = oxNew('oxAttributeList');
+                $oAttributeList = oxNew(\OxidEsales\Eshop\Application\Model\AttributeList::class);
                 $this->_oAttributeList = $oAttributeList->loadAttributesByIds($aProductIds);
             }
         }
@@ -330,7 +310,7 @@ class CompareController extends \oxUBase
 
     /**
      * Return array of id to form recommend list.
-     * 
+     *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return array
@@ -378,7 +358,7 @@ class CompareController extends \oxUBase
         $aListKeys = $oList->arrayKeys();
         $aItemKeys = array_keys($aItems);
         $aKeys = array_intersect($aItemKeys, $aListKeys);
-        $aNewItems = array();
+        $aNewItems = [];
         $iActPage = $this->getActPage();
         for ($i = $this->_iArticlesPerPage * $iActPage; $i < $this->_iArticlesPerPage * $iActPage + $this->_iArticlesPerPage; $i++) {
             if (!isset($aKeys[$i])) {
@@ -401,13 +381,12 @@ class CompareController extends \oxUBase
     protected function _changeArtListOrder($aItems, $oList)
     {
         // #777C changing order of list elements, according to $aItems
-        $oNewList = array();
+        $oNewList = [];
         $iCnt = 0;
         $iActPage = $this->getActPage();
         foreach ($aItems as $sOxid => $sVal) {
-
             //#4391T, skipping non loaded products
-            if (!isset ($oList[$sOxid])) {
+            if (!isset($oList[$sOxid])) {
                 continue;
             }
 
@@ -454,14 +433,14 @@ class CompareController extends \oxUBase
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false);
-        $aPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($this->getViewConfig()->getSelfLink() . 'cl=account');
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_ACCOUNT', \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage(), false);
+        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($this->getViewConfig()->getSelfLink() . 'cl=account');
         $aPaths[] = $aPath;
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('PRODUCT_COMPARISON', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('PRODUCT_COMPARISON', \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage(), false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 

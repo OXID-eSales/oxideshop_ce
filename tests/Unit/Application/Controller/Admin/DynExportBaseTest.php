@@ -1,31 +1,15 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use DynExportBase;
 use Exception;
-use oxarticle;
+use OxidEsales\EshopCommunity\Application\Model\Article;
 use oxDb;
-use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use oxRegistry;
 use oxTestModules;
 use stdClass;
@@ -145,7 +129,7 @@ class DynExportBaseTest extends \OxidTestCase
     public function testStart()
     {
         $testFile = $this->createFile('test.txt', '');
-        $oView = $this->getMock('Unit\Application\Controller\Admin\_DynExportBase', array("prepareExport"));
+        $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin\_DynExportBase::class, array("prepareExport"));
         $oView->expects($this->once())->method('prepareExport')->will($this->returnValue(5));
         $oView->setVar('sFilePath', $testFile);
         $oView->start();
@@ -163,10 +147,10 @@ class DynExportBaseTest extends \OxidTestCase
     {
         $oDb = oxDb::getDb();
         $sTableName = 'testdynexportbasetable';
-        $oDb->execute("CREATE TABLE `{$sTableName}` (`oxid` TINYINT( 1 ) NOT NULL) ENGINE = MYISAM");
+        $oDb->execute("CREATE TABLE `{$sTableName}` (`oxid` TINYINT( 1 ) NOT NULL) ENGINE = InnoDB");
         $this->assertEquals(0, $oDb->getOne("select count(*) from {$sTableName}"));
 
-        $oView = $this->getMock("DynExportBase", array("_getHeapTableName"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController::class, array("_getHeapTableName"));
         $oView->expects($this->once())->method('_getHeapTableName')->will($this->returnValue($sTableName));
         $oView->stop(999);
 
@@ -216,7 +200,7 @@ class DynExportBaseTest extends \OxidTestCase
         $this->setRequestParameter("aExportResultset", array("aaaaa"));
         $testFile = $this->createFile('test.txt', '');
 
-        $oView = $this->getMock('Unit\Application\Controller\Admin\_DynExportBase', array("nextTick"));
+        $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin\_DynExportBase::class, array("nextTick"));
         $oView->expects($this->any())->method('nextTick')->will($this->returnValue(5));
         $oView->setVar('sFilePath', $testFile);
         $oView->setExportPerTick(30);
@@ -238,7 +222,7 @@ class DynExportBaseTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("iExportNrofLines", 10);
         $testFile = $this->createFile('test.txt', '');
 
-        $oView = $this->getMock('Unit\Application\Controller\Admin\_DynExportBase', array("nextTick"));
+        $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin\_DynExportBase::class, array("nextTick"));
         $oView->expects($this->any())->method('nextTick')->will($this->returnValue(5));
         $oView->setVar('sFilePath', $testFile);
         $oView->run();
@@ -380,8 +364,8 @@ class DynExportBaseTest extends \OxidTestCase
      */
     public function testGetDeepestCategoryPath()
     {
-        $oView = $this->getMock("DynExportBase", array("_findDeepestCatPath"));
-        $oView->expects($this->once())->method('_findDeepestCatPath')->with($this->isInstanceOf(oxarticle));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController::class, array("_findDeepestCatPath"));
+        $oView->expects($this->once())->method('_findDeepestCatPath')->with($this->isInstanceOf('OxidEsales\EshopCommunity\Application\Model\Article'));
         $oView->getDeepestCategoryPath(oxNew('oxarticle'));
     }
 
@@ -420,12 +404,12 @@ class DynExportBaseTest extends \OxidTestCase
     public function testGetOneArticle()
     {
         $blContinue = null;
-        $oView = $this->getMock("DynExportBase", array("_initArticle", "_getHeapTableName", "_setCampaignDetailLink"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController::class, array("_initArticle", "_getHeapTableName", "_setCampaignDetailLink"));
         $oView->expects($this->once())->method('_initArticle')->with($this->equalTo("oxarticles"), $this->equalTo(0))->will($this->returnValue(oxNew('oxarticle')));
         $oView->expects($this->once())->method('_getHeapTableName')->will($this->returnValue("oxarticles"));
-        $oView->expects($this->once())->method('_setCampaignDetailLink')->with($this->isInstanceOf('oxArticle'))->will($this->returnValue(oxNew('oxarticle')));
+        $oView->expects($this->once())->method('_setCampaignDetailLink')->with($this->isInstanceOf('\OxidEsales\EshopCommunity\Application\Model\Article'))->will($this->returnValue(oxNew('oxarticle')));
 
-        $this->assertTrue($oView->getOneArticle(0, $blContinue) instanceof oxarticle);
+        $this->assertTrue($oView->getOneArticle(0, $blContinue) instanceof article);
         $this->assertTrue($blContinue);
     }
 
@@ -530,7 +514,7 @@ class DynExportBaseTest extends \OxidTestCase
         $sCatAdd = '';
 
         $oDb = oxDb::getDb();
-        $oDb->execute("CREATE TABLE `{$sHeapTable}` (`oxid` TINYINT( 1 ) NOT NULL) ENGINE = MYISAM");
+        $oDb->execute("CREATE TABLE `{$sHeapTable}` (`oxid` TINYINT( 1 ) NOT NULL) ENGINE = InnoDB");
 
         $oView = oxNew('DynExportBase');
         $this->assertTrue($oView->UNITinsertArticles($sHeapTable, $sCatAdd));
@@ -560,7 +544,7 @@ class DynExportBaseTest extends \OxidTestCase
         $sO2CView = getViewName('oxobject2category');
 
         $sHeapTable = "testdynexportbasetable";
-        $oDb->execute("CREATE TABLE `{$sHeapTable}` (`oxid` varchar( 32 ) NOT NULL) ENGINE = MYISAM");
+        $oDb->execute("CREATE TABLE `{$sHeapTable}` (`oxid` varchar( 32 ) NOT NULL) ENGINE = InnoDB");
 
         $sCatAdd = "and ( oxobject2category.oxcatnid = '" . $oDb->getOne("select oxcatnid from $sO2CView where oxobjectid='1126'") . "')";
 
@@ -592,7 +576,7 @@ class DynExportBaseTest extends \OxidTestCase
 
         // defining parameters
         $sHeapTable = "testdynexportbasetable";
-        $oDb->execute("CREATE TABLE `{$sHeapTable}` (`oxid` varchar( 32 ) NOT NULL) ENGINE = MYISAM");
+        $oDb->execute("CREATE TABLE `{$sHeapTable}` (`oxid` varchar( 32 ) NOT NULL) ENGINE = InnoDB");
 
         $sQ = "insert into {$sHeapTable} ( select oxid from ( select oxid from oxarticles where oxparentid != '' union select oxparentid from oxarticles where oxparentid != '') as toptable group by oxid )";
         $oDb->execute($sQ);
@@ -661,7 +645,7 @@ class DynExportBaseTest extends \OxidTestCase
     public function testFindDeepestCatPathNoCatIdsFound()
     {
         // defining parameters
-        $oArticle = $this->getMock("oxArticle", array("getCategoryIds"));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getCategoryIds"));
         $oArticle->expects($this->once())->method('getCategoryIds')->will($this->returnValue(array()));
 
         $oView = oxNew('DynExportBase');
@@ -676,7 +660,7 @@ class DynExportBaseTest extends \OxidTestCase
     public function testFindDeepestCatPath()
     {
         // defining parameters
-        $oArticle = $this->getMock("oxArticle", array("getCategoryIds"));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getCategoryIds"));
         $oArticle->expects($this->once())->method('getCategoryIds')->will($this->returnValue(array("cat1", "cat2", "cat3")));
 
         $aCache["cat1"] = new stdClass();
@@ -694,7 +678,7 @@ class DynExportBaseTest extends \OxidTestCase
         $aCache["cat3"]->oxtitle = "cat3";
         $aCache["cat3"]->oxparentid = "cat2";
 
-        $oView = $this->getMock("DynExportBase", array("_loadRootCats"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController::class, array("_loadRootCats"));
         $oView->expects($this->once())->method('_loadRootCats')->will($this->returnValue($aCache));
         $this->assertEquals("cat1/cat2/cat3", $oView->UNITfindDeepestCatPath($oArticle));
     }
@@ -708,12 +692,12 @@ class DynExportBaseTest extends \OxidTestCase
     {
         $heapTableName = "testdynexportbasetable";
 
-        $databaseMock = $this->getMock('OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database', array('selectLimit'));
+        $databaseMock = $this->getMock('OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database', array('selectLimit'));
         $databaseMock->expects($this->any())
             ->method('selectLimit')
             ->with($this->equalTo("select oxid from $heapTableName"));
 
-        $dynamicExportControllerMock = $this->getMock('OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController', array('getDb', '_getHeapTableName'));
+        $dynamicExportControllerMock = $this->getMock('OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicExportBaseController', array('getDb', '_getHeapTableName'));
         $dynamicExportControllerMock->expects($this->any())->method('getDb')->willReturn($databaseMock);
         $dynamicExportControllerMock->expects($this->any())->method('_getHeapTableName')->willReturn($heapTableName);
 
@@ -745,13 +729,13 @@ class DynExportBaseTest extends \OxidTestCase
 
         // defining parameters
         $sHeapTable = "testdynexportbasetable";
-        $oDb->execute("CREATE TABLE `{$sHeapTable}` (`oxid` varchar( 32 ) NOT NULL) ENGINE = MYISAM");
+        $oDb->execute("CREATE TABLE `{$sHeapTable}` (`oxid` varchar( 32 ) NOT NULL) ENGINE = InnoDB");
         $oDb->execute("INSERT INTO `{$sHeapTable}` values ( '{$sProdId}' )");
 
         $oView = new _DynExportBase();
         $oArticle = $oView->initArticle("testdynexportbasetable", 0, $blContinue);
         $this->assertNotNull($oArticle);
-        $this->assertTrue($oArticle instanceof oxarticle);
+        $this->assertTrue($oArticle instanceof \OxidEsales\EshopCommunity\Application\Model\Article);
         $this->assertEquals($oParent->oxarticles__oxtitle->value . " " . $sTitle, $oArticle->oxarticles__oxtitle->value);
     }
 
@@ -766,12 +750,12 @@ class DynExportBaseTest extends \OxidTestCase
         $this->setRequestParameter("sExportCampaign", "testCampaign");
         $this->setRequestParameter("blAppendCatToCampaign", 1);
 
-        $oArticle = $this->getMock("oxarticle", array("appendLink"));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("appendLink"));
         $oArticle->expects($this->at(0))->method('appendLink')->with($this->equalTo("campaign=testCampaign"));
         $oArticle->expects($this->at(1))->method('appendLink')->with($this->equalTo("/testCat"));
 
-        $oView = $this->getMock("DynExportBase", array("getCategoryString"));
-        $oView->expects($this->once())->method('getCategoryString')->with($this->isInstanceOf(oxarticle))->will($this->returnValue("testCat"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController::class, array("getCategoryString"));
+        $oView->expects($this->once())->method('getCategoryString')->with($this->isInstanceOf('\OxidEsales\EshopCommunity\Application\Model\Article'))->will($this->returnValue("testCat"));
         $oView->UNITsetCampaignDetailLink($oArticle);
     }
 

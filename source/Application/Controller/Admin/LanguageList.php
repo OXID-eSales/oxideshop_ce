@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -29,9 +13,8 @@ use Exception;
 /**
  * Admin selectlist list manager.
  */
-class LanguageList extends \oxAdminList
+class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
-
     /**
      * Default sorting parameter.
      *
@@ -65,9 +48,9 @@ class LanguageList extends \oxAdminList
 
         // preventing deleting main language with base id = 0
         if ($iBaseId == 0) {
-            $oEx = oxNew("oxExceptionToDisplay");
+            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             $oEx->setMessage('LANGUAGE_DELETINGMAINLANG_WARNING');
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
 
             return;
         }
@@ -112,7 +95,7 @@ class LanguageList extends \oxAdminList
     protected function _getLanguagesList()
     {
         $aLangParams = $this->getConfig()->getConfigParam('aLanguageParams');
-        $aLanguages = oxRegistry::getLang()->getLanguageArray();
+        $aLanguages = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageArray();
         $sDefaultLang = $this->getConfig()->getConfigParam('sDefaultLang');
 
         foreach ($aLanguages as $sKey => $sValue) {
@@ -140,7 +123,7 @@ class LanguageList extends \oxAdminList
                 }
             }
 
-            uasort($aLanguages, array($this, '_sortLanguagesCallback'));
+            uasort($aLanguages, [$this, '_sortLanguagesCallback']);
         }
 
         return $aLanguages;
@@ -180,23 +163,21 @@ class LanguageList extends \oxAdminList
 
         //skipping reseting language with id = 0
         if ($iLangId) {
-
-            oxDb::getDb()->startTransaction();
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->startTransaction();
 
             try {
-                $oDbMeta = oxNew("oxDbMetaDataHandler");
+                $oDbMeta = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
                 $oDbMeta->resetLanguage($iLangId);
 
-                oxDb::getDb()->commitTransaction();
+                \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->commitTransaction();
             } catch (Exception $oEx) {
-
                 // if exception, rollBack everything
-                oxDb::getDb()->rollbackTransaction();
+                \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
 
                 //show warning
-                $oEx = oxNew("oxExceptionToDisplay");
+                $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
                 $oEx->setMessage('LANGUAGE_ERROR_RESETING_MULTILANG_FIELDS');
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
             }
         }
     }

@@ -1,28 +1,13 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Setup;
+namespace OxidEsales\EshopCommunity\Setup;
 
 use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use OxidEsales\EshopCommunity\Setup\Exception\TemplateNotFoundException;
 
 /**
  * Setup View class
@@ -41,26 +26,60 @@ class View extends Core
      *
      * @var array
      */
-    protected $_aMessages = array();
+    protected $_aMessages = [];
 
     /**
      * View parameters array
      *
      * @var array
      */
-    protected $_aViewParams = array();
+    protected $_aViewParams = [];
 
+    /** @var string */
+    private $templateFileName = 'default.php';
 
     /**
-     * Displayes current setup step template
+     * Defines name of template to be used in display method.
      *
-     * @param string $sTemplate name of template to display
+     * @param string $templateFileName
+     * @throws TemplateNotFoundException
      */
-    public function display($sTemplate)
+    public function setTemplateFileName($templateFileName)
+    {
+        if (!file_exists($this->getPathToTemplateFileName($templateFileName))) {
+            throw new TemplateNotFoundException($templateFileName);
+        }
+
+        $this->templateFileName = $templateFileName;
+    }
+
+    /**
+     * Displays current setup step template
+     */
+    public function display()
     {
         ob_start();
-        include "tpl/{$sTemplate}";
+        $templateFilePath = $this->getPathToActiveTemplateFileName();
+        include $templateFilePath;
         ob_end_flush();
+    }
+
+    /**
+     * @return string
+     */
+    private function getPathToActiveTemplateFileName()
+    {
+        return $this->getPathToTemplateFileName($this->templateFileName);
+    }
+
+    /**
+     * @param string $templateFileName Name of the template file.
+     *
+     * @return string
+     */
+    private function getPathToTemplateFileName($templateFileName)
+    {
+        return implode(DIRECTORY_SEPARATOR, [__DIR__, "tpl", $templateFileName]);
     }
 
     /**
@@ -102,7 +121,7 @@ class View extends Core
     public function setMessage($sMessage, $blOverride = false)
     {
         if ($blOverride) {
-            $this->_aMessages = array();
+            $this->_aMessages = [];
         }
 
         $this->_aMessages[] = $sMessage;
@@ -211,45 +230,34 @@ class View extends Core
     }
 
     /**
-     * Returns image file path
-     *
-     * @return string
-     */
-    public function getImageDir()
-    {
-        return getInstallPath() . 'out/admin/img';
-    }
-
-    /**
      * If demo data installation is OFF, tries to delete demo pictures also
      * checks if setup deletion is ON and deletes setup files if possible,
      * return deletion status
      *
+     * @param array $aSetupConfig if to delete setup directory.
+     * @param array $aDemoConfig  database and demo data configuration.
+     *
      * @return bool
      */
-    public function isDeletedSetup()
+    public function isDeletedSetup($aSetupConfig, $aDemoConfig)
     {
-        //finalizing installation
-        $blDeleted = true;
-        /** @var Session $oSession */
-        $oSession = $this->getInstance("Session");
         /** @var Utilities $oUtils */
         $oUtils = $this->getInstance("Utilities");
         $sPath = getShopBasePath();
 
-        $aDemoConfig = $oSession->getSessionParam("aDB");
         if (!isset($aDemoConfig['dbiDemoData']) || $aDemoConfig['dbiDemoData'] != '1') {
             // "/generated" cleanup
             $oUtils->removeDir($sPath . "out/pictures/generated", true);
 
             // "/master" cleanup, leaving nopic
-            $oUtils->removeDir($sPath . "out/pictures/master", true, 1, array("nopic.jpg"));
+            $oUtils->removeDir($sPath . "out/pictures/master", true, 1, ["nopic.jpg"]);
         }
 
-        $aSetupConfig = $oSession->getSessionParam("aSetupConfig");
         if (isset($aSetupConfig['blDelSetupDir']) && $aSetupConfig['blDelSetupDir']) {
             // removing setup files
             $blDeleted = $oUtils->removeDir($sPath . EditionPathProvider::SETUP_DIRECTORY, true);
+        } else {
+            $blDeleted = false;
         }
 
         return $blDeleted;

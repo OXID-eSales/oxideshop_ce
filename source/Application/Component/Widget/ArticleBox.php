@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Component\Widget;
+namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
 use oxRegistry;
 use oxArticle;
@@ -28,7 +12,7 @@ use oxArticle;
 /**
  * Article box widget
  */
-class ArticleBox extends \oxWidget
+class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
     /**
      * Names of components (classes) that are initiated and executed
@@ -37,7 +21,7 @@ class ArticleBox extends \oxWidget
      *
      * @var array
      */
-    protected $_aComponentNames = array('oxcmp_user' => 1, 'oxcmp_basket' => 1, 'oxcmp_cur' => 1);
+    protected $_aComponentNames = ['oxcmp_user' => 1, 'oxcmp_basket' => 1, 'oxcmp_cur' => 1];
 
     /**
      * Current class template name.
@@ -49,7 +33,7 @@ class ArticleBox extends \oxWidget
     /**
      * Current article
      *
-     * @var oxArticle|null
+     * @var \OxidEsales\Eshop\Application\Model\Article|null
      */
     protected $_oArticle = null;
 
@@ -95,7 +79,7 @@ class ArticleBox extends \oxWidget
     /**
      * Sets box product
      *
-     * @param oxArticle $oArticle Box product
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle Box product
      */
     public function setProduct($oArticle)
     {
@@ -105,12 +89,11 @@ class ArticleBox extends \oxWidget
     /**
      * Get product article
      *
-     * @return oxArticle
+     * @return \OxidEsales\Eshop\Application\Model\Article
      */
     public function getProduct()
     {
         if (is_null($this->_oArticle)) {
-
             if ($this->getViewParameter('_object')) {
                 $oArticle = $this->getViewParameter('_object');
             } else {
@@ -260,8 +243,8 @@ class ArticleBox extends \oxWidget
     /**
      * Appends dyn params to url.
      *
-     * @param string    $sAddDynParams Dyn params
-     * @param oxArticle $oArticle      Article
+     * @param string                                      $sAddDynParams Dyn params
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle      Article
      *
      * @return bool
      */
@@ -269,7 +252,7 @@ class ArticleBox extends \oxWidget
     {
         $blAddedParams = false;
         if ($sAddDynParams) {
-            $blSeo = oxRegistry::getUtils()->seoIsActive();
+            $blSeo = \OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive();
             if (!$blSeo) {
                 // only if seo is off..
                 $oArticle->appendStdLink($sAddDynParams);
@@ -286,12 +269,12 @@ class ArticleBox extends \oxWidget
      *
      * @param string $sArticleId Article id
      *
-     * @return oxArticle
+     * @return \OxidEsales\Eshop\Application\Model\Article
      */
     protected function _getArticleById($sArticleId)
     {
-        /** @var oxArticle $oArticle */
-        $oArticle = oxNew('oxArticle');
+        /** @var \OxidEsales\Eshop\Application\Model\Article $oArticle */
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oArticle->load($sArticleId);
         $iLinkType = $this->getViewParameter('iLinkType');
 

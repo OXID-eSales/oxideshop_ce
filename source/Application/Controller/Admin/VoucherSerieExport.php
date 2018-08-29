@@ -1,37 +1,19 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
-use oxUtilsObject;
 
 /**
  * General export class.
  */
-class VoucherSerieExport extends \VoucherSerie_Main
+class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\VoucherSerieMain
 {
-
     /**
      * Export class name
      *
@@ -89,7 +71,7 @@ class VoucherSerieExport extends \VoucherSerie_Main
             $sUrl = $myConfig->getConfigParam('sAdminSSLURL');
         }
 
-        $sUrl = oxRegistry::get("oxUtilsUrl")->processUrl($sUrl . '/index.php');
+        $sUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($sUrl . '/index.php');
 
         return $sUrl . '&amp;cl=' . $this->sClassDo . '&amp;fnc=download';
     }
@@ -101,10 +83,10 @@ class VoucherSerieExport extends \VoucherSerie_Main
      */
     protected function _getExportFileName()
     {
-        $sSessionFileName = oxRegistry::getSession()->getVariable("sExportFileName");
+        $sSessionFileName = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("sExportFileName");
         if (!$sSessionFileName) {
-            $sSessionFileName = md5($this->getSession()->getId() . oxUtilsObject::getInstance()->generateUId());
-            oxRegistry::getSession()->setVariable("sExportFileName", $sSessionFileName);
+            $sSessionFileName = md5($this->getSession()->getId() . \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUId());
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("sExportFileName", $sSessionFileName);
         }
 
         return $sSessionFileName;
@@ -125,7 +107,7 @@ class VoucherSerieExport extends \VoucherSerie_Main
      */
     public function download()
     {
-        $oUtils = oxRegistry::getUtils();
+        $oUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
         $oUtils->setHeader("Pragma: public");
         $oUtils->setHeader("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         $oUtils->setHeader("Expires: 0");
@@ -152,7 +134,7 @@ class VoucherSerieExport extends \VoucherSerie_Main
             $this->stop(ERR_FILEIO);
         } else {
             // file is open
-            $iStart = oxRegistry::getConfig()->getRequestParameter("iStart");
+            $iStart = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("iStart");
             if (!$iStart) {
                 ftruncate($this->fpFile, 0);
             }
@@ -185,8 +167,7 @@ class VoucherSerieExport extends \VoucherSerie_Main
         $iExported = false;
 
         if ($oSerie = $this->_getVoucherSerie()) {
-
-            $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
             $sSelect = "select oxvouchernr from oxvouchers where oxvoucherserieid = " . $oDb->quote($oSerie->getId());
             $rs = $oDb->selectLimit($sSelect, $this->iExportPerTick, $iStart);
@@ -196,7 +177,7 @@ class VoucherSerieExport extends \VoucherSerie_Main
 
                 // writing header text
                 if ($iStart == 0) {
-                    $this->write(oxRegistry::getLang()->translateString("VOUCHERSERIE_MAIN_VOUCHERSTATISTICS", oxRegistry::getLang()->getTplLanguage(), true));
+                    $this->write(\OxidEsales\Eshop\Core\Registry::getLang()->translateString("VOUCHERSERIE_MAIN_VOUCHERSTATISTICS", \OxidEsales\Eshop\Core\Registry::getLang()->getTplLanguage(), true));
                 }
             }
 

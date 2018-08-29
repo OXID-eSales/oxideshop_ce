@@ -1,25 +1,9 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
 
@@ -209,7 +193,7 @@ class ActionsMainAjaxTest extends \OxidTestCase
      */
     public function testRemoveArtFromAct()
     {
-        $oView = $this->getMock("actions_main_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMainAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testActionAdd1', '_testActionAdd2')));
         $this->assertEquals(2, oxDb::getDb()->getOne("select count(oxid) from oxactions2article where oxactionid='_testActionAdd'"));
         $oView->removeartfromact();
@@ -230,7 +214,7 @@ class ActionsMainAjaxTest extends \OxidTestCase
 
         $this->assertEquals(2, oxDb::getDb()->getOne("select count(oxid) from oxactions2article where oxactionid='_testActionAdd'"));
 
-        /** @var actions_main_ajax $oView */
+        /** @var \OxidEsales\Eshop\Application\Controller\Admin\ActionsMainAjax $oView */
         $oView = oxNew('actions_main_ajax');
         $oView->removeartfromact();
         $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxactions2article where oxactionid='_testActionAdd'"));
@@ -241,10 +225,10 @@ class ActionsMainAjaxTest extends \OxidTestCase
      */
     public function testRemoveArtFromActExpiresFileCache()
     {
-        $oRssFeed = $this->getMock('oxRssFeed', array('removeCacheFile'));
+        $oRssFeed = $this->getMock(\OxidEsales\Eshop\Application\Model\RssFeed::class, array('removeCacheFile'));
         $oRssFeed->expects($this->once())->method('removeCacheFile');
 
-        $oActionsMainAjax = $this->getMock('actions_main_ajax', array('_getOxRssFeed'));
+        $oActionsMainAjax = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMainAjax::class, array('_getOxRssFeed'));
 
         $oActionsMainAjax->expects($this->once())
             ->method('_getOxRssFeed')
@@ -265,7 +249,7 @@ class ActionsMainAjaxTest extends \OxidTestCase
 
         $this->assertEquals(0, oxDb::getDb()->getOne("select count(oxid) from oxactions2article where oxactionid='$sSynchoxid'"));
 
-        $oView = $this->getMock("actions_main_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMainAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testActionAdd1', '_testActionAdd2')));
 
         $oView->addarttoact();
@@ -277,7 +261,7 @@ class ActionsMainAjaxTest extends \OxidTestCase
      */
     public function testAddArtToActExpiresFileCache()
     {
-        $oActionsMainAjax = $this->getMock('actions_main_ajax', array('addArtToAct'));
+        $oActionsMainAjax = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMainAjax::class, array('addArtToAct'));
 
         $oActionsMainAjax->expects($this->once())
             ->method('addArtToAct');
@@ -320,7 +304,7 @@ class ActionsMainAjaxTest extends \OxidTestCase
         $sOxid = '_testSetSorting';
         $this->setRequestParameter("oxid", $sOxid);
 
-        $oView = $this->getMock("actions_main_ajax", array("_output"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMainAjax::class, array("_output"));
         $oView->expects($this->any())->method('_output')->with($this->equalTo(json_encode($aData)));
         $oView->setsorting();
     }
@@ -340,7 +324,7 @@ class ActionsMainAjaxTest extends \OxidTestCase
         $this->setRequestParameter("oxid", $sOxid);
         $this->getConfig()->setConfigParam("iDebug", 1);
 
-        $oView = $this->getMock("actions_main_ajax", array("_output"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMainAjax::class, array("_output"));
         $oView->expects($this->any())->method('_output')->with($this->equalTo(json_encode($aData)));
         $oView->setsorting();
     }

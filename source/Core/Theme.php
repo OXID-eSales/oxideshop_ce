@@ -1,52 +1,32 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-use OxidEsales\Eshop\Core\Registry;
 
-namespace OxidEsales\Eshop\Core;
-
-use oxException;
+namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * Themes handler class.
  *
  * @internal Do not make a module extension for this class.
- * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
+ * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
-class Theme extends \oxSuperCfg
+class Theme extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Theme info array
      *
      * @var array
      */
-    protected $_aTheme = array();
+    protected $_aTheme = [];
 
     /**
      * Theme info list
      *
      * @var array
      */
-    protected $_aThemeList = array();
+    protected $_aThemeList = [];
 
     /**
      * Load theme info
@@ -59,7 +39,7 @@ class Theme extends \oxSuperCfg
     {
         $sFilePath = $this->getConfig()->getViewsDir() . $sOXID . "/theme.php";
         if (file_exists($sFilePath) && is_readable($sFilePath)) {
-            $aTheme = array();
+            $aTheme = [];
             include $sFilePath;
             $this->_aTheme = $aTheme;
             $this->_aTheme['id'] = $sOXID;
@@ -78,8 +58,8 @@ class Theme extends \oxSuperCfg
     {
         $sError = $this->checkForActivationErrors();
         if ($sError) {
-            /** @var oxException $oException */
-            $oException = oxNew("oxException", $sError);
+            /** @var \OxidEsales\Eshop\Core\Exception\StandardException $oException */
+            $oException = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, $sError);
             throw $oException;
         }
         $sParent = $this->getInfo('parentTheme');
@@ -90,6 +70,8 @@ class Theme extends \oxSuperCfg
             $this->getConfig()->saveShopConfVar("str", 'sTheme', $this->getId());
             $this->getConfig()->saveShopConfVar("str", 'sCustomTheme', '');
         }
+        $settingsHandler = oxNew(\OxidEsales\Eshop\Core\SettingsHandler::class);
+        $settingsHandler->setModuleType('theme')->run($this);
     }
 
     /**
@@ -99,10 +81,10 @@ class Theme extends \oxSuperCfg
      */
     public function getList()
     {
-        $this->_aThemeList = array();
+        $this->_aThemeList = [];
         $sOutDir = $this->getConfig()->getViewsDir();
         foreach (glob($sOutDir . "*", GLOB_ONLYDIR) as $sDir) {
-            $oTheme = oxNew('oxTheme');
+            $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
             if ($oTheme->load(basename($sDir))) {
                 $this->_aThemeList[$sDir] = $oTheme;
             }
@@ -152,9 +134,9 @@ class Theme extends \oxSuperCfg
      */
     public function getActiveThemesList()
     {
-        $config = Registry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-        $activeThemeList = array();
+        $activeThemeList = [];
         if (!$this->isAdmin()) {
             $activeThemeList[] = $config->getConfigParam('sTheme');
 
@@ -169,7 +151,7 @@ class Theme extends \oxSuperCfg
     /**
      * Return loaded parent
      *
-     * @return oxTheme
+     * @return \OxidEsales\Eshop\Core\Theme
      */
     public function getParent()
     {
@@ -177,7 +159,7 @@ class Theme extends \oxSuperCfg
         if (!$sParent) {
             return null;
         }
-        $oTheme = oxNew('oxTheme');
+        $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
         if ($oTheme->load($sParent)) {
             return $oTheme;
         }

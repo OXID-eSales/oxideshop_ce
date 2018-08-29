@@ -1,28 +1,12 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxDb;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 
 class DiagnosticsTest extends \OxidTestCase
 {
@@ -50,17 +34,6 @@ class DiagnosticsTest extends \OxidTestCase
     }
 
     /**
-     * Testing revision getter and setter
-     */
-    public function testGetRevision()
-    {
-        $oChecker = oxNew("oxDiagnostics");
-        $oChecker->setRevision("r123");
-
-        $this->assertEquals("r123", $oChecker->getRevision());
-    }
-
-    /**
      * Testing base directory getter and setter
      */
     public function testGetShopLink()
@@ -69,33 +42,6 @@ class DiagnosticsTest extends \OxidTestCase
         $oChecker->setShopLink("somelink");
 
         $this->assertEquals("somelink", $oChecker->getShopLink());
-    }
-
-
-    /**
-     * Testing FileCheckerPathList getter and setter
-     */
-    public function testGetFileCheckerPathList()
-    {
-        $oDiagnostics = oxNew("oxDiagnostics");
-        $oDiagnostics->setFileCheckerPathList(array("admin", "views"));
-
-        $this->assertEquals(2, count($oDiagnostics->getFileCheckerPathList()));
-        $this->assertContains("admin", $oDiagnostics->getFileCheckerPathList());
-        $this->assertContains("views", $oDiagnostics->getFileCheckerPathList());
-    }
-
-    /**
-     * Testing FileCheckerPathList getter and setter
-     */
-    public function testGetFileCheckerExtensionList()
-    {
-        $oDiagnostics = oxNew("oxDiagnostics");
-        $oDiagnostics->setFileCheckerExtensionList(array("ex1", "ex2"));
-
-        $this->assertEquals(2, count($oDiagnostics->getFileCheckerExtensionList()));
-        $this->assertContains("ex1", $oDiagnostics->getFileCheckerExtensionList());
-        $this->assertContains("ex2", $oDiagnostics->getFileCheckerExtensionList());
     }
 
     /**
@@ -143,20 +89,18 @@ class DiagnosticsTest extends \OxidTestCase
     {
         $this->_setUpTestGetShopDetails();
 
-        $oDiagnostics = oxNew('oxDiagnostics');
+        $oDiagnostics = new \OxidEsales\Eshop\Application\Model\Diagnostics();
 
         $oDiagnostics->setShopLink('someShopURL');
         $oDiagnostics->setEdition('someEdition');
         $oDiagnostics->setVersion('someVersion');
-        $oDiagnostics->setRevision('someRevision');
 
         $aResult = $oDiagnostics->getShopDetails();
 
-        $this->assertEquals(12, count($aResult));
+        $this->assertEquals(11, count($aResult));
         $this->assertEquals('someShopURL', $aResult['URL']);
         $this->assertEquals('someEdition', $aResult['Edition']);
         $this->assertEquals('someVersion', $aResult['Version']);
-        $this->assertEquals('someRevision', $aResult['Revision']);
         $this->assertEquals(4, $aResult['Subshops (Total)']);
         $this->assertEquals(2, $aResult['Subshops (Active)']);
         $this->assertEquals(9, $aResult['Categories (Total)']);

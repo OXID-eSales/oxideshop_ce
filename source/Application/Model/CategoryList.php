@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
 use Exception;
@@ -31,9 +15,8 @@ use Exception;
  * list structure.
  *
  */
-class CategoryList extends \oxList
+class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
-
     /**
      * List Object class name
      *
@@ -74,14 +57,14 @@ class CategoryList extends \oxList
      *
      * @var array
      */
-    protected $_aPath = array();
+    protected $_aPath = [];
 
     /**
      * Category update info array
      *
      * @var array
      */
-    protected $_aUpdateInfo = array();
+    protected $_aUpdateInfo = [];
 
     /**
      * Class constructor, initiates parent constructor (parent::oxList()).
@@ -200,7 +183,7 @@ class CategoryList extends \oxList
 
         //excluding long desc
         if (!$this->isAdmin() && !$this->_blHideEmpty && !$this->getLoadFull()) {
-            $oCat = oxNew('oxCategory');
+            $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             if (!($this->_sActCat && $oCat->load($this->_sActCat) && $oCat->oxcategories__oxrootid->value)) {
                 $oCat = null;
                 $this->_sActCat = null;
@@ -225,7 +208,7 @@ class CategoryList extends \oxList
      * constructs the sql snippet responsible for depth optimizations,
      * loads only selected category's siblings
      *
-     * @param oxCategory $oCat selected category
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCat selected category
      *
      * @return string
      */
@@ -237,7 +220,7 @@ class CategoryList extends \oxList
         // load complete tree of active category, if it exists
         if ($oCat) {
             // select children here, siblings will be selected from union
-            $sDepthSnippet .= " or ($sViewName.oxparentid = " . oxDb::getDb()->quote($oCat->oxcategories__oxid->value) . ")";
+            $sDepthSnippet .= " or ($sViewName.oxparentid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($oCat->oxcategories__oxid->value) . ")";
         }
 
         // load 1'st category level (roots)
@@ -260,8 +243,8 @@ class CategoryList extends \oxList
      * siblings of the same root (siblings of the category, and parents and
      * grandparents etc)
      *
-     * @param oxCategory $oCat     current category object
-     * @param array      $aColumns required column names (optional)
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCat     current category object
+     * @param array                                        $aColumns required column names (optional)
      *
      * @return string
      */
@@ -276,7 +259,7 @@ class CategoryList extends \oxList
         return "UNION SELECT " . $this->_getSqlSelectFieldsForTree('maincats', $aColumns)
                . " FROM oxcategories AS subcats"
                . " LEFT JOIN $sViewName AS maincats on maincats.oxparentid = subcats.oxparentid"
-               . " WHERE subcats.oxrootid = " . oxDb::getDb()->quote($oCat->oxcategories__oxrootid->value)
+               . " WHERE subcats.oxrootid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($oCat->oxcategories__oxrootid->value)
                . " AND subcats.oxleft <= " . (int) $oCat->oxcategories__oxleft->value
                . " AND subcats.oxright >= " . (int) $oCat->oxcategories__oxright->value;
     }
@@ -289,7 +272,7 @@ class CategoryList extends \oxList
     protected function _loadFromDb()
     {
         $sSql = $this->_getSelectString(false, null, 'oxparentid, oxsort, oxtitle');
-        $aData = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll($sSql);
+        $aData = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getAll($sSql);
 
         return $aData;
     }
@@ -346,7 +329,7 @@ class CategoryList extends \oxList
     protected function _ppLoadFullCategory($sId)
     {
         if (isset($this->_aArray[$sId])) {
-            $oNewCat = oxNew('oxCategory');
+            $oNewCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             if ($oNewCat->load($sId)) {
                 // replace aArray object with fully loaded category
                 $this->_aArray[$sId] = $oNewCat;
@@ -398,7 +381,7 @@ class CategoryList extends \oxList
     /**
      * Getter for active category
      *
-     * @return oxCategory
+     * @return \OxidEsales\Eshop\Application\Model\Category
      */
     public function getClickCat()
     {
@@ -415,7 +398,7 @@ class CategoryList extends \oxList
     public function getClickRoot()
     {
         if (count($this->_aPath)) {
-            return array(reset($this->_aPath));
+            return [reset($this->_aPath)];
         }
     }
 
@@ -425,11 +408,11 @@ class CategoryList extends \oxList
     protected function _ppRemoveInactiveCategories()
     {
         // Collect all items which must be remove
-        $aRemoveList = array();
+        $aRemoveList = [];
         foreach ($this->_aArray as $sId => $oCat) {
             if ($oCat->oxcategories__oxppremove->value) {
                 if (!isset($aRemoveList[$oCat->oxcategories__oxrootid->value])) {
-                    $aRemoveList[$oCat->oxcategories__oxrootid->value] = array();
+                    $aRemoveList[$oCat->oxcategories__oxrootid->value] = [];
                 }
                 $aRemoveList[$oCat->oxcategories__oxrootid->value][$oCat->oxcategories__oxleft->value] = $oCat->oxcategories__oxright->value;
                 unset($this->_aArray[$sId]);
@@ -467,7 +450,7 @@ class CategoryList extends \oxList
             return;
         }
 
-        $aPath = array();
+        $aPath = [];
         $sCurrentCat = $this->_sActCat;
 
         while ($sCurrentCat != 'oxrootid' && isset($this[$sCurrentCat])) {
@@ -486,7 +469,7 @@ class CategoryList extends \oxList
     protected function _ppAddContentCategories()
     {
         // load content pages for adding them into menu tree
-        $oContentList = oxNew("oxContentList");
+        $oContentList = oxNew(\OxidEsales\Eshop\Application\Model\ContentList::class);
         $oContentList->loadCatMenues();
 
         foreach ($oContentList as $sCatId => $aContent) {
@@ -501,7 +484,7 @@ class CategoryList extends \oxList
      */
     protected function _ppBuildTree()
     {
-        $aTree = array();
+        $aTree = [];
         foreach ($this->_aArray as $oCat) {
             $sParentId = $oCat->oxcategories__oxparentid->value;
             if ($sParentId != 'oxrootid') {
@@ -522,11 +505,7 @@ class CategoryList extends \oxList
      */
     protected function _ppAddDepthInformation()
     {
-        $aStack = array();
-        $iDepth = 0;
-        $sPrevParent = '';
-
-        $aTree = array();
+        $aTree = [];
         foreach ($this->_aArray as $oCat) {
             $aTree[$oCat->getId()] = $oCat;
             $aSubCats = $oCat->getSubCats();
@@ -572,7 +551,7 @@ class CategoryList extends \oxList
     public function updateCategoryTree($blVerbose = true, $sShopID = null)
     {
         // Only called from admin and admin mode reads from master (see ESDEV-3804 and ESDEV-3822).
-        $database = oxDb::getDb();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $database->startTransaction();
 
         try {
@@ -643,7 +622,7 @@ class CategoryList extends \oxList
     protected function _updateNodes($oxRootId, $isRoot, $thisRoot)
     {
         // Called from inside a transaction so master is picked automatically (see ESDEV-3804 and ESDEV-3822).
-        $database = oxDb::getDb();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         if ($isRoot) {
             $thisRoot = $oxRootId;

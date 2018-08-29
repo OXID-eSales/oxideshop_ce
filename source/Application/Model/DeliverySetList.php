@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxRegistry;
 use oxDb;
@@ -29,9 +13,8 @@ use oxDb;
  * DeliverySet list manager.
  *
  */
-class DeliverySetList extends \oxList
+class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
-
     /**
      * Session user Id
      *
@@ -49,7 +32,7 @@ class DeliverySetList extends \oxList
     /**
      * User object
      *
-     * @var oxUser
+     * @var \OxidEsales\Eshop\Application\Model\User
      */
     protected $_oUser = null;
 
@@ -91,8 +74,8 @@ class DeliverySetList extends \oxList
      * assigned users, countries or user groups. Performs
      * additional filtering according to these parameters
      *
-     * @param oxUser $oUser      user object
-     * @param string $sCountryId user country id
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser      user object
+     * @param string                                   $sCountryId user country id
      *
      * @return array
      */
@@ -109,10 +92,8 @@ class DeliverySetList extends \oxList
         $sUserId = $oUser ? $oUser->getId() : '';
 
         if ($sUserId !== $this->_sUserId || $sCountryId !== $this->_sCountryId) {
-
             // choosing delivery country if it is not set yet
             if (!$sCountryId) {
-
                 if ($oUser) {
                     $sCountryId = $oUser->getActiveCountry();
                 } else {
@@ -134,8 +115,8 @@ class DeliverySetList extends \oxList
     /**
      * Creates delivery set list filter SQL to load current state delivery set list
      *
-     * @param oxUser $oUser      user object
-     * @param string $sCountryId user country id
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser      user object
+     * @param string                                   $sCountryId user country id
      *
      * @return string
      */
@@ -147,19 +128,18 @@ class DeliverySetList extends \oxList
 
         // defining initial filter parameters
         $sUserId = null;
-        $aGroupIds = null;
+        $aGroupIds = [];
 
         // checking for current session user which gives additional restrictions for user itself, users group and country
         if ($oUser) {
-
             // user ID
             $sUserId = $oUser->getId();
 
-            // user groups ( maybe would be better to fetch by function oxuser::getUserGroups() ? )
+            // user groups ( maybe would be better to fetch by function \OxidEsales\Eshop\Application\Model\User::getUserGroups() ? )
             $aGroupIds = $oUser->getUserGroups();
         }
 
-        $aIds = array();
+        $aIds = [];
         if (count($aGroupIds)) {
             foreach ($aGroupIds as $oGroup) {
                 $aIds[] = $oGroup->getId();
@@ -170,11 +150,11 @@ class DeliverySetList extends \oxList
         $sGroupTable = getViewName('oxgroups');
         $sCountryTable = getViewName('oxcountry');
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sCountrySql = $sCountryId ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelset' and oxobject2delivery.OXOBJECTID=" . $oDb->quote($sCountryId) . ")" : '0';
         $sUserSql = $sUserId ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelsetu' and oxobject2delivery.OXOBJECTID=" . $oDb->quote($sUserId) . ")" : '0';
-        $sGroupSql = count($aIds) ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelsetg' and oxobject2delivery.OXOBJECTID in (" . implode(', ', oxDb::getDb()->quoteArray($aIds)) . ") )" : '0';
+        $sGroupSql = count($aIds) ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelsetg' and oxobject2delivery.OXOBJECTID in (" . implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds)) . ") )" : '0';
 
         $sQ .= "and (
             select
@@ -198,9 +178,9 @@ class DeliverySetList extends \oxList
     /**
      * Creates current state delivery set list
      *
-     * @param oxUser $oUser      user object
-     * @param string $sCountryId user country id
-     * @param string $sDelSet    preferred delivery set ID (optional)
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser      user object
+     * @param string                                   $sCountryId user country id
+     * @param string                                   $sDelSet    preferred delivery set ID (optional)
      *
      * @return array
      */
@@ -211,12 +191,11 @@ class DeliverySetList extends \oxList
         // if there is already chosen delivery set we must start checking from it
         $aList = $this->_aArray;
         if ($sDelSet && isset($aList[$sDelSet])) {
-
             //set it as first element
             $oDelSet = $aList[$sDelSet];
             unset($aList[$sDelSet]);
 
-            $aList = array_merge(array($sDelSet => $oDelSet), $aList);
+            $aList = array_merge([$sDelSet => $oDelSet], $aList);
         }
 
         return $aList;
@@ -230,17 +209,17 @@ class DeliverySetList extends \oxList
      *   2. active ship set id (string)
      *   3. payment list for active ship set (array)
      *
-     * @param string $sShipSet current ship set id (can be null if not set yet)
-     * @param oxUser $oUser    active user
-     * @param double $oBasket  basket object
+     * @param string                                   $sShipSet current ship set id (can be null if not set yet)
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser    active user
+     * @param double                                   $oBasket  basket object
      *
      * @return array
      */
     public function getDeliverySetData($sShipSet, $oUser, $oBasket)
     {
         $sActShipSet = null;
-        $aActSets = array();
-        $aActPaymentList = array();
+        $aActSets = [];
+        $aActPaymentList = [];
 
         if (!$oUser) {
             return;
@@ -250,24 +229,21 @@ class DeliverySetList extends \oxList
 
         // if there are no shipping sets we don't need to load payments
         if ($this->count()) {
-
             // one selected ?
             if ($sShipSet && !isset($this->_aArray[$sShipSet])) {
                 $sShipSet = null;
             }
 
-            $oPayList = oxRegistry::get("oxPaymentList");
-            $oDelList = oxRegistry::get("oxDeliveryList");
+            $oPayList = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\PaymentList::class);
+            $oDelList = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DeliveryList::class);
 
             $oCur = $this->getConfig()->getActShopCurrencyObject();
             $dBasketPrice = $oBasket->getPriceForPayment() / $oCur->rate;
 
             // checking if these ship sets available (number of possible payment methods > 0)
             foreach ($this as $sShipSetId => $oShipSet) {
-
                 $aPaymentList = $oPayList->getPaymentList($sShipSetId, $dBasketPrice, $oUser);
                 if (count($aPaymentList)) {
-
                     // now checking for deliveries
                     if ($oDelList->hasDeliveries($oBasket, $oUser, $oUser->getActiveCountry(), $sShipSetId)) {
                         $aActSets[$sShipSetId] = $oShipSet;
@@ -282,13 +258,13 @@ class DeliverySetList extends \oxList
             }
         }
 
-        return array($aActSets, $sActShipSet, $aActPaymentList);
+        return [$aActSets, $sActShipSet, $aActPaymentList];
     }
 
     /**
      * Get current user object. If user is not set, try to get current user.
      *
-     * @return oxUser
+     * @return \OxidEsales\Eshop\Application\Model\User
      */
     public function getUser()
     {
@@ -302,7 +278,7 @@ class DeliverySetList extends \oxList
     /**
      * Set current user object
      *
-     * @param oxUser $oUser user object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser user object
      */
     public function setUser($oUser)
     {
@@ -330,7 +306,7 @@ class DeliverySetList extends \oxList
     {
         $sTable = getViewName('oxdeliveryset');
         if ($sDelId) {
-            $oDb = oxDb::getDb();
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sSubSql = "( select $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelsetid=$sTable.oxid where " . $this->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelid = " . $oDb->quote($sDelId) . " ) as $sTable";
         } else {
             $sSubSql = $sTable;

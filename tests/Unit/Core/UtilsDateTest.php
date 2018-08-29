@@ -1,25 +1,9 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxField;
 use \stdclass;
@@ -66,10 +50,10 @@ class UtilsDateTest extends \OxidTestCase
     public function testGetTime()
     {
         $this->setConfigParam('iServerTimeShift', null); //explicitly set timezone to null
-        $this->assertEquals(oxRegistry::get("oxUtilsDate")->getTime(), time());
+        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime(), time());
         for ($iTimeZone = -12; $iTimeZone < 15; $iTimeZone++) {
             $this->setConfigParam('iServerTimeShift', $iTimeZone);
-            $this->assertEquals(oxRegistry::get("oxUtilsDate")->getTime(), (time() + ($this->getConfigParam('iServerTimeShift') * 3600)));
+            $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime(), (time() + ($this->getConfigParam('iServerTimeShift') * 3600)));
         }
     }
 
@@ -78,15 +62,15 @@ class UtilsDateTest extends \OxidTestCase
 
         $sTimeStamp = '1186052540'; // from 2007-08-02 -> week nr = 31;
 
-        $this->assertEquals(31, oxRegistry::get("oxUtilsDate")->getWeekNumber(0, $sTimeStamp));
-        $this->assertEquals(30, oxRegistry::get("oxUtilsDate")->getWeekNumber(0, $sTimeStamp, '%U'));
-        $this->assertEquals(31, oxRegistry::get("oxUtilsDate")->getWeekNumber(0, $sTimeStamp, '%W'));
+        $this->assertEquals(31, \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getWeekNumber(0, $sTimeStamp));
+        $this->assertEquals(30, \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getWeekNumber(0, $sTimeStamp, '%U'));
+        $this->assertEquals(31, \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getWeekNumber(0, $sTimeStamp, '%W'));
 
-        $this->assertEquals(30, oxRegistry::get("oxUtilsDate")->getWeekNumber(1, $sTimeStamp));
+        $this->assertEquals(30, \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getWeekNumber(1, $sTimeStamp));
 
         $sCurTimeStamp = time();
         $iCurWeekNr = (int) strftime('%U', $sCurTimeStamp);
-        $this->assertEquals($iCurWeekNr, oxRegistry::get("oxUtilsDate")->getWeekNumber(1));
+        $this->assertEquals($iCurWeekNr, \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getWeekNumber(1));
     }
 
     /**
@@ -94,9 +78,9 @@ class UtilsDateTest extends \OxidTestCase
      */
     public function testGerman2English()
     {
-        $this->assertEquals('2008-05-25', oxRegistry::get("oxUtilsDate")->german2English('25.05.2008'));
-        $this->assertEquals('2008-05', oxRegistry::get("oxUtilsDate")->german2English('05.2008'));
-        $this->assertEquals('08-05-25', oxRegistry::get("oxUtilsDate")->german2English('25.05.08'));
+        $this->assertEquals('2008-05-25', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->german2English('25.05.2008'));
+        $this->assertEquals('2008-05', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->german2English('05.2008'));
+        $this->assertEquals('08-05-25', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->german2English('25.05.08'));
     }
 
     /**
@@ -104,15 +88,15 @@ class UtilsDateTest extends \OxidTestCase
      */
     public function testIsEmptyDate()
     {
-        $this->assertFalse(oxRegistry::get("oxUtilsDate")->isEmptyDate('2008-05-08'));
-        $this->assertFalse(oxRegistry::get("oxUtilsDate")->isEmptyDate('25.05.2008'));
-        $this->assertFalse(oxRegistry::get("oxUtilsDate")->isEmptyDate('2008-06-18 00:00'));
-        $this->assertFalse(oxRegistry::get("oxUtilsDate")->isEmptyDate('0000/00/00 00:01'));
-        $this->assertFalse(oxRegistry::get("oxUtilsDate")->isEmptyDate('Some Text'));
-        $this->assertTrue(oxRegistry::get("oxUtilsDate")->isEmptyDate(''));
-        $this->assertTrue(oxRegistry::get("oxUtilsDate")->isEmptyDate('0000-00-00'));
-        $this->assertTrue(oxRegistry::get("oxUtilsDate")->isEmptyDate('0000/00/00'));
-        $this->assertTrue(oxRegistry::get("oxUtilsDate")->isEmptyDate('0000-00-00 00:00:00'));
+        $this->assertFalse(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->isEmptyDate('2008-05-08'));
+        $this->assertFalse(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->isEmptyDate('25.05.2008'));
+        $this->assertFalse(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->isEmptyDate('2008-06-18 00:00'));
+        $this->assertFalse(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->isEmptyDate('0000/00/00 00:01'));
+        $this->assertFalse(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->isEmptyDate('Some Text'));
+        $this->assertTrue(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->isEmptyDate(''));
+        $this->assertTrue(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->isEmptyDate('0000-00-00'));
+        $this->assertTrue(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->isEmptyDate('0000/00/00'));
+        $this->assertTrue(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->isEmptyDate('0000-00-00 00:00:00'));
     }
 
     /**
@@ -123,7 +107,7 @@ class UtilsDateTest extends \OxidTestCase
     {
         $oObject = new oxField('xxx', oxField::T_RAW);
 
-        $sReturn = oxRegistry::get("oxUtilsDate")->convertDBDateTime($oObject, false, false);
+        $sReturn = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDateTime($oObject, false, false);
 
         $this->assertEquals('xxx', $sReturn);
     }
@@ -132,7 +116,7 @@ class UtilsDateTest extends \OxidTestCase
     {
         $oObject = new oxField('2007-08-01', oxField::T_RAW);
 
-        $sReturn = oxRegistry::get("oxUtilsDate")->convertDBDateTime($oObject, false, false);
+        $sReturn = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDateTime($oObject, false, false);
 
         $this->assertEquals('2007-08-01', $sReturn);
     }
@@ -152,7 +136,6 @@ class UtilsDateTest extends \OxidTestCase
         $sEURDateTime = '01.08.2007 11.56.25';
 
         $sUSADateTimeAM = '08/01/2007 11:56:25 AM';
-        $sUSADateTimeAMExpected = '2007-08-01 11:56:25';
 
         $sUSADateTimePM = '08/01/2007 11:56:25 PM';
         $sUSADateTimePMStandard = '2007-08-01 23:56:25';
@@ -210,7 +193,7 @@ class UtilsDateTest extends \OxidTestCase
             $oConvObject->fldmax_length = strlen($sInput);
             $oConvObject->fldtype = "datetime";
         }
-        oxRegistry::get("oxUtilsDate")->convertDBDateTime($oConvObject, $blMysql, $blFormatDate);
+        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDateTime($oConvObject, $blMysql, $blFormatDate);
         //echo "\nReturned: ->".$oConvObject->value."<-\nExpected: ->".$sExpected.'<-';
         if ($oConvObject->value == $sExpected) {
             return true;
@@ -295,14 +278,12 @@ class UtilsDateTest extends \OxidTestCase
      */
     protected function _ConvertDBTimestampTest($sInput = "", $sExpected = "", $blToTimeStamp = false, $blSkip = false)
     {
-        $myConfig = $this->getConfig();
-
         $oConvObject = new oxField();
         if (!empty($sInput)) {
             $oConvObject = new oxField($sInput, oxField::T_RAW);
         }
 
-        oxRegistry::get("oxUtilsDate")->convertDBTimestamp($oConvObject, $blToTimeStamp);
+        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBTimestamp($oConvObject, $blToTimeStamp);
         if ($oConvObject->value == $sExpected) {
             return true;
         }
@@ -370,7 +351,7 @@ class UtilsDateTest extends \OxidTestCase
         if (!empty($sInput)) {
             $oConvObject = new oxField($sInput, oxField::T_RAW);
         }
-        oxRegistry::get("oxUtilsDate")->convertDBDate($oConvObject, $blToTimeStamp);
+        \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDate($oConvObject, $blToTimeStamp);
         //echo "\nReturned: ->".$oConvObject->value."<-\nExpected: ->".$sExpected.'<-';
         if ($oConvObject->value == $sExpected) {
             return true;
@@ -437,7 +418,7 @@ class UtilsDateTest extends \OxidTestCase
     {
         $this->setTime(157);
         $this->assertEquals(157, $this->getTime());
-        $this->assertEquals(157, oxRegistry::get("oxUtilsDate")->getTime());
+        $this->assertEquals(157, \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
     }
 
     public function testFormTimeNoTimeShift()
@@ -447,7 +428,7 @@ class UtilsDateTest extends \OxidTestCase
         $oDateTime = new DateTime('tomorrow');
         $iExpectedTimeStamp = $oDateTime->getTimestamp();
 
-        $this->assertEquals(oxRegistry::get("oxUtilsDate")->formTime('tomorrow'), $iExpectedTimeStamp);
+        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formTime('tomorrow'), $iExpectedTimeStamp);
     }
 
     public function testFormTimeNoTimeShiftHourSet()
@@ -458,7 +439,7 @@ class UtilsDateTest extends \OxidTestCase
         $oDateTime->setTime(17, 10, 15);
         $iExpectedTimeStamp = $oDateTime->getTimestamp();
 
-        $this->assertEquals(oxRegistry::get("oxUtilsDate")->formTime('tomorrow', '17:10:15'), $iExpectedTimeStamp);
+        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formTime('tomorrow', '17:10:15'), $iExpectedTimeStamp);
 
     }
 
@@ -471,7 +452,7 @@ class UtilsDateTest extends \OxidTestCase
         $oDateTime = new DateTime('tomorrow');
         $iExpectedTimeStamp = $oDateTime->getTimestamp() + $iTimeShiftSeconds;
 
-        $this->assertEquals(oxRegistry::get("oxUtilsDate")->formTime('tomorrow'), $iExpectedTimeStamp);
+        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formTime('tomorrow'), $iExpectedTimeStamp);
     }
 
     public function testFormTimeWithTimeShiftHourSet()
@@ -484,7 +465,7 @@ class UtilsDateTest extends \OxidTestCase
         $oDateTime->setTime(17, 10, 15);
         $iExpectedTimeStamp = $oDateTime->getTimestamp() + $iTimeShiftSeconds;
 
-        $this->assertEquals(oxRegistry::get("oxUtilsDate")->formTime('tomorrow', '17:10:15'), $iExpectedTimeStamp);
+        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formTime('tomorrow', '17:10:15'), $iExpectedTimeStamp);
 
     }
 
@@ -511,7 +492,7 @@ class UtilsDateTest extends \OxidTestCase
         $iExpectedTimeStamp = $iCurrentTime + $iTimeShiftSeconds;
 
         /** @var oxUtilsDate $oUtilsDate */
-        $oUtilsDate = oxRegistry::get("oxUtilsDate");
+        $oUtilsDate = \OxidEsales\Eshop\Core\Registry::getUtilsDate();
         $this->assertSame($iExpectedTimeStamp, $oUtilsDate->shiftServerTime($iCurrentTime));
     }
 }

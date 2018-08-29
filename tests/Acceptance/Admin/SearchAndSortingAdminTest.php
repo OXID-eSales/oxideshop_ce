@@ -1,29 +1,13 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Tests\Acceptance\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin;
 
 use oxDb;
-use OxidEsales\Eshop\Tests\Acceptance\AdminTestCase;
+use OxidEsales\EshopCommunity\Tests\Acceptance\AdminTestCase;
 
 /** Search and sorting in admin. */
 class SearchAndSortingAdminTest extends AdminTestCase
@@ -492,6 +476,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
      */
     public function testSearchPaymentMethods()
     {
+        $paymentColumn = "contains(@class, 'payment_name')";
         $this->loginAdmin("Shop Settings", "Payment Methods");
         //testing search
         $this->changeAdminListLanguage('Deutsch');
@@ -506,7 +491,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->assertEquals("DE test payment", $this->getValue("where[oxpayments][oxdesc]"));
         $this->type("where[oxpayments][oxdesc]", "method [DE] šÄßüл");
         $this->clickAndWait("submitit");
-        $this->assertEquals("Test payment method [DE] šÄßüл", $this->getText("//tr[@id='row.1']/td[2]"));
+        $this->assertEquals("Test payment method [DE] šÄßüл", $this->getText("//tr[@id='row.1']/td[$paymentColumn]"));
         $this->assertElementNotPresent("//tr[@id='row.2']/td[1]");
         $this->changeAdminListLanguage('English');
         $this->type("where[oxpayments][oxdesc]", "EN test payment");
@@ -519,7 +504,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->assertEquals("EN test payment", $this->getValue("where[oxpayments][oxdesc]"));
         $this->type("where[oxpayments][oxdesc]", "method [EN");
         $this->clickAndWait("submitit");
-        $this->assertEquals("Test payment method [EN] šÄßüл", $this->getText("//tr[@id='row.1']/td[2]"));
+        $this->assertEquals("Test payment method [EN] šÄßüл", $this->getText("//tr[@id='row.1']/td[$paymentColumn]"));
         $this->assertElementNotPresent("//tr[@id='row.2']/td[1]");
         $this->type("where[oxpayments][oxdesc]", "noEntry");
         $this->clickAndWait("submitit");
@@ -538,29 +523,29 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->loginAdmin("Shop Settings", "Payment Methods");
         $this->type("where[oxpayments][oxdesc]", "test");
         $this->clickAndWait("submitit");
-        $iNameCol = 2;
+        $paymentColumn = "contains(@class, 'payment_name')";
         //testing sorting and navigation between pages
         $this->assertEquals("Page 1 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
         $this->clickAndWait("link=Name");
-        $this->assertEquals("1 EN test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]"));
-        $this->assertEquals("2 EN test payment šÄßüл", $this->getText("//tr[@id='row.2']/td[".$iNameCol."]"));
-        $this->assertEquals("3 EN test payment šÄßüл", $this->getText("//tr[@id='row.3']/td[".$iNameCol."]"));
+        $this->assertEquals("1 EN test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$paymentColumn."]"));
+        $this->assertEquals("2 EN test payment šÄßüл", $this->getText("//tr[@id='row.2']/td[".$paymentColumn."]"));
+        $this->assertEquals("3 EN test payment šÄßüл", $this->getText("//tr[@id='row.3']/td[".$paymentColumn."]"));
         $this->clickAndWait("nav.next");
         $this->assertEquals("Page 2 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']");
-        $this->assertEquals("[last] EN test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]/div"));
+        $this->assertEquals("[last] EN test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$paymentColumn."]/div"));
         $this->clickAndWait("nav.prev");
         $this->assertEquals("Page 1 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
         $this->changeAdminListLanguage('Deutsch');
-        $this->assertEquals("1 DE test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]"));
-        $this->assertEquals("2 DE test payment šÄßüл", $this->getText("//tr[@id='row.2']/td[".$iNameCol."]"));
-        $this->assertEquals("3 DE test payment šÄßüл", $this->getText("//tr[@id='row.3']/td[".$iNameCol."]"));
+        $this->assertEquals("1 DE test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$paymentColumn."]"));
+        $this->assertEquals("2 DE test payment šÄßüл", $this->getText("//tr[@id='row.2']/td[".$paymentColumn."]"));
+        $this->assertEquals("3 DE test payment šÄßüл", $this->getText("//tr[@id='row.3']/td[".$paymentColumn."]"));
         $this->clickAndWait("nav.last");
         $this->assertEquals("Page 2 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']");
-        $this->assertEquals("[last] DE test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]/div"));
+        $this->assertEquals("[last] DE test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$paymentColumn."]/div"));
         $this->clickAndWait("nav.first");
         $this->assertEquals("Page 1 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
@@ -571,11 +556,11 @@ class SearchAndSortingAdminTest extends AdminTestCase
             $this->clickAndWait("nav.last");
             $this->assertEquals("Page 2 / 2", $this->getText("nav.site"));
             $this->assertElementPresent("//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']");
-            $this->assertEquals("[last] DE test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]/div"));
+            $this->assertEquals("[last] DE test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$paymentColumn."]/div"));
             $this->clickDeleteListItem(1);
             $this->assertElementNotPresent("nav.page.1");
             $this->assertElementPresent("//tr[@id='row.1']/td[1]");
-            $this->assertEquals("1 DE test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]"));
+            $this->assertEquals("1 DE test payment šÄßüл", $this->getText("//tr[@id='row.1']/td[".$paymentColumn."]"));
         }
     }
 
@@ -2527,14 +2512,14 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->assertEquals("New", $this->getSelectedLabel("setfolder"));
         $this->frame("list");
         $this->selectAndWait("folder", "label=Finished");
-        $this->assertEquals("3", $this->getText("//tr[@id='row.1']/td[3]"));
-        $this->assertElementNotPresent("//tr[@id='row.2']/td[3]");
+        $this->assertEquals("3", $this->getText("//tr[@id='row.1']/td[contains(@class, 'order_no')]"));
+        $this->assertElementNotPresent("//tr[@id='row.2']//td[contains(@class, 'order_no')]");
         $this->openListItem("link=3");
         $this->assertEquals("Finished", $this->getSelectedLabel("setfolder"));
         $this->frame("list");
         $this->selectAndWait("folder", "label=Problems");
-        $this->assertEquals("7", $this->getText("//tr[@id='row.1']/td[3]"));
-        $this->assertElementNotPresent("//tr[@id='row.2']/td[3]");
+        $this->assertEquals("7", $this->getText("//tr[@id='row.1']/td[contains(@class, 'order_no')]"));
+        $this->assertElementNotPresent("//tr[@id='row.2']/td[contains(@class, 'order_no')]");
         $this->openListItem("link=7");
         $this->assertEquals("Problems", $this->getSelectedLabel("setfolder"));
         $this->frame("list");
@@ -2558,19 +2543,19 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->assertElementPresent("link=1");
         $this->type("where[oxorder][oxordernr]", "10");
         $this->clickAndWait("submitit");
-        $this->assertEquals("10", $this->getText("//tr[@id='row.1']/td[3]"));
-        $this->assertElementNotPresent("//tr[@id='row.2']/td[3]");
+        $this->assertEquals("10", $this->getText("//tr[@id='row.1']/td[contains(@class, 'order_no')]"));
+        $this->assertElementNotPresent("//tr[@id='row.2']/td[contains(@class, 'order_no')]");
         $this->assertEquals("10", $this->getValue("where[oxorder][oxordernr]"));
         $this->type("where[oxorder][oxordernr]", "");
         $this->type("where[oxorder][oxbilllname]", "3user");
         $this->clickAndWait("submitit");
-        $this->assertEquals("3useršÄßüл", $this->getText("//tr[@id='row.3']/td[4]"));
-        $this->assertEquals("3UserSurnamešÄßüл", $this->getText("//tr[@id='row.3']/td[5]"));
+        $this->assertEquals("3useršÄßüл", $this->getText("//tr[@id='row.3']/td[contains(@class, 'first_name')]"));
+        $this->assertEquals("3UserSurnamešÄßüл", $this->getText("//tr[@id='row.3']/td[contains(@class, 'last_name')]"));
         $this->type("where[oxorder][oxbilllname]", "2usersurnamešÄßüл");
         $this->clickAndWait("submitit");
         $this->assertElementPresent("link=2useršÄßüл");
         $this->assertElementPresent("link=2UserSurnamešÄßüл");
-        $this->assertElementPresent("//tr[@id='row.2']/td[4]");
+        $this->assertEquals("2useršÄßüл", $this->getText("//tr[@id='row.2']/td[contains(@class, 'first_name')]"));
         $this->assertEquals("2usersurnamešÄßüл", $this->getValue("where[oxorder][oxbilllname]"));
         $this->type("where[oxorder][oxbilllname]", "");
         $this->clickAndWait("submitit");
@@ -2589,57 +2574,57 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->selectAndWait("folder", "label=all");
         //sorting
         $this->clickAndWait("link=Order Time");
-        $this->assertEquals("2008-04-21 15:07:46", $this->getText("//tr[@id='row.1']/td[1]"));
-        $this->assertEquals("2008-04-21 15:02:54", $this->getText("//tr[@id='row.2']/td[1]"));
-        $this->assertEquals("2008-04-21 15:02:12", $this->getText("//tr[@id='row.3']/td[1]"));
-        $this->assertEquals("2008-04-21 15:08:47", $this->getText("//tr[@id='row.1']/td[2]"));
-        $this->assertEquals("0000-00-00 00:00:00", $this->getText("//tr[@id='row.2']/td[2]"));
-        $this->assertEquals("2008-04-21 15:08:11", $this->getText("//tr[@id='row.3']/td[2]"));
+        $this->assertEquals("2008-04-21 15:07:46", $this->getText("//tr[@id='row.1']/td[contains(@class, 'order_time')]"));
+        $this->assertEquals("2008-04-21 15:02:54", $this->getText("//tr[@id='row.2']/td[contains(@class, 'order_time')]"));
+        $this->assertEquals("2008-04-21 15:02:12", $this->getText("//tr[@id='row.3']/td[contains(@class, 'order_time')]"));
+        $this->assertEquals("2008-04-21 15:08:47", $this->getText("//tr[@id='row.1']/td[contains(@class, 'payment_date')]"));
+        $this->assertEquals("0000-00-00 00:00:00", $this->getText("//tr[@id='row.2']/td[contains(@class, 'payment_date')]"));
+        $this->assertEquals("2008-04-21 15:08:11", $this->getText("//tr[@id='row.3']/td[contains(@class, 'payment_date')]"));
         $this->clickAndWait("link=Payment Date");
-        $this->assertEquals("2008-04-21 15:14:02", $this->getText("//tr[@id='row.1']/td[2]"));
-        $this->assertEquals("2008-04-21 15:08:47", $this->getText("//tr[@id='row.2']/td[2]"));
-        $this->assertEquals("2008-04-21 15:08:26", $this->getText("//tr[@id='row.3']/td[2]"));
-        $this->assertEquals("2", $this->getText("//tr[@id='row.1']/td[3]"));
-        $this->assertEquals("11", $this->getText("//tr[@id='row.2']/td[3]"));
+        $this->assertEquals("2008-04-21 15:14:02", $this->getText("//tr[@id='row.1']/td[contains(@class, 'payment_date')]"));
+        $this->assertEquals("2008-04-21 15:08:47", $this->getText("//tr[@id='row.2']/td[contains(@class, 'payment_date')]"));
+        $this->assertEquals("2008-04-21 15:08:26", $this->getText("//tr[@id='row.3']/td[contains(@class, 'payment_date')]"));
+        $this->assertEquals("2", $this->getText("//tr[@id='row.1']/td[contains(@class, 'order_no')]"));
+        $this->assertEquals("11", $this->getText("//tr[@id='row.2']/td[contains(@class, 'order_no')]"));
         $this->clickAndWait("link=Order No.");
-        $this->assertEquals("11", $this->getText("//tr[@id='row.1']/td[3]"));
-        $this->assertEquals("10", $this->getText("//tr[@id='row.2']/td[3]"));
-        $this->assertEquals("9", $this->getText("//tr[@id='row.3']/td[3]"));
-        $this->assertEquals("3UserSurnamešÄßüл", $this->getText("//tr[@id='row.1']/td[5]"));
-        $this->assertEquals("3useršÄßüл", $this->getText("//tr[@id='row.1']/td[4]"));
-        $this->assertEquals("3useršÄßüл", $this->getText("//tr[@id='row.2']/td[4]"));
-        $this->assertEquals("3useršÄßüл", $this->getText("//tr[@id='row.3']/td[4]"));
-        $this->assertEquals("1useršÄßüл", $this->getText("//tr[@id='row.4']/td[4]"));
-        $this->assertEquals("3UserSurnamešÄßüл", $this->getText("//tr[@id='row.2']/td[5]"));
-        $this->assertEquals("3UserSurnamešÄßüл", $this->getText("//tr[@id='row.3']/td[5]"));
-        $this->assertEquals("1UserSurnamešÄßüл", $this->getText("//tr[@id='row.4']/td[5]"));
+        $this->assertEquals("11", $this->getText("//tr[@id='row.1']/td[contains(@class, 'order_no')]"));
+        $this->assertEquals("10", $this->getText("//tr[@id='row.2']/td[contains(@class, 'order_no')]"));
+        $this->assertEquals("9", $this->getText("//tr[@id='row.3']/td[contains(@class, 'order_no')]"));
+        $this->assertEquals("3UserSurnamešÄßüл", $this->getText("//tr[@id='row.1']/td[contains(@class, 'last_name')]"));
+        $this->assertEquals("3useršÄßüл", $this->getText("//tr[@id='row.1']/td[contains(@class, 'first_name')]"));
+        $this->assertEquals("3useršÄßüл", $this->getText("//tr[@id='row.2']/td[contains(@class, 'first_name')]"));
+        $this->assertEquals("3useršÄßüл", $this->getText("//tr[@id='row.3']/td[contains(@class, 'first_name')]"));
+        $this->assertEquals("1useršÄßüл", $this->getText("//tr[@id='row.4']/td[contains(@class, 'first_name')]"));
+        $this->assertEquals("3UserSurnamešÄßüл", $this->getText("//tr[@id='row.2']/td[contains(@class, 'last_name')]"));
+        $this->assertEquals("3UserSurnamešÄßüл", $this->getText("//tr[@id='row.3']/td[contains(@class, 'last_name')]"));
+        $this->assertEquals("1UserSurnamešÄßüл", $this->getText("//tr[@id='row.4']/td[contains(@class, 'last_name')]"));
         $this->clickAndWait("link=First Name");
-        $this->assertEquals("3useršÄßüл", $this->getText("//tr[@id='row.1']/td[4]"));
-        $this->assertEquals("3useršÄßüл", $this->getText("//tr[@id='row.2']/td[4]"));
-        $this->assertEquals("3useršÄßüл", $this->getText("//tr[@id='row.3']/td[4]"));
-        $this->assertEquals("3useršÄßüл", $this->getText("//tr[@id='row.4']/td[4]"));
-        $this->assertEquals("3UserSurnamešÄßüл", $this->getText("//tr[@id='row.1']/td[5]"));
-        $this->assertEquals("3UserSurnamešÄßüл", $this->getText("//tr[@id='row.2']/td[5]"));
-        $this->assertEquals("3UserSurnamešÄßüл", $this->getText("//tr[@id='row.3']/td[5]"));
-        $this->assertEquals("3UserSurnamešÄßüл", $this->getText("//tr[@id='row.4']/td[5]"));
+        $this->assertEquals("3useršÄßüл", $this->getText("//tr[@id='row.1']/td[contains(@class, 'first_name')]"));
+        $this->assertEquals("3useršÄßüл", $this->getText("//tr[@id='row.2']/td[contains(@class, 'first_name')]"));
+        $this->assertEquals("3useršÄßüл", $this->getText("//tr[@id='row.3']/td[contains(@class, 'first_name')]"));
+        $this->assertEquals("3useršÄßüл", $this->getText("//tr[@id='row.4']/td[contains(@class, 'first_name')]"));
+        $this->assertEquals("3UserSurnamešÄßüл", $this->getText("//tr[@id='row.1']/td[contains(@class, 'last_name')]"));
+        $this->assertEquals("3UserSurnamešÄßüл", $this->getText("//tr[@id='row.2']/td[contains(@class, 'last_name')]"));
+        $this->assertEquals("3UserSurnamešÄßüл", $this->getText("//tr[@id='row.3']/td[contains(@class, 'last_name')]"));
+        $this->assertEquals("3UserSurnamešÄßüл", $this->getText("//tr[@id='row.4']/td[contains(@class, 'last_name')]"));
         $this->clickAndWait("link=Order No.");
-        $this->assertEquals("11", $this->getText("//tr[@id='row.1']/td[3]"));
+        $this->assertEquals("11", $this->getText("//tr[@id='row.1']/td[contains(@class, 'order_no')]"));
         $this->assertEquals("Page 1 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
         $this->clickAndWait("nav.next");
-        $this->assertEquals("1", $this->getText("//tr[@id='row.1']/td[3]"));
+        $this->assertEquals("1", $this->getText("//tr[@id='row.1']/td[contains(@class, 'order_no')]"));
         $this->assertEquals("Page 2 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']");
         $this->clickAndWait("nav.prev");
-        $this->assertEquals("11", $this->getText("//tr[@id='row.1']/td[3]"));
+        $this->assertEquals("11", $this->getText("//tr[@id='row.1']/td[contains(@class, 'order_no')]"));
         $this->assertEquals("Page 1 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
         $this->clickAndWait("nav.last");
         $this->assertEquals("Page 2 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']");
-        $this->assertEquals("1", $this->getText("//tr[@id='row.1']/td[3]"));
+        $this->assertEquals("1", $this->getText("//tr[@id='row.1']/td[contains(@class, 'order_no')]"));
         $this->clickAndWait("nav.first");
-        $this->assertEquals("11", $this->getText("//tr[@id='row.1']/td[3]"));
+        $this->assertEquals("11", $this->getText("//tr[@id='row.1']/td[contains(@class, 'order_no')]"));
         $this->assertEquals("Page 1 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
         //testing if other tabs are working
@@ -2652,10 +2637,10 @@ class SearchAndSortingAdminTest extends AdminTestCase
         //checking navigation
         $this->openListPage("nav.last");
         //deleting order
-        $this->assertEquals("1", $this->getText("//tr[@id='row.1']/td[3]"));
+        $this->assertEquals("1", $this->getText("//tr[@id='row.1']/td[contains(@class, 'order_no')]"));
         $this->clickDeleteListItem(1);
         $this->assertElementNotPresent("nav.page.1");
-        $this->assertEquals("11", $this->getText("//tr[@id='row.1']/td[3]"));
+        $this->assertEquals("11", $this->getText("//tr[@id='row.1']/td[contains(@class, 'order_no')]"));
         //canceling order
         $this->openListItem("link=11");
         $this->assertEquals("3,03", $this->getText("//table[@id='order.info']/tbody/tr[3]/td[2]"));
@@ -3447,6 +3432,11 @@ class SearchAndSortingAdminTest extends AdminTestCase
         if ($testConfig->getShopEdition() === 'EE' && $testConfig->isSubShop()) {
             #User demodata for subshop
             $aUserParams = array("oxshopid" => $testConfig->getShopId());
+
+            // First need to update USER dependency to newsletter.
+            // It is impossible to change User Shop ID without changing Shop ID for newsletter subscription.
+            oxDb::getDb(oxDb::FETCH_MODE_NUM)->execute("UPDATE oxnewssubscribed SET oxshopid = '{$testConfig->getShopId()}'");
+
             $aUsers = oxDb::getDb(oxDb::FETCH_MODE_NUM)->getAll('SELECT OXID FROM oxuser');
             foreach ($aUsers as $aUser) {
                 $this->callShopSC("oxUser", "save", $aUser[0], $aUserParams);

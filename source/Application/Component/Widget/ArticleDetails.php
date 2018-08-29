@@ -1,37 +1,25 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link          http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version       OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Component\Widget;
+namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
-use oxRegistry;
+use OxidEsales\Eshop\Application\Model\Article;
+use OxidEsales\Eshop\Application\Model\ArticleList;
+use OxidEsales\Eshop\Application\Model\Manufacturer;
+use OxidEsales\Eshop\Application\Model\SimpleVariantList;
+use OxidEsales\Eshop\Application\Model\Vendor;
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Utils;
 use stdClass;
-use oxCategory;
 
 /**
  * Article detailed information widget.
  */
-class ArticleDetails extends \oxWidget
+class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
-
     /**
      * List of article variants.
      *
@@ -44,7 +32,7 @@ class ArticleDetails extends \oxWidget
      *
      * @var array
      */
-    protected $_aComponentNames = array('oxcmp_cur' => 1, 'oxcmp_shop' => 1, 'oxcmp_basket' => 1, 'oxcmp_user' => 1);
+    protected $_aComponentNames = ['oxcmp_cur' => 1, 'oxcmp_shop' => 1, 'oxcmp_basket' => 1, 'oxcmp_user' => 1];
 
     /**
      * Current class template name.
@@ -54,70 +42,70 @@ class ArticleDetails extends \oxWidget
     protected $_sThisTemplate = 'widget/product/details.tpl';
 
     /**
-     * Current product parent article object
+     * Current product parent article object.
      *
-     * @var oxArticle
+     * @var Article
      */
     protected $_oParentProd = null;
 
     /**
-     * Marker if user can rate current product
+     * Marker if user can rate current product.
      *
      * @var bool
      */
     protected $_blCanRate = null;
 
     /**
-     * Media files
+     * Media files.
      *
      * @var array
      */
     protected $_aMediaFiles = null;
 
     /**
-     * History (last seen) products
+     * History (last seen) products.
      *
      * @var array
      */
     protected $_aLastProducts = null;
 
     /**
-     * Current product's vendor
+     * Current product's vendor.
      *
-     * @var oxVendor
+     * @var Vendor
      */
     protected $_oVendor = null;
 
     /**
-     * Current product's manufacturer
+     * Current product's manufacturer.
      *
-     * @var oxManufacturer
+     * @var Manufacturer
      */
     protected $_oManufacturer = null;
 
     /**
-     * Current product's category
+     * Current product's category.
      *
      * @var object
      */
     protected $_oCategory = null;
 
     /**
-     * Current product's attributes
+     * Current product's attributes.
      *
-     * @var object
+     * @var array
      */
     protected $_aAttributes = null;
 
     /**
-     * Picture gallery
+     * Picture gallery.
      *
      * @var array
      */
     protected $_aPicGallery = null;
 
     /**
-     * Reviews of current article
+     * Reviews of current article.
      *
      * @var array
      */
@@ -131,35 +119,35 @@ class ArticleDetails extends \oxWidget
     protected $_oCrossSelling = null;
 
     /**
-     * Similar products article list
+     * Similar products article list.
      *
      * @var object
      */
     protected $_oSimilarProducts = null;
 
     /**
-     * Accessories of current article
+     * Accessories of current article.
      *
      * @var object
      */
     protected $_oAccessoires = null;
 
     /**
-     * List of customer also bought these products
+     * List of customer also bought these products.
      *
      * @var object
      */
     protected $_aAlsoBoughtArts = null;
 
     /**
-     * Search title
+     * Search title.
      *
      * @var string
      */
     protected $_sSearchTitle = null;
 
     /**
-     * Marker if active product was fully initialized before returning it
+     * Marker if active product was fully initialized before returning it.
      * (see details::getProduct())
      *
      * @var bool
@@ -167,28 +155,28 @@ class ArticleDetails extends \oxWidget
     protected $_blIsInitialized = false;
 
     /**
-     * Current view link type
+     * Current view link type.
      *
      * @var int
      */
     protected $_iLinkType = null;
 
     /**
-     * Is multi dimension variant view
+     * Is multi dimension variant view.
      *
      * @var bool
      */
     protected $_blMdView = null;
 
     /**
-     * Rating value
+     * Rating value.
      *
      * @var double
      */
     protected $_dRatingValue = null;
 
     /**
-     * Rating count
+     * Rating count.
      *
      * @var integer
      */
@@ -202,7 +190,7 @@ class ArticleDetails extends \oxWidget
     protected $_sBidPrice = null;
 
     /**
-     * Marked which defines if current view is sortable or not
+     * Marked which defines if current view is sortable or not.
      *
      * @var bool
      */
@@ -218,9 +206,9 @@ class ArticleDetails extends \oxWidget
     protected $_aSimilarRecommListIds = null;
 
     /**
-     * Template variable getter. Returns active zoom picture id
+     * Template variable getter. Returns active zoom picture id.
      *
-     * @return array
+     * @return int
      */
     public function getActZoomPic()
     {
@@ -228,17 +216,17 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Returns current product parent article object if it is available
+     * Returns current product parent article object if it is available.
      *
      * @param string $sParentId parent product id
      *
-     * @return oxArticle
+     * @return Article
      */
     protected function _getParentProduct($sParentId)
     {
         if ($sParentId && $this->_oParentProd === null) {
             $this->_oParentProd = false;
-            $oProduct = oxNew('oxArticle');
+            $oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             if (($oProduct->load($sParentId))) {
                 $this->_processProduct($oProduct);
                 $this->_oParentProd = $oProduct;
@@ -249,9 +237,9 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * In case list type is "search" returns search parameters which will be added to product details link
+     * In case list type is "search" returns search parameters which will be added to product details link.
      *
-     * @return string | null
+     * @return string|null
      */
     protected function _getAddUrlParams()
     {
@@ -261,9 +249,9 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Processes product by setting link type and in case list type is search adds search parameters to details link
+     * Processes product by setting link type and in case list type is search adds search parameters to details link.
      *
-     * @param object $oProduct product to process
+     * @param object $oProduct Product to process.
      */
     protected function _processProduct($oProduct)
     {
@@ -274,7 +262,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Checks if rating functionality is active
+     * Checks if rating functionality is active.
      *
      * @return bool
      */
@@ -284,7 +272,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Checks if rating functionality is on and allowed to user
+     * Checks if rating functionality is on and allowed to user.
      *
      * @return bool
      */
@@ -294,7 +282,7 @@ class ArticleDetails extends \oxWidget
             $this->_blCanRate = false;
 
             if ($this->ratingIsActive() && $oUser = $this->getUser()) {
-                $oRating = oxNew('oxrating');
+                $oRating = oxNew(\OxidEsales\Eshop\Application\Model\Rating::class);
                 $this->_blCanRate = $oRating->allowRating($oUser->getId(), 'oxarticle', $this->getProduct()->getId());
             }
         }
@@ -303,9 +291,9 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * loading full list of attributes
+     * Loading full list of attributes.
      *
-     * @return array $_aAttributes
+     * @return array
      */
     public function getAttributes()
     {
@@ -329,14 +317,14 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Returns current view link type
+     * Returns current view link type.
      *
      * @return int
      */
     public function getLinkType()
     {
         if ($this->_iLinkType === null) {
-            $sListType = oxRegistry::getConfig()->getRequestParameter('listtype');
+            $sListType = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('listtype');
             if ('vendor' == $sListType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_VENDOR;
             } elseif ('manufacturer' == $sListType) {
@@ -360,9 +348,9 @@ class ArticleDetails extends \oxWidget
 
     /**
      * Returns variant lists of current product
-     * excludes currently viewed product
+     * excludes currently viewed product.
      *
-     * @return array | oxSimpleVariantList | oxArticleList
+     * @return array|SimpleVariantList|ArticleList
      */
     public function getVariantListExceptCurrent()
     {
@@ -380,10 +368,10 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * loading full list of variants,
-     * if we are child and do not have any variants then let's load all parent variants as ours
+     * Loading full list of variants,
+     * if we are child and do not have any variants then let's load all parent variants as ours.
      *
-     * @return array | oxSimpleVariantList | oxArticleList
+     * @return array|SimpleVariantList|ArticleList
      */
     public function loadVariantInformation()
     {
@@ -402,7 +390,7 @@ class ArticleDetails extends \oxWidget
                     //#1104S if parent is buyable load select lists too
                     $oParent->enablePriceLoad();
                     $oParent->aSelectlist = $oParent->getSelectLists();
-                    $this->_aVariantList = array_merge(array($oParent), $this->_aVariantList->getArray());
+                    $this->_aVariantList = array_merge([$oParent], $this->_aVariantList->getArray());
                 }
             } else {
                 //loading full list of variants
@@ -419,9 +407,9 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Returns variant lists of current product
+     * Returns variant lists of current product.
      *
-     * @return array | oxsimplevariantlist | oxarticlelist
+     * @return array|SimpleVariantList|ArticleList
      */
     public function getVariantList()
     {
@@ -429,7 +417,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Template variable getter. Returns media files of current product
+     * Template variable getter. Returns media files of current product.
      *
      * @return array
      */
@@ -444,7 +432,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Template variable getter. Returns last seen products
+     * Template variable getter. Returns last seen products.
      *
      * @param int $iCnt product count
      *
@@ -458,7 +446,7 @@ class ArticleDetails extends \oxWidget
             $sParentIdField = 'oxarticles__oxparentid';
             $sArtId = $oProduct->$sParentIdField->value ? $oProduct->$sParentIdField->value : $oProduct->getId();
 
-            $oHistoryArtList = oxNew('oxArticleList');
+            $oHistoryArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
             $oHistoryArtList->loadHistoryArticles($sArtId, $iCnt);
             $this->_aLastProducts = $oHistoryArtList;
         }
@@ -467,7 +455,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Template variable getter. Returns product's vendor
+     * Template variable getter. Returns product's vendor.
      *
      * @return object
      */
@@ -481,7 +469,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Template variable getter. Returns product's vendor
+     * Template variable getter. Returns product's vendor.
      *
      * @return object
      */
@@ -495,7 +483,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Template variable getter. Returns product's root category
+     * Template variable getter. Returns product's root category.
      *
      * @return object
      */
@@ -509,7 +497,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Template variable getter. Returns picture gallery of current article
+     * Template variable getter. Returns picture gallery of current article.
      *
      * @return array
      */
@@ -524,7 +512,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Template variable getter. Returns active picture
+     * Template variable getter. Returns active picture.
      *
      * @return object
      */
@@ -536,7 +524,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Template variable getter. Returns true if there more pictures
+     * Template variable getter. Returns true if there more pictures.
      *
      * @return bool
      */
@@ -548,7 +536,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Template variable getter. Returns icons of current article
+     * Template variable getter. Returns icons of current article.
      *
      * @return array
      */
@@ -560,7 +548,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Template variable getter. Returns if to show zoom pictures
+     * Template variable getter. Returns if to show zoom pictures.
      *
      * @return bool
      */
@@ -572,7 +560,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Template variable getter. Returns zoom pictures
+     * Template variable getter. Returns zoom pictures.
      *
      * @return array
      */
@@ -584,7 +572,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Template variable getter. Returns reviews of current article
+     * Template variable getter. Returns reviews of current article.
      *
      * @return array
      */
@@ -601,7 +589,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Template variable getter. Returns cross selling
+     * Template variable getter. Returns cross selling.
      *
      * @return object
      */
@@ -618,7 +606,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Template variable getter. Returns similar article list
+     * Template variable getter. Returns similar article list.
      *
      * @return object
      */
@@ -647,7 +635,7 @@ class ArticleDetails extends \oxWidget
             $this->_aSimilarRecommListIds = false;
 
             if ($oProduct = $this->getProduct()) {
-                $this->_aSimilarRecommListIds = array($oProduct->getId());
+                $this->_aSimilarRecommListIds = [$oProduct->getId()];
             }
         }
 
@@ -655,7 +643,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Template variable getter. Returns accessories of article
+     * Template variable getter. Returns accessories of article.
      *
      * @return object
      */
@@ -672,7 +660,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Template variable getter. Returns list of customer also bought these products
+     * Template variable getter. Returns list of customer also bought these products.
      *
      * @return object
      */
@@ -689,7 +677,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Template variable getter. Returns if price alarm is enabled
+     * Template variable getter. Returns if price alarm is enabled.
      *
      * @return bool
      */
@@ -712,7 +700,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Returns search title. It will be set in oxLocator
+     * Returns search title. It will be set in Locator.
      *
      * @return string
      */
@@ -722,7 +710,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Returns search title setter
+     * Returns search title setter.
      *
      * @param string $sTitle search title
      */
@@ -734,7 +722,7 @@ class ArticleDetails extends \oxWidget
     /**
      * active category path setter
      *
-     * @param string $sActCatPath category tree path
+     * @param string $sActCatPath category tree path.
      */
     public function setCatTreePath($sActCatPath)
     {
@@ -742,7 +730,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Checks should persistent parameter input field be displayed
+     * Checks should persistent parameter input field be displayed.
      *
      * @return bool
      */
@@ -754,7 +742,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Template variable getter. Returns rating value
+     * Template variable getter. Returns rating value.
      *
      * @return double
      */
@@ -773,7 +761,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Template variable getter. Returns if review module is on
+     * Template variable getter. Returns if review module is on.
      *
      * @return bool
      */
@@ -783,7 +771,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Template variable getter. Returns rating count
+     * Template variable getter. Returns rating count.
      *
      * @return integer
      */
@@ -801,7 +789,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Return price alarm status (if it was send)
+     * Return price alarm status (if it was send).
      *
      * @return integer
      */
@@ -811,7 +799,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Template variable getter. Returns bid price
+     * Template variable getter. Returns bid price.
      *
      * @return string
      */
@@ -820,19 +808,19 @@ class ArticleDetails extends \oxWidget
         if ($this->_sBidPrice === null) {
             $this->_sBidPrice = false;
 
-            $aParams = oxRegistry::getConfig()->getRequestParameter('pa');
+            $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pa');
             $oCur = $this->getConfig()->getActShopCurrencyObject();
-            $iPrice = oxRegistry::getUtils()->currency2Float($aParams['price']);
-            $this->_sBidPrice = oxRegistry::getLang()->formatCurrency($iPrice, $oCur);
+            $iPrice = \OxidEsales\Eshop\Core\Registry::getUtils()->currency2Float($aParams['price']);
+            $this->_sBidPrice = \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($iPrice, $oCur);
         }
 
         return $this->_sBidPrice;
     }
 
     /**
-     * Returns variant selection
+     * Returns variant selection.
      *
-     * @return oxVariantSelectList
+     * @return array
      */
     public function getVariantSelections()
     {
@@ -840,18 +828,18 @@ class ArticleDetails extends \oxWidget
         $oProduct = $this->getProduct();
         $sParentIdField = 'oxarticles__oxparentid';
         if (($oParent = $this->_getParentProduct($oProduct->$sParentIdField->value))) {
-            $sVarSelId = oxRegistry::getConfig()->getRequestParameter("varselid");
+            $sVarSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("varselid");
 
             return $oParent->getVariantSelections($sVarSelId, $oProduct->getId());
         }
 
-        return $oProduct->getVariantSelections(oxRegistry::getConfig()->getRequestParameter("varselid"));
+        return $oProduct->getVariantSelections(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("varselid"));
     }
 
     /**
-     * Returns pictures product object
+     * Returns pictures product object.
      *
-     * @return oxArticle
+     * @return ArticleList
      */
     public function getPicturesProduct()
     {
@@ -866,12 +854,12 @@ class ArticleDetails extends \oxWidget
     /**
      * Get product.
      *
-     * @return oxArticle
+     * @return Article
      */
     public function getProduct()
     {
         $myConfig = $this->getConfig();
-        $myUtils = oxRegistry::getUtils();
+        $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
 
         if ($this->_oProduct === null) {
             if ($this->getViewParameter('_object')) {
@@ -881,17 +869,17 @@ class ArticleDetails extends \oxWidget
                 //as blLoadVariants = false affect "ab price" functionality
                 $myConfig->setConfigParam('blLoadVariants', true);
 
-                $sOxid = oxRegistry::getConfig()->getRequestParameter('anid');
+                $sOxid = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('anid');
 
                 // object is not yet loaded
-                $this->_oProduct = oxNew('oxArticle');
+                $this->_oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
                 if (!$this->_oProduct->load($sOxid)) {
                     $myUtils->redirect($myConfig->getShopHomeUrl());
                     $myUtils->showMessageAndExit('');
                 }
 
-                $sVarSelId = oxRegistry::getConfig()->getRequestParameter("varselid");
+                $sVarSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("varselid");
                 $aVarSelections = $this->_oProduct->getVariantSelections($sVarSelId);
                 if ($aVarSelections && $aVarSelections['oActiveVariant'] && $aVarSelections['blPerfectFit']) {
                     $this->_oProduct = $aVarSelections['oActiveVariant'];
@@ -906,7 +894,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Set item sorting for widget based of retrieved parameters
+     * Set item sorting for widget based of retrieved parameters.
      */
     protected function _setSortingParameters()
     {
@@ -929,7 +917,7 @@ class ArticleDetails extends \oxWidget
 
         parent::render();
 
-        $oCategory = oxNew('oxCategory');
+        $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
 
         // if category parameter is not found, use category from product
         $sCatId = $this->getViewParameter("cnid");
@@ -973,8 +961,8 @@ class ArticleDetails extends \oxWidget
     /**
      * Runs additional checks for article.
      *
-     * @param oxUtils  $myUtils  General utils
-     * @param oxConfig $myConfig Main shop configuration
+     * @param Utils  $myUtils  General utils.
+     * @param Config $myConfig Main shop configuration.
      */
     protected function _additionalChecksForArticle($myUtils, $myConfig)
     {
@@ -998,7 +986,7 @@ class ArticleDetails extends \oxWidget
     }
 
     /**
-     * Returns default category sorting for selected category
+     * Returns default category sorting for selected category.
      *
      * @return array
      */
@@ -1008,10 +996,10 @@ class ArticleDetails extends \oxWidget
 
         $oCategory = $this->getActiveCategory();
 
-        if ($this->getListType() != 'search' && $oCategory && $oCategory instanceof oxCategory) {
+        if ($this->getListType() != 'search' && $oCategory && $oCategory instanceof \OxidEsales\Eshop\Application\Model\Category) {
             if ($sSortBy = $oCategory->getDefaultSorting()) {
                 $sSortDir = ($oCategory->getDefaultSortingMode()) ? "desc" : "asc";
-                $aSorting = array('sortby' => $sSortBy, 'sortdir' => $sSortDir);
+                $aSorting = ['sortby' => $sSortBy, 'sortdir' => $sSortDir];
             }
         }
 

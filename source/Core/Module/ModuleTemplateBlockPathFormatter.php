@@ -1,35 +1,18 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core\Module;
+namespace OxidEsales\EshopCommunity\Core\Module;
 
-use \oxException;
-use \OxidEsales\Eshop\Core\FileSystem\FileSystem;
+use OxidEsales\Eshop\Core\FileSystem\FileSystem;
 
 /**
  * Forms path to module block template.
  *
  * @internal Do not make a module extension for this class.
- * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
+ * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ModuleTemplateBlockPathFormatter
 {
@@ -84,7 +67,7 @@ class ModuleTemplateBlockPathFormatter
     public function getPath()
     {
         if (is_null($this->moduleId) || is_null($this->fileName)) {
-            throw oxNew('oxException');
+            throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
         }
 
         $fileName = $this->fileName;
@@ -99,7 +82,7 @@ class ModuleTemplateBlockPathFormatter
             $fileName = "out/blocks/$fileName";
         }
 
-        $moduleList = oxNew('oxmodulelist');
+        $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
         $activeModuleInfo = $moduleList->getActiveModuleInfo();
 
         if (!array_key_exists($this->moduleId, $activeModuleInfo)) {

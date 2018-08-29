@@ -1,40 +1,30 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxField;
 use stdClass;
 
-DEFINE("ERR_SUCCESS", 1);
-DEFINE("ERR_REQUIREDMISSING", -1);
-DEFINE("ERR_POSOUTOFBOUNDS", -2);
+if (!defined('ERR_SUCCESS')) {
+    DEFINE("ERR_SUCCESS", 1);
+}
+if (!defined('ERR_REQUIREDMISSING')) {
+    DEFINE("ERR_REQUIREDMISSING", -1);
+}
+if (!defined('ERR_POSOUTOFBOUNDS')) {
+    DEFINE("ERR_POSOUTOFBOUNDS", -2);
+}
 
 /**
  * Admin article main selectlist manager.
  * Performs collection and updatind (on user submit) main item information.
  */
-class SelectListMain extends \oxAdminDetails
+class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
     /**
      * Keeps all act. fields to store
@@ -56,7 +46,7 @@ class SelectListMain extends \oxAdminDetails
         $sArticleTable = getViewName('oxarticles');
 
         //create empty edit object
-        $this->_aViewData["edit"] = oxNew("oxselectlist");
+        $this->_aViewData["edit"] = oxNew(\OxidEsales\Eshop\Application\Model\SelectList::class);
 
         if (isset($sOxId) && $sOxId != "-1") {
             // generating category tree for select list
@@ -65,7 +55,7 @@ class SelectListMain extends \oxAdminDetails
             $this->_createCategoryTree("artcattree", $sOxId);
 
             // load object
-            $oAttr = oxNew("oxselectlist");
+            $oAttr = oxNew(\OxidEsales\Eshop\Application\Model\SelectList::class);
             $oAttr->loadInLang($this->_iEditLang, $sOxId);
 
             $aFieldList = $oAttr->getFieldList();
@@ -90,7 +80,7 @@ class SelectListMain extends \oxAdminDetails
             }
 
             // remove already created languages
-            $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
+            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
             if (count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
@@ -102,18 +92,17 @@ class SelectListMain extends \oxAdminDetails
                 $this->_aViewData["otherlang"][$id] = clone $oLang;
             }
 
-            $iErr = oxRegistry::getSession()->getVariable("iErrorCode");
+            $iErr = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("iErrorCode");
 
             if (!$iErr) {
                 $iErr = ERR_SUCCESS;
             }
 
             $this->_aViewData["iErrorCode"] = $iErr;
-            oxRegistry::getSession()->setVariable("iErrorCode", ERR_SUCCESS);
-
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("iErrorCode", ERR_SUCCESS);
         }
-        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
-            $oSelectlistMainAjax = oxNew('selectlist_main_ajax');
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc")) {
+            $oSelectlistMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\SelectListMainAjax::class);
             $this->_aViewData['oxajax'] = $oSelectlistMainAjax->getColumns();
 
             return "popups/selectlist_main.tpl";
@@ -132,9 +121,9 @@ class SelectListMain extends \oxAdminDetails
         parent::save();
 
         $sOxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
 
-        $oAttr = oxNew("oxselectlist");
+        $oAttr = oxNew(\OxidEsales\Eshop\Application\Model\SelectList::class);
 
         if ($sOxId != "-1") {
             $oAttr->loadInLang($this->_iEditLang, $sOxId);
@@ -153,19 +142,19 @@ class SelectListMain extends \oxAdminDetails
 
         //#708
         if (!is_array($this->aFieldArray)) {
-            $this->aFieldArray = oxRegistry::getUtils()->assignValuesFromText($oAttr->oxselectlist__oxvaldesc->getRawValue());
+            $this->aFieldArray = \OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($oAttr->oxselectlist__oxvaldesc->getRawValue());
         }
         // build value
-        $oAttr->oxselectlist__oxvaldesc = new oxField("", oxField::T_RAW);
+        $oAttr->oxselectlist__oxvaldesc = new \OxidEsales\Eshop\Core\Field("", \OxidEsales\Eshop\Core\Field::T_RAW);
         foreach ($this->aFieldArray as $oField) {
-            $oAttr->oxselectlist__oxvaldesc->setValue($oAttr->oxselectlist__oxvaldesc->getRawValue() . $oField->name, oxField::T_RAW);
+            $oAttr->oxselectlist__oxvaldesc->setValue($oAttr->oxselectlist__oxvaldesc->getRawValue() . $oField->name, \OxidEsales\Eshop\Core\Field::T_RAW);
             if (isset($oField->price) && $oField->price) {
-                $oAttr->oxselectlist__oxvaldesc->setValue($oAttr->oxselectlist__oxvaldesc->getRawValue() . "!P!" . trim(str_replace(",", ".", $oField->price)), oxField::T_RAW);
+                $oAttr->oxselectlist__oxvaldesc->setValue($oAttr->oxselectlist__oxvaldesc->getRawValue() . "!P!" . trim(str_replace(",", ".", $oField->price)), \OxidEsales\Eshop\Core\Field::T_RAW);
                 if ($oField->priceUnit == '%') {
-                    $oAttr->oxselectlist__oxvaldesc->setValue($oAttr->oxselectlist__oxvaldesc->getRawValue() . '%', oxField::T_RAW);
+                    $oAttr->oxselectlist__oxvaldesc->setValue($oAttr->oxselectlist__oxvaldesc->getRawValue() . '%', \OxidEsales\Eshop\Core\Field::T_RAW);
                 }
             }
-            $oAttr->oxselectlist__oxvaldesc->setValue($oAttr->oxselectlist__oxvaldesc->getRawValue() . "__@@", oxField::T_RAW);
+            $oAttr->oxselectlist__oxvaldesc->setValue($oAttr->oxselectlist__oxvaldesc->getRawValue() . "__@@", \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
         $oAttr->setLanguage($this->_iEditLang);
@@ -183,9 +172,9 @@ class SelectListMain extends \oxAdminDetails
     public function saveinnlang()
     {
         $sOxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
 
-        $oObj = oxNew("oxselectlist");
+        $oObj = oxNew(\OxidEsales\Eshop\Application\Model\SelectList::class);
 
         if ($sOxId != "-1") {
             $oObj->loadInLang($this->_iEditLang, $sOxId);
@@ -205,7 +194,7 @@ class SelectListMain extends \oxAdminDetails
         $oObj->assign($aParams);
 
         // apply new language
-        $oObj->setLanguage(oxRegistry::getConfig()->getRequestParameter("new_lang"));
+        $oObj->setLanguage(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("new_lang"));
         $oObj->save();
 
         // set oxid if inserted
@@ -219,15 +208,15 @@ class SelectListMain extends \oxAdminDetails
      */
     public function delFields()
     {
-        $oSelectlist = oxNew("oxselectlist");
+        $oSelectlist = oxNew(\OxidEsales\Eshop\Application\Model\SelectList::class);
         if ($oSelectlist->loadInLang($this->_iEditLang, $this->getEditObjectId())) {
             // Disable editing for derived items.
             if ($oSelectlist->isDerived()) {
                 return;
             }
 
-            $aDelFields = oxRegistry::getConfig()->getRequestParameter("aFields");
-            $this->aFieldArray = oxRegistry::getUtils()->assignValuesFromText($oSelectlist->oxselectlist__oxvaldesc->getRawValue());
+            $aDelFields = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aFields");
+            $this->aFieldArray = \OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($oSelectlist->oxselectlist__oxvaldesc->getRawValue());
 
             if (is_array($aDelFields) && count($aDelFields)) {
                 foreach ($aDelFields as $sDelField) {
@@ -251,30 +240,29 @@ class SelectListMain extends \oxAdminDetails
      */
     public function addField()
     {
-        $oSelectlist = oxNew("oxselectlist");
+        $oSelectlist = oxNew(\OxidEsales\Eshop\Application\Model\SelectList::class);
         if ($oSelectlist->loadInLang($this->_iEditLang, $this->getEditObjectId())) {
-
             //Disable editing for derived items.
             if ($oSelectlist->isDerived()) {
                 return;
             }
 
-            $sAddField = oxRegistry::getConfig()->getRequestParameter("sAddField");
+            $sAddField = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sAddField");
             if (empty($sAddField)) {
-                oxRegistry::getSession()->setVariable("iErrorCode", ERR_REQUIREDMISSING);
+                \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("iErrorCode", ERR_REQUIREDMISSING);
 
                 return;
             }
 
-            $this->aFieldArray = oxRegistry::getUtils()->assignValuesFromText($oSelectlist->oxselectlist__oxvaldesc->getRawValue());
+            $this->aFieldArray = \OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($oSelectlist->oxselectlist__oxvaldesc->getRawValue());
 
             $oField = new stdClass();
             $oField->name = $sAddField;
-            $oField->price = oxRegistry::getConfig()->getRequestParameter("sAddFieldPriceMod");
-            $oField->priceUnit = oxRegistry::getConfig()->getRequestParameter("sAddFieldPriceModUnit");
+            $oField->price = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sAddFieldPriceMod");
+            $oField->priceUnit = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sAddFieldPriceModUnit");
 
             $this->aFieldArray[] = $oField;
-            if ($iPos = oxRegistry::getConfig()->getRequestParameter("sAddFieldPos")) {
+            if ($iPos = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sAddFieldPos")) {
                 if ($this->_rearrangeFields($oField, $iPos - 1)) {
                     return;
                 }
@@ -291,26 +279,26 @@ class SelectListMain extends \oxAdminDetails
      */
     public function changeField()
     {
-        $sAddField = oxRegistry::getConfig()->getRequestParameter("sAddField");
+        $sAddField = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sAddField");
         if (empty($sAddField)) {
-            oxRegistry::getSession()->setVariable("iErrorCode", ERR_REQUIREDMISSING);
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("iErrorCode", ERR_REQUIREDMISSING);
 
             return;
         }
 
-        $aChangeFields = oxRegistry::getConfig()->getRequestParameter("aFields");
+        $aChangeFields = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aFields");
         if (is_array($aChangeFields) && count($aChangeFields)) {
-            $oSelectlist = oxNew("oxselectlist");
+            $oSelectlist = oxNew(\OxidEsales\Eshop\Application\Model\SelectList::class);
             if ($oSelectlist->loadInLang($this->_iEditLang, $this->getEditObjectId())) {
-                $this->aFieldArray = oxRegistry::getUtils()->assignValuesFromText($oSelectlist->oxselectlist__oxvaldesc->getRawValue());
+                $this->aFieldArray = \OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($oSelectlist->oxselectlist__oxvaldesc->getRawValue());
                 $sChangeFieldName = $this->parseFieldName($aChangeFields[0]);
 
                 foreach ($this->aFieldArray as $sKey => $oField) {
                     if ($oField->name == $sChangeFieldName) {
                         $this->aFieldArray[$sKey]->name = $sAddField;
-                        $this->aFieldArray[$sKey]->price = oxRegistry::getConfig()->getRequestParameter("sAddFieldPriceMod");
-                        $this->aFieldArray[$sKey]->priceUnit = oxRegistry::getConfig()->getRequestParameter("sAddFieldPriceModUnit");
-                        if ($iPos = oxRegistry::getConfig()->getRequestParameter("sAddFieldPos")) {
+                        $this->aFieldArray[$sKey]->price = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sAddFieldPriceMod");
+                        $this->aFieldArray[$sKey]->priceUnit = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sAddFieldPriceModUnit");
+                        if ($iPos = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sAddFieldPos")) {
                             if ($this->_rearrangeFields($this->aFieldArray[$sKey], $iPos - 1)) {
                                 return;
                             }
@@ -340,7 +328,7 @@ class SelectListMain extends \oxAdminDetails
 
         $iFieldCount = count($this->aFieldArray);
         if ($iPos < 0 || $iPos >= $iFieldCount) {
-            oxRegistry::getSession()->setVariable("iErrorCode", ERR_POSOUTOFBOUNDS);
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("iErrorCode", ERR_POSOUTOFBOUNDS);
 
             return true;
         }

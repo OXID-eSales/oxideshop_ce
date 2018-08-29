@@ -1,29 +1,13 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use oxDb;
-use OxidEsales\Eshop\Core\GenericImport\GenericImport;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\GenericImport\GenericImport;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use OxidTestCase;
 use oxUser;
 use oxUtilsServer;
@@ -47,7 +31,7 @@ class GenericImportTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        oxRemClassModule('GenericImportTest_oxUtilsServer');
+        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Core\GenericImportTest_oxUtilsServer::class);
         $this->cleanUpTable('oxuser');
         parent::tearDown();
     }
@@ -57,11 +41,11 @@ class GenericImportTest extends OxidTestCase
      */
     public function testInit()
     {
-        oxAddClassModule('Unit\Core\GenericImportTest_oxUtilsServer', 'oxUtilsServer');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Core\GenericImportTest_oxUtilsServer::class, 'oxUtilsServer');
         $oImport = new GenericImport();
 
         /** @var oxUser|MockObject $oUser */
-        $oUser = $this->getMock('oxUser', array('isAdmin'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('isAdmin'));
         $oUser->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
         $oUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD);
         $oUser->loadAdminUser();
@@ -85,7 +69,7 @@ class GenericImportTest extends OxidTestCase
         $importer = new GenericImport();
 
         $importObject = $importer->getImportObject('A');
-        $this->assertInstanceOf('OxidEsales\Eshop\Core\GenericImport\ImportObject\Article', $importObject);
+        $this->assertInstanceOf('OxidEsales\EshopCommunity\Core\GenericImport\ImportObject\Article', $importObject);
     }
 
     /**
@@ -119,11 +103,11 @@ class GenericImportTest extends OxidTestCase
      */
     public function testMapFields($dataToMap, $csvFields, $mappedData)
     {
-        $importObject = $this->getMock('OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject', array('import'));
+        $importObject = $this->getMock('OxidEsales\EshopCommunity\Core\GenericImport\ImportObject\ImportObject', array('import'));
         $importObject->expects($this->once())->method('import')->with($mappedData)->will($this->returnValue(1));
 
         /** @var GenericImport|MockObject $oImport */
-        $oImport = $this->getMock('OxidEsales\Eshop\Core\GenericImport\GenericImport', array('createImportObject', 'checkAccess'));
+        $oImport = $this->getMock('OxidEsales\EshopCommunity\Core\GenericImport\GenericImport', array('createImportObject', 'checkAccess'));
         $oImport->expects($this->any())->method('createImportObject')->will($this->returnValue($importObject));
 
         $oImport->setImportType('A');
@@ -133,11 +117,11 @@ class GenericImportTest extends OxidTestCase
 
     public function testCalculationOfImportedRows()
     {
-        $importObject = $this->getMock('OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject', array('import'));
+        $importObject = $this->getMock('OxidEsales\EshopCommunity\Core\GenericImport\ImportObject\ImportObject', array('import'));
         $importObject->expects($this->any())->method('import')->will($this->returnValue(1));
 
         /** @var GenericImport|MockObject $oImport */
-        $oImport = $this->getMock('OxidEsales\Eshop\Core\GenericImport\GenericImport', array('createImportObject', 'checkAccess'));
+        $oImport = $this->getMock('OxidEsales\EshopCommunity\Core\GenericImport\GenericImport', array('createImportObject', 'checkAccess'));
         $oImport->expects($this->any())->method('createImportObject')->will($this->returnValue($importObject));
 
         $this->assertEquals(0, $oImport->getImportedRowCount());
@@ -164,7 +148,7 @@ class GenericImportTest extends OxidTestCase
     public function testDoImportFailsWhenImportFileNotFound()
     {
         /** @var GenericImport|MockObject $oImport */
-        $oImport = $this->getMock('OxidEsales\Eshop\Core\GenericImport\GenericImport', array('init'));
+        $oImport = $this->getMock('OxidEsales\EshopCommunity\Core\GenericImport\GenericImport', array('init'));
         $oImport->expects($this->once())->method('init')->will($this->returnValue(true));
 
         $this->assertEquals('ERPGENIMPORT_ERROR_WRONG_FILE', $oImport->importFile('nosuchfile'));
@@ -176,7 +160,7 @@ class GenericImportTest extends OxidTestCase
     public function testDoImport()
     {
         /** @var GenericImport|MockObject $oImport */
-        $oImport = $this->getMock('OxidEsales\Eshop\Core\GenericImport\GenericImport', array('init', 'checkAccess'));
+        $oImport = $this->getMock('OxidEsales\EshopCommunity\Core\GenericImport\GenericImport', array('init', 'checkAccess'));
         $oImport->expects($this->once())->method('init')->will($this->returnValue(true));
         $oImport->expects($this->any())->method('checkAccess')->will($this->returnValue(true));
 
@@ -204,7 +188,7 @@ class GenericImportTest extends OxidTestCase
     public function testDoImportSkipsHeaderLine()
     {
         /** @var GenericImport|MockObject $oImport */
-        $oImport = $this->getMock('OxidEsales\Eshop\Core\GenericImport\GenericImport', array('init', 'checkAccess'));
+        $oImport = $this->getMock('OxidEsales\EshopCommunity\Core\GenericImport\GenericImport', array('init', 'checkAccess'));
         $oImport->expects($this->once())->method('init')->will($this->returnValue(true));
         $oImport->expects($this->any())->method('checkAccess')->will($this->returnValue(true));
 
@@ -225,7 +209,7 @@ class GenericImportTest extends OxidTestCase
     public function testDoImportWithCsvWithoutHeaderLine()
     {
         /** @var GenericImport|MockObject $oImport */
-        $oImport = $this->getMock('OxidEsales\Eshop\Core\GenericImport\GenericImport', array('init', 'checkAccess'));
+        $oImport = $this->getMock('OxidEsales\EshopCommunity\Core\GenericImport\GenericImport', array('init', 'checkAccess'));
         $oImport->expects($this->once())->method('init')->will($this->returnValue(true));
         $oImport->expects($this->any())->method('checkAccess')->will($this->returnValue(true));
 

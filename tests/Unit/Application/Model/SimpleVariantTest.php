@@ -1,27 +1,11 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
-use \oxPrice;
+use OxidEsales\EshopCommunity\Core\Price;
 
 use \oxField;
 use \StdClass;
@@ -55,7 +39,7 @@ class SimpleVariantTest extends \OxidTestCase
     {
         $this->getConfig()->setConfigParam("bl_perfLoadSelectLists", true);
 
-        $oVariant = $this->getMock('oxSimpleVariant', array('getSelectLists'));
+        $oVariant = $this->getMock(\OxidEsales\Eshop\Application\Model\SimpleVariant::class, array('getSelectLists'));
         $oVariant->expects($this->once())->method('getSelectLists')->will($this->returnValue("testSelLists"));
 
         $this->assertEquals("testSelLists", $oVariant->getSelectLists());
@@ -104,10 +88,10 @@ class SimpleVariantTest extends \OxidTestCase
      */
     public function testGetGroupPricePriceA()
     {
-        $oUser = $this->getMock('oxuser', array('inGroup'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('inGroup'));
         $oUser->expects($this->any())->method('inGroup')->will($this->returnValue(true));
 
-        $oVariant = $this->getMock('oxSimpleVariant', array('getUser'));
+        $oVariant = $this->getMock(\OxidEsales\Eshop\Application\Model\SimpleVariant::class, array('getUser'));
         $oVariant->oxarticles__oxpricea = new oxField(12, oxField::T_RAW);
         $oVariant->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
 
@@ -121,10 +105,10 @@ class SimpleVariantTest extends \OxidTestCase
      */
     public function testGetGroupPricePriceB()
     {
-        $oUser = $this->getMock('oxuser', array('inGroup'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('inGroup'));
         $oUser->expects($this->any())->method('inGroup')->will($this->onConsecutiveCalls($this->returnValue(false), $this->returnValue(true), $this->returnValue(false)));
 
-        $oVariant = $this->getMock('oxSimpleVariant', array('getUser'));
+        $oVariant = $this->getMock(\OxidEsales\Eshop\Application\Model\SimpleVariant::class, array('getUser'));
         $oVariant->oxarticles__oxpriceb = new oxField(12, oxField::T_RAW);
         $oVariant->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
 
@@ -139,10 +123,10 @@ class SimpleVariantTest extends \OxidTestCase
     public function testGetGroupPricePriceC()
     {
 
-        $oUser = $this->getMock('oxuser', array('inGroup'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('inGroup'));
         $oUser->expects($this->any())->method('inGroup')->will($this->onConsecutiveCalls($this->returnValue(false), $this->returnValue(false), $this->returnValue(true)));
 
-        $oVariant = $this->getMock('oxSimpleVariant', array('getUser'));
+        $oVariant = $this->getMock(\OxidEsales\Eshop\Application\Model\SimpleVariant::class, array('getUser'));
         $oVariant->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
         $oVariant->oxarticles__oxpriceb = new oxField(12, oxField::T_RAW);
         $oVariant->oxarticles__oxpricec = new oxField(12, oxField::T_RAW);
@@ -158,10 +142,10 @@ class SimpleVariantTest extends \OxidTestCase
      */
     public function testModifyGroupPricePriceAZero()
     {
-        $oUser = $this->getMock('oxuser', array('inGroup'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('inGroup'));
         $oUser->expects($this->any())->method('inGroup')->will($this->returnValue(true));
 
-        $oVariant = $this->getMock('oxSimpleVariant', array('getUser'));
+        $oVariant = $this->getMock(\OxidEsales\Eshop\Application\Model\SimpleVariant::class, array('getUser'));
         $oVariant->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
         $oVariant->oxarticles__oxprice = new oxField(15, oxField::T_RAW);
         $oVariant->oxarticles__oxpricea = new oxField(0, oxField::T_RAW);
@@ -187,7 +171,7 @@ class SimpleVariantTest extends \OxidTestCase
     {
         oxTestModules::addFunction("oxUtils", "seoIsActive", "{return true;}");
 
-        $oVariant = $this->getMock("oxSimpleVariant", array("getBaseSeoLink"));
+        $oVariant = $this->getMock(\OxidEsales\Eshop\Application\Model\SimpleVariant::class, array("getBaseSeoLink"));
         $oVariant->expects($this->once())->method('getBaseSeoLink')->will($this->returnValue('sArticleUrl'));
         $this->assertEquals("sArticleUrl", $oVariant->getLink());
     }
@@ -196,7 +180,7 @@ class SimpleVariantTest extends \OxidTestCase
     {
         oxTestModules::addFunction("oxUtils", "seoIsActive", "{return false;}");
 
-        $oVariant = $this->getMock("oxSimpleVariant", array("getStdLink"));
+        $oVariant = $this->getMock(\OxidEsales\Eshop\Application\Model\SimpleVariant::class, array("getStdLink"));
         $oVariant->expects($this->once())->method('getStdLink')->will($this->returnValue('sArticleUrl'));
         $this->assertEquals("sArticleUrl", $oVariant->getLink());
     }
@@ -223,17 +207,17 @@ class SimpleVariantTest extends \OxidTestCase
 
     public function testGetPrice()
     {
-        $oSubj = $this->getMock('oxSimpleVariant', array('_getGroupPrice', '_applyParentVat', '_applyCurrency'));
+        $oSubj = $this->getMock(\OxidEsales\Eshop\Application\Model\SimpleVariant::class, array('_getGroupPrice', '_applyParentVat', '_applyCurrency'));
         $oSubj->expects($this->once())->method('_getGroupPrice')->will($this->returnValue(1));
         $oSubj->expects($this->once())->method('_applyParentVat')->will($this->returnValue(null));
         $oSubj->expects($this->once())->method('_applyCurrency')->will($this->returnValue(null));
         $oPrice = $oSubj->getPrice();
-        $this->assertTrue($oPrice instanceof oxPrice);
+        $this->assertTrue($oPrice instanceof Price);
     }
 
     public function testApplyParentVatNoParent()
     {
-        $oSubj = $this->getMock("oxSimpleVariant", array('getParent'));
+        $oSubj = $this->getMock(\OxidEsales\Eshop\Application\Model\SimpleVariant::class, array('getParent'));
         $oSubj->expects($this->once())->method('getParent')->will($this->returnValue(null));
 
         $oPrice = oxNew('oxPrice');
@@ -244,10 +228,10 @@ class SimpleVariantTest extends \OxidTestCase
     {
         $oPrice = oxNew('oxPrice');
 
-        $oParent = $this->getMock('oxArticle', array('applyVats'));
+        $oParent = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('applyVats'));
         $oParent->expects($this->once())->method('applyVats')->will($this->returnValue(null))->with($oPrice);
 
-        $oSubj = $this->getMock("oxSimpleVariant", array('getParent'));
+        $oSubj = $this->getMock(\OxidEsales\Eshop\Application\Model\SimpleVariant::class, array('getParent'));
         $oSubj->expects($this->once())->method('getParent')->will($this->returnValue($oParent));
 
         $oSubj->UNITapplyParentVat($oPrice);
@@ -259,10 +243,10 @@ class SimpleVariantTest extends \OxidTestCase
         $oPrice = oxNew('oxPrice');
         $this->getConfig()->setConfigParam('bl_perfCalcVatOnlyForBasketOrder', true);
 
-        $oParent = $this->getMock('oxArticle', array('applyVats'));
+        $oParent = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('applyVats'));
         $oParent->expects($this->never())->method('applyVats');
 
-        $oSubj = $this->getMock("oxSimpleVariant", array('getParent'));
+        $oSubj = $this->getMock(\OxidEsales\Eshop\Application\Model\SimpleVariant::class, array('getParent'));
         $oSubj->expects($this->once())->method('getParent')->will($this->returnValue($oParent));
 
         $oSubj->UNITapplyParentVat($oPrice);
@@ -273,7 +257,7 @@ class SimpleVariantTest extends \OxidTestCase
         $oSubj = $this->getProxyClass("oxSimpleVariant");
         $oSubj->setNonPublicVar("_oPrice", 10);
         $this->assertEquals(10, $oSubj->getPrice());
-        $this->assertFalse($oPrice instanceof oxPrice);
+        $this->assertFalse($oSubj->getPrice() instanceof Price);
     }
 
     public function testGetFPrice()
@@ -364,7 +348,7 @@ class SimpleVariantTest extends \OxidTestCase
 
     public function testGetLinkType()
     {
-        $oParent = $this->getMock('oxArticle', array('getLinkType'));
+        $oParent = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getLinkType'));
         $oParent->expects($this->once())->method('getLinkType')->will($this->returnValue(1));
 
         $oSubj = $this->getProxyClass("oxSimpleVariant");
@@ -376,7 +360,7 @@ class SimpleVariantTest extends \OxidTestCase
     public function testInCategory()
     {
         $sCatId = "123";
-        $oParent = $this->getMock('oxArticle', array('inCategory'));
+        $oParent = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('inCategory'));
         $oParent->expects($this->once())->method('inCategory')->with($this->equalTo($sCatId))->will($this->returnValue(true));
 
         $oSubj = $this->getProxyClass("oxSimpleVariant");
@@ -388,7 +372,7 @@ class SimpleVariantTest extends \OxidTestCase
     public function testInPriceCategory()
     {
         $sCatId = "123";
-        $oParent = $this->getMock('oxArticle', array('inPriceCategory'));
+        $oParent = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('inPriceCategory'));
         $oParent->expects($this->once())->method('inPriceCategory')->with($this->equalTo($sCatId))->will($this->returnValue(true));
 
         $oSubj = $this->getProxyClass("oxSimpleVariant");

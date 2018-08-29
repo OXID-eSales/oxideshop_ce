@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -30,9 +14,8 @@ use Exception;
 /**
  * Class manages article select lists configuration
  */
-class SelectListMainAjax extends \ajaxListComponent
+class SelectListMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
-
     /**
      * If true extended column selection will be build
      *
@@ -45,33 +28,33 @@ class SelectListMainAjax extends \ajaxListComponent
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
-        array('oxartnum', 'oxarticles', 1, 0, 0),
-        array('oxtitle', 'oxarticles', 1, 1, 0),
-        array('oxean', 'oxarticles', 0, 0, 0),
-        array('oxmpn', 'oxarticles', 0, 0, 0),
-        array('oxprice', 'oxarticles', 0, 0, 0),
-        array('oxstock', 'oxarticles', 0, 0, 0),
-        array('oxid', 'oxarticles', 0, 0, 1)
-    ),
-                                 'container2' => array(
-                                     array('oxartnum', 'oxarticles', 1, 0, 0),
-                                     array('oxtitle', 'oxarticles', 1, 1, 0),
-                                     array('oxean', 'oxarticles', 0, 0, 0),
-                                     array('oxmpn', 'oxarticles', 0, 0, 0),
-                                     array('oxprice', 'oxarticles', 0, 0, 0),
-                                     array('oxstock', 'oxarticles', 0, 0, 0),
-                                     array('oxid', 'oxobject2selectlist', 0, 0, 1),
-                                     array('oxid', 'oxarticles', 0, 0, 1)
-                                 ),
-                                 'container3' => array(
-                                     array('oxtitle', 'oxselectlist', 1, 1, 0),
-                                     array('oxsort', 'oxobject2selectlist', 1, 0, 0),
-                                     array('oxident', 'oxselectlist', 0, 0, 0),
-                                     array('oxvaldesc', 'oxselectlist', 0, 0, 0),
-                                     array('oxid', 'oxselectlist', 0, 0, 1)
-                                 )
-    );
+    protected $_aColumns = ['container1' => [ // field , table,         visible, multilanguage, ident
+        ['oxartnum', 'oxarticles', 1, 0, 0],
+        ['oxtitle', 'oxarticles', 1, 1, 0],
+        ['oxean', 'oxarticles', 0, 0, 0],
+        ['oxmpn', 'oxarticles', 0, 0, 0],
+        ['oxprice', 'oxarticles', 0, 0, 0],
+        ['oxstock', 'oxarticles', 0, 0, 0],
+        ['oxid', 'oxarticles', 0, 0, 1]
+    ],
+                                 'container2' => [
+                                     ['oxartnum', 'oxarticles', 1, 0, 0],
+                                     ['oxtitle', 'oxarticles', 1, 1, 0],
+                                     ['oxean', 'oxarticles', 0, 0, 0],
+                                     ['oxmpn', 'oxarticles', 0, 0, 0],
+                                     ['oxprice', 'oxarticles', 0, 0, 0],
+                                     ['oxstock', 'oxarticles', 0, 0, 0],
+                                     ['oxid', 'oxobject2selectlist', 0, 0, 1],
+                                     ['oxid', 'oxarticles', 0, 0, 1]
+                                 ],
+                                 'container3' => [
+                                     ['oxtitle', 'oxselectlist', 1, 1, 0],
+                                     ['oxsort', 'oxobject2selectlist', 1, 0, 0],
+                                     ['oxident', 'oxselectlist', 0, 0, 0],
+                                     ['oxvaldesc', 'oxselectlist', 0, 0, 0],
+                                     ['oxid', 'oxselectlist', 0, 0, 1]
+                                 ]
+    ];
 
     /**
      * Returns SQL query for data to fetc
@@ -86,9 +69,9 @@ class SelectListMainAjax extends \ajaxListComponent
         $sArtTable = $this->_getViewName('oxarticles');
         $sCatTable = $this->_getViewName('oxcategories');
         $sO2CView = $this->_getViewName('oxobject2category');
-        $oDb = oxDb::getDb();
-        $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchSelId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $sSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $sSynchSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sSelId) {
@@ -123,13 +106,12 @@ class SelectListMainAjax extends \ajaxListComponent
     {
         $aChosenArt = $this->_getActionIds('oxobject2selectlist.oxid');
 
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sQ = parent::_addFilter("delete oxobject2selectlist.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
-
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
-            $sQ = "delete from oxobject2selectlist where oxobject2selectlist.oxid in (" . implode(", ", oxDb::getDb()->quoteArray($aChosenArt)) . ") ";
-            oxDb::getDb()->Execute($sQ);
+            $sQ = "delete from oxobject2selectlist where oxobject2selectlist.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt)) . ") ";
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
 
@@ -141,33 +123,26 @@ class SelectListMainAjax extends \ajaxListComponent
     public function addArtToSel()
     {
         $aAddArticle = $this->_getActionIds('oxarticles.oxid');
-        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sArtTable = $this->_getViewName('oxarticles');
             $aAddArticle = $this->_getAll(parent::_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }
 
         if ($soxId && $soxId != "-1" && is_array($aAddArticle)) {
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
+            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
+            foreach ($aAddArticle as $sAdd) {
+                $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
+                $oNewGroup->init("oxobject2selectlist");
+                $oNewGroup->oxobject2selectlist__oxobjectid = new \OxidEsales\Eshop\Core\Field($sAdd);
+                $oNewGroup->oxobject2selectlist__oxselnid = new \OxidEsales\Eshop\Core\Field($soxId);
+                $oNewGroup->oxobject2selectlist__oxsort = new \OxidEsales\Eshop\Core\Field(( int ) $database->getOne("select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  " . $database->quote($sAdd) . " "));
+                $oNewGroup->save();
 
-            oxDb::getDb()->startTransaction();
-            try {
-                $database = oxDb::getDb();
-                foreach ($aAddArticle as $sAdd) {
-                    $oNewGroup = oxNew("oxBase");
-                    $oNewGroup->init("oxobject2selectlist");
-                    $oNewGroup->oxobject2selectlist__oxobjectid = new oxField($sAdd);
-                    $oNewGroup->oxobject2selectlist__oxselnid = new oxField($soxId);
-                    $oNewGroup->oxobject2selectlist__oxsort = new oxField(( int ) $database->getOne("select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  " . $database->quote($sAdd) . " "));
-                    $oNewGroup->save();
-
-                    $this->onArticleAddToSelectionList($sAdd);
-                }
-            } catch (Exception $exception) {
-                oxDb::getDb()->rollbackTransaction();
-                throw $exception;
+                $this->onArticleAddToSelectionList($sAdd);
             }
-            oxDb::getDb()->commitTransaction();
         }
     }
 

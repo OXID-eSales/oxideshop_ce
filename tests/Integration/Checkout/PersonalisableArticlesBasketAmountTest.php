@@ -1,30 +1,13 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Integration\Checkout;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Checkout;
 
 use oxBasket;
 use oxField;
 use oxRegistry;
-use oxUtilsObject;
 
 /**
  * Test basket contents for configurable articles (oxarticles.oxisconfigurable = true).
@@ -75,13 +58,14 @@ class PersonalisableArticlesBasketAmountTest extends \OxidTestCase
         $products[$this->getItemKey('first')]['am'] = 2;
         $products[$this->getItemKey('fourth')]['am'] = 3;
         $this->setRequestParameter('aproducts', $products);
+        $this->prepareSessionChallengeToken();
 
         $basketComponent = oxNew('oxcmp_basket');
         $basketComponent->changebasket();
 
         $basket = oxRegistry::getSession()->getBasket();
 
-        $this->assertSame(7, (int) $basket->getBasketSummary()->iArticleCount);
+        $this->assertSame(7, $this->getAmountInBasket());
         $this->assertSame(4, count($basket->getBasketArticles()));
     }
 
@@ -99,13 +83,14 @@ class PersonalisableArticlesBasketAmountTest extends \OxidTestCase
         $products[$this->getItemKey('third')]['persparam'] = $this->getPersistentParameters('first');
         $products[$this->getItemKey('fourth')]['persparam'] = $this->getPersistentParameters('first');
         $this->setRequestParameter('aproducts', $products);
+        $this->prepareSessionChallengeToken();
 
         $basketComponent = oxNew('oxcmp_basket');
         $basketComponent->changebasket();
 
         $basket = oxRegistry::getSession()->getBasket();
 
-        $this->assertSame(4, (int) $basket->getBasketSummary()->iArticleCount);
+        $this->assertSame(4, $this->getAmountInBasket());
         $this->assertSame(1, count($basket->getBasketArticles()));
     }
 
@@ -123,13 +108,14 @@ class PersonalisableArticlesBasketAmountTest extends \OxidTestCase
         $products[$this->getItemKey('third')]['persparam'] = $this->getPersistentParameters('second');
         $products[$this->getItemKey('fourth')]['persparam'] = $this->getPersistentParameters('second');
         $this->setRequestParameter('aproducts', $products);
+        $this->prepareSessionChallengeToken();
 
         $basketComponent = oxNew('oxcmp_basket');
         $basketComponent->changebasket();
 
         $basket = oxRegistry::getSession()->getBasket();
 
-        $this->assertSame(4, (int) $basket->getBasketSummary()->iArticleCount);
+        $this->assertSame(4, $this->getAmountInBasket());
         $this->assertSame(1, count($basket->getBasketArticles()));
     }
 
@@ -147,13 +133,14 @@ class PersonalisableArticlesBasketAmountTest extends \OxidTestCase
         $products[$this->getItemKey('third')]['persparam'] = $this->getPersistentParameters('fourth');
         $products[$this->getItemKey('fourth')]['persparam'] = $this->getPersistentParameters('fourth');
         $this->setRequestParameter('aproducts', $products);
+        $this->prepareSessionChallengeToken();
 
         $basketComponent = oxNew('oxcmp_basket');
         $basketComponent->changebasket();
 
         $basket = oxRegistry::getSession()->getBasket();
 
-        $this->assertSame(4, (int) $basket->getBasketSummary()->iArticleCount);
+        $this->assertSame(4, $this->getAmountInBasket());
         $this->assertSame(1, count($basket->getBasketArticles()));
     }
 
@@ -208,7 +195,7 @@ class PersonalisableArticlesBasketAmountTest extends \OxidTestCase
      */
     private function insertArticle()
     {
-        $this->testArticleId = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+        $this->testArticleId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
 
         //copy from original article
         $articleParent = oxNew('oxarticle');
@@ -298,5 +285,32 @@ class PersonalisableArticlesBasketAmountTest extends \OxidTestCase
         $persistent = $this->getPersistent();
         $values = array_values($persistent[$article]);
         return $values[0];
+    }
+
+    /**
+     * Test helper.
+     */
+    private function prepareSessionChallengeToken()
+    {
+        $this->setRequestParameter('stoken', \OxidEsales\Eshop\Core\Registry::getSession()->getSessionChallengeToken());
+    }
+
+    /**
+     * NOTE: Do not use Basket::getBasketSummary() as this method adds up on every call.
+     *
+     * Test helper to get amount of test artile in basket.
+     *
+     * @return integer
+     */
+    private function getAmountInBasket()
+    {
+        $return = 0;
+        $basket = \OxidEsales\Eshop\Core\Registry::getSession()->getBasket();
+        $basketContents = $basket->getContents();
+
+        foreach ($basketContents as $basketItem) {
+            $return += $basketItem->getAmount();
+        }
+        return (int) $return;
     }
 }

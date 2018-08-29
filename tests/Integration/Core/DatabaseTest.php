@@ -1,44 +1,26 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link          http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version       OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace Integration\Core;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
 use oxDb;
 use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\Eshop\Core\DatabaseProvider;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseNotConfiguredException;
+use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\TestingLibrary\UnitTestCase;
-use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
-use OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException;
 
 /**
  * Class DatabaseTest
- * 
+ *
  * @group database-adapter
- * @covers OxidEsales\Eshop\Core\Database
+ * @covers OxidEsales\EshopCommunity\Core\DatabaseProvider
  */
 class DatabaseTest extends UnitTestCase
 {
-
     /** @var mixed Backing up for earlier value of database link object */
     private $dbObjectBackup = null;
 
@@ -100,17 +82,21 @@ class DatabaseTest extends UnitTestCase
         $configFileBackup = Registry::get('oxConfigFile');
 
         $configFile = $this->getBlankConfigFile();
-        Registry::set('oxConfigFile', $configFile);
+        Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $configFile);
         $this->setProtectedClassProperty(oxDb::getInstance(), 'db', null);
 
-        $this->setExpectedException('OxidEsales\Eshop\Core\Exception\DatabaseConnectionException');
-
+        $exceptionThrown = false;
         try {
             oxDb::getDb();
         } catch (DatabaseConnectionException $exception) {
+            $exceptionThrown = true;
+        } finally {
             /** Restore original configFile object */
-            Registry::set('oxConfigFile', $configFileBackup);
-            throw $exception;
+            Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $configFileBackup);
+        }
+
+        if (!$exceptionThrown) {
+            $this->fail('A DatabaseConnectionException should have been thrown, as the ConfigFile object does contain proper credentials.');
         }
     }
 
@@ -121,17 +107,15 @@ class DatabaseTest extends UnitTestCase
 
         $configFile = $this->getBlankConfigFile();
         $configFile->setVar('dbHost', '<');
-        Registry::set('oxConfigFile', $configFile);
+        Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $configFile);
         $this->setProtectedClassProperty(oxDb::getInstance(), 'db', null);
-
-        $this->setExpectedException('OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException');
 
         try {
             oxDb::getDb();
+            $this->fail('A DatabaseNotConfiguredException should have been thrown, as the ConfigFile object does does not pass validation.');
         } catch (DatabaseNotConfiguredException $exception) {
             /** Restore original configFile object */
-            Registry::set('oxConfigFile', $configFileBackup);
-            throw $exception;
+            Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $configFileBackup);
         }
     }
 
@@ -221,7 +205,7 @@ class DatabaseTest extends UnitTestCase
         $connectionMock = $this->createConnectionMock();
 
         $dbMock = $this->getMock(
-            'OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database',
+            'OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database',
             array('isConnectionEstablished', 'getConnectionFromDriverManager', 'createConnectionErrorMessage', 'setFetchMode', 'closeConnection')
         );
         $dbMock->expects($this->once())

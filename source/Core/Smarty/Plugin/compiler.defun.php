@@ -25,7 +25,7 @@ $this->register_compiler_function('fun', 'smarty_compiler_fun');
 function smarty_compiler_defun($tag_args, &$compiler) {   
     $attrs = $compiler->_parse_attrs($tag_args);
     $func_key = '"' . md5('php-5') . '[[' . md5(uniqid('sucks')) . '";';
-    array_push($compiler->_tag_stack, array('defun', $attrs, $tag_args, $func_key));
+    array_push($compiler->_tag_stack, ['defun', $attrs, $tag_args, $func_key]);
     if (!isset($attrs['name'])) $compiler->_syntax_error("defun: missing name parameter");
 
     $func_name = $compiler->_dequote($attrs['name']);

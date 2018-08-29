@@ -1,36 +1,17 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core\Exception;
-
-use oxRegistry;
+namespace OxidEsales\EshopCommunity\Core\Exception;
 
 /**
  * simplified Exception classes for simply displaying errors
  * saves resources when exception functionality is not needed
  */
-class ExceptionToDisplay implements \oxIDisplayError
+class ExceptionToDisplay implements \OxidEsales\Eshop\Core\Contract\IDisplayError
 {
-
     /**
      * Language const of a Message
      *
@@ -87,7 +68,7 @@ class ExceptionToDisplay implements \oxIDisplayError
     }
 
     /**
-     * Sets oxExceptionToDisplay::_aValues value
+     * Sets \OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::_aValues value
      *
      * @param array $aValues exception values to store
      */
@@ -138,7 +119,17 @@ class ExceptionToDisplay implements \oxIDisplayError
     {
         return $this->_aValues[$sName];
     }
-
+    
+    /**
+     * Returns all exception stored values
+     *
+     * @return  array
+     */
+    public function getValues()
+    {
+        return $this->_aValues;
+    }
+    
     /**
      * Exception debug mode setter
      *
@@ -178,7 +169,7 @@ class ExceptionToDisplay implements \oxIDisplayError
         if ($this->_blDebug) {
             return $this;
         } else {
-            $sString = oxRegistry::getLang()->translateString($this->_sMessage);
+            $sString = \OxidEsales\Eshop\Core\Registry::getLang()->translateString($this->_sMessage);
 
             if (!empty($this->_aMessageArgs)) {
                 $sString = vsprintf($sString, $this->_aMessageArgs);
@@ -195,7 +186,7 @@ class ExceptionToDisplay implements \oxIDisplayError
      */
     public function __toString()
     {
-        $sRes = $this->getErrorClassType() . " (time: " . date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()) . "): " . $this->getOxMessage() . " \n Stack Trace: " . $this->getStackTrace() . "\n";
+        $sRes = $this->getErrorClassType() . " (time: " . date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()) . "): " . $this->getOxMessage() . " \n Stack Trace: " . $this->getStackTrace() . "\n";
         foreach ($this->_aValues as $key => $value) {
             $sRes .= $key . " => " . $value . "\n";
         }

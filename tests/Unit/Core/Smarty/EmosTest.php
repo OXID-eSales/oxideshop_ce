@@ -1,27 +1,11 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Core\Smarty;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Smarty;
 
-use OxidEsales\Eshop\Core\Smarty\Plugin\Emos;
+use OxidEsales\EshopCommunity\Core\Smarty\Plugin\Emos;
 use \stdClass;
 
 /**
@@ -105,7 +89,7 @@ class EmosTest extends \OxidTestCase
         $oItem->variant2 = 'var2';
         $oItem->variant3 = 'var3';
 
-        $oEmos = $this->getMock('\Unit\Core\Smarty\EmosHelper', array('_emos_DataFormat'));
+        $oEmos = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\Smarty\EmosHelper::class, array('_emos_DataFormat'));
         $oEmos->expects($this->at(0))->method('_emos_DataFormat')->with($this->equalTo('prodid'))->will($this->returnValue('prodid'));
         $oEmos->expects($this->at(1))->method('_emos_DataFormat')->with($this->equalTo('prodname'))->will($this->returnValue('prodname'));
         $oEmos->expects($this->at(2))->method('_emos_DataFormat')->with($this->equalTo('prodgrp'))->will($this->returnValue('prodgrp'));

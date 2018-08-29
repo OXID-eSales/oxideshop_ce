@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 
@@ -30,9 +14,8 @@ use oxRegistry;
  * field ('oxactions.oxtitle').
  * Admin Menu: Manage Products -> Actions.
  */
-class ActionsList extends \oxAdminList
+class ActionsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
-
     /**
      * Current class template name.
      *
@@ -64,7 +47,7 @@ class ActionsList extends \oxAdminList
         parent::render();
 
         // passing display type back to view
-        $this->_aViewData["displaytype"] = oxRegistry::getConfig()->getRequestParameter("displaytype");
+        $this->_aViewData["displaytype"] = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("displaytype");
 
         return $this->_sThisTemplate;
     }
@@ -80,13 +63,12 @@ class ActionsList extends \oxAdminList
     protected function _prepareWhereQuery($aWhere, $sqlFull)
     {
         $sQ = parent::_prepareWhereQuery($aWhere, $sqlFull);
-        $sDisplayType = (int) oxRegistry::getConfig()->getRequestParameter('displaytype');
+        $sDisplayType = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('displaytype');
         $sTable = getViewName("oxactions");
 
         // searching for empty oxfolder fields
         if ($sDisplayType) {
-
-            $sNow = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime());
+            $sNow = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
 
             switch ($sDisplayType) {
                 case 1: // active

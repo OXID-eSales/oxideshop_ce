@@ -1,25 +1,9 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \oxField;
 use \oxlist;
@@ -70,8 +54,8 @@ class RecommlistTest extends \OxidTestCase
         $myDB->execute($sDelete);
 
         // testing db for records
-        $myDB->getOne("delete from oxratings where oxobjectid = 'testRecommListId'");
-        $myDB->getOne("delete from oxreviews where oxobjectid = 'testRecommListId'");
+        $myDB->execute("delete from oxratings where oxobjectid = 'testRecommListId'");
+        $myDB->execute("delete from oxreviews where oxobjectid = 'testRecommListId'");
 
         parent::tearDown();
     }
@@ -113,16 +97,16 @@ class RecommlistTest extends \OxidTestCase
         $this->setRequestParameter("recommlistrating", 3);
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
-        oxRegistry::set('oxSession', $oSession);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         /** @var oxRecommList|PHPUnit_Framework_MockObject_MockObject $oRecommList */
-        $oRecommList = $this->getMock("oxRecommList", array("addToRatingAverage"));
+        $oRecommList = $this->getMock(\OxidEsales\Eshop\Application\Model\RecommendationList::class, array("addToRatingAverage"));
         $oRecommList->expects($this->never())->method('addToRatingAverage');
 
         /** @var RecommList|PHPUnit_Framework_MockObject_MockObject $oView */
-        $oView = $this->getMock("RecommList", array("getActiveRecommList", "getUser"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\RecommListController::class, array("getActiveRecommList", "getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
         $oView->expects($this->any())->method('getActiveRecommList')->will($this->returnValue($oRecommList));
 
@@ -140,21 +124,21 @@ class RecommlistTest extends \OxidTestCase
         $this->setRequestParameter("rvw_txt", "testRecommId");
 
         /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
-        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
-        oxRegistry::set('oxSession', $oSession);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         /** @var oxRecommList|PHPUnit_Framework_MockObject_MockObject $oRecommList */
-        $oRecommList = $this->getMock("oxRecommList", array("addToRatingAverage", "getId"));
+        $oRecommList = $this->getMock(\OxidEsales\Eshop\Application\Model\RecommendationList::class, array("addToRatingAverage", "getId"));
         $oRecommList->expects($this->once())->method('addToRatingAverage');
         $oRecommList->expects($this->any())->method('getId')->will($this->returnValue("testRecommListId"));
 
         /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUser */
-        $oUser = $this->getMock("oxuser", array("getId"));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array("getId"));
         $oUser->expects($this->any())->method('getId')->will($this->returnValue("testUserId"));
 
         /** @var RecommList|PHPUnit_Framework_MockObject_MockObject $oView */
-        $oView = $this->getMock("RecommList", array("getActiveRecommList", "getUser", "canAcceptFormData"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\RecommListController::class, array("getActiveRecommList", "getUser", "canAcceptFormData"));
         $oView->expects($this->any())->method('canAcceptFormData')->will($this->returnValue(true));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
         $oView->expects($this->any())->method('getActiveRecommList')->will($this->returnValue($oRecommList));
@@ -173,7 +157,7 @@ class RecommlistTest extends \OxidTestCase
     {
         oxTestModules::addFunction('oxSeoEncoderRecomm', 'getRecommPageUrl', '{return "testPageUrl";}');
 
-        $oRecommListView = $this->getMock("RecommList", array("getActiveRecommList"));
+        $oRecommListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\RecommListController::class, array("getActiveRecommList"));
         $oRecommListView->expects($this->any())->method('getActiveRecommList')->will($this->returnValue(oxNew('oxrecommlist')));
 
         $this->assertEquals("testPageUrl", $oRecommListView->UNITaddPageNrParam(null, 1));
@@ -181,10 +165,10 @@ class RecommlistTest extends \OxidTestCase
 
     public function testGeneratePageNavigationUrlSeoOn()
     {
-        $oActRecommtList = $this->getMock("oxrecommlist", array("getLink"));
+        $oActRecommtList = $this->getMock(\OxidEsales\Eshop\Application\Model\RecommendationList::class, array("getLink"));
         $oActRecommtList->expects($this->any())->method('getLink')->will($this->returnValue("testLink"));
 
-        $oRecommListView = $this->getMock("RecommList", array("getActiveRecommList"));
+        $oRecommListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\RecommListController::class, array("getActiveRecommList"));
         $oRecommListView->expects($this->any())->method('getActiveRecommList')->will($this->returnValue($oActRecommtList));
 
         $this->assertEquals("testLink", $oRecommListView->generatePageNavigationUrl());
@@ -212,7 +196,7 @@ class RecommlistTest extends \OxidTestCase
         $oActRecommtList = oxNew('oxrecommlist');
         $oActRecommtList->setId("testRecommListId");
 
-        $oRecommListView = $this->getMock("RecommList", array("getActiveRecommList"));
+        $oRecommListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\RecommListController::class, array("getActiveRecommList"));
         $oRecommListView->expects($this->any())->method('getActiveRecommList')->will($this->returnValue($oActRecommtList));
 
         $oListView = oxNew('aList');
@@ -251,7 +235,7 @@ class RecommlistTest extends \OxidTestCase
         $aPath[1]->setLink($sUrl);
         $aPath[1]->oxcategories__oxtitle = new oxField($sTitle);
 
-        $oView = $this->getMock("recommlist", array("getRecommSearch"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\RecommListController::class, array("getRecommSearch"));
         $oView->expects($this->once())->method('getRecommSearch')->will($this->returnValue($sSearchparam));
 
         $this->assertEquals($aPath, $oView->getTreePath());
@@ -288,10 +272,10 @@ class RecommlistTest extends \OxidTestCase
         $oRecommtList = oxNew('oxRecommList');
         $oRecommtList->setId("testlist");
 
-        $oRecommtListItem = $this->getMock('oxRecommList', array('arrayKeys'));
+        $oRecommtListItem = $this->getMock(\OxidEsales\Eshop\Application\Model\RecommendationList::class, array('arrayKeys'));
         $oRecommtListItem->expects($this->any())->method('arrayKeys')->will($this->returnValue(array($this->_sArticleID, $sArticleID)));
 
-        $oRecomm = $this->getMock("recommlist", array("getArticleList", "getActiveRecommList"));
+        $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\RecommListController::class, array("getArticleList", "getActiveRecommList"));
         $oRecomm->expects($this->once())->method('getArticleList')->will($this->returnValue($oRecommtListItem));
         $oRecomm->expects($this->once())->method('getActiveRecommList')->will($this->returnValue($oRecommtList));
 
@@ -346,7 +330,7 @@ class RecommlistTest extends \OxidTestCase
 
     public function testGetRatingValueNotNull()
     {
-        $oRecomm = $this->getMock("recommlist", array("isReviewActive"));
+        $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\RecommListController::class, array("isReviewActive"));
         $oRecomm->expects($this->any())->method('isReviewActive')->will($this->returnValue(false));
 
         $this->assertSame((double) 0, $oRecomm->getRatingValue());
@@ -405,7 +389,7 @@ class RecommlistTest extends \OxidTestCase
         $oRecommList = oxNew('oxRecommList');
         $oRecommList->setId("testRecommId");
 
-        $oRecomm = $this->getMock("recommlist", array("getActiveRecommList", "getRecommSearch"));
+        $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\RecommListController::class, array("getActiveRecommList", "getRecommSearch"));
         $oRecomm->expects($this->any())->method('getActiveRecommList')->will($this->returnValue($oRecommList));
         $oRecomm->expects($this->any())->method('getRecommSearch')->will($this->returnValue("testRecommSearch"));
 
@@ -417,7 +401,7 @@ class RecommlistTest extends \OxidTestCase
 
     public function testGetPageNavigation()
     {
-        $oRecomm = $this->getMock('recommlist', array('generatePageNavigation'));
+        $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\RecommListController::class, array('generatePageNavigation'));
         $oRecomm->expects($this->any())->method('generatePageNavigation')->will($this->returnValue("aaa"));
         $this->assertEquals('aaa', $oRecomm->getPageNavigation());
     }
@@ -442,10 +426,10 @@ class RecommlistTest extends \OxidTestCase
     {
         $this->setRequestParameter('searchrecomm', 'aaa');
 
-        $oRecList = $this->getMock("oxrecommlist", array("getLink"));
+        $oRecList = $this->getMock(\OxidEsales\Eshop\Application\Model\RecommendationList::class, array("getLink"));
         $oRecList->expects($this->once())->method('getLink')->will($this->returnValue("testRecommListUrl"));
 
-        $oRecomm = $this->getMock("RecommList", array("getActiveRecommList"));
+        $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\RecommListController::class, array("getActiveRecommList"));
         $oRecomm->expects($this->once())->method('getActiveRecommList')->will($this->returnValue($oRecList));
 
         $this->assertEquals("testRecommListUrl?searchrecomm=aaa", $oRecomm->getLink());
@@ -456,7 +440,7 @@ class RecommlistTest extends \OxidTestCase
         oxTestModules::addFunction('oxUtilsServer', 'getServerVar', '{ if ( $aA[0] == "HTTP_HOST") { return "shop.com/"; } else { return "test.php";} }');
         $this->setRequestParameter('searchrecomm', 'aaa');
 
-        $oRecomm = $this->getMock("RecommList", array("getActiveRecommList"));
+        $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\RecommListController::class, array("getActiveRecommList"));
         $oRecomm->expects($this->atLeastOnce())->method('getActiveRecommList')->will($this->returnValue(false));
 
         $oUBaseView = oxNew('oxUBase');
@@ -486,7 +470,7 @@ class RecommlistTest extends \OxidTestCase
         $oRecommlist->oxrecommlists__oxtitle = new oxField('title');
         $oRecommlist->oxrecommlists__oxauthor = new oxField('author');
 
-        $oView = $this->getMock("RecommList", array('getActiveRecommList'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\RecommListController::class, array('getActiveRecommList'));
         $oView->expects($this->any())->method('getActiveRecommList')->will($this->returnValue($oRecommlist));
 
         $this->assertEquals('title (' . oxRegistry::getLang()->translateString('LIST_BY', oxRegistry::getLang()->getBaseLanguage(), false) . ' author)', $oView->getTitle());
@@ -497,7 +481,7 @@ class RecommlistTest extends \OxidTestCase
      */
     public function testGetTitleWithoutActiveRecommList()
     {
-        $oView = $this->getMock("RecommList", array('getActiveRecommList', 'getArticleCount', 'getSearchForHtml'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\RecommListController::class, array('getActiveRecommList', 'getArticleCount', 'getSearchForHtml'));
         $oView->expects($this->any())->method('getActiveRecommList')->will($this->returnValue(null));
         $oView->expects($this->any())->method('getArticleCount')->will($this->returnValue(7));
         $oView->expects($this->any())->method('getSearchForHtml')->will($this->returnValue('string'));

@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
 
@@ -28,9 +12,8 @@ use oxDb;
  * Payment list manager.
  *
  */
-class PaymentList extends \oxList
+class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
-
     /**
      * Home country id
      *
@@ -64,15 +47,15 @@ class PaymentList extends \oxList
     /**
      * Creates payment list filter SQL to load current state payment list
      *
-     * @param string $sShipSetId user chosen delivery set
-     * @param double $dPrice     basket products price
-     * @param oxuser $oUser      session user object
+     * @param string                                   $sShipSetId user chosen delivery set
+     * @param double                                   $dPrice     basket products price
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser      session user object
      *
      * @return string
      */
     protected function _getFilterSelect($sShipSetId, $dPrice, $oUser)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sBoni = ($oUser && $oUser->oxuser__oxboni->value) ? $oUser->oxuser__oxboni->value : 0;
 
         $sTable = getViewName('oxpayments');
@@ -88,7 +71,7 @@ class PaymentList extends \oxList
 
         // checking for current session user which gives additional restrictions for user itself, users group and country
         if ($oUser) {
-            // user groups ( maybe would be better to fetch by function oxuser::getUserGroups() ? )
+            // user groups ( maybe would be better to fetch by function \OxidEsales\Eshop\Application\Model\User::getUserGroups() ? )
             foreach ($oUser->getUserGroups() as $oGroup) {
                 if ($sGroupIds) {
                     $sGroupIds .= ', ';
@@ -119,7 +102,7 @@ class PaymentList extends \oxList
     /**
      * Returns user country id for for payment selection
      *
-     * @param oxuser $oUser oxuser object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser oxuser object
      *
      * @return string
      */
@@ -140,9 +123,9 @@ class PaymentList extends \oxList
     /**
      * Loads and returns list of user payments.
      *
-     * @param string $sShipSetId user chosen delivery set
-     * @param double $dPrice     basket product price excl. discount
-     * @param oxuser $oUser      session user object
+     * @param string                                   $sShipSetId user chosen delivery set
+     * @param double                                   $dPrice     basket product price excl. discount
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser      session user object
      *
      * @return array
      */
@@ -172,7 +155,7 @@ class PaymentList extends \oxList
      */
     public function loadRDFaPaymentList($dPrice = null)
     {
-        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $sTable = getViewName('oxpayments');
         $sQ = "select $sTable.*, oxobject2payment.oxobjectid from $sTable left join (select oxobject2payment.* from oxobject2payment where oxobject2payment.oxtype = 'rdfapayment') as oxobject2payment on oxobject2payment.oxpaymentid=$sTable.oxid ";
         $sQ .= "where $sTable.oxactive = 1 ";

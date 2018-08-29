@@ -1,29 +1,13 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use oxDb;
 use oxField;
-use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use oxRegistry;
 use oxTestModules;
 
@@ -176,7 +160,7 @@ class ActionsTest extends \OxidTestCase
     public function testGetTimeLeft()
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . time() . ';}');
-        $this->_oPromo->oxactions__oxactiveto = new oxField(date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() + 10));
+        $this->_oPromo->oxactions__oxactiveto = new oxField(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() + 10));
         $this->assertEquals(10, $this->_oPromo->getTimeLeft());
     }
 
@@ -189,7 +173,7 @@ class ActionsTest extends \OxidTestCase
     public function testGetTimeUntilStart()
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . time() . ';}');
-        $this->_oPromo->oxactions__oxactivefrom = new oxField(date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() + 10));
+        $this->_oPromo->oxactions__oxactivefrom = new oxField(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() + 10));
         $this->assertEquals(10, $this->_oPromo->getTimeUntilStart());
     }
 
@@ -215,7 +199,7 @@ class ActionsTest extends \OxidTestCase
         $this->assertEquals('0000-00-00 00:00:00', $this->_oPromo->oxactions__oxactivefrom->value);
 
         $this->_oPromo->start();
-        $iNow = strtotime(date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
+        $iNow = strtotime(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
 
         $this->assertEquals(date('Y-m-d H:i:s', $iNow), $this->_oPromo->oxactions__oxactivefrom->value);
         $this->assertEquals('0000-00-00 00:00:00', $this->_oPromo->oxactions__oxactiveto->value);
@@ -227,7 +211,7 @@ class ActionsTest extends \OxidTestCase
         $this->assertEquals('0000-00-00 00:00:00', $this->_oPromo->oxactions__oxactiveto->value);
 
 
-        $this->_oPromo->oxactions__oxactiveto = new oxField(date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() + 10));
+        $this->_oPromo->oxactions__oxactiveto = new oxField(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() + 10));
         $sTo = $this->_oPromo->oxactions__oxactiveto->value;
         $this->_oPromo->save();
         $id = $this->_oPromo->getId();
@@ -252,7 +236,7 @@ class ActionsTest extends \OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . time() . ';}');
         $this->_oPromo->stop();
-        $iNow = strtotime(date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
+        $iNow = strtotime(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
 
         $this->assertEquals(date('Y-m-d H:i:s', $iNow), $this->_oPromo->oxactions__oxactiveto->value);
 
@@ -272,7 +256,7 @@ class ActionsTest extends \OxidTestCase
     public function testIsTestRunning()
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return ' . time() . ';}');
-        $iNow = strtotime(date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
+        $iNow = strtotime(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
         $this->_oPromo->oxactions__oxactivefrom = new oxField(date('Y-m-d H:i:s', $iNow - 10));
         $this->_oPromo->oxactions__oxactiveto = new oxField(date('Y-m-d H:i:s', $iNow + 10));
         $this->assertTrue($this->_oPromo->isRunning());
@@ -347,7 +331,7 @@ class ActionsTest extends \OxidTestCase
 
         oxTestModules::addModuleObject('oxarticle', $oArticle);
 
-        $promotionMock = $this->getMock('oxActions', array('fetchBannerArticleId'));
+        $promotionMock = $this->getMock(\OxidEsales\Eshop\Application\Model\Actions::class, array('fetchBannerArticleId'));
         $promotionMock->expects($this->any())->method('fetchBannerArticleId')->willReturn($databaseResult);
         $promotionMock->setId('promoid');
         $this->assertNull($promotionMock->getBannerArticle());
@@ -364,7 +348,7 @@ class ActionsTest extends \OxidTestCase
 
         oxTestModules::addModuleObject('oxarticle', $oArticle);
 
-        $promotionMock = $this->getMock('oxActions', array('fetchBannerArticleId'));
+        $promotionMock = $this->getMock(\OxidEsales\Eshop\Application\Model\Actions::class, array('fetchBannerArticleId'));
         $promotionMock->expects($this->any())->method('fetchBannerArticleId')->willReturn($databaseResult);
         $promotionMock->setId('promoid');
         $this->assertNull($promotionMock->getBannerArticle());
@@ -381,32 +365,13 @@ class ActionsTest extends \OxidTestCase
 
         oxTestModules::addModuleObject('oxarticle', $oArticle);
 
-        $promotionMock = $this->getMock('oxActions', array('fetchBannerArticleId'));
+        $promotionMock = $this->getMock(\OxidEsales\Eshop\Application\Model\Actions::class, array('fetchBannerArticleId'));
         $promotionMock->expects($this->any())->method('fetchBannerArticleId')->willReturn($databaseResult);
         $promotionMock->setId('promoid');
         $oArt = $promotionMock->getBannerArticle();
         $this->assertNotNull($oArt);
         $this->assertSame($oArticle, $oArt);
     }
-
-    /**
-     * Helper function for testGetBannerArticle_notAssigned, testGetBannerArticle_notExisting, testGetBannerArticle_Existing
-     *
-     * @param $valueToReturn
-     *
-     * @return PHPUnit_Framework_MockObject_MockObject
-     */
-    private function getBannerArticleMockWithSpecificReturn($valueToReturn)
-    {
-        $dbMock = $this->getDbObjectMock();
-        $dbMock->expects($this->any())
-            ->method('getOne')
-            ->with($this->equalTo('select oxobjectid from oxobject2action where oxactionid=\'promoid\' and oxclass="oxarticle"'))
-            ->will($this->returnValue($valueToReturn));
-
-        return $dbMock;
-    }
-
 
     /**
      * test
@@ -448,10 +413,10 @@ class ActionsTest extends \OxidTestCase
     {
         $sUrl = "action-link";
 
-        $oUtilsUrl = $this->getMock('oxUtilsUrl', array('processUrl', 'addShopHost'));
+        $oUtilsUrl = $this->getMock(\OxidEsales\Eshop\Core\UtilsUrl::class, array('processUrl', 'addShopHost'));
         $oUtilsUrl->expects($this->any())->method('addShopHost')->with($sUrl)->will($this->returnValue('http://with-url/' . $sUrl));
         $oUtilsUrl->expects($this->any())->method('processUrl')->with('http://with-url/' . $sUrl)->will($this->returnValue($sUrl . '/with-params'));
-        oxRegistry::set("oxUtilsUrl", $oUtilsUrl);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsUrl::class, $oUtilsUrl);
 
         $oPromo = oxNew('oxActions');
         $oPromo->oxactions__oxlink = new oxField($sUrl);
@@ -475,11 +440,11 @@ class ActionsTest extends \OxidTestCase
      */
     public function testGetBannerLink_noLinkWithAssignedArticle()
     {
-        $oArticle = $this->getMock('oxArticle', array('getLink'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getLink'));
         $oArticle->expects($this->once())->method('getLink')
             ->will($this->returnValue("testLinkToArticle"));
 
-        $oPromo = $this->getMock('oxActions', array('getBannerArticle'));
+        $oPromo = $this->getMock(\OxidEsales\Eshop\Application\Model\Actions::class, array('getBannerArticle'));
         $oPromo->expects($this->once())->method('getBannerArticle')
             ->will($this->returnValue($oArticle));
 

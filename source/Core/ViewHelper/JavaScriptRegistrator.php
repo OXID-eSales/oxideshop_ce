@@ -1,28 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core\ViewHelper;
-
-use oxRegistry;
+namespace OxidEsales\EshopCommunity\Core\ViewHelper;
 
 /**
  * Class for preparing JavaScript.
@@ -40,7 +22,7 @@ class JavaScriptRegistrator
      */
     public function addSnippet($script, $isDynamic = false)
     {
-        $config = oxRegistry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $suffix = $isDynamic ? '_dynamic' : '';
         $scriptsParameterName = static::SNIPPETS_PARAMETER_NAME . $suffix;
         $scripts = (array) $config->getGlobalParameter($scriptsParameterName);
@@ -60,7 +42,7 @@ class JavaScriptRegistrator
      */
     public function addFile($file, $priority, $isDynamic = false)
     {
-        $config = oxRegistry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $suffix = $isDynamic ? '_dynamic' : '';
         $filesParameterName = static::FILES_PARAMETER_NAME . $suffix;
         $includes = (array) $config->getGlobalParameter($filesParameterName);
@@ -85,11 +67,12 @@ class JavaScriptRegistrator
      */
     protected function formLocalFileUrl($file)
     {
-        $config = oxRegistry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $parts = explode('?', $file);
         $url = $config->getResourceUrl($parts[0], $config->isAdmin());
-        $parameters = $parts[1];
-        if (empty($parameters)) {
+        if (isset($parts[1])) {
+            $parameters = $parts[1];
+        } else {
             $path = $config->getResourcePath($file, $config->isAdmin());
             $parameters = filemtime($path);
         }

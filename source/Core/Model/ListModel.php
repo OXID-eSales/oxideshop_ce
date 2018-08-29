@@ -1,42 +1,23 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core\Model;
-
-use oxDb;
+namespace OxidEsales\EshopCommunity\Core\Model;
 
 /**
  * List manager.
  * Collects list data (eg. from DB), performs list changes updating (to DB), etc.
  */
-class ListModel extends \oxSuperCfg implements \ArrayAccess, \Iterator, \Countable
+class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \Iterator, \Countable
 {
-
     /**
      * Array of objects (some object list).
      *
      * @var array $_aArray
      */
-    protected $_aArray = array();
+    protected $_aArray = [];
 
     /**
      * Save the state, that active element was unset
@@ -102,7 +83,7 @@ class ListModel extends \oxSuperCfg implements \ArrayAccess, \Iterator, \Countab
     /**
      * offsetSet for SPL
      *
-     * @param mixed  $offset SPL array offset
+     * @param mixed     $offset SPL array offset
      * @param BaseModel $oBase  Array element
      */
     public function offsetSet($offset, $oBase)
@@ -235,7 +216,7 @@ class ListModel extends \oxSuperCfg implements \ArrayAccess, \Iterator, \Countab
             unset( $this->_aArray[$key]);
         }
         reset( $this->_aArray);*/
-        $this->_aArray = array();
+        $this->_aArray = [];
     }
 
     /**
@@ -286,7 +267,7 @@ class ListModel extends \oxSuperCfg implements \ArrayAccess, \Iterator, \Countab
     /**
      * @var array SQL Limit, 0 => Start, 1 => Records
      */
-    protected $_aSqlLimit = array();
+    protected $_aSqlLimit = [];
 
     /**
      * Class Constructor
@@ -380,13 +361,13 @@ class ListModel extends \oxSuperCfg implements \ArrayAccess, \Iterator, \Countab
      * @param string $sql        SQL select statement or prepared statement
      * @param array  $parameters Parameters to be used in a prepared statement
      */
-    public function selectString($sql, array $parameters = array())
+    public function selectString($sql, array $parameters = [])
     {
         $this->clear();
 
-        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         if ($this->_aSqlLimit[0] || $this->_aSqlLimit[1]) {
-            $rs = $oDb->selectLimit($sql, $this->_aSqlLimit[1], $this->_aSqlLimit[0], $parameters);
+            $rs = $oDb->selectLimit($sql, $this->_aSqlLimit[1], max(0, $this->_aSqlLimit[0]), $parameters);
         } else {
             $rs = $oDb->select($sql, $parameters);
         }
@@ -499,7 +480,7 @@ class ListModel extends \oxSuperCfg implements \ArrayAccess, \Iterator, \Countab
      * It is if you want to execute any functionality on every list ELEMENT after it is fully loaded (assigned).
      *
      * @param BaseModel $oListObject List object (the one derived from BaseModel)
-     * @param array     $aDbFields   An array holding db field values (normally the result of oxDb::Execute())
+     * @param array     $aDbFields   An array holding db field values (normally the result of \OxidEsales\Eshop\Core\DatabaseProvider::Execute())
      */
     protected function _assignElement($oListObject, $aDbFields)
     {

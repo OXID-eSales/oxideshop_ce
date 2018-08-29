@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use stdClass;
@@ -33,9 +17,8 @@ use oxField;
  *
  * @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
  */
-class NewsMain extends \oxAdminDetails
+class NewsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Executes parent method parent::render(), creates oxlist object and
      * collects user groups information, passes data to Smarty engine,
@@ -50,7 +33,7 @@ class NewsMain extends \oxAdminDetails
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oNews = oxNew("oxNews");
+            $oNews = oxNew(\OxidEsales\Eshop\Application\Model\News::class);
             $oNews->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oNews->getAvailableInLangs();
@@ -66,7 +49,7 @@ class NewsMain extends \oxAdminDetails
             }
 
             // remove already created languages
-            $this->_aViewData["posslang"] = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
+            $this->_aViewData["posslang"] = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
 
             foreach ($oOtherLang as $id => $language) {
                 $oLang = new stdClass();
@@ -75,8 +58,8 @@ class NewsMain extends \oxAdminDetails
                 $this->_aViewData["otherlang"][$id] = clone $oLang;
             }
         }
-        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
-            $oNewsMainAjax = oxNew('news_main_ajax');
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc")) {
+            $oNewsMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\NewsMainAjax::class);
             $this->_aViewData['oxajax'] = $oNewsMainAjax->getColumns();
 
             return "popups/news_main.tpl";
@@ -95,7 +78,7 @@ class NewsMain extends \oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
         // checkbox handling
         if (!isset($aParams['oxnews__oxactive'])) {
             $aParams['oxnews__oxactive'] = 0;
@@ -105,13 +88,13 @@ class NewsMain extends \oxAdminDetails
             $aParams['oxnews__oxdate'] = "";
         }
 
-        $oConvObject = new oxField();
+        $oConvObject = new \OxidEsales\Eshop\Core\Field();
         $oConvObject->fldmax_length = 0;
         $oConvObject->fldtype = "date";
         $oConvObject->value = $aParams['oxnews__oxdate'];
-        $aParams['oxnews__oxdate'] = oxRegistry::get("oxUtilsDate")->convertDBDate($oConvObject, true);
+        $aParams['oxnews__oxdate'] = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDate($oConvObject, true);
 
-        $oNews = oxNew("oxnews");
+        $oNews = oxNew(\OxidEsales\Eshop\Application\Model\News::class);
 
         if ($soxId != "-1") {
             $oNews->loadInLang($this->_iEditLang, $soxId);
@@ -143,7 +126,7 @@ class NewsMain extends \oxAdminDetails
     public function saveinnlang()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
         // checkbox handling
         if (!isset($aParams['oxnews__oxactive'])) {
             $aParams['oxnews__oxactive'] = 0;
@@ -156,13 +139,13 @@ class NewsMain extends \oxAdminDetails
             $aParams['oxnews__oxdate'] = "";
         }
 
-        $oConvObject = new oxField();
+        $oConvObject = new \OxidEsales\Eshop\Core\Field();
         $oConvObject->fldmax_length = 0;
         $oConvObject->fldtype = "date";
         $oConvObject->value = $aParams['oxnews__oxdate'];
-        $aParams['oxnews__oxdate'] = oxRegistry::get("oxUtilsDate")->convertDBDate($oConvObject, true);
+        $aParams['oxnews__oxdate'] = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDate($oConvObject, true);
 
-        $oNews = oxNew("oxnews");
+        $oNews = oxNew(\OxidEsales\Eshop\Application\Model\News::class);
 
         if ($soxId != "-1") {
             $oNews->loadInLang($this->_iEditLang, $soxId);
@@ -180,7 +163,7 @@ class NewsMain extends \oxAdminDetails
         $oNews->assign($aParams);
 
         // apply new language
-        $oNews->setLanguage(oxRegistry::getConfig()->getRequestParameter("new_lang"));
+        $oNews->setLanguage(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("new_lang"));
         $oNews->save();
 
         // set oxid if inserted

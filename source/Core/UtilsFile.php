@@ -1,35 +1,16 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core;
-
-use oxRegistry;
+namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * File manipulation utility class
  */
-class UtilsFile extends \oxSuperCfg
+class UtilsFile extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Promotions images upload dir name
      *
@@ -56,7 +37,7 @@ class UtilsFile extends \oxSuperCfg
      *
      * @var array
      */
-    protected $_aTypeToPath = array('TC'    => 'master/category/thumb',
+    protected $_aTypeToPath = ['TC'    => 'master/category/thumb',
                                     'CICO'  => 'master/category/icon',
                                     'PICO'  => 'master/category/promo_icon',
                                     'MICO'  => 'master/manufacturer/icon',
@@ -104,21 +85,21 @@ class UtilsFile extends \oxSuperCfg
         //
                                     'WP'    => 'master/wrapping',
                                     'FL'    => 'media',
-    );
+    ];
 
     /**
      * Denied file types
      *
      * @var array
      */
-    protected $_aBadFiles = array('php', 'php3', 'php4', 'php5', 'phps', 'php6', 'jsp', 'cgi', 'cmf', 'exe');
+    protected $_aBadFiles = ['php', 'php3', 'php4', 'php5', 'phps', 'php6', 'jsp', 'cgi', 'cmf', 'exe'];
 
     /**
      * Allowed to upload files in demo mode ( "white list")
      *
      * @var array
      */
-    protected $_aAllowedFiles = array('gif', 'jpg', 'jpeg', 'png', 'pdf');
+    protected $_aAllowedFiles = ['gif', 'jpg', 'jpeg', 'png', 'pdf'];
 
     /**
      * Counts how many new files added.
@@ -273,7 +254,7 @@ class UtilsFile extends \oxSuperCfg
      *
      * @param object $sValue     uploadable file name
      * @param string $sType      image type
-     * @param object $blDemo     if true = whecks if file type is defined in oxutilsfile::_aAllowedFiles
+     * @param object $blDemo     if true = whecks if file type is defined in \OxidEsales\Eshop\Core\UtilsFile::_aAllowedFiles
      * @param string $sImagePath final image file location
      * @param bool   $blUnique   if TRUE - generates unique file name
      *
@@ -292,7 +273,7 @@ class UtilsFile extends \oxSuperCfg
 
                 // unallowed files ?
                 if (in_array($sFileType, $this->_aBadFiles) || ($blDemo && !in_array($sFileType, $this->_aAllowedFiles))) {
-                    oxRegistry::getUtils()->showMessageAndExit("We don't play this game, go away");
+                    \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("File didn't pass our allowed files filter.");
                 }
 
                 // removing file type
@@ -370,6 +351,10 @@ class UtilsFile extends \oxSuperCfg
     {
         $blDone = false;
 
+        if (!is_dir(dirname($sTarget))) {
+            mkdir(dirname($sTarget), 0744, true);
+        }
+
         if ($sSource === $sTarget) {
             $blDone = true;
         } else {
@@ -421,12 +406,11 @@ class UtilsFile extends \oxSuperCfg
      *
      * @return object
      */
-    public function processFiles($oObject = null, $aFiles = array(), $blUseMasterImage = false, $blUnique = true)
+    public function processFiles($oObject = null, $aFiles = [], $blUseMasterImage = false, $blUnique = true)
     {
         $aFiles = $aFiles ? $aFiles : $_FILES;
         if (isset($aFiles['myfile']['name'])) {
             $oConfig = $this->getConfig();
-            $oStr = getStr();
 
             // A. protection for demoshops - strictly defining allowed file extensions
             $blDemo = (bool) $oConfig->isDemoShop();
@@ -437,11 +421,10 @@ class UtilsFile extends \oxSuperCfg
             $iNewFilesCounter = 0;
             $aSource = $aFiles['myfile']['tmp_name'];
             $aError = $aFiles['myfile']['error'];
-            $sErrorsDescription = '';
 
-            $oEx = oxNew("oxExceptionToDisplay");
+            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             // process all files
-            while (list($sKey, $sValue) = each($aFiles['myfile']['name'])) {
+            foreach ($aFiles['myfile']['name'] as $sKey => $sValue) {
                 $sSource = $aSource[$sKey];
                 $iError = $aError[$sKey];
                 $aFiletype = explode("@", $sKey);
@@ -455,7 +438,7 @@ class UtilsFile extends \oxSuperCfg
                 if (UPLOAD_ERR_OK !== $iError && UPLOAD_ERR_NO_FILE !== $iError) {
                     $sErrorsDescription = $this->translateError($iError);
                     $oEx->setMessage($sErrorsDescription);
-                    oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false);
+                    \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false);
                 }
 
                 // checking file type and building final file name
@@ -500,7 +483,7 @@ class UtilsFile extends \oxSuperCfg
      */
     public function checkFile($sFile)
     {
-        $aCheckCache = oxRegistry::getSession()->getVariable("checkcache");
+        $aCheckCache = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("checkcache");
 
         if (isset($aCheckCache[$sFile])) {
             return $aCheckCache[$sFile];
@@ -516,7 +499,7 @@ class UtilsFile extends \oxSuperCfg
         }
 
         $aCheckCache[$sFile] = $blRet;
-        oxRegistry::getSession()->setVariable("checkcache", $aCheckCache);
+        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("checkcache", $aCheckCache);
 
         return $blRet;
     }
@@ -572,17 +555,17 @@ class UtilsFile extends \oxSuperCfg
 
         //checking params
         if (!isset($aFileInfo['name']) || !isset($aFileInfo['tmp_name'])) {
-            throw oxNew("oxException", 'EXCEPTION_NOFILE');
+            throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_NOFILE');
         }
 
         //wrong chars in file name?
         if (!getStr()->preg_match('/^[\-_a-z0-9\.]+$/i', $aFileInfo['name'])) {
-            throw oxNew("oxException", 'EXCEPTION_FILENAMEINVALIDCHARS');
+            throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_FILENAMEINVALIDCHARS');
         }
 
         // error uploading file ?
         if (isset($aFileInfo['error']) && $aFileInfo['error']) {
-            throw oxNew("oxException", 'EXCEPTION_FILEUPLOADERROR_' . ((int) $aFileInfo['error']));
+            throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_FILEUPLOADERROR_' . ((int) $aFileInfo['error']));
         }
 
         $aPathInfo = pathinfo($aFileInfo['name']);
@@ -594,7 +577,7 @@ class UtilsFile extends \oxSuperCfg
         $aAllowedUploadTypes = array_map("strtolower", $aAllowedUploadTypes);
 
         if (!in_array(strtolower($sExt), $aAllowedUploadTypes)) {
-            throw oxNew("oxException", 'EXCEPTION_NOTALLOWEDTYPE');
+            throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_NOTALLOWEDTYPE');
         }
 
         $sFileName = $this->_getUniqueFileName($sBasePath . $sUploadPath, $sFileName, $sExt);

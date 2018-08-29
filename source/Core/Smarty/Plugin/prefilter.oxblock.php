@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 
@@ -37,9 +21,9 @@ function smarty_prefilter_oxblock($sSource, &$oSmartyCompiler)
     if (strpos($oSmartyCompiler->_version, 'Smarty3') === 0) {
         $blUseSmarty3 = true;
     }
-    $blDebugTemplateBlocks = (bool)oxRegistry::getConfig()->getConfigParam('blDebugTemplateBlocks');
+    $blDebugTemplateBlocks = (bool)\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blDebugTemplateBlocks');
 
-    $aBlocks = oxRegistry::get("oxUtilsView")->getTemplateBlocks($oSmartyCompiler->_current_file);
+    $aBlocks = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getTemplateBlocks($oSmartyCompiler->_current_file);
 
     $iLimit = 500;
 
@@ -60,8 +44,8 @@ function smarty_prefilter_oxblock($sSource, &$oSmartyCompiler)
             $sAppend .= '[{/__smartyblock__}]';
         }
         if ($blDebugTemplateBlocks) {
-            $sTplDir = trim(oxRegistry::getConfig()->getConfigParam('_sTemplateDir'), '/\\');
-            $sFile = str_replace(array('\\', '//'), '/', $oSmartyCompiler->_current_file);
+            $sTplDir = trim(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('_sTemplateDir'), '/\\');
+            $sFile = str_replace(['\\', '//'], '/', $oSmartyCompiler->_current_file);
             if (preg_match('@/'.preg_quote($sTplDir, '@').'/(.*)$@', $sFile, $m)) {
                 $sFile = $m[1];
             }

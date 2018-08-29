@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxManufacturer;
 use oxRegistry;
@@ -32,9 +16,8 @@ use oxUBase;
  * metatags (for search engines). Result - "manufacturerlist.tpl" template.
  * OXID eShop -> (Any selected shop product category).
  */
-class ManufacturerListController extends \AList
+class ManufacturerListController extends \OxidEsales\Eshop\Application\Controller\ArticleListController
 {
-
     /**
      * List type
      *
@@ -58,7 +41,7 @@ class ManufacturerListController extends \AList
 
     /**
      * Recommlist
-     * 
+     *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @var object
@@ -105,14 +88,14 @@ class ManufacturerListController extends \AList
      * list sorting rules. Loads list of articles which belong to this Manufacturer
      * Generates page navigation data
      * such as previous/next window URL, number of available pages, generates
-     * metatags info (oxubase::_convertForMetaTags()) and returns name of
+     * metatags info (\OxidEsales\Eshop\Application\Controller\FrontendController::_convertForMetaTags()) and returns name of
      * template to render.
      *
      * @return  string  $this->_sThisTemplate   current template file name
      */
     public function render()
     {
-        oxUBase::render();
+        \OxidEsales\Eshop\Application\Controller\FrontendController::render();
 
         // load Manufacturer
         if ($this->getManufacturerTree()) {
@@ -146,7 +129,7 @@ class ManufacturerListController extends \AList
     /**
      * Loads and returns article list of active Manufacturer.
      *
-     * @param oxManufacturer $oManufacturer Manufacturer object
+     * @param \OxidEsales\Eshop\Application\Model\Manufacturer $oManufacturer Manufacturer object
      *
      * @return array
      */
@@ -158,7 +141,7 @@ class ManufacturerListController extends \AList
         $iNrofCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
         $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
 
-        $oArtList = oxNew('oxArticleList');
+        $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
         $oArtList->setSqlLimit($iNrofCatArticles * $this->_getRequestPageNr(), $iNrofCatArticles);
         $oArtList->setCustomSorting($this->getSortingSql($this->getSortIdent()));
 
@@ -168,7 +151,7 @@ class ManufacturerListController extends \AList
         // counting pages
         $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrofCatArticles);
 
-        return array($oArtList, $this->_iAllArtCnt);
+        return [$oArtList, $this->_iAllArtCnt];
     }
 
     /**
@@ -195,7 +178,7 @@ class ManufacturerListController extends \AList
      */
     protected function _addPageNrParam($sUrl, $iPage, $iLang = null)
     {
-        if (oxRegistry::getUtils()->seoIsActive() && ($oManufacturer = $this->getActManufacturer())) {
+        if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && ($oManufacturer = $this->getActManufacturer())) {
             if ($iPage) {
                 // only if page number > 0
                 return $oManufacturer->getBaseSeoLink($iLang, $iPage);
@@ -212,7 +195,7 @@ class ManufacturerListController extends \AList
      */
     public function generatePageNavigationUrl()
     {
-        if ((oxRegistry::getUtils()->seoIsActive() && ($oManufacturer = $this->getActManufacturer()))) {
+        if ((\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && ($oManufacturer = $this->getActManufacturer()))) {
             return $oManufacturer->getLink();
         } else {
             return parent::generatePageNavigationUrl();
@@ -249,7 +232,7 @@ class ManufacturerListController extends \AList
     public function getSubCatList()
     {
         if ($this->_oSubCatList === null) {
-            $this->_oSubCatList = $this->hasVisibleSubCats() ? $this->_oSubCatList : array();
+            $this->_oSubCatList = $this->hasVisibleSubCats() ? $this->_oSubCatList : [];
         }
 
         return $this->_oSubCatList;
@@ -263,7 +246,7 @@ class ManufacturerListController extends \AList
     public function getArticleList()
     {
         if ($this->_aArticleList === null) {
-            $this->_aArticleList = array();
+            $this->_aArticleList = [];
             if (($oManufacturerTree = $this->getManufacturerTree())) {
                 $oManufacturer = $this->getActManufacturer();
                 if ($oManufacturer && ($oManufacturer->getId() != 'root') && $oManufacturer->getIsVisible()) {
@@ -423,13 +406,13 @@ class ManufacturerListController extends \AList
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
+        $aPaths = [];
 
         $oCatTree = $this->getManufacturerTree();
 
         if ($oCatTree) {
             foreach ($oCatTree->getPath() as $oCat) {
-                $aCatPath = array();
+                $aCatPath = [];
                 $aCatPath['link'] = $oCat->getLink();
                 $aCatPath['title'] = $oCat->oxmanufacturers__oxtitle->value;
 

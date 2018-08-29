@@ -1,36 +1,16 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core;
-
-use oxRegistry;
-use oxPrice;
+namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * Price calculation class. Responsible for simple price calculations. Basically contains Brutto, Netto prices and VAT values.
  */
 class Price
 {
-
     /**
      * Brutto price
      *
@@ -76,11 +56,11 @@ class Price
      *
      * @param double $dPrice given price
      *
-     * @return oxPrice
+     * @return \OxidEsales\Eshop\Core\Price
      */
     public function __construct($dPrice = null)
     {
-        $this->setNettoMode(oxRegistry::getConfig()->getConfigParam('blEnterNetPrice'));
+        $this->setNettoMode(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blEnterNetPrice'));
 
         if (!is_null($dPrice)) {
             $this->setPrice($dPrice);
@@ -205,7 +185,7 @@ class Price
         if ($this->isNettoMode()) {
             return $this->getNettoPrice() + $this->getVatValue();
         } else {
-            return oxRegistry::getUtils()->fRound($this->_dBrutto);
+            return \OxidEsales\Eshop\Core\Registry::getUtils()->fRound($this->_dBrutto);
         }
     }
 
@@ -217,7 +197,7 @@ class Price
     public function getNettoPrice()
     {
         if ($this->isNettoMode()) {
-            return oxRegistry::getUtils()->fRound($this->_dNetto);
+            return \OxidEsales\Eshop\Core\Registry::getUtils()->fRound($this->_dNetto);
         } else {
             return $this->getBruttoPrice() - $this->getVatValue();
         }
@@ -236,7 +216,7 @@ class Price
             $dVatValue = $this->getBruttoPrice() * $this->getVat() / (100 + $this->getVat());
         }
 
-        return oxRegistry::getUtils()->fRound($dVatValue);
+        return \OxidEsales\Eshop\Core\Registry::getUtils()->fRound($dVatValue);
     }
 
     /**
@@ -265,9 +245,9 @@ class Price
     /**
      * Adds another oxPrice object and recalculates current method.
      *
-     * @param oxPrice $oPrice object
+     * @param \OxidEsales\Eshop\Core\Price $oPrice object
      */
-    public function addPrice(oxPrice $oPrice)
+    public function addPrice(\OxidEsales\Eshop\Core\Price $oPrice)
     {
         if ($this->isNettoMode()) {
             $this->add($oPrice->getNettoPrice());
@@ -330,11 +310,11 @@ class Price
      *   1 - when this price is larger than $oPrice.
      *  -1 - when this price is smaller than $oPrice.
      *
-     * @param oxPrice $oPrice price object
+     * @param \OxidEsales\Eshop\Core\Price $oPrice price object
      *
      * @return null
      */
-    public function compare(oxPrice $oPrice)
+    public function compare(\OxidEsales\Eshop\Core\Price $oPrice)
     {
         $dBruttoPrice1 = $this->getBruttoPrice();
         $dBruttoPrice2 = $oPrice->getBruttoPrice();
@@ -410,7 +390,7 @@ class Price
      */
     public static function getPriceInActCurrency($dPrice)
     {
-        $oCur = oxRegistry::getConfig()->getActShopCurrencyObject();
+        $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
 
         return (( double ) $dPrice) * $oCur->rate;
     }
@@ -424,7 +404,7 @@ class Price
      */
     public function setDiscount($dValue, $sType)
     {
-        $this->_aDiscounts[] = array('value' => $dValue, 'type' => $sType);
+        $this->_aDiscounts[] = ['value' => $dValue, 'type' => $sType];
     }
 
     /**

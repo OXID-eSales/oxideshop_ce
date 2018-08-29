@@ -1,33 +1,16 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Setup;
+namespace OxidEsales\EshopCommunity\Setup;
 
 /**
  * Setup session manager class
  */
 class Session extends Core
 {
-
     /**
      * Session data array
      *
@@ -156,12 +139,6 @@ class Session extends Core
         $oUtils = $this->getInstance("Utilities");
 
         //storing country value settings to session
-        $sLocationLang = $oUtils->getRequestVar("location_lang", "post");
-        if (isset($sLocationLang)) {
-            $this->setSessionParam('location_lang', $sLocationLang);
-        }
-
-        //storing country value settings to session
         $sCountryLang = $oUtils->getRequestVar("country_lang", "post");
         if (isset($sCountryLang)) {
             $this->setSessionParam('country_lang', $sCountryLang);
@@ -173,13 +150,11 @@ class Session extends Core
             $this->setSessionParam('sShopLang', $sShopLang);
         }
 
-        // @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
-        //storing dyn pages settings to session
-        $blUseDynPages = $oUtils->getRequestVar("use_dynamic_pages", "post");
-        if (isset($blUseDynPages)) {
-            $this->setSessionParam('use_dynamic_pages', $blUseDynPages);
+        //storing if send information to OXID
+        $blSendInformation = $oUtils->getRequestVar("send_technical_information_to_oxid", "post");
+        if (isset($blSendInformation)) {
+            $this->setSessionParam('send_technical_information_to_oxid', $blSendInformation);
         }
-        // END deprecated
 
         //storing check for updates settings to session
         $blCheckForUpdates = $oUtils->getRequestVar("check_for_updates", "post");

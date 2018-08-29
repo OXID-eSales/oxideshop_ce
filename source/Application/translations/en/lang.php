@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 $sLangName  = "English";
@@ -25,7 +9,7 @@ $sLangName  = "English";
 // -------------------------------
 // RESOURCE IDENTIFIER = STRING
 // -------------------------------
-$aLang = array(
+$aLang = [
 'charset'                                                     => 'UTF-8',
 'fullDateFormat'                                              => 'Y-m-d H:i:s',
 'simpleDateFormat'                                            => 'Y-m-d',
@@ -171,6 +155,7 @@ $aLang = array(
 'ERROR_MESSAGE_PASSWORD_EMAIL_INVALID'                        => 'Please enter a valid e-mail address!',
 'ERROR_MESSAGE_PASSWORD_LINK_EXPIRED'                         => 'This page is expired. Please use the function "Forgot password?" once again.',
 'ERROR_MESSAGE_PASSWORD_TOO_SHORT'                            => 'Error: your password is too short.',
+'ERROR_REVIEW_AND_RATING_NOT_DELETED'                         => 'The review and the star rating could not be deleted',
 'ERROR_MESSAGE_CURRENT_PASSWORD_INVALID'                      => 'Error: your current password is incorrect.',
 'ERROR_MESSAGE_RECOMMLIST_NOTITLE'                            => 'Title field is empty',
 'ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND'                 => 'Class "%s" not found',
@@ -320,7 +305,7 @@ $aLang = array(
 'MESSAGE_THANKYOU_FOR_SUBSCRIBING_NEWSLETTERS'                => 'Thank you for subscribing to our newsletter.',
 'MESSAGE_UNAVAILABLE_SHIPPING_METHOD'                         => 'The shipping method you selected isn\'t available any more. Please choose another one!',
 'MESSAGE_VERIFY_YOUR_EMAIL'                                   => 'Please verify your e-mail address!',
-'MESSAGE_WELCOME_REGISTERED_USER'                             => 'Welcome as a registered user!',
+'MESSAGE_WELCOME_REGISTERED_USER'                             => 'Welcome as a registered customer!',
 'MESSAGE_WE_WILL_INFORM_YOU'                                  => 'We will inform you immediately if an item is not deliverable.',
 'MESSAGE_WRONG_VERIFICATION_CODE'                             => 'The verification code you entered is not correct. Please try again!',
 'MESSAGE_YOU_RECEIVED_ORDER_CONFIRM'                          => 'You\'ve already received an e-mail with an order confirmation.',
@@ -366,7 +351,7 @@ $aLang = array(
 'NO_ITEMS_FOUND'                                              => 'Sorry - no items found.',
 'NO_LISTMANIA_LIST_FOUND'                                     => 'No listmania lists found',
 'NO_RATINGS'                                                  => 'No ratings',
-'NO_REVIEW_AVAILABLE'                                         => 'No review available for this item.',
+'NO_REVIEW_AVAILABLE'                                         => 'No review available for this product.',
 'NUMBER'                                                      => 'Number',
 'NUMBER_2'                                                    => 'No.',
 'OF'                                                          => 'of',
@@ -385,7 +370,7 @@ $aLang = array(
 'BRAND'                                                       => 'Brand',
 'OUR_BRANDS'                                                  => 'Our brands',
 'OUR_REGULAR_PRICE'                                           => '(Our regular price)',
-'OXID_ESALES_URL'                                             => 'http://www.oxid-esales.com',
+'OXID_ESALES_URL'                                             => 'https://www.oxid-esales.com',
 'OXID_ESALES_URL_TITLE'                                       => 'Shopping cart software by OXID eSales',
 'PAGE'                                                        => 'Page',
 'PASSWORD'                                                    => 'Password',
@@ -459,7 +444,7 @@ $aLang = array(
 'REVIEW_YOUR_ORDER'                                           => 'Please check your order!',
 'ROOT_CATEGORY_CHANGED'                                       => 'Main category changed',
 'SAVE'                                                        => 'Save',
-'SAVE_RATING_AND_REVIEW'                                      => 'Save rating and review',
+'SAVE_RATING_AND_REVIEW'                                      => 'Save review and star rating',
 'SEARCH'                                                      => 'Search',
 'SEARCH_FOR_LISTS'                                            => 'Search for more lists',
 'SEARCH_FOR_PRODUCTS_CATEGORY_VENDOR'                         => 'Products by search for "%s" <TAG_CATEGORY> <TAG_VENDOR>',
@@ -559,8 +544,8 @@ $aLang = array(
 'WRAPPING_DESCRIPTION'                                        => 'We\'re happy to wrap your gift or to add a card with your personal message.',
 'WRAPPING_NET'                                                => 'Gift wrapping/greeting card (w/o tax)',
 'WRITES'                                                      => 'writes',
-'WRITE_PRODUCT_REVIEW'                                        => 'Review a product',
-'WRITE_REVIEW'                                                => 'Write a review',
+'WRITE_PRODUCT_REVIEW'                                        => 'Review product',
+'WRITE_REVIEW'                                                => 'Write a review.',
 'WRITE_REVIEW_2'                                              => 'Review our shop!',
 'YES'                                                         => 'Yes',
 'YOUR_EMAIL_ADDRESS'                                          => 'Your e-mail address',
@@ -700,6 +685,10 @@ $aLang = array(
 'BASKET_TOTAL_PLUS_PROPORTIONAL_VAT'                          => 'plus tax (calculated proportionally)',
 'PROPORTIONALLY_CALCULATED'                                   => 'Calculated proportionally',
 'PRICE_FROM'                                                  => 'from',
+'PAGE_DETAILS_THANKYOUMESSAGE1'                               => 'Thank you.',
+'PAGE_DETAILS_THANKYOUMESSAGE2'                               => ' appreciates your comments.',
+'PAGE_DETAILS_THANKYOUMESSAGE3'                               => 'We will inform you as soon as the price falls below',
+'PAGE_DETAILS_THANKYOUMESSAGE4'                               => '.',
 'PAGE_TITLE_BASKET'                                           => 'Cart',
 'PAGE_TITLE_USER'                                             => 'Shipping address',
 'PAGE_TITLE_PAYMENT'                                          => 'Shipping & payment',
@@ -748,6 +737,8 @@ $aLang = array(
 'SERVICES'                                                    => 'Service',
 'FORM_FIELDSET_USER_SHIPPING_ADDITIONALINFO2_TOOLTIP'         => '', // this is specifically for DHL
 'FORM_FIELDSET_USER_BILLING_ADDITIONALINFO_TOOLTIP'           => '', // this is specifically for DHL
+'FORM_SUGGEST_MESSAGE1'                                       => 'Hello, I was looking at',
+'FORM_SUGGEST_MESSAGE2'                                       => 'today and found something that might be interesting for you. Just click on the link below and you will be directed to the shop.',
 'SHOP_SUGGEST_MESSAGE'                                        => 'Hello, I was looking at %s today and found something that might be interesting for you. Just click on the link below and you will be directed to the shop.',
 'SHOP_SUGGEST_BUY_FOR_ME'                                     => 'Hi, I created a gift registry at %s . I\'d appreciate if you could buy something for me.',
 'GIFT_REGISTRY_SENT_SUCCESSFULLY'                             => 'Your gift registry was sent successfully to %s.',
@@ -772,4 +763,5 @@ $aLang = array(
 'INFO_ABOUT_COOKIES'                                          => 'Information about cookies',
 'PARTNERS'                                                    => 'Partners',
 
-);
+'MY_REVIEWS'                                                  => 'My reviews',
+];

@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
 
@@ -31,7 +15,6 @@ use Exception;
  */
 class FileCollector
 {
-
     /**
      * base directory
      *
@@ -87,7 +70,6 @@ class FileCollector
         }
 
         if (is_file($this->_sBaseDirectory . $sFile)) {
-
             $this->_aFiles[] = $sFile;
 
             return true;
@@ -107,7 +89,7 @@ class FileCollector
      * @throws exception
      * @return null
      */
-    public function addDirectoryFiles($sFolder, $aExtensions = array(), $blRecursive = false)
+    public function addDirectoryFiles($sFolder, $aExtensions = [], $blRecursive = false)
     {
         if (empty($sFolder)) {
             throw new Exception('Parameter $sFolder is empty!');
@@ -117,7 +99,7 @@ class FileCollector
             throw new Exception('Base directory is not set, please use setter setBaseDirectory!');
         }
 
-        $aCurrentList = array();
+        $aCurrentList = [];
 
         if (!is_dir($this->_sBaseDirectory . $sFolder)) {
             return;
@@ -126,7 +108,6 @@ class FileCollector
         $handle = opendir($this->_sBaseDirectory . $sFolder);
 
         while ($sFile = readdir($handle)) {
-
             if ($sFile != "." && $sFile != "..") {
                 if (is_dir($this->_sBaseDirectory . $sFolder . $sFile)) {
                     if ($blRecursive) {
@@ -142,7 +123,6 @@ class FileCollector
                     if ((!empty($aExtensions) && is_array($aExtensions) && in_array($sExt, $aExtensions)) ||
                         (empty($aExtensions))
                     ) {
-
                         $this->addFile($sFolder . $sFile);
                     }
                 }

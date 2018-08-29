@@ -1,41 +1,21 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxView;
-use oxCookieException;
-use oxUserException;
-use oxConnectionException;
+use OxidEsales\Eshop\Core\ShopVersion;
 
 /**
  * Administrator login form.
  * Performs administrator login form data collection.
  */
-class LoginController extends \oxAdminView
+class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
     /** Login page view id. */
-    CONST VIEW_ID = 'login';
+    const VIEW_ID = 'login';
 
     /**
      * Sets value for _sThisAction to "login".
@@ -58,14 +38,14 @@ class LoginController extends \oxAdminView
 
         // automatically redirect to SSL login
         if (!$myConfig->isSsl() && strpos($myConfig->getConfigParam('sAdminSSLURL'), 'https://') === 0) {
-            oxRegistry::getUtils()->redirect($myConfig->getConfigParam('sAdminSSLURL'), false, 302);
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($myConfig->getConfigParam('sAdminSSLURL'), false, 302);
         }
 
         //resets user once on this screen.
-        $oUser = oxNew("oxUser");
+        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $oUser->logout();
 
-        oxView::render();
+        \OxidEsales\Eshop\Core\Controller\BaseController::render();
 
         $this->setShopConfigParameters();
 
@@ -75,7 +55,7 @@ class LoginController extends \oxAdminView
             $this->addTplParam("pwd", "admin");
         }
         //#533 user profile
-        $this->addTplParam("profiles", oxRegistry::getUtils()->loadAdminProfile($myConfig->getConfigParam('aInterfaceProfiles')));
+        $this->addTplParam("profiles", \OxidEsales\Eshop\Core\Registry::getUtils()->loadAdminProfile($myConfig->getConfigParam('aInterfaceProfiles')));
 
         $aLanguages = $this->_getAvailableLanguages();
         $this->addTplParam("aLanguages", $aLanguages);
@@ -83,7 +63,7 @@ class LoginController extends \oxAdminView
         // setting templates language to selected language id
         foreach ($aLanguages as $iKey => $oLang) {
             if ($aLanguages[$iKey]->selected) {
-                oxRegistry::getLang()->setTplLanguage($iKey);
+                \OxidEsales\Eshop\Core\Registry::getLang()->setTplLanguage($iKey);
                 break;
             }
         }
@@ -98,10 +78,9 @@ class LoginController extends \oxAdminView
     {
         $myConfig = $this->getConfig();
 
-        $oBaseShop = oxNew("oxShop");
+        $oBaseShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         $oBaseShop->load($myConfig->getBaseShopId());
-        $sVersion = $oBaseShop->oxshops__oxversion->value;
-        $this->getViewConfig()->setViewConfigParam('sShopVersion', $sVersion);
+        $this->getViewConfig()->setViewConfigParam('sShopVersion', oxNew(ShopVersion::class)->getVersion());
     }
 
     /**
@@ -111,24 +90,24 @@ class LoginController extends \oxAdminView
      */
     public function checklogin()
     {
-        $myUtilsServer = oxRegistry::get("oxUtilsServer");
-        $myUtilsView = oxRegistry::get("oxUtilsView");
+        $myUtilsServer = \OxidEsales\Eshop\Core\Registry::getUtilsServer();
+        $myUtilsView = \OxidEsales\Eshop\Core\Registry::getUtilsView();
 
-        $sUser = oxRegistry::getConfig()->getRequestParameter('user', true);
-        $sPass = oxRegistry::getConfig()->getRequestParameter('pwd', true);
-        $sProfile = oxRegistry::getConfig()->getRequestParameter('profile');
+        $sUser = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('user', true);
+        $sPass = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pwd', true);
+        $sProfile = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('profile');
 
         try { // trying to login
-            /** @var oxUser $oUser */
-            $oUser = oxNew("oxuser");
+            /** @var \OxidEsales\Eshop\Application\Model\User $oUser */
+            $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             $oUser->login($sUser, $sPass);
             $iSubshop = (int) $oUser->oxuser__oxrights->value;
             if ($iSubshop) {
-                oxRegistry::getSession()->setVariable("shp", $iSubshop);
-                oxRegistry::getSession()->setVariable('currentadminshop', $iSubshop);
-                oxRegistry::getConfig()->setShopId($iSubshop);
+                \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("shp", $iSubshop);
+                \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('currentadminshop', $iSubshop);
+                \OxidEsales\Eshop\Core\Registry::getConfig()->setShopId($iSubshop);
             }
-        } catch (oxUserException $oEx) {
+        } catch (\OxidEsales\Eshop\Core\Exception\UserException $oEx) {
             $myUtilsView->addErrorToDisplay('LOGIN_ERROR');
             $oStr = getStr();
             $this->addTplParam('user', $oStr->htmlspecialchars($sUser));
@@ -136,7 +115,7 @@ class LoginController extends \oxAdminView
             $this->addTplParam('profile', $oStr->htmlspecialchars($sProfile));
 
             return;
-        } catch (oxCookieException $oEx) {
+        } catch (\OxidEsales\Eshop\Core\Exception\CookieException $oEx) {
             $myUtilsView->addErrorToDisplay('LOGIN_NO_COOKIE_SUPPORT');
             $oStr = getStr();
             $this->addTplParam('user', $oStr->htmlspecialchars($sUser));
@@ -144,24 +123,21 @@ class LoginController extends \oxAdminView
             $this->addTplParam('profile', $oStr->htmlspecialchars($sProfile));
 
             return;
-        } catch (oxConnectionException $oEx) {
+        } catch (\OxidEsales\Eshop\Core\Exception\ConnectionException $oEx) {
             $myUtilsView->addErrorToDisplay($oEx);
         }
 
-        // success
-        oxRegistry::getUtils()->logger("login successful");
-
         //execute onAdminLogin() event
-        $oEvenHandler = oxNew("oxSystemEventHandler");
-        $oEvenHandler->onAdminLogin(oxRegistry::getConfig()->getShopId());
+        $oEvenHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
+        $oEvenHandler->onAdminLogin(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopId());
 
         // #533
         if (isset($sProfile)) {
-            $aProfiles = oxRegistry::getSession()->getVariable("aAdminProfiles");
+            $aProfiles = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("aAdminProfiles");
             if ($aProfiles && isset($aProfiles[$sProfile])) {
                 // setting cookie to store last locally used profile
                 $myUtilsServer->setOxCookie("oxidadminprofile", $sProfile . "@" . implode("@", $aProfiles[$sProfile]), time() + 31536000, "/");
-                oxRegistry::getSession()->setVariable("profile", $aProfiles[$sProfile]);
+                \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("profile", $aProfiles[$sProfile]);
             }
         } else {
             //deleting cookie info, as setting profile to default
@@ -169,8 +145,8 @@ class LoginController extends \oxAdminView
         }
 
         // languages
-        $iLang = oxRegistry::getConfig()->getRequestParameter("chlanguage");
-        $aLanguages = oxRegistry::getLang()->getAdminTplLanguageArray();
+        $iLang = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("chlanguage");
+        $aLanguages = \OxidEsales\Eshop\Core\Registry::getLang()->getAdminTplLanguageArray();
         if (!isset($aLanguages[$iLang])) {
             $iLang = key($aLanguages);
         }
@@ -178,8 +154,8 @@ class LoginController extends \oxAdminView
         $myUtilsServer->setOxCookie("oxidadminlanguage", $aLanguages[$iLang]->abbr, time() + 31536000, "/");
 
         //P
-        //oxRegistry::getSession()->setVariable( "blAdminTemplateLanguage", $iLang );
-        oxRegistry::getLang()->setTplLanguage($iLang);
+        //\OxidEsales\Eshop\Core\Registry::getSession()->setVariable( "blAdminTemplateLanguage", $iLang );
+        \OxidEsales\Eshop\Core\Registry::getLang()->setTplLanguage($iLang);
 
         return "admin_start";
     }
@@ -212,10 +188,10 @@ class LoginController extends \oxAdminView
      */
     protected function _getAvailableLanguages()
     {
-        $sDefLang = oxRegistry::get("oxUtilsServer")->getOxCookie('oxidadminlanguage');
+        $sDefLang = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('oxidadminlanguage');
         $sDefLang = $sDefLang ? $sDefLang : $this->_getBrowserLanguage();
 
-        $aLanguages = oxRegistry::getLang()->getAdminTplLanguageArray();
+        $aLanguages = \OxidEsales\Eshop\Core\Registry::getLang()->getAdminTplLanguageArray();
         foreach ($aLanguages as $oLang) {
             $oLang->selected = ($sDefLang == $oLang->abbr) ? 1 : 0;
         }

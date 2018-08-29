@@ -1,35 +1,18 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin pricealarm list manager.
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: Customer Info -> pricealarm.
  */
-class PriceAlarmList extends \oxAdminList
+class PriceAlarmList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
-
     /**
      * Current class template name.
      *
@@ -82,12 +65,12 @@ class PriceAlarmList extends \oxAdminList
 
         // updating price fields values for correct search in DB
         if (isset($this->_aWhere[$sViewName . '.oxprice'])) {
-            $sPriceParam = (double) str_replace(array('%', ','), array('', '.'), $this->_aWhere[$sViewName . '.oxprice']);
+            $sPriceParam = (double) str_replace(['%', ','], ['', '.'], $this->_aWhere[$sViewName . '.oxprice']);
             $this->_aWhere[$sViewName . '.oxprice'] = '%' . $sPriceParam . '%';
         }
 
         if (isset($this->_aWhere[$sArtViewName . '.oxprice'])) {
-            $sPriceParam = (double) str_replace(array('%', ','), array('', '.'), $this->_aWhere[$sArtViewName . '.oxprice']);
+            $sPriceParam = (double) str_replace(['%', ','], ['', '.'], $this->_aWhere[$sArtViewName . '.oxprice']);
             $this->_aWhere[$sArtViewName . '.oxprice'] = '%' . $sPriceParam . '%';
         }
 

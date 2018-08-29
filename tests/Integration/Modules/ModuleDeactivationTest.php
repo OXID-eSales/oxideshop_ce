@@ -1,27 +1,9 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Integration\Modules;
-
-require_once __DIR__ . '/BaseModuleTestCase.php';
+namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 class ModuleDeactivationTest extends BaseModuleTestCase
 {
@@ -112,9 +94,9 @@ class ModuleDeactivationTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
-                    'oxorder'   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
-                    'oxarticle' => 'with_everything/myarticle',
-                    'oxuser'    => 'with_everything/myuser',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
+                    \OxidEsales\Eshop\Application\Model\Article::class =>'with_everything/myarticle',
+                    \OxidEsales\Eshop\Application\Model\User::class => 'with_everything/myuser',
                 ),
                 'files'           => array(
                     'with_2_files' => array(
@@ -184,9 +166,9 @@ class ModuleDeactivationTest extends BaseModuleTestCase
             array(
                 'blocks'          => array(),
                 'extend'          => array(
-                    'oxarticle' => 'with_everything/myarticle',
-                    'oxorder'   => 'with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
-                    'oxuser'    => 'with_everything/myuser',
+                    \OxidEsales\Eshop\Application\Model\Article::class =>'with_everything/myarticle',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
+                    \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                 ),
                 'files'           => array(),
                 'settings'        => array(
@@ -229,11 +211,11 @@ class ModuleDeactivationTest extends BaseModuleTestCase
             array(
                 'blocks'          => array(),
                 'extend'          => array(
-                    'oxorder'   => 'extending_1_class_3_extensions/myorder1&extending_1_class_3_extensions/myorder2&' .
+                    \OxidEsales\Eshop\Application\Model\Order::class => 'extending_1_class_3_extensions/myorder1&extending_1_class_3_extensions/myorder2&' .
                                    'extending_1_class_3_extensions/myorder3&extending_1_class/myorder&' .
                                    'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myorder',
-                    'oxarticle' => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myarticle',
-                    'oxuser'    => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myuser',
+                    \OxidEsales\Eshop\Application\Model\Article::class => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myarticle',
+                    \OxidEsales\Eshop\Application\Model\User::class    => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myuser',
                 ),
                 'files'           => array(),
                 'settings'        => array(),
@@ -283,9 +265,9 @@ class ModuleDeactivationTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
-                    'oxorder'   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
-                    'oxarticle' => 'with_everything/myarticle',
-                    'oxuser'    => 'with_everything/myuser',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
+                    \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
+                    \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                 ),
                 'files'           => array(
                     'with_2_files'    => array(

@@ -1,32 +1,12 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
-use oxConfig;
-use oxRegistry;
-use oxSession;
 use oxSystemComponentException;
-use oxUser;
 
 /**
  * Basic class which is used as parent class by other OXID eShop classes.
@@ -35,16 +15,9 @@ use oxUser;
 class Base
 {
     /**
-     * oxconfig instance
-     *
-     * @var oxconfig
-     */
-    protected static $_oConfig = null;
-
-    /**
      * oxsession instance
      *
-     * @var oxsession
+     * @var \OxidEsales\Eshop\Core\Session
      */
     protected static $_oSession = null;
 
@@ -58,7 +31,7 @@ class Base
     /**
      * oxuser object
      *
-     * @var oxuser
+     * @var \OxidEsales\Eshop\Application\Model\User
      */
     protected static $_oActUser = null;
 
@@ -87,11 +60,11 @@ class Base
                 $method = str_replace('UNIT', '_', $method);
             }
             if (method_exists($this, $method)) {
-                return call_user_func_array(array(& $this, $method), $arguments);
+                return call_user_func_array([& $this, $method], $arguments);
             }
         }
 
-        throw new oxSystemComponentException("Function '$method' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
+        throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException("Function '$method' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
     }
 
     /**
@@ -106,36 +79,32 @@ class Base
     /**
      * oxConfig instance getter
      *
-     * @return oxConfig
+     * @return \OxidEsales\Eshop\Core\Config
      */
     public function getConfig()
     {
-        if (self::$_oConfig == null) {
-            self::$_oConfig = oxRegistry::getConfig();
-        }
-
-        return self::$_oConfig;
+        return \OxidEsales\Eshop\Core\Registry::getConfig();
     }
 
     /**
      * oxConfig instance setter
      *
-     * @param oxConfig $config config object
+     * @param \OxidEsales\Eshop\Core\Config $config config object
      */
     public function setConfig($config)
     {
-        self::$_oConfig = $config;
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
     }
 
     /**
      * oxSession instance getter
      *
-     * @return oxsession
+     * @return \OxidEsales\Eshop\Core\Session
      */
     public function getSession()
     {
         if (self::$_oSession == null) {
-            self::$_oSession = oxRegistry::getSession();
+            self::$_oSession = \OxidEsales\Eshop\Core\Registry::getSession();
         }
 
         return self::$_oSession;
@@ -144,7 +113,7 @@ class Base
     /**
      * oxSession instance setter
      *
-     * @param oxsession $session session object
+     * @param \OxidEsales\Eshop\Core\Session $session session object
      */
     public function setSession($session)
     {
@@ -154,13 +123,13 @@ class Base
     /**
      * Active user getter
      *
-     * @return oxUser
+     * @return \OxidEsales\Eshop\Application\Model\User
      */
     public function getUser()
     {
         if (self::$_oActUser === null) {
             self::$_oActUser = false;
-            $user = oxNew('oxuser');
+            $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             if ($user->loadActiveUser()) {
                 self::$_oActUser = $user;
             }
@@ -172,7 +141,7 @@ class Base
     /**
      * Active oxuser object setter
      *
-     * @param oxuser $user user object
+     * @param \OxidEsales\Eshop\Application\Model\User $user user object
      */
     public function setUser($user)
     {

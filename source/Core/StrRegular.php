@@ -1,33 +1,16 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * Class dealing with regular string handling
  */
 class StrRegular
 {
-
     /**
      * The character encoding.
      *
@@ -40,19 +23,17 @@ class StrRegular
      *
      * @var array
      */
-    protected $_aUmls = array("\344", "\366", "\374", "\304", "\326", "\334", "\337");
+    protected $_aUmls = ["\344", "\366", "\374", "\304", "\326", "\334", "\337"];
 
     /**
      * oxUtilsString::$_aUmls equivalent in entities form
      *
      * @var array
      */
-    protected $_aUmlEntities = array('&auml;', '&ouml;', '&uuml;', '&Auml;', '&Ouml;', '&Uuml;', '&szlig;');
+    protected $_aUmlEntities = ['&auml;', '&ouml;', '&uuml;', '&Auml;', '&Ouml;', '&Uuml;', '&szlig;'];
 
     /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
-     *
-     * @return null;
      */
     public function __construct()
     {
@@ -306,7 +287,7 @@ class StrRegular
      *
      * @return string
      */
-    public function recodeEntities($sInput, $blToHtmlEntities = false, $aUmls = array(), $aUmlEntities = array())
+    public function recodeEntities($sInput, $blToHtmlEntities = false, $aUmls = [], $aUmlEntities = [])
     {
         $aUmls = (count($aUmls) > 0) ? array_merge($this->_aUmls, $aUmls) : $this->_aUmls;
         $aUmlEntities = (count($aUmlEntities) > 0) ? array_merge($this->_aUmlEntities, $aUmlEntities) : $this->_aUmlEntities;
@@ -331,7 +312,7 @@ class StrRegular
      * Special chars are: \n \r \t x95 xa0 ;
      *
      * @param string $sStr      string to cleanup
-     * @param object $sCleanChr which character should be used as a replacement (default is empty space)
+     * @param mixed  $sCleanChr which character should be used as a replacement (default is empty space)
      *
      * @return string
      */
@@ -358,7 +339,7 @@ class StrRegular
                 $blNumerical = !is_string($key);
             }
             if ($blNumerical) {
-                return '[' . implode(',', array_map(array($this, 'jsonEncode'), $data)) . ']';
+                return '[' . implode(',', array_map([$this, 'jsonEncode'], $data)) . ']';
             } else {
                 foreach ($data as $key => $val) {
                     if ($blWasOne) {

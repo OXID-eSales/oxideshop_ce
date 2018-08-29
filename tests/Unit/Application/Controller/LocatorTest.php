@@ -1,25 +1,9 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use oxArticle;
 use \oxLocator;
@@ -145,10 +129,10 @@ class LocatorTest extends \OxidTestCase
     {
         $oCurrArticle = oxNew('oxArticle');
 
-        $oLocatorTarget = $this->getMock('oxview', array('setListType'));
+        $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('setListType'));
         $oLocatorTarget->expects($this->once())->method('setListType');
 
-        $oLocator = $this->getMock('oxlocator', array('_setListLocatorData'));
+        $oLocator = $this->getMock(\OxidEsales\Eshop\Application\Component\Locator::class, array('_setListLocatorData'));
         $oLocator->expects($this->once())->method('_setListLocatorData')->with($this->equalTo($oLocatorTarget), $this->equalTo($oCurrArticle));
         $oLocator->setLocatorData($oCurrArticle, $oLocatorTarget, 'xxx');
     }
@@ -164,7 +148,7 @@ class LocatorTest extends \OxidTestCase
 
         $config = $this->getConfig();
 
-        $oCurrArticle = $this->getMock('oxarticle', array('getId'));
+        $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId'));
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue('1651'));
 
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
@@ -180,13 +164,12 @@ class LocatorTest extends \OxidTestCase
         $oCategory = oxNew('oxcategory');
         $oCategory->load($sActCat);
 
-        $oLocatorTarget = $this->getMock('oxubase', array('getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActiveCategory', 'getCategoryTree', 'showSorting'));
+        $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActiveCategory', 'getCategoryTree', 'showSorting'));
         $oLocatorTarget->expects($this->once())->method('getSortingSql')->with($this->equalTo('alist'))->will($this->returnValue('oxid'));
         $oLocatorTarget->expects($this->any())->method('setCatTreePath');
         $oLocatorTarget->expects($this->any())->method('getCatTreePath');
         $oLocatorTarget->expects($this->once())->method('getActiveCategory')->will($this->returnValue($oCategory));
         $oLocatorTarget->expects($this->once())->method('getCategoryTree')->will($this->returnValue(oxNew('oxcategorylist')));
-        $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
 
         $oLocator = new testOxLocator();
@@ -209,7 +192,7 @@ class LocatorTest extends \OxidTestCase
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{ return true; }');
 
-        $oCurrArticle = $this->getMock('oxArticle', array('getId'));
+        $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId'));
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue('1651'));
 
         $sActCat = $this->getTestConfig()->getShopEdition() == 'EE'? '30e44ab83fdee7564.23264141' : '8a142c3e4143562a5.46426637';
@@ -217,19 +200,18 @@ class LocatorTest extends \OxidTestCase
         $oCategory = oxNew('oxCategory');
         $oCategory->load($sActCat);
 
-        $oLocatorTarget = $this->getMock('oxubase', array('getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActiveCategory', 'getCategoryTree', 'showSorting'));
+        $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActiveCategory', 'getCategoryTree', 'showSorting'));
         $oLocatorTarget->expects($this->once())->method('getSortingSql')->with($this->equalTo('alist'))->will($this->returnValue('oxid'));
         $oLocatorTarget->expects($this->any())->method('setCatTreePath');
         $oLocatorTarget->expects($this->any())->method('getCatTreePath');
         $oLocatorTarget->expects($this->once())->method('getActiveCategory')->will($this->returnValue($oCategory));
         $oLocatorTarget->expects($this->once())->method('getCategoryTree')->will($this->returnValue(oxNew('oxcategorylist')));
-        $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
 
-        $oConfig = $this->getMock('oxconfig', array('getConfigParam'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
         $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(true));
 
-        $oLocator = $this->getMock('Unit\Application\Controller\testOxLocator', array('getConfig'));
+        $oLocator = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\testOxLocator::class, array('getConfig'));
         $oLocator->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         // testing
@@ -238,11 +220,11 @@ class LocatorTest extends \OxidTestCase
         $sShopUrl = $this->getConfig()->getShopUrl();
 
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $sToListLink = $sShopUrl . 'Party/3/';
+            $sToListLink = $sShopUrl . 'Party/?pgNr=2';
             $sPrevProdLink = $sShopUrl . 'Party/Bar-Equipment/Kuehlwuerfel-NORDIC-ROCKS-Eiswuerfel-Ersatz.html';
             $sNextProdLink = $sShopUrl . 'Party/Schuerze-BAVARIA.html';
         } else {
-            $sToListLink = $sShopUrl . 'Geschenke/9/';
+            $sToListLink = $sShopUrl . 'Geschenke/?pgNr=8';
             $sNextProdLink = $sShopUrl . 'Geschenke/Wohnen/Uhren/Wanduhr-PHOTOFRAME.html';
             $sPrevProdLink = $sShopUrl . 'Geschenke/Bar-Equipment/Champagnerverschluss-GOLF.html';
         }
@@ -270,7 +252,7 @@ class LocatorTest extends \OxidTestCase
             $sNextLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=1477&amp;listtype=vendor&amp;cnid=v_d2e44d9b31fcce448.08890330";
             $sPrevLink = $myConfig->getShopHomeUrl() . "cl=details&amp;anid=1131&amp;listtype=vendor&amp;cnid=v_d2e44d9b31fcce448.08890330";
         }
-        $oCurrArticle = $this->getMock('oxarticle', array('getId'));
+        $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId'));
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue($sArt));
 
         $sActCat = $this->getTestConfig()->getShopEdition() == 'EE'? 'v_d2e44d9b31fcce448.08890330' : 'v_77442e37fdf34ccd3.94620745';
@@ -278,12 +260,11 @@ class LocatorTest extends \OxidTestCase
         $oVendor = oxNew('oxVendor');
         $oVendor->load(str_replace('v_', '', $sActCat));
 
-        $oLocatorTarget = $this->getMock('oxubase', array('getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActVendor', 'getVendorTree', 'showSorting'));
+        $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActVendor', 'getVendorTree', 'showSorting'));
         $oLocatorTarget->expects($this->once())->method('getSortingSql')->with($this->equalTo('alist'))->will($this->returnValue('oxid'));
         $oLocatorTarget->expects($this->any())->method('setCatTreePath');
         $oLocatorTarget->expects($this->any())->method('getCatTreePath');
         $oLocatorTarget->expects($this->once())->method('getActVendor')->will($this->returnValue($oVendor));
-        $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_VENDOR));
 
         $oLocator = new testOxLocator();
@@ -306,7 +287,7 @@ class LocatorTest extends \OxidTestCase
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{ return true; }');
 
         $sArt = $this->getTestConfig()->getShopEdition() == 'EE'? '1142' : '1964';
-        $oCurrArticle = $this->getMock('oxarticle', array('getId'));
+        $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId'));
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue($sArt));
         $oCurrArticle->setLinkType(1);
 
@@ -315,12 +296,11 @@ class LocatorTest extends \OxidTestCase
         $oVendor = oxNew('oxVendor');
         $oVendor->load(str_replace('v_', '', $sActCat));
 
-        $oLocatorTarget = $this->getMock('oxubase', array('getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActVendor', 'getVendorTree', 'showSorting'));
+        $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActVendor', 'getVendorTree', 'showSorting'));
         $oLocatorTarget->expects($this->once())->method('getSortingSql')->with($this->equalTo('alist'))->will($this->returnValue('oxid'));
         $oLocatorTarget->expects($this->any())->method('setCatTreePath');
         $oLocatorTarget->expects($this->any())->method('getCatTreePath');
         $oLocatorTarget->expects($this->once())->method('getActVendor')->will($this->returnValue($oVendor));
-        $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_VENDOR));
 
         $oLocator = new testOxLocator();
@@ -334,7 +314,7 @@ class LocatorTest extends \OxidTestCase
         $this->assertEquals($expectedCount, $oVendor->iCntOfProd);
 
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $sToListLink = $sShopUrl . 'Nach-Lieferant/Hersteller-1/2/';
+            $sToListLink = $sShopUrl . 'Nach-Lieferant/Hersteller-1/?pgNr=1';
             $sPrevProdLink = $sShopUrl . 'Nach-Lieferant/Hersteller-1/Flaschenverschluss-EGO.html';
             $sNextProdLink = $sShopUrl . 'Nach-Lieferant/Hersteller-1/Champagnerverschluss-GOLF.html';
         } else {
@@ -363,7 +343,7 @@ class LocatorTest extends \OxidTestCase
             $sPrevLink = '';
             $sNextLink = '';
         }
-        $oCurrArticle = $this->getMock('oxarticle', array('getId'));
+        $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId'));
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue($sArt));
 
         $sActCat = $this->getTestConfig()->getShopEdition() == 'EE'? md5('d2e44d9b31fcce448.08890330') : md5('77442e37fdf34ccd3.94620745');
@@ -371,13 +351,12 @@ class LocatorTest extends \OxidTestCase
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sActCat);
 
-        $oLocatorTarget = $this->getMock('oxubase', array('getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActManufacturer', 'getManufacturerTree', 'showSorting'));
+        $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActManufacturer', 'getManufacturerTree', 'showSorting'));
         $oLocatorTarget->expects($this->once())->method('getSortingSql')->with($this->equalTo('alist'))->will($this->returnValue('oxid'));
         $oLocatorTarget->expects($this->any())->method('setCatTreePath');
         $oLocatorTarget->expects($this->any())->method('getCatTreePath');
         $oLocatorTarget->expects($this->once())->method('getActManufacturer')->will($this->returnValue($oManufacturer));
         $oLocatorTarget->expects($this->once())->method('getManufacturerTree')->will($this->returnValue(oxNew('oxmanufacturerlist')));
-        $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_MANUFACTURER));
 
         $oLocator = new testOxLocator();
@@ -400,7 +379,7 @@ class LocatorTest extends \OxidTestCase
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{ return true; }');
 
         $sArt = $this->getTestConfig()->getShopEdition() == 'EE'? '1142' : '1964';
-        $oCurrArticle = $this->getMock('oxarticle', array('getId'));
+        $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId'));
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue($sArt));
         $oCurrArticle->setLinkType(1);
 
@@ -409,13 +388,12 @@ class LocatorTest extends \OxidTestCase
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sActCat);
 
-        $oLocatorTarget = $this->getMock('oxubase', array('getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActManufacturer', 'getManufacturerTree', 'showSorting'));
+        $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getLinkType', 'getSortingSql', 'setCatTreePath', 'getCatTreePath', 'getActManufacturer', 'getManufacturerTree', 'showSorting'));
         $oLocatorTarget->expects($this->once())->method('getSortingSql')->with($this->equalTo('alist'))->will($this->returnValue('oxid'));
         $oLocatorTarget->expects($this->any())->method('setCatTreePath');
         $oLocatorTarget->expects($this->any())->method('getCatTreePath');
         $oLocatorTarget->expects($this->once())->method('getActManufacturer')->will($this->returnValue($oManufacturer));
         $oLocatorTarget->expects($this->once())->method('getManufacturerTree')->will($this->returnValue(oxNew('oxmanufacturerlist')));
-        $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_MANUFACTURER));
 
         $oLocator = new testOxLocator();
@@ -429,7 +407,7 @@ class LocatorTest extends \OxidTestCase
         $this->assertEquals($expectedCount, $oManufacturer->iCntOfProd);
 
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $sToListLink = $sShopUrl . 'Nach-Hersteller/Hersteller-1/2/';
+            $sToListLink = $sShopUrl . 'Nach-Hersteller/Hersteller-1/?pgNr=1';
             $sPrevProdLink = $sShopUrl . 'Nach-Hersteller/Hersteller-1/Flaschenverschluss-EGO.html';
             $sNextProdLink = $sShopUrl . 'Nach-Hersteller/Hersteller-1/Champagnerverschluss-GOLF.html';
         } else {
@@ -458,15 +436,14 @@ class LocatorTest extends \OxidTestCase
             $sArtId = '1889';
         }
 
-        $oCurrArticle = $this->getMock('oxarticle', array('getId'));
+        $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId'));
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue($sArtId));
 
-        $oLocatorTarget = $this->getMock('oxubase', array('getLinkType', 'getSortingSql', 'addTplParam', 'setSearchTitle', 'getSearchTitle', 'showSorting'));
+        $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getLinkType', 'getSortingSql', 'addTplParam', 'setSearchTitle', 'getSearchTitle', 'showSorting'));
         $oLocatorTarget->expects($this->once())->method('getSortingSql')->with($this->equalTo('alist'))->will($this->returnValue('oxid'));
         $oLocatorTarget->expects($this->any())->method('addTplParam');
         $oLocatorTarget->expects($this->any())->method('setSearchTitle');
         $oLocatorTarget->expects($this->any())->method('getSearchTitle');
-        $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
 
         $this->setRequestParameter("searchparam", 'Bier');
@@ -502,15 +479,14 @@ class LocatorTest extends \OxidTestCase
             $sNextId = '1477';
         }
 
-        $oCurrArticle = $this->getMock('oxarticle', array('getId'));
+        $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId'));
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue($sArt));
 
-        $oLocatorTarget = $this->getMock('oxubase', array('getLinkType', 'prepareSortColumns', 'getSortingSql', 'addTplParam', 'setSearchTitle', 'getSearchTitle', 'showSorting'));
+        $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getLinkType', 'prepareSortColumns', 'getSortingSql', 'addTplParam', 'setSearchTitle', 'getSearchTitle', 'showSorting'));
         $oLocatorTarget->expects($this->once())->method('getSortingSql')->with($this->equalTo('alist'))->will($this->returnValue('oxid'));
         $oLocatorTarget->expects($this->any())->method('addTplParam');
         $oLocatorTarget->expects($this->any())->method('setSearchTitle');
         $oLocatorTarget->expects($this->any())->method('getSearchTitle');
-        $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
 
         $sSearchVendor = $this->getTestConfig()->getShopEdition() == 'EE'? 'd2e44d9b31fcce448.08890330' : '68342e2955d7401e6.18967838';
@@ -540,15 +516,14 @@ class LocatorTest extends \OxidTestCase
 
         $myConfig = $this->getConfig();
 
-        $oCurrArticle = $this->getMock('oxarticle', array('getId'));
+        $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId'));
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue('1651'));
 
-        $oLocatorTarget = $this->getMock('oxubase', array('getLinkType', 'prepareSortColumns', 'getSortingSql', 'addTplParam', 'setSearchTitle', 'getSearchTitle', 'showSorting'));
+        $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getLinkType', 'prepareSortColumns', 'getSortingSql', 'addTplParam', 'setSearchTitle', 'getSearchTitle', 'showSorting'));
         $oLocatorTarget->expects($this->once())->method('getSortingSql')->with($this->equalTo('alist'))->will($this->returnValue('oxid'));
         $oLocatorTarget->expects($this->any())->method('addTplParam');
         $oLocatorTarget->expects($this->any())->method('setSearchTitle');
         $oLocatorTarget->expects($this->any())->method('getSearchTitle');
-        $oLocatorTarget->expects($this->once())->method('showSorting')->will($this->returnValue(true));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
 
 
@@ -598,10 +573,10 @@ class LocatorTest extends \OxidTestCase
         $oRecomm = oxNew('oxRecommList');
         $oRecomm->load("testlist");
 
-        $oCurrArticle = $this->getMock('oxarticle', array('getId'));
+        $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId'));
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue('1651'));
 
-        $oLocatorTarget = $this->getMock('oxubase', array('getLinkType', 'addTplParam', 'setSearchTitle', 'getSearchTitle', 'getActiveRecommList'));
+        $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getLinkType', 'addTplParam', 'setSearchTitle', 'getSearchTitle', 'getActiveRecommList'));
         $oLocatorTarget->expects($this->any())->method('addTplParam');
         $oLocatorTarget->expects($this->any())->method('setSearchTitle');
         $oLocatorTarget->expects($this->any())->method('getSearchTitle');
@@ -642,10 +617,10 @@ class LocatorTest extends \OxidTestCase
         $oRecomm = oxNew('oxRecommList');
         $oRecomm->load("testlist");
 
-        $oCurrArticle = $this->getMock('oxarticle', array('getId'));
+        $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId'));
         $oCurrArticle->expects($this->any())->method('getId')->will($this->returnValue('1651'));
 
-        $oLocatorTarget = $this->getMock('oxubase', array('getLinkType', 'addTplParam', 'setSearchTitle', 'getSearchTitle', 'getActiveRecommList'));
+        $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getLinkType', 'addTplParam', 'setSearchTitle', 'getSearchTitle', 'getActiveRecommList'));
         $oLocatorTarget->expects($this->any())->method('addTplParam');
         $oLocatorTarget->expects($this->any())->method('setSearchTitle');
         $oLocatorTarget->expects($this->any())->method('getSearchTitle');
@@ -668,7 +643,7 @@ class LocatorTest extends \OxidTestCase
 
     public function testLoadIdsInList()
     {
-        $oCurrArticle = $this->getMock('oxarticle', array('getId'));
+        $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId'));
         $oCurrArticle->expects($this->once())->method('getId')->will($this->returnValue('1651'));
 
         $sActCat = $this->getTestConfig()->getShopEdition() == 'EE'? '30e44ab83fdee7564.23264141' : '8a142c3e4143562a5.46426637';
@@ -688,7 +663,7 @@ class LocatorTest extends \OxidTestCase
 
     public function testLoadIdsInListNonExistingArticle()
     {
-        $oCurrArticle = $this->getMock('oxarticle', array('getId'));
+        $oCurrArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId'));
         $oCurrArticle->expects($this->once())->method('getId')->will($this->returnValue('xxx'));
 
         $sActCat = $this->getTestConfig()->getShopEdition() == 'EE'? '30e44ab83fdee7564.23264141' : '8a142c3e4143562a5.46426637';
@@ -774,7 +749,7 @@ class LocatorTest extends \OxidTestCase
 
     public function testGetProductPos()
     {
-        $oLocatorTarget = $this->getMock('oxubase', array('getLinkType'));
+        $oLocatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getLinkType'));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
 
         $aTest = array();
@@ -786,7 +761,7 @@ class LocatorTest extends \OxidTestCase
         $oTest = oxNew('oxlist');
         $oTest->assign($aTest);
 
-        $oArticle = $this->getMock('oxarticle', array('getId'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId'));
         $oArticle->expects($this->any())->method('getId')->will($this->returnValue('2000'));
         $oArticle->oxarticles__oxparentid = new oxField(null, oxField::T_RAW);
 
@@ -822,7 +797,7 @@ class LocatorTest extends \OxidTestCase
         $oTest = oxNew('oxlist');
         $oTest->assign($aTest);
 
-        $oArticle = $this->getMock('oxarticle', array('getId'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getId'));
         $oArticle->expects($this->any())->method('getId')->will($this->returnValue('2000-1'));
         $oArticle->oxarticles__oxparentid = new oxField('2000', oxField::T_RAW);
 
@@ -844,7 +819,7 @@ class LocatorTest extends \OxidTestCase
         $article = $this->insertArticle('1234567');
         $otherArticle = $this->insertArticle('1234567A');
 
-        $locatorTarget = $this->getMock('oxubase', array('getLinkType'));
+        $locatorTarget = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getLinkType'));
         $locatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
 
         $array = array();

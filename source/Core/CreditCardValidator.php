@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * Credit card validation class
@@ -28,13 +12,12 @@ namespace OxidEsales\Eshop\Core;
  */
 class CreditCardValidator
 {
-
     /**
      * Credit card identification check array
      *
      * @var array
      */
-    protected $_aCardsInfo = array( // name              // digits     // starting digits
+    protected $_aCardsInfo = [ // name              // digits     // starting digits
         "amx" => '/^3[47].{13}$/', // American Express     16            34, 37
         "dlt" => '/^4.{15}$/', // Delta                16            4
         "dnc" => '/^30[0-5].{11}$|^3[68].{12}$/', // Diners Club          14            300-305, 36, 38
@@ -44,7 +27,7 @@ class CreditCardValidator
         "mcd" => '/^5[1-5].{14}$/', // MasterCard           16            51-55
         "swi" => '/^[456].{15}$|^[456].{17,18}$/', // Switch               16, 18, 19    4-6
         "vis" => '/^4.{15}$|^4.{12}$/', // Visa                 13, 16        4
-    );
+    ];
 
     /**
      * Checks credit card type. Returns TRUE if card is valid

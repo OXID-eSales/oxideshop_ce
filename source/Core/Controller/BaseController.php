@@ -1,47 +1,26 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core\Controller;
+namespace OxidEsales\EshopCommunity\Core\Controller;
 
-use oxCategory;
-use oxRegistry;
-use oxShop;
-use oxSystemComponentException;
-use oxUtilsObject;
-use oxView;
-use oxViewConfig;
+use OxidEsales\EshopCommunity\Core\ShopVersion;
+use Psr\Container\ContainerInterface;
 
 /**
  * Base view class. Collects and passes data to template engine, sets some global
  * configuration parameters.
  */
-class BaseController extends \oxSuperCfg
+class BaseController extends \OxidEsales\Eshop\Core\Base
 {
     /**
      * Array of data that is passed to template engine - array( "varName" => "varValue").
      *
      * @var array
      */
-    protected $_aViewData = array();
+    protected $_aViewData = [];
 
     /**
      * Location of a executed class file.
@@ -60,7 +39,7 @@ class BaseController extends \oxSuperCfg
     /**
      * If this is a component we will have our parent view here.
      *
-     * @var oxView
+     * @var \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected $_oParent = null;
 
@@ -91,6 +70,13 @@ class BaseController extends \oxSuperCfg
      * @var string
      */
     protected $_sClass = null;
+
+    /**
+     * Current view class key
+     *
+     * @var string
+     */
+    protected $classKey = null;
 
     /**
      * Action function name
@@ -170,14 +156,14 @@ class BaseController extends \oxSuperCfg
     protected $_blIsCallForCache = false;
 
     /**
-     * oxViewConfig instance
+     * \OxidEsales\Eshop\Core\ViewConfig instance
      *
-     * @var oxViewConfig
+     * @var \OxidEsales\Eshop\Core\ViewConfig
      */
     protected $_oViewConf = null;
 
     /**
-     * Initiates all components stored, executes oxView::addGlobalParams.
+     * Initiates all components stored, executes \OxidEsales\Eshop\Core\Controller\BaseController::addGlobalParams.
      */
     public function init()
     {
@@ -257,9 +243,9 @@ class BaseController extends \oxSuperCfg
      * <b>version</b>,
      * <b>urlsign</b>
      *
-     * @param oxShop $oShop current shop object
+     * @param \OxidEsales\Eshop\Application\Model\Shop $oShop current shop object
      *
-     * @return oxViewConfig $oShop current shop object
+     * @return \OxidEsales\Eshop\Core\ViewConfig $oShop current shop object
      */
     public function addGlobalParams($oShop = null)
     {
@@ -310,12 +296,12 @@ class BaseController extends \oxSuperCfg
     /**
      * Returns view config object
      *
-     * @return \oxViewConfig
+     * @return \OxidEsales\Eshop\Core\ViewConfig
      */
     public function getViewConfig()
     {
         if ($this->_oViewConf === null) {
-            $this->_oViewConf = oxNew('oxViewConfig');
+            $this->_oViewConf = oxNew(\OxidEsales\Eshop\Core\ViewConfig::class);
         }
 
         return $this->_oViewConf;
@@ -342,23 +328,50 @@ class BaseController extends \oxSuperCfg
     }
 
     /**
+     * @deprecated since v6.0 (2017-02-3). Use BaseController::setClassKey() instead.
+     *
+     * NOTE: current usage and name misleading, the shop actually calls this function with the view's class id as argument.
+     *
      * Current view class name setter.
      *
-     * @param string $sClassName current view class name
+     * @param string $classKey current view class name
      */
-    public function setClassName($sClassName)
+    public function setClassName($classKey)
     {
-        $this->_sClass = $sClassName;
+        $this->_sClass = $classKey;
+        $this->setClassKey($classKey);
     }
 
     /**
+     * @deprecated since v6.0 (2017-02-3). Use BaseController::getClassId() instead.
+     *
      * Returns class name of current class
      *
      * @return string
      */
     public function getClassName()
     {
-        return $this->_sClass;
+        return $this->getClassKey();
+    }
+
+    /**
+     * Current view class key setter.
+     *
+     * @param string $classKey current view class key
+     */
+    public function setClassKey($classKey)
+    {
+        $this->classKey = $classKey;
+    }
+
+    /**
+     * Returns class key of current view
+     *
+     * @return string
+     */
+    public function getClassKey()
+    {
+        return $this->classKey;
     }
 
     /**
@@ -501,7 +514,7 @@ class BaseController extends \oxSuperCfg
      *
      * @param string $sFunction name of function to execute
      *
-     * @throws oxSystemComponentException system component exception
+     * @throws \OxidEsales\Eshop\Core\Exception\SystemComponentException system component exception
      */
     public function executeFunction($sFunction)
     {
@@ -517,9 +530,9 @@ class BaseController extends \oxSuperCfg
             } else {
                 // was not executed on any level ?
                 if (!$this->_blIsComponent) {
-                    /** @var oxSystemComponentException $oEx */
-                    $oEx = oxNew('oxSystemComponentException');
-                    $oEx->setMessage('ERROR_MESSAGE_SYSTEMCOMPONENT_FUNCTIONNOTFOUND');
+                    /** @var \OxidEsales\Eshop\Core\Exception\SystemComponentException $oEx */
+                    $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class);
+                    $oEx->setMessage('ERROR_MESSAGE_SYSTEMCOMPONENT_FUNCTIONNOTFOUND'. ' ' . $sFunction);
                     $oEx->setComponent($sFunction);
                     throw $oEx;
                 }
@@ -534,7 +547,7 @@ class BaseController extends \oxSuperCfg
      *
      * @param string $sNewAction new action params
      *
-     * @throws oxSystemComponentException system component exception
+     * @throws \OxidEsales\Eshop\Core\Exception\SystemComponentException system component exception
      */
     protected function _executeNewAction($sNewAction)
     {
@@ -542,45 +555,46 @@ class BaseController extends \oxSuperCfg
             $myConfig = $this->getConfig();
 
             // page parameters is the part which goes after '?'
-            $aParams = explode('?', $sNewAction);
+            $params = explode('?', $sNewAction);
 
             // action parameters is the part before '?'
-            $sPageParams = isset($aParams[1]) ? $aParams[1] : null;
+            $pageParams = isset($params[1]) ? $params[1] : null;
 
             // looking for function name
-            $aParams = explode('/', $aParams[0]);
-            $sClassName = $aParams[0];
-            $realClassName = oxUtilsObject::getInstance()->getClassName($sClassName);
+            $params = explode('/', $params[0]);
+            $className = $params[0];
+            $resolvedClassName = \OxidEsales\Eshop\Core\Registry::getControllerClassNameResolver()->getClassNameById($className);
+            $realClassName = $resolvedClassName ? \OxidEsales\Eshop\Core\Registry::getUtilsObject()->getClassName($resolvedClassName) : \OxidEsales\Eshop\Core\Registry::getUtilsObject()->getClassName($className);
 
             if (false === class_exists($realClassName)) {
                 //If redirect tries to use a not existing class throw an exception.
                 //we'll be redirected to start page directly.
-                /** @var oxSystemComponentException $exception */
-                $exception = oxNew('oxSystemComponentException');
-                $exception->setMessage('ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND');
-                $exception->setComponent($sClassName);
+                $exception =  new \OxidEsales\Eshop\Core\Exception\SystemComponentException();
+                /** Use setMessage here instead of passing it in constructor in order to test exception message */
+                $exception->setMessage('ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND' . ' ' . $className);
+                $exception->setComponent($className);
                 throw $exception;
             }
 
             // building redirect path ...
-            $sHeader = ($sClassName) ? "cl=$sClassName&" : ''; // adding view name
-            $sHeader .= ($sPageParams) ? "$sPageParams&" : ''; // adding page params
-            $sHeader .= $this->getSession()->sid(); // adding session Id
+            $header = ($className) ? "cl=$className&" : ''; // adding view name
+            $header .= ($pageParams) ? "$pageParams&" : ''; // adding page params
+            $header .= $this->getSession()->sid(); // adding session Id
 
-            $sUrl = $myConfig->getCurrentShopUrl($this->isAdmin());
+            $url = $myConfig->getCurrentShopUrl($this->isAdmin());
 
-            $sUrl = "{$sUrl}index.php?{$sHeader}";
+            $url = "{$url}index.php?{$header}";
 
-            $sUrl = oxRegistry::get("oxUtilsUrl")->processUrl($sUrl);
+            $url = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($url);
 
-            if (oxRegistry::getUtils()->seoIsActive() && $sSeoUrl = oxRegistry::get("oxSeoEncoder")->getStaticUrl($sUrl)) {
-                $sUrl = $sSeoUrl;
+            if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && $seoUrl = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($url)) {
+                $url = $seoUrl;
             }
 
             $this->onExecuteNewAction();
 
             //#M341 do not add redirect parameter
-            oxRegistry::getUtils()->redirect($sUrl, (bool) $myConfig->getRequestParameter('redirected'), 302);
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($url, (bool) $myConfig->getRequestParameter('redirected'), 302);
         }
     }
 
@@ -598,7 +612,7 @@ class BaseController extends \oxSuperCfg
      */
     public function getAdditionalParams()
     {
-        return oxRegistry::get("oxUtilsUrl")->processUrl('', false);
+        return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl('', false);
     }
 
     /**
@@ -609,7 +623,7 @@ class BaseController extends \oxSuperCfg
     public function getCharSet()
     {
         if ($this->_sCharSet == null) {
-            $this->_sCharSet = oxRegistry::getLang()->translateString('charset');
+            $this->_sCharSet = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('charset');
         }
 
         return $this->_sCharSet;
@@ -622,11 +636,7 @@ class BaseController extends \oxSuperCfg
      */
     public function getShopVersion()
     {
-        if ($this->_sVersion == null) {
-            $this->_sVersion = $this->getConfig()->getActiveShop()->oxshops__oxversion->value;
-        }
-
-        return $this->_sVersion;
+        return ShopVersion::getVersion();
     }
 
     /**
@@ -637,16 +647,6 @@ class BaseController extends \oxSuperCfg
     public function getShopEdition()
     {
         return $this->getConfig()->getEdition();
-    }
-
-    /**
-     * Returns shop revision
-     *
-     * @return string
-     */
-    public function getRevision()
-    {
-        return $this->getConfig()->getRevision();
     }
 
     /**
@@ -759,39 +759,11 @@ class BaseController extends \oxSuperCfg
     }
 
     /**
-     * Template variable getter. Returns shop logo from config option
-     *
-     * @deprecated since v5.1.0 (2013-09-23); Use oxViewConfig::getShopLogo().
-     *
-     * @return string
-     */
-    public function getShopLogo()
-    {
-        if ($this->_sShopLogo === null) {
-            $this->setShopLogo($this->getConfig()->getConfigParam('sShopLogo'));
-        }
-
-        return $this->_sShopLogo;
-    }
-
-    /**
-     * Sets shop logo
-     *
-     * @param string $sLogo shop logo url
-     *
-     * @deprecated since v5.1.0 (2013-09-23); Use oxViewConfig::setShopLogo().
-     */
-    public function setShopLogo($sLogo)
-    {
-        $this->_sShopLogo = $sLogo;
-    }
-
-    /**
      * Returns active category set by categories component; if category is
      * not set by component - will create category object and will try to
      * load by id passed by request
      *
-     * @return oxCategory
+     * @return \OxidEsales\Eshop\Application\Model\Category
      */
     public function getActCategory()
     {
@@ -800,7 +772,7 @@ class BaseController extends \oxSuperCfg
         // and we still need some object to mount navigation info
         if ($this->_oClickCat === null) {
             $this->_oClickCat = false;
-            $oCategory = oxNew('oxCategory');
+            $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             if ($oCategory->load($this->getCategoryId())) {
                 $this->_oClickCat = $oCategory;
             }
@@ -812,7 +784,7 @@ class BaseController extends \oxSuperCfg
     /**
      * Active category setter
      *
-     * @param oxCategory $oCategory active category
+     * @param \OxidEsales\Eshop\Application\Model\Category $oCategory active category
      */
     public function setActCategory($oCategory)
     {
@@ -907,5 +879,15 @@ class BaseController extends \oxSuperCfg
     public function showPersParam($persParamKey)
     {
         return true;
+    }
+
+    /**
+     * @internal
+     *
+     * @return ContainerInterface
+     */
+    protected function getContainer()
+    {
+        return \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
     }
 }

@@ -1,28 +1,12 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Tests\Acceptance\Frontend;
+namespace OxidEsales\EshopCommunity\Tests\Acceptance\Frontend;
 
-use OxidEsales\Eshop\Tests\Acceptance\FrontendTestCase;
+use OxidEsales\EshopCommunity\Tests\Acceptance\FrontendTestCase;
 
 /** My account related tests */
 class MyAccountFrontendTest extends FrontendTestCase
@@ -506,7 +490,7 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->clickAndWAit("//ul[@id='services']/li[5]/a");
         $this->type("amountToBasket_noticelistProductList_1", "2");
         $this->clickAndWait("toBasket_noticelistProductList_1");
-        $this->assertEquals("2", $this->getText("//div[@id='miniBasket']/span"));
+        $this->waitForElementText("2", "//div[@id='miniBasket']/span");
 
         $this->clickAndWait("//button[@triggerform='remove_tonoticelistnoticelistProductList_1']");
         $this->assertEquals("%PAGE_TITLE_ACCOUNT_NOTICELIST%", $this->getText("//h1"));
@@ -660,7 +644,7 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->clickAndWAit("//ul[@id='services']/li[6]/a");
         $this->type("amountToBasket_wishlistProductList_1", "2");
         $this->clickAndWait("toBasket_wishlistProductList_1");
-        $this->assertEquals("2", $this->getText("//div[@id='miniBasket']/span"));
+        $this->waitForElementText("2", "//div[@id='miniBasket']/span");
         $this->clickAndWait("//button[@triggerform='remove_towishlistwishlistProductList_1']");
         $this->assertTextPresent("%GIFT_REGISTRY_EMPTY%");
 
@@ -715,7 +699,7 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("wishlistProductList_1"));
         $this->type("amountToBasket_wishlistProductList_1", "2");
         $this->clickAndWait("toBasket_wishlistProductList_1");
-        $this->assertEquals("2", $this->getText("//div[@id='miniBasket']/span"));
+        $this->waitForElementText("2", "//div[@id='miniBasket']/span");
 
         //deleting gift registry
         $this->clickAndWait("link=%LOGOUT%");

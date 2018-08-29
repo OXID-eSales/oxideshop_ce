@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
 use oxField;
@@ -33,9 +17,8 @@ use oxUtilsFile;
  * Article actions manager. Collects and keeps actions of chosen article.
  *
  */
-class Actions extends \oxI18n
+class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-
     /**
      * Current class name
      *
@@ -59,16 +42,16 @@ class Actions extends \oxI18n
      */
     public function addArticle($articleId)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQ = "select max(oxsort) from oxactions2article where oxactionid = " . $oDb->quote($this->getId()) . " and oxshopid = '" . $this->getShopId() . "'";
         $iSort = ((int) $oDb->getOne($sQ)) + 1;
 
-        $oNewGroup = oxNew('oxBase');
+        $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
         $oNewGroup->init('oxactions2article');
-        $oNewGroup->oxactions2article__oxshopid = new oxField($this->getShopId());
-        $oNewGroup->oxactions2article__oxactionid = new oxField($this->getId());
-        $oNewGroup->oxactions2article__oxartid = new oxField($articleId);
-        $oNewGroup->oxactions2article__oxsort = new oxField($iSort);
+        $oNewGroup->oxactions2article__oxshopid = new \OxidEsales\Eshop\Core\Field($this->getShopId());
+        $oNewGroup->oxactions2article__oxactionid = new \OxidEsales\Eshop\Core\Field($this->getId());
+        $oNewGroup->oxactions2article__oxartid = new \OxidEsales\Eshop\Core\Field($articleId);
+        $oNewGroup->oxactions2article__oxsort = new \OxidEsales\Eshop\Core\Field($iSort);
         $oNewGroup->save();
     }
 
@@ -82,7 +65,7 @@ class Actions extends \oxI18n
     public function removeArticle($articleId)
     {
         // remove actions from articles also
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sDelete = "delete from oxactions2article where oxactionid = " . $oDb->quote($this->getId()) . " and oxartid = " . $oDb->quote($articleId) . " and oxshopid = '" . $this->getShopId() . "'";
         $iRemovedArticles = $oDb->execute($sDelete);
 
@@ -106,7 +89,7 @@ class Actions extends \oxI18n
         }
 
         // remove actions from articles also
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sDelete = "delete from oxactions2article where oxactionid = " . $oDb->quote($articleId) . " and oxshopid = '" . $this->getShopId() . "'";
         $oDb->execute($sDelete);
 
@@ -120,7 +103,7 @@ class Actions extends \oxI18n
      */
     public function getTimeLeft()
     {
-        $iNow = oxRegistry::get("oxUtilsDate")->getTime();
+        $iNow = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $iFrom = strtotime($this->oxactions__oxactiveto->value);
 
         return $iFrom - $iNow;
@@ -133,7 +116,7 @@ class Actions extends \oxI18n
      */
     public function getTimeUntilStart()
     {
-        $iNow = oxRegistry::get("oxUtilsDate")->getTime();
+        $iNow = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $iFrom = strtotime($this->oxactions__oxactivefrom->value);
 
         return $iFrom - $iNow;
@@ -144,12 +127,12 @@ class Actions extends \oxI18n
      */
     public function start()
     {
-        $this->oxactions__oxactivefrom = new oxField(date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
+        $this->oxactions__oxactivefrom = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
         if ($this->oxactions__oxactiveto->value && ($this->oxactions__oxactiveto->value != '0000-00-00 00:00:00')) {
-            $iNow = oxRegistry::get("oxUtilsDate")->getTime();
+            $iNow = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
             $iTo = strtotime($this->oxactions__oxactiveto->value);
             if ($iNow > $iTo) {
-                $this->oxactions__oxactiveto = new oxField('0000-00-00 00:00:00');
+                $this->oxactions__oxactiveto = new \OxidEsales\Eshop\Core\Field('0000-00-00 00:00:00');
             }
         }
         $this->save();
@@ -160,7 +143,7 @@ class Actions extends \oxI18n
      */
     public function stop()
     {
-        $this->oxactions__oxactiveto = new oxField(date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()));
+        $this->oxactions__oxactiveto = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
         $this->save();
     }
 
@@ -178,7 +161,7 @@ class Actions extends \oxI18n
         ) {
             return false;
         }
-        $iNow = oxRegistry::get("oxUtilsDate")->getTime();
+        $iNow = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $iFrom = strtotime($this->oxactions__oxactivefrom->value);
         if ($iNow < $iFrom) {
             return false;
@@ -201,8 +184,8 @@ class Actions extends \oxI18n
      */
     public function getLongDesc()
     {
-        /** @var oxUtilsView $oUtilsView */
-        $oUtilsView = oxRegistry::get("oxUtilsView");
+        /** @var \OxidEsales\Eshop\Core\UtilsView $oUtilsView */
+        $oUtilsView = \OxidEsales\Eshop\Core\Registry::getUtilsView();
         return $oUtilsView->parseThroughSmarty($this->oxactions__oxlongdesc->getRawValue(), $this->getId() . $this->getLanguage(), null, true);
     }
 
@@ -216,10 +199,10 @@ class Actions extends \oxI18n
         $sArtId = $this->fetchBannerArticleId();
 
         if ($sArtId) {
-            $oArticle = oxNew('oxArticle');
+            $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
             if ($this->isAdmin()) {
-                $oArticle->setLanguage(oxRegistry::getLang()->getEditLanguage());
+                $oArticle->setLanguage(\OxidEsales\Eshop\Core\Registry::getLang()->getEditLanguage());
             }
 
             if ($oArticle->load($sArtId)) {
@@ -238,7 +221,7 @@ class Actions extends \oxI18n
      */
     protected function fetchBannerArticleId()
     {
-        $database = oxDb::getDb();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $articleId = $database->getOne(
             'select oxobjectid from oxobject2action ' .
@@ -257,7 +240,7 @@ class Actions extends \oxI18n
     public function getBannerPictureUrl()
     {
         if (isset($this->oxactions__oxpic) && $this->oxactions__oxpic->value) {
-            $sPromoDir = oxRegistry::get("oxUtilsFile")->normalizeDir(oxUtilsFile::PROMO_PICTURE_DIR);
+            $sPromoDir = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->normalizeDir(\OxidEsales\Eshop\Core\UtilsFile::PROMO_PICTURE_DIR);
 
             return $this->getConfig()->getPictureUrl($sPromoDir . $this->oxactions__oxpic->value, false);
         }
@@ -274,8 +257,8 @@ class Actions extends \oxI18n
         $sUrl = null;
 
         if (isset($this->oxactions__oxlink) && $this->oxactions__oxlink->value) {
-            /** @var oxUtilsUrl $oUtilsUlr */
-            $oUtilsUlr = oxRegistry::get("oxUtilsUrl");
+            /** @var \OxidEsales\Eshop\Core\UtilsUrl $oUtilsUlr */
+            $oUtilsUlr = \OxidEsales\Eshop\Core\Registry::getUtilsUrl();
             $sUrl = $oUtilsUlr->addShopHost($this->oxactions__oxlink->value);
             $sUrl = $oUtilsUlr->processUrl($sUrl);
         } else {
@@ -286,5 +269,15 @@ class Actions extends \oxI18n
         }
 
         return $sUrl;
+    }
+
+    /**
+     * Returns true if Action is default.
+     *
+     * @return bool
+     */
+    public function isDefault()
+    {
+        return '0' === $this->oxactions__oxtype->value;
     }
 }

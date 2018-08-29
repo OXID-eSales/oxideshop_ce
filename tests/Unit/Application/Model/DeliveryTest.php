@@ -1,25 +1,9 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use oxArticleHelper;
 use \oxDelivery;
@@ -90,7 +74,7 @@ class DeliveryTest extends \OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        oxAddClassModule('Unit\Application\Model\modOxDelivery', 'oxDelivery');
+        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modOxDelivery::class, 'oxDelivery');
 
         $this->cleanUpTable('oxdelivery');
         $this->cleanUpTable('oxobject2delivery');
@@ -160,7 +144,7 @@ class DeliveryTest extends \OxidTestCase
      */
     protected function tearDown()
     {
-        oxRemClassModule('Unit\Application\Model\modOxDelivery');
+        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modOxDelivery::class);
 
         $this->cleanUpTable('oxdelivery');
         $this->cleanUpTable('oxobject2delivery');
@@ -706,12 +690,12 @@ class DeliveryTest extends \OxidTestCase
         $oDelivery->oxdelivery__oxfixed = new oxField('2', oxField::T_RAW);
 
         /** @var oxOrderArticle|PHPUnit_Framework_MockObject_MockObject $oOrderArticle */
-        $oOrderArticle = $this->getMock('oxOrderArticle', array(), array(), '', false);
+        $oOrderArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\OrderArticle::class, array(), array(), '', false);
         $oOrderArticle->expects($this->any())->method('getArticle')->will($this->returnValue($this->_oBasketItem->getArticle()));
         $oOrderArticle->expects($this->any())->method('isOrderArticle')->will($this->returnValue(true));
 
         /** @var oxBasketItem $oBasketItem|PHPUnit_Framework_MockObject_MockObject */
-        $oBasketItem = $this->getMock('oxBasketItem', array(), array(), '', false);
+        $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array(), array(), '', false);
         $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($oOrderArticle));
 
         $this->assertEquals(5, $oDelivery->getDeliveryAmount($oBasketItem));
@@ -754,12 +738,12 @@ class DeliveryTest extends \OxidTestCase
         $oDelivery->oxdelivery__oxfixed = new oxField('2', oxField::T_RAW);
 
         /** @var oxOrderArticle|PHPUnit_Framework_MockObject_MockObject $oOrderArticle */
-        $oOrderArticle = $this->getMock('oxOrderArticle', array(), array(), '', false);
+        $oOrderArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\OrderArticle::class, array(), array(), '', false);
         $oOrderArticle->expects($this->any())->method('getArticle')->will($this->returnValue($this->_oBasketItem->getArticle()));
         $oOrderArticle->expects($this->any())->method('isOrderArticle')->will($this->returnValue(true));
 
         /** @var oxBasketItem $oBasketItem|PHPUnit_Framework_MockObject_MockObject */
-        $oBasketItem = $this->getMock('oxBasketItem', array(), array(), '', false);
+        $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array(), array(), '', false);
         $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($oOrderArticle));
 
         $this->assertEquals(48, $oDelivery->getDeliveryAmount($oBasketItem));
@@ -1056,7 +1040,7 @@ class DeliveryTest extends \OxidTestCase
 
     public function testIsForArticle()
     {
-        $oDelivery = $this->getMock('Unit\Application\Model\modOxDelivery', array('_checkDeliveryAmount', 'getCalculationRule'));
+        $oDelivery = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modOxDelivery::class, array('_checkDeliveryAmount', 'getCalculationRule'));
         $oDelivery->expects($this->once())->method('_checkDeliveryAmount')->will($this->returnValue(true));
         $calculateMoreThanOncePerCartRule = 123;
         $oDelivery->expects($this->any())->method('getCalculationRule')->will($this->returnValue($calculateMoreThanOncePerCartRule));

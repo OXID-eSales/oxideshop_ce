@@ -25,7 +25,7 @@
       <!--
         // standard messages
         var sUnassignMessage = "[{oxmultilang ident='GENERAL_YOUWANTTOUNASSIGN'}]";
-        var sDeleteMessage   = "[{oxmultilang ident='GENERAL_YOUWANTTODELETE'}]";;
+        var sDeleteMessage   = "[{oxmultilang ident='GENERAL_YOUWANTTODELETE'}]";
 
         // class info
         var sDefClass = '[{$default_edit}]';

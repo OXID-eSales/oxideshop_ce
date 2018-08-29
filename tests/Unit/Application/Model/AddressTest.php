@@ -1,25 +1,9 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
 use \oxDb;
@@ -104,7 +88,7 @@ class AddressTest extends \OxidTestCase
      */
     public function testToStringMagicMocked()
     {
-        $oSubj = $this->getMock("oxaddress", array("toString"));
+        $oSubj = $this->getMock(\OxidEsales\Eshop\Application\Model\Address::class, array("toString"));
         $oSubj->expects($this->once())->method('toString')->will($this->returnValue("teststr"));
         (string) $oSubj;
     }
@@ -154,7 +138,7 @@ class AddressTest extends \OxidTestCase
         $iAlternateStateId = 'AK';
 
         /** @var oxState|PHPUnit_Framework_MockObject_MockObject $oStateMock */
-        $oStateMock = $this->getMock('oxState', array('getTitleById'));
+        $oStateMock = $this->getMock(\OxidEsales\Eshop\Application\Model\State::class, array('getTitleById'));
 
         $oStateMock->expects($this->at(0))
             ->method('getTitleById')
@@ -177,7 +161,7 @@ class AddressTest extends \OxidTestCase
             ->will($this->returnValue('Alaska'));
 
         /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUserMock */
-        $oAddressMock = $this->getMock('oxAddress', array('_getStateObject', 'getStateId'));
+        $oAddressMock = $this->getMock(\OxidEsales\Eshop\Application\Model\Address::class, array('_getStateObject', 'getStateId'));
 
         $oAddressMock->expects($this->any())
             ->method('_getStateObject')

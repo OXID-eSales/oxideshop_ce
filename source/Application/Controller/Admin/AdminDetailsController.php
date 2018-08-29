@@ -1,36 +1,17 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxField;
+use OxidEsales\Eshop\Core\ShopVersion;
 
 /**
  * Admin selectlist list manager.
- *
- * @internal This class should not be directly extended, instead of it oxAdminDetails class should be used.
  */
-class AdminDetailsController extends \oxAdminView
+class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
     /**
      * Global editor object.
@@ -55,8 +36,8 @@ class AdminDetailsController extends \oxAdminView
             $sDir = $myConfig->getConfigParam('sShopURL') . 'documentation/admin';
         } else {
             $languageId = $this->getDocumentationLanguageId();
-            $oShop = $this->_getEditShop(oxRegistry::getSession()->getVariable('actshop'));
-            $sDir = "http://docu.oxid-esales.com/PE/{$oShop->oxshops__oxversion->value}/" . $languageId . '/admin';
+            $shopVersion = oxNew(ShopVersion::class)->getVersion();
+            $sDir = "http://docu.oxid-esales.com/PE/{$shopVersion}/" . $languageId . '/admin';
         }
 
         $this->_aViewData['sHelpURL'] = $sDir;
@@ -66,10 +47,12 @@ class AdminDetailsController extends \oxAdminView
 
     /**
      * Get language id for documentation by current language id.
+     *
+     * @return int
      */
     protected function getDocumentationLanguageId()
     {
-        $language = oxRegistry::getLang();
+        $language = \OxidEsales\Eshop\Core\Registry::getLang();
         $languageAbbr = $language->getLanguageAbbr($language->getTplLanguage());
 
         return $languageAbbr === "de" ? 0 : 1;
@@ -78,8 +61,8 @@ class AdminDetailsController extends \oxAdminView
     /**
      * Returns string which must be edited by editor.
      *
-     * @param oxbase $oObject object whifh field will be used for editing
-     * @param string $sField  name of editable field
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $oObject object used for editing
+     * @param string                                 $sField  name of editable field
      *
      * @return string
      */
@@ -87,14 +70,14 @@ class AdminDetailsController extends \oxAdminView
     {
         $sEditObjectValue = '';
         if ($oObject && $sField && isset($oObject->$sField)) {
-            if ($oObject->$sField instanceof oxField) {
+            if ($oObject->$sField instanceof \OxidEsales\Eshop\Core\Field) {
                 $sEditObjectValue = $oObject->$sField->getRawValue();
             } else {
                 $sEditObjectValue = $oObject->$sField->value;
             }
 
             $sEditObjectValue = $this->_processEditValue($sEditObjectValue);
-            $oObject->$sField = new oxField($sEditObjectValue, oxField::T_RAW);
+            $oObject->$sField = new \OxidEsales\Eshop\Core\Field($sEditObjectValue, \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
         return $sEditObjectValue;
@@ -113,7 +96,7 @@ class AdminDetailsController extends \oxAdminView
         // store smarty tags ([{$shop->currenthomedir}]/[{$oViewConf->getCurrentHomeDir()}]) in long
         // descriptions, which are filled dynamically
         if (!$this->getConfig()->getConfigParam('bl_perfParseLongDescinSmarty')) {
-            $aReplace = array('[{$shop->currenthomedir}]', '[{$oViewConf->getCurrentHomeDir()}]');
+            $aReplace = ['[{$shop->currenthomedir}]', '[{$oViewConf->getCurrentHomeDir()}]'];
             $sValue = str_replace($aReplace, $this->getConfig()->getCurrentShopURL(false), $sValue);
         }
 
@@ -123,43 +106,61 @@ class AdminDetailsController extends \oxAdminView
     /**
      * Returns textarea filled with text to edit.
      *
-     * @param int    $iWidth  editor width
-     * @param int    $iHeight editor height
-     * @param object $oObject object passed to editor
-     * @param string $sField  object field which content is passed to editor
+     * @param int                                    $width  editor width
+     * @param int                                    $height editor height
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $object object passed to editor
+     * @param string                                 $field  object field which content is passed to editor
+     *
+     * @deprecated since v6.0 (2017-06-29); Please use TextEditorHandler::renderPlainTextEditor() method.
      *
      * @return string
      */
-    protected function _getPlainEditor($iWidth, $iHeight, $oObject, $sField)
+    protected function _getPlainEditor($width, $height, $object, $field)
     {
-        $sEditObjectValue = $this->_getEditValue($oObject, $sField);
+        $objectValue = $this->_getEditValue($object, $field);
 
-        if (strpos($iWidth, '%') === false) {
-            $iWidth .= 'px';
-        }
-        if (strpos($iHeight, '%') === false) {
-            $iHeight .= 'px';
-        }
+        $textEditor = oxNew(\OxidEsales\Eshop\Application\Controller\TextEditorHandler::class);
 
-        return "<textarea id='editor_{$sField}' style='width:{$iWidth}; height:{$iHeight};'>{$sEditObjectValue}</textarea>";
+        return $textEditor->renderPlainTextEditor($width, $height, $objectValue, $field);
     }
 
     /**
      * Generates Text editor html code.
      *
-     * @param int    $iWidth      editor width
-     * @param int    $iHeight     editor height
-     * @param object $oObject     object passed to editor
-     * @param string $sField      object field which content is passed to editor
-     * @param string $sStylesheet stylesheet to use in editor
+     * @param int                                    $width      editor width
+     * @param int                                    $height     editor height
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $object     object passed to editor
+     * @param string                                 $field      object field which content is passed to editor
+     * @param string                                 $stylesheet stylesheet to use in editor
+     *
+     * @deprecated since v6.0 (2017-06-29); Please use generateTextEditor() method.
      *
      * @return string Editor output
      */
-    protected function _generateTextEditor($iWidth, $iHeight, $oObject, $sField, $sStylesheet = null)
+    protected function _generateTextEditor($width, $height, $object, $field, $stylesheet = null)
     {
-        $sEditorHtml = $this->_getPlainEditor($iWidth, $iHeight, $oObject, $sField);
+        return $this->generateTextEditor($width, $height, $object, $field, $stylesheet);
+    }
 
-        return $sEditorHtml;
+    /**
+     * Generates Text editor html code.
+     *
+     * @param int                                    $width      editor width
+     * @param int                                    $height     editor height
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $object     object passed to editor
+     * @param string                                 $field      object field which content is passed to editor
+     * @param string                                 $stylesheet stylesheet to use in editor
+     *
+     * @return string Editor output
+     */
+    protected function generateTextEditor($width, $height, $object, $field, $stylesheet = null)
+    {
+        $objectValue = $this->_getEditValue($object, $field);
+
+        $textEditorHandler = $this->createTextEditorHandler();
+        $this->configureTextEditorHandler($textEditorHandler, $object, $field, $stylesheet);
+
+        return $textEditorHandler->renderTextEditor($width, $height, $objectValue, $field);
     }
 
     /**
@@ -203,7 +204,7 @@ class AdminDetailsController extends \oxAdminView
     {
         // caching category tree, to load it once, not many times
         if (!isset($this->oCatTree) || $blForceNonCache) {
-            $this->oCatTree = oxNew('oxCategoryList');
+            $this->oCatTree = oxNew(\OxidEsales\Eshop\Application\Model\CategoryList::class);
             $this->oCatTree->setShopID($iTreeShopId);
 
             // setting language
@@ -221,10 +222,10 @@ class AdminDetailsController extends \oxAdminView
         }
 
         // add first fake category for not assigned articles
-        $oRoot = oxNew('oxCategory');
-        $oRoot->oxcategories__oxtitle = new oxField('--');
+        $oRoot = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
+        $oRoot->oxcategories__oxtitle = new \OxidEsales\Eshop\Core\Field('--');
 
-        $oCatTree->assign(array_merge(array('' => $oRoot), $oCatTree->getArray()));
+        $oCatTree->assign(array_merge(['' => $oRoot], $oCatTree->getArray()));
 
         // passing to view
         $this->_aViewData[$sTplVarName] = $oCatTree;
@@ -277,8 +278,8 @@ class AdminDetailsController extends \oxAdminView
      */
     public function changeFolder()
     {
-        $sFolder = oxRegistry::getConfig()->getRequestParameter('setfolder');
-        $sFolderClass = oxRegistry::getConfig()->getRequestParameter('folderclass');
+        $sFolder = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('setfolder');
+        $sFolderClass = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('folderclass');
 
         if ($sFolderClass == 'oxcontent' && $sFolder == 'CMSFOLDER_NONE') {
             $sFolder = '';
@@ -286,7 +287,7 @@ class AdminDetailsController extends \oxAdminView
 
         $oObject = oxNew($sFolderClass);
         if ($oObject->load($this->getEditObjectId())) {
-            $oObject->{$oObject->getCoreTableName() . '__oxfolder'} = new oxField($sFolder);
+            $oObject->{$oObject->getCoreTableName() . '__oxfolder'} = new \OxidEsales\Eshop\Core\Field($sFolder);
             $oObject->save();
         }
     }
@@ -329,5 +330,41 @@ class AdminDetailsController extends \oxAdminView
                 }
             }
         }
+    }
+
+    /**
+     * Create the handler for the text editor.
+     *
+     * Note: the parameters editedObject and field are not used here but in the enterprise edition.
+     *
+     * @param \OxidEsales\Eshop\Application\Controller\TextEditorHandler $textEditorHandler
+     * @param mixed                                                      $editedObject      The object we want to edit.
+     *                                                                                      Either type of
+     *                                                                                      \OxidEsales\Eshop\Core\BaseModel
+     *                                                                                      if you want to persist or
+     *                                                                                      anything else
+     * @param string                                                     $field             The input field we want to edit
+     * @param string                                                     $stylesheet        The name of the CSS file
+     *
+     */
+    protected function configureTextEditorHandler(
+        \OxidEsales\Eshop\Application\Controller\TextEditorHandler $textEditorHandler,
+        $editedObject,
+        $field,
+        $stylesheet
+    ) {
+        $textEditorHandler->setStyleSheet($stylesheet);
+    }
+
+    /**
+     * Create the handler for the text editor.
+     *
+     * @return \OxidEsales\Eshop\Application\Controller\TextEditorHandler The text editor handler
+     */
+    protected function createTextEditorHandler()
+    {
+        $textEditorHandler = oxNew(\OxidEsales\Eshop\Application\Controller\TextEditorHandler::class);
+
+        return $textEditorHandler;
     }
 }

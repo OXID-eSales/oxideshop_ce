@@ -1,42 +1,24 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
-use oxRegistry;
 
 /**
  * View config data access class. Keeps most
  * of getters needed for formatting various urls,
  * config parameters, session information etc.
  */
-class ViewConfig extends \oxSuperCfg
+class ViewConfig extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Active shop object. Can only be accessed when it is assigned
      *
-     * @var oxshop
+     * @var \OxidEsales\Eshop\Application\Model\Shop
      */
     protected $_oShop = null;
 
@@ -52,7 +34,7 @@ class ViewConfig extends \oxSuperCfg
      *
      * @var array
      */
-    protected $_aConfigParams = array();
+    protected $_aConfigParams = [];
 
     /**
      * Help page link
@@ -94,11 +76,11 @@ class ViewConfig extends \oxSuperCfg
 
             $blAddStartCl = $this->isStartClassRequired();
             if ($blAddStartCl) {
-                $baseLanguage = oxRegistry::getLang()->getBaseLanguage();
-                $sValue = oxRegistry::get("oxSeoEncoder")->getStaticUrl($this->getSelfLink() . 'cl=start', $baseLanguage);
-                $sValue = oxRegistry::get("oxUtilsUrl")->appendUrl(
+                $baseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+                $sValue = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($this->getSelfLink() . 'cl=start', $baseLanguage);
+                $sValue = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendUrl(
                     $sValue,
-                    oxRegistry::get("oxUtilsUrl")->getBaseAddUrlParams()
+                    \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->getBaseAddUrlParams()
                 );
                 $sValue = getStr()->preg_replace('/(\?|&(amp;)?)$/', '', $sValue);
             }
@@ -120,9 +102,9 @@ class ViewConfig extends \oxSuperCfg
      */
     protected function isStartClassRequired()
     {
-        $baseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $baseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $shopConfig = $this->getConfig();
-        $isSeoActive = oxRegistry::getUtils()->seoIsActive();
+        $isSeoActive = \OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive();
 
         return $isSeoActive && ($baseLanguage != $shopConfig->getConfigParam('sDefaultLang'));
     }
@@ -134,7 +116,7 @@ class ViewConfig extends \oxSuperCfg
      */
     public function getActContentLoadId()
     {
-        $sTplName = oxRegistry::getConfig()->getRequestParameter('oxloadid');
+        $sTplName = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxloadid');
         // #M1176: Logout from CMS page
         if (!$sTplName && $this->getConfig()->getTopActiveView()) {
             $sTplName = $this->getConfig()->getTopActiveView()->getViewConfig()->getViewConfigParam('oxloadid');
@@ -150,7 +132,7 @@ class ViewConfig extends \oxSuperCfg
      */
     public function getActTplName()
     {
-        return oxRegistry::getConfig()->getRequestParameter('tpl');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('tpl');
     }
 
     /**
@@ -209,7 +191,7 @@ class ViewConfig extends \oxSuperCfg
     {
         $sClass = $this->getActiveClassName();
 
-        return array('oxhelp' . strtolower($sClass), 'oxhelpdefault');
+        return ['oxhelp' . strtolower($sClass), 'oxhelpdefault'];
     }
 
     /**
@@ -222,9 +204,9 @@ class ViewConfig extends \oxSuperCfg
         if ($this->_sHelpPageLink === null) {
             $this->_sHelpPageLink = "";
             $aContentIdents = $this->_getHelpContentIdents();
-            $oContent = oxNew("oxContent");
+            $oContent = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
             foreach ($aContentIdents as $sIdent) {
-                if ($oContent->loadByIdent($sIdent)) {
+                if ($oContent->loadByIdent($sIdent, true)) {
                     $this->_sHelpPageLink = $oContent->getLink();
                     break;
                 }
@@ -241,7 +223,7 @@ class ViewConfig extends \oxSuperCfg
      */
     public function getActCatId()
     {
-        return oxRegistry::getConfig()->getRequestParameter('cnid');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid');
     }
 
     /**
@@ -251,7 +233,7 @@ class ViewConfig extends \oxSuperCfg
      */
     public function getActArticleId()
     {
-        return oxRegistry::getConfig()->getRequestParameter('anid');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('anid');
     }
 
     /**
@@ -261,7 +243,7 @@ class ViewConfig extends \oxSuperCfg
      */
     public function getActSearchParam()
     {
-        return oxRegistry::getConfig()->getRequestParameter('searchparam');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchparam');
     }
 
     /**
@@ -273,7 +255,7 @@ class ViewConfig extends \oxSuperCfg
      */
     public function getActRecommendationId()
     {
-        return oxRegistry::getConfig()->getRequestParameter('recommid');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recommid');
     }
 
     /**
@@ -283,7 +265,7 @@ class ViewConfig extends \oxSuperCfg
      */
     public function getActListType()
     {
-        return oxRegistry::getConfig()->getRequestParameter('listtype');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('listtype');
     }
 
     /**
@@ -293,7 +275,7 @@ class ViewConfig extends \oxSuperCfg
      */
     public function getActManufacturerId()
     {
-        return oxRegistry::getConfig()->getRequestParameter('mnid');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('mnid');
     }
 
     /**
@@ -303,7 +285,7 @@ class ViewConfig extends \oxSuperCfg
      */
     public function getContentId()
     {
-        return oxRegistry::getConfig()->getRequestParameter('oxcid');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxcid');
     }
 
     /**
@@ -316,11 +298,11 @@ class ViewConfig extends \oxSuperCfg
      */
     public function setViewConfigParam($sName, $sValue)
     {
-        startProfile('oxviewconfig::setViewConfigParam');
+        startProfile('\OxidEsales\Eshop\Core\ViewConfig::setViewConfigParam');
 
         $this->_aConfigParams[$sName] = $sValue;
 
-        stopProfile('oxviewconfig::setViewConfigParam');
+        stopProfile('\OxidEsales\Eshop\Core\ViewConfig::setViewConfigParam');
     }
 
     /**
@@ -332,7 +314,7 @@ class ViewConfig extends \oxSuperCfg
      */
     public function getViewConfigParam($sName)
     {
-        startProfile('oxviewconfig::getViewConfigParam');
+        startProfile('\OxidEsales\Eshop\Core\ViewConfig::getViewConfigParam');
 
         if ($this->_oShop && isset($this->_oShop->$sName)) {
             $sValue = $this->_oShop->$sName;
@@ -342,7 +324,7 @@ class ViewConfig extends \oxSuperCfg
             $sValue = (isset($this->_aConfigParams[$sName]) ? $this->_aConfigParams[$sName] : null);
         }
 
-        stopProfile('oxviewconfig::getViewConfigParam');
+        stopProfile('\OxidEsales\Eshop\Core\ViewConfig::getViewConfigParam');
 
         return $sValue;
     }
@@ -351,8 +333,8 @@ class ViewConfig extends \oxSuperCfg
      * Sets shop object and view data to view config. This is needed mostly for
      * old templates
      *
-     * @param oxshop $oShop     shop object
-     * @param array  $aViewData view data array
+     * @param \OxidEsales\Eshop\Application\Model\Shop $oShop     shop object
+     * @param array                                    $aViewData view data array
      */
     public function setViewShop($oShop, $aViewData)
     {
@@ -363,7 +345,7 @@ class ViewConfig extends \oxSuperCfg
     /**
      * Returns session id
      *
-     * @deprecated v5.1.0 Use conditional sid getter oxView::getSidForWidget() for widgets instead
+     * @deprecated v5.1.0 Use conditional sid getter \OxidEsales\Eshop\Core\Controller\BaseController::getSidForWidget() for widgets instead
      *
      * @return string
      */
@@ -388,7 +370,7 @@ class ViewConfig extends \oxSuperCfg
             $sValue = $this->getSession()->hiddenSid();
 
             // appending language info to form
-            if (($sLang = oxRegistry::getLang()->getFormLang())) {
+            if (($sLang = \OxidEsales\Eshop\Core\Registry::getLang()->getFormLang())) {
                 $sValue .= "\n{$sLang}";
             }
 
@@ -737,7 +719,7 @@ class ViewConfig extends \oxSuperCfg
     public function getRemoteAddress()
     {
         if (($sValue = $this->getViewConfigParam('ip')) === null) {
-            $sValue = oxRegistry::get("oxUtilsServer")->getRemoteAddress();
+            $sValue = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress();
             $this->setViewConfigParam('ip', $sValue);
         }
 
@@ -810,34 +792,22 @@ class ViewConfig extends \oxSuperCfg
     }
 
     /**
-     * Returns config param "blShowFinalStep" value
-     *
-     * @deprecated since 2012-11-19. Option blShowFinalStep is removed
-     *
-     * @return bool
-     */
-    public function showFinalStep()
-    {
-        return true;
-    }
-
-    /**
      * Returns config param "aNrofCatArticles" value
      *
      * @return array
      */
     public function getNrOfCatArticles()
     {
-        $sListType = oxRegistry::getSession()->getVariable('ldtype');
+        $sListType = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('ldtype');
 
         if (is_null($sListType)) {
-            $sListType = oxRegistry::getConfig()->getConfigParam('sDefaultListDisplayType');
+            $sListType = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sDefaultListDisplayType');
         }
 
         if ('grid' === $sListType) {
-            $aNrOfCatArticles = oxRegistry::getConfig()->getConfigParam('aNrofCatArticlesInGrid');
+            $aNrOfCatArticles = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aNrofCatArticlesInGrid');
         } else {
-            $aNrOfCatArticles = oxRegistry::getConfig()->getConfigParam('aNrofCatArticles');
+            $aNrOfCatArticles = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aNrofCatArticles');
         }
 
         return $aNrOfCatArticles;
@@ -885,6 +855,18 @@ class ViewConfig extends \oxSuperCfg
     }
 
     /**
+     * Returns config param "blAllowSuggestArticle" value.
+     *
+     * @deprecated since v6.2.0 (2017-02-15); Recommendations feature will be moved to an own module.
+     *
+     * @return bool
+     */
+    public function getShowSuggest()
+    {
+        return $this->getConfig()->getConfigParam('blAllowSuggestArticle');
+    }
+
+    /**
      * Returns config param "bl_showVouchers" value
      *
      * @return bool
@@ -912,8 +894,8 @@ class ViewConfig extends \oxSuperCfg
     public function getActLanguageId()
     {
         if (($sValue = $this->getViewConfigParam('lang')) === null) {
-            $iLang = oxRegistry::getConfig()->getRequestParameter('lang');
-            $sValue = ($iLang !== null) ? $iLang : oxRegistry::getLang()->getBaseLanguage();
+            $iLang = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('lang');
+            $sValue = ($iLang !== null) ? $iLang : \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
             $this->setViewConfigParam('lang', $sValue);
         }
 
@@ -927,7 +909,7 @@ class ViewConfig extends \oxSuperCfg
      */
     public function getActLanguageAbbr()
     {
-        return oxRegistry::getLang()->getLanguageAbbr($this->getActLanguageId());
+        return \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageAbbr($this->getActLanguageId());
     }
 
     /**
@@ -1082,7 +1064,7 @@ class ViewConfig extends \oxSuperCfg
      */
     public function getRemoteAccessToken()
     {
-        return oxRegistry::getSession()->getRemoteAccessToken();
+        return \OxidEsales\Eshop\Core\Registry::getSession()->getRemoteAccessToken();
     }
 
     /**
@@ -1149,7 +1131,7 @@ class ViewConfig extends \oxSuperCfg
      */
     public function getPasswordLength()
     {
-        return oxRegistry::get('oxInputValidator')->getPasswordLength();
+        return \OxidEsales\Eshop\Core\Registry::getInputValidator()->getPasswordLength();
     }
 
     /**
@@ -1161,7 +1143,7 @@ class ViewConfig extends \oxSuperCfg
     {
         if ($this->_oCountryList === null) {
             // passing country list
-            $this->_oCountryList = oxNew('oxcountrylist');
+            $this->_oCountryList = oxNew(\OxidEsales\Eshop\Application\Model\CountryList::class);
             $this->_oCountryList->loadActiveCountries();
         }
 
@@ -1175,7 +1157,7 @@ class ViewConfig extends \oxSuperCfg
      * @param string $sModule module name (directory name in modules dir)
      * @param string $sFile   file name to lookup
      *
-     * @throws oxFileException
+     * @throws \OxidEsales\EshopCommunity\Core\Exception\FileException
      *
      * @return string
      */
@@ -1184,19 +1166,27 @@ class ViewConfig extends \oxSuperCfg
         if (!$sFile || ($sFile[0] != '/')) {
             $sFile = '/' . $sFile;
         }
-        $oModule = oxNew("oxmodule");
+        $oModule = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
         $sModulePath = $oModule->getModulePath($sModule);
         $sFile = $this->getConfig()->getModulesDir() . $sModulePath . $sFile;
         if (file_exists($sFile) || is_dir($sFile)) {
             return $sFile;
         } else {
-            /** @var oxFileException $oEx */
-            $oEx = oxNew("oxFileException", "Requested file not found for module $sModule ($sFile)");
-            $oEx->debugOut();
-            if (!$this->getConfig()->getConfigParam('iDebug')) {
+            /**
+             * Do not call oxNew in the exception handling of the module subsystem system, as the same module system will be
+             * involved when calling oxNew
+             */
+            $exception = new \OxidEsales\Eshop\Core\Exception\FileException("Requested file not found for module $sModule ($sFile)");
+            if ($this->getConfig()->getConfigParam('iDebug')) {
+                throw $exception;
+            } else {
+                /**
+                 * This error should be reported, as it will be the cause of an unexpected behavior of the shop an the
+                 * operator should be given a chance to analyse the issue.
+                 */
+                \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
                 return '';
             }
-            throw $oEx;
         }
     }
 
@@ -1206,15 +1196,41 @@ class ViewConfig extends \oxSuperCfg
      * @param string $sModule module name (directory name in modules dir)
      * @param string $sFile   file name to lookup
      *
-     * @throws oxFileException
+     * @throws \oxFileException
      *
      * @return string
      */
     public function getModuleUrl($sModule, $sFile = '')
     {
+        $c = $this->getConfig();
+        $shopUrl = null;
+        if ($this->isAdmin()) {
+            if ($c->isSsl()) {
+                // From admin and with SSL we try to use sAdminSSLURL config directive
+                $shopUrl = $c->getConfigParam('sAdminSSLURL');
+                if ($shopUrl) {
+                    // but we don't need the admin directory
+                    $adminDir = '/'.$c->getConfigParam('sAdminDir');
+                    $shopUrl = substr($shopUrl, 0, -strlen($adminDir));
+                } else {
+                    // if no sAdminSSLURL directive were defined we use sSSLShopURL config directive instead
+                    $shopUrl = $c->getConfigParam('sSSLShopURL');
+                }
+            }
+            // From admin and with no config usefull directive, we use the sShopURL directive
+            if (!$shopUrl) {
+                $shopUrl = $c->getConfigParam('sShopURL');
+            }
+        }
+        // We are either in front, or in admin with no $sShopURL defined
+        if (!$shopUrl) {
+            $shopUrl = $c->getCurrentShopUrl();
+        }
+        $shopUrl = rtrim($shopUrl, '/');
+
         $sUrl = str_replace(
-            rtrim($this->getConfig()->getConfigParam('sShopDir'), '/'),
-            rtrim($this->getConfig()->getCurrentShopUrl(false), '/'),
+            rtrim($c->getConfigParam('sShopDir'), '/'),
+            $shopUrl,
             $this->getModulePath($sModule, $sFile)
         );
 
@@ -1320,7 +1336,7 @@ class ViewConfig extends \oxSuperCfg
     public function getActiveTheme()
     {
         if ($this->_sActiveTheme === null) {
-            $oTheme = oxNew('oxTheme');
+            $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
             $this->_sActiveTheme = $oTheme->getActiveThemeId();
         }
 
@@ -1364,7 +1380,7 @@ class ViewConfig extends \oxSuperCfg
      */
     public function getSessionChallengeToken()
     {
-        if (oxRegistry::getSession()->isSessionStarted()) {
+        if (\OxidEsales\Eshop\Core\Registry::getSession()->isSessionStarted()) {
             $sessionChallengeToken = $this->getSession()->getSessionChallengeToken();
         } else {
             $sessionChallengeToken = "";
@@ -1446,7 +1462,7 @@ class ViewConfig extends \oxSuperCfg
      */
     public function getAdditionalNavigationParameters()
     {
-        return array();
+        return [];
     }
 
     /**

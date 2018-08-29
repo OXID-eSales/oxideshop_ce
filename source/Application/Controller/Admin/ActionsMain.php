@@ -1,29 +1,15 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
 use stdClass;
+use \OxidEsales\Eshop\Application\Model\Actions;
+use \OxidEsales\Eshop\Core\Registry;
+use \OxidEsales\Eshop\Core\Request;
 
 /**
  * Admin article main actions manager.
@@ -31,9 +17,8 @@ use stdClass;
  * this actions, etc.
  * Admin Menu: Manage Products -> actions -> Main.
  */
-class ActionsMain extends \oxAdminDetails
+class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Loads article actionss info, passes it to Smarty engine and
      * returns name of template file "actions_main.tpl".
@@ -44,23 +29,21 @@ class ActionsMain extends \oxAdminDetails
     {
         parent::render();
 
-        // check if we right now saved a new entry
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if (isset($soxId) && $soxId != "-1") {
-            // load object
-            $oAction = oxNew("oxActions");
+
+        if ($this->isNewEditObject() !== true) {
+            $oAction = oxNew(Actions::class);
             $oAction->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oAction->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
-                // echo "language entry doesn't exist! using: ".key($oOtherLang);
                 $oAction->loadInLang(key($oOtherLang), $soxId);
             }
 
             $this->_aViewData["edit"] = $oAction;
 
             // remove already created languages
-            $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
+            $aLang = array_diff(Registry::getLang()->getLanguageNames(), $oOtherLang);
 
             if (count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
@@ -74,11 +57,11 @@ class ActionsMain extends \oxAdminDetails
             }
         }
 
-        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
+        if (Registry::getConfig()->getRequestParameter("aoc")) {
             // generating category tree for select list
             $this->_createCategoryTree("artcattree", $soxId);
 
-            $oActionsMainAjax = oxNew('actions_main_ajax');
+            $oActionsMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMainAjax::class);
             $this->_aViewData['oxajax'] = $oActionsMainAjax->getColumns();
 
             return "popups/actions_main.tpl";
@@ -87,7 +70,7 @@ class ActionsMain extends \oxAdminDetails
 
         if (($oPromotion = $this->getViewDataElement("edit"))) {
             if (($oPromotion->oxactions__oxtype->value == 2) || ($oPromotion->oxactions__oxtype->value == 3)) {
-                if ($iAoc = oxRegistry::getConfig()->getRequestParameter("oxpromotionaoc")) {
+                if ($iAoc = Registry::getConfig()->getRequestParameter("oxpromotionaoc")) {
                     $sPopup = false;
                     switch ($iAoc) {
                         case 'article':
@@ -107,7 +90,6 @@ class ActionsMain extends \oxAdminDetails
                     }
 
                     if ($sPopup) {
-                        $aColumns = array();
                         $oActionsArticleAjax = oxNew($sPopup . '_ajax');
                         $this->_aViewData['oxajax'] = $oActionsArticleAjax->getColumns();
 
@@ -132,35 +114,25 @@ class ActionsMain extends \oxAdminDetails
 
     /**
      * Saves Promotions
-     *
-     * @return mixed
      */
     public function save()
     {
         parent::save();
 
-        $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $action = oxNew(Actions::class);
 
-        $oPromotion = oxNew("oxActions");
-        if ($soxId != "-1") {
-            $oPromotion->load($soxId);
-        } else {
-            $aParams['oxactions__oxid'] = null;
+        if ($this->isNewEditObject() !== true) {
+            $action->load($this->getEditObjectId());
         }
 
-        if (!$aParams['oxactions__oxactive']) {
-            $aParams['oxactions__oxactive'] = 0;
+        if ($this->checkAccessToEditAction($action) === true) {
+            $action->assign($this->getActionFormData());
+            $action->setLanguage($this->_iEditLang);
+            $action = Registry::getUtilsFile()->processFiles($action);
+            $action->save();
+
+            $this->setEditObjectId($action->getId());
         }
-
-        $oPromotion->setLanguage(0);
-        $oPromotion->assign($aParams);
-        $oPromotion->setLanguage($this->_iEditLang);
-        $oPromotion = oxRegistry::get("oxUtilsFile")->processFiles($oPromotion);
-        $oPromotion->save();
-
-        // set oxid if inserted
-        $this->setEditObjectId($oPromotion->getId());
     }
 
     /**
@@ -169,5 +141,51 @@ class ActionsMain extends \oxAdminDetails
     public function saveinnlang()
     {
         $this->save();
+    }
+
+    /**
+     * Checks access to edit Action.
+     *
+     * @param Actions $action
+     *
+     * @return bool
+     */
+    protected function checkAccessToEditAction(Actions $action)
+    {
+        return true;
+    }
+
+    /**
+     * Returns form data for Action.
+     *
+     * @return array
+     */
+    private function getActionFormData()
+    {
+        $request    = oxNew(Request::class);
+        $formData   = $request->getRequestEscapedParameter("editval");
+        $formData   = $this->normalizeActionFormData($formData);
+
+        return $formData;
+    }
+
+    /**
+     * Normalizes form data for Action.
+     *
+     * @param   array $formData
+     *
+     * @return  array
+     */
+    private function normalizeActionFormData($formData)
+    {
+        if ($this->isNewEditObject() === true) {
+            $formData['oxactions__oxid'] = null;
+        }
+
+        if (!$formData['oxactions__oxactive']) {
+            $formData['oxactions__oxactive'] = 0;
+        }
+
+        return $formData;
     }
 }

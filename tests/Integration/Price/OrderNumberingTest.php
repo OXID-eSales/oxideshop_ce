@@ -1,27 +1,12 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Integration\Price;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Price;
 
 use oxDb;
+use OxidEsales\Eshop\Application\Model\Order;
 use oxOrder;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
@@ -95,24 +80,14 @@ class OrderNumberingTest extends BaseTestCase
 
         $user = $basket->getBasketUser();
 
-        // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
-        /** @var oxOrder|MockObject $order1 */
-        $order1 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
-        $order1->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
-        $order1->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
-        $order1->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
+        $order1 = $this->getOrderMock();
 
         // if basket has products
         if ($basket->getProductsCount()) {
             $order1->finalizeOrder($basket, $user);
         }
 
-        // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
-        /** @var oxOrder|MockObject $order2 */
-        $order2 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
-        $order2->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
-        $order2->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
-        $order2->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
+        $order2 = $this->getOrderMock();
         // If separate numbering, then it must be restarted.
         $order2->setSeparateNumbering($options['separateNumbering']);
 
@@ -151,24 +126,14 @@ class OrderNumberingTest extends BaseTestCase
 
         $user = $basket->getBasketUser();
 
-        // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
-        /** @var oxOrder|MockObject $order1 */
-        $order1 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
-        $order1->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
-        $order1->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
-        $order1->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
+        $order1 = $this->getOrderMock();
 
         // if basket has products
         if ($basket->getProductsCount()) {
             $order1->finalizeOrder($basket, $user);
         }
 
-        // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
-        /** @var oxOrder|MockObject $order2 */
-        $order2 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
-        $order2->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
-        $order2->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
-        $order2->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
+        $order2 = $this->getOrderMock();
 
         // if basket has products
         if ($basket->getProductsCount()) {
@@ -177,12 +142,7 @@ class OrderNumberingTest extends BaseTestCase
 
         $order2->delete();
 
-        // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
-        /** @var oxOrder|MockObject $order3 */
-        $order3 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
-        $order3->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
-        $order3->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
-        $order3->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
+        $order3 = $this->getOrderMock();
         // If separate numbering, then it must be restarted.
         $order3->setSeparateNumbering($options['separateNumbering']);
 
@@ -221,32 +181,17 @@ class OrderNumberingTest extends BaseTestCase
 
         $user = $basket->getBasketUser();
 
-        // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
-        /** @var oxOrder|MockObject $order1 */
-        $order1 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
-        $order1->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
-        $order1->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
-        $order1->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
+        $order1 = $this->getOrderMock();
 
         // if basket has products
         if ($basket->getProductsCount()) {
             $order1->finalizeOrder($basket, $user);
         }
 
-        // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
-        /** @var oxOrder|MockObject $order2 */
-        $order2 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
-        $order2->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
-        $order2->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
-        $order2->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
+        $order2 = $this->getOrderMock();
         $order2->save();
 
-        // Mocking _sendOrderByEmail, cause Jenkins return err, while mailing after saving order
-        /** @var oxOrder|MockObject $order3 */
-        $order3 = $this->getMock('oxOrder', array('_sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery'));
-        $order3->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
-        $order3->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
-        $order3->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
+        $order3 = $this->getOrderMock();
         // If separate numbering, then it must be restarted.
         $order3->setSeparateNumbering($options['separateNumbering']);
 
@@ -262,5 +207,22 @@ class OrderNumberingTest extends BaseTestCase
         } else {
             $this->assertEquals($order1Nr, ($order3Nr - 1), 'Second order must had bigger number if no separate numbering.');
         }
+    }
+
+    private function getOrderMock()
+    {
+        $order = $this->getMock(Order::class, array(
+            '_sendOrderByEmail',
+            'validateDeliveryAddress',
+            'validateDelivery',
+            'validatePayment'
+        ));
+
+        $order
+            ->expects($this->any())
+            ->method('_sendOrderByEmail')
+            ->will($this->returnValue(0));
+
+        return $order;
     }
 }

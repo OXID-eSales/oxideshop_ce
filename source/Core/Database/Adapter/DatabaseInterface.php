@@ -1,35 +1,22 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link         http://www.oxid-esales.com
- * @copyright (C)OXID eSales AG 2003-2016
- * @version      OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core\Database\Adapter;
+namespace OxidEsales\EshopCommunity\Core\Database\Adapter;
 
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
-use OxidEsales\Eshop\Core\Exception\DatabaseException;
+use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
 
 /**
  * The database connection interface specifies how a database connection should look and act.
  */
 interface DatabaseInterface
 {
+
+    /** @var int code of exception to check against. Use same number as MySQL to avoid duplications. */
+    const DUPLICATE_KEY_ERROR_CODE = 1062;
 
     /**
      * The default fetch mode as implemented by the database driver, in Doctrine this is usually FETCH_MODE_BOTH
@@ -124,7 +111,7 @@ interface DatabaseInterface
      *
      * @return string|false      Returns a string for SELECT or SHOW statements and FALSE for any other statement.
      */
-    public function getOne($query, $parameters = array());
+    public function getOne($query, $parameters = []);
 
     /**
      * Get an array with the values of the first row of a given sql SELECT or SHOW statement .
@@ -141,19 +128,19 @@ interface DatabaseInterface
      *
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
-     * $result = Database::getDb->getOne(
+     * $result = DatabaseProvider::getDb->getOne(
      *   'SELECT ´id´ FROM ´mytable´ WHERE ´id´ = ? LIMIT 0, 1',
      *   array($id1)
      * );
-     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query      The sql select statement we want to execute.
+     * @param string $query      The sql select statement to be executed.
      * @param array  $parameters Array of parameters, for the given sql statement.
      *
      * @return array The row, we selected with the given sql statement.
      */
-    public function getRow($query, $parameters = array());
+    public function getRow($query, $parameters = []);
 
     /**
      * Return the first column of all rows of the results of a given sql SELECT or SHOW statement as an numeric array.
@@ -161,21 +148,21 @@ interface DatabaseInterface
      *
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
-     * $result = Database::getDb->getRow(
+     * $result = DatabaseProvider::getDb->getRow(
      *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? LIMIT 0, 1',
      *   array($id1)
      * );
-     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query      The sql select statement
+     * @param string $query      The sql select statement to be executed.
      * @param array  $parameters The parameters array.
      *
-     * @throws DatabaseException
+     * @throws DatabaseErrorException
      *
      * @return array The values of the first column of a corresponding sql query.
      */
-    public function getCol($query, $parameters = array());
+    public function getCol($query, $parameters = []);
 
     /**
      * Get an multi-dimensional array of arrays with the values of the all rows of a given sql SELECT or SHOW statement.
@@ -187,11 +174,11 @@ interface DatabaseInterface
      *
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
-     * $result = Database::getDb->getAll(
+     * $result = DatabaseProvider::getDb->getAll(
      *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ? LIMIT 0, 1',
      *   array($id1, $id2)
      * );
-     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
      * @param string $query      If parameters are given, the "?" in the string will be replaced by the values in the array
@@ -200,12 +187,12 @@ interface DatabaseInterface
      * @see DatabaseInterface::setFetchMode()
      * @see Doctrine::$fetchMode
      *
-     * @throws DatabaseException
+     * @throws DatabaseErrorException
      * @throws \InvalidArgumentException
      *
      * @return array
      */
-    public function getAll($query, $parameters = array());
+    public function getAll($query, $parameters = []);
 
     /**
      * Return the results of a given sql SELECT or SHOW statement as a ResultSet.
@@ -217,21 +204,21 @@ interface DatabaseInterface
      *
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
-     * $resultSet = Database::getDb->select(
+     * $resultSet = DatabaseProvider::getDb->select(
      *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ?',
      *   array($id1, $id2)
      * );
-     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query      The sql select statement
+     * @param string $query      The sql select statement to be executed.
      * @param array  $parameters The parameters array for the given query.
      *
-     * @throws DatabaseException The exception, that can occur while executing the sql statement.
+     * @throws DatabaseErrorException The exception, that can occur while executing the sql statement.
      *
      * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface The result of the given query.
      */
-    public function select($query, $parameters = array());
+    public function select($query, $parameters = []);
 
     /**
      * Return the results of a given sql SELECT or SHOW statement limited by a LIMIT clause as a ResultSet.
@@ -243,47 +230,47 @@ interface DatabaseInterface
      *
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
-     * $resultSet = Database::getDb->selectLimit(
+     * $resultSet = DatabaseProvider::getDb->selectLimit(
      *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ?',
      *   $rowCount,
      *   $offset,
      *   array($id1, $id2)
      * );
-     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query      The sql select statement
+     * @param string $query      The sql select statement to be executed.
      * @param int    $rowCount   Maximum number of rows to return
      * @param int    $offset     Offset of the first row to return
      * @param array  $parameters The parameters array.
      *
-     * @throws DatabaseException The exception, that can occur while executing the sql statement.
+     * @throws DatabaseErrorException The exception, that can occur while executing the sql statement.
      *
      * @return ResultSetInterface The result of the given query.
      */
-    public function selectLimit($query, $rowCount = -1, $offset = -1, $parameters = array());
+    public function selectLimit($query, $rowCount = -1, $offset = 0, $parameters = []);
 
     /**
-     * Execute read statements like SELECT or SHOW and return the results as a ResultSet.
      * Execute non read statements like INSERT, UPDATE, DELETE and return the number of rows affected by the statement.
+     * This method has to be used EXCLUSIVELY for non read statements.
      *
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
-     * $resultSet = Database::getDb->execute(
-     *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ?',
+     * $resultSet = DatabaseProvider::getDb->execute(
+     *   'DELETE * FROM `mytable` WHERE `id` = ? OR `id` = ?',
      *   array($id1, $id2)
      * );
-     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query      The sql statement we want to execute.
+     * @param string $query      The sql select statement to be executed.
      * @param array  $parameters The parameters array.
      *
-     * @throws DatabaseException
+     * @throws DatabaseErrorException
      *
      * @return integer Number of rows affected by the SQL statement
      */
-    public function execute($query, $parameters = array());
+    public function execute($query, $parameters = []);
 
     /**
      * Quote a string or a numeric value in a way, that it might be used as a value in a sql statement.
@@ -293,13 +280,13 @@ interface DatabaseInterface
      * but when the statement is executed and the value could not have been quoted, a DatabaseException is thrown.
      * You are strongly encouraged to always use prepared statements instead of quoting the values on your own.
      * E.g. use
-     * $resultSet = Database::getDb->select(
+     * $resultSet = DatabaseProvider::getDb->select(
      *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ?',
      *   array($id1, $id2)
      * );
      * instead of
-     * $resultSet = Database::getDb->select(
-     *  'SELECT * FROM ´mytable´ WHERE ´id´ = ' . Database::getDb->quote($id1) . ' OR ´id´ = ' . Database::getDb->quote($id1)
+     * $resultSet = DatabaseProvider::getDb->select(
+     *  'SELECT * FROM ´mytable´ WHERE ´id´ = ' . DatabaseProvider::getDb->quote($id1) . ' OR ´id´ = ' . DatabaseProvider::getDb->quote($id1)
      * );
      *
      * @param mixed $value The string or numeric value to be quoted.
@@ -346,21 +333,21 @@ interface DatabaseInterface
     /**
      * Start a database transaction.
      *
-     * @throws DatabaseException
+     * @throws DatabaseErrorException
      */
     public function startTransaction();
 
     /**
      * Commit a database transaction.
      *
-     * @throws DatabaseException
+     * @throws DatabaseErrorException
      */
     public function commitTransaction();
 
     /**
      * RollBack a database transaction.
      *
-     * @throws DatabaseException
+     * @throws DatabaseErrorException
      */
     public function rollbackTransaction();
 
@@ -385,7 +372,7 @@ interface DatabaseInterface
      *
      * @param string $level The transaction isolation level
      *
-     * @throws \InvalidArgumentException|DatabaseException
+     * @throws \InvalidArgumentException|DatabaseErrorException
      *
      * @return
      */

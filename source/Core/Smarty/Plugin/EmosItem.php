@@ -38,7 +38,7 @@
  *
  */
 
-namespace OxidEsales\Eshop\Core\Smarty\Plugin;
+namespace OxidEsales\EshopCommunity\Core\Smarty\Plugin;
 
 /**
  * A Class to hold products as well a basket items

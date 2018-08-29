@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxRegistry;
 use oxPrice;
@@ -29,9 +13,8 @@ use oxPrice;
  * Lightweight variant handler. Implemnets only absolutely needed oxArticle methods.
  *
  */
-class SimpleVariant extends \oxI18n implements \oxIUrl
+class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
-
     /**
      * Use lazy loading for this item
      *
@@ -42,14 +25,14 @@ class SimpleVariant extends \oxI18n implements \oxIUrl
     /**
      * Variant price
      *
-     * @var oxPrice
+     * @var \OxidEsales\Eshop\Core\Price
      */
     protected $_oPrice = null;
 
     /**
      * Parent article
      *
-     * @var oxArticle
+     * @var \OxidEsales\Eshop\Application\Model\Article
      */
     protected $_oParent = null;
 
@@ -58,21 +41,21 @@ class SimpleVariant extends \oxI18n implements \oxIUrl
      *
      * @var array
      */
-    protected $_aStdUrls = array();
+    protected $_aStdUrls = [];
 
     /**
      * Stardard/dynamic article urls for languages
      *
      * @var array
      */
-    protected $_aBaseStdUrls = array();
+    protected $_aBaseStdUrls = [];
 
     /**
      * Seo article urls for languages
      *
      * @var array
      */
-    protected $_aSeoUrls = array();
+    protected $_aSeoUrls = [];
 
     /**
      * user object
@@ -146,7 +129,7 @@ class SimpleVariant extends \oxI18n implements \oxIUrl
     /**
      * Implementing (faking) performance friendly method from oxArticle
      *
-     * @return oxPrice
+     * @return \OxidEsales\Eshop\Core\Price
      */
     public function getPrice()
     {
@@ -157,7 +140,7 @@ class SimpleVariant extends \oxI18n implements \oxIUrl
         }
 
         if ($this->_oPrice === null) {
-            $this->_oPrice = oxNew("oxPrice");
+            $this->_oPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
             if (($dPrice = $this->_getGroupPrice())) {
                 $dPrice = $this->modifyGroupPrice($dPrice);
                 $this->_oPrice->setPrice($dPrice, $this->_dVat);
@@ -188,10 +171,10 @@ class SimpleVariant extends \oxI18n implements \oxIUrl
     /**
      * Applies currency factor
      *
-     * @param oxPrice $oPrice Price object
-     * @param object  $oCur   Currency object
+     * @param \OxidEsales\Eshop\Core\Price $oPrice Price object
+     * @param object                       $oCur   Currency object
      */
-    protected function _applyCurrency(oxPrice $oPrice, $oCur = null)
+    protected function _applyCurrency(\OxidEsales\Eshop\Core\Price $oPrice, $oCur = null)
     {
         if (!$oCur) {
             $oCur = $this->getConfig()->getActShopCurrencyObject();
@@ -203,7 +186,7 @@ class SimpleVariant extends \oxI18n implements \oxIUrl
     /**
      * Applies discounts which should be applied in general case (for 0 amount)
      *
-     * @param oxprice $oPrice Price object
+     * @param \OxidEsales\Eshop\Core\Price $oPrice Price object
      */
     protected function _applyParentDiscounts($oPrice)
     {
@@ -215,7 +198,7 @@ class SimpleVariant extends \oxI18n implements \oxIUrl
     /**
      * apply parent article VAT to given price
      *
-     * @param oxPrice $oPrice price object
+     * @param \OxidEsales\Eshop\Core\Price $oPrice price object
      */
     protected function _applyParentVat($oPrice)
     {
@@ -243,7 +226,7 @@ class SimpleVariant extends \oxI18n implements \oxIUrl
     {
         $sPrice = null;
         if (($oPrice = $this->getPrice())) {
-            $sPrice = oxRegistry::getLang()->formatCurrency($oPrice->getBruttoPrice());
+            $sPrice = \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($oPrice->getBruttoPrice());
         }
 
         return $sPrice;
@@ -252,7 +235,7 @@ class SimpleVariant extends \oxI18n implements \oxIUrl
     /**
      * Sets parent article
      *
-     * @param oxArticle $oParent Parent article
+     * @param \OxidEsales\Eshop\Application\Model\Article $oParent Parent article
      */
     public function setParent($oParent)
     {
@@ -262,7 +245,7 @@ class SimpleVariant extends \oxI18n implements \oxIUrl
     /**
      * Parent article getter.
      *
-     * @return oxArticle
+     * @return \OxidEsales\Eshop\Application\Model\Article
      */
     public function getParent()
     {
@@ -330,7 +313,7 @@ class SimpleVariant extends \oxI18n implements \oxIUrl
     public function getBaseStdLink($iLang, $blAddId = true, $blFull = true)
     {
         if (!isset($this->_aBaseStdUrls[$iLang][$iLinkType])) {
-            $oArticle = oxNew("oxArticle");
+            $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             $oArticle->setId($this->getId());
             $oArticle->setLinkType($iLinkType);
             $this->_aBaseStdUrls[$iLang][$iLinkType] = $oArticle->getBaseStdLink($iLang, $blAddId, $blFull);
@@ -347,7 +330,7 @@ class SimpleVariant extends \oxI18n implements \oxIUrl
      *
      * @return string
      */
-    public function getStdLink($iLang = null, $aParams = array())
+    public function getStdLink($iLang = null, $aParams = [])
     {
         if ($iLang === null) {
             $iLang = (int) $this->getLanguage();
@@ -355,7 +338,7 @@ class SimpleVariant extends \oxI18n implements \oxIUrl
 
         $iLinkType = $this->getLinkType();
         if (!isset($this->_aStdUrls[$iLang][$iLinkType])) {
-            $oArticle = oxNew("oxArticle");
+            $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             $oArticle->setId($this->getId());
             $oArticle->setLinkType($iLinkType);
             $this->_aStdUrls[$iLang][$iLinkType] = $oArticle->getStdLink($iLang, $aParams);
@@ -373,7 +356,7 @@ class SimpleVariant extends \oxI18n implements \oxIUrl
      */
     public function getBaseSeoLink($iLang)
     {
-        return oxRegistry::get("oxSeoEncoderArticle")->getArticleUrl($this, $iLang, $iLinkType);
+        return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderArticle::class)->getArticleUrl($this, $iLang, $iLinkType);
     }
 
     /**
@@ -389,7 +372,7 @@ class SimpleVariant extends \oxI18n implements \oxIUrl
             $iLang = (int) $this->getLanguage();
         }
 
-        if (!oxRegistry::getUtils()->seoIsActive()) {
+        if (!\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive()) {
             return $this->getStdLink($iLang);
         }
 
@@ -399,6 +382,5 @@ class SimpleVariant extends \oxI18n implements \oxIUrl
         }
 
         return $this->_aSeoUrls[$iLang][$iLinkType];
-
     }
 }

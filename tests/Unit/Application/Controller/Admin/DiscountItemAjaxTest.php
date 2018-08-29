@@ -1,25 +1,9 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
 
@@ -174,7 +158,7 @@ class DiscountItemAjaxTest extends \OxidTestCase
     public function testRemoveDiscArt()
     {
         $this->setRequestParameter("oxid", '_testO2DRemove1');
-        $oView = $this->getMock("discount_item_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DiscountItemAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testObjectRemove1', '_testObjectRemove2')));
         $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxdiscount where oxid like '_test%' and oxitmartid != ''"));
 
@@ -191,7 +175,7 @@ class DiscountItemAjaxTest extends \OxidTestCase
     {
         $sSynchoxid = '_testO2DRemove4';
         $this->setRequestParameter("synchoxid", $sSynchoxid);
-        $oView = $this->getMock("discount_item_ajax", array("_getActionIds"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DiscountItemAjax::class, array("_getActionIds"));
         $oView->expects($this->any())->method('_getActionIds')->will($this->returnValue(array('_testArticleAdd1', '_testArticleAdd2')));
         $this->assertEquals(3, oxDb::getDb()->getOne("select count(oxid) from oxdiscount where oxid like '_test%' and oxitmartid != ''"));
 
@@ -221,7 +205,7 @@ class DiscountItemAjaxTest extends \OxidTestCase
         $sTableName = getViewName("oxarticles");
         $sQ = " $sTableName.oxartnum as _0, $sTableName.oxtitle as _1, $sTableName.oxean as _2, $sTableName.oxmpn as _3, $sTableName.oxprice as _4, $sTableName.oxstock as _5, $sTableName.oxid as _6 ";
 
-        $oComponent = $this->getMock("discount_item_ajax", array("_getColNames"));
+        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DiscountItemAjax::class, array("_getColNames"));
         $oComponent->expects($this->any())->method('_getColNames')->will($this->returnValue($aColNames));
         $this->assertEquals($sQ, $oComponent->UNITgetQueryCols());
     }
@@ -248,7 +232,7 @@ class DiscountItemAjaxTest extends \OxidTestCase
         $sTableName = getViewName("oxarticles");
         $sQ = " $sTableName.oxartnum as _0,  IF( $sTableName.oxtitle != '', $sTableName.oxtitle, CONCAT((select oxart.oxtitle from $sTableName as oxart where oxart.oxid = $sTableName.oxparentid),', ',$sTableName.oxvarselect)) as _1, $sTableName.oxean as _2, $sTableName.oxmpn as _3, $sTableName.oxprice as _4, $sTableName.oxstock as _5, $sTableName.oxid as _6 ";
 
-        $oComponent = $this->getMock("discount_item_ajax", array("_getColNames"));
+        $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\DiscountItemAjax::class, array("_getColNames"));
         $oComponent->expects($this->any())->method('_getColNames')->will($this->returnValue($aColNames));
         $this->assertEquals($sQ, $oComponent->UNITgetQueryCols());
     }

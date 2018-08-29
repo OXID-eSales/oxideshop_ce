@@ -1,33 +1,17 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 
 /**
  * Encapsulates methods for application initialization.
  */
-class OxidStartController extends \oxUBase
+class OxidStartController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
      * Initializes globals and environment vars
@@ -38,7 +22,7 @@ class OxidStartController extends \oxUBase
     {
         $this->pageStart();
 
-        if ('oxstart' == oxRegistry::getConfig()->getRequestParameter('cl') || $this->isAdmin()) {
+        if ('oxstart' == \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestControllerId() || $this->isAdmin()) {
             return;
         }
 
@@ -55,7 +39,7 @@ class OxidStartController extends \oxUBase
     {
         parent::render();
 
-        $errorNumber = oxRegistry::getConfig()->getRequestParameter('execerror');
+        $errorNumber = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('execerror');
         $templates = $this->getErrorTemplates();
 
         if (array_key_exists($errorNumber, $templates)) {
@@ -88,7 +72,7 @@ class OxidStartController extends \oxUBase
         }
 
         //commit file cache
-        oxRegistry::getUtils()->commitFileCache();
+        \OxidEsales\Eshop\Core\Registry::getUtils()->commitFileCache();
     }
 
     /**
@@ -98,7 +82,7 @@ class OxidStartController extends \oxUBase
      */
     public function getErrorNumber()
     {
-        return oxRegistry::getConfig()->getRequestParameter('errornr');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('errornr');
     }
 
     /**
@@ -108,9 +92,9 @@ class OxidStartController extends \oxUBase
      */
     protected function getErrorTemplates()
     {
-        return array(
+        return [
             'unknown' => 'message/err_unknown.tpl',
-        );
+        ];
     }
 
     /**
@@ -120,6 +104,6 @@ class OxidStartController extends \oxUBase
      */
     protected function _getSystemEventHandler()
     {
-        return oxNew('oxSystemEventHandler');
+        return oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
     }
 }

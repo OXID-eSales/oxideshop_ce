@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace {
@@ -31,7 +15,7 @@ namespace {
          */
         function getGeneratorInstanceName()
         {
-            return "oxdynimggenerator";
+            return \OxidEsales\Eshop\Core\DynamicImageGenerator::class;
         }
     }
 
@@ -55,7 +39,6 @@ namespace {
                         $version = version_compare(preg_replace("/[^0-9\.]/", "", $info["GD Version"]), 1, '>') ? 2 : 1;
                     }
                 }
-
             }
 
             return $version;
@@ -74,11 +57,7 @@ namespace {
     }
 }
 
-namespace OxidEsales\Eshop\Core {
-
-    use oxDb;
-    use OxidEsales\Eshop\Core\Exception\StandardException;
-    use oxSystemComponentException;
+namespace OxidEsales\EshopCommunity\Core {
 
     /**
      * Image generator class
@@ -97,14 +76,14 @@ namespace OxidEsales\Eshop\Core {
          *
          * @var array
          */
-        protected $_aHeaders = array();
+        protected $_aHeaders = [];
 
         /**
          * Allowed image types
          *
          * @var array
          */
-        protected $_aAllowedImgTypes = array("jpg", "jpeg", "png", "gif");
+        protected $_aAllowedImgTypes = ["jpg", "jpeg", "png", "gif"];
 
         /**
          * Image info like size and quality is defined in directory
@@ -133,7 +112,7 @@ namespace OxidEsales\Eshop\Core {
          *
          * @var array
          */
-        protected $_aConfParamToPath = array( // ** product
+        protected $_aConfParamToPath = [ // ** product
             "sIconsize"             => '/.*\/generated\/product\/(icon|\d+)\/\d+\_\d+\_\d+$/', // Icon size
             "sThumbnailsize"        => '/.*\/generated\/product\/(thumb|\d+)\/\d+\_\d+\_\d+$/', // Thumbnail size
             "sZoomImageSize"        => '/.*\/generated\/product\/\d+\/\d+\_\d+\_\d+$/', // Zoom picture size
@@ -146,7 +125,7 @@ namespace OxidEsales\Eshop\Core {
             "sCatThumbnailsize"     => '/.*\/generated\/category\/thumb\/\d+\_\d+\_\d+$/', // Category picture size
             "sCatIconsize"          => '/.*\/generated\/category\/icon\/\d+\_\d+\_\d+$/', // Size of a subcategory's picture
             "sCatPromotionsize"     => '/.*\/generated\/category\/promo_icon\/\d+\_\d+\_\d+$/' // Category picture size for promotion on startpage
-        );
+        ];
 
         /**
          * Creates and returns picture generator instance
@@ -170,7 +149,7 @@ namespace OxidEsales\Eshop\Core {
          * @param string $method Methods name
          * @param array  $args   Argument array
          *
-         * @throws oxSystemComponentException Throws an exception if the called method does not exist or is not accessable in current class
+         * @throws \OxidEsales\Eshop\Core\Exception\SystemComponentException Throws an exception if the called method does not exist or is not accessable in current class
          *
          * @return string
          */
@@ -181,11 +160,11 @@ namespace OxidEsales\Eshop\Core {
                     $method = str_replace("UNIT", "_", $method);
                 }
                 if (method_exists($this, $method)) {
-                    return call_user_func_array(array(& $this, $method), $args);
+                    return call_user_func_array([& $this, $method], $args);
                 }
             }
 
-            throw new oxSystemComponentException("Function '$method' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
+            throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException("Function '$method' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
         }
 
         /**
@@ -210,6 +189,7 @@ namespace OxidEsales\Eshop\Core {
                 $reqPath = 'out/pictures/generated';
 
                 $reqImg = isset($_SERVER["REQUEST_URI"]) ? urldecode($_SERVER["REQUEST_URI"]) : "";
+                $reqImg = str_replace('//', '/', $reqImg);
                 if (($pos = strpos($reqImg, $reqPath)) !== false) {
                     $this->_sImageUri = substr($reqImg, $pos);
                 }
@@ -418,22 +398,19 @@ namespace OxidEsales\Eshop\Core {
             list($width, $height, $quality) = $this->_getImageInfo();
             if ($width && $height && $quality) {
                 $config = Registry::getConfig();
-                $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+                $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
                 // parameter names
-                $names = '';
+                $names = [];
                 foreach ($this->_aConfParamToPath as $paramName => $pathReg) {
                     if (preg_match($pathReg, $path)) {
-                        if ($names) {
-                            $names .= ", ";
-                        }
-                        $names .= $db->quote($paramName);
-
+                        $names[] = $db->quote($paramName);
                         if ($paramName == "sManufacturerIconsize" || $paramName == "sCatIconsize") {
-                            $names .= ", " . $db->quote("sIconsize");
+                            $names[] = $db->quote("sIconsize");
                         }
                     }
                 }
+                $names = implode(', ', $names);
 
                 // any name matching path?
                 if ($names) {
@@ -447,16 +424,10 @@ namespace OxidEsales\Eshop\Core {
 
                     // building query:
                     // shop id
-                    $shopIds = '';
-                    foreach ($shopIdsArray as $shopId) {
+                    $shopIds = implode(', ', array_map(function ($shopId) use ($db) {
                         // probably here we can resolve and check shop id to shorten check?
-
-
-                        if ($shopIds) {
-                            $shopIds .= ", ";
-                        }
-                        $shopIds .= $db->quote($shopId["oxshopid"]);
-                    }
+                        return $db->quote($shopId['oxshopid']);
+                    }, $shopIdsArray));
 
                     // any shop matching quality
                     if ($shopIds) {
@@ -490,7 +461,7 @@ namespace OxidEsales\Eshop\Core {
          * @param string $imageSource File path of the source image
          * @param string $imageTarget File path of the image to be generated
          *
-         * @throws StandardException If the path of imageTarget and generated image are not the same
+         * @throws OxidEsales\Eshop\Core\Exception\StandardException If the path of imageTarget and generated image are not the same
          *
          * @return bool|string Return false on failure or file path of the generated image on success
          */
@@ -503,22 +474,12 @@ namespace OxidEsales\Eshop\Core {
             $fileExtensionTarget = strtolower(pathinfo($imageTarget, PATHINFO_EXTENSION));
 
             // Do some validation and return false on failure
-            if (!$this->validateGdVersion()) {
-                return false;
-            }
-            if (!$this->validateFileExist($imageSource)) {
-                return false;
-            }
-            if (!$this->_isTargetPathValid($imageTarget)) {
-                return false;
-            }
-            if (!$this->validateImageFileExtension($fileExtensionSource)) {
-                return false;
-            }
-            if (!$this->validateImageFileExtension($fileExtensionTarget)) {
-                return false;
-            }
-            if ($fileExtensionSource !== $fileExtensionTarget) {
+            if (!$this->validateGdVersion()
+                || !$this->validateFileExist($imageSource)
+                || !$this->_isTargetPathValid($imageTarget)
+                || !$this->validateImageFileExtension($fileExtensionSource)
+                || !$this->validateImageFileExtension($fileExtensionTarget)
+                || $fileExtensionSource !== $fileExtensionTarget) {
                 return false;
             }
 
@@ -527,7 +488,6 @@ namespace OxidEsales\Eshop\Core {
                 if (($currentWidth == $targetWidth) && ($currentHeight == $targetHeight)) {
                     return $imageTarget;
                 }
-
             }
 
             // including generator files
@@ -555,7 +515,7 @@ namespace OxidEsales\Eshop\Core {
                 $this->_unlock($imageTarget);
             }
             if ($generatedImagePath && $generatedImagePath != $imageTarget) {
-                throw new StandardException('imageTarget path and generatedImage path differ');
+                throw new \OxidEsales\Eshop\Core\Exception\StandardException('imageTarget path and generatedImage path differ');
             }
 
             return $generatedImagePath;
@@ -761,7 +721,7 @@ namespace OxidEsales\Eshop\Core {
         /**
          * Return true, if a given file path exists.
          *
-         * @param $filePath
+         * @param string $filePath
          *
          * @return bool
          */
@@ -774,15 +734,17 @@ namespace OxidEsales\Eshop\Core {
          * Return an array with the dimensions (width x height) of an image file.
          * returns array (0,0), if the dimensions could not be retrieved.
          *
-         * @param $imageFilePath
+         * @param string $imageFilePath
+         *
+         * @return array
          */
         protected function getImageDimensions($imageFilePath)
         {
             try {
                 list($width, $height) = getimagesize($imageFilePath);
-                $imageDimensions = array ($width, $height);
+                $imageDimensions = [$width, $height];
             } catch (\Exception $exception) {
-                $imageDimensions = array (0,0);
+                $imageDimensions = [0,0];
             }
 
             return $imageDimensions;

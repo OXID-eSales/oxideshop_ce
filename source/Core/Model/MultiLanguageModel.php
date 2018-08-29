@@ -1,37 +1,18 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core\Model;
+namespace OxidEsales\EshopCommunity\Core\Model;
 
-use OxidEsales\Eshop\Core\oxObjectException;
-use oxRegistry;
-use oxDb;
+use oxObjectException;
 
 /**
  * Class handling multilanguage data fields
  */
-class MultiLanguageModel extends \oxBase
+class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-
     /**
      * Name of class.
      *
@@ -89,7 +70,7 @@ class MultiLanguageModel extends \oxBase
     public function getLanguage()
     {
         if ($this->_iLanguage === null) {
-            $this->_iLanguage = oxRegistry::getLang()->getBaseLanguage();
+            $this->_iLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         }
 
         return $this->_iLanguage;
@@ -197,13 +178,13 @@ class MultiLanguageModel extends \oxBase
      */
     public function getAvailableInLangs()
     {
-        $languages = oxRegistry::getLang()->getLanguageNames();
+        $languages = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames();
 
         $objFields = $this->_getTableFields(
             getViewName($this->_sCoreTable, -1, -1),
             true
         );
-        $multiLangFields = array();
+        $multiLangFields = [];
 
         //selecting all object multilang fields
         foreach ($objFields as $key => $value) {
@@ -227,7 +208,7 @@ class MultiLanguageModel extends \oxBase
         }
 
         // select from non-multilanguage core view (all ml tables joined to one)
-        $db = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $query = "select * from " . getViewName($this->_sCoreTable, -1, -1) . " where oxid = " . $db->quote($this->getId());
         $rs = $db->getAll($query);
 
@@ -427,18 +408,6 @@ class MultiLanguageModel extends \oxBase
     }
 
     /**
-     * If needed, check if field can be updated
-     *
-     * @param string $fieldName
-     *
-     * @return bool
-     */
-    protected function checkFieldCanBeUpdated($fieldName)
-    {
-        return true;
-    }
-
-    /**
      * Get object fields sql part for base table
      * used for updates or inserts:
      * return e.g.  fldName1 = 'value1',fldName2 = 'value2'...
@@ -468,7 +437,7 @@ class MultiLanguageModel extends \oxBase
 
         if ($ret) {
             //also update multilang table if it is separate
-            $updateTables = array();
+            $updateTables = [];
             if ($this->_blEmployMultilanguage) {
                 $coreTable = $this->getCoreTableName();
                 $langTable = getLangTableName($coreTable, $this->getLanguage());
@@ -490,7 +459,7 @@ class MultiLanguageModel extends \oxBase
         // if current object is managed by SEO and SEO is ON
         if ($ret && $this->_blIsSeoObject && $this->getUpdateSeo() && $this->isAdmin()) {
             // marks all object db entries as expired
-            oxRegistry::get("oxSeoEncoder")->markAsExpired($this->getId(), null, 1, $this->getLanguage());
+            \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->markAsExpired($this->getId(), null, 1, $this->getLanguage());
         }
 
         return $ret;
@@ -507,7 +476,7 @@ class MultiLanguageModel extends \oxBase
     {
         $coreTableName = $coreTableName ? $coreTableName : $this->getCoreTableName();
 
-        return oxNew('oxDbMetaDataHandler')->getAllMultiTables($coreTableName);
+        return oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class)->getAllMultiTables($coreTableName);
     }
 
     /**
@@ -557,7 +526,7 @@ class MultiLanguageModel extends \oxBase
      *
      * @param bool $returnSimple Set $returnSimple to true when you need simple array (meta data array is returned otherwise)
      *
-     * @see oxBase::_getTableFields()
+     * @see \OxidEsales\Eshop\Core\Model\BaseModel::_getTableFields()
      *
      * @return array
      */
@@ -568,7 +537,7 @@ class MultiLanguageModel extends \oxBase
         } else {
             $viewName = $this->getViewName();
             if (!$viewName) {
-                return array();
+                return [];
             }
 
             return $this->_getTableFields($viewName, $returnSimple);
@@ -623,7 +592,7 @@ class MultiLanguageModel extends \oxBase
     {
         $deleted = parent::delete($oxid);
         if ($deleted) {
-            $db = oxDb::getDb();
+            $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $oxid = $db->quote($oxid);
 
             //delete the record

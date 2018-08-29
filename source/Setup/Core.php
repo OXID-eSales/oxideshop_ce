@@ -1,29 +1,13 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Setup;
+namespace OxidEsales\EshopCommunity\Setup;
 
-use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use \OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use \OxidEsales\Facts\Facts;
 use oxSystemComponentException;
 
 /**
@@ -36,7 +20,7 @@ class Core
      *
      * @var array
      */
-    protected static $_aInstances = array();
+    protected static $_aInstances = [];
 
     /**
      * Returns requested instance object
@@ -75,11 +59,11 @@ class Core
                 $sMethod = str_replace("UNIT", "_", $sMethod);
             }
             if (method_exists($this, $sMethod)) {
-                return call_user_func_array(array(& $this, $sMethod), $aArgs);
+                return call_user_func_array([& $this, $sMethod], $aArgs);
             }
         }
 
-        throw new oxSystemComponentException("Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
+        throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException("Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
     }
 
     /**
@@ -91,18 +75,115 @@ class Core
      */
     protected function getClass($sInstanceName)
     {
-        $editionSelector = new EditionSelector();
-        $class =  'OxidEsales\\Eshop\\Setup\\' . $sInstanceName;
+        $facts = new Facts();
+        $class =  'OxidEsales\\EshopCommunity\\Setup\\' . $sInstanceName;
 
         $classEnterprise = '\\OxidEsales\\EshopEnterprise\\'.EditionPathProvider::SETUP_DIRECTORY.'\\'.$sInstanceName;
         $classProfessional = '\\OxidEsales\\EshopProfessional\\'.EditionPathProvider::SETUP_DIRECTORY.'\\'.$sInstanceName;
-        if (($editionSelector->isProfessional() || $editionSelector->isEnterprise()) && class_exists($classProfessional)) {
+        if (($facts->isProfessional() || $facts->isEnterprise()) && $this->classExists($classProfessional)) {
             $class = $classProfessional;
         }
-        if ($editionSelector->isEnterprise() && class_exists($classEnterprise)) {
+        if ($facts->isEnterprise() && $this->classExists($classEnterprise)) {
             $class = $classEnterprise;
         }
 
         return $class;
+    }
+
+    /**
+     * @return Setup
+     */
+    protected function getSetupInstance()
+    {
+        return $this->getInstance("Setup");
+    }
+
+    /**
+     * @return Language
+     */
+    protected function getLanguageInstance()
+    {
+        return $this->getInstance("Language");
+    }
+
+    /**
+     * @return Utilities
+     */
+    protected function getUtilitiesInstance()
+    {
+        return $this->getInstance("Utilities");
+    }
+
+    /**
+     * @return Session
+     */
+    protected function getSessionInstance()
+    {
+        return $this->getInstance("Session");
+    }
+
+    /**
+     * @return Database
+     */
+    protected function getDatabaseInstance()
+    {
+        return $this->getInstance("Database");
+    }
+
+    /**
+     * Return true if user already decided to overwrite database.
+     *
+     * @return bool
+     */
+    protected function userDecidedOverwriteDB()
+    {
+        $userDecidedOverwriteDatabase = false;
+
+        $overwriteCheck = $this->getUtilitiesInstance()->getRequestVar("ow", "get");
+        $session = $this->getSessionInstance();
+
+        if (isset($overwriteCheck) || $session->getSessionParam('blOverwrite')) {
+            $userDecidedOverwriteDatabase = true;
+        }
+
+        return $userDecidedOverwriteDatabase;
+    }
+
+    /**
+     * Return true if user already decided to ignore database recommended version related warnings.
+     *
+     * @return bool
+     */
+    protected function userDecidedIgnoreDBWarning()
+    {
+        $userDecidedIgnoreDBWarning = false;
+
+        $overwriteCheck = $this->getUtilitiesInstance()->getRequestVar("owrec", "get");
+        $session = $this->getSessionInstance();
+
+        if (isset($overwriteCheck) || $session->getSessionParam('blIgnoreDbRecommendations')) {
+            $userDecidedIgnoreDBWarning = true;
+        }
+
+        return $userDecidedIgnoreDBWarning;
+    }
+
+    /**
+     * Check if class exists.
+     * Ignore autoloader exceptions which might appear if database does not exist.
+     *
+     * @param string $className
+     *
+     * @return bool
+     */
+    private function classExists($className)
+    {
+        try {
+            $classExists = class_exists($className);
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return $classExists;
     }
 }

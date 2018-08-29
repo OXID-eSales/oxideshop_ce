@@ -1,7 +1,7 @@
 SET @@session.sql_mode = '';
 
-# Activate Azure theme
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x4db70f6d1a WHERE `OXVARNAME` = 'sTheme';
+# Reset theme in config
+UPDATE `oxconfig` SET `OXVARVALUE` = encode('basic', 'fq45QS09_fqyx09239QQ') WHERE `OXVARNAME` = 'sTheme';
 
 # Activate en and de languages
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x4dba832f744c5786a371d9df33778f9525f408b6efbc82de7c3c5ae3396caa6f8afb6864afa833b43597cad1fb8f9b8970c8e9098d10aae1be4637faa40a012a04e45a8a1cdd1b2ac3da558638600e58acf70fe8c192b668995bb533dac95be7af7d343b3a9c9b8daeaf4d637f065895346773476d667de331fe40d18765d4b98faf7375e1090587d8dd4bf98ad5005eb30666410920 WHERE `OXVARNAME` = 'aLanguageParams';
@@ -3755,5 +3755,3 @@ INSERT INTO `oxactions` (`OXID`, `OXSHOPID`, `OXSORT`, `OXTYPE`, `OXTITLE`, `OXT
 ('d51545e80843be666a9326783a73e91d', 1, 3, 2, 'Upcoming Promotion', 'Upcoming Promotion', '', '', '<a href="[{ oxgetseourl type=\'oxmanufacturer\' oxid=\'9434afb379a46d6c141de9c9e5b94fcf\' }]"><img alt="" src="[{$oViewConf->getPictureDir()}]promo/upcoming_de.jpg" /></a>', '<a href="[{ oxgetseourl type=\'oxmanufacturer\' oxid=\'9434afb379a46d6c141de9c9e5b94fcf\' }]"><img alt="" src="[{$oViewConf->getPictureDir()}]promo/upcoming_en.jpg" /></a>', '', '', 0, '2010-10-10 00:00:00', '2011-10-10 00:00:00');
 
 UPDATE `oxactions` SET OXACTIVE = '1' WHERE OXID='oxstart';
-
-

@@ -1,30 +1,13 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
-use oxAdminDetails;
+use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FieldConfigurationInterface;
+use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormBridgeInterface;
 use Exception;
 
 /**
@@ -32,21 +15,20 @@ use Exception;
  * Collects shop config information, updates it on user submit, etc.
  * Admin Menu: Main Menu -> Core Settings -> General.
  */
-class ShopConfiguration extends oxAdminDetails
+class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     protected $_sThisTemplate = 'shop_config.tpl';
-    protected $_aSkipMultiline = array('aHomeCountry');
-    protected $_aParseFloat = array('iMinOrderPrice');
+    protected $_aSkipMultiline = ['aHomeCountry'];
+    protected $_aParseFloat = ['iMinOrderPrice'];
 
-    protected $_aConfParams = array(
+    protected $_aConfParams = [
         "bool"   => 'confbools',
         "str"    => 'confstrs',
         "arr"    => 'confarrs',
         "aarr"   => 'confaarrs',
         "select" => 'confselects',
         "num"    => 'confnum',
-    );
+    ];
 
     /**
      * Executes parent method parent::render(), passes shop configuration parameters
@@ -69,7 +51,7 @@ class ShopConfiguration extends oxAdminDetails
                 // category choosen as default
                 $this->_aViewData["defcat"] = null;
                 if ($oShop->oxshops__oxdefcat->value) {
-                    $oCat = oxNew("oxCategory");
+                    $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
                     if ($oCat->load($oShop->oxshops__oxdefcat->value)) {
                         $this->_aViewData["defcat"] = $oCat;
                     }
@@ -80,14 +62,13 @@ class ShopConfiguration extends oxAdminDetails
                 $this->_aViewData["updateViews"] = 1;
             }
 
-            $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
+            $iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc");
             if ($iAoc == 1) {
-                $oShopDefaultCategoryAjax = oxNew('shop_default_category_ajax');
+                $oShopDefaultCategoryAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ShopDefaultCategoryAjax::class);
                 $this->_aViewData['oxajax'] = $oShopDefaultCategoryAjax->getColumns();
 
                 return "popups/shop_default_category.tpl";
             }
-
         }
 
         $aDbVariables = $this->loadConfVars($soxId, $this->_getModuleForConfigVars());
@@ -101,8 +82,8 @@ class ShopConfiguration extends oxAdminDetails
         }
 
         // #251A passing country list
-        $oCountryList = oxNew("oxCountryList");
-        $oCountryList->loadActiveCountries(oxRegistry::getLang()->getObjectTplLanguage());
+        $oCountryList = oxNew(\OxidEsales\Eshop\Application\Model\CountryList::class);
+        $oCountryList->loadActiveCountries(\OxidEsales\Eshop\Core\Registry::getLang()->getObjectTplLanguage());
         if (isset($aConfVars['arr']["aHomeCountry"]) && count($aConfVars['arr']["aHomeCountry"]) && count($oCountryList)) {
             foreach ($oCountryList as $sCountryId => $oCountry) {
                 if (in_array($oCountry->oxcountry__oxid->value, $aConfVars['arr']["aHomeCountry"])) {
@@ -115,6 +96,19 @@ class ShopConfiguration extends oxAdminDetails
 
         // checking if cUrl is enabled
         $this->_aViewData["blCurlIsActive"] = (!function_exists('curl_init')) ? false : true;
+
+        /** @var ContactFormBridgeInterface $contactFormBridge */
+        $contactFormBridge = $this->getContainer()->get(ContactFormBridgeInterface::class);
+        $contactFormConfiguration = $contactFormBridge->getContactFormConfiguration();
+
+        /** @var FieldConfigurationInterface $fieldConfiguration */
+        foreach ($contactFormConfiguration->getFieldConfigurations() as $fieldConfiguration) {
+            $this->_aViewData['contactFormFieldConfigurations'][] = [
+                'name' => $fieldConfiguration->getName(),
+                'label' => $fieldConfiguration->getLabel(),
+                'isRequired' => $fieldConfiguration->isRequired(),
+            ];
+        }
 
         return $this->_sThisTemplate;
     }
@@ -141,19 +135,19 @@ class ShopConfiguration extends oxAdminDetails
         $sShopId = $this->getEditObjectId();
         $sModule = $this->_getModuleForConfigVars();
 
-        $configValidator = oxNew('oxNoJsValidator');
+        $configValidator = oxNew(\OxidEsales\Eshop\Core\NoJsValidator::class);
         foreach ($this->_aConfParams as $sType => $sParam) {
-            $aConfVars = oxRegistry::getConfig()->getRequestParameter($sParam, true);
+            $aConfVars = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter($sParam, true);
             if (is_array($aConfVars)) {
                 foreach ($aConfVars as $sName => $sValue) {
                     $oldValue = $myConfig->getConfigParam($sName);
                     if ($sValue !== $oldValue) {
                         $sValueToValidate = is_array($sValue) ? join(', ', $sValue) : $sValue;
                         if (!$configValidator->isValid($sValueToValidate)) {
-                            $error = oxNew('oxDisplayError');
+                            $error = oxNew(\OxidEsales\Eshop\Core\DisplayError::class);
                             $error->setFormatParameters(htmlspecialchars($sValueToValidate));
                             $error->setMessage("SHOP_CONFIG_ERROR_INVALID_VALUE");
-                            oxRegistry::get("oxUtilsView")->addErrorToDisplay($error);
+                            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($error);
                             continue;
                         }
                         $myConfig->saveShopConfVar(
@@ -178,10 +172,10 @@ class ShopConfiguration extends oxAdminDetails
         $this->saveConfVars();
 
         //saving additional fields ("oxshops__oxdefcat"") that goes directly to shop (not config)
-        /** @var oxShop $oShop */
-        $oShop = oxNew("oxshop");
+        /** @var \OxidEsales\Eshop\Application\Model\Shop $oShop */
+        $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         if ($oShop->load($this->getEditObjectId())) {
-            $oShop->assign(oxRegistry::getConfig()->getRequestParameter("editval"));
+            $oShop->assign(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval"));
             $oShop->save();
         }
     }
@@ -201,16 +195,16 @@ class ShopConfiguration extends oxAdminDetails
     public function loadConfVars($sShopId, $sModule)
     {
         $myConfig = $this->getConfig();
-        $aConfVars = array(
-            "bool"   => array(),
-            "str"    => array(),
-            "arr"    => array(),
-            "aarr"   => array(),
-            "select" => array(),
-        );
-        $aVarConstraints = array();
-        $aGrouping = array();
-        $oDb = oxDb::getDb();
+        $aConfVars = [
+            "bool"   => [],
+            "str"    => [],
+            "arr"    => [],
+            "aarr"   => [],
+            "select" => [],
+        ];
+        $aVarConstraints = [];
+        $aGrouping = [];
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $rs = $oDb->select(
             "select cfg.oxvarname,
                     cfg.oxvartype,
@@ -232,7 +226,7 @@ class ShopConfiguration extends oxAdminDetails
                 $aVarConstraints[$sName] = $this->_parseConstraint($sType, $sConstraint);
                 if ($sGrouping) {
                     if (!isset($aGrouping[$sGrouping])) {
-                        $aGrouping[$sGrouping] = array($sName => $sType);
+                        $aGrouping[$sGrouping] = [$sName => $sType];
                     } else {
                         $aGrouping[$sGrouping][$sName] = $sType;
                     }
@@ -241,11 +235,27 @@ class ShopConfiguration extends oxAdminDetails
             }
         }
 
-        return array(
+        return [
             'vars'        => $aConfVars,
             'constraints' => $aVarConstraints,
             'grouping'    => $aGrouping,
-        );
+        ];
+    }
+
+    /**
+     * If allow to configure information sending to OXID.
+     * For PE and EE users it is always turned on.
+     *
+     * @return bool
+     */
+    public function informationSendingToOxidConfigurable()
+    {
+        $facts = new \OxidEsales\Facts\Facts();
+        if (!$facts->isCommunity()) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -439,7 +449,7 @@ class ShopConfiguration extends oxAdminDetails
     protected function _multilineToAarray($sMultiline)
     {
         $oStr = getStr();
-        $aArr = array();
+        $aArr = [];
         $aLines = explode("\n", $sMultiline);
         foreach ($aLines as $sLine) {
             $sLine = trim($sLine);

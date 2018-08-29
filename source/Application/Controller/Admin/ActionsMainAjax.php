@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -30,9 +14,8 @@ use Exception;
 /**
  * Class controls article assignment to action
  */
-class ActionsMainAjax extends \ajaxListComponent
+class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
-
     /**
      * If true extended column selection will be build
      *
@@ -45,26 +28,26 @@ class ActionsMainAjax extends \ajaxListComponent
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
-        array('oxartnum', 'oxarticles', 1, 0, 0),
-        array('oxtitle', 'oxarticles', 1, 1, 0),
-        array('oxean', 'oxarticles', 1, 0, 0),
-        array('oxmpn', 'oxarticles', 0, 0, 0),
-        array('oxprice', 'oxarticles', 0, 0, 0),
-        array('oxstock', 'oxarticles', 0, 0, 0),
-        array('oxid', 'oxarticles', 0, 0, 1)
-    ),
-                                 'container2' => array(
-                                     array('oxartnum', 'oxarticles', 1, 0, 0),
-                                     array('oxsort', 'oxactions2article', 1, 0, 0),
-                                     array('oxtitle', 'oxarticles', 1, 1, 0),
-                                     array('oxean', 'oxarticles', 1, 0, 0),
-                                     array('oxmpn', 'oxarticles', 0, 0, 0),
-                                     array('oxprice', 'oxarticles', 0, 0, 0),
-                                     array('oxstock', 'oxarticles', 0, 0, 0),
-                                     array('oxid', 'oxactions2article', 0, 0, 1)
-                                 )
-    );
+    protected $_aColumns = ['container1' => [ // field , table,         visible, multilanguage, ident
+        ['oxartnum', 'oxarticles', 1, 0, 0],
+        ['oxtitle', 'oxarticles', 1, 1, 0],
+        ['oxean', 'oxarticles', 1, 0, 0],
+        ['oxmpn', 'oxarticles', 0, 0, 0],
+        ['oxprice', 'oxarticles', 0, 0, 0],
+        ['oxstock', 'oxarticles', 0, 0, 0],
+        ['oxid', 'oxarticles', 0, 0, 1]
+    ],
+                                 'container2' => [
+                                     ['oxartnum', 'oxarticles', 1, 0, 0],
+                                     ['oxsort', 'oxactions2article', 1, 0, 0],
+                                     ['oxtitle', 'oxarticles', 1, 1, 0],
+                                     ['oxean', 'oxarticles', 1, 0, 0],
+                                     ['oxmpn', 'oxarticles', 0, 0, 0],
+                                     ['oxprice', 'oxarticles', 0, 0, 0],
+                                     ['oxstock', 'oxarticles', 0, 0, 0],
+                                     ['oxid', 'oxactions2article', 0, 0, 1]
+                                 ]
+    ];
 
     /**
      * Returns SQL query for data to fetc
@@ -74,13 +57,13 @@ class ActionsMainAjax extends \ajaxListComponent
     protected function _getQuery()
     {
         $myConfig = $this->getConfig();
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         // looking for table/view
         $sArtTable = $this->_getViewName('oxarticles');
         $sView = $this->_getViewName('oxobject2category');
 
-        $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchSelId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $sSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $sSynchSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sSelId) {
@@ -144,8 +127,8 @@ class ActionsMainAjax extends \ajaxListComponent
      */
     protected function _getSorting()
     {
-        $sOxIdParameter = oxRegistry::getConfig()->getRequestParameter('oxid');
-        $sSynchOxidParameter = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $sOxIdParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $sSynchOxidParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
         if ($sOxIdParameter && !$sSynchOxidParameter) {
             return 'order by oxactions2article.oxsort ';
         }
@@ -159,17 +142,17 @@ class ActionsMainAjax extends \ajaxListComponent
     public function removeArtFromAct()
     {
         $aChosenArt = $this->_getActionIds('oxactions2article.oxid');
-        $sOxid = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $sOxid = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
 
         $this->_getOxRssFeed()->removeCacheFile($sOxid);
 
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sQ = parent::_addFilter("delete oxactions2article.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
-            $sChosenArticles = implode(", ", oxDb::getDb()->quoteArray($aChosenArt));
+            $sChosenArticles = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt));
             $sQ = "delete from oxactions2article where oxactions2article.oxid in (" . $sChosenArticles . ") ";
-            oxDb::getDb()->Execute($sQ);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
 
@@ -184,46 +167,40 @@ class ActionsMainAjax extends \ajaxListComponent
     {
         $myConfig = $this->getConfig();
         $aArticles = $this->_getActionIds('oxarticles.oxid');
-        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
         $this->_getOxRssFeed()->removeCacheFile($soxId);
 
-        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sArtTable = $this->_getViewName('oxarticles');
             $aArticles = $this->_getAll($this->_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }
 
-        oxDb::getDb()->startTransaction();
-        try {
-            $database = oxDb::getDb();
-            $sArtTable = $this->_getViewName('oxarticles');
-            $sQ = "select max(oxactions2article.oxsort) from oxactions2article join {$sArtTable} " .
-                  "on {$sArtTable}.oxid=oxactions2article.oxartid " .
-                  "where oxactions2article.oxactionid = " . $database->quote($soxId) .
-                  " and oxactions2article.oxshopid = '" . $myConfig->getShopId() .
-                  "'and $sArtTable.oxid is not null";
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
+        $sArtTable = $this->_getViewName('oxarticles');
+        $sQ = "select max(oxactions2article.oxsort) from oxactions2article join {$sArtTable} " .
+              "on {$sArtTable}.oxid=oxactions2article.oxartid " .
+              "where oxactions2article.oxactionid = " . $database->quote($soxId) .
+              " and oxactions2article.oxshopid = '" . $myConfig->getShopId() .
+              "'and $sArtTable.oxid is not null";
 
-            $iSort = ((int) $database->getOne($sQ)) + 1;
+        $iSort = ((int) $database->getOne($sQ)) + 1;
 
-            $articleAdded = false;
-            if ($soxId && $soxId != "-1" && is_array($aArticles)) {
-                $sShopId = $myConfig->getShopId();
-                foreach ($aArticles as $sAdd) {
-                    $oNewGroup = oxNew('oxBase');
-                    $oNewGroup->init('oxactions2article');
-                    $oNewGroup->oxactions2article__oxshopid = new oxField($sShopId);
-                    $oNewGroup->oxactions2article__oxactionid = new oxField($soxId);
-                    $oNewGroup->oxactions2article__oxartid = new oxField($sAdd);
-                    $oNewGroup->oxactions2article__oxsort = new oxField($iSort++);
-                    $oNewGroup->save();
-                }
-                $articleAdded = true;
+        $articleAdded = false;
+        if ($soxId && $soxId != "-1" && is_array($aArticles)) {
+            $sShopId = $myConfig->getShopId();
+            foreach ($aArticles as $sAdd) {
+                $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
+                $oNewGroup->init('oxactions2article');
+                $oNewGroup->oxactions2article__oxshopid = new \OxidEsales\Eshop\Core\Field($sShopId);
+                $oNewGroup->oxactions2article__oxactionid = new \OxidEsales\Eshop\Core\Field($soxId);
+                $oNewGroup->oxactions2article__oxartid = new \OxidEsales\Eshop\Core\Field($sAdd);
+                $oNewGroup->oxactions2article__oxsort = new \OxidEsales\Eshop\Core\Field($iSort++);
+                $oNewGroup->save();
             }
-        } catch (Exception $exception) {
-            oxDb::getDb()->rollbackTransaction();
-            throw $exception;
+            $articleAdded = true;
         }
-        oxDb::getDb()->commitTransaction();
 
         return $articleAdded;
     }
@@ -235,18 +212,18 @@ class ActionsMainAjax extends \ajaxListComponent
     {
         $myConfig = $this->getConfig();
         $sArtTable = $this->_getViewName('oxarticles');
-        $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $sSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
         $sSelect = "select * from $sArtTable left join oxactions2article on $sArtTable.oxid=oxactions2article.oxartid ";
-        $sSelect .= "where oxactions2article.oxactionid = " . oxDb::getDb()->quote($sSelId) .
+        $sSelect .= "where oxactions2article.oxactionid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sSelId) .
                     " and oxactions2article.oxshopid = '" . $myConfig->getShopID() . "' " . $this->_getSorting();
 
-        $oList = oxNew("oxlist");
+        $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oList->init("oxbase", "oxactions2article");
         $oList->selectString($sSelect);
 
         // fixing indexes
         $iSelCnt = 0;
-        $aIdx2Id = array();
+        $aIdx2Id = [];
         foreach ($oList as $sKey => $oSel) {
             if ($oSel->oxactions2article__oxsort->value != $iSelCnt) {
                 $oSel->oxactions2article__oxsort->setValue($iSelCnt);
@@ -259,8 +236,8 @@ class ActionsMainAjax extends \ajaxListComponent
         }
 
         //
-        if (($iKey = array_search(oxRegistry::getConfig()->getRequestParameter('sortoxid'), $aIdx2Id)) !== false) {
-            $iDir = (oxRegistry::getConfig()->getRequestParameter('direction') == 'up') ? ($iKey - 1) : ($iKey + 1);
+        if (($iKey = array_search(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sortoxid'), $aIdx2Id)) !== false) {
+            $iDir = (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('direction') == 'up') ? ($iKey - 1) : ($iKey + 1);
             if (isset($aIdx2Id[$iDir])) {
                 // exchanging indexes
                 $oDir1 = $oList->offsetGet($aIdx2Id[$iDir]);
@@ -286,10 +263,10 @@ class ActionsMainAjax extends \ajaxListComponent
     /**
      * Getter for the rss feed handler.
      *
-     * @return oxRssFeed The rss feed handler.
+     * @return \OxidEsales\Eshop\Application\Model\RssFeed The rss feed handler.
      */
     protected function _getOxRssFeed()
     {
-        return oxNew('oxRssFeed');
+        return oxNew(\OxidEsales\Eshop\Application\Model\RssFeed::class);
     }
 }

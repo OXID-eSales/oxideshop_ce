@@ -1,29 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Model;
-
-use oxRegistry;
-use oxDb;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 /**
  * Diagnostic tool model
@@ -32,7 +13,6 @@ use oxDb;
  */
 class Diagnostics
 {
-
     /**
      * Edition of THIS OXID eShop
      *
@@ -52,79 +32,7 @@ class Diagnostics
      *
      * @var string
      */
-    protected $_sRevision = "";
-
-    /**
-     * Revision of THIS OXID eShop
-     *
-     * @var string
-     */
     protected $_sShopLink = "";
-
-    /**
-     * Array of all files and folders in shop root folder which are to be checked
-     *
-     * @var array
-     */
-    protected $_aFileCheckerPathList = array(
-        'bootstrap.php',
-        'index.php',
-        'oxid.php',
-        'oxseo.php',
-        'admin/',
-        'Application/',
-        'bin/',
-        'Core/',
-        'modules/',
-    );
-
-    /**
-     * Array of file extensions which are to be checked
-     *
-     * @var array
-     */
-    protected $_aFileCheckerExtensionList = array('php', 'tpl');
-
-    /**
-     * Setter for list of files and folders to check
-     *
-     * @param array $aPathList Path list.
-     */
-    public function setFileCheckerPathList($aPathList)
-    {
-        $this->_aFileCheckerPathList = $aPathList;
-    }
-
-    /**
-     * getter for list of files and folders to check
-     *
-     * @return $this->_aFileCheckerPathList array
-     */
-    public function getFileCheckerPathList()
-    {
-        return $this->_aFileCheckerPathList;
-    }
-
-    /**
-     * Setter for extensions of files to check
-     *
-     * @param array $aExtList List of extensions.
-     */
-    public function setFileCheckerExtensionList($aExtList)
-    {
-        $this->_aFileCheckerExtensionList = $aExtList;
-    }
-
-    /**
-     * getter for extensions of files to check
-     *
-     * @return $this->_aFileCheckerExtensionList array
-     */
-    public function getFileCheckerExtensionList()
-    {
-        return $this->_aFileCheckerExtensionList;
-    }
-
 
     /**
      * Version setter
@@ -171,29 +79,6 @@ class Diagnostics
     }
 
     /**
-     * Revision setter
-     *
-     * @param string $sRevision revision.
-     */
-    public function setRevision($sRevision)
-    {
-        if (!empty($sRevision)) {
-            $this->_sRevision = $sRevision;
-        }
-    }
-
-    /**
-     * Revision getter
-     *
-     * @return string
-     */
-    public function getRevision()
-    {
-        return $this->_sRevision;
-    }
-
-
-    /**
      * ShopLink setter
      *
      * @param string $sShopLink Shop link.
@@ -222,12 +107,11 @@ class Diagnostics
      */
     public function getShopDetails()
     {
-        $aShopDetails = array(
-            'Date'                => date(oxRegistry::getLang()->translateString('fullDateFormat'), time()),
+        $aShopDetails = [
+            'Date'                => date(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('fullDateFormat'), time()),
             'URL'                 => $this->getShopLink(),
             'Edition'             => $this->getEdition(),
             'Version'             => $this->getVersion(),
-            'Revision'            => $this->getRevision(),
             'Subshops (Total)'    => $this->_countRows('oxshops', true),
             'Subshops (Active)'   => $this->_countRows('oxshops', false),
             'Categories (Total)'  => $this->_countRows('oxcategories', true),
@@ -235,7 +119,7 @@ class Diagnostics
             'Articles (Total)'    => $this->_countRows('oxarticles', true),
             'Articles (Active)'   => $this->_countRows('oxarticles', false),
             'Users (Total)'       => $this->_countRows('oxuser', true),
-        );
+        ];
 
         return $aShopDetails;
     }
@@ -250,7 +134,7 @@ class Diagnostics
      */
     protected function _countRows($sTable, $blMode)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sRequest = 'SELECT COUNT(*) FROM ' . $sTable;
 
         if ($blMode == false) {
@@ -270,7 +154,7 @@ class Diagnostics
      */
     public function getPhpSelection()
     {
-        $aPhpIniParams = array(
+        $aPhpIniParams = [
             'allow_url_fopen',
             'display_errors',
             'file_uploads',
@@ -279,9 +163,9 @@ class Diagnostics
             'post_max_size',
             'register_globals',
             'upload_max_filesize',
-        );
+        ];
 
-        $aPhpIniConf = array();
+        $aPhpIniConf = [];
 
         foreach ($aPhpIniParams as $sParam) {
             $sValue = ini_get($sParam);
@@ -322,7 +206,7 @@ class Diagnostics
     public function getServerInfo()
     {
         // init empty variables (can be filled if exec is allowed)
-        $iCpuAmnt = $iCpuMhz = $iBogo = $iMemTotal = $iMemFree = $sCpuModelName = $sCpuModel = $sCpuFreq = $iCpuCores = null;
+        $iMemTotal = $iMemFree = $sCpuModelName = $sCpuModel = $sCpuFreq = $iCpuCores = null;
 
         // fill, if exec is allowed
         if ($this->isExecAllowed()) {
@@ -341,7 +225,7 @@ class Diagnostics
             }
         }
 
-        $aServerInfo = array(
+        $aServerInfo = [
             'Server OS'     => @php_uname('s'),
             'VM'            => $this->_getVirtualizationSystem(),
             'PHP'           => $this->_getPhpVersion(),
@@ -354,7 +238,7 @@ class Diagnostics
             'CPU Model'     => $sCpuModel,
             'CPU frequency' => $sCpuFreq,
             'CPU cores'     => round($iCpuCores, 0),
-        );
+        ];
 
         return $aServerInfo;
     }
@@ -523,7 +407,7 @@ class Diagnostics
      */
     protected function _getMySqlServerInfo()
     {
-        $aResult = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getRow("SHOW VARIABLES LIKE 'version'");
+        $aResult = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getRow("SHOW VARIABLES LIKE 'version'");
 
         return $aResult['Value'];
     }

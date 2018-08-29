@@ -1,29 +1,13 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Tests\Acceptance\Frontend;
+namespace OxidEsales\EshopCommunity\Tests\Acceptance\Frontend;
 
 use oxDb;
-use OxidEsales\Eshop\Tests\Acceptance\FrontendTestCase;
+use OxidEsales\EshopCommunity\Tests\Acceptance\FrontendTestCase;
 
 /** Selenium tests for new layout. */
 class NavigationFrontendTest extends FrontendTestCase
@@ -146,7 +130,7 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertElementPresent("//div[@id='panel']/div[1]//label[text()='%NEWSLETTER%']");
         $this->assertElementPresent("//div[@id='panel']/div[1]//input[@name='editval[oxuser__oxusername]']");
         $this->assertElementPresent("//div[@id='panel']/div[1]//button[text()='%SUBSCRIBE%']");
-
+//exit;
         //SERVICE links
         $this->assertElementPresent("footerServices");
         //there are fixed amount of links in here
@@ -339,7 +323,7 @@ class NavigationFrontendTest extends FrontendTestCase
         $oValidator = $this->getObjectValidator();
         $this->assertTrue($oValidator->validate('oxNewsSubscribed', $aSubscribedUserData), $oValidator->getErrorMessage());
     }
-    
+
     /**
      * News small box in main page and news page
      *
@@ -722,7 +706,7 @@ class NavigationFrontendTest extends FrontendTestCase
 
         $this->type( "amountToBasket_searchList_1", "3" );
         $this->clickAndWait( "toBasket_searchList_1" );
-        $this->assertEquals( "3", $this->getText( "//div[@id='miniBasket']/span" ) );
+        $this->waitForElementText("3", "//div[@id='miniBasket']/span");
 
         $this->clickAndWait( "//ul[@id='searchList']/li[1]//a" ); //link on img
         $this->assertEquals( "%YOU_ARE_HERE%: / Search result for \"šÄßüл1000\"", $this->getText( "breadCrumb" ) );
@@ -1233,7 +1217,7 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->waitForItemAppear("newItemMsg");
         $this->assertEquals("%NEW_BASKET_ITEM_MSG%", $this->clearString($this->getText("newItemMsg")));
         $this->waitForTextDisappear("%NEW_BASKET_ITEM_MSG%");
-        $this->assertEquals("1", $this->getText("//div[@id='miniBasket']/span"));
+        $this->waitForElementText("1", "//div[@id='miniBasket']/span");
 
         //display popup when product is added to basket
         $this->callShopSC("oxConfig", null, null, array("iNewBasketItemMessage" => array("type" => "select", "value" => '2', "module" => "theme:azure")));
@@ -1246,7 +1230,7 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertEquals("%TOTAL% 50,00 €", $this->clearString($this->getText("//div[@id='modalbasketFlyout']//p[2]")));
         $this->clickAndWait("//div[@id='modalbasketFlyout']//a[text()='%DISPLAY_BASKET%']");
         $this->assertEquals("%YOU_ARE_HERE%: / %PAGE_TITLE_BASKET%", $this->getText("breadCrumb"));
-        $this->assertEquals("1", $this->getText("//div[@id='miniBasket']/span"));
+        $this->waitForElementText("1", "//div[@id='miniBasket']/span");
         $this->assertEquals("Test product 0 [EN] šÄßüл %PRODUCT_NO%: 1000", $this->clearString($this->getText("//tr[@id='cartItem_1']/td[3]")));
 
         $this->clickAndWait("link=%HOME%");
@@ -1260,7 +1244,7 @@ class NavigationFrontendTest extends FrontendTestCase
 
         $this->clickAndWait("//div[@id='modalbasketFlyout']//a[text()='%CHECKOUT%']");
         $this->assertEquals("%YOU_ARE_HERE%: / %ADDRESS%", $this->getText("breadCrumb"));
-        $this->assertEquals("2", $this->getText("//div[@id='miniBasket']/span"));
+        $this->waitForElementText("2", "//div[@id='miniBasket']/span");
 
         $this->clickAndWait("link=%HOME%");
         $this->assertElementNotPresent("modalbasketFlyout");
@@ -1270,12 +1254,12 @@ class NavigationFrontendTest extends FrontendTestCase
 
         $this->click("//div[@id='modalbasketFlyout']//p[1]/img");
         $this->waitForItemDisappear("modalbasketFlyout");
-        $this->assertEquals("3", $this->getText("//div[@id='miniBasket']/span"));
+        $this->waitForElementText("3", "//div[@id='miniBasket']/span");
 
         $this->addToBasket("1000");
         $this->waitForItemAppear("modalbasketFlyout");
         $this->clickAndWait("//div[@id='modalbasketFlyout']//ul/li[2]/a");
-        $this->assertEquals("4", $this->getText("//div[@id='miniBasket']/span"));
+        $this->waitForElementText("4", "//div[@id='miniBasket']/span");
         $this->assertElementNotPresent("modalbasketFlyout");
         $this->assertEquals("Test product 3 [EN] šÄßüл", $this->getText("//h1"));
     }

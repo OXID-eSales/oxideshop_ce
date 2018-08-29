@@ -1,25 +1,9 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxField;
 use \oxDb;
@@ -61,7 +45,7 @@ class ActionsMainTest extends \OxidTestCase
         $this->setRequestParameter("oxid", oxDb::getDb()->getOne("select oxid from oxactions"));
 
         // testing..
-        $oView = $this->getMock("Actions_Main", array("_createCategoryTree"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMain::class, array("_createCategoryTree"));
         $oView->expects($this->any())->method('_createCategoryTree')->will($this->returnValue(false));
         $sTplName = $oView->render();
 
@@ -108,12 +92,12 @@ class ActionsMainTest extends \OxidTestCase
         $oArticle->oxarticles__oxartnum = new oxField("testArtNr");
         $oArticle->oxarticles__oxtitle = new oxField("testArtTitle");
 
-        $oPromotion = $this->getMock("oxactions", array("getBannerArticle"));
+        $oPromotion = $this->getMock(\OxidEsales\Eshop\Application\Model\Actions::class, array("getBannerArticle"));
         $oPromotion->expects($this->once())->method('getBannerArticle')->will($this->returnValue($oArticle));
         $oPromotion->load($sPromotion);
 
         // testing..
-        $oView = $this->getMock("Actions_Main", array("getViewDataElement", "_createCategoryTree"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMain::class, array("getViewDataElement", "_createCategoryTree"));
         $oView->expects($this->once())->method('getViewDataElement')->will($this->returnValue($oPromotion));
         $oView->expects($this->once())->method('_createCategoryTree');
         $sTplName = $oView->render();
@@ -143,7 +127,7 @@ class ActionsMainTest extends \OxidTestCase
         $oPromotion->load($sPromotion);
 
         // testing..
-        $oView = $this->getMock("Actions_Main", array("getViewDataElement", "_createCategoryTree"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMain::class, array("getViewDataElement", "_createCategoryTree"));
         $oView->expects($this->once())->method('getViewDataElement')->will($this->returnValue($oPromotion));
         $oView->expects($this->never())->method('_createCategoryTree');
         $sTplName = $oView->render();
@@ -173,7 +157,7 @@ class ActionsMainTest extends \OxidTestCase
         $oPromotion->load($sPromotion);
 
         // testing..
-        $oView = $this->getMock("Actions_Main", array("getViewDataElement", "_generateTextEditor"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMain::class, array("getViewDataElement", "_generateTextEditor"));
         $oView->expects($this->once())->method('getViewDataElement')->will($this->returnValue($oPromotion));
         $oView->expects($this->once())->method('_generateTextEditor')->will($this->returnValue("sHtmlEditor"));
         $sTplName = $oView->render();
@@ -216,7 +200,7 @@ class ActionsMainTest extends \OxidTestCase
      */
     public function testSaveinnlang()
     {
-        $oView = $this->getMock("Actions_Main", array("save"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMain::class, array("save"));
         $oView->expects($this->once())->method("save");
         $oView->saveinnlang();
     }
@@ -235,7 +219,7 @@ class ActionsMainTest extends \OxidTestCase
         $oPromotion->oxactions__oxtype = new oxField(2);
 
         // testing..
-        $oView = $this->getMock("Actions_Main", array("getViewDataElement", "_generateTextEditor"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMain::class, array("getViewDataElement", "_generateTextEditor"));
         $oView->expects($this->once())->method('getViewDataElement')->with($this->equalTo("edit"))->will($this->returnValue($oPromotion));
         $oView->expects($this->once())->method('_generateTextEditor')->with($this->equalTo("100%"), $this->equalTo(300), $this->equalTo($oPromotion), $this->equalTo("oxactions__oxlongdesc"), $this->equalTo("details.tpl.css"));
 

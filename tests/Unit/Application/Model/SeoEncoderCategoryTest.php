@@ -1,25 +1,9 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use modDB;
 use \oxField;
@@ -80,7 +64,7 @@ class SeoEncoderCategoryTest extends \OxidTestCase
     {
         oxTestModules::addFunction("oxcategory", "loadInLang", "{ return true; }");
 
-        $oEncoder = $this->getMock("oxSeoEncoderCategory", array("getCategoryUri"));
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class, array("getCategoryUri"));
         $oEncoder->expects($this->once())->method('getCategoryUri')->will($this->returnValue("categoryUri"));
 
         $this->assertEquals("categoryUri", $oEncoder->UNITgetAltUri('1126', 0));
@@ -178,10 +162,10 @@ class SeoEncoderCategoryTest extends \OxidTestCase
      */
     public function testGetCategoryUrl()
     {
-        $oCategory = $this->getMock('oxcategory', array('getLanguage'));
+        $oCategory = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('getLanguage'));
         $oCategory->expects($this->once())->method('getLanguage')->will($this->returnValue(0));
 
-        $oEncoder = $this->getMock('oxSeoEncoderCategory', array('_getFullUrl', 'getCategoryUri'));
+        $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class, array('_getFullUrl', 'getCategoryUri'));
         $oEncoder->expects($this->once())->method('_getFullUrl')->will($this->returnValue('seocaturl'));
         $oEncoder->expects($this->once())->method('getCategoryUri')->will($this->returnValue(true));
 
@@ -273,7 +257,7 @@ class SeoEncoderCategoryTest extends \OxidTestCase
         oxTestModules::addFunction("oxUtilsServer", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
         $categoryId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab85808a1f05.26160932' : '8a142c3e4d3253c95.46563530';
-        $link = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/Living/Clocks/23/' : 'en/Gifts/Fantasy/23/';
+        $link = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/Living/Clocks/?pgNr=22' : 'en/Gifts/Fantasy/?pgNr=22';
 
         $oCategory = oxNew('oxCategory');
         $oCategory->loadInLang(1, $categoryId);
@@ -287,7 +271,7 @@ class SeoEncoderCategoryTest extends \OxidTestCase
         oxTestModules::addFunction("oxUtilsServer", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
         $categoryId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab85808a1f05.26160932' : '8a142c3e4d3253c95.46563530';
-        $link = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/Living/Clocks/23/' : 'en/Gifts/Fantasy/23/';
+        $link = $this->getTestConfig()->getShopEdition() == 'EE' ? 'en/Living/Clocks/?pgNr=22' : 'en/Gifts/Fantasy/?pgNr=22';
 
         $category = oxNew('oxCategory');
         $category->loadInLang(0, $categoryId);

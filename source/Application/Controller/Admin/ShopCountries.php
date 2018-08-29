@@ -1,50 +1,34 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 //shop location countries - used when loading dynamic content from oxid servers
-$aLanguages = array(
+$aLanguages = [
 
     'en' => 'English',
     'de' => 'Deutsch',
 
-);
+];
 
-$aLocationCountries['en'] = array(
+$aLocationCountries['en'] = [
 
     'de' => 'Germany, Austria, Switzerland',
     'en' => 'Any other',
 
-);
+];
 
-$aLocationCountries['de'] = array(
+$aLocationCountries['de'] = [
 
     'de' => 'Deutschland, &Ouml;sterreich, Schweiz',
     'en' => 'Andere Region',
 
-);
+];
 
-$aCountries['en'] = array(
+$aCountries['en'] = [
 
     "a7c40f6320aeb2ec2.72885259" => "Austria",
     "a7c40f63272a57296.32117580" => "France",
@@ -293,9 +277,9 @@ $aCountries['en'] = array(
     "8f241f110969c34a2.42564730" => "Zambia",
     "8f241f110969da699.04185888" => "Zimbabwe",
     "a7c40f632a0804ab5.18804099" => "Åland Islands",
-);
+];
 
-$aCountries['de'] = array(
+$aCountries['de'] = [
 
     "a7c40f6320aeb2ec2.72885259" => "Österreich",
     "a7c40f63272a57296.32117580" => "Frankreich",
@@ -544,4 +528,4 @@ $aCountries['de'] = array(
     "8f241f11095861fb7.55278256" => "Ägypten",
     "8f241f1109588d077.74284490" => "Äquatorialguinea",
     "8f241f110958caf67.08982313" => "Äthiopien",
-);
+];

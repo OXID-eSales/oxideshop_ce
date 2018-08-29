@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
 
@@ -29,9 +13,8 @@ use oxDb;
  * Collects list of content
  *
  */
-class ContentList extends \oxList
+class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
-
     /**
      * Information content type
      *
@@ -65,7 +48,7 @@ class ContentList extends \oxList
      *
      * @var array
      */
-    protected $_aServiceKeys = array('oximpressum', 'oxagb', 'oxsecurityinfo', 'oxdeliveryinfo', 'oxrightofwithdrawal', 'oxorderinfo', 'oxcredits');
+    protected $_aServiceKeys = ['oximpressum', 'oxagb', 'oxsecurityinfo', 'oxdeliveryinfo', 'oxrightofwithdrawal', 'oxorderinfo', 'oxcredits'];
 
     /**
      * Sets service keys.
@@ -109,13 +92,13 @@ class ContentList extends \oxList
     public function loadCatMenues()
     {
         $this->_load(self::TYPE_CATEGORY_MENU);
-        $aArray = array();
+        $aArray = [];
 
         if ($this->count()) {
             foreach ($this as $oContent) {
                 // add into category tree
                 if (!isset($aArray[$oContent->getCategoryId()])) {
-                    $aArray[$oContent->getCategoryId()] = array();
+                    $aArray[$oContent->getCategoryId()] = [];
                 }
 
                 $aArray[$oContent->oxcontents__oxcatid->value][] = $oContent;
@@ -135,7 +118,7 @@ class ContentList extends \oxList
     protected function _loadFromDb($iType)
     {
         $sSql = $this->_getSQLByType($iType);
-        $aData = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll($sSql);
+        $aData = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getAll($sSql);
 
         return $aData;
     }
@@ -165,7 +148,7 @@ class ContentList extends \oxList
      */
     protected function _extractListToArray()
     {
-        $aExtractedContents = array();
+        $aExtractedContents = [];
         foreach ($this as $oContent) {
             $aExtractedContents[$oContent->getLoadId()] = $oContent;
         }
@@ -183,7 +166,7 @@ class ContentList extends \oxList
     protected function _getSQLByType($iType)
     {
         $sSQLAdd = '';
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sSQLType = " AND `oxtype` = " . $oDb->quote($iType);
 
         if ($iType == self::TYPE_CATEGORY_MENU) {
@@ -191,7 +174,7 @@ class ContentList extends \oxList
         }
 
         if ($iType == self::TYPE_SERVICE_LIST) {
-            $sIdents = implode(", ", oxDb::getDb()->quoteArray($this->getServiceKeys()));
+            $sIdents = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($this->getServiceKeys()));
             $sSQLAdd = " AND OXLOADID IN (" . $sIdents . ")";
             $sSQLType = '';
         }

@@ -1,30 +1,14 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Integration\Seo;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Seo;
 
 use oxBase;
 use oxDb;
 use oxField;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use oxRegistry;
 use oxSeoEncoder;
 
@@ -374,7 +358,7 @@ class SeoTest extends \OxidTestCase
         //check if old URL still active
         $aExp = array("cl" => "details", "anid" => "_testid", "cnid" => "_test3", "lang" => 0);
         /** @var oxSeoEncoder $oSeoDecoder */
-        $oSeoDecoder = oxRegistry::get('oxSeoDecoder');
+        $oSeoDecoder = \OxidEsales\Eshop\Core\Registry::getSeoDecoder();
         $aDecoded = $oSeoDecoder->decodeUrl($sCurrentSeo);
         $this->assertEquals($aExp, $aDecoded);
     }
@@ -432,7 +416,7 @@ class SeoTest extends \OxidTestCase
      */
     protected function _addArticlesToCategories(array $aArticles, array $aCategories)
     {
-        $myUtilsObject = oxRegistry::get("oxUtilsObject");
+        $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
         foreach ($aArticles as $sArticle) {
             foreach ($aCategories as $sCategory => $iTime) {
                 /** @var oxBase $oNew */

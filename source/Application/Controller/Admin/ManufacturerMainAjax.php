@@ -1,35 +1,18 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxDb;
 
 /**
  * Class manages manufacturer assignment to articles
  */
-class ManufacturerMainAjax extends \ajaxListComponent
+class ManufacturerMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
-
     /**
      * If true extended column selection will be build
      *
@@ -42,27 +25,27 @@ class ManufacturerMainAjax extends \ajaxListComponent
      *
      * @var array
      */
-    protected $_aColumns = array(
+    protected $_aColumns = [
         // field , table, visible, multilanguage, id
-        'container1' => array(
-            array('oxartnum', 'oxarticles', 1, 0, 0),
-            array('oxtitle', 'oxarticles', 1, 1, 0),
-            array('oxean', 'oxarticles', 1, 0, 0),
-            array('oxmpn', 'oxarticles', 0, 0, 0),
-            array('oxprice', 'oxarticles', 0, 0, 0),
-            array('oxstock', 'oxarticles', 0, 0, 0),
-            array('oxid', 'oxarticles', 0, 0, 1)
-        ),
-        'container2' => array(
-            array('oxartnum', 'oxarticles', 1, 0, 0),
-            array('oxtitle', 'oxarticles', 1, 1, 0),
-            array('oxean', 'oxarticles', 1, 0, 0),
-            array('oxmpn', 'oxarticles', 0, 0, 0),
-            array('oxprice', 'oxarticles', 0, 0, 0),
-            array('oxstock', 'oxarticles', 0, 0, 0),
-            array('oxid', 'oxarticles', 0, 0, 1)
-        )
-    );
+        'container1' => [
+            ['oxartnum', 'oxarticles', 1, 0, 0],
+            ['oxtitle', 'oxarticles', 1, 1, 0],
+            ['oxean', 'oxarticles', 1, 0, 0],
+            ['oxmpn', 'oxarticles', 0, 0, 0],
+            ['oxprice', 'oxarticles', 0, 0, 0],
+            ['oxstock', 'oxarticles', 0, 0, 0],
+            ['oxid', 'oxarticles', 0, 0, 1]
+        ],
+        'container2' => [
+            ['oxartnum', 'oxarticles', 1, 0, 0],
+            ['oxtitle', 'oxarticles', 1, 1, 0],
+            ['oxean', 'oxarticles', 1, 0, 0],
+            ['oxmpn', 'oxarticles', 0, 0, 0],
+            ['oxprice', 'oxarticles', 0, 0, 0],
+            ['oxstock', 'oxarticles', 0, 0, 0],
+            ['oxid', 'oxarticles', 0, 0, 1]
+        ]
+    ];
 
     /**
      * Returns SQL query for data to fetc
@@ -76,7 +59,7 @@ class ManufacturerMainAjax extends \ajaxListComponent
         // looking for table/view
         $articlesViewName = $this->_getViewName('oxarticles');
         $objectToCategoryViewName = $this->_getViewName('oxobject2category');
-        $database = oxDb::getDb();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $manufacturerId = $config->getRequestParameter('oxid');
         $syncedManufacturerId = $config->getRequestParameter('synchoxid');
@@ -134,7 +117,7 @@ class ManufacturerMainAjax extends \ajaxListComponent
 
         if (is_array($articleIds) && !empty($articleIds)) {
             $query = $this->formManufacturerRemovalQuery($articleIds);
-            oxDb::getDb()->execute($query);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($query);
 
             $this->resetCounter("manufacturerArticle", $manufacturerId);
         }
@@ -152,7 +135,7 @@ class ManufacturerMainAjax extends \ajaxListComponent
         return "
           UPDATE oxarticles
           SET oxmanufacturerid = null
-          WHERE oxid IN ( " . implode(", ", oxDb::getDb()->quoteArray($articlesToRemove)) . ") ";
+          WHERE oxid IN ( " . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($articlesToRemove)) . ") ";
     }
 
     /**
@@ -171,7 +154,7 @@ class ManufacturerMainAjax extends \ajaxListComponent
         }
 
         if ($manufacturerId && $manufacturerId != "-1" && is_array($articleIds)) {
-            $database = oxDb::getDb();
+            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
             $query = $this->formArticleToManufacturerAdditionQuery($manufacturerId, $articleIds);
             $database->execute($query);
@@ -189,7 +172,7 @@ class ManufacturerMainAjax extends \ajaxListComponent
      */
     protected function formArticleToManufacturerAdditionQuery($manufacturerId, $articlesToAdd)
     {
-        $database = oxDb::getDb();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         return "
             UPDATE oxarticles

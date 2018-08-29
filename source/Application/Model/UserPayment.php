@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxRegistry;
 use oxDb;
@@ -31,9 +15,8 @@ use oxDb;
  * user payment.
  *
  */
-class UserPayment extends \oxBase
+class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-
     // you can change this if you want more security
     // DO NOT !! CHANGE THIS FILE AND STORE CREDIT CARD INFORMATION
     // THIS IS MORE THAN LIKELY ILLEGAL !!
@@ -86,7 +69,7 @@ class UserPayment extends \oxBase
         //due to compatibility with templates
         if ($sName == 'oxpayments__oxdesc') {
             if ($this->_oPayment === null) {
-                $this->_oPayment = oxNew('oxpayment');
+                $this->_oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
                 $this->_oPayment->load($this->oxuserpayments__oxpaymentsid->value);
             }
 
@@ -111,7 +94,7 @@ class UserPayment extends \oxBase
     {
         parent::__construct();
         $this->init('oxuserpayments');
-        $this->_sPaymentKey = oxRegistry::getUtils()->strRot13($this->_sPaymentKey);
+        $this->_sPaymentKey = str_rot13($this->_sPaymentKey);
         $this->setStoreCreditCardInfo($this->getConfig()->getConfigParam('blStoreCreditCardInfo'));
     }
 
@@ -135,7 +118,7 @@ class UserPayment extends \oxBase
     public function load($sOxId)
     {
         $sSelect = 'select oxid, oxuserid, oxpaymentsid, DECODE( oxvalue, "' . $this->getPaymentKey() . '" ) as oxvalue
-                    from oxuserpayments where oxid = ' . oxDb::getDb()->quote($sOxId);
+                    from oxuserpayments where oxid = ' . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sOxId);
 
         return $this->assignRecord($sSelect);
     }
@@ -158,7 +141,7 @@ class UserPayment extends \oxBase
         if ($sValue = $this->oxuserpayments__oxvalue->value) {
             // Function is called from inside a transaction in Category::save (see ESDEV-3804 and ESDEV-3822).
             // No need to explicitly force master here.
-            $database = oxDb::getDb();
+            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sEncodedValue = $database->getOne("select encode( " . $database->quote($sValue) . ", '" . $this->getPaymentKey() . "' )");
             $this->oxuserpayments__oxvalue->setValue($sEncodedValue);
         }
@@ -185,7 +168,7 @@ class UserPayment extends \oxBase
         if ($sValue = $this->oxuserpayments__oxvalue->value) {
             // Function is called from inside a transaction in Category::save (see ESDEV-3804 and ESDEV-3822).
             // No need to explicitly force master here.
-            $database = oxDb::getDb();
+            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
             $sEncodedValue = $database->getOne("select encode( " . $database->quote($sValue) . ", '" . $this->getPaymentKey() . "' )");
             $this->oxuserpayments__oxvalue->setValue($sEncodedValue);
@@ -224,8 +207,8 @@ class UserPayment extends \oxBase
     /**
      * Get user payment by payment id
      *
-     * @param oxUser $oUser        user object
-     * @param string $sPaymentType payment type
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser        user object
+     * @param string                                   $sPaymentType payment type
      *
      * @return bool
      */
@@ -233,7 +216,7 @@ class UserPayment extends \oxBase
     {
         $blGet = false;
         if ($oUser && $sPaymentType != null) {
-            $oDb = oxDb::getDb();
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sQ = 'select oxpaymentid from oxorder where oxpaymenttype=' . $oDb->quote($sPaymentType) . ' and
                     oxuserid=' . $oDb->quote($oUser->getId()) . ' order by oxorderdate desc';
             if (($sOxId = $oDb->getOne($sQ))) {
@@ -256,13 +239,12 @@ class UserPayment extends \oxBase
         }
 
         if (!$this->_aDynValues) {
-
             $sRawDynValue = null;
             if (is_object($this->oxuserpayments__oxvalue)) {
                 $sRawDynValue = $this->oxuserpayments__oxvalue->getRawValue();
             }
 
-            $this->_aDynValues = oxRegistry::getUtils()->assignValuesFromText($sRawDynValue);
+            $this->_aDynValues = \OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($sRawDynValue);
         }
 
         return $this->_aDynValues;

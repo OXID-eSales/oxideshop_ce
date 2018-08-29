@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 
@@ -31,7 +15,7 @@ use oxRegistry;
  * store them to shopping basket, view detail information.
  * OXID eShop -> MY ACCOUNT -> Newsletter.
  */
-class AccountNoticeListController extends \Account
+class AccountNoticeListController extends \OxidEsales\Eshop\Application\Controller\AccountController
 {
     /**
      * Current class template name.
@@ -77,11 +61,11 @@ class AccountNoticeListController extends \Account
 
     /**
      * If user is not logged in - returns name of template
-     * Account_Noticelist::_sThisLoginTemplate, or if user is allready
+     * \OxidEsales\Eshop\Application\Controller\AccountNoticeListController::_sThisLoginTemplate, or if user is allready
      * logged in - loads notice list articles (articles may be accessed
-     * by oxuser::getBasket()), loads similar articles (if available) for
-     * the last article in list oxarticle::GetSimilarProducts() and
-     * returns name of template to render account_noticelist::_sThisTemplate
+     * by \OxidEsales\Eshop\Application\Model\User::getBasket()), loads similar articles (if available) for
+     * the last article in list \OxidEsales\Eshop\Application\Model\Article::GetSimilarProducts() and
+     * returns name of template to render \OxidEsales\Eshop\Application\Controller\AccountNoticeListController::_sThisTemplate
      *
      * @return string current template file name
      */
@@ -123,7 +107,6 @@ class AccountNoticeListController extends \Account
     {
         // similar products list
         if ($this->_aSimilarProductList === null && count($this->getNoticeProductList())) {
-
             // just ensuring that next call will skip this check
             $this->_aSimilarProductList = false;
 
@@ -162,15 +145,15 @@ class AccountNoticeListController extends \Account
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
 
-        $oLang = oxRegistry::getLang();
+        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $sSelfLink = $this->getViewConfig()->getSelfLink();
 
         $iBaseLanguage = $oLang->getBaseLanguage();
         $aPath['title'] = $oLang->translateString('MY_ACCOUNT', $iBaseLanguage, false);
-        $aPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($sSelfLink . "cl=account");
+        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($sSelfLink . "cl=account");
         $aPaths[] = $aPath;
 
         $aPath['title'] = $oLang->translateString('MY_WISH_LIST', $iBaseLanguage, false);

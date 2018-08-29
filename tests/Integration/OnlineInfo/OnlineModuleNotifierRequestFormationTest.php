@@ -1,40 +1,21 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Integration\OnlineInfo;
+namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
 
-use oxCurl;
-use oxModule;
-use oxOnlineModuleVersionNotifier;
-use oxOnlineModuleVersionNotifierCaller;
-use oxRegistry;
-use oxSimpleXml;
+use OxidEsales\Eshop\Core\OnlineServerEmailBuilder;
+use OxidEsales\EshopCommunity\Core\Exception\SystemComponentException;
+use \oxOnlineModuleVersionNotifier;
+use \oxOnlineModuleVersionNotifierCaller;
+use \oxRegistry;
+use \oxSimpleXml;
 
 /**
  * Class Integration_OnlineInfo_FrontendServersInformationStoringTest
  *
- * @covers oxServerProcessor
- * @covers oxApplicationServer
- * @covers oxServerChecker
- * @covers oxServerManager
+ * @covers \OxidEsales\Eshop\Core\Service\ApplicationServerService
  */
 class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
 {
@@ -68,13 +49,15 @@ class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
         $sXml .=   '<productId>eShop</productId>';
         $sXml .= '</omvnRequest>'."\n";
 
-        $oCurl = $this->getMock('oxCurl', array('setParameters', 'execute'));
-        $oCurl->expects($this->atLeastOnce())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $sXml)));
-        $oCurl->expects($this->any())->method('execute')->will($this->returnValue(true));
-        /** @var oxCurl $oCurl */
+        $curlMock = $this->getMockBuilder(\OxidEsales\Eshop\Core\Curl::class)
+            ->setMethods(['execute','getStatusCode','setParameters'])
+            ->getMock();
+        $curlMock->expects($this->any())->method('execute')->will($this->returnValue(true));
+        $curlMock->expects($this->any())->method('getStatusCode')->will($this->returnValue(200));
+        $curlMock->expects($this->atLeastOnce())->method('setParameters')->with($this->equalTo(array('xmlRequest' => $sXml)));
 
-        $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
-        $oOnlineModuleVersionNotifierCaller = new oxOnlineModuleVersionNotifierCaller($oCurl, $oEmailBuilder, new oxSimpleXml());
+        $oEmailBuilder = oxNew(OnlineServerEmailBuilder::class);
+        $oOnlineModuleVersionNotifierCaller = new oxOnlineModuleVersionNotifierCaller($curlMock, $oEmailBuilder, new oxSimpleXml());
 
         $oModule1 = oxNew('oxModule');
         $oModule1->setModuleData(array(
@@ -90,9 +73,9 @@ class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
             'active' => true,
         ));
 
-        $oModuleList = $this->getMock('oxModuleList', array('getList'));
+        $oModuleList = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, array('getList'));
         $oModuleList->expects($this->any())->method('getList')->will($this->returnValue(array($oModule1, $oModule2)));
-        /** @var oxModule $oModuleList */
+        /** @var \OxidEsales\Eshop\Core\Module\ModuleList $oModuleList */
 
         $oOnlineModuleVersionNotifier = new oxOnlineModuleVersionNotifier($oOnlineModuleVersionNotifierCaller, $oModuleList);
 

@@ -1,27 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link          http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version       OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
-use oxDb;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database as DatabaseAdapter;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
@@ -32,7 +15,6 @@ use OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException;
  */
 class DatabaseProvider
 {
-
     /**
      * @var int Fetch mode - numeric
      */
@@ -56,7 +38,7 @@ class DatabaseProvider
     /**
      * @var array Database tables descriptions cache array
      */
-    protected static $tblDescCache = array();
+    protected static $tblDescCache = [];
 
     /**
      * @var null|ConfigFile Database type
@@ -107,7 +89,7 @@ class DatabaseProvider
      *
      * @return DatabaseInterface
      */
-    public static function getDb($fetchMode = oxDb::FETCH_MODE_NUM)
+    public static function getDb($fetchMode = \OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_NUM)
     {
         if (null === static::$db) {
             $databaseFactory = static::getInstance();
@@ -126,7 +108,7 @@ class DatabaseProvider
     /**
      * Return the database master connection instance as a singleton.
      * In case the shop is not allowed a master/slave setup, this function
-     * is simply a wrapper for Database::getDb.
+     * is simply a wrapper for DatabaseProvider::getDb.
      *
      * @param int $fetchMode The fetch mode. Default is numeric (0).
      *
@@ -134,7 +116,7 @@ class DatabaseProvider
      *
      * @return DatabaseInterface
      */
-    public static function getMaster($fetchMode = oxDb::FETCH_MODE_NUM)
+    public static function getMaster($fetchMode = \OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_NUM)
     {
         static::getDb($fetchMode)->forceMasterConnection();
 
@@ -146,7 +128,7 @@ class DatabaseProvider
      *
      * @param ConfigFile $configFile The file config.inc.php wrapped in an object
      */
-    public function setConfigFile(ConfigFile $configFile)
+    public function setConfigFile(\OxidEsales\Eshop\Core\ConfigFile $configFile)
     {
         $this->configFile = $configFile;
     }
@@ -241,7 +223,7 @@ class DatabaseProvider
          * Do the configuration of the database connection parameters
          */
         /** @var ConfigFile $configFile */
-        $configFile = Registry::get('oxConfigFile');
+        $configFile = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class);
 
         return $configFile;
     }
@@ -255,12 +237,15 @@ class DatabaseProvider
      *
      * @throws DatabaseNotConfiguredException
      */
-    protected function validateConfigFile(ConfigFile $configFile)
+    protected function validateConfigFile(\OxidEsales\Eshop\Core\ConfigFile $configFile)
     {
         $isDatabaseConfigured = $this->isDatabaseConfigured($configFile);
 
         if (!$isDatabaseConfigured) {
-            throw new DatabaseNotConfiguredException('The database connection has not been configured in config.inc.php', 0);
+            throw new \OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException(
+                'The database connection has not been configured in config.inc.php',
+                0
+            );
         }
     }
 
@@ -302,26 +287,20 @@ class DatabaseProvider
          */
         $databasePassword = $this->getConfigParam('dbPwd');
 
-        $connectionParameters = array(
-            'default' => array(
+        $connectionParameters = [
+            'default' => [
                 'databaseDriver'    => $databaseDriver,
                 'databaseHost'      => $databaseHost,
                 'databasePort'      => $databasePort,
                 'databaseName'      => $databaseName,
                 'databaseUser'      => $databaseUser,
                 'databasePassword'  => $databasePassword,
-            )
-        );
+            ]
+        ];
 
         /** The charset has to be set during the connection to the database */
-        if ($this->getConfigParam('iUtfMode')) {
-            $charset = 'utf8';
-        } else {
-            $charset = $this->getConfigParam('sDefaultDatabaseConnection');
-        }
-        if ($charset) {
-            $connectionParameters['default'] = array_merge($connectionParameters['default'], array('connectionCharset' => $charset));
-        }
+        $charset = 'utf8';
+        $connectionParameters['default'] = array_merge($connectionParameters['default'], ['connectionCharset' => $charset]);
 
         return $connectionParameters;
     }
@@ -345,7 +324,7 @@ class DatabaseProvider
      *
      * @return bool
      */
-    protected function isDatabaseConfigured(ConfigFile $config)
+    protected function isDatabaseConfigured(\OxidEsales\Eshop\Core\ConfigFile $config)
     {
         $isValid = true;
 

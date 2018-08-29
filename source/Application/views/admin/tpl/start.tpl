@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
+<html style="border-top: 2px solid [{if $oViewConf->getEdition()|lower == 'ee'}]#006ab4[{else}]#c02124[{/if}]; overflow: hidden; height: 100%;">
 <head>
     <title>[{oxmultilang ident="GENERAL_ADMIN_TITLE"}]</title>
     <link rel="shortcut icon" href="[{$oViewConf->getImageUrl()}]favicon.ico">
@@ -75,10 +75,10 @@ function loadEditFrame(sUrl)
 <script type="text/javascript" src="[{$oViewConf->getResourceUrl()}]oxid.js"></script>
 </html>
 
-<frameset rows="54,*" border="0">
-    <frame src="[{$oViewConf->getSelfLink()}]&cl=navigation&item=header.tpl" name="header" id="header" frameborder="0" scrolling="No" noresize marginwidth="0" marginheight="0">
-    <frameset  cols="200,*" border="0">
-        <frame src="[{$oViewConf->getSelfLink()}]&cl=navigation" name="navigation" id="navigation" frameborder="0" scrolling="Auto" noresize marginwidth="0" marginheight="0">
+<frameset cols="200,*" border="0">
+    <frame src="[{$oViewConf->getSelfLink()}]&cl=navigation" name="navigation" id="navigation" frameborder="0" scrolling="Auto" noresize marginwidth="0" marginheight="0">
+    <frameset  rows="54,*" border="0">
+        <frame src="[{$oViewConf->getSelfLink()}]&cl=navigation&item=header.tpl" name="header" id="header" frameborder="0" scrolling="No" noresize marginwidth="0" marginheight="0">
         <frame src="[{$oViewConf->getSelfLink()}]&cl=navigation&item=home.tpl" name="basefrm" id="basefrm" frameborder="0" scrolling="Auto" noresize marginwidth="0" marginheight="0">
     </frameset>
 </frameset>

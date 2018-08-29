@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 use oxUBase;
@@ -32,7 +16,7 @@ use oxVendorList;
  * meta tags (for search engines). Result - "vendorlist.tpl" template.
  * OXID eShop -> (Any selected shop product category).
  */
-class VendorListController extends \AList
+class VendorListController extends \OxidEsales\Eshop\Application\Controller\ArticleListController
 {
     /**
      * List type
@@ -102,14 +86,14 @@ class VendorListController extends \AList
      * list sorting rules. Loads list of articles which belong to this vendor
      * Generates page navigation data
      * such as previous/next window URL, number of available pages, generates
-     * meta tags info (oxUBase::_convertForMetaTags()) and returns name of
+     * meta tags info (\OxidEsales\Eshop\Application\Controller\FrontendController::_convertForMetaTags()) and returns name of
      * template to render.
      *
      * @return  string  $this->_sThisTemplate   current template file name
      */
     public function render()
     {
-        oxUBase::render();
+        \OxidEsales\Eshop\Application\Controller\FrontendController::render();
 
         // load vendor
         if (($this->_getVendorId() && $this->getVendorTree())) {
@@ -155,7 +139,7 @@ class VendorListController extends \AList
         $iNrOfCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
         $iNrOfCatArticles = $iNrOfCatArticles ? $iNrOfCatArticles : 1;
 
-        $oArtList = oxNew('oxArticleList');
+        $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
         $oArtList->setSqlLimit($iNrOfCatArticles * $this->_getRequestPageNr(), $iNrOfCatArticles);
         $oArtList->setCustomSorting($this->getSortingSql($this->getSortIdent()));
 
@@ -165,7 +149,7 @@ class VendorListController extends \AList
         // counting pages
         $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrOfCatArticles);
 
-        return array($oArtList, $this->_iAllArtCnt);
+        return [$oArtList, $this->_iAllArtCnt];
     }
 
     /**
@@ -192,13 +176,13 @@ class VendorListController extends \AList
      */
     protected function _addPageNrParam($sUrl, $iPage, $iLang = null)
     {
-        if (oxRegistry::getUtils()->seoIsActive() && ($oVendor = $this->getActVendor())) {
+        if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && ($oVendor = $this->getActVendor())) {
             if ($iPage) {
                 // only if page number > 0
                 $sUrl = $oVendor->getBaseSeoLink($iLang, $iPage);
             }
         } else {
-            $sUrl = oxUBase::_addPageNrParam($sUrl, $iPage, $iLang);
+            $sUrl = \OxidEsales\Eshop\Application\Controller\FrontendController::_addPageNrParam($sUrl, $iPage, $iLang);
         }
 
         return $sUrl;
@@ -211,7 +195,7 @@ class VendorListController extends \AList
      */
     public function generatePageNavigationUrl()
     {
-        if ((oxRegistry::getUtils()->seoIsActive() && ($oVendor = $this->getActVendor()))) {
+        if ((\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && ($oVendor = $this->getActVendor()))) {
             return $oVendor->getLink();
         } else {
             return parent::generatePageNavigationUrl();
@@ -248,7 +232,7 @@ class VendorListController extends \AList
     public function getSubCatList()
     {
         if ($this->_oSubCatList === null) {
-            $this->_oSubCatList = array();
+            $this->_oSubCatList = [];
             if ($this->hasVisibleSubCats()) {
                 return $this->_oSubCatList;
             }
@@ -265,7 +249,7 @@ class VendorListController extends \AList
     public function getArticleList()
     {
         if ($this->_aArticleList === null) {
-            $this->_aArticleList = array();
+            $this->_aArticleList = [];
             if (($oVendor = $this->getActVendor()) && ($oVendor->getId() != 'root')) {
                 list($aArticleList, $iAllArtCnt) = $this->_loadArticles($oVendor);
                 if ($iAllArtCnt) {
@@ -313,7 +297,7 @@ class VendorListController extends \AList
      */
     protected function _getVendorId()
     {
-        return oxRegistry::getConfig()->getRequestParameter('cnid');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid');
     }
 
     /**
@@ -429,12 +413,12 @@ class VendorListController extends \AList
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
+        $aPaths = [];
         $oCatTree = $this->getVendorTree();
 
         if ($oCatTree) {
             foreach ($oCatTree->getPath() as $oCat) {
-                $aCatPath = array();
+                $aCatPath = [];
 
                 $aCatPath['link'] = $oCat->getLink();
                 $aCatPath['title'] = $oCat->oxcategories__oxtitle->value;
@@ -450,13 +434,13 @@ class VendorListController extends \AList
     /**
      * Returns vendor tree
      *
-     * @return oxVendorList
+     * @return \OxidEsales\Eshop\Application\Model\VendorList
      */
     public function getVendorTree()
     {
         if ($this->_getVendorId() && $this->_oVendorTree === null) {
-            /** @var oxVendorList $oVendorTree */
-            $oVendorTree = oxNew('oxVendorList');
+            /** @var \OxidEsales\Eshop\Application\Model\VendorList $oVendorTree */
+            $oVendorTree = oxNew(\OxidEsales\Eshop\Application\Model\VendorList::class);
             $oVendorTree->buildVendorTree(
                 'vendorlist',
                 $this->getActVendor()->getId(),
@@ -471,7 +455,7 @@ class VendorListController extends \AList
     /**
      * Vendor tree setter
      *
-     * @param oxVendorList $oVendorTree vendor tree
+     * @param \OxidEsales\Eshop\Application\Model\VendorList $oVendorTree vendor tree
      */
     public function setVendorTree($oVendorTree)
     {

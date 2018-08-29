@@ -1,25 +1,9 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxLinks;
 use \oxAdminView;
@@ -51,9 +35,9 @@ class AdminDetailsTest extends \OxidTestCase
     public function testGetPlainEditor()
     {
         $oObject = new stdClass;
-        $sEditorHtml = "<textarea id='editor_sField' style='width:100px; height:100px;'>sEditObjectValue</textarea>";
+        $sEditorHtml = "<textarea id='editor_sField' name='sField' style='width:100px; height:100px;'>sEditObjectValue</textarea>";
 
-        $oAdminDetails = $this->getMock('oxadmindetails', array('_getEditValue'));
+        $oAdminDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController::class, array('_getEditValue'));
         $oAdminDetails->expects($this->once())->method('_getEditValue')->with($this->equalTo($oObject), $this->equalTo('sField'))->will($this->returnValue('sEditObjectValue'));
         $this->assertEquals($sEditorHtml, $oAdminDetails->UNITgetPlainEditor(100, 100, $oObject, 'sField'));
     }
@@ -151,11 +135,11 @@ class AdminDetailsTest extends \OxidTestCase
      */
     public function testSetupNavigation()
     {
-        $oNavigation = $this->getMock('oxnavigationtree', array('getBtn', 'getActiveTab'));
+        $oNavigation = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationTree::class, array('getBtn', 'getActiveTab'));
         $oNavigation->expects($this->once())->method('getBtn')->with($this->equalTo('xxx'))->will($this->returnValue('bottom_buttons'));
         $oNavigation->expects($this->once())->method('getActiveTab')->with($this->equalTo('xxx'), $this->equalTo(0))->will($this->returnValue('default_edit'));
 
-        $oAdminDetails = $this->getMock('oxadmindetails', array('getNavigation'));
+        $oAdminDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController::class, array('getNavigation'));
         $oAdminDetails->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavigation));
 
         $oAdminDetails->UNITsetupNavigation('xxx');
@@ -223,7 +207,7 @@ class AdminDetailsTest extends \OxidTestCase
      */
     public function testResetNrOfCatArticles()
     {
-        $oAdminDetails = $this->getMock('oxadmindetails', array('resetContentCache'));
+        $oAdminDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController::class, array('resetContentCache'));
         $oAdminDetails->expects($this->once())->method('resetContentCache');
 
         $oAdminDetails->resetNrOfCatArticles();
@@ -234,7 +218,7 @@ class AdminDetailsTest extends \OxidTestCase
      */
     public function testResetNrOfVendorArticles()
     {
-        $oAdminDetails = $this->getMock('oxadmindetails', array('resetContentCache'));
+        $oAdminDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController::class, array('resetContentCache'));
         $oAdminDetails->expects($this->once())->method('resetContentCache');
 
         $oAdminDetails->resetNrOfVendorArticles();
@@ -245,7 +229,7 @@ class AdminDetailsTest extends \OxidTestCase
      */
     public function testResetNrOfManufacturerArticles()
     {
-        $oAdminDetails = $this->getMock('oxadmindetails', array('resetContentCache'));
+        $oAdminDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController::class, array('resetContentCache'));
         $oAdminDetails->expects($this->once())->method('resetContentCache');
 
         $oAdminDetails->resetNrOfManufacturerArticles();
@@ -260,7 +244,7 @@ class AdminDetailsTest extends \OxidTestCase
             $this->markTestSkipped('This test is for Community and Professional editions only.');
         }
 
-        $oAdminDetails = $this->getMock('oxadmindetails', array('resetCounter'));
+        $oAdminDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController::class, array('resetCounter'));
         $oAdminDetails->expects($this->at(0))->method('resetCounter')->with($this->equalTo("vendorArticle"), $this->equalTo("ID1"));
         $oAdminDetails->expects($this->at(1))->method('resetCounter')->with($this->equalTo("manufacturerArticle"), $this->equalTo("ID2"));
 

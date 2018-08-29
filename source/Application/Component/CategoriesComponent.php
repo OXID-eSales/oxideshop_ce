@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link          http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version       OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Component;
+namespace OxidEsales\EshopCommunity\Application\Component;
 
 use oxRegistry;
 
@@ -29,9 +13,8 @@ use oxRegistry;
  *
  * @subpackage oxcmp
  */
-class CategoriesComponent extends \oxView
+class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
-
     /**
      * More category object.
      *
@@ -85,7 +68,7 @@ class CategoriesComponent extends \oxView
 
         if ($myConfig->getConfigParam('bl_perfLoadManufacturerTree')) {
             // building Manufacturer tree
-            $sActManufacturer = oxRegistry::getConfig()->getRequestParameter('mnid');
+            $sActManufacturer = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('mnid');
             $this->_loadManufacturerTree($sActManufacturer);
         }
 
@@ -96,16 +79,16 @@ class CategoriesComponent extends \oxView
     /**
      * get active article
      *
-     * @return oxarticle
+     * @return \OxidEsales\Eshop\Application\Model\Article
      */
     public function getProduct()
     {
-        if (($sActProduct = oxRegistry::getConfig()->getRequestParameter('anid'))) {
+        if (($sActProduct = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('anid'))) {
             $oParentView = $this->getParent();
             if (($oProduct = $oParentView->getViewProduct())) {
                 return $oProduct;
             } else {
-                $oProduct = oxNew('oxArticle');
+                $oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                 if ($oProduct->load($sActProduct)) {
                     // storing for reuse
                     $oParentView->setViewProduct($oProduct);
@@ -123,9 +106,9 @@ class CategoriesComponent extends \oxView
      */
     protected function _getActCat()
     {
-        $sActManufacturer = oxRegistry::getConfig()->getRequestParameter('mnid');
+        $sActManufacturer = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('mnid');
 
-        $sActCat = $sActManufacturer ? null : oxRegistry::getConfig()->getRequestParameter('cnid');
+        $sActCat = $sActManufacturer ? null : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid');
 
         // loaded article - then checking additional parameters
         $oProduct = $this->getProduct();
@@ -136,7 +119,7 @@ class CategoriesComponent extends \oxView
 
             $sActVendor = (getStr()->preg_match('/^v_.?/i', $sActCat)) ? $sActCat : null;
 
-            $sActCat = $this->_addAdditionalParams($oProduct, $sActCat, $sActManufacturer, null, $sActVendor);
+            $sActCat = $this->_addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActVendor);
         }
 
         // Checking for the default category
@@ -148,7 +131,6 @@ class CategoriesComponent extends \oxView
                 $sActCat = null;
             }
         }
-        // END deprecated
 
         return $sActCat;
     }
@@ -160,8 +142,8 @@ class CategoriesComponent extends \oxView
      */
     protected function _loadCategoryTree($sActCat)
     {
-        /** @var oxCategoryList $oCategoryTree */
-        $oCategoryTree = oxNew('oxCategoryList');
+        /** @var \OxidEsales\Eshop\Application\Model\CategoryList $oCategoryTree */
+        $oCategoryTree = oxNew(\OxidEsales\Eshop\Application\Model\CategoryList::class);
         $oCategoryTree->buildTree($sActCat);
 
         $oParentView = $this->getParent();
@@ -183,7 +165,7 @@ class CategoriesComponent extends \oxView
     {
         $myConfig = $this->getConfig();
         if ($myConfig->getConfigParam('bl_perfLoadManufacturerTree')) {
-            $oManufacturerTree = oxNew('oxmanufacturerlist');
+            $oManufacturerTree = $this->getManufacturerList();
             $shopHomeURL = $myConfig->getShopHomeUrl();
             $oManufacturerTree->buildManufacturerTree('manufacturerlist', $sActManufacturer, $shopHomeURL);
 
@@ -204,7 +186,7 @@ class CategoriesComponent extends \oxView
      * Executes parent::render(), loads expanded/clicked category object,
      * adds parameters template engine and returns list of category tree.
      *
-     * @return oxCategoryList
+     * @return \OxidEsales\Eshop\Application\Model\CategoryList
      */
     public function render()
     {
@@ -227,30 +209,26 @@ class CategoriesComponent extends \oxView
     /**
      * Adds additional parameters: active category, list type and category id
      *
-     * @param oxArticle $oProduct         loaded product
-     * @param string    $sActCat          active category id
-     * @param string    $sActManufacturer active manufacturer id
-     * @param string    $sActTag          active tag
-     * @param string    $sActVendor       active vendor
-     *
-     * @deprecated v5.3 (2016-05-04); Tags will be moved to own module. So the parameter sActTag will be removed.
+     * @param \OxidEsales\Eshop\Application\Model\Article $oProduct         loaded product
+     * @param string                                      $sActCat          active category id
+     * @param string                                      $sActManufacturer active manufacturer id
+     * @param string                                      $sActVendor       active vendor
      *
      * @return string $sActCat
      */
-    protected function _addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActTag, $sActVendor)
+    protected function _addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActVendor)
     {
-        $sSearchPar = oxRegistry::getConfig()->getRequestParameter('searchparam');
-        $sSearchCat = oxRegistry::getConfig()->getRequestParameter('searchcnid');
-        $sSearchVnd = oxRegistry::getConfig()->getRequestParameter('searchvendor');
-        $sSearchMan = oxRegistry::getConfig()->getRequestParameter('searchmanufacturer');
-        $sListType = oxRegistry::getConfig()->getRequestParameter('listtype');
+        $sSearchPar = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchparam');
+        $sSearchCat = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchcnid');
+        $sSearchVnd = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchvendor');
+        $sSearchMan = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchmanufacturer');
+        $sListType = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('listtype');
 
         // search ?
         if ((!$sListType || $sListType == 'search') && ($sSearchPar || $sSearchCat || $sSearchVnd || $sSearchMan)) {
             // setting list type directly
             $sListType = 'search';
         } else {
-
             // such Manufacturer is available ?
             if ($sActManufacturer && ($sActManufacturer == $oProduct->getManufacturerId())) {
                 // setting list type directly
@@ -278,7 +256,7 @@ class CategoriesComponent extends \oxView
     /**
      * Returns array containing default list type and category (or manufacturer ir vendor) id
      *
-     * @param oxArticle $oProduct current product object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oProduct current product object
      *
      * @return array
      */
@@ -298,13 +276,13 @@ class CategoriesComponent extends \oxView
             $sActCat = null;
         }
 
-        return array($sListType, $sActCat);
+        return [$sListType, $sActCat];
     }
 
     /**
      * Setter of category tree
      *
-     * @param oxCategoryList $oCategoryTree category list
+     * @param \OxidEsales\Eshop\Application\Model\CategoryList $oCategoryTree category list
      */
     public function setCategoryTree($oCategoryTree)
     {
@@ -314,10 +292,18 @@ class CategoriesComponent extends \oxView
     /**
      * Setter of manufacturer tree
      *
-     * @param oxManufacturerList $oManufacturerTree manufacturer list
+     * @param \OxidEsales\Eshop\Application\Model\ManufacturerList $oManufacturerTree manufacturer list
      */
     public function setManufacturerTree($oManufacturerTree)
     {
         $this->_oManufacturerTree = $oManufacturerTree;
+    }
+
+    /**
+     * @return \OxidEsales\Eshop\Application\Model\ManufacturerList
+     */
+    protected function getManufacturerList()
+    {
+        return oxNew(\OxidEsales\Eshop\Application\Model\ManufacturerList::class);
     }
 }

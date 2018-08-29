@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core\Model;
+namespace OxidEsales\EshopCommunity\Core\Model;
 
 /**
  * Defining triggered action type.
@@ -32,16 +16,18 @@ DEFINE('ACTION_UPDATE', 3);
 DEFINE('ACTION_UPDATE_STOCK', 4);
 
 use Exception;
-use object_ResultSet;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use oxObjectException;
-use oxRegistry;
-use oxField;
-use oxDb;
-use oxUtilsObject;
+use \OxidEsales\Eshop\Core\Field;
+use Psr\Container\ContainerInterface;
 
-class BaseModel extends \oxSuperCfg
+/**
+ * Class BaseModel
+ * @package OxidEsales\EshopCommunity\Core\Model
+ */
+class BaseModel extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Unique object ID. Normally representing record oxid field value
      *
@@ -89,7 +75,7 @@ class BaseModel extends \oxSuperCfg
      *
      * @var array
      */
-    protected $_aFieldNames = array('oxid' => 0);
+    protected $_aFieldNames = ['oxid' => 0];
 
     /**
      * Cache key. Assigned to object depending on active view. Is used for object caching identification in lazy loading mechanism.
@@ -110,7 +96,7 @@ class BaseModel extends \oxSuperCfg
      *
      * @var array
      */
-    protected $_aSkipSaveFields = array('oxtimestamp');
+    protected $_aSkipSaveFields = ['oxtimestamp'];
 
     /**
      * Enable skip save fields usage
@@ -143,7 +129,7 @@ class BaseModel extends \oxSuperCfg
      *
      * @var bool
      */
-    protected static $_blDisableFieldCaching = array();
+    protected static $_blDisableFieldCaching = [];
 
     /**
      * Marks that current object is managed by SEO
@@ -243,8 +229,8 @@ class BaseModel extends \oxSuperCfg
     /**
      * Magic setter. If using lazy loading, adds setted field to fields array
      *
-     * @param string $fieldName name value
-     * @param mixed $fieldValue value
+     * @param string $fieldName  name value
+     * @param mixed  $fieldValue value
      */
     public function __set($fieldName, $fieldValue)
     {
@@ -300,7 +286,7 @@ class BaseModel extends \oxSuperCfg
 
                 try {
                     if ($this->_aInnerLazyCache === null) {
-                        $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+                        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
                         $query = 'SELECT * FROM ' . $viewName . ' WHERE `oxid` = ' . $database->quote($id);
                         $queryResult = $database->select($query);
                         if ($queryResult && $queryResult->count()) {
@@ -324,7 +310,7 @@ class BaseModel extends \oxSuperCfg
 
                     //save names to cache for next loading
                     if ($this->_sCacheKey) {
-                        $myUtils = oxRegistry::getUtils();
+                        $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
                         $cacheKey = 'fieldnames_' . $this->_sCoreTable . '_' . $this->_sCacheKey;
                         $fieldNames = $myUtils->fromFileCache($cacheKey);
                         $fieldNames[$fieldName] = $fieldStatus;
@@ -339,11 +325,11 @@ class BaseModel extends \oxSuperCfg
                 self::$_blDisableFieldCaching[get_class($this)] = true;
             }
 
-            oxUtilsObject::getInstance()->resetInstanceCache(get_class($this));
+            \OxidEsales\Eshop\Core\Registry::getUtilsObject()->resetInstanceCache(get_class($this));
         }
 
         //returns stdClass implementing __toString() method due to uknown scenario where this var should be used.
-        if (!isset($this->$variableName)) {
+        if (!$this->isPropertyLoaded($variableName)) {
             $this->$variableName = null;
         }
 
@@ -369,7 +355,7 @@ class BaseModel extends \oxSuperCfg
      */
     public function __isset($variableName)
     {
-        return isset($this->$variableName);
+        return $this->isPropertyLoaded($variableName) || $this->isPropertyField($variableName);
     }
 
     /**
@@ -395,7 +381,7 @@ class BaseModel extends \oxSuperCfg
     public function oxClone($object)
     {
         $classVariables = get_object_vars($object);
-        while (list($name, $value) = each($classVariables)) {
+        foreach ($classVariables as $name => $value) {
             if (is_object($object->$name)) {
                 $this->$name = clone $object->$name;
             } else {
@@ -434,7 +420,7 @@ class BaseModel extends \oxSuperCfg
     protected function _setUpdateSeoOnFieldChange($fieldName)
     {
         if ($this->getId() && in_array($fieldName, $this->getFieldNames())) {
-            $database = oxDb::getDb();
+            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $tableName = $this->getCoreTableName();
             $quotedOxid = $database->quote($this->getId());
             $title = $database->getOne("select `{$fieldName}` from `{$tableName}` where `oxid` = {$quotedOxid}");
@@ -480,13 +466,14 @@ class BaseModel extends \oxSuperCfg
             return;
         }
 
-        reset($dbRecord);
-        while (list($name, $value) = each($dbRecord)) {
+        foreach ($dbRecord as $name => $value) {
             $this->_setFieldData($name, $value);
         }
 
         $oxidField = $this->_getFieldLongName('oxid');
-        $this->_sOXID = $this->$oxidField->value;
+        if ($this->$oxidField instanceof Field) {
+            $this->_sOXID = $this->$oxidField->value;
+        }
     }
 
     /**
@@ -537,12 +524,12 @@ class BaseModel extends \oxSuperCfg
                 $shopID = $this->oxobject2category__oxshopid;
                 $this->_sOXID = md5($objectId . $categoryId . $shopID);
             } else {
-                $this->_sOXID = oxUtilsObject::getInstance()->generateUID();
+                $this->_sOXID = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID();
             }
         }
 
         $idFieldName = $this->getCoreTableName() . '__oxid';
-        $this->$idFieldName = new oxField($this->_sOXID, oxField::T_RAW);
+        $this->$idFieldName = new Field($this->_sOXID, Field::T_RAW);
 
         return $this->_sOXID;
     }
@@ -586,7 +573,7 @@ class BaseModel extends \oxSuperCfg
             if (($forceCoreTableUsage !== null) && $forceCoreTableUsage) {
                 $shopId = -1;
             } else {
-                $shopId = oxRegistry::getConfig()->getShopId();
+                $shopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
             }
 
             $viewName = getViewName($this->getCoreTableName(), $this->_blEmployMultilanguage == false ? -1 : $this->getLanguage(), $shopId);
@@ -678,7 +665,7 @@ class BaseModel extends \oxSuperCfg
     {
         //getting at least one field before lazy loading the object
         $this->_addField('oxid', 0);
-        $query = $this->buildSelectString(array($this->getViewName() . '.oxid' => $oxid));
+        $query = $this->buildSelectString([$this->getViewName() . '.oxid' => $oxid]);
         $this->_isLoaded = $this->assignRecord($query);
 
         return $this->_isLoaded;
@@ -697,20 +684,20 @@ class BaseModel extends \oxSuperCfg
     /**
      * Builds and returns SQL query string.
      *
-     * @param mixed $whereCondition SQL select WHERE conditions array (default false)
+     * @param null|array $whereCondition SQL select WHERE conditions array (default false)
      *
-     * @return array
+     * @return string
      */
     public function buildSelectString($whereCondition = null)
     {
-        $database = oxDb::getDb();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $get = $this->getSelectFields();
         $query = "select $get from " . $this->getViewName() . ' where 1 ';
 
         if ($whereCondition) {
             reset($whereCondition);
-            while (list($name, $value) = each($whereCondition)) {
+            foreach ($whereCondition as $name => $value) {
                 $query .= ' and ' . $name . ' = ' . $database->quote($value);
             }
         }
@@ -742,11 +729,11 @@ class BaseModel extends \oxSuperCfg
      *
      * @param string $query
      *
-     * @return mixed|Object_ResultSet
+     * @return mixed
      */
     protected function getRecordByQuery($query)
     {
-        return oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->select($query);
+        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->select($query);
     }
 
     /**
@@ -772,7 +759,7 @@ class BaseModel extends \oxSuperCfg
      */
     public function getSelectFields($forceCoreTableUsage = null)
     {
-        $selectFields = array();
+        $selectFields = [];
 
         $viewName = $this->getViewName($forceCoreTableUsage);
 
@@ -782,7 +769,6 @@ class BaseModel extends \oxSuperCfg
             } else {
                 $selectFields[] = ".`$key`";
             }
-
         }
 
         return implode(', ', $selectFields);
@@ -804,7 +790,7 @@ class BaseModel extends \oxSuperCfg
 
         $this->_removeElement2ShopRelations($oxid);
 
-        $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $coreTable = $this->getCoreTableName();
         $deleteQuery = "delete from {$coreTable} where oxid = " . $database->quote($oxid);
         $affectedRows = $database->execute($deleteQuery);
@@ -842,11 +828,11 @@ class BaseModel extends \oxSuperCfg
             foreach ($this->_aFieldNames as $name => $value) {
                 $longName = $this->_getFieldLongName($name);
                 if (isset($this->$longName->fldtype) && $this->$longName->fldtype == 'datetime') {
-                    oxRegistry::get('oxUtilsDate')->convertDBDateTime($this->$longName, true);
+                    \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDateTime($this->$longName, true);
                 } elseif (isset($this->$longName->fldtype) && $this->$longName->fldtype == 'timestamp') {
-                    oxRegistry::get('oxUtilsDate')->convertDBTimestamp($this->$longName, true);
+                    \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBTimestamp($this->$longName, true);
                 } elseif (isset($this->$longName->fldtype) && $this->$longName->fldtype == 'date') {
-                    oxRegistry::get('oxUtilsDate')->convertDBDate($this->$longName, true);
+                    \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDate($this->$longName, true);
                 }
             }
         }
@@ -856,7 +842,7 @@ class BaseModel extends \oxSuperCfg
         $action = null;
         $response = null;
         /** We must check on the master database, if an entry exists, so we switch to master connection.*/
-        oxDb::getMaster();
+        \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
         if ($this->exists()) {
             //only update if derived update is allowed
             if ($this->allowDerivedUpdate()) {
@@ -878,7 +864,7 @@ class BaseModel extends \oxSuperCfg
     }
 
     /**
-     * Checks if derived update is allowed (calls oxbase::isDerived)
+     * Checks if derived update is allowed (calls \OxidEsales\Eshop\Core\Model\BaseModel::isDerived)
      *
      * @return bool
      */
@@ -888,7 +874,7 @@ class BaseModel extends \oxSuperCfg
     }
 
     /**
-     * Checks if derived delete is allowed (calls oxbase::isDerived)
+     * Checks if derived delete is allowed (calls \OxidEsales\Eshop\Core\Model\BaseModel::isDerived)
      *
      * @return bool
      */
@@ -914,7 +900,7 @@ class BaseModel extends \oxSuperCfg
         }
 
         $viewName = $this->getCoreTableName();
-        $database = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $query = "select {$this->_sExistKey} from {$viewName} where {$this->_sExistKey} = " . $database->quote($oxid);
 
         return ( bool ) $database->getOne($query);
@@ -940,7 +926,6 @@ class BaseModel extends \oxSuperCfg
         // has 'activefrom'/'activeto' fields ?
         if (isset($this->_aFieldNames['oxactivefrom']) && isset($this->_aFieldNames['oxactiveto'])) {
             $query = $this->addSqlActiveRangeSnippet($query, $tableName);
-
         }
 
         return $query;
@@ -1013,7 +998,7 @@ class BaseModel extends \oxSuperCfg
      */
     protected function _getTableFields($table, $returnSimpleArray = false)
     {
-        $myUtils = oxRegistry::getUtils();
+        $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
 
         $cacheKey = $table . '_allfields_' . $returnSimpleArray;
         $metaFields = $myUtils->fromFileCache($cacheKey);
@@ -1022,7 +1007,7 @@ class BaseModel extends \oxSuperCfg
             return $metaFields;
         }
 
-        $metaFields = oxDb::getInstance()->getTableDescription($table);
+        $metaFields = \OxidEsales\Eshop\Core\DatabaseProvider::getInstance()->getTableDescription($table);
 
         if (!$returnSimpleArray) {
             $myUtils->toFileCache($cacheKey, $metaFields);
@@ -1031,7 +1016,7 @@ class BaseModel extends \oxSuperCfg
         }
 
         //returning simple array
-        $result = array();
+        $result = [];
         if (is_array($metaFields)) {
             foreach ($metaFields as $valueObject) {
                 $result[strtolower($valueObject->name)] = 0;
@@ -1050,14 +1035,14 @@ class BaseModel extends \oxSuperCfg
      *
      * @param bool $returnSimple Set $blReturnSimple to true when you need simple array (meta data array is returned otherwise)
      *
-     * @see oxBase::_getTableFields()
+     * @see \OxidEsales\Eshop\Core\Model\BaseModel::_getTableFields()
      *
      * @return array
      */
     protected function _getAllFields($returnSimple = false)
     {
         if (!$this->getCoreTableName()) {
-            return array();
+            return [];
         }
 
         return $this->_getTableFields($this->getCoreTableName(), $returnSimple);
@@ -1071,7 +1056,7 @@ class BaseModel extends \oxSuperCfg
      */
     protected function _initDataStructure($forceFullStructure = false)
     {
-        $myUtils = oxRegistry::getUtils();
+        $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
 
         //get field names from cache
         $fieldNamesList = null;
@@ -1103,7 +1088,7 @@ class BaseModel extends \oxSuperCfg
      *
      * @param bool $forceFullStructure Whether to force loading of full data structure
      *
-     * @return array
+     * @return array|bool
      */
     protected function _getNonCachedFieldNames($forceFullStructure = false)
     {
@@ -1145,7 +1130,7 @@ class BaseModel extends \oxSuperCfg
         //case 3. (get only oxid field, so we can fetch the rest of the fields over lazy loading mechanism)
         stopProfile('!__CACHABLE__!');
 
-        return array('oxid' => 0);
+        return ['oxid' => 0];
     }
 
     /**
@@ -1181,7 +1166,7 @@ class BaseModel extends \oxSuperCfg
 
         //already set?
         $fieldLongName = $this->_getFieldLongName($fieldName);
-        if (isset($this->$fieldLongName)) {
+        if ($this->isPropertyLoaded($fieldLongName)) {
             return;
         }
 
@@ -1189,7 +1174,7 @@ class BaseModel extends \oxSuperCfg
         $field = false;
 
         if (isset($type)) {
-            $field = new oxField();
+            $field = new Field();
             $field->fldtype = $type;
             //T2008-01-29
             //can't clone as the fields are objects and are not fully cloned
@@ -1198,7 +1183,7 @@ class BaseModel extends \oxSuperCfg
 
         if (isset($length)) {
             if (!$field) {
-                $field = new oxField();
+                $field = new Field();
             }
             $field->fldmax_length = $length;
             $this->_blIsSimplyClonable = false;
@@ -1232,7 +1217,7 @@ class BaseModel extends \oxSuperCfg
      * @param string $fieldValue Value of data field
      * @param int    $dataType   Field type
      */
-    protected function _setFieldData($fieldName, $fieldValue, $dataType = oxField::T_TEXT)
+    protected function _setFieldData($fieldName, $fieldValue, $dataType = Field::T_TEXT)
     {
         $longFieldName = $this->_getFieldLongName($fieldName);
         //$sLongFieldName = $this->_sCoreTable . "__" . strtolower($sFieldName);
@@ -1244,22 +1229,30 @@ class BaseModel extends \oxSuperCfg
 
 
         //in non lazy loading case we just add a field and do not care about it more
-        if (!$this->_blUseLazyLoading && !isset($this->$longFieldName)) {
+        if (!$this->_blUseLazyLoading
+            && !$this->isPropertyLoaded($longFieldName)
+        ) {
             $fieldsList = $this->_getAllFields(true);
             if (isset($fieldsList[strtolower($fieldName)])) {
                 $this->_addField($fieldName, $this->_getFieldStatus($fieldName));
             }
         }
         // if we have a double field we replace "," with "." in case somebody enters it in european format
-        if (isset($this->$longFieldName) && isset($this->$longFieldName->fldtype) && $this->$longFieldName->fldtype == 'double') {
+        $isPropertyLoaded = $this->isPropertyLoaded($longFieldName);
+        if ($isPropertyLoaded
+            && isset($this->$longFieldName->fldtype)
+            && $this->$longFieldName->fldtype == 'double'
+        ) {
             $fieldValue = str_replace(',', '.', $fieldValue);
         }
 
         // isset is REQUIRED here not to use getter
-        if (isset($this->$longFieldName) && is_object($this->$longFieldName)) {
+        if ($isPropertyLoaded
+            && is_object($this->$longFieldName)
+        ) {
             $this->$longFieldName->setValue($fieldValue, $dataType);
         } else {
-            $this->$longFieldName = new oxField($fieldValue, $dataType);
+            $this->$longFieldName = new Field($fieldValue, $dataType);
         }
     }
 
@@ -1294,7 +1287,7 @@ class BaseModel extends \oxSuperCfg
         $metaData = $this->_getAllFields();
         foreach ($metaData as $metaInfo) {
             if (strcasecmp($metaInfo->name, $fieldName) == 0) {
-                return $metaInfo->default_value;
+                return property_exists($metaInfo, 'default_value') ? $metaInfo->default_value : null;
             }
         }
 
@@ -1304,21 +1297,21 @@ class BaseModel extends \oxSuperCfg
     /**
      * returns quoted field value for using in update statement
      *
-     * @param string  $fieldName name of field
-     * @param oxField $field     field object
+     * @param string $fieldName name of field
+     * @param Field  $field     field object
      *
      * @return string
      */
     protected function _getUpdateFieldValue($fieldName, $field)
     {
         $fieldValue = null;
-        if ($field instanceof oxField) {
+        if ($field instanceof Field) {
             $fieldValue = $field->getRawValue();
         } elseif (isset($field->value)) {
             $fieldValue = $field->value;
         }
 
-        $database = oxDb::getDb();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         //Check if this field value is null AND it can be null according if not returning default value
         if ((null === $fieldValue)) {
             if ($this->_canFieldBeNull($fieldName)) {
@@ -1379,8 +1372,9 @@ class BaseModel extends \oxSuperCfg
      * be loaded through oxList.
      *
      * @throws oxObjectException Throws on failure inserting
+     * @throws DatabaseException On database errors
      *
-     * @return bool
+     * @return bool Will always return true. On failure an exception is thrown.
      */
     protected function _update()
     {
@@ -1390,23 +1384,24 @@ class BaseModel extends \oxSuperCfg
         }
 
         if (!$this->getId()) {
-            $exception = oxNew('oxObjectException');
+            $exception = oxNew(\OxidEsales\Eshop\Core\Exception\ObjectException::class);
             $exception->setMessage('EXCEPTION_OBJECT_OXIDNOTSET');
             $exception->setObject($this);
             throw $exception;
         }
         $coreTableName = $this->getCoreTableName();
 
-        $idKey = oxRegistry::getUtils()->getArrFldName($coreTableName . '.oxid');
-        $this->$idKey = new oxField($this->getId(), oxField::T_RAW);
-        $database = oxDb::getDb();
+        $idKey = \OxidEsales\Eshop\Core\Registry::getUtils()->getArrFldName($coreTableName . '.oxid');
+        $this->$idKey = new Field($this->getId(), Field::T_RAW);
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $updateQuery = "update {$coreTableName} set " . $this->_getUpdateFields() .
                      " where {$coreTableName}.oxid = " . $database->quote($this->getId());
 
         $this->beforeUpdate();
+        $this->executeDatabaseQuery($updateQuery);
 
-        return (bool) $this->executeDatabaseQuery($updateQuery);
+        return true;
     }
 
     /**
@@ -1418,7 +1413,7 @@ class BaseModel extends \oxSuperCfg
      */
     protected function executeDatabaseQuery($query)
     {
-        $database = oxDb::getDb();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         return $database->execute($query);
     }
@@ -1433,7 +1428,7 @@ class BaseModel extends \oxSuperCfg
     protected function _insert()
     {
         $myConfig = $this->getConfig();
-        $myUtils = oxRegistry::getUtils();
+        $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
 
         // let's get a new ID
         if (!$this->getId()) {
@@ -1441,13 +1436,18 @@ class BaseModel extends \oxSuperCfg
         }
 
         $idKey = $myUtils->getArrFldName($this->getCoreTableName() . '.oxid');
-        $this->$idKey = new oxField($this->getId(), oxField::T_RAW);
+        $this->$idKey = new Field($this->getId(), Field::T_RAW);
         $insertSql = "Insert into {$this->getCoreTableName()} set ";
 
         $shopIdField = $myUtils->getArrFldName($this->getCoreTableName() . '.oxshopid');
 
-        if (isset($this->$shopIdField) && !$this->$shopIdField->value) {
-            $this->$shopIdField = new oxField($myConfig->getShopId(), oxField::T_RAW);
+        if ($this->isPropertyLoaded($shopIdField)
+            && (!$this->isPropertyField($shopIdField) || !$this->$shopIdField->value)
+        ) {
+            $this->$shopIdField = new Field(
+                $myConfig->getShopId(),
+                Field::T_RAW
+            );
         }
 
         $insertSql .= $this->_getUpdateFields($this->getUseSkipSaveFields());
@@ -1527,7 +1527,13 @@ class BaseModel extends \oxSuperCfg
      */
     public function getFieldNames()
     {
-        return array_keys($this->_aFieldNames);
+        $fieldNames = $this->_aFieldNames;
+
+        if (!$this->isAdmin() && $this->_blUseLazyLoading) {
+            $fieldNames = $this->_getNonCachedFieldNames(true);
+        }
+
+        return array_keys($fieldNames);
     }
 
     /**
@@ -1553,15 +1559,28 @@ class BaseModel extends \oxSuperCfg
     }
 
     /**
+     * Returns true if the property is loaded.
+     *
+     * @param  string $name
+     *
+     * @return bool
+     */
+    public function isPropertyLoaded($name)
+    {
+        return property_exists($this, $name) && $this->$name !== null;
+    }
+
+    /**
      * adds and activefrom/activeto to the query
-     * @param $query
-     * @param $tableName
+     *
+     * @param string $query
+     * @param string $tableName
      *
      * @return string
      */
     protected function addSqlActiveRangeSnippet($query, $tableName)
     {
-        $dateObj = oxRegistry::get('oxUtilsDate');
+        $dateObj = \OxidEsales\Eshop\Core\Registry::getUtilsDate();
         $secondsToRoundForQueryCache = $this->getSecondsToRoundForQueryCache();
         $databaseFormattedDate = $dateObj->getRoundedRequestDateDBFormatted($secondsToRoundForQueryCache);
         $query = $query ? " $query or " : '';
@@ -1582,5 +1601,27 @@ class BaseModel extends \oxSuperCfg
         //set default value cache time to 60 seconds
         //because active from setting is based on minutes
         return 60;
+    }
+
+    /**
+     * Returns true if the property is a Field.
+     *
+     * @param  string $name
+     *
+     * @return bool
+     */
+    private function isPropertyField($name)
+    {
+        return $this->$name instanceof Field;
+    }
+
+    /**
+     * @internal
+     *
+     * @return ContainerInterface
+     */
+    protected function getContainer()
+    {
+        return ContainerFactory::getInstance()->getContainer();
     }
 }

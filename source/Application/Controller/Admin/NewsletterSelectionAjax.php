@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxDb;
 use oxField;
@@ -28,25 +12,24 @@ use oxField;
 /**
  * Class manages newsletter user groups rights
  */
-class NewsletterSelectionAjax extends \ajaxListComponent
+class NewsletterSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
-
     /**
      * Columns array
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array( // field , table,  visible, multilanguage, ident
-        array('oxtitle', 'oxgroups', 1, 0, 0),
-        array('oxid', 'oxgroups', 0, 0, 0),
-        array('oxid', 'oxgroups', 0, 0, 1),
-    ),
-                                 'container2' => array(
-                                     array('oxtitle', 'oxgroups', 1, 0, 0),
-                                     array('oxid', 'oxgroups', 0, 0, 0),
-                                     array('oxid', 'oxobject2group', 0, 0, 1),
-                                 )
-    );
+    protected $_aColumns = ['container1' => [ // field , table,  visible, multilanguage, ident
+        ['oxtitle', 'oxgroups', 1, 0, 0],
+        ['oxid', 'oxgroups', 0, 0, 0],
+        ['oxid', 'oxgroups', 0, 0, 1],
+    ],
+                                 'container2' => [
+                                     ['oxtitle', 'oxgroups', 1, 0, 0],
+                                     ['oxid', 'oxgroups', 0, 0, 0],
+                                     ['oxid', 'oxobject2group', 0, 0, 1],
+                                 ]
+    ];
 
     /**
      * Returns SQL query for data to fetc
@@ -57,7 +40,7 @@ class NewsletterSelectionAjax extends \ajaxListComponent
     {
         // active AJAX component
         $sGroupTable = $this->_getViewName('oxgroups');
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sDiscountId = $this->getConfig()->getRequestParameter('oxid');
         $sSynchDiscountId = $this->getConfig()->getRequestParameter('synchoxid');
 
@@ -86,13 +69,11 @@ class NewsletterSelectionAjax extends \ajaxListComponent
     {
         $aRemoveGroups = $this->_getActionIds('oxobject2group.oxid');
         if ($this->getConfig()->getRequestParameter('all')) {
-
             $sQ = $this->_addFilter("delete oxobject2group.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
-
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
-            $sQ = "delete from oxobject2group where oxobject2group.oxid in (" . implode(", ", oxDb::getDb()->quoteArray($aRemoveGroups)) . ") ";
-            oxDb::getDb()->Execute($sQ);
+            $sQ = "delete from oxobject2group where oxobject2group.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRemoveGroups)) . ") ";
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
 
@@ -110,9 +91,9 @@ class NewsletterSelectionAjax extends \ajaxListComponent
         }
         if ($soxId && $soxId != "-1" && is_array($aAddGroups)) {
             foreach ($aAddGroups as $sAddgroup) {
-                $oNewGroup = oxNew("oxobject2group");
-                $oNewGroup->oxobject2group__oxobjectid = new oxField($soxId);
-                $oNewGroup->oxobject2group__oxgroupsid = new oxField($sAddgroup);
+                $oNewGroup = oxNew(\OxidEsales\Eshop\Application\Model\Object2Group::class);
+                $oNewGroup->oxobject2group__oxobjectid = new \OxidEsales\Eshop\Core\Field($soxId);
+                $oNewGroup->oxobject2group__oxgroupsid = new \OxidEsales\Eshop\Core\Field($sAddgroup);
                 $oNewGroup->save();
             }
         }

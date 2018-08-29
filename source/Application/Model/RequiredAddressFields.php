@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxRegistry;
 
@@ -29,27 +13,26 @@ use oxRegistry;
  */
 class RequiredAddressFields
 {
-
     /**
      * Default required fields for use when not set in config.
      *
      * @var array
      */
-    private $_aDefaultRequiredFields = array(
+    private $_aDefaultRequiredFields = [
         'oxuser__oxfname',
         'oxuser__oxlname',
         'oxuser__oxstreetnr',
         'oxuser__oxstreet',
         'oxuser__oxzip',
         'oxuser__oxcity'
-    );
+    ];
 
     /**
      * Required fields.
      *
      * @var array
      */
-    private $_aRequiredFields = array();
+    private $_aRequiredFields = [];
 
     /**
      * Sets default required fields either from config or from _aDefaultRequiredFields.
@@ -59,7 +42,7 @@ class RequiredAddressFields
     {
         $this->setRequiredFields($this->_aDefaultRequiredFields);
 
-        $aRequiredFields = oxRegistry::getConfig()->getConfigParam('aMustFillFields');
+        $aRequiredFields = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aMustFillFields');
         if (is_array($aRequiredFields)) {
             $this->setRequiredFields($aRequiredFields);
         }
@@ -119,7 +102,7 @@ class RequiredAddressFields
      */
     private function _filterFields($aFields, $sPrefix)
     {
-        $aAllowed = array();
+        $aAllowed = [];
         foreach ($aFields as $sKey => $sValue) {
             if (strpos($sValue, $sPrefix) === 0) {
                 $aAllowed[] = $aFields[$sKey];

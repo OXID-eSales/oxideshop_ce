@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxDb;
 use oxField;
@@ -28,7 +12,7 @@ use oxField;
 /**
  * Class manages discount articles
  */
-class DiscountArticlesAjax extends \ajaxListComponent
+class DiscountArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
     /**  */
     const NEW_DISCOUNT_LIST_ID = "-1";
@@ -45,27 +29,27 @@ class DiscountArticlesAjax extends \ajaxListComponent
      *
      * @var array
      */
-    protected $_aColumns = array(
+    protected $_aColumns = [
         // field , table, visible, multilanguage, id
-        'container1' => array(
-            array('oxartnum', 'oxarticles', 1, 0, 0),
-            array('oxtitle', 'oxarticles', 1, 1, 0),
-            array('oxean', 'oxarticles', 1, 0, 0),
-            array('oxmpn', 'oxarticles', 0, 0, 0),
-            array('oxprice', 'oxarticles', 0, 0, 0),
-            array('oxstock', 'oxarticles', 0, 0, 0),
-            array('oxid', 'oxarticles', 0, 0, 1)
-        ),
-        'container2' => array(
-            array('oxartnum', 'oxarticles', 1, 0, 0),
-            array('oxtitle', 'oxarticles', 1, 1, 0),
-            array('oxean', 'oxarticles', 1, 0, 0),
-            array('oxmpn', 'oxarticles', 0, 0, 0),
-            array('oxprice', 'oxarticles', 0, 0, 0),
-            array('oxstock', 'oxarticles', 0, 0, 0),
-            array('oxid', 'oxobject2discount', 0, 0, 1)
-        )
-    );
+        'container1' => [
+            ['oxartnum', 'oxarticles', 1, 0, 0],
+            ['oxtitle', 'oxarticles', 1, 1, 0],
+            ['oxean', 'oxarticles', 1, 0, 0],
+            ['oxmpn', 'oxarticles', 0, 0, 0],
+            ['oxprice', 'oxarticles', 0, 0, 0],
+            ['oxstock', 'oxarticles', 0, 0, 0],
+            ['oxid', 'oxarticles', 0, 0, 1]
+        ],
+        'container2' => [
+            ['oxartnum', 'oxarticles', 1, 0, 0],
+            ['oxtitle', 'oxarticles', 1, 1, 0],
+            ['oxean', 'oxarticles', 1, 0, 0],
+            ['oxmpn', 'oxarticles', 0, 0, 0],
+            ['oxprice', 'oxarticles', 0, 0, 0],
+            ['oxstock', 'oxarticles', 0, 0, 0],
+            ['oxid', 'oxobject2discount', 0, 0, 1]
+        ]
+    ];
 
     /**
      * Returns SQL query for data to fetc
@@ -79,7 +63,7 @@ class DiscountArticlesAjax extends \ajaxListComponent
         $sArticleTable = $this->_getViewName('oxarticles');
         $sO2CView = $this->_getViewName('oxobject2category');
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sOxid = $oConfig->getRequestParameter('oxid');
         $sSynchOxid = $oConfig->getRequestParameter('synchoxid');
 
@@ -126,13 +110,11 @@ class DiscountArticlesAjax extends \ajaxListComponent
         $aChosenArt = $this->_getActionIds('oxobject2discount.oxid');
 
         if ($this->getConfig()->getRequestParameter('all')) {
-
             $sQ = parent::_addFilter("delete oxobject2discount.* " . $this->_getQuery());
-            oxDb::getDb()->execute($sQ);
-
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($sQ);
         } elseif (is_array($aChosenArt)) {
-            $sQ = "delete from oxobject2discount where oxobject2discount.oxid in (" . implode(", ", oxDb::getDb()->quoteArray($aChosenArt)) . ") ";
-            oxDb::getDb()->execute($sQ);
+            $sQ = "delete from oxobject2discount where oxobject2discount.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt)) . ") ";
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($sQ);
         }
     }
 
@@ -165,11 +147,11 @@ class DiscountArticlesAjax extends \ajaxListComponent
      */
     protected function addArticleToDiscount($discountListId, $articleId)
     {
-        $object2Discount = oxNew("oxBase");
+        $object2Discount = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
         $object2Discount->init('oxobject2discount');
-        $object2Discount->oxobject2discount__oxdiscountid = new oxField($discountListId);
-        $object2Discount->oxobject2discount__oxobjectid = new oxField($articleId);
-        $object2Discount->oxobject2discount__oxtype = new oxField("oxarticles");
+        $object2Discount->oxobject2discount__oxdiscountid = new \OxidEsales\Eshop\Core\Field($discountListId);
+        $object2Discount->oxobject2discount__oxobjectid = new \OxidEsales\Eshop\Core\Field($articleId);
+        $object2Discount->oxobject2discount__oxtype = new \OxidEsales\Eshop\Core\Field("oxarticles");
 
         $object2Discount->save();
     }

@@ -1,0 +1,245 @@
+html, body {
+    background-color: #fafafa;
+}
+
+body, p , form {
+    margin: 0;
+}
+body, p, td, tr, ol, ul, input, textarea {
+    font-size: 12px;
+    line-height: 130%;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+#body a {
+    color: #fff;
+}
+
+#page {
+    margin: 2em auto;
+}
+#header {
+    clear: both;
+    margin-top: 10px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    height: 108px;
+}
+#body {
+    clear: both;
+    padding: 20px 10px;
+    color: #fff;
+    background: #333333;
+    border: 1px solid #333333;
+    border-top: none;
+    margin: -10px 1px 0 0;
+    min-height: 350px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+#footer {
+    clear: both;
+    background: #575756;
+    color: #fff;
+    padding: 10px;
+    margin-right: 1px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+dl.tab {
+    float: left;
+    height: 108px;
+    margin: 0;
+    margin-right: 1px;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    margin-bottom: -1px;
+    background-color: #fff;
+}
+
+dl.tab dt {
+    display: block;
+    margin: 0;
+    padding: 5px 5px 0;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+dl.tab a {
+    color: #888;
+}
+dl.tab dd {
+    font-size: 11px;
+    display: block;
+    margin: 0;
+    padding: 5px;
+    height: 50px;
+}
+
+dl.tab.act {
+    border-color: #333333;
+    background-color: #333333;
+}
+dl.tab.act dt a {
+    color: #fff;
+}
+dl.tab.act dd a {
+    color: #fff;
+}
+
+img {
+    margin: 0;
+}
+
+.exclamation-icon {
+    background-image: url('img/pmin.png');
+    background-repeat: no-repeat;
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+}
+ul.req {
+    padding: 0 5px;
+    border: 1px solid #575756;
+    margin: 5px 0;
+    clear: both;
+    display: block;
+}
+ul.req li {
+    list-style: none;
+    margin: 5px 0;
+    padding-left: 1.5em;
+}
+ul.req > li.group {
+    padding-left: 0;
+    margin-right: 1em;
+}
+ul.req ul li {
+    padding-left: 1.5em;
+}
+ul.req li.pass {
+    background-image: url('img/pass.png');
+    background-repeat: no-repeat;
+}
+ul.req li.pmin {
+    background-image: url('img/pmin.png');
+    background-repeat: no-repeat;
+}
+ul.req li.fail {
+    background-image: url('img/fail.png');
+    background-repeat: no-repeat;
+}
+ul.req li.null {
+    background-image: url('img/null.png');
+    background-repeat: no-repeat;
+}
+ul.req ul {
+    padding: 0;
+    margin: 0;
+}
+ul.req li.group {
+    border: none;
+    float: left;
+    font-weight: bold;
+    width: 31%;
+}
+ul.req li.group li {
+    font-weight: normal;
+}
+ul.req li.clear {
+    clear: left;
+    border: none;
+    visibility: collapse;
+    height: 0;
+    padding: 0;
+    margin: 0;
+    display: block;
+    line-height: 0;
+}
+
+#body .helpicon {
+    display: block;
+    width: 18px;
+    height: 18px;
+    background: #ddd;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    line-height: 18px;
+    text-align: center;
+    font-weight: bold;
+    color: #777;
+}
+
+.oxid_eshop_logo {
+    width: 240px;
+    height: auto;
+}
+
+.helpbox {
+    position: absolute;
+    margin-top: 5px;
+    border: 1px solid rgb(193, 193, 193);
+    background: rgb(221, 221, 221) none repeat scroll 0 0;
+    padding: 10px;
+    border-radius: 5px;
+    width: 300px;
+    color: #000;
+    display: none;
+}
+
+.helpbox ul {
+    margin-left: 0;
+    padding: 0 0 0 1.5em;
+}
+
+.helpbox ul li {
+    padding-bottom: 0.25em;
+}
+
+.attention-title {
+    font-size: 14px;
+    color: #f00;
+    padding: 6px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.attention-item {
+    font-size: 13px;
+    color: #fff;
+    background-color: #c20;
+    padding: 8px;
+    font-weight: normal;
+}
+
+input[type=submit] {
+    font-size: 13px;
+    border: none;
+    padding: 8px 12px;
+    background-color: #fff;
+    color: #000;
+    border-radius: 3px;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+input[type=submit]:hover {
+    background-color: #e6e6e6;
+}
+
+select, .editinput {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .075) inset;
+    color: #555;
+    min-height: 15px;
+    line-height: 1.42857;
+    padding: 3px;
+    font-size: 12px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    background: #fff;
+}

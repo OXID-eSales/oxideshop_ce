@@ -1,27 +1,11 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Setup;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Setup;
 
-use OxidEsales\Eshop\Setup\Utilities;
+use OxidEsales\EshopCommunity\Setup\Utilities;
 use \Exception;
 
 require_once getShopBasePath() . '/Setup/functions.php';
@@ -62,8 +46,6 @@ class UtilitiesTest extends \OxidTestCase
 
     /**
      * Test teardown
-     *
-     * @return null
      */
     protected function tearDown()
     {
@@ -90,8 +72,6 @@ class UtilitiesTest extends \OxidTestCase
 
     /**
      * Testing Utilities::getFileContents()
-     *
-     * @return null
      */
     public function testGetFileContents()
     {
@@ -105,8 +85,6 @@ class UtilitiesTest extends \OxidTestCase
 
     /**
      * Testing Utilities::getDefaultPathParams()
-     *
-     * @return null
      */
     public function testGetDefaultPathParams()
     {
@@ -129,8 +107,6 @@ class UtilitiesTest extends \OxidTestCase
 
     /**
      * test for bug #0002043: System requirements check for "Files/folders access rights" always fails
-     *
-     * @return null
      */
     public function testGetDefaultPathParamsIfPathTranslatedIsEmpty()
     {
@@ -153,8 +129,6 @@ class UtilitiesTest extends \OxidTestCase
 
     /**
      * Testing Utilities::getEnvVar()
-     *
-     * @return null
      */
     public function testGetEnvVar()
     {
@@ -170,8 +144,6 @@ class UtilitiesTest extends \OxidTestCase
 
     /**
      * Testing Utilities::getRequestVar()
-     *
-     * @return null
      */
     public function testGetRequestVar()
     {
@@ -185,8 +157,6 @@ class UtilitiesTest extends \OxidTestCase
 
     /**
      * Testing Utilities::preparePath()
-     *
-     * @return null
      */
     public function testPreparePath()
     {
@@ -198,8 +168,6 @@ class UtilitiesTest extends \OxidTestCase
 
     /**
      * Testing Utilities::extractBasePath()
-     *
-     * @return null
      */
     public function testExtractBasePath()
     {
@@ -213,8 +181,6 @@ class UtilitiesTest extends \OxidTestCase
 
     /**
      * Testing Utilities::isValidEmail()
-     *
-     * @return null
      */
     public function testIsValidEmail()
     {
@@ -235,29 +201,112 @@ class UtilitiesTest extends \OxidTestCase
         $this->assertTrue(function_exists('getDefaultConfigFileMode'), 'missing function getDefaultConfigFileMode');
 
         $utilities = new Utilities();
-        $password = 'l3$z4f#buzhdcv5745XC$lic';
+        $password = 'l3$z4f#bu\'xyz\\\'zh"ad\\"dc$1\1\\1\2v5745XC$lic';
         $url = 'http://test.myoxidshop.com';
 
-        $originalFile = $this->configTestPath . '/config.inc.php.dist';
-        $destination = $this->configTestPath . '/config.inc.php';
+        /** @var  $originalFile take the real config.inc.php.dist for testing as this is the blueprint for config.inc.php */
+        $originalFile = OX_BASE_PATH . 'config.inc.php.dist';
+        if (!realpath($originalFile)) {
+            $originalFile = VENDOR_PATH .
+                            'oxid-esales' . DIRECTORY_SEPARATOR .
+                            'oxideshop-ce' . DIRECTORY_SEPARATOR .
+                            'source' . DIRECTORY_SEPARATOR .
+                            'config.inc.php.dist';
+        }
+        if (!realpath($originalFile)) {
+            throw new Exception('Configuration file template \'config.inc.php.dist\' not found');
+        }
+        $destinationDirectory = realpath($this->configTestPath);
+        if (!is_writable(realpath($destinationDirectory))) {
+            throw new Exception($destinationDirectory . ' is not writable');
+        }
 
-        file_put_contents($destination, file_get_contents($originalFile));
-        $this->assertNotContains($password, $destination);
+        $destinationFile = $destinationDirectory . '/config.inc.php';
+        file_put_contents($destinationFile, file_get_contents($originalFile));
+        $this->assertNotContains($password, $destinationFile);
 
-        $parameters = ['sShopDir' => $this->configTestPath,
-                       'testPassword' => $password,
-                       'testUrl' => $url];
+        $configParameters = [
+            'sShopDir' => $destinationDirectory,
+            'dbPwd'    => $password,
+            'sShopURL' => $url
+        ];
 
         //check
         try {
-            $utilities->updateConfigFile($parameters);
+            $utilities->updateConfigFile($configParameters);
         } catch (Exception $exception) {
             $this->fail($exception->getMessage());
         }
 
-        $content = file_get_contents($this->configTestPath . '/config.inc.php');
-        $this->assertContains($url, $content);
-        $this->assertContains($password, $content);
+        /**
+         * Test if the _values_ are assigned correctly:
+         * - file can be parsed without problems
+         * - the properties are set to the correct values
+         */
+        include $destinationFile;
+        foreach ($configParameters as $key => $value) {
+            $this->assertEquals($value, $this->{$key}, "The value for the parameter $key was not updated as expected");
+        }
+    }
+
+    /**
+     * @param string $testInput
+     * @param string $expectedValue
+     * @param string $explanationOnWhatIsChecked
+     *
+     * @dataProvider stripAnsiControlCodesDataProvider
+     */
+    public function testStripAnsiControlCodes($testInput, $expectedValue, $explanationOnWhatIsChecked)
+    {
+        $actualValue = Utilities::stripAnsiControlCodes($testInput);
+
+        $this->assertSame($expectedValue, $actualValue, "Test case which failed: $explanationOnWhatIsChecked");
+    }
+
+    public function stripAnsiControlCodesDataProvider()
+    {
+        return [
+            [
+                "Regular text with no ANSI controls",
+                "Regular text with no ANSI controls",
+                "No ANSI codes used",
+            ],
+            [
+                "Test of \e[1;31mcolored\e[0m text",
+                "Test of colored text",
+                "Red foreground color",
+            ],
+            [
+                "Test of \e[44mbackground\e[0m text",
+                "Test of background text",
+                "Blue background color",
+            ],
+            [
+                "Test of \e[1;31m\e[44mcolored background\e[0m text",
+                "Test of colored background text",
+                "Red foreground with blue background color",
+            ],
+            [
+                "\e[0m\e[0m\e[0m\e[0m",
+                "",
+                "ANSI control codes only, empty text",
+            ],
+            [
+                "\e[0ma\e[0m\n\e[0mb\e[0m",
+                "a\nb",
+                "ANSI control codes combined with new lines and simple text",
+            ],
+            [
+                "",
+                "",
+                "Empty string",
+            ],
+            [
+                null,
+                "",
+                "Null converted to empty string",
+            ]
+        ];
     }
 
     /**

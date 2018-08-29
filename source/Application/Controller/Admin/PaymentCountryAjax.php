@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxDb;
 use oxField;
@@ -28,29 +12,28 @@ use oxField;
 /**
  * Class manages payment countries
  */
-class PaymentCountryAjax extends \ajaxListComponent
+class PaymentCountryAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
-
     /**
      * Columns array
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
-        array('oxtitle', 'oxcountry', 1, 1, 0),
-        array('oxisoalpha2', 'oxcountry', 1, 0, 0),
-        array('oxisoalpha3', 'oxcountry', 0, 0, 0),
-        array('oxunnum3', 'oxcountry', 0, 0, 0),
-        array('oxid', 'oxcountry', 0, 0, 1)
-    ),
-                                 'container2' => array(
-                                     array('oxtitle', 'oxcountry', 1, 1, 0),
-                                     array('oxisoalpha2', 'oxcountry', 1, 0, 0),
-                                     array('oxisoalpha3', 'oxcountry', 0, 0, 0),
-                                     array('oxunnum3', 'oxcountry', 0, 0, 0),
-                                     array('oxid', 'oxobject2payment', 0, 0, 1)
-                                 )
-    );
+    protected $_aColumns = ['container1' => [ // field , table,         visible, multilanguage, ident
+        ['oxtitle', 'oxcountry', 1, 1, 0],
+        ['oxisoalpha2', 'oxcountry', 1, 0, 0],
+        ['oxisoalpha3', 'oxcountry', 0, 0, 0],
+        ['oxunnum3', 'oxcountry', 0, 0, 0],
+        ['oxid', 'oxcountry', 0, 0, 1]
+    ],
+                                 'container2' => [
+                                     ['oxtitle', 'oxcountry', 1, 1, 0],
+                                     ['oxisoalpha2', 'oxcountry', 1, 0, 0],
+                                     ['oxisoalpha3', 'oxcountry', 0, 0, 0],
+                                     ['oxunnum3', 'oxcountry', 0, 0, 0],
+                                     ['oxid', 'oxobject2payment', 0, 0, 1]
+                                 ]
+    ];
 
     /**
      * Returns SQL query for data to fetc
@@ -61,7 +44,7 @@ class PaymentCountryAjax extends \ajaxListComponent
     {
         // looking for table/view
         $sCountryTable = $this->_getViewName('oxcountry');
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sCountryId = $this->getConfig()->getRequestParameter('oxid');
         $sSynchCountryId = $this->getConfig()->getRequestParameter('synchoxid');
 
@@ -70,7 +53,6 @@ class PaymentCountryAjax extends \ajaxListComponent
             // which fields to load ?
             $sQAdd = " from $sCountryTable where $sCountryTable.oxactive = '1' ";
         } else {
-
             $sQAdd = " from oxobject2payment left join $sCountryTable on $sCountryTable.oxid=oxobject2payment.oxobjectid ";
             $sQAdd .= "where $sCountryTable.oxactive = '1' and oxobject2payment.oxpaymentid = " . $oDb->quote($sCountryId) . " and oxobject2payment.oxtype = 'oxcountry' ";
         }
@@ -98,11 +80,11 @@ class PaymentCountryAjax extends \ajaxListComponent
         }
         if ($soxId && $soxId != "-1" && is_array($aChosenCntr)) {
             foreach ($aChosenCntr as $sChosenCntr) {
-                $oObject2Payment = oxNew('oxBase');
+                $oObject2Payment = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Payment->init('oxobject2payment');
-                $oObject2Payment->oxobject2payment__oxpaymentid = new oxField($soxId);
-                $oObject2Payment->oxobject2payment__oxobjectid = new oxField($sChosenCntr);
-                $oObject2Payment->oxobject2payment__oxtype = new oxField("oxcountry");
+                $oObject2Payment->oxobject2payment__oxpaymentid = new \OxidEsales\Eshop\Core\Field($soxId);
+                $oObject2Payment->oxobject2payment__oxobjectid = new \OxidEsales\Eshop\Core\Field($sChosenCntr);
+                $oObject2Payment->oxobject2payment__oxtype = new \OxidEsales\Eshop\Core\Field("oxcountry");
                 $oObject2Payment->save();
             }
         }
@@ -115,13 +97,11 @@ class PaymentCountryAjax extends \ajaxListComponent
     {
         $aChosenCntr = $this->_getActionIds('oxobject2payment.oxid');
         if ($this->getConfig()->getRequestParameter('all')) {
-
             $sQ = $this->_addFilter("delete oxobject2payment.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
-
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenCntr)) {
-            $sQ = "delete from oxobject2payment where oxobject2payment.oxid in (" . implode(", ", oxDb::getDb()->quoteArray($aChosenCntr)) . ") ";
-            oxDb::getDb()->Execute($sQ);
+            $sQ = "delete from oxobject2payment where oxobject2payment.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenCntr)) . ") ";
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
 }

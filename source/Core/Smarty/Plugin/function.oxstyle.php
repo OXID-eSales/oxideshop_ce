@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 /**
@@ -43,16 +27,24 @@
  */
 function smarty_function_oxstyle($params, &$smarty)
 {
-    $widget = !empty($params['widget']) ? $params['widget'] : '';
-    $forceRender = !empty($params['inWidget']) ? $params['inWidget'] : false;
+    $defaults = [
+        'widget' => '',
+        'inWidget' => false,
+        'if' => null,
+        'include' => null,
+    ];
+    $params = array_merge($defaults, $params);
+
+    $widget = $params['widget'];
+    $forceRender = $params['inWidget'];
     $isDynamic = isset($smarty->_tpl_vars["__oxid_include_dynamic"]) ? (bool)$smarty->_tpl_vars["__oxid_include_dynamic"] : false;
 
     $output = '';
     if (!empty($params['include'])) {
-        $registrator = oxNew('OxidEsales\Eshop\Core\ViewHelper\StyleRegistrator');
+        $registrator = oxNew(\OxidEsales\Eshop\Core\ViewHelper\StyleRegistrator::class);
         $registrator->addFile($params['include'], $params['if'], $isDynamic);
     } else {
-        $renderer = oxNew('OxidEsales\Eshop\Core\ViewHelper\StyleRenderer');
+        $renderer = oxNew(\OxidEsales\Eshop\Core\ViewHelper\StyleRenderer::class);
         $output = $renderer->render($widget, $forceRender, $isDynamic);
     }
 

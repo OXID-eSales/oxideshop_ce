@@ -1,36 +1,16 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright Â© OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core;
-
-use oxRegistry;
+namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * class for output processing
- *
  */
-class Output extends \oxSuperCfg
+class Output extends \OxidEsales\Eshop\Core\Base
 {
-
     const OUTPUT_FORMAT_HTML = 'html';
     const OUTPUT_FORMAT_JSON = 'json';
 
@@ -60,7 +40,7 @@ class Output extends \oxSuperCfg
      *
      * @var array
      */
-    protected $_aBuffer = array();
+    protected $_aBuffer = [];
 
     /**
      * Class constructor. Sets search engine mode according to client info
@@ -69,7 +49,7 @@ class Output extends \oxSuperCfg
      */
     public function __construct()
     {
-        $this->setIsSearchEngine(oxRegistry::getUtils()->isSearchEngine());
+        $this->setIsSearchEngine(\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine());
     }
 
     /**
@@ -93,13 +73,6 @@ class Output extends \oxSuperCfg
      */
     public function process($sValue, $sClassName)
     {
-        $myConfig = $this->getConfig();
-
-        //fix for euro currency problem (it's invisible in some older browsers)
-        if (!$myConfig->getConfigParam('blSkipEuroReplace') && !$myConfig->isUtf()) {
-            $sValue = str_replace('¤', '&euro;', $sValue);
-        }
-
         return $sValue;
     }
 
@@ -116,7 +89,6 @@ class Output extends \oxSuperCfg
         $sVersion = $this->getConfig()->getVersion();
         $sEdition = $this->getConfig()->getFullEdition();
         $sCurYear = date("Y");
-        $sShopMode = "";
 
         // SHOW ONLY MAJOR VERSION NUMBER
         $aVersion = explode('.', $sVersion);
@@ -223,11 +195,11 @@ class Output extends \oxSuperCfg
     {
         switch ($this->_sOutputFormat) {
             case self::OUTPUT_FORMAT_JSON:
-                oxRegistry::getUtils()->setHeader("Content-Type: application/json; charset=" . $this->_sCharset);
+                \OxidEsales\Eshop\Core\Registry::getUtils()->setHeader("Content-Type: application/json; charset=" . $this->_sCharset);
                 break;
             case self::OUTPUT_FORMAT_HTML:
             default:
-                oxRegistry::getUtils()->setHeader("Content-Type: text/html; charset=" . $this->_sCharset);
+                \OxidEsales\Eshop\Core\Registry::getUtils()->setHeader("Content-Type: text/html; charset=" . $this->_sCharset);
                 break;
         }
     }

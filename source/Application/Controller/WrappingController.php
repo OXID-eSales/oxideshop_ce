@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxList;
 use oxRegistry;
@@ -29,9 +13,8 @@ use oxUBase;
 /**
  * Managing Gift Wrapping
  */
-class WrappingController extends oxUBase
+class WrappingController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
-
     /**
      * Current class template name.
      *
@@ -87,11 +70,11 @@ class WrappingController extends oxUBase
     public function getWrappingList()
     {
         if ($this->_oWrappings === null) {
-            $this->_oWrappings = new oxlist();
+            $this->_oWrappings = new \OxidEsales\Eshop\Core\Model\ListModel();
 
             // load wrapping papers
             if ($this->getViewConfig()->getShowGiftWrapping()) {
-                $this->_oWrappings = oxNew('oxwrapping')->getWrappingList('WRAP');
+                $this->_oWrappings = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class)->getWrappingList('WRAP');
             }
         }
 
@@ -106,11 +89,11 @@ class WrappingController extends oxUBase
     public function getCardList()
     {
         if ($this->_oCards === null) {
-            $this->_oCards = new oxlist();
+            $this->_oCards = new \OxidEsales\Eshop\Core\Model\ListModel();
 
             // load gift cards
             if ($this->getViewConfig()->getShowGiftWrapping()) {
-                $this->_oCards = oxNew('oxwrapping')->getWrappingList('CARD');
+                $this->_oCards = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class)->getWrappingList('CARD');
             }
         }
 
@@ -119,18 +102,18 @@ class WrappingController extends oxUBase
 
     /**
      * Updates wrapping data in session basket object
-     * (oxsession::getBasket()) - adds wrapping info to
+     * (\OxidEsales\Eshop\Core\Session::getBasket()) - adds wrapping info to
      * each article in basket (if possible). Plus adds
      * gift message and chosen card ( takes from GET/POST/session;
      * oBasket::giftmessage, oBasket::chosencard). Then sets
-     * basket back to session (oxsession::setBasket()). Returns
+     * basket back to session (\OxidEsales\Eshop\Core\Session::setBasket()). Returns
      * "order" to redirect to order confirmation secreen.
      *
      * @return string
      */
     public function changeWrapping()
     {
-        $aWrapping = oxRegistry::getConfig()->getRequestParameter('wrapping');
+        $aWrapping = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('wrapping');
 
         if ($this->getViewConfig()->getShowGiftWrapping()) {
             $oBasket = $this->getSession()->getBasket();
@@ -144,10 +127,9 @@ class WrappingController extends oxUBase
                 }
             }
 
-            $oBasket->setCardMessage(oxRegistry::getConfig()->getRequestParameter('giftmessage'));
-            $oBasket->setCardId(oxRegistry::getConfig()->getRequestParameter('chosencard'));
+            $oBasket->setCardMessage(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('giftmessage'));
+            $oBasket->setCardId(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('chosencard'));
             $oBasket->onUpdate();
-
         }
 
         return 'order';

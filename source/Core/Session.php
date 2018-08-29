@@ -1,41 +1,22 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
-use oxDb;
-use oxUtilsObject;
-use oxBasket;
-use OxidEsales\Eshop\Application\Model\Basket;
+use \OxidEsales\Eshop\Application\Model\Basket;
+use \OxidEsales\Eshop\Application\Model\BasketItem;
+use \OxidEsales\Eshop\Application\Model\User;
 
 /**
  * Session manager.
  * Performs session managing function, such as variables deletion,
  * initialisation and other session functions.
  */
-class Session extends \oxSuperCfg
+class Session extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Session parameter name
      *
@@ -122,20 +103,20 @@ class Session extends \oxSuperCfg
      * @var array
      * @see _getRequireSessionWithParams()
      */
-    protected $_aRequireSessionWithParams = array(
-        'cl'          => array(
+    protected $_aRequireSessionWithParams = [
+        'cl'          => [
             'register' => true,
             'account'  => true,
-        ),
-        'fnc'         => array(
+        ],
+        'fnc'         => [
             'tobasket'         => true,
             'login_noredirect' => true,
             'tocomparelist'    => true,
-        ),
+        ],
         '_artperpage' => true,
         'ldtype'      => true,
         'listorderby' => true,
-    );
+    ];
 
     /**
      * Marker if processed urls must contain SID parameter
@@ -149,7 +130,7 @@ class Session extends \oxSuperCfg
      *
      * @var array
      */
-    protected $_aPersistentParams = array("actshop", "lang", "currency", "language", "tpllanguage");
+    protected $_aPersistentParams = ["actshop", "lang", "currency", "language", "tpllanguage"];
 
     /**
      * Returns session ID
@@ -202,18 +183,14 @@ class Session extends \oxSuperCfg
     }
 
     /**
-     * Starts shop session, generates unique session ID, extracts user IP.
+     * retrieves the session id from the request if any
+     *
+     * @return string|null
      */
-    public function start()
+    protected function getSidFromRequest()
     {
         $myConfig = $this->getConfig();
         $sid = null;
-
-        if ($this->isAdmin()) {
-            $this->setName("admin_sid");
-        } else {
-            $this->setName("sid");
-        }
 
         $sForceSidParam = $myConfig->getRequestParameter($this->getForcedName());
         $sSidParam = $myConfig->getRequestParameter($this->getName());
@@ -226,6 +203,24 @@ class Session extends \oxSuperCfg
         } elseif ($sSidParam) {
             $sid = $sSidParam;
         }
+
+        return $sid;
+    }
+
+    /**
+     * Starts shop session, generates unique session ID, extracts user IP.
+     */
+    public function start()
+    {
+        $myConfig = $this->getConfig();
+
+        if ($this->isAdmin()) {
+            $this->setName("admin_sid");
+        } else {
+            $this->setName("sid");
+        }
+
+        $sid = $this->getSidFromRequest();
 
         //starting session if only we can
         if ($this->_allowSessionStart()) {
@@ -251,11 +246,11 @@ class Session extends \oxSuperCfg
 
                 // passing notification about session problems
                 if ($this->_sErrorMsg && $myConfig->getConfigParam('iDebug')) {
-                    oxRegistry::get("oxUtilsView")->addErrorToDisplay(oxNew("oxException", $this->_sErrorMsg));
+                    \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, $this->_sErrorMsg));
                 }
             } elseif (!$blSwapped) {
                 // transferring cookies between hosts
-                oxRegistry::get("oxUtilsServer")->loadSessionCookies();
+                \OxidEsales\Eshop\Core\Registry::getUtilsServer()->loadSessionCookies();
             }
         }
     }
@@ -304,7 +299,7 @@ class Session extends \oxSuperCfg
      */
     protected function _initNewSessionChallenge()
     {
-        $this->setVariable('sess_stoken', sprintf('%X', crc32(oxUtilsObject::getInstance()->generateUID())));
+        $this->setVariable('sess_stoken', sprintf('%X', crc32(\OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID())));
     }
 
     /**
@@ -349,7 +344,7 @@ class Session extends \oxSuperCfg
         }
 
         //saving persistent params if old session exists
-        $aPersistent = array();
+        $aPersistent = [];
         foreach ($this->_aPersistentParams as $sParam) {
             if (($sValue = $this->getVariable($sParam))) {
                 $aPersistent[$sParam] = $sValue;
@@ -366,7 +361,7 @@ class Session extends \oxSuperCfg
         $this->_initNewSessionChallenge();
 
         // (re)setting actual user agent when initiating new session
-        $this->setVariable("sessionagent", oxRegistry::get("oxUtilsServer")->getServerVar('HTTP_USER_AGENT'));
+        $this->setVariable("sessionagent", \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getServerVar('HTTP_USER_AGENT'));
     }
 
     /**
@@ -379,7 +374,7 @@ class Session extends \oxSuperCfg
             $this->_sessionStart();
 
             // (re)setting actual user agent when initiating new session
-            $this->setVariable("sessionagent", oxRegistry::get("oxUtilsServer")->getServerVar('HTTP_USER_AGENT'));
+            $this->setVariable("sessionagent", \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getServerVar('HTTP_USER_AGENT'));
         }
 
         $this->_setSessionId($this->_getNewSessionId(false));
@@ -396,9 +391,7 @@ class Session extends \oxSuperCfg
      */
     protected function _getNewSessionId($blUnset = true)
     {
-        $sOldId = session_id();
         @session_regenerate_id(true);
-        $sNewId = session_id();
 
         if ($blUnset) {
             session_unset();
@@ -423,7 +416,6 @@ class Session extends \oxSuperCfg
      */
     public function destroy()
     {
-        //session_unset();
         unset($_SESSION);
         session_destroy();
     }
@@ -489,7 +481,7 @@ class Session extends \oxSuperCfg
         $blUseCookies = $this->_getSessionUseCookies();
         $sRet = '';
 
-        $blDisableSid = oxRegistry::getUtils()->isSearchEngine()
+        $blDisableSid = \OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()
                         && is_array($myConfig->getConfigParam('aCacheViews'))
                         && !$this->isAdmin();
 
@@ -530,48 +522,121 @@ class Session extends \oxSuperCfg
     /**
      * Returns basket session object.
      *
-     * @return oxbasket
+     * @return \OxidEsales\Eshop\Application\Model\Basket
      */
     public function getBasket()
     {
         if ($this->_oBasket === null) {
-            $sBasket = $this->getVariable($this->_getBasketName());
+            $serializedBasket = $this->getVariable($this->_getBasketName());
 
             //init oxbasketitem class first
             //#1746
-            oxNew('oxBasketItem');
+            oxNew(BasketItem::class);
 
             // init oxbasket through oxNew and not oxAutoload, Mantis-Bug #0004262
-            $oEmptyBasket = oxNew('oxBasket');
+            $emptyBasket = oxNew(Basket::class);
 
-            $oBasket = ($sBasket && ($oBasket = unserialize($sBasket))) ? $oBasket : null;
+            $basket =
+                $this->isSerializedBasketValid($serializedBasket) &&
+                ($unserializedBasket = unserialize($serializedBasket)) &&
+                $this->isUnserializedBasketValid($unserializedBasket, $emptyBasket) ?
+                    $unserializedBasket : $emptyBasket;
 
-            if (!$oBasket || (get_class($oBasket) !== get_class($oEmptyBasket))) {
-                $oBasket = $oEmptyBasket;
-            }
-
-            $this->_validateBasket($oBasket);
-            $this->setBasket($oBasket);
+            $this->_validateBasket($basket);
+            $this->setBasket($basket);
         }
 
         return $this->_oBasket;
     }
 
     /**
+     * True if given serialized object is constructed with compatible classes.
+     *
+     * @param string $serializedBasket
+     * @return bool
+     */
+    protected function isSerializedBasketValid($serializedBasket)
+    {
+        $basketClass = get_class(oxNew(Basket::class));
+        $basketItemClass = get_class(oxNew(BasketItem::class));
+        $priceClass = get_class(oxNew(\OxidEsales\Eshop\Core\Price::class));
+        $priceListClass = get_class(oxNew(\OxidEsales\Eshop\Core\PriceList::class));
+        $userClass = get_class(oxNew(User::class));
+
+        return $serializedBasket &&
+            $this->isClassInSerializedObject($serializedBasket, $basketClass) &&
+            $this->isClassInSerializedObject($serializedBasket, $basketItemClass) &&
+            $this->isClassOrNullInSerializedObjectAfterField($serializedBasket, "oPrice", $priceClass) &&
+            $this->isClassOrNullInSerializedObjectAfterField($serializedBasket, "oProductsPriceList", $priceListClass) &&
+            $this->isClassOrNullInSerializedObjectAfterField($serializedBasket, "oUser", $userClass);
+    }
+
+    /**
+     * True if given class is found within serialized object.
+     *
+     * @param string $serializedObject
+     * @param string $className
+     *
+     * @return bool
+     */
+    protected function isClassInSerializedObject($serializedObject, $className)
+    {
+        $quotedClassName = sprintf('"%s"', $className);
+
+        return strpos($serializedObject, $quotedClassName) !== false;
+    }
+
+    /**
+     * True if given class or null value is found after given field in serialized object.
+     *
+     * @param string $serializedObject
+     * @param string $fieldName
+     * @param string $className
+     *
+     * @return bool
+     */
+    protected function isClassOrNullInSerializedObjectAfterField($serializedObject, $fieldName, $className)
+    {
+        $fieldAndClassPattern = '/'. preg_quote($fieldName, '/') . '";((?P<null>N);|O:\d+:"(?P<class>[\w\\\\]+)":)/';
+        $matchFound = preg_match($fieldAndClassPattern, $serializedObject, $matches) === 1;
+
+        return $matchFound &&
+            (
+                (isset($matches['class']) && $matches['class'] === $className) ||
+                (isset($matches['null']) && $matches['null'] === 'N')
+            );
+    }
+
+    /**
+     * True if both basket objects have been constructed from same class.
+     *
+     * Shop cannot function properly if provided with different basket class.
+     *
+     * @param \OxidEsales\Eshop\Application\Model\Basket $basket
+     * @param \OxidEsales\Eshop\Application\Model\Basket $emptyBasket
+     *
+     * @return bool
+     */
+    protected function isUnserializedBasketValid($basket, $emptyBasket)
+    {
+        return $basket && (get_class($basket) === get_class($emptyBasket));
+    }
+
+    /**
      * Validate loaded from session basket content. Check for language change.
      *
-     * @param oxBasket $oBasket Basket object loaded from session.
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket Basket object loaded from session.
      *
      * @return null
      */
-    protected function _validateBasket(Basket $oBasket)
+    protected function _validateBasket(\OxidEsales\Eshop\Application\Model\Basket $oBasket)
     {
         $aCurrContent = $oBasket->getContents();
         if (empty($aCurrContent)) {
             return;
         }
 
-        $iCurrLang = oxRegistry::getLang()->getBaseLanguage();
+        $iCurrLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         foreach ($aCurrContent as $oContent) {
             if ($oContent->getLanguageId() != $iCurrLang) {
                 $oContent->setLanguageId($iCurrLang);
@@ -611,7 +676,7 @@ class Session extends \oxSuperCfg
 
     /**
      * Forces starting session and skips checking if session is allowed to start
-     * when calling oxSession::start();
+     * when calling \OxidEsales\Eshop\Core\Session::start();
      */
     public function setForceNewSession()
     {
@@ -645,9 +710,9 @@ class Session extends \oxSuperCfg
             $this->_blSidNeeded = false;
 
             // no SIDs for search engines
-            if (!oxRegistry::getUtils()->isSearchEngine()) {
+            if (!\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()) {
                 // cookie found - SID is not needed
-                if (oxRegistry::get("oxUtilsServer")->getOxCookie($this->getName())) {
+                if (\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie($this->getName())) {
                     $this->_blSidNeeded = false;
                 } elseif ($this->_forceSessionStart()) {
                     $this->_blSidNeeded = true;
@@ -681,13 +746,13 @@ class Session extends \oxSuperCfg
     }
 
     /**
-     * Appends url with session ID, but only if oxSession::_isSidNeeded() returns true
+     * Appends url with session ID, but only if \OxidEsales\Eshop\Core\Session::_isSidNeeded() returns true
      * Direct usage of this method to retrieve end url result is discouraged - instead
-     * see oxUtilsUrl::processUrl
+     * see \OxidEsales\Eshop\Core\UtilsUrl::processUrl
      *
      * @param string $sUrl url to append with sid
      *
-     * @see oxUtilsUrl::processUrl
+     * @see \OxidEsales\Eshop\Core\UtilsUrl::processUrl
      *
      * @return string
      */
@@ -742,7 +807,7 @@ class Session extends \oxSuperCfg
      */
     protected function _forceSessionStart()
     {
-        return (!oxRegistry::getUtils()->isSearchEngine()) && ((( bool ) $this->getConfig()->getConfigParam('blForceSessionStart')) || $this->getConfig()->getRequestParameter("su") || $this->_blForceNewSession);
+        return (!\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()) && ((( bool ) $this->getConfig()->getConfigParam('blForceSessionStart')) || $this->getConfig()->getRequestParameter("su") || $this->_blForceNewSession);
     }
 
     /**
@@ -757,15 +822,15 @@ class Session extends \oxSuperCfg
 
         // special handling only in non-admin mode
         if (!$this->isAdmin()) {
-            if (oxRegistry::getUtils()->isSearchEngine() || $myConfig->getRequestParameter('skipSession')) {
+            if (\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine() || $myConfig->getRequestParameter('skipSession')) {
                 $blAllowSessionStart = false;
-            } elseif (oxRegistry::get("oxUtilsServer")->getOxCookie('oxid_' . $myConfig->getShopId() . '_autologin') === '1') {
+            } elseif (\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('oxid_' . $myConfig->getShopId() . '_autologin') === '1') {
                 $blAllowSessionStart = true;
-            } elseif (!$this->_forceSessionStart() && !oxRegistry::get("oxUtilsServer")->getOxCookie('sid_key')) {
+            } elseif (!$this->_forceSessionStart() && !\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('sid_key')) {
                 // session is not needed to start when it is not necessary:
                 // - no sid in request and also user executes no session connected action
                 // - no cookie set and user executes no session connected action
-                if (!oxRegistry::get("oxUtilsServer")->getOxCookie($this->getName()) &&
+                if (!\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie($this->getName()) &&
                     !($myConfig->getRequestParameter($this->getName()) || $myConfig->getRequestParameter($this->getForcedName())) &&
                     !$this->_isSessionRequiredAction()
                 ) {
@@ -787,10 +852,10 @@ class Session extends \oxSuperCfg
     protected function _isSwappedClient()
     {
         $blSwapped = false;
-        $myUtilsServer = oxRegistry::get("oxUtilsServer");
+        $myUtilsServer = \OxidEsales\Eshop\Core\Registry::getUtilsServer();
 
         // check only for non search engines
-        if (!oxRegistry::getUtils()->isSearchEngine() && !$myUtilsServer->isTrustedClientIp() && !$this->_isValidRemoteAccessToken()) {
+        if (!\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine() && !$myUtilsServer->isTrustedClientIp() && !$this->_isValidRemoteAccessToken()) {
             $myConfig = $this->getConfig();
 
             // checking if session user agent matches actual
@@ -819,7 +884,7 @@ class Session extends \oxSuperCfg
     {
         $blCheck = false;
         // processing
-        $oUtils = oxRegistry::get("oxUtilsServer");
+        $oUtils = \OxidEsales\Eshop\Core\Registry::getUtilsServer();
         $sAgent = $oUtils->processUserAgentInfo($sAgent);
         $sExistingAgent = $oUtils->processUserAgentInfo($sExistingAgent);
 
@@ -867,7 +932,7 @@ class Session extends \oxSuperCfg
         //if we detect the cookie then set session var for possible later use
         if ($sCookieSid == "oxid" && !$blSessCookieSetOnce) {
             if (!is_array($aSessCookieSetOnce)) {
-                $aSessCookieSetOnce = array();
+                $aSessCookieSetOnce = [];
             }
 
             $aSessCookieSetOnce[$sCurrUrl] = "ox_true";
@@ -876,7 +941,7 @@ class Session extends \oxSuperCfg
 
         //if we have no cookie then try to set it
         if (!$sCookieSid) {
-            oxRegistry::get("oxUtilsServer")->setOxCookie('sid_key', 'oxid');
+            \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie('sid_key', 'oxid');
         }
 
         return $blSwapped;
@@ -904,7 +969,7 @@ class Session extends \oxSuperCfg
 
         if (!$this->_allowSessionStart()) {
             if ($blUseCookies) {
-                oxRegistry::get("oxUtilsServer")->setOxCookie($this->getName(), null);
+                \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie($this->getName(), null);
             }
 
             return;
@@ -912,7 +977,7 @@ class Session extends \oxSuperCfg
 
         if ($blUseCookies) {
             //setting session cookie
-            oxRegistry::get("oxUtilsServer")->setOxCookie($this->getName(), $sSessId);
+            \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie($this->getName(), $sSessId);
         }
     }
 
@@ -938,7 +1003,7 @@ class Session extends \oxSuperCfg
      */
     protected function _getCookieSid()
     {
-        return oxRegistry::get("oxUtilsServer")->getOxCookie($this->getName());
+        return \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie($this->getName());
     }
 
     /**
@@ -1018,7 +1083,7 @@ class Session extends \oxSuperCfg
     public function getBasketReservations()
     {
         if (!$this->_oBasketReservations) {
-            $this->_oBasketReservations = oxNew('oxBasketReservation');
+            $this->_oBasketReservations = oxNew(\OxidEsales\Eshop\Application\Model\BasketReservation::class);
         }
 
         return $this->_oBasketReservations;

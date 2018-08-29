@@ -39,7 +39,7 @@
  * $Id$
  */
 
-namespace OxidEsales\Eshop\Core\Smarty\Plugin;
+namespace OxidEsales\EshopCommunity\Core\Smarty\Plugin;
 
 /**
  * PHP Helper Class to construct a ECONDA Monitor statement for the later
@@ -383,12 +383,12 @@ class Emos
             return;
         }
 
-        $aBasketItems = array();
+        $aBasketItems = [];
         foreach ($aBasket as $oItem) {
             $oItem = $this->_emos_ItemFormat($oItem);
-            $aBasketItems[] = array("buy", $oItem->productId, $oItem->productName,
+            $aBasketItems[] = ["buy", $oItem->productId, $oItem->productName,
                                   $oItem->price, $oItem->productGroup, $oItem->quantity,
-                                  $oItem->variant1, $oItem->variant2, $oItem->variant3 );
+                                  $oItem->variant1, $oItem->variant2, $oItem->variant3 ];
         }
 
         $this->_ecEvent = $aBasketItems;
@@ -397,7 +397,7 @@ class Emos
     /**
      * adds a detailView to the preScript
      *
-     * @param EMOS_Item $oItem item to add to view
+     * @param \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem $oItem item to add to view
      */
     public function addDetailView($oItem)
     {
@@ -407,7 +407,7 @@ class Emos
     /**
      * adds a removeFromBasket to the preScript
      *
-     * @param EMOS_Item $oItem item to remove from basket
+     * @param \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem $oItem item to remove from basket
      */
     public function removeFromBasket($oItem)
     {
@@ -417,7 +417,7 @@ class Emos
     /**
      * adds a addToBasket to the preScript
      *
-     * @param EMOS_Item $oItem item to add to basket
+     * @param \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem $oItem item to add to basket
      */
     public function addToBasket($oItem)
     {
@@ -477,29 +477,29 @@ class Emos
             $ort.=$sCip;
         }
 
-        $this->_billing = array($sBillingId, $sCustomerNumber, $ort, $iTotal);
+        $this->_billing = [$sBillingId, $sCustomerNumber, $ort, $iTotal];
     }
 
     /**
      * constructs a emosECPageArray of given $sEvent type
      *
-     * @param EMOS_Item $oItem      an instance of class EMOS_Item
+     * @param \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem $oItem      an instance of class EMOS_Item
      * @param string    $sEvent     Type of this event ("view","c_rmv","c_add")
      */
     protected function _setEmosECPageArray($oItem, $sEvent)
     {
         $oItem = $this->_emos_ItemFormat($oItem);
 
-        $this->_ecEvent = array(array($sEvent, $oItem->productId, $oItem->productName,
+        $this->_ecEvent = [[$sEvent, $oItem->productId, $oItem->productName,
                  $oItem->price, $oItem->productGroup,
                  $oItem->quantity, $oItem->variant1,
-                 $oItem->variant2, $oItem->variant3));
+                 $oItem->variant2, $oItem->variant3]];
     }
 
     /**
      * formats data/values/params by eliminating named entities and xml-entities
      *
-     * @param EMOS_Item $oItem item to format its parameters
+     * @param \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem $oItem item to format its parameters
      *
      * @return null
      */
@@ -583,11 +583,11 @@ class Emos
         $this->_sPostscript .= $this->_addJsFormat("pageId", $this->_pageid);
         $this->_sPostscript .= $this->_addJsFormat("scontact", $this->_scontact);
         $this->_sPostscript .= $this->_addJsFormat("download", $this->_download);
-        $this->_sPostscript .= $this->_addJsFormat("billing", array($this->_billing));
+        $this->_sPostscript .= $this->_addJsFormat("billing", [$this->_billing]);
 
-        $this->_sPostscript .= $this->_addJsFormat("search", array(array($this->_searchQuery, $this->_searchNumberOfHits)));
-        $this->_sPostscript .= $this->_addJsFormat("register", array(array($this->_registerUser, $this->_registerResult)));
-        $this->_sPostscript .= $this->_addJsFormat("login", array(array($this->_loginUser, $this->_loginResult)));
+        $this->_sPostscript .= $this->_addJsFormat("search", [[$this->_searchQuery, $this->_searchNumberOfHits]]);
+        $this->_sPostscript .= $this->_addJsFormat("register", [[$this->_registerUser, $this->_registerResult]]);
+        $this->_sPostscript .= $this->_addJsFormat("login", [[$this->_loginUser, $this->_loginResult]]);
 
         $this->_sPostscript .= $this->_addJsFormat("ec_Event", $this->_ecEvent);
 

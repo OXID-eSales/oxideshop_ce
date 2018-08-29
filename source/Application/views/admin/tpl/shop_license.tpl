@@ -26,7 +26,7 @@
         </td>
         <td class="edittext">
             <b>[{oxmultilang ident="GENERAL_OXIDESHOP"}]
-               [{$oView->getShopEdition()}] [{$oView->getShopVersion()}]_[{$oView->getRevision()}]
+               [{$oView->getShopEdition()}] [{$oView->getShopVersion()}]
                [{if $oView->isDemoVersion()}]
                    [{oxmultilang ident="SHOP_LICENSE_DEMO"}]
                [{/if}]

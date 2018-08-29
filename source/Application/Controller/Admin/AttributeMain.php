@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use stdClass;
@@ -31,9 +15,8 @@ use stdClass;
  * this attribute, etc.
  * Admin Menu: Manage Products -> Attributes -> Main.
  */
-class AttributeMain extends \oxAdminDetails
+class AttributeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Loads article Attributes info, passes it to Smarty engine and
      * returns name of template file "attribute_main.tpl".
@@ -46,7 +29,7 @@ class AttributeMain extends \oxAdminDetails
 
         $myConfig = $this->getConfig();
 
-        $oAttr = oxNew("oxattribute");
+        $oAttr = oxNew(\OxidEsales\Eshop\Application\Model\Attribute::class);
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
 
         // copy this tree for our article choose
@@ -68,7 +51,7 @@ class AttributeMain extends \oxAdminDetails
             }
 
             // remove already created languages
-            $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
+            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
             if (count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
@@ -84,7 +67,7 @@ class AttributeMain extends \oxAdminDetails
         $this->_aViewData["edit"] = $oAttr;
 
         if ($myConfig->getRequestParameter("aoc")) {
-            $oAttributeMainAjax = oxNew('attribute_main_ajax');
+            $oAttributeMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\AttributeMainAjax::class);
             $this->_aViewData['oxajax'] = $oAttributeMainAjax->getColumns();
 
             return "popups/attribute_main.tpl";
@@ -103,9 +86,9 @@ class AttributeMain extends \oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
 
-        $oAttr = oxNew("oxattribute");
+        $oAttr = oxNew(\OxidEsales\Eshop\Application\Model\Attribute::class);
 
         if ($soxId != "-1") {
             $oAttr->loadInLang($this->_iEditLang, $soxId);
@@ -122,7 +105,7 @@ class AttributeMain extends \oxAdminDetails
         $oAttr->setLanguage(0);
         $oAttr->assign($aParams);
         $oAttr->setLanguage($this->_iEditLang);
-        $oAttr = oxRegistry::get("oxUtilsFile")->processFiles($oAttr);
+        $oAttr = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oAttr);
         $oAttr->save();
 
         $this->setEditObjectId($oAttr->getId());
@@ -138,9 +121,9 @@ class AttributeMain extends \oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
 
-        $oAttr = oxNew("oxattribute");
+        $oAttr = oxNew(\OxidEsales\Eshop\Application\Model\Attribute::class);
 
         if ($soxId != "-1") {
             $oAttr->loadInLang($this->_iEditLang, $soxId);
@@ -157,7 +140,7 @@ class AttributeMain extends \oxAdminDetails
         $oAttr->assign($aParams);
 
         // apply new language
-        $oAttr->setLanguage(oxRegistry::getConfig()->getRequestParameter("new_lang"));
+        $oAttr->setLanguage(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("new_lang"));
         $oAttr->save();
 
         // set oxid if inserted

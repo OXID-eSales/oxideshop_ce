@@ -1,0 +1,5 @@
+services:
+  OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface:
+    class: OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapter
+    autowire: true
+    public: false

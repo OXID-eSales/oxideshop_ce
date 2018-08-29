@@ -1,27 +1,11 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use \oxselectlist;
+use OxidEsales\EshopCommunity\Application\Model\SelectList;
 
 use \Exception;
 use \stdClass;
@@ -48,7 +32,7 @@ class SelectListMainTest extends \OxidTestCase
         $this->assertEquals('selectlist_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
-        $this->assertTrue($aViewData['edit'] instanceof oxselectlist);
+        $this->assertTrue($aViewData['edit'] instanceof selectlist);
     }
 
     /**
@@ -128,7 +112,7 @@ class SelectListMainTest extends \OxidTestCase
         $this->setRequestParameter("aFields", array("testField1", "testField2"));
 
         // testing..
-        $oView = $this->getMock("SelectList_Main", array("parseFieldName", "save"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\SelectListMain::class, array("parseFieldName", "save"));
         $oView->expects($this->at(0))->method('parseFieldName')->will($this->returnValue("testField2"));
         $oView->expects($this->at(1))->method('parseFieldName')->will($this->returnValue("testField1"));
         $oView->expects($this->at(2))->method('save');
@@ -166,7 +150,7 @@ class SelectListMainTest extends \OxidTestCase
         oxTestModules::addFunction('oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass();$oField1->name = "testField1";$oField2 = new stdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');
 
         // testing..
-        $oView = $this->getMock("SelectList_Main", array("_rearrangeFields", "save"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\SelectListMain::class, array("_rearrangeFields", "save"));
         $oView->expects($this->once())->method('_rearrangeFields')->will($this->returnValue(true));
         $oView->expects($this->never())->method('save');
         $this->assertNull($oView->addField());
@@ -187,7 +171,7 @@ class SelectListMainTest extends \OxidTestCase
         oxTestModules::addFunction('oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass();$oField1->name = "testField1";$oField2 = new stdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');
 
         // testing..
-        $oView = $this->getMock("SelectList_Main", array("_rearrangeFields", "save"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\SelectListMain::class, array("_rearrangeFields", "save"));
         $oView->expects($this->once())->method('_rearrangeFields')->will($this->returnValue(false));
         $oView->expects($this->once())->method('save');
         $this->assertNull($oView->addField());
@@ -223,7 +207,7 @@ class SelectListMainTest extends \OxidTestCase
         oxTestModules::addFunction('oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass();$oField1->name = "testField1";$oField2 = new stdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');
 
         // testing..
-        $oView = $this->getMock("SelectList_Main", array("parseFieldName", "_rearrangeFields", "save"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\SelectListMain::class, array("parseFieldName", "_rearrangeFields", "save"));
         $oView->expects($this->once())->method('parseFieldName')->will($this->returnValue("testField1"));
         $oView->expects($this->once())->method('_rearrangeFields')->will($this->returnValue(true));
         $oView->expects($this->never())->method('save');
@@ -245,7 +229,7 @@ class SelectListMainTest extends \OxidTestCase
         oxTestModules::addFunction('oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass();$oField1->name = "testField1";$oField2 = new stdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');
 
         // testing..
-        $oView = $this->getMock("SelectList_Main", array("parseFieldName", "_rearrangeFields", "save"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\SelectListMain::class, array("parseFieldName", "_rearrangeFields", "save"));
         $oView->expects($this->once())->method('parseFieldName')->will($this->returnValue("testField1"));
         $oView->expects($this->once())->method('_rearrangeFields')->will($this->returnValue(false));
         $oView->expects($this->once())->method('save');

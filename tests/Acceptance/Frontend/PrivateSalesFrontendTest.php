@@ -1,28 +1,12 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Tests\Acceptance\Frontend;
+namespace OxidEsales\EshopCommunity\Tests\Acceptance\Frontend;
 
-use OxidEsales\Eshop\Tests\Acceptance\FrontendTestCase;
+use OxidEsales\EshopCommunity\Tests\Acceptance\FrontendTestCase;
 
 /** Private sales related tests. */
 class PrivateSalesFrontendTest extends FrontendTestCase
@@ -38,7 +22,7 @@ class PrivateSalesFrontendTest extends FrontendTestCase
         $this->openShop();
         $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
         $this->clickAndWait("//ul[@id='productList']/li//button");
-        $this->assertEquals("1", $this->getText("//div[@id='miniBasket']/span"));
+        $this->waitForElementText("1", "//div[@id='miniBasket']/span");
         $this->clickAndWait("link=Kiteboarding");
         $this->clickAndWait("link=Kites");
         $this->assertEquals("%YOU_ARE_HERE%: / Kiteboarding / Kites", $this->getText("breadCrumb"));
@@ -63,14 +47,14 @@ class PrivateSalesFrontendTest extends FrontendTestCase
         $this->assertEquals("%YOU_ARE_HERE%: / %PAGE_TITLE_BASKET%", $this->getText("breadCrumb"));
         $this->assertElementPresent("//tr[@id='cartItem_1']//a/b[text()='Test product 0 [EN] šÄßüл']");
         $this->clickAndWait("link=%HOME%");
-        $this->assertEquals("1", $this->getText("//div[@id='miniBasket']/span"));
+        $this->waitForElementText("1", "//div[@id='miniBasket']/span");
         $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
         $this->assertEquals("%YOU_ARE_HERE%: / Test category 0 [EN] šÄßüл", $this->getText("breadCrumb"));
         $this->assertElementNotPresent("scRootCatChanged");
         $this->clickAndWait("moreSubCat_1");
         $this->assertElementNotPresent("scRootCatChanged");
         $this->clickAndWait("//form[@name='tobasketproductList_1']//button");
-        $this->assertEquals("2", $this->getText("//div[@id='miniBasket']/span"));
+        $this->waitForElementText("2", "//div[@id='miniBasket']/span");
 
         $this->clickAndWait("link=Kiteboarding");
         $this->assertElementPresent("scRootCatChanged");
@@ -78,7 +62,7 @@ class PrivateSalesFrontendTest extends FrontendTestCase
         $this->clickAndWait("//button[text()='%CONTINUE_SHOPPING%']");
         $this->clickAndWait("link=Kites");
         $this->clickAndWait("//ul[@id='productList']/li[1]//button");
-        $this->assertEquals("1", $this->getText("//div[@id='miniBasket']/span"));
+        $this->waitForElementText("1", "//div[@id='miniBasket']/span");
 
         $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
         $this->assertElementPresent("scRootCatChanged");
@@ -109,7 +93,7 @@ class PrivateSalesFrontendTest extends FrontendTestCase
         $this->assertElementPresent("scRootCatChanged");
         $this->clickAndWait("tobasket");
         $this->assertEquals("%YOU_ARE_HERE%: / %PAGE_TITLE_BASKET%", $this->getText("breadCrumb"));
-        $this->assertEquals("1", $this->getText("//div[@id='miniBasket']/span"));
+        $this->waitForElementText("1", "//div[@id='miniBasket']/span");
 
         $this->click("checkAll");
         $this->clickAndWait("basketRemove");
@@ -151,10 +135,10 @@ class PrivateSalesFrontendTest extends FrontendTestCase
 
         //adding product to basket
         $this->clickAndWait("//ul[@id='searchList']/li//button");
-        $this->assertEquals("1", $this->getText("//div[@id='miniBasket']/span"));
+        $this->waitForElementText("1", "//div[@id='miniBasket']/span");
         $this->assertTextPresent("%EXPIRES_IN%:");
         $this->clickAndWait("//ul[@id='searchList']/li//button");
-        $this->assertEquals("2", $this->getText("//div[@id='miniBasket']/span"));
+        $this->waitForElementText("2", "//div[@id='miniBasket']/span");
         $this->assertTextPresent("%EXPIRES_IN%:");
 
         //checking if product is reserved

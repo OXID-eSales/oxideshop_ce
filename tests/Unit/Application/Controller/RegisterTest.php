@@ -1,25 +1,9 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \oxTestModules;
 
@@ -35,7 +19,7 @@ class RegisterTest extends \OxidTestCase
     {
         $this->getConfig()->setConfigParam("blPsLoginEnabled", true);
 
-        $oView = $this->getMock("register", array("isConfirmed"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\RegisterController::class, array("isConfirmed"));
         $oView->expects($this->once())->method('isConfirmed')->will($this->returnValue(true));
         $this->assertEquals('page/account/register_confirm.tpl', $oView->render());
     }
@@ -50,7 +34,7 @@ class RegisterTest extends \OxidTestCase
         oxTestModules::addFunction("oxuser", "loadUserByUpdateId", "{return false;}");
         oxTestModules::addFunction("oxUtilsView", "addErrorToDisplay", "{}");
 
-        $oView = $this->getMock("register", array("getUpdateId"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\RegisterController::class, array("getUpdateId"));
         $oView->expects($this->once())->method('getUpdateId')->will($this->returnValue("testUpdateId"));
         $this->assertEquals('account', $oView->confirmRegistration());
     }
@@ -66,7 +50,7 @@ class RegisterTest extends \OxidTestCase
         oxTestModules::addFunction("oxuser", "setUpdateKey", "{return true;}");
         oxTestModules::addFunction("oxuser", "save", "{return true;}");
 
-        $oView = $this->getMock("register", array("getUpdateId"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\RegisterController::class, array("getUpdateId"));
         $oView->expects($this->once())->method('getUpdateId')->will($this->returnValue("testUpdateId"));
         $this->assertEquals('register?confirmstate=1', $oView->confirmRegistration());
     }
@@ -123,7 +107,7 @@ class RegisterTest extends \OxidTestCase
      */
     public function testIsFieldRequired()
     {
-        $oRegister = $this->getMock('register', array('getMustFillFields'));
+        $oRegister = $this->getMock(\OxidEsales\Eshop\Application\Controller\RegisterController::class, array('getMustFillFields'));
         $oRegister->expects($this->any())->method('getMustFillFields')->will($this->returnValue(array("testValue1" => 1, "testValue2" => 1)));
 
         $this->assertTrue($oRegister->isFieldRequired("testValue1"));
@@ -138,7 +122,7 @@ class RegisterTest extends \OxidTestCase
 
     public function testRenderRStat()
     {
-        $oRegister = $this->getMock('register', array('getRegistrationStatus', 'getRegistrationError'));
+        $oRegister = $this->getMock(\OxidEsales\Eshop\Application\Controller\RegisterController::class, array('getRegistrationStatus', 'getRegistrationError'));
         $oRegister->expects($this->exactly(2))->method('getRegistrationStatus')->will($this->returnValue('rst'));
         $oRegister->expects($this->once())->method('getRegistrationError')->will($this->returnValue('rer'));
 

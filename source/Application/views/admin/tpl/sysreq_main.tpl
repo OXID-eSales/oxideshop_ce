@@ -12,16 +12,7 @@
         [{foreach from=$aModules item=iModuleState key=sModule}]
             <ul>
                 [{assign var="class" value=$oView->getModuleClass($iModuleState)}]
-                [{if $sModule == "memory_limit"}]
-                    <li id="[{$sModule}]" class="[{$class}]"><a href=[{$oView->getReqInfoUrl($sModule)}] target="_blank">[{oxmultilang ident="SYSREQ_MEMORY_LIMIT"}]</a></li>
-                    [{assign var="memoryLimitName" value="SYSREQ_MEMORY_LIMIT"}]
-                    [{if $oViewConf->getEdition() == 'EE'}]
-                        [{assign var="memoryLimitName" value="SYSREQ_MEMORY_LIMIT_EE"}]
-                    [{/if}]
-                    <li id="[{$sModule}]" class="[{$class}]"><a href=[{$oView->getReqInfoUrl($sModule)}] target="_blank">[{oxmultilang ident=$memoryLimitName}]</a></li>
-                [{else}]
-                    <li id="[{$sModule}]" class="[{$class}]"><a href=[{$oView->getReqInfoUrl($sModule)}] target="_blank">[{oxmultilang ident="SYSREQ_"|cat:$sModule|oxupper}]</a></li>
-                [{/if}]
+                <li id="[{$sModule}]" class="[{$class}]"><a href=[{$oView->getReqInfoUrl($sModule)}] target="_blank">[{oxmultilang ident="SYSREQ_"|cat:$sModule|oxupper}]</a></li>
             </ul>
         [{/foreach}]
     </li>

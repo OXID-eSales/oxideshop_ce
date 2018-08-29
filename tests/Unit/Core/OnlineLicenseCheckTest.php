@@ -1,93 +1,76 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \stdClass;
-use \oxOnlineLicenseCheck;
-use \oxException;
-use \oxRegistry;
 
-class OnlineLicenseCheckTest extends \OxidTestCase
+class OnlineLicenseCheckTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
     public function testRequestFormation()
     {
-        $iAdminUsers = 25;
-        $iActiveAdminUsers = 10;
-        $iSubShops = 5;
-        $aServers = array('7da43ed884a1ad1d6035d4c1d630fc4e' => array(
+        $adminUsers = 25;
+        $activeAdminUsers = 10;
+        $subShops = 5;
+        $servers = array('7da43ed884a1ad1d6035d4c1d630fc4e' => array(
             'id' => '7da43ed884a1ad1d6035d4c1d630fc4e',
             'timestamp' => '1409911182',
             'ip' => null,
             'lastFrontendUsage' => '1409911182',
             'lastAdminUsage' => null,
         ));
-        $aCounters = array(
+        $counters = array(
             array(
                 'name' => 'admin users',
-                'value' => $iAdminUsers,
+                'value' => $adminUsers,
             ),
             array(
                 'name' => 'active admin users',
-                'value' => $iActiveAdminUsers,
+                'value' => $activeAdminUsers,
             ),
             array(
                 'name' => 'subShops',
-                'value' => $iSubShops,
+                'value' => $subShops,
             )
         );
 
-        $oConfig = $this->getMock('oxConfig', array('getMandateCount'));
-        $oConfig->expects($this->any())->method('getMandateCount')->will($this->returnValue($iSubShops));
+        $config = $this->getConfigMock($subShops);
 
-        /** @var oxConfig $oConfig */
-        oxRegistry::set('oxConfig', $oConfig);
+        /** @var \OxidEsales\Eshop\Core\Config $config */
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
 
-        $oRequest = oxNew('oxOnlineLicenseCheckRequest');
-        $oRequest->revision = $this->getConfig()->getRevision();
-        $oRequest->pVersion = '1.1';
-        $oRequest->productId = 'eShop';
-        $oRequest->keys = array('key' => array('validSerial'));
-        $oRequest->productSpecificInformation = new stdClass();
-        $oRequest->productSpecificInformation->servers = array('server' => $aServers);
-        $oRequest->productSpecificInformation->counters = array('counter' => $aCounters);
+        $request = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest::class);
+        $request->pVersion = '1.1';
+        $request->productId = 'eShop';
+        $request->keys = array('key' => array('validSerial'));
+        $request->productSpecificInformation = new stdClass();
+        $request->productSpecificInformation->servers = array('server' => $servers);
+        $request->productSpecificInformation->counters = array('counter' => $counters);
 
-        $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
-        $oCaller->expects($this->once())->method('doRequest')->with($oRequest);
-        /** @var oxOnlineLicenseCheckCaller $oCaller */
+        $caller = $this->getMockBuilder('\OxidEsales\Eshop\Core\OnlineLicenseCheckCaller')
+            ->disableOriginalConstructor()
+            ->setMethods(['doRequest'])
+            ->getMock();
+        $caller->expects($this->once())->method('doRequest')->with($request);
 
-        $oUserCounter = $this->getMock('oxUserCounter', array('getAdminCount', 'getActiveAdminCount'), array(), '', false);
-        $oUserCounter->expects($this->once())->method('getAdminCount')->will($this->returnValue($iAdminUsers));
-        $oUserCounter->expects($this->once())->method('getActiveAdminCount')->will($this->returnValue($iActiveAdminUsers));
-        /** @var oxUserCounter $oUserCounter */
+        /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheckCaller $caller */
 
-        $oServersManager = $this->getMock('oxServersManager', array('getServers'), array(), '', false);
-        $oServersManager->expects($this->once())->method('getServers')->will($this->returnValue($aServers));
-        /** @var oxServersManager $oServersManager */
+        $userCounter = $this->getMockBuilder('\OxidEsales\Eshop\Core\UserCounter')
+            ->setMethods(['getAdminCount', 'getActiveAdminCount'])
+            ->getMock();
+        $userCounter->expects($this->once())->method('getAdminCount')->will($this->returnValue($adminUsers));
+        $userCounter->expects($this->once())->method('getActiveAdminCount')->will($this->returnValue($activeAdminUsers));
+        /** @var \OxidEsales\Eshop\Core\UserCounter $userCounter */
 
-        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
-        $oLicenseCheck->setServersManager($oServersManager);
-        $oLicenseCheck->setUserCounter($oUserCounter);
+        $appServerExporter = $this->getApplicationServerExporterMock($servers);
 
-        $oLicenseCheck->validate('validSerial');
+        $licenseCheck = new \OxidEsales\Eshop\Core\OnlineLicenseCheck($caller);
+        $licenseCheck->setAppServerExporter($appServerExporter);
+        $licenseCheck->setUserCounter($userCounter);
+
+        $licenseCheck->validate('validSerial');
     }
 
     /**
@@ -95,28 +78,27 @@ class OnlineLicenseCheckTest extends \OxidTestCase
      */
     public function testValidationPassed()
     {
-        $oResponse = oxNew('oxOnlineLicenseCheckResponse');
-        $oResponse->code = 0;
-        $oResponse->message = 'ACK';
+        $response = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckResponse::class);
+        $response->code = 0;
+        $response->message = 'ACK';
 
-        $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
-        $oCaller->expects($this->any())->method('doRequest')->will($this->returnValue($oResponse));
+        $caller = $this->getOnlineLicenseCheckCallerMock($response);
 
-        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
+        $licenseCheck = new \OxidEsales\Eshop\Core\OnlineLicenseCheck($caller);
 
-        $this->assertEquals(true, $oLicenseCheck->validate('validSerial'));
+        $this->assertEquals(true, $licenseCheck->validate('validSerial'));
 
-        return $oLicenseCheck;
+        return $licenseCheck;
     }
 
     /**
      * @depends testValidationPassed
      *
-     * @param oxOnlineLicenseCheck $oLicenseCheck
+     * @param \OxidEsales\Eshop\Core\OnlineLicenseCheck $licenseCheck
      */
-    public function testErrorMessageEmptyOnSuccess($oLicenseCheck)
+    public function testErrorMessageEmptyOnSuccess($licenseCheck)
     {
-        $this->assertEquals('', $oLicenseCheck->getErrorMessage());
+        $this->assertEquals('', $licenseCheck->getErrorMessage());
     }
 
     /**
@@ -124,164 +106,219 @@ class OnlineLicenseCheckTest extends \OxidTestCase
      */
     public function testValidationFailed()
     {
-        $oResponse = oxNew('oxOnlineLicenseCheckResponse');
-        $oResponse->code = 1;
-        $oResponse->message = 'NACK';
+        $response = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckResponse::class);
+        $response->code = 1;
+        $response->message = 'NACK';
 
-        $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
-        $oCaller->expects($this->any())->method('doRequest')->will($this->returnValue($oResponse));
-        /** @var oxOnlineLicenseCheckCaller $oCaller */
+        $caller = $this->getOnlineLicenseCheckCallerMock($response);
+        /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheckCaller $caller */
 
-        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
+        $licenseCheck = new \OxidEsales\Eshop\Core\OnlineLicenseCheck($caller);
 
-        $this->assertEquals(false, $oLicenseCheck->validate('invalidSerial'));
+        $this->assertEquals(false, $licenseCheck->validate('invalidSerial'));
 
-        return $oLicenseCheck;
+        return $licenseCheck;
     }
 
     /**
      * @depends testValidationFailed
      *
-     * @param oxOnlineLicenseCheck $oLicenseCheck
+     * @param \OxidEsales\Eshop\Core\OnlineLicenseCheck $licenseCheck
      */
-    public function testErrorMessageSetOnFailure($oLicenseCheck)
+    public function testErrorMessageSetOnFailure($licenseCheck)
     {
-        $this->assertEquals(oxRegistry::getLang()->translateString('OLC_ERROR_SERIAL_NOT_VALID'), $oLicenseCheck->getErrorMessage());
+        $this->assertEquals(
+            \OxidEsales\Eshop\Core\Registry::getLang()->translateString('OLC_ERROR_SERIAL_NOT_VALID'),
+            $licenseCheck->getErrorMessage()
+        );
     }
 
     public function testSerialsAreTakenFromConfigInShopSerialsValidation()
     {
-        $iAdminUsers = 25;
-        $iActiveAdminUsers = 10;
-        $iSubShops = 5;
-        $aServers = array('7da43ed884a1ad1d6035d4c1d630fc4e' => array(
+        $adminUsers = 25;
+        $activeAdminUsers = 10;
+        $subShops = 5;
+        $servers = array('7da43ed884a1ad1d6035d4c1d630fc4e' => array(
             'id' => '7da43ed884a1ad1d6035d4c1d630fc4e',
             'timestamp' => '1409911182',
             'ip' => null,
             'lastFrontendUsage' => '1409911182',
             'lastAdminUsage' => null,
         ));
-        $aCounters = array(
+        $counters = array(
             array(
                 'name' => 'admin users',
-                'value' => $iAdminUsers,
+                'value' => $adminUsers,
             ),
             array(
                 'name' => 'active admin users',
-                'value' => $iActiveAdminUsers,
+                'value' => $activeAdminUsers,
             ),
             array(
                 'name' => 'subShops',
-                'value' => $iSubShops,
+                'value' => $subShops,
             )
         );
 
-        $oConfig = $this->getMock('oxConfig', array('getMandateCount'));
-        $oConfig->expects($this->any())->method('getMandateCount')->will($this->returnValue($iSubShops));
-        /** @var oxConfig $oConfig */
-        oxRegistry::set('oxConfig', $oConfig);
+        $config = $this->getConfigMock($subShops);
 
-        $oRequest = oxNew('oxOnlineLicenseCheckRequest');
-        $oRequest->edition = $this->getConfig()->getEdition();
-        $oRequest->version = $this->getConfig()->getVersion();
-        $oRequest->revision = $this->getConfig()->getRevision();
-        $oRequest->shopUrl = $this->getConfig()->getShopUrl();
-        $oRequest->pVersion = '1.1';
-        $oRequest->productId = 'eShop';
-        $oRequest->keys = array('key' => array('key1', 'key2'));
+        /** @var \OxidEsales\Eshop\Core\Config $config */
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
 
-        $oRequest->productSpecificInformation = new stdClass();
-        $oRequest->productSpecificInformation->servers = array('server' => $aServers);
-        $oRequest->productSpecificInformation->counters = array('counter' => $aCounters);
+        $request = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest::class);
+        $request->edition = $this->getConfig()->getEdition();
+        $request->version = $this->getConfig()->getVersion();
+        $request->shopUrl = $this->getConfig()->getShopUrl();
+        $request->pVersion = '1.1';
+        $request->productId = 'eShop';
+        $request->keys = array('key' => array('key1', 'key2'));
+
+        $request->productSpecificInformation = new stdClass();
+        $request->productSpecificInformation->servers = array('server' => $servers);
+        $request->productSpecificInformation->counters = array('counter' => $counters);
 
         $this->getConfig()->setConfigParam("aSerials", array('key1', 'key2'));
 
-        $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
-        $oCaller->expects($this->once())->method('doRequest')->with($oRequest);
-        /** @var oxOnlineLicenseCheckCaller $oUserCounter */
+        $caller = $this->getMockBuilder('\OxidEsales\Eshop\Core\OnlineLicenseCheckCaller')
+            ->disableOriginalConstructor()
+            ->setMethods(['doRequest'])
+            ->getMock();
+        $caller->expects($this->once())->method('doRequest')->with($request);
+        /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheckCaller $caller */
 
-        $oUserCounter = $this->getMock('oxUserCounter', array('getAdminCount', 'getActiveAdminCount'), array(), '', false);
-        $oUserCounter->expects($this->once())->method('getAdminCount')->will($this->returnValue($iAdminUsers));
-        $oUserCounter->expects($this->once())->method('getActiveAdminCount')->will($this->returnValue($iActiveAdminUsers));
-        /** @var oxUserCounter $oUserCounter */
+        $userCounter = $this->getMockBuilder('\OxidEsales\Eshop\Core\UserCounter')
+            ->setMethods(['getAdminCount', 'getActiveAdminCount'])
+            ->getMock();
+        $userCounter->expects($this->once())->method('getAdminCount')->will($this->returnValue($adminUsers));
+        $userCounter->expects($this->once())->method('getActiveAdminCount')->will($this->returnValue($activeAdminUsers));
+        /** @var \OxidEsales\Eshop\Core\UserCounter $userCounter */
 
-        $oServersManager = $this->getMock('oxServersManager', array('getServers'), array(), '', false);
-        $oServersManager->expects($this->once())->method('getServers')->will($this->returnValue($aServers));
-        /** @var oxServersManager $oServersManager */
+        $appServerExporter = $this->getApplicationServerExporterMock($servers);
 
-
-        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
-        $oLicenseCheck->setServersManager($oServersManager);
-        $oLicenseCheck->setUserCounter($oUserCounter);
-        $oLicenseCheck->validateShopSerials();
+        $licenseCheck = new \OxidEsales\Eshop\Core\OnlineLicenseCheck($caller);
+        $licenseCheck->setAppServerExporter($appServerExporter);
+        $licenseCheck->setUserCounter($userCounter);
+        $licenseCheck->validateShopSerials();
     }
 
     public function testNewSerialIsAddedToExistingSerials()
     {
-        $iSubShops = 5;
-        $aCounters = array(array(
+        $subShops = 5;
+        $counters = array(array(
             'name' => 'subShops',
-            'value' => $iSubShops,
+            'value' => $subShops,
         ));
 
-        $oConfig = $this->getMock('oxConfig', array('getMandateCount'));
-        $oConfig->expects($this->any())->method('getMandateCount')->will($this->returnValue($iSubShops));
-        /** @var oxConfig $oConfig */
-        $oConfig->setConfigParam('aServersData', array());
-        $this->setConfigParam('aServersData', array());
-        oxRegistry::set('oxConfig', $oConfig);
+        \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute("DELETE FROM oxconfig WHERE oxvarname like 'aServersData_%'");
 
-        $oRequest = oxNew('oxOnlineLicenseCheckRequest');
-        $oRequest->edition = $this->getConfig()->getEdition();
-        $oRequest->version = $this->getConfig()->getVersion();
-        $oRequest->revision = $this->getConfig()->getRevision();
-        $oRequest->shopUrl = $this->getConfig()->getShopUrl();
-        $oRequest->pVersion = '1.1';
-        $oRequest->productId = 'eShop';
-        $aKeys = array('key1', 'key2', array('attributes' => array('state' => 'new'), 'value' => 'new_serial'));
-        $oRequest->keys = array('key' => $aKeys);
+        $config = $this->getConfigMock($subShops);
 
-        $oRequest->productSpecificInformation = new stdClass();
-        $oRequest->productSpecificInformation->counters = array('counter' => $aCounters);
+        /** @var \OxidEsales\Eshop\Core\Config $config */
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
+
+        $request = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest::class);
+        $request->edition = $this->getConfig()->getEdition();
+        $request->version = $this->getConfig()->getVersion();
+        $request->shopUrl = $this->getConfig()->getShopUrl();
+        $request->pVersion = '1.1';
+        $request->productId = 'eShop';
+        $keys = array('key1', 'key2', array('attributes' => array('state' => 'new'), 'value' => 'new_serial'));
+        $request->keys = array('key' => $keys);
+
+        $request->productSpecificInformation = new stdClass();
+        $request->productSpecificInformation->counters = array('counter' => $counters);
 
         $this->getConfig()->setConfigParam("aSerials", array('key1', 'key2'));
 
-        $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
-        $oCaller->expects($this->once())->method('doRequest')->with($oRequest);
-        /** @var oxOnlineLicenseCheckCaller $oUserCounter */
+        $caller = $this->getMockBuilder('\OxidEsales\Eshop\Core\OnlineLicenseCheckCaller')
+            ->disableOriginalConstructor()
+            ->setMethods(['doRequest'])
+            ->getMock();
+        $caller->expects($this->once())->method('doRequest')->with($request);
+        /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheckCaller $caller */
 
-        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
-        $oLicenseCheck->validateNewSerial('new_serial');
+        $licenseCheck = new \OxidEsales\Eshop\Core\OnlineLicenseCheck($caller);
+        $licenseCheck->validateNewSerial('new_serial');
     }
 
     public function testIsExceptionWhenExceptionWasThrown()
     {
-        $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
-        $oCaller->expects($this->any())->method('doRequest')->will($this->throwException(new oxException()));
-        /** @var oxOnlineLicenseCheckCaller $oUserCounter */
+        $exception = new \OxidEsales\Eshop\Core\Exception\StandardException();
+        $caller = $this->getMockBuilder('\OxidEsales\Eshop\Core\OnlineLicenseCheckCaller')
+            ->disableOriginalConstructor()
+            ->setMethods(['doRequest'])
+            ->getMock();
+        $caller->expects($this->any())->method('doRequest')->will($this->throwException($exception));
+        /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheckCaller $caller */
 
-        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
-        $oLicenseCheck->validate('validSerial');
+        $licenseCheck = new \OxidEsales\Eshop\Core\OnlineLicenseCheck($caller);
+        $licenseCheck->validate('validSerial');
 
-        $this->assertEquals(true, $oLicenseCheck->isException());
+        $this->assertEquals(true, $licenseCheck->isException());
     }
 
     public function testLog()
     {
-        $oResponse = oxNew('oxOnlineLicenseCheckResponse');
-        $oResponse->code = 0;
-        $oResponse->message = 'ACK';
+        $response = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckResponse::class);
+        $response->code = 0;
+        $response->message = 'ACK';
 
-        $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
-        $oCaller->expects($this->any())->method('doRequest')->will($this->returnValue($oResponse));
-        /** @var oxOnlineLicenseCheckCaller $oUserCounter */
+        $caller = $this->getOnlineLicenseCheckCallerMock($response);
+        /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheckCaller $caller */
 
-        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
+        $licenseCheck = new \OxidEsales\Eshop\Core\OnlineLicenseCheck($caller);
 
         $this->setTime(10);
 
-        $oLicenseCheck->validate('validSerial');
+        $licenseCheck->validate('validSerial');
 
         $this->assertEquals(10, $this->getConfig()->getConfigParam('iOlcSuccess'));
+    }
+
+    /**
+     * @param array $appServerList An array of application servers to return.
+     *
+     * @return \OxidEsales\Eshop\Core\Service\ApplicationServerExporter
+     */
+    private function getApplicationServerExporterMock($appServerList)
+    {
+        $appServer = $this->getMockBuilder('\OxidEsales\Eshop\Core\Service\ApplicationServerServiceInterface')->getMock();
+
+        $exporter = $this->getMockBuilder('\OxidEsales\Eshop\Core\Service\ApplicationServerExporter')
+            ->setConstructorArgs([$appServer])
+            ->getMock();
+        $exporter->expects($this->once())->method('exportAppServerList')->willReturn($appServerList);
+
+        return $exporter;
+    }
+
+    /**
+     * @param array $subShops
+     *
+     * @return \OxidEsales\Eshop\Core\Config
+     */
+    private function getConfigMock($subShops)
+    {
+        $config = $this->getMockBuilder('\OxidEsales\Eshop\Core\Config')
+            ->setMethods(['getMandateCount'])
+            ->getMock();
+        $config->expects($this->any())->method('getMandateCount')->will($this->returnValue($subShops));
+
+        return $config;
+    }
+
+    /**
+     * @param array $response
+     *
+     * @return \OxidEsales\Eshop\Core\OnlineLicenseCheckCaller
+     */
+    private function getOnlineLicenseCheckCallerMock($response)
+    {
+        $caller = $this->getMockBuilder('\OxidEsales\Eshop\Core\OnlineLicenseCheckCaller')
+            ->disableOriginalConstructor()
+            ->setMethods(['doRequest'])
+            ->getMock();
+        $caller->expects($this->any())->method('doRequest')->will($this->returnValue($response));
+        return $caller;
     }
 }

@@ -123,7 +123,7 @@
         </tr>
         <tr>
             <td valign="top" class="edittext" id="_article" [{if !$actionarticle_artnum}] style="visibility:hidden" [{/if}]>
-              <b>[{oxmultilang ident="PROMOTIONS_ARTICLE_ASSIGNEDARTICLE"}]</b>
+              <b>[{oxmultilang ident="PROMOTIONS_ARTICLE_ASSIGNEDARTICLE"}]:</b>
               <b id="actionarticle_artnum">[{$actionarticle_artnum}]</b> <b id="actionarticle_title">[{$actionarticle_title}]</b>
             </td>
         </tr>

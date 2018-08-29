@@ -1,48 +1,31 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 
 /**
  * Class manages article select lists sorting
  */
-class SelectListOrderAjax extends \ajaxListComponent
+class SelectListOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
-
     /**
      * Columns array
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array(
-        array('oxtitle', 'oxselectlist', 1, 1, 0),
-        array('oxsort', 'oxobject2selectlist', 1, 0, 0),
-        array('oxident', 'oxselectlist', 0, 0, 0),
-        array('oxvaldesc', 'oxselectlist', 0, 0, 0),
-        array('oxid', 'oxobject2selectlist', 0, 0, 1)
-    )
-    );
+    protected $_aColumns = ['container1' => [
+        ['oxtitle', 'oxselectlist', 1, 1, 0],
+        ['oxsort', 'oxobject2selectlist', 1, 0, 0],
+        ['oxident', 'oxselectlist', 0, 0, 0],
+        ['oxvaldesc', 'oxselectlist', 0, 0, 0],
+        ['oxid', 'oxobject2selectlist', 0, 0, 1]
+    ]
+    ];
 
     /**
      * Returns SQL query for data to fetc
@@ -52,7 +35,7 @@ class SelectListOrderAjax extends \ajaxListComponent
     protected function _getQuery()
     {
         $sSelTable = $this->_getViewName('oxselectlist');
-        $sArtId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $sArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
 
         return " from $sSelTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sSelTable.oxid " .
                  "where oxobjectid = '$sArtId' ";
@@ -73,16 +56,16 @@ class SelectListOrderAjax extends \ajaxListComponent
      */
     public function setSorting()
     {
-        $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $sSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
         $sSelect = "select * from oxobject2selectlist where oxobjectid='$sSelId' order by oxsort";
 
-        $oList = oxNew("oxlist");
+        $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oList->init("oxbase", "oxobject2selectlist");
         $oList->selectString($sSelect);
 
         // fixing indexes
         $iSelCnt = 0;
-        $aIdx2Id = array();
+        $aIdx2Id = [];
         foreach ($oList as $sKey => $oSel) {
             if ($oSel->oxobject2selectlist__oxsort->value != $iSelCnt) {
                 $oSel->oxobject2selectlist__oxsort->setValue($iSelCnt);
@@ -95,8 +78,8 @@ class SelectListOrderAjax extends \ajaxListComponent
         }
 
         //
-        if (($iKey = array_search(oxRegistry::getConfig()->getRequestParameter('sortoxid'), $aIdx2Id)) !== false) {
-            $iDir = (oxRegistry::getConfig()->getRequestParameter('direction') == 'up') ? ($iKey - 1) : ($iKey + 1);
+        if (($iKey = array_search(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sortoxid'), $aIdx2Id)) !== false) {
+            $iDir = (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('direction') == 'up') ? ($iKey - 1) : ($iKey + 1);
             if (isset($aIdx2Id[$iDir])) {
                 // exchanging indexes
                 $oDir1 = $oList->offsetGet($aIdx2Id[$iDir]);

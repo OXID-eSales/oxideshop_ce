@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link          http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version       OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core\Database\Adapter\Doctrine;
+namespace OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine;
 
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
@@ -30,10 +14,9 @@ use Doctrine\DBAL\Driver\Connection as DriverConnection;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
-use OxidEsales\Eshop;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
-use OxidEsales\Eshop\Core\Exception\DatabaseException;
+use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use PDO;
 
@@ -44,11 +27,13 @@ use PDO;
  */
 class Database implements DatabaseInterface
 {
+    /** @var int code of Mysql duplicated key error. */
+    const MYSQL_DUPLICATE_KEY_ERROR_CODE = 1062;
 
     /**
      * Holds the necessary parameters to connect to the database
      */
-    protected $connectionParameters = array();
+    protected $connectionParameters = [];
 
     /**
      * @var DriverConnection The database connection.
@@ -63,22 +48,22 @@ class Database implements DatabaseInterface
     /**
      * @var array Map strings used in the shop to Doctrine constants
      */
-    protected $transactionIsolationLevelMap = array(
+    protected $transactionIsolationLevelMap = [
         'READ UNCOMMITTED' => Connection::TRANSACTION_READ_UNCOMMITTED,
         'READ COMMITTED'   => Connection::TRANSACTION_READ_COMMITTED,
         'REPEATABLE READ'  => Connection::TRANSACTION_REPEATABLE_READ,
         'SERIALIZABLE'     => Connection::TRANSACTION_SERIALIZABLE
-    );
+    ];
 
     /**
      * @var array Map fetch modes used in the shop to doctrine constants
      */
-    protected $fetchModeMap = array(
+    protected $fetchModeMap = [
         DatabaseInterface::FETCH_MODE_DEFAULT => PDO::FETCH_BOTH,
         DatabaseInterface::FETCH_MODE_NUM     => PDO::FETCH_NUM,
         DatabaseInterface::FETCH_MODE_ASSOC   => PDO::FETCH_ASSOC,
         DatabaseInterface::FETCH_MODE_BOTH    => PDO::FETCH_BOTH
-    );
+    ];
 
     /**
      * The standard constructor.
@@ -192,14 +177,14 @@ class Database implements DatabaseInterface
      */
     protected function getPdoMysqlConnectionParameters(array $connectionParameters)
     {
-        $pdoMysqlConnectionParameters = array(
+        $pdoMysqlConnectionParameters = [
             'driver'   => 'pdo_mysql',
             'host'     => $connectionParameters['databaseHost'],
             'dbname'   => $connectionParameters['databaseName'],
             'user'     => $connectionParameters['databaseUser'],
             'password' => $connectionParameters['databasePassword'],
             'port'     => $connectionParameters['databasePort'],
-        );
+        ];
 
         $this->addDriverOptions($pdoMysqlConnectionParameters);
         $this->addConnectionCharset(
@@ -218,9 +203,9 @@ class Database implements DatabaseInterface
      */
     protected function addDriverOptions(array &$existingParameters)
     {
-        $existingParameters['driverOptions'] = array(
+        $existingParameters['driverOptions'] = [
             PDO::MYSQL_ATTR_INIT_COMMAND => $this->getMySqlInitCommand()
-        );
+        ];
     }
 
     /**
@@ -283,7 +268,15 @@ class Database implements DatabaseInterface
     {
         $this->fetchMode = $this->fetchModeMap[$fetchMode];
 
-        $this->getConnection()->setFetchMode($this->fetchMode);
+        try {
+            $this->getConnection()->setFetchMode($this->fetchMode);
+        } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        }
     }
 
     /**
@@ -298,14 +291,24 @@ class Database implements DatabaseInterface
      *
      * @return string|false      Returns a string for SELECT or SHOW statements and FALSE for any other statement.
      */
-    public function getOne($query, $parameters = array())
+    public function getOne($query, $parameters = [])
     {
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
         // END deprecated
 
         if ($this->doesStatementProduceOutput($query)) {
-            return $this->getConnection()->fetchColumn($query, $parameters);
+            try {
+                return $this->getConnection()->fetchColumn($query, $parameters);
+            } catch (DBALException $exception) {
+                $exception = $this->convertException($exception);
+                $this->handleException($exception);
+            } catch (PDOException $exception) {
+                $exception = $this->convertException($exception);
+                $this->handleException($exception);
+            }
+        } else {
+            \OxidEsales\Eshop\Core\Registry::getLogger()->warning('Given statement does not produce output and was not executed', [debug_backtrace()]);
         }
 
         return false;
@@ -326,19 +329,19 @@ class Database implements DatabaseInterface
      *
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
-     * $result = Database::getDb->getOne(
+     * $result = DatabaseProvider::getDb->getOne(
      *   'SELECT ´id´ FROM ´mytable´ WHERE ´id´ = ? LIMIT 0, 1',
      *   array($id1)
      * );
-     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query      The sql select statement we want to execute.
+     * @param string $query      The sql select statement to be executed.
      * @param array  $parameters Array of parameters, for the given sql statement.
      *
      * @return array The row, we selected with the given sql statement.
      */
-    public function getRow($query, $parameters = array())
+    public function getRow($query, $parameters = [])
     {
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
@@ -347,19 +350,19 @@ class Database implements DatabaseInterface
         try {
             $resultSet = $this->select($query, $parameters);
             $result = $resultSet->fields;
-        } catch (DatabaseException $exception) {
+        } catch (\OxidEsales\Eshop\Core\Exception\DatabaseErrorException $exception) {
             /** Only log exception, do not re-throw here, as legacy code expects this behavior */
             $this->logException($exception);
-            $result = array();
+            $result = [];
         } catch (PDOException $exception) {
             /** Only log exception, do not re-throw here, as legacy code expects this behavior */
             $exception = $this->convertException($exception);
             $this->logException($exception);
-            $result = array();
+            $result = [];
         }
 
         if (false == $result) {
-            $result = array();
+            $result = [];
         }
 
         return $result;
@@ -382,8 +385,17 @@ class Database implements DatabaseInterface
         }
 
         $string = trim(str_replace($identifierQuoteCharacter, '', $string));
+        try {
+            $result = $this->getConnection()->quoteIdentifier($string);
+        } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        }
 
-        return $this->getConnection()->quoteIdentifier($string);
+        return $result;
     }
 
     /**
@@ -394,13 +406,13 @@ class Database implements DatabaseInterface
      * but when the statement is executed and the value could not have been quoted, a DatabaseException is thrown.
      * You are strongly encouraged to always use prepared statements instead of quoting the values on your own.
      * E.g. use
-     * $resultSet = Database::getDb->select(
+     * $resultSet = DatabaseProvider::getDb->select(
      *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ?',
      *   array($id1, $id2)
      * );
      * instead of
-     * $resultSet = Database::getDb->select(
-     *  'SELECT * FROM ´mytable´ WHERE ´id´ = ' . Database::getDb->quote($id1) . ' OR ´id´ = ' . Database::getDb->quote($id1)
+     * $resultSet = DatabaseProvider::getDb->select(
+     *  'SELECT * FROM ´mytable´ WHERE ´id´ = ' . DatabaseProvider::getDb->quote($id1) . ' OR ´id´ = ' . DatabaseProvider::getDb->quote($id1)
      * );
      *
      * @param mixed $value The string or numeric value to be quoted.
@@ -409,7 +421,17 @@ class Database implements DatabaseInterface
      */
     public function quote($value)
     {
-        return $this->getConnection()->quote($value);
+        try {
+            $result = $this->getConnection()->quote($value);
+        } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        }
+
+        return $result;
     }
 
     /**
@@ -427,7 +449,7 @@ class Database implements DatabaseInterface
      */
     public function quoteArray($array)
     {
-        $result = array();
+        $result = [];
 
         foreach ($array as $key => $item) {
             $result[$key] = $this->quote($item);
@@ -446,6 +468,9 @@ class Database implements DatabaseInterface
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
         }
     }
 
@@ -459,6 +484,9 @@ class Database implements DatabaseInterface
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
         }
     }
 
@@ -470,6 +498,9 @@ class Database implements DatabaseInterface
         try {
             $this->getConnection()->rollBack();
         } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        } catch (PDOException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
         }
@@ -489,7 +520,7 @@ class Database implements DatabaseInterface
      *
      * @param string $level The transaction isolation level
      *
-     * @throws \InvalidArgumentException|DatabaseException     *
+     * @throws \InvalidArgumentException|DatabaseErrorException     *
      *
      * @return bool|integer
      */
@@ -509,32 +540,35 @@ class Database implements DatabaseInterface
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
         }
 
         return $result;
     }
 
     /**
-     * Execute read statements like SELECT or SHOW and return the results as a ResultSet.
      * Execute non read statements like INSERT, UPDATE, DELETE and return the number of rows affected by the statement.
+     * This method has to be used EXCLUSIVELY for non read statements.
      *
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
-     * $resultSet = Database::getDb->execute(
-     *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ?',
+     * $resultSet = DatabaseProvider::getDb->execute(
+     *   'DELETE * FROM `mytable` WHERE `id` = ? OR `id` = ?',
      *   array($id1, $id2)
      * );
-     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query      The sql statement we want to execute.
+     * @param string $query      The sql statement to execute.
      * @param array  $parameters The parameters array.
      *
-     * @throws DatabaseException
+     * @throws DatabaseErrorException
      *
      * @return integer Number of rows affected by the SQL statement
      */
-    public function execute($query, $parameters = array())
+    public function execute($query, $parameters = [])
     {
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
@@ -543,13 +577,6 @@ class Database implements DatabaseInterface
 
         return $this->executeUpdate($query, $parameters);
     }
-
-    /**
-     * @inheritdoc
-     *
-     * Affected rows will be set to 0 by this query.
-     *
-     */
 
     /**
      * Return the results of a given sql SELECT or SHOW statement as a ResultSet.
@@ -561,21 +588,21 @@ class Database implements DatabaseInterface
      *
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
-     * $resultSet = Database::getDb->select(
+     * $resultSet = DatabaseProvider::getDb->select(
      *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ?',
      *   array($id1, $id2)
      * );
-     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query      The sql select statement
+     * @param string $query      The sql select statement to be executed.
      * @param array  $parameters The parameters array for the given query.
      *
-     * @throws DatabaseException The exception, that can occur while executing the sql statement.
+     * @throws DatabaseErrorException The exception, that can occur while executing the sql statement.
      *
      * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface The result of the given query.
      */
-    public function select($query, $parameters = array())
+    public function select($query, $parameters = [])
     {
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
@@ -591,7 +618,7 @@ class Database implements DatabaseInterface
             /** @var \Doctrine\DBAL\Driver\Statement $statement Statement is prepared and executed by executeQuery() */
             $statement = $this->getConnection()->executeQuery($query, $parameters);
 
-            $result = new ResultSet($statement);
+            $result = new \OxidEsales\Eshop\Core\Database\Adapter\Doctrine\ResultSet($statement);
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
@@ -614,28 +641,29 @@ class Database implements DatabaseInterface
      *
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
-     * $resultSet = Database::getDb->selectLimit(
+     * $resultSet = DatabaseProvider::getDb->selectLimit(
      *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ?',
      *   $rowCount,
      *   $offset,
      *   array($id1, $id2)
      * );
-     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
      * Be aware that only a few database vendors have the LIMIT clause as known from MySQL.
      * The Doctrine Query Builder should be used here.
      *
-     * @param string $query      The sql select statement
+     * @param string $query      The sql select statement to be executed.
      * @param int    $rowCount   Maximum number of rows to return
      * @param int    $offset     Offset of the first row to return
      * @param array  $parameters The parameters array.
      *
-     * @throws DatabaseException The exception, that can occur while executing the sql statement.
+     * @throws DatabaseErrorException The exception, that can occur while executing the sql statement.
+     * @throws \InvalidArgumentException The exception for invalid $offset.
      *
      * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface The result of the given query.
      */
-    public function selectLimit($query, $rowCount = -1, $offset = -1, $parameters = array())
+    public function selectLimit($query, $rowCount = -1, $offset = 0, $parameters = [])
     {
         /**
          * Parameter validation.
@@ -648,6 +676,10 @@ class Database implements DatabaseInterface
                 'Please fix your code as this error may trigger an exception in future versions of OXID eShop.',
                 E_USER_DEPRECATED
             );
+        }
+
+        if (0 > $offset) {
+            throw new \InvalidArgumentException('Argument $offset must not be smaller than zero.');
         }
 
         /**
@@ -670,27 +702,27 @@ class Database implements DatabaseInterface
      *
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
-     * $result = Database::getDb->getRow(
+     * $result = DatabaseProvider::getDb->getRow(
      *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? LIMIT 0, 1',
      *   array($id1)
      * );
-     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query      The sql select statement
+     * @param string $query      The sql select statement to be executed.
      * @param array  $parameters The parameters array.
      *
-     * @throws DatabaseException
+     * @throws DatabaseErrorException
      *
      * @return array The values of the first column of a corresponding sql query.
      */
-    public function getCol($query, $parameters = array())
+    public function getCol($query, $parameters = [])
     {
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
         // END deprecated
 
-        $result = array();
+        $result = [];
 
         try {
             $rows = $this->getConnection()->fetchAll($query, $parameters);
@@ -713,7 +745,17 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Executes an SQL INSERT/UPDATE/DELETE query with the given parameters and returns the number of affected.
+     * Execute non read statements like INSERT, UPDATE, DELETE and return the number of rows affected by the statement.
+     * This method has to be used EXCLUSIVELY for non read statements.
+     *
+     * IMPORTANT:
+     * You are strongly encouraged to use prepared statements like this:
+     * $resultSet = DatabaseProvider::getDb->executeUpdate(
+     *   'DELETE * FROM `mytable` WHERE `id` = ? OR `id` = ?',
+     *   array($id1, $id2)
+     * );
+     * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * SQL injection vulnerability.
      *
      * This method supports PDO binding types as well as DBAL mapping types.
      *
@@ -721,11 +763,11 @@ class Database implements DatabaseInterface
      * @param array  $parameters The query parameters.
      * @param array  $types      The parameter types.
      *
-     * @throws DatabaseException
+     * @throws DatabaseErrorException
      *
      * @return integer The number of affected rows.
      */
-    public function executeUpdate($query, $parameters = array(), $types = array())
+    public function executeUpdate($query, $parameters = [], $types = [])
     {
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
         $parameters = $this->assureParameterIsAnArray($parameters);
@@ -738,6 +780,9 @@ class Database implements DatabaseInterface
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
         }
 
         return $affectedRows;
@@ -746,7 +791,7 @@ class Database implements DatabaseInterface
     /**
      * Get the database connection.
      *
-     * @return \Doctrine\DBAL\Connection $oConnection The database connection we want to use.
+     * @return DriverConnection $oConnection The database connection we want to use.
      */
     protected function getConnection()
     {
@@ -779,7 +824,7 @@ class Database implements DatabaseInterface
 
         /** If $parameter evaluates to false and it is not an array convert it into an array */
         if (!is_array($parameter)) {
-            $parameter = array();
+            $parameter = [];
         }
 
         return $parameter;
@@ -834,12 +879,13 @@ class Database implements DatabaseInterface
      *
      * @param \Exception $exception Doctrine exception to be converted
      *
-     * @return \oxException Exception converted into an instance of oxException
+     * @return StandardException Exception converted into an instance of StandardException
      */
     protected function convertException(\Exception $exception)
     {
         $message = $exception->getMessage();
         $code = $exception->getCode();
+        $exceptionClass = DatabaseErrorException::class;
 
         switch (true) {
             case $exception instanceof Exception\ConnectionException:
@@ -864,28 +910,30 @@ class Database implements DatabaseInterface
                  * See http://php.net/manual/de/class.pdoexception.php For details and discussion.
                  * Fortunately we can access PDOException and recover the original SQL error code and message.
                  */
-                $pdoException = $exception->getPrevious();
                 /** @var $pdoException PDOException */
-                $code = $pdoException->errorInfo[1];
-                $message = $pdoException->errorInfo[2];
+                $pdoException = $exception->getPrevious();
 
-                $exceptionClass = DatabaseException::class;
+                if ($pdoException instanceof PDOException) {
+                    $code = $this->convertErrorCode($pdoException->errorInfo[1]);
+                    $message = $pdoException->errorInfo[2];
+                }
 
                 break;
             case $exception instanceof PDOException:
                 /**
-                 * The shop used to the (My)SQL errors (integer) in the error code, but $pdoException uses SQLSTATE error code (string)
+                 * The shop uses the (My)SQL errors (integer) in the error code, but $pdoException uses SQLSTATE error code (string)
                  * See http://php.net/manual/de/class.pdoexception.php For details and discussion.
-                 * Fortunately we can access PDOException and recover the original SQL error code and message.
+                 * Fortunately in some cases we can access PDOException and recover the original SQL error code and message.
                  */
-                $code = $exception->errorInfo[1];
+                $code = $this->convertErrorCode($exception->errorInfo[1]);
                 $message = $exception->errorInfo[2];
 
-                $exceptionClass = 'OxidEsales\Eshop\Core\Exception\DatabaseException';
+                /** In case the original code (int) cannot be recovered, code is set to 0 */
+                if (!is_integer($code)) {
+                    $code = 0;
+                }
 
                 break;
-            default:
-                $exceptionClass = 'OxidEsales\Eshop\Core\Exception\DatabaseException';
         }
 
         /** @var \oxException $convertedException */
@@ -902,9 +950,9 @@ class Database implements DatabaseInterface
      *
      * @throws StandardException
      * @throws DatabaseConnectionException
-     * @throws DatabaseException
+     * @throws DatabaseErrorException
      */
-    protected function handleException(StandardException $exception)
+    protected function handleException(\OxidEsales\Eshop\Core\Exception\StandardException $exception)
     {
         throw $exception;
     }
@@ -919,7 +967,7 @@ class Database implements DatabaseInterface
     {
         /** The exception has to be converted into an instance of oxException in order to be logged like this */
         $exception = $this->convertException($exception);
-        $exception->debugOut();
+        \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
     }
 
     /**
@@ -932,11 +980,11 @@ class Database implements DatabaseInterface
      *
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
-     * $result = Database::getDb->getAll(
+     * $result = DatabaseProvider::getDb->getAll(
      *   'SELECT * FROM ´mytable´ WHERE ´id´ = ? OR ´id´ = ? LIMIT 0, 1',
      *   array($id1, $id2)
      * );
-     * If you will not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
+     * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
      * @param string $query      If parameters are given, the "?" in the string will be replaced by the values in the array
@@ -945,14 +993,14 @@ class Database implements DatabaseInterface
      * @see DatabaseInterface::setFetchMode()
      * @see Doctrine::$fetchMode
      *
-     * @throws DatabaseException
+     * @throws DatabaseErrorException
      * @throws \InvalidArgumentException
      *
      * @return array
      */
-    public function getAll($query, $parameters = array())
+    public function getAll($query, $parameters = [])
     {
-        $result = array();
+        $result = [];
         $statement = null;
 
         // @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
@@ -964,10 +1012,15 @@ class Database implements DatabaseInterface
         } catch (DBALException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
         }
 
         if ($this->doesStatementProduceOutput($query)) {
             $result = $statement->fetchAll();
+        } else {
+            \OxidEsales\Eshop\Core\Registry::getLogger()->warning('Given statement does not produce output and was not executed', [debug_backtrace()]);
         }
 
         return $result;
@@ -982,7 +1035,17 @@ class Database implements DatabaseInterface
      */
     public function getLastInsertId()
     {
-        return $this->getConnection()->lastInsertId();
+        try {
+            $lastInsertId = $this->getConnection()->lastInsertId();
+        } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        }
+
+        return $lastInsertId;
     }
 
     /**
@@ -1013,10 +1076,18 @@ class Database implements DatabaseInterface
               TABLE_SCHEMA = '$databaseName'
               AND
               TABLE_NAME = '$table'";
-        $columns = $connection->executeQuery($query)->fetchAll();
+
+        try {
+            $columns = $connection->executeQuery($query)->fetchAll();
+        } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        }
+
         /** Depending on the fetch mode we may find numeric or string key in the array $rawColumns */
-
-
         $result = [];
 
         foreach ($columns as $column) {
@@ -1101,7 +1172,17 @@ class Database implements DatabaseInterface
      */
     public function isRollbackOnly()
     {
-        return $this->connection->isRollbackOnly();
+        try {
+            $isRollbackOnly = $this->connection->isRollbackOnly();
+        } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        }
+
+        return $isRollbackOnly;
     }
 
     /**
@@ -1111,7 +1192,17 @@ class Database implements DatabaseInterface
      */
     public function isTransactionActive()
     {
-        return $this->connection->isTransactionActive();
+        try {
+            $isTransactionActive = $this->connection->isTransactionActive();
+        } catch (DBALException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        } catch (PDOException $exception) {
+            $exception = $this->convertException($exception);
+            $this->handleException($exception);
+        }
+
+        return $isTransactionActive;
     }
 
     /**
@@ -1125,7 +1216,7 @@ class Database implements DatabaseInterface
     protected function getMetaColumnValueByKey(array $column, $key)
     {
         if (array_key_exists('Field', $column)) {
-            $keyMap = array(
+            $keyMap = [
                 'Field'        => 'Field',
                 'Type'         => 'Type',
                 'Null'         => 'Null',
@@ -1135,9 +1226,9 @@ class Database implements DatabaseInterface
                 'Comment'      => 'Comment',
                 'CharacterSet' => 'CharacterSet',
                 'Collation'    => 'Collation',
-            );
+            ];
         } else {
-            $keyMap = array(
+            $keyMap = [
                 'Field'        => 0,
                 'Type'         => 1,
                 'Null'         => 2,
@@ -1147,7 +1238,7 @@ class Database implements DatabaseInterface
                 'Comment'      => 6,
                 'CharacterSet' => 7,
                 'Collation'    => 8,
-            );
+            ];
         }
 
         $result = $column[$keyMap[$key]];
@@ -1205,15 +1296,15 @@ class Database implements DatabaseInterface
         }
 
         /** Numeric types, which may have a maximum length */
-        $integerTypes = array('INTEGER', 'INT', 'SMALLINT', 'TINYINT', 'MEDIUMINT', 'BIGINT');
-        $fixedPointTypes = array('DECIMAL', 'NUMERIC');
-        $floatingPointTypes = array('FLOAT', 'DOUBLE');
+        $integerTypes = ['INTEGER', 'INT', 'SMALLINT', 'TINYINT', 'MEDIUMINT', 'BIGINT'];
+        $fixedPointTypes = ['DECIMAL', 'NUMERIC'];
+        $floatingPointTypes = ['FLOAT', 'DOUBLE'];
 
         /** Text types, which may have a maximum length */
-        $textTypes = array('CHAR', 'VARCHAR');
+        $textTypes = ['CHAR', 'VARCHAR'];
 
         /** Date types, which may have a maximum length */
-        $dateTypes = array('YEAR');
+        $dateTypes = ['YEAR'];
 
         $assignedType = strtoupper($assignedType);
         if ((
@@ -1229,7 +1320,7 @@ class Database implements DatabaseInterface
              */
         }
 
-        return array((int) $maxLength, (int) $scale);
+        return [(int) $maxLength, (int) $scale];
     }
 
     /**
@@ -1314,5 +1405,21 @@ class Database implements DatabaseInterface
             '/' . $connection->getDatabase();
 
         return $message;
+    }
+
+    /**
+     * Convert error code from MySQL to interface.
+     *
+     * @param int $code
+     *
+     * @return string
+     */
+    private function convertErrorCode($code)
+    {
+        if ($code === self::MYSQL_DUPLICATE_KEY_ERROR_CODE) {
+            $code = self::DUPLICATE_KEY_ERROR_CODE;
+        }
+
+        return $code;
     }
 }

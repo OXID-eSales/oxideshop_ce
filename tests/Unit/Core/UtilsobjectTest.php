@@ -1,36 +1,22 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxarticle;
 
-use OxidEsales\Eshop\Core\ShopIdCalculator;
-use OxidEsales\Eshop\Core\UtilsObject;
+use OxidEsales\Eshop\Core\Exception\SystemComponentException;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\UtilsObject;
 use \oxNewDummyUserModule_parent;
 use \oxNewDummyUserModule2_parent;
 use \oemodulenameoxorder_parent;
 use \oxAttribute;
 use \oxRegistry;
 use oxUtilsObject;
+use \oxTestModules;
 
 class modOxUtilsObject_oxUtilsObject extends \oxUtilsObject
 {
@@ -76,7 +62,7 @@ class oxModuleUtilsObject extends \oxUtilsObject
     }
 }
 
-class UtilsobjectTest extends \OxidTestCase
+class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
 
     /**
@@ -84,7 +70,7 @@ class UtilsobjectTest extends \OxidTestCase
      */
     public function tearDown()
     {
-        oxRemClassModule('Unit\Core\modOxUtilsObject_oxUtilsObject');
+        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Core\modOxUtilsObject_oxUtilsObject::class);
 
         $oArticle = oxNew('oxArticle');
         $oArticle->delete('testArticle');
@@ -95,36 +81,35 @@ class UtilsobjectTest extends \OxidTestCase
         parent::tearDown();
     }
 
-    private function getOrderClassName()
+    /**
+     * Test, that the method getInstance creates the object of the correct current edition namespace.
+     */
+    public function testEditionSpecificObjectIsCreatedCorrect()
     {
-        $orderClassName = 'oxorder';
-
-        if ($this->getConfig()->getEdition() === 'EE') {
-            $orderClassName = '\OxidEsales\EshopEnterprise\Application\Model\Order';
-        }
-
-        return $orderClassName;
+        $utilsObject = \OxidEsales\Eshop\Core\UtilsObject::getInstance();
+        $expectedClass = \OxidEsales\Eshop\Core\UtilsObject::class;
+        $this->assertEquals($expectedClass, get_class($utilsObject));
     }
 
     /**
-     * Testing oxUtilsObject::_getObject();
+     * Testing oxUtilsObject object creation.
      *
      * @return null
      */
     public function testGetObject()
     {
-        $this->assertTrue(oxNew('Unit\Core\_oxutils_test') instanceof _oxutils_test);
-        $this->assertTrue(oxNew('Unit\Core\_oxutils_test', 1) instanceof _oxutils_test);
-        $this->assertTrue(oxNew('Unit\Core\_oxutils_test', 1, 2) instanceof _oxutils_test);
-        $this->assertTrue(oxNew('Unit\Core\_oxutils_test', 1, 2, 3) instanceof _oxutils_test);
-        $this->assertTrue(oxNew('Unit\Core\_oxutils_test', 1, 2, 3, 4) instanceof _oxutils_test);
+        $this->assertTrue(oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class) instanceof _oxutils_test);
+        $this->assertTrue(oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class, 1) instanceof _oxutils_test);
+        $this->assertTrue(oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class, 1, 2) instanceof _oxutils_test);
+        $this->assertTrue(oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class, 1, 2, 3) instanceof _oxutils_test);
+        $this->assertTrue(oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxutils_test::class, 1, 2, 3, 4) instanceof _oxutils_test);
     }
 
     public function testOxNewSettingParameters()
     {
         $oArticle = oxNew('oxarticle', array('aaa' => 'bbb'));
 
-        $this->assertTrue($oArticle instanceof oxarticle);
+        $this->assertTrue($oArticle instanceof \OxidEsales\EshopCommunity\Application\Model\Article);
         $this->assertTrue(isset($oArticle->aaa));
         $this->assertEquals('bbb', $oArticle->aaa);
     }
@@ -148,7 +133,7 @@ class UtilsobjectTest extends \OxidTestCase
 
         $config = $this->getConfig();
 
-        oxUtilsObject::getInstance()->setModuleVar("aModules", $aModules);
+        oxRegistry::getUtilsObject()->setModuleVar("aModules", $aModules);
         $config->setConfigParam("aModules", $aModules);
 
         $configFile = oxRegistry::get("oxConfigFile");
@@ -166,6 +151,12 @@ class UtilsobjectTest extends \OxidTestCase
 
     public function testOxNewClassExtendingWhenClassesDoesNotExists()
     {
+        /**
+         * Real error handling on missing files is disabled for the tests, but when the shop tries to include that not
+         * existing file we expect an error to be thrown
+         */
+        $this->setExpectedException(\PHPUnit_Framework_Error_Warning::class);
+
         $structure = array(
             'modules' => array(
                 'oxNewDummyModule.php' => '<?php class oxNewDummyModule {}',
@@ -182,7 +173,7 @@ class UtilsobjectTest extends \OxidTestCase
 
         $config = $this->getConfig();
 
-        oxUtilsObject::getInstance()->setModuleVar("aModules", $aModules);
+        oxRegistry::getUtilsObject()->setModuleVar("aModules", $aModules);
         $config->setConfigParam("aModules", $aModules);
 
         $configFile = oxRegistry::get("oxConfigFile");
@@ -198,9 +189,9 @@ class UtilsobjectTest extends \OxidTestCase
         $this->assertFalse($oNewDummyModule instanceof \oxNewDummyUserModule2);
     }
 
-    public function testOxNewCreationOfNonExistingClass()
+    public function testOxNewCreationOfNonExistingClassContainsClassNameInExceptionMessage()
     {
-        $this->setExpectedException('oxSystemComponentException', 'EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND');
+        $this->setExpectedException(SystemComponentException::class, 'non_existing_class');
 
         oxNew("non_existing_class");
     }
@@ -210,8 +201,8 @@ class UtilsobjectTest extends \OxidTestCase
      */
     public function testGenerateUid()
     {
-        $id1 = oxUtilsObject::getInstance()->generateUid();
-        $id2 = oxUtilsObject::getInstance()->generateUid();
+        $id1 = oxRegistry::getUtilsObject()->generateUid();
+        $id2 = oxRegistry::getUtilsObject()->generateUid();
         $this->assertNotEquals($id1, $id2);
     }
 
@@ -226,7 +217,7 @@ class UtilsobjectTest extends \OxidTestCase
         $aGotInstanceCache = $oTestInstance->getClassNameCache();
 
         $this->assertEquals(1, count($aGotInstanceCache));
-        $this->assertTrue($aGotInstanceCache["oxattribute"] instanceof oxAttribute);
+        $this->assertTrue($aGotInstanceCache["oxattribute"] instanceof \OxidEsales\EshopCommunity\Application\Model\Attribute);
     }
 
     public function testResetInstanceCacheAll()
@@ -253,14 +244,11 @@ class UtilsobjectTest extends \OxidTestCase
 
     public function testGetClassName_classNotExist_originalClassReturn()
     {
-        $sClassName = $sClassNameExpect = 'oxorder';
-
-        if ($this->getConfig()->getEdition() === 'EE') {
-            $sClassNameExpect = '\OxidEsales\EshopEnterprise\Application\Model\Order';
-        }
+        $sClassName = 'oxorder';
+        $sClassNameExpect = 'oxorder';
 
         $sClassNameWhichExtends = 'oemodulenameoxorder_different2';
-        $oUtilsObject = $this->_prepareFakeModule($sClassName, $sClassNameWhichExtends);
+        $oUtilsObject = $this->prepareFakeModuleNonExistentClass($sClassName, $sClassNameWhichExtends);
 
         $this->assertSame($sClassNameExpect, $oUtilsObject->getClassName($sClassName));
     }
@@ -268,12 +256,12 @@ class UtilsobjectTest extends \OxidTestCase
     public function testGetClassName_classNotExistDoDisableModuleOnError_originalClassReturn()
     {
         $sClassName = 'oxorder';
-        $sClassNameExpect = $this->getOrderClassName();
+        $sClassNameExpect = 'oxorder';
 
         oxRegistry::get("oxConfigFile")->setVar('blDoNotDisableModuleOnError', false);
 
         $sClassNameWhichExtends = 'oemodulenameoxorder_different3';
-        $oUtilsObject = $this->_prepareFakeModule($sClassName, $sClassNameWhichExtends);
+        $oUtilsObject = $this->prepareFakeModuleNonExistentClass($sClassName, $sClassNameWhichExtends);
 
         $this->assertSame($sClassNameExpect, $oUtilsObject->getClassName($sClassName));
     }
@@ -285,8 +273,6 @@ class UtilsobjectTest extends \OxidTestCase
         $sClassName = 'oxorder';
         $sClassNameWhichExtends = 'oemodulenameoxorder_different4';
         $oUtilsObject = $this->_prepareFakeModule($sClassName, $sClassNameWhichExtends);
-
-        $this->setExpectedException('oxSystemComponentException', 'EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND');
 
         $oUtilsObject->getClassName($sClassName);
     }
@@ -311,11 +297,36 @@ class UtilsobjectTest extends \OxidTestCase
         oxRegistry::get("oxConfigFile")->setVar("sShopDir", $wrapper->getRootPath());
         $wrapper->createStructure(array(
             'modules' => array(
-                'oemodulenameoxorder.php' => '<?php class oemodulenameoxorder extends oemodulenameoxorder_parent {}'
+                $extension . '.php' => "<?php class $extension extends {$extension}_parent {}"
             )
         ));
 
-        $oUtilsObject = oxNew('oxUtilsObject');
+        $oUtilsObject = oxRegistry::getUtilsObject();
+        $oUtilsObject->setModuleVar('aModules', array($class => $extension));
+
+        return $oUtilsObject;
+    }
+
+    /**
+     * Make a module, which classname is not the expected one. I.e. class name does not match file name.
+     * The parent class name matches the expections i.e. {$extension}_parent
+     *
+     * @param $class
+     * @param $extension
+     *
+     * @return \OxidEsales\Eshop\Core\UtilsObject
+     */
+    private function prepareFakeModuleNonExistentClass($class, $extension)
+    {
+        $wrapper = $this->getVfsStreamWrapper();
+        oxRegistry::get("oxConfigFile")->setVar("sShopDir", $wrapper->getRootPath());
+        $wrapper->createStructure(array(
+            'modules' => array(
+                $extension . '.php' => "<?php class {$extension}NonExistent extends {$extension}_parent {}"
+            )
+        ));
+
+        $oUtilsObject = oxRegistry::getUtilsObject();
         $oUtilsObject->setModuleVar('aModules', array($class => $extension));
 
         return $oUtilsObject;

@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxRegistry;
 use oxField;
@@ -30,13 +14,12 @@ use oxField;
  * Collects list of manufacturers according to collection rules (activ, etc.).
  *
  */
-class ManufacturerList extends \oxList
+class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
-
     /**
      * Manufacturer root.
      *
-     * @var stdClass
+     * @var \stdClass
      */
     protected $_oRoot = null;
 
@@ -45,7 +28,7 @@ class ManufacturerList extends \oxList
      *
      * @var array
      */
-    protected $_aPath = array();
+    protected $_aPath = [];
 
     /**
      * To show manufacturer article count or not
@@ -57,7 +40,7 @@ class ManufacturerList extends \oxList
     /**
      * Active manufacturer object
      *
-     * @var oxmanufacturer
+     * @var \OxidEsales\Eshop\Application\Model\Manufacturer
      */
     protected $_oClickedManufacturer = null;
 
@@ -116,7 +99,7 @@ class ManufacturerList extends \oxList
 
 
         //Create fake manufacturer root category
-        $this->_oRoot = oxNew("oxManufacturer");
+        $this->_oRoot = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
         $this->_oRoot->load("root");
 
         //category fields
@@ -124,7 +107,6 @@ class ManufacturerList extends \oxList
         $this->_aPath[] = $this->_oRoot;
 
         foreach ($this as $sVndId => $oManufacturer) {
-
             // storing active manufacturer object
             if ((string)$sVndId === $sActCat) {
                 $this->setClickManufacturer($oManufacturer);
@@ -142,7 +124,7 @@ class ManufacturerList extends \oxList
     /**
      * Root manufacturer list node (which usually is a manually prefilled object) getter
      *
-     * @return oxmanufacturer
+     * @return \OxidEsales\Eshop\Application\Model\Manufacturer
      */
     public function getRootCat()
     {
@@ -166,7 +148,7 @@ class ManufacturerList extends \oxList
      */
     protected function _addCategoryFields($oManufacturer)
     {
-        $oManufacturer->oxcategories__oxid = new oxField($oManufacturer->oxmanufacturers__oxid->value);
+        $oManufacturer->oxcategories__oxid = new \OxidEsales\Eshop\Core\Field($oManufacturer->oxmanufacturers__oxid->value);
         $oManufacturer->oxcategories__oxicon = $oManufacturer->oxmanufacturers__oxicon;
         $oManufacturer->oxcategories__oxtitle = $oManufacturer->oxmanufacturers__oxtitle;
         $oManufacturer->oxcategories__oxdesc = $oManufacturer->oxmanufacturers__oxshortdesc;
@@ -178,7 +160,7 @@ class ManufacturerList extends \oxList
     /**
      * Sets active (open) manufacturer object
      *
-     * @param oxmanufacturer $oManufacturer active manufacturer
+     * @param \OxidEsales\Eshop\Application\Model\Manufacturer $oManufacturer active manufacturer
      */
     public function setClickManufacturer($oManufacturer)
     {
@@ -188,7 +170,7 @@ class ManufacturerList extends \oxList
     /**
      * returns active (open) manufacturer object
      *
-     * @return oxmanufacturer
+     * @return \OxidEsales\Eshop\Application\Model\Manufacturer
      */
     public function getClickManufacturer()
     {
@@ -201,9 +183,8 @@ class ManufacturerList extends \oxList
     protected function _seoSetManufacturerData()
     {
         // only when SEO id on and in front end
-        if (oxRegistry::getUtils()->seoIsActive() && !$this->isAdmin()) {
-
-            $oEncoder = oxRegistry::get("oxSeoEncoderManufacturer");
+        if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && !$this->isAdmin()) {
+            $oEncoder = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer::class);
 
             // preparing root manufacturer category
             if ($this->_oRoot) {

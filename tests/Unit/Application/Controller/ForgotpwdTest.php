@@ -1,25 +1,9 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \Exception;
 use \oxfield;
@@ -217,23 +201,23 @@ class ForgotpwdTest extends \OxidTestCase
      */
     public function testUpdatePassword_passwordSpecChars()
     {
-        $oRealInputValidator = oxRegistry::get('oxInputValidator');
+        $oRealInputValidator = \OxidEsales\Eshop\Core\Registry::getInputValidator();
 
         $sPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';
         $this->setRequestParameter('password_new', $sPass);
         $this->setRequestParameter('password_new_confirm', $sPass);
 
-        $oUser = $this->getMock('oxUser', array('checkPassword'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('checkPassword'));
         oxTestModules::addModuleObject('oxuser', $oUser);
 
         $oInputValidator = $this->getMock('oxInputValidator');
         $oInputValidator->expects($this->once())->method('checkPassword')->with($this->equalTo($oUser), $this->equalTo($sPass), $this->equalTo($sPass), $this->equalTo(true))->will($this->returnValue(new oxException()));
-        oxRegistry::set('oxInputValidator', $oInputValidator);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\InputValidator::class, $oInputValidator);
 
         $oView = oxNew('ForgotPwd');
         $oView->updatePassword();
 
-        oxRegistry::set('oxInputValidator', $oRealInputValidator);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\InputValidator::class, $oRealInputValidator);
     }
 
     /**
@@ -254,7 +238,7 @@ class ForgotpwdTest extends \OxidTestCase
      */
     public function testGetTitle()
     {
-        $oView = $this->getMock("ForgotPwd", array('showUpdateScreen', 'updateSuccess'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ForgotPasswordController::class, array('showUpdateScreen', 'updateSuccess'));
         $oView->expects($this->any())->method('showUpdateScreen')->will($this->returnValue(false));
         $oView->expects($this->any())->method('updateSuccess')->will($this->returnValue(false));
 
@@ -266,7 +250,7 @@ class ForgotpwdTest extends \OxidTestCase
      */
     public function testGetTitle_ShowUpdateScreen()
     {
-        $oView = $this->getMock("ForgotPwd", array('showUpdateScreen', 'updateSuccess'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ForgotPasswordController::class, array('showUpdateScreen', 'updateSuccess'));
         $oView->expects($this->any())->method('showUpdateScreen')->will($this->returnValue(true));
         $oView->expects($this->any())->method('updateSuccess')->will($this->returnValue(true));
 
@@ -278,7 +262,7 @@ class ForgotpwdTest extends \OxidTestCase
      */
     public function testGetTitle_UpdateSuccess()
     {
-        $oView = $this->getMock("ForgotPwd", array('showUpdateScreen', 'updateSuccess'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ForgotPasswordController::class, array('showUpdateScreen', 'updateSuccess'));
         $oView->expects($this->any())->method('showUpdateScreen')->will($this->returnValue(false));
         $oView->expects($this->any())->method('updateSuccess')->will($this->returnValue(true));
 

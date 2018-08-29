@@ -1,40 +1,18 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core;
-
-use oxCountry;
-use oxCompanyVatIn;
-use oxICountryAware;
-use oxCompanyVatInChecker;
+namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * Company VAT identification number validator. Executes added validators on given VATIN.
  */
 class CompanyVatInValidator
 {
-
     /**
-     * @var oxCountry
+     * @var \OxidEsales\Eshop\Application\Model\Country
      */
     private $_oCountry = null;
 
@@ -43,7 +21,7 @@ class CompanyVatInValidator
      *
      * @var array
      */
-    private $_aCheckers = array();
+    private $_aCheckers = [];
 
     /**
      * Error message
@@ -55,9 +33,9 @@ class CompanyVatInValidator
     /**
      * Country setter
      *
-     * @param oxCountry $country
+     * @param \OxidEsales\Eshop\Application\Model\Country $country
      */
-    public function setCountry(oxCountry $country)
+    public function setCountry(\OxidEsales\Eshop\Application\Model\Country $country)
     {
         $this->_oCountry = $country;
     }
@@ -65,7 +43,7 @@ class CompanyVatInValidator
     /**
      * Country getter
      *
-     * @return oxCountry
+     * @return \OxidEsales\Eshop\Application\Model\Country
      */
     public function getCountry()
     {
@@ -95,9 +73,9 @@ class CompanyVatInValidator
     /**
      * Constructor
      *
-     * @param oxCountry $country
+     * @param \OxidEsales\Eshop\Application\Model\Country $country
      */
-    public function __construct(oxCountry $country)
+    public function __construct(\OxidEsales\Eshop\Application\Model\Country $country)
     {
         $this->setCountry($country);
     }
@@ -105,9 +83,9 @@ class CompanyVatInValidator
     /**
      * Adds validator
      *
-     * @param oxCompanyVatInChecker $validator
+     * @param \OxidEsales\Eshop\Core\CompanyVatInChecker $validator
      */
-    public function addChecker(oxCompanyVatInChecker $validator)
+    public function addChecker(\OxidEsales\Eshop\Core\CompanyVatInChecker $validator)
     {
         $this->_aCheckers[] = $validator;
     }
@@ -125,18 +103,18 @@ class CompanyVatInValidator
     /**
      * Validate company VAT identification number.
      *
-     * @param oxCompanyVatIn $companyVatNumber
+     * @param \OxidEsales\Eshop\Application\Model\CompanyVatIn $companyVatNumber
      *
      * @return bool
      */
-    public function validate(oxCompanyVatIn $companyVatNumber)
+    public function validate(\OxidEsales\Eshop\Application\Model\CompanyVatIn $companyVatNumber)
     {
         $result = false;
         $validators = $this->getCheckers();
 
         foreach ($validators as $validator) {
             $result = true;
-            if ($validator instanceof oxICountryAware) {
+            if ($validator instanceof \OxidEsales\Eshop\Core\Contract\ICountryAware) {
                 $validator->setCountry($this->getCountry());
             }
 

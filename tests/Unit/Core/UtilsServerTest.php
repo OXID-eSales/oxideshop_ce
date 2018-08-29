@@ -1,25 +1,9 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxRegistry;
 use \oxTestModules;
@@ -46,7 +30,7 @@ class UtilsServerTest extends \OxidTestCase
     public function testSetOxCookieForSaveSessionCookie()
     {
         $sValue = 'some value';
-        $oUtilsServer = $this->getMock("oxUtilsServer", array("_saveSessionCookie"));
+        $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("_saveSessionCookie"));
         // One cookie will be saved to session another will not.
         $oUtilsServer->expects($this->once())->method('_saveSessionCookie');
         $oUtilsServer->setOxCookie("testName1", $sValue);
@@ -61,10 +45,10 @@ class UtilsServerTest extends \OxidTestCase
      */
     public function testMustSaveToSessionNoSslUrl()
     {
-        $oConfig = $this->getMock("oxConfig", array("getSslShopUrl"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getSslShopUrl"));
         $oConfig->expects($this->once())->method('getSslShopUrl')->will($this->returnValue(false));
 
-        $oUtilsServer = $this->getMock("oxUtilsServer", array("getConfig"));
+        $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("getConfig"));
         $oUtilsServer->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
         $this->assertFalse($oUtilsServer->UNITmustSaveToSession());
     }
@@ -76,11 +60,11 @@ class UtilsServerTest extends \OxidTestCase
      */
     public function testMustSaveToSession()
     {
-        $oConfig = $this->getMock("oxConfig", array("getSslShopUrl", "getShopUrl"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getSslShopUrl", "getShopUrl"));
         $oConfig->expects($this->once())->method('getSslShopUrl')->will($this->returnValue("https://ssl.oxid.com"));
         $oConfig->expects($this->once())->method('getShopUrl')->will($this->returnValue("http://www.oxid.com"));
 
-        $oUtilsServer = $this->getMock("oxUtilsServer", array("getConfig"));
+        $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("getConfig"));
         $oUtilsServer->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
         $this->assertFalse($oUtilsServer->UNITmustSaveToSession());
     }
@@ -92,13 +76,13 @@ class UtilsServerTest extends \OxidTestCase
      */
     public function testGetSessionCookieKey()
     {
-        $oConfig = $this->getMock("oxConfig", array("isSsl"));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("isSsl"));
         $oConfig->expects($this->at(0))->method('isSsl')->will($this->returnValue(true));
         $oConfig->expects($this->at(1))->method('isSsl')->will($this->returnValue(false));
         $oConfig->expects($this->at(2))->method('isSsl')->will($this->returnValue(true));
         $oConfig->expects($this->at(3))->method('isSsl')->will($this->returnValue(false));
 
-        $oUtilsServer = $this->getMock("oxUtilsServer", array("getConfig"));
+        $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("getConfig"));
         $oUtilsServer->expects($this->exactly(4))->method('getConfig')->will($this->returnValue($oConfig));
         $this->assertEquals('ssl', $oUtilsServer->UNITgetSessionCookieKey(true));
         $this->assertEquals('nossl', $oUtilsServer->UNITgetSessionCookieKey(true));
@@ -113,7 +97,7 @@ class UtilsServerTest extends \OxidTestCase
      */
     public function testSaveSessionCookie()
     {
-        $oUtilsServer = $this->getMock("oxUtilsServer", array("_mustSaveToSession", "_getSessionCookieKey"));
+        $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("_mustSaveToSession", "_getSessionCookieKey"));
         $oUtilsServer->expects($this->any())->method('_mustSaveToSession')->will($this->returnValue(true));
         $oUtilsServer->expects($this->any())->method('_getSessionCookieKey')->will($this->returnValue("key"));
         $oUtilsServer->UNITsaveSessionCookie("var1", "val1", 123, "path1", "domain1");
@@ -136,7 +120,7 @@ class UtilsServerTest extends \OxidTestCase
 
         $this->getSession()->setVariable('aSessionCookies', $aVal);
 
-        $oUtilsServer = $this->getMock("oxUtilsServer", array("_getSessionCookieKey", "setOxCookie"));
+        $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("_getSessionCookieKey", "setOxCookie"));
         $oUtilsServer->expects($this->at(0))->method('_getSessionCookieKey')->will($this->returnValue("key"));
         $oUtilsServer->expects($this->at(1))->method('setOxCookie')->with($this->equalTo("var1"), $this->equalTo("val1"), $this->equalTo(123), $this->equalTo("path1"), $this->equalTo("domain1"), $this->equalTo(false));
         $oUtilsServer->expects($this->at(2))->method('setOxCookie')->with($this->equalTo("var2"), $this->equalTo("val2"), $this->equalTo(321), $this->equalTo("path2"), $this->equalTo("domain2"), $this->equalTo(false));
@@ -152,7 +136,7 @@ class UtilsServerTest extends \OxidTestCase
 
         //
         $this->getConfig()->setConfigParam("aTrustedIPs", array("xxx"));
-        $oUtilsServer = $this->getMock("oxUtilsServer", array("getRemoteAddress"));
+        $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("getRemoteAddress"));
         $oUtilsServer->expects($this->once())->method('getRemoteAddress')->will($this->returnValue("xxx"));
         $this->assertTrue($oUtilsServer->isTrustedClientIp());
     }
@@ -190,24 +174,24 @@ class UtilsServerTest extends \OxidTestCase
     {
         $sName = "someName";
         $sValue = "someValue";
-        $this->assertNull(oxRegistry::get("oxUtilsServer")->setOxCookie($sName, $sValue));
+        $this->assertNull(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie($sName, $sValue));
     }
 
     public function testGetCookie()
     {
         // $sName = null
-        /*  $aCookie = oxRegistry::get("oxUtilsServer")->getOxCookie();
+        /*  $aCookie = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie();
   var_dump($_COOKIE);
   var_dump($aCookie);
           $this->assertTrue((isset($aCookie) && ($aCookie[0] == null)));
-          $this->assertNull(oxRegistry::get("oxUtilsServer")->getOxCookie('test'));*/
+          $this->assertNull(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('test'));*/
 
         $aC = $_COOKIE;
         $e = null;
         try {
 
             $_COOKIE['test'] = "asd'\"\000aa";
-            $this->assertEquals("asd&#039;&quot;aa", oxRegistry::get("oxUtilsServer")->getOxCookie('test'));
+            $this->assertEquals("asd&#039;&quot;aa", \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('test'));
         } catch (Exception $e) {
         }
 
@@ -227,17 +211,17 @@ class UtilsServerTest extends \OxidTestCase
         unset($_SERVER["HTTP_X_FORWARDED_FOR"]);
         unset($_SERVER["HTTP_CLIENT_IP"]);
         if (isset($_SERVER["REMOTE_ADDR"])) {
-            $this->assertNull(oxRegistry::get("oxUtilsServer")->getRemoteAddress());
+            $this->assertNull(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress());
         } else {
             $_SERVER["REMOTE_ADDR"] = $sIP;
-            $this->assertEquals(oxRegistry::get("oxUtilsServer")->getRemoteAddress(), $sIP);
+            $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress(), $sIP);
         }
 
         $_SERVER["HTTP_X_FORWARDED_FOR"] = $sIP;
-        $this->assertEquals(oxRegistry::get("oxUtilsServer")->getRemoteAddress(), $sIP);
+        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress(), $sIP);
         unset($_SERVER["HTTP_X_FORWARDED_FOR"]);
         $_SERVER["HTTP_CLIENT_IP"] = $sIP;
-        $this->assertEquals(oxRegistry::get("oxUtilsServer")->getRemoteAddress(), $sIP);
+        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress(), $sIP);
         unset($_SERVER["HTTP_CLIENT_IP"]);
     }
 
@@ -247,7 +231,7 @@ class UtilsServerTest extends \OxidTestCase
         $sProxy = '127.5.4.4';
         // in test mode, there are no remote adresses, thus null
         $_SERVER["HTTP_X_FORWARDED_FOR"] = $sIP . ',' . $sProxy;
-        $this->assertEquals(oxRegistry::get("oxUtilsServer")->getRemoteAddress(), $sIP);
+        $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress(), $sIP);
         unset($_SERVER["HTTP_X_FORWARDED_FOR"]);
     }
 
@@ -257,8 +241,8 @@ class UtilsServerTest extends \OxidTestCase
         $sValue = time();
 
         $_SERVER[$sName] = $sValue;;
-        $this->assertEquals($sValue, oxRegistry::get("oxUtilsServer")->getServerVar($sName));
-        $this->assertEquals($_SERVER, oxRegistry::get("oxUtilsServer")->getServerVar());
+        $this->assertEquals($sValue, \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getServerVar($sName));
+        $this->assertEquals($_SERVER, \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getServerVar());
     }
 
     /**

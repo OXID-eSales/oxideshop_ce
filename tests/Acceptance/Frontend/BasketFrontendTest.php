@@ -1,28 +1,12 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Tests\Acceptance\Frontend;
+namespace OxidEsales\EshopCommunity\Tests\Acceptance\Frontend;
 
-use OxidEsales\Eshop\Tests\Acceptance\FrontendTestCase;
+use OxidEsales\EshopCommunity\Tests\Acceptance\FrontendTestCase;
 
 /** Tests related creating of orders in frontend. */
 class BasketFrontendTest extends FrontendTestCase
@@ -53,7 +37,7 @@ class BasketFrontendTest extends FrontendTestCase
         //adding few more products to basket
         $this->addToBasket("1000");
         $this->addToBasket("1001");
-        $this->assertEquals("3", $this->getText("//div[@id='miniBasket']/span"));
+        $this->waitForElementText("3", "//div[@id='miniBasket']/span");
 
         $this->click("//div[@id='miniBasket']/img");
         $this->waitForItemAppear("basketFlyout");
@@ -1205,7 +1189,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->_continueToNextStep();
 
         //Order Step4
-        $this->openWindow(shopURL."en/my-address/", "222");
+        $this->openWindow($this->getSubShopAwareUrl(shopURL . "en/my-address/"), "222");
         $this->waitForText("%SHIPPING_ADDRESSES%");
         $this->click("userChangeShippingAddress");
         $this->waitForItemAppear("delCountrySelect");
@@ -1219,7 +1203,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->_continueToNextStep();
         $this->assertTextNotPresent("%ERROR_DELIVERY_ADDRESS_WAS_CHANGED_DURING_CHECKOUT%");
         //changing billing address once more
-        $this->openWindow(shopURL."en/my-address/", "222");
+        $this->openWindow($this->getSubShopAwareUrl(shopURL . "en/my-address/"), "222");
         $this->waitForText("%SHIPPING_ADDRESSES%");
         $this->click("userChangeAddress");
         $this->waitForItemAppear("invCountrySelect");
@@ -1230,11 +1214,22 @@ class BasketFrontendTest extends FrontendTestCase
 
         // submit
         $this->_confirmAndOrder();
-        //billing address was changed, so message was displayed:" %ERROR_DELIVERY_ADDRESS_WAS_CHANGED_DURING_CHECKOUT%"
-        //$this->assertTextPresent("%ERROR_DELIVERY_ADDRESS_WAS_CHANGED_DURING_CHECKOUT%");
-        // submit
+
+        $this->assertTextPresent("%ERROR_DELIVERY_ADDRESS_WAS_CHANGED_DURING_CHECKOUT%");
+
         $this->_confirmAndOrder();
         $this->assertEquals("%YOU_ARE_HERE%: / %ORDER_COMPLETED%", $this->getText("breadCrumb"));
+    }
+
+    /**
+     * Form a URL which is aware of the current subshop id.
+     *
+     * @param string $url Full destination URL
+     * @return string
+     */
+    private function getSubShopAwareUrl($url)
+    {
+        return $url . '?' . http_build_query(['shp' => oxSHOPID]);
     }
 
     /**

@@ -1,25 +1,9 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright Â© OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Core;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 class CurlTest extends \OxidTestCase
 {
@@ -90,9 +74,9 @@ class CurlTest extends \OxidTestCase
     public function testGetQuery_setParameterNotUtf_getQueryFromParameters()
     {
         $oCurl = oxNew('oxCurl');
-        $oCurl->setParameters(array('param1' => 'Jäger', 'param2' => 'values2'));
+        $oCurl->setParameters(array('param1' => 'JÃ¤ger', 'param2' => 'values2'));
 
-        $aPramsUtf = array('param1' => 'Jäger', 'param2' => 'values2');
+        $aPramsUtf = array('param1' => 'JÃ¤ger', 'param2' => 'values2');
 
         $this->assertEquals(http_build_query($aPramsUtf), $oCurl->getQuery());
     }
@@ -271,7 +255,7 @@ class CurlTest extends \OxidTestCase
      */
     public function testExecute_getResponseArray()
     {
-        $oCurl = $this->getMock('oxCurl', array("_execute", '_setOpt', '_close', '_getErrorNumber', 'getHeader', 'getUrl', 'getQuery', 'getOptions'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array("_execute", '_setOpt', '_close', '_getErrorNumber', 'getHeader', 'getUrl', 'getQuery', 'getOptions'));
         $oCurl->expects($this->any())->method('_setOpt');
         $oCurl->expects($this->once())->method('getHeader');
         $oCurl->expects($this->once())->method('getUrl');
@@ -289,7 +273,7 @@ class CurlTest extends \OxidTestCase
      */
     public function testExecute_noAdditionalOptionsSetForGET()
     {
-        $oCurl = $this->getMock('oxCurl', array("_execute", '_setOpt', '_close', '_getErrorNumber', 'getHeader', 'getUrl', 'getQuery', 'getOptions'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array("_execute", '_setOpt', '_close', '_getErrorNumber', 'getHeader', 'getUrl', 'getQuery', 'getOptions'));
         $oCurl->expects($this->exactly(1))->method('_setOpt');
         $oCurl->expects($this->once())->method('getHeader');
         $oCurl->expects($this->once())->method('getUrl');
@@ -308,7 +292,7 @@ class CurlTest extends \OxidTestCase
      */
     public function testExecute_noAdditionalOptionsSetForPOST()
     {
-        $oCurl = $this->getMock('oxCurl', array("_execute", '_setOpt', '_close', '_getErrorNumber', 'getHeader', 'getUrl', 'getQuery', 'getOptions'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array("_execute", '_setOpt', '_close', '_getErrorNumber', 'getHeader', 'getUrl', 'getQuery', 'getOptions'));
         $oCurl->expects($this->exactly(3))->method('_setOpt');
         $oCurl->expects($this->once())->method('getHeader');
         $oCurl->expects($this->once())->method('getUrl');
@@ -327,7 +311,7 @@ class CurlTest extends \OxidTestCase
     public function testExecute_curlError()
     {
         $this->setExpectedException('oxException');
-        $oCurl = $this->getMock('oxCurl', array("_execute", '_setOptions', '_close', '_getErrorNumber'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array("_execute", '_setOptions', '_close', '_getErrorNumber'));
 
         $oCurl->expects($this->any())->method('_setOptions');
         $oCurl->expects($this->once())->method('_execute')->will($this->returnValue('rParam1=rValue1'));
@@ -342,7 +326,7 @@ class CurlTest extends \OxidTestCase
      */
     public function testGetStatusCode()
     {
-        $oCurl = $this->getMock('oxCurl', array("_execute"));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array("_execute"));
 
         $this->assertSame(null, $oCurl->getStatusCode());
 
@@ -388,7 +372,7 @@ class CurlTest extends \OxidTestCase
 
     public function testSimplePOSTCall()
     {
-        $oCurl = $this->getMock('oxCurl', array("_execute", '_setOpt', '_close', '_getErrorNumber'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array("_execute", '_setOpt', '_close', '_getErrorNumber'));
         $oCurl->expects($this->once())->method('_execute')->will($this->returnValue('rParam1=rValue1'));
         $oCurl->expects($this->once())->method('_getErrorNumber')->will($this->returnValue(false));
         $oCurl->expects($this->once())->method('_close');
@@ -404,7 +388,7 @@ class CurlTest extends \OxidTestCase
 
     public function testSimpleGETCall()
     {
-        $oCurl = $this->getMock('oxCurl', array("_execute", '_setOpt', '_close', '_getErrorNumber'));
+        $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array("_execute", '_setOpt', '_close', '_getErrorNumber'));
         $oCurl->expects($this->once())->method('_execute')->will($this->returnValue('rParam1=rValue1'));
         $oCurl->expects($this->once())->method('_getErrorNumber')->will($this->returnValue(false));
         $oCurl->expects($this->once())->method('_close');

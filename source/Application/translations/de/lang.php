@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 $sLangName  = "Deutsch";
@@ -25,7 +9,7 @@ $sLangName  = "Deutsch";
 // -------------------------------
 // RESOURCE IDENTIFIER = STRING
 // -------------------------------
-$aLang = array(
+$aLang = [
 'charset'                                                     => 'UTF-8',
 'fullDateFormat'                                              => 'd.m.Y H:i:s',
 'simpleDateFormat'                                            => 'd.m.Y',
@@ -171,6 +155,7 @@ $aLang = array(
 'ERROR_MESSAGE_PASSWORD_EMAIL_INVALID'                        => 'Bitte geben Sie eine gültige E-Mail-Adresse ein!',
 'ERROR_MESSAGE_PASSWORD_LINK_EXPIRED'                         => 'Diese Seite ist nicht mehr gültig. Bitte benutzen Sie die Funktion "Passwort vergessen?" erneut.',
 'ERROR_MESSAGE_PASSWORD_TOO_SHORT'                            => 'Fehler: Ihr Passwort ist zu kurz.',
+'ERROR_REVIEW_AND_RATING_NOT_DELETED'                         => 'Bewertung und Sterne-Rating konnten nicht gelöscht werden',
 'ERROR_MESSAGE_CURRENT_PASSWORD_INVALID'                      => 'Fehler: Ihr aktuelles Passwort ist falsch.',
 'ERROR_MESSAGE_RECOMMLIST_NOTITLE'                            => 'Kein Titel angegeben',
 'ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND'                 => 'Class "%s" nicht gefunden',
@@ -285,7 +270,7 @@ $aLang = array(
 'MESSAGE_INVITE_YOUR_FRIENDS_EMAIL'                           => 'Tragen Sie die E-Mail-Adressen Ihrer Freunde unten ein, um ihnen eine Einladung zu schicken.',
 'MESSAGE_INVITE_YOUR_FRIENDS_INVITATION_SENT'                 => 'Die Einladungen wurden versendet. Danke!',
 'MESSAGE_LOGIN_TO_RATE'                                       => 'Für Bewertung bitte anmelden!',
-'MESSAGE_LOGIN_TO_WRITE_REVIEW'                               => 'Sie müssen angemeldet sein, um einen Kommentar schreiben zu können.',
+'MESSAGE_LOGIN_TO_WRITE_REVIEW'                               => 'Sie müssen angemeldet sein, um eine Bewertung schreiben zu können.',
 'MESSAGE_MAKE_GIFT_REGISTRY_PUBLISH'                          => 'Mein Wunschzettel soll von allen gesucht und angesehen werden können',
 'MESSAGE_NEGATIVE_TOTAL'                                      => 'Negativer Betrag ist nicht erlaubt.',
 'MESSAGE_NEWSLETTER_CONGRATULATIONS'                          => 'Herzlichen Glückwunsch!',
@@ -320,7 +305,7 @@ $aLang = array(
 'MESSAGE_THANKYOU_FOR_SUBSCRIBING_NEWSLETTERS'                => 'Vielen Dank für das Abonnement unseres Newsletters.',
 'MESSAGE_UNAVAILABLE_SHIPPING_METHOD'                         => 'Die von Ihnen gewählte Versandart ist nicht mehr verfügbar. Bitte wählen Sie eine andere Versandart aus!',
 'MESSAGE_VERIFY_YOUR_EMAIL'                                   => 'Bitte kontrollieren Sie Ihre E-Mail-Adresse!',
-'MESSAGE_WELCOME_REGISTERED_USER'                             => 'Herzlich willkommen als registriertes Mitglied!',
+'MESSAGE_WELCOME_REGISTERED_USER'                             => 'Herzlich willkommen als registrierter Kunde!',
 'MESSAGE_WE_WILL_INFORM_YOU'                                  => 'Sollte etwas nicht lieferbar sein, werden wir Sie sofort informieren.',
 'MESSAGE_WRONG_VERIFICATION_CODE'                             => 'Der Prüfcode, den Sie eingegeben haben, ist nicht korrekt. Bitte versuchen Sie es erneut!',
 'MESSAGE_YOU_RECEIVED_ORDER_CONFIRM'                          => 'Sie haben bereits eine Bestellbestätigung per E-Mail erhalten.',
@@ -366,7 +351,7 @@ $aLang = array(
 'NO_ITEMS_FOUND'                                              => 'Leider keine Artikel gefunden.',
 'NO_LISTMANIA_LIST_FOUND'                                     => 'Keine Lieblingslisten gefunden',
 'NO_RATINGS'                                                  => 'Keine Bewertungen',
-'NO_REVIEW_AVAILABLE'                                         => 'Es liegen keine Kommentare zu diesem Artikel vor.',
+'NO_REVIEW_AVAILABLE'                                         => 'Es liegen keine Bewertungen zu diesem Artikel vor.',
 'NUMBER'                                                      => 'Nummer',
 'NUMBER_2'                                                    => 'Nr.',
 'OF'                                                          => 'VON',
@@ -385,7 +370,7 @@ $aLang = array(
 'BRAND'                                                       => 'Marke',
 'OUR_BRANDS'                                                  => 'Unsere Marken',
 'OUR_REGULAR_PRICE'                                           => '(Unser regulärer Preis)',
-'OXID_ESALES_URL'                                             => 'http://www.oxid-esales.com',
+'OXID_ESALES_URL'                                             => 'https://www.oxid-esales.com',
 'OXID_ESALES_URL_TITLE'                                       => 'Shopsoftware von OXID eSales',
 'PAGE'                                                        => 'Seite',
 'PASSWORD'                                                    => 'Passwort',
@@ -459,7 +444,7 @@ $aLang = array(
 'REVIEW_YOUR_ORDER'                                           => 'Bitte Bestellung kontrollieren!',
 'ROOT_CATEGORY_CHANGED'                                       => 'Hauptkategorie verändert',
 'SAVE'                                                        => 'Speichern',
-'SAVE_RATING_AND_REVIEW'                                      => 'Bewertung und Kommentar speichern',
+'SAVE_RATING_AND_REVIEW'                                      => 'Bewertung und Sterne-Rating speichern',
 'SEARCH'                                                      => 'Suche',
 'SEARCH_FOR_LISTS'                                            => 'Suche nach weiteren Listen',
 'SEARCH_FOR_PRODUCTS_CATEGORY_VENDOR'                         => 'Artikel aus Suche nach "%s" <TAG_CATEGORY> <TAG_VENDOR>',
@@ -559,8 +544,8 @@ $aLang = array(
 'WRAPPING_DESCRIPTION'                                        => 'Wir verpacken gern Ihr Geschenk oder legen eine Karte mit Ihrer persönlichen Nachricht bei.',
 'WRAPPING_NET'                                                => 'Geschenkverpackung/Grußkarte (netto)',
 'WRITES'                                                      => 'schreibt',
-'WRITE_PRODUCT_REVIEW'                                        => 'Einen Kommentar schreiben',
-'WRITE_REVIEW'                                                => 'Einen Kommentar schreiben',
+'WRITE_PRODUCT_REVIEW'                                        => 'Artikel bewerten',
+'WRITE_REVIEW'                                                => 'Eine Bewertung schreiben.',
 'WRITE_REVIEW_2'                                              => 'Bewerten Sie unseren Shop!',
 'YES'                                                         => 'Ja',
 'YOUR_EMAIL_ADDRESS'                                          => 'Ihre E-Mail-Adresse',
@@ -703,6 +688,10 @@ $aLang = array(
 'BASKET_TOTAL_PLUS_PROPORTIONAL_VAT'                          => 'plus MwSt. (anteilig berechnet)',
 'PROPORTIONALLY_CALCULATED'                                   => 'Anteilig berechnet',
 'PRICE_FROM'                                                  => 'ab',
+'PAGE_DETAILS_THANKYOUMESSAGE1'                               => 'Vielen Dank für Ihre Nachricht an',
+'PAGE_DETAILS_THANKYOUMESSAGE2'                               => '.',
+'PAGE_DETAILS_THANKYOUMESSAGE3'                               => 'Sie bekommen eine Nachricht von uns sobald der Preis unter',
+'PAGE_DETAILS_THANKYOUMESSAGE4'                               => 'fällt.',
 'PAGE_TITLE_BASKET'                                           => 'Warenkorb',
 'PAGE_TITLE_USER'                                             => 'Lieferadresse',
 'PAGE_TITLE_PAYMENT'                                          => 'Versand & Zahlungsart ',
@@ -749,6 +738,8 @@ $aLang = array(
 'SERVICES'                                                    => 'Service',
 'FORM_FIELDSET_USER_SHIPPING_ADDITIONALINFO2_TOOLTIP'         => '', // this is specifically for DHL
 'FORM_FIELDSET_USER_BILLING_ADDITIONALINFO_TOOLTIP'           => '', // this is specifically for DHL
+'FORM_SUGGEST_MESSAGE1'                                       => 'Hallo, Heute habe ich den interessanten Shop',
+'FORM_SUGGEST_MESSAGE2'                                       => 'für dich gefunden. Einfach auf den Link unten klicken, und du gelangst direkt zum Shop.',
 'SHOP_SUGGEST_MESSAGE'                                        => 'Hallo, heute habe ich den interessanten Shop %s für Dich gefunden. Einfach auf den Link unten klicken und Du gelangst direkt zum Shop.',
 'SHOP_SUGGEST_BUY_FOR_ME'                                     => 'Hallo, ich habe mir hier bei %s einen Wunschzettel angelegt. Es wäre toll, wenn Du mir davon etwas kaufen könntest.',
 'GIFT_REGISTRY_SENT_SUCCESSFULLY'                             => 'Ihr Wunschzettel wurde erfolgreich an %s verschickt.',
@@ -772,4 +763,5 @@ $aLang = array(
 'INFO_ABOUT_COOKIES'                                          => 'Information über Cookies',
 'PARTNERS'                                                    => 'Partner',
 
-);
+'MY_REVIEWS'                                                  => 'Meine Bewertungen',
+];

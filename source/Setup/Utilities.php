@@ -1,35 +1,37 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Setup;
+namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
-use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+
+use OxidEsales\DatabaseViewsGenerator\ViewsGenerator;
+use \OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
+use \OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use \OxidEsales\Facts\Facts;
+use \OxidEsales\Eshop\Core\Edition\EditionSelector;
+use \OxidEsales\DoctrineMigrationWrapper\Migrations;
+use OxidEsales\DoctrineMigrationWrapper\MigrationsBuilder;
+use OxidEsales\DemoDataInstaller\DemoDataInstallerBuilder;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
  * Setup utilities class
  */
 class Utilities extends Core
 {
+    const CONFIG_FILE_NAME = 'config.inc.php';
+
+    const DEMODATA_PACKAGE_NAME = 'oxideshop-demodata-%s';
+
+    const DEMODATA_PACKAGE_SOURCE_DIRECTORY = 'src';
+
+    const DEMODATA_SQL_FILENAME = 'demodata.sql';
+    const LICENSE_TEXT_FILENAME = "lizenz.txt";
+
     /**
      * Unable to find file
      *
@@ -58,46 +60,6 @@ class Utilities extends Core
      */
     protected $_sEmailTpl = "/^([-!#\$%&'*+.\/0-9=?A-Z^_`a-z{|}~\177])+@([-!#\$%&'*+\/0-9=?A-Z^_`a-z{|}~\177]+\\.)+[a-zA-Z]{2,6}\$/i";
 
-    /**
-     * Converts given data array from iso-8859-15 to utf-8
-     *
-     * @param array $aData data to convert
-     *
-     * @return array
-     */
-    public function convertToUtf8($aData)
-    {
-        if (is_array($aData)) {
-            $aKeys = array_keys($aData);
-            $aValues = array_values($aData);
-
-            //converting keys
-            if (count($aData) > 1) {
-                foreach ($aKeys as $sKeyIndex => $sKeyValue) {
-                    if (is_string($sKeyValue)) {
-                        $aKeys[$sKeyIndex] = iconv('iso-8859-15', 'utf-8', $sKeyValue);
-                    }
-                }
-
-                $aData = array_combine($aKeys, $aValues);
-
-                //converting values
-                foreach ($aData as $sKey => $sValue) {
-                    if (is_array($sValue)) {
-                        $this->convertToUtf8($sValue);
-                    }
-
-                    if (is_string($sValue)) {
-                        $aData[$sKey] = iconv('iso-8859-15', 'utf-8', $sValue);
-                    }
-                }
-            }
-        } else {
-            $aData = iconv('iso-8859-15', 'utf-8', $aData);
-        }
-
-        return $aData;
-    }
 
     /**
      * Generates unique id
@@ -120,7 +82,7 @@ class Utilities extends Core
      *
      * @return bool
      */
-    public function removeDir($sPath, $blDeleteSuccess, $iMode = 0, $aSkipFiles = array(), $aSkipFolders = array())
+    public function removeDir($sPath, $blDeleteSuccess, $iMode = 0, $aSkipFiles = [], $aSkipFolders = [])
     {
 
         if (is_file($sPath) || is_dir($sPath)) {
@@ -157,7 +119,7 @@ class Utilities extends Core
     /**
      * Extracts install path
      *
-     * @param string $aPath path info array
+     * @param array $aPath path info array
      *
      * @return string
      */
@@ -210,42 +172,60 @@ class Utilities extends Core
     }
 
     /**
-     * Updates config.inc.php file contents
+     * Updates config.inc.php file contents.
      *
-     * @param array $aParams paths parameters
+     * @param array $parameters Configuration parameters as submitted by the user
      *
-     * @throws Exception exception is thrown is file cant be open for reading or can not be written
+     * @throws Exception File can't be found, opened for reading or written.
      */
-    public function updateConfigFile($aParams)
+    public function updateConfigFile($parameters)
     {
-        $sConfPath = $aParams['sShopDir'] . "/config.inc.php";
+        $configFile = '';
+        $language = $this->getInstance("Language");
 
-        $oLang = $this->getInstance("Language");
+        if (isset($parameters['sShopDir'])) {
+            $configFile = $parameters['sShopDir'] . "/config.inc.php";
+        }
+        $this->handleMissingConfigFileException($configFile);
 
         clearstatcache();
-        @chmod($sConfPath, getDefaultFileMode());
-        if (($fp = fopen($sConfPath, "r"))) {
-            $sConfFile = fread($fp, filesize($sConfPath));
-            fclose($fp);
-        } else {
-            throw new Exception(sprintf($oLang->getText('ERROR_COULD_NOT_OPEN_CONFIG_FILE'), $sConfPath));
+        // Make config file writable, as it may be write protected
+        @chmod($configFile, getDefaultFileMode());
+        if (!$configFileContent = file_get_contents($configFile)) {
+            throw new Exception(sprintf($language->getText('ERROR_COULD_NOT_OPEN_CONFIG_FILE'), $configFile));
         }
 
         // overwriting settings
-        foreach ($aParams as $sParamName => $sParamValue) {
-            // non integer type variables must be surrounded by quotes
-            if ($sParamName[0] != 'i') {
-                $sParamValue = "'{$sParamValue}'";
-            }
-            $sConfFile = preg_replace("/(this->{$sParamName}).*'<.*>'.*;/", "\\1 = " . $sParamValue . ";", $sConfFile);
+        foreach ($parameters as $configOption => $value) {
+            $search = ["\'", "'" ];
+            $replace = ["\\\'", "\'"];
+            $escapedValue = str_replace($search, $replace, $value);
+            $configFileContent = str_replace("<{$configOption}>", $escapedValue, $configFileContent);
         }
 
-        if (($fp = fopen($sConfPath, "w"))) {
-            fwrite($fp, $sConfFile);
-            fclose($fp);
-            @chmod($sConfPath, getDefaultConfigFileMode());
-        } else {
-            throw new Exception(sprintf($oLang->getText('ERROR_CONFIG_FILE_IS_NOT_WRITABLE'), $aParams['sShopDir']));
+        if (!file_put_contents($configFile, $configFileContent)) {
+            throw new Exception(sprintf($language->getText('ERROR_CONFIG_FILE_IS_NOT_WRITABLE'), $configFile));
+        }
+        // Make config file read-only, this is our recomnedation for config.inc.php
+        @chmod($configFile, getDefaultConfigFileMode());
+    }
+
+    /**
+     * Throws an exception in case config file is missing.
+     *
+     * This is necessary to suppress PHP warnings during Setup. With the help of exception this problem is
+     * caught and displayed properly.
+     *
+     * @param string $pathToConfigFile File path to eShop configuration file.
+     *
+     * @throws Exception Config file is missing.
+     */
+    private function handleMissingConfigFileException($pathToConfigFile)
+    {
+        if (!file_exists($pathToConfigFile)) {
+            $language = $this->getLanguageInstance();
+
+            throw new Exception(sprintf($language->getText('ERROR_COULD_NOT_OPEN_CONFIG_FILE'), $pathToConfigFile));
         }
     }
 
@@ -254,10 +234,12 @@ class Utilities extends Core
      *
      * @param array  $aParams    various setup parameters
      * @param string $sSubFolder in case you need to update non default, but e.g. admin file, you must add its folder
+     *
+     * @throws Exception when .htaccess file is not accessible/readable.
      */
     public function updateHtaccessFile($aParams, $sSubFolder = "")
     {
-        /** @var Language $oLang */
+        /** @var \OxidEsales\EshopCommunity\Setup\Language $oLang */
         $oLang = $this->getInstance("Language");
 
         // preparing rewrite base param
@@ -296,6 +278,27 @@ class Utilities extends Core
             // error ? strange !?
             throw new Exception(sprintf($oLang->getText('ERROR_COULD_NOT_WRITE_TO_FILE'), $sHtaccessPath), Utilities::ERROR_COULD_NOT_WRITE_TO_FILE);
         }
+    }
+
+    /**
+     * Returns true if htaccess file can be updated by setup process.
+     *
+     * Functionality is tested via:
+     *   `Acceptance/Frontend/ShopSetUpTest.php::testInstallShopCantContinueDueToHtaccessProblem`
+     *
+     * @return bool
+     */
+    public function canHtaccessFileBeUpdated()
+    {
+        try {
+            $defaultPathParameters = $this->getDefaultPathParams();
+            $defaultPathParameters['sBaseUrlPath'] = $this->extractRewriteBase($defaultPathParameters['sShopURL']);
+            $this->updateHtaccessFile($defaultPathParameters);
+        } catch (Exception $exception) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -429,5 +432,202 @@ class Utilities extends Core
     public function isValidEmail($sEmail)
     {
         return preg_match($this->_sEmailTpl, $sEmail) != 0;
+    }
+
+    /**
+     * Calls external database views regeneration command.
+     *
+     * @return bool Was the call a success?
+     */
+    public function executeExternalRegenerateViewsCommand()
+    {
+        $ViewsGenerator = new ViewsGenerator();
+
+        return $ViewsGenerator->generate();
+    }
+
+    /**
+     * Calls external database migration command.
+     *
+     * @param ConsoleOutput $output Add a possibility to provide a custom output handler.
+     * @param Facts|null    $facts  A possible facts mock
+     */
+    public function executeExternalDatabaseMigrationCommand(ConsoleOutput $output = null, Facts $facts = null)
+    {
+        $migrations = $this->createMigrations($facts);
+        $migrations->setOutput($output);
+
+        $command = Migrations::MIGRATE_COMMAND;
+
+        $migrations->execute($command);
+    }
+
+    /**
+     * Calls external demodata assets install command.
+     *
+     * @return int Error code of the install command.
+     */
+    public function executeExternalDemodataAssetsInstallCommand()
+    {
+        $demoDataInstaller = $this->createDemoDataInstaller();
+
+        return $demoDataInstaller->execute();
+    }
+
+    /**
+     * Return path to composer vendor directory.
+     *
+     * @return string
+     */
+    private function getVendorDirectory()
+    {
+        return VENDOR_PATH;
+    }
+
+    /**
+     * Check if database is up and running
+     *
+     * @param  Database $database
+     * @return bool
+     */
+    public function checkDbExists($database)
+    {
+        try {
+            $databaseExists = true;
+            $database->execSql("select * from oxconfig");
+        } catch (Exception $exception) {
+            $databaseExists = false;
+        }
+
+        return $databaseExists;
+    }
+
+    /**
+     * Get specific edition sql directory
+     *
+     * @param null|string $edition
+     * @return string
+     */
+    public function getSqlDirectory($edition = null)
+    {
+        $editionPathSelector = $this->getEditionPathProvider($edition);
+        return $editionPathSelector->getDatabaseSqlDirectory();
+    }
+
+    /**
+     * Get setup directory
+     *
+     * @return string
+     */
+    public function getSetupDirectory()
+    {
+        $editionPathSelector = $this->getEditionPathProvider();
+        return $editionPathSelector->getSetupDirectory();
+    }
+
+    /**
+     * @param string $edition
+     * @return EditionPathProvider
+     */
+    private function getEditionPathProvider($edition = null)
+    {
+        $editionPathSelector = new EditionRootPathProvider(new EditionSelector($edition));
+        return new EditionPathProvider($editionPathSelector);
+    }
+
+    /**
+     * Check if demodata package is installed.
+     *
+     * @return bool
+     */
+    public function isDemodataPrepared()
+    {
+        $demodataSqlFile = $this->getActiveEditionDemodataPackageSqlFilePath();
+        return file_exists($demodataSqlFile) ? true : false;
+    }
+
+    /**
+     * Return full path to `demodata.sql` file of demodata package based on current eShop edition.
+     *
+     * @return string
+     */
+    public function getActiveEditionDemodataPackageSqlFilePath()
+    {
+        return implode(
+            DIRECTORY_SEPARATOR,
+            [
+                $this->getActiveEditionDemodataPackagePath(),
+                self::DEMODATA_PACKAGE_SOURCE_DIRECTORY,
+                self::DEMODATA_SQL_FILENAME,
+            ]
+        );
+    }
+
+    /**
+     * Return full path to demodata package based on current eShop edition.
+     *
+     * @return string
+     */
+    public function getActiveEditionDemodataPackagePath()
+    {
+        $facts = new Facts();
+
+        return $this->getVendorDirectory()
+            . EditionRootPathProvider::EDITIONS_DIRECTORY
+            . DIRECTORY_SEPARATOR
+            . sprintf(self::DEMODATA_PACKAGE_NAME, strtolower($facts->getEdition()));
+    }
+
+    /**
+     * Returns the contents of license agreement in requested language.
+     *
+     * @param string $languageId
+     * @return string
+     */
+    public function getLicenseContent($languageId)
+    {
+        $licensePathElements = [
+            $this->getSetupDirectory(),
+            ucfirst($languageId),
+            self::LICENSE_TEXT_FILENAME
+        ];
+        $licensePath = implode(DIRECTORY_SEPARATOR, $licensePathElements);
+
+        $licenseContent = $this->getFileContents($licensePath);
+
+        return $licenseContent;
+    }
+
+    /**
+     * Removes any ANSI control codes from command output.
+     *
+     * @param string $outputWithAnsiControlCodes
+     * @return string
+     */
+    public static function stripAnsiControlCodes($outputWithAnsiControlCodes)
+    {
+        return preg_replace('/\x1b(\[|\(|\))[;?0-9]*[0-9A-Za-z]/', "", $outputWithAnsiControlCodes);
+    }
+
+    /**
+     * @param Facts $facts The facts object to use for the creation of the migrations.
+     *
+     * @return Migrations
+     */
+    protected function createMigrations(Facts $facts = null)
+    {
+        $migrationsBuilder = new MigrationsBuilder();
+
+        return $migrationsBuilder->build($facts);
+    }
+
+    /**
+     * @return \OxidEsales\DemoDataInstaller\DemoDataInstaller
+     */
+    protected function createDemoDataInstaller()
+    {
+        $demoDataInstallerBuilder = new DemoDataInstallerBuilder();
+
+        return $demoDataInstallerBuilder->build();
     }
 }

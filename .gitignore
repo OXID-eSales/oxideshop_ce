@@ -32,6 +32,10 @@
 # IDE
 /.idea/
 /.phpstorm-oxid.meta.php
+/.ide-helper.php
 
 # OS
 .DS_Store
+
+# DI cache
+/source/Internal/Application/containercache.php

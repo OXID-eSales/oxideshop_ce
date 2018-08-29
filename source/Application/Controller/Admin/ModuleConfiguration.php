@@ -1,30 +1,12 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxConfig;
-use oxRegistry;
-use oxException;
+use OxidEsales\Eshop\Core\Registry as EshopRegistry;
 
 /**
  * Admin article main deliveryset manager.
@@ -32,7 +14,7 @@ use oxException;
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling -> Main Sets.
  */
-class ModuleConfiguration extends \Shop_Config
+class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
     /** @var string Template name. */
     protected $_sModule = 'shop_config.tpl';
@@ -56,7 +38,7 @@ class ModuleConfiguration extends \Shop_Config
     {
         $sModuleId = $this->_sModuleId = $this->getEditObjectId();
 
-        $oModule = oxNew('oxModule');
+        $oModule = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
 
         if ($sModuleId && $oModule->load($sModuleId)) {
             try {
@@ -69,12 +51,12 @@ class ModuleConfiguration extends \Shop_Config
                     $this->_aViewData[$sParam] = $aDbVariables['vars'][$sType];
                     $iCount += count($aDbVariables['vars'][$sType]);
                 }
-            } catch (oxException $oEx) {
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
-                $oEx->debugOut();
+            } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
+                EshopRegistry::getUtilsView()->addErrorToDisplay($exception);
+                EshopRegistry::getLogger()->error($exception->getMessage(), [$exception]);
             }
         } else {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay(new oxException('EXCEPTION_MODULE_NOT_LOADED'));
+            EshopRegistry::getUtilsView()->addErrorToDisplay(new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_MODULE_NOT_LOADED'));
         }
 
         $this->_aViewData["oModule"] = $oModule;
@@ -89,7 +71,7 @@ class ModuleConfiguration extends \Shop_Config
      */
     protected function _getModuleForConfigVars()
     {
-        return oxConfig::OXMODULE_MODULE_PREFIX . $this->_sModuleId;
+        return \OxidEsales\Eshop\Core\Config::OXMODULE_MODULE_PREFIX . $this->_sModuleId;
     }
 
     /**
@@ -107,16 +89,16 @@ class ModuleConfiguration extends \Shop_Config
     {
         $oConfig = $this->getConfig();
 
-        $aConfVars = array(
-            "bool"     => array(),
-            "str"      => array(),
-            "arr"      => array(),
-            "aarr"     => array(),
-            "select"   => array(),
-            "password" => array(),
-        );
-        $aVarConstraints = array();
-        $aGrouping = array();
+        $aConfVars = [
+            "bool"     => [],
+            "str"      => [],
+            "arr"      => [],
+            "aarr"     => [],
+            "select"   => [],
+            "password" => [],
+        ];
+        $aVarConstraints = [];
+        $aGrouping = [];
 
         $aDbVariables = $this->loadConfVars($oConfig->getShopId(), $this->_getModuleForConfigVars());
 
@@ -159,7 +141,7 @@ class ModuleConfiguration extends \Shop_Config
                 $aVarConstraints[$sName] = $this->_parseConstraint($sType, $sConstraints);
                 if ($sGroup) {
                     if (!isset($aGrouping[$sGroup])) {
-                        $aGrouping[$sGroup] = array($sName => $sType);
+                        $aGrouping[$sGroup] = [$sName => $sType];
                     } else {
                         $aGrouping[$sGroup][$sName] = $sType;
                     }
@@ -167,11 +149,11 @@ class ModuleConfiguration extends \Shop_Config
             }
         }
 
-        return array(
+        return [
             'vars'        => $aConfVars,
             'constraints' => $aVarConstraints,
             'grouping'    => $aGrouping,
-        );
+        ];
     }
 
     /**

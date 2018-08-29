@@ -1,39 +1,22 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core;
-
-use oxRegistry;
+namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * CURL request handler.
  * Handles CURL calls
- *
  */
-
 class Curl
 {
     /** Curl option for setting the timeout of whole execution process. */
     const EXECUTION_TIMEOUT_OPTION = 'CURLOPT_TIMEOUT';
+
+    /** Curl option for setting the timeout for connect. */
+    const CONNECT_TIMEOUT_OPTION = 'CURLOPT_CONNECTTIMEOUT';
 
     /**
      * Curl instance.
@@ -96,7 +79,7 @@ class Curl
      *
      * @var array
      */
-    protected $_aOptions = array('CURLOPT_RETURNTRANSFER' => 1);
+    protected $_aOptions = ['CURLOPT_RETURNTRANSFER' => 1];
 
     /**
      * Request HTTP status call code.
@@ -211,7 +194,7 @@ class Curl
         if (is_null($header) && $this->getMethod() == "POST") {
             $host = $this->getHost();
 
-            $header = array();
+            $header = [];
             $header[] = 'POST /cgi-bin/webscr HTTP/1.1';
             $header[] = 'Content-Type: application/x-www-form-urlencoded';
             if (isset($host)) {
@@ -268,10 +251,10 @@ class Curl
     {
         if (strpos($name, 'CURLOPT_') !== 0 || !defined($constant = strtoupper($name))) {
             /**
-             * @var oxException $exception
+             * @var \OxidEsales\Eshop\Core\Exception\StandardException $exception
              */
-            $exception = oxNew('oxException');
-            $lang = oxRegistry::getLang();
+            $exception = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
+            $lang = \OxidEsales\Eshop\Core\Registry::getLang();
             $exception->setMessage(sprintf($lang->translateString('EXCEPTION_NOT_VALID_CURL_CONSTANT', $lang->getTplLanguage()), $name));
             throw $exception;
         }
@@ -309,10 +292,10 @@ class Curl
 
         if ($curlErrorNumber) {
             /**
-             * @var oxException $exception
+             * @var \OxidEsales\Eshop\Core\Exception\StandardException $exception
              */
-            $exception = oxNew('oxException');
-            $lang = oxRegistry::getLang();
+            $exception = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
+            $lang = \OxidEsales\Eshop\Core\Registry::getLang();
             $exception->setMessage(sprintf($lang->translateString('EXCEPTION_CURL_ERROR', $lang->getTplLanguage()), $curlErrorNumber));
             throw $exception;
         }

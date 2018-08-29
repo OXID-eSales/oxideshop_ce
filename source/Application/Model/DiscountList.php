@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
 
@@ -29,9 +13,8 @@ use oxDb;
  * Organizes list of discount objects.
  *
  */
-class DiscountList extends \oxList
+class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
-
     /**
      * Discount user id
      *
@@ -67,7 +50,7 @@ class DiscountList extends \oxList
      * For iterating through the list, use getArray() on the list,
      * as iterating on object itself can cause concurrency problems.
      *
-     * @param oxuser $oUser user object (optional)
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser user object (optional)
      *
      * @return array
      */
@@ -93,7 +76,7 @@ class DiscountList extends \oxList
     /**
      * Returns user country id for for discount selection
      *
-     * @param oxuser $oUser oxuser object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser oxuser object
      *
      * @return string
      */
@@ -118,7 +101,7 @@ class DiscountList extends \oxList
     /**
      * Creates discount list filter SQL to load current state discount list
      *
-     * @param oxuser $oUser user object
+     * @param \OxidEsales\Eshop\Application\Model\User $oUser user object
      *
      * @return string
      */
@@ -135,11 +118,10 @@ class DiscountList extends \oxList
         $sUserId = null;
         $sGroupIds = null;
         $sCountryId = $this->getCountryId($oUser);
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         // checking for current session user which gives additional restrictions for user itself, users group and country
         if ($oUser) {
-
             // user ID
             $sUserId = $oUser->getId();
 
@@ -181,14 +163,14 @@ class DiscountList extends \oxList
     /**
      * Returns array of discounts that can be globally (transparently) applied
      *
-     * @param oxarticle $oArticle article object
-     * @param oxuser $oUser    oxuser object (optional)
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
+     * @param \OxidEsales\Eshop\Application\Model\User    $oUser    oxuser object (optional)
      *
      * @return array
      */
     public function getArticleDiscounts($oArticle, $oUser = null)
     {
-        $aList = array();
+        $aList = [];
         $aDiscList = $this->_getList($oUser)->getArray();
         foreach ($aDiscList as $oDiscount) {
             if ($oDiscount->isForArticle($oArticle)) {
@@ -202,17 +184,17 @@ class DiscountList extends \oxList
     /**
      * Returns array of discounts that can be applied for individual basket item
      *
-     * @param mixed    $oArticle article object or article id (according to needs)
-     * @param oxbasket $oBasket  array of basket items containing article id, amount and price
-     * @param oxuser   $oUser    user object (optional)
+     * @param mixed                                      $oArticle article object or article id (according to needs)
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket  array of basket items containing article id, amount and price
+     * @param \OxidEsales\Eshop\Application\Model\User   $oUser    user object (optional)
      *
      * @return array
      */
     public function getBasketItemDiscounts($oArticle, $oBasket, $oUser = null)
     {
-        $aList = array();
+        $aList = [];
         $aDiscList = $this->_getList($oUser)->getArray();
-        /** @var oxdiscount $oDiscount */
+        /** @var \OxidEsales\Eshop\Application\Model\Discount $oDiscount */
         foreach ($aDiscList as $oDiscount) {
             if ($oDiscount->isForBasketItem($oArticle) && $oDiscount->isForBasketAmount($oBasket)) {
                 $aList[$oDiscount->getId()] = $oDiscount;
@@ -225,16 +207,16 @@ class DiscountList extends \oxList
     /**
      * Returns array of discounts that can be applied for whole basket
      *
-     * @param oxbasket $oBasket basket
-     * @param oxuser   $oUser   user object (optional)
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket basket
+     * @param \OxidEsales\Eshop\Application\Model\User   $oUser   user object (optional)
      *
      * @return array
      */
     public function getBasketDiscounts($oBasket, $oUser = null)
     {
-        $aList = array();
+        $aList = [];
         $aDiscList = $this->_getList($oUser)->getArray();
-        /** @var oxdiscount $oDiscount */
+        /** @var \OxidEsales\Eshop\Application\Model\Discount $oDiscount */
         foreach ($aDiscList as $oDiscount) {
             if ($oDiscount->isForBasket($oBasket)) {
                 $aList[$oDiscount->getId()] = $oDiscount;
@@ -247,17 +229,17 @@ class DiscountList extends \oxList
     /**
      * Returns array of bundle discounts that can be applied for whole basket
      *
-     * @param oxarticle $oArticle article object
-     * @param oxbasket  $oBasket  basket
-     * @param oxuser    $oUser    user object (optional)
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
+     * @param \OxidEsales\Eshop\Application\Model\Basket  $oBasket  basket
+     * @param \OxidEsales\Eshop\Application\Model\User    $oUser    user object (optional)
      *
      * @return array
      */
     public function getBasketItemBundleDiscounts($oArticle, $oBasket, $oUser = null)
     {
-        $aList = array();
+        $aList = [];
         $aDiscList = $this->_getList($oUser)->getArray();
-        /** @var oxdiscount $oDiscount */
+        /** @var \OxidEsales\Eshop\Application\Model\Discount $oDiscount */
         foreach ($aDiscList as $oDiscount) {
             if ($oDiscount->isForBundleItem($oArticle, $oBasket) && $oDiscount->isForBasketAmount($oBasket)) {
                 $aList[$oDiscount->getId()] = $oDiscount;
@@ -270,16 +252,16 @@ class DiscountList extends \oxList
     /**
      * Returns array of basket bundle discounts
      *
-     * @param oxbasket $oBasket oxbasket object
-     * @param oxuser   $oUser   oxuser object (optional)
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket oxbasket object
+     * @param \OxidEsales\Eshop\Application\Model\User   $oUser   oxuser object (optional)
      *
      * @return array
      */
     public function getBasketBundleDiscounts($oBasket, $oUser = null)
     {
-        $aList = array();
+        $aList = [];
         $aDiscList = $this->_getList($oUser)->getArray();
-        /** @var oxdiscount $oDiscount */
+        /** @var \OxidEsales\Eshop\Application\Model\Discount $oDiscount */
         foreach ($aDiscList as $oDiscount) {
             if ($oDiscount->isForBundleBasket($oBasket)) {
                 $aList[$oDiscount->getId()] = $oDiscount;
@@ -300,7 +282,7 @@ class DiscountList extends \oxList
             $sViewName = getViewName('oxcategories');
             $sQ = "select 1 from {$sViewName} where {$sViewName}.oxactive = 1 and {$sViewName}.oxskipdiscounts = '1' ";
 
-            $this->_hasSkipDiscountCategories = (bool) oxDb::getDb()->getOne($sQ);
+            $this->_hasSkipDiscountCategories = (bool) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ);
         }
 
         return $this->_hasSkipDiscountCategories;

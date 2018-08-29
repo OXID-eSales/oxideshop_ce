@@ -1,30 +1,11 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Controller;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
-use oxActionList;
-use \oxUbase;
 use oxUBaseHelper;
-use oxUser;
 use \stdClass;
 use \oxField;
 use \exception;
@@ -253,15 +234,15 @@ class UBaseTest extends \OxidTestCase
     public function testGetManufacturerId()
     {
         // active manufacturer is not set
-        $oUBase = $this->getMock('oxubase', array('getActManufacturer'));
+        $oUBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getActManufacturer'));
         $oUBase->expects($this->once())->method('getActManufacturer')->will($this->returnValue(null));
         $this->assertFalse($oUBase->getManufacturerId());
 
         // active manufacturer was set
-        $oManufacturer = $this->getMock('oxmanufacturer', array('getId'));
+        $oManufacturer = $this->getMock(\OxidEsales\Eshop\Application\Model\Manufacturer::class, array('getId'));
         $oManufacturer->expects($this->once())->method('getId')->will($this->returnValue('someid'));
 
-        $oUBase = $this->getMock('oxubase', array('getActManufacturer'));
+        $oUBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getActManufacturer'));
         $oUBase->expects($this->once())->method('getActManufacturer')->will($this->returnValue($oManufacturer));
         $this->assertEquals('someid', $oUBase->getManufacturerId());
     }
@@ -378,14 +359,14 @@ class UBaseTest extends \OxidTestCase
      */
     public function testInitComponents()
     {
-        $oView = $this->getProxyClass('oxubase');
-        $oView->setNonPublicVar('_aComponentNames', array("oxcmp_lang" => false));
-        $oView->init();
+        $view = $this->getProxyClass('oxubase');
+        $view->setNonPublicVar('_aComponentNames', array("oxcmp_lang" => false));
+        $view->init();
 
-        $aComponents = $oView->getComponents();
+        $aComponents = $view->getComponents();
         $this->assertEquals(1, count($aComponents));
         $this->assertEquals('oxidesales\eshop\application\component\languagecomponent', $aComponents["oxcmp_lang"]->getThisAction());
-        $this->assertEquals("oxubaseproxy", $aComponents["oxcmp_lang"]->getParent()->getThisAction());
+        $this->assertEquals(strtolower(get_class($view)), $aComponents["oxcmp_lang"]->getParent()->getThisAction());
     }
 
     /*
@@ -393,15 +374,15 @@ class UBaseTest extends \OxidTestCase
      */
     public function testInitUserDefinedComponents()
     {
-        $oView = $this->getMock('oxubase', array("_getComponentNames"));
-        $oView->expects($this->once())->method('_getComponentNames')->will($this->returnValue(array("oxcmp_cur" => false, "oxcmp_lang" => false)));
-        $oView->init();
+        $view = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("_getComponentNames"));
+        $view->expects($this->once())->method('_getComponentNames')->will($this->returnValue(array("oxcmp_cur" => false, "oxcmp_lang" => false)));
+        $view->init();
 
-        $aComponents = $oView->getComponents();
+        $aComponents = $view->getComponents();
         $this->assertEquals(2, count($aComponents));
         $this->assertEquals('oxidesales\eshop\application\component\languagecomponent', $aComponents["oxcmp_lang"]->getThisAction());
         $this->assertEquals('oxidesales\eshop\application\component\currencycomponent', $aComponents["oxcmp_cur"]->getThisAction());
-        $this->assertEquals(strtolower(get_class($oView)), $aComponents["oxcmp_lang"]->getParent()->getThisAction());
+        $this->assertEquals(strtolower(get_class($view)), $aComponents["oxcmp_lang"]->getParent()->getThisAction());
     }
 
     /*
@@ -409,7 +390,7 @@ class UBaseTest extends \OxidTestCase
      */
     public function testIniOfComponent()
     {
-        $oView = $this->getMock("oxview", array('addGlobalParams'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('addGlobalParams'));
         $oView->expects($this->never())->method('addGlobalParams');
         $oView->setIsComponent(true);
         $oView->init();
@@ -421,7 +402,7 @@ class UBaseTest extends \OxidTestCase
     public function testRender()
     {
         $this->getConfig()->setConfigParam('blDisableNavBars', true);
-        $oView = $this->getMock('oxubase', array('getIsOrderStep'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getIsOrderStep'));
 
         $oView->expects($this->once())->method('getIsOrderStep')->will($this->returnValue(true));
 
@@ -623,7 +604,7 @@ class UBaseTest extends \OxidTestCase
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
         oxTestModules::addFunction("oxseoencoder", "getMetaData", '{return "xxx";}');
 
-        $oView = $this->getMock('oxubase', array('_prepareMetaDescription', '_getSeoObjectId'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_prepareMetaDescription', '_getSeoObjectId'));
         $oView->expects($this->never())->method('_prepareMetaDescription');
         $oView->expects($this->once())->method('_getSeoObjectId')->will($this->returnValue(1));
         $oView->setMetaDescription(null);
@@ -636,7 +617,7 @@ class UBaseTest extends \OxidTestCase
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
         oxTestModules::addFunction("oxseoencoder", "getMetaData", '{return "xxx";}');
 
-        $oView = $this->getMock('oxubase', array('_prepareMetaDescription', '_getSeoObjectId'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_prepareMetaDescription', '_getSeoObjectId'));
         $oView->expects($this->never())->method('_prepareMetaDescription');
         $oView->expects($this->once())->method('_getSeoObjectId')->will($this->returnValue(1));
         $oView->setMetaDescription(null);
@@ -867,7 +848,7 @@ class UBaseTest extends \OxidTestCase
         $this->setRequestParameter('mnid', 'testid');
         $oView = oxNew('oxubase');
         $oView->setClassName('testClass');
-        $myConfig = $this->getMock('oxconfig', array('getActiveView'));
+        $myConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getActiveView'));
         $myConfig->expects($this->once())
             ->method('getActiveView')
             ->will($this->returnValue($oView));
@@ -887,7 +868,7 @@ class UBaseTest extends \OxidTestCase
      */
     public function testAddGlobalParamsCallsSetNrOfArtPerPage()
     {
-        $oView = $this->getMock('oxubase', array('_setNrOfArtPerPage'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_setNrOfArtPerPage'));
         $oView->expects($this->once())->method('_setNrOfArtPerPage');
 
         $oView->addGlobalParams(new stdclass);
@@ -907,13 +888,13 @@ class UBaseTest extends \OxidTestCase
     public function testGetTitleSuffix()
     {
         $oShop = oxNew('oxShop');
-        $oShop->oxshops__oxtitlesuffix = $this->getMock('oxField', array('__get'));
+        $oShop->oxshops__oxtitlesuffix = $this->getMock(\OxidEsales\Eshop\Core\Field::class, array('__get'));
         $oShop->oxshops__oxtitlesuffix->expects($this->once())->method('__get')->will($this->returnValue('testsuffix'));
 
-        $oConfig = $this->getMock('oxconfig', array('getActiveShop'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getActiveShop'));
         $oConfig->expects($this->once())->method('getActiveShop')->will($this->returnValue($oShop));
 
-        $oView = $this->getMock('oxubase', array('getConfig'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getConfig'));
         $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
         $this->assertEquals('testsuffix', $oView->getTitleSuffix());
     }
@@ -922,20 +903,20 @@ class UBaseTest extends \OxidTestCase
     public function testGetTitlePrefix()
     {
         $oShop = oxNew('oxShop');
-        $oShop->oxshops__oxtitleprefix = $this->getMock('oxField', array('__get'));
+        $oShop->oxshops__oxtitleprefix = $this->getMock(\OxidEsales\Eshop\Core\Field::class, array('__get'));
         $oShop->oxshops__oxtitleprefix->expects($this->once())->method('__get')->will($this->returnValue('testsuffix'));
 
-        $oConfig = $this->getMock('oxconfig', array('getActiveShop'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getActiveShop'));
         $oConfig->expects($this->once())->method('getActiveShop')->will($this->returnValue($oShop));
 
-        $oView = $this->getMock('oxubase', array('getConfig'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getConfig'));
         $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
         $this->assertEquals('testsuffix', $oView->getTitlePrefix());
     }
 
     public function testGetSeoRequestParams()
     {
-        $oView = $this->getMock('oxubase', array('getClassName', 'getFncName'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getClassName', 'getFncName'));
         $oView->expects($this->once())->method('getClassName')->will($this->returnValue('testclass'));
         $oView->expects($this->once())->method('getFncName')->will($this->returnValue('testfnc'));
 
@@ -1029,7 +1010,7 @@ class UBaseTest extends \OxidTestCase
         $languageId = 2;
         $activePage = 10;
 
-        $baseView = $this->getMock('oxubase', array('getBaseLink', 'getActPage', '_addPageNrParam'));
+        $baseView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getBaseLink', 'getActPage', '_addPageNrParam'));
         $baseView->expects($this->once())->method('getActPage')->will($this->returnValue($activePage));
         $baseView->expects($this->once())->method('getBaseLink')->with($this->equalTo($languageId))->will($this->returnValue('link'));
         $baseView->expects($this->once())->method('_addPageNrParam')->with($this->equalTo('link'), $this->equalTo($activePage), $this->equalTo($languageId));
@@ -1041,13 +1022,13 @@ class UBaseTest extends \OxidTestCase
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blSeoMode', false);
 
-        $oV = $this->getMock('oxubase', array('_getRequestParams', 'getActPage'));
+        $oV = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_getRequestParams', 'getActPage'));
         $oV->expects($this->any())->method('_getRequestParams')->will($this->returnValue('req'));
         $oV->expects($this->once())->method('getActPage')->will($this->returnValue(false));
 
         $this->assertEquals($oConfig->getShopCurrentURL(0) . 'req', $oV->getLink());
 
-        $oV = $this->getMock('oxubase', array('_getRequestParams', 'getActPage', '_addPageNrParam'));
+        $oV = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_getRequestParams', 'getActPage', '_addPageNrParam'));
         $oV->expects($this->any())->method('_getRequestParams')->will($this->returnValue('req'));
         $oV->expects($this->once())->method('getActPage')->will($this->returnValue(16));
         $oV->expects($this->once())->method('_addPageNrParam')->with($this->equalTo($oConfig->getShopCurrentURL(0) . 'req&amp;lang=2', 16, 2))->will($this->returnValue('linkas'));
@@ -1060,7 +1041,7 @@ class UBaseTest extends \OxidTestCase
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blSeoMode', true);
 
-        $oV = $this->getMock('oxubase', array('_getRequestParams', '_getSubject'));
+        $oV = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_getRequestParams', '_getSubject'));
 
         $articleId = '1126';
         $sExp = "Geschenke/Bar-Equipment/Bar-Set-ABSINTH.html";
@@ -1085,7 +1066,7 @@ class UBaseTest extends \OxidTestCase
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blSeoMode', true);
 
-        $oV = $this->getMock('oxUBase', array('_getRequestParams', '_getSubject'));
+        $oV = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_getRequestParams', '_getSubject'));
 
         $articleId = '1964';
         $sVndExp = "Nach-Hersteller/Bush/Original-BUSH-Beach-Radio.html";
@@ -1112,7 +1093,7 @@ class UBaseTest extends \OxidTestCase
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blSeoMode', true);
 
-        $oV = $this->getMock('oxubase', array('_getRequestParams'));
+        $oV = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_getRequestParams'));
         $oV->expects($this->any())->method('_getRequestParams')->will($this->returnValue('req'));
 
         $this->assertEquals($oConfig->getShopCurrentURL(0) . 'req', $oV->getLink());
@@ -1125,7 +1106,7 @@ class UBaseTest extends \OxidTestCase
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blSeoMode', true);
 
-        $oV = $this->getMock('oxubase', array('_getRequestParams', '_getSeoRequestParams'));
+        $oV = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_getRequestParams', '_getSeoRequestParams'));
         $oV->expects($this->any())->method('_getRequestParams')->will($this->returnValue('cl=contact'));
         $oV->expects($this->any())->method('_getSeoRequestParams')->will($this->returnValue('cl=contact'));
 
@@ -1140,7 +1121,7 @@ class UBaseTest extends \OxidTestCase
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blSeoMode', false);
 
-        $oV = $this->getMock('oxubase', array('_getRequestParams'));
+        $oV = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_getRequestParams'));
         $oV->expects($this->any())->method('_getRequestParams')->will($this->returnValue('req'));
 
         $this->assertEquals($oConfig->getShopCurrentURL(0) . 'req', $oV->getLink());
@@ -1199,11 +1180,11 @@ class UBaseTest extends \OxidTestCase
      */
     public function testGetTitle()
     {
-        $oActiveView = $this->getMock('oxubase', array('getClassName'));
+        $oActiveView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getClassName'));
         $oActiveView->expects($this->once())->method('getClassName')->will($this->returnValue('links'));
-        $oConfig = $this->getMock('oxconfig', array('getActiveView'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getActiveView'));
         $oConfig->expects($this->once())->method('getActiveView')->will($this->returnValue($oActiveView));
-        $oView = $this->getMock('oxubase', array('getConfig'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getConfig'));
         $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
         $this->assertEquals('Links', $oView->getTitle());
     }
@@ -1239,7 +1220,7 @@ class UBaseTest extends \OxidTestCase
 
     public function testGetRequestParams()
     {
-        $oView = $this->getMock('oxubase', array('getClassName', 'getFncName'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getClassName', 'getFncName'));
         $oView->expects($this->any())->method('getClassName')->will($this->returnValue('testclass'));
         $oView->expects($this->any())->method('getFncName')->will($this->returnValue('testfunc'));
         $this->setRequestParameter('cnid', 'catid');
@@ -1264,7 +1245,7 @@ class UBaseTest extends \OxidTestCase
 
     public function testGetRequestParamsSkipFnc()
     {
-        $oView = $this->getMock('oxubase', array('getClassName', 'getFncName'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getClassName', 'getFncName'));
         $oView->expects($this->any())->method('getClassName')->will($this->returnValue('testclass'));
         $oView->expects($this->any())->method('getFncName')->will($this->returnValue('tobasket'));
         $this->setRequestParameter('cnid', 'catid');
@@ -1276,7 +1257,7 @@ class UBaseTest extends \OxidTestCase
 
     public function testGetRequestParamsSkipFnc2()
     {
-        $oView = $this->getMock('oxubase', array('getClassName', 'getFncName'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getClassName', 'getFncName'));
         $oView->expects($this->any())->method('getClassName')->will($this->returnValue('testclass'));
         $oView->expects($this->any())->method('getFncName')->will($this->returnValue('moveleft'));
         $this->setRequestParameter('cnid', 'catid');
@@ -1288,7 +1269,7 @@ class UBaseTest extends \OxidTestCase
 
     public function testGetRequestParamsWithoutPageNr()
     {
-        $oView = $this->getMock('oxubase', array('getClassName'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getClassName'));
         $oView->expects($this->any())->method('getClassName')->will($this->returnValue('testclass'));
         $this->setRequestParameter('cnid', 'catid');
         $this->setRequestParameter('pgNr', '2');
@@ -1375,7 +1356,7 @@ class UBaseTest extends \OxidTestCase
 
         oxTestModules::addFunction("oxUtils", "redirect", "{ \$aArgs = func_get_args(); throw new exception( \$aArgs[0] ); }");
 
-        $oUBase = $this->getMock('oxubase', array('_canRedirect', 'isAdmin'));
+        $oUBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_canRedirect', 'isAdmin'));
         $oUBase->expects($this->any())->method('_canRedirect')->will($this->returnValue(true));
         $oUBase->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
 
@@ -1404,7 +1385,7 @@ class UBaseTest extends \OxidTestCase
 
         oxTestModules::addFunction("oxUtils", "redirect", "{ \$aArgs = func_get_args(); throw new exception( \$aArgs[0] ); }");
 
-        $oUBase = $this->getMock('oxubase', array('_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex'));
+        $oUBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex'));
         $oUBase->expects($this->any())->method('_canRedirect')->will($this->returnValue(false));
         $oUBase->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $oUBase->expects($this->once())->method('_forceNoIndex');
@@ -1433,7 +1414,7 @@ class UBaseTest extends \OxidTestCase
 
         oxTestModules::addFunction("oxUtils", "redirect", "{ \$aArgs = func_get_args(); throw new exception( \$aArgs[0] ); }");
 
-        $oUBase = $this->getMock('oxubase', array('_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex', 'noIndex'));
+        $oUBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex', 'noIndex'));
         $oUBase->expects($this->any())->method('_canRedirect')->will($this->returnValue(false));
         $oUBase->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $oUBase->expects($this->never())->method('_forceNoIndex');
@@ -1459,15 +1440,15 @@ class UBaseTest extends \OxidTestCase
         $_SERVER["REQUEST_METHOD"] = 'GET';
         $_SERVER['REQUEST_URI'] = $sUri = 'index.php?param1=value1&param2=value2';
 
-        $utils = $this->getMock('oxUtils', array('redirect'));
+        $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('redirect'));
         $utils->expects($this->never())->method('redirect');
-        oxRegistry::set('oxUtils', $utils);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
-        $config = $this->getMock('oxConfig', array('isProductiveMode'));
+        $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isProductiveMode'));
         $config->expects($this->any())->method('isProductiveMode')->will($this->returnValue(1));
 
-        $userBase = $this->getMock('oxubase', array('_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex', 'getConfig'));
+        $userBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex', 'getConfig'));
         $userBase->expects($this->any())->method('_canRedirect')->will($this->returnValue(false));
         $userBase->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $userBase->expects($this->once())->method('_forceNoIndex');
@@ -1487,16 +1468,16 @@ class UBaseTest extends \OxidTestCase
         $_SERVER["REQUEST_METHOD"] = 'GET';
         $_SERVER['REQUEST_URI'] = $sUri = 'index.php?param1=value1&param2=value2';
 
-        $utils = $this->getMock('oxUtils', array('redirect'));
+        $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('redirect'));
         $utils->expects($this->never())->method('redirect');
-        oxRegistry::set('oxUtils', $utils);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
 
         /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
-        $config = $this->getMock('oxconfig', array('isProductiveMode'));
+        $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isProductiveMode'));
         $config->expects($this->any())->method('isProductiveMode')->will($this->returnValue(1));
         $config->setConfigParam('blSeoLogging', 1);
 
-        $oUBase = $this->getMock('oxubase', array('_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex', 'getConfig'));
+        $oUBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex', 'getConfig'));
         $oUBase->expects($this->any())->method('_canRedirect')->will($this->returnValue(false));
         $oUBase->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $oUBase->expects($this->once())->method('_forceNoIndex');
@@ -1515,7 +1496,7 @@ class UBaseTest extends \OxidTestCase
     // M71: Coupons should be considered in "Min order price" check
     public function testIsLowOrderPrice()
     {
-        $oBasket = $this->getMock('oxBasket', array('isBelowMinOrderPrice'));
+        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('isBelowMinOrderPrice'));
         $oBasket->expects($this->once())->method('isBelowMinOrderPrice')->will($this->returnValue(true));
 
         $oUBase = oxNew('oxUBase');
@@ -1532,7 +1513,7 @@ class UBaseTest extends \OxidTestCase
 
         $sMinOrderPrice = oxRegistry::getLang()->formatCurrency(40 * $oCur->rate);
 
-        $oUBase = $this->getMock("oxUBase", array("isLowOrderPrice"));
+        $oUBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("isLowOrderPrice"));
         $oUBase->expects($this->once())->method('isLowOrderPrice')->will($this->returnValue(true));
 
         $this->assertEquals($sMinOrderPrice, $oUBase->getMinOrderPrice());
@@ -1582,7 +1563,7 @@ class UBaseTest extends \OxidTestCase
     {
         $this->setRequestParameter('pgNr', '2');
         $this->setRequestParameter('lang', '1');
-        $oUBase = $this->getMock('oxubase', array("getClassName", "getFncName"));
+        $oUBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("getClassName", "getFncName"));
         $oUBase->expects($this->any())->method('getClassName')->will($this->returnValue("testclass"));
         $oUBase->expects($this->any())->method('getFncName')->will($this->returnValue("testfnc"));
 
@@ -1635,13 +1616,13 @@ class UBaseTest extends \OxidTestCase
      */
     public function testGetPromoFinishedList()
     {
-        $oList = $this->getMock("oxActionList", array("loadFinishedByCount"));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array("loadFinishedByCount"));
         $oList->expects($this->once())->method('loadFinishedByCount')->with($this->equalTo(2));
         oxTestModules::addModuleObject('oxActionList', $oList);
 
         $oView = oxNew('oxUBase');
 
-        $this->assertTrue($oView->getPromoFinishedList() instanceof oxActionList);
+        $this->assertTrue($oView->getPromoFinishedList() instanceof \OxidEsales\EshopCommunity\Application\Model\ActionList);
     }
 
     /**
@@ -1651,13 +1632,13 @@ class UBaseTest extends \OxidTestCase
      */
     public function testGetPromoCurrentList()
     {
-        $oList = $this->getMock("oxActionList", array("loadCurrent"));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array("loadCurrent"));
         $oList->expects($this->once())->method('loadCurrent');
         oxTestModules::addModuleObject('oxActionList', $oList);
 
         $oView = oxNew('oxUBase');
 
-        $this->assertTrue($oView->getPromoCurrentList() instanceof oxActionList);
+        $this->assertTrue($oView->getPromoCurrentList() instanceof \OxidEsales\EshopCommunity\Application\Model\ActionList);
     }
 
     /**
@@ -1667,13 +1648,13 @@ class UBaseTest extends \OxidTestCase
      */
     public function testGetPromoFutureList()
     {
-        $oList = $this->getMock("oxActionList", array("loadFutureByCount"));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array("loadFutureByCount"));
         $oList->expects($this->once())->method('loadFutureByCount')->with($this->equalTo(2));
         oxTestModules::addModuleObject('oxActionList', $oList);
 
         $oView = oxNew('oxUBase');
 
-        $this->assertTrue($oView->getPromoFutureList() instanceof oxActionList);
+        $this->assertTrue($oView->getPromoFutureList() instanceof \OxidEsales\EshopCommunity\Application\Model\ActionList);
     }
 
     /**
@@ -1683,11 +1664,11 @@ class UBaseTest extends \OxidTestCase
      */
     public function testGetShowPromotionList()
     {
-        $oList = $this->getMock("oxActionList", array("areAnyActivePromotions"));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array("areAnyActivePromotions"));
         $oList->expects($this->once())->method('areAnyActivePromotions')->will($this->returnValue(true));
         oxTestModules::addModuleObject('oxActionList', $oList);
 
-        $oView = $this->getMock("oxUBase", array("getPromoFinishedList", "getPromoCurrentList", "getPromoFutureList"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("getPromoFinishedList", "getPromoCurrentList", "getPromoFutureList"));
         $oView->expects($this->once())->method('getPromoFinishedList')->will($this->returnValue(1));
         $oView->expects($this->once())->method('getPromoCurrentList')->will($this->returnValue(1));
         $oView->expects($this->once())->method('getPromoFutureList')->will($this->returnValue(1));
@@ -1702,11 +1683,11 @@ class UBaseTest extends \OxidTestCase
      */
     public function testGetShowPromotionListPerformanceIfNoPromotionsActive()
     {
-        $oList = $this->getMock("oxActionList", array("areAnyActivePromotions"));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\ActionList::class, array("areAnyActivePromotions"));
         $oList->expects($this->once())->method('areAnyActivePromotions')->will($this->returnValue(false));
         oxTestModules::addModuleObject('oxActionList', $oList);
 
-        $oView = $this->getMock("oxUBase", array("getPromoFinishedList", "getPromoCurrentList", "getPromoFutureList"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("getPromoFinishedList", "getPromoCurrentList", "getPromoFutureList"));
         $oView->expects($this->never())->method('getPromoFinishedList');
         $oView->expects($this->never())->method('getPromoCurrentList');
         $oView->expects($this->never())->method('getPromoFutureList');
@@ -1906,7 +1887,7 @@ class UBaseTest extends \OxidTestCase
     {
         $oUser = oxNew('oxUser');
         $oUser->oxuser__oxusername = new oxField('testEmail');
-        $oUBase = $this->getMock("oxubase", array("getUser"));
+        $oUBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("getUser"));
         $oUBase->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
         $this->setRequestParameter('lgn_usr', false);
 
@@ -2161,10 +2142,10 @@ class UBaseTest extends \OxidTestCase
         $this->setRequestParameter('wishid', "testwishlist");
         oxTestModules::addFunction('oxuser', 'load', '{ return true; }');
 
-        $oView = $this->getMock("oxubase", array("getUser"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("getUser"));
         $oView->expects($this->once())->method('getUser')->will($this->returnValue(true));
 
-        $this->assertTrue($oView->getWishlistName() instanceof oxUser);
+        $this->assertTrue($oView->getWishlistName() instanceof \OxidEsales\EshopCommunity\Application\Model\User);
     }
 
     public function testGetWishlistNameIfNotLoggedIn()
@@ -2172,7 +2153,7 @@ class UBaseTest extends \OxidTestCase
         $this->setRequestParameter('wishid', "testwishlist");
         oxTestModules::addFunction('oxuser', 'load', '{ return true; }');
 
-        $oView = $this->getMock("oxubase", array("getUser"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("getUser"));
         $oView->expects($this->once())->method('getUser')->will($this->returnValue(false));
 
         $this->assertFalse($oView->getWishlistName());
@@ -2183,7 +2164,7 @@ class UBaseTest extends \OxidTestCase
         $this->setRequestParameter('wishid', null);
         oxTestModules::addFunction('oxuser', 'load', '{ return true; }');
 
-        $oView = $this->getMock("oxubase", array("getUser"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("getUser"));
         $oView->expects($this->once())->method('getUser')->will($this->returnValue(true));
 
         $this->assertFalse($oView->getWishlistName());
@@ -2193,7 +2174,7 @@ class UBaseTest extends \OxidTestCase
     {
         $this->setRequestParameter('wishid', "testwishlist");
 
-        $oView = $this->getMock("oxubase", array("getUser"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("getUser"));
         $oView->expects($this->once())->method('getUser')->will($this->returnValue(true));
 
         $this->assertFalse($oView->getWishlistName());
@@ -2248,11 +2229,7 @@ class UBaseTest extends \OxidTestCase
     {
         $this->getConfig()->setConfigParam('blShowNetPrice', true);
 
-        $oUser = $this->getMock("oxuser", array('getActiveCountry'));
-        $oUser->expects($this->once())->method('getActiveCountry')->will($this->returnValue(''));
-
-        $oView = $this->getMock('oxubase', array('getUser'));
-        $oView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
+        $oView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
         $this->assertFalse($oView->isVatIncluded());
     }
 
@@ -2296,10 +2273,10 @@ class UBaseTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("blShowNetPrice", false);
         $this->getConfig()->setConfigParam("bl_perfCalcVatOnlyForBasketOrder", false);
 
-        $oUser = $this->getMock("oxuser", array('getActiveCountry'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getActiveCountry'));
         $oUser->expects($this->once())->method('getActiveCountry')->will($this->returnValue(''));
 
-        $oView = $this->getMock('oxubase', array('getUser'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getUser'));
         $oView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
 
         $this->assertTrue($oView->isVatIncluded());
@@ -2318,10 +2295,10 @@ class UBaseTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("blShowNetPrice", false);
         $this->getConfig()->setConfigParam("bl_perfCalcVatOnlyForBasketOrder", false);
 
-        $oUser = $this->getMock("oxuser", array('getActiveCountry'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getActiveCountry'));
         $oUser->expects($this->once())->method('getActiveCountry')->will($this->returnValue('oxcountry_0'));
 
-        $oView = $this->getMock('oxubase', array('getUser'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getUser'));
         $oView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
 
         $this->assertTrue($oView->isVatIncluded());
@@ -2340,10 +2317,10 @@ class UBaseTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("blShowNetPrice", false);
         $this->getConfig()->setConfigParam("bl_perfCalcVatOnlyForBasketOrder", false);
 
-        $oUser = $this->getMock("oxuser", array('getActiveCountry'));
+        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getActiveCountry'));
         $oUser->expects($this->once())->method('getActiveCountry')->will($this->returnValue('oxcountry_1'));
 
-        $oView = $this->getMock('oxubase', array('getUser'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getUser'));
         $oView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
 
         $this->assertFalse($oView->isVatIncluded());
@@ -2389,7 +2366,7 @@ class UBaseTest extends \OxidTestCase
         $this->setConfigParam('blSeoLogging', $blSeoLogging);
         $this->setConfigParam('blProductive', $blProductive);
 
-        $oUBase = $this->getMock('oxubase', array('_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex'));
+        $oUBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex'));
         $oUBase->expects($this->any())->method('_canRedirect')->will($this->returnValue(false));
         $oUBase->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $oUBase->expects($this->once())->method('_forceNoIndex');
@@ -2434,7 +2411,7 @@ class UBaseTest extends \OxidTestCase
      */
     public function testGetPageTitle($aParts, $sTitle)
     {
-        $oUBase = $this->getMock('oxUBase', array('getTitlePrefix', 'getTitle', 'getTitleSuffix', 'getTitlePageSuffix'));
+        $oUBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getTitlePrefix', 'getTitle', 'getTitleSuffix', 'getTitlePageSuffix'));
         $oUBase->expects($this->any())->method('getTitlePrefix')->will($this->returnValue($aParts['prefix']));
         $oUBase->expects($this->any())->method('getTitle')->will($this->returnValue($aParts['title']));
         $oUBase->expects($this->any())->method('getTitleSuffix')->will($this->returnValue($aParts['suffix']));
@@ -2443,54 +2420,82 @@ class UBaseTest extends \OxidTestCase
         $this->assertEquals($sTitle, $oUBase->getPageTitle());
     }
 
+    public function providerGetUserSelectedSortingValidSorting()
+    {
+        return [
+            ['oxid', 'asc'],
+            ['oxid', 'desc'],
+            ['oxtitle', 'asc'],
+            ['notArticleColumn', 'asc'],
+        ];
+    }
+
     /**
+     * Test case for bug fix #0006445 #0006579 #0006083
+     *
      * test for getUserSelectedSorting
-     * @see https://bugs.oxid-esales.com/view.php?id=6083
+     *
+     * @param string $columnName    column name which is used to sort by.
+     * @param string $sortDirection sort direction asc or desc.
+     *
+     * @dataProvider providerGetUserSelectedSortingValidSorting
      */
-    public function testGetUserSelectedSortingValidSorting()
+    public function testGetUserSelectedSortingValidSorting($columnName, $sortDirection)
     {
         /** @var BaseController $baseController */
         $baseController = oxNew('oxUBase');
 
-        $_GET[$baseController->getSortOrderByParameterName()] = 'oxid';
-        $_GET[$baseController->getSortOrderParameterName()] = 'asc';
-        $this->assertEquals(
-            array('sortby' => 'oxid', 'sortdir' => 'asc'),
-            $baseController->getUserSelectedSorting()
-        );
+        $this->setConfigParam('aSortCols', ['oxid', 'oxtitle', 'notArticleColumn']);
 
-        $_GET[$baseController->getSortOrderParameterName()] = 'desc';
+        $_GET[$baseController->getSortOrderByParameterName()] = $columnName;
+        $_GET[$baseController->getSortOrderParameterName()] = $sortDirection;
         $this->assertEquals(
-            array('sortby' => 'oxid', 'sortdir' => 'desc'),
+            ['sortby' => $columnName, 'sortdir' => $sortDirection],
             $baseController->getUserSelectedSorting()
         );
     }
 
+    public function providerGetUserSelectedSortingInvalidSorting()
+    {
+        return [
+            ['oxid', 'notExisting'],
+            ['oxid', null],
+            ['notExisting', 'asc'],
+            [null, 'asc'],
+        ];
+    }
+
     /**
+     * Test case for bug fix #0006445 #0006579 #0006083
+     *
      * test for getUserSelectedSorting
-     * @see https://bugs.oxid-esales.com/view.php?id=6083
+     *
+     * @param string $columnName    column name which is used to sort by.
+     * @param string $sortDirection sort direction asc or desc.
+     *
+     * @dataProvider providerGetUserSelectedSortingInvalidSorting
      */
-    public function testGetUserSelectedSortingInvalidSorting()
+    public function testGetUserSelectedSortingInvalidSorting($columnName, $sortDirection)
     {
         /** @var BaseController $baseController */
         $baseController = oxNew('oxUBase');
+
+        $this->setConfigParam('aSortCols', ['oxid', 'oxtitle']);
 
         //not existing field name
-        $_GET[$baseController->getSortOrderByParameterName()] = 'foobar';
-        $_GET[$baseController->getSortOrderParameterName()] = 'asc';
-        $this->assertNull($baseController->getUserSelectedSorting());
-
-        //empty field name
-        $_GET[$baseController->getSortOrderByParameterName()] = '';
-        $this->assertNull($baseController->getUserSelectedSorting());
-
-        //not existing order direction
-        $_GET[$baseController->getSortOrderByParameterName()] = 'oxid';
-        $_GET[$baseController->getSortOrderParameterName()] = 'foobar';
-        $this->assertNull($baseController->getUserSelectedSorting());
-
-        //empty order direction
-        $_GET[$baseController->getSortOrderParameterName()] = '';
+        $_GET[$baseController->getSortOrderByParameterName()] = $columnName;
+        $_GET[$baseController->getSortOrderParameterName()] = $sortDirection;
         $this->assertNull($baseController->getUserSelectedSorting());
     }
+
+    /**
+     * Test class key setter and getter.
+     */
+    public function testSetGetClassKey()
+    {
+        $baseController = $baseController = oxNew('oxUBase');
+        $baseController->setClassKey('test_class_key');
+        $this->assertEquals('test_class_key', $baseController->getClassKey());
+    }
+
 }

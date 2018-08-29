@@ -1,25 +1,9 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \stdclass;
 use \oxSelection;
@@ -162,18 +146,18 @@ class SelectlistTest extends \OxidTestCase
      */
     public function testSetActiveSelectionByIndex()
     {
-        $oSel0 = $this->getMock("oxSelection", array("setActiveState"), array(), '', false);
+        $oSel0 = $this->getMock(\OxidEsales\Eshop\Application\Model\Selection::class, array("setActiveState"), array(), '', false);
         $oSel0->expects($this->once())->method('setActiveState')->with($this->equalTo(false));
 
-        $oSel1 = $this->getMock("oxSelection", array("setActiveState"), array(), '', false);
+        $oSel1 = $this->getMock(\OxidEsales\Eshop\Application\Model\Selection::class, array("setActiveState"), array(), '', false);
         $oSel1->expects($this->once())->method('setActiveState')->with($this->equalTo(false));
 
-        $oSel2 = $this->getMock("oxSelection", array("setActiveState"), array(), '', false);
+        $oSel2 = $this->getMock(\OxidEsales\Eshop\Application\Model\Selection::class, array("setActiveState"), array(), '', false);
         $oSel2->expects($this->once())->method('setActiveState')->with($this->equalTo(true));
 
         $aSelections = array($oSel0, $oSel1, $oSel2);
 
-        $oSelectList = $this->getMock("oxselectlist", array("getSelections"));
+        $oSelectList = $this->getMock(\OxidEsales\Eshop\Application\Model\SelectList::class, array("getSelections"));
         $oSelectList->expects($this->once())->method('getSelections')->will($this->returnValue($aSelections));
         $oSelectList->setActiveSelectionByIndex(2);
 
@@ -189,7 +173,7 @@ class SelectlistTest extends \OxidTestCase
     {
         $aSelections = array("oxSel0", "oxSel1", "oxSel2");
 
-        $oSelectList = $this->getMock("oxselectlist", array("getSelections"));
+        $oSelectList = $this->getMock(\OxidEsales\Eshop\Application\Model\SelectList::class, array("getSelections"));
         $oSelectList->expects($this->once())->method('getSelections')->will($this->returnValue($aSelections));
         $this->assertEquals("oxSel0", $oSelectList->getActiveSelection());
     }
@@ -206,9 +190,9 @@ class SelectlistTest extends \OxidTestCase
         $this->assertNull($oSelectList->getSelections());
 
         $this->setRequestParameter('cur', 2);
-        $aSelections = array(new oxSelection("test1, 10", 0, false, true),
-                             new oxSelection("test2, 10", 1, false, false),
-                             new oxSelection("test3', 10", 2, false, false),
+        $aSelections = array(oxNew('oxSelection', "test1, 10", 0, false, true),
+                             oxNew('oxSelection', "test2, 10", 1, false, false),
+                             oxNew('oxSelection', "test3', 10", 2, false, false),
         );
 
         // valdesc is set

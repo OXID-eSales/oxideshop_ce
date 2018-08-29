@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxDb;
 use oxField;
@@ -28,28 +12,27 @@ use oxField;
 /**
  * Class manages delivery categories
  */
-class DeliveryCategoriesAjax extends \ajaxListComponent
+class DeliveryCategoriesAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
-
     /**
      * Columns array
      *
      * @var array
      */
-    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
-        array('oxtitle', 'oxcategories', 1, 1, 0),
-        array('oxdesc', 'oxcategories', 1, 1, 0),
-        array('oxid', 'oxcategories', 0, 0, 0),
-        array('oxid', 'oxcategories', 0, 0, 1)
-    ),
-                                 'container2' => array(
-                                     array('oxtitle', 'oxcategories', 1, 1, 0),
-                                     array('oxdesc', 'oxcategories', 1, 1, 0),
-                                     array('oxid', 'oxcategories', 0, 0, 0),
-                                     array('oxid', 'oxobject2delivery', 0, 0, 1),
-                                     array('oxid', 'oxcategories', 0, 0, 1)
-                                 ),
-    );
+    protected $_aColumns = ['container1' => [ // field , table,         visible, multilanguage, ident
+        ['oxtitle', 'oxcategories', 1, 1, 0],
+        ['oxdesc', 'oxcategories', 1, 1, 0],
+        ['oxid', 'oxcategories', 0, 0, 0],
+        ['oxid', 'oxcategories', 0, 0, 1]
+    ],
+                                 'container2' => [
+                                     ['oxtitle', 'oxcategories', 1, 1, 0],
+                                     ['oxdesc', 'oxcategories', 1, 1, 0],
+                                     ['oxid', 'oxcategories', 0, 0, 0],
+                                     ['oxid', 'oxobject2delivery', 0, 0, 1],
+                                     ['oxid', 'oxcategories', 0, 0, 1]
+                                 ],
+    ];
 
     /**
      * Returns SQL query for data to fetc
@@ -60,7 +43,7 @@ class DeliveryCategoriesAjax extends \ajaxListComponent
     {
         // looking for table/view
         $sCatTable = $this->_getViewName('oxcategories');
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sDelId = $this->getConfig()->getRequestParameter('oxid');
         $sSynchDelId = $this->getConfig()->getRequestParameter('synchoxid');
 
@@ -100,14 +83,12 @@ class DeliveryCategoriesAjax extends \ajaxListComponent
 
         // removing all
         if ($this->getConfig()->getRequestParameter('all')) {
-
             $sQ = $this->_addFilter("delete oxobject2delivery.* " . $this->_getQuery());
-            oxDb::getDb()->Execute($sQ);
-
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenCat)) {
-            $sChosenCategoriess = implode(", ", oxDb::getDb()->quoteArray($aChosenCat));
+            $sChosenCategoriess = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenCat));
             $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . $sChosenCategoriess . ") ";
-            oxDb::getDb()->Execute($sQ);
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
 
@@ -127,11 +108,11 @@ class DeliveryCategoriesAjax extends \ajaxListComponent
 
         if (isset($soxId) && $soxId != "-1" && isset($aChosenCat) && $aChosenCat) {
             foreach ($aChosenCat as $sChosenCat) {
-                $oObject2Delivery = oxNew('oxBase');
+                $oObject2Delivery = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Delivery->init('oxobject2delivery');
-                $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField($soxId);
-                $oObject2Delivery->oxobject2delivery__oxobjectid = new oxField($sChosenCat);
-                $oObject2Delivery->oxobject2delivery__oxtype = new oxField("oxcategories");
+                $oObject2Delivery->oxobject2delivery__oxdeliveryid = new \OxidEsales\Eshop\Core\Field($soxId);
+                $oObject2Delivery->oxobject2delivery__oxobjectid = new \OxidEsales\Eshop\Core\Field($sChosenCat);
+                $oObject2Delivery->oxobject2delivery__oxtype = new \OxidEsales\Eshop\Core\Field("oxcategories");
                 $oObject2Delivery->save();
             }
         }

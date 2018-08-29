@@ -1,28 +1,13 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
+use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use stdClass;
 
@@ -30,9 +15,8 @@ use stdClass;
  * Discounts manager.
  *
  */
-class Discount extends \oxI18n
+class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-
     /**
      * Current class name
      *
@@ -66,7 +50,7 @@ class Discount extends \oxI18n
      *
      * @var array
      */
-    protected $_aHasArticleDiscounts = array();
+    protected $_aHasArticleDiscounts = [];
 
     /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
@@ -93,7 +77,7 @@ class Discount extends \oxI18n
             return false;
         }
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $oDb->execute('delete from oxobject2discount where oxobject2discount.oxdiscountid = ' . $oDb->quote($sOXID));
 
         return parent::delete($sOXID);
@@ -118,12 +102,12 @@ class Discount extends \oxI18n
         if (is_null($oxsort)) {
             $shopId = $this->oxdiscount__oxshopid->value;
             $newSort = $this->getNextOxsort($shopId);
-            $this->oxdiscount__oxsort = new \oxField($newSort, \oxField::T_RAW);
+            $this->oxdiscount__oxsort = new \oxField($newSort, \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
         // Validate oxsort before saving
         if (!is_numeric($this->oxdiscount__oxsort->value)) {
-            $exception = oxNew('oxInputException');
+            $exception = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
             $exception->setMessage('DISCOUNT_ERROR_OXSORT_NOT_A_NUMBER');
 
             throw $exception;
@@ -131,9 +115,9 @@ class Discount extends \oxI18n
 
         try {
             $saveStatus = parent::save();
-        } catch (StandardException $exception) {
-            if ($exception->getCode() == 1062 && false !== strpos($exception->getMessage(), 'UNIQ_OXSORT')) {
-                $exception = oxNew('oxInputException');
+        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
+            if ($exception->getCode() == \OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database::DUPLICATE_KEY_ERROR_CODE && false !== strpos($exception->getMessage(), 'UNIQ_OXSORT')) {
+                $exception = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
                 $exception->setMessage('DISCOUNT_ERROR_OXSORT_NOT_UNIQUE');
             }
 
@@ -150,7 +134,7 @@ class Discount extends \oxI18n
     public function isGlobalDiscount()
     {
         if (is_null($this->_blIsForArticleOrForCategory)) {
-            $oDb = oxDb::getDb();
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sDiscountIdQuoted = $oDb->quote($this->oxdiscount__oxid->value);
 
             $sQuery = "select 1
@@ -166,7 +150,7 @@ class Discount extends \oxI18n
     /**
      * Checks if discount applies for article
      *
-     * @param oxArticle $oArticle article object
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      *
      * @return bool
      */
@@ -192,7 +176,6 @@ class Discount extends \oxI18n
         $sArticleId = $oArticle->getProductId();
 
         if (!isset($this->_aHasArticleDiscounts[$sArticleId])) {
-
             $blResult = $this->_isArticleAssigned($oArticle) || $this->_isCategoriesAssigned($oArticle->getCategoryIds());
 
             $this->_aHasArticleDiscounts[$sArticleId] = $blResult;
@@ -219,13 +202,12 @@ class Discount extends \oxI18n
             return false;
         }
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         // check if this article is assigned
         $sQ = "select 1 from oxobject2discount where oxdiscountid = " . $oDb->quote($this->oxdiscount__oxid->value) . " and oxtype = 'oxarticles' ";
         $sQ .= $this->_getProductCheckQuery($oArticle);
         if (!($blOk = ( bool ) $oDb->getOne($sQ))) {
-
             // checking article category
             $blOk = $this->_checkForArticleCategories($oArticle);
         }
@@ -236,7 +218,7 @@ class Discount extends \oxI18n
     /**
      * Tests if total amount or price (price priority) of articles that can be applied to current discount fits to discount configuration
      *
-     * @param oxbasket $oBasket basket
+     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket basket
      *
      * @return bool
      */
@@ -245,7 +227,6 @@ class Discount extends \oxI18n
         $dAmount = 0;
         $aBasketItems = $oBasket->getContents();
         foreach ($aBasketItems as $oBasketItem) {
-
             $oBasketArticle = $oBasketItem->getArticle(false);
 
             $blForBasketItem = false;
@@ -321,7 +302,7 @@ class Discount extends \oxI18n
         }
 
         // oxobject2discount configuration check
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQ = 'select 1 from oxobject2discount where oxdiscountid = ' . $oDb->quote($this->oxdiscount__oxid->value) . ' and oxtype in ("oxarticles", "oxcategories" ) ';
 
         return !((bool) $oDb->getOne($sQ));
@@ -340,7 +321,7 @@ class Discount extends \oxI18n
             return false;
         }
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQ = "select 1 from oxobject2discount where oxdiscountid=" . $oDb->quote($this->getId());
         $sQ .= $this->_getProductCheckQuery($oArticle);
         if (!($blOk = (bool) $oDb->getOne($sQ))) {
@@ -389,9 +370,9 @@ class Discount extends \oxI18n
     /**
      * Return discount percent
      *
-     * @param decimal $dPrice - price from which calculates discount
+     * @param double $dPrice - price from which calculates discount
      *
-     * @return decimal
+     * @return double
      */
     public function getPercentage($dPrice)
     {
@@ -470,7 +451,7 @@ class Discount extends \oxI18n
      */
     public function getArticleIds()
     {
-        return oxDb::getDb()->getCol("select `oxobjectid` from oxobject2discount where oxdiscountid = '" . $this->getId() . "' and oxtype = 'oxarticles'");
+        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol("select `oxobjectid` from oxobject2discount where oxdiscountid = '" . $this->getId() . "' and oxtype = 'oxarticles'");
     }
 
     /**
@@ -480,10 +461,10 @@ class Discount extends \oxI18n
      */
     public function getCategoryIds()
     {
-        return oxDb::getDb()->getCol("select `oxobjectid` from oxobject2discount where oxdiscountid = '" . $this->getId() . "' and oxtype = 'oxcategories'");
+        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol("select `oxobjectid` from oxobject2discount where oxdiscountid = '" . $this->getId() . "' and oxtype = 'oxcategories'");
     }
 
-    /*
+    /**
      * Increment the maximum value of oxsort found in the database by certain amount and return it.
      *
      * @param int $shopId The id of the current shop
@@ -493,7 +474,7 @@ class Discount extends \oxI18n
     public function getNextOxsort($shopId)
     {
         $query = "SELECT MAX(`oxsort`)+10 FROM `oxdiscount` WHERE `oxshopid` = ?";
-        $nextSort = oxDb::getDb()->getOne($query, [$shopId]);
+        $nextSort = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($query, [$shopId]);
 
         return (int) $nextSort;
     }
@@ -514,9 +495,9 @@ class Discount extends \oxI18n
             return false;
         }
 
-        $sCatIds = "(" . implode(",", oxDb::getDb()->quoteArray($aCatIds)) . ")";
+        $sCatIds = "(" . implode(",", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aCatIds)) . ")";
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         // getOne appends limit 1, so this one should be fast enough
         $sQ = "select oxobjectid from oxobject2discount where oxdiscountid = " . $oDb->quote($this->oxdiscount__oxid->value) . " and oxobjectid in $sCatIds and oxtype = 'oxcategories'";
 
@@ -527,13 +508,13 @@ class Discount extends \oxI18n
      * Returns part of query for discount check. If product is variant - query contains both id check e.g.
      * "and (oxobjectid = '...' or oxobjectid = '...')
      *
-     * @param oxarticle $oProduct product used for discount check
+     * @param \OxidEsales\Eshop\Application\Model\Article $oProduct product used for discount check
      *
      * @return string
      */
     protected function _getProductCheckQuery($oProduct)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         // check if this article is assigned
         if (($sParentId = $oProduct->getParentId())) {
             $sArticleId = " and ( oxobjectid = " . $oDb->quote($oProduct->getProductId()) . " or oxobjectid = " . $oDb->quote($sParentId) . " )";
@@ -547,13 +528,13 @@ class Discount extends \oxI18n
     /**
      * Checks whether this article is assigned to discount
      *
-     * @param oxArticle $oArticle
+     * @param \OxidEsales\Eshop\Application\Model\Article $oArticle
      *
      * @return bool
      */
     protected function _isArticleAssigned($oArticle)
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sDiscountIdQuoted = $oDb->quote($this->oxdiscount__oxid->value);
 
         $sQ = "select 1
@@ -577,10 +558,10 @@ class Discount extends \oxI18n
             return false;
         }
 
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sDiscountIdQuoted = $oDb->quote($this->oxdiscount__oxid->value);
 
-        $sCategoryIds = "(" . implode(",", oxDb::getDb()->quoteArray($aCategoryIds)) . ")";
+        $sCategoryIds = "(" . implode(",", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aCategoryIds)) . ")";
         $sQ = "select 1
                 from oxobject2discount
                 where oxdiscountid = {$sDiscountIdQuoted} and oxobjectid in {$sCategoryIds} and oxtype = 'oxcategories'";

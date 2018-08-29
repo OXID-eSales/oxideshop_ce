@@ -1,30 +1,13 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core\GenericImport;
+namespace OxidEsales\EshopCommunity\Core\GenericImport;
 
 use Exception;
 use OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject;
-use oxRegistry;
 
 /**
  * Class responsible for generic import functionality.
@@ -35,7 +18,7 @@ class GenericImport
     const ERROR_NO_INIT = 'Init not executed, Access denied!';
 
     /** @var array Import objects types. */
-    protected $objects = array(
+    protected $objects = [
         'A' => 'Article',
         'K' => 'Category',
         'H' => 'Vendor',
@@ -49,13 +32,13 @@ class GenericImport
         'R' => 'OrderArticle',
         'N' => 'Country',
         'Y' => 'ArticleExtends',
-    );
+    ];
 
     /** @var string Imported data array. */
     protected $importType = null;
 
     /** @var array Imported id array */
-    protected $importedIds = array();
+    protected $importedIds = [];
 
     /** @var string Return message after import. */
     protected $returnMessage;
@@ -79,13 +62,13 @@ class GenericImport
     protected $userId = null;
 
     /** @var array */
-    protected $statistics = array();
+    protected $statistics = [];
 
     /** @var bool Whether import was retried. */
     protected $retried = false;
 
     /** @var array CSV file fields array. */
-    protected $csvFileFieldsOrder = array();
+    protected $csvFileFieldsOrder = [];
 
     /** @var int Maximum length of imported line. */
     protected $maxLineLength = 8192;
@@ -100,8 +83,8 @@ class GenericImport
      */
     public function init()
     {
-        $config = oxRegistry::getConfig();
-        $user = oxNew('oxUser');
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $user->loadAdminUser();
 
         if (($user->oxuser__oxrights->value == 'malladmin' || $user->oxuser__oxrights->value == $config->getShopId())) {
@@ -186,7 +169,7 @@ class GenericImport
         $file = @fopen($this->importFilePath, 'r');
 
         if (isset($file) && $file) {
-            $data = array();
+            $data = [];
             while (($row = fgetcsv($file, $this->maxLineLength, $this->getCsvFieldsTerminator(), $this->getCsvFieldsEncolser())) !== false) {
                 $data[] = $this->csvTextConvert($row, false);
             }
@@ -227,7 +210,7 @@ class GenericImport
                     $errorMessage = $e->getMessage();
                 }
 
-                $this->statistics[$key] = array('r' => $success, 'm' => $errorMessage);
+                $this->statistics[$key] = ['r' => $success, 'm' => $errorMessage];
             }
         }
 
@@ -261,7 +244,7 @@ class GenericImport
      */
     public function getImportObjectsList()
     {
-        $importObjects = array();
+        $importObjects = [];
         foreach ($this->objects as $sKey => $importType) {
             $type = $this->createImportObject($importType);
             $importObjects[$sKey] = $type->getBaseTableName();
@@ -309,7 +292,7 @@ class GenericImport
     {
         $statistics = $this->getStatistics();
 
-        $dataForRetry = array();
+        $dataForRetry = [];
         foreach ($statistics as $key => $value) {
             if ($value['r'] == false) {
                 $this->returnMessage .= "File[" . $this->importFilePath . "] - dataset number: $key - Error: " . $value['m'] . " ---<br> " . PHP_EOL;
@@ -362,7 +345,7 @@ class GenericImport
      */
     protected function mapFields($data)
     {
-        $result = array();
+        $result = [];
         $index = 0;
 
         foreach ($this->csvFileFieldsOrder as $value) {
@@ -389,8 +372,8 @@ class GenericImport
      */
     protected function csvTextConvert($text, $mode)
     {
-        $search = array(chr(13), chr(10), '\'', '"');
-        $replace = array('&#13;', '&#10;', '&#39;', '&#34;');
+        $search = [chr(13), chr(10), '\'', '"'];
+        $replace = ['&#13;', '&#10;', '&#39;', '&#34;'];
 
         if ($mode) {
             $text = str_replace($search, $replace, $text);
@@ -408,7 +391,7 @@ class GenericImport
      */
     protected function getCsvFieldsTerminator()
     {
-        $config = oxRegistry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $fieldTerminator = $config->getConfigParam('sGiCsvFieldTerminator');
 
@@ -429,7 +412,7 @@ class GenericImport
      */
     protected function getCsvFieldsEncolser()
     {
-        $config = \oxRegistry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if ($fieldEncloser = $config->getConfigParam('sGiCsvFieldEncloser')) {
             return $fieldEncloser;

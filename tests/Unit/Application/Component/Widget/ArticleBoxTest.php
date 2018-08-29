@@ -1,27 +1,11 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Component\Widget;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Component\Widget;
 
-use oxCategory;
+use OxidEsales\EshopCommunity\Application\Model\Category;
 
 /**
  * Tests for oxwArticleBox class
@@ -124,7 +108,7 @@ class ArticleBoxTest extends \OxidTestCase
         $sLinkUrl = $oArticleBox->getProduct()->getMainLink();
 
         $oArticleBox->setParent("search");
-        $oConfig = $this->getMock("oxConfig", array('getTopActiveView'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getTopActiveView'));
         $oSearch = oxNew('Search');
         $oConfig->expects($this->any())->method('getTopActiveView')->will($this->returnValue($oSearch));
 
@@ -245,13 +229,13 @@ class ArticleBoxTest extends \OxidTestCase
         $oList = oxNew('aList');
         $oList->setActiveCategory($oCategory);
 
-        $oConfig = $this->getMock('oxConfig', array('getTopActiveView'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getTopActiveView'));
         $oConfig->expects($this->any())->method('getTopActiveView')->will($this->returnValue($oList));
 
-        $oArticleBox = $this->getMock('oxwArticleBox', array('getConfig'));
+        $oArticleBox = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleBox::class, array('getConfig'));
         $oArticleBox->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
-        $this->assertTrue($oArticleBox->getActiveCategory() instanceof oxCategory);
+        $this->assertTrue($oArticleBox->getActiveCategory() instanceof Category);
         $this->assertEquals('943a9ba3050e78b443c16e043ae60ef3', $oArticleBox->getActiveCategory()->getId());
         $this->assertEquals('Eco-Fashion', $oArticleBox->getActiveCategory()->getTitle());
     }
@@ -267,13 +251,13 @@ class ArticleBoxTest extends \OxidTestCase
         $oList = oxNew('aList');
         $oList->setActiveCategory($oCategory);
 
-        $oConfig = $this->getMock('oxConfig', array('getTopActiveView'));
+        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getTopActiveView'));
         $oConfig->expects($this->any())->method('getTopActiveView')->will($this->returnValue($oList));
 
-        $oArticleBox = $this->getMock('oxwArticleBox', array('getConfig'));
+        $oArticleBox = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleBox::class, array('getConfig'));
         $oArticleBox->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
-        $this->assertTrue($oArticleBox->getActiveCategory() instanceof oxCategory);
+        $this->assertTrue($oArticleBox->getActiveCategory() instanceof Category);
         $this->assertEquals(null, $oArticleBox->getActiveCategory()->getId());
         $this->assertEquals(null, $oArticleBox->getActiveCategory()->getTitle());
     }

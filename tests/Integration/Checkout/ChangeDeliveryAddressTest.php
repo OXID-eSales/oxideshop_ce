@@ -2,24 +2,15 @@
 /**
  * #PHPHEADER_OXID_LICENSE_INFORMATION#
  */
-namespace Integration\Checkout;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Checkout;
 
 use oxField;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use oxRegistry;
-use oxUtilsObject;
 
 class ChangeDeliveryAddressTest extends \OxidTestCase
 {
     const TEST_ARTICLE_ID = '1951';
-
-    /**
-     * Fixture setUp.
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-    }
 
     /**
      * Fixture tearDown.
@@ -131,7 +122,7 @@ class ChangeDeliveryAddressTest extends \OxidTestCase
      */
     private function createActiveUser()
     {
-        $sTestUserId = substr_replace(oxUtilsObject::getInstance()->generateUId(), '_', 0, 1);
+        $sTestUserId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
 
         $user = oxNew('oxUser');
         $user->setId($sTestUserId);

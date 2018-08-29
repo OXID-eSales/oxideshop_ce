@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxRegistry;
 use oxDb;
@@ -29,9 +13,8 @@ use oxSysRequirements;
 /**
  * Administrator GUI navigation manager class.
  */
-class NavigationController extends \oxAdminView
+class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
-
     /**
      * Allowed host url
      *
@@ -48,13 +31,13 @@ class NavigationController extends \oxAdminView
     public function render()
     {
         parent::render();
-        $myUtilsServer = oxRegistry::get("oxUtilsServer");
+        $myUtilsServer = \OxidEsales\Eshop\Core\Registry::getUtilsServer();
 
-        $sItem = oxRegistry::getConfig()->getRequestParameter("item");
+        $sItem = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("item");
         $sItem = $sItem ? basename($sItem) : false;
         if (!$sItem) {
             $sItem = "nav_frame.tpl";
-            $aFavorites = oxRegistry::getConfig()->getRequestParameter("favorites");
+            $aFavorites = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("favorites");
             if (is_array($aFavorites)) {
                 $myUtilsServer->setOxCookie('oxidadminfavorites', implode('|', $aFavorites));
             }
@@ -65,18 +48,17 @@ class NavigationController extends \oxAdminView
             $this->_aViewData["menustructure"] = $oNavTree->getDomXml()->documentElement->childNodes;
 
             // version patch string
-            $sVersion = str_replace(array("EE.", "PE."), "", $this->_sShopVersion);
-            $this->_aViewData["sVersion"] = trim($sVersion);
+            $this->_aViewData["sVersion"] = $this->_sShopVersion;
 
             //checking requirements if this is not nav frame reload
-            if (!oxRegistry::getConfig()->getRequestParameter("navReload")) {
+            if (!\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("navReload")) {
                 // #661 execute stuff we run each time when we start admin once
                 if ('home.tpl' == $sItem) {
                     $this->_aViewData['aMessage'] = $this->_doStartUpChecks();
                 }
             } else {
                 //removing reload param to force requirements checking next time
-                oxRegistry::getSession()->deleteVariable("navReload");
+                \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable("navReload");
             }
 
             // favorite navigation
@@ -94,15 +76,15 @@ class NavigationController extends \oxAdminView
             }
 
             // open history node ?
-            $this->_aViewData["blOpenHistory"] = oxRegistry::getConfig()->getRequestParameter('openHistory');
+            $this->_aViewData["blOpenHistory"] = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('openHistory');
         }
 
-        $blisMallAdmin = oxRegistry::getSession()->getVariable('malladmin');
-        $oShoplist = oxNew('oxShopList');
+        $blisMallAdmin = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('malladmin');
+        $oShoplist = oxNew(\OxidEsales\Eshop\Application\Model\ShopList::class);
         if (!$blisMallAdmin) {
             // we only allow to see our shop
-            $iShopId = oxRegistry::getSession()->getVariable("actshop");
-            $oShop = oxNew('oxShop');
+            $iShopId = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("actshop");
+            $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
             $oShop->load($iShopId);
             $oShoplist->add($oShop);
         } else {
@@ -122,9 +104,9 @@ class NavigationController extends \oxAdminView
 
         // informing about basefrm parameters
         $this->_aViewData['loadbasefrm'] = true;
-        $this->_aViewData['listview'] = oxRegistry::getConfig()->getRequestParameter('listview');
-        $this->_aViewData['editview'] = oxRegistry::getConfig()->getRequestParameter('editview');
-        $this->_aViewData['actedit'] = oxRegistry::getConfig()->getRequestParameter('actedit');
+        $this->_aViewData['listview'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('listview');
+        $this->_aViewData['editview'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editview');
+        $this->_aViewData['actedit'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('actedit');
     }
 
     /**
@@ -135,7 +117,7 @@ class NavigationController extends \oxAdminView
         $mySession = $this->getSession();
         $myConfig = $this->getConfig();
 
-        $oUser = oxNew("oxUser");
+        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $oUser->logout();
 
         // kill session
@@ -146,7 +128,7 @@ class NavigationController extends \oxAdminView
             $this->resetContentCache(true);
         }
 
-        oxRegistry::getUtils()->redirect('index.php', true, 302);
+        \OxidEsales\Eshop\Core\Registry::getUtils()->redirect('index.php', true, 302);
     }
 
     /**
@@ -154,34 +136,10 @@ class NavigationController extends \oxAdminView
      */
     public function exturl()
     {
-        $myUtils = oxRegistry::getUtils();
-        if ($sUrl = oxRegistry::getConfig()->getRequestParameter("url")) {
-
-            // Limit external url's only allowed host
-            $myConfig = $this->getConfig();
-            if ($myConfig->getConfigParam('blLoadDynContents') && strpos($sUrl, $this->_sAllowedHost) === 0) {
-
-                $sPath = $myConfig->getConfigParam('sCompileDir') . "/" . md5($sUrl) . '.html';
-                if ($myUtils->getRemoteCachePath($sUrl, $sPath)) {
-
-                    $oStr = getStr();
-                    $sVersion = $myConfig->getVersion();
-                    $sEdition = $myConfig->getFullEdition();
-                    $sCurYear = date("Y");
-
-                    // Get ceontent
-                    $sOutput = file_get_contents($sPath);
-
-                    // Fix base path
-                    $sOutput = $oStr->preg_replace("/<\/head>/i", "<base href=\"" . dirname($sUrl) . '/' . "\"></head>\n  <!-- OXID eShop {$sEdition}, Version {$sVersion}, Shopping Cart System (c) OXID eSales AG 2003 - {$sCurYear} - http://www.oxid-esales.com -->", $sOutput);
-
-                    // Fix self url's
-                    $myUtils->showMessageAndExit($oStr->preg_replace("/href=\"#\"/i", 'href="javascript::void();"', $sOutput));
-                }
-            } else {
-                // Caching not allowed, redirecting
-                $myUtils->redirect($sUrl, true, 302);
-            }
+        $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
+        if ($sUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("url")) {
+            // Caching not allowed, redirecting
+            $myUtils->redirect($sUrl, true, 302);
         }
 
         $myUtils->showMessageAndExit("");
@@ -195,20 +153,20 @@ class NavigationController extends \oxAdminView
      */
     protected function _doStartUpChecks()
     {
-        $aMessage = array();
+        $aMessage = [];
 
         if ($this->getConfig()->getConfigParam('blCheckSysReq') !== false) {
             // check if system reguirements are ok
-            $oSysReq = new oxSysRequirements();
+            $oSysReq = new \OxidEsales\Eshop\Core\SystemRequirements();
             if (!$oSysReq->getSysReqStatus()) {
-                $aMessage['warning'] = oxRegistry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE');
+                $aMessage['warning'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE');
                 $aMessage['warning'] .= '<a href="?cl=sysreq&amp;stoken=' . $this->getSession()->getSessionChallengeToken() . '" target="basefrm">';
-                $aMessage['warning'] .= oxRegistry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE2') . '</a>';
+                $aMessage['warning'] .= \OxidEsales\Eshop\Core\Registry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE2') . '</a>';
             }
         } else {
-            $aMessage['message'] = oxRegistry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE_INACTIVE');
+            $aMessage['message'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE_INACTIVE');
             $aMessage['message'] .= '<a href="?cl=sysreq&amp;stoken=' . $this->getSession()->getSessionChallengeToken() . '" target="basefrm">';
-            $aMessage['message'] .= oxRegistry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE2') . '</a>';
+            $aMessage['message'] .= \OxidEsales\Eshop\Core\Registry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE2') . '</a>';
         }
 
         // version check
@@ -221,19 +179,19 @@ class NavigationController extends \oxAdminView
 
         // check if setup dir is deleted
         if (file_exists($this->getConfig()->getConfigParam('sShopDir') . '/Setup/index.php')) {
-            $aMessage['warning'] .= ((!empty($aMessage['warning'])) ? "<br>" : '') . oxRegistry::getLang()->translateString('SETUP_DIRNOTDELETED_WARNING');
+            $aMessage['warning'] .= ((!empty($aMessage['warning'])) ? "<br>" : '') . \OxidEsales\Eshop\Core\Registry::getLang()->translateString('SETUP_DIRNOTDELETED_WARNING');
         }
 
         // check if updateApp dir is deleted or empty
         $sUpdateDir = $this->getConfig()->getConfigParam('sShopDir') . '/updateApp/';
         if (file_exists($sUpdateDir) && !(count(glob("$sUpdateDir/*")) === 0)) {
-            $aMessage['warning'] .= ((!empty($aMessage['warning'])) ? "<br>" : '') . oxRegistry::getLang()->translateString('UPDATEAPP_DIRNOTDELETED_WARNING');
+            $aMessage['warning'] .= ((!empty($aMessage['warning'])) ? "<br>" : '') . \OxidEsales\Eshop\Core\Registry::getLang()->translateString('UPDATEAPP_DIRNOTDELETED_WARNING');
         }
 
         // check if config file is writable
         $sConfPath = $this->getConfig()->getConfigParam('sShopDir') . "/config.inc.php";
         if (!is_readable($sConfPath) || is_writable($sConfPath)) {
-            $aMessage['warning'] .= ((!empty($aMessage['warning'])) ? "<br>" : '') . oxRegistry::getLang()->translateString('SETUP_CONFIGPERMISSIONS_WARNING');
+            $aMessage['warning'] .= ((!empty($aMessage['warning'])) ? "<br>" : '') . \OxidEsales\Eshop\Core\Registry::getLang()->translateString('SETUP_CONFIGPERMISSIONS_WARNING');
         }
 
         return $aMessage;
@@ -248,10 +206,10 @@ class NavigationController extends \oxAdminView
     {
         $edition = $this->getConfig()->getEdition();
         $query = 'http://admin.oxid-esales.com/' . $edition . '/onlinecheck.php?getlatestversion';
-        if ($version = oxRegistry::get("oxUtilsFile")->readRemoteFileAsString($query)) {
+        if ($version = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->readRemoteFileAsString($query)) {
             // current version is older ..
             if (version_compare($this->getConfig()->getVersion(), $version) == '-1') {
-                return sprintf(oxRegistry::getLang()->translateString('NAVIGATION_NEWVERSIONAVAILABLE'), $version);
+                return sprintf(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('NAVIGATION_NEWVERSIONAVAILABLE'), $version);
             }
         }
     }

@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * SEPA (Single Euro Payments Area) validation class
@@ -28,11 +12,10 @@ namespace OxidEsales\Eshop\Core;
  */
 class SepaValidator
 {
-
     /**
      * @var array IBAN Code Length array
      */
-    protected $_aIBANCodeLengths = array(
+    protected $_aIBANCodeLengths = [
         'AL' => 28,
         'AD' => 24,
         'AT' => 20,
@@ -97,7 +80,7 @@ class SepaValidator
         'AE' => 23,
         'GB' => 22,
         'VG' => 24
-    );
+    ];
 
     /**
      * Business identifier code validation
@@ -108,7 +91,7 @@ class SepaValidator
      */
     public function isValidBIC($sBIC)
     {
-        $oBICValidator = oxNew('oxSepaBICValidator');
+        $oBICValidator = oxNew(\OxidEsales\Eshop\Core\SepaBICValidator::class);
 
         return $oBICValidator->isValid($sBIC);
     }
@@ -122,63 +105,10 @@ class SepaValidator
      */
     public function isValidIBAN($sIBAN)
     {
-        $oIBANValidator = oxNew('oxSepaIBANValidator');
+        $oIBANValidator = oxNew(\OxidEsales\Eshop\Core\SepaIBANValidator::class);
         $oIBANValidator->setCodeLengths($this->getIBANCodeLengths());
 
         return $oIBANValidator->isValid($sIBAN);
-    }
-
-    /**
-     * Validation of IBAN registry
-     *
-     * @param array $aIBANRegistry
-     *
-     * @deprecated since v5.1.2 (2013-12-11); Use oxSepaIBANValidator::isCodeLengthsValid().
-     *
-     * @return bool
-     */
-    public function isValidIBANRegistry($aIBANRegistry = null)
-    {
-        $oIBANValidator = oxNew('oxSepaIBANValidator');
-
-        if (is_null($aIBANRegistry)) {
-            $aIBANRegistry = $this->getIBANCodeLengths();
-        }
-
-        return $oIBANValidator->isCodeLengthsValid($aIBANRegistry);
-    }
-
-
-    /**
-     * Set IBAN Registry
-     *
-     * @param array $aIBANRegistry
-     *
-     * @deprecated since v5.1.2 (2013-12-11); Use oxSepaIBANValidator::setCodeLengths().
-     *
-     * @return bool
-     */
-    public function setIBANRegistry($aIBANRegistry)
-    {
-        if ($this->isValidIBANRegistry($aIBANRegistry)) {
-            $this->_aIBANCodeLengths = $aIBANRegistry;
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Get IBAN length by country data
-     *
-     * @deprecated since v5.1.2 (2013-12-11); Use oxSepaValidator::getIBANCodeLengths().
-     *
-     * @return array
-     */
-    public function getIBANRegistry()
-    {
-        return $this->_aIBANCodeLengths;
     }
 
     /**

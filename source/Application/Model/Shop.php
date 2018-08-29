@@ -1,36 +1,16 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Model;
-
-use oxRegistry;
-use oxDb;
-use OxidEsales\Eshop\Core\Exception\StandardException;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 /**
  * Shop manager.
  * Performs configuration and object loading or deletion.
  */
-class Shop extends \oxI18n
+class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
     /** @var string Name of current class. */
     protected $_sClassName = 'oxshop';
@@ -39,7 +19,7 @@ class Shop extends \oxI18n
     protected $_aMultiShopTables = null;
 
     /** @var array Query variables. */
-    protected $_aQueries = array();
+    protected $_aQueries = [];
 
     /** @var array Database tables. */
     protected $_aTables = null;
@@ -138,7 +118,7 @@ class Shop extends \oxI18n
     public function getMultiShopTables()
     {
         if (is_null($this->_aMultiShopTables)) {
-            $this->_aMultiShopTables = array();
+            $this->_aMultiShopTables = [];
         }
 
         return $this->_aMultiShopTables;
@@ -193,7 +173,7 @@ class Shop extends \oxI18n
         $sStart = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW';
 
         if (!is_array($aLanguages)) {
-            $aLanguages = array(null => null);
+            $aLanguages = [null => null];
         }
 
         foreach ($aLanguages as $iLang => $sLang) {
@@ -211,7 +191,7 @@ class Shop extends \oxI18n
      */
     protected function _getViewSelect($sTable, $iLang)
     {
-        $oMetaData = oxNew('oxDbMetaDataHandler');
+        $oMetaData = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
         $aFields = $oMetaData->getSinglelangFields($sTable, $iLang);
         foreach ($aFields as $sCoreField => $sField) {
             if ($sCoreField !== $sField) {
@@ -231,10 +211,10 @@ class Shop extends \oxI18n
      */
     protected function _getViewSelectMultilang($sTable)
     {
-        $aFields = array();
+        $aFields = [];
 
-        $oMetaData = oxNew('oxDbMetaDataHandler');
-        $aTables = array_merge(array($sTable), $oMetaData->getAllMultiTables($sTable));
+        $oMetaData = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
+        $aTables = array_merge([$sTable], $oMetaData->getAllMultiTables($sTable));
         foreach ($aTables as $sTableKey => $sTableName) {
             $aTableFields = $oMetaData->getFields($sTableName);
             foreach ($aTableFields as $sCoreField => $sField) {
@@ -257,7 +237,7 @@ class Shop extends \oxI18n
     protected function _getViewJoinAll($sTable)
     {
         $sJoin = ' ';
-        $oMetaData = oxNew('oxDbMetaDataHandler');
+        $oMetaData = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
         $aTables = $oMetaData->getAllMultiTables($sTable);
         if (count($aTables)) {
             foreach ($aTables as $sTableKey => $sTableName) {
@@ -292,17 +272,17 @@ class Shop extends \oxI18n
      */
     protected function _cleanInvalidViews()
     {
-        $oDb = oxDb::getDb();
-        $oLang = oxRegistry::getLang();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $aLanguages = $oLang->getLanguageIds($this->getId());
 
-        $aMultilangTables = oxRegistry::getLang()->getMultiLangTables();
+        $aMultilangTables = \OxidEsales\Eshop\Core\Registry::getLang()->getMultiLangTables();
         $aMultishopTables = $this->getMultiShopTables();
 
-        $oLang = oxRegistry::getLang();
+        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $aAllShopLanguages = $oLang->getAllShopLanguageIds();
 
-        $oViewsValidator = oxNew('oxShopViewValidator');
+        $oViewsValidator = oxNew(\OxidEsales\Eshop\Application\Model\ShopViewValidator::class);
 
         $oViewsValidator->setShopId($this->getId());
         $oViewsValidator->setLanguages($aLanguages);
@@ -313,7 +293,7 @@ class Shop extends \oxI18n
         $aViews = $oViewsValidator->getInvalidViews();
 
         foreach ($aViews as $sView) {
-            $oDb->execute('DROP VIEW IF EXISTS ' . $sView);
+            $oDb->execute('DROP VIEW IF EXISTS `' . $sView . '`');
         }
     }
 
@@ -322,10 +302,10 @@ class Shop extends \oxI18n
      */
     protected function _prepareViewsQueries()
     {
-        $oLang = oxRegistry::getLang();
+        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $aLanguages = $oLang->getLanguageIds($this->getId());
 
-        $aMultilangTables = oxRegistry::getLang()->getMultiLangTables();
+        $aMultilangTables = \OxidEsales\Eshop\Core\Registry::getLang()->getMultiLangTables();
         $aTables = $this->getTables();
         foreach ($aTables as $sTable) {
             $this->createViewQuery($sTable);
@@ -369,14 +349,14 @@ class Shop extends \oxI18n
      */
     protected function _runQueries()
     {
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $aQueries = $this->getQueries();
         $bSuccess = true;
         foreach ($aQueries as $sQuery) {
             try {
                 $oDb->execute($sQuery);
-            } catch (StandardException $exception) {
-                $exception->debugOut();
+            } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
+                \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
                 $bSuccess = false;
             }
         }
@@ -391,7 +371,7 @@ class Shop extends \oxI18n
      */
     protected function formDatabaseTablesArray()
     {
-        $multilanguageTables = oxRegistry::getLang()->getMultiLangTables();
+        $multilanguageTables = \OxidEsales\Eshop\Core\Registry::getLang()->getMultiLangTables();
 
         return array_unique($multilanguageTables);
     }

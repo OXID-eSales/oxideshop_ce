@@ -1,32 +1,14 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
-use OxidEsales\Eshop\Application\Model\Article;
-use OxidEsales\Eshop\Application\Model\Vendor;
-use \oxVendor;
+use OxidEsales\EshopCommunity\Application\Model\Article;
+use OxidEsales\EshopCommunity\Application\Model\Vendor;
 
 use \oxField;
-use \oxDb;
 use \oxRegistry;
 use \oxTestModules;
 
@@ -85,7 +67,8 @@ class VendorTest extends \OxidTestCase
 
         $this->insertTestVendor();
 
-        return parent::setUp();
+        parent::setUp();
+//        $this->getConfig()->setConfigParam('sTheme', 'azure');
     }
 
     /**
@@ -179,7 +162,7 @@ class VendorTest extends \OxidTestCase
         /**
          * Insert an article for this vendor
          *
-         * @var Article $article
+         * @var \OxidEsales\Eshop\Application\Controller\Admin\ArticleController $article
          */
         $article = oxNew('oxArticle');
         $article->setId('_vendorTestArticleId');
@@ -187,7 +170,7 @@ class VendorTest extends \OxidTestCase
         $article->save();
 
         /** @var Vendor|\PHPUnit_Framework_MockObject_MockObject $vendor */
-        $vendor = $this->getMock('oxvendor', array('isAdmin'));
+        $vendor = $this->getMock(\OxidEsales\Eshop\Application\Model\Vendor::class, array('isAdmin'));
         $vendor->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $vendor->setShowArticleCnt(true);
         $vendor->load($this->testVendorId);
@@ -239,7 +222,7 @@ class VendorTest extends \OxidTestCase
         $vendor->loadInLang(1, $this->testVendorId);
 
         /** Expect title also in lang 1, as getLink() is called without parameters*/
-        $part = ('azure' == $this->getConfig()->getConfigParam('sTheme')) ? 'en/By-distributor/' : 'en/By-Distributor/';
+        $part = 'en/By-distributor/';
         $expectedUrl = $this->getConfig()->getShopUrl() . $part . str_replace(' ', '-', $this->testVendorTitle_1) . '/';
         $actualUrl = $vendor->getLink();
 
@@ -294,7 +277,7 @@ class VendorTest extends \OxidTestCase
         $vendor->load($this->testVendorId);
 
         /** Expect title not in lang 0, but in lang 1, as getLink() is called with parameter 1*/
-        $part = ('azure' == $this->getConfig()->getConfigParam('sTheme')) ? 'en/By-distributor/' : 'en/By-Distributor/';
+        $part = 'en/By-distributor/';
         $expectedUrl = $this->getConfig()->getShopUrl() . $part . str_replace(' ', '-', $this->testVendorTitle_1) . '/';
         $actualUrl = $vendor->getLink(1);
 
@@ -317,7 +300,7 @@ class VendorTest extends \OxidTestCase
         /** @var Vendor $vendor */
         $vendor = oxNew('oxVendor');
         $vendor->load('root');
-        $this->assertTrue($vendor instanceof oxVendor);
+        $this->assertTrue($vendor instanceof Vendor);
         $this->assertEquals('root', $vendor->getId());
 
         $vendor = oxNew('oxVendor');
@@ -338,7 +321,7 @@ class VendorTest extends \OxidTestCase
         /**
          * Insert an article for this vendor
          *
-         * @var Article $article
+         * @var \OxidEsales\Eshop\Application\Controller\Admin\ArticleController $article
          */
         $article = oxNew('oxArticle');
         $article->setId('_vendorTestArticleId');
@@ -351,7 +334,7 @@ class VendorTest extends \OxidTestCase
         $vendor->load($this->testVendorId);
 
         $actualArticleCount = $vendor->getNrOfArticles();
-        $expectedArticleCount = oxRegistry::get("oxUtilsCount")->getVendorArticleCount($this->testVendorId);
+        $expectedArticleCount = \OxidEsales\Eshop\Core\Registry::getUtilsCount()->getVendorArticleCount($this->testVendorId);
 
         $article->delete();
 

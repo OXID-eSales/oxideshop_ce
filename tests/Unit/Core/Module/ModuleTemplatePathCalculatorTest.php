@@ -1,33 +1,21 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Core\Module;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Module;
 
 use Exception;
-use OxidEsales\Eshop\Core\FileSystem\FileSystem;
-use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
+use OxidEsales\EshopCommunity\Core\FileSystem\FileSystem;
+use OxidEsales\EshopCommunity\Core\Module\ModuleTemplatePathCalculator;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use oxModuleList;
 use PHPUnit_Framework_MockObject_MockObject;
 
+/**
+ * @group module
+ * @package Unit\Core\Module
+ */
 class ModuleTemplatePathFormatterTest extends UnitTestCase
 {
     /**
@@ -149,8 +137,6 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
      */
     public function testCalculateModuleTemplatePathWithNoActiveModules()
     {
-        $this->setExpectedException('oxException');
-
         /** @var oxModuleList|PHPUnit_Framework_MockObject_MockObject $moduleListMock */
         $moduleListMock = $this->getMock(oxModuleList::class, ['getActiveModuleInfo']);
         $moduleListMock->method('getActiveModuleInfo')->willReturn([]);
@@ -160,9 +146,9 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
 
         try {
             $templatePathCalculator->calculateModuleTemplatePath('someTemplateName.tpl');
-        } catch (Exception $e) {
-            $this->assertRegExp("@^Cannot find template@i", $e->getMessage());
-            throw $e;
+            $this->fail('An exception should have been thrown');
+        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
+            $this->assertRegExp("@^Cannot find template@i", $exception->getMessage());
         }
     }
 

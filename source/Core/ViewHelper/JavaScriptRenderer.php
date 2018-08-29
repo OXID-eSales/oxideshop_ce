@@ -1,28 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core\ViewHelper;
-
-use oxRegistry;
+namespace OxidEsales\EshopCommunity\Core\ViewHelper;
 
 /**
  * Class for preparing JavaScript.
@@ -40,11 +22,11 @@ class JavaScriptRenderer
      */
     public function render($widget, $forceRender, $isDynamic = false)
     {
-        $config = oxRegistry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $output = '';
         $suffix = $isDynamic ? '_dynamic' : '';
-        $filesParameterName = JavaScriptRegistrator::FILES_PARAMETER_NAME . $suffix;
-        $scriptsParameterName = JavaScriptRegistrator::SNIPPETS_PARAMETER_NAME . $suffix;
+        $filesParameterName = \OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator::FILES_PARAMETER_NAME . $suffix;
+        $scriptsParameterName = \OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator::SNIPPETS_PARAMETER_NAME . $suffix;
 
         $isAjaxRequest = $this->isAjaxRequest();
         $forceRender = $this->shouldForceRender($forceRender, $isAjaxRequest);
@@ -55,9 +37,9 @@ class JavaScriptRenderer
                 $output .= $this->formFilesOutput($files, $widget);
                 $config->setGlobalParameter($filesParameterName, null);
                 if ($widget) {
-                    $dynamicIncludes = (array)$config->getGlobalParameter(JavaScriptRegistrator::FILES_PARAMETER_NAME . '_dynamic');
+                    $dynamicIncludes = (array)$config->getGlobalParameter(\OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator::FILES_PARAMETER_NAME . '_dynamic');
                     $output .= $this->formFilesOutput($dynamicIncludes, $widget);
-                    $config->setGlobalParameter(JavaScriptRegistrator::FILES_PARAMETER_NAME . '_dynamic', null);
+                    $config->setGlobalParameter(\OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator::FILES_PARAMETER_NAME . '_dynamic', null);
                 }
             }
 
@@ -66,9 +48,9 @@ class JavaScriptRenderer
             $scriptOutput = $this->formSnippetsOutput($snippets, $widget, $isAjaxRequest);
             $config->setGlobalParameter($scriptsParameterName, null);
             if ($widget) {
-                $dynamicScripts = (array) $config->getGlobalParameter(JavaScriptRegistrator::SNIPPETS_PARAMETER_NAME . '_dynamic');
+                $dynamicScripts = (array) $config->getGlobalParameter(\OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator::SNIPPETS_PARAMETER_NAME . '_dynamic');
                 $scriptOutput .= $this->formSnippetsOutput($dynamicScripts, $widget, $isAjaxRequest);
-                $config->setGlobalParameter(JavaScriptRegistrator::SNIPPETS_PARAMETER_NAME . '_dynamic', null);
+                $config->setGlobalParameter(\OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator::SNIPPETS_PARAMETER_NAME . '_dynamic', null);
             }
             $output .= $this->enclose($scriptOutput, $widget, $isAjaxRequest);
         }
@@ -127,8 +109,8 @@ class JavaScriptRenderer
         }
 
         ksort($includes); // Sort by priority.
-        $usedSources = array();
-        $widgets = array();
+        $usedSources = [];
+        $widgets = [];
         $widgetTemplate = "WidgetsHandler.registerFile('%s', '%s');";
         $scriptTemplate = '<script type="text/javascript" src="%s"></script>';
         foreach ($includes as $priority) {
@@ -165,7 +147,7 @@ JS;
      */
     protected function formSnippetsOutput($scripts, $widgetName, $ajaxRequest)
     {
-        $preparedScripts = array();
+        $preparedScripts = [];
         foreach ($scripts as $script) {
             if ($widgetName && !$ajaxRequest) {
                 $sanitizedScript = $this->sanitize($script);
@@ -186,7 +168,7 @@ JS;
      */
     protected function sanitize($scripts)
     {
-        return strtr($scripts, array('\\' => '\\\\', "'" => "\\'", "\r" => '', "\n" => '\n'));
+        return strtr($scripts, ['\\' => '\\\\', "'" => "\\'", "\r" => '', "\n" => '\n']);
     }
 
     /**

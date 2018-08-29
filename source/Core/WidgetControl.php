@@ -1,38 +1,26 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Core;
+namespace OxidEsales\EshopCommunity\Core;
 
-use oxRegistry;
+use OxidEsales\Eshop\Application\Component\Widget\WidgetController;
+use OxidEsales\Eshop\Core\Exception\ObjectException;
 
 /**
  * Main shop actions controller. Processes user actions, logs
  * them (if needed), controls output, redirects according to
  * processed methods logic. This class is initialized from index.php
  */
-class WidgetControl extends \oxShopControl
+class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
 {
     /**
      * Skip handler set for widget as it already set in oxShopControl.
+     *
+     * @deprecated since v.6.0.0 (2017-10-11); Not used any more, was used in _setDefaultExceptionHandler()
+     * which was already removed.
      *
      * @var bool
      */
@@ -65,10 +53,10 @@ class WidgetControl extends \oxShopControl
      */
     public function start($class = null, $function = null, $parameters = null, $viewsChain = null)
     {
-        //$aParams = ( isset($aParams) ) ? $aParams : oxRegistry::getConfig()->getRequestParameter( 'oxwparams' );
+        //$aParams = ( isset($aParams) ) ? $aParams : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter( 'oxwparams' );
 
-        if (!isset($viewsChain) && oxRegistry::getConfig()->getRequestParameter('oxwparent')) {
-            $viewsChain = explode("|", oxRegistry::getConfig()->getRequestParameter('oxwparent'));
+        if (!isset($viewsChain) && \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxwparent')) {
+            $viewsChain = explode("|", \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxwparent'));
         }
 
         parent::start($class, $function, $parameters, $viewsChain);
@@ -93,49 +81,61 @@ class WidgetControl extends \oxShopControl
             }
 
             // Setting back last active view.
-            $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
+            $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
             $oSmarty->assign('oView', $oConfig->getActiveView());
         }
     }
 
     /**
-     * Initialize and return widget view object
+     * Initialize and return widget view object.
      *
-     * @param string $sClass      view name
-     * @param string $sFunction   function name
-     * @param array  $aParams     Parameters array
-     * @param array  $aViewsChain Array of views names that should be initialized also
+     * @param string $class      View class
+     * @param string $function   Function name
+     * @param array  $parameters Parameters array
+     * @param array  $viewsChain Array of views keys that should be initialized as well
      *
-     * @return oxView Current active view
+     * @throws ObjectException
+     *
+     * @return \OxidEsales\Eshop\Core\Controller\BaseController Current active view
      */
-    protected function _initializeViewObject($sClass, $sFunction, $aParams = null, $aViewsChain = null)
+    protected function _initializeViewObject($class, $function, $parameters = null, $viewsChain = null)
     {
-        $oConfig = $this->getConfig();
-        $aActiveViewsNames = $oConfig->getActiveViewsNames();
-        $aActiveViewsNames = array_map("strtolower", $aActiveViewsNames);
+        $config = $this->getConfig();
+        $activeViewsIds = $config->getActiveViewsIds();
+        $activeViewsIds = array_map("strtolower", $activeViewsIds);
+        $classKey = Registry::getControllerClassNameResolver()->getIdByClassName($class);
+        $classKey = !is_null($classKey) ? $classKey : $class; //fallback
 
         // if exists views chain, initializing these view at first
-        if (is_array($aViewsChain) && !empty($aViewsChain)) {
-            foreach ($aViewsChain as $sParentClassName) {
-                if ($sParentClassName != $sClass && !in_array(strtolower($sParentClassName), $aActiveViewsNames)) {
+        if (is_array($viewsChain) && !empty($viewsChain)) {
+            foreach ($viewsChain as $parentClassKey) {
+                $parentClass = Registry::getControllerClassNameResolver()->getClassNameById($parentClassKey);
+
+                if ($parentClassKey != $classKey && !in_array(strtolower($parentClassKey), $activeViewsIds) && $parentClass) {
                     // creating parent view object
-                    $oViewObject = oxNew($sParentClassName);
-                    if (strtolower($sParentClassName) != 'oxubase') {
-                        $oViewObject->setClassName($sParentClassName);
+                    $viewObject = oxNew($parentClass);
+                    if ('oxubase' != strtolower($parentClassKey)) {
+                        $viewObject->setClassKey($parentClassKey);
                     }
-                    $oConfig->setActiveView($oViewObject);
-                    $this->parentsAdded[] = $sParentClassName;
+                    $config->setActiveView($viewObject);
+                    $this->parentsAdded[] = $parentClassKey;
                 }
             }
         }
 
-        $oWidgetViewObject = parent::_initializeViewObject($sClass, $sFunction, $aParams);
+        $widgetViewObject = parent::_initializeViewObject($class, $function, $parameters, null);
 
-        // Set template name for current widget.
-        if (!empty($aParams['oxwtemplate'])) {
-            $oWidgetViewObject->setTemplateName($aParams['oxwtemplate']);
+        if (!is_a($widgetViewObject, WidgetController::class)) {
+            /** @var ObjectException $exception */
+            $exception = oxNew(ObjectException::class, get_class($widgetViewObject) . ' is not an instance of ' . WidgetController::class);
+            throw $exception;
         }
 
-        return $oWidgetViewObject;
+        // Set template name for current widget.
+        if (!empty($parameters['oxwtemplate'])) {
+            $widgetViewObject->setTemplateName($parameters['oxwtemplate']);
+        }
+
+        return $widgetViewObject;
     }
 }

@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 use oxUBase;
@@ -30,9 +14,8 @@ use oxSearch;
  * Articles searching class.
  * Performs searching through articles in database.
  */
-class SearchController extends oxUBase
+class SearchController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
-
     /**
      * Count of all found articles.
      *
@@ -164,7 +147,7 @@ class SearchController extends oxUBase
         $myConfig = $this->getConfig();
 
         // #1184M - special char search
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sSearchParamForQuery = trim($oConfig->getRequestParameter('searchparam', true));
 
         // searching in category ?
@@ -192,8 +175,8 @@ class SearchController extends oxUBase
         }
 
         // searching ..
-        /** @var oxSearch $oSearchHandler */
-        $oSearchHandler = oxNew('oxsearch');
+        /** @var \OxidEsales\Eshop\Application\Model\Search $oSearchHandler */
+        $oSearchHandler = oxNew(\OxidEsales\Eshop\Application\Model\Search::class);
         $oSearchList = $oSearchHandler->getSearchArticles(
             $sSearchParamForQuery,
             $sInitialSearchCat,
@@ -233,7 +216,7 @@ class SearchController extends oxUBase
 
         $oConfig = $this->getConfig();
         if ($oConfig->getConfigParam('bl_rssSearch')) {
-            $oRss = oxNew('oxrssfeed');
+            $oRss = oxNew(\OxidEsales\Eshop\Application\Model\RssFeed::class);
             $sSearch = $oConfig->getRequestParameter('searchparam', true);
             $sCnid = $oConfig->getRequestParameter('searchcnid', true);
             $sVendor = $oConfig->getRequestParameter('searchvendor', true);
@@ -257,7 +240,7 @@ class SearchController extends oxUBase
     {
         $sAddDynParams = $this->getAddUrlParams();
         if ($sAddDynParams && ($aArtList = $this->getArticleList())) {
-            $blSeo = oxRegistry::getUtils()->seoIsActive();
+            $blSeo = \OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive();
             foreach ($aArtList as $oArticle) {
                 // appending std and dynamic urls
                 if (!$blSeo) {
@@ -308,7 +291,7 @@ class SearchController extends oxUBase
     {
         if ($this->_blSearchClass === null) {
             $this->_blSearchClass = false;
-            if (strtolower($this->getConfig()->getRequestParameter('cl')) == 'search') {
+            if ('search' == strtolower($this->getConfig()->getRequestControllerId())) {
                 $this->_blSearchClass = true;
             }
         }
@@ -338,7 +321,7 @@ class SearchController extends oxUBase
 
     /**
      * Return array of id to form recommend list.
-     * 
+     *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @return array
@@ -478,11 +461,11 @@ class SearchController extends oxUBase
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
+        $aPaths = [];
+        $aPath = [];
 
-        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
-        $aPath['title'] = oxRegistry::getLang()->translateString('SEARCH', $iBaseLanguage, false);
+        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('SEARCH', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
@@ -528,8 +511,8 @@ class SearchController extends oxUBase
     {
         $sTitle = '';
         $sTitle .= $this->getArticleCount();
-        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
-        $sTitle .= ' ' . oxRegistry::getLang()->translateString('HITS_FOR', $iBaseLanguage, false);
+        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        $sTitle .= ' ' . \OxidEsales\Eshop\Core\Registry::getLang()->translateString('HITS_FOR', $iBaseLanguage, false);
         $sTitle .= ' "' . $this->getSearchParamForHtml() . '"';
 
         return $sTitle;

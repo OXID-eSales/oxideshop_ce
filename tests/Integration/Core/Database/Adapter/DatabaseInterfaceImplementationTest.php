@@ -1,32 +1,16 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link          http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version       OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Tests\Integration\Core\Database\Adapter;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Database\Adapter;
 
 use oxDb;
 use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\Eshop\Core\DatabaseProvider;
-use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\DatabaseProvider;
+use OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface;
+use OxidEsales\EshopCommunity\Core\Registry;
 use ReflectionClass;
 
 /**
@@ -36,7 +20,7 @@ use ReflectionClass;
  * Tests, which do not test mere interface implementation should go to the concrete tests.
  * If the implementation is changed update or add the tests in the concrete class e.g. DoctrineTest.
  *
- * @package OxidEsales\Eshop\Tests\Integration\Core\Database
+ * @package OxidEsales\EshopCommunity\Tests\Integration\Core\Database
  *
  * @group   database-adapter
  */
@@ -369,7 +353,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
                 [
                     [self::FIXTURE_OXID_2], [self::FIXTURE_OXID_3] // expected result
                 ]
-            ),
+            )
         );
     }
 
@@ -396,6 +380,31 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
                ')';
 
         $resultSet = $this->database->selectLimit($sql, $rowCount, $offset);
+        $actualResult = $resultSet->fetchAll();
+
+        $this->assertSame($expectedResult, $actualResult, $assertionMessage);
+    }
+
+    /**
+     * Test, that the method 'selectLimit' returns the expected rows if offset is not set.
+     *
+     * This test assumes that there are at least 3 entries in the table.
+     */
+    public function testSelectLimitReturnsExpectedResultForMissingOffsetParameter()
+    {
+        $rowCount = 2;
+        $expectedResult = [[self::FIXTURE_OXID_1], [self::FIXTURE_OXID_2]];
+        $assertionMessage = 'If parameter offet is not set, selectLimit will return the number of records 
+        given in the parameter $rowcount starting from the first record in the result set';
+
+        $this->loadFixtureToTestTable();
+        $sql = 'SELECT OXID FROM ' . self::TABLE_NAME . ' WHERE OXID IN (' .
+               '"' . self::FIXTURE_OXID_1 . '",' .
+               '"' . self::FIXTURE_OXID_2 . '",' .
+               '"' . self::FIXTURE_OXID_3 . '"' .
+               ')';
+
+        $resultSet = $this->database->selectLimit($sql, $rowCount);
         $actualResult = $resultSet->fetchAll();
 
         $this->assertSame($expectedResult, $actualResult, $assertionMessage);
@@ -1001,12 +1010,19 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
      */
     public function testGetRowIncorrectSqlStatement()
     {
-        $this->loadFixtureToTestTable();
+        $this->truncateTestTable();
 
+        /**
+         * An exception will be logged as part of the BC layer, when calling the getRow with a wrong SQL statement
+         * The exception log will be cleared at the end of this test
+         */
         $result = $this->database->getRow('INSERT INTO ' . self::TABLE_NAME . " (oxid) VALUES ('" . self::FIXTURE_OXID_1 . "')");
 
         $this->assertInternalType('array', $result);
         $this->assertEmpty($result);
+
+        $expectedExceptionClass = \OxidEsales\Eshop\Core\Exception\DatabaseErrorException::class;
+        $this->assertLoggedException($expectedExceptionClass);
     }
 
     /**
@@ -1117,88 +1133,24 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $this->assertEquals(array(self::FIXTURE_OXID_1, self::FIXTURE_OXUSERID_1), $result);
     }
 
-    public function testCharsetIsNotUtf8WhenUtfModeIsZero()
+    public function testCharsetIsUtf8()
     {
         $character_set = 'utf8';
 
         $configFile = Registry::get('oxConfigFile');
-        // Store original values
-        $savedIUtfMode = $configFile->getVar('iUtfMode');
-
-        $configFile->setVar('iUtfMode', 0);
         $this->resetDbProperty(oxDb::getInstance());
         $database = oxDb::getInstance();
         $database->setConfigFile($configFile);
         $databaseConnection = $database::getDb(oxDb::FETCH_MODE_ASSOC);
 
-        $configFile->setVar('iUtfMode', $savedIUtfMode);
-
         $actualResult = $databaseConnection->getRow('SHOW VARIABLES LIKE \'character_set_client\'');
-        $this->assertNotEquals($character_set, $actualResult['Value'], 'As \'iUtfMode\' is set to 0, character_set_client is not ' . $character_set);
+        $this->assertEquals($character_set, $actualResult['Value'], 'As shop is in utf-8 mode, character_set_client is ' . $character_set);
 
         $actualResult = $databaseConnection->getRow('SHOW VARIABLES LIKE \'character_set_results\'');
-        $this->assertNotEquals($character_set, $actualResult['Value'], 'As \'iUtfMode\' is set to 0, character_set_results is not ' . $character_set);
+        $this->assertEquals($character_set, $actualResult['Value'], 'As shop is in utf-8 mode, character_set_results is ' . $character_set);
 
         $actualResult = $databaseConnection->getRow('SHOW VARIABLES LIKE \'character_set_connection\'');
-        $this->assertNotEquals($character_set, $actualResult['Value'], 'As \'iUtfMode\' is set to 0, character_set_client is not ' . $character_set);
-    }
-
-    public function testCharsetIsUtf8WhenUtfModeIsOne()
-    {
-        $character_set = 'utf8';
-
-        $configFile = Registry::get('oxConfigFile');
-        // Store original values
-        $savedIUtfMode = $configFile->getVar('iUtfMode');
-        // Set new values
-        $configFile->setVar('iUtfMode', 1);
-        $this->resetDbProperty(oxDb::getInstance());
-        $database = oxDb::getInstance();
-        $database->setConfigFile($configFile);
-        $databaseConnection = $database::getDb(oxDb::FETCH_MODE_ASSOC);
-
-        // restore original values
-        $configFile->setVar('iUtfMode', $savedIUtfMode);
-
-        $actualResult = $databaseConnection->getRow('SHOW VARIABLES LIKE \'character_set_client\'');
-        $this->assertEquals($character_set, $actualResult['Value'], 'As \'iUtfMode\' is set to 1, character_set_client is ' . $character_set);
-
-        $actualResult = $databaseConnection->getRow('SHOW VARIABLES LIKE \'character_set_results\'');
-        $this->assertEquals($character_set, $actualResult['Value'], 'As \'iUtfMode\' is set to 1, character_set_results is ' . $character_set);
-
-        $actualResult = $databaseConnection->getRow('SHOW VARIABLES LIKE \'character_set_connection\'');
-        $this->assertEquals($character_set, $actualResult['Value'], 'As \'iUtfMode\' is set to 1, character_set_client is ' . $character_set);
-    }
-
-    public function testCharsetMatchesDefaultDatabaseConnectionWhenUtfModeIsZero()
-    {
-        $character_set = 'cp1251';
-
-        $configFile = Registry::get('oxConfigFile');
-        // Store original values
-        $savedIUtfMode = $configFile->getVar('iUtfMode');
-        $savedCharacterSet = $configFile->getVar('sDefaultDatabaseConnection');
-        // Set new values
-        $configFile->setVar('iUtfMode', 0);
-        $configFile->setVar('sDefaultDatabaseConnection', $character_set);
-
-        $this->resetDbProperty(oxDb::getInstance());
-        $database = oxDb::getInstance();
-        $database->setConfigFile($configFile);
-        $databaseConnection = $database::getDb(oxDb::FETCH_MODE_ASSOC);
-
-        // restore original values
-        $configFile->setVar('iUtfMode', $savedIUtfMode);
-        $configFile->setVar('sDefaultDatabaseConnection', $savedCharacterSet);
-
-        $actualResult = $databaseConnection->getRow('SHOW VARIABLES LIKE \'character_set_client\'');
-        $this->assertEquals($character_set, $actualResult['Value'], 'As \'iUtfMode\' is set to 0, character_set_client is sDefaultDatabaseConnection: ' . $character_set);
-
-        $actualResult = $databaseConnection->getRow('SHOW VARIABLES LIKE \'character_set_results\'');
-        $this->assertEquals($character_set, $actualResult['Value'], 'As \'iUtfMode\' is set to 0, character_set_results is sDefaultDatabaseConnection: ' . $character_set);
-
-        $actualResult = $databaseConnection->getRow('SHOW VARIABLES LIKE \'character_set_connection\'');
-        $this->assertEquals($character_set, $actualResult['Value'], 'As \'iUtfMode\' is set to 0, character_set_client is sDefaultDatabaseConnection: ' . $character_set);
+        $this->assertEquals($character_set, $actualResult['Value'], 'As shop is in utf-8 mode, character_set_client is ' . $character_set);
     }
 
     /**
@@ -1444,7 +1396,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     protected function fetchAllTestTableRows()
     {
         $masterDb = oxDb::getMaster();
-        
+
         return $masterDb
             ->select('SELECT * FROM ' . self::TABLE_NAME, array())
             ->fetchAll();
@@ -1458,7 +1410,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     protected function fetchFirstTestTableOxId()
     {
         $masterDb = oxDb::getMaster();
-        
+
         $rows = $masterDb->select('SELECT OXID FROM ' . self::TABLE_NAME, array());
         $row = $rows->fetchRow();
 
@@ -1498,7 +1450,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
     public static function resetDbProperty($class)
     {
-        $reflectionClass = new ReflectionClass(\OxidEsales\Eshop\Core\DatabaseProvider::class);
+        $reflectionClass = new ReflectionClass(DatabaseProvider::class);
 
         $reflectionProperty = $reflectionClass->getProperty('db');
         $reflectionProperty->setAccessible(true);

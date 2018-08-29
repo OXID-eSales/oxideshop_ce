@@ -1,33 +1,48 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link          http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version       OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Tests\Acceptance\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin;
 
 use oxDb;
-use OxidEsales\Eshop\Tests\Acceptance\AdminTestCase;
+use OxidEsales\EshopCommunity\Tests\Acceptance\AdminTestCase;
 
 /** Admin interface functionality. */
 class FunctionalityInAdminTest extends AdminTestCase
 {
+    /** @var array To store translation error value. */
+    private $translationError = [];
+
+    /**
+     * Set translation error value if some case would change it.
+     */
+    public function setUp()
+    {
+        $this->translationError = $this->errorsInPage["ERROR: Tran"];
+        parent::setUp();
+    }
+
+    /**
+     * Restore translation error value as some case might change it.
+     */
+    public function tearDown()
+    {
+        parent::tearDown();
+        $this->errorsInPage["ERROR: Tran"] = $this->translationError;
+    }
+
+    /**
+     * Skip check for error when translation does not exist.
+     * Some translations might be missing as tests add new language.
+     * In these cases no need to check if everything is translated.
+     */
+    private function skipTranslationCheck()
+    {
+        unset($this->errorsInPage["ERROR: Tran"]);
+    }
+
     /**
      * Testing downloadable product in admin ant frontend
      *
@@ -88,14 +103,16 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->loginAdmin("Administer Orders", "Orders");
         $this->clickAndWaitFrame("link=12", "edit");
         $this->openTab("Downloads");
-        $this->assertEquals("1002-1", $this->getText("//div[2]/table/tbody/tr[2]/td[1]"));
-        $this->assertEquals("Test product 2 [EN] šÄßüл", $this->getText("//div[2]/table/tbody/tr[2]/td[2]"));
-        $this->assertEquals("testFile3", $this->getText("//div[2]/table/tbody/tr[2]/td[3]"));
-        $this->assertEquals("0000-00-00 00:00:00", $this->getText("//div[2]/table/tbody/tr[2]/td[4]"));
-        $this->assertEquals("0000-00-00 00:00:00", $this->getText("//div[2]/table/tbody/tr[2]/td[5]"));
-        $this->assertEquals("0", $this->getText("//div[2]/table/tbody/tr[2]/td[6]"));
-        $this->assertEquals("20", $this->getText("//div[2]/table/tbody/tr[2]/td[7]"));
-        $this->assertEquals("0", $this->getText("//div[2]/table/tbody/tr[2]/td[9]"));
+        $this->getElement("//tr[@id='file.1']/td[1]");
+        $firstDownloadableProductLocator = "//tr[@id='file.1']";
+        $this->assertEquals("1002-1", $this->getText("{$firstDownloadableProductLocator}/td[1]"));
+        $this->assertEquals("Test product 2 [EN] šÄßüл", $this->getText("$firstDownloadableProductLocator/td[2]"));
+        $this->assertEquals("testFile3", $this->getText("$firstDownloadableProductLocator/td[3]"));
+        $this->assertEquals("0000-00-00 00:00:00", $this->getText("$firstDownloadableProductLocator/td[4]"));
+        $this->assertEquals("0000-00-00 00:00:00", $this->getText("$firstDownloadableProductLocator/td[5]"));
+        $this->assertEquals("0", $this->getText("$firstDownloadableProductLocator/td[6]"));
+        $this->assertEquals("20", $this->getText("$firstDownloadableProductLocator/td[7]"));
+        $this->assertEquals("0", $this->getText("$firstDownloadableProductLocator/td[9]"));
         $this->openTab("Main");
         $this->click("link=Current Date");
         $this->clickAndWait("saveFormButton");
@@ -117,11 +134,11 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->loginAdmin("Administer Orders", "Orders");
         $this->clickAndWaitFrame("link=12", "edit");
         $this->openTab("Downloads");
-        $this->assertEquals("1002-1", $this->getText("//div[2]/table/tbody/tr[2]/td[1]"));
-        $this->assertEquals("Test product 2 [EN] šÄßüл", $this->getText("//div[2]/table/tbody/tr[2]/td[2]"));
-        $this->assertEquals("testFile3", $this->getText("//div[2]/table/tbody/tr[2]/td[3]"));
-        $this->assertEquals("20", $this->getText("//div[2]/table/tbody/tr[2]/td[7]"));
-        $this->assertEquals("0", $this->getText("//div[2]/table/tbody/tr[2]/td[9]"));
+        $this->assertEquals("1002-1", $this->getText("$firstDownloadableProductLocator/td[1]"));
+        $this->assertEquals("Test product 2 [EN] šÄßüл", $this->getText("$firstDownloadableProductLocator/td[2]"));
+        $this->assertEquals("testFile3", $this->getText("$firstDownloadableProductLocator/td[3]"));
+        $this->assertEquals("20", $this->getText("$firstDownloadableProductLocator/td[7]"));
+        $this->assertEquals("0", $this->getText("$firstDownloadableProductLocator/td[9]"));
     }
 
     /**
@@ -474,13 +491,13 @@ class FunctionalityInAdminTest extends AdminTestCase
 
     /**
      * checking if order info is displayed correctly
+     * TODO: revisit test after bug 0004624 is fixed
      *
      * @group adminFunctionality
+     * @group quarantine
      */
     public function testEditingOrdersProducts()
     {
-        $this->markTestSkipped(" fix test after bug 0004624 fix , so we need to move test to integration test with correct information");
-
         $this->updateSubshopOrders();
 
         $this->executeSql("UPDATE `oxorder` SET `OXFOLDER` = 'ORDERFOLDER_FINISHED' WHERE `OXID` = 'testorder7'");
@@ -491,12 +508,18 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->type("editval[oxorder__oxdelcost]", "10");
         $this->select("setDelSet", "label=Example Set1: UPS 48 hours");
         $this->clickAndWait("saveFormButton");
+        $this->openTab("Main");
         $this->assertEquals("----", $this->getSelectedLabel("setPayment"));
         $this->assertEquals("Example Set1: UPS 48 hours", $this->getSelectedLabel("setDelSet"));
         $this->select("setDelSet", "label=Standard");
         $this->clickAndWait("saveFormButton");
+        $this->waitForElement("setPayment");
+        $this->openTab("Main");
+        $this->assertEquals("Standard", $this->getSelectedLabel("setDelSet"));
+        $this->assertEquals("----", $this->getSelectedLabel("setPayment"));
         $this->select("setPayment", "label=COD (Cash on Delivery)");
         $this->clickAndWait("saveFormButton");
+        $this->openTab("Main");
         $this->openTab("Products");
         $this->type("sSearchArtNum", "1001");
         $this->clickAndWait("//input[@name='search']");
@@ -706,6 +729,7 @@ class FunctionalityInAdminTest extends AdminTestCase
      * Service -> Product Export
      *
      * @group adminFunctionality
+     * @group quarantine
      */
     public function testProductExport()
     {
@@ -816,7 +840,7 @@ class FunctionalityInAdminTest extends AdminTestCase
     public function testLoginToAdminInOtherLang()
     {
         $this->loginAdmin();
-        $this->waitForText("Welcome to the OXID eShop Admin");
+        $this->waitForText("Welcome to OXID eShop Admin");
         $this->frame("navigation");
         $this->checkForErrors();
         $this->assertElementPresent("link=Master Settings");
@@ -831,7 +855,9 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->frame("edit");
         $this->waitForElement("btn.new");
         $this->checkForErrors();
+
         $this->logoutAdmin("link=Logout");
+        $this->assertElementPresent("usr");
 
         $this->loginAdmin(null, null, false, "admin@myoxideshop.com", "admin0303", "Deutsch");
         $this->waitForText("Willkommen im OXID eShop Administrationsbereich");
@@ -840,8 +866,6 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->checkForErrors();
         $this->assertElementPresent("link=Stammdaten");
         $this->assertElementPresent("link=Shopeinstellungen");
-        $this->logoutAdmin("link=Abmelden");
-        $this->assertElementPresent("usr");
     }
 
     /**
@@ -851,6 +875,8 @@ class FunctionalityInAdminTest extends AdminTestCase
      */
     public function testNewLanguageCreatingAndNavigation()
     {
+        $this->skipTranslationCheck();
+
         //EN lang
         $this->loginAdmin("Master Settings", "Languages");
         $this->clickCreateNewItem();
@@ -963,13 +989,12 @@ class FunctionalityInAdminTest extends AdminTestCase
 
     /**
      * Core settings -> Settings -> Active Category at Start
+     * NOTE: according to comment in 0004482 in azure theme to mark some category in category tree (list) on first page is not needed.
      *
      * @group adminFunctionality
      */
     public function testActiveCategoryAtStart()
     {
-        $this->markTestSkipped("waiting for desition from management, if this option should be in azure theme at all");
-
         $this->openShop();
         $this->assertElementNotPresent("test_BoxLeft_Cat_testcategory0_sub1");
         $this->loginAdmin("Master Settings", "Core Settings");
@@ -1001,11 +1026,6 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->openTab("Settings");
         $this->click("link=Shop frontend");
         $this->assertElementPresent("//input[@value='Test category 1 [EN] šÄßüл']");
-        //checking in frontend
-        $this->clearCache();
-        $this->openShop();
-        $this->assertElementPresent("//ul[@id='tree']/li/ul/li/a");
-        $this->assertEquals("Test category 1 [EN] šÄßüл", $this->getText("//ul[@id='tree']/li/ul/li/a"));
     }
 
     /**
@@ -1678,278 +1698,6 @@ class FunctionalityInAdminTest extends AdminTestCase
     }
 
     /**
-     * Testing modules in vendor directory. Checking when any file with source code class of module is deleted.
-     *
-     * @group adminFunctionality
-     */
-    public function testModuleSettings()
-    {
-        $testConfig = $this->getTestConfig();
-        if ($testConfig->isSubShop()) {
-            $this->markTestSkipped("Test is not for SubShop");
-        }
-
-        $this->loginAdmin("Extensions", "Modules");
-
-        // checking If the same class extend two modules
-        $this->openListItem("Test module #1");
-        $this->openTab("Settings");
-        $this->assertTextPresent("Empty Settings Group");
-        $this->assertTextPresent("Filled Settings Group");
-
-        // Asserting module settings values when default values are not set
-        $this->click("link=Empty Settings Group");
-
-        $this->assertNotChecked("//input[@name='confbools[testEmptyBoolConfig]' and @type='checkbox']");
-        $this->assertElementValue("confstrs[testEmptyStrConfig]", '', 'Without default value text input (str) should be empty');
-        $this->assertElementValue("confarrs[testEmptyArrConfig]", '', 'Without default value text area array (arr) should be empty');
-        $this->assertElementValue("confaarrs[testEmptyAArrConfig]", '', 'Without default value text area assoc array (aarr) should be empty');
-        $this->assertElementValue("confselects[testEmptySelectConfig]", '0', 'Without default value first option should be selected for selects');
-
-        $oPassword = $this->getElement("confpassword[testEmptyPasswordConfig]");
-        $this->assertEquals('', $oPassword->getValue(), 'Without default value password should be empty');
-        $this->assertTrue($oPassword->isVisible(), 'Password confirm field should be visible when default value is not set');
-
-        // Asserting module settings values when default values are set
-        $this->click("link=Filled Settings Group");
-
-        $this->assertChecked("//input[@name='confbools[testFilledBoolConfig]' and @type='checkbox']");
-        $this->assertElementValue("confstrs[testFilledStrConfig]", 'testStr', 'Default value of text input (str) should be taken from metadata');
-        $this->assertElementValue("confarrs[testFilledArrConfig]", "option1\noption2", 'Default value of text area array (arr) should be taken from metadata');
-        $this->assertElementValue("confaarrs[testFilledAArrConfig]", "key1 => option1\nkey2 => option2", 'Default value of text area assoc array (aarr) should be taken from metadata');
-        $this->assertElementValue("confselects[testFilledSelectConfig]", '2', 'Default value of select should be taken from metadata');
-
-        $oPassword = $this->getElement("confpassword[testFilledPasswordConfig]");
-        $this->assertEquals('', $oPassword->getValue(), 'Default value of password should be empty');
-        $this->assertFalse($oPassword->isVisible(), 'Password confirm field should be invisible when default value is set');
-
-        // Add some information to the input fields
-        $this->check("//input[@name='confbools[testEmptyBoolConfig]' and @type='checkbox']");
-        $this->type("confstrs[testEmptyStrConfig]", 'testString');
-        $this->type("confarrs[testEmptyArrConfig]", "option1\noption2\noption3");
-        $this->type("confaarrs[testEmptyAArrConfig]", "key1 => option1\nkey2 => option2");
-        $this->select("confselects[testEmptySelectConfig]", "2");
-        $this->type("css=.password_input", "testPassword");
-        $this->type("confpassword[testEmptyPasswordConfig]", "testPassword");
-
-        $this->clickAndWait('save');
-
-        // Assert that added information appeared.
-        $this->assertChecked("//input[@name='confbools[testEmptyBoolConfig]' and @type='checkbox']");
-        $this->assertElementValue("confstrs[testEmptyStrConfig]", 'testString', 'Without default value text input (str) should be empty');
-        $this->assertElementValue("confarrs[testEmptyArrConfig]", "option1\noption2\noption3", 'Without default value text area array (arr) should be empty');
-        $this->assertElementValue("confaarrs[testEmptyAArrConfig]", "key1 => option1\nkey2 => option2", 'Without default value text area assoc array (aarr) should be empty');
-        $this->assertElementValue("confselects[testEmptySelectConfig]", '2', 'Without default value first option should be selected for selects');
-
-        $oPassword = $this->getElement("confpassword[testEmptyPasswordConfig]");
-        $this->assertEquals('', $oPassword->getValue(), 'With saved value password should be empty');
-        $this->assertFalse($oPassword->isVisible(), 'Password confirm field should be invisible when value is saved');
-    }
-
-    /**
-     * Testing modules in vendor directory. Checking when any file with source code class of module is deleted.
-     *
-     * @group adminFunctionality
-     */
-    public function testModulesHandlingExtendingClass()
-    {
-        $testConfig = $this->getTestConfig();
-        if ($testConfig->isSubShop()) {
-            $this->markTestSkipped("Test is not for SubShop");
-        }
-
-        $this->loginAdmin("Extensions", "Modules");
-
-        // checking If the same class extend two modules
-        $this->openListItem("Test module #1");
-        $this->clickAndWait("//form[@id='myedit']//input[@value='Activate']", "list");
-        $this->assertElementPresent("//form[@id='myedit']//input[@value='Deactivate']");
-        $this->assertTextPresent("1.0");
-        $this->assertTextPresent("OXID");
-        $this->assertTextPresent("-");
-        $this->assertTextPresent("-");
-
-        // activated seconds modules
-        $this->openListItem("Test module #2");
-        $this->frame("edit");
-        $this->clickAndWait("//form[@id='myedit']//input[@value='Activate']", "list");
-        $this->assertElementPresent("//form[@id='myedit']//input[@value='Deactivate']");
-        $this->assertTextPresent("Test module #2");
-        $this->assertTextPresent("1.0");
-        $this->assertTextPresent("OXID");
-        $this->assertTextPresent("-");
-        $this->assertTextPresent("-");
-
-        // activated modules test7
-        $this->openListItem("Test module #7");
-        $this->frame("edit");
-        $this->clickAndWait("//form[@id='myedit']//input[@value='Activate']", "list");
-        $this->waitForFrameToLoad('list');
-        $this->assertElementPresent("//form[@id='myedit']//input[@value='Deactivate']");
-        $this->assertTextPresent("Test module #7");
-        $this->assertTextPresent("1.0");
-        $this->assertTextPresent("OXID");
-        $this->assertTextPresent("-");
-        $this->assertTextPresent("-");
-
-        //checking if module all entry is displayed
-        $this->openTab("Installed Shop Modules");
-        $this->assertTextPresent("Drag items to change modules order. After changing order press Save button to save current modules order.");
-        $this->assertEquals('test1/controllers/test1content', $this->getText("//li[@id='test1/controllers/test1content']/span"));
-        $this->assertEquals('test2/view/myinfo2', $this->getText("//li[@id='test2/view/myinfo2']/span"));
-        $this->assertEquals('oxid/test7/view/myinfo7', $this->getText("//li[@id='oxid/test7/view/myinfo7']/span"));
-
-        $this->clearCache();
-        $this->openShop();
-        $this->open(shopURL."en/About-Us/");
-        $this->assertTextPresent("About Us + info1 + info2 + info7");
-
-        $aModules = array('content' => 'test1_/view/myinfo1&test2/view/myinfo2&oxid/test7/view/myinfo7');
-        $aModules = serialize($aModules);
-        $this->callShopSC("oxConfig", null, null, array('aModules' => array("type" => "aarr", "value" => $aModules)));
-
-        $this->loginAdmin("Extensions", "Modules");
-        $this->frame("edit");
-        $this->assertTextPresent("Problematic Files");
-        $this->assertTextPresent("test1_/metadata.php");
-        $this->clickAndWait("yesButton");
-
-        $this->clearCache();
-        $this->openShop();
-        $this->open(shopURL."en/About-Us/");
-        $this->assertTextPresent("About Us + info2 + info7");
-        $this->assertTextNotPresent("About Us + info1 + info2 + info7");
-    }
-
-    /**
-     * Test, that the module deactivation works in the non demo mode.
-     *
-     * @group adminFunctionality
-     * @group adminModules
-     */
-    public function testModuleActivationWorksInNormalMode()
-    {
-        $this->loginAdmin("Extensions", "Modules");
-        $this->openListItem("Test module #6 (in vendor dir)");
-        $this->assertActivationButtonIsPresent();
-        $this->assertDeactivationButtonIsNotPresent();
-        $this->clickAndWait("//form[@id='myedit']//input[@value='Activate']");
-        $this->assertDeactivationButtonIsPresent();
-        $this->assertActivationButtonIsNotPresent();
-    }
-
-    /**
-     * Test, that the module deactivation works in the non demo mode.
-     *
-     * @group adminFunctionality
-     * @group adminModules
-     */
-    public function testModuleDeactivationWorksInNormalMode()
-    {
-        $this->testModuleActivationWorksInNormalMode();
-
-        $this->clickAndWait("//form[@id='myedit']//input[@value='Deactivate']");
-        $this->assertActivationButtonIsPresent();
-        $this->assertDeactivationButtonIsNotPresent();
-    }
-
-    /**
-     * Test, that the module activation won't work in the demo mode.
-     *
-     * @group adminFunctionality
-     * @group adminModules
-     */
-    public function testModuleActivationIsSwitchedOffInDemoMode()
-    {
-        $this->loginAdmin("Extensions", "Modules");
-        $this->switchToDemoMode();
-
-        $this->openListItem("Test module #6 (in vendor dir)");
-        $this->assertActivationButtonIsNotPresent();
-        $this->assertDeactivationButtonIsNotPresent();
-        $this->assertTextPresent('Please note: modules can\'t be activated or deactivated in demo shop mode.', "N");
-    }
-
-    /**
-     * Test, that the module deactivation won't work in the demo mode.
-     *
-     * @group adminFunctionality
-     * @group adminModules
-     */
-    public function testModuleDeactivationIsSwitchedOffInDemoMode()
-    {
-        $this->testModuleActivationWorksInNormalMode();
-        $this->switchToDemoMode();
-
-        $this->openListItem("Test module #6 (in vendor dir)");
-        $this->assertActivationButtonIsNotPresent();
-        $this->assertDeactivationButtonIsNotPresent();
-        $this->assertTextPresent('Please note: modules can\'t be activated or deactivated in demo shop mode.', "N");
-    }
-
-    protected function assertActivationButtonIsPresent()
-    {
-        $this->assertButtonIsPresent('Activate');
-    }
-
-    protected function assertDeactivationButtonIsPresent()
-    {
-        $this->assertButtonIsPresent('Deactivate');
-    }
-
-    protected function assertButtonIsPresent($buttonValue)
-    {
-        $this->assertElementPresent("//form[@id='myedit']//input[@value='{$buttonValue}']");
-    }
-
-    protected function assertActivationButtonIsNotPresent()
-    {
-        $this->assertButtonIsNotPresent('Activate');
-    }
-
-    protected function assertDeactivationButtonIsNotPresent()
-    {
-        $this->assertButtonIsNotPresent('Deactivate');
-    }
-
-    protected function assertButtonIsNotPresent($buttonValue)
-    {
-        $this->assertElementNotPresent("//form[@id='myedit']//input[@value='{$buttonValue}']");
-    }
-
-    protected function switchToDemoMode()
-    {
-        $this->callShopSC("oxConfig", null, null, array("blDemoShop" => array("type" => "bool", "value" => "true")));
-    }
-
-    protected function switchDemoModeOff()
-    {
-        $this->callShopSC("oxConfig", null, null, array("blDemoShop" => array("type" => "bool", "value" => "false")));
-    }
-
-    /**
-     * checking if switching themes works
-     *
-     * @group adminFunctionality
-     */
-    public function testConversionRateOptions()
-    {
-        $this->markTestSkipped("There is not done test, so we need to decide  finish or  delete test ");
-
-        //basic theme on
-        $this->loginAdmin("Master Settings", "Core Settings");
-        $this->openTab("System");
-        $this->click("link=Order");
-        $this->waitForText("Allow Orders from foreign Countries");
-        $this->assertElementPresent("confbools[blDisableNavBars]");
-        //checking in basic theme
-        $this->selectMenu("Master Settings", "Themes");
-        $this->openListItem("link=testtheme");
-        $this->clickAndWaitFrame("//input[@value='Activate']", "list");
-        $this->openTab("Settings");
-    }
-
-    /**
      * This simple test runs in all editions for subshop and varnish groups.
      * In this way CI generates test results for CE/PE editions.
      *
@@ -1965,102 +1713,6 @@ class FunctionalityInAdminTest extends AdminTestCase
         } else {
             $this->assertElementNotPresent("btn.new", "Subshop link should not exist.");
         }
-    }
-
-    /**
-     * checking if econda is loaded in frontend
-     *
-     * @group adminFunctionality
-     *
-     * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
-     */
-    public function testEconda()
-    {
-        $this->markTestSkipped('deprecated sinve v5.3 (2016-11-04) Dynpages will be removed.');
-        //activating econda
-        $aConfigs = array("sShopCountry"      => array("type" => "str", "value" => 'de'),
-                          "blLoadDynContents" => array("type" => "bool", "value" => 'true'));
-
-        $this->callShopSC("oxConfig", null, null, $aConfigs);
-        $this->loginAdmin("Shop controlling", "econda");
-
-        if ($this->getTestConfig()->getShopEdition() === 'CE') {
-            $this->openTab('Interface');
-        }
-
-        $this->frame("edit");
-        $this->click("//input[@name='confbools[blEcondaActive]' and @type='checkbox']");
-        $this->clickAndWait("save");
-
-        //checking in frontend
-        $this->clearCache();
-        $this->openShop();
-
-        $sUrl = "//script[@src='" . $this->getTestConfig()->getShopUrl() . "modules/econda/out/emos2.js']";
-
-        $this->assertElementPresent($sUrl);
-        $this->open(shopURL . "modules/econda/out/emos2.js");
-        $this->assertTextPresent("function(){var URL_TRACKING_ALLOWED=true");
-        $this->goBack();
-        //home page checking
-        $this->clearCache();
-        $this->openShop();
-        $htmlSource = $this->getHtmlSource();
-
-        $this->assertContains("window.emosPropertiesEvent(emospro);", $htmlSource);
-        $this->assertContains('emospro.content = "Start";', $htmlSource);
-        $this->assertContains('emospro.langid = 1;', $htmlSource);
-        $this->assertContains('emospro.pageId', $htmlSource);
-        $this->assertContains('emospro.siteid', $htmlSource);
-        //category page
-        $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
-        $htmlSource = $this->getHtmlSource();
-        $this->assertContains("window.emosPropertiesEvent(emospro);", $htmlSource);
-        $this->assertContains('emospro.content', $htmlSource);
-        $this->assertContains('emospro.langid = 1;', $htmlSource);
-        $this->assertContains('emospro.pageId', $htmlSource);
-        $this->assertContains('emospro.siteid', $htmlSource);
-        //details page
-        $this->clickAndWait("productList_1");
-        $htmlSource = $this->getHtmlSource();
-        $this->assertContains("window.emosPropertiesEvent(emospro);", $htmlSource);
-        $this->assertContains('emospro.content', $htmlSource);
-        $this->assertContains('emospro.langid = 1;', $htmlSource);
-        $this->assertContains('emospro.pageId', $htmlSource);
-        $this->assertContains('emospro.siteid', $htmlSource);
-        $this->assertContains('emospro.ec_Event = [["view","1000","Test', $htmlSource);
-        $this->clickAndWait("toBasket");
-        //acount page
-        $this->clickAndWait("//dl[@id='footerServices']//a[text()='%ACCOUNT%']");
-        $htmlSource = $this->getHtmlSource();
-        $this->assertContains('emospro.content = "Login\/Formular\/Login";', $htmlSource);
-        $this->assertContains('emospro.langid = 1;', $htmlSource);
-        $this->assertContains('emospro.pageId', $htmlSource);
-        $this->assertContains('emospro.siteid', $htmlSource);
-        $this->type("loginUser", "example_test@oxid-esales.dev");
-        $this->type("loginPwd", "useruser");
-        $this->clickAndWait("loginButton");
-        $htmlSource = $this->getHtmlSource();
-        $this->assertContains('emospro.content = "Login\/Uebersicht";', $htmlSource);
-        $this->assertContains('emospro.langid = 1;', $htmlSource);
-        $this->assertContains('emospro.pageId', $htmlSource);
-        $this->assertContains('emospro.siteid', $htmlSource);
-        $this->assertContains('emospro.login = [["' . md5('example_test@oxid-esales.dev') . '"', $htmlSource);
-        //basket page
-        $this->openBasket();
-        $htmlSource = $this->getHtmlSource();
-        $this->assertContains('emospro.content = "Shop\/Kaufprozess\/Warenkorb";', $htmlSource);
-        $this->assertContains('emospro.langid = 1;', $htmlSource);
-        $this->assertContains('emospro.pageId', $htmlSource);
-        $this->assertContains('emospro.siteid', $htmlSource);
-        $this->assertContains('emospro.orderProcess = "1_Warenkorb";', $htmlSource);
-        //information page
-        $this->clickAndWait("link=Privacy Policy");
-        $htmlSource = $this->getHtmlSource();
-        $this->assertContains('emospro.content = "Info\/Sicherheit";', $htmlSource);
-        $this->assertContains('emospro.langid = 1;', $htmlSource);
-        $this->assertContains('emospro.pageId', $htmlSource);
-        $this->assertContains('emospro.siteid', $htmlSource);
     }
 
     /**
@@ -2112,7 +1764,7 @@ EOT;
             $query = <<<EOT
             INSERT IGNORE INTO `oxcategories2shop`
             (`OXSHOPID`, `OXMAPOBJECTID`)
-              SELECT 1, `OXMAPID` 
+              SELECT 1, `OXMAPID`
               FROM `oxcategories` WHERE `oxcategories`.`OXTITLE` LIKE 'test%03';
 EOT;
             oxDb::getDb()->execute($query);

@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 
@@ -32,9 +16,8 @@ use oxRegistry;
  * ordered articles information, button to add article to basket.
  * OXID eShop -> MY ACCOUNT -> Newsletter.
  */
-class AccountOrderController extends \Account
+class AccountOrderController extends \OxidEsales\Eshop\Application\Controller\AccountController
 {
-
     /**
      * Count of all articles in list.
      *
@@ -71,9 +54,9 @@ class AccountOrderController extends \Account
     protected $_aArticlesList = null;
 
     /**
-     * If user is not logged in - returns name of template account_order::_sThisLoginTemplate,
+     * If user is not logged in - returns name of template \OxidEsales\Eshop\Application\Controller\AccountOrderController::_sThisLoginTemplate,
      * or if user is allready logged in - returns name of template
-     * account_order::_sThisTemplate
+     * \OxidEsales\Eshop\Application\Controller\AccountOrderController::_sThisTemplate
      *
      * @return string $_sThisTemplate current template file name
      */
@@ -98,7 +81,7 @@ class AccountOrderController extends \Account
     public function getOrderList()
     {
         if ($this->_aOrderList === null) {
-            $this->_aOrderList = array();
+            $this->_aOrderList = [];
 
             // Load user Orderlist
             if ($oUser = $this->getUser()) {
@@ -118,17 +101,16 @@ class AccountOrderController extends \Account
     /**
      * Template variable getter. Returns ordered articles
      *
-     * @return oxarticlelist | false
+     * @return \OxidEsales\Eshop\Application\Model\ArticleList | false
      */
     public function getOrderArticleList()
     {
         if ($this->_aArticlesList === null) {
-
             // marking as set
             $this->_aArticlesList = false;
             $oOrdersList = $this->getOrderList();
             if ($oOrdersList && $oOrdersList->count()) {
-                $this->_aArticlesList = oxNew('oxArticleList');
+                $this->_aArticlesList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                 $this->_aArticlesList->loadOrderArticles($oOrdersList);
             }
         }
@@ -157,16 +139,16 @@ class AccountOrderController extends \Account
      */
     public function getBreadCrumb()
     {
-        $aPaths = array();
-        $aPath = array();
-        $iBaseLanguage = oxRegistry::getLang()->getBaseLanguage();
+        $aPaths = [];
+        $aPath = [];
+        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $sSelfLink = $this->getViewConfig()->getSelfLink();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
-        $aPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($sSelfLink . 'cl=account');
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
+        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($sSelfLink . 'cl=account');
         $aPaths[] = $aPath;
 
-        $aPath['title'] = oxRegistry::getLang()->translateString('ORDER_HISTORY', $iBaseLanguage, false);
+        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('ORDER_HISTORY', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 

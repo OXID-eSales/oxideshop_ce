@@ -1,26 +1,10 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Controller;
+namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxRegistry;
 use oxUBase;
@@ -29,9 +13,8 @@ use oxUBase;
  * Starting shop page.
  * Shop starter, manages starting visible articles, etc.
  */
-class StartController extends oxUBase
+class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
-
     /**
      * List display type
      *
@@ -126,13 +109,13 @@ class StartController extends oxUBase
     public function render()
     {
 
-        if (oxRegistry::getConfig()->getRequestParameter('showexceptionpage') == '1') {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('showexceptionpage') == '1') {
             return 'message/exception.tpl';
         }
 
         $myConfig = $this->getConfig();
 
-        $oRss = oxNew('oxrssfeed');
+        $oRss = oxNew(\OxidEsales\Eshop\Application\Model\RssFeed::class);
         if ($myConfig->getConfigParam('iTop5Mode') && $myConfig->getConfigParam('bl_rssTopShop')) {
             $this->addRssFeed($oRss->getTopInShopTitle(), $oRss->getTopInShopUrl(), 'topArticles');
         }
@@ -220,10 +203,10 @@ class StartController extends oxUBase
     public function getArticleList()
     {
         if ($this->_aArticleList === null) {
-            $this->_aArticleList = array();
+            $this->_aArticleList = [];
             if ($this->_getLoadActionsParam()) {
                 // start list
-                $oArtList = oxNew('oxArticleList');
+                $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                 $oArtList->loadActionArticles('OXSTART');
                 if ($oArtList->count()) {
                     $this->_aArticleList = $oArtList;
@@ -245,7 +228,7 @@ class StartController extends oxUBase
             $this->_aTopArticleList = false;
             if ($this->_getLoadActionsParam()) {
                 // start list
-                $oArtList = oxNew('oxArticleList');
+                $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                 $oArtList->loadActionArticles('OXTOPSTART');
                 if ($oArtList->count()) {
                     $this->_aTopArticleList = $oArtList;
@@ -265,10 +248,10 @@ class StartController extends oxUBase
     public function getNewestArticles()
     {
         if ($this->_aNewArticleList === null) {
-            $this->_aNewArticleList = array();
+            $this->_aNewArticleList = [];
             if ($this->_getLoadActionsParam()) {
                 // newest articles
-                $oArtList = oxNew('oxArticleList');
+                $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                 $oArtList->loadNewestArticles();
                 if ($oArtList->count()) {
                     $this->_aNewArticleList = $oArtList;
@@ -290,7 +273,7 @@ class StartController extends oxUBase
             $this->_oFirstArticle = false;
             if ($this->_getLoadActionsParam()) {
                 // top articles ( big one )
-                $oArtList = oxNew('oxArticleList');
+                $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                 $oArtList->loadActionArticles('OXFIRSTSTART');
                 if ($oArtList->count()) {
                     $this->_oFirstArticle = $oArtList->current();
@@ -326,10 +309,10 @@ class StartController extends oxUBase
     public function getCatOfferArticleList()
     {
         if ($this->_oCatOfferArtList === null) {
-            $this->_oCatOfferArtList = array();
+            $this->_oCatOfferArtList = [];
             if ($this->_getLoadActionsParam()) {
                 // "category offer" articles
-                $oArtList = oxNew('oxArticleList');
+                $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                 $oArtList->loadActionArticles('OXCATOFFER');
                 if ($oArtList->count()) {
                     $this->_oCatOfferArtList = $oArtList;
@@ -357,8 +340,8 @@ class StartController extends oxUBase
      */
     public function getCanonicalUrl()
     {
-        if (oxRegistry::getUtils()->seoIsActive() && ($oViewConf = $this->getViewConfig())) {
-            return oxRegistry::get("oxUtilsUrl")->prepareCanonicalUrl($oViewConf->getHomeLink());
+        if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && ($oViewConf = $this->getViewConfig())) {
+            return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->prepareCanonicalUrl($oViewConf->getHomeLink());
         }
     }
 
@@ -374,7 +357,7 @@ class StartController extends oxUBase
         $oBannerList = null;
 
         if ($this->getConfig()->getConfigParam('bl_perfLoadAktion')) {
-            $oBannerList = oxNew('oxActionList');
+            $oBannerList = oxNew(\OxidEsales\Eshop\Application\Model\ActionList::class);
             $oBannerList->loadBanners();
         }
 
@@ -391,7 +374,7 @@ class StartController extends oxUBase
 
         $oList = null;
 
-        if ($this->getConfig()->getConfigParam('bl_perfLoadAktion')) {
+        if ($this->getConfig()->getConfigParam('bl_perfLoadManufacturerTree')) {
             $oList = $this->getManufacturerlist();
         }
 

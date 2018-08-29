@@ -1,38 +1,21 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\Eshop\Application\Model;
+namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
 use oxRegistry;
 use oxField;
-use oxUtilsObject;
 
 /**
  * Article attributes manager.
  * Collects and keeps attributes of chosen article.
  *
  */
-class Attribute extends \oxI18n
+class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
     /**
      * Current class name
@@ -89,7 +72,7 @@ class Attribute extends \oxI18n
         }
 
         // remove attributes from articles also
-        $oDb = oxDb::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sOxidQuoted = $oDb->quote($sOXID);
         $sDelete = "delete from oxobject2attribute where oxattrid = " . $sOxidQuoted;
         $oDb->execute($sDelete);
@@ -109,7 +92,7 @@ class Attribute extends \oxI18n
      */
     public function assignVarToAttribute($aMDVariants, $aSelTitle)
     {
-        $myLang = oxRegistry::getLang();
+        $myLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $aConfLanguages = $myLang->getLanguageIds();
         $sAttrId = $this->_getAttrId($aSelTitle[0]);
         if (!$sAttrId) {
@@ -118,26 +101,25 @@ class Attribute extends \oxI18n
         foreach ($aMDVariants as $sVarId => $oValue) {
             if (strpos($sVarId, "mdvar_") === 0) {
                 foreach ($oValue as $sId) {
-                    //var_dump($sVarId, $oAttribute->oxattribute__oxid->value);
                     $sVarId = substr($sVarId, 6);
-                    $oNewAssign = oxNew("oxBase");
+                    $oNewAssign = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                     $oNewAssign->init("oxobject2attribute");
-                    $sNewId = oxUtilsObject::getInstance()->generateUID();
+                    $sNewId = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID();
                     if ($oNewAssign->load($sId)) {
-                        $oNewAssign->oxobject2attribute__oxobjectid = new oxField($sVarId);
+                        $oNewAssign->oxobject2attribute__oxobjectid = new \OxidEsales\Eshop\Core\Field($sVarId);
                         $oNewAssign->setId($sNewId);
                         $oNewAssign->save();
                     }
                 }
             } else {
-                $oNewAssign = oxNew("oxi18n");
+                $oNewAssign = oxNew(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class);
                 $oNewAssign->setEnableMultilang(false);
                 $oNewAssign->init("oxobject2attribute");
-                $oNewAssign->oxobject2attribute__oxobjectid = new oxField($sVarId);
-                $oNewAssign->oxobject2attribute__oxattrid = new oxField($sAttrId);
+                $oNewAssign->oxobject2attribute__oxobjectid = new \OxidEsales\Eshop\Core\Field($sVarId);
+                $oNewAssign->oxobject2attribute__oxattrid = new \OxidEsales\Eshop\Core\Field($sAttrId);
                 foreach ($aConfLanguages as $sKey => $sLang) {
                     $sPrefix = $myLang->getLanguageTag($sKey);
-                    $oNewAssign->{'oxobject2attribute__oxvalue' . $sPrefix} = new oxField($oValue[$sKey]->name);
+                    $oNewAssign->{'oxobject2attribute__oxvalue' . $sPrefix} = new \OxidEsales\Eshop\Core\Field($oValue[$sKey]->name);
                 }
                 $oNewAssign->save();
             }
@@ -153,7 +135,7 @@ class Attribute extends \oxI18n
      */
     protected function _getAttrId($sSelTitle)
     {
-        $oDb = oxDb::getDB();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDB();
         $sAttViewName = getViewName('oxattribute');
 
         return $oDb->getOne("select oxid from $sAttViewName where LOWER(oxtitle) = " . $oDb->quote(getStr()->strtolower($sSelTitle)));
@@ -168,14 +150,14 @@ class Attribute extends \oxI18n
      */
     protected function _createAttribute($aSelTitle)
     {
-        $myLang = oxRegistry::getLang();
+        $myLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $aConfLanguages = $myLang->getLanguageIds();
-        $oAttr = oxNew('oxI18n');
+        $oAttr = oxNew(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class);
         $oAttr->setEnableMultilang(false);
         $oAttr->init('oxattribute');
         foreach ($aConfLanguages as $sKey => $sLang) {
             $sPrefix = $myLang->getLanguageTag($sKey);
-            $oAttr->{'oxattribute__oxtitle' . $sPrefix} = new oxField($aSelTitle[$sKey]);
+            $oAttr->{'oxattribute__oxtitle' . $sPrefix} = new \OxidEsales\Eshop\Core\Field($aSelTitle[$sKey]);
         }
         $oAttr->save();
 
@@ -192,12 +174,12 @@ class Attribute extends \oxI18n
     public function getAttributeAssigns($sArtId)
     {
         if ($sArtId) {
-            $oDb = oxDb::getDb();
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
             $sSelect = "select o2a.oxid from oxobject2attribute as o2a ";
             $sSelect .= "where o2a.oxobjectid = " . $oDb->quote($sArtId) . " order by o2a.oxpos";
 
-            $aIds = array();
+            $aIds = [];
             $rs = $oDb->select($sSelect);
             if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {

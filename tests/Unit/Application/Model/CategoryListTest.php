@@ -1,31 +1,15 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
-namespace Unit\Application\Model;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use oxCategoryList;
 use \oxField;
 use \oxDb;
 use \oxRegistry;
-use \oxCategory;
+use OxidEsales\EshopCommunity\Application\Model\Category;
 
 if (!class_exists('\OxidEsales\EshopEnterprise\Application\Model\CategoryList')) {
     class_alias('oxCategoryList', '\OxidEsales\EshopEnterprise\Application\Model\CategoryList');
@@ -180,7 +164,7 @@ class CategoryListTest extends \OxidTestCase
     {
         parent::setUp();
 
-        $this->classForMock = ($this->getTestConfig()->getShopEdition() === 'EE') ? 'Unit\Application\Model\oxCategoryListHelperEE' : 'Unit\Application\Model\oxCategoryListHelperCE';
+        $this->classForMock = ($this->getTestConfig()->getShopEdition() === 'EE') ? \OxidEsales\EshopCommunity\Tests\Unit\Application\Model\oxCategoryListHelperEE::class : \OxidEsales\EshopCommunity\Tests\Unit\Application\Model\oxCategoryListHelperCE::class;
 
         $this->_oList = oxNew($this->classForMock);
         $this->_sNoCat = '_no_such_cat_';
@@ -488,7 +472,7 @@ class CategoryListTest extends \OxidTestCase
         $oCat->oxcategories__oxleft = new oxField('151');
         $oCat->oxcategories__oxright = new oxField('959');
 
-        $oList = $this->getMock('oxCategoryList', array('_getSqlSelectFieldsForTree'));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\CategoryList::class, array('_getSqlSelectFieldsForTree'));
         $oList->expects($this->once())->method('_getSqlSelectFieldsForTree')
             ->with($this->equalTo('maincats'), $this->equalTo(null))
             ->will($this->returnValue('qqqqq'));
@@ -497,14 +481,14 @@ class CategoryListTest extends \OxidTestCase
 
         $this->assertEquals("UNION SELECT qqqqq FROM oxcategories AS subcats LEFT JOIN $sViewName AS maincats on maincats.oxparentid = subcats.oxparentid WHERE subcats.oxrootid = 'rootid' AND subcats.oxleft <= 151 AND subcats.oxright >= 959", $oList->UNITgetDepthSqlUnion($oCat));
 
-        $oList = $this->getMock('oxCategoryList', array('_getSqlSelectFieldsForTree'));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\CategoryList::class, array('_getSqlSelectFieldsForTree'));
         $oList->expects($this->once())->method('_getSqlSelectFieldsForTree')
             ->with($this->equalTo('maincats'), $this->equalTo('lalala'))
             ->will($this->returnValue('qqqqq'));
 
         $this->assertEquals("UNION SELECT qqqqq FROM oxcategories AS subcats LEFT JOIN $sViewName AS maincats on maincats.oxparentid = subcats.oxparentid WHERE subcats.oxrootid = 'rootid' AND subcats.oxleft <= 151 AND subcats.oxright >= 959", $oList->UNITgetDepthSqlUnion($oCat, 'lalala'));
 
-        $oList = $this->getMock('oxCategoryList', array('_getSqlSelectFieldsForTree'));
+        $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\CategoryList::class, array('_getSqlSelectFieldsForTree'));
         $oList->expects($this->never())->method('_getSqlSelectFieldsForTree');
 
         $this->assertEquals("", $oList->UNITgetDepthSqlUnion(null));
@@ -569,10 +553,10 @@ class CategoryListTest extends \OxidTestCase
 
         $this->_oList->selectString($this->_oList->UNITgetSelectString());
         $this->_oList[$this->_sActCat] = array();
-        $this->assertFalse($this->_oList[$this->_sActCat] instanceof oxcategory);
+        $this->assertFalse($this->_oList[$this->_sActCat] instanceof category);
 
         $this->_oList->UNITppLoadFullCategory($this->_sActCat);
-        $this->assertTrue($this->_oList[$this->_sActCat] instanceof oxcategory);
+        $this->assertTrue($this->_oList[$this->_sActCat] instanceof category);
     }
 
     /**
@@ -596,7 +580,7 @@ class CategoryListTest extends \OxidTestCase
         $this->_oList->UNITppLoadFullCategory($this->_sActCat);
 
         $this->assertTrue(isset($this->_sActCat));
-        $this->assertFalse($this->_oList[$this->_sActCat] instanceof oxcategory);
+        $this->assertFalse($this->_oList[$this->_sActCat] instanceof category);
     }
 
     /**
@@ -674,7 +658,7 @@ class CategoryListTest extends \OxidTestCase
         $this->_oList->setVar('blForceFull', false);
         $this->_oList->setVar('iForceLevel', 0);
 
-        $moduleName = ($this->getTestConfig()->getShopEdition() === 'EE') ? 'Unit\Application\Model\oxCategoryListHelperLoadCategoryMenusEE' : 'Unit\Application\Model\oxCategoryListHelperLoadCategoryMenusPE';
+        $moduleName = ($this->getTestConfig()->getShopEdition() === 'EE') ? \OxidEsales\EshopCommunity\Tests\Unit\Application\Model\oxCategoryListHelperLoadCategoryMenusEE::class : \OxidEsales\EshopCommunity\Tests\Unit\Application\Model\oxCategoryListHelperLoadCategoryMenusPE::class;
         oxAddClassModule($moduleName, 'oxcontentlist');
 
         $this->_oList->load();
@@ -838,7 +822,7 @@ class CategoryListTest extends \OxidTestCase
         $oCat->oxcategories__oxactive = new oxField(1);
         $oCat->oxcategories__oxtitle = new oxField("_test");
         $oCat->save();
-        $oCat2 = $this->getMock('oxCategory', array('getSubCats'));
+        $oCat2 = $this->getMock(\OxidEsales\Eshop\Application\Model\Category::class, array('getSubCats'));
         $oCat2->expects($this->any())->method('getSubCats')->will($this->returnValue(array($oCat)));
         $oCat2->setId("_test2");
         $oCat2->oxcategories__oxparentid = new oxField("oxrootid");

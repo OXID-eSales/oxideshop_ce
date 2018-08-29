@@ -9,7 +9,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Common\Storage;
 
 use OxidEsales\EshopCommunity\Internal\Common\Storage\YamlFileStorage;
-use OxidEsales\TestingLibrary\VfsStreamWrapper;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\FileLocator;
 
@@ -18,6 +17,11 @@ use Symfony\Component\Config\FileLocator;
  */
 class YamlFileStorageTest extends TestCase
 {
+    /**
+     * @var resource
+     */
+    private $tempFileHandle = null;
+
     public function testSaving()
     {
         $testData = [
@@ -46,7 +50,7 @@ class YamlFileStorageTest extends TestCase
     {
         $yamlFileStorage = new YamlFileStorage(
             new FileLocator(),
-            '/tmp/testStorageFile.yaml'
+            $this->getFilePath()
         );
 
         $yamlFileStorage->save(['testData']);
@@ -57,19 +61,63 @@ class YamlFileStorageTest extends TestCase
         );
     }
 
+
+    /**
+     * @expectedException \Symfony\Component\Yaml\Exception\ParseException
+     */
+    public function testinvalidYamlFileThrowsParseException()
+    {
+        $yaml = "\t";
+
+        file_put_contents($this->getFilePath(), $yaml);
+
+        $yamlFileStorage = new YamlFileStorage(
+            new FileLocator(),
+            $this->getFilePath()
+        );
+        $yamlFileStorage->get();
+    }
+
+    /**
+     * @expectedException \TypeError
+     */
+    public function testEmptyYamlFileThrowsTypeError()
+    {
+        $yaml = "";
+
+        file_put_contents($this->getFilePath(), $yaml);
+
+        $yamlFileStorage = new YamlFileStorage(
+            new FileLocator(),
+            $this->getFilePath()
+        );
+        $yamlFileStorage->get();
+    }
+
+    public function testEmptyYamlArrayThrowsNoError()
+    {
+        $yaml = "[]";
+
+        file_put_contents($this->getFilePath(), $yaml);
+
+        $yamlFileStorage = new YamlFileStorage(
+            new FileLocator(),
+            $this->getFilePath()
+        );
+        $parsedYaml = $yamlFileStorage->get();
+
+        $this->assertEquals([], $parsedYaml);
+    }
+
     /**
      * @return string
      */
     private function getFilePath(): string
     {
-        $vfsStreamWrapper = new VfsStreamWrapper();
-        $relativePath = 'test/storage.yaml';
-        $path = $vfsStreamWrapper->getRootPath() . $relativePath;
-
-        if (!is_file($path)) {
-            $vfsStreamWrapper->createFile($relativePath);
+        if ($this->tempFileHandle === null) {
+            $this->tempFileHandle = tmpfile();
         }
 
-        return $path;
+        return stream_get_meta_data($this->tempFileHandle)['uri'];
     }
 }

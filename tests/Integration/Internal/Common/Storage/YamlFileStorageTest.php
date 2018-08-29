@@ -46,17 +46,57 @@ class YamlFileStorageTest extends TestCase
         );
     }
 
-    public function testCreatesNewFileIfItDoesNotExist()
+    public function testCreatesNewFileIfDoesNotExist()
     {
+        $filePath = $this->getFilePath();
+        unlink($filePath);
+
         $yamlFileStorage = new YamlFileStorage(
             new FileLocator(),
-            $this->getFilePath()
+            $filePath
         );
 
         $yamlFileStorage->save(['testData']);
 
         $this->assertSame(
             ['testData'],
+            $yamlFileStorage->get()
+        );
+    }
+
+    /**
+     * @expectedException Symfony\Component\Yaml\Exception\ParseException
+     */
+    public function testStorageWithCorruptedFile()
+    {
+        $filePath = $this->getFilePath();
+        $yamlContent = <<<YAML
+bar:
+    <<: *foo
+YAML;
+        file_put_contents($filePath, $yamlContent);
+
+        $yamlFileStorage = new YamlFileStorage(
+            new FileLocator(),
+            $filePath
+        );
+
+        $yamlFileStorage->get();
+    }
+
+    public function testStorageWithEmptyFile()
+    {
+        $filePath = $this->getFilePath();
+
+        file_put_contents($filePath, '');
+
+        $yamlFileStorage = new YamlFileStorage(
+            new FileLocator(),
+            $filePath
+        );
+
+        $this->assertSame(
+            [],
             $yamlFileStorage->get()
         );
     }

@@ -43,9 +43,11 @@ class YamlFileStorage implements ArrayStorageInterface
      */
     public function get(): array
     {
-        return Yaml::parse(
+        $fileContent = Yaml::parse(
             $this->getLocatedFilePath()
         );
+
+        return null === $fileContent ?? [];
     }
 
     /**
@@ -62,15 +64,23 @@ class YamlFileStorage implements ArrayStorageInterface
     /**
      * @return string
      */
-    private function getLocatedFilePath()
+    private function getLocatedFilePath(): string
     {
         try {
             $filePath = $this->fileLocator->locate($this->filePath);
         } catch (FileLocatorFileNotFoundException $exception) {
-            touch($this->filePath);
+            $this->createFile();
             $filePath = $this->fileLocator->locate($this->filePath);
         }
 
         return $filePath;
+    }
+
+    /**
+     * Creates file.
+     */
+    private function createFile()
+    {
+        touch($this->filePath);
     }
 }

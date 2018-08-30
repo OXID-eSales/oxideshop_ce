@@ -8,7 +8,10 @@ namespace OxidEsales\EshopCommunity\Internal\Adapter;
 
 use OxidEsales\Eshop\Core\MailValidator;
 use OxidEsales\Eshop\Core\Module\ModuleList;
+use OxidEsales\Eshop\Core\Module\Module;
+use OxidEsales\Eshop\Core\Module\ModuleCache;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Common\Exception\ModuleNotLoadableException;
 
 /**
  * @internal
@@ -17,6 +20,7 @@ class ShopAdapter implements ShopAdapterInterface
 {
     /**
      * @param string $email
+     *
      * @return bool
      */
     public function isValidEmail($email)
@@ -28,6 +32,7 @@ class ShopAdapter implements ShopAdapterInterface
 
     /**
      * @param string $string
+     *
      * @return string
      */
     public function translateString($string)
@@ -35,6 +40,22 @@ class ShopAdapter implements ShopAdapterInterface
         $lang = Registry::getLang();
 
         return $lang->translateString($string);
+    }
+
+    /**
+     * @param string $moduleId
+     *
+     * @throws ModuleNotLoadableException
+     */
+    public function invalidateModuleCache(string $moduleId)
+    {
+        $module = oxNew(Module::class);
+        if (!$module->load($moduleId)) {
+            throw new ModuleNotLoadableException('The following module could not be loaded. ModuleId: ' . $moduleId);
+        }
+
+        $moduleCache = oxNew(ModuleCache::class, $module);
+        $moduleCache->resetCache();
     }
 
     /**

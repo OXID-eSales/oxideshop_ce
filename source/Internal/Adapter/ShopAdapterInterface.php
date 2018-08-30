@@ -24,6 +24,11 @@ interface ShopAdapterInterface
     public function translateString($string);
 
     /**
+     * @param string $moduleId
+     */
+    public function invalidateModuleCache(string $moduleId);
+
+    /**
      * @return array
      */
     public function getModules();

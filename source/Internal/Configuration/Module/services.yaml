@@ -10,6 +10,13 @@ parameters:
       - smartyDirectories
 
 services:
+  OxidEsales\EshopCommunity\Internal\Configuration\Module\Service\ModuleActivationServiceInterface:
+    class: %module_configuration_path%\Service\ModuleActivationService
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Configuration\Module\Dao\ProjectConfigurationDaoInterface'
+      - '@OxidEsales\EshopCommunity\Internal\Common\Configuration\ConfigurationSettingDaoInterface'
+    public: false
+
   OxidEsales\EshopCommunity\Internal\Configuration\Module\Dao\ProjectConfigurationDaoInterface:
     class: %module_configuration_path%\Dao\ProjectConfigurationDao
     arguments:
@@ -47,7 +54,7 @@ services:
     public: false
 
   oxid_esales.configuration.module.data_mapper.validator.metadata_setting_validator:
-    class: OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\Validator\MetadataSettingValidator
+    class: OxidEsales\EshopCommunity\Internal\Configuration\Module\Validator\MetadataSettingValidator
     arguments:
       - '%oxid_esales.configuration.module.metadata_settings%'
     public: false

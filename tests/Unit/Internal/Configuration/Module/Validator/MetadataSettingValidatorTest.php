@@ -6,9 +6,9 @@ declare(strict_types=1);
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Configuration\Module\DataMapper\Validator;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Configuration\Module\Validator;
 
-use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\Validator\MetadataSettingValidator;
+use OxidEsales\EshopCommunity\Internal\Configuration\Module\Validator\MetadataSettingValidator;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ModuleSetting;
 use PHPUnit\Framework\TestCase;
 
@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 class MetadataSettingValidatorTest extends TestCase
 {
     /**
-     * @expectedException OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\Validator\MetadataVersionException
+     * @expectedException OxidEsales\EshopCommunity\Internal\Configuration\Module\Validator\MetadataVersionException
      */
     public function testWithInvalidMetadataVersion()
     {
@@ -37,7 +37,7 @@ class MetadataSettingValidatorTest extends TestCase
     }
 
     /**
-     * @expectedException OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\Validator\MetadataSettingException
+     * @expectedException OxidEsales\EshopCommunity\Internal\Configuration\Module\Validator\MetadataSettingException
      */
     public function testWithNonExistentSetting()
     {

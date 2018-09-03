@@ -6,12 +6,12 @@ declare(strict_types=1);
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\Validator;
+namespace OxidEsales\EshopCommunity\Internal\Configuration\Module\Validator;
 
 /**
  * @internal
  */
-class MetadataSettingException extends \Exception
+class MetadataVersionException extends \Exception
 {
 
 }

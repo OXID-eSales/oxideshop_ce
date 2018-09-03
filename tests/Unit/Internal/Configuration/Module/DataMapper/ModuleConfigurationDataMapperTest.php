@@ -9,7 +9,7 @@ declare(strict_types = 1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Configuration\Module\DataMapper;
 
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\ModuleConfigurationDataMapper;
-use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\Validator\SettingValidatorInterface;
+use OxidEsales\EshopCommunity\Internal\Configuration\Module\Validator\SettingValidatorInterface;
 use PHPUnit\Framework\TestCase;
 
 /**

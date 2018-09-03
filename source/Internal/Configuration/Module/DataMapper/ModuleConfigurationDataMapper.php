@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper;
 
-use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\Validator\SettingValidatorInterface;
+use OxidEsales\EshopCommunity\Internal\Configuration\Module\Validator\SettingValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ModuleSetting;
 

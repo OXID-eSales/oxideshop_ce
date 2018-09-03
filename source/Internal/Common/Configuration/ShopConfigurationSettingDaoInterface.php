@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Common\Configuration;
 /**
  * @internal
  */
-interface ConfigurationSettingDaoInterface
+interface ShopConfigurationSettingDaoInterface
 {
     /**
      * @param string $name

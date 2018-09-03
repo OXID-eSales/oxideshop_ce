@@ -10,13 +10,13 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Common\Configurat
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
-use OxidEsales\EshopCommunity\Internal\Common\Configuration\ConfigurationSettingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Common\Configuration\ShopConfigurationSettingDaoInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-class ConfigurationSettingDaoTest extends TestCase
+class ShopConfigurationSettingDaoTest extends TestCase
 {
     /**
      * @dataProvider settingValueDataProvider
@@ -88,16 +88,16 @@ class ConfigurationSettingDaoTest extends TestCase
         $containerBuilder = new ContainerBuilder();
         $container = $containerBuilder->getContainer();
 
-        $settingDaoDefinition = $container->getDefinition(ConfigurationSettingDaoInterface::class);
+        $settingDaoDefinition = $container->getDefinition(ShopConfigurationSettingDaoInterface::class);
         $settingDaoDefinition->setPublic(true);
 
         $container->setDefinition(
-            ConfigurationSettingDaoInterface::class,
+            ShopConfigurationSettingDaoInterface::class,
             $settingDaoDefinition
         );
 
         $container->compile();
 
-        return $container->get(ConfigurationSettingDaoInterface::class);
+        return $container->get(ShopConfigurationSettingDaoInterface::class);
     }
 }

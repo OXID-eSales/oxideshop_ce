@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 /**
  * @internal
  */
-class ConfigurationSettingDao implements ConfigurationSettingDaoInterface
+class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterface
 {
     /**
      * @var QueryBuilderFactoryInterface
@@ -27,7 +27,7 @@ class ConfigurationSettingDao implements ConfigurationSettingDaoInterface
     private $context;
 
     /**
-     * ConfigurationSettingDao constructor.
+     * ShopConfigurationSettingDao constructor.
      * @param QueryBuilderFactoryInterface $queryBuilderFactory
      * @param ContextInterface             $context
      */
@@ -94,12 +94,12 @@ class ConfigurationSettingDao implements ConfigurationSettingDaoInterface
     }
 
     /**
-     * @param string $type
-     * @param string $value
+     * @param mixed $type
+     * @param mixed $value
      *
      * @return mixed
      */
-    private function decodeValue(string $type, string $value)
+    private function decodeValue($type, $value)
     {
         switch ($type) {
             case 'arr':

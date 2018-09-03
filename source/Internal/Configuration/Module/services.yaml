@@ -14,8 +14,13 @@ services:
     class: %module_configuration_path%\Service\ModuleActivationService
     arguments:
       - '@OxidEsales\EshopCommunity\Internal\Configuration\Module\Dao\ProjectConfigurationDaoInterface'
-      - '@OxidEsales\EshopCommunity\Internal\Common\Configuration\ConfigurationSettingDaoInterface'
+      - '@oxid_esales.configuration.module.data_mapper.module_configuration_to_shop_configuration_data_mapper'
+      - '@OxidEsales\EshopCommunity\Internal\Common\Configuration\ShopConfigurationSettingDaoInterface'
     public: false
+
+  oxid_esales.configuration.module.data_mapper.module_configuration_to_shop_configuration_data_mapper:
+      class: %module_configuration_path%\DataMapper\ModuleConfigurationToShopConfigurationDataMapper
+      public: false
 
   OxidEsales\EshopCommunity\Internal\Configuration\Module\Dao\ProjectConfigurationDaoInterface:
     class: %module_configuration_path%\Dao\ProjectConfigurationDao

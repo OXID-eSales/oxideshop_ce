@@ -29,4 +29,18 @@ class ModuleConfigurationTest extends TestCase
             $moduleConfiguration->getModuleSetting('testSetting')
         );
     }
+
+    public function testConfigurationHasSetting()
+    {
+        $moduleConfiguration = new ModuleConfiguration();
+
+        $this->assertFalse($moduleConfiguration->hasSetting('testSetting'));
+
+        $moduleConfiguration->setModuleSetting(
+            'testSetting',
+            new ModuleSetting('testSetting', [])
+        );
+
+        $this->assertTrue($moduleConfiguration->hasSetting('testSetting'));
+    }
 }

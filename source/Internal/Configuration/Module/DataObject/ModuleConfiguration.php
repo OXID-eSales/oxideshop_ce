@@ -131,10 +131,22 @@ class ModuleConfiguration
     /**
      * @param string        $settingName
      * @param ModuleSetting $moduleSetting
+     *
+     * @return $this
      */
-    public function setModuleSetting(string $settingName, ModuleSetting $moduleSetting)
+    public function setModuleSetting(string $settingName, ModuleSetting $moduleSetting): ModuleConfiguration
     {
         $this->settings[$settingName] = $moduleSetting;
+        return $this;
+    }
+
+    /**
+     * @param string $settingName
+     * @return bool
+     */
+    public function hasSetting(string $settingName): bool
+    {
+        return isset($this->settings[$settingName]);
     }
 
     /**

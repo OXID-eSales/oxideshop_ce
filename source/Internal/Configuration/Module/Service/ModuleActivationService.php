@@ -8,9 +8,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Configuration\Module\Service;
 
-use OxidEsales\EshopCommunity\Internal\Common\Configuration\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\Dao\ProjectConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\ModuleConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ModuleConfiguration;
 
 /**
@@ -24,29 +22,22 @@ class ModuleActivationService implements ModuleActivationServiceInterface
     private $projectConfigurationDao;
 
     /**
-     * @var ModuleConfigurationDataMapperInterface
+     * @var ModuleDataTransferServiceInterface
      */
-    private $moduleConfigurationDataMapper;
-
-    /**
-     * @var ShopConfigurationSettingDaoInterface
-     */
-    private $shopConfigurationSettingDao;
+    private $moduleDataToShopConfigurationTransferService;
 
     /**
      * ModuleActivationService constructor.
-     * @param ProjectConfigurationDaoInterface       $projectConfigurationDao
-     * @param ModuleConfigurationDataMapperInterface $moduleConfigurationDataMapper
-     * @param ShopConfigurationSettingDaoInterface   $shopConfigurationSettingDao
+     *
+     * @param ProjectConfigurationDaoInterface   $projectConfigurationDao
+     * @param ModuleDataTransferServiceInterface $moduleDataToShopConfigurationTransferService
      */
     public function __construct(
-        ProjectConfigurationDaoInterface        $projectConfigurationDao,
-        ModuleConfigurationDataMapperInterface  $moduleConfigurationDataMapper,
-        ShopConfigurationSettingDaoInterface    $shopConfigurationSettingDao
+        ProjectConfigurationDaoInterface $projectConfigurationDao,
+        ModuleDataTransferServiceInterface $moduleDataToShopConfigurationTransferService
     ) {
         $this->projectConfigurationDao = $projectConfigurationDao;
-        $this->moduleConfigurationDataMapper = $moduleConfigurationDataMapper;
-        $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
+        $this->moduleDataToShopConfigurationTransferService = $moduleDataToShopConfigurationTransferService;
     }
 
     /**
@@ -57,7 +48,7 @@ class ModuleActivationService implements ModuleActivationServiceInterface
     {
         $moduleConfiguration = $this->getModuleConfiguration($moduleId, $shopId);
 
-        $this->transferModuleConfigurationToShopConfigurationSettings(
+        $this->moduleDataToShopConfigurationTransferService->transfer(
             $moduleConfiguration,
             $shopId
         );
@@ -85,23 +76,5 @@ class ModuleActivationService implements ModuleActivationServiceInterface
             ->getEnvironmentConfiguration('dev')
             ->getShopConfiguration($shopId)
             ->getModuleConfiguration($moduleId);
-    }
-
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     * @param int                 $shopId
-     */
-    private function transferModuleConfigurationToShopConfigurationSettings(
-        ModuleConfiguration $moduleConfiguration,
-        int                 $shopId
-    ) {
-        $moduleConfigurationData = $this->moduleConfigurationDataMapper->toData($moduleConfiguration);
-
-        foreach ($moduleConfigurationData as $settingName => $settingValue) {
-            $shopSetting = $this->shopConfigurationSettingDao->get($settingName, $shopId);
-            $shopSetting = array_merge($shopSetting, $settingValue);
-
-            $this->shopConfigurationSettingDao->save($settingName, $shopSetting, $shopId);
-        }
     }
 }

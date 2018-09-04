@@ -8,40 +8,28 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Configuration\Module\Service;
 
-use OxidEsales\Eshop\Core\Module\ModuleList;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
-use OxidEsales\EshopCommunity\Internal\Common\Configuration\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\Dao\ProjectConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\Service\ModuleActivationServiceInterface;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
-use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**
  * @internal
  */
-class ModuleActivationServiceTest extends UnitTestCase
+class ModuleActivationServiceTest extends TestCase
 {
-    public function testDataTransferToShopConfigurationSettingsOnActivation()
+    public function testActivation()
     {
         $projectConfigurationDao = $this->get(ProjectConfigurationDaoInterface::class);
         $projectConfigurationDao->persistConfiguration($this->getTestProjectConfiguration());
 
         $moduleActivationService = $this->get(ModuleActivationServiceInterface::class);
         $moduleActivationService->activate('testModuleConfiguration', 1);
-
-        $shopConfigurationSettingDao = $this->get(ShopConfigurationSettingDaoInterface::class);
-        $modulePaths = $shopConfigurationSettingDao->get('aModulePaths', 1);
-
-        $this->assertArraySubset(
-            [
-                'testModuleConfiguration' => 'testModuleConfigurationPath',
-            ],
-            $modulePaths
-        );
     }
 
     private function get(string $serviceId)

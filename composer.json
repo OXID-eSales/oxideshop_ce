@@ -26,7 +26,7 @@
         "oxid-esales/oxideshop-demodata-installer": "^v1.1.2",
         "oxid-esales/oxideshop-composer-plugin": "^v2.0.3",
         "oxid-esales/oxideshop-unified-namespace-generator": "^2.0.0",
-        "oxid-esales/testing-library": "dev-OXDEV-1359-Update_php_unit",
+        "oxid-esales/testing-library": "dev-master",
         "oxid-esales/coding-standards": "^v3.0.5",
         "oxid-esales/coding-standards-wrapper": "^v1.0.0",
         "incenteev/composer-parameter-handler": "~v2.0",

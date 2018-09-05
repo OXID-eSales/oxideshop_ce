@@ -25,4 +25,15 @@ interface ContextInterface
      * @return array
      */
     public function getRequiredContactFormFields();
+
+    /**
+     * @return int
+     */
+    public function getCurrentShopId();
+
+    /**
+     * @return string
+     */
+    public function getShopDir();
+
 }

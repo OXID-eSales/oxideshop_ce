@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Application;
 use Monolog\Logger;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Application\Events\ShopAwareEventDispatcher;
 use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserRatingBridgeInterface;
@@ -17,6 +18,7 @@ use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewBridgeInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ContainerTest extends \PHPUnit\Framework\TestCase
 {
@@ -124,6 +126,16 @@ EOT;
     public function testCacheIsCreated()
     {
         $this->assertTrue(file_exists($this->getCacheFilePath()));
+    }
+
+    /**
+     * Tests that an event dispatcher is available and implements
+     * the correct interface.
+     *
+     */
+    public function testEventDispatcher()
+    {
+        $this->assertInstanceOf(ShopAwareEventDispatcher::class, $this->container->get('event_dispatcher'));
     }
 
     /**

@@ -12,7 +12,6 @@ class ValidateUpdatedShopTest extends FrontendTestCase
 {
     /**
      * Browse through shop and check if pages contains no errors.
-     * @group main
      * @group validateUpdate
      */
     public function testShopBrowsing()
@@ -40,7 +39,6 @@ class ValidateUpdatedShopTest extends FrontendTestCase
 
     /**
      * Check if checkout can be performed.
-     * @group main
      * @group validateUpdate
      */
     public function testSearchAndCheckout()

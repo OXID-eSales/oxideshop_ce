@@ -57,7 +57,7 @@ class YamlFileStorage implements ArrayStorageInterface
     {
         file_put_contents(
             $this->getLocatedFilePath(),
-            Yaml::dump($data)
+            Yaml::dump($data, 10, 2)
         );
     }
 

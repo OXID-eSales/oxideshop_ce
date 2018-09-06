@@ -11,7 +11,7 @@ use OxidEsales\Eshop\Core\Module\ModuleList;
 use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Module\ModuleCache;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Common\Exception\ModuleNotLoadableException;
+use OxidEsales\EshopCommunity\Internal\Adapter\Exception\ModuleNotLoadableException;
 
 /**
  * @internal

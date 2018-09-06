@@ -4,9 +4,17 @@ parameters:
     v2.0:
       - blocks
       - controllers
+      - extend
+      - events
+      - settings
+      - templates
     v2.1:
       - blocks
       - controllers
+      - extend
+      - events
+      - settings
+      - templates
       - smartyDirectories
 
 services:

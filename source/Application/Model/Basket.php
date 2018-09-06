@@ -1665,30 +1665,45 @@ class Basket extends \OxidEsales\Eshop\Core\Base
         }
     }
 
-    /**
+   /**
      * Saves existing basket to database
      */
     protected function _save()
     {
         if ($this->isSaveToDataBaseEnabled()) {
+
             if ($oUser = $this->getBasketUser()) {
                 //first delete all contents
                 //#2039
-                $oSavedBasket = $oUser->getBasket('savedbasket');
+                $oSavedBasket = $oUser->getBasket('savedbasket_tmp');
                 $oSavedBasket->delete();
 
                 //then save
-                /** @var \oxBasketItem $oBasketItem */
                 foreach ($this->_aBasketContents as $oBasketItem) {
                     // discount or bundled products will be added automatically if available
                     if (!$oBasketItem->isBundle() && !$oBasketItem->isDiscountArticle()) {
                         $oSavedBasket->addItemToBasket($oBasketItem->getProductId(), $oBasketItem->getAmount(), $oBasketItem->getSelList(), true, $oBasketItem->getPersParams());
                     }
                 }
+
+                $oldSavedBasket = $oUser->getBasket('savedbasket');
+                $oldSavedBasket->oxuserbaskets__oxtitle = new \oxField('savedbasketold');
+                $oSavedBasket->oxuserbaskets__oxtitle = new \oxField('savedbasket');
+
+                //switching baskets within transaction to avoid race conditions
+                $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+                $database->startTransaction();
+                $oldSavedBasket->save();
+                $oSavedBasket->save();
+                $database->commitTransaction();
+
+                $oUser->setBasket('savedbasket', $oSavedBasket);
+                $oldSavedBasket->delete();
+
             }
         }
     }
-
+    
     /**
      * Cleans up saved basket data. This method usually is initiated by
      * \OxidEsales\Eshop\Application\Model\Basket::deleteBasket() method which cleans up basket data when

@@ -962,6 +962,15 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         return $this->_aBaskets[$sName];
     }
+    
+    /**
+    * sets a userbasket
+    * @param string $name name/type of basket
+    * @param object $basket the basket
+    **/
+    public function setBasket($name, $basket) {
+       $this->_aBaskets[$name] = $basket; 
+    } 
 
     /**
      * User birthday converter. Usually this data comes in array form, so before

@@ -6,7 +6,7 @@ declare(strict_types=1);
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Common\Configuration;
+namespace OxidEsales\EshopCommunity\Internal\Adapter\Configuration;
 
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;

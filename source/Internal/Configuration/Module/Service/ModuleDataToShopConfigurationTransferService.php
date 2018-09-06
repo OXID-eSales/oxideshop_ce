@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Configuration\Module\Service;
 
-use OxidEsales\EshopCommunity\Internal\Common\Configuration\ShopConfigurationSettingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\ModuleConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ModuleConfiguration;
 

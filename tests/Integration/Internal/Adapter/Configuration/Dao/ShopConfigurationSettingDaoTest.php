@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Adapter\Configuration\Dao;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface;
 use PHPUnit\Framework\TestCase;
@@ -25,16 +26,28 @@ class ShopConfigurationSettingDaoTest extends TestCase
     {
         $settingDao = $this->getConfigurationSettingDao();
 
-        $settingDao->save(
+        $shopConfigurationSetting = new ShopConfigurationSetting(
+            1,
             $name,
-            $value,
-            1
+            $value
         );
 
-        $this->assertSame(
-            $value,
+        $settingDao->save($shopConfigurationSetting);
+
+        $this->assertEquals(
+            $shopConfigurationSetting,
             $settingDao->get($name, 1)
         );
+    }
+
+    /**
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException
+     */
+    public function testGetNonExistentSetting()
+    {
+        $settingDao = $this->getConfigurationSettingDao();
+
+        $settingDao->get('onExistentSetting', 1);
     }
 
     /**
@@ -46,11 +59,13 @@ class ShopConfigurationSettingDaoTest extends TestCase
     {
         $settingDao = $this->getConfigurationSettingDao();
 
-        $settingDao->save(
+        $shopConfigurationSetting = new ShopConfigurationSetting(
+            1,
             $name,
-            $value,
-            1
+            $value
         );
+
+        $settingDao->save($shopConfigurationSetting);
 
         $this->assertEquals(
             $value,

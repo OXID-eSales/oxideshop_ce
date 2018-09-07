@@ -8,7 +8,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao;
 
+use Doctrine\DBAL\Driver\Statement;
+use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 
 /**
@@ -38,11 +41,9 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
     }
 
     /**
-     * @param string $name
-     * @param mixed  $value
-     * @param int    $shopId
+     * @param ShopConfigurationSetting $shopConfigurationSettig
      */
-    public function save(string $name, $value, int $shopId)
+    public function save(ShopConfigurationSetting $shopConfigurationSettig)
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
@@ -55,10 +56,10 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
                 'oxvarvalue'    => 'encode(:value, :key)',
             ])
             ->setParameters([
-                'shopId'    => $shopId,
-                'name'      => $name,
-                'type'      => $this->getValueType($value),
-                'value'     => $this->encodeValue($value),
+                'shopId'    => $shopConfigurationSettig->getShopId(),
+                'name'      => $shopConfigurationSettig->getName(),
+                'type'      => $this->getValueType($shopConfigurationSettig->getValue()),
+                'value'     => $this->encodeValue($shopConfigurationSettig->getValue()),
                 'key'       => $this->context->getConfigurationEncryptionKey(),
             ]);
 
@@ -68,14 +69,13 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
     /**
      * @param string $name
      * @param int    $shopId
-     *
-     * @return mixed
+     * @return ShopConfigurationSetting
      */
-    public function get(string $name, int $shopId)
+    public function get(string $name, int $shopId): ShopConfigurationSetting
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
-            ->select('decode(oxvarvalue, :key) as value, oxvartype as type')
+            ->select('decode(oxvarvalue, :key) as value, oxvartype as type, oxvarname as name')
             ->from('oxconfig')
             ->where('oxshopid = :shopId')
             ->andWhere('oxvarname = :name')
@@ -85,7 +85,28 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
                 'key'       => $this->context->getConfigurationEncryptionKey(),
             ]);
 
-        $result = $queryBuilder->execute()->fetch();
+        $value = $this->getShopCofigurationSettingValueFromDoctrineStatment(
+            $queryBuilder->execute()
+        );
+
+        return new ShopConfigurationSetting(
+            $shopId,
+            $name,
+            $value
+        );
+    }
+
+    /**
+     * @param Statement $statement
+     * @return mixed
+     */
+    private function getShopCofigurationSettingValueFromDoctrineStatment(Statement $statement)
+    {
+        $result = $statement->fetch();
+
+        if (false === $result) {
+            throw new EntryDoesNotExistDaoException();
+        }
 
         return $this->decodeValue(
             $result['type'],

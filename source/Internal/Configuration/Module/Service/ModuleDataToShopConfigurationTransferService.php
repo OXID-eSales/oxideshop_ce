@@ -65,8 +65,10 @@ class ModuleDataToShopConfigurationTransferService implements ModuleDataTransfer
     private function addModuleSettingToShopConfiguration(string $settingName, $settingValue, int $shopId)
     {
         $shopSetting = $this->shopConfigurationSettingDao->get($settingName, $shopId) ?? [];
-        $shopSetting = array_merge($shopSetting, $settingValue);
+        $shopSettingValue = array_merge($shopSetting->getValue(), $settingValue);
 
-        $this->shopConfigurationSettingDao->save($settingName, $shopSetting, $shopId);
+        $shopSetting->setValue($shopSettingValue);
+
+        $this->shopConfigurationSettingDao->save($shopSetting);
     }
 }

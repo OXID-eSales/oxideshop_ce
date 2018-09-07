@@ -8,22 +8,22 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao;
 
+use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
+
 /**
  * @internal
  */
 interface ShopConfigurationSettingDaoInterface
 {
     /**
-     * @param string $name
-     * @param mixed  $value
-     * @param int    $shopId
+     * @param ShopConfigurationSetting $shopConfigurationSetting
      */
-    public function save(string $name, $value, int $shopId);
+    public function save(ShopConfigurationSetting $shopConfigurationSetting);
 
     /**
      * @param string $name
      * @param int    $shopId
-     * @return mixed
+     * @return ShopConfigurationSetting
      */
-    public function get(string $name, int $shopId);
+    public function get(string $name, int $shopId): ShopConfigurationSetting;
 }

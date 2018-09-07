@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Configuration\Module\Service;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\ModuleConfigurationToShopConfigurationDataMapper;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\Service\ModuleDataToShopConfigurationTransferService;
@@ -28,12 +29,11 @@ class ModuleDataToShopConfigurationTransferServiceTest extends TestCase
             ->setVersion('v2.0');
 
         $shopConfigurationSettingDao = $this->getTestShopConfigurationSettingDao();
-        $shopConfigurationSettingDao->save(
-            'aModulePaths',
-            [
-                'alreadyExistedModuleId' => 'alreadyExistedModulePath'
-            ],
-            1
+        $shopConfigurationSettingDao->save(new ShopConfigurationSetting(
+                1,
+                'aModulePaths',
+                ['alreadyExistedModuleId' => 'alreadyExistedModulePath']
+            )
         );
 
         $moduleDataToShopConfigurationTransferService = new ModuleDataToShopConfigurationTransferService(
@@ -43,12 +43,14 @@ class ModuleDataToShopConfigurationTransferServiceTest extends TestCase
 
         $moduleDataToShopConfigurationTransferService->transfer($moduleConfiguration, 1);
 
+        $shopConfigurationSetting = $shopConfigurationSettingDao->get('aModulePaths', 1);
+
         $this->assertEquals(
             [
                 'alreadyExistedModuleId' => 'alreadyExistedModulePath',
                 'testModule'             => 'testModulePath',
             ],
-            $shopConfigurationSettingDao->get('aModulePaths', 1)
+            $shopConfigurationSetting->getValue()
         );
     }
 
@@ -58,14 +60,14 @@ class ModuleDataToShopConfigurationTransferServiceTest extends TestCase
         {
             private $settings = [];
 
-            public function save(string $name, $value, int $shopId)
+            public function save(ShopConfigurationSetting $setting)
             {
-                $this->settings[$shopId][$name] = $value;
+                $this->settings[$setting->getShopId()][$setting->getName()] = $setting;
             }
 
-            public function get(string $name, int $shopId)
+            public function get(string $name, int $shopId): ShopConfigurationSetting
             {
-                return $this->settings[$shopId][$name] ?? [];
+                return $this->settings[$shopId][$name] ?? new ShopConfigurationSetting($shopId, $name, []);
             }
         };
     }

@@ -27,7 +27,7 @@ services:
     class: %module_configuration_path%\Service\ModuleDataToShopConfigurationTransferService
     arguments:
       - '@oxid_esales.configuration.module.data_mapper.module_configuration_to_shop_configuration_data_mapper'
-      - '@OxidEsales\EshopCommunity\Internal\Adapter\Configuration\ShopConfigurationSettingDaoInterface'
+      - '@OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface'
     public: false
 
   oxid_esales.configuration.module.data_mapper.module_configuration_to_shop_configuration_data_mapper:

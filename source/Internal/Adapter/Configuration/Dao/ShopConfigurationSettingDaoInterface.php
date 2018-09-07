@@ -6,7 +6,7 @@ declare(strict_types=1);
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Adapter\Configuration;
+namespace OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao;
 
 /**
  * @internal

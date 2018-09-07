@@ -19,7 +19,7 @@ services:
     autowire: true
     public: false
 
-  OxidEsales\EshopCommunity\Internal\Adapter\Configuration\ShopConfigurationSettingDaoInterface:
-      class: OxidEsales\EshopCommunity\Internal\Adapter\Configuration\ShopConfigurationSettingDao
+  OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface:
+      class: OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDao
       autowire: true
       public: false

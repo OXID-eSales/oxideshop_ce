@@ -43,11 +43,13 @@ class YamlFileStorage implements ArrayStorageInterface
      */
     public function get(): array
     {
-        $fileContent = Yaml::parse(
-            $this->getLocatedFilePath()
+        $fileContent = file_get_contents($this->getLocatedFilePath());
+
+        $yaml = Yaml::parse(
+            $fileContent
         );
 
-        return $fileContent ?? [];
+        return $yaml ?? [];
     }
 
     /**

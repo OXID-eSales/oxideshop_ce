@@ -19,15 +19,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - category_main form layout improvements [PR-585](https://github.com/OXID-eSales/oxideshop_ce/pull/585)
 - Split config parameter initialization from application initialization [PR-628](https://github.com/OXID-eSales/oxideshop_ce/pull/628)
 
+### Removed
+- Removed old not used blAutoSearchOnCat option from shop_config tab [PR-654](https://github.com/OXID-eSales/oxideshop_ce/pull/654)
+
+## [6.3.1] - Unreleased
+
 ### Fixed
 - Fix global variable name in startProfile [PR-651](https://github.com/OXID-eSales/oxideshop_ce/pull/651)
 - Improve a check of module id in ModuleExtensionsCleaner::filterExtensionsByModuleId [PR-662](https://github.com/OXID-eSales/oxideshop_ce/pull/662)
 - Fixed return type in Basket::getDiscounts [PR-659](https://github.com/OXID-eSales/oxideshop_ce/pull/659)
 - AccountReviewController extends correct AccountController [PR-664](https://github.com/OXID-eSales/oxideshop_ce/pull/664)
 - Get correct oxid for attributes loaded by loadAttributesDisplayableInBasket [PR-452](https://github.com/OXID-eSales/oxideshop_ce/pull/452)
-
-### Removed
-- Removed old not used blAutoSearchOnCat option from shop_config tab [PR-654](https://github.com/OXID-eSales/oxideshop_ce/pull/654)
 
 ## [6.3.0] - 2018-07-31
 

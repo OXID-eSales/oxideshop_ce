@@ -18,7 +18,7 @@ use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewBridgeInterface;
  *
  * @package OxidEsales\EshopCommunity\Application\Controller
  */
-class AccountReviewController extends AccountController
+class AccountReviewController extends \OxidEsales\Eshop\Application\Controller\AccountController
 {
     protected $itemsPerPage = 10;
 

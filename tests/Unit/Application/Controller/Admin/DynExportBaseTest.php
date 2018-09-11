@@ -10,6 +10,7 @@ use Exception;
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use oxDb;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
+use OxidEsales\TestingLibrary\VfsStreamWrapper;
 use oxRegistry;
 use oxTestModules;
 use stdClass;
@@ -128,7 +129,7 @@ class DynExportBaseTest extends \OxidTestCase
      */
     public function testStart()
     {
-        $testFile = $this->createFile('test.txt', '');
+        $testFile = $this->getVfsStreamWrapper()->createFile('test.txt', '');
         $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin\_DynExportBase::class, array("prepareExport"));
         $oView->expects($this->once())->method('prepareExport')->will($this->returnValue(5));
         $oView->setVar('sFilePath', $testFile);
@@ -177,7 +178,7 @@ class DynExportBaseTest extends \OxidTestCase
      */
     public function testWrite()
     {
-        $testFile = $this->createFile('test.txt', '');
+        $testFile = $this->getVfsStreamWrapper()->createFile('test_write.txt', '');
         $sLine = 'TestExport';
 
         $oView = oxNew('DynExportBase');
@@ -198,7 +199,7 @@ class DynExportBaseTest extends \OxidTestCase
     {
         $this->setRequestParameter("iStart", 0);
         $this->setRequestParameter("aExportResultset", array("aaaaa"));
-        $testFile = $this->createFile('test.txt', '');
+        $testFile = $this->getVfsStreamWrapper()->createFile('test.txt', '');
 
         $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin\_DynExportBase::class, array("nextTick"));
         $oView->expects($this->any())->method('nextTick')->will($this->returnValue(5));
@@ -220,7 +221,7 @@ class DynExportBaseTest extends \OxidTestCase
         $this->setRequestParameter("iStart", 0);
         $this->setRequestParameter("aExportResultset", array("aaaaa"));
         $this->getConfig()->setConfigParam("iExportNrofLines", 10);
-        $testFile = $this->createFile('test.txt', '');
+        $testFile = $this->getVfsStreamWrapper()->createFile('test.txt', '');
 
         $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin\_DynExportBase::class, array("nextTick"));
         $oView->expects($this->any())->method('nextTick')->will($this->returnValue(5));
@@ -769,4 +770,13 @@ class DynExportBaseTest extends \OxidTestCase
         $oView = oxNew('DynExportBase');
         $this->assertEquals('dyn_interface', $oView->getViewId());
     }
+
+    /**
+     * @return VfsStreamWrapper
+     */
+    public function getVfsStreamWrapper()
+    {
+        return new VfsStreamWrapper();
+    }
+
 }

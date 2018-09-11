@@ -58,7 +58,7 @@ class ContainerFactory
     public function resetContainer()
     {
         $cacheFilePath = $this->getCacheFilePath();
-        $this->createAndCompileSymfonyContainer();
+        $this->getCompiledSymfonyContainer();
         $this->saveContainerToCache($cacheFilePath);
     }
 

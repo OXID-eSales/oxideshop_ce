@@ -10,7 +10,7 @@ use org\bovigo\vfs\vfsStream;
 use OxidEsales\EshopCommunity\Internal\Smarty\SmartyEngine;
 use Symfony\Component\Templating\TemplateNameParserInterface;
 
-class SmartyEngineTests extends \PHPUnit_Framework_TestCase
+class SmartyEngineTests extends \PHPUnit\Framework\TestCase
 {
 
     public function testExists()

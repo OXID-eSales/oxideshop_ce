@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Smarty;
 
-class SmartyContextTest extends \PHPUnit_Framework_TestCase
+class SmartyContextTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetTemplateEngineDebugMode()
     {

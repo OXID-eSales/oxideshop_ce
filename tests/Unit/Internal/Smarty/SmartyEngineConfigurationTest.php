@@ -11,7 +11,7 @@ use OxidEsales\EshopCommunity\Internal\Smarty\Extensions\oxSmarty;
 use OxidEsales\EshopCommunity\Internal\Smarty\SmartyContextInterface;
 use OxidEsales\EshopCommunity\Internal\Smarty\SmartyEngineConfiguration;
 
-class SmartyEngineConfigurationTest extends \PHPUnit_Framework_TestCase
+class SmartyEngineConfigurationTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetOptions()
     {

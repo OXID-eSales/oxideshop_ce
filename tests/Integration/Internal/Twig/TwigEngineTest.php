@@ -16,7 +16,7 @@ use Symfony\Component\Templating\TemplateReference;
 use Twig\Environment;
 use Twig_Loader;
 
-class TwigEngineTest extends \PHPUnit_Framework_TestCase
+class TwigEngineTest extends \PHPUnit\Framework\TestCase
 {
 
     private $templateDir;

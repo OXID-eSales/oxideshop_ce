@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Twig;
 use OxidEsales\EshopCommunity\Internal\Twig\TwigEngineConfiguration;
 use OxidEsales\EshopCommunity\Internal\Twig\TwigContextInterface;
 
-class TwigEngineConfigurationTest extends \PHPUnit_Framework_TestCase
+class TwigEngineConfigurationTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testGetParameters()

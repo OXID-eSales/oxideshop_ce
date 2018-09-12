@@ -38,8 +38,35 @@ class ThankyouTest extends \OxidTestCase
         //$this->getSession()->setVariable( 'basket', $oBasket );
         $mySession->setBasket($oBasket);
         $oThankyou = $this->getProxyClass('thankyou');
-        $oThankyou->init();
+
+        /** @var \PHPUnit\Framework\MockObject\MockObject $utilsMock */
+        $utilsMock = $this->createStub(\OxidEsales\Eshop\Core\Utils::class, [], ["redirect"]);
+        $utilsMock->expects($this->any())->method('redirect')->willThrowException(new \Exception("expected redirect"));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utilsMock);
+
+        try {
+            $oThankyou->init();
+        } catch (\Exception $e) {
+            $this->assertEquals("expected redirect", $e->getMessage());
+        }
+
         $this->assertEquals($oBasket, $oThankyou->getBasket());
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage expected redirect
+     */
+    public function testThankYouRedirectOnNoOrder()
+    {
+        $oThankyou = $this->getProxyClass('thankyou');
+
+        /** @var \PHPUnit\Framework\MockObject\MockObject $utilsMock */
+        $utilsMock = $this->createStub(\OxidEsales\Eshop\Core\Utils::class, [], ["redirect"]);
+        $utilsMock->expects($this->any())->method('redirect')->willThrowException(new \Exception("expected redirect"));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utilsMock);
+
+        $oThankyou->init();
     }
 
     public function testGetCurrencyCovIndex()

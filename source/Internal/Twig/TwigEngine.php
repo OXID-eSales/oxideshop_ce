@@ -9,6 +9,11 @@
 namespace OxidEsales\EshopCommunity\Internal\Twig;
 
 use OxidEsales\EshopCommunity\Internal\Templating\BaseEngineInterface;
+use OxidEsales\EshopCommunity\Internal\Twig\Extensions\MathExtension;
+use OxidEsales\EshopCommunity\Internal\Twig\Extensions\OxidExtension;
+use OxidEsales\EshopCommunity\Internal\Twig\Extensions\OxidIncludeExtension;
+use OxidEsales\EshopCommunity\Internal\Twig\Extensions\SmartyExtension;
+
 use Symfony\Component\Templating\TemplateNameParserInterface;
 use Symfony\Component\Templating\TemplateReferenceInterface;
 use Twig\Environment;
@@ -46,6 +51,11 @@ class TwigEngine implements BaseEngineInterface
         if ($this->engine->isDebug()) {
             $this->engine->addExtension(new \Twig_Extension_Debug());
         }
+
+        $this->engine->addExtension(new MathExtension());
+        $this->engine->addExtension(new OxidExtension());
+        $this->engine->addExtension(new OxidIncludeExtension());
+        $this->engine->addExtension(new SmartyExtension());
     }
 
     /**

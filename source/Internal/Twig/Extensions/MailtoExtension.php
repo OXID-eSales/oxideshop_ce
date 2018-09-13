@@ -20,6 +20,14 @@ class MailtoExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * Twig mailto function imported from Smarty
+     *
+     * @param string $address
+     * @param array $parameters
+     *
+     * @return string
+     */
     public function mailto($address, array $parameters = [])
     {
         $extra = '';
@@ -78,6 +86,8 @@ class MailtoExtension extends AbstractExtension
     }
 
     /**
+     * Encode using javascript
+     *
      * @param $address
      * @param $text
      * @param $extra
@@ -97,7 +107,7 @@ class MailtoExtension extends AbstractExtension
     }
 
     /**
-     * Encode using
+     * Encode using charcode
      *
      * @param $address
      * @param $text

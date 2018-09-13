@@ -15,6 +15,10 @@ class ContextStub implements ContextInterface
 
     private $logFilePath = 'log.txt';
 
+    private $currentShopId = 1;
+
+    private $shopDir = '/tmp';
+
     /**
      * @var array
      */
@@ -67,4 +71,37 @@ class ContextStub implements ContextInterface
     {
         $this->requiredContactFormFields = $requiredContactFormFields;
     }
+
+    /**
+     * @param int $shopId
+     */
+    public function setCurrentShopId($shopId)
+    {
+        $this->currentShopId = $shopId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCurrentShopId()
+    {
+        return $this->currentShopId;
+    }
+
+    /**
+     * @param string $shopDir
+     */
+    public function setShopDir($shopDir)
+    {
+        $this->shopDir = $shopDir;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShopDir()
+    {
+        return $this->shopDir;
+    }
+
 }

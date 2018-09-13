@@ -11,9 +11,11 @@ namespace OxidEsales\EshopCommunity\Internal\Application\Events;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Class ShopAwareEventSubscriber
+ */
 abstract class ShopAwareEventSubscriber implements EventSubscriberInterface, ShopAwareEventSubscriberInterface
 {
-
     /**
      * @var ContextInterface
      */
@@ -31,7 +33,8 @@ abstract class ShopAwareEventSubscriber implements EventSubscriberInterface, Sho
      *
      * @param array $activeShops
      */
-    public function setActiveShops(array $activeShops) {
+    public function setActiveShops(array $activeShops)
+    {
         $this->activeShops = $activeShops;
     }
 
@@ -42,7 +45,8 @@ abstract class ShopAwareEventSubscriber implements EventSubscriberInterface, Sho
      *
      * @param ContextInterface $context
      */
-    public function setContext(ContextInterface $context) {
+    public function setContext(ContextInterface $context)
+    {
         $this->context = $context;
     }
 
@@ -53,7 +57,8 @@ abstract class ShopAwareEventSubscriber implements EventSubscriberInterface, Sho
      *
      * @return bool
      */
-    public function isActive() {
+    public function isActive()
+    {
         return in_array(strval($this->context->getCurrentShopId()), $this->activeShops);
     }
 }

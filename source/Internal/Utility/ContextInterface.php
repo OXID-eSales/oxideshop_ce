@@ -35,5 +35,4 @@ interface ContextInterface
      * @return string
      */
     public function getShopDir();
-
 }

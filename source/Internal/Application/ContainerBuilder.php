@@ -68,6 +68,9 @@ class ContainerBuilder
         }
     }
 
+    /**
+     * @return string
+     */
     private function getShopSourcePath()
     {
         return Registry::getConfig()->getConfigParam('sShopDir');

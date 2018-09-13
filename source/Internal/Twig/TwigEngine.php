@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Twig\Extensions\MathExtension;
 use OxidEsales\EshopCommunity\Internal\Twig\Extensions\OxidExtension;
 use OxidEsales\EshopCommunity\Internal\Twig\Extensions\OxidIncludeExtension;
 use OxidEsales\EshopCommunity\Internal\Twig\Extensions\SmartyExtension;
+use OxidEsales\EshopCommunity\Internal\Twig\Extensions\MailtoExtension;
 
 use Symfony\Component\Templating\TemplateNameParserInterface;
 use Symfony\Component\Templating\TemplateReferenceInterface;
@@ -58,6 +59,8 @@ class TwigEngine implements BaseEngineInterface
         $this->engine->addExtension(new OxidExtension());
         $this->engine->addExtension(new OxidIncludeExtension());
         $this->engine->addExtension(new SmartyExtension());
+
+        $this->engine->addExtension(new MailtoExtension());
     }
 
     /**

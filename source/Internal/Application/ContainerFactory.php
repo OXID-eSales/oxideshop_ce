@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Internal\Application;
 
 use OxidEsales\Eshop\Core\Registry;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 
 /**
@@ -25,7 +24,7 @@ class ContainerFactory
     private static $instance = null;
 
     /**
-     * @var Container
+     * @var ContainerInterface
      */
     private $symfonyContainer = null;
 

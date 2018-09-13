@@ -383,7 +383,7 @@ class Email extends \PHPMailer
 
         if ($this->_getUseInlineImages()) {
             $this->_includeImages(
-                $myConfig->getImageDir(),
+                $myConfig->getImageUrl(),
                 $myConfig->getImageUrl(false, false),
                 $myConfig->getPictureUrl(null, false),
                 $myConfig->getImageDir(),

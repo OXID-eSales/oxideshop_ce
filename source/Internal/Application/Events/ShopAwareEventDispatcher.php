@@ -8,12 +8,19 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Application\Events;
 
-
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * Class ShopAwareEventDispatcher
+ */
 class ShopAwareEventDispatcher extends ContainerAwareEventDispatcher
 {
+    /**
+     * @param \callable[] $listeners
+     * @param string      $eventName
+     * @param Event       $event
+     */
     protected function doDispatch($listeners, $eventName, Event $event)
     {
         foreach ($listeners as $listener) {
@@ -29,5 +36,4 @@ class ShopAwareEventDispatcher extends ContainerAwareEventDispatcher
             call_user_func($listener, $event, $eventName, $this);
         }
     }
-
 }

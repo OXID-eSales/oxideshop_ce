@@ -118,5 +118,4 @@ class ContainerFactory
         }
         return self::$instance;
     }
-
 }

@@ -16,7 +16,8 @@ class MailtoExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('mailto', [$this, 'mailto'], ['is_safe' => ['html']])
+            new TwigFunction('mailto', [$this, 'mailto'], ['is_safe' => ['html']]),
+            new TwigFunction('oxmailto', [$this, 'oxmailto'], ['is_safe' => ['html']])
         ];
     }
 
@@ -30,39 +31,10 @@ class MailtoExtension extends AbstractExtension
      */
     public function mailto($address, array $parameters = [])
     {
-        $extra = '';
-        $text = $address;
-        // Netscape and Mozilla do not decode %40 (@) in BCC field (bug?), so don't encode it.
-        $search = ['%40', '%2C'];
-        $replace = ['@', ','];
-        $mailParameters = [];
+        $text = isset($parameters['text']) ? $parameters['text'] : $address;
+        $extra = isset($parameters['extra']) ? $parameters['extra'] : '';
 
-        foreach ($parameters as $var => $value) {
-            switch ($var) {
-                case 'cc':
-                case 'bcc':
-                case 'followupto':
-                    if (!empty($value))
-                        $mailParameters[] = $var . '=' . str_replace($search, $replace, rawurlencode($value));
-                    break;
-
-                case 'subject':
-                case 'newsgroups':
-                    $mailParameters[] = $var . '=' . rawurlencode($value);
-                    break;
-
-                case 'extra':
-                case 'text':
-                    $$var = $value;
-            }
-        }
-
-        $mailParametersString = '';
-        for ($i = 0; $i < count($mailParameters); $i++) {
-            $mailParametersString .= (0 == $i) ? '?' : '&';
-            $mailParametersString .= $mailParameters[$i];
-        }
-        $address .= $mailParametersString;
+        $address .= $this->prepareMailParametersString($parameters);
 
         $encode = (empty($parameters['encode'])) ? 'none' : $parameters['encode'];
         if (!in_array($encode, ['javascript', 'javascript_charcode', 'hex', 'none'])) {
@@ -83,6 +55,65 @@ class MailtoExtension extends AbstractExtension
                 // no encoding
                 return "<a href=\"mailto:$address\" $extra>$text</a>";
         }
+    }
+
+    /**
+     * @param string $address
+     * @param array $parameters
+     *
+     * @return string
+     */
+    public function oxmailto($address, array $parameters = [])
+    {
+        if (isset($parameters['encode']) && $parameters['encode'] == 'javascript') {
+            $text = isset($parameters['text']) ? $parameters['text'] : $address;
+            $extra = isset($parameters['extra']) ? $parameters['extra'] : '';
+
+            $address .= $this->prepareMailParametersString($parameters);
+
+            $string = "document.write('<a href=\"mailto:$address\" $extra>$text</a>');";
+            $encodedString = "%" . wordwrap(current(unpack("H*", $string)), 2, "%", true);
+
+            return "<script type=\"text/javascript\">eval(decodeURIComponent('$encodedString'))</script>";
+        } else {
+            return $this->mailto($address, $parameters);
+        }
+    }
+
+    /**
+     * @param $parameters
+     *
+     * @return string
+     */
+    private function prepareMailParametersString($parameters)
+    {
+        // Netscape and Mozilla do not decode %40 (@) in BCC field (bug?), so don't encode it.
+        $search = ['%40', '%2C'];
+        $replace = ['@', ','];
+
+        $mailParameters = [];
+        foreach ($parameters as $var => $value) {
+            switch ($var) {
+                case 'cc':
+                case 'bcc':
+                case 'followupto':
+                    if ($value) {
+                        $mailParameters[] = $var . '=' . str_replace($search, $replace, rawurlencode($value));
+                    }
+                    break;
+                case 'subject':
+                case 'newsgroups':
+                    $mailParameters[] = $var . '=' . rawurlencode($value);
+                    break;
+            }
+        }
+
+        $parametersString = '';
+        if (count($mailParameters)) {
+            $parametersString = '?' . implode('&', $mailParameters);
+        }
+
+        return $parametersString;
     }
 
     /**
@@ -166,6 +197,6 @@ class MailtoExtension extends AbstractExtension
 
         $mailto = "&#109;&#97;&#105;&#108;&#116;&#111;&#58;";
 
-        return "<a href=\"$mailto$addressEncode\"$extra>$textEncode</a>";
+        return "<a href=\"$mailto$addressEncode\" $extra>$textEncode</a>";
     }
 }

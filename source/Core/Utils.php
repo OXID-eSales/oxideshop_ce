@@ -1383,8 +1383,13 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     public function setLangCache($sCacheName, $aLangCache)
     {
         $sCache = "<?php\n\$aLangCache = " . var_export($aLangCache, true) . ";\n?>";
+        $sFileName = $this->getCacheFilePath($sCacheName);
+        $tmpFile = tempnam($this->getConfig()->getConfigParam('sCompileDir'), $sCacheName);
+        $blRes = file_put_contents($tmpFile, $sCache, LOCK_EX);
 
-        return file_put_contents($this->getCacheFilePath($sCacheName), $sCache, LOCK_EX);
+        rename($tmpFile, $sFileName);
+
+        return $blRes;
     }
 
     /**

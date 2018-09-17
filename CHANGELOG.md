@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Prevent usage of thankyou-controller in no order-context [PR-665](https://github.com/OXID-eSales/oxideshop_ce/pull/665)
 - Send correct shop url to includeImages email template parser [PR-545](https://github.com/OXID-eSales/oxideshop_ce/pull/545)
 - Wrong return value FrontendController.isVatIncluded [PR-666](https://github.com/OXID-eSales/oxideshop_ce/pull/666) [0006902](https://bugs.oxid-esales.com/view.php?id=6902)
+- Fix filecache write/read race conditions [PR-658](https://github.com/OXID-eSales/oxideshop_ce/pull/658)
 
 ## [6.3.0] - 2018-07-31
 

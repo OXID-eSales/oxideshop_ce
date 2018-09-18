@@ -53,8 +53,9 @@ class FileCache
     public function setToCache($key, $value)
     {
         $fileName = $this->getCacheFilePath($key);
-        $tempDirectory = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar("sCompileDir");
-        $tmpFile = tempnam($tempDirectory, $key);
+        $cacheDirectory = $this->getCacheDir();
+
+        $tmpFile = $cacheDirectory . basename($fileName) . uniqid('.temp', true) . '.txt';
         file_put_contents($tmpFile, serialize($value), LOCK_EX);
 
         rename($tmpFile, $fileName);

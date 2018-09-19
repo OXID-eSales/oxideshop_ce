@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Service;
 
+use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Exception\InvalidShopSettingValueException;
 use function unserialize;
 use function serialize;
 
@@ -27,6 +28,8 @@ class ShopSettingEncoder implements ShopSettingEncoderInterface
      */
     public function encode(string $encodingType, $value)
     {
+        $this->validateSettingValue($value);
+
         switch ($encodingType) {
             case self::ARRAY:
             case self::ASSOCIATIVE_ARRAY:
@@ -44,10 +47,10 @@ class ShopSettingEncoder implements ShopSettingEncoderInterface
 
     /**
      * @param string $encodingType
-     * @param string $value
+     * @param mixed  $value
      * @return mixed
      */
-    public function decode(string $encodingType, string $value)
+    public function decode(string $encodingType, $value)
     {
         switch ($encodingType) {
             case self::ARRAY:
@@ -62,5 +65,16 @@ class ShopSettingEncoder implements ShopSettingEncoderInterface
         }
 
         return $decodedValue;
+    }
+
+    /**
+     * @param mixed $value
+     * @throws InvalidShopSettingValueException
+     */
+    private function validateSettingValue($value)
+    {
+        if (is_object($value)) {
+            throw new InvalidShopSettingValueException();
+        }
     }
 }

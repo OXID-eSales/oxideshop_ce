@@ -19,7 +19,7 @@ class ShopSettingEncoderTest extends TestCase
     /**
      * @dataProvider settingDataProvider
      */
-    public function testEncoding($value, string $encodedValue, string $encodingType)
+    public function testEncoding($value, $encodedValue, string $encodingType)
     {
         $shopSettingEncoder = new ShopSettingEncoder();
 
@@ -32,7 +32,7 @@ class ShopSettingEncoderTest extends TestCase
     /**
      * @dataProvider settingDataProvider
      */
-    public function testDecoding($value, string $encodedValue, string $encodingType)
+    public function testDecoding($value, $encodedValue, string $encodingType)
     {
         $shopSettingEncoder = new ShopSettingEncoder();
 
@@ -40,6 +40,16 @@ class ShopSettingEncoderTest extends TestCase
             $value,
             $shopSettingEncoder->decode($encodingType, $encodedValue)
         );
+    }
+
+    /**
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Exception\InvalidShopSettingValueException
+     */
+    public function testEncodingInvalidValue()
+    {
+        $shopSettingEncoder = new ShopSettingEncoder();
+
+        $shopSettingEncoder->encode('object', new \stdClass());
     }
 
     public function settingDataProvider(): array
@@ -57,8 +67,8 @@ class ShopSettingEncoderTest extends TestCase
             ],
             [
                 2,
-                '2',
-                'num'
+                2,
+                'int'
             ],
             [
                 ['value'],

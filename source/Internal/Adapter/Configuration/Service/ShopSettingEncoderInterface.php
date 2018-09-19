@@ -22,8 +22,8 @@ interface ShopSettingEncoderInterface
 
     /**
      * @param string $encodingType
-     * @param string $value
+     * @param mixed  $value
      * @return mixed
      */
-    public function decode(string $encodingType, string $value);
+    public function decode(string $encodingType, $value);
 }

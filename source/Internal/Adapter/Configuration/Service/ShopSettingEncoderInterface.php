@@ -14,10 +14,11 @@ namespace OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Service;
 interface ShopSettingEncoderInterface
 {
     /**
-     * @param mixed $value
-     * @return string
+     * @param string $encodingType
+     * @param mixed  $value
+     * @return mixed
      */
-    public function encode($value): string;
+    public function encode(string $encodingType, $value);
 
     /**
      * @param string $encodingType
@@ -25,10 +26,4 @@ interface ShopSettingEncoderInterface
      * @return mixed
      */
     public function decode(string $encodingType, string $value);
-
-    /**
-     * @param mixed $value
-     * @return string
-     */
-    public function getEncodingType($value): string;
 }

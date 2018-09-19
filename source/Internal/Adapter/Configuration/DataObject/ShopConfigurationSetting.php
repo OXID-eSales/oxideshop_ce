@@ -24,6 +24,11 @@ class ShopConfigurationSetting
     private $name;
 
     /**
+     * @var string
+     */
+    private $type;
+
+    /**
      * @var mixed
      */
     private $value;
@@ -32,14 +37,17 @@ class ShopConfigurationSetting
      * ShopConfigurationSetting constructor.
      * @param int    $shopId
      * @param string $name
+     * @param string $type
      * @param mixed  $value
      */
-    public function __construct(int $shopId, string $name, $value)
+    public function __construct(int $shopId, string $name, string $type, $value)
     {
         $this->shopId = $shopId;
         $this->name = $name;
+        $this->type = $type;
         $this->value = $value;
     }
+
 
     /**
      * @return int
@@ -55,6 +63,14 @@ class ShopConfigurationSetting
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
     }
 
     /**

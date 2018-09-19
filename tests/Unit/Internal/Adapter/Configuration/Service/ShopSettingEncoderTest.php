@@ -17,28 +17,15 @@ use PHPUnit\Framework\TestCase;
 class ShopSettingEncoderTest extends TestCase
 {
     /**
-     * @dataProvider encodingTypeDataProvider
-     */
-    public function testEncodingTypeGetter($value, string $expectedType)
-    {
-        $shopSettingEncoder = new ShopSettingEncoder();
-
-        $this->assertSame(
-            $expectedType,
-            $shopSettingEncoder->getEncodingType($value)
-        );
-    }
-
-    /**
      * @dataProvider settingDataProvider
      */
-    public function testEncoding($value, string $encodedValue)
+    public function testEncoding($value, string $encodedValue, string $encodingType)
     {
         $shopSettingEncoder = new ShopSettingEncoder();
 
         $this->assertSame(
             $encodedValue,
-            $shopSettingEncoder->encode($value)
+            $shopSettingEncoder->encode($encodingType, $value)
         );
     }
 
@@ -53,28 +40,6 @@ class ShopSettingEncoderTest extends TestCase
             $value,
             $shopSettingEncoder->decode($encodingType, $encodedValue)
         );
-    }
-
-    public function encodingTypeDataProvider(): array
-    {
-        return [
-            [
-                true,
-                'bool'
-            ],
-            [
-                'some string',
-                'str'
-            ],
-            [
-                2,
-                'num'
-            ],
-            [
-                ['value'],
-                'arr'
-            ],
-        ];
     }
 
     public function settingDataProvider(): array

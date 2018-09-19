@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao;
 
-use Doctrine\DBAL\Driver\Statement;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
+use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Service\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
@@ -30,20 +30,30 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
     private $context;
 
     /**
+     * @var ShopSettingEncoderInterface
+     */
+    private $shopSettingEncoder;
+
+    /**
      * ShopConfigurationSettingDao constructor.
      * @param QueryBuilderFactoryInterface $queryBuilderFactory
      * @param ContextInterface             $context
+     * @param ShopSettingEncoderInterface  $shopSettingEncoder
      */
-    public function __construct(QueryBuilderFactoryInterface $queryBuilderFactory, ContextInterface $context)
-    {
+    public function __construct(
+        QueryBuilderFactoryInterface    $queryBuilderFactory,
+        ContextInterface                $context,
+        ShopSettingEncoderInterface     $shopSettingEncoder
+    ) {
         $this->queryBuilderFactory = $queryBuilderFactory;
         $this->context = $context;
+        $this->shopSettingEncoder = $shopSettingEncoder;
     }
 
     /**
-     * @param ShopConfigurationSetting $shopConfigurationSettig
+     * @param ShopConfigurationSetting $shopConfigurationSetting
      */
-    public function save(ShopConfigurationSetting $shopConfigurationSettig)
+    public function save(ShopConfigurationSetting $shopConfigurationSetting)
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
@@ -56,10 +66,13 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
                 'oxvarvalue'    => 'encode(:value, :key)',
             ])
             ->setParameters([
-                'shopId'    => $shopConfigurationSettig->getShopId(),
-                'name'      => $shopConfigurationSettig->getName(),
-                'type'      => $this->getValueType($shopConfigurationSettig->getValue()),
-                'value'     => $this->encodeValue($shopConfigurationSettig->getValue()),
+                'shopId'    => $shopConfigurationSetting->getShopId(),
+                'name'      => $shopConfigurationSetting->getName(),
+                'type'      => $shopConfigurationSetting->getType(),
+                'value'     => $this->shopSettingEncoder->encode(
+                    $shopConfigurationSetting->getType(),
+                    $shopConfigurationSetting->getValue()
+                ),
                 'key'       => $this->context->getConfigurationEncryptionKey(),
             ]);
 
@@ -70,6 +83,7 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
      * @param string $name
      * @param int    $shopId
      * @return ShopConfigurationSetting
+     * @throws EntryDoesNotExistDaoException
      */
     public function get(string $name, int $shopId): ShopConfigurationSetting
     {
@@ -85,104 +99,17 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
                 'key'       => $this->context->getConfigurationEncryptionKey(),
             ]);
 
-        $value = $this->getShopCofigurationSettingValueFromDoctrineStatment(
-            $queryBuilder->execute()
-        );
-
-        return new ShopConfigurationSetting(
-            $shopId,
-            $name,
-            $value
-        );
-    }
-
-    /**
-     * @param Statement $statement
-     * @return mixed
-     */
-    private function getShopCofigurationSettingValueFromDoctrineStatment(Statement $statement)
-    {
-        $result = $statement->fetch();
+        $result = $queryBuilder->execute()->fetch();
 
         if (false === $result) {
             throw new EntryDoesNotExistDaoException();
         }
 
-        return $this->decodeValue(
+        return new ShopConfigurationSetting(
+            $shopId,
+            $name,
             $result['type'],
-            $result['value']
+            $this->shopSettingEncoder->decode($result['type'], $result['value'])
         );
-    }
-
-    /**
-     * @param mixed $type
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    private function decodeValue($type, $value)
-    {
-        switch ($type) {
-            case 'arr':
-            case 'aarr':
-                $decodedValue = unserialize($value);
-                break;
-            case 'bool':
-                $decodedValue = ($value === 'true' || $value === '1');
-                break;
-            case 'int':
-                $decodedValue = (int) $value;
-                break;
-            default:
-                $decodedValue = $value;
-        }
-
-        return $decodedValue;
-    }
-
-    /**
-     * @param mixed $value
-     * @return string
-     */
-    private function encodeValue($value): string
-    {
-        $encodedValue = $value;
-
-        if (is_array($value)) {
-            $encodedValue = serialize($value);
-        }
-
-        if (is_bool($value)) {
-            $encodedValue = $value === true ? '1' : '';
-        }
-
-        if (is_int($value)) {
-            $encodedValue = (string) $value;
-        }
-
-        return $encodedValue;
-    }
-
-    /**
-     * @param mixed $value
-     * @return string
-     */
-    private function getValueType($value): string
-    {
-        $type = 'str';
-
-        if (is_array($value)) {
-            $type = 'arr';
-        }
-
-        if (is_bool($value)) {
-            $type = 'bool';
-        }
-
-        if (is_int($value)) {
-            $type = 'int';
-        }
-
-        return $type;
     }
 }

@@ -29,6 +29,11 @@ class ShopModuleSetting
     private $name;
 
     /**
+     * @var string
+     */
+    private $type;
+
+    /**
      * @var mixed
      */
     private $value;
@@ -39,17 +44,20 @@ class ShopModuleSetting
      * @param string $moduleId
      * @param int    $shopId
      * @param string $name
+     * @param string $type
      * @param mixed  $value
      */
     public function __construct(
         string $moduleId,
         int $shopId,
         string $name,
+        string $type,
         $value
     ) {
         $this->moduleId = $moduleId;
         $this->shopId = $shopId;
         $this->name = $name;
+        $this->type = $type;
         $this->value = $value;
     }
 
@@ -78,6 +86,14 @@ class ShopModuleSetting
     }
 
     /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
      * @return mixed
      */
     public function getValue()
@@ -87,11 +103,9 @@ class ShopModuleSetting
 
     /**
      * @param mixed $value
-     * @return ShopModuleSetting
      */
     public function setValue($value)
     {
         $this->value = $value;
-        return $this;
     }
 }

@@ -22,7 +22,7 @@ class ShopModuleSettingDaoTest extends TestCase
     /**
      * @dataProvider settingValueDataProvider
      */
-    public function testSettingSaving(string $name, $value)
+    public function testSettingSaving(string $name, string $type, $value)
     {
         $settingDao = $this->getShopModuleSettingDao();
 
@@ -30,6 +30,7 @@ class ShopModuleSettingDaoTest extends TestCase
             'testModuleId',
             1,
             $name,
+            $type,
             $value
         );
 
@@ -56,7 +57,7 @@ class ShopModuleSettingDaoTest extends TestCase
      *
      * @dataProvider settingValueDataProvider
      */
-    public function testSettingSavingCompatibility(string $name, $value)
+    public function testSettingSavingCompatibility(string $name, string $type, $value)
     {
         $settingDao = $this->getShopModuleSettingDao();
 
@@ -64,13 +65,14 @@ class ShopModuleSettingDaoTest extends TestCase
             'testModuleId',
             1,
             $name,
+            $type,
             $value
         );
 
         $settingDao->save($shopModuleSetting);
 
-        $this->assertEquals(
-            $value,
+        $this->assertSame(
+            $settingDao->get($name, 'testModuleId', 1)->getValue(),
             Registry::getConfig()->getShopConfVar($name, 1, 'testModuleId')
         );
     }
@@ -80,18 +82,22 @@ class ShopModuleSettingDaoTest extends TestCase
         return [
             [
                 'string',
+                'str',
                 'testString',
             ],
             [
+                'int',
                 'int',
                 1,
             ],
             [
                 'bool',
+                'bool',
                 true,
             ],
             [
                 'array',
+                'arr',
                 [
                     'element'   => 'value',
                     'element2'  => 'value',

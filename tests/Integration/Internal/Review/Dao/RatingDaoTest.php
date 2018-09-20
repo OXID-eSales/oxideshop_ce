@@ -10,12 +10,11 @@ use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserRatingBridge;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Service\UserRatingService;
-use OxidEsales\TestingLibrary\UnitTestCase;
 use OxidEsales\Eshop\Application\Model\Rating as EshopRating;
 use OxidEsales\EshopCommunity\Internal\Review\DataObject\Rating;
 use OxidEsales\Eshop\Core\Field;
 
-class RatingDaoTest extends UnitTestCase
+class RatingDaoTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetRatingsByUserId()
     {

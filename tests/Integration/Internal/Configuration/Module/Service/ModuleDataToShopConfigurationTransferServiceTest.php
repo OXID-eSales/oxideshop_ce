@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Configuration\Mod
 
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
-use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\StandardShopSettingType;
+use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataMapper\ModuleConfigurationToShopConfigurationDataMapper;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\Service\ModuleDataToShopConfigurationTransferService;
@@ -33,7 +33,7 @@ class ModuleDataToShopConfigurationTransferServiceTest extends TestCase
         $shopConfigurationSettingDao->save(new ShopConfigurationSetting(
                 1,
                 'aModulePaths',
-                StandardShopSettingType::ARRAY,
+                ShopSettingType::ARRAY,
                 ['alreadyExistedModuleId' => 'alreadyExistedModulePath']
             )
         );
@@ -73,7 +73,7 @@ class ModuleDataToShopConfigurationTransferServiceTest extends TestCase
                     ?? new ShopConfigurationSetting(
                         $shopId,
                         $name,
-                        StandardShopSettingType::ARRAY,
+                        ShopSettingType::ARRAY,
                         []
                     );
             }

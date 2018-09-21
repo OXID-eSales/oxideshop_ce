@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Service;
 
-use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\StandardShopSettingType;
+use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Exception\InvalidShopSettingValueException;
 use function unserialize;
 use function serialize;
@@ -28,11 +28,11 @@ class ShopSettingEncoder implements ShopSettingEncoderInterface
         $this->validateSettingValue($value);
 
         switch ($encodingType) {
-            case StandardShopSettingType::ARRAY:
-            case StandardShopSettingType::ASSOCIATIVE_ARRAY:
+            case ShopSettingType::ARRAY:
+            case ShopSettingType::ASSOCIATIVE_ARRAY:
                 $encodedValue = serialize($value);
                 break;
-            case StandardShopSettingType::BOOLEAN:
+            case ShopSettingType::BOOLEAN:
                 $encodedValue = $value === true ? '1' : '';
                 break;
             default:
@@ -50,11 +50,11 @@ class ShopSettingEncoder implements ShopSettingEncoderInterface
     public function decode(string $encodingType, $value)
     {
         switch ($encodingType) {
-            case StandardShopSettingType::ARRAY:
-            case StandardShopSettingType::ASSOCIATIVE_ARRAY:
+            case ShopSettingType::ARRAY:
+            case ShopSettingType::ASSOCIATIVE_ARRAY:
                 $decodedValue = unserialize($value, ['allowed_classes' => false]);
                 break;
-            case StandardShopSettingType::BOOLEAN:
+            case ShopSettingType::BOOLEAN:
                 $decodedValue = ($value === 'true' || $value === '1');
                 break;
             default:

@@ -71,7 +71,9 @@ class ShopSettingEncoder implements ShopSettingEncoderInterface
     private function validateSettingValue($value)
     {
         if (is_object($value)) {
-            throw new InvalidShopSettingValueException();
+            throw new InvalidShopSettingValueException(
+                'Shop setting value must not be an object.'
+            );
         }
     }
 }

@@ -39,34 +39,21 @@ class ShopModuleSetting
     private $value;
 
     /**
-     * ShopModuleSetting constructor.
-     *
-     * @param string $moduleId
-     * @param int    $shopId
-     * @param string $name
-     * @param string $type
-     * @param mixed  $value
-     */
-    public function __construct(
-        string $moduleId,
-        int $shopId,
-        string $name,
-        string $type,
-        $value
-    ) {
-        $this->moduleId = $moduleId;
-        $this->shopId = $shopId;
-        $this->name = $name;
-        $this->type = $type;
-        $this->value = $value;
-    }
-
-    /**
      * @return string
      */
     public function getModuleId(): string
     {
         return $this->moduleId;
+    }
+
+    /**
+     * @param string $moduleId
+     * @return ShopModuleSetting
+     */
+    public function setModuleId(string $moduleId): ShopModuleSetting
+    {
+        $this->moduleId = $moduleId;
+        return $this;
     }
 
     /**
@@ -78,6 +65,16 @@ class ShopModuleSetting
     }
 
     /**
+     * @param int $shopId
+     * @return ShopModuleSetting
+     */
+    public function setShopId(int $shopId): ShopModuleSetting
+    {
+        $this->shopId = $shopId;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getName(): string
@@ -86,11 +83,31 @@ class ShopModuleSetting
     }
 
     /**
+     * @param string $name
+     * @return ShopModuleSetting
+     */
+    public function setName(string $name): ShopModuleSetting
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getType(): string
     {
         return $this->type;
+    }
+
+    /**
+     * @param string $type
+     * @return ShopModuleSetting
+     */
+    public function setType(string $type): ShopModuleSetting
+    {
+        $this->type = $type;
+        return $this;
     }
 
     /**
@@ -103,9 +120,11 @@ class ShopModuleSetting
 
     /**
      * @param mixed $value
+     * @return ShopModuleSetting
      */
-    public function setValue($value)
+    public function setValue($value): ShopModuleSetting
     {
         $this->value = $value;
+        return $this;
     }
 }

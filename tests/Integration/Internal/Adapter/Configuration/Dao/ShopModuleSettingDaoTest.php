@@ -26,13 +26,13 @@ class ShopModuleSettingDaoTest extends TestCase
     {
         $settingDao = $this->getShopModuleSettingDao();
 
-        $shopModuleSetting = new ShopModuleSetting(
-            'testModuleId',
-            1,
-            $name,
-            $type,
-            $value
-        );
+        $shopModuleSetting = new ShopModuleSetting();
+        $shopModuleSetting
+            ->setModuleId('testModuleId')
+            ->setShopId(1)
+            ->setName($name)
+            ->setType($type)
+            ->setValue($value);
 
         $settingDao->save($shopModuleSetting);
 
@@ -61,13 +61,13 @@ class ShopModuleSettingDaoTest extends TestCase
     {
         $settingDao = $this->getShopModuleSettingDao();
 
-        $shopModuleSetting = new ShopModuleSetting(
-            'testModuleId',
-            1,
-            $name,
-            $type,
-            $value
-        );
+        $shopModuleSetting = new ShopModuleSetting();
+        $shopModuleSetting
+            ->setModuleId('testModuleId')
+            ->setShopId(1)
+            ->setName($name)
+            ->setType($type)
+            ->setValue($value);
 
         $settingDao->save($shopModuleSetting);
 

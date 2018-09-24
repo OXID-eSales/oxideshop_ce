@@ -29,14 +29,16 @@ class ModuleDataToShopConfigurationTransferServiceTest extends TestCase
             ->setPath('testModulePath')
             ->setVersion('v2.0');
 
+        $shopConfigurationSetting = new ShopConfigurationSetting();
+        $shopConfigurationSetting
+            ->setShopId(1)
+            ->setName('aModulePaths')
+            ->setType(ShopSettingType::ARRAY)
+            ->setValue(['alreadyExistedModuleId' => 'alreadyExistedModulePath']);
+
+
         $shopConfigurationSettingDao = $this->getTestShopConfigurationSettingDao();
-        $shopConfigurationSettingDao->save(new ShopConfigurationSetting(
-                1,
-                'aModulePaths',
-                ShopSettingType::ARRAY,
-                ['alreadyExistedModuleId' => 'alreadyExistedModulePath']
-            )
-        );
+        $shopConfigurationSettingDao->save($shopConfigurationSetting);
 
         $moduleDataToShopConfigurationTransferService = new ModuleDataToShopConfigurationTransferService(
             new ModuleConfigurationToShopConfigurationDataMapper(),
@@ -69,13 +71,18 @@ class ModuleDataToShopConfigurationTransferServiceTest extends TestCase
 
             public function get(string $name, int $shopId): ShopConfigurationSetting
             {
-                return $this->settings[$shopId][$name]
-                    ?? new ShopConfigurationSetting(
-                        $shopId,
-                        $name,
-                        ShopSettingType::ARRAY,
-                        []
-                    );
+                if (isset($this->settings[$shopId][$name])) {
+                    $setting = $this->settings[$shopId][$name];
+                } else {
+                    $setting = new ShopConfigurationSetting();
+                    $setting
+                        ->setShopId(1)
+                        ->setName($name)
+                        ->setType(ShopSettingType::ARRAY)
+                        ->setValue([]);
+                }
+
+                return $setting;
             }
         };
     }

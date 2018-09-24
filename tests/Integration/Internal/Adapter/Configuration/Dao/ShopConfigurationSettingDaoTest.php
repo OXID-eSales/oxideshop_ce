@@ -26,12 +26,12 @@ class ShopConfigurationSettingDaoTest extends TestCase
     {
         $settingDao = $this->getConfigurationSettingDao();
 
-        $shopConfigurationSetting = new ShopConfigurationSetting(
-            1,
-            $name,
-            $type,
-            $value
-        );
+        $shopConfigurationSetting = new ShopConfigurationSetting();
+        $shopConfigurationSetting
+            ->setShopId(1)
+            ->setName($name)
+            ->setType($type)
+            ->setValue($value);
 
         $settingDao->save($shopConfigurationSetting);
 
@@ -60,12 +60,12 @@ class ShopConfigurationSettingDaoTest extends TestCase
     {
         $settingDao = $this->getConfigurationSettingDao();
 
-        $shopConfigurationSetting = new ShopConfigurationSetting(
-            1,
-            $name,
-            $type,
-            $value
-        );
+        $shopConfigurationSetting = new ShopConfigurationSetting();
+        $shopConfigurationSetting
+            ->setShopId(1)
+            ->setName($name)
+            ->setType($type)
+            ->setValue($value);
 
         $settingDao->save($shopConfigurationSetting);
 

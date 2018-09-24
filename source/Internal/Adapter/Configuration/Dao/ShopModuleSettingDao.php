@@ -110,12 +110,14 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
             throw new EntryDoesNotExistDaoException();
         }
 
-        return new ShopModuleSetting(
-            $moduleId,
-            $shopId,
-            $name,
-            $result['type'],
-            $this->shopSettingEncoder->decode($result['type'], $result['value'])
-        );
+        $setting = new ShopModuleSetting();
+        $setting
+            ->setName($name)
+            ->setValue($this->shopSettingEncoder->decode($result['type'], $result['value']))
+            ->setShopId($shopId)
+            ->setModuleId($moduleId)
+            ->setType($result['type']);
+
+        return $setting;
     }
 }

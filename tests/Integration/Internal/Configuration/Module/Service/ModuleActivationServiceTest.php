@@ -25,6 +25,8 @@ class ModuleActivationServiceTest extends TestCase
 {
     public function testActivation()
     {
+        $this->markTestSkipped('Not implemented yet.');
+
         $projectConfigurationDao = $this->get(ProjectConfigurationDaoInterface::class);
         $projectConfigurationDao->persistConfiguration($this->getTestProjectConfiguration());
 

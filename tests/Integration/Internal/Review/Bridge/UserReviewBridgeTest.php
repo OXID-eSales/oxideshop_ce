@@ -13,9 +13,8 @@ use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoExce
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewBridge;
 use OxidEsales\EshopCommunity\Internal\Review\Exception\ReviewPermissionException;
 use OxidEsales\EshopCommunity\Internal\Review\Service\UserReviewService;
-use OxidEsales\TestingLibrary\UnitTestCase;
 
-class UserReviewBridgeTest extends UnitTestCase
+class UserReviewBridgeTest extends \PHPUnit\Framework\TestCase
 {
     public function testDeleteReview()
     {

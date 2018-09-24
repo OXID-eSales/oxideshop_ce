@@ -18,8 +18,20 @@ use Psr\Log\LogLevel;
  */
 class LoggerTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var \OxidEsales\TestingLibrary\VfsStreamWrapper */
-    private $vfsStreamWrapper = null;
+    private $logFilePath;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->logFilePath = tempnam(sys_get_temp_dir() . '/test_logger', 'test_');
+    }
+
+    public function tearDown()
+    {
+        unlink($this->logFilePath);
+        parent::tearDown();
+    }
 
     public function testLogging()
     {
@@ -51,6 +63,18 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @param $context Context
+     *
+     * @return \Psr\Log\LoggerInterface
+     */
+    private function getLogger($context)
+    {
+        $loggerServiceFactory = new LoggerServiceFactory($context);
+
+        return $loggerServiceFactory->getLogger();
+    }
+
+    /**
      * Log level is not configured by default.
      *
      * @param string $logLevelFromConfig
@@ -66,52 +90,12 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
 
         $context
             ->method('getLogFilePath')
-            ->willReturn($this->getVfsLogFile());
+            ->willReturn($this->logFilePath);
 
         $context
             ->method('getLogLevel')
             ->willReturn($logLevelFromConfig);
 
         return $context;
-    }
-
-    /**
-     * @return string
-     */
-    private function getVfsLogFile()
-    {
-        $vfsStreamWrapper = $this->getVfsStreamWrapper();
-        $relativeLogFilePath = 'logs/vfsLogFile.txt';
-        $logFilePath = $vfsStreamWrapper->getRootPath() . $relativeLogFilePath;
-
-        if (!is_file($logFilePath)) {
-            $vfsStreamWrapper->createFile($relativeLogFilePath);
-        }
-
-        return $logFilePath;
-    }
-
-    /**
-     * @param $context Context
-     *
-     * @return \Psr\Log\LoggerInterface
-     */
-    private function getLogger($context)
-    {
-        $loggerServiceFactory = new LoggerServiceFactory($context);
-
-        return $loggerServiceFactory->getLogger();
-    }
-
-    /**
-     * @return \OxidEsales\TestingLibrary\VfsStreamWrapper
-     */
-    private function getVfsStreamWrapper()
-    {
-        if (is_null($this->vfsStreamWrapper)) {
-            $this->vfsStreamWrapper = new \OxidEsales\TestingLibrary\VfsStreamWrapper();
-        }
-
-        return $this->vfsStreamWrapper;
     }
 }

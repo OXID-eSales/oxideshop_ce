@@ -10,11 +10,10 @@ use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewBridge;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Service\UserReviewService;
-use OxidEsales\TestingLibrary\UnitTestCase;
 use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Core\Field;
 
-class ReviewDaoTest extends UnitTestCase
+class ReviewDaoTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetReviewsByUserId()
     {

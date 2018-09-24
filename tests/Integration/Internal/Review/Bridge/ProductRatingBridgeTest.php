@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridgeInterfac
 use OxidEsales\EshopCommunity\Internal\Review\Dao\ProductRatingDao;
 use OxidEsales\EshopCommunity\Internal\Review\Service\ProductRatingService;
 
-class ProductRatingBridgeTest extends \PHPUnit_Framework_TestCase
+class ProductRatingBridgeTest extends \PHPUnit\Framework\TestCase
 {
     public function testUpdateProductRating()
     {

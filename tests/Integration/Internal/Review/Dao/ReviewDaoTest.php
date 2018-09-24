@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Review\Service\UserReviewService;
 use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Core\Field;
 
-class ReviewDaoTest extends \PHPUnit_Framework_TestCase
+class ReviewDaoTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetReviewsByUserId()
     {

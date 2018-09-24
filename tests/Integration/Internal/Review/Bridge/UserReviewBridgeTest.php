@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewBridge;
 use OxidEsales\EshopCommunity\Internal\Review\Exception\ReviewPermissionException;
 use OxidEsales\EshopCommunity\Internal\Review\Service\UserReviewService;
 
-class UserReviewBridgeTest extends \PHPUnit_Framework_TestCase
+class UserReviewBridgeTest extends \PHPUnit\Framework\TestCase
 {
     public function testDeleteReview()
     {

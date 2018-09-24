@@ -14,7 +14,7 @@ use OxidEsales\Eshop\Application\Model\Rating as EshopRating;
 use OxidEsales\EshopCommunity\Internal\Review\DataObject\Rating;
 use OxidEsales\Eshop\Core\Field;
 
-class RatingDaoTest extends \PHPUnit_Framework_TestCase
+class RatingDaoTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetRatingsByUserId()
     {

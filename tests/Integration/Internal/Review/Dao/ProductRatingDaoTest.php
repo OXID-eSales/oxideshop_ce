@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Review\Dao\ProductRatingDao;
 use OxidEsales\EshopCommunity\Internal\Review\DataObject\ProductRating;
 use OxidEsales\EshopCommunity\Internal\Review\Service\ProductRatingService;
 
-class ProductRatingDaoTest extends \PHPUnit_Framework_TestCase
+class ProductRatingDaoTest extends \PHPUnit\Framework\TestCase
 {
     public function testUpdateProductRating()
     {

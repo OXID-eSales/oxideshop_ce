@@ -13,9 +13,8 @@ use OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridgeInterfac
 use OxidEsales\EshopCommunity\Internal\Review\Dao\ProductRatingDao;
 use OxidEsales\EshopCommunity\Internal\Review\DataObject\ProductRating;
 use OxidEsales\EshopCommunity\Internal\Review\Service\ProductRatingService;
-use OxidEsales\TestingLibrary\UnitTestCase;
 
-class ProductRatingDaoTest extends UnitTestCase
+class ProductRatingDaoTest extends \PHPUnit_Framework_TestCase
 {
     public function testUpdateProductRating()
     {

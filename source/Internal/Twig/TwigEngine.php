@@ -45,10 +45,14 @@ class TwigEngine implements BaseEngineInterface
      * TwigEngine constructor.
      * @param Environment                 $engine
      * @param TemplateNameParserInterface $parser
+     * @param OxidExtension $oxidExtension
      */
-    public function __construct(Environment $engine, TemplateNameParserInterface $parser)
-    {
-        $this->engine = $engine;
+    public function __construct(
+        Environment $engine,
+        TemplateNameParserInterface $parser,
+        OxidExtension $oxidExtension
+    ) {
+		$this->engine = $engine;
         $this->parser = $parser;
 
         if ($this->engine->isDebug()) {
@@ -56,7 +60,7 @@ class TwigEngine implements BaseEngineInterface
         }
 
         $this->engine->addExtension(new MathExtension());
-        $this->engine->addExtension(new OxidExtension());
+        $this->engine->addExtension($oxidExtension);
         $this->engine->addExtension(new OxidIncludeExtension());
         $this->engine->addExtension(new SmartyExtension());
 

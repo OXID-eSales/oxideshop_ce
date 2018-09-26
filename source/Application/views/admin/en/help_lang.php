@@ -204,6 +204,11 @@ $aLang =  [
 'HELP_SHOP_CONFIG_DOWNLOAD_EXPIRATION_TIME'   => 'Specify the time in hours, the download link is valid after the first download. This is the default setting for all products.'.
                                                  'You can change this value for every file of product in Administer Products -> Products -> Downloads.',
 
+'HELP_SHOP_CONFIG_LOADREVIEWS'                  => 'Users can rate and comment products. If this setting is checked, the existing reviews/comments are loaded and shown with the product. ' .
+                                                   'This setting might influence the performance of the shop.',
+
+'HELP_SHOP_CONFIG_SEND_REVIEW_AND_RATINGS_LINK_IN_ORDER_EMAIL' => 'HELP Lorem ipsum',
+
 'HELP_SHOP_MALL_MALLMODE'                     => 'Here you can set what is shown as front page of this eShop:' .
                                                  '<ul><li><span class="navipath_or_inputname">Show shop selector</span>: A page where the different eShops can be selected is shown.</li>' .
                                                  '<li><span class="navipath_or_inputname">Show main shop front page</span>: The normal front page of this Shop is shown.</li></ul>',
@@ -225,8 +230,6 @@ $aLang =  [
 'HELP_SHOP_PERF_LOADFULLTREE'                 => 'If this setting is checked, the complete category tree is shown in the category navigation (all categories are expanded). This only works if the category navigation is not shown at top.',
 
 'HELP_SHOP_PERF_LOADACTION'                   => 'If this setting is checked, promotions like <span class="filename_filepath_or_italic">Just arrived!</span> and <span class="filename_filepath_or_italic">Top of the Shop</span> are loaded and shown.',
-
-'HELP_SHOP_PERF_LOADREVIEWS'                  => 'Users can rate and comment products. If this setting is checked, the existing reviews/comments are loaded and shown with the product.',
 
 'HELP_SHOP_PERF_USESELECTLISTPRICE'           => 'In selection lists surcharges/discounts can be set up. If this setting is checked, the surcharges/discounts are loaded and applied. If unchecked, the surcharges/discounts aren\'t applied.',
 

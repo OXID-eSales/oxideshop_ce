@@ -207,6 +207,11 @@ $aLang =  [
 
 'HELP_SHOP_CONFIG_PARCELSERVICE'   			  => 'Bitte tragen Sie die Tracking-URL Ihres Versanddienstleisters ein. <i>##ID##</i> ist ein Platzhalter, welcher durch die jeweilige Sendungsnummer ersetzt wird.',
 
+'HELP_SHOP_CONFIG_LOADREVIEWS'                => 'Benutzer können Artikel bewerten und Kommentare zu Artikeln verfassen. Wenn die Einstellung aktiv ist, werden die bereits abgegebenen Kommentare und Bewertungen beim Artikel angezeigt. ' .
+                                                 'Diese Einstellung kann die Performance des eShops beeinflussen.',
+
+'HELP_SHOP_CONFIG_SEND_REVIEW_AND_RATINGS_LINK_IN_ORDER_EMAIL' => 'HELP Lorem ipsum',
+
 'HELP_SHOP_PERF_NEWESTARTICLES'               => 'In Ihrem eShop wird eine Liste mit den neusten Artikeln (Frisch eingetroffen!) angezeigt. Hier können Sie einstellen, wie die Liste generiert wird:' .
                                                  '<ul><li><span class="userinput_or_code">ausgeschaltet</span>: Die Liste wird nicht angezeigt.</li>' .
                                                  '<li><span class="userinput_or_code">manuell</span>: Sie können unter <span class="navipath_or_inputname">Kundeninformationen -> Aktionen verwalten</span> in der Aktion <span class="navipath_or_inputname">Frisch eingetroffen</span> einstellen, welche Artikel in der Liste angezeigt werden.</li>' .
@@ -220,8 +225,6 @@ $aLang =  [
 'HELP_SHOP_PERF_LOADFULLTREE'                 => 'Wenn die Einstellung aktiv ist, wird in der Kategoriennavigation der komplette Kategoriebaum angezeigt (Alle Kategorien sind \'ausgeklappt\'). Diese Einstellung funktioniert nur, wenn die Kategoriennavigation <span class="warning_or_important_hint">nicht</span> oben angezeigt wird.',
 
 'HELP_SHOP_PERF_LOADACTION'                   => 'Wenn die Einstellung aktiv ist, werden Aktionen wie <span class="filename_filepath_or_italic">Die Dauerbrenner</span>, <span class="filename_filepath_or_italic">Top of the Shop</span>, <span class="filename_filepath_or_italic">Frisch eingetroffen!</span> geladen und angezeigt.',
-
-'HELP_SHOP_PERF_LOADREVIEWS'                  => 'Benutzer können Artikel bewerten und Kommentare zu Artikeln verfassen. Wenn die Einstellung aktiv ist, werden die bereits abgegebenen Kommentare und Bewertungen beim Artikel angezeigt.',
 
 'HELP_SHOP_PERF_USESELECTLISTPRICE'           => 'In Auswahllisten können Sie Preis Auf/Abschläge einstellen. Wenn diese Einstellung aktiv ist, werden die Auf/Abschläge berechnet, ansonsten nicht.',
 

@@ -1,13 +1,17 @@
 <?php
+/**
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
 
 namespace OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic;
 
 /**
- * Class OxaddparamsLogic
+ * Class AddUrlParametersLogic
  *
  * @author Tomasz Kowalewski (t.kowalewski@createit.pl)
  */
-class OxaddparamsLogic
+class AddUrlParametersLogic
 {
     /**
      * Add additional parameters to SEO url
@@ -17,7 +21,7 @@ class OxaddparamsLogic
      *
      * @return string
      */
-    public function oxaddparams($sUrl, $sDynParams)
+    public function addUrlParameters($sUrl, $sDynParams)
     {
         $oStr = getStr();
         // removing empty parameters

@@ -1,22 +1,26 @@
 <?php
+/**
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
 
 namespace OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic;
 
 /**
- * Class OxgetseourlLogic
+ * Class SeoUrlLogic
  *
  * @author Tomasz Kowalewski (t.kowalewski@createit.pl)
  */
-class OxgetseourlLogic
+class SeoUrlLogic
 {
     /**
      * Output SEO style url
      *
-     * @param $params
+     * @param array $params
      *
      * @return null|string
      */
-    public function oxgetseourl($params)
+    public function seoUrl($params)
     {
         $sOxid = isset($params['oxid']) ? $params['oxid'] : null;
         $sType = isset($params['type']) ? $params['type'] : null;

@@ -35,17 +35,37 @@ services:
         - '@twig.loader.filesystem'
         - "@=service('OxidEsales\\\\EshopCommunity\\\\Internal\\\\Twig\\\\TemplateEngineConfigurationInterface').getParameters()"
     public: false
+    calls:
+        - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\MathExtension']]
+        - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\IncludeExtension']]
+        - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\SmartyExtension']]
+        - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\MailtoExtension']]
+        - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\UrlExtension']]
 
   OxidEsales\EshopCommunity\Internal\Twig\TwigEngine:
     class: OxidEsales\EshopCommunity\Internal\Twig\TwigEngine
     arguments:
         - '@twig.environment'
         - '@Symfony\Component\Templating\TemplateNameParserInterface'
-        - '@OxidEsales\EshopCommunity\Internal\Twig\Extensions\OxidExtension'
     public: false
 
-  OxidEsales\EshopCommunity\Internal\Twig\Extensions\OxidExtension:
-    class: OxidEsales\EshopCommunity\Internal\Twig\Extensions\OxidExtension
+
+# Extensions
+
+  OxidEsales\EshopCommunity\Internal\Twig\Extensions\MathExtension:
+    class: OxidEsales\EshopCommunity\Internal\Twig\Extensions\MathExtension
+
+  OxidEsales\EshopCommunity\Internal\Twig\Extensions\IncludeExtension:
+    class: OxidEsales\EshopCommunity\Internal\Twig\Extensions\IncludeExtension
+
+  OxidEsales\EshopCommunity\Internal\Twig\Extensions\SmartyExtension:
+    class: OxidEsales\EshopCommunity\Internal\Twig\Extensions\SmartyExtension
+
+  OxidEsales\EshopCommunity\Internal\Twig\Extensions\MailtoExtension:
+    class: OxidEsales\EshopCommunity\Internal\Twig\Extensions\MailtoExtension
+
+  OxidEsales\EshopCommunity\Internal\Twig\Extensions\UrlExtension:
+    class: OxidEsales\EshopCommunity\Internal\Twig\Extensions\UrlExtension
     arguments:
-        - '@OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\OxgetseourlLogic'
-        - '@OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\OxaddparamsLogic'
+        - '@OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\SeoUrlLogic'
+        - '@OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\AddUrlParametersLogic'

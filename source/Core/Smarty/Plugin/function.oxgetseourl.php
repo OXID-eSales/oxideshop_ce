@@ -4,7 +4,7 @@
  * See LICENSE file for license details.
  */
 
-use OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\OxgetseourlLogic;
+use OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\SeoUrlLogic;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 
 
@@ -22,10 +22,10 @@ use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
  */
 function smarty_function_oxgetseourl( $params, &$smarty )
 {
-    /** @var OxgetseourlLogic $oxgetseourlLogic */
-    $oxgetseourlLogic = ContainerFactory::getInstance()->getContainer()->get(OxgetseourlLogic::class);
+    /** @var SeoUrlLogic $oxgetseourlLogic */
+    $oxgetseourlLogic = ContainerFactory::getInstance()->getContainer()->get(SeoUrlLogic::class);
 
-    $sUrl = $oxgetseourlLogic->oxgetseourl($params);
+    $sUrl = $oxgetseourlLogic->seoUrl($params);
 
     $sDynParams = isset( $params['params'] )?$params['params']:false;
     if ( $sDynParams ) {

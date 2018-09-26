@@ -2758,7 +2758,7 @@ class BasketTest extends \OxidTestCase
         $oBasket->setNonPublicVar('_aDiscounts', array($oDiscount2));
         $oBasket->UNITcalcBasketTotalDiscount();
 
-        $this->assertSame([], $oBasket->getDiscounts());
+        $this->assertNull($oBasket->getDiscounts());
     }
 
     /**

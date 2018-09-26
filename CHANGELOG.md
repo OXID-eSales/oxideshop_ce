@@ -68,6 +68,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [6.4.0] - Unreleased
 
+### Fixed
+- Fixed return type in Basket::getDiscounts [PR-659](https://github.com/OXID-eSales/oxideshop_ce/pull/659)
+
 ### Added
 - New methods:
   - `OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay::getValues` [PR-660](https://github.com/OXID-eSales/oxideshop_ce/pull/660)

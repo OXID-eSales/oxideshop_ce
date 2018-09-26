@@ -2137,7 +2137,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     public function getDiscounts()
     {
         if ($this->getTotalDiscount() && $this->getTotalDiscount()->getBruttoPrice() == 0 && count($this->_aItemDiscounts) == 0) {
-            return [];
+            return null;
         }
 
         return array_merge($this->_aItemDiscounts, $this->_aDiscounts);

@@ -22,9 +22,16 @@ use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
  */
 function smarty_function_oxgetseourl( $params, &$smarty )
 {
-    $container = ContainerFactory::getInstance()->getContainer();
     /** @var OxgetseourlLogic $oxgetseourlLogic */
-    $oxgetseourlLogic = $container->get(OxgetseourlLogic::class);
+    $oxgetseourlLogic = ContainerFactory::getInstance()->getContainer()->get(OxgetseourlLogic::class);
 
-    return $oxgetseourlLogic->oxgetseourl($params);
+    $sUrl = $oxgetseourlLogic->oxgetseourl($params);
+
+    $sDynParams = isset( $params['params'] )?$params['params']:false;
+    if ( $sDynParams ) {
+        include_once $smarty->_get_plugin_filepath( 'modifier', 'oxaddparams' );
+        $sUrl = smarty_modifier_oxaddparams( $sUrl, $sDynParams );
+    }
+
+    return $sUrl;
 }

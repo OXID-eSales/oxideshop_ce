@@ -3,3 +3,11 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapter
     autowire: true
     public: false
+
+# TemplateLogic
+
+  OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\OxgetseourlLogic:
+    class: OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\OxgetseourlLogic
+
+  OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\OxaddparamsLogic:
+    class: OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\OxaddparamsLogic

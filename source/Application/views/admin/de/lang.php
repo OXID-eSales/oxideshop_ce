@@ -1152,7 +1152,7 @@ $aLang = [
     'SHOP_CONFIG_PARCELSERVICE'                               => 'Tracking-URL des Versanddienstleisters',
     'SHOP_CONFIG_ERROR_INVALID_VALUE'                         => 'Der eingegebene Konfigurationswert %s ist ungültig.',
     'SHOP_CONFIG_LOADREVIEWS'                                 => 'Kommentare und Bewertungen aktivieren',
-    'SHOP_CONFIG_SEND_REVIEW_AND_RATINGS_LINK_IN_ORDER_EMAIL' => 'Lorem Ipsum',
+    'SHOP_CONFIG_SEND_REVIEW_AND_RATINGS_LINK_IN_ORDER_EMAIL' => 'Link zur Artikel Bewertung in der E-Mail zur Bestellbestätigung mitversenden',
 
     'SHOP_SYSTEM_ATTRIBUTESPERCENT'          => 'Prozentsatz gleicher Attribute, damit Artikel ähnlich sind',
     'SHOP_SYSTEM_DEFAULTIMAGEQUALITY'        => 'Bildqualität - von 0 (schlechteste Qualität, kleine Dateigröße) bis 100 (beste Qualität, große Dateigröße)',

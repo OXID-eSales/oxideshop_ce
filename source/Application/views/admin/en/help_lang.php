@@ -207,7 +207,7 @@ $aLang =  [
 'HELP_SHOP_CONFIG_LOADREVIEWS'                  => 'Users can rate and comment products. If this setting is checked, the existing reviews/comments are loaded and shown with the product. ' .
                                                    'This setting might influence the performance of the shop.',
 
-'HELP_SHOP_CONFIG_SEND_REVIEW_AND_RATINGS_LINK_IN_ORDER_EMAIL' => 'HELP Lorem ipsum',
+'HELP_SHOP_CONFIG_SEND_REVIEW_AND_RATINGS_LINK_IN_ORDER_EMAIL' => 'Please double-check that this is compliant with your laws.',
 
 'HELP_SHOP_MALL_MALLMODE'                     => 'Here you can set what is shown as front page of this eShop:' .
                                                  '<ul><li><span class="navipath_or_inputname">Show shop selector</span>: A page where the different eShops can be selected is shown.</li>' .

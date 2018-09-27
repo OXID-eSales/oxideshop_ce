@@ -1,15 +1,19 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-use \oxField;
-use \oxPrice;
-use \oxDb;
-use \oxRegistry;
-use \oxTestModules;
+use oxDb;
+use oxField;
+use OxidEsales\Eshop\Application\Model\BasketItem;
+use OxidEsales\Eshop\Application\Model\Shop;
+use OxidEsales\Eshop\Core\Price;
+use oxPrice;
+use oxRegistry;
+use oxTestModules;
 
 class EmailTest extends \OxidTestCase
 {
@@ -438,7 +442,7 @@ class EmailTest extends \OxidTestCase
         $this->_oArticle->oxarticles__oxremindamount = new oxField('0', oxField::T_RAW);
         $this->_oArticle->save();
 
-        $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array('getArticle', 'getProductId'));
+        $oBasketItem = $this->getMock(BasketItem::class, array('getArticle', 'getProductId'));
         $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($this->_oArticle));
         $oBasketItem->expects($this->any())->method('getProductId')->will($this->returnValue('_testArticleId'));
 
@@ -463,7 +467,7 @@ class EmailTest extends \OxidTestCase
         $this->_oArticle->oxarticles__oxremindamount = new oxField('9', oxField::T_RAW);
         $this->_oArticle->save();
 
-        $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array('getArticle', 'getProductId'));
+        $oBasketItem = $this->getMock(BasketItem::class, array('getArticle', 'getProductId'));
         $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($this->_oArticle));
         $oBasketItem->expects($this->any())->method('getProductId')->will($this->returnValue('_testArticleId'));
 
@@ -488,7 +492,7 @@ class EmailTest extends \OxidTestCase
         $this->_oArticle->oxarticles__oxremindamount = new oxField('10', oxField::T_RAW);
         $this->_oArticle->save();
 
-        $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array('getArticle', 'getProductId'));
+        $oBasketItem = $this->getMock(BasketItem::class, array('getArticle', 'getProductId'));
         $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($this->_oArticle));
         $oBasketItem->expects($this->any())->method('getProductId')->will($this->returnValue('_testArticleId'));
 
@@ -1133,5 +1137,219 @@ class EmailTest extends \OxidTestCase
         $this->assertEquals("info@myoxideshop.com", $oEmail->getFrom());
     }
 
-}
+    public function testProductReviewLinksAreIncludedByDefaultInSendedNowMail()
+    {
+        $orderStub = $this->getOrderStub();
+        $emailStub = $this->getEmailStub();
 
+        $emailStub->sendSendedNowMail($orderStub);
+
+        $body = $emailStub->getBody();
+
+        $this->assertTrue($this->isReviewLinkIncluded($body), 'Links to product reviews are included in the email body by default');
+    }
+
+    /**
+     * @param bool   $configParameterLoadReviewsValue
+     * @param bool   $isReviewLinkExpectedToBeIncluded
+     * @param string $message
+     *
+     * @dataProvider dataProviderTestProductReviewLinksAreIncludedInSendedNowMailAccordingConfiguration
+     */
+    public function testProductReviewLinksAreIncludedInSendedNowMailAccordingConfiguration(
+        bool $configParameterLoadReviewsValue,
+        bool $isReviewLinkExpectedToBeIncluded,
+        string $message
+    )
+    {
+        $this->setConfigParam('bl_perfLoadReviews', $configParameterLoadReviewsValue);
+        $orderStub = $this->getOrderStub();
+        $emailStub = $this->getEmailStub();
+
+        $emailStub->sendSendedNowMail($orderStub);
+
+        $body = $emailStub->getBody();
+
+        $this->assertSame($isReviewLinkExpectedToBeIncluded, $this->isReviewLinkIncluded($body), $message);
+    }
+
+    public function dataProviderTestProductReviewLinksAreIncludedInSendedNowMailAccordingConfiguration()
+    {
+        return [
+            [
+                'configParameterLoadReviewsValue'  => true,
+                'isReviewLinkExpectedToBeIncluded' => true,
+                'message'                          => 'Links to product reviews are included in the email body'
+            ],
+            [
+                'configParameterLoadReviewsValue'  => false,
+                'isReviewLinkExpectedToBeIncluded' => false,
+                'message'                          => 'No links to product reviews are included in the email body'
+            ],
+
+        ];
+    }
+
+    public function testProductReviewLinksAreNotIncludedByDefaultInOrderEmail()
+    {
+        $orderStub = $this->getOrderStub();
+        $emailStub = $this->getEmailStub();
+
+        $emailStub->sendOrderEmailToUser($orderStub);
+
+        $body = $emailStub->getBody();
+
+        $this->assertFalse($this->isReviewLinkIncluded($body));
+    }
+
+    /**
+     * @param bool   $configParameterLoadReviews
+     * @param bool   $configParameterIncludeProductReviewLinksInEmail
+     * @param bool   $isReviewLinkExpectedToBeIncluded
+     * @param string $message
+     *
+     * @dataProvider dataProviderTestProductReviewLinksAreIncludedInOrderEmailAccordingConfiguration
+     */
+    public function testProductReviewLinksAreIncludedInOrderEmailAccordingConfiguration(
+        bool $configParameterLoadReviews,
+        bool $configParameterIncludeProductReviewLinksInEmail,
+        bool $isReviewLinkExpectedToBeIncluded,
+        string $message
+    )
+    {
+        $this->setConfigParam('bl_perfLoadReviews', $configParameterLoadReviews);
+        $this->setConfigParam('includeProductReviewLinksInEmail', $configParameterIncludeProductReviewLinksInEmail);
+        $orderStub = $this->getOrderStub();
+        $emailStub = $this->getEmailStub();
+
+        $emailStub->sendOrderEmailToUser($orderStub);
+
+        $body = $emailStub->getBody();
+
+        $this->assertSame($isReviewLinkExpectedToBeIncluded, $this->isReviewLinkIncluded($body), $message);
+    }
+
+    public function dataProviderTestProductReviewLinksAreIncludedInOrderEmailAccordingConfiguration()
+    {
+        return [
+            [
+                'configParameterLoadReviewsValue'                 => true,
+                'configParameterIncludeProductReviewLinksInEmail' => true,
+                'isReviewLinkExpectedToBeIncluded'                => true,
+                'message'                                         => 'Links to product reviews are included in the email body'
+            ],
+            [
+                'configParameterLoadReviewsValue'                 => true,
+                'configParameterIncludeProductReviewLinksInEmail' => false,
+                'isReviewLinkExpectedToBeIncluded'                => false,
+                'message'                                         => 'No links to product reviews are included in the email body'
+            ],
+            [
+                'configParameterLoadReviewsValue'                 => false,
+                'configParameterIncludeProductReviewLinksInEmail' => true,
+                'isReviewLinkExpectedToBeIncluded'                => false,
+                'message'                                         => 'No links to product reviews are included in the email body'
+            ],
+            [
+                'configParameterLoadReviewsValue'                 => false,
+                'configParameterIncludeProductReviewLinksInEmail' => false,
+                'isReviewLinkExpectedToBeIncluded'                => false,
+                'message'                                         => 'No links to product reviews are included in the email body'
+            ],
+        ];
+    }
+
+    /**
+     * @param $basketContents
+     * @param $basketArticles
+     *
+     * @return \OxidEsales\Eshop\Application\Model\Order|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getOrderStub()
+    {
+        $priceStub = $this->getMockBuilder(Price::class)
+            ->getMock();
+        $priceStub->method('getPrice')->will($this->returnValue(256));
+        $priceStub->method('getBruttoPrice')->will($this->returnValue(8));
+
+        $basketItemStub = $this->getMockBuilder(BasketItem::class)
+            ->setMethods(['getPrice', 'getUnitPrice', 'getRegularUnitPrice', 'getTitle'])
+            ->getMock();
+        $basketItemStub->method('getPrice')->will($this->returnValue($priceStub));
+        $basketItemStub->method('getUnitPrice')->will($this->returnValue($priceStub));
+        $basketItemStub->method('getRegularUnitPrice')->will($this->returnValue($priceStub));
+        $basketItemStub->method('getTitle')->will($this->returnValue("testarticle"));
+
+        // insert test article
+        $article = oxNew("oxArticle");
+        $article->setId('_testArticleId');
+        $article->setId('_testArticleId');
+        $article->oxarticles__oxtitle = new oxField();
+
+        $priceStub->setPrice(0);
+
+        $basketStub = $this->getMockBuilder(\OxidEsales\Eshop\Application\Model\Basket::class)
+            ->setMethods(['getBasketArticles', 'getContents', 'getCosts', 'getBruttoSum',])
+            ->getMock();
+        $basketStub->method('getBasketArticles')->will($this->returnValue([$article]));
+        $basketStub->method('getContents')->will($this->returnValue([$basketItemStub]));
+        $basketStub->method('getCosts')->will($this->returnValue($priceStub));
+        $basketStub->method('getBruttoSum')->will($this->returnValue(7));
+
+        $payment = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
+        $payment->oxpayments__oxdesc = new oxField("testPaymentDesc");
+
+        $user = oxNew("oxuser");
+        $user->setId('_testUserId');
+        $user->oxuser__oxusername = new oxField('username@useremail.nl', oxField::T_RAW);
+        $user->oxuser__oxfname = new oxField('testUserFName', oxField::T_RAW);
+        $user->oxuser__oxlname = new oxField('testUserLName', oxField::T_RAW);
+
+        $orderStub = $this->getMockBuilder(\OxidEsales\Eshop\Application\Model\Order::class)
+            ->setMethods(['getOrderUser', 'getBasket', 'getPayment'])
+            ->getMock();
+        $orderStub->method('getOrderUser')->will($this->returnValue($user));
+        $orderStub->method('getBasket')->will($this->returnValue($basketStub));
+        $orderStub->method('getPayment')->will($this->returnValue($payment));
+
+        $orderStub->oxorder__oxordernr = new oxField('987654321', oxField::T_RAW);
+        $orderStub->oxorder__oxbillfname = new oxField('');
+        $orderStub->oxorder__oxbilllname = new oxField('');
+        $orderStub->oxorder__oxbilladdinfo = new oxField('');
+        $orderStub->oxorder__oxbillstreet = new oxField('');
+        $orderStub->oxorder__oxbillcity = new oxField('');
+        $orderStub->oxorder__oxbillcountry = new oxField('');
+        $orderStub->oxorder__oxbillcompany = new oxField('');
+        $orderStub->oxorder__oxdeltype = new oxField("oxidstandard");
+
+        return $orderStub;
+    }
+
+    /**
+     * @return \OxidEsales\Eshop\Core\Email|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getEmailStub()
+    {
+        $shop = oxNew(Shop::class);
+        $shop->load($this->getConfig()->getShopId());
+
+        $emailStub = $this->getMockBuilder(\OxidEsales\Eshop\Core\Email::class)
+            ->setMethods(['_sendMail', '_getShop', 'getOrderFileList'])
+            ->getMock();;
+        $emailStub->method('_sendMail')->will($this->returnValue(true));
+        $emailStub->method('_getShop')->will($this->returnValue($shop));
+        $emailStub->method('getOrderFileList')->will($this->returnValue(false));
+
+        return $emailStub;
+    }
+
+    /**
+     * @param $body
+     *
+     * @return bool
+     */
+    private function isReviewLinkIncluded($body): bool
+    {
+        return false !== strpos($body, 'cl=review');
+    }
+}

@@ -6,8 +6,8 @@ services:
 
 # TemplateLogic
 
-  OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\OxgetseourlLogic:
-    class: OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\OxgetseourlLogic
+  OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\SeoUrlLogic:
+    class: OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\SeoUrlLogic
 
-  OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\OxaddparamsLogic:
-    class: OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\OxaddparamsLogic
+  OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\AddUrlParametersLogic:
+    class: OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\AddUrlParametersLogic

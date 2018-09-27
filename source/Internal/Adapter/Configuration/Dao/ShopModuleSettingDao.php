@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Service\ShopSettingEncoderInterface;
+use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
@@ -35,19 +36,27 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
     private $shopSettingEncoder;
 
     /**
-     * ShopConfigurationSettingDao constructor.
+     * @var ShopAdapterInterface
+     */
+    private $shopAdapter;
+
+    /**
+     * ShopModuleSettingDao constructor.
      * @param QueryBuilderFactoryInterface $queryBuilderFactory
      * @param ContextInterface             $context
      * @param ShopSettingEncoderInterface  $shopSettingEncoder
+     * @param ShopAdapterInterface         $shopAdapter
      */
     public function __construct(
         QueryBuilderFactoryInterface    $queryBuilderFactory,
         ContextInterface                $context,
-        ShopSettingEncoderInterface     $shopSettingEncoder
+        ShopSettingEncoderInterface     $shopSettingEncoder,
+        ShopAdapterInterface            $shopAdapter
     ) {
         $this->queryBuilderFactory = $queryBuilderFactory;
         $this->context = $context;
         $this->shopSettingEncoder = $shopSettingEncoder;
+        $this->shopAdapter = $shopAdapter;
     }
 
     /**
@@ -59,7 +68,7 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
         $queryBuilder
             ->insert('oxconfig')
             ->values([
-                'oxid'          => 'uuid()',
+                'oxid'          => ':id',
                 'oxmodule'      => ':moduleId',
                 'oxshopid'      => ':shopId',
                 'oxvarname'     => ':name',
@@ -67,6 +76,7 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
                 'oxvarvalue'    => 'encode(:value, :key)',
             ])
             ->setParameters([
+                'id'        => $this->shopAdapter->generateUniqueId(),
                 'moduleId'  => $shopModuleSetting->getModuleId(),
                 'shopId'    => $shopModuleSetting->getShopId(),
                 'name'      => $shopModuleSetting->getName(),

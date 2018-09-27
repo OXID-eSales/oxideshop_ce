@@ -59,6 +59,14 @@ class ShopAdapter implements ShopAdapterInterface
     }
 
     /**
+     * @return string
+     */
+    public function generateUniqueId(): string
+    {
+        return Registry::getUtilsObject()->generateUId();
+    }
+
+    /**
      * @return array
      */
     public function getModules()

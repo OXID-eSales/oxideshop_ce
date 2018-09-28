@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Module\TemplateExtension;
 
+use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
 
 /**
@@ -21,12 +22,19 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
     private $queryBuilderFactory;
 
     /**
-     * TemplateBlockDao constructor.
-     * @param QueryBuilderFactoryInterface $queryBuilderFactory
+     * @var ShopAdapterInterface
      */
-    public function __construct(QueryBuilderFactoryInterface $queryBuilderFactory)
+    private $shopAdapter;
+
+    /**
+     * TemplateBlockExtensionDao constructor.
+     * @param QueryBuilderFactoryInterface $queryBuilderFactory
+     * @param ShopAdapterInterface         $shopAdapter
+     */
+    public function __construct(QueryBuilderFactoryInterface $queryBuilderFactory, ShopAdapterInterface $shopAdapter)
     {
         $this->queryBuilderFactory = $queryBuilderFactory;
+        $this->shopAdapter = $shopAdapter;
     }
 
     /**
@@ -38,7 +46,7 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
         $queryBuilder
             ->insert('oxtplblocks')
             ->values([
-                'oxid'          => 'uuid()',
+                'oxid'          => ':id',
                 'oxshopid'      => ':shopId',
                 'oxmodule'      => ':moduleId',
                 'oxblockname'   => ':name',
@@ -48,6 +56,7 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
                 'oxactive'      => '1',
             ])
             ->setParameters([
+                'id'            => $this->shopAdapter->generateUniqueId(),
                 'shopId'        => $templateBlockExtension->getShopId(),
                 'moduleId'      => $templateBlockExtension->getModuleId(),
                 'name'          => $templateBlockExtension->getName(),

@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - New settings:
- `blSendReviewAndRatingsLinkInOrderEmail` defines, if a link to the product review is included in order confirmation email
+ `includeProductReviewLinksInEmail` defines, if a link to the product review is included in order confirmation email
 
 ### Fixed
 - Fix global variable name in startProfile [PR-651](https://github.com/OXID-eSales/oxideshop_ce/pull/651)

@@ -348,10 +348,10 @@ function editThis(sID)
                 <dt>
                     <input type=hidden name=confbools[includeProductReviewLinksInEmail] value=false>
                     <input type=checkbox name=confbools[includeProductReviewLinksInEmail] value=true  [{if ($confbools.includeProductReviewLinksInEmail)}]checked[{/if}] [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_CONFIG_SEND_REVIEW_AND_RATINGS_LINK_IN_ORDER_EMAIL"}]
+                    [{oxinputhelp ident="HELP_SHOP_CONFIG_INCLUDE_PRODUCT_REVIEW_LINKS_IN_ORDER_EMAIL"}]
                 </dt>
                 <dd>
-                    [{oxmultilang ident="SHOP_CONFIG_SEND_REVIEW_AND_RATINGS_LINK_IN_ORDER_EMAIL"}]
+                    [{oxmultilang ident="SHOP_CONFIG_INCLUDE_PRODUCT_REVIEW_LINKS_IN_ORDER_EMAIL"}]
                 </dd>
                 <div class="spacer"></div>
             </dl>

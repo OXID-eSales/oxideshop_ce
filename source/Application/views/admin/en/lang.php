@@ -1157,8 +1157,8 @@ $aLang = [
     'SHOP_CONFIG_DEBIT_OLD_BANK_INFORMATION_NOT_ALLOWED'      => 'Use IBAN/BIC only',
     'SHOP_CONFIG_PARCELSERVICE'                               => 'Shipping provider tracking URL',
     'SHOP_CONFIG_ERROR_INVALID_VALUE'                         => 'Provided configuration value: %s is not valid.',
-    'SHOP_CONFIG_LOADREVIEWS'                                 => 'Activate user Reviews and Ratings',
-    'SHOP_CONFIG_SEND_REVIEW_AND_RATINGS_LINK_IN_ORDER_EMAIL' => 'Include a link to the product review in the order email',
+    'SHOP_CONFIG_LOADREVIEWS'                                 => 'Activate user reviews and star ratings',
+    'SHOP_CONFIG_INCLUDE_PRODUCT_REVIEW_LINKS_IN_ORDER_EMAIL' => 'Include a link  to product reviews in order e-mail',
 
     'SHOP_SYSTEM_ATTRIBUTESPERCENT'                      => 'Number of equal Attributes for similar Products (%)',
     'SHOP_SYSTEM_DEFAULTIMAGEQUALITY'                    => 'Picture Quality - from 0 (poor Quality, small File Size) to 100 (best Quality, large File Size)',

@@ -204,10 +204,10 @@ $aLang =  [
 'HELP_SHOP_CONFIG_DOWNLOAD_EXPIRATION_TIME'   => 'Specify the time in hours, the download link is valid after the first download. This is the default setting for all products.'.
                                                  'You can change this value for every file of product in Administer Products -> Products -> Downloads.',
 
-'HELP_SHOP_CONFIG_LOADREVIEWS'                  => 'Users can rate and comment products. If this setting is checked, the existing reviews/comments are loaded and shown with the product. ' .
-                                                   'This setting might influence the performance of the shop.',
+'HELP_SHOP_CONFIG_LOADREVIEWS'                  => 'Users can review and rate your products with stars. If this setting is checked, the existing reviews/star ratings are loaded and shown with the product. ' .
+                                                   'This setting might degrade the performance of the shop.',
 
-'HELP_SHOP_CONFIG_SEND_REVIEW_AND_RATINGS_LINK_IN_ORDER_EMAIL' => 'Please double-check that this is compliant with your laws.',
+'HELP_SHOP_CONFIG_INCLUDE_PRODUCT_REVIEW_LINKS_IN_ORDER_EMAIL' => 'Please double-check if this is legally compliant in your country.',
 
 'HELP_SHOP_MALL_MALLMODE'                     => 'Here you can set what is shown as front page of this eShop:' .
                                                  '<ul><li><span class="navipath_or_inputname">Show shop selector</span>: A page where the different eShops can be selected is shown.</li>' .

@@ -207,10 +207,10 @@ $aLang =  [
 
 'HELP_SHOP_CONFIG_PARCELSERVICE'   			  => 'Bitte tragen Sie die Tracking-URL Ihres Versanddienstleisters ein. <i>##ID##</i> ist ein Platzhalter, welcher durch die jeweilige Sendungsnummer ersetzt wird.',
 
-'HELP_SHOP_CONFIG_LOADREVIEWS'                => 'Benutzer können Artikel bewerten und Kommentare zu Artikeln verfassen. Wenn die Einstellung aktiv ist, werden die bereits abgegebenen Kommentare und Bewertungen beim Artikel angezeigt. ' .
-                                                 'Diese Einstellung kann die Performance des Shop beeinflussen.',
+'HELP_SHOP_CONFIG_LOADREVIEWS'                => 'Benutzer können Artikel bewerten und Sterne-Ratings abgeben. Wenn die Einstellung aktiv ist, werden die bereits abgegebenen Bewertungen und Sterne-Ratings beim Artikel angezeigt. ' .
+                                                 'Diese Einstellung kann die Performance des Shops beeinflussen.',
 
-'HELP_SHOP_CONFIG_SEND_REVIEW_AND_RATINGS_LINK_IN_ORDER_EMAIL' => 'Bitte prüfen Sie ob dies in Ihren Lieferländern gesetzeskonform ist',
+'HELP_SHOP_CONFIG_INCLUDE_PRODUCT_REVIEW_LINKS_IN_ORDER_EMAIL' => 'Bitte prüfen Sie, ob dies in Ihren Lieferländern gesetzeskonform ist.',
 
 'HELP_SHOP_PERF_NEWESTARTICLES'               => 'In Ihrem eShop wird eine Liste mit den neusten Artikeln (Frisch eingetroffen!) angezeigt. Hier können Sie einstellen, wie die Liste generiert wird:' .
                                                  '<ul><li><span class="userinput_or_code">ausgeschaltet</span>: Die Liste wird nicht angezeigt.</li>' .

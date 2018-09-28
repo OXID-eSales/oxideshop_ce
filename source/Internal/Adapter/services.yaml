@@ -11,3 +11,6 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\AddUrlParametersLogic:
     class: OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\AddUrlParametersLogic
+
+  OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\AssignAdvancedLogic:
+    class: OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\AssignAdvancedLogic

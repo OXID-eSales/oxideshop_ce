@@ -2,5 +2,6 @@ services:
   OxidEsales\EshopCommunity\Internal\Templating\TemplateEngineBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Templating\TemplateEngineBridge
     arguments:
-        $templateEngine: '@OxidEsales\EshopCommunity\Internal\Smarty\SmartyEngine'
+        #$templateEngine: '@OxidEsales\EshopCommunity\Internal\Smarty\SmartyEngine'
+        $templateEngine: '@OxidEsales\EshopCommunity\Internal\Twig\TwigEngine'
     public: true

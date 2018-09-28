@@ -41,6 +41,7 @@ services:
         - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\SmartyExtension']]
         - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\MailtoExtension']]
         - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\UrlExtension']]
+        - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\AssignAdvancedExtension']]
 
   OxidEsales\EshopCommunity\Internal\Twig\TwigEngine:
     class: OxidEsales\EshopCommunity\Internal\Twig\TwigEngine
@@ -69,3 +70,8 @@ services:
     arguments:
         - '@OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\SeoUrlLogic'
         - '@OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\AddUrlParametersLogic'
+
+  OxidEsales\EshopCommunity\Internal\Twig\Extensions\AssignAdvancedExtension:
+    class: OxidEsales\EshopCommunity\Internal\Twig\Extensions\AssignAdvancedExtension
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\AssignAdvancedLogic'

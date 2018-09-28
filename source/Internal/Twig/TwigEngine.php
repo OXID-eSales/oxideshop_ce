@@ -19,6 +19,7 @@ use Twig\Environment;
  */
 class TwigEngine implements BaseEngineInterface
 {
+
     /**
      * @var \Twig_Environment
      */
@@ -38,12 +39,13 @@ class TwigEngine implements BaseEngineInterface
 
     /**
      * TwigEngine constructor.
+     *
      * @param Environment                 $engine
      * @param TemplateNameParserInterface $parser
      */
     public function __construct(Environment $engine, TemplateNameParserInterface $parser)
     {
-		$this->engine = $engine;
+        $this->engine = $engine;
         $this->parser = $parser;
 
         if ($this->engine->isDebug()) {
@@ -109,7 +111,6 @@ class TwigEngine implements BaseEngineInterface
 
     /**
      * @return array
-    public function getGlobals()
      */
     public function getGlobals()
     {

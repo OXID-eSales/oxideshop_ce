@@ -13,11 +13,12 @@ namespace OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic;
  */
 class AddUrlParametersLogic
 {
+
     /**
      * Add additional parameters to SEO url
      *
-     * @param string $sUrl          Url
-     * @param string $sDynParams    Dynamic URL parameters
+     * @param string $sUrl       Url
+     * @param string $sDynParams Dynamic URL parameters
      *
      * @return string
      */

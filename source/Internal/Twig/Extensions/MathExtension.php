@@ -10,8 +10,11 @@ use Twig\TwigFunction;
  */
 class MathExtension extends AbstractExtension
 {
+
     /**
-     * {@inheritdoc}
+     * Returns a list of functions to add to the existing list.
+     *
+     * @return TwigFunction[]
      */
     public function getFunctions()
     {

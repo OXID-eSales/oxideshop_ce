@@ -18,6 +18,7 @@ use Twig\TwigFunction;
  */
 class UrlExtension extends AbstractExtension
 {
+
     /** @var SeoUrlLogic */
     private $seoUrlLogic;
 
@@ -27,7 +28,7 @@ class UrlExtension extends AbstractExtension
     /**
      * OxidExtension constructor.
      *
-     * @param SeoUrlLogic $seoUrlLogic
+     * @param SeoUrlLogic           $seoUrlLogic
      * @param AddUrlParametersLogic $addUrlParametersLogic
      */
     public function __construct(SeoUrlLogic $seoUrlLogic, AddUrlParametersLogic $addUrlParametersLogic)
@@ -37,7 +38,9 @@ class UrlExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritdoc}
+     * Returns a list of functions to add to the existing list.
+     *
+     * @return TwigFunction[]
      */
     public function getFunctions()
     {
@@ -47,7 +50,9 @@ class UrlExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritdoc}
+     * Returns a list of filters to add to the existing list.
+     *
+     * @return TwigFilter[]
      */
     public function getFilters()
     {

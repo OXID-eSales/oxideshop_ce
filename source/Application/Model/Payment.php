@@ -192,8 +192,6 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function getPaymentValue($dBasePrice)
     {
-        $dRet = 0;
-
         if ($this->oxpayments__oxaddsumtype->value == "%") {
             $dRet = $dBasePrice * $this->oxpayments__oxaddsum->value / 100;
         } else {

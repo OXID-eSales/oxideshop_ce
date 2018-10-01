@@ -387,9 +387,6 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getMenuFiles()
     {
-        $myConfig = $this->getConfig();
-        $myOxUtlis = \OxidEsales\Eshop\Core\Registry::getUtils();
-
         $editionPathSelector = new EditionPathProvider(new EditionRootPathProvider(new EditionSelector()));
         $fullAdminDir = $editionPathSelector->getViewsDirectory() . 'admin' . DIRECTORY_SEPARATOR;
         $menuFile = $fullAdminDir . 'menu.xml';

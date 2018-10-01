@@ -129,9 +129,6 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
             foreach ($_FILES['myfile']['name'] as $key => $value) {
                 $aSource = $_FILES['myfile']['tmp_name'];
                 $sSource = $aSource[$key];
-                $aFiletype = explode("@", $key);
-                $key = $aFiletype[1];
-                $sType = $aFiletype[0];
                 $value = strtolower($value);
                 // add type to name
                 $aFilename = explode(".", $value);
@@ -171,7 +168,6 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      */
     protected function _prepareSQL($sSQL, $iSQLlen)
     {
-        $sChar = "";
         $sStrStart = "";
         $blString = false;
         $oStr = getStr();

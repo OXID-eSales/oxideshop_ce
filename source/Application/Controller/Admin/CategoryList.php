@@ -60,8 +60,6 @@ class CategoryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
-
         parent::render();
 
         $oLang = \OxidEsales\Eshop\Core\Registry::getLang();

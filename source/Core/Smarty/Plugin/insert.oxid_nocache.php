@@ -19,12 +19,8 @@
  * @return string
  */
 function smarty_insert_oxid_nocache($params, &$smarty)
-{   $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-
+{
     $smarty->caching = false;
-
-   /* if( isset( $smarty->oxobject->oProduct))
-        $smarty->assign_by_ref( "product", $smarty->oxobject->oProduct);*/
 
     // #1184M - specialchar search
     $sSearchParamForHTML = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("searchparam");

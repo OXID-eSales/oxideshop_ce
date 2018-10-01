@@ -148,8 +148,6 @@ class InviteController extends \OxidEsales\Eshop\Application\Controller\Frontend
             }
         }
 
-        $oUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
-
         //validating entered emails
         foreach ($aParams["rec_email"] as $sRecipientEmail) {
             if (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($sRecipientEmail)) {

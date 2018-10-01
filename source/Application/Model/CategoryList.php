@@ -629,7 +629,6 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
         }
 
         // Get sub categories of root categories
-        $rs = $database->execute("update oxcategories set oxrootid = " . $database->quote($thisRoot) . " where oxparentid = " . $database->quote($oxRootId));
         $rs = $database->select("select oxid, oxparentid from oxcategories where oxparentid = " . $database->quote($oxRootId) . " order by oxsort", false);
         // If there are sub categories
         if ($rs != false && $rs->count() > 0) {

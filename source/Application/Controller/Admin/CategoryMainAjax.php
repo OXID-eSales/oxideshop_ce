@@ -64,8 +64,6 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
         $sSynchOxid = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $sShopID = $myConfig->getShopId();
-
         // category selected or not ?
         if (!$sOxid && $sSynchOxid) {
             // dodger performance
@@ -138,9 +136,6 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
                 $sO2CView = $this->_getViewName('oxobject2category');
 
                 $oNew = oxNew(\OxidEsales\Eshop\Application\Model\Object2Category::class);
-                $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
-                $oActShop = $myConfig->getActiveShop();
-
                 $sProdIds = "";
                 foreach ($aArticles as $sAdd) {
                     // check, if it's already in, then don't add it again

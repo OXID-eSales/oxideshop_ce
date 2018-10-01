@@ -612,12 +612,10 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
             $sUri = $this->_prepareUri(self::$_sPrefix, $iLang);
         }
 
-        $sAdd = '';
+        $sAdd = '_' . self::$_sPrefix;
         if ('/' != self::$_sSeparator) {
             $sAdd = self::$_sSeparator . self::$_sPrefix;
             $sUri = trim($sUri, self::$_sSeparator);
-        } else {
-            $sAdd = '_' . self::$_sPrefix;
         }
 
         // binding the ending back

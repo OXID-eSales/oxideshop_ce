@@ -146,8 +146,6 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function init()
     {
-        $myConfig = $this->getConfig();
-
         // authorization check
         if (!$this->_authorize()) {
             \OxidEsales\Eshop\Core\Registry::getUtils()->redirect('index.php?cl=login', true, 302);
@@ -175,7 +173,6 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function addGlobalParams($oShop = null)
     {
-        $mySession = $this->getSession();
         $myConfig = $this->getConfig();
         $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
 
@@ -443,8 +440,6 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected function _getCountryByCode($sCountryCode)
     {
-        $myConfig = $this->getConfig();
-
         //default country
         $sCountry = 'international';
 

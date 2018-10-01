@@ -139,8 +139,6 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
             $aOrdArt = [];
         }
 
-        $blEnable = false;
-
         if (is_array($aAddArticle)) {
             // storing newly ordered article seq.
             foreach ($aAddArticle as $sAdd) {

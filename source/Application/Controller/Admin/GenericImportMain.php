@@ -183,7 +183,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
     {
         $blCsvContainsHeader = $this->getConfig()->getRequestParameter('blContainsHeader');
         \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('blCsvContainsHeader', $blCsvContainsHeader);
-        $sCsvPath = $this->_getUploadedCsvFilePath();
+        $this->_getUploadedCsvFilePath();
 
         $aFirstRow = $this->_getCsvFirstRow();
 

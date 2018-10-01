@@ -57,8 +57,6 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
-
         parent::render();
 
         $sOxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
@@ -415,7 +413,6 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      */
     protected function _checkLangExists($sAbbr)
     {
-        $myConfig = $this->getConfig();
         $aAbbrs = array_keys($this->_aLangData['lang']);
 
         return in_array($sAbbr, $aAbbrs);

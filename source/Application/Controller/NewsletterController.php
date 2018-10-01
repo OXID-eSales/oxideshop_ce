@@ -111,8 +111,6 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
         $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $oUser->oxuser__oxusername = new \OxidEsales\Eshop\Core\Field($aParams['oxuser__oxusername'], \OxidEsales\Eshop\Core\Field::T_RAW);
 
-        $blUserLoaded = false;
-
         // if such user does not exist
         if (!$oUser->exists()) {
             // and subscribe is off - error, on - create

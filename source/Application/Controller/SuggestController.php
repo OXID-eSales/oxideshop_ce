@@ -103,7 +103,6 @@ class SuggestController extends \OxidEsales\Eshop\Application\Controller\Fronten
             }
         }
 
-        $oUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
         if (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams["rec_email"]) || !oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams["send_email"])) {
             $oUtilsView->addErrorToDisplay('SUGGEST_INVALIDMAIL');
 

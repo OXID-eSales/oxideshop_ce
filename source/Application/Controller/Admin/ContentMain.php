@@ -93,8 +93,6 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     {
         parent::save();
 
-        $myConfig = $this->getConfig();
-
         $soxId = $this->getEditObjectId();
         $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
 
@@ -159,8 +157,6 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     public function saveinnlang()
     {
         parent::save();
-
-        $myConfig = $this->getConfig();
 
         $soxId = $this->getEditObjectId();
         $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");

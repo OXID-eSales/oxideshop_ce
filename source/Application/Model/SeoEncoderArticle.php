@@ -201,12 +201,10 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
         //load details link from DB
         if ($blRegenerate || !($sSeoUri = $this->_loadFromDb('oxarticle', $oArticle->getId(), $iLang, null, $sActCatId, true))) {
             if ($oActCat) {
-                $blInCat = false;
-                if ($oActCat->isPriceCategory()) {
-                    $blInCat = $oArticle->inPriceCategory($sActCatId);
-                } else {
-                    $blInCat = $oArticle->inCategory($sActCatId);
-                }
+                $blInCat = $oActCat->isPriceCategory()
+                    ? $oArticle->inPriceCategory($sActCatId)
+                    : $oArticle->inCategory($sActCatId);
+
                 if ($blInCat) {
                     $sSeoUri = $this->_createArticleCategoryUri($oArticle, $oActCat, $iLang);
                 }
@@ -331,8 +329,6 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      */
     protected function _prepareArticleTitle($oArticle)
     {
-        $sTitle = '';
-
         // create title part for uri
         if (!($sTitle = $oArticle->oxarticles__oxtitle->value)) {
             // taking parent article title

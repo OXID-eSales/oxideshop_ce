@@ -116,7 +116,6 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         if ($oObject) {
             $oDescField = $oObject->getLongDescription();
             $sEditObjectValue = $this->_processEditValue($oDescField->getRawValue());
-            $oDescField = new \OxidEsales\Eshop\Core\Field($sEditObjectValue, \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
         return $sEditObjectValue;

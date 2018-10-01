@@ -78,7 +78,7 @@ class oxArticle_Extended extends oxArticle
         }
     }
 
-    function getPrice()
+    function getPrice($dAmount = 1)
     {
         if ($this->oPriceCache) {
             return $this->oPriceCache;

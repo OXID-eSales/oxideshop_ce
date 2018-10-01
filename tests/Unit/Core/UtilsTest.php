@@ -1198,7 +1198,7 @@ class UtilsTest extends \OxidTestCase
         oxTestModules::addFunction('oxUBase', 'render', '{throw new Exception();}');
 
         oxRegistry::getUtils()->handlePageNotFoundError('url aa');
-        $this->assertEquals(0, count(\OxidEsales\Eshop\Core\Registry::getUtilsView()->getTemplateOutputCall));
+        $this->assertNull(\OxidEsales\Eshop\Core\Registry::getUtilsView()->getTemplateOutputCall);
         $this->assertEquals(1, count(oxRegistry::getUtils()->showMessageAndExitCall));
         $this->assertEquals('Page not found.', oxRegistry::getUtils()->showMessageAndExitCall[0][0]);
         $expectedHeaders = array(

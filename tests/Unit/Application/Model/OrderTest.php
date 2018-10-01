@@ -35,7 +35,7 @@ class modoxdeliverylist_oxorder extends oxdeliverylist
         if ($this->_blCollectFittingDeliveriesSets) {
             return $this->aTestDeliveriesSetsRetValue;
         } else {
-            return null;
+            return [];
         }
     }
 }

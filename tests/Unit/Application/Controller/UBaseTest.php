@@ -1669,9 +1669,9 @@ class UBaseTest extends \OxidTestCase
         oxTestModules::addModuleObject('oxActionList', $oList);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("getPromoFinishedList", "getPromoCurrentList", "getPromoFutureList"));
-        $oView->expects($this->once())->method('getPromoFinishedList')->will($this->returnValue(1));
-        $oView->expects($this->once())->method('getPromoCurrentList')->will($this->returnValue(1));
-        $oView->expects($this->once())->method('getPromoFutureList')->will($this->returnValue(1));
+        $oView->expects($this->once())->method('getPromoFinishedList')->will($this->returnValue([1]));
+        $oView->expects($this->once())->method('getPromoCurrentList')->will($this->returnValue([1]));
+        $oView->expects($this->once())->method('getPromoFutureList')->will($this->returnValue([1]));
 
         $this->assertTrue($oView->getShowPromotionList());
     }

@@ -583,7 +583,7 @@ class BasketConstruct
     public function createShop($data)
     {
         $activeShopId = 1;
-        $shopCnt = count($data);
+        $shopCnt = $this->getShopCount($data);
         for ($i = 0; $i < $shopCnt; $i++) {
             $parameters = array();
             foreach ($data[$i] as $key => $value) {
@@ -618,5 +618,18 @@ class BasketConstruct
         if ($shopId) {
             oxRegistry::getConfig()->setShopId($shopId);
         }
+    }
+
+    /**
+     * @param mixed $data
+     *
+     * @return int
+     */
+    private function getShopCount($data)
+    {
+        if (is_array($data)) {
+            return count($data);
+        }
+        return 1;
     }
 }

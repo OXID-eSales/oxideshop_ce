@@ -1680,7 +1680,7 @@ EOT;
 
         $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('selectString'));
         $oTest->expects($this->never())->method("selectString");
-        $oTest->loadIds(null);
+        $oTest->loadIds([]);
     }
 
     /**
@@ -1982,7 +1982,7 @@ EOT;
     public function testLoadOrderArticlesNoOrders()
     {
         $oTest = oxNew('oxArticleList');
-        $oTest->loadOrderArticles(null);
+        $oTest->loadOrderArticles([]);
         $this->assertEquals(0, $oTest->count());
     }
 

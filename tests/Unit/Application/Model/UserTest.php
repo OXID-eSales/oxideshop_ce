@@ -1802,7 +1802,7 @@ class UserTest extends \OxidTestCase
         $oUser = $this->createUser();
 
         $oBasket = $oUser->getBasket('oxtest');
-        $this->assertEquals(1, count($oBasket->getItemCount(false)));
+        $this->assertEquals(1, $oBasket->getItemCount(false));
     }
 
     // 2. fetching basket for no user - should return 0
@@ -1811,7 +1811,7 @@ class UserTest extends \OxidTestCase
         $oUser = oxNew('oxUser');
 
         $oBasket = $oUser->getBasket('oxtest2');
-        $this->assertEquals(0, count($oBasket->oArticles));
+        $this->assertEquals(0, $oBasket->getItemCount(false));
     }
 
 

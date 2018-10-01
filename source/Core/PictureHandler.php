@@ -206,12 +206,13 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
      */
     public function getImageSize($aImgSizes, $sIndex = null)
     {
+        $aSize = [];
         if (isset($sIndex) && is_array($aImgSizes) && isset($aImgSizes[$sIndex])) {
             $aSize = explode('*', $aImgSizes[$sIndex]);
         } elseif (is_string($aImgSizes)) {
             $aSize = explode('*', $aImgSizes);
         }
-        if (2 == count($aSize)) {
+        if (is_array($aSize) && 2 == count($aSize)) {
             $x = (int) $aSize[0];
             $y = (int) $aSize[1];
             if ($x && $y) {

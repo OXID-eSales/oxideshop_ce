@@ -77,7 +77,7 @@ class AttributelistTest extends \OxidTestCase
     public function testLoadAttributesByIdsNoIds()
     {
         $oAttrList = oxNew('oxAttributelist');
-        $aAttributes = $oAttrList->loadAttributesByIds(null);
+        $aAttributes = $oAttrList->loadAttributesByIds([]);
 
         $this->assertNull($aAttributes);
     }

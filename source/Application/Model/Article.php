@@ -10,7 +10,6 @@ use Exception;
 use oxDb;
 use oxField;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Core\Exception\ObjectException;
 use oxList;
 use oxPrice;
 use oxRegistry;

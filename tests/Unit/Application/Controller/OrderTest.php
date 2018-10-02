@@ -1050,7 +1050,7 @@ class OrderTest extends \OxidTestCase
 
         $this->assertEquals($oUser->getEncodedDeliveryAddress(), $oOrder->getDeliveryAddressMD5());
 
-        $this->getSession()->setVariable('deladrid', _testDelAddrId);
+        $this->getSession()->setVariable('deladrid', '_testDelAddrId');
 
         $this->assertEquals($oUser->getEncodedDeliveryAddress() . $oDelAddress->getEncodedDeliveryAddress(), $oOrder->getDeliveryAddressMD5());
 

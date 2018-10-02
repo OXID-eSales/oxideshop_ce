@@ -85,6 +85,7 @@ class UserListTest extends \OxidTestCase
         try {
             $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserList::class, array("_allowAdminEdit", "buildWhere"));
             $oView->expects($this->any())->method('_allowAdminEdit')->will($this->returnValue(true));
+            $oView->expects($this->any())->method('buildWhere')->will($this->returnValue([]));
             $oView->getItemList();
             $oView->deleteEntry();
 

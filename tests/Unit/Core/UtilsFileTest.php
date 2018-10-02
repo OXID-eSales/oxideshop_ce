@@ -430,7 +430,7 @@ class UtilsFileTest extends \OxidTestCase
         if (!is_dir($sSourceDir)) {
             if (mkdir($sSourceDir)) {
                 //create textfile
-                $hHandle = fopen($sSourceFilePath, w);
+                $hHandle = fopen($sSourceFilePath, 'w');
                 if ($hHandle) {
                     if (!fclose($hHandle)) {
                         $this->fail("could not close file: $sSourceFilePath ");

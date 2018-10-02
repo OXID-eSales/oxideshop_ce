@@ -51,7 +51,8 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
                 $iCount = 0;
                 foreach ($this->_aConfParams as $sType => $sParam) {
                     $this->_aViewData[$sParam] = $aDbVariables['vars'][$sType];
-                    $iCount += count($aDbVariables['vars'][$sType]);
+                    $variableCount = (is_array($aDbVariables['vars'][$sType])) ? count($aDbVariables['vars'][$sType]) : 0;
+                    $iCount += $variableCount;
                 }
             } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
                 \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);

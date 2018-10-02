@@ -411,7 +411,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      */
     protected function _prepareWhereQuery($whereQuery, $fullQuery)
     {
-        if (count($whereQuery)) {
+        if (is_array($whereQuery) && count($whereQuery)) {
             $myUtilsString = \OxidEsales\Eshop\Core\Registry::getUtilsString();
             foreach ($whereQuery as $identifierName => $fieldValue) {
                 $fieldValue = trim($fieldValue);

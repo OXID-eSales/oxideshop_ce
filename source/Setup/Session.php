@@ -44,7 +44,9 @@ class Session extends Core
      */
     public function __construct()
     {
-        ini_set('session.use_cookies', 0);
+        if (headers_sent()) {
+            ini_set('session.use_cookies', 0);
+        }
 
         // initialize session
         $this->_startSession();

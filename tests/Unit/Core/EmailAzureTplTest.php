@@ -952,7 +952,7 @@ class EmailAzureTplTest extends \OxidTestCase
 
         if ($aFields['sRecipient']) {
             $aRecipient = $oEmail->getRecipient();
-            $this->assertEquals($aFields['sRecipient'], $aRecipient[0][0], 'Incorect mail recipient');
+            $this->assertEquals(strtolower($aFields['sRecipient']), strtolower($aRecipient[0][0]), 'Incorect mail recipient');
         }
 
         if ($aFields['sRecipientName']) {

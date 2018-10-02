@@ -1571,7 +1571,7 @@ class Email extends \PHPMailer
     {
         try {
             if (function_exists('idn_to_ascii')) {
-                $address = idn_to_ascii($address);
+                $address = idn_to_ascii($address, 0, INTL_IDNA_VARIANT_UTS46);
             }
 
             parent::AddAddress($address, $name);

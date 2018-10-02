@@ -4880,9 +4880,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $dPrice = $this->oxarticles__oxprice->value;
         } else {
             if ($this->getConfig()->getConfigParam('blOverrideZeroABCPrices')) {
-                $dPrice = ($this->{oxarticles__oxprice . $sPriceSuffix}->value != 0) ? $this->{oxarticles__oxprice . $sPriceSuffix}->value : $this->oxarticles__oxprice->value;
+                $dPrice = ($this->{'oxarticles__oxprice' . $sPriceSuffix}->value != 0) ? $this->{'oxarticles__oxprice' . $sPriceSuffix}->value : $this->oxarticles__oxprice->value;
             } else {
-                $dPrice = $this->{oxarticles__oxprice . $sPriceSuffix}->value;
+                $dPrice = $this->{'oxarticles__oxprice' . $sPriceSuffix}->value;
             }
         }
 

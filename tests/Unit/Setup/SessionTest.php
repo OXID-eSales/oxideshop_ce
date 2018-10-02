@@ -15,7 +15,9 @@ class SessionTest extends \OxidTestCase
 
     public function setUp()
     {
-        session_cache_limiter(false);
+        if (headers_sent()) {
+            session_cache_limiter(false);
+        }
 
         return parent::setUp();
     }

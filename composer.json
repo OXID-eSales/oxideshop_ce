@@ -20,7 +20,7 @@
         "symfony/dependency-injection": "^3.4"
     },
     "require-dev": {
-        "oxid-esales/flow-theme": "^v3.0.2",
+        "oxid-esales/flow-theme": "dev-support-php7",
         "oxid-esales/oxideshop-doctrine-migration-wrapper": "^v2.1.2",
         "oxid-esales/oxideshop-db-views-generator": "^v1.2.0",
         "oxid-esales/oxideshop-demodata-installer": "^v1.1.2",
@@ -31,7 +31,7 @@
         "oxid-esales/coding-standards-wrapper": "^v1.0.0",
         "incenteev/composer-parameter-handler": "~v2.0",
         "oxid-esales/oxideshop-ide-helper": "^3.0",
-        "oxid-esales/azure-theme": "^v1.4.1"
+        "oxid-esales/azure-theme": "dev-support-php7"
     },
     "autoload": {
         "psr-4": {

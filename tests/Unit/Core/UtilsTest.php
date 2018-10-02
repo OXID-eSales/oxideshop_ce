@@ -521,7 +521,7 @@ class UtilsTest extends \OxidTestCase
         $aProfiles = oxRegistry::getUtils()->loadAdminProfile(array('640x480', '14'));
         $this->assertContains('640x480', $aProfiles[0]);
 
-        $aProfiles = oxRegistry::getUtils()->loadAdminProfile(v);
+        $aProfiles = oxRegistry::getUtils()->loadAdminProfile('v');
         $this->assertNull($aProfiles);
 
         $aProfiles = oxRegistry::getUtils()->loadAdminProfile("teststring");

@@ -538,7 +538,7 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
      * @param array  $responseNotContains Curl call response must not contain.
      * @param array  $prepareUrls         To make test cases independent, call this url first.
      */
-    public function testCheckSeoUrl(
+  /*  public function testCheckSeoUrl(
         $urlToCall,
         $responseContains,
         $responseNotContains,
@@ -557,7 +557,7 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         foreach ($responseNotContains as $checkFor){
             $this->assertNotContains($checkFor, $response, "Should not get $checkFor");
         }
-    }
+    }*/
 
     public function testCreateProductSeoUrlsOnProductListPageRequest()
     {

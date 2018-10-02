@@ -31,7 +31,7 @@ class TemplateBlockExtension
     /**
      * @var int
      */
-    private $priority = 0;
+    private $position = 0;
 
     /**
      * @var string
@@ -100,18 +100,18 @@ class TemplateBlockExtension
     /**
      * @return int
      */
-    public function getPriority(): int
+    public function getPosition(): int
     {
-        return $this->priority;
+        return $this->position;
     }
 
     /**
-     * @param int $priority
+     * @param int $position
      * @return TemplateBlockExtension
      */
-    public function setPriority(int $priority): TemplateBlockExtension
+    public function setPosition(int $position): TemplateBlockExtension
     {
-        $this->priority = $priority;
+        $this->position = $position;
         return $this;
     }
 

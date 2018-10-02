@@ -62,7 +62,7 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
                 'name'          => $templateBlockExtension->getName(),
                 'filePath'      => $templateBlockExtension->getFilePath(),
                 'templatePath'  => $templateBlockExtension->getExtendedBlockTemplatePath(),
-                'priority'      => $templateBlockExtension->getPriority(),
+                'priority'      => $templateBlockExtension->getPosition(),
             ]);
 
         $queryBuilder->execute();
@@ -137,7 +137,7 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
                 ->setExtendedBlockTemplatePath(
                     $blockData['OXTEMPLATE']
                 )
-                ->setPriority(
+                ->setPosition(
                     (int) $blockData['OXPOS']
                 );
 

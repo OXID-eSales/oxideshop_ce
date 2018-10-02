@@ -27,7 +27,7 @@ class TemplateBlockDaoTest extends TestCase
             ->setName('testTemplateBlock')
             ->setFilePath('blockFilePath')
             ->setExtendedBlockTemplatePath('shopTemplatePath')
-            ->setPriority(1)
+            ->setPosition(1)
             ->setModuleId('testModuleId')
             ->setShopId(1);
 
@@ -47,7 +47,7 @@ class TemplateBlockDaoTest extends TestCase
             ->setName('testTemplateBlock')
             ->setFilePath('blockFilePath')
             ->setExtendedBlockTemplatePath('shopTemplatePath')
-            ->setPriority(1)
+            ->setPosition(1)
             ->setModuleId('testModuleId')
             ->setShopId(1);
 
@@ -56,7 +56,7 @@ class TemplateBlockDaoTest extends TestCase
             ->setName('testTemplateBlock2')
             ->setFilePath('blockFilePath')
             ->setExtendedBlockTemplatePath('shopTemplatePath')
-            ->setPriority(1)
+            ->setPosition(1)
             ->setModuleId('testModuleId')
             ->setShopId(1);
 

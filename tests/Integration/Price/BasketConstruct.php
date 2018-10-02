@@ -630,6 +630,6 @@ class BasketConstruct
         if (is_array($data)) {
             return count($data);
         }
-        return 1;
+        return 0;
     }
 }

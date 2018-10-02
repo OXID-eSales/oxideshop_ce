@@ -836,7 +836,7 @@ class UtilsTest extends \OxidTestCase
         $this->assertEquals(true, oxRegistry::getUtils()->checkAccessRights());
 
         //  self::$test_sql_used = null;
-        modDB::getInstance()->addClassFunction('getOne', create_function('$sql', 'return 1;'));
+        modDB::getInstance()->addClassFunction('getOne', function ($sql) {return 1;});
 
         $mySession->setVariable("auth", "oxdefaultadmin");
         $this->assertEquals(true, oxRegistry::getUtils()->checkAccessRights());
@@ -844,7 +844,7 @@ class UtilsTest extends \OxidTestCase
 
 
         //self::$test_sql_used = null;
-        modDB::getInstance()->addClassFunction('getOne', create_function('$sql', 'return 0;'));
+        modDB::getInstance()->addClassFunction('getOne', function ($sql) {return 0;});
 
         $this->assertEquals(false, oxRegistry::getUtils()->checkAccessRights());
 

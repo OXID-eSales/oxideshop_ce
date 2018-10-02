@@ -57,7 +57,7 @@ class ShopControlTest extends \OxidTestCase
         $this->setRequestParameter('fnc', "testFnc");
         $this->getSession()->setVariable('actshop', null);
         oxTestModules::addFunction('oxUtils', 'redirect', '{ throw new Exception("Error in testStart()"); }');
-        modDB::getInstance()->addClassFunction('getOne', create_function('$x', 'return 2;'));
+        modDB::getInstance()->addClassFunction('getOne', function($x) { return 2;});
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getShopHomeUrl"));
         //$oConfig->expects( $this->never() )->method( 'getShopId' )->will( $this->returnValue( 999 ) );

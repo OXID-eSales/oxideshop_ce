@@ -52,7 +52,7 @@ class ShopLicenseTest extends \OxidTestCase
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopLicense::class, array("getConfig"), array(), '', false);
         $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
-        $this->expectException(oxSystemComponentException);
+        $this->expectException(SystemComponentException::class);
         $oView->render();
     }
 

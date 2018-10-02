@@ -1,13 +1,13 @@
 <?php
 /**
- * Copyright © OXID eSales AG. All rights reserved.
+ * Copyright ï¿½ OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 //THIS FILE IS IN LATIN1 AND NOT IN UTF
 //bellow is one O uml char
-//ö
+//ï¿½
 
 
 //Warning: StrRegular functions should not be ever called with utf string params,
@@ -16,16 +16,16 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 class StrRegularTest extends \OxidTestCase
 {
     /** @var string */
-    protected $_sStrNeedle = "ö";
+    protected $_sStrNeedle = "ï¿½";
 
     /** @var string */
-    protected $_sStrHaystack = "Design Bau - auf zu neuen Höhen. Hö hö.";
+    protected $_sStrHaystack = "Design Bau - auf zu neuen Hï¿½hen. Hï¿½ hï¿½.";
 
     /** @var string */
-    protected $_sStrUpperCase = "HÖ HÖ";
+    protected $_sStrUpperCase = "Hï¿½ Hï¿½";
 
     /** @var string */
-    protected $_sStrHtmlEntities = "HÖ HÖ <b>bold</b>&amp;";
+    protected $_sStrHtmlEntities = "Hï¿½ Hï¿½ <b>bold</b>&amp;";
 
     /** @var oxStrRegular */
     protected $_oSubj = null;
@@ -56,7 +56,7 @@ class StrRegularTest extends \OxidTestCase
     public function testSubstr2Params()
     {
         $this->assertEquals(
-            $this->_2Utf(" Hö hö."),
+            $this->_2Utf(" Hï¿½ hï¿½."),
             $this->_oSubj->substr($this->_2Utf($this->_sStrHaystack), 33)
         );
     }
@@ -64,7 +64,7 @@ class StrRegularTest extends \OxidTestCase
     public function testSubstr3Params()
     {
         $this->assertEquals(
-            $this->_2Utf("Design Bau - auf zu neuen Höh"),
+            $this->_2Utf("Design Bau - auf zu neuen Hï¿½h"),
             $this->_oSubj->substr($this->_2Utf($this->_sStrHaystack), 0, 30)
         );
     }
@@ -73,7 +73,7 @@ class StrRegularTest extends \OxidTestCase
     {
         $this->assertEquals(
             26,
-            $this->_oSubj->strpos($this->_sStrHaystack, "Höhen")
+            $this->_oSubj->strpos($this->_sStrHaystack, "Hï¿½hen")
         );
     }
 
@@ -93,22 +93,22 @@ class StrRegularTest extends \OxidTestCase
     {
         $this->assertEquals(
             33,
-            $this->_oSubj->strpos($this->_sStrHaystack, "Hö", 27)
+            $this->_oSubj->strpos($this->_sStrHaystack, "Hï¿½", 27)
         );
     }
 
     public function testStrstr()
     {
         $this->assertEquals(
-            $this->_2Utf("Höhen. Hö hö."),
-            $this->_oSubj->strstr($this->_2Utf($this->_sStrHaystack), $this->_2Utf("Hö"))
+            $this->_2Utf("Hï¿½hen. Hï¿½ hï¿½."),
+            $this->_oSubj->strstr($this->_2Utf($this->_sStrHaystack), $this->_2Utf("Hï¿½"))
         );
     }
 
     public function testStrtolower()
     {
         $this->assertEquals(
-            "hÖ hÖ",
+            "hï¿½ hï¿½",
             $this->_oSubj->strtolower($this->_sStrUpperCase)
         );
     }
@@ -116,15 +116,15 @@ class StrRegularTest extends \OxidTestCase
     public function testStrtoupper()
     {
         $this->assertEquals(
-            "Hö Hö",
-            $this->_oSubj->strtoupper("hö hö")
+            "Hï¿½ Hï¿½",
+            $this->_oSubj->strtoupper("hï¿½ hï¿½")
         );
     }
 
     public function testHtmlspecialchars()
     {
         $this->assertEquals(
-            "HÖ HÖ &lt;b&gt;bold&lt;/b&gt;&amp;amp;",
+            "Hï¿½ Hï¿½ &lt;b&gt;bold&lt;/b&gt;&amp;amp;",
             $this->_oSubj->htmlspecialchars($this->_sStrHtmlEntities)
         );
     }
@@ -148,7 +148,7 @@ class StrRegularTest extends \OxidTestCase
     public function testPregSplit()
     {
         $this->assertEquals(
-            array("HÖ", "HÖ"),
+            array("Hï¿½", "Hï¿½"),
             $this->_oSubj->preg_split('/ /', $this->_sStrUpperCase)
         );
     }
@@ -156,7 +156,7 @@ class StrRegularTest extends \OxidTestCase
     public function testPregReplace()
     {
         $this->assertEquals(
-            "HÖ_HÖ",
+            "Hï¿½_Hï¿½",
             $this->_oSubj->preg_replace('/ /', '_', $this->_sStrUpperCase)
         );
     }
@@ -164,25 +164,25 @@ class StrRegularTest extends \OxidTestCase
     public function testPregReplaceArray()
     {
         $this->assertEquals(
-            "HÖ_HÖ",
+            "Hï¿½_Hï¿½",
             $this->_oSubj->preg_replace(array('/ /', '|//+|'), '_', $this->_sStrUpperCase)
         );
     }
 
     public function testPregReplaceCallback()
     {
-        $callBack = create_function('$matches', 'return "_";');
+        $callBack = function ($matches) { return "_";};
         $this->assertEquals(
-            "HÖ_HÖ",
+            "Hï¿½_Hï¿½",
             $this->_oSubj->preg_replace_callback('/ /', $callBack, $this->_sStrUpperCase)
         );
     }
 
     public function testPregReplaceCallbackArray()
     {
-        $callBack = create_function('$matches', 'return "_";');
+        $callBack = function ($matches) { return "_";};
         $this->assertEquals(
-            $this->_2Utf("HÖ_HÖ"),
+            $this->_2Utf("Hï¿½_Hï¿½"),
             $this->_oSubj->preg_replace_callback(array('/ /', '|//+|'), $callBack, $this->_2Utf($this->_sStrUpperCase))
         );
     }
@@ -201,38 +201,38 @@ class StrRegularTest extends \OxidTestCase
     public function testUcfirst()
     {
         // with umlaut's doesn't work
-        $this->assertEquals('öl', $this->_oSubj->ucfirst('öl'));
+        $this->assertEquals('ï¿½l', $this->_oSubj->ucfirst('ï¿½l'));
     }
 
     public function testWordwrap()
     {
         $this->assertEquals(
-            "HÖ\nHÖ",
+            "Hï¿½\nHï¿½",
             $this->_oSubj->wordwrap($this->_sStrUpperCase, 2)
         );
         $this->assertEquals(
-            "HÖ\na\nHÖ\na",
-            $this->_oSubj->wordwrap("HÖa HÖa", 2, "\n", true)
+            "Hï¿½\na\nHï¿½\na",
+            $this->_oSubj->wordwrap("Hï¿½a Hï¿½a", 2, "\n", true)
         );
         $this->assertEquals(
-            "HÖa\na\nHÖa\na",
-            $this->_oSubj->wordwrap("HÖaa HÖaa", 3, "\n", true)
+            "Hï¿½a\na\nHï¿½a\na",
+            $this->_oSubj->wordwrap("Hï¿½aa Hï¿½aa", 3, "\n", true)
         );
         $this->assertEquals(
-            "HÖa\nHÖa",
-            $this->_oSubj->wordwrap("HÖa HÖa", 2, "\n")
+            "Hï¿½a\nHï¿½a",
+            $this->_oSubj->wordwrap("Hï¿½a Hï¿½a", 2, "\n")
         );
     }
 
     public function testRecodeEntities()
     {
-        $this->assertEquals(' &auml; &ouml; &uuml; &Auml; &Ouml; &Uuml; &szlig;', $this->_oSubj->recodeEntities(' ä ö ü Ä Ö Ü ß', true));
-        $this->assertEquals(' ä ö ü Ä Ö Ü ß &amp;', $this->_oSubj->recodeEntities(' &auml; &ouml; &uuml; &Auml; &Ouml; &Uuml; &szlig; &', false, array('&amp;'), array('&')));
+        $this->assertEquals(' &auml; &ouml; &uuml; &Auml; &Ouml; &Uuml; &szlig;', $this->_oSubj->recodeEntities(' ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½', true));
+        $this->assertEquals(' ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ &amp;', $this->_oSubj->recodeEntities(' &auml; &ouml; &uuml; &Auml; &Ouml; &Uuml; &szlig; &', false, array('&amp;'), array('&')));
     }
 
     public function testHasSpecialChars()
     {
-        $this->assertEquals(1, $this->_oSubj->hasSpecialChars(' ä ö ü Ä Ö Ü ß'));
+        $this->assertEquals(1, $this->_oSubj->hasSpecialChars(' ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½'));
         $this->assertEquals(0, $this->_oSubj->hasSpecialChars('aaaa'));
     }
 

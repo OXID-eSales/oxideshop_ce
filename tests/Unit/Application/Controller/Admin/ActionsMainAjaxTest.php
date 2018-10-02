@@ -298,7 +298,7 @@ class ActionsMainAjaxTest extends \OxidTestCase
      */
     public function testSetSorting()
     {
-        $aData = array('startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from " . $this->getArticleViewTable() . " left join oxactions2article on " . $this->getArticleViewTable() . ".oxid=oxactions2article.oxartid  where oxactions2article.oxactionid = '_testSetSorting' and oxactions2article.oxshopid = '" . $this->getShopIdTest() . "' ", 'records' => array(), 'totalRecords' => 0);
+        $aData = array('startIndex' => 0, 'sort' => '_0', 'dir' => 'asc', 'countsql' => "select count( * )  from " . $this->getArticleViewTable() . " left join oxactions2article on " . $this->getArticleViewTable() . ".oxid=oxactions2article.oxartid  where oxactions2article.oxactionid = '_testSetSorting' and oxactions2article.oxshopid = '" . $this->getShopIdTest() . "' ", 'records' => array(), 'totalRecords' => 0);
 
         $this->getConfig()->setConfigParam("iDebug", 1);
         $sOxid = '_testSetSorting';
@@ -318,7 +318,7 @@ class ActionsMainAjaxTest extends \OxidTestCase
     {
         $sOxid = '_testActionAddAct';
         $this->setRequestParameter("oxid", $sOxid);
-        $aData = array('startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from " . $this->getArticleViewTable() . " left join oxactions2article on " . $this->getArticleViewTable() . ".oxid=oxactions2article.oxartid  where oxactions2article.oxactionid = '_testSetSorting' and oxactions2article.oxshopid = '" . $this->getShopIdTest() . "' ", 'records' => array(), 'totalRecords' => 0);
+        $aData = array('startIndex' => 0, 'sort' => '_0', 'dir' => 'asc', 'countsql' => "select count( * )  from " . $this->getArticleViewTable() . " left join oxactions2article on " . $this->getArticleViewTable() . ".oxid=oxactions2article.oxartid  where oxactions2article.oxactionid = '_testSetSorting' and oxactions2article.oxshopid = '" . $this->getShopIdTest() . "' ", 'records' => array(), 'totalRecords' => 0);
 
         $sOxid = '_testSetSorting';
         $this->setRequestParameter("oxid", $sOxid);

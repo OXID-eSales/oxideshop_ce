@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - New settings:
  `includeProductReviewLinksInEmail` defines, if a link to the product review is included in order confirmation email
+- Language constants `source/Application/views/admin/[de,en]/lang.php`:
+  `SHOP_CONFIG_INCLUDE_PRODUCT_REVIEW_LINKS_IN_ORDER_EMAIL` 
 
 ### Deprecated
 - `\OxidEsales\EshopCommunity\Core\Base::setConfig`

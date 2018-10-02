@@ -14,6 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ModuleCon
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Configuration\Module\Service\ModuleActivationServiceInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
 /**

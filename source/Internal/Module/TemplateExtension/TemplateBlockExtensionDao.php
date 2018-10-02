@@ -49,6 +49,7 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
                 'oxid'          => ':id',
                 'oxshopid'      => ':shopId',
                 'oxmodule'      => ':moduleId',
+                'oxtheme'       => ':themeId',
                 'oxblockname'   => ':name',
                 'oxfile'        => ':filePath',
                 'oxtemplate'    => ':templatePath',
@@ -59,6 +60,7 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
                 'id'            => $this->shopAdapter->generateUniqueId(),
                 'shopId'        => $templateBlockExtension->getShopId(),
                 'moduleId'      => $templateBlockExtension->getModuleId(),
+                'themeId'       => $templateBlockExtension->getThemeId(),
                 'name'          => $templateBlockExtension->getName(),
                 'filePath'      => $templateBlockExtension->getFilePath(),
                 'templatePath'  => $templateBlockExtension->getExtendedBlockTemplatePath(),
@@ -127,6 +129,9 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
                 )
                 ->setModuleId(
                     $blockData['OXMODULE']
+                )
+                ->setThemeId(
+                    $blockData['OXTHEME']
                 )
                 ->setName(
                     $blockData['OXBLOCKNAME']

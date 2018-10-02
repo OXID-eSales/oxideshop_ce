@@ -29,7 +29,8 @@ class TemplateBlockDaoTest extends TestCase
             ->setExtendedBlockTemplatePath('shopTemplatePath')
             ->setPosition(1)
             ->setModuleId('testModuleId')
-            ->setShopId(1);
+            ->setShopId(1)
+            ->setThemeId('testThemeId');
 
         $templateBlockDao = $this->getTemplateBlockDao();
         $templateBlockDao->add($templateBlock);

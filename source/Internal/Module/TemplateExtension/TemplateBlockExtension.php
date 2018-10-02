@@ -44,6 +44,11 @@ class TemplateBlockExtension
     private $shopId;
 
     /**
+     * @var string
+     */
+    private $themeId = '';
+
+    /**
      * @return string
      */
     public function getName(): string
@@ -148,6 +153,24 @@ class TemplateBlockExtension
     public function setShopId(int $shopId): TemplateBlockExtension
     {
         $this->shopId = $shopId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getThemeId(): string
+    {
+        return $this->themeId;
+    }
+
+    /**
+     * @param string $themeId
+     * @return TemplateBlockExtension
+     */
+    public function setThemeId(string $themeId): TemplateBlockExtension
+    {
+        $this->themeId = $themeId;
         return $this;
     }
 }

@@ -207,7 +207,7 @@ $aLang =  [
 'HELP_SHOP_CONFIG_LOADREVIEWS'                  => 'Users can review and rate your products with stars. If this setting is checked, the existing reviews/star ratings are loaded and shown with the product. ' .
                                                    'This setting might degrade the performance of the shop.',
 
-'HELP_SHOP_CONFIG_INCLUDE_PRODUCT_REVIEW_LINKS_IN_ORDER_EMAIL' => 'Please double-check if this is legally compliant in your country.',
+'HELP_SHOP_CONFIG_INCLUDE_PRODUCT_REVIEW_LINKS_IN_ORDER_EMAIL' => 'Please double-check if this is legally compliant with the applicable laws. This setting will only be applied, if "user reviews and star ratings" is activated.',
 
 'HELP_SHOP_MALL_MALLMODE'                     => 'Here you can set what is shown as front page of this eShop:' .
                                                  '<ul><li><span class="navipath_or_inputname">Show shop selector</span>: A page where the different eShops can be selected is shown.</li>' .

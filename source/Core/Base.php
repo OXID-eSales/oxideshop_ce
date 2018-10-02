@@ -77,6 +77,8 @@ class Base
     }
 
     /**
+     * @deprecated since v6.3.1 (2018-10-01); This method will be removed completely. Use OxidEsales\Eshop\Core\Registry::getConfig() in the future.
+     *
      * oxConfig instance getter
      *
      * @return \OxidEsales\Eshop\Core\Config
@@ -87,6 +89,8 @@ class Base
     }
 
     /**
+     * @deprecated since v6.3.1 (2018-10-01); This method will be removed completely. Use OxidEsales\Eshop\Core\Registry::getConfig()->setConfigParam() in the future.
+     *
      * oxConfig instance setter
      *
      * @param \OxidEsales\Eshop\Core\Config $config config object

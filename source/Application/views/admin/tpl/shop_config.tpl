@@ -320,7 +320,31 @@ function editThis(sID)
                 </dd>
                 <div class="spacer"></div>
             </dl>
-         </div>
+
+            <dl>
+                <dt>
+                    <input type=hidden name=confbools[bl_perfLoadReviews] value=false>
+                    <input type=checkbox name=confbools[bl_perfLoadReviews] value=true  [{if ($confbools.bl_perfLoadReviews)}]checked[{/if}] [{$readonly}]>
+                    [{oxinputhelp ident="HELP_SHOP_CONFIG_LOADREVIEWS"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="SHOP_CONFIG_LOADREVIEWS"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+
+            <dl>
+                <dt>
+                    <input type=hidden name=confbools[includeProductReviewLinksInEmail] value=false>
+                    <input type=checkbox name=confbools[includeProductReviewLinksInEmail] value=true  [{if ($confbools.includeProductReviewLinksInEmail)}]checked[{/if}] [{$readonly}]>
+                    [{oxinputhelp ident="HELP_SHOP_CONFIG_INCLUDE_PRODUCT_REVIEW_LINKS_IN_ORDER_EMAIL"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="SHOP_CONFIG_INCLUDE_PRODUCT_REVIEW_LINKS_IN_ORDER_EMAIL"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+        </div>
     </div>
 
     <div class="groupExp">

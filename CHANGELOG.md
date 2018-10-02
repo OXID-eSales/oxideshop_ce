@@ -27,6 +27,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [6.3.1] - Unreleased
 
+### Added
+- New settings:
+ `includeProductReviewLinksInEmail` defines, if a link to the product review is included in order confirmation email
+- Language constants `source/Application/views/admin/[de,en]/lang.php`:
+  `SHOP_CONFIG_INCLUDE_PRODUCT_REVIEW_LINKS_IN_ORDER_EMAIL` 
+
+### Deprecated
+- `\OxidEsales\EshopCommunity\Core\Base::setConfig`
+- `\OxidEsales\EshopCommunity\Core\Base::getConfig`
+- `\OxidEsales\EshopCommunity\Core\Email::$_oConfig`
+- `\OxidEsales\EshopCommunity\Core\Email::setConfig`
+- `\OxidEsales\EshopCommunity\Core\Email::getConfig`
+
 ### Fixed
 - Fix global variable name in startProfile [PR-651](https://github.com/OXID-eSales/oxideshop_ce/pull/651)
 - Improve a check of module id in ModuleExtensionsCleaner::filterExtensionsByModuleId [PR-662](https://github.com/OXID-eSales/oxideshop_ce/pull/662)

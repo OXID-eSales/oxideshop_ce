@@ -272,7 +272,11 @@ class Email extends \PHPMailer
      */
     protected $_sCharSet = null;
 
-    /** @var \OxidEsales\Eshop\Core\Config */
+    /**
+     * @deprecated since v6.3.1 (2018-10-01); This property will be removed completely.
+     *
+     * @var \OxidEsales\Eshop\Core\Config
+     */
     protected $_oConfig = null;
 
     /**
@@ -323,6 +327,8 @@ class Email extends \PHPMailer
     }
 
     /**
+     * @deprecated since v6.3.1 (2018-10-01); This method will be removed completely. Use OxidEsales\Eshop\Core\Registry::getConfig() in the future.
+     *
      * oxConfig instance getter
      *
      * @return \OxidEsales\Eshop\Core\Config
@@ -337,6 +343,8 @@ class Email extends \PHPMailer
     }
 
     /**
+     * @deprecated since v6.3.1 (2018-10-01); This method will be removed completely. Use OxidEsales\Eshop\Core\Registry::getConfig()->setConfigParam() in the future.
+     *
      * oxConfig instance setter
      *
      * @param \OxidEsales\Eshop\Core\Config $config config object
@@ -520,8 +528,6 @@ class Email extends \PHPMailer
      */
     public function sendOrderEmailToUser($order, $subject = null)
     {
-        $myConfig = $this->getConfig();
-
         // add user defined stuff if there is any
         $order = $this->_addUserInfoOrderEMail($order);
 
@@ -535,9 +541,7 @@ class Email extends \PHPMailer
         $smarty = $this->_getSmarty();
         $this->setViewData("order", $order);
 
-        if ($myConfig->getConfigParam("bl_perfLoadReviews")) {
-            $this->setViewData("blShowReviewLink", true);
-        }
+        $this->setViewData("blShowReviewLink", $this->shouldProductReviewLinksBeIncluded());
 
         // Process view data array through oxOutput processor
         $this->_processViewArray();
@@ -1038,10 +1042,12 @@ class Email extends \PHPMailer
         $this->setViewData("order", $order);
         $this->setViewData("shopTemplateDir", $myConfig->getTemplateDir(false));
 
-        if ($myConfig->getConfigParam("bl_perfLoadReviews")) {
+        if ($myConfig->getConfigParam('bl_perfLoadReviews', false)) {
             $this->setViewData("blShowReviewLink", true);
             $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             $this->setViewData("reviewuserhash", $user->getReviewUserHash($order->oxorder__oxuserid->value));
+        } else {
+            $this->setViewData("blShowReviewLink", false);
         }
 
         // Process view data array through oxoutput processor
@@ -2293,5 +2299,18 @@ class Email extends \PHPMailer
         );
 
         return $sOxId;
+    }
+
+    /**
+     * @return bool
+     */
+    private function shouldProductReviewLinksBeIncluded(): bool
+    {
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+
+        $reviewsEnabled = $config->getConfigParam('bl_perfLoadReviews', false);
+        $productReviewLinkInclusionEnabled = $config->getConfigParam('includeProductReviewLinksInEmail', false);
+
+        return  $reviewsEnabled && $productReviewLinkInclusionEnabled;
     }
 }

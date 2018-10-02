@@ -173,17 +173,6 @@ function editThis( sID )
 
                 <tr>
                  <td valign="top" class="conftext">
-                    <input type=hidden name=confbools[bl_perfLoadReviews] value=false>
-                    <input type=checkbox name=confbools[bl_perfLoadReviews] value=true  [{if ($confbools.bl_perfLoadReviews)}]checked[{/if}] [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_PERF_LOADREVIEWS"}]
-                 </td>
-                 <td valign="top" class="conftext" width="100%">
-                  [{oxmultilang ident="SHOP_PERF_LOADREVIEWS"}]
-                 </td>
-                </tr>
-
-                <tr>
-                 <td valign="top" class="conftext">
                     <input type=hidden name=confbools[bl_perfLoadCrossselling] value=false>
                     <input type=checkbox name=confbools[bl_perfLoadCrossselling] value=true  [{if ($confbools.bl_perfLoadCrossselling)}]checked[{/if}] [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_PERF_LOADCROSSSELLING"}]

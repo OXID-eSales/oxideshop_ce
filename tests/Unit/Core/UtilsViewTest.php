@@ -5,6 +5,8 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Theme;
 use \stdClass;
 use \oxRegistry;
@@ -363,7 +365,7 @@ class UtilsViewTest extends \OxidTestCase
         $smarty = $this->getSmartyMock();
 
         $oUtilsView = oxNew('oxUtilsView');
-        $oUtilsView->setConfig($config);
+        Registry::set(Config::class, $config);
         $oUtilsView->UNITfillCommonSmartyProperties($smarty);
         $oUtilsView->UNITsmartyCompileCheck($smarty);
 
@@ -412,7 +414,7 @@ class UtilsViewTest extends \OxidTestCase
         $smarty = $this->getSmartyMock();
 
         $oUtilsView = oxNew('oxUtilsView');
-        $oUtilsView->setConfig($config);
+        Registry::set(Config::class, $config);
         $oUtilsView->UNITfillCommonSmartyProperties($smarty);
         $oUtilsView->UNITsmartyCompileCheck($smarty);
 
@@ -454,7 +456,7 @@ class UtilsViewTest extends \OxidTestCase
         $oSmarty->expects($this->once())->method('register_resource');
 
         $oUtilsView = oxNew('oxUtilsView');
-        $oUtilsView->setConfig($config);
+        Registry::set(Config::class, $config);
         $oUtilsView->UNITfillCommonSmartyProperties($oSmarty);
         $oUtilsView->UNITsmartyCompileCheck($oSmarty);
 
@@ -500,7 +502,7 @@ class UtilsViewTest extends \OxidTestCase
         $oSmarty->expects($this->once())->method('register_resource');
 
         $oUtilsView = oxNew('oxUtilsView');
-        $oUtilsView->setConfig($config);
+        Registry::set(Config::class, $config);
         $oUtilsView->UNITfillCommonSmartyProperties($oSmarty);
         $oUtilsView->UNITsmartyCompileCheck($oSmarty);
 
@@ -547,7 +549,7 @@ class UtilsViewTest extends \OxidTestCase
         $config = oxNew('oxConfig');
 
         $oUV = oxNew('oxUtilsView');
-        $oUV->setConfig($config);
+        Registry::set(Config::class, $config);
 
         $compileDirectory = $this->getCompileDirectory();
         $config->setConfigParam('sCompileDir', $compileDirectory);

@@ -61,6 +61,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Application\Model\Diagnostics::getFileCheckerPathList`
 - `\OxidEsales\EshopCommunity\Application\Model\Diagnostics::setFileCheckerExtensionList`
 - `\OxidEsales\EshopCommunity\Application\Model\Diagnostics::setFileCheckerPathList`
+- `\OxidEsales\EshopCommunity\Core\Base::setConfig`
+- `\OxidEsales\EshopCommunity\Core\Base::getConfig`
+- `\OxidEsales\EshopCommunity\Core\Email::$_oConfig`
+- `\OxidEsales\EshopCommunity\Core\Email::setConfig`
+- `\OxidEsales\EshopCommunity\Core\Email::getConfig`
 
 ### Fixed
 

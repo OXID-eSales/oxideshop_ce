@@ -6,6 +6,8 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxField;
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
 use \oxTestModules;
 
 class PictureHandlerTest extends \OxidTestCase
@@ -543,7 +545,7 @@ class PictureHandlerTest extends \OxidTestCase
         $config->setConfigParam('sSSLAltImageUrl', 'https://ssl-alt/image/url');
 
         $oPicHandler = oxNew('oxPictureHandler');
-        $oPicHandler->setConfig($config);
+        Registry::set(Config::class, $config);
 
         $this->assertEquals('https://ssl-alt/image/url/master/product/nopic.jpg', $oPicHandler->getAltImageUrl('master/product/', 'nopic.jpg'));
     }
@@ -558,7 +560,7 @@ class PictureHandlerTest extends \OxidTestCase
         $config->setConfigParam('sSSLAltImageUrl', 'https://ssl-alt/image/url');
 
         $oPicHandler = oxNew('oxPictureHandler');
-        $oPicHandler->setConfig($config);
+        Registry::set(Config::class, $config);
 
         $this->assertEquals('http://alt/image/url/master/product/nopic.jpg', $oPicHandler->getAltImageUrl('master/product/', 'nopic.jpg'));
     }
@@ -573,7 +575,7 @@ class PictureHandlerTest extends \OxidTestCase
         $config->setConfigParam('sSSLAltImageUrl', 'https://ssl-alt/image/url');
 
         $oPicHandler = oxNew('oxPictureHandler');
-        $oPicHandler->setConfig($config);
+        Registry::set(Config::class, $config);
 
         $this->assertEquals('https://ssl-alt/image/url/master/product/nopic.jpg', $oPicHandler->getAltImageUrl('master/product/', 'nopic.jpg', true));
     }
@@ -588,7 +590,7 @@ class PictureHandlerTest extends \OxidTestCase
         $config->setConfigParam('sSSLAltImageUrl', 'https://ssl-alt/image/url');
 
         $oPicHandler = oxNew('oxPictureHandler');
-        $oPicHandler->setConfig($config);
+        Registry::set(Config::class, $config);
 
         $this->assertEquals('http://alt/image/url/master/product/nopic.jpg', $oPicHandler->getAltImageUrl('master/product/', 'nopic.jpg', false));
     }

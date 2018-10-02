@@ -5,6 +5,8 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
 use oxUBaseHelper;
 use \stdClass;
 use \oxField;
@@ -852,7 +854,7 @@ class UBaseTest extends \OxidTestCase
         $myConfig->expects($this->once())
             ->method('getActiveView')
             ->will($this->returnValue($oView));
-        $oView->setConfig($myConfig);
+        Registry::set(Config::class, $myConfig);
         $oView->getAdditionalParams();
 
         $sAdditionalParams = '';

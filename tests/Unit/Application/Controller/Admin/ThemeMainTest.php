@@ -5,6 +5,8 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Theme;
 
 use \Exception;
@@ -81,7 +83,7 @@ class ThemeMainTest extends \OxidTestCase
         $oConfig->sCustomTheme = null;
 
         $oView = oxNew('Theme_Main');
-        $oView->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
         $this->assertEquals(true, $oView->themeInConfigFile(), 'Should return true as there is sTheme.');
     }
 
@@ -95,7 +97,7 @@ class ThemeMainTest extends \OxidTestCase
         $oConfig->sCustomTheme = 'someTheme';
 
         $oView = oxNew('Theme_Main');
-        $oView->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
         $this->assertEquals(true, $oView->themeInConfigFile(), 'Should return true as there is sCustomTheme.');
     }
 
@@ -109,7 +111,7 @@ class ThemeMainTest extends \OxidTestCase
         $oConfig->sCustomTheme = 'someTheme';
 
         $oView = oxNew('Theme_Main');
-        $oView->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
         $this->assertEquals(true, $oView->themeInConfigFile(), 'Should return true as there is sTheme and sCustomTheme.');
     }
 }

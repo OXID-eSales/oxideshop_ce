@@ -13,8 +13,10 @@ use OxidEsales\Eshop\Application\Model\RecommendationList;
 use OxidEsales\Eshop\Application\Model\Remark;
 use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Application\Model\User;
+use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Model\BaseModel;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Application\Model\PriceAlarm;
 use OxidEsales\EshopCommunity\Application\Model\UserPayment;
@@ -1971,7 +1973,7 @@ class UserTest extends \OxidTestCase
         $oUser->expects($this->once())->method('getNewsSubscription')->will($this->returnValue($oSubscription));
         $oUser->expects($this->never())->method('addToGroup');
         $oUser->expects($this->never())->method('removeFromGroup');
-        $oUser->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
 
         $this->assertFalse($oUser->setNewsSubscription(true, false));
     }
@@ -1989,7 +1991,7 @@ class UserTest extends \OxidTestCase
         $oUser->expects($this->once())->method('getNewsSubscription')->will($this->returnValue($oSubscription));
         $oUser->expects($this->once())->method('addToGroup')->with($this->equalTo('oxidnewsletter'));
         $oUser->expects($this->never())->method('removeFromGroup');
-        $oUser->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
 
         $this->assertTrue($oUser->setNewsSubscription(true, false));
     }
@@ -2010,7 +2012,7 @@ class UserTest extends \OxidTestCase
         $oUser->expects($this->once())->method('getNewsSubscription')->will($this->returnValue($oSubscription));
         $oUser->expects($this->never())->method('addToGroup');
         $oUser->expects($this->never())->method('removeFromGroup');
-        $oUser->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
 
         $this->assertTrue($oUser->setNewsSubscription(true, true));
     }
@@ -2034,7 +2036,7 @@ class UserTest extends \OxidTestCase
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getNewsSubscription', 'addToGroup', 'removeFromGroup'));
         $oUser->expects($this->any())->method('getNewsSubscription')->will($this->returnValue($oSubscription));
-        $oUser->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
 
         // first call, mail should be sent
         $this->assertTrue($oUser->setNewsSubscription(true, true));
@@ -2058,7 +2060,7 @@ class UserTest extends \OxidTestCase
         $oUser->expects($this->once())->method('getNewsSubscription')->will($this->returnValue($oSubscription));
         $oUser->expects($this->never())->method('addToGroup');
         $oUser->expects($this->once())->method('removeFromGroup')->with($this->equalTo('oxidnewsletter'));
-        $oUser->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
 
         $this->assertTrue($oUser->setNewsSubscription(false, false));
     }

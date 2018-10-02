@@ -6,6 +6,8 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
 use oxVoucherException;
 use \stdclass;
 use \oxDb;
@@ -629,7 +631,7 @@ class VoucherTest extends \OxidTestCase
         $dPrice = 9;
 
         try {
-            $oNewVoucher->setConfig($oConfig);
+            Registry::set(Config::class, $oConfig);
             $aErrors = $oNewVoucher->UNITisAvailablePrice($dPrice);
         } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
             $sErrorMsg = $oEx->getMessage();

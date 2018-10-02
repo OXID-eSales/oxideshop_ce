@@ -5,6 +5,8 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Component\Widget;
 
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Model\Category;
 
 /**
@@ -112,7 +114,7 @@ class ArticleBoxTest extends \OxidTestCase
         $oSearch = oxNew('Search');
         $oConfig->expects($this->any())->method('getTopActiveView')->will($this->returnValue($oSearch));
 
-        $oArticleBox->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
         $sLinkUrl .= "?listtype=search&amp;searchparam=1126";
 
 

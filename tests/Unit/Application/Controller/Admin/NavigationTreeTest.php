@@ -8,6 +8,8 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 use \DOMDocument;
 use \oxField;
 use \DOMXPath;
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
 use \stdClass;
 use \DOMElement;
 use \oxTestModules;
@@ -539,7 +541,7 @@ class NavigationTreeTest extends \OxidTestCase
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
         $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo('blDemoShop'))->will($this->returnValue(false));
-        $oNavTree->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
         $oNavTree->UNITcheckDemoShopDenials($oDom);
 
         // not changed
@@ -565,7 +567,7 @@ class NavigationTreeTest extends \OxidTestCase
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
         $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo('blDemoShop'))->will($this->returnValue(true));
-        $oNavTree->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
         $oNavTree->UNITcheckDemoShopDenials($oDom);
 
         // removed
@@ -591,7 +593,7 @@ class NavigationTreeTest extends \OxidTestCase
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
         $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo('blDemoShop'))->will($this->returnValue(false));
-        $oNavTree->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
         $oNavTree->UNITcheckDemoShopDenials($oDom);
 
         // removed
@@ -617,7 +619,7 @@ class NavigationTreeTest extends \OxidTestCase
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
         $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo('blDemoShop'))->will($this->returnValue(true));
-        $oNavTree->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
         $oNavTree->UNITcheckDemoShopDenials($oDom);
 
         // not changed

@@ -5,6 +5,8 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Model\Category;
 use \oxField;
 use \oxDb;
@@ -280,7 +282,7 @@ class CategoryMainTest extends \OxidTestCase
 
         /** @var \OxidEsales\Eshop\Application\Controller\Admin\CategoryMain $oView */
         $oView = $this->getProxyClass("Category_Main");
-        $oView->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
         $oView->deletePicture();
 
         $aEx = oxRegistry::getSession()->getVariable("Errors");

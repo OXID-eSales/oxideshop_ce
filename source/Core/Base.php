@@ -77,7 +77,7 @@ class Base
     }
 
     /**
-     * oxConfig instance getter
+     * Config instance getter
      *
      * @deprecated since v6.4.0 (2018-10-15); This method will be removed completely. Use \OxidEsales\Eshop\Core\Registry::getConfig().
      *
@@ -86,18 +86,6 @@ class Base
     public function getConfig()
     {
         return \OxidEsales\Eshop\Core\Registry::getConfig();
-    }
-
-    /**
-     * oxConfig instance setter
-     *
-     * @param \OxidEsales\Eshop\Core\Config $config config object
-     *
-     * @deprecated since v6.4.0 (2018-10-15); This method will be removed completely. Use \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config:class, $config).
-     */
-    public function setConfig($config)
-    {
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
     }
 
     /**

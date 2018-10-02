@@ -7,6 +7,8 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxFileException;
 use \Exception;
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
 use \oxRegistry;
 use \oxTestModules;
 
@@ -174,7 +176,7 @@ class UtilsFileTest extends \OxidTestCase
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isDemoShop'));
         $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(true));
         $oUF = \OxidEsales\Eshop\Core\Registry::getUtilsFile();
-        $oUF->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
         oxTestModules::addFunction('oxUtils', 'showMessageAndExit', '{throw new Exception("this is ok");}');
         try {
             $oUF->processFiles();

@@ -6,6 +6,8 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use oxField;
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 
 class SuperConfigTest extends \OxidTestCase
@@ -13,13 +15,13 @@ class SuperConfigTest extends \OxidTestCase
     public function testSetGetConfig()
     {
         $oOxSuperCfg = oxNew('oxSuperCfg');
-        $oOxSuperCfg->setConfig(null);
+        Registry::set(Config::class, null);
         $oConfig = $this->getConfig();
         $this->assertEquals($oConfig, $oOxSuperCfg->getConfig());
 
-        $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
+        $config = $this->getMock(Config::class, array('getConfigParam'));
         $config->expects($this->once())->method('getConfigParam')->will($this->returnValue(true));
-        $oOxSuperCfg->setConfig($config);
+        Registry::set(Config::class, $config);
         $this->assertTrue($oOxSuperCfg->getConfig()->getConfigParam('xxx'));
     }
 
@@ -30,7 +32,7 @@ class SuperConfigTest extends \OxidTestCase
         $oSession = oxRegistry::getSession();
         $this->assertEquals($oSession, $oOxSuperCfg->getSession());
 
-        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getId'));
+        $oSession = $this->getMock(Config::class, array('getId'));
         $oSession->expects($this->once())->method('getId')->will($this->returnValue('xxx'));
         $oOxSuperCfg->setSession($oSession);
         $this->assertEquals('xxx', $oOxSuperCfg->getSession()->getId());

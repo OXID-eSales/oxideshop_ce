@@ -6,6 +6,8 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use oxDb;
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Application\Model\Search;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
@@ -628,7 +630,7 @@ class SearchTest extends UnitTestCase
 
         /** @var Search $oSearch */
         $oSearch = oxNew('oxSearch');
-        $oSearch->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
         $sQ = $oSearch->UNITgetWhere($sSearchString, $iLanguage = 0);
 
         $this->assertEquals($sFix, $sQ);

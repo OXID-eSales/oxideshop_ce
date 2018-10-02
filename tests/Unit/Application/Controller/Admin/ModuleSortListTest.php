@@ -5,6 +5,9 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
+
 /**
  * Tests for Shop_Config class
  */
@@ -45,7 +48,7 @@ class ModuleSortListTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("aModules"), $this->equalTo($aModules));
 
         $oView = oxNew('Module_SortList');
-        $oView->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
 
         $oView->save();
     }

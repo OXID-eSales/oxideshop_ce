@@ -5,7 +5,9 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
+use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Module\Module;
+use OxidEsales\Eshop\Core\Registry;
 use oxModule;
 use \shop;
 use \oxRegistry;
@@ -341,7 +343,7 @@ class ModuleTest extends \OxidTestCase
 
         $oModule = oxNew('oxModule');
         $oModule->setModuleData($aModuleToActivate);
-        $oModule->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
 
         $this->assertSame($blResult, $oModule->isActive(), 'Module extends shop class, so methods should return true.');
     }

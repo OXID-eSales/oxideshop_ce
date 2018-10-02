@@ -5,6 +5,8 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Theme;
 use oxLang;
 use \stdClass;
@@ -949,7 +951,7 @@ class LangTest extends \OxidTestCase
         $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array('isAdmin'));
         $oLang->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
 
-        $oLang->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
 
 
         $this->assertEquals(1, $oLang->getBaseLanguage());

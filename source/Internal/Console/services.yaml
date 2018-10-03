@@ -1,0 +1,76 @@
+services:
+  OxidEsales\EshopCommunity\Internal\Console\ExecutorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Console\Executor
+    public: true
+    arguments:
+      - '@symfony.component.console.application'
+      - '@Symfony\Component\Console\Output\ConsoleOutputInterface'
+      - '@console.commands_collection_builder'
+      - '@OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface'
+
+  symfony.component.console.application:
+    class: Symfony\Component\Console\Application
+    public: false
+    calls:
+      - method: setDispatcher
+        arguments:
+          - '@event_dispatcher'
+
+  Symfony\Component\Console\Output\ConsoleOutputInterface:
+    class: Symfony\Component\Console\Output\ConsoleOutput
+    public: false
+
+  console.commands_collection_builder:
+    class: OxidEsales\EshopCommunity\Internal\Console\CommandsCollectionBuilder
+    arguments:
+      - '@console.commands_provider.component_commands_provider'
+      - '@console.commands_provider.module_commands_provider'
+      - '@console.commands_provider.services_command_provider'
+
+  console.commands_provider.component_commands_provider:
+    class: OxidEsales\EshopCommunity\Internal\Console\CommandsProvider\ComponentCommandsProvider
+    public: false
+    arguments: ['@Composer\Repository\WritableRepositoryInterface']
+
+  composer.composer:
+    class: Composer\Composer
+    public: true
+    factory: 'composer.factory:create'
+    arguments: ['@composer.io.null_io']
+
+  composer.factory:
+    class: Composer\Factory
+    public: false
+
+  composer.io.null_io:
+    class: Composer\IO\NullIO
+    public: false
+
+  composer.repository.manager:
+    class: Composer\Repository\RepositoryManager
+    factory: 'composer.composer:getRepositoryManager'
+    public: false
+
+  Composer\Repository\WritableRepositoryInterface:
+    factory: 'composer.repository.manager:getLocalRepository'
+    public: false
+
+  console.commands_provider.module_commands_provider:
+    class: OxidEsales\EshopCommunity\Internal\Console\CommandsProvider\ModuleCommandsProvider
+    public: false
+    autowire: true
+
+  console.commands_provider.services_command_provider:
+    class: OxidEsales\EshopCommunity\Internal\Console\CommandsProvider\ServicesCommandsProvider
+    public: false
+    autowire: true
+
+  symfony.component.console.input.argv_input:
+    class: Symfony\Component\Console\Input\ArgvInput
+    public: false
+
+  console.command_event_subscriber:
+    class: OxidEsales\EshopCommunity\Internal\Console\CommandEventSubscriber
+    public: false
+    tags:
+      - { name: kernel.event_subscriber }

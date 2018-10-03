@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Adapter;
 
+use OxidEsales\EshopCommunity\Internal\Console\ShopSwitchException;
+
 /**
  * @internal
  */
@@ -22,4 +24,16 @@ interface ShopAdapterInterface
      * @return string
      */
     public function translateString($string);
+
+    /**
+     * @return array
+     */
+    public function getModules();
+
+    /**
+     * Switch active shop.
+     * @throws ShopSwitchException
+     * @param int $shopId
+     */
+    public function switchToShop(int $shopId);
 }

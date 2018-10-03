@@ -1,0 +1,28 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+$bootstrapFileExist = false;
+$bootstrapFiles = [
+    __DIR__ . '/../source/bootstrap.php',
+    __DIR__ . '/../../source/bootstrap.php',
+    __DIR__ . '/../../../source/bootstrap.php',
+    __DIR__ . '/../../../../source/bootstrap.php',
+];
+foreach ($bootstrapFiles as $bootstrapFile) {
+    if (file_exists($bootstrapFile)) {
+        require_once $bootstrapFile;
+        $bootstrapFileExist = true;
+        break;
+    }
+}
+
+if (!$bootstrapFileExist) {
+    exit("bootstrap.php file was not found!");
+}
+
+$factory = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance();
+$factory->getContainer()->get(OxidEsales\EshopCommunity\Internal\Console\ExecutorInterface::class)->execute();

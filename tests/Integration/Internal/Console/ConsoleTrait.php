@@ -6,22 +6,23 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Console;
 
+use OxidEsales\EshopCommunity\Internal\Console\CommandsCollectionBuilder;
 use OxidEsales\EshopCommunity\Internal\Console\Executor;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapter;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\StreamOutput;
 
+/**
+ * @internal
+ */
 trait ConsoleTrait
 {
-    use ContainerTrait;
-
     /**
      * @param $commandsCollectionBuilder
      * @return string
      */
-    protected function execute($commandsCollectionBuilder, $input): string
+    protected function execute(CommandsCollectionBuilder $commandsCollectionBuilder, $input): string
     {
         $executor = new Executor($this->getConsoleApplication(), new ConsoleOutput(), $commandsCollectionBuilder, new ShopAdapter());
 

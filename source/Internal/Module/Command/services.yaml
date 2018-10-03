@@ -1,0 +1,13 @@
+services:
+  command.module_activate_command:
+    class: OxidEsales\EshopCommunity\Internal\Module\Command\ModuleActivateCommand
+    public: true
+    autowire: true
+    tags:
+    - { name: 'console.command', command: 'oe:module:activate' }
+  oxid_esales.command.module_deactivate_command:
+    class: OxidEsales\EshopCommunity\Internal\Module\Command\ModuleDeactivateCommand
+    public: true
+    autowire: true
+    tags:
+    - { name: 'console.command', command: 'oe:module:deactivate' }

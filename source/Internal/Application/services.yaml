@@ -8,7 +8,6 @@ imports:
     - { resource: ../Review/services.yaml }
     - { resource: ../Form/services.yaml }
     - { resource: ../Adapter/services.yaml }
-    - { resource: ../Configuration/Module/services.yaml }
     - { resource: ../Module/services.yaml }
     - { resource: ../ProjectDIConfig/services.yaml }
     - { resource: ../Console/services.yaml }

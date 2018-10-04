@@ -1,0 +1,12 @@
+services:
+  OxidEsales\EshopCommunity\Internal\Module\Setup\ModuleActivationServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\ModuleActivationService
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Module\Setup\ModuleDataTransferServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\ModuleDataToShopConfigurationTransferService
+    arguments:
+      - '@oxid_esales.module.configuration.data_mapper.module_configuration_to_shop_configuration_data_mapper'
+      - '@OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface'
+    public: false

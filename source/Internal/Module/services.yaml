@@ -1,4 +1,5 @@
-services:
-  OxidEsales\EshopCommunity\Internal\Module\TemplateExtension\TemplateBlockExtensionDaoInterface:
-    class: OxidEsales\EshopCommunity\Internal\Module\TemplateExtension\TemplateBlockExtensionDao
-    autowire: true
+imports:
+   - { resource: Setup/services.yaml }
+   - { resource: Configuration/services.yaml }
+   - { resource: Cache/services.yaml }
+   - { resource: TemplateExtension/services.yaml }

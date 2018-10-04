@@ -1454,7 +1454,6 @@ class Email extends \PHPMailer
                     }
 
                     if ($fileName) {
-                        $cId = '';
                         if (isset($imageCache[$fileName]) && $imageCache[$fileName]) {
                             $cId = $imageCache[$fileName];
                         } else {

@@ -26,12 +26,9 @@ class DeliveryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
-
         parent::render();
 
         $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
-        $iLang = $oLang->getTplLanguage();
 
         // remove itm from list
         unset($this->_aViewData["sumtype"][2]);

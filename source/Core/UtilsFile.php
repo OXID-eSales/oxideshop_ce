@@ -320,7 +320,6 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     protected function _getImageSize($sImgType, $iImgNum, $sImgConf)
     {
         $myConfig = $this->getConfig();
-        $sSize = false;
 
         switch ($sImgConf) {
             case 'aDetailImageSizes':
@@ -349,15 +348,12 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      */
     protected function _copyFile($sSource, $sTarget)
     {
-        $blDone = false;
-
         if (!is_dir(dirname($sTarget))) {
             mkdir(dirname($sTarget), 0744, true);
         }
 
-        if ($sSource === $sTarget) {
-            $blDone = true;
-        } else {
+        $blDone = true;
+        if ($sSource !== $sTarget) {
             $blDone = copy($sSource, $sTarget);
         }
 
@@ -378,13 +374,12 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      */
     protected function _moveImage($sSource, $sTarget)
     {
-        $blDone = false;
         if (!is_dir(dirname($sTarget))) {
             mkdir(dirname($sTarget), 0744, true);
         }
-        if ($sSource === $sTarget) {
-            $blDone = true;
-        } else {
+
+        $blDone = true;
+        if ($sSource !== $sTarget) {
             $blDone = move_uploaded_file($sSource, $sTarget);
         }
 
@@ -489,12 +484,8 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
             return $aCheckCache[$sFile];
         }
 
-        $blRet = false;
-
-        if (is_readable($sFile)) {
-            $blRet = true;
-        } else {
-            // try again via socket
+        $blRet = true;
+        if (!is_readable($sFile)) {
             $blRet = $this->urlValidate($sFile);
         }
 

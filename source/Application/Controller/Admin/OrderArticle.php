@@ -206,8 +206,6 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         // order and order article exits?
         if ($oOrderArticle->load($sOrderArtId) && $oOrder->load($sOrderId)) {
-            $myConfig = $this->getConfig();
-
             // deleting record
             $oOrderArticle->delete();
 

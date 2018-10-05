@@ -13,6 +13,7 @@ namespace OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic;
  */
 class SeoUrlLogic
 {
+
     /**
      * Output SEO style url
      *

@@ -10,10 +10,12 @@ namespace OxidEsales\EshopCommunity\Internal\Twig;
 
 /**
  * Class TwigEngineConfiguration
+ *
  * @package OxidEsales\EshopCommunity\Internal\Twig
  */
 class TwigEngineConfiguration implements TemplateEngineConfigurationInterface
 {
+
     /**
      * @var TwigContextInterface
      */

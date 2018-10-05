@@ -10,8 +10,11 @@ use Twig\TwigFunction;
  */
 class MailtoExtension extends AbstractExtension
 {
+
     /**
-     * {@inheritdoc}
+     * Returns a list of functions to add to the existing list.
+     *
+     * @return TwigFunction[]
      */
     public function getFunctions()
     {
@@ -25,7 +28,7 @@ class MailtoExtension extends AbstractExtension
      * Twig mailto function imported from Smarty
      *
      * @param string $address
-     * @param array $parameters
+     * @param array  $parameters
      *
      * @return string
      */
@@ -59,7 +62,7 @@ class MailtoExtension extends AbstractExtension
 
     /**
      * @param string $address
-     * @param array $parameters
+     * @param array  $parameters
      *
      * @return string
      */
@@ -81,7 +84,7 @@ class MailtoExtension extends AbstractExtension
     }
 
     /**
-     * @param $parameters
+     * @param array $parameters
      *
      * @return string
      */
@@ -119,9 +122,9 @@ class MailtoExtension extends AbstractExtension
     /**
      * Encode using javascript
      *
-     * @param $address
-     * @param $text
-     * @param $extra
+     * @param string $address
+     * @param string $text
+     * @param string $extra
      *
      * @return string
      */
@@ -140,9 +143,9 @@ class MailtoExtension extends AbstractExtension
     /**
      * Encode using charcode
      *
-     * @param $address
-     * @param $text
-     * @param $extra
+     * @param string $address
+     * @param string $text
+     * @param string $extra
      *
      * @return string
      */
@@ -166,9 +169,9 @@ class MailtoExtension extends AbstractExtension
     /**
      * Encode using hex
      *
-     * @param $address
-     * @param $text
-     * @param $extra
+     * @param string $address
+     * @param string $text
+     * @param string $extra
      *
      * @return string
      */

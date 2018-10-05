@@ -83,9 +83,8 @@ use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
  */
 function smarty_function_assign_adv($params, &$smarty)
 {
-    $var = isset($params['var']) ? $params['var'] : false;
-    $value = isset($params['value']) ? $params['value'] : false;
-
+    $var = isset($params['var']) ? $params['var'] : NULL;
+    $value = isset($params['value']) ? $params['value'] : NULL;
     if(!$var) {
         $smarty->trigger_error("assign_adv: missing 'var' parameter");
         return;

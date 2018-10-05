@@ -6,7 +6,6 @@ notifications:
   email: false
 
 php:
-  - "7.0"
   - "7.1"
 
 matrix:

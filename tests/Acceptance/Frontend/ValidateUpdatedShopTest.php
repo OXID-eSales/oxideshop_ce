@@ -16,6 +16,7 @@ class ValidateUpdatedShopTest extends FrontendTestCase
      */
     public function testShopBrowsing()
     {
+        $this->markTestSkipped('The goutte driver is not available anymore. Will be replaced with codeception test.');
         if ($this->getTestConfig()->isSubShop()) {
             $this->markTestSkipped('Functionality is not available in subshop');
         }

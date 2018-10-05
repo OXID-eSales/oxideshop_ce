@@ -9,17 +9,17 @@
 namespace OxidEsales\EshopCommunity\Internal\Twig;
 
 use OxidEsales\EshopCommunity\Internal\Templating\BaseEngineInterface;
-use OxidEsales\EshopCommunity\Internal\Twig\Extensions\MathExtension;
-use OxidEsales\EshopCommunity\Internal\Twig\Extensions\OxidExtension;
-use OxidEsales\EshopCommunity\Internal\Twig\Extensions\OxidIncludeExtension;
-use OxidEsales\EshopCommunity\Internal\Twig\Extensions\SmartyExtension;
 
 use Symfony\Component\Templating\TemplateNameParserInterface;
 use Symfony\Component\Templating\TemplateReferenceInterface;
 use Twig\Environment;
 
+/**
+ * Class TwigEngine
+ */
 class TwigEngine implements BaseEngineInterface
 {
+
     /**
      * @var \Twig_Environment
      */
@@ -37,32 +37,27 @@ class TwigEngine implements BaseEngineInterface
      */
     private $globals = [];
 
-
     /**
      * TwigEngine constructor.
-     * @param Environment $engine
+     *
+     * @param Environment                 $engine
      * @param TemplateNameParserInterface $parser
      */
     public function __construct(Environment $engine, TemplateNameParserInterface $parser)
     {
-		$this->engine = $engine;
+        $this->engine = $engine;
         $this->parser = $parser;
 
         if ($this->engine->isDebug()) {
             $this->engine->addExtension(new \Twig_Extension_Debug());
         }
-
-        $this->engine->addExtension(new MathExtension());
-        $this->engine->addExtension(new OxidExtension());
-        $this->engine->addExtension(new OxidIncludeExtension());
-        $this->engine->addExtension(new SmartyExtension());
     }
 
     /**
      * Renders a template.
      *
-     * @param string|TemplateReferenceInterface $name A template name or a TemplateReferenceInterface instance
-     * @param array $parameters An array of parameters to pass to the template
+     * @param string $name       A template name or a TemplateReferenceInterface instance
+     * @param array  $parameters An array of parameters to pass to the template
      *
      * @return string The evaluated template as a string
      */
@@ -74,7 +69,7 @@ class TwigEngine implements BaseEngineInterface
     /**
      * Returns true if the template exists.
      *
-     * @param string|TemplateReferenceInterface $name A template name or a TemplateReferenceInterface instance
+     * @param string $name A template name or a TemplateReferenceInterface instance
      *
      * @return bool true if the template exists, false otherwise
      */
@@ -116,7 +111,6 @@ class TwigEngine implements BaseEngineInterface
 
     /**
      * @return array
-    public function getGlobals()
      */
     public function getGlobals()
     {

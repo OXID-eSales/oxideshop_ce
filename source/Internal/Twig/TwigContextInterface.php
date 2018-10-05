@@ -10,10 +10,12 @@ namespace OxidEsales\EshopCommunity\Internal\Twig;
 
 /**
  * Interface TwigContextInterface
+ *
  * @package OxidEsales\EshopCommunity\Internal\Twig
  */
 interface TwigContextInterface
 {
+
     /**
      * @return array
      */

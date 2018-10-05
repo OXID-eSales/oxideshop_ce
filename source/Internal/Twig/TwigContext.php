@@ -13,10 +13,12 @@ use OxidEsales\Eshop\Core\UtilsView;
 
 /**
  * Class TwigContext
+ *
  * @package OxidEsales\EshopCommunity\Internal\Twig
  */
 class TwigContext implements TwigContextInterface
 {
+
     /**
      * @var Config
      */
@@ -45,9 +47,13 @@ class TwigContext implements TwigContextInterface
     public function getTemplateDirectories()
     {
         $templateDirectory = $this->utilsView->getTemplateDirs();
-        $directories = array_filter($templateDirectory, function ($directory) {
-            return is_dir($directory);
-        });
+        $directories = array_filter(
+            $templateDirectory,
+            function ($directory) {
+                return is_dir($directory);
+            }
+        );
+
         return $directories;
     }
 

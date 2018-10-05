@@ -99,43 +99,6 @@ class FunctionsTest extends \OxidTestCase
         oxNew("non_existing_class");
     }
 
-  /*  public function testOx_get_template()
-    {
-        $fake = new stdClass;
-        $fake->oxidcache = new oxField('test', oxField::T_RAW);
-        $sRes = 'aa';
-        $this->assertEquals(true, ox_get_template('blah', $sRes, $fake));
-        $this->assertEquals('test', $sRes);
-        if ($this->getConfig()->isDemoShop()) {
-            $this->assertEquals($fake->security, true);
-        }
-    }
-
-    public function testOx_get_timestamp()
-    {
-        $fake = new stdClass;
-        $this->assertEquals(true, ox_get_timestamp('blah', $res, $fake));
-        $this->assertEquals(true, is_numeric($res));
-        $tm = time() - $res;
-        $this->assertEquals(true, ($tm >= 0) && ($tm < 2));
-        $fake->oxidtimecache = new oxField('test', oxField::T_RAW);
-        $this->assertEquals(true, ox_get_timestamp('blah', $res, $fake));
-        $this->assertEquals('test', $res);
-    }
-
-    public function testOx_get_secure()
-    {
-        $o = null;
-        $this->assertEquals(true, ox_get_secure("s", $o));
-    }
-
-    public function testOx_get_trusted()
-    {
-        $o = null;
-        // in php void functions also return - null
-        $this->assertEquals(null, ox_get_trusted("s", $o));
-    }*/
-
     public function testGetViewName()
     {
         $this->assertEquals('xxx', getViewName('xxx', 'xxx'));

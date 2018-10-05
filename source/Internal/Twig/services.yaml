@@ -35,6 +35,13 @@ services:
         - '@twig.loader.filesystem'
         - "@=service('OxidEsales\\\\EshopCommunity\\\\Internal\\\\Twig\\\\TemplateEngineConfigurationInterface').getParameters()"
     public: false
+    calls:
+        - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\MathExtension']]
+        - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\IncludeExtension']]
+        - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\SmartyExtension']]
+        - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\MailtoExtension']]
+        - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\UrlExtension']]
+        - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\AssignAdvancedExtension']]
 
   OxidEsales\EshopCommunity\Internal\Twig\TwigEngine:
     class: OxidEsales\EshopCommunity\Internal\Twig\TwigEngine
@@ -42,3 +49,29 @@ services:
         - '@twig.environment'
         - '@Symfony\Component\Templating\TemplateNameParserInterface'
     public: false
+
+
+# Extensions
+
+  OxidEsales\EshopCommunity\Internal\Twig\Extensions\MathExtension:
+    class: OxidEsales\EshopCommunity\Internal\Twig\Extensions\MathExtension
+
+  OxidEsales\EshopCommunity\Internal\Twig\Extensions\IncludeExtension:
+    class: OxidEsales\EshopCommunity\Internal\Twig\Extensions\IncludeExtension
+
+  OxidEsales\EshopCommunity\Internal\Twig\Extensions\SmartyExtension:
+    class: OxidEsales\EshopCommunity\Internal\Twig\Extensions\SmartyExtension
+
+  OxidEsales\EshopCommunity\Internal\Twig\Extensions\MailtoExtension:
+    class: OxidEsales\EshopCommunity\Internal\Twig\Extensions\MailtoExtension
+
+  OxidEsales\EshopCommunity\Internal\Twig\Extensions\UrlExtension:
+    class: OxidEsales\EshopCommunity\Internal\Twig\Extensions\UrlExtension
+    arguments:
+        - '@OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\SeoUrlLogic'
+        - '@OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\AddUrlParametersLogic'
+
+  OxidEsales\EshopCommunity\Internal\Twig\Extensions\AssignAdvancedExtension:
+    class: OxidEsales\EshopCommunity\Internal\Twig\Extensions\AssignAdvancedExtension
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\AssignAdvancedLogic'

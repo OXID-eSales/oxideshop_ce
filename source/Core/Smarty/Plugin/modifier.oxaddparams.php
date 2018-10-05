@@ -4,6 +4,9 @@
  * See LICENSE file for license details.
  */
 
+use OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\AddUrlParametersLogic;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+
 /**
  * Smarty function
  * -------------------------------------------------------------
@@ -18,11 +21,8 @@
  */
 function smarty_modifier_oxaddparams( $sUrl, $sDynParams )
 {
-    $oStr = getStr();
-    // removing empty parameters
-    $sDynParams = $sDynParams?$oStr->preg_replace( [ '/^\?/', '/^\&(amp;)?$/' ], '', $sDynParams ):false;
-    if ( $sDynParams ) {
-        $sUrl .= ( ( strpos( $sUrl, '?' ) !== false ) ? "&amp;":"?" ) . $sDynParams;
-    }
-    return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processSeoUrl( $sUrl );
+    /** @var AddUrlParametersLogic $addUrlParametersLogic */
+    $addUrlParametersLogic = ContainerFactory::getInstance()->getContainer()->get(AddUrlParametersLogic::class);
+
+    return $addUrlParametersLogic->addUrlParameters($sUrl, $sDynParams);
 }

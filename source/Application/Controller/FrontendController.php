@@ -2949,7 +2949,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
 
         $user = $this->getUser();
         if ($user !== false) {
-            if ($user->oxuser__oxustid->value !== null && $user->oxuser__oxustidstatus->value == 1) {
+            if ($user->getFieldData('oxustid') && $user->getFieldData('oxustidstatus') == 1) {
                 return $this->_blIsVatIncluded = false;
             }
         } else {

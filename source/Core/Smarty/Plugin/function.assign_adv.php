@@ -1,5 +1,8 @@
 <?php
 
+use OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\AssignAdvancedLogic;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+
 /*
  * Smarty plugin
  * -------------------------------------------------------------
@@ -80,24 +83,23 @@
  */
 function smarty_function_assign_adv($params, &$smarty)
 {
-    extract($params);
-
-    if (empty($var)) {
+    $var = isset($params['var']) ? $params['var'] : NULL;
+    $value = isset($params['value']) ? $params['value'] : NULL;
+    if(!$var) {
         $smarty->trigger_error("assign_adv: missing 'var' parameter");
         return;
     }
 
-    if (!in_array('value', array_keys($params))) {
+    if(!$value) {
         $smarty->trigger_error("assign_adv: missing 'value' parameter");
         return;
     }
-    if (preg_match('/^\s*array\s*\(\s*(.*)\s*\)\s*$/s',$value,$match)){
-        eval('$value=array('.str_replace("\n", "", $match[1]).');');
-    }
-    else if (preg_match('/^\s*range\s*\(\s*(.*)\s*\)\s*$/s',$value,$match)){
-        eval('$value=range('.str_replace("\n", "", $match[1]).');');
-    }
 
-    $smarty->assign($var, $value);
+    /** @var AssignAdvancedLogic $oxgetseourlLogic */
+    $assignAdvancedLogic = ContainerFactory::getInstance()->getContainer()->get(AssignAdvancedLogic::class);
+    $formattedValue = $assignAdvancedLogic->formatValue($value);
+
+    $smarty->assign($var, $formattedValue);
 }
+
 ?>

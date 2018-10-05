@@ -15,6 +15,7 @@ namespace OxidEsales\EshopCommunity\Internal\Twig;
  */
 interface TemplateEngineConfigurationInterface
 {
+
     /**
      * @return array
      */

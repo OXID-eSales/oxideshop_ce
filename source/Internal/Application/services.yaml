@@ -1,4 +1,5 @@
 imports:
+    - { resource: Events/services.yaml }
     - { resource: ../Utility/services.yaml }
     - { resource: ../Logger/services.yaml }
     - { resource: ../Common/services.yaml }

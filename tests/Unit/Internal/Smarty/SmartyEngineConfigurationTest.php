@@ -7,7 +7,8 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Smarty;
 
 
-use OxidEsales\EshopCommunity\Internal\Smarty\Extensions\oxSmarty;
+use OxidEsales\EshopCommunity\Internal\Smarty\Extension\CacheResourcePlugin;
+use OxidEsales\EshopCommunity\Internal\Smarty\Extension\SmartyDefaultTemplateHandler;
 use OxidEsales\EshopCommunity\Internal\Smarty\SmartyContextInterface;
 use OxidEsales\EshopCommunity\Internal\Smarty\SmartyEngineConfiguration;
 
@@ -25,13 +26,13 @@ class SmartyEngineConfigurationTest extends \PHPUnit\Framework\TestCase
             'cache_dir' => 'testCompileDir',
             'template_dir' => 'testTemplateDir',
             'compile_id' => 'testCompileId',
-            'default_template_handler_func' => [oxSmarty::getInstance($smartyContextMock), '_smartyDefaultTemplateHandler'],
+            'default_template_handler_func' => [new SmartyDefaultTemplateHandler($smartyContextMock), 'handleTemplate'],
             'debugging' => '2',
             'compile_check' => true
         ];
 
         $configuration = new SmartyEngineConfiguration($smartyContextMock);
-        $this->assertSame($options, $configuration->getOptions());
+        $this->assertEquals($options, $configuration->getOptions());
     }
 
     public function testGetSecurityOptionsIfOff()
@@ -70,18 +71,18 @@ class SmartyEngineConfigurationTest extends \PHPUnit\Framework\TestCase
     {
         /** @var SmartyContextInterface $smartyContextMock */
         $smartyContextMock = $this->getSmartyContextMock();
-        $oxSmarty = oxSmarty::getInstance($smartyContextMock);
+        $resource = new CacheResourcePlugin($smartyContextMock);
         $options = ['ox' => [
-            $oxSmarty,
-            'ox_get_template',
-            'ox_get_timestamp',
-            'ox_get_secure',
-            'ox_get_trusted'
-        ]
+            $resource,
+            'getTemplate',
+            'getTimestamp',
+            'getSecure',
+            'getTrusted'
+            ]
         ];
 
         $configuration = new SmartyEngineConfiguration($smartyContextMock);
-        $this->assertSame($options, $configuration->getResources());
+        $this->assertEquals($options, $configuration->getResources());
     }
 
     public function testGetPrefilterPlugin()

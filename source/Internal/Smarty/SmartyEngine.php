@@ -1,9 +1,7 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: vilma
- * Date: 02.08.18
- * Time: 09:34
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Internal\Smarty;
@@ -127,7 +125,6 @@ class SmartyEngine implements BaseEngineInterface
     {
         $template = $this->parser->parse($name);
 
-        // Keep 'tpl' for backwards compatibility.
         return in_array($template->get('engine'), array('smarty', 'tpl'), true);
     }
 

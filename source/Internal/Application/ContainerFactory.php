@@ -9,9 +9,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Application;
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Application\PSR11Compliance\ContainerWrapper;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 
 /**
@@ -26,7 +24,7 @@ class ContainerFactory
     private static $instance = null;
 
     /**
-     * @var Container
+     * @var ContainerInterface
      */
     private $symfonyContainer = null;
 
@@ -48,7 +46,7 @@ class ContainerFactory
             $this->initializeContainer();
         }
 
-        return new ContainerWrapper($this->symfonyContainer);
+        return $this->symfonyContainer;
     }
 
     /**
@@ -93,7 +91,6 @@ class ContainerFactory
     private function getCompiledSymfonyContainer()
     {
         $containerBuilder = new ContainerBuilder();
-
         $this->symfonyContainer = $containerBuilder->getContainer();
         $this->symfonyContainer->compile();
     }
@@ -106,10 +103,7 @@ class ContainerFactory
     private function saveContainerToCache($cachefile)
     {
         $dumper = new PhpDumper($this->symfonyContainer);
-       // file_put_contents($cachefile, $dumper->dump(), LOCK_EX);
-        $fp = fopen($cachefile, 'c');
-        fwrite($fp, $dumper->dump());
-        fclose($fp);
+        file_put_contents($cachefile, $dumper->dump(), LOCK_EX);
     }
 
     /**

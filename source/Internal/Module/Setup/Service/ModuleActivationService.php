@@ -58,6 +58,9 @@ class ModuleActivationService implements ModuleActivationServiceInterface
 
         $this->validateModuleSettings($moduleConfiguration);
 
+        /**
+         * @todo [II] wrap it in transaction.
+         */
         foreach ($moduleConfiguration->getSettings() as $setting) {
             $handler = $this->getHandler($setting);
             $handler->handle($setting, $moduleId, $shopId);

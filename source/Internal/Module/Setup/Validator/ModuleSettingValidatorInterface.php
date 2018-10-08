@@ -15,8 +15,10 @@ interface ModuleSettingValidatorInterface
 {
     /**
      * @param ModuleSetting $moduleSetting
+     * @param string        $moduleId
+     * @param int           $shopId
      */
-    public function validate(ModuleSetting $moduleSetting);
+    public function validate(ModuleSetting $moduleSetting, string $moduleId, int $shopId);
 
     /**
      * @param ModuleSetting $moduleSetting

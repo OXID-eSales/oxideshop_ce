@@ -15,8 +15,10 @@ class SmartyPluginDirectoriesModuleSettingValidator implements ModuleSettingVali
 {
     /**
      * @param ModuleSetting $moduleSetting
+     * @param string        $moduleId
+     * @param int           $shopId
      */
-    public function validate(ModuleSetting $moduleSetting)
+    public function validate(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
     {
         // TODO: Implement validate() method.
     }

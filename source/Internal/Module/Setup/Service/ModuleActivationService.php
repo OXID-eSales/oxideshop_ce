@@ -56,7 +56,7 @@ class ModuleActivationService implements ModuleActivationServiceInterface
             $shopId
         );
 
-        $this->validateModuleSettings($moduleConfiguration);
+        $this->validateModuleSettings($moduleConfiguration, $moduleId, $shopId);
 
         /**
          * @todo [II] wrap it in transaction.
@@ -102,13 +102,15 @@ class ModuleActivationService implements ModuleActivationServiceInterface
 
     /**
      * @param ModuleConfiguration $moduleConfiguration
+     * @param string              $moduleId
+     * @param int                 $shopId
      */
-    private function validateModuleSettings(ModuleConfiguration $moduleConfiguration)
+    private function validateModuleSettings(ModuleConfiguration $moduleConfiguration, string $moduleId, int $shopId)
     {
         foreach ($moduleConfiguration->getSettings() as $setting) {
             foreach ($this->moduleSettingValidators as $validator) {
                 if ($validator->canValidate($setting)) {
-                    $validator->validate($setting);
+                    $validator->validate($setting, $moduleId, $shopId);
                 }
             }
         }

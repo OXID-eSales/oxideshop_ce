@@ -2,6 +2,8 @@ parameters:
   module_configuration_path: OxidEsales\EshopCommunity\Internal\Module\Configuration
   oxid_esales.module.configuration.metadata_settings:
     v2.0:
+      - path
+      - version
       - blocks
       - controllers
       - extend
@@ -9,18 +11,20 @@ parameters:
       - settings
       - templates
     v2.1:
+      - path
+      - version
       - blocks
       - controllers
       - extend
       - events
       - settings
       - templates
-      - smartyDirectories
+      - smartyPluginDirectories
 
 services:
-  oxid_esales.module.configuration.data_mapper.module_configuration_to_shop_configuration_data_mapper:
-    class: %module_configuration_path%\DataMapper\ModuleConfigurationToShopConfigurationDataMapper
-    public: false
+  OxidEsales\EshopCommunity\Internal\Module\Configuration\Provider\ModuleConfigurationProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Provider\ModuleConfigurationProvider
+    autowire: true
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface:
     class: %module_configuration_path%\Dao\ProjectConfigurationDao

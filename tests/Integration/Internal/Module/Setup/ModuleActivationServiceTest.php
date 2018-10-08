@@ -11,9 +11,10 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Setup;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\ModuleActivationServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -26,8 +27,6 @@ class ModuleActivationServiceTest extends TestCase
 
     public function testActivation()
     {
-        $this->markTestSkipped('Not implemented yet.');
-
         $projectConfigurationDao = $this->get(ProjectConfigurationDaoInterface::class);
         $projectConfigurationDao->persistConfiguration($this->getTestProjectConfiguration());
 
@@ -35,14 +34,54 @@ class ModuleActivationServiceTest extends TestCase
         $moduleActivationService->activate('testModuleConfiguration', 1);
     }
 
-    private function getTestProjectConfiguration()
+    private function getTestProjectConfiguration(): ProjectConfiguration
     {
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId('testModuleConfiguration')
-            ->setPath('testModuleConfigurationPath')
-            ->setVersion('v2.0')
             ->setState('active');
+
+        $moduleConfiguration->setSetting(
+            new ModuleSetting('path', 'somePath')
+        )
+        ->setSetting(
+            new ModuleSetting('version', 'v2.1')
+        )
+        ->setSetting(new ModuleSetting(
+            'events',
+            [
+                'onActivate' => 'ModuleClass::onActivate',
+                'onDeactivate' => 'ModuleClass::onDeactivate',
+            ]
+        ))
+        ->setSetting(new ModuleSetting(
+            'controllers',
+            [
+                'originalClassNamespace' => 'moduleClassNamespace',
+                'otherOriginalClassNamespace' => 'moduleClassNamespace',
+            ]
+        ))
+        ->setSetting(new ModuleSetting(
+            'templates',
+            [
+                'originalTemplate' => 'moduleTemplate',
+                'otherOriginalTemplate' => 'moduleTemplate',
+            ]
+        ))
+        ->setSetting(new ModuleSetting(
+            'extend',
+            [
+                'originalClassNamespace' => 'moduleClassNamespace',
+                'otherOriginalClassNamespace' => 'moduleClassNamespace',
+            ]
+        ))
+        ->setSetting(new ModuleSetting(
+            'smartyPluginDirectories',
+            [
+                'firstSmartyDirectory',
+                'secondSmartyDirectory',
+            ]
+        ));
 
         $shopConfiguration = new ShopConfiguration();
         $shopConfiguration->setModuleConfiguration('testModuleConfiguration', $moduleConfiguration);

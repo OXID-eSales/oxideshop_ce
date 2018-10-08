@@ -24,16 +24,6 @@ class ModuleConfiguration
     private $state;
 
     /**
-     * @var string
-     */
-    private $version;
-
-    /**
-     * @var string
-     */
-    private $path;
-
-    /**
      * @var array
      */
     private $settings = [];
@@ -75,42 +65,6 @@ class ModuleConfiguration
     }
 
     /**
-     * @return string
-     */
-    public function getVersion(): string
-    {
-        return $this->version;
-    }
-
-    /**
-     * @param string $version
-     * @return ModuleConfiguration
-     */
-    public function setVersion(string $version): ModuleConfiguration
-    {
-        $this->version = $version;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPath(): string
-    {
-        return $this->path;
-    }
-
-    /**
-     * @param string $path
-     * @return ModuleConfiguration
-     */
-    public function setPath(string $path): ModuleConfiguration
-    {
-        $this->path = $path;
-        return $this;
-    }
-
-    /**
      * @return array
      */
     public function getSettings(): array
@@ -129,14 +83,13 @@ class ModuleConfiguration
     }
 
     /**
-     * @param string        $settingName
      * @param ModuleSetting $moduleSetting
      *
      * @return $this
      */
-    public function setModuleSetting(string $settingName, ModuleSetting $moduleSetting): ModuleConfiguration
+    public function setSetting(ModuleSetting $moduleSetting): ModuleConfiguration
     {
-        $this->settings[$settingName] = $moduleSetting;
+        $this->settings[$moduleSetting->getName()] = $moduleSetting;
         return $this;
     }
 
@@ -153,7 +106,7 @@ class ModuleConfiguration
      * @param string $settingName
      * @return ModuleSetting
      */
-    public function getModuleSetting(string $settingName): ModuleSetting
+    public function getSetting(string $settingName): ModuleSetting
     {
         return $this->settings[$settingName];
     }

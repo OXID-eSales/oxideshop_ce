@@ -6,7 +6,7 @@ declare(strict_types=1);
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Module\Setup;
+namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Service;
 
 /**
  * @internal
@@ -18,10 +18,4 @@ interface ModuleActivationServiceInterface
      * @param int    $shopId
      */
     public function activate(string $moduleId, int $shopId);
-
-    /**
-     * @param string $moduleId
-     * @param int    $shopId
-     */
-    public function deactivate(string $moduleId, int $shopId);
 }

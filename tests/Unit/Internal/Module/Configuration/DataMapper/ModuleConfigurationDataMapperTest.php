@@ -22,9 +22,9 @@ class ModuleConfigurationDataMapperTest extends TestCase
         $configurationData = [
             'id'        => 'moduleId',
             'state'     => 'active',
-            'version'   => '1.0',
-            'path'      => 'relativePath',
             'settings'  => [
+                'version'   => '1.0',
+                'path'      => 'relativePath',
                 'templates' => [
                     'shopTemplate' => 'moduleTemplate',
                 ],

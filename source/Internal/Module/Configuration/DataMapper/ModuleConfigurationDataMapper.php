@@ -38,9 +38,7 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
     public function toData(ModuleConfiguration $configuration): array
     {
         $data['id']         = $configuration->getId();
-        $data['version']    = $configuration->getVersion();
         $data['state']      = $configuration->getState();
-        $data['path']       = $configuration->getPath();
         $data['settings']   = $this->getSettingsData($configuration);
 
         return $data;
@@ -55,9 +53,7 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId($data['id'])
-            ->setVersion($data['version'])
-            ->setState($data['state'])
-            ->setPath($data['path']);
+            ->setState($data['state']);
 
         if (isset($data['settings'])) {
             $this->setSettings($moduleConfiguration, $data['settings']);
@@ -75,13 +71,12 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
         $settings = $this->getMappedSettings($settingsData);
 
         $this->settingValidator->validate(
-            $moduleConfiguration->getVersion(),
+            $settingsData['version'],
             $settings
         );
 
         foreach ($settings as $setting) {
-            $moduleConfiguration->setModuleSetting(
-                $setting->getName(),
+            $moduleConfiguration->setSetting(
                 $setting
             );
         }

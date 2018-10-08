@@ -22,11 +22,11 @@ class ModuleConfigurationTest extends TestCase
         $setting = new ModuleSetting('testSetting', []);
 
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->setModuleSetting('testSetting', $setting);
+        $moduleConfiguration->setSetting($setting);
 
         $this->assertSame(
             $setting,
-            $moduleConfiguration->getModuleSetting('testSetting')
+            $moduleConfiguration->getSetting('testSetting')
         );
     }
 
@@ -36,8 +36,7 @@ class ModuleConfigurationTest extends TestCase
 
         $this->assertFalse($moduleConfiguration->hasSetting('testSetting'));
 
-        $moduleConfiguration->setModuleSetting(
-            'testSetting',
+        $moduleConfiguration->setSetting(
             new ModuleSetting('testSetting', [])
         );
 

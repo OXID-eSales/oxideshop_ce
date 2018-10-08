@@ -1,12 +1,54 @@
 services:
-  OxidEsales\EshopCommunity\Internal\Module\Setup\ModuleActivationServiceInterface:
-    class: OxidEsales\EshopCommunity\Internal\Module\Setup\ModuleActivationService
+  OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationService
     autowire: true
-    public: false
+    calls:
+      - [addHandler, ['@oxid_esales.module.setup.path_module_setting_handler']]
+      - [addHandler, ['@oxid_esales.module.setup.version_module_setting_handler']]
+      - [addHandler, ['@oxid_esales.module.setup.templates_module_setting_handler']]
+      - [addHandler, ['@oxid_esales.module.setup.controllers_module_setting_handler']]
+      - [addHandler, ['@oxid_esales.module.setup.smarty_plugin_directories_module_setting_handler']]
+      - [addValidator, ['@oxid_esales.module.setup.validator.controllers_module_setting_validator']]
+      - [addValidator, ['@oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator']]
 
-  OxidEsales\EshopCommunity\Internal\Module\Setup\ModuleDataTransferServiceInterface:
-    class: OxidEsales\EshopCommunity\Internal\Module\Setup\ModuleDataToShopConfigurationTransferService
+  oxid_esales.module.setup.version_module_setting_handler:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopConfigurationModuleSettingHandler
     arguments:
-      - '@oxid_esales.module.configuration.data_mapper.module_configuration_to_shop_configuration_data_mapper'
+      - version
+      - aModuleVersions
       - '@OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface'
-    public: false
+
+  oxid_esales.module.setup.path_module_setting_handler:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopConfigurationModuleSettingHandler
+    arguments:
+      - path
+      - aModulePaths
+      - '@OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface'
+
+  oxid_esales.module.setup.templates_module_setting_handler:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopConfigurationModuleSettingHandler
+    arguments:
+      - templates
+      - aModuleTemplates
+      - '@OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface'
+
+  oxid_esales.module.setup.controllers_module_setting_handler:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopConfigurationModuleSettingHandler
+    arguments:
+      - controllers
+      - aModuleControllers
+      - '@OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface'
+
+  oxid_esales.module.setup.smarty_plugin_directories_module_setting_handler:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopConfigurationModuleSettingHandler
+    arguments:
+      - smartyPluginDirectories
+      - moduleSmartyPluginDirectories
+      - '@OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface'
+
+
+  oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ControllersModuleSettingValidator
+
+  oxid_esales.module.setup.validator.controllers_module_setting_validator:
+      class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\SmartyPluginDirectoriesModuleSettingValidator

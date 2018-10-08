@@ -75,13 +75,9 @@ class AdminListTest extends \OxidTestCase
      */
     public function testGetViewListSize()
     {
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('setConfigParam', 'getConfigParam'));
-        $oConfig->expects($this->once())->method('setConfigParam')->with($this->equalTo('iAdminListSize'), $this->equalTo(10));
-        $oConfig->expects($this->once())->method('getConfigParam')->will($this->returnValue(''));
-
         // testing is config value taken
         $oAdminList = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminListController::class, array('getConfig'), array(), '', false);
-        $oAdminList->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        \OxidEsales\Eshop\Core\Registry::getConfig()->setConfigParam('iAdminListSize', 0);
         $this->assertEquals(10, $oAdminList->UNITgetViewListSize());
 
         // testing if cookie data is used

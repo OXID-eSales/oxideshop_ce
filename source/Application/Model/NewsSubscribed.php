@@ -107,7 +107,7 @@ class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function loadFromUserId($sOxUserId)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sOxId = $oDb->getOne("select oxid from oxnewssubscribed where oxuserid = {$oDb->quote($sOxUserId)} and oxshopid = {$oDb->quote($this->getConfig()->getShopId())}");
+        $sOxId = $oDb->getOne("select oxid from oxnewssubscribed where oxuserid = {$oDb->quote($sOxUserId)} and oxshopid = {$oDb->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopId())}");
 
         return $this->load($sOxId);
     }

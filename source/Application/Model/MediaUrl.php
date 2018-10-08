@@ -71,7 +71,7 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function getLink()
     {
         if ($this->oxmediaurls__oxisuploaded->value) {
-            $sUrl = $this->getConfig()->isSsl() ? $this->getConfig()->getSslShopUrl() : $this->getConfig()->getShopUrl();
+            $sUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->isSsl() ? \OxidEsales\Eshop\Core\Registry::getConfig()->getSslShopUrl() : \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl();
             $sUrl .= 'out/media/';
             $sUrl .= basename($this->oxmediaurls__oxurl->value);
         } else {
@@ -100,7 +100,7 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function delete($sOXID = null)
     {
-        $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . "/out/media/" .
+        $sFilePath = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopDir') . "/out/media/" .
                      basename($this->oxmediaurls__oxurl->value);
 
         if ($this->oxmediaurls__oxisuploaded->value) {

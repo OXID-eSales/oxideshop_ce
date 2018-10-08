@@ -241,7 +241,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         $this->init('oxorder');
 
         // set usage of separate orders numbering for different shops
-        $this->setSeparateNumbering($this->getConfig()->getConfigParam('blSeparateNumbering'));
+        $this->setSeparateNumbering(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blSeparateNumbering'));
     }
 
     /**
@@ -621,7 +621,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _loadFromBasket(\OxidEsales\Eshop\Application\Model\Basket $oBasket)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         // store IP Address - default must be FALSE as it is illegal to store
         if ($myConfig->getConfigParam('blStoreIPs') && $this->oxorder__oxip->value === null) {
@@ -999,7 +999,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _setFolder()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $this->oxorder__oxfolder = new \OxidEsales\Eshop\Core\Field(key($myConfig->getShopConfVar('aOrderfolder', $myConfig->getShopId())), \OxidEsales\Eshop\Core\Field::T_RAW);
     }
 
@@ -1211,7 +1211,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _insert()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oUtilsDate = \OxidEsales\Eshop\Core\Registry::getUtilsDate();
 
         //V #M525 orderdate must be the same as it was
@@ -1246,7 +1246,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _getCounterIdent()
     {
-        $sCounterIdent = ($this->_blSeparateNumbering) ? 'oxOrder_' . $this->getConfig()->getShopId() : 'oxOrder';
+        $sCounterIdent = ($this->_blSeparateNumbering) ? 'oxOrder_' . \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId() : 'oxOrder';
 
         return $sCounterIdent;
     }
@@ -1388,7 +1388,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         $this->_oOrderBasket->setOrderId($this->getId());
 
         // setting basket currency order uses
-        $aCurrencies = $this->getConfig()->getCurrencyArray();
+        $aCurrencies = \OxidEsales\Eshop\Core\Registry::getConfig()->getCurrencyArray();
         foreach ($aCurrencies as $oCur) {
             if ($oCur->name == $this->oxorder__oxcurrency->value) {
                 $oBasketCur = $oCur;
@@ -1527,7 +1527,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getInvoiceNum()
     {
-        $sQ = 'select max(oxorder.oxinvoicenr) from oxorder where oxorder.oxshopid = "' . $this->getConfig()->getShopId() . '" ';
+        $sQ = 'select max(oxorder.oxinvoicenr) from oxorder where oxorder.oxshopid = "' . \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId() . '" ';
 
         return (( int ) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ, false) + 1);
     }
@@ -1539,7 +1539,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getNextBillNum()
     {
-        $sQ = 'select max(cast(oxorder.oxbillnr as unsigned)) from oxorder where oxorder.oxshopid = "' . $this->getConfig()->getShopId() . '" ';
+        $sQ = 'select max(cast(oxorder.oxbillnr as unsigned)) from oxorder where oxorder.oxshopid = "' . \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId() . '" ';
 
         return (( int ) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ, false) + 1);
     }
@@ -1610,7 +1610,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getOrderSum($blToday = false)
     {
         $sSelect = 'select sum(oxtotalordersum / oxcurrate) from oxorder where ';
-        $sSelect .= 'oxshopid = "' . $this->getConfig()->getShopId() . '" and oxorder.oxstorno != "1" ';
+        $sSelect .= 'oxshopid = "' . \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId() . '" and oxorder.oxstorno != "1" ';
 
         if ($blToday) {
             $sSelect .= 'and oxorderdate like "' . date('Y-m-d') . '%" ';
@@ -1630,7 +1630,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getOrderCnt($blToday = false)
     {
         $sSelect = 'select count(*) from oxorder where ';
-        $sSelect .= 'oxshopid = "' . $this->getConfig()->getShopId() . '"  and oxorder.oxstorno != "1" ';
+        $sSelect .= 'oxshopid = "' . \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId() . '"  and oxorder.oxstorno != "1" ';
 
         if ($blToday) {
             $sSelect .= 'and oxorderdate like "' . date('Y-m-d') . '%" ';
@@ -1795,7 +1795,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
-        $sQ = 'select oxorder.oxpaymenttype from oxorder where oxorder.oxshopid="' . $this->getConfig()->getShopId() . '" and oxorder.oxuserid=' . $masterDb->quote($sUserId) . ' order by oxorder.oxorderdate desc ';
+        $sQ = 'select oxorder.oxpaymenttype from oxorder where oxorder.oxshopid="' . \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId() . '" and oxorder.oxuserid=' . $masterDb->quote($sUserId) . ' order by oxorder.oxorderdate desc ';
         $sLastPaymentId = $masterDb->getOne($sQ);
 
         return $sLastPaymentId;
@@ -1849,7 +1849,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getTotalOrderSum()
     {
-        $oCur = $this->getConfig()->getActShopCurrencyObject();
+        $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
 
         return number_format((double) $this->oxorder__oxtotalordersum->value, $oCur->decimal, '.', '');
     }
@@ -1873,7 +1873,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         if ($blFormatCurrency) {
             $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
-            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
             foreach ($aVats as $sKey => $dVat) {
                 $aVats[$sKey] = $oLang->formatCurrency($dVat, $oCur);
             }
@@ -1954,7 +1954,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         if ($this->_oOrderCurrency === null) {
             // setting default in case unrecognized currency was set during order
-            $aCurrencies = $this->getConfig()->getCurrencyArray();
+            $aCurrencies = \OxidEsales\Eshop\Core\Registry::getConfig()->getCurrencyArray();
             $this->_oOrderCurrency = current($aCurrencies);
 
             foreach ($aCurrencies as $oCurr) {
@@ -2027,7 +2027,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function validateDeliveryAddress($oUser)
     {
-        $sDelAddressMD5 = $this->getConfig()->getRequestParameter('sDeliveryAddressMD5');
+        $sDelAddressMD5 = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sDeliveryAddressMD5');
 
         $sDeliveryAddress = $oUser->getEncodedDeliveryAddress();
 
@@ -2278,7 +2278,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         $paymentModel->load($paymentId);
 
         $dynamicValues = $this->getDynamicValues();
-        $shopId = $this->getConfig()->getShopId();
+        $shopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
 
         return $paymentModel->isValidPayment(
             $dynamicValues,

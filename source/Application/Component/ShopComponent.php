@@ -32,7 +32,7 @@ class ShopComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     {
         parent::render();
 
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         // is shop active?
         $oShop = $myConfig->getActiveShop();

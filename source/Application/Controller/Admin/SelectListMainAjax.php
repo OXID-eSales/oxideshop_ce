@@ -63,7 +63,7 @@ class SelectListMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      */
     protected function _getQuery()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         // looking for table/view
         $sArtTable = $this->_getViewName('oxarticles');

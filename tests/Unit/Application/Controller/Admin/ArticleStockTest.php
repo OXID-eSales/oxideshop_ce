@@ -247,7 +247,7 @@ class ArticleStockTest extends \OxidTestCase
         oxTestModules::addModuleObject('oxbase', $oBase);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleStock::class, array('getConfig', 'resetContentCache', 'getEditObjectId', 'oxNew'), array(), '', false);
-        $oView->expects($this->atLeastOnce())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oView->expects($this->atLeastOnce())->method('resetContentCache');
         $oView->expects($this->atLeastOnce())->method('getEditObjectId')->will($this->returnValue('_testArtId'));
 

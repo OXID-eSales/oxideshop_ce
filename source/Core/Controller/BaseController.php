@@ -195,7 +195,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function getViewParameter($sKey)
     {
-        return (isset($this->_aViewParams[$sKey])) ? $this->_aViewParams[$sKey] : $this->getConfig()->getRequestParameter($sKey);
+        return (isset($this->_aViewParams[$sKey])) ? $this->_aViewParams[$sKey] : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter($sKey);
     }
 
     /**
@@ -286,7 +286,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
         if ($sBelboon = $this->getSession()->getVariable('belboon')) {
             return $sBelboon;
         }
-        if (($sBelboon = $this->getConfig()->getRequestParameter('belboon'))) {
+        if (($sBelboon = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('belboon'))) {
             $this->getSession()->setVariable('belboon', $sBelboon);
         }
 
@@ -552,7 +552,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     protected function _executeNewAction($sNewAction)
     {
         if ($sNewAction) {
-            $myConfig = $this->getConfig();
+            $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
             // page parameters is the part which goes after '?'
             $params = explode('?', $sNewAction);
@@ -646,7 +646,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function getShopEdition()
     {
-        return $this->getConfig()->getEdition();
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getEdition();
     }
 
     /**
@@ -656,7 +656,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function getPackageInfo()
     {
-        return $this->getConfig()->getPackageInfo();
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getPackageInfo();
     }
 
     /**
@@ -688,7 +688,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     public function isDemoVersion()
     {
         if ($this->_blDemoVersion == null) {
-            $this->_blDemoVersion = $this->getConfig()->detectVersion() == 1;
+            $this->_blDemoVersion = \OxidEsales\Eshop\Core\Registry::getConfig()->detectVersion() == 1;
         }
 
         return $this->_blDemoVersion;
@@ -701,7 +701,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function isBetaVersion()
     {
-        return (stripos($this->getConfig()->getVersion(), 'beta') !== false);
+        return (stripos(\OxidEsales\Eshop\Core\Registry::getConfig()->getVersion(), 'beta') !== false);
     }
 
     /**
@@ -711,7 +711,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function isRCVersion()
     {
-        return (stripos($this->getConfig()->getVersion(), 'rc') !== false);
+        return (stripos(\OxidEsales\Eshop\Core\Registry::getConfig()->getVersion(), 'rc') !== false);
     }
 
     /**
@@ -732,7 +732,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     public function isDemoShop()
     {
         if ($this->_blDemoShop == null) {
-            $this->_blDemoShop = $this->getConfig()->isDemoShop();
+            $this->_blDemoShop = \OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop();
         }
 
         return $this->_blDemoShop;
@@ -798,7 +798,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function getCategoryId()
     {
-        if ($this->_sCategoryId == null && ($sCatId = $this->getConfig()->getRequestParameter('cnid'))) {
+        if ($this->_sCategoryId == null && ($sCatId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid'))) {
             $this->_sCategoryId = $sCatId;
         }
 

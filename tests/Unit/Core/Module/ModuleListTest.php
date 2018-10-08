@@ -445,7 +445,7 @@ class ModuleListTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('saveShopConfVar')->with($this->equalTo('arr'), $this->equalTo('aDisabledModules'), $this->equalTo($aResult));
 
         $oModuleList = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, array('getConfig', 'getDisabledModules'));
-        $oModuleList->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oModuleList->expects($this->once())->method('getDisabledModules')->will($this->returnValue($aModules));
 
 
@@ -475,7 +475,7 @@ class ModuleListTest extends \OxidTestCase
 
         /** @var \oxModuleList|\PHPUnit\Framework\MockObject\MockObject $oModuleList */
         $oModuleList = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, array('getConfig', 'getModuleConfigParametersByKey'));
-        $oModuleList->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oModuleList->expects($this->once())->method('getModuleConfigParametersByKey')->with('Paths')->will($this->returnValue($aModulePaths));
 
 
@@ -505,7 +505,7 @@ class ModuleListTest extends \OxidTestCase
 
         /** @var \oxModuleList|\PHPUnit\Framework\MockObject\MockObject $oModuleList */
         $oModuleList = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, array('getConfig', 'getModuleConfigParametersByKey'));
-        $oModuleList->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oModuleList->expects($this->once())->method('getModuleConfigParametersByKey')->with('Versions')->will($this->returnValue($aModuleVersions));
 
         $oModuleList->removeFromModulesArray(ModuleList::MODULE_KEY_VERSIONS, $aDeletedExtIds);
@@ -534,7 +534,7 @@ class ModuleListTest extends \OxidTestCase
 
         /** @var \oxModuleList|\PHPUnit\Framework\MockObject\MockObject $oModuleList */
         $oModuleList = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, array('getConfig', 'getModuleConfigParametersByKey'));
-        $oModuleList->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oModuleList->expects($this->once())->method('getModuleConfigParametersByKey')->with('Events')->will($this->returnValue($aModuleEvents));
 
         $oModuleList->removeFromModulesArray(ModuleList::MODULE_KEY_EVENTS, $aDeletedExtIds);
@@ -563,7 +563,7 @@ class ModuleListTest extends \OxidTestCase
 
         /** @var \oxModuleList|\PHPUnit\Framework\MockObject\MockObject $oModuleList */
         $oModuleList = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, array('getConfig', 'getModuleConfigParametersByKey'));
-        $oModuleList->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oModuleList->expects($this->once())->method('getModuleConfigParametersByKey')->with('Files')->will($this->returnValue($aModuleFiles));
 
         $oModuleList->removeFromModulesArray(ModuleList::MODULE_KEY_FILES, $aDeletedExtIds);
@@ -592,7 +592,7 @@ class ModuleListTest extends \OxidTestCase
 
         /** @var \oxModuleList|\PHPUnit\Framework\MockObject\MockObject $oModuleList */
         $oModuleList = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, array('getConfig', 'getModuleConfigParametersByKey'));
-        $oModuleList->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oModuleList->expects($this->once())->method('getModuleConfigParametersByKey')->with('Templates')->will($this->returnValue($aModuleTemplates));
 
         $oModuleList->removeFromModulesArray(ModuleList::MODULE_KEY_TEMPLATES, $aDeletedExtIds);
@@ -754,7 +754,7 @@ class ModuleListTest extends \OxidTestCase
 
         $oModuleList = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, array('getModuleConfigParametersByKey', 'getConfig'));
         $oModuleList->expects($this->once())->method('getModuleConfigParametersByKey')->with('Paths')->will($this->returnValue($aModulePaths));
-        $oModuleList->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $oModuleList->_saveModulePath("testId3", "testPath3");
     }

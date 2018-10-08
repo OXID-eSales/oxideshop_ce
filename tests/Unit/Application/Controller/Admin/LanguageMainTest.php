@@ -76,7 +76,7 @@ class LanguageMainTest extends \OxidTestCase
         $oConfig->setConfigParam("blAllowSharedEdit", true);
 
         $oMainLang = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageMain::class, array("_validateInput", "getConfig", "_getLanguages"), array(), '', false);
-        $oMainLang->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oMainLang->expects($this->once())->method('_getLanguages')->will($this->returnValue($aDefaultLangData));
         $oMainLang->expects($this->once())->method('_validateInput')->will($this->returnValue(true));
 
@@ -110,7 +110,7 @@ class LanguageMainTest extends \OxidTestCase
         $oConfig->setConfigParam("blAllowSharedEdit", true);
 
         $oMainLang = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageMain::class, array("_validateInput", "getConfig", "_checkMultilangFieldsExistsInDb", "_addNewMultilangFieldsToDb", "_getLanguages"), array(), '', false);
-        $oMainLang->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oMainLang->expects($this->once())->method('_getLanguages')->will($this->returnValue($aLangData));
         $oMainLang->expects($this->once())->method('_validateInput')->will($this->returnValue(true));
         $oMainLang->expects($this->once())->method('_checkMultilangFieldsExistsInDb')->with($this->equalTo('fr'))->will($this->returnValue(false));
@@ -247,7 +247,7 @@ class LanguageMainTest extends \OxidTestCase
 
         /** @var MockObject|Language_Main $oView */
         $oView = $this->getMock($this->getProxyClassName('Language_Main'), array("getConfig"), array(), '', false);
-        $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oView->setNonPublicVar('_aLangData', $aLangData);
 
         $oView->_setDefaultLang("en");
@@ -284,7 +284,7 @@ class LanguageMainTest extends \OxidTestCase
 
         /** @var MockObject|Language_Main $oView */
         $oView = $this->getMock($this->getProxyClassName('Language_Main'), array("getConfig"), array(), '', false);
-        $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oView->setNonPublicVar('_aLangData', $aLangData);
 
         $oView->_checkLangTranslations("en");
@@ -310,7 +310,7 @@ class LanguageMainTest extends \OxidTestCase
 
         /** @var MockObject|Language_Main $oView */
         $oView = $this->getMock($this->getProxyClassName('Language_Main'), array("getConfig"), array(), '', false);
-        $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oView->setNonPublicVar('_aLangData', $aLangData);
 
         $oView->_checkLangTranslations("en");

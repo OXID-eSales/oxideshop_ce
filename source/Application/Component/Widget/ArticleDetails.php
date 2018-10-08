@@ -268,7 +268,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      */
     public function ratingIsActive()
     {
-        return $this->getConfig()->getConfigParam('bl_perfLoadReviews');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadReviews');
     }
 
     /**
@@ -380,7 +380,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
 
             //if we are child and do not have any variants then let's load all parent variants as ours
             if ($oParent = $oProduct->getParentArticle()) {
-                $myConfig = $this->getConfig();
+                $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
                 $oParent->setNoVariantLoading(false);
                 $this->_aVariantList = $oParent->getFullVariants(false);
@@ -580,7 +580,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     {
         if ($this->_aReviews === null) {
             $this->_aReviews = false;
-            if ($this->getConfig()->getConfigParam('bl_perfLoadReviews')) {
+            if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadReviews')) {
                 $this->_aReviews = $this->getProduct()->getReviews();
             }
         }
@@ -752,7 +752,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
         if ($this->_dRatingValue === null) {
             $this->_dRatingValue = (double) 0;
             if ($this->isReviewActive() && ($oDetailsProduct = $this->getProduct())) {
-                $blShowVariantsReviews = $this->getConfig()->getConfigParam('blShowVariantReviews');
+                $blShowVariantsReviews = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowVariantReviews');
                 $this->_dRatingValue = round($oDetailsProduct->getArticleRatingAverage($blShowVariantsReviews), 1);
             }
         }
@@ -767,7 +767,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      */
     public function isReviewActive()
     {
-        return $this->getConfig()->getConfigParam('bl_perfLoadReviews');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadReviews');
     }
 
     /**
@@ -780,7 +780,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
         if ($this->_iRatingCnt === null) {
             $this->_iRatingCnt = false;
             if ($this->isReviewActive() && ($oDetailsProduct = $this->getProduct())) {
-                $blShowVariantsReviews = $this->getConfig()->getConfigParam('blShowVariantReviews');
+                $blShowVariantsReviews = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowVariantReviews');
                 $this->_iRatingCnt = $oDetailsProduct->getArticleRatingCount($blShowVariantsReviews);
             }
         }
@@ -809,7 +809,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
             $this->_sBidPrice = false;
 
             $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pa');
-            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
             $iPrice = \OxidEsales\Eshop\Core\Registry::getUtils()->currency2Float($aParams['price']);
             $this->_sBidPrice = \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($iPrice, $oCur);
         }
@@ -858,7 +858,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      */
     public function getProduct()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
 
         if ($this->_oProduct === null) {
@@ -949,7 +949,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     {
         if ($this->_blMdView === null) {
             $this->_blMdView = false;
-            if ($this->getConfig()->getConfigParam('blUseMultidimensionVariants')) {
+            if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blUseMultidimensionVariants')) {
                 $iMaxMdDepth = $this->getProduct()->getMdVariants()->getMaxDepth();
                 $this->_blMdView = ($iMaxMdDepth > 1);
             }

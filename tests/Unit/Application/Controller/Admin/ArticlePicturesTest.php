@@ -5,10 +5,12 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\Config;
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay;
 use \oxField;
 use \oxDb;
+use OxidEsales\EshopCommunity\Core\Registry;
 use \oxRegistry;
 use \oxTestModules;
 
@@ -303,7 +305,7 @@ class ArticlePicturesTest extends \OxidTestCase
         oxRegistry::getSession()->deleteVariable("Errors");
 
         $oArtPic = $this->getProxyClass("Article_Pictures");
-        $oArtPic->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
         $oArtPic->save();
 
         $aEx = oxRegistry::getSession()->getVariable("Errors");
@@ -325,7 +327,7 @@ class ArticlePicturesTest extends \OxidTestCase
         oxRegistry::getSession()->deleteVariable("Errors");
 
         $oArtPic = $this->getProxyClass("Article_Pictures");
-        $oArtPic->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
         $oArtPic->deletePicture();
 
         $aEx = oxRegistry::getSession()->getVariable("Errors");

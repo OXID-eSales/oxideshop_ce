@@ -126,7 +126,7 @@ class UtilsFileTest extends \OxidTestCase
         $oUtilsFile = $this->getMock(\OxidEsales\Eshop\Core\UtilsFile::class, array("_moveImage"));
         $oUtilsFile->expects($this->once())->method('_moveImage')->will($this->returnValue(true));
 
-        $oUtilsFile->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
         $oUtilsFile->processFiles(oxNew('oxArticle'));
     }
 
@@ -145,7 +145,7 @@ class UtilsFileTest extends \OxidTestCase
         $oUtilsFile->expects($this->once())->method('_moveImage')->will($this->returnValue(true));
         $oUtilsFile->expects($this->never())->method('_copyFile')->will($this->returnValue(false));
 
-        $oUtilsFile->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
         $oUtilsFile->processFiles();
     }
 
@@ -162,7 +162,7 @@ class UtilsFileTest extends \OxidTestCase
 
         /** @var oxUtilsFile|PHPUnit\Framework\MockObject\MockObject $oUtilsFile */
         $oUtilsFile = \OxidEsales\Eshop\Core\Registry::getUtilsFile();
-        $oUtilsFile->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
         oxTestModules::addFunction('oxUtils', 'showMessageAndExit', '{throw new oxFileException("this is ok");}');
         $oUtilsFile->processFiles();
     }
@@ -396,7 +396,7 @@ class UtilsFileTest extends \OxidTestCase
         $oUtilsFile = $this->getMock(\OxidEsales\Eshop\Core\UtilsFile::class, array("_moveImage"));
         $oUtilsFile->expects($this->any())->method('_moveImage')->will($this->returnValue(true));
 
-        $oUtilsFile->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
         $oUtilsFile->processFiles(oxNew('oxArticle'));
 
         $this->assertEquals($oUtilsFile->getNewFilesCounter(), 2, "Check how much new files add.");

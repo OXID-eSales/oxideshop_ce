@@ -1495,7 +1495,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         if (!$finalTemplatePath) {
             $templatePathCalculator = $this->getModuleTemplatePathCalculator();
-            $templatePathCalculator->setModulesPath($this->getConfig()->getModulesDir());
+            $templatePathCalculator->setModulesPath(\OxidEsales\Eshop\Core\Registry::getConfig()->getModulesDir());
             try {
                 $finalTemplatePath = $templatePathCalculator->calculateModuleTemplatePath($templateName);
             } catch (Exception $e) {

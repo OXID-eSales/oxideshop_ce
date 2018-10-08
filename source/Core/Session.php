@@ -189,7 +189,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function getSidFromRequest()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sid = null;
 
         $sForceSidParam = $myConfig->getRequestParameter($this->getForcedName());
@@ -212,7 +212,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     public function start()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if ($this->isAdmin()) {
             $this->setName("admin_sid");
@@ -262,7 +262,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     public function getRequestChallengeToken()
     {
-        return preg_replace('/[^a-z0-9]/i', '', $this->getConfig()->getRequestParameter('stoken'));
+        return preg_replace('/[^a-z0-9]/i', '', \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('stoken'));
     }
 
     /**
@@ -479,7 +479,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     public function sid($blForceSid = false)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $blUseCookies = $this->_getSessionUseCookies();
         $sRet = '';
 
@@ -698,7 +698,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
             return true;
         }
 
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if (!$this->_getSessionUseCookies() || ($sUrl && $this->_getCookieSid() && !$oConfig->isCurrentProtocol($sUrl))) {
             // switching from ssl to non ssl or vice versa?
@@ -809,7 +809,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _forceSessionStart()
     {
-        return (!\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()) && ((( bool ) $this->getConfig()->getConfigParam('blForceSessionStart')) || $this->getConfig()->getRequestParameter("su") || $this->_blForceNewSession);
+        return (!\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()) && ((( bool ) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blForceSessionStart')) || \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("su") || $this->_blForceNewSession);
     }
 
     /**
@@ -820,7 +820,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
     protected function _allowSessionStart()
     {
         $blAllowSessionStart = true;
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         // special handling only in non-admin mode
         if (!$this->isAdmin()) {
@@ -858,7 +858,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
 
         // check only for non search engines
         if (!\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine() && !$myUtilsServer->isTrustedClientIp() && !$this->_isValidRemoteAccessToken()) {
-            $myConfig = $this->getConfig();
+            $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
             // checking if session user agent matches actual
             $blSwapped = $this->_checkUserAgent($myUtilsServer->getServerVar('HTTP_USER_AGENT'), $this->getVariable('sessionagent'));
@@ -912,7 +912,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
     protected function _checkCookies($sCookieSid, $aSessCookieSetOnce)
     {
         $blSwapped = false;
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sCurrUrl = $myConfig->isSsl() ? $myConfig->getSslShopUrl() : $myConfig->getShopUrl();
 
         $blSessCookieSetOnce = false;
@@ -990,7 +990,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getBasketName()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         if ($myConfig->getConfigParam('blMallSharedBasket') == 0) {
             return $myConfig->getShopId() . "_basket";
         }
@@ -1016,7 +1016,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getRequireSessionWithParams()
     {
-        $aCfgArray = $this->getConfig()->getConfigParam('aRequireSessionWithParams');
+        $aCfgArray = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aRequireSessionWithParams');
         if (is_array($aCfgArray)) {
             $aDefault = $this->_aRequireSessionWithParams;
             foreach ($aCfgArray as $key => $val) {
@@ -1039,7 +1039,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
     protected function _isSessionRequiredAction()
     {
         foreach ($this->_getRequireSessionWithParams() as $sParam => $aValues) {
-            $sValue = $this->getConfig()->getRequestParameter($sParam);
+            $sValue = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter($sParam);
             if (isset($sValue)) {
                 if (is_array($aValues)) {
                     if (isset($aValues[$sValue]) && $aValues[$sValue]) {
@@ -1061,7 +1061,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getSessionUseCookies()
     {
-        return $this->isAdmin() || $this->getConfig()->getConfigParam('blSessionUseCookies');
+        return $this->isAdmin() || \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blSessionUseCookies');
     }
 
     /**
@@ -1071,7 +1071,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _isValidRemoteAccessToken()
     {
-        $inputToken = $this->getConfig()->getRequestParameter('rtoken');
+        $inputToken = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('rtoken');
         $token = $this->getRemoteAccessToken(false);
 
         return !empty($inputToken) ? ($token === $inputToken) : false;

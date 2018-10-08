@@ -97,9 +97,9 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      */
     protected function _loadBaseChannel()
     {
-        $oShop = $this->getConfig()->getActiveShop();
+        $oShop = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveShop();
         $this->_aChannel['title'] = $oShop->oxshops__oxname->value;
-        $this->_aChannel['link'] = Registry::getUtilsUrl()->prepareUrlForNoSession($this->getConfig()->getShopUrl());
+        $this->_aChannel['link'] = Registry::getUtilsUrl()->prepareUrlForNoSession(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl());
         $this->_aChannel['description'] = '';
         $oLang = Registry::getLang();
         $aLangIds = $oLang->getLanguageIds();
@@ -116,7 +116,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         $this->_aChannel['generator'] = $oShop->oxshops__oxname->value;
 
         $editionSelector = new EditionSelector();
-        $this->_aChannel['image']['url'] = $this->getConfig()->getImageUrl()
+        $this->_aChannel['image']['url'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getImageUrl()
             . 'logo_' . strtolower($editionSelector->getEdition()) . '.png';
 
         $this->_aChannel['image']['title'] = $this->_aChannel['title'];
@@ -133,7 +133,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getCacheId($name)
     {
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         return $name . '_' . $oConfig->getShopId() . '_' . Registry::getLang()->getBaseLanguage() . '_' . (int) $oConfig->getShopCurrency();
     }
@@ -219,7 +219,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
 
         foreach ($oList as $oArticle) {
             $oItem = new stdClass();
-            $oActCur = $this->getConfig()->getActShopCurrencyObject();
+            $oActCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
             $sPrice = '';
 
             // check if article is a variant
@@ -305,7 +305,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      */
     protected function _prepareFeedName($sTitle)
     {
-        $oShop = $this->getConfig()->getActiveShop();
+        $oShop = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveShop();
 
         return $oShop->oxshops__oxname->value . "/" . $sTitle;
     }
@@ -318,7 +318,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getShopUrl()
     {
-        $sUrl = $this->getConfig()->getShopUrl();
+        $sUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl();
         $oStr = getStr();
         if ($oStr->strpos($sUrl, '?') !== false) {
             if (!$oStr->preg_match('/[?&](amp;)?$/i', $sUrl)) {
@@ -407,7 +407,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         }
 
         $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
-        $oArtList->loadTop5Articles($this->getConfig()->getConfigParam('iRssItemsCount'));
+        $oArtList->loadTop5Articles(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iRssItemsCount'));
 
         $oLang = Registry::getLang();
         $this->_loadData(
@@ -460,7 +460,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
             return;
         }
         $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
-        $oArtList->loadNewestArticles($this->getConfig()->getConfigParam('iRssItemsCount'));
+        $oArtList->loadNewestArticles(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iRssItemsCount'));
 
         $oLang = Registry::getLang();
         $this->_loadData(
@@ -550,7 +550,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
 
         $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
         $oArtList->setCustomSorting('oc.oxtimestamp desc');
-        $oArtList->loadCategoryArticles($oCat->getId(), null, $this->getConfig()->getConfigParam('iRssItemsCount'));
+        $oArtList->loadCategoryArticles($oCat->getId(), null, \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iRssItemsCount'));
 
         $oLang = Registry::getLang();
         $this->_loadData(
@@ -714,7 +714,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         //    return;
         //}
 
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oConfig->setConfigParam('iNrofCatArticles', $oConfig->getConfigParam('iRssItemsCount'));
 
         $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\Search::class)->getSearchArticles($sSearch, $sCatId, $sVendorId, $sManufacturerId, oxNew(\OxidEsales\Eshop\Application\Model\Article::class)->getViewName() . '.oxtimestamp desc');
@@ -809,7 +809,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
             return;
         }
 
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oConfig->setConfigParam('iNrofCrossellArticles', $oConfig->getConfigParam('iRssItemsCount'));
 
         $oList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class)->getRecommListsByIds([$oArticle->getId()]);
@@ -881,7 +881,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         }
 
         $oList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
-        $oList->loadRecommArticles($oRecommList->getId(), ' order by oxobject2list.oxtimestamp desc limit ' . $this->getConfig()->getConfigParam('iRssItemsCount'));
+        $oList->loadRecommArticles($oRecommList->getId(), ' order by oxobject2list.oxtimestamp desc limit ' . \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iRssItemsCount'));
 
         $oLang = Registry::getLang();
         $this->_loadData(
@@ -935,7 +935,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         }
 
         $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
-        $oArtList->loadActionArticles('OXBARGAIN', $this->getConfig()->getConfigParam('iRssItemsCount'));
+        $oArtList->loadActionArticles('OXBARGAIN', \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iRssItemsCount'));
 
         $oLang = Registry::getLang();
         $this->_loadData(

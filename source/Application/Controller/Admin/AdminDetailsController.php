@@ -30,7 +30,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
         $sReturn = parent::render();
 
         // generate help link
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sDir = $myConfig->getConfigParam('sShopDir') . '/documentation/admin';
         if (is_dir($sDir)) {
             $sDir = $myConfig->getConfigParam('sShopURL') . 'documentation/admin';
@@ -95,9 +95,9 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
         // A. replace ONLY if long description is not processed by smarty, or users will not be able to
         // store smarty tags ([{$shop->currenthomedir}]/[{$oViewConf->getCurrentHomeDir()}]) in long
         // descriptions, which are filled dynamically
-        if (!$this->getConfig()->getConfigParam('bl_perfParseLongDescinSmarty')) {
+        if (!\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfParseLongDescinSmarty')) {
             $aReplace = ['[{$shop->currenthomedir}]', '[{$oViewConf->getCurrentHomeDir()}]'];
-            $sValue = str_replace($aReplace, $this->getConfig()->getCurrentShopURL(false), $sValue);
+            $sValue = str_replace($aReplace, \OxidEsales\Eshop\Core\Registry::getConfig()->getCurrentShopURL(false), $sValue);
         }
 
         return $sValue;

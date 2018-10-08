@@ -170,7 +170,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      */
     protected function _reserveArticles($aBasketDiff)
     {
-        $blAllowNegativeStock = $this->getConfig()->getConfigParam('blAllowNegativeStock');
+        $blAllowNegativeStock = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blAllowNegativeStock');
 
         $oReserved = $this->getReservations();
         foreach ($aBasketDiff as $sId => $dAmount) {
@@ -271,7 +271,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
-        $iStartTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - (int) $this->getConfig()->getConfigParam('iPsBasketReservationTimeout');
+        $iStartTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iPsBasketReservationTimeout');
 
         $oRs = $database->select("select oxid from oxuserbaskets where oxtitle = 'reservations' and oxupdate <= $iStartTime limit $iLimit", false);
         if ($oRs->EOF) {
@@ -317,7 +317,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      */
     public function getTimeLeft()
     {
-        $iTimeout = $this->getConfig()->getConfigParam('iPsBasketReservationTimeout');
+        $iTimeout = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iPsBasketReservationTimeout');
         if ($iTimeout > 0) {
             $oRev = $this->getReservations();
             if ($oRev && $oRev->getId()) {

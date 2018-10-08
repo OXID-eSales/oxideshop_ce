@@ -219,7 +219,7 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      */
     public function storno()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $sOrderArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sArtID');
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\OrderArticle::class);
@@ -262,7 +262,7 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         if (is_array($aOrderArticles) && $oOrder->load($this->getEditObjectId())) {
-            $myConfig = $this->getConfig();
+            $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
             $oOrderArticles = $oOrder->getOrderArticles(true);
 
             $blUseStock = $myConfig->getConfigParam('blUseStock');

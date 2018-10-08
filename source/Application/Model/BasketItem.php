@@ -379,7 +379,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
         if ($this->getStockCheckStatus() == true) {
             $dArtStockAmount = $this->getSession()->getBasket()->getArtStockInBasket($oArticle->getId(), $sItemKey);
             $selectForUpdate = false;
-            if ($this->getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
+            if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
                 $selectForUpdate = true;
             }
             $iOnStock = $oArticle->checkForStock($this->_dAmount, $dArtStockAmount, $selectForUpdate);
@@ -443,7 +443,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
     public function getIconUrl()
     {
         // icon url must be (re)loaded in case icon is not set or shop was switched between ssl/nonssl
-        if ($this->_sIconUrl === null || $this->_blSsl != $this->getConfig()->isSsl()) {
+        if ($this->_sIconUrl === null || $this->_blSsl != \OxidEsales\Eshop\Core\Registry::getConfig()->isSsl()) {
             $this->_sIconUrl = $this->getArticle()->getIconUrl();
         }
 
@@ -717,7 +717,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      */
     protected function _setArticle($sProductId)
     {
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oArticle = $this->getArticle(true, $sProductId);
 
         // product ID
@@ -765,7 +765,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
         $this->_sTitle = $oOrderArticle->oxarticles__oxtitle->value;
 
         // shop Ids
-        $this->_sShopId = $this->getConfig()->getShopId();
+        $this->_sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
         $this->_sNativeShopId = $oOrderArticle->oxarticles__oxshopid->value;
     }
 

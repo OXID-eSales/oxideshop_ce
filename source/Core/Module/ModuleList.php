@@ -120,7 +120,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getModuleVersions()
     {
-        return $this->getConfig()->getConfigParam('aModuleVersions');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModuleVersions');
     }
 
     /**
@@ -130,7 +130,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getModules()
     {
-        return $this->getConfig()->getConfigParam('aModules');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModules');
     }
 
     /**
@@ -140,7 +140,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getDisabledModules()
     {
-        return (array) $this->getConfig()->getConfigParam('aDisabledModules');
+        return (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aDisabledModules');
     }
 
     /**
@@ -151,7 +151,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getModulePaths()
     {
-        return $this->getConfig()->getConfigParam('aModulePaths');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModulePaths');
     }
 
     /**
@@ -162,7 +162,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getModuleEvents()
     {
-        return (array) $this->getConfig()->getConfigParam('aModuleEvents');
+        return (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModuleEvents');
     }
 
     /**
@@ -195,7 +195,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getModuleFiles()
     {
-        return (array) $this->getConfig()->getConfigParam('aModuleFiles');
+        return (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModuleFiles');
     }
 
     /**
@@ -206,7 +206,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getModuleTemplates()
     {
-        return $this->getConfig()->getConfigParam('aModuleTemplates');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModuleTemplates');
     }
 
     /**
@@ -429,7 +429,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
         $aUpdatedExtensions = $this->diffModuleArrays($aModuleExtensions, $aExtensionsToDelete);
         $aUpdatedExtensionsChains = $this->buildModuleChains($aUpdatedExtensions);
 
-        $this->getConfig()->saveShopConfVar('aarr', 'aModules', $aUpdatedExtensionsChains);
+        \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar('aarr', 'aModules', $aUpdatedExtensionsChains);
     }
 
     /**
@@ -439,7 +439,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     protected function _removeFromDisabledModulesArray($aDeletedExtIds)
     {
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $aDisabledExtensionIds = $this->getDisabledModules();
         $aDisabledExtensionIds = array_diff($aDisabledExtensionIds, $aDeletedExtIds);
         $oConfig->saveShopConfVar('arr', 'aDisabledModules', $aDisabledExtensionIds);
@@ -461,7 +461,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-        $this->getConfig()->saveShopConfVar('aarr', 'aModule' . $key, $array);
+        \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar('aarr', 'aModule' . $key, $array);
     }
 
     /**
@@ -475,7 +475,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getModuleConfigParametersByKey($key)
     {
-        return (array) $this->getConfig()->getConfigParam('aModule' . $key);
+        return (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModule' . $key);
     }
 
     /**
@@ -608,7 +608,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     public function getModuleExtensions($sModuleId)
     {
         if (!isset($this->_aModuleExtensions)) {
-            $aModuleExtension = $this->getConfig()->getModulesWithExtendedClass();
+            $aModuleExtension = \OxidEsales\Eshop\Core\Registry::getConfig()->getModulesWithExtendedClass();
             $oModule = $this->getModule();
             $aExtension = [];
             foreach ($aModuleExtension as $sOxClass => $aFiles) {
@@ -670,7 +670,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     protected function _extendsClasses($sModuleDir)
     {
-        $aModules = $this->getConfig()->getConfigParam('aModules');
+        $aModules = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModules');
         if (is_array($aModules)) {
             $sModules = implode('&', $aModules);
 
@@ -693,7 +693,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
         $aModulePaths = $this->getModuleConfigParametersByKey(static::MODULE_KEY_PATHS);
 
         $aModulePaths[$sModuleId] = $sModulePath;
-        $this->getConfig()->saveShopConfVar('aarr', 'aModulePaths', $aModulePaths);
+        \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar('aarr', 'aModulePaths', $aModulePaths);
     }
 
     /**
@@ -759,7 +759,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     private function backwardsCompatibleGetInvalidExtensions($moduleClass, &$invalidModuleClasses, $extendedShopClass)
     {
-        $moduleClassFile = $this->getConfig()->getModulesDir() . $moduleClass . '.php';
+        $moduleClassFile = \OxidEsales\Eshop\Core\Registry::getConfig()->getModulesDir() . $moduleClass . '.php';
         if (!is_readable($moduleClassFile)) {
             $invalidModuleClasses[$extendedShopClass][] = $moduleClass;
         }

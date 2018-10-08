@@ -49,7 +49,7 @@ class UtilsServerTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('getSslShopUrl')->will($this->returnValue(false));
 
         $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("getConfig"));
-        $oUtilsServer->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $this->assertFalse($oUtilsServer->UNITmustSaveToSession());
     }
 
@@ -65,7 +65,7 @@ class UtilsServerTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('getShopUrl')->will($this->returnValue("http://www.oxid.com"));
 
         $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("getConfig"));
-        $oUtilsServer->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $this->assertFalse($oUtilsServer->UNITmustSaveToSession());
     }
 
@@ -83,7 +83,7 @@ class UtilsServerTest extends \OxidTestCase
         $oConfig->expects($this->at(3))->method('isSsl')->will($this->returnValue(false));
 
         $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("getConfig"));
-        $oUtilsServer->expects($this->exactly(4))->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $this->assertEquals('ssl', $oUtilsServer->UNITgetSessionCookieKey(true));
         $this->assertEquals('nossl', $oUtilsServer->UNITgetSessionCookieKey(true));
         $this->assertEquals('nossl', $oUtilsServer->UNITgetSessionCookieKey(false));

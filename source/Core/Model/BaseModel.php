@@ -206,7 +206,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     public function __construct()
     {
         // set active shop
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $this->_sCacheKey = $this->getViewName();
 
         $this->_addSkippedSaveFieldsForMapping();
@@ -824,7 +824,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         }
 
         // #739A - should be executed here because of date/time formatting feature
-        if ($this->isAdmin() && !$this->getConfig()->getConfigParam('blSkipFormatConversion')) {
+        if ($this->isAdmin() && !\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blSkipFormatConversion')) {
             foreach ($this->_aFieldNames as $name => $value) {
                 $longName = $this->_getFieldLongName($name);
                 if (isset($this->$longName->fldtype) && $this->$longName->fldtype == 'datetime') {
@@ -1427,7 +1427,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      */
     protected function _insert()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
 
         // let's get a new ID

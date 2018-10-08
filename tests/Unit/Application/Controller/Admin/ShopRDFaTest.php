@@ -5,6 +5,8 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
 use \oxRegistry;
 
 /**
@@ -42,7 +44,7 @@ class ShopRDFaTest extends \OxidTestCase
         $oConf->setConfigParam('aRDFaCustomers', array('Enduser', 'Reseller', 'PublicInstitution'));
 
         $oView = $this->getProxyClass('Shop_RDFA');
-        $oView->setConfig($oConf);
+        Registry::set(Config::class, $oConf);
         $this->assertEquals($aCustomers, $oView->getCustomers());
     }
 
@@ -57,7 +59,7 @@ class ShopRDFaTest extends \OxidTestCase
         $oConf->setConfigParam('aRDFaCustomers', null);
 
         $oView = $this->getProxyClass('Shop_RDFA');
-        $oView->setConfig($oConf);
+        Registry::set(Config::class, $oConf);
         $this->assertEquals(array(), $oView->getCustomers());
     }
 

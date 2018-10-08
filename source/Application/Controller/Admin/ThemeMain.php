@@ -57,8 +57,8 @@ class ThemeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
      */
     public function themeInConfigFile()
     {
-        $blThemeSet = isset($this->getConfig()->sTheme);
-        $blCustomThemeSet = isset($this->getConfig()->sCustomTheme);
+        $blThemeSet = isset(\OxidEsales\Eshop\Core\Registry::getConfig()->sTheme);
+        $blCustomThemeSet = isset(\OxidEsales\Eshop\Core\Registry::getConfig()->sCustomTheme);
 
         return ($blThemeSet || $blCustomThemeSet);
     }

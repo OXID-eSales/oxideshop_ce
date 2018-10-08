@@ -114,7 +114,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
     protected function _getRecomm($oArticle, $iLang)
     {
         $oList = null;
-        $oView = $this->getConfig()->getActiveView();
+        $oView = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView();
         if ($oView instanceof \OxidEsales\Eshop\Application\Controller\FrontendController) {
             $oList = $oView->getActiveRecommList();
         }
@@ -129,7 +129,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      */
     protected function _getListType()
     {
-        return $this->getConfig()->getActiveView()->getListType();
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView()->getListType();
     }
 
     /**
@@ -227,7 +227,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
     protected function _getCategory($oArticle, $iLang)
     {
         $oCat = null;
-        $oView = $this->getConfig()->getActiveView();
+        $oView = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView();
         if ($oView instanceof \OxidEsales\Eshop\Application\Controller\FrontendController) {
             $oCat = $oView->getActiveCategory();
         } elseif ($oView instanceof \OxidEsales\Eshop\Application\Controller\FrontendController) {
@@ -412,7 +412,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      */
     protected function _getVendor($oArticle, $iLang)
     {
-        $oView = $this->getConfig()->getActiveView();
+        $oView = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView();
 
         $oVendor = null;
         if ($sActVendorId = $oArticle->oxarticles__oxvendorid->value) {
@@ -491,7 +491,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
     {
         $oManufacturer = null;
         if ($sActManufacturerId = $oArticle->oxarticles__oxmanufacturerid->value) {
-            $oView = $this->getConfig()->getActiveView();
+            $oView = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView();
 
             if ($oView instanceof \OxidEsales\Eshop\Application\Controller\FrontendController && ($oActManufacturer = $oView->getActManufacturer())) {
                 $oManufacturer = $oActManufacturer;

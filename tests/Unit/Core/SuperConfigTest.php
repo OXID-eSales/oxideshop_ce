@@ -12,19 +12,6 @@ use oxRegistry;
 
 class SuperConfigTest extends \OxidTestCase
 {
-    public function testSetGetConfig()
-    {
-        $oOxSuperCfg = oxNew('oxSuperCfg');
-        Registry::set(Config::class, null);
-        $oConfig = $this->getConfig();
-        $this->assertEquals($oConfig, $oOxSuperCfg->getConfig());
-
-        $config = $this->getMock(Config::class, array('getConfigParam'));
-        $config->expects($this->once())->method('getConfigParam')->will($this->returnValue(true));
-        Registry::set(Config::class, $config);
-        $this->assertTrue($oOxSuperCfg->getConfig()->getConfigParam('xxx'));
-    }
-
     public function testSetGetSession()
     {
         $oOxSuperCfg = oxNew('oxSuperCfg');

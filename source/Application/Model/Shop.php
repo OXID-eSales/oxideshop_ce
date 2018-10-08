@@ -95,7 +95,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         $this->init('oxshops');
 
-        if ($iMax = $this->getConfig()->getConfigParam('iMaxShopId')) {
+        if ($iMax = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iMaxShopId')) {
             $this->setMaxShopId($iMax);
         }
     }

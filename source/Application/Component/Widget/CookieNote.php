@@ -38,6 +38,6 @@ class CookieNote extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      */
     public function isEnabled()
     {
-        return (bool) $this->getConfig()->getConfigParam('blShowCookiesNotification');
+        return (bool) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowCookiesNotification');
     }
 }

@@ -150,7 +150,7 @@ class UtilsTest extends \OxidTestCase
         // as now SEO is on by default
         $oUtils = oxNew('oxutils');
 
-        $oConfig = $oUtils->getConfig();
+        $oConfig = Registry::getConfig();
         $oConfig->setConfigParam('aSeoModes', array('testshop' => array(2 => false, 3 => true)));
 
         $this->assertTrue($oUtils->seoIsActive());

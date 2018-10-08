@@ -71,7 +71,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
 
         // #2873: In demoshop for RSS we set php_handling to SMARTY_PHP_PASSTHRU
         // as SMARTY_PHP_REMOVE removes not only php tags, but also xml
-        if ($this->getConfig()->isDemoShop()) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop()) {
             $oSmarty->php_handling = SMARTY_PHP_PASSTHRU;
         }
 
@@ -108,7 +108,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
      */
     public function topshop()
     {
-        if ($this->getConfig()->getConfigParam('bl_rssTopShop')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_rssTopShop')) {
             $this->_getRssFeed()->loadTopInShop();
         } else {
             error_404_handler();
@@ -122,7 +122,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
      */
     public function newarts()
     {
-        if ($this->getConfig()->getConfigParam('bl_rssNewest')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_rssNewest')) {
             $this->_getRssFeed()->loadNewestArticles();
         } else {
             error_404_handler();
@@ -136,7 +136,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
      */
     public function catarts()
     {
-        if ($this->getConfig()->getConfigParam('bl_rssCategories')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_rssCategories')) {
             $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             if ($oCat->load(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cat'))) {
                 $this->_getRssFeed()->loadCategoryArticles($oCat);
@@ -153,7 +153,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
      */
     public function searcharts()
     {
-        if ($this->getConfig()->getConfigParam('bl_rssSearch')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_rssSearch')) {
             $sSearchParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchparam', true);
             $sCatId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchcnid');
             $sVendorId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchvendor');
@@ -175,7 +175,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
      */
     public function recommlists()
     {
-        if ($this->getViewConfig()->getShowListmania() && $this->getConfig()->getConfigParam('bl_rssRecommLists')) {
+        if ($this->getViewConfig()->getShowListmania() && \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_rssRecommLists')) {
             $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             if ($oArticle->load(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('anid'))) {
                 $this->_getRssFeed()->loadRecommLists($oArticle);
@@ -196,7 +196,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
      */
     public function recommlistarts()
     {
-        if ($this->getConfig()->getConfigParam('bl_rssRecommListArts')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_rssRecommListArts')) {
             $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
             if ($oRecommList->load(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recommid'))) {
                 $this->_getRssFeed()->loadRecommListArticles($oRecommList);
@@ -214,7 +214,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
      */
     public function bargain()
     {
-        if ($this->getConfig()->getConfigParam('bl_rssBargain')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_rssBargain')) {
             $this->_getRssFeed()->loadBargain();
         } else {
             error_404_handler();

@@ -25,7 +25,7 @@ class ArticleReview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
      */
     public function render()
     {
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         parent::render();
 
@@ -85,7 +85,7 @@ class ArticleReview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
         $variantList = $article->getVariants();
 
-        if ($this->getConfig()->getConfigParam('blShowVariantReviews') && count($variantList)) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowVariantReviews') && count($variantList)) {
             // verifying rights
             foreach ($variantList as $variant) {
                 $query .= "or oxreviews.oxobjectid = " . $database->quote($variant->oxarticles__oxid->value) . " ";
@@ -113,7 +113,7 @@ class ArticleReview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
         $parameters = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
         // checkbox handling
-        if ($this->getConfig()->getConfigParam('blGBModerate') && !isset($parameters['oxreviews__oxactive'])) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blGBModerate') && !isset($parameters['oxreviews__oxactive'])) {
             $parameters['oxreviews__oxactive'] = 0;
         }
 

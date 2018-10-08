@@ -608,7 +608,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      */
     public function shiftServerTime($iTime)
     {
-        $iServerTimeShift = $this->getConfig()->getConfigParam('iServerTimeShift');
+        $iServerTimeShift = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iServerTimeShift');
         if ($iServerTimeShift) {
             $iTime = $iTime + ((int) $iServerTimeShift * 3600);
         }

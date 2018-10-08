@@ -59,7 +59,7 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
     protected function addModuleSettings($moduleSettings, $moduleId)
     {
         $this->removeNotUsedSettings($moduleSettings, $moduleId);
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $shopId = $config->getShopId();
         $moduleConfigs = $this->getModuleConfigs($moduleId);
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -144,7 +144,7 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
     protected function getModuleConfigs($moduleId)
     {
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $shopId = $config->getShopId();
         $module = $this->getModuleConfigId($moduleId);
 
@@ -189,7 +189,7 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
     protected function removeModuleConfigs($moduleId, $configsToRemove)
     {
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $quotedShopId = $db->quote($this->getConfig()->getShopId());
+        $quotedShopId = $db->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopId());
         $quotedModuleId = $db->quote($this->getModuleConfigId($moduleId));
 
         $quotedConfigsToRemove = array_map([$db, 'quote'], $configsToRemove);

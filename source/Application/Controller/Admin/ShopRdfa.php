@@ -62,7 +62,7 @@ class ShopRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfig
      */
     public function getCustomers()
     {
-        $aCustomersConf = $this->getConfig()->getShopConfVar("aRDFaCustomers");
+        $aCustomersConf = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopConfVar("aRDFaCustomers");
         if (isset($aCustomersConf)) {
             foreach ($this->_aCustomers as $sCustomer => $iValue) {
                 $aCustomers[$sCustomer] = (in_array($sCustomer, $aCustomersConf)) ? 1 : 0;

@@ -267,7 +267,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
      */
     public function getFPrice()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         // 0002030 No need to return price if it disabled for better performance.
         if (!$myConfig->getConfigParam('bl_perfLoadPrice')) {
             return;
@@ -285,7 +285,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
 
         $dMinPrice = $this->getMinDPrice();
         $sFMinPrice = \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($dMinPrice);
-        $sCurrency = ' ' . $this->getConfig()->getActShopCurrencyObject()->sign;
+        $sCurrency = ' ' . \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject()->sign;
         $this->_sFPrice = $sFromPrefix . $sFMinPrice . $sCurrency;
 
         return $this->_sFPrice;

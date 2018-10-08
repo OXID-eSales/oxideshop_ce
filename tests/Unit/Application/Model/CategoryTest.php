@@ -7,6 +7,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use oxCategory;
 use oxCategoryHelper;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use \oxUtilsView;
 use \oxField;
@@ -153,7 +154,7 @@ class CategoryTest extends \OxidTestCase
         $oCategory = oxNew('oxCategory');
         $oCategory->setId("testCategoryId");
 
-        $sTestUrl = $this->getConfig()->getConfig()->getShopHomeUrl($iLang, false) . "cl=alist&amp;cnid=" . $oCategory->getId();
+        $sTestUrl = Registry::getConfig()->getShopHomeUrl($iLang, false) . "cl=alist&amp;cnid=" . $oCategory->getId();
         $this->assertEquals($sTestUrl, $oCategory->getBaseStdLink($iLang));
     }
 

@@ -47,7 +47,7 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
     {
         parent::render();
 
-        $folders = $this->getConfig()->getConfigParam('aOrderfolder');
+        $folders = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aOrderfolder');
         $folder = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("folder");
         // first display new orders
         if (!$folder && is_array($folders)) {
@@ -121,7 +121,7 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $query = parent::_prepareWhereQuery($whereQuery, $fullQuery);
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $folders = $config->getConfigParam('aOrderfolder');
         $folder = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('folder');
         // Searching for empty oxfolder fields

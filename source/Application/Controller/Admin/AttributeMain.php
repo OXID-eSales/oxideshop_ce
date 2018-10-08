@@ -27,7 +27,7 @@ class AttributeMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     {
         parent::render();
 
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $oAttr = oxNew(\OxidEsales\Eshop\Application\Model\Attribute::class);
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();

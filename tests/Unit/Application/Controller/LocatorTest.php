@@ -78,6 +78,8 @@ class LocatorTest extends \OxidTestCase
      */
     protected function tearDown()
     {
+        parent::tearDown();
+
         $this->getConfig()->setGlobalParameter('listtype', null);
 
         $sDelete = "Delete from oxcategories where oxtitle = 'test'";
@@ -90,7 +92,6 @@ class LocatorTest extends \OxidTestCase
         $this->getConfig()->getActiveShop()->oxshops__oxseoactive = new oxField($this->_iSeoMode, oxField::T_RAW);
 
         oxRegistry::getUtils()->seoIsActive(true);
-        parent::tearDown();
     }
 
     /**
@@ -208,11 +209,7 @@ class LocatorTest extends \OxidTestCase
         $oLocatorTarget->expects($this->once())->method('getCategoryTree')->will($this->returnValue(oxNew('oxcategorylist')));
         $oLocatorTarget->expects($this->any())->method('getLinkType')->will($this->returnValue(OXARTICLE_LINKTYPE_CATEGORY));
 
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
-        $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(true));
-
         $oLocator = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\testOxLocator::class, array('getConfig'));
-        $oLocator->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
 
         // testing
         $oLocator->UNITsetListLocatorData($oLocatorTarget, $oCurrArticle);

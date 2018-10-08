@@ -604,7 +604,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
     protected function safeGuardAdditionalMultiLanguageTables()
     {
         $maxLang = $this->getCurrentMaxLangId();
-        $multiLanguageTables = $this->getConfig()->getConfigParam('aMultiLangTables');
+        $multiLanguageTables = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aMultiLangTables');
 
         if (!is_array($multiLanguageTables) || empty($multiLanguageTables)) {
             return; //nothing to do

@@ -42,7 +42,7 @@ class CategoryTree extends \OxidEsales\Eshop\Application\Component\Widget\Widget
 
         if ($sTpl = $this->getViewParameter("sWidgetType")) {
             $sTemplateName = 'widget/' . basename($sTpl) . '/categorylist.tpl';
-            if ($this->getConfig()->getTemplatePath($sTemplateName, $this->isAdmin())) {
+            if (\OxidEsales\Eshop\Core\Registry::getConfig()->getTemplatePath($sTemplateName, $this->isAdmin())) {
                 $this->_sThisTemplate = $sTemplateName;
             }
         }

@@ -42,8 +42,8 @@ class PaymentMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
     {
         // looking for table/view
         $sGroupTable = $this->_getViewName('oxgroups');
-        $sGroupId = $this->getConfig()->getRequestParameter('oxid');
-        $sSynchGroupId = $this->getConfig()->getRequestParameter('synchoxid');
+        $sGroupId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $sSynchGroupId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         // category selected or not ?
@@ -56,7 +56,7 @@ class PaymentMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
         }
 
         if (!$sSynchGroupId) {
-            $sSynchGroupId = $this->getConfig()->getRequestParameter('oxajax_synchfid');
+            $sSynchGroupId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxajax_synchfid');
         }
         if ($sSynchGroupId && $sSynchGroupId != $sGroupId) {
             if (!$sGroupId) {
@@ -78,7 +78,7 @@ class PaymentMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
     public function removePayGroup()
     {
         $aRemoveGroups = $this->_getActionIds('oxobject2group.oxid');
-        if ($this->getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2group.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
@@ -94,9 +94,9 @@ class PaymentMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
     public function addPayGroup()
     {
         $aAddGroups = $this->_getActionIds('oxgroups.oxid');
-        $soxId = $this->getConfig()->getRequestParameter('synchoxid');
+        $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
-        if ($this->getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sGroupTable = $this->_getViewName('oxgroups');
             $aAddGroups = $this->_getAll($this->_addFilter("select $sGroupTable.oxid " . $this->_getQuery()));
         }

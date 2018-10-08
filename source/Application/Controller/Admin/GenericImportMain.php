@@ -79,7 +79,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
      */
     public function render()
     {
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $genericImport = oxNew(\OxidEsales\Eshop\Core\GenericImport\GenericImport::class);
         $this->_sCsvFilePath = null;
@@ -181,7 +181,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
      */
     protected function _getCsvFieldsNames()
     {
-        $blCsvContainsHeader = $this->getConfig()->getRequestParameter('blContainsHeader');
+        $blCsvContainsHeader = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('blContainsHeader');
         \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('blCsvContainsHeader', $blCsvContainsHeader);
         $this->_getUploadedCsvFilePath();
 
@@ -254,7 +254,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
         if ($iNavStep == 3) {
             $blIsEmpty = true;
-            $aCsvFields = $this->getConfig()->getRequestParameter('aCsvFields');
+            $aCsvFields = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aCsvFields');
             foreach ($aCsvFields as $sValue) {
                 if ($sValue) {
                     $blIsEmpty = false;
@@ -289,7 +289,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
             return $this->_sCsvFilePath;
         }
 
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $aFile = $oConfig->getUploadedFile('csvfile');
         if (isset($aFile['name']) && $aFile['name']) {
             $this->_sCsvFilePath = $oConfig->getConfigParam('sCompileDir') . basename($aFile['tmp_name']);
@@ -325,7 +325,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
     {
         if ($this->_sStringTerminator === null) {
             $this->_sStringTerminator = $this->_sDefaultStringTerminator;
-            if ($char = $this->getConfig()->getConfigParam('sGiCsvFieldTerminator')) {
+            if ($char = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sGiCsvFieldTerminator')) {
                 $this->_sStringTerminator = $char;
             }
         }
@@ -342,7 +342,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
     {
         if ($this->_sStringEncloser === null) {
             $this->_sStringEncloser = $this->_sDefaultStringEncloser;
-            if ($char = $this->getConfig()->getConfigParam('sGiCsvFieldEncloser')) {
+            if ($char = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sGiCsvFieldEncloser')) {
                 $this->_sStringEncloser = $char;
             }
         }

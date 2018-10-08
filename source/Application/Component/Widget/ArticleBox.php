@@ -44,7 +44,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      */
     public function getActiveCategory()
     {
-        $oCategory = $this->getConfig()->getTopActiveView()->getActiveCategory();
+        $oCategory = \OxidEsales\Eshop\Core\Registry::getConfig()->getTopActiveView()->getActiveCategory();
         if ($oCategory) {
             $this->setActiveCategory($oCategory);
         }
@@ -97,7 +97,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
             if ($this->getViewParameter('_object')) {
                 $oArticle = $this->getViewParameter('_object');
             } else {
-                $sAddDynParams = $this->getConfig()->getTopActiveView()->getAddUrlParams();
+                $sAddDynParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getTopActiveView()->getAddUrlParams();
 
                 $sAddDynParams = $this->updateDynamicParameters($sAddDynParams);
 
@@ -120,7 +120,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      */
     public function getLink($iLang = null)
     {
-        return $this->getConfig()->getTopActiveView()->getLink($iLang);
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getTopActiveView()->getLink($iLang);
     }
 
     /**

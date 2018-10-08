@@ -136,7 +136,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
         $sVendorId = $oVendor->getId();
 
         // load only articles which we show on screen
-        $iNrOfCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
+        $iNrOfCatArticles = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofCatArticles');
         $iNrOfCatArticles = $iNrOfCatArticles ? $iNrOfCatArticles : 1;
 
         $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
@@ -344,7 +344,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
     public function getTitleSuffix()
     {
         if ($this->getActVendor()->oxvendor__oxshowsuffix->value) {
-            return $this->getConfig()->getActiveShop()->oxshops__oxtitlesuffix->value;
+            return \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveShop()->oxshops__oxtitlesuffix->value;
         }
     }
 
@@ -444,7 +444,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
             $oVendorTree->buildVendorTree(
                 'vendorlist',
                 $this->getActVendor()->getId(),
-                $this->getConfig()->getShopHomeUrl()
+                \OxidEsales\Eshop\Core\Registry::getConfig()->getShopHomeUrl()
             );
             $this->_oVendorTree = $oVendorTree;
         }

@@ -115,7 +115,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      */
     public function __construct()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if ($iPicCount = $myConfig->getConfigParam('iPicCount')) {
             $this->_iMaxPicImgCount = $iPicCount;
@@ -304,7 +304,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     {
         $sFolder = array_key_exists($sType, $this->_aTypeToPath) ? $this->_aTypeToPath[$sType] : '0';
 
-        return $this->normalizeDir($this->getConfig()->getPictureDir(false)) . "{$sFolder}/";
+        return $this->normalizeDir(\OxidEsales\Eshop\Core\Registry::getConfig()->getPictureDir(false)) . "{$sFolder}/";
     }
 
     /**
@@ -319,7 +319,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getImageSize($sImgType, $iImgNum, $sImgConf)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         switch ($sImgConf) {
             case 'aDetailImageSizes':
@@ -405,7 +405,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     {
         $aFiles = $aFiles ? $aFiles : $_FILES;
         if (isset($aFiles['myfile']['name'])) {
-            $oConfig = $this->getConfig();
+            $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
             // A. protection for demoshops - strictly defining allowed file extensions
             $blDemo = (bool) $oConfig->isDemoShop();
@@ -542,7 +542,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     {
         $aFileInfo = $_FILES[$sFileName];
 
-        $sBasePath = $this->getConfig()->getConfigParam('sShopDir');
+        $sBasePath = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopDir');
 
         //checking params
         if (!isset($aFileInfo['name']) || !isset($aFileInfo['tmp_name'])) {
@@ -564,7 +564,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         $sExt = $aPathInfo['extension'];
         $sFileName = $aPathInfo['filename'];
 
-        $aAllowedUploadTypes = (array) $this->getConfig()->getConfigParam('aAllowedUploadTypes');
+        $aAllowedUploadTypes = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aAllowedUploadTypes');
         $aAllowedUploadTypes = array_map("strtolower", $aAllowedUploadTypes);
 
         if (!in_array(strtolower($sExt), $aAllowedUploadTypes)) {

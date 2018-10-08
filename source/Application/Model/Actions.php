@@ -242,7 +242,7 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         if (isset($this->oxactions__oxpic) && $this->oxactions__oxpic->value) {
             $sPromoDir = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->normalizeDir(\OxidEsales\Eshop\Core\UtilsFile::PROMO_PICTURE_DIR);
 
-            return $this->getConfig()->getPictureUrl($sPromoDir . $this->oxactions__oxpic->value, false);
+            return \OxidEsales\Eshop\Core\Registry::getConfig()->getPictureUrl($sPromoDir . $this->oxactions__oxpic->value, false);
         }
     }
 

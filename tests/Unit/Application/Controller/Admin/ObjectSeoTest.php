@@ -196,7 +196,7 @@ class ObjectSeoTest extends \OxidTestCase
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo::class, array("getEditObjectId", "getConfig", "_getEncoder", "getEditLang", "_getStdUrl", "_getSeoEntryType", "processParam", "_getAltSeoEntryId"), array(), '', false);
         $oView->expects($this->once())->method('getEditObjectId')->will($this->returnValue("objectId"));
-        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oView->expects($this->once())->method('_getEncoder')->will($this->returnValue($oEncoder));
         $oView->expects($this->once())->method('_getStdUrl')->will($this->returnValue("stdUrl"));
         $oView->expects($this->once())->method('getEditLang')->will($this->returnValue(1));
@@ -222,7 +222,7 @@ class ObjectSeoTest extends \OxidTestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo::class, array("_getEncoder", "getEditObjectId", "getConfig", "getEditLang"), array(), '', false);
         $oView->expects($this->once())->method('_getEncoder')->will($this->returnValue($oEncoder));
         $oView->expects($this->once())->method('getEditObjectId')->will($this->returnValue(1));
-        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oView->expects($this->once())->method('getEditLang')->will($this->returnValue(1));
         $this->assertEquals("metaData", $oView->getEntryMetaData("MetaType"));
     }

@@ -314,7 +314,7 @@ class SessionTest extends \OxidTestCase
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("getConfig", '_getSessionUseCookies', '_getCookieSid', 'isSessionStarted'));
         $oSession->expects($this->once())->method('_getSessionUseCookies')->will($this->returnValue(true));
         $oSession->expects($this->once())->method('_getCookieSid')->will($this->returnValue(true));
-        $oSession->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oSession->expects($this->any())->method('isSessionStarted')->will($this->returnValue(true));
         $this->assertTrue($oSession->isSidNeeded($sUrl));
     }
@@ -753,7 +753,7 @@ class SessionTest extends \OxidTestCase
         $oConfig->expects($this->never())->method('getConfigParam');
 
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("getConfig"));
-        $oSession->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $this->assertFalse($oSession->UNITcheckCookies(false, array()));
     }
 
@@ -771,7 +771,7 @@ class SessionTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo('iDebug'))->will($this->returnValue(true));
 
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("getConfig"));
-        $oSession->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $this->assertTrue($oSession->UNITcheckCookies(false, array("testurl" => "ox_true")));
     }
 

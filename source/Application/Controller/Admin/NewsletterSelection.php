@@ -87,7 +87,7 @@ class NewsletterSelection extends \OxidEsales\Eshop\Application\Controller\Admin
                 if (!$blSep) {
                     $sSelectGroups = " oxobject2group.oxobjectid is null ";
                 }
-                $sShopId = $this->getConfig()->getShopID();
+                $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopID();
                 $sQ = "select count(*) from ( select oxnewssubscribed.oxemail as _icnt from oxnewssubscribed left join
                    oxobject2group on oxobject2group.oxobjectid = oxnewssubscribed.oxuserid
                    where ( oxobject2group.oxshopid = '{$sShopId}'
@@ -111,7 +111,7 @@ class NewsletterSelection extends \OxidEsales\Eshop\Application\Controller\Admin
     {
         $soxId = $this->getEditObjectId();
         $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
-        $aParams['oxnewsletter__oxshopid'] = $this->getConfig()->getShopId();
+        $aParams['oxnewsletter__oxshopid'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
 
         $oNewsletter = oxNew(\OxidEsales\Eshop\Application\Model\Newsletter::class);
         if ($soxId != "-1") {

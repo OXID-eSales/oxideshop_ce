@@ -48,7 +48,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
             $this->_aAddUrlParams = $this->getBaseAddUrlParams();
 
             // appending currency
-            if (($iCur = $this->getConfig()->getShopCurrency())) {
+            if (($iCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopCurrency())) {
                 $this->_aAddUrlParams['cur'] = $iCur;
             }
         }
@@ -93,7 +93,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
             $sSep = '&amp;';
         }
 
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         if (!$oStr->preg_match('/[&?](amp;)?cur=[0-9]+/i', $sUrl)) {
             $iCur = (int) $oConfig->getShopCurrency();
             if ($iCur) {
@@ -114,7 +114,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      */
     public function prepareCanonicalUrl($sUrl)
     {
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         /** @var \OxidEsales\Eshop\Core\StrRegular $oStr */
         $oStr = getStr();
 
@@ -211,7 +211,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     public function addShopHost($sUrl)
     {
         if (!preg_match("#^https?://#i", $sUrl)) {
-            $sShopUrl = $this->getConfig()->getSslShopUrl();
+            $sShopUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getSslShopUrl();
             $sUrl = $sShopUrl . $sUrl;
         }
 
@@ -270,7 +270,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      */
     public function getActiveShopHost()
     {
-        $shopUrl = $this->getConfig()->getShopUrl();
+        $shopUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl();
 
         return $this->extractHost($shopUrl);
     }
@@ -530,7 +530,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     {
         if ($this->_aHosts === null) {
             $this->_aHosts = [];
-            $oConfig = $this->getConfig();
+            $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
             $this->_addMallHosts($this->_aHosts);
 

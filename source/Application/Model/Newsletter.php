@@ -179,7 +179,7 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _setParams($blPerfLoadAktion = false)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         $oShop->load($myConfig->getShopId());

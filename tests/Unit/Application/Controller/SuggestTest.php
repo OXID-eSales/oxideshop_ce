@@ -5,6 +5,7 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
+use OxidEsales\Eshop\Core\Config;
 use OxidEsales\EshopCommunity\Core\Model\ListModel;
 
 use \oxDb;
@@ -122,7 +123,7 @@ class SuggestTest extends \OxidTestCase
      */
     public function testgetRecommListsIfOff()
     {
-        $oCfg = $this->getMock("stdClass", array("getShowListmania"));
+        $oCfg = $this->getMock(Config::class, array("getShowListmania"));
         $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(false));
 
         $oSuggest = $this->getMock(\OxidEsales\Eshop\Application\Controller\SuggestController::class, array("getViewConfig", 'getArticleList'));

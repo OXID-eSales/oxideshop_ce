@@ -15,6 +15,8 @@ use OxidEsales\Eshop\Application\Model\Order;
 use OxidEsales\Eshop\Application\Model\Payment;
 use OxidEsales\Eshop\Application\Model\UserPayment;
 use OxidEsales\Eshop\Application\Model\User;
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsObject;
 use oxOrder;
 use \stdClass;
@@ -2028,7 +2030,7 @@ class OrderTest extends \OxidTestCase
         $oBasket->expects($this->any())->method('getCardMessage')->will($this->returnValue('testCardMsg'));
 
         $oOrder = $this->getProxyClass("oxOrder");
-        $oOrder->setConfig($myConfig);
+        Registry::set(Config::class, $myConfig);
 
         $oOrder->UNITsetWrapping($oBasket);
 
@@ -2321,7 +2323,7 @@ class OrderTest extends \OxidTestCase
         $oConfig->setConfigParam('iPayment_blActive', false);
 
         $oOrder = $this->getProxyClass("oxOrder");
-        $oOrder->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
         $oOrder->oxorder__oxpaymenttype = new oxField('_testPaymentId', oxField::T_RAW);
 
         $oPayment = oxNew('oxPayment');
@@ -2807,7 +2809,7 @@ class OrderTest extends \OxidTestCase
         $this->assertEquals('_testUserId', $aRes['OXUSERID']);
         $this->assertEquals('100', $aRes['OXTOTALNETSUM']);
 
-        $myConfig = $oOrder->getConfig();
+        $myConfig = Registry::getConfig();
 
         $this->assertTrue($aRes['OXORDERDATE'] >= $sTestDate);
         $this->assertEquals($myConfig->getShopId(), $aRes['OXSHOPID']);
@@ -2912,7 +2914,7 @@ class OrderTest extends \OxidTestCase
         $oOrderArticle->oxorderarticles__oxstorno = new \OxidEsales\Eshop\Core\Field('1', \OxidEsales\Eshop\Core\Field::T_RAW); //canceled
         $oOrderArticle->save();
 
-        $this->getConfig()->setConfigParam('blUseStock', true);
+        Registry::getConfig()->setConfigParam('blUseStock', true);
 
         $oOrder = oxNew('oxOrder');
         $oOrder->load('_testOrderId');
@@ -2962,7 +2964,7 @@ class OrderTest extends \OxidTestCase
         $oOrderArticle->save();
 
         $oOrder = $this->getProxyClass("oxOrder");
-        $oOrder->getConfig()->setConfigParam('blUseStock', false);
+        Registry::getConfig()->setConfigParam('blUseStock', false);
         $oOrder->load('_testOrderId');
 
         $this->assertEquals(2, $oOrder->getOrderArticles()->count());

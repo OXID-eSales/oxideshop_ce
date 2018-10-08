@@ -718,7 +718,7 @@ class BasketitemTest extends \OxidTestCase
         $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array('getArticle', 'getConfig', "getTitle"));
         $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($oArticle));
         $oBasketItem->expects($this->once())->method('getTitle');
-        $oBasketItem->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         // initiating product
         $oBasketItem->UNITsetArticle("testId");

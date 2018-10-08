@@ -92,8 +92,8 @@ class AccountNewsletterController extends \OxidEsales\Eshop\Application\Controll
             return false;
         }
 
-        $iStatus = $this->getConfig()->getRequestParameter('status');
-        if ($oUser->setNewsSubscription($iStatus, $this->getConfig()->getConfigParam('blOrderOptInEmail'))) {
+        $iStatus = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('status');
+        if ($oUser->setNewsSubscription($iStatus, \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blOrderOptInEmail'))) {
             $this->_iSubscriptionStatus = ($iStatus == 0 && $iStatus !== null) ? -1 : 1;
         }
     }

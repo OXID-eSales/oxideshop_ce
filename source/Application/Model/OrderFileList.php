@@ -28,7 +28,7 @@ class OrderFileList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         $oOrderFile = $this->getBaseObject();
         $sFields = $oOrderFile->getSelectFields();
-        $sShopId = $this->getConfig()->getShopId();
+        $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
 
         $oOrderFile->addFieldName('oxorderfiles__oxarticletitle');
         $oOrderFile->addFieldName('oxorderfiles__oxarticleartnum');
@@ -64,7 +64,7 @@ class OrderFileList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         $oOrderFile = $this->getBaseObject();
         $sFields = $oOrderFile->getSelectFields();
-        $sShopId = $this->getConfig()->getShopId();
+        $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
 
         $oOrderFile->addFieldName('oxorderfiles__oxarticletitle');
         $oOrderFile->addFieldName('oxorderfiles__oxarticleartnum');

@@ -6,6 +6,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use modDB;
+use OxidEsales\Eshop\Core\Config;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use \oxSeoEncoder;
@@ -583,7 +584,7 @@ class SeoEncoderTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('getShopUrl')->with($this->equalTo(1))->will($this->returnValue('url/'));
 
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('getConfig'), array(), '', false);
-        $oEncoder->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals('PROCurl/seouri/CORP', $oEncoder->UNITgetFullUrl('seouri/', 1));
     }
@@ -1367,13 +1368,13 @@ class SeoEncoderTest extends \OxidTestCase
         $sBaseUrl = $this->getConfig()->getConfigParam("sShopURL");
         $sSslUrl = str_replace("http:", "https:", $sBaseUrl);
 
-        $oConfig = $this->getMock("oxStdClas", array("getShopURL", "getSslShopUrl", "getConfigParam"));
+        $oConfig = $this->getMock(Config::class, array("getShopURL", "getSslShopUrl", "getConfigParam"));
         $oConfig->expects($this->any())->method('getShopURL')->will($this->returnValue($sBaseUrl));
         $oConfig->expects($this->any())->method('getSslShopUrl')->will($this->returnValue($sSslUrl));
         $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(0));
 
         $oE = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array("getConfig"), array(), '', false);
-        $oE->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals('aa?a=2', $oE->UNITtrimUrl($sBaseUrl . 'aa?sid=as23.&a=2', 0));
         $this->assertEquals('aa', $oE->UNITtrimUrl($sBaseUrl . 'aa?sid=as23.', 1));
@@ -1725,7 +1726,7 @@ class SeoEncoderTest extends \OxidTestCase
         // non admin
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('isAdmin', 'getConfig'), array(), '', false);
         $oEncoder->expects($this->exactly(3))->method('isAdmin')->will($this->returnValue(false));
-        $oEncoder->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $this->assertEquals(md5($sViewId) . "seo", $oEncoder->UNITgetCacheKey("oxarticle"));
 
         // + cache check

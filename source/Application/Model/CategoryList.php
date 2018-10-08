@@ -73,7 +73,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function __construct($sObjectsInListName = 'oxcategory')
     {
-        $this->_blHideEmpty = $this->getConfig()->getConfigParam('blDontShowEmptyCategories');
+        $this->_blHideEmpty = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blDontShowEmptyCategories');
         parent::__construct($sObjectsInListName);
     }
 

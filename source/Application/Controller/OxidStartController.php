@@ -54,7 +54,7 @@ class OxidStartController extends \OxidEsales\Eshop\Application\Controller\Front
      */
     public function pageStart()
     {
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $config->setConfigParam('iMaxMandates', $config->getConfigParam('IMS'));
         $config->setConfigParam('iMaxArticles', $config->getConfigParam('IMA'));

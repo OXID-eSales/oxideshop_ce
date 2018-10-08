@@ -85,7 +85,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     {
         parent::__construct();
 
-        $this->_sShopDir = $this->getConfig()->getConfigParam('sShopDir');
+        $this->_sShopDir = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopDir');
         $this->_oOutput = oxNew(\OxidEsales\Eshop\Application\Model\DiagnosticsOutput::class);
         $this->_oRenderer = oxNew(\OxidEsales\Eshop\Application\Model\SmartyRenderer::class);
     }
@@ -149,7 +149,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
          * Modules
          */
         if ($this->getParam('oxdiag_frm_modules')) {
-            $sModulesDir = $this->getConfig()->getModulesDir();
+            $sModulesDir = \OxidEsales\Eshop\Core\Registry::getConfig()->getModulesDir();
             $oModuleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
             $aModules = $oModuleList->getModulesFromDir($sModulesDir);
 

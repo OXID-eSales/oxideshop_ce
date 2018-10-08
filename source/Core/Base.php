@@ -77,18 +77,6 @@ class Base
     }
 
     /**
-     * Config instance getter
-     *
-     * @deprecated since v6.4.0 (2018-10-15); This method will be removed completely. Use \OxidEsales\Eshop\Core\Registry::getConfig().
-     *
-     * @return \OxidEsales\Eshop\Core\Config
-     */
-    public function getConfig()
-    {
-        return \OxidEsales\Eshop\Core\Registry::getConfig();
-    }
-
-    /**
      * oxSession instance getter
      *
      * @return \OxidEsales\Eshop\Core\Session

@@ -5,6 +5,7 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
+use OxidEsales\Eshop\Core\Registry;
 use \oxObjectException;
 
 use Exception;
@@ -293,7 +294,7 @@ class BaseTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue(null));
 
         $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('getConfig', 'getShopId'), array(), '', false);
-        $oBase->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oBase->expects($this->any())->method('getShopId')->will($this->returnValue(null));
 
         $this->assertNull($oBase->isDerived());
@@ -312,7 +313,7 @@ class BaseTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue('xxx'));
 
         $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('getConfig', 'getShopId'), array(), '', false);
-        $oBase->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oBase->expects($this->any())->method('getShopId')->will($this->returnValue('xxx'));
 
         $this->assertSame($expected, $oBase->isDerived());
@@ -331,7 +332,7 @@ class BaseTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue('xxx'));
 
         $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('getConfig', 'getShopId'), array(), '', false);
-        $oBase->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oBase->expects($this->any())->method('getShopId')->will($this->returnValue('yyy'));
 
         $this->assertSame($expected, $oBase->isDerived());
@@ -504,7 +505,7 @@ class BaseTest extends \OxidTestCase
     public function testMagicGetLazyLoadingNonExistingFieldWithDebug()
     {
         $oBase = new _oxBase();
-        $oBase->getConfig()->setConfigParam('iDebug', -1);
+        Registry::getConfig()->setConfigParam('iDebug', -1);
         $oBase->setClassVar("_blUseLazyLoading", true);
         $oBase->init("oxarticles");
         $oBase->setId("2000");
@@ -520,7 +521,7 @@ class BaseTest extends \OxidTestCase
     public function testMagicGetLazyLoadingNonExistingFieldWithoutDebug()
     {
         $oBase = new _oxBase();
-        $oBase->getConfig()->setConfigParam('iDebug', 0);
+        Registry::getConfig()->setConfigParam('iDebug', 0);
         $oBase->setClassVar("_blUseLazyLoading", true);
         $oBase->init("oxarticles");
         $oBase->setId("2000");

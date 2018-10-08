@@ -42,8 +42,8 @@ class DeliverySetMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin
      */
     protected function _getQuery()
     {
-        $sId = $this->getConfig()->getRequestParameter('oxid');
-        $sSynchId = $this->getConfig()->getRequestParameter('synchoxid');
+        $sId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $sSynchId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sDeliveryViewName = $this->_getViewName('oxdelivery');
@@ -70,7 +70,7 @@ class DeliverySetMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin
     public function removeFromSet()
     {
         $aRemoveGroups = $this->_getActionIds('oxdel2delset.oxid');
-        if ($this->getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxdel2delset.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
@@ -90,7 +90,7 @@ class DeliverySetMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin
         $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
         // adding
-        if ($this->getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sDeliveryViewName = $this->_getViewName('oxdelivery');
             $aChosenSets = $this->_getAll($this->_addFilter("select $sDeliveryViewName.oxid " . $this->_getQuery()));
         }

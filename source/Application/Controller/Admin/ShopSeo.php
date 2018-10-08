@@ -152,7 +152,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
      */
     public function dropSeoIds()
     {
-        $this->resetSeoData($this->getConfig()->getShopId());
+        $this->resetSeoData(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopId());
     }
 
     /**

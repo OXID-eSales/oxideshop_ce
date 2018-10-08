@@ -5,6 +5,7 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\Registry;
 use \stdClass;
 use \Exception;
 use \oxRegistry;
@@ -149,8 +150,7 @@ class NavigationTest extends \OxidTestCase
         $this->getSession()->setVariable('dynvalue', "testDynValue");
         $this->getSession()->setVariable('paymentid', "testPaymentId");
 
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getConfigParam"));
-        $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo("blClearCacheOnLogout"))->will($this->returnValue(true));
+        Registry::getConfig()->setConfigParam('blClearCacheOnLogout', true);
 
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("destroy", "getId"));
         $oSession->expects($this->once())->method('destroy');
@@ -159,7 +159,6 @@ class NavigationTest extends \OxidTestCase
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationController::class, array("getSession", "getConfig", "resetContentCache"), array(), '', false);
         $oView->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
-        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
         $oView->expects($this->once())->method('resetContentCache');
         $oView->logout();
 
@@ -225,7 +224,7 @@ class NavigationTest extends \OxidTestCase
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationController::class, array("getConfig"), array(), '', false);
-        $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $this->assertEquals("Version 4 is available.", $oView->UNITcheckVersion());
     }
 }

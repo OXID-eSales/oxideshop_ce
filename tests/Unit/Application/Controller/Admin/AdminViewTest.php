@@ -48,7 +48,7 @@ class AdminViewTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('isSsl')->will($this->returnValue(true));
 
         $oAdminView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminController::class, array("getConfig"), array(), '', false);
-        $oAdminView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals("https", $oAdminView->UNITgetServiceProtocol());
 
@@ -57,7 +57,7 @@ class AdminViewTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('isSsl')->will($this->returnValue(false));
 
         $oAdminView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminController::class, array("getConfig"), array(), '', false);
-        $oAdminView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals("http", $oAdminView->UNITgetServiceProtocol());
     }

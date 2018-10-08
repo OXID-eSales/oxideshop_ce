@@ -106,7 +106,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function __construct()
     {
-        $this->setPaymentVatOnTop($this->getConfig()->getConfigParam('blPaymentVatOnTop'));
+        $this->setPaymentVatOnTop(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blPaymentVatOnTop'));
         parent::__construct();
         $this->init('oxpayments');
     }
@@ -195,7 +195,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         if ($this->oxpayments__oxaddsumtype->value == "%") {
             $dRet = $dBasePrice * $this->oxpayments__oxaddsum->value / 100;
         } else {
-            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
             $dRet = $this->oxpayments__oxaddsum->value * $oCur->rate;
         }
 
@@ -402,7 +402,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function isValidPayment($aDynValue, $sShopId, $oUser, $dBasketPrice, $sShipSetId)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         if ($this->oxpayments__oxid->value == 'oxempty') {
             // inactive or blOtherCountryOrder is off
             if (!$this->oxpayments__oxactive->value || !$myConfig->getConfigParam("blOtherCountryOrder")) {

@@ -50,7 +50,7 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function __construct()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $this->setWrappingVat($oConfig->getConfigParam('dDefaultVAT'));
         $this->setWrappingVatOnTop($oConfig->getConfigParam('blWrappingVatOnTop'));
         parent::__construct();
@@ -95,7 +95,7 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
                 $this->_oPrice->setNettoPriceMode();
             }
 
-            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
             $this->_oPrice->setPrice($this->oxwrapping__oxprice->value * $oCur->rate, $this->_dVat);
             $this->_oPrice->multiply($dAmount);
         }
@@ -145,7 +145,7 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     protected function _isPriceViewModeNetto()
     {
-        $blResult = (bool) $this->getConfig()->getConfigParam('blShowNetPrice');
+        $blResult = (bool) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowNetPrice');
         $oUser = $this->getUser();
         if ($oUser) {
             $blResult = $oUser->isPriceViewModeNetto();
@@ -165,7 +165,7 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         $dPrice = $this->getPrice();
 
-        return \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($dPrice, $this->getConfig()->getActShopCurrencyObject());
+        return \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($dPrice, \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject());
     }
 
     /**
@@ -191,7 +191,7 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function getNoSslDynImageDir()
     {
-        return $this->getConfig()->getPictureUrl(null, false, false, null, $this->oxwrapping__oxshopid->value);
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getPictureUrl(null, false, false, null, $this->oxwrapping__oxshopid->value);
     }
 
     /**
@@ -202,7 +202,7 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function getPictureUrl()
     {
         if ($this->oxwrapping__oxpic->value) {
-            return $this->getConfig()->getPictureUrl("master/wrapping/" . $this->oxwrapping__oxpic->value, false, $this->getConfig()->isSsl(), null, $this->oxwrapping__oxshopid->value);
+            return \OxidEsales\Eshop\Core\Registry::getConfig()->getPictureUrl("master/wrapping/" . $this->oxwrapping__oxpic->value, false, \OxidEsales\Eshop\Core\Registry::getConfig()->isSsl(), null, $this->oxwrapping__oxshopid->value);
         }
     }
 }

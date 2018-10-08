@@ -459,7 +459,7 @@ class PictureHandlerTest extends \OxidTestCase
 
         $cl = oxTestModules::publicize('oxPictureHandler', '_getPictureInfo');
         $oPicHandler = $this->getMock($cl, array('getConfig'));
-        $oPicHandler->expects($this->any())->method('getConfig')->will($this->returnValue($oCfg));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
 
         $this->assertEquals(array('path' => '/qqq/pic/mic.jpg', 'url' => 'http://qqq/pic/mic.jpg',), $oPicHandler->p_getPictureInfo('master/product/', 'nopic.jpg'));
     }
@@ -506,7 +506,7 @@ class PictureHandlerTest extends \OxidTestCase
 
         $cl = oxTestModules::publicize('oxPictureHandler', '_getPictureInfo');
         $oPicHandler = $this->getMock($cl, array('getConfig'));
-        $oPicHandler->expects($this->any())->method('getConfig')->will($this->returnValue($oCfg));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
 
         $this->assertEquals(array('path' => false, 'url' => false,), $oPicHandler->p_getPictureInfo('master/product/', 'nopic.jpg'));
     }
@@ -517,7 +517,7 @@ class PictureHandlerTest extends \OxidTestCase
         $oCfg->expects($this->any())->method('getConfigParam')->will($this->returnValue(false));
 
         $oPicHandler = $this->getMock(\OxidEsales\Eshop\Core\PictureHandler::class, array('getConfig'));
-        $oPicHandler->expects($this->any())->method('getConfig')->will($this->returnValue($oCfg));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
 
         $this->assertEquals(null, $oPicHandler->getAltImageUrl('master/product/', 'nopic.jpg'));
     }
@@ -530,7 +530,7 @@ class PictureHandlerTest extends \OxidTestCase
             ->will($this->returnValue('http://alt/image/url'));
 
         $oPicHandler = $this->getMock(\OxidEsales\Eshop\Core\PictureHandler::class, array('getConfig'));
-        $oPicHandler->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
 
         $this->assertEquals('http://alt/image/url/master/product/nopic.jpg', $oPicHandler->getAltImageUrl('master/product/', 'nopic.jpg'));
     }

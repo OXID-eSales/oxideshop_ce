@@ -143,7 +143,7 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
             // processing amounts
             $dAmount = str_replace(',', '.', $dAmount);
-            if (!$this->getConfig()->getConfigParam('blAllowUnevenAmounts')) {
+            if (!\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blAllowUnevenAmounts')) {
                 $dAmount = round(( string ) $dAmount);
             }
 

@@ -26,7 +26,7 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         parent::render();
 
         $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);

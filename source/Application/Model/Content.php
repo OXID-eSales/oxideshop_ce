@@ -290,7 +290,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $sUrl = '';
         if ($blFull) {
             //always returns shop url, not admin
-            $sUrl = $this->getConfig()->getShopUrl($iLang, false);
+            $sUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl($iLang, false);
         }
 
         if ($this->oxcontents__oxloadid->value === 'oxcredits') {
@@ -402,7 +402,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         $blSaved = parent::save();
         if ($blSaved && $this->oxcontents__oxloadid->value === 'oxagb') {
-            $sShopId = $this->getConfig()->getShopId();
+            $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
             $sVersion = $this->oxcontents__oxtermversion->value;
 
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();

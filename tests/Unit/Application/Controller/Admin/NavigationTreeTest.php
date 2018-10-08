@@ -698,7 +698,7 @@ class NavigationTreeTest extends \OxidTestCase
 
         $oNavTree = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationTree::class, array("isAdmin"));
         $oNavTree->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
-        $oNavTree->getConfig()->setConfigParam('sAdminDir', 'admin');
+        Registry::getConfig()->setConfigParam('sAdminDir', 'admin');
 
         $this->assertEquals('mxcoresett', $oNavTree->getClassId('shop'));
 

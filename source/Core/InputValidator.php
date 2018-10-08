@@ -233,7 +233,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      */
     public function getPasswordLength()
     {
-        return $this->getConfig()->getConfigParam("iPasswordLength") ?: 6;
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("iPasswordLength") ?: 6;
     }
 
     /**

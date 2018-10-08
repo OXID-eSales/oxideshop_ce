@@ -47,7 +47,7 @@ class LanguageListTest extends \OxidTestCase
         $aTasks = array("getConfig");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageList::class, $aTasks, array(), '', false);
-        $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $oView->deleteEntry();
     }

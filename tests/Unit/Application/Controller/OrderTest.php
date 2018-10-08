@@ -7,6 +7,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Application\Model\BasketItem;
+use OxidEsales\Eshop\Core\Config;
 use OxidEsales\EshopCommunity\Application\Model\Payment;
 use oxOutOfStockException;
 use \oxUtils;
@@ -955,7 +956,7 @@ class OrderTest extends \OxidTestCase
      */
     public function testIsWrappingIfWrappingIsOff()
     {
-        $oCfg = $this->getMock("stdClass", array("getShowGiftWrapping"));
+        $oCfg = $this->getMock(Config::class, array("getShowGiftWrapping"));
         $oCfg->expects($this->once())->method('getShowGiftWrapping')->will($this->returnValue(false));
 
         oxTestModules::addFunction("oxwrapping", "__construct", '{throw new Exception("wrapping should not be constructed");}');

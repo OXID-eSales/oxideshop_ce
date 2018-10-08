@@ -7,6 +7,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
 use \oxDb;
+use OxidEsales\Eshop\Core\Registry;
 use \oxRegistry;
 use \oxTestModules;
 
@@ -468,7 +469,7 @@ class UserbasketTest extends \OxidTestCase
         $oSubj->oxuserbaskets__oxuserid = new oxField('oxdefaultadmin');
         $oUser = oxNew('oxUser');
         $oUser->load('oxdefaultadmin');
-        $oSubj->getConfig()->setUser($oUser);
+        Registry::getConfig()->setUser($oUser);
         $this->assertTrue($oSubj->isVisible());
     }
 

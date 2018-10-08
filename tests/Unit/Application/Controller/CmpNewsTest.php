@@ -44,7 +44,7 @@ class CmpNewsTest extends \OxidTestCase
         $oConfig->expects($this->at(3))->method('getConfigParam')->with($this->equalTo("bl_perfLoadNewsOnlyStart"))->will($this->returnValue(true));
 
         $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\NewsComponent::class, array("getConfig"), array(), '', false);
-        $oCmp->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $this->assertNull($oCmp->render());
     }
 

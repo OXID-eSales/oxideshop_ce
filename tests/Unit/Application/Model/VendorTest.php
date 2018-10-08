@@ -6,11 +6,12 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
-use oxField;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Application\Model\Vendor;
-use oxRegistry;
-use oxTestModules;
+use \oxRegistry;
+use \oxTestModules;
+use \oxField;
 
 /**
  * Testing oxvendor class
@@ -114,7 +115,7 @@ class VendorTest extends \OxidTestCase
         $vendor = oxNew('oxvendor');
         $vendor->setId("testVendorId");
 
-        $sTestUrl = $this->getConfig()->getConfig()->getShopHomeUrl($iLang, false) . "cl=vendorlist&amp;cnid=v_" . $vendor->getId();
+        $sTestUrl = Registry::getConfig()->getShopHomeUrl($iLang, false) . "cl=vendorlist&amp;cnid=v_" . $vendor->getId();
         $this->assertEquals($sTestUrl, $vendor->getBaseStdLink($iLang));
     }
 
@@ -380,7 +381,7 @@ class VendorTest extends \OxidTestCase
     public function testGetIconUrlNewPath()
     {
         $vendor = oxNew(Vendor::class);
-        $vendor->getConfig()->setConfigParam('sManufacturerIconsize', '100*100');
+        Registry::getConfig()->setConfigParam('sManufacturerIconsize', '100*100');
         $vendor->oxvendor__oxicon = new oxField('big_matsol_1_mico.png');
 
         $sUrl = $vendor->getConfig()->getOutUrl() . basename($vendor->getConfig()->getPicturePath(''));

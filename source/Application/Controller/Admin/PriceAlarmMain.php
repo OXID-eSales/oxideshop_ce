@@ -27,7 +27,7 @@ class PriceAlarmMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      */
     public function render()
     {
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $this->_aViewData['iAllCnt'] = $this->getActivePriceAlarmsCount();
 

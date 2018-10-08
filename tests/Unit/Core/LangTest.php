@@ -901,7 +901,7 @@ class LangTest extends \OxidTestCase
         $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array('isAdmin', 'getBaseLanguage', 'getConfig'));
         $oLang->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
         $oLang->expects($this->any())->method('getBaseLanguage')->will($this->returnValue(2));
-        $oLang->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals(1, $oLang->getEditLanguage());
     }
@@ -1346,7 +1346,7 @@ class LangTest extends \OxidTestCase
         $oConfig->expects($this->at(1))->method('getConfigParam')->with($this->equalTo('aLanguages'))->will($this->returnValue($aLangIds));
 
         $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array("getConfig"));
-        $oLang->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals(array(0, 1), $oLang->getLanguageIds());
     }

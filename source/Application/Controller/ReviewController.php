@@ -136,7 +136,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     {
         // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recommid') && !$this->getActiveRecommList()) {
-            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getConfig()->getShopHomeUrl(), true, 302);
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopHomeUrl(), true, 302);
         }
         // END deprecated
 
@@ -153,7 +153,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
      */
     public function render()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if (!$oConfig->getConfigParam("bl_perfLoadReviews")) {
             \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($oConfig->getShopHomeUrl());
@@ -172,7 +172,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
                     $this->_iAllArtCnt = $oActiveRecommList->getArtCount();
                 }
                 // load only lists which we show on screen
-                $iNrofCatArticles = $this->getConfig()->getConfigParam('iNrofCatArticles');
+                $iNrofCatArticles = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofCatArticles');
                 $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
                 $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrofCatArticles);
             }
@@ -411,7 +411,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
                 $iActPage = ($iActPage < 0) ? 0 : $iActPage;
 
                 // load only lists which we show on screen
-                $iNrofCatArticles = $this->getConfig()->getConfigParam('iNrofCatArticles');
+                $iNrofCatArticles = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofCatArticles');
                 $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
 
                 $oList = $oActiveRecommList->getArticles($iNrofCatArticles * $iActPage, $iNrofCatArticles);

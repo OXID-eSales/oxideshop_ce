@@ -56,7 +56,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
     public function decodeUrl($seoUrl)
     {
         $stringObject = getStr();
-        $baseUrl = $this->getConfig()->getShopURL();
+        $baseUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopURL();
         if ($stringObject->strpos($seoUrl, $baseUrl) === 0) {
             $seoUrl = $stringObject->substr($seoUrl, $stringObject->strlen($baseUrl));
         }
@@ -64,7 +64,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
 
         //extract page number from seo url
         list($seoUrl, $pageNumber) = $this->extractPageNumberFromSeoUrl($seoUrl);
-        $shopId = $this->getConfig()->getShopId();
+        $shopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
 
         $key = $this->_getIdent($seoUrl);
         $urlParameters = false;
@@ -96,11 +96,11 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
     {
         $stringObject = getStr();
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-        $baseUrl = $this->getConfig()->getShopURL();
+        $baseUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopURL();
         if ($stringObject->strpos($seoUrl, $baseUrl) === 0) {
             $seoUrl = $stringObject->substr($seoUrl, $stringObject->strlen($baseUrl));
         }
-        $shopId = $this->getConfig()->getShopId();
+        $shopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
         $seoUrl = rawurldecode($seoUrl);
 
         //extract page number from seo url
@@ -202,10 +202,10 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
                 \OxidEsales\Eshop\Core\Registry::getLang()->resetBaseLanguage();
             } elseif (($sRedirectUrl = $this->_decodeOldUrl($sParams))) {
                 // in case SEO url was changed - redirecting to new location
-                \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getConfig()->getShopURL() . $sRedirectUrl, false, 301);
+                \OxidEsales\Eshop\Core\Registry::getUtils()->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopURL() . $sRedirectUrl, false, 301);
             } elseif (($sRedirectUrl = $this->_decodeSimpleUrl($sParams))) {
                 // old type II seo urls
-                \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getConfig()->getShopURL() . $sRedirectUrl, false, 301);
+                \OxidEsales\Eshop\Core\Registry::getUtils()->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopURL() . $sRedirectUrl, false, 301);
             } else {
                 \OxidEsales\Eshop\Core\Registry::getSession()->start();
                 // unrecognized url
@@ -292,7 +292,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
 
         // this should not happen on most cases, because this redirect is handled by .htaccess
         if ($sParams && !$oStr->preg_match('/\.html$/', $sParams) && !$oStr->preg_match('/\/$/', $sParams)) {
-            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getConfig()->getShopURL() . $sParams . '/', false);
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopURL() . $sParams . '/', false);
         }
 
         return $sParams;

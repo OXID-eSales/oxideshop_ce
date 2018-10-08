@@ -5,6 +5,7 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
+use OxidEsales\Eshop\Core\Config;
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Application\Model\ArticleList;
 use OxidEsales\EshopCommunity\Application\Model\PaymentList;
@@ -957,7 +958,7 @@ class DetailsTest extends \OxidTestCase
      */
     public function testAddToRecommIfOff()
     {
-        $oCfg = $this->getMock("stdClass", array("getShowListmania"));
+        $oCfg = $this->getMock(Config::class, array("getShowListmania"));
         $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(false));
 
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
@@ -983,7 +984,7 @@ class DetailsTest extends \OxidTestCase
      */
     public function testAddToRecommIfOn()
     {
-        $oCfg = $this->getMock("stdClass", array("getShowListmania"));
+        $oCfg = $this->getMock(Config::class, array("getShowListmania"));
         $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(true));
 
         /** @var oxArticle|PHPUnit\Framework\MockObject\MockObject $oProduct */
@@ -1180,7 +1181,7 @@ class DetailsTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo('bl_perfLoadReviews'))->will($this->returnValue('test_isactive'));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getConfig'));
-        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertSame('test_isactive', $oView->isReviewActive());
     }

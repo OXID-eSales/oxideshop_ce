@@ -9,6 +9,7 @@ use oxBasket;
 use oxDb;
 use oxField;
 use OxidEsales\Eshop\Application\Model\Order;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsObject;
 use oxOrder;
 use oxRegistry;
@@ -125,7 +126,7 @@ class OrderRecalculationTest extends \OxidTestCase
      */
     public function testPlaceOrderWithoutVouchersTriggerRecalculateOrderMain($editValues, $expectedDiscount)
     {
-        $defaultVat = oxRegistry::getSession()->getConfig()->getConfigParam('dDefaultVAT');
+        $defaultVat = Registry::getConfig()->getConfigParam('dDefaultVAT');
         $buyAmount = 10;
 
         $expectedOrderTotalBruttoSum = $buyAmount * self::TEST_ARTICLE_PRICE;
@@ -186,7 +187,7 @@ class OrderRecalculationTest extends \OxidTestCase
         //relative discount, 20% off on each voucher
         $this->createVouchers();
 
-        $defaultVat = oxRegistry::getSession()->getConfig()->getConfigParam('dDefaultVAT');
+        $defaultVat = Registry::getConfig()->getConfigParam('dDefaultVAT');
         $buyAmount = 10;
         $payDate = date('Y-m-d H:i:s');
 
@@ -259,7 +260,7 @@ class OrderRecalculationTest extends \OxidTestCase
         //discount of 20% when buying 10 or more articles T-666
         $this->createDiscount(); //is summed up with the voucherDiscount
 
-        $defaultVat = oxRegistry::getSession()->getConfig()->getConfigParam('dDefaultVAT');
+        $defaultVat = Registry::getConfig()->getConfigParam('dDefaultVAT');
         $buyAmount = 10;
         $payDate = date('Y-m-d H:i:s');
 
@@ -343,7 +344,7 @@ class OrderRecalculationTest extends \OxidTestCase
         //discount of 20% when buying 10 or more articles T-666
         $this->createDiscount(); //is summed up with the voucherDiscount
 
-        $defaultVat = oxRegistry::getSession()->getConfig()->getConfigParam('dDefaultVAT');
+        $defaultVat = Registry::getConfig()->getConfigParam('dDefaultVAT');
         $buyAmount = 10;
         $payDate = date('Y-m-d H:i:s');
 

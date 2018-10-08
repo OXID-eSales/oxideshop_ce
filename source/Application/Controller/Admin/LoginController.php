@@ -22,7 +22,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     public function __construct()
     {
-        $this->getConfig()->setConfigParam('blAdmin', true);
+        \OxidEsales\Eshop\Core\Registry::getConfig()->setConfigParam('blAdmin', true);
         $this->_sThisAction = "login";
     }
 
@@ -34,7 +34,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         // automatically redirect to SSL login
         if (!$myConfig->isSsl() && strpos($myConfig->getConfigParam('sAdminSSLURL'), 'https://') === 0) {
@@ -76,7 +76,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     protected function setShopConfigParameters()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $oBaseShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         $oBaseShop->load($myConfig->getBaseShopId());

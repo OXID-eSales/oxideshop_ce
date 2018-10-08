@@ -44,7 +44,7 @@ class Country extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function isForeignCountry()
     {
-        return !in_array($this->getId(), $this->getConfig()->getConfigParam('aHomeCountry'));
+        return !in_array($this->getId(), \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aHomeCountry'));
     }
 
     /**

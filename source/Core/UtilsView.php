@@ -86,7 +86,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     public function getTemplateOutput($templateName, $oObject)
     {
         $smarty = $this->getSmarty();
-        $debugMode = $this->getConfig()->getConfigParam('iDebug');
+        $debugMode = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iDebug');
 
         // assign
         $viewData = $oObject->getViewData();
@@ -301,7 +301,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      */
     public function getTemplateCompileId()
     {
-        $shopId = $this->getConfig()->getShopId();
+        $shopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
         $templateDirectories = $this->getTemplateDirs();
 
         return md5(reset($templateDirectories) . '__' . $shopId);
@@ -314,7 +314,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      */
     public function getSmartyDir()
     {
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         //check for the Smarty dir
         $compileDir = $config->getConfigParam('sCompileDir');
@@ -337,7 +337,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      */
     protected function _fillCommonSmartyProperties($smarty)
     {
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $smarty->left_delimiter = '[{';
         $smarty->right_delimiter = '}]';
 
@@ -366,7 +366,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
             $smarty->plugins_dir
         );
 
-        $coreDirectory = $this->getConfig()->getConfigParam('sCoreDir');
+        $coreDirectory = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sCoreDir');
 
         include_once $coreDirectory . 'Smarty/Plugin/prefilter.oxblock.php';
         $smarty->register_prefilter('smarty_prefilter_oxblock');
@@ -406,9 +406,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      */
     protected function getShopSmartyPluginDirectories()
     {
-        $coreDirectory = $this
-            ->getConfig()
-            ->getConfigParam('sCoreDir');
+        $coreDirectory = Registry::getConfig()->getConfigParam('sCoreDir');
 
         return [
             $coreDirectory . 'Smarty/Plugin',
@@ -422,7 +420,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      */
     protected function _smartyCompileCheck($smarty)
     {
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $smarty->compile_check = $config->getConfigParam('blCheckTemplates');
     }
 
@@ -467,7 +465,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     protected function _getTemplateBlock($moduleId, $fileName)
     {
         $pathFormatter = oxNew(ModuleTemplateBlockPathFormatter::class);
-        $pathFormatter->setModulesPath($this->getConfig()->getModulesDir());
+        $pathFormatter->setModulesPath(\OxidEsales\Eshop\Core\Registry::getConfig()->getModulesDir());
         $pathFormatter->setModuleId($moduleId);
         $pathFormatter->setFileName($fileName);
 
@@ -489,7 +487,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     {
         $templateBlocksWithContent = [];
 
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $tplDir = trim($config->getConfigParam('_sTemplateDir'), '/\\');
         $templateFileName = str_replace(['\\', '//'], '/', $templateFileName);
@@ -542,7 +540,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      */
     protected function addActiveThemeId($themePath)
     {
-        $themeId = $this->getConfig()->getConfigParam('sTheme');
+        $themeId = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sTheme');
         if ($this->isAdmin()) {
             $themeId = 'admin';
         }
@@ -645,7 +643,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     private function formListOfDuplicatedBlocks($activeBlockTemplates)
     {
         $templateBlocksToExchange = [];
-        $customThemeId = $this->getConfig()->getConfigParam('sCustomTheme');
+        $customThemeId = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sCustomTheme');
 
         foreach ($activeBlockTemplates as $activeBlockTemplate) {
             if ($activeBlockTemplate['OXTHEME']) {
@@ -694,7 +692,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     {
         $activeBlockTemplates = $templateBlocks;
         $templateBlocks = [];
-        $customThemeId = $this->getConfig()->getConfigParam('sCustomTheme');
+        $customThemeId = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sCustomTheme');
         foreach ($activeBlockTemplates as $activeBlockTemplate) {
             if (!in_array($this->prepareBlockKey($activeBlockTemplate), $templateBlocksToExchange['custom_theme'])
                 || $activeBlockTemplate['OXTHEME'] === $customThemeId
@@ -776,7 +774,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         $ids = $this->_getActiveModuleInfo();
         if (count($ids)) {
             $templateBlockRepository = oxNew(ModuleTemplateBlockRepository::class);
-            $shopId = $this->getConfig()->getShopId();
+            $shopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
             $activeModulesId = array_keys($ids);
             $blocksCount = $templateBlockRepository->getBlocksCount($activeModulesId, $shopId);
 
@@ -832,7 +830,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
         return oxNew(
             ModuleSmartyPluginDirectoryRepository::class,
-            $this->getConfig(),
+            \OxidEsales\Eshop\Core\Registry::getConfig(),
             $moduleVariablesLocator,
             oxNew(Module::class)
         );

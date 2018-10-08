@@ -113,7 +113,7 @@ class UserComponentTest extends \OxidTestCase
             $oView = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array("getUser", "getConfig", "getParent"), array(), '', false);
             $oView->expects($this->atLeastOnce())->method('getUser')->will($this->returnValue(false));
             $oView->expects($this->atLeastOnce())->method('getParent')->will($this->returnValue($oParent));
-            $oView->expects($this->atLeastOnce())->method('getConfig')->will($this->returnValue($oConfig));
+		    \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
             $oView->render();
         } catch (Exception $oExcp) {
             $this->assertEquals("testUrlcl=account", $oExcp->getMessage(), "Error in oxscloginoxcmpuser::render()");
@@ -147,7 +147,7 @@ class UserComponentTest extends \OxidTestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array("getUser", "getConfig", "_checkTermVersion", "getParent"), array(), '', false);
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
         $oView->expects($this->any())->method('getParent')->will($this->returnValue($oParent));
-        $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         try {
             $this->assertFalse($oView->render());
@@ -184,7 +184,7 @@ class UserComponentTest extends \OxidTestCase
             $oView = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array("getUser", "getConfig", "getParent"), array(), '', false);
             $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
             $oView->expects($this->any())->method('getParent')->will($this->returnValue($oParent));
-            $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		    \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
             $oView->render();
         } catch (Exception $oExcp) {
             $this->assertEquals("testUrlcl=account&term=1", $oExcp->getMessage(), "Error in oxscloginoxcmpuser::render()");
@@ -353,7 +353,7 @@ class UserComponentTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('isSsl')->will($this->returnValue(false));
 
         $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Integration\Application\Component\modcmp_user::class, array('getConfig'));
-        $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->setRequestParameter('cl', 'testclass');
         $this->setRequestParameter('cnid', 'catid');
@@ -376,7 +376,7 @@ class UserComponentTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('isSsl')->will($this->returnValue(true));
 
         $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Integration\Application\Component\modcmp_user::class, array('getConfig'));
-        $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $this->setRequestParameter('cl', 'testclass');
         $this->setRequestParameter('cnid', 'catid');
         $this->setRequestParameter('mnid', 'manId');

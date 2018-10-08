@@ -34,7 +34,7 @@ class NewsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     {
         parent::render();
 
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oActView = $myConfig->getActiveView();
 
         // news loading is disabled

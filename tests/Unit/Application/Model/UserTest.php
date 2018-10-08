@@ -650,7 +650,7 @@ class UserTest extends \OxidTestCase
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('isAdmin', 'getConfig', 'getViewName'), array(), '', false);
         $oUser->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
-        $oUser->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oUser->expects($this->any())->method('getViewName')->will($this->returnValue('oxuser'));
 
         $oUser->init('oxuser');

@@ -86,8 +86,8 @@ class Output extends \OxidEsales\Eshop\Core\Base
     final public function addVersionTags($sOutput)
     {
         // DISPLAY IT
-        $sVersion = $this->getConfig()->getVersion();
-        $sEdition = $this->getConfig()->getFullEdition();
+        $sVersion = \OxidEsales\Eshop\Core\Registry::getConfig()->getVersion();
+        $sEdition = \OxidEsales\Eshop\Core\Registry::getConfig()->getFullEdition();
         $sCurYear = date("Y");
 
         // SHOW ONLY MAJOR VERSION NUMBER

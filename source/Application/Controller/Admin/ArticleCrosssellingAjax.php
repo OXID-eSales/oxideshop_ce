@@ -54,7 +54,7 @@ class ArticleCrosssellingAjax extends \OxidEsales\Eshop\Application\Controller\A
      */
     protected function _getQuery()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sArticleTable = $this->_getViewName('oxarticles');
         $sView = $this->_getViewName('oxobject2category');
 

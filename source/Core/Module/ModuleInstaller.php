@@ -198,7 +198,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      */
     public function getModulesWithExtendedClass()
     {
-        return $this->getConfig()->getModulesWithExtendedClass();
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getModulesWithExtendedClass();
     }
 
     /**
@@ -275,7 +275,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      */
     protected function _addToDisabledList($sModuleId)
     {
-        $aDisabledModules = (array) $this->getConfig()->getConfigParam('aDisabledModules');
+        $aDisabledModules = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aDisabledModules');
 
         $aModules = array_merge($aDisabledModules, [$sModuleId]);
         $aModules = array_unique($aModules);
@@ -292,12 +292,12 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      */
     protected function _deleteModule($sModuleId)
     {
-        $aExt = $this->getConfig()->getModulesWithExtendedClass();
+        $aExt = \OxidEsales\Eshop\Core\Registry::getConfig()->getModulesWithExtendedClass();
 
         $aUpdatedExt = $this->diffModuleArrays($aExt, $sModuleId);
         $aUpdatedExt = $this->buildModuleChains($aUpdatedExt);
 
-        $this->getConfig()->saveShopConfVar('aarr', 'aModules', $aUpdatedExt);
+        \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar('aarr', 'aModules', $aUpdatedExt);
     }
 
     /**
@@ -310,7 +310,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     protected function _deleteBlock($sModuleId)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sShopId = $this->getConfig()->getShopId();
+        $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
         $oDb->execute("DELETE FROM `oxtplblocks` WHERE `oxmodule` =" . $oDb->quote($sModuleId) . " AND `oxshopid` = " . $oDb->quote($sShopId));
     }
 
@@ -321,7 +321,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      */
     protected function _deleteTemplateFiles($sModuleId)
     {
-        $aTemplates = (array) $this->getConfig()->getConfigParam('aModuleTemplates');
+        $aTemplates = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModuleTemplates');
         unset($aTemplates[$sModuleId]);
 
         $this->_saveToConfig('aModuleTemplates', $aTemplates);
@@ -334,7 +334,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      */
     protected function _deleteModuleFiles($sModuleId)
     {
-        $aFiles = (array) $this->getConfig()->getConfigParam('aModuleFiles');
+        $aFiles = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModuleFiles');
         unset($aFiles[$sModuleId]);
 
         $this->_saveToConfig('aModuleFiles', $aFiles);
@@ -347,7 +347,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      */
     protected function _deleteModuleEvents($sModuleId)
     {
-        $aEvents = (array) $this->getConfig()->getConfigParam('aModuleEvents');
+        $aEvents = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModuleEvents');
         unset($aEvents[$sModuleId]);
 
         $this->_saveToConfig('aModuleEvents', $aEvents);
@@ -360,7 +360,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      */
     protected function _deleteModuleVersions($sModuleId)
     {
-        $aVersions = (array) $this->getConfig()->getConfigParam('aModuleVersions');
+        $aVersions = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModuleVersions');
         unset($aVersions[$sModuleId]);
 
         $this->_saveToConfig('aModuleVersions', $aVersions);
@@ -424,7 +424,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      */
     protected function _removeFromDisabledList($sModuleId)
     {
-        $aDisabledModules = (array) $this->getConfig()->getConfigParam('aDisabledModules');
+        $aDisabledModules = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aDisabledModules');
 
         if (isset($aDisabledModules) && is_array($aDisabledModules)) {
             $aDisabledModules = array_diff($aDisabledModules, [$sModuleId]);
@@ -444,7 +444,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      */
     protected function _addTemplateBlocks($moduleBlocks, $moduleId)
     {
-        $shopId = $this->getConfig()->getShopId();
+        $shopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         if (is_array($moduleBlocks)) {
             $knownBlocks = ['dummy'];
@@ -506,7 +506,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      */
     protected function _addModuleFiles($aModuleFiles, $sModuleId)
     {
-        $aFiles = (array) $this->getConfig()->getConfigParam('aModuleFiles');
+        $aFiles = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModuleFiles');
 
         if (is_array($aModuleFiles)) {
             $aFiles[$sModuleId] = array_change_key_case($aModuleFiles, CASE_LOWER);
@@ -523,7 +523,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      */
     protected function _addTemplateFiles($aModuleTemplates, $sModuleId)
     {
-        $aTemplates = (array) $this->getConfig()->getConfigParam('aModuleTemplates');
+        $aTemplates = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModuleTemplates');
         if (is_array($aModuleTemplates)) {
             $aTemplates[$sModuleId] = $aModuleTemplates;
         }
@@ -539,7 +539,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      */
     protected function _addModuleEvents($aModuleEvents, $sModuleId)
     {
-        $aEvents = (array) $this->getConfig()->getConfigParam('aModuleEvents');
+        $aEvents = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModuleEvents');
         if (is_array($aEvents)) {
             $aEvents[$sModuleId] = $aModuleEvents;
         }
@@ -555,7 +555,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      */
     protected function _addModuleVersion($sModuleVersion, $sModuleId)
     {
-        $aVersions = (array) $this->getConfig()->getConfigParam('aModuleVersions');
+        $aVersions = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModuleVersions');
         if (is_array($aVersions)) {
             $aVersions[$sModuleId] = $sModuleVersion;
         }
@@ -571,7 +571,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      */
     protected function _addModuleExtensions($moduleExtensions, $moduleId)
     {
-        $extensions = (array) $this->getConfig()->getConfigParam('aModuleExtensions');
+        $extensions = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModuleExtensions');
         if (is_array($extensions)) {
             $extensions[$moduleId] = array_values($moduleExtensions);
         }
@@ -614,7 +614,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      */
     protected function _callEvent($sEvent, $sModuleId)
     {
-        $aModuleEvents = (array) $this->getConfig()->getConfigParam('aModuleEvents');
+        $aModuleEvents = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModuleEvents');
 
         if (isset($aModuleEvents[$sModuleId], $aModuleEvents[$sModuleId][$sEvent])) {
             $mEvent = $aModuleEvents[$sModuleId][$sEvent];
@@ -649,7 +649,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      */
     protected function _saveToConfig($sVariableName, $sVariableValue, $sVariableType = 'aarr')
     {
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oConfig->saveShopConfVar($sVariableType, $sVariableName, $sVariableValue);
     }
 
@@ -797,7 +797,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
 
         return oxNew(
             EshopModuleSmartyPluginDirectoryRepository::class,
-            $this->getConfig(),
+            \OxidEsales\Eshop\Core\Registry::getConfig(),
             $moduleVariablesLocator,
             oxNew(EshopModule::class)
         );

@@ -30,13 +30,13 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $sTheme = $this->_sTheme = $this->getEditObjectId();
         $sShopId = $myConfig->getShopId();
 
         if (!isset($sTheme)) {
-            $sTheme = $this->_sTheme = $this->getConfig()->getConfigParam('sTheme');
+            $sTheme = $this->_sTheme = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sTheme');
         }
 
         $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
@@ -80,7 +80,7 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
      */
     public function saveConfVars()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         oxAdminDetails::save();
 

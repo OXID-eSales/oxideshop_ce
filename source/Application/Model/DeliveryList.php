@@ -67,7 +67,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
         parent::__construct('oxdelivery');
 
         // load or not delivery list
-        $this->setHomeCountry($this->getConfig()->getConfigParam('aHomeCountry'));
+        $this->setHomeCountry(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aHomeCountry'));
     }
 
     /**

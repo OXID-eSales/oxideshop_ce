@@ -32,7 +32,7 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
         $oModuleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
 
-        $extendClass = $this->getConfig()->getModulesWithExtendedClass();
+        $extendClass = \OxidEsales\Eshop\Core\Registry::getConfig()->getModulesWithExtendedClass();
         $sanitizedExtendClass = [];
         foreach ($extendClass as $key => $value) {
             $sanitizedKey = str_replace("\\", self::BACKSLASH_REPLACEMENT, $key);
@@ -70,7 +70,7 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             $aModules = $oModuleInstaller->buildModuleChains($aModules);
         }
 
-        $this->getConfig()->saveShopConfVar("aarr", "aModules", $aModules);
+        \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar("aarr", "aModules", $aModules);
     }
 
     /**

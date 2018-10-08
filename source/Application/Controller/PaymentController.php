@@ -142,7 +142,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if ($myConfig->getConfigParam('blPsBasketReservationEnabled')) {
             $this->getSession()->getBasketReservations()->renewExpiration();
@@ -205,7 +205,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     protected function _setDefaultEmptyPayment()
     {
         // no shipping method there !!
-        if ($this->getConfig()->getConfigParam('blOtherCountryOrder')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blOtherCountryOrder')) {
             $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
             if ($oPayment->load('oxempty')) {
                 $this->_oEmptyPayment = $oPayment;
@@ -252,7 +252,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $oBasket = $oSession->getBasket();
         $oBasket->setShipping(null);
         $oBasket->onUpdate();
-        $oSession->setVariable('sShipSet', $this->getConfig()->getRequestParameter('sShipSet'));
+        $oSession->setVariable('sShipSet', \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sShipSet'));
     }
 
     /**
@@ -268,7 +268,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function validatePayment()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oSession = $this->getSession();
 
         //#1308C - check user. Function is executed before render(), and oUser is not set!
@@ -470,7 +470,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function isOldDebitValidationEnabled()
     {
-        return !$this->getConfig()->getConfigParam('blSkipDebitOldBankInfo');
+        return !\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blSkipDebitOldBankInfo');
     }
 
     /**
@@ -719,6 +719,6 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function isPaymentVatSplitted()
     {
-        return $this->getConfig()->getConfigParam('blShowVATForPayCharge');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowVATForPayCharge');
     }
 }

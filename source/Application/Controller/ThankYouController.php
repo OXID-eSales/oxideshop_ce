@@ -111,7 +111,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
         // if not in order-context, redirect to start
         $order = $this->getOrder();
         if (!$order || !$order->getFieldData('oxordernr')) {
-            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getConfig()->getShopHomeURL() . '&cl=start');
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopHomeURL() . '&cl=start');
         }
     }
 
@@ -125,7 +125,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     public function render()
     {
         if (!$this->_oBasket || !$this->_oBasket->getProductsCount()) {
-            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . '&cl=start', true, 302);
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopHomeUrl() . '&cl=start', true, 302);
         }
 
         parent::render();
@@ -191,7 +191,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     {
         if ($this->_dConvIndex === null) {
             // currency conversion index value
-            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
             $this->_dConvIndex = 1 / $oCur->rate;
         }
 
@@ -221,7 +221,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     {
         if ($this->_sIPaymentAccount === null) {
             $this->_sIPaymentAccount = false;
-            $this->_sIPaymentAccount = $this->getConfig()->getConfigParam('iShopID_iPayment_Account');
+            $this->_sIPaymentAccount = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iShopID_iPayment_Account');
         }
 
         return $this->_sIPaymentAccount;
@@ -236,7 +236,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     {
         if ($this->_sIPaymentUser === null) {
             $this->_sIPaymentUser = false;
-            $this->_sIPaymentUser = $this->getConfig()->getConfigParam('iShopID_iPayment_User');
+            $this->_sIPaymentUser = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iShopID_iPayment_User');
         }
 
         return $this->_sIPaymentUser;
@@ -251,7 +251,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     {
         if ($this->_sIPaymentPassword === null) {
             $this->_sIPaymentPassword = false;
-            $this->_sIPaymentPassword = $this->getConfig()->getConfigParam('iShopID_iPayment_Passwort');
+            $this->_sIPaymentPassword = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iShopID_iPayment_Passwort');
         }
 
         return $this->_sIPaymentPassword;

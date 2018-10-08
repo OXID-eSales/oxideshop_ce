@@ -61,7 +61,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         // saving/updating seo params
         if (($sOxid = $this->_getSaveObjectId())) {
             $aSeoData = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aSeoData');
-            $iShopId = $this->getConfig()->getShopId();
+            $iShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
             $iLang = $this->getEditLang();
 
             // checkbox handling
@@ -131,7 +131,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
      */
     public function getEntryMetaData($sMetaType)
     {
-        return $this->_getEncoder()->getMetaData($this->getEditObjectId(), $sMetaType, $this->getConfig()->getShopId(), $this->getEditLang());
+        return $this->_getEncoder()->getMetaData($this->getEditObjectId(), $sMetaType, \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId(), $this->getEditLang());
     }
 
     /**
@@ -142,7 +142,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     public function isEntryFixed()
     {
         $iLang = (int) $this->getEditLang();
-        $iShopId = $this->getConfig()->getShopId();
+        $iShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
 
         $sQ = "select oxfixed from oxseo where
                    oxseo.oxobjectid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($this->getEditObjectId()) . " and

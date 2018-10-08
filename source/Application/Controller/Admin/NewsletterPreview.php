@@ -37,7 +37,7 @@ class NewsletterPreview extends \OxidEsales\Eshop\Application\Controller\Admin\A
             $sUserID = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("auth");
 
             // assign values to the newsletter and show it
-            $oNewsletter->prepare($sUserID, $this->getConfig()->getConfigParam('bl_perfLoadAktion'));
+            $oNewsletter->prepare($sUserID, \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadAktion'));
 
             $this->_aViewData["previewhtml"] = $oNewsletter->getHtmlText();
             $this->_aViewData["previewtext"] = $oNewsletter->getPlainText();

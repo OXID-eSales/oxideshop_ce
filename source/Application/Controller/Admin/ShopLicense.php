@@ -34,7 +34,7 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         if ($myConfig->isDemoShop()) {
             /** @var \OxidEsales\Eshop\Core\Exception\SystemComponentException $oSystemComponentException */
             $oSystemComponentException = oxNew(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class, "license");
@@ -69,7 +69,7 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
      */
     protected function _canUpdate()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $blIsMallAdmin = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('malladmin');
         if (!$blIsMallAdmin) {
@@ -92,7 +92,7 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
      */
     protected function _fetchCurVersionInfo($sUrl)
     {
-        $aParams = ["myversion" => $this->getConfig()->getVersion()];
+        $aParams = ["myversion" => \OxidEsales\Eshop\Core\Registry::getConfig()->getVersion()];
         $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $iLang = $oLang->getTplLanguage();
         $sLang = $oLang->getLanguageAbbr($iLang);

@@ -6,6 +6,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \oxField;
+use OxidEsales\Eshop\Core\Config;
 use \oxObjectException;
 use \Exception;
 use \oxDb;
@@ -385,7 +386,7 @@ class AccountRecommlistTest extends \OxidTestCase
      */
     public function testGetActiveRecommListIfOff()
     {
-        $oCfg = $this->getMock("stdClass", array("getShowListmania"));
+        $oCfg = $this->getMock(Config::class, array("getShowListmania"));
         $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(false));
 
         $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountRecommlistController::class, array("getViewConfig"));
@@ -401,7 +402,7 @@ class AccountRecommlistTest extends \OxidTestCase
      */
     public function testSaveRecommListIfOff()
     {
-        $oCfg = $this->getMock("stdClass", array("getShowListmania"));
+        $oCfg = $this->getMock(Config::class, array("getShowListmania"));
         $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(false));
 
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
@@ -424,7 +425,7 @@ class AccountRecommlistTest extends \OxidTestCase
      */
     public function testEditListIfOff()
     {
-        $oCfg = $this->getMock("stdClass", array("getShowListmania"));
+        $oCfg = $this->getMock(Config::class, array("getShowListmania"));
         $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(false));
 
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
@@ -449,7 +450,7 @@ class AccountRecommlistTest extends \OxidTestCase
      */
     public function testRemoveArticleIfOff()
     {
-        $oCfg = $this->getMock("stdClass", array("getShowListmania"));
+        $oCfg = $this->getMock(Config::class, array("getShowListmania"));
         $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(false));
 
         /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */

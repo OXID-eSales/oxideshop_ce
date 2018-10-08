@@ -59,7 +59,7 @@ class MediaurlTest extends \OxidTestCase
         $oCfg->expects($this->never())->method('getSslShopUrl')->will($this->returnValue('https://shop/'));
 
         $oMediaUrl = $this->getMock(\OxidEsales\Eshop\Application\Model\MediaUrl::class, array('getConfig'), array(), '', false);
-        $oMediaUrl->expects($this->any())->method('getConfig')->will($this->returnValue($oCfg));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
 
         // uploaded file
         $oMediaUrl->oxmediaurls__oxurl = new oxField('test.jpg', oxField::T_RAW);
@@ -90,7 +90,7 @@ class MediaurlTest extends \OxidTestCase
         $oCfg->expects($this->any())->method('getSslShopUrl')->will($this->returnValue('https://shop/'));
 
         $oMediaUrl = $this->getMock(\OxidEsales\Eshop\Application\Model\MediaUrl::class, array('getConfig'), array(), '', false);
-        $oMediaUrl->expects($this->any())->method('getConfig')->will($this->returnValue($oCfg));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
 
         // uploaded file
         $oMediaUrl->oxmediaurls__oxurl = new oxField('test.jpg', oxField::T_RAW);
@@ -122,7 +122,7 @@ class MediaurlTest extends \OxidTestCase
         $oCfg->expects($this->never())->method('getSslShopUrl')->will($this->returnValue('https://shop/'));
 
         $oMediaUrl = $this->getMock(\OxidEsales\Eshop\Application\Model\MediaUrl::class, array('getConfig'), array(), '', false);
-        $oMediaUrl->expects($this->any())->method('getConfig')->will($this->returnValue($oCfg));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
 
         // uploaded file
         $oMediaUrl->oxmediaurls__oxurl = new oxField('test.jpg', oxField::T_RAW);
@@ -153,7 +153,7 @@ class MediaurlTest extends \OxidTestCase
         $oCfg->expects($this->any())->method('getSslShopUrl')->will($this->returnValue('https://shop/'));
 
         $oMediaUrl = $this->getMock(\OxidEsales\Eshop\Application\Model\MediaUrl::class, array('getConfig'), array(), '', false);
-        $oMediaUrl->expects($this->any())->method('getConfig')->will($this->returnValue($oCfg));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
 
         // uploaded file
         $oMediaUrl->oxmediaurls__oxurl = new oxField('test.jpg', oxField::T_RAW);
@@ -188,7 +188,7 @@ class MediaurlTest extends \OxidTestCase
         $oCfg->expects($this->never())->method('getSslShopUrl')->will($this->returnValue('https://shop/'));
 
         $oMediaUrl = $this->getMock(\OxidEsales\Eshop\Application\Model\MediaUrl::class, array('getConfig'), array(), '', false);
-        $oMediaUrl->expects($this->any())->method('getConfig')->will($this->returnValue($oCfg));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
 
         // uploaded file
         $oMediaUrl->oxmediaurls__oxurl = new oxField('test.jpg', oxField::T_RAW);
@@ -219,7 +219,7 @@ class MediaurlTest extends \OxidTestCase
         $oCfg->expects($this->any())->method('getSslShopUrl')->will($this->returnValue('https://shop/'));
 
         $oMediaUrl = $this->getMock(\OxidEsales\Eshop\Application\Model\MediaUrl::class, array('getConfig'), array(), '', false);
-        $oMediaUrl->expects($this->any())->method('getConfig')->will($this->returnValue($oCfg));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
 
         // uploaded file
         $oMediaUrl->oxmediaurls__oxurl = new oxField('test.jpg', oxField::T_RAW);

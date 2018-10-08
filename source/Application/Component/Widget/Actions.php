@@ -50,7 +50,7 @@ class Actions extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContr
      */
     protected function _getLoadActionsParam()
     {
-        $this->_blLoadActions = $this->getConfig()->getConfigParam('bl_perfLoadAktion');
+        $this->_blLoadActions = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadAktion');
 
         return $this->_blLoadActions;
     }

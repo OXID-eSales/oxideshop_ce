@@ -135,7 +135,7 @@ class ArticleExtendTest extends \OxidTestCase
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleExtend::class, array("getConfig", "resetContentCache"), array(), '', false);
-        $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oView->expects($this->any())->method('resetContentCache');
         $this->assertEquals("handleUploadedFile", $oView->save());
     }
@@ -161,7 +161,7 @@ class ArticleExtendTest extends \OxidTestCase
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleExtend::class, array("getConfig", "resetContentCache"), array(), '', false);
-        $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oView->expects($this->any())->method('resetContentCache');
 
 
@@ -192,7 +192,7 @@ class ArticleExtendTest extends \OxidTestCase
         );
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleExtend::class, array("getConfig", "resetContentCache"), array(), '', false);
-        $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oView->expects($this->any())->method('resetContentCache');
         $oView->save();
         // testing..

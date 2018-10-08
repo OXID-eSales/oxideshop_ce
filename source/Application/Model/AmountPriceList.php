@@ -80,14 +80,14 @@ class AmountPriceList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         $sArticleId = $this->getArticle()->getId();
 
-        if (!$this->isAdmin() && $this->getConfig()->getConfigParam('blVariantInheritAmountPrice') && $this->getArticle()->getParentId()) {
+        if (!$this->isAdmin() && \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blVariantInheritAmountPrice') && $this->getArticle()->getParentId()) {
             $sArticleId = $this->getArticle()->getParentId();
         }
 
-        if ($this->getConfig()->getConfigParam('blMallInterchangeArticles')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blMallInterchangeArticles')) {
             $sShopSelect = '1';
         } else {
-            $sShopSelect = " `oxshopid` = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($this->getConfig()->getShopId()) . " ";
+            $sShopSelect = " `oxshopid` = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()) . " ";
         }
 
         $sSql = "SELECT * FROM `oxprice2article` WHERE `oxartid` = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sArticleId) . " AND $sShopSelect ORDER BY `oxamount` ";

@@ -220,7 +220,6 @@ class RssfeedTest extends \OxidTestCase
         $oCfg->setConfigParam('aCurrencies', array('EUR@1.00@.@.@EUR@1'));
         $oCfg->setConfigParam("bl_perfParseLongDescinSmarty", false);
         $oRss = oxNew('oxRssFeed');
-        $oRss->setConfig($oCfg);
 
         $oVarMinPrice = oxNew('oxPrice');
         $oVarMinPrice->setPrice(10);
@@ -437,7 +436,7 @@ class RssfeedTest extends \OxidTestCase
         $oCfg->expects($this->any())->method('getShopUrl')->will($this->returnValue('http://homeurl/'));
 
         $oRss = $this->getMock(\OxidEsales\Eshop\Application\Model\RssFeed::class, array('getConfig'));
-        $oRss->expects($this->any())->method('getConfig')->will($this->returnValue($oCfg));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
 
         Registry::set(Config::class, $oCfg);
 

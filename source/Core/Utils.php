@@ -219,7 +219,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         }
         startProfile("isSearchEngine");
 
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $blIsSe = false;
 
         if (!($myConfig->getConfigParam('iDebug') && $this->isAdmin())) {
@@ -299,7 +299,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
 
         if (is_null($iCurPrecision)) {
             if (!$oCur) {
-                $oCur = $this->getConfig()->getActShopCurrencyObject();
+                $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
             }
 
             $iCurPrecision = $oCur->decimal;
@@ -854,7 +854,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function checkAccessRights()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $blIsAuth = false;
 
@@ -967,7 +967,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             return $this->_blSeoIsActive;
         }
 
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if (($this->_blSeoIsActive = $myConfig->getConfigParam('blSeoMode')) === null) {
             $this->_blSeoIsActive = true;
@@ -1144,7 +1144,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     protected function _fillExplodeArray($aName, $dVat = null)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oObject = new stdClass();
         $aPrice = explode('!P!', $aName[0]);
 
@@ -1209,9 +1209,9 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         $blCalculationModeNetto = $this->_isPriceViewModeNetto();
 
-        $oCurrency = $this->getConfig()->getActShopCurrencyObject();
+        $oCurrency = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
 
-        $blEnterNetPrice = $this->getConfig()->getConfigParam('blEnterNetPrice');
+        $blEnterNetPrice = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blEnterNetPrice');
         if ($blCalculationModeNetto && !$blEnterNetPrice) {
             $dPrice = round(\OxidEsales\Eshop\Core\Price::brutto2Netto($dPrice, $dVat), $oCurrency->decimal);
         } elseif (!$blCalculationModeNetto && $blEnterNetPrice) {
@@ -1228,7 +1228,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     protected function _isPriceViewModeNetto()
     {
-        $blResult = (bool) $this->getConfig()->getConfigParam('blShowNetPrice');
+        $blResult = (bool) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowNetPrice');
         $oUser = $this->_getArticleUser();
         if ($oUser) {
             $blResult = $oUser->isPriceViewModeNetto();
@@ -1295,7 +1295,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function logger($sText, $blNewline = false)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if ($myConfig->getConfigParam('iDebug') == -2) {
             if (gettype($sText) != 'string') {
@@ -1322,7 +1322,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         $versionPrefix = $this->getEditionCacheFilePrefix();
 
-        $sPath = realpath($this->getConfig()->getConfigParam('sCompileDir'));
+        $sPath = realpath(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sCompileDir'));
 
         if (!$sPath) {
             return false;
@@ -1370,7 +1370,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         $sCache = "<?php\n\$aLangCache = " . var_export($aLangCache, true) . ";\n?>";
         $sFileName = $this->getCacheFilePath($sCacheName);
-        $cacheDirectory = $this->getConfig()->getConfigParam('sCompileDir');
+        $cacheDirectory = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sCompileDir');
 
         $tmpFile = $cacheDirectory . basename($sFileName) . uniqid('.temp', true) . '.txt';
         $blRes = file_put_contents($tmpFile, $sCache, LOCK_EX);

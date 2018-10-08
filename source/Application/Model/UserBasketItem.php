@@ -55,7 +55,7 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function __construct()
     {
-        $this->setVariantParentBuyable($this->getConfig()->getConfigParam('blVariantParentBuyable'));
+        $this->setVariantParentBuyable(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blVariantParentBuyable'));
         parent::__construct();
         $this->init('oxuserbasketitems');
     }

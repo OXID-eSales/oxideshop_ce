@@ -269,7 +269,7 @@ class SearchTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('getConfigParam')->will($this->returnValue(true));
 
         $oSubj = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getConfig'));
-        $oSubj->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals(true, $oSubj->canSelectDisplayType());
     }

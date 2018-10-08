@@ -56,7 +56,7 @@ class EmosadapterTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('getActShopCurrencyObject')->will($this->returnValue($oCurr));
 
         $oEmosAdapter = $this->getMock(\OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter::class, array('getConfig'));
-        $oEmosAdapter->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oEmosItem = $oEmosAdapter->UNITconvProd2EmosItem($oProduct, 'SHOP');
 
         $this->assertEquals($sResult, $oEmosItem->productGroup);
@@ -157,7 +157,7 @@ class EmosadapterTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('getActiveView')->will($this->returnValue($oActiveView));
 
         $oEmosCode = $this->getMock(\OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter::class, array('getConfig'));
-        $oEmosCode->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $sContent = "1ü/2ü/3ü";
         $sCharset = oxRegistry::getLang()->translateString('charset');
@@ -184,7 +184,7 @@ class EmosadapterTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('getActiveView')->will($this->returnValue($oActiveView));
 
         $oEmos = $this->getMock(\OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter::class, array('getConfig'));
-        $oEmos->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals('getTemplateName', $oEmos->UNITgetTplName());
     }
@@ -406,7 +406,7 @@ class EmosadapterTest extends \OxidTestCase
         $oEmos = $this->getMock(\OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter::class, array('getEmos', '_getEmosCl', 'getConfig'));
         $oEmos->expects($this->once())->method('getEmos')->will($this->returnValue($oFormatter));
         $oEmos->expects($this->once())->method('_getEmosCl')->will($this->returnValue('thankyou'));
-        $oEmos->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oEmos->getCode($aParams, $oSmarty);
     }
 
@@ -454,7 +454,7 @@ class EmosadapterTest extends \OxidTestCase
         $oEmos = $this->getMock(\OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter::class, array('getEmos', '_getEmosCl', 'getConfig'));
         $oEmos->expects($this->once())->method('getEmos')->will($this->returnValue($oFormatter));
         $oEmos->expects($this->once())->method('_getEmosCl')->will($this->returnValue('thankyou'));
-        $oEmos->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oEmos->getCode($aParams, $oSmarty);
     }
 
@@ -555,7 +555,7 @@ class EmosadapterTest extends \OxidTestCase
         $oEmos = $this->getMock(\OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter::class, array('getEmos', '_getEmosCl', 'getConfig'));
         $oEmos->expects($this->once())->method('getEmos')->will($this->returnValue($oFormatter));
         $oEmos->expects($this->once())->method('_getEmosCl')->will($this->returnValue('contact'));
-        $oEmos->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oEmos->getCode($aParams, $oSmarty);
     }
 
@@ -577,7 +577,7 @@ class EmosadapterTest extends \OxidTestCase
         $oEmos = $this->getMock(\OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter::class, array('getEmos', '_getEmosCl', 'getConfig'));
         $oEmos->expects($this->once())->method('getEmos')->will($this->returnValue($oFormatter));
         $oEmos->expects($this->once())->method('_getEmosCl')->will($this->returnValue('contact'));
-        $oEmos->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oEmos->getCode($aParams, $oSmarty);
     }
 
@@ -612,7 +612,7 @@ class EmosadapterTest extends \OxidTestCase
         $oEmos = $this->getMock(\OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter::class, array('getEmos', '_getEmosCl', 'getConfig'));
         $oEmos->expects($this->once())->method('getEmos')->will($this->returnValue($oFormatter));
         $oEmos->expects($this->once())->method('_getEmosCl')->will($this->returnValue('newsletter'));
-        $oEmos->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oEmos->getCode($aParams, $oSmarty);
     }
 
@@ -633,7 +633,7 @@ class EmosadapterTest extends \OxidTestCase
         $oEmos = $this->getMock(\OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter::class, array('getEmos', '_getEmosCl', 'getConfig'));
         $oEmos->expects($this->once())->method('getEmos')->will($this->returnValue($oFormatter));
         $oEmos->expects($this->once())->method('_getEmosCl')->will($this->returnValue('newsletter'));
-        $oEmos->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oEmos->getCode($aParams, $oSmarty);
     }
 
@@ -764,7 +764,7 @@ class EmosadapterTest extends \OxidTestCase
         $oEmos = $this->getMock(\OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter::class, array('getEmos', '_getEmosCl', 'getConfig'));
         $oEmos->expects($this->once())->method('getEmos')->will($this->returnValue($oFormatter));
         $oEmos->expects($this->once())->method('_getEmosCl')->will($this->returnValue('account'));
-        $oEmos->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oEmos->getCode($aParams, $oSmarty);
     }
 
@@ -784,7 +784,7 @@ class EmosadapterTest extends \OxidTestCase
 
         $oEmos = $this->getMock(\OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter::class, array('getEmos', 'getConfig'));
         $oEmos->expects($this->once())->method('getEmos')->will($this->returnValue($oFormatter));
-        $oEmos->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oEmos->getCode($aParams, $oSmarty);
     }
 
@@ -805,7 +805,7 @@ class EmosadapterTest extends \OxidTestCase
         $oEmos = $this->getMock(\OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter::class, array('getEmos', '_getEmosCl', 'getConfig'));
         $oEmos->expects($this->once())->method('getEmos')->will($this->returnValue($oFormatter));
         $oEmos->expects($this->once())->method('_getEmosCl')->will($this->returnValue('account'));
-        $oEmos->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oEmos->getCode($aParams, $oSmarty);
     }
 
@@ -826,7 +826,7 @@ class EmosadapterTest extends \OxidTestCase
         $oEmos = $this->getMock(\OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter::class, array('getEmos', '_getEmosCl', 'getConfig'));
         $oEmos->expects($this->once())->method('getEmos')->will($this->returnValue($oFormatter));
         $oEmos->expects($this->once())->method('_getEmosCl')->will($this->returnValue('account'));
-        $oEmos->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oEmos->getCode($aParams, $oSmarty);
     }
 
@@ -949,7 +949,7 @@ class EmosadapterTest extends \OxidTestCase
         $oEmos = $this->getMock(\OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter::class, array('getEmos', '_getEmosCl', 'getConfig'));
         $oEmos->expects($this->once())->method('getEmos')->will($this->returnValue($oFormatter));
         $oEmos->expects($this->once())->method('_getEmosCl')->will($this->returnValue('content'));
-        $oEmos->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $oEmos->getCode($aParams, $oSmarty);
     }
@@ -974,7 +974,7 @@ class EmosadapterTest extends \OxidTestCase
         $oEmos = $this->getMock(\OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter::class, array('getEmos', '_getEmosCl', 'getConfig'));
         $oEmos->expects($this->once())->method('getEmos')->will($this->returnValue($oFormatter));
         $oEmos->expects($this->once())->method('_getEmosCl')->will($this->returnValue('content'));
-        $oEmos->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $oEmos->getCode($aParams, $oSmarty);
     }
@@ -999,7 +999,7 @@ class EmosadapterTest extends \OxidTestCase
         $oEmos = $this->getMock(\OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter::class, array('getEmos', '_getEmosCl', 'getConfig'));
         $oEmos->expects($this->once())->method('getEmos')->will($this->returnValue($oFormatter));
         $oEmos->expects($this->once())->method('_getEmosCl')->will($this->returnValue('content'));
-        $oEmos->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $oEmos->getCode($aParams, $oSmarty);
     }
@@ -1024,7 +1024,7 @@ class EmosadapterTest extends \OxidTestCase
         $oEmos = $this->getMock(\OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter::class, array('getEmos', '_getEmosCl', 'getConfig'));
         $oEmos->expects($this->once())->method('getEmos')->will($this->returnValue($oFormatter));
         $oEmos->expects($this->once())->method('_getEmosCl')->will($this->returnValue('content'));
-        $oEmos->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $oEmos->getCode($aParams, $oSmarty);
     }
@@ -1049,7 +1049,7 @@ class EmosadapterTest extends \OxidTestCase
         $oEmos = $this->getMock(\OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter::class, array('getEmos', '_getEmosCl', 'getConfig'));
         $oEmos->expects($this->once())->method('getEmos')->will($this->returnValue($oFormatter));
         $oEmos->expects($this->once())->method('_getEmosCl')->will($this->returnValue('content'));
-        $oEmos->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $oEmos->getCode($aParams, $oSmarty);
     }
@@ -1107,7 +1107,7 @@ class EmosadapterTest extends \OxidTestCase
 
         $oEmos = $this->getMock(\OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter::class, array('getEmos', 'getConfig'));
         $oEmos->expects($this->once())->method('getEmos')->will($this->returnValue($oFormatter));
-        $oEmos->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oEmos->getCode($aParams, $oSmarty);
     }
 

@@ -7,7 +7,6 @@
 namespace OxidEsales\EshopCommunity\Internal\Twig\Loader;
 
 use OxidEsales\EshopCommunity\Application\Model\Content;
-use OxidEsales\EshopCommunity\Internal\Twig\Exception\InvalidTemplateNameException;
 use OxidEsales\EshopCommunity\Internal\Twig\TemplateLoaderNameParser;
 use Twig\Error\LoaderError;
 use Twig\Loader\LoaderInterface;
@@ -20,12 +19,6 @@ use Twig\Source;
  */
 class ContentTemplateLoader implements LoaderInterface
 {
-
-    /** @var Content */
-    private $content;
-
-    /** @var string */
-    private $name;
 
     /** @var TemplateLoaderNameParser */
     private $nameParser;
@@ -117,7 +110,7 @@ class ContentTemplateLoader implements LoaderInterface
     public function exists($name)
     {
         if (!$this->nameParser->isValidName($name)) {
-            throw new InvalidTemplateNameException();
+            return false;
         }
 
         $loaderName = $this->nameParser->getLoaderName($name);
@@ -125,7 +118,7 @@ class ContentTemplateLoader implements LoaderInterface
         $value = $this->nameParser->getValue($name);
         $content = $this->getContent($name);
 
-        return $loaderName == 'contentSnippet' && in_array($key, ['ident', 'oxid']) && $value && $content;
+        return $loaderName == 'content' && in_array($key, ['ident', 'oxid']) && $value && $content;
     }
 
     /**
@@ -138,16 +131,8 @@ class ContentTemplateLoader implements LoaderInterface
     private function getContent($name)
     {
         if (!$this->nameParser->isValidName($name)) {
-            throw new InvalidTemplateNameException();
+            throw new LoaderError("Cannot load template. Name is invalid.");
         }
-
-        if ($name == $this->name) {
-            return $this->content;
-        }
-
-        $this->content = null;
-        $this->name = $name;
-        $this->content;
 
         $key = $this->nameParser->getKey($name);
         $value = $this->nameParser->getValue($name);
@@ -159,19 +144,13 @@ class ContentTemplateLoader implements LoaderInterface
         } elseif ($key == 'oxid') {
             $isLoaded = $content->load($value);
         } else {
-            $this->name = null;
             throw new LoaderError("Cannot load template. Not provided neither ident nor oxid.");
         }
 
         if (!$content->oxcontents__oxactive->value) {
-            $this->name = null;
             throw new LoaderError("Cannot load template. It's not active.");
         }
 
-        if ($isLoaded) {
-            $this->content = $content;
-        }
-
-        return $this->content;
+        return $isLoaded ? $content : null;
     }
 }

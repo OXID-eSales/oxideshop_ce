@@ -6,8 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Twig;
 
-use OxidEsales\EshopCommunity\Internal\Twig\Exception\InvalidTemplateNameException;
-
 /**
  * Class TemplateNameParser
  *
@@ -38,8 +36,6 @@ class TemplateLoaderNameParser
      * @param string $name
      *
      * @return string
-     *
-     * @throws InvalidTemplateNameException
      */
     public function getLoaderName($name)
     {
@@ -53,8 +49,6 @@ class TemplateLoaderNameParser
      * @param string $name
      *
      * @return string
-     *
-     * @throws InvalidTemplateNameException
      */
     public function getKey($name)
     {
@@ -68,8 +62,6 @@ class TemplateLoaderNameParser
      * @param string $name
      *
      * @return string
-     *
-     * @throws InvalidTemplateNameException
      */
     public function getValue($name)
     {
@@ -105,13 +97,11 @@ class TemplateLoaderNameParser
      * @param int    $index
      *
      * @return string
-     *
-     * @throws InvalidTemplateNameException
      */
     private function getNamePart($name, $index)
     {
         if (!$this->isValidName($name)) {
-            throw new InvalidTemplateNameException();
+            throw new \Exception("Invalid template name.");
         }
 
         $nameParts = explode('?', $name)[0];

@@ -265,6 +265,8 @@ class OnlineLicenseCheck
      */
     protected function formRequest($serials)
     {
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+
         /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheckRequest $request */
         $request = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest::class);
 

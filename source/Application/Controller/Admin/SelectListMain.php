@@ -43,7 +43,6 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         parent::render();
 
         $sOxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        $sArticleTable = getViewName('oxarticles');
 
         //create empty edit object
         $this->_aViewData["edit"] = oxNew(\OxidEsales\Eshop\Application\Model\SelectList::class);

@@ -126,7 +126,6 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
     public function run()
     {
         $blContinue = true;
-        $iExportedItems = 0;
 
         $this->fpFile = @fopen($this->_sFilePath, "a");
         if (!isset($this->fpFile) || !$this->fpFile) {

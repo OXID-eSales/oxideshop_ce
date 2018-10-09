@@ -25,7 +25,6 @@ class DeliverySetMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();

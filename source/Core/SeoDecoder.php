@@ -224,9 +224,6 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      */
     protected function _decodeSimpleUrl($sParams)
     {
-        $oStr = getStr();
-        $sLastParam = rtrim($sParams, '/');
-        $sLastParam = $oStr->substr($sLastParam, (( int ) strrpos($sLastParam, '/')) - ($oStr->strlen($sLastParam)));
         $sLastParam = trim($sParams, '/');
 
         // active object id

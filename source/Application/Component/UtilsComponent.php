@@ -164,7 +164,6 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     {
         parent::render();
 
-        $myConfig = $this->getConfig();
         $oParentView = $this->getParent();
 
         // add content for main menu

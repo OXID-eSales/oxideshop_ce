@@ -568,7 +568,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function delete($oxid = null)
     {
-        $deleted = false;
         if (!$oxid) {
             $oxid = $this->getId();
         }

@@ -78,11 +78,9 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $sQuerySnipet = '';
+        $sQuerySnipet = " AND `oxobjectid` = " . $oDb->quote($sObjectId);
         if (is_array($aIncludedObjectsIds) && count($aIncludedObjectsIds) > 0) {
             $sQuerySnipet = " AND ( `oxobjectid` = " . $oDb->quote($sObjectId) . " OR `oxobjectid` in ('" . implode("', '", $aIncludedObjectsIds) . "') )";
-        } else {
-            $sQuerySnipet = " AND `oxobjectid` = " . $oDb->quote($sObjectId);
         }
 
         $sSelect = "
@@ -115,11 +113,9 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $sQuerySnipet = '';
+        $sQuerySnipet = " AND `oxobjectid` = " . $oDb->quote($sObjectId);
         if (is_array($aIncludedObjectsIds) && count($aIncludedObjectsIds) > 0) {
             $sQuerySnipet = " AND ( `oxobjectid` = " . $oDb->quote($sObjectId) . " OR `oxobjectid` in ('" . implode("', '", $aIncludedObjectsIds) . "') )";
-        } else {
-            $sQuerySnipet = " AND `oxobjectid` = " . $oDb->quote($sObjectId);
         }
 
         $sSelect = "

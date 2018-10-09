@@ -58,7 +58,6 @@ class DeliveryArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admi
 
         // looking for table/view
         $sArtTable = $this->_getViewName('oxarticles');
-        $sCatTable = $this->_getViewName('oxcategories');
         $sO2CView = $this->_getViewName('oxobject2category');
 
         $sDelId = $this->getConfig()->getRequestParameter('oxid');

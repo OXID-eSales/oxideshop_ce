@@ -29,7 +29,6 @@ class DiscountUsers extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        $sSelGroup = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("selgroup");
 
         // all usergroups
         $oGroups = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);

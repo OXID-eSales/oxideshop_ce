@@ -24,7 +24,6 @@ use oxRegistry;
 use oxShop;
 use oxVendor;
 use oxViewConfig;
-use Psr\Container\ContainerInterface;
 use stdClass;
 
 // view indexing state for search engines:

@@ -10,7 +10,6 @@ use Exception;
 use oxDb;
 use oxField;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Core\Exception\ObjectException;
 use oxList;
 use oxPrice;
 use oxRegistry;
@@ -2450,7 +2449,6 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $rs = $oDb->select($sQ);
 
         $iOnStock = 0;
-        $iStockFlag = 0;
         if ($rs !== false && $rs->count() > 0) {
             $iOnStock = $rs->fields['oxstock'] - $dArtStockAmount;
             $iStockFlag = $rs->fields['oxstockflag'];

@@ -105,7 +105,6 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oRevs = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oRevs->init('oxreview');
 
-        $sObjectIdWhere = '';
         if (is_array($aIds) && count($aIds)) {
             $sObjectIdWhere = "oxreviews.oxobjectid in ( " . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds)) . " )";
         } elseif (is_string($aIds) && $aIds) {

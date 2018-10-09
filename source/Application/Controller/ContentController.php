@@ -271,7 +271,6 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
             $this->_sContentId = false;
             $oContent = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
-            $blRes = false;
 
             if ($sLoadId) {
                 $blRes = $oContent->loadByIdent($sLoadId);

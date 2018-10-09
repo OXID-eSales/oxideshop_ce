@@ -437,9 +437,6 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getProductPos($oArticle, $oIdList, $oLocatorTarget)
     {
-        $iCnt = 1;
-        $iPos = 0;
-
         // variant handling
         $sOxid = $oArticle->oxarticles__oxparentid->value ? $oArticle->oxarticles__oxparentid->value : $oArticle->getId();
         if ($oIdList->count() && isset($oIdList[$sOxid])) {

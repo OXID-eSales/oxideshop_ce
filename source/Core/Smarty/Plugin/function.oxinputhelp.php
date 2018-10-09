@@ -19,7 +19,6 @@
 function smarty_function_oxinputhelp($params, &$smarty)
 {
     $sIdent = $params['ident'];
-    $myConfig  = \OxidEsales\Eshop\Core\Registry::getConfig();
     $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
     $iLang  = $oLang->getTplLanguage();
 

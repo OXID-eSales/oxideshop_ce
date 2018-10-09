@@ -229,7 +229,6 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         foreach ($aBasketItems as $oBasketItem) {
             $oBasketArticle = $oBasketItem->getArticle(false);
 
-            $blForBasketItem = false;
             if ($this->oxdiscount__oxaddsumtype->value != 'itm') {
                 $blForBasketItem = $this->isForBasketItem($oBasketArticle);
             } else {

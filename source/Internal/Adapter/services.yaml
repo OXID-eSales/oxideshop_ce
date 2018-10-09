@@ -4,6 +4,9 @@ services:
     autowire: true
     public: false
 
+  OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\ContentFactory:
+    class: OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\ContentFactory
+
 # TemplateLogic
 
   OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\SeoUrlLogic:

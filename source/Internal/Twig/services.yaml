@@ -58,7 +58,9 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Twig\Loader\ContentTemplateLoader:
     class: OxidEsales\EshopCommunity\Internal\Twig\Loader\ContentTemplateLoader
-    arguments: ['@OxidEsales\EshopCommunity\Internal\Twig\TemplateLoaderNameParser']
+    arguments:
+        - '@OxidEsales\EshopCommunity\Internal\Twig\TemplateLoaderNameParser'
+        - '@OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\ContentFactory'
     public: false
 
   twig.loader.chain:

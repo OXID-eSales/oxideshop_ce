@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Twig\Loader;
 
 use OxidEsales\EshopCommunity\Application\Model\Content;
+use OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\ContentFactory;
 use OxidEsales\EshopCommunity\Internal\Twig\TemplateLoaderNameParser;
 use Twig\Error\LoaderError;
 use Twig\Loader\LoaderInterface;
@@ -23,14 +24,19 @@ class ContentTemplateLoader implements LoaderInterface
     /** @var TemplateLoaderNameParser */
     private $nameParser;
 
+    /** @var ContentFactory */
+    private $contentFactory;
+
     /**
      * ContentTemplateLoader constructor.
      *
      * @param TemplateLoaderNameParser $nameParser
+     * @param ContentFactory           $contentFactory
      */
-    public function __construct(TemplateLoaderNameParser $nameParser)
+    public function __construct(TemplateLoaderNameParser $nameParser, ContentFactory $contentFactory)
     {
         $this->nameParser = $nameParser;
+        $this->contentFactory = $contentFactory;
     }
 
     /**
@@ -50,14 +56,14 @@ class ContentTemplateLoader implements LoaderInterface
 
         $content = $this->getContent($name);
 
-        if ($content && $content->oxcontents__oxactive->value) {
+        if ($content) {
             $field = "oxcontent";
             if (isset($parameters['field'])) {
                 $field = $parameters['field'];
             }
 
             $property = 'oxcontents__' . $field;
-            $code = clone $content->$property;
+            $code = $content->$property->value;
         } else {
             throw new LoaderError("Template with $key '$value' not found.");
         }
@@ -137,20 +143,16 @@ class ContentTemplateLoader implements LoaderInterface
         $key = $this->nameParser->getKey($name);
         $value = $this->nameParser->getValue($name);
 
-        $content = oxNew("oxcontent");
+        $content = $this->contentFactory->getContent($key, $value);
 
-        if ($key == 'ident') {
-            $isLoaded = $content->loadbyIdent($value);
-        } elseif ($key == 'oxid') {
-            $isLoaded = $content->load($value);
-        } else {
-            throw new LoaderError("Cannot load template. Not provided neither ident nor oxid.");
+        if (!$content) {
+            throw new LoaderError("Cannot load template from database.");
         }
 
         if (!$content->oxcontents__oxactive->value) {
-            throw new LoaderError("Cannot load template. It's not active.");
+            throw new LoaderError("Template is not active.");
         }
 
-        return $isLoaded ? $content : null;
+        return $content;
     }
 }

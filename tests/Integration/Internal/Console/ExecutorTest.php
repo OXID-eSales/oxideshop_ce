@@ -29,7 +29,6 @@ class ExecutorTest extends TestCase
     public function testIfShopIdInGlobalOptionsList()
     {
         $consoleOutput = $this->execute(
-            $this->getConsoleApplication(),
             new CommandsCollectionBuilder(),
             new ArrayInput(['command' => 'list'])
         );
@@ -42,7 +41,7 @@ class ExecutorTest extends TestCase
         $commands = $this->getMockBuilder(CommandsProvidableInterface::class)->getMock();
         $commands->method('getCommands')->willReturn([new TestCommand()]);
         $commandsCollectionBuilder = new CommandsCollectionBuilder($commands);
-        $consoleOutput = $this->execute($this->getConsoleApplication(), $commandsCollectionBuilder, new ArrayInput(['command' => 'list']));
+        $consoleOutput = $this->execute($commandsCollectionBuilder, new ArrayInput(['command' => 'list']));
 
         $this->assertRegexp('/oe:tests:test-command/', $consoleOutput);
     }
@@ -53,7 +52,6 @@ class ExecutorTest extends TestCase
         $commands->method('getCommands')->willReturn([new TestCommand()]);
         $commandsCollectionBuilder = new CommandsCollectionBuilder($commands);
         $consoleOutput = $this->execute(
-            $this->getConsoleApplication(),
             $commandsCollectionBuilder,
             new ArrayInput(['command' => 'oe:tests:test-command'])
         );

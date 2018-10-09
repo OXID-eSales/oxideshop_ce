@@ -18,13 +18,12 @@ trait ConsoleTrait
     use ContainerTrait;
 
     /**
-     * @param $application
      * @param $commandsCollectionBuilder
      * @return string
      */
-    protected function execute($application, $commandsCollectionBuilder, $input): string
+    protected function execute($commandsCollectionBuilder, $input): string
     {
-        $executor = new Executor($application, new ConsoleOutput(), $commandsCollectionBuilder, new ShopAdapter());
+        $executor = new Executor($this->getConsoleApplication(), new ConsoleOutput(), $commandsCollectionBuilder, new ShopAdapter());
 
         $output = new StreamOutput(fopen('php://memory', 'w', false));
         $executor->execute($input, $output);
@@ -38,7 +37,7 @@ trait ConsoleTrait
     /**
      * @return object
      */
-    protected function getConsoleApplication(): Application
+    private function getConsoleApplication(): Application
     {
         $application = $this->get('symfony.component.console.application');
         $application->setAutoExit(false);

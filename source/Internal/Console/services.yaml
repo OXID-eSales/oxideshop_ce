@@ -15,6 +15,9 @@ services:
       - method: setDispatcher
         arguments:
           - '@event_dispatcher'
+      - method: setCommandLoader
+        arguments:
+          - '@console.command_loader'
 
   Symfony\Component\Console\Output\ConsoleOutputInterface:
     class: Symfony\Component\Console\Output\ConsoleOutput
@@ -25,7 +28,6 @@ services:
     arguments:
       - '@console.commands_provider.component_commands_provider'
       - '@console.commands_provider.module_commands_provider'
-      - '@console.commands_provider.services_command_provider'
 
   console.commands_provider.component_commands_provider:
     class: OxidEsales\EshopCommunity\Internal\Console\CommandsProvider\ComponentCommandsProvider
@@ -57,11 +59,6 @@ services:
 
   console.commands_provider.module_commands_provider:
     class: OxidEsales\EshopCommunity\Internal\Console\CommandsProvider\ModuleCommandsProvider
-    public: false
-    autowire: true
-
-  console.commands_provider.services_command_provider:
-    class: OxidEsales\EshopCommunity\Internal\Console\CommandsProvider\ServicesCommandsProvider
     public: false
     autowire: true
 

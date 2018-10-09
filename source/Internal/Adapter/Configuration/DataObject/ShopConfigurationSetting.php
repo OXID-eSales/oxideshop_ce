@@ -13,6 +13,12 @@ namespace OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject;
  */
 class ShopConfigurationSetting
 {
+    const MODULE_CONTROLLERS                = 'aModuleControllers';
+    const MODULE_VERSIONS                   = 'aModuleVersions';
+    const MODULE_PATHS                      = 'aModulePaths';
+    const MODULE_TEMPLATES                  = 'aModuleTemplates';
+    const MODULE_SMARTY_PLUGIN_DIRECTORIES  = 'moduleSmartyPluginDirectories';
+
     /**
      * @var int
      */

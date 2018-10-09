@@ -27,8 +27,6 @@ class ModuleActivationServiceTest extends TestCase
 
     public function testActivation()
     {
-        $this->markTestSkipped('Not everything is implemented yet.');
-
         $projectConfigurationDao = $this->get(ProjectConfigurationDaoInterface::class);
         $projectConfigurationDao->persistConfiguration($this->getTestProjectConfiguration());
 
@@ -50,13 +48,6 @@ class ModuleActivationServiceTest extends TestCase
             new ModuleSetting('version', 'v2.1')
         )
         ->setSetting(new ModuleSetting(
-            'events',
-            [
-                'onActivate' => 'ModuleClass::onActivate',
-                'onDeactivate' => 'ModuleClass::onDeactivate',
-            ]
-        ))
-        ->setSetting(new ModuleSetting(
             'controllers',
             [
                 'originalClassNamespace' => 'moduleClassNamespace',
@@ -71,6 +62,14 @@ class ModuleActivationServiceTest extends TestCase
             ]
         ))
         ->setSetting(new ModuleSetting(
+            'smartyPluginDirectories',
+            [
+                'firstSmartyDirectory',
+                'secondSmartyDirectory',
+            ]
+        ))
+        /**
+        ->setSetting(new ModuleSetting(
             'extend',
             [
                 'originalClassNamespace' => 'moduleClassNamespace',
@@ -78,12 +77,13 @@ class ModuleActivationServiceTest extends TestCase
             ]
         ))
         ->setSetting(new ModuleSetting(
-            'smartyPluginDirectories',
+            'events',
             [
-                'firstSmartyDirectory',
-                'secondSmartyDirectory',
+                'onActivate' => 'ModuleClass::onActivate',
+                'onDeactivate' => 'ModuleClass::onDeactivate',
             ]
-        ));
+        ))
+         */;
 
         $shopConfiguration = new ShopConfiguration();
         $shopConfiguration->setModuleConfiguration('testModuleConfiguration', $moduleConfiguration);

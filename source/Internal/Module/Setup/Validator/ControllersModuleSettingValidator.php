@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Validator;
 use function is_array;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
@@ -66,7 +67,7 @@ class ControllersModuleSettingValidator implements ModuleSettingValidatorInterfa
      */
     public function canValidate(ModuleSetting $moduleSetting): bool
     {
-        return $moduleSetting->getName() === 'controllers';
+        return $moduleSetting->getName() === ModuleSetting::CONTROLLERS;
     }
 
     /**
@@ -78,7 +79,9 @@ class ControllersModuleSettingValidator implements ModuleSettingValidatorInterfa
         $moduleControllersClassMap = [];
 
         try {
-            $controllersGroupedByModule = $this->shopConfigurationSettingDao->get('aModuleControllers', $shopId);
+            $controllersGroupedByModule = $this
+                ->shopConfigurationSettingDao
+                ->get(ShopConfigurationSetting::MODULE_CONTROLLERS, $shopId);
 
             if (is_array($controllersGroupedByModule->getValue())) {
                 foreach ($controllersGroupedByModule->getValue() as $moduleControllers) {

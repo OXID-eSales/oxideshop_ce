@@ -49,6 +49,9 @@ services:
 
   oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ControllersModuleSettingValidator
+    autowire: true
 
   oxid_esales.module.setup.validator.controllers_module_setting_validator:
-      class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\SmartyPluginDirectoriesModuleSettingValidator
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\SmartyPluginDirectoriesModuleSettingValidator
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface'

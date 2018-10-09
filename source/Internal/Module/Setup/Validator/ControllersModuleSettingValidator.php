@@ -6,7 +6,13 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Validator;
 
+use function is_array;
+
+use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSettingNotValidException;
 
 /**
  * @internal
@@ -14,13 +20,44 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSet
 class ControllersModuleSettingValidator implements ModuleSettingValidatorInterface
 {
     /**
+     * @var ShopAdapterInterface
+     */
+    private $shopAdapter;
+
+    /**
+     * @var ShopConfigurationSettingDaoInterface
+     */
+    private $shopConfigurationSettingDao;
+
+    /**
+     * ControllersModuleSettingValidator constructor.
+     * @param ShopAdapterInterface                 $shopAdapter
+     * @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
+     */
+    public function __construct(
+        ShopAdapterInterface $shopAdapter,
+        ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
+    ) {
+        $this->shopAdapter = $shopAdapter;
+        $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
+    }
+
+    /**
      * @param ModuleSetting $moduleSetting
      * @param string        $moduleId
      * @param int           $shopId
      */
     public function validate(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
     {
-        // TODO: Implement validate() method.
+        $shopControllerClassMap = $this->shopAdapter->getShopControllerClassMap();
+
+        $controllerClassMap = array_merge(
+            $shopControllerClassMap,
+            $this->getModulesControllerClassMap($shopId)
+        );
+
+        $this->validateForControllerKeyDuplication($moduleSetting, $controllerClassMap);
+        $this->validateForControllerNamespaceDuplication($moduleSetting, $controllerClassMap);
     }
 
     /**
@@ -29,6 +66,77 @@ class ControllersModuleSettingValidator implements ModuleSettingValidatorInterfa
      */
     public function canValidate(ModuleSetting $moduleSetting): bool
     {
-        return false;
+        return $moduleSetting->getName() === 'controllers';
+    }
+
+    /**
+     * @param int $shopId
+     * @return array
+     */
+    private function getModulesControllerClassMap(int $shopId): array
+    {
+        $moduleControllersClassMap = [];
+
+        try {
+            $controllersGroupedByModule = $this->shopConfigurationSettingDao->get('aModuleControllers', $shopId);
+
+            if (is_array($controllersGroupedByModule->getValue())) {
+                foreach ($controllersGroupedByModule->getValue() as $moduleControllers) {
+                    $moduleControllersClassMap = array_merge($moduleControllersClassMap, $moduleControllers);
+                }
+            }
+        } catch (EntryDoesNotExistDaoException $exception) {
+        }
+
+        return $moduleControllersClassMap;
+    }
+
+    /**
+     * @param ModuleSetting $moduleSetting
+     * @param array         $controllerClassMap
+     *
+     * @throws ModuleSettingNotValidException
+     */
+    private function validateForControllerNamespaceDuplication(ModuleSetting $moduleSetting, array $controllerClassMap)
+    {
+        $duplications = array_intersect(
+            $moduleSetting->getValue(),
+            $controllerClassMap
+        );
+
+        if (!empty($duplications)) {
+            throw new ModuleSettingNotValidException(
+                'Controller namespaces duplication: ' . implode(', ', $duplications)
+            );
+        }
+    }
+
+    /**
+     * @param ModuleSetting $moduleSetting
+     * @param array         $controllerClassMap
+     *
+     * @throws ModuleSettingNotValidException
+     */
+    private function validateForControllerKeyDuplication(ModuleSetting $moduleSetting, array $controllerClassMap)
+    {
+        $duplications = array_intersect_key(
+            $this->arrayKeysToLowerCase($moduleSetting->getValue()),
+            $controllerClassMap
+        );
+
+        if (!empty($duplications)) {
+            throw new ModuleSettingNotValidException(
+                'Controller keys duplication: ' . implode(', ', $duplications)
+            );
+        }
+    }
+
+    /**
+     * @param array $array
+     * @return array
+     */
+    private function arrayKeysToLowerCase(array $array): array
+    {
+        return array_change_key_case($array, CASE_LOWER);
     }
 }

@@ -9,16 +9,14 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Application\Events;
 
 
-use OxidEsales\Eshop\Core\Config;
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
+use OxidEsales\Facts\Facts;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
 {
-
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerBuilder
      */
@@ -29,18 +27,18 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
      */
     private $dispatcher;
 
-    /**
-     * @var Config $originalConfig
-     */
-    private $originalConfig;
-
 
     public function setUp()
     {
-        $this->originalConfig = Registry::get(Config::class);
-        Registry::set(Config::class, new TestConfig());
 
-        $builder = new ContainerBuilder();
+        $facts = $this->getMockBuilder(Facts::class)
+            ->setMethods(['getSourcePath', 'getCommunityEditionSourcePath'])->getMock();
+        $facts->method('getCommunityEditionSourcePath')->willReturn(
+            (new Facts)->getCommunityEditionSourcePath()
+        );
+        $facts->method('getSourcePath')->willReturn(__DIR__);
+
+        $builder = new ContainerBuilder($facts);
         $this->container = $builder->getContainer();
         $definition = $this->container->getDefinition(ContextInterface::class);
         $definition->setClass(ContextStub::class);
@@ -48,13 +46,6 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
         $this->container->compile();
 
         $this->dispatcher = $this->container->get('event_dispatcher');
-
-    }
-
-    public function tearDown() {
-
-        Registry::set(\OxidEsales\Eshop\Core\Config::class, $this->originalConfig);
-
     }
 
     /**

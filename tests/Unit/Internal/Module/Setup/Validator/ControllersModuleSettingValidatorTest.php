@@ -81,7 +81,7 @@ class ControllersModuleSettingValidatorTest extends TestCase
     }
 
     /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSettingNotValidException
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ControllersDuplicationModuleSettingException
      *
      * @dataProvider duplicatedSettingValueDataProvider
      *

@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConf
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSettingNotValidException;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ControllersDuplicationModuleSettingException;
 
 /**
  * @internal
@@ -98,7 +98,7 @@ class ControllersModuleSettingValidator implements ModuleSettingValidatorInterfa
      * @param ModuleSetting $moduleSetting
      * @param array         $controllerClassMap
      *
-     * @throws ModuleSettingNotValidException
+     * @throws ControllersDuplicationModuleSettingException
      */
     private function validateForControllerNamespaceDuplication(ModuleSetting $moduleSetting, array $controllerClassMap)
     {
@@ -108,7 +108,7 @@ class ControllersModuleSettingValidator implements ModuleSettingValidatorInterfa
         );
 
         if (!empty($duplications)) {
-            throw new ModuleSettingNotValidException(
+            throw new ControllersDuplicationModuleSettingException(
                 'Controller namespaces duplication: ' . implode(', ', $duplications)
             );
         }
@@ -118,7 +118,7 @@ class ControllersModuleSettingValidator implements ModuleSettingValidatorInterfa
      * @param ModuleSetting $moduleSetting
      * @param array         $controllerClassMap
      *
-     * @throws ModuleSettingNotValidException
+     * @throws ControllersDuplicationModuleSettingException
      */
     private function validateForControllerKeyDuplication(ModuleSetting $moduleSetting, array $controllerClassMap)
     {
@@ -128,7 +128,7 @@ class ControllersModuleSettingValidator implements ModuleSettingValidatorInterfa
         );
 
         if (!empty($duplications)) {
-            throw new ModuleSettingNotValidException(
+            throw new ControllersDuplicationModuleSettingException(
                 'Controller keys duplication: ' . implode(', ', $duplications)
             );
         }

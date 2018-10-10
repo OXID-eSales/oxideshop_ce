@@ -31,7 +31,7 @@ class TemplateBlockExtension
     /**
      * @var int
      */
-    private $position = 0;
+    private $position = 1;
 
     /**
      * @var string

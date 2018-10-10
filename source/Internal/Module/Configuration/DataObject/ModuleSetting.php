@@ -18,6 +18,7 @@ class ModuleSetting
     const VERSION                   = 'version';
     const PATH                      = 'path';
     const SMARTY_PLUGIN_DIRECTORIES = 'smartyPluginDirectories';
+    const TEMPLATE_BLOCKS           = 'blocks';
 
     /**
      * @var string

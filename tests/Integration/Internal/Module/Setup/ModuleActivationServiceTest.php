@@ -68,6 +68,18 @@ class ModuleActivationServiceTest extends TestCase
                 'secondSmartyDirectory',
             ]
         ))
+        ->setSetting(new ModuleSetting(
+            'blocks',
+            [
+                [
+                    'block'     => 'testBlock',
+                    'position'  => '3',
+                    'theme'     => 'flow_theme',
+                    'template'  => 'extendedTemplatePath',
+                    'file'      => 'filePath',
+                ],
+            ]
+        ))
         /**
         ->setSetting(new ModuleSetting(
             'extend',

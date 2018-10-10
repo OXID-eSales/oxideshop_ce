@@ -26,22 +26,16 @@ class ExecutorTest extends TestCase
     use ConsoleTrait;
     use ContainerTrait;
 
-    public function testIfShopIdInGlobalOptionsList()
-    {
-        $consoleOutput = $this->execute(
-            new CommandsCollectionBuilder(),
-            new ArrayInput(['command' => 'list'])
-        );
-
-        $this->assertRegexp('/--shop-id/', $consoleOutput);
-    }
-
     public function testIfRegisteredCommandInList()
     {
         $commands = $this->getMockBuilder(CommandsProvidableInterface::class)->getMock();
         $commands->method('getCommands')->willReturn([new TestCommand()]);
         $commandsCollectionBuilder = new CommandsCollectionBuilder($commands);
-        $consoleOutput = $this->execute($commandsCollectionBuilder, new ArrayInput(['command' => 'list']));
+        $consoleOutput = $this->execute(
+            $this->getApplication(),
+            $commandsCollectionBuilder,
+            new ArrayInput(['command' => 'list'])
+        );
 
         $this->assertRegexp('/oe:tests:test-command/', $consoleOutput);
     }
@@ -52,10 +46,22 @@ class ExecutorTest extends TestCase
         $commands->method('getCommands')->willReturn([new TestCommand()]);
         $commandsCollectionBuilder = new CommandsCollectionBuilder($commands);
         $consoleOutput = $this->execute(
+            $this->getApplication(),
             $commandsCollectionBuilder,
             new ArrayInput(['command' => 'oe:tests:test-command'])
         );
 
         $this->assertSame('Command have been executed!'.PHP_EOL, $consoleOutput);
+    }
+
+    /**
+     * @return Application
+     */
+    private function getApplication(): Application
+    {
+        $application = $this->get('symfony.component.console.application');
+        $application->setAutoExit(false);
+
+        return $application;
     }
 }

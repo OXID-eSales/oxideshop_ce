@@ -4,17 +4,12 @@ services:
     public: true
     arguments:
       - '@symfony.component.console.application'
-      - '@Symfony\Component\Console\Output\ConsoleOutputInterface'
       - '@console.commands_collection_builder'
-      - '@OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface'
 
   symfony.component.console.application:
     class: Symfony\Component\Console\Application
     public: false
     calls:
-      - method: setDispatcher
-        arguments:
-          - '@event_dispatcher'
       - method: setCommandLoader
         arguments:
           - '@console.command_loader'
@@ -65,9 +60,3 @@ services:
   symfony.component.console.input.argv_input:
     class: Symfony\Component\Console\Input\ArgvInput
     public: false
-
-  console.command_event_subscriber:
-    class: OxidEsales\EshopCommunity\Internal\Console\CommandEventSubscriber
-    public: false
-    tags:
-      - { name: kernel.event_subscriber }

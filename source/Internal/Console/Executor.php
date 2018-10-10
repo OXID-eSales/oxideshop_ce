@@ -31,31 +31,15 @@ class Executor implements ExecutorInterface
     private $commandsCollectionBuilder;
 
     /**
-     * @var ConsoleOutput
-     */
-    private $consoleOutput;
-
-    /**
-     * @var ShopAdapterInterface
-     */
-    private $shopAdapter;
-
-    /**
      * @param Application               $application
-     * @param ConsoleOutputInterface    $consoleOutput
      * @param CommandsCollectionBuilder $commandsCollectionBuilder
-     * @param ShopAdapterInterface      $shopAdapter
      */
     public function __construct(
         Application $application,
-        ConsoleOutputInterface $consoleOutput,
-        CommandsCollectionBuilder $commandsCollectionBuilder,
-        ShopAdapterInterface $shopAdapter
+        CommandsCollectionBuilder $commandsCollectionBuilder
     ) {
         $this->application = $application;
-        $this->consoleOutput = $consoleOutput;
         $this->commandsCollectionBuilder = $commandsCollectionBuilder;
-        $this->shopAdapter = $shopAdapter;
     }
 
     /**
@@ -63,26 +47,9 @@ class Executor implements ExecutorInterface
      */
     public function execute(InputInterface $input = null, OutputInterface $output = null)
     {
-        if (null === $input) {
-            $input = new ArgvInput();
+        foreach ($this->commandsCollectionBuilder->build()->toArray() as $command) {
+            $this->application->add($command);
         }
-        if (null === $output) {
-            $output = new ConsoleOutput();
-        }
-
-        $shopId = (int) $input->getParameterOption('--shop-id', 1);
-        $shopId = $shopId === 0 ? 1 : $shopId;
-        try {
-            $this->shopAdapter->switchToShop($shopId);
-            foreach ($this->commandsCollectionBuilder->build()->toArray() as $command) {
-                $this->application->add($command);
-            }
-            $this->application->run($input, $output);
-        } catch (ShopSwitchException $shopSwitchException) {
-            $output->writeln('<error>'.$shopSwitchException->getMessage().'</error>');
-            if ($this->application->isAutoExitEnabled()) {
-                exit(1);
-            }
-        }
+        $this->application->run($input, $output);
     }
 }

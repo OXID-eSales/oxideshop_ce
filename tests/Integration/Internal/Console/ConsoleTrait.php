@@ -8,9 +8,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Console;
 
 use OxidEsales\EshopCommunity\Internal\Console\CommandsCollectionBuilder;
 use OxidEsales\EshopCommunity\Internal\Console\Executor;
-use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapter;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\StreamOutput;
 
 /**
@@ -19,12 +17,14 @@ use Symfony\Component\Console\Output\StreamOutput;
 trait ConsoleTrait
 {
     /**
-     * @param $commandsCollectionBuilder
+     * @param Application $application
+     * @param CommandsCollectionBuilder $commandsCollectionBuilder
+     * @param $input
      * @return string
      */
-    protected function execute(CommandsCollectionBuilder $commandsCollectionBuilder, $input): string
+    protected function execute(Application $application, CommandsCollectionBuilder $commandsCollectionBuilder, $input): string
     {
-        $executor = new Executor($this->getConsoleApplication(), new ConsoleOutput(), $commandsCollectionBuilder, new ShopAdapter());
+        $executor = new Executor($application, $commandsCollectionBuilder);
 
         $output = new StreamOutput(fopen('php://memory', 'w', false));
         $executor->execute($input, $output);
@@ -33,15 +33,5 @@ trait ConsoleTrait
         $display = stream_get_contents($stream);
 
         return $display;
-    }
-
-    /**
-     * @return object
-     */
-    private function getConsoleApplication(): Application
-    {
-        $application = $this->get('symfony.component.console.application');
-        $application->setAutoExit(false);
-        return $application;
     }
 }

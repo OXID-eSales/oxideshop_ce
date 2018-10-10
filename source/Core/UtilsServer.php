@@ -419,10 +419,10 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     {
         // #4010: force_sid added in https to every link
         preg_match("/^(https?:\/\/)?(www\.)?([^\/]+)/i", $sURL, $matches);
-        $sUrlHost = $matches[3];
+        $sUrlHost = isset($matches[3]) ? $matches[3] : null;
 
         preg_match("/^(https?:\/\/)?(www\.)?([^\/]+)/i", $sServerHost, $matches);
-        $sRealHost = $matches[3];
+        $sRealHost =  isset($matches[3]) ? $matches[3] : null;
 
 
         //fetch the path from SCRIPT_NAME and ad it to the $sServerHost

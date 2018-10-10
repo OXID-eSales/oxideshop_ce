@@ -38,6 +38,8 @@ services:
         - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\UrlExtension']]
         - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\AssignAdvancedExtension']]
         - [addExtension, ['@Twig_Extension_StringLoader']]
+        - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\HasRightsExtension\HasRightsExtension']]
+        - [addTokenParser, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\HasRightsExtension\HasRightsParser']]
 
   OxidEsales\EshopCommunity\Internal\Twig\TwigEngine:
     class: OxidEsales\EshopCommunity\Internal\Twig\TwigEngine
@@ -99,3 +101,9 @@ services:
 
   Twig_Extension_StringLoader:
     class: Twig_Extension_StringLoader
+
+  OxidEsales\EshopCommunity\Internal\Twig\Extensions\HasRightsExtension\HasRightsParser:
+    class: OxidEsales\EshopCommunity\Internal\Twig\Extensions\HasRightsExtension\HasRightsParser
+
+  OxidEsales\EshopCommunity\Internal\Twig\Extensions\HasRightsExtension\HasRightsExtension:
+    class: OxidEsales\EshopCommunity\Internal\Twig\Extensions\HasRightsExtension\HasRightsExtension

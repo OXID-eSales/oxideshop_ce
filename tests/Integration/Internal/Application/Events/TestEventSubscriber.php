@@ -1,6 +1,4 @@
-<?php
-declare(strict_types=1);
-
+<?php declare(strict_types=1);
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -9,11 +7,10 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Application\Events;
 
 
-use OxidEsales\EshopCommunity\Internal\Application\Events\AbstractShopAwareEventSubscriber;
+use OxidEsales\EshopCommunity\Internal\Application\Events\ShopAwareEventSubscriber;
 
-class TestEventSubscriber extends AbstractShopAwareEventSubscriber
+class TestEventSubscriber extends ShopAwareEventSubscriber
 {
-
     private $stopPropagation = false;
 
     public function __construct($stopPropagation)

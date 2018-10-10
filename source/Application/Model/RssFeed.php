@@ -221,10 +221,19 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
             $oItem = new stdClass();
             $oActCur = $this->getConfig()->getActShopCurrencyObject();
             $sPrice = '';
-            if ($oPrice = $oArticle->getPrice()) {
-                $sFrom = ($oArticle->isRangePrice()) ? Registry::getLang()->translateString('PRICE_FROM')." " : '';
-                $sPrice .= ' ' . $sFrom . $oLang->formatCurrency($oPrice->getBruttoPrice(), $oActCur) . " " . $oActCur->sign;
+
+            // check if article is a variant
+            if ($oArticle->isParentNotBuyable()) {
+                $oPrice = $oArticle->getVarMinPrice();
+            } else {
+                $oPrice = $oArticle->getPrice();
             }
+
+            if ($oPrice) {
+                $sFrom = ($oArticle->isRangePrice()) ? Registry::getLang()->translateString('PRICE_FROM') . ' ' : '';
+                $sPrice .= ' ' . $sFrom . $oLang->formatCurrency($oPrice->getBruttoPrice(), $oActCur) . ' ' . $oActCur->sign;
+            }
+
             $oItem->title = strip_tags($oArticle->oxarticles__oxtitle->value . $sPrice);
             $oItem->guid = $oItem->link = $myUtilsUrl->prepareUrlForNoSession($oArticle->getLink());
             $oItem->isGuidPermalink = true;

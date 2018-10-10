@@ -3,22 +3,20 @@
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
+use oxField;
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Application\Model\Vendor;
-
-use \oxField;
-use \oxRegistry;
-use \oxTestModules;
+use oxRegistry;
+use oxTestModules;
 
 /**
  * Testing oxvendor class
  */
 class VendorTest extends \OxidTestCase
 {
-
-    //
     protected $_sVndIcon = "/vendor/icon/big_matsol_1_mico.png";
 
     protected $_sManIcon = "/manufacturer/icon/big_matsol_1_mico.png";
@@ -50,15 +48,12 @@ class VendorTest extends \OxidTestCase
 
     /**
      * Test setup
-     *...,,,,,
-     * @return null
      */
     protected function setUp()
     {
         // test require icon for vendors
-        if ($this->getName() == "testGetIconUrlNewPath" || $this->getName() == "testGetIconUrl") {
+        if (in_array($this->getName(), ['testGetIconUrlNewPath', 'testGetIconUrl'])) {
             $oConfig = $this->getConfig();
-            $oConfig->init();
             $sTarget = $oConfig->getPicturePath("") . "master";
             if (file_exists($sTarget . $this->_sManIcon)) {
                 copy($sTarget . $this->_sManIcon, $sTarget . $this->_sVndIcon);
@@ -68,18 +63,15 @@ class VendorTest extends \OxidTestCase
         $this->insertTestVendor();
 
         parent::setUp();
-//        $this->getConfig()->setConfigParam('sTheme', 'azure');
     }
 
     /**
      * Tear down the fixture.
-     *
-     * @return null
      */
     protected function tearDown()
     {
         // removing folder
-        if ($this->getName() == "testGetIconUrlNewPath" || $this->getName() == "testGetIconUrl") {
+        if (in_array($this->getName(), ['testGetIconUrlNewPath', 'testGetIconUrl'])) {
             $sTarget = $this->getConfig()->getPicturePath("") . "master";
             if (file_exists($sTarget . $this->_sVndIcon)) {
                 unlink($sTarget . $this->_sVndIcon);
@@ -383,16 +375,16 @@ class VendorTest extends \OxidTestCase
     /**
      * Testing icon url getter with new path solution
      *
-     * @return null
+     * @covers \OxidEsales\EshopCommunity\Application\Model\Vendor::getIconUrl
      */
     public function testGetIconUrlNewPath()
     {
-        /** @var Vendor $vendor */
-        $vendor = oxNew('oxvendor');
+        $vendor = oxNew(Vendor::class);
+        $vendor->getConfig()->setConfigParam('sManufacturerIconsize', '100*100');
         $vendor->oxvendor__oxicon = new oxField('big_matsol_1_mico.png');
 
-        $sUrl = $this->getConfig()->getOutUrl() . basename($this->getConfig()->getPicturePath(""));
-        $sUrl .= "/generated/vendor/icon/100_100_75/big_matsol_1_mico.png";
+        $sUrl = $vendor->getConfig()->getOutUrl() . basename($vendor->getConfig()->getPicturePath(''));
+        $sUrl .= '/generated/vendor/icon/100_100_75/big_matsol_1_mico.png';
 
         $this->assertEquals($sUrl, $vendor->getIconUrl());
     }
@@ -434,8 +426,6 @@ class VendorTest extends \OxidTestCase
 
     /**
      * Title getter test
-     *
-     * @return null
      */
     public function testGetTitle()
     {
@@ -446,7 +436,8 @@ class VendorTest extends \OxidTestCase
         $this->assertEquals($sTitle, $vendor->getTitle());
     }
 
-    protected function insertTestVendor() {
+    protected function insertTestVendor()
+    {
         $shopId = $this->getConfig()->getShopId();
 
         /** @var Vendor $vendor */
@@ -455,12 +446,21 @@ class VendorTest extends \OxidTestCase
         $vendor->setId($this->testVendorId);
 
         $vendor->oxvendor__oxshopid = $shopId;
-        $vendor->oxvendor__oxtitle = new oxField($this->testVendorTitle_0, oxField::T_RAW);;
+        $vendor->oxvendor__oxtitle = new oxField($this->testVendorTitle_0, oxField::T_RAW);
         $vendor->save();
+
+        $product = oxNew(Article::class);
+        $product->setId('_test');
+        $product->oxarticles__oxparentid = new oxField('', oxField::T_RAW);
+        $product->oxarticles__oxvendorid = new oxField($this->testVendorId, oxField::T_RAW);
+        $product->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
+        $product->oxarticles__oxhidden = new oxField(0, oxField::T_RAW);
+        $product->oxarticles__oxstock = new oxField(1, oxField::T_RAW);
+        $product->save();
 
         $vendor->setLanguage(1);
         $vendor->load($this->testVendorId);
-        $vendor->oxvendor__oxtitle = new oxField($this->testVendorTitle_1, oxField::T_RAW);;
+        $vendor->oxvendor__oxtitle = new oxField($this->testVendorTitle_1, oxField::T_RAW);
         $vendor->save();
     }
 }

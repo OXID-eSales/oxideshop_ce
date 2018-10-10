@@ -205,6 +205,47 @@ class RssfeedTest extends \OxidTestCase
         $this->assertEquals(array($oSAr1, $oSAr2), $oRss->UNITgetArticleItems($oArr));
     }
 
+    /**
+     * Test if works correctly when parent is not buyable and has a VarMinPrice.
+     *
+     * Fix for bug entry 0006522: Wrong price-calculation for variants in RSS-feed
+     */
+    public function testUserVarMinPriceIfParentIsNotBuyable()
+    {
+        oxTestModules::addFunction('oxutilsurl', 'prepareUrlForNoSession', '{return $aA[0]."extra";}');
+
+        $oCfg = $this->getConfig();
+        $oCfg->setConfigParam('aCurrencies', array('EUR@1.00@.@.@EUR@1'));
+        $oCfg->setConfigParam("bl_perfParseLongDescinSmarty", false);
+        $oRss = oxNew('oxRssFeed');
+        $oRss->setConfig($oCfg);
+
+        $oVarMinPrice = oxNew('oxPrice');
+        $oVarMinPrice->setPrice(10);
+
+        $oParentArt = $this->getMock('oxarticle', array("getLink", "getLongDescription", "isParentNotBuyable", "getVarMinPrice"));
+        $oParentArt->expects($this->any())->method('getLink')->will($this->returnValue("artlink"));
+        $oParentArt->expects($this->any())->method('isParentNotBuyable')->will($this->returnValue(true));
+        $oParentArt->expects($this->any())->method('getVarMinPrice')->will($this->returnValue($oVarMinPrice));
+        $oParentArt->oxarticles__oxid = new oxField('testarticle');
+        $oParentArt->oxarticles__oxtitle = new oxField('title1');
+        $oParentArt->oxarticles__oxprice = new oxField(2);
+        $oParentArt->oxarticles__oxtimestamp = new oxField('2011-09-06 09:46:42');
+
+        $oArr = oxNew('oxarticlelist');
+        $oArr->assign(array($oParentArt));
+
+        $oSArt = new stdClass();
+        $oSArt->title = 'title1 10.0 EUR';
+        $oSArt->link = 'artlinkextra';
+        $oSArt->guid = 'artlinkextra';
+        $oSArt->isGuidPermalink = true;
+        $oSArt->description = "&lt;img src=&#039;" . $oParentArt->getThumbnailUrl() . "&#039; border=0 align=&#039;left&#039; hspace=5&gt;";
+        $oSArt->date = "Tue, 06 Sep 2011 09:46:42 +0200";
+
+        $this->assertEquals(array($oSArt), $oRss->UNITgetArticleItems($oArr));
+    }
+
     public function testGetArticleItemsDescriptionParsedWithSmarty()
     {
         oxTestModules::addFunction('oxutilsurl', 'prepareUrlForNoSession', '{return $aA[0]."extra";}');

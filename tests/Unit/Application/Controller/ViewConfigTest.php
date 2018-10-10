@@ -6,11 +6,11 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\ViewConfig;
 use OxidEsales\EshopCommunity\Application\Model\CountryList;
-
-use \stdClass;
-use \oxRegistry;
-use \oxTestModules;
+use oxTestModules;
+use stdClass;
 
 class ViewConfigTest extends \OxidTestCase
 {
@@ -529,7 +529,8 @@ class ViewConfigTest extends \OxidTestCase
         $fakeShopDirectory = $config->getConfigParam('sShopDir');
         $message = "Requested file not found for module test1 (" .
                    $fakeShopDirectory . "modules/test1/out/blocks/non_existing_template.tpl)";
-        $this->expectException('\OxidEsales\EshopCommunity\Core\Exception\FileException'); $this->expectExceptionMessage( $message);
+        $this->expectException('\OxidEsales\EshopCommunity\Core\Exception\FileException');
+        $this->expectExceptionMessage($message);
 
         /** @var oxViewConfig|PHPUnit\Framework\MockObject\MockObject $viewConfig */
         $viewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig'));
@@ -630,7 +631,8 @@ class ViewConfigTest extends \OxidTestCase
         $fakeShopDirectory = $config->getConfigParam('sShopDir');
         $message = "Requested file not found for module test1 (" . $fakeShopDirectory .
                    "modules/test1/out/blocks/non_existing_template.tpl)";
-        $this->expectException(\OxidEsales\Eshop\Core\Exception\FileException::class); $this->expectExceptionMessage( $message);
+        $this->expectException(\OxidEsales\Eshop\Core\Exception\FileException::class);
+        $this->expectExceptionMessage($message);
 
         /** @var \OxidEsales\Eshop\Core\ViewConfig|PHPUnit\Framework\MockObject\MockObject $viewConfig */
         $viewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig'));
@@ -639,23 +641,25 @@ class ViewConfigTest extends \OxidTestCase
         $viewConfig->getModuleUrl('test1', '/out/blocks/non_existing_template.tpl');
     }
 
-    public function testViewThemeParam()
+    /**
+     * @covers \OxidEsales\EshopCommunity\Core\ViewConfig::getViewThemeParam
+     */
+    public function testGetViewThemeParamReadsDirectlyFromConfig()
     {
-        $oVC = oxNew('oxViewConfig');
+        $configStub = $this->getMockBuilder(Config::class)
+            ->setMethods(['isThemeOption'])
+            ->getMock();
+        $configStub->method('isThemeOption')->willReturn('true');
 
-        $oV = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isThemeOption', 'getSession'));
-        $oV->expects($this->any())->method('getSession')->will($this->returnValue(false));
+        $viewConfig = oxNew(ViewConfig::class);
+        $viewConfig->setConfig($configStub);
 
-        $this->assertEquals(false, $oVC->getViewThemeParam('aaa'));
+        $viewConfig->getConfig()->setConfigParam('someParameter', 'someValue');
+        $this->assertEquals('someValue', $viewConfig->getViewThemeParam('someParameter'));
 
-        $oV = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isThemeOption', 'getSession'));
-        $oV->expects($this->any())->method('getSession')->will($this->returnValue(true));
-
-        $this->getConfig()->setConfigParam('bl_showListmania', 1);
-        $this->assertEquals(1, $oVC->getViewThemeParam('bl_showListmania'));
-
-        $this->getConfig()->setConfigParam('bl_showListmania', 0);
-        $this->assertEquals(0, $oVC->getViewThemeParam('bl_showListmania'));
+        /** Set and read the value again to discover caching issues */
+        $viewConfig->getConfig()->setConfigParam('someParameter', 'otherValue');
+        $this->assertEquals('otherValue', $viewConfig->getViewThemeParam('someParameter'));
     }
 
     /**

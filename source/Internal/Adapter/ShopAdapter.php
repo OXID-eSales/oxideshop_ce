@@ -10,6 +10,7 @@ use OxidEsales\Eshop\Core\MailValidator;
 use OxidEsales\Eshop\Core\Module\ModuleList;
 use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Module\ModuleCache;
+use OxidEsales\Eshop\Core\NamespaceInformationProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider;
 use OxidEsales\EshopCommunity\Internal\Adapter\Exception\ModuleNotLoadableException;
@@ -78,6 +79,7 @@ class ShopAdapter implements ShopAdapterInterface
     }
 
     /**
+<<<<<<< HEAD
      * @return array
      */
     public function getModules()
@@ -86,5 +88,32 @@ class ShopAdapter implements ShopAdapterInterface
         $moduleList->getModulesFromDir(Registry::getConfig()->getModulesDir());
 
         return $moduleList->getList();
+    }
+
+    /*
+     * @param string $namespace
+     * @return bool
+     */
+    public function isNamespace(string $namespace): bool
+    {
+        return NamespaceInformationProvider::isNamespacedClass($namespace);
+    }
+
+    /**
+     * @param string $namespace
+     * @return bool
+     */
+    public function isShopUnifiedNamespace(string $namespace): bool
+    {
+        return NamespaceInformationProvider::classBelongsToShopUnifiedNamespace($namespace);
+    }
+
+    /**
+     * @param string $namespace
+     * @return bool
+     */
+    public function isShopEditionNamespace(string $namespace): bool
+    {
+        return NamespaceInformationProvider::classBelongsToShopEditionNamespace($namespace);
     }
 }

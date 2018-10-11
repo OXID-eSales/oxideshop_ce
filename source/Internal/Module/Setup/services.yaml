@@ -11,6 +11,7 @@ services:
       - [addHandler, ['@oxid_esales.module.setup.template_blocks_module_setting_handler']]
       - [addValidator, ['@oxid_esales.module.setup.validator.controllers_module_setting_validator']]
       - [addValidator, ['@oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator']]
+      - [addValidator, ['@oxid_esales.module.setup.validator.class_extensions_module_setting_validator']]
 
   oxid_esales.module.setup.version_module_setting_handler:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopConfigurationModuleSettingHandler
@@ -57,5 +58,8 @@ services:
 
   oxid_esales.module.setup.validator.controllers_module_setting_validator:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\SmartyPluginDirectoriesModuleSettingValidator
-    arguments:
-      - '@OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface'
+    autowire: true
+
+  oxid_esales.module.setup.validator.class_extensions_module_setting_validator:
+      class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ClassExtensionsModuleSettingValidator
+      autowire: true

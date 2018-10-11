@@ -13,6 +13,7 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject;
  */
 class ModuleSetting
 {
+    const CLASS_EXTENSIONS          = 'extend';
     const CONTROLLERS               = 'controllers';
     const TEMPLATES                 = 'templates';
     const VERSION                   = 'version';

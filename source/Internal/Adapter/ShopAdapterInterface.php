@@ -44,4 +44,22 @@ interface ShopAdapterInterface
      * @return array
      */
     public function getShopControllerClassMap(): array;
+
+    /**
+     * @param string $namespace
+     * @return bool
+     */
+    public function isNamespace(string $namespace): bool;
+
+    /**
+     * @param string $namespace
+     * @return bool
+     */
+    public function isShopUnifiedNamespace(string $namespace): bool;
+
+    /**
+     * @param string $namespace
+     * @return bool
+     */
+    public function isShopEditionNamespace(string $namespace): bool;
 }

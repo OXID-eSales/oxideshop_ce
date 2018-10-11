@@ -151,6 +151,11 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
 
             $this->_outputResponse($this->_getData($sCountQ, $sQ));
         }
+        if ($function) {
+            $container = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
+            $dispatcher = $container->get('event_dispatcher');
+            $dispatcher->dispatch('oxidesales.listcomponentajax.executeCache', new \OxidEsales\EshopCommunity\Internal\Application\Events\ExecuteCacheEvent());
+        }
     }
 
     /**

@@ -2,20 +2,20 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Twig\Extension;
 
-use OxidEsales\EshopCommunity\Internal\Twig\Extensions\OxidExtension;
+use OxidEsales\EshopCommunity\Internal\Twig\Extensions\MultilangExtension;
 
 class OxidIncludeWidget extends \OxidTestCase
 {
 
     /**
-     * @var OxidExtension
+     * @var MultilangExtension
      */
     protected $extension;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->extension = new OxidExtension();
+        $this->extension = new MultilangExtension();
     }
 
     /**
@@ -43,7 +43,7 @@ class OxidIncludeWidget extends \OxidTestCase
     {
         $this->setLanguage($iLang);
         $this->setAdminMode($blAdmin);
-        $this->assertEquals($sTranslation, $this->extension->oxmultilang(['ident' => $sIndent]));
+        $this->assertEquals($sTranslation, $this->extension->multilang(['ident' => $sIndent]));
     }
 
     /**
@@ -69,7 +69,7 @@ class OxidIncludeWidget extends \OxidTestCase
     public function testAssignmentPlusSuffix($sIndent, $sTranslation, $iLang, $sSuffixIndent)
     {
         $this->setLanguage($iLang);
-        $this->assertEquals($sTranslation, $this->extension->oxmultilang(['ident' => $sIndent, 'suffix' => $sSuffixIndent]));
+        $this->assertEquals($sTranslation, $this->extension->multilang(['ident' => $sIndent, 'suffix' => $sSuffixIndent]));
     }
 
     /**
@@ -99,7 +99,7 @@ class OxidIncludeWidget extends \OxidTestCase
     public function testAlternativeAssignments($aArgs, $sTranslation, $iLang)
     {
         $this->setLanguage($iLang);
-        $this->assertEquals($sTranslation, $this->extension->oxmultilang($aArgs));
+        $this->assertEquals($sTranslation, $this->extension->multilang($aArgs));
     }
 
 
@@ -152,7 +152,7 @@ class OxidIncludeWidget extends \OxidTestCase
         $oShop->oxshops__oxproductive = new \oxfield($isProductiveMode);
         $oShop->save();
 
-        $this->assertEquals($sTranslation, $this->extension->oxmultilang($aArgs));
+        $this->assertEquals($sTranslation, $this->extension->multilang($aArgs));
     }
 
     /**
@@ -186,7 +186,7 @@ class OxidIncludeWidget extends \OxidTestCase
         $this->setLanguage(1);
         $this->setAdminMode(true);
 
-        $this->assertEquals($sTranslation, $this->extension->oxmultilang($aArgs));
+        $this->assertEquals($sTranslation, $this->extension->multilang($aArgs));
     }
 
 }

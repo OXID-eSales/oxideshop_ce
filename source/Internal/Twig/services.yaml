@@ -36,6 +36,7 @@ services:
         - "@=service('OxidEsales\\\\EshopCommunity\\\\Internal\\\\Twig\\\\TemplateEngineConfigurationInterface').getParameters()"
     public: false
     calls:
+        - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\MultilangExtension']]
         - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\MathExtension']]
         - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\IncludeExtension']]
         - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\SmartyExtension']]
@@ -52,6 +53,9 @@ services:
 
 
 # Extensions
+
+  OxidEsales\EshopCommunity\Internal\Twig\Extensions\MultilangExtension:
+    class: OxidEsales\EshopCommunity\Internal\Twig\Extensions\MultilangExtension
 
   OxidEsales\EshopCommunity\Internal\Twig\Extensions\MathExtension:
     class: OxidEsales\EshopCommunity\Internal\Twig\Extensions\MathExtension

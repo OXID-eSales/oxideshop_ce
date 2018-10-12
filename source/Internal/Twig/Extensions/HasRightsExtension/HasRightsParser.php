@@ -6,11 +6,17 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Twig\Extensions\HasRightsExtension;
 
+/**
+ * Class HasRightsParser
+ *
+ * @package OxidEsales\EshopCommunity\Internal\Twig\Extensions\HasRightsExtension
+ */
 class HasRightsParser extends \Twig_TokenParser
 {
 
     /**
      * @param \Twig_Token $token
+     *
      * @return HasRightsNode|\Twig_Node
      * @throws \Twig_Error_Syntax
      */
@@ -21,12 +27,12 @@ class HasRightsParser extends \Twig_TokenParser
         $params = array_merge([], $this->getInlineParams());
 
         $continue = true;
-        while($continue) {
+        while ($continue) {
             // create subtree until the decideMyTagFork() callback returns true
             $body = $this->parser->subparse([$this, 'decideMyTagFork']);
 
             $tag = $stream->next()->getValue();
-            switch($tag) {
+            switch ($tag) {
                 case 'endhasrights':
                     $continue = false;
                     break;
@@ -37,6 +43,7 @@ class HasRightsParser extends \Twig_TokenParser
             array_unshift($params, $body);
             $stream->expect(\Twig_Token::BLOCK_END_TYPE);
         }
+
         return new HasRightsNode(new \Twig_Node($params), $lineno, $this->getTag());
     }
 
@@ -49,10 +56,11 @@ class HasRightsParser extends \Twig_TokenParser
     {
         $stream = $this->parser->getStream();
         $params = array();
-        while(!$stream->test(\Twig_Token::BLOCK_END_TYPE)) {
+        while (!$stream->test(\Twig_Token::BLOCK_END_TYPE)) {
             $params[] = $this->parser->getExpressionParser()->parseExpression();
         }
         $stream->expect(\Twig_Token::BLOCK_END_TYPE);
+
         return $params;
     }
 
@@ -61,6 +69,7 @@ class HasRightsParser extends \Twig_TokenParser
      * true when the expected end tag is reached.
      *
      * @param \Twig_Token $token
+     *
      * @return bool
      */
     public function decideMyTagFork(\Twig_Token $token)
@@ -78,5 +87,4 @@ class HasRightsParser extends \Twig_TokenParser
     {
         return 'hasrights';
     }
-
 }

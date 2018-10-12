@@ -8,8 +8,14 @@ namespace OxidEsales\EshopCommunity\Internal\Twig\Extensions\HasRightsExtension;
 
 use Twig\Extension\AbstractExtension;
 
+/**
+ * Class HasRightsExtension
+ *
+ * @package OxidEsales\EshopCommunity\Internal\Twig\Extensions\HasRightsExtension
+ */
 class HasRightsExtension extends AbstractExtension
 {
+
     /**
      * @return array|\Twig_TokenParserInterface[]
      */

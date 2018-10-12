@@ -1570,9 +1570,7 @@ class Email extends \PHPMailer
     public function setRecipient($address = null, $name = null)
     {
         try {
-            if (function_exists('idn_to_ascii')) {
-                $address = idn_to_ascii($address, 0, INTL_IDNA_VARIANT_UTS46);
-            }
+            $address = $this->idnToAscii($address);
 
             parent::AddAddress($address, $name);
 
@@ -2311,5 +2309,23 @@ class Email extends \PHPMailer
         $productReviewLinkInclusionEnabled = $config->getConfigParam('includeProductReviewLinksInEmail', false);
 
         return  $reviewsEnabled && $productReviewLinkInclusionEnabled;
+    }
+
+    /**
+     * @param string $idn The email address
+     *
+     * @return string
+     */
+    private function idnToAscii($idn)
+    {
+        if (function_exists('idn_to_ascii')) {
+            if (PHP_VERSION_ID < 50600) {
+                // for old PHP versions support
+                // remove it after the PHP 7.1 support is dropped
+                return idn_to_ascii($idn);
+            }
+            return idn_to_ascii($idn, 0, INTL_IDNA_VARIANT_UTS46);
+        }
+        return $idn;
     }
 }

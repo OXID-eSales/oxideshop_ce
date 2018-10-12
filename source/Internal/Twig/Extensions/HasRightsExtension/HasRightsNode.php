@@ -6,14 +6,20 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Twig\Extensions\HasRightsExtension;
 
+/**
+ * Class HasRightsNode
+ *
+ * @package OxidEsales\EshopCommunity\Internal\Twig\Extensions\HasRightsExtension
+ */
 class HasRightsNode extends \Twig_Node
 {
 
     /**
      * HasRightsNode constructor.
-     * @param $params
-     * @param int $lineno
-     * @param null $tag
+     *
+     * @param array $params
+     * @param int   $lineno
+     * @param null  $tag
      */
     public function __construct($params, $lineno = 0, $tag = null)
     {
@@ -29,11 +35,10 @@ class HasRightsNode extends \Twig_Node
 
         $compiler->addDebugInfo($this);
 
-        for($i = 0; ($i < $count); $i++) {
-            if(!($this->getNode('HasRightsParams')->getNode($i) instanceof \Twig_Node_Expression)) {
+        for ($i = 0; ($i < $count); $i++) {
+            if (!($this->getNode('HasRightsParams')->getNode($i) instanceof \Twig_Node_Expression)) {
                 $compiler->subcompile($this->getNode('HasRightsParams')->getNode($i));
             }
         }
     }
-
 }

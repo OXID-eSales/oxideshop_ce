@@ -80,7 +80,6 @@ class ModuleActivationServiceTest extends TestCase
                 ],
             ]
         ))
-        /**
         ->setSetting(new ModuleSetting(
             'extend',
             [
@@ -88,6 +87,7 @@ class ModuleActivationServiceTest extends TestCase
                 'otherOriginalClassNamespace' => 'moduleClassNamespace',
             ]
         ))
+        /**
         ->setSetting(new ModuleSetting(
             'events',
             [

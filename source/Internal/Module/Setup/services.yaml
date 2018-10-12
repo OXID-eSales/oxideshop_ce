@@ -8,6 +8,7 @@ services:
       - [addHandler, ['@oxid_esales.module.setup.templates_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.controllers_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.smarty_plugin_directories_module_setting_handler']]
+      - [addHandler, ['@oxid_esales.module.setup.class_extensions_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.template_blocks_module_setting_handler']]
       - [addValidator, ['@oxid_esales.module.setup.validator.controllers_module_setting_validator']]
       - [addValidator, ['@oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator']]
@@ -47,6 +48,10 @@ services:
       - !php/const OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting::SMARTY_PLUGIN_DIRECTORIES
       - !php/const OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting::MODULE_SMARTY_PLUGIN_DIRECTORIES
       - '@OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface'
+
+  oxid_esales.module.setup.class_extensions_module_setting_handler:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ClassExtensionsModuleSettingHandler
+    autowire: true
 
   oxid_esales.module.setup.template_blocks_module_setting_handler:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\TemplateBlockModuleSettingHandler

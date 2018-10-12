@@ -61,10 +61,7 @@ class ModuleActivationService implements ModuleActivationServiceInterface
         /**
          * @todo [II] wrap it in transaction.
          */
-        foreach ($moduleConfiguration->getSettings() as $setting) {
-            $handler = $this->getHandler($setting);
-            $handler->handle($setting, $moduleId, $shopId);
-        }
+        $this->handleModuleSettings($moduleConfiguration, $moduleId, $shopId);
     }
 
     /**
@@ -84,8 +81,22 @@ class ModuleActivationService implements ModuleActivationServiceInterface
     }
 
     /**
+     * @param ModuleConfiguration $moduleConfiguration
+     * @param string              $moduleId
+     * @param int                 $shopId
+     */
+    private function handleModuleSettings(ModuleConfiguration $moduleConfiguration, string $moduleId, int $shopId)
+    {
+        foreach ($moduleConfiguration->getSettings() as $setting) {
+            $handler = $this->getHandler($setting);
+            $handler->handle($setting, $moduleId, $shopId);
+        }
+    }
+
+    /**
      * @param ModuleSetting $setting
      * @return ModuleSettingHandlerInterface
+     * @throws ModuleSettingHandlerNotFoundException
      */
     private function getHandler(ModuleSetting $setting): ModuleSettingHandlerInterface
     {

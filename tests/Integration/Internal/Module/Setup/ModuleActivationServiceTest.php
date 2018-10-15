@@ -87,6 +87,17 @@ class ModuleActivationServiceTest extends TestCase
                 'otherOriginalClassNamespace' => 'moduleClassNamespace',
             ]
         ))
+        ->setSetting(new ModuleSetting(
+            ModuleSetting::SHOP_MODULE_SETTING,
+            [
+                [
+                    'group' => 'frontend',
+                    'name'  => 'sGridRow',
+                    'type'  => 'str',
+                    'value' => 'row',
+                ],
+            ]
+        ))
         /**
         ->setSetting(new ModuleSetting(
             'events',

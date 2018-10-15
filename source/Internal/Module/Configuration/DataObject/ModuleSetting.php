@@ -20,6 +20,7 @@ class ModuleSetting
     const PATH                      = 'path';
     const SMARTY_PLUGIN_DIRECTORIES = 'smartyPluginDirectories';
     const TEMPLATE_BLOCKS           = 'blocks';
+    const SHOP_MODULE_SETTING       = 'settings';
 
     /**
      * @var string

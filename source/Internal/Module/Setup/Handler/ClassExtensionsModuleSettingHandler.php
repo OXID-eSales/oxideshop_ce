@@ -36,6 +36,7 @@ class ClassExtensionsModuleSettingHandler implements ModuleSettingHandlerInterfa
      * @param ModuleSetting $moduleSetting
      * @param string        $moduleId
      * @param int           $shopId
+     * @throws WrongSettingModuleSettingHandlerException
      */
     public function handle(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
     {

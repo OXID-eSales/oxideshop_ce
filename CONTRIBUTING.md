@@ -10,18 +10,43 @@ https://oxidforge.org/en/oxid-contribution-and-contributor-agreement-faq
 
 First off, you have to fork the repository OXID-eSales/oxideshop_ce to your list of repositories.
 
+### Branch naming introduction
+
 To find the correct branch to contribute to, read this introduction to our branch naming strategy:
 
-As the oxideshop_ce core component follows semantic versioning, the version number of the tagged releases differ from the OXID eShop Compilation.
-Understanding this is important, because the branches do not relate to the oxideshop_ce core component version, but to the compilation version.
+First one caveat: You really need to understand the difference between OXID *components* and
+the eShop *compilation*. The compilation is a bundle that incorporates the shop core *and*
+several essential modules. But although each *component* has it's own versioning (and follows
+strict semantic versioning), it's the versioning of the *compilation*, that determines the
+naming of branches that exist in the OXID eShop *components*.
 
-You will find the three following branch types in *\<github_username\>/oxideshop_ce* repository:
+The versioning of the *components* themselves may differ
+from the *compilation* (which as a bundle can't follow strict semantic versioning).
+So although you are contributing to a *component*, the numbering of the branches follows the
+versioning of the *compilation*. The reason for this is obvious: We want to see, which changes
+go to the next release and releases means that we publish a new *compilation* - although we
+might have several new versions of the *component* in between.
 
-* The **development** branch is always named **master** and represents the next major version: All new features including compatibility breaking changes will be developed here as well as bug fixes.
-* The **maintenance** branch with a name like **b-6.x** for the currently maintained major version, in this case for the OXID eShop Compilation V6. Only Backwards compatible changes as well as new compatible features are possible. From this we can provide the next minor version.
-* The **legacy** branch with a name like **b-6.0.x** for an already released minor version (will only be created if needed): fixes for critical bugs only.
+For a better understanding take a look at the [release plan](https://oxidforge.org/en/release-plan) - as example the compilation version v6.1.0 contains the v6.3.0 version from this repository.
+
+Of the many different branches only three types are relevant for you as a contributor in the *\<github_username\>/oxideshop_ce* repository:
+
+* The **next major version** branch is always named **master**: All new features including compatibility breaking changes will be developed here as well as bug fixes.
+* The **next minor version** branch with a name like **b-{current major}.x** for the currently maintained major version. Only Backwards compatible changes as well as new compatible features are possible.
+* The **current patch** branch with a name like **b-{current major}.{current minor}.x**: bug fixes only. (will only be created if needed)
+* The **previous patch** branch with a name like **b-{current major}.{previous minor}.x**: critical bug fixes only. (will only be created if needed)
 
 In general, contributions can be taken over for all branches. Bug fixes committed to only one branch will be pushed to the other branches manually. Of course you can also consider to commit e.g. bug fixes to more than one branch.
+
+### Finding the best branch for a pull request
+
+* So you have found a security issue: do not create a pull request please, but instead follow the the security procedures as outlined here https://oxidforge.org/en/security - thank you!
+
+* You have a great idea and even a working prototype for a nice new feature/improvement, but it will break the shops backwards compatibility: **master** is the best spot for you.
+
+* Again you have a nice new feature/improvement, but you are sure it will not break backwards compatibility: if for example "6" is the current major shop version then **b-6.x** is the best spot, as it will be used for the **next minor version**.
+
+* You have found a bug and already know the best fix: this one is a bit tricky, of course you can always create a pull request for **next minor version** as described above, but we would prefer usage of the **current patch** branch. An easy way to find the best branch is to look at https://github.com/OXID-eSales/oxideshop_metapackage_ce/releases and if a.e. the topmost entry is **v6.1.0** then the best branch to use is **b-6.1.x**.
 
 ## Development installation
 

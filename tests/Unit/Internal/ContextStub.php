@@ -22,7 +22,7 @@ class ContextStub implements ContextInterface
     /**
      * @var array
      */
-    private $requiredContactFormFields;
+    private $requiredContactFormFields = [];
 
     /**
      * @param string $logLevel

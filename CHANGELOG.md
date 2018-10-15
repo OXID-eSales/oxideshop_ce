@@ -28,6 +28,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Removed old not used blAutoSearchOnCat option from shop_config tab [PR-654](https://github.com/OXID-eSales/oxideshop_ce/pull/654)
 - Removed unnecessary class imports [PR-667](https://github.com/OXID-eSales/oxideshop_ce/pull/667)
 
+### Deprecated
+- `\OxidEsales\EshopCommunity\Core\Base::setConfig`
+- `\OxidEsales\EshopCommunity\Core\Base::getConfig`
+- `\OxidEsales\EshopCommunity\Core\Email::$_oConfig`
+- `\OxidEsales\EshopCommunity\Core\Email::setConfig`
+- `\OxidEsales\EshopCommunity\Core\Email::getConfig`
+
 ## [6.3.1] - Unreleased
 
 ### Added

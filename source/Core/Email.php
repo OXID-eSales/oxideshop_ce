@@ -272,7 +272,11 @@ class Email extends \PHPMailer
      */
     protected $_sCharSet = null;
 
-    /** @var \OxidEsales\Eshop\Core\Config */
+    /**
+     * @var \OxidEsales\Eshop\Core\Config
+     *
+     * @deprecated since v6.4.0 (2018-10-15); This property will be removed completely. Use \OxidEsales\Eshop\Core\Registry::getConfig().
+     */
     protected $_oConfig = null;
 
     /**
@@ -325,6 +329,8 @@ class Email extends \PHPMailer
     /**
      * oxConfig instance getter
      *
+     * @deprecated since v6.4.0 (2018-10-15); This method will be removed completely. Use \OxidEsales\Eshop\Core\Registry::getConfig().
+     *
      * @return \OxidEsales\Eshop\Core\Config
      */
     public function getConfig()
@@ -340,6 +346,8 @@ class Email extends \PHPMailer
      * oxConfig instance setter
      *
      * @param \OxidEsales\Eshop\Core\Config $config config object
+     *
+     * @deprecated since v6.4.0 (2018-10-15); This method will be removed completely. Use \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config:class, $config).
      */
     public function setConfig($config)
     {

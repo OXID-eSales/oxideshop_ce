@@ -6,14 +6,19 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Twig\Extensions;
 
-
 use OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\AssignAdvancedLogic;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
+/**
+ * Class AssignAdvancedExtension
+ *
+ * @package OxidEsales\EshopCommunity\Internal\Twig\Extensions
+ */
 class AssignAdvancedExtension extends AbstractExtension
 {
+
     /**
      * @var AssignAdvancedLogic
      */
@@ -21,6 +26,7 @@ class AssignAdvancedExtension extends AbstractExtension
 
     /**
      * AssignAdvancedExtension constructor.
+     *
      * @param AssignAdvancedLogic $assignAdvancedLogic
      */
     public function __construct(AssignAdvancedLogic $assignAdvancedLogic)
@@ -39,7 +45,8 @@ class AssignAdvancedExtension extends AbstractExtension
     /**
      * Calles formatValue function to format arrays and range()
      *
-     * @param $value
+     * @param string $value
+     *
      * @return mixed
      */
     public function assignAdvanced($value)
@@ -47,6 +54,7 @@ class AssignAdvancedExtension extends AbstractExtension
         /** @var AssignAdvancedLogic $oxgetseourlLogic */
         $assignAdvancedLogic = ContainerFactory::getInstance()->getContainer()->get(AssignAdvancedLogic::class);
         $formattedValue = $assignAdvancedLogic->formatValue($value);
+
         return $formattedValue;
     }
 }

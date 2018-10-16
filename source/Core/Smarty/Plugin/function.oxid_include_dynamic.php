@@ -4,6 +4,9 @@
  * See LICENSE file for license details.
  */
 
+use OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\IncludeDynamicLogic;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+
 /**
  * Smarty function
  * -------------------------------------------------------------
@@ -26,24 +29,14 @@ function smarty_function_oxid_include_dynamic($params, &$smarty)
         return;
     }
 
-    if ( !empty($smarty->_tpl_vars["_render4cache"]) ) {
-        $sContent = "<oxid_dynamic>";
-        foreach ($params as $key => $val) {
-            $sContent .= " $key='".base64_encode($val)."'";
-        }
-        $sContent .= "</oxid_dynamic>";
-        return $sContent;
-    } else {
-        $sPrefix="_";
-        if ( array_key_exists('type', $params) ) {
-            $sPrefix.= $params['type']."_";
-        }
+    /** @var IncludeDynamicLogic $includeDynamicLogic */
+    $includeDynamicLogic = ContainerFactory::getInstance()->getContainer()->get(IncludeDynamicLogic::class);
 
-        foreach ($params as $key => $val) {
-            if ($key != 'type' && $key != 'file') {
-                $sContent .= " $key='$val'";
-                $smarty->assign($sPrefix.$key, $val);
-            }
+    if ( !empty($smarty->_tpl_vars["_render4cache"]) ) {
+        return $includeDynamicLogic->renderForCache($params);
+    } else {
+        foreach ($includeDynamicLogic->includeDynamicPrefix($params) as $key => $value) {
+            $smarty->assign($key, $value);
         }
 
         $smarty->assign("__oxid_include_dynamic", true);

@@ -17,3 +17,6 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\AssignAdvancedLogic:
     class: OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\AssignAdvancedLogic
+
+  OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\IncludeDynamicLogic:
+    class: OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\IncludeDynamicLogic

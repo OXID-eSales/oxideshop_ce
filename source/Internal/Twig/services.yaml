@@ -40,6 +40,7 @@ services:
         - [addExtension, ['@Twig_Extension_StringLoader']]
         - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\HasRightsExtension\HasRightsExtension']]
         - [addTokenParser, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\HasRightsExtension\HasRightsParser']]
+        - [addTokenParser, ['@OxidEsales\EshopCommunity\Internal\Twig\TokenParser\IncludeDynamicTokenParser']]
 
   OxidEsales\EshopCommunity\Internal\Twig\TwigEngine:
     class: OxidEsales\EshopCommunity\Internal\Twig\TwigEngine
@@ -81,6 +82,8 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Twig\Extensions\IncludeExtension:
     class: OxidEsales\EshopCommunity\Internal\Twig\Extensions\IncludeExtension
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\IncludeDynamicLogic'
 
   OxidEsales\EshopCommunity\Internal\Twig\Extensions\SmartyExtension:
     class: OxidEsales\EshopCommunity\Internal\Twig\Extensions\SmartyExtension
@@ -107,3 +110,8 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Twig\Extensions\HasRightsExtension\HasRightsExtension:
     class: OxidEsales\EshopCommunity\Internal\Twig\Extensions\HasRightsExtension\HasRightsExtension
+
+# Token parsers
+
+  OxidEsales\EshopCommunity\Internal\Twig\TokenParser\IncludeDynamicTokenParser:
+    class: OxidEsales\EshopCommunity\Internal\Twig\TokenParser\IncludeDynamicTokenParser

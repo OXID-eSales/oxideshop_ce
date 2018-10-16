@@ -12,10 +12,12 @@ use OxidEsales\EshopCommunity\Internal\Smarty\SmartyContextInterface;
 
 /**
  * Class oxSmarty
+ *
  * @package OxidEsales\EshopCommunity\Internal\Smarty\Extensions
  */
 class oxSmarty
 {
+
     /**
      * @var SmartyContextInterface
      */
@@ -46,6 +48,7 @@ class oxSmarty
         if (self::$instance === null) {
             self::$instance = new oxSmarty($context);
         }
+
         return self::$instance;
     }
 

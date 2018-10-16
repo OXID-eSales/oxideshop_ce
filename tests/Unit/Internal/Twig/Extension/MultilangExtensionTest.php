@@ -4,7 +4,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Twig\Extension;
 
 use OxidEsales\EshopCommunity\Internal\Twig\Extensions\MultilangExtension;
 
-class OxidIncludeWidget extends \OxidTestCase
+class MultilangExtensionTest extends \OxidTestCase
 {
 
     /**

@@ -1,5 +1,5 @@
 services:
-  command.module_activate_command:
+  oxid_esales.command.module_activate_command:
     class: OxidEsales\EshopCommunity\Internal\Module\Command\ModuleActivateCommand
     public: true
     autowire: true

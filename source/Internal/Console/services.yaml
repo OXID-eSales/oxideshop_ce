@@ -3,62 +3,55 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Console\Executor
     public: true
     arguments:
-      - '@symfony.component.console.application'
-      - '@console.commands_collection_builder'
+      - '@oxid_esales.console.symfony.component.console.application'
+      - '@oxid_esales.console.commands_collection_builder'
 
-  symfony.component.console.application:
+  oxid_esales.console.symfony.component.console.application:
     class: Symfony\Component\Console\Application
     public: false
 
-  Symfony\Component\Console\Output\ConsoleOutputInterface:
-    class: Symfony\Component\Console\Output\ConsoleOutput
-    public: false
-
-  console.commands_collection_builder:
+  oxid_esales.console.commands_collection_builder:
     class: OxidEsales\EshopCommunity\Internal\Console\CommandsCollectionBuilder
     arguments:
-      - '@console.commands_provider.component_commands_provider'
-      - '@console.commands_provider.module_commands_provider'
-      - '@console.commands_provider.services_commands_provider'
+      - '@oxid_esales.console.commands_provider.component_commands_provider'
+      - '@oxid_esales.console.commands_provider.module_commands_provider'
+      - '@oxid_esales.console.commands_provider.services_commands_provider'
 
-  console.commands_provider.component_commands_provider:
+  oxid_esales.console.commands_provider.component_commands_provider:
     class: OxidEsales\EshopCommunity\Internal\Console\CommandsProvider\ComponentCommandsProvider
     public: false
-    arguments: ['@Composer\Repository\WritableRepositoryInterface']
+    arguments: ['@oxid_esales.console.composer.repository.local_repository']
 
-  console.commands_provider.module_commands_provider:
+  oxid_esales.console.commands_provider.module_commands_provider:
     class: OxidEsales\EshopCommunity\Internal\Console\CommandsProvider\ModuleCommandsProvider
     public: false
     autowire: true
 
-  console.commands_provider.services_commands_provider:
+  oxid_esales.console.commands_provider.services_commands_provider:
     class: OxidEsales\EshopCommunity\Internal\Console\CommandsProvider\ServicesCommandsProvider
     public: false
     autowire: true
 
-  composer.composer:
+  oxid_esales.console.composer.composer:
     class: Composer\Composer
     public: true
-    factory: 'composer.factory:create'
-    arguments: ['@composer.io.null_io']
+    factory: 'oxid_esales.console.composer.factory:create'
+    arguments: ['@oxid_esales.console.composer.io.null_io']
 
-  composer.factory:
+  oxid_esales.console.composer.factory:
     class: Composer\Factory
     public: false
 
-  composer.io.null_io:
+  oxid_esales.console.composer.io.null_io:
     class: Composer\IO\NullIO
     public: false
 
-  composer.repository.manager:
+  oxid_esales.console.composer.repository.manager:
     class: Composer\Repository\RepositoryManager
-    factory: 'composer.composer:getRepositoryManager'
+    factory: 'oxid_esales.console.composer.composer:getRepositoryManager'
     public: false
 
-  Composer\Repository\WritableRepositoryInterface:
-    factory: 'composer.repository.manager:getLocalRepository'
-    public: false
-
-  symfony.component.console.input.argv_input:
-    class: Symfony\Component\Console\Input\ArgvInput
+  oxid_esales.console.composer.repository.local_repository:
+    class: Composer\Repository\FilesystemRepository
+    factory: 'oxid_esales.console.composer.repository.manager:getLocalRepository'
     public: false

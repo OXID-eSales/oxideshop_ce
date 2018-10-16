@@ -9,11 +9,6 @@ services:
     autowire: true
     public: false
 
-  OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopModuleSettingDaoInterface:
-    class: OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopModuleSettingDao
-    autowire: true
-    public: false
-
   OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Service\ShopSettingEncoderInterface:
     class: OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Service\ShopSettingEncoder
     public: false

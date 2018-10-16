@@ -6,8 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Handler;
 
-use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopModuleSettingDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopModuleSetting;
+use OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\ShopModuleSettingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\ShopModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopModuleSettingModuleSettingHandler;
 use PHPUnit\Framework\TestCase;

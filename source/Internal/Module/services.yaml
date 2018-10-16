@@ -3,3 +3,4 @@ imports:
    - { resource: Configuration/services.yaml }
    - { resource: Cache/services.yaml }
    - { resource: TemplateExtension/services.yaml }
+   - { resource: ShopModuleSetting/services.yaml }

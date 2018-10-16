@@ -6,11 +6,11 @@ declare(strict_types=1);
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Adapter\Configuration\Dao;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\ShopModuleSetting;
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopModuleSettingDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopModuleSetting;
+use OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\ShopModuleSettingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\ShopModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
 use PHPUnit\Framework\TestCase;
 

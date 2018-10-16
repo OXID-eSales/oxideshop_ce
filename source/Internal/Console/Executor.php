@@ -6,12 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Console;
 
-use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -47,9 +43,7 @@ class Executor implements ExecutorInterface
      */
     public function execute(InputInterface $input = null, OutputInterface $output = null)
     {
-        foreach ($this->commandsCollectionBuilder->build()->toArray() as $command) {
-            $this->application->add($command);
-        }
+        $this->application->addCommands($this->commandsCollectionBuilder->build()->toArray());
         $this->application->run($input, $output);
     }
 }

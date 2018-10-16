@@ -9,12 +9,12 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Application;
 
 use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Console\ConsoleCommandPass;
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Application\Service\ProjectYamlImportService;
 use OxidEsales\EshopCommunity\Internal\Utility\Context;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Console\DependencyInjection\AddConsoleCommandPass;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
@@ -53,7 +53,7 @@ class ContainerBuilder
     {
         $symfonyContainer = new SymfonyContainerBuilder();
         $symfonyContainer->addCompilerPass(new RegisterListenersPass());
-        $symfonyContainer->addCompilerPass(new AddConsoleCommandPass('console.command_loader', 'console.command'));
+        $symfonyContainer->addCompilerPass(new ConsoleCommandPass());
         $this->loadServiceFiles($symfonyContainer);
         if ($this->facts->isProfessional()) {
             $this->loadEditionServices($symfonyContainer, $this->facts->getProfessionalEditionRootPath());

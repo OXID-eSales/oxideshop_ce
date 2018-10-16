@@ -28,40 +28,54 @@ class ExecutorTest extends TestCase
 
     public function testIfRegisteredCommandInList()
     {
-        $commands = $this->getMockBuilder(CommandsProvidableInterface::class)->getMock();
-        $commands->method('getCommands')->willReturn([new TestCommand()]);
-        $commandsCollectionBuilder = new CommandsCollectionBuilder($commands);
-        $consoleOutput = $this->execute(
-            $this->getApplication(),
-            $commandsCollectionBuilder,
-            new ArrayInput(['command' => 'list'])
-        );
+        $executor = $this->makeExecutor();
+        $output = new StreamOutput(fopen('php://memory', 'w', false));
+        $executor->execute(new ArrayInput(['command' => 'list']), $output);
 
-        $this->assertRegexp('/oe:tests:test-command/', $consoleOutput);
+        $this->assertRegexp('/oe:tests:test-command/', $this->getOutputFromStream($output));
     }
 
     public function testCommandExecution()
     {
-        $commands = $this->getMockBuilder(CommandsProvidableInterface::class)->getMock();
-        $commands->method('getCommands')->willReturn([new TestCommand()]);
-        $commandsCollectionBuilder = new CommandsCollectionBuilder($commands);
-        $consoleOutput = $this->execute(
-            $this->getApplication(),
-            $commandsCollectionBuilder,
-            new ArrayInput(['command' => 'oe:tests:test-command'])
-        );
+        $executor = $this->makeExecutor();
+        $output = new StreamOutput(fopen('php://memory', 'w', false));
+        $executor->execute(new ArrayInput(['command' => 'oe:tests:test-command']), $output);
 
-        $this->assertSame('Command have been executed!'.PHP_EOL, $consoleOutput);
+        $this->assertSame('Command have been executed!'.PHP_EOL, $this->getOutputFromStream($output));
+    }
+
+    public function testCommandWithChangedNameExecution()
+    {
+        $executor = $this->makeExecutor();
+        $output = new StreamOutput(fopen('php://memory', 'w', false));
+        $executor->execute(new ArrayInput(['command' => 'oe:tests:test-command-changed-name']), $output);
+
+        $this->assertSame('Command have been executed!'.PHP_EOL, $this->getOutputFromStream($output));
     }
 
     /**
-     * @return Application
+     * @return ExecutorInterface
      */
-    private function getApplication(): Application
+    private function makeExecutor(): ExecutorInterface
     {
-        $application = $this->get('symfony.component.console.application');
-        $application->setAutoExit(false);
+        $facts = $this->getMockBuilder(Facts::class)->setMethods(['getSourcePath'])->getMock();
+        $facts->method('getSourcePath')->willReturn(__DIR__ . '/Fixtures');
+        $containerBuilder = new ContainerBuilder($facts);
+        $container = $containerBuilder->getContainer();
+        $container->compile();
+        $executor = $container->get(ExecutorInterface::class);
+        return $executor;
+    }
 
-        return $application;
+    /**
+     * @param StreamOutput $output
+     * @return bool|string
+     */
+    private function getOutputFromStream($output)
+    {
+        $stream = $output->getStream();
+        rewind($stream);
+        $display = stream_get_contents($stream);
+        return $display;
     }
 }

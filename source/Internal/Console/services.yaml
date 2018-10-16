@@ -9,10 +9,6 @@ services:
   symfony.component.console.application:
     class: Symfony\Component\Console\Application
     public: false
-    calls:
-      - method: setCommandLoader
-        arguments:
-          - '@console.command_loader'
 
   Symfony\Component\Console\Output\ConsoleOutputInterface:
     class: Symfony\Component\Console\Output\ConsoleOutput
@@ -23,11 +19,22 @@ services:
     arguments:
       - '@console.commands_provider.component_commands_provider'
       - '@console.commands_provider.module_commands_provider'
+      - '@console.commands_provider.services_commands_provider'
 
   console.commands_provider.component_commands_provider:
     class: OxidEsales\EshopCommunity\Internal\Console\CommandsProvider\ComponentCommandsProvider
     public: false
     arguments: ['@Composer\Repository\WritableRepositoryInterface']
+
+  console.commands_provider.module_commands_provider:
+    class: OxidEsales\EshopCommunity\Internal\Console\CommandsProvider\ModuleCommandsProvider
+    public: false
+    autowire: true
+
+  console.commands_provider.services_commands_provider:
+    class: OxidEsales\EshopCommunity\Internal\Console\CommandsProvider\ServicesCommandsProvider
+    public: false
+    autowire: true
 
   composer.composer:
     class: Composer\Composer
@@ -51,11 +58,6 @@ services:
   Composer\Repository\WritableRepositoryInterface:
     factory: 'composer.repository.manager:getLocalRepository'
     public: false
-
-  console.commands_provider.module_commands_provider:
-    class: OxidEsales\EshopCommunity\Internal\Console\CommandsProvider\ModuleCommandsProvider
-    public: false
-    autowire: true
 
   symfony.component.console.input.argv_input:
     class: Symfony\Component\Console\Input\ArgvInput

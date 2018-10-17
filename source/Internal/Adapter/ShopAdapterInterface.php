@@ -46,6 +46,13 @@ interface ShopAdapterInterface
     public function getShopControllerClassMap(): array;
 
     /**
+     * @param string $moduleId
+     *
+     * @return string
+     */
+    public function getModuleFullPath(string $moduleId): string;
+
+    /**
      * @param string $namespace
      * @return bool
      */

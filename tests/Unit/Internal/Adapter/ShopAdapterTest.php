@@ -23,4 +23,13 @@ class ShopAdapterTest extends TestCase
         $shopAdapter = new ShopAdapter();
         $shopAdapter->invalidateModuleCache(uniqid('test', false));
     }
+
+    /**
+     * @expectedException \Exception
+     */
+    public function testGetModuleFullPathThrowsExceptionIfModulePathNotExisting()
+    {
+        $shopAdapter = new ShopAdapter();
+        $shopAdapter->getModuleFullPath('notExistingModule');
+    }
 }

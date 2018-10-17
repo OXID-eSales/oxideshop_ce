@@ -14,6 +14,7 @@ use OxidEsales\Eshop\Core\NamespaceInformationProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider;
 use OxidEsales\EshopCommunity\Internal\Adapter\Exception\ModuleNotLoadableException;
+use \Exception;
 
 /**
  * @internal
@@ -58,6 +59,25 @@ class ShopAdapter implements ShopAdapterInterface
 
         $moduleCache = oxNew(ModuleCache::class, $module);
         $moduleCache->resetCache();
+    }
+
+    /**
+     * @param string $moduleId
+     *
+     * @return string
+     *
+     * @throws Exception
+     */
+    public function getModuleFullPath(string $moduleId) : string
+    {
+        $module = oxNew(Module::class);
+        $fullPath = $module->getModuleFullPath($moduleId);
+
+        if ($fullPath === false) {
+            throw new Exception('Path to module with id ' . $moduleId . ' not found.');
+        }
+
+        return $fullPath;
     }
 
     /**

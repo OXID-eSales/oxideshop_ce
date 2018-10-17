@@ -39,6 +39,21 @@ class ShopModuleSetting
     private $value;
 
     /**
+     * @var array
+     */
+    private $constraints = [];
+
+    /**
+     * @var string
+     */
+    private $groupName = '';
+
+    /**
+     * @var int
+     */
+    private $positionInGroup = 1;
+
+    /**
      * @return string
      */
     public function getModuleId(): string
@@ -125,6 +140,60 @@ class ShopModuleSetting
     public function setValue($value): ShopModuleSetting
     {
         $this->value = $value;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getConstraints(): array
+    {
+        return $this->constraints;
+    }
+
+    /**
+     * @param array $constraints
+     * @return ShopModuleSetting
+     */
+    public function setConstraints(array $constraints): ShopModuleSetting
+    {
+        $this->constraints = $constraints;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGroupName(): string
+    {
+        return $this->groupName;
+    }
+
+    /**
+     * @param string $groupName
+     * @return ShopModuleSetting
+     */
+    public function setGroupName(string $groupName): ShopModuleSetting
+    {
+        $this->groupName = $groupName;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPositionInGroup(): int
+    {
+        return $this->positionInGroup;
+    }
+
+    /**
+     * @param int $positionInGroup
+     * @return ShopModuleSetting
+     */
+    public function setPositionInGroup(int $positionInGroup): ShopModuleSetting
+    {
+        $this->positionInGroup = $positionInGroup;
         return $this;
     }
 }

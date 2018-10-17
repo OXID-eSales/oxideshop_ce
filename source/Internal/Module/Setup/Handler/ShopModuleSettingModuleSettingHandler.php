@@ -45,6 +45,20 @@ class ShopModuleSettingModuleSettingHandler implements ModuleSettingHandlerInter
                 ->setType($shopModuleSettingData['type'])
                 ->setValue($shopModuleSettingData['value']);
 
+            if (isset($shopModuleSettingData['constraints'])) {
+                $shopModuleSetting->setConstraints(
+                    explode('|', $shopModuleSettingData['constraints'])
+                );
+            }
+
+            if (isset($shopModuleSettingData['group'])) {
+                $shopModuleSetting->setGroupName($shopModuleSettingData['group']);
+            }
+
+            if (isset($shopModuleSettingData['position'])) {
+                $shopModuleSetting->setPositionInGroup($shopModuleSettingData['position']);
+            }
+
             $this->shopModuleSettingDao->save($shopModuleSetting);
         }
     }

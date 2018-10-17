@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting;
 
-use OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\ShopModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Service\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
@@ -64,6 +63,65 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
      */
     public function save(ShopModuleSetting $shopModuleSetting)
     {
+        /**
+         * The same entity was splitted between two tables.
+         * Till we can't refactor tables we have to save data in both.
+         */
+        $this->saveDataToOxConfigTable($shopModuleSetting);
+        $this->saveDataToOxConfigDisplayTable($shopModuleSetting);
+    }
+
+    /**
+     * @param string $name
+     * @param string $moduleId
+     * @param int    $shopId
+     *
+     * @return ShopModuleSetting
+     * @throws EntryDoesNotExistDaoException
+     */
+    public function get(string $name, string $moduleId, int $shopId): ShopModuleSetting
+    {
+        /**
+         * The same entity was splitted between two tables.
+         * Till we can't refactor tables we have to get data from both.
+         */
+        $settingsData = array_merge(
+            $this->getDataFromOxConfigTable($name, $moduleId, $shopId),
+            $this->getDataFromOxConfigDisplayTable($name, $moduleId)
+        );
+
+        $setting = new ShopModuleSetting();
+        $setting
+            ->setName($name)
+            ->setValue($this->shopSettingEncoder->decode($settingsData['type'], $settingsData['value']))
+            ->setShopId($shopId)
+            ->setModuleId($moduleId)
+            ->setType($settingsData['type']);
+
+        if (isset($settingsData['oxvarconstraint']) && is_string($settingsData['oxvarconstraint'])) {
+            $setting->setConstraints(
+                explode('|', $settingsData['oxvarconstraint'])
+            );
+        }
+
+        if (isset($settingsData['oxgrouping'])) {
+            $setting->setGroupName($settingsData['oxgrouping']);
+        }
+
+        if (isset($settingsData['oxpos'])) {
+            $setting->setPositionInGroup(
+                (int) $settingsData['oxpos']
+            );
+        }
+
+        return $setting;
+    }
+
+    /**
+     * @param ShopModuleSetting $shopModuleSetting
+     */
+    private function saveDataToOxConfigTable(ShopModuleSetting $shopModuleSetting)
+    {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
             ->insert('oxconfig')
@@ -92,13 +150,42 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
     }
 
     /**
+     * @param ShopModuleSetting $shopModuleSetting
+     */
+    private function saveDataToOxConfigDisplayTable(ShopModuleSetting $shopModuleSetting)
+    {
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $queryBuilder
+            ->insert('oxconfigdisplay')
+            ->values([
+                'oxid'              => ':id',
+                'oxcfgmodule'       => ':moduleId',
+                'oxcfgvarname'      => ':name',
+                'oxgrouping'        => ':groupName',
+                'oxpos'             => ':position',
+                'oxvarconstraint'   => ':constraints',
+            ])
+            ->setParameters([
+                'id'            => $this->shopAdapter->generateUniqueId(),
+                'moduleId'      => 'module:' . $shopModuleSetting->getModuleId(),
+                'name'          => $shopModuleSetting->getName(),
+                'groupName'     => $shopModuleSetting->getGroupName(),
+                'position'      => $shopModuleSetting->getPositionInGroup(),
+                'constraints'   => implode('|', $shopModuleSetting->getConstraints()),
+            ]);
+
+        $queryBuilder->execute();
+    }
+
+    /**
      * @param string $name
      * @param string $moduleId
      * @param int    $shopId
      *
-     * @return ShopModuleSetting
+     * @return array
+     * @throws EntryDoesNotExistDaoException
      */
-    public function get(string $name, string $moduleId, int $shopId): ShopModuleSetting
+    private function getDataFromOxConfigTable(string $name, string $moduleId, int $shopId): array
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
@@ -120,14 +207,29 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
             throw new EntryDoesNotExistDaoException();
         }
 
-        $setting = new ShopModuleSetting();
-        $setting
-            ->setName($name)
-            ->setValue($this->shopSettingEncoder->decode($result['type'], $result['value']))
-            ->setShopId($shopId)
-            ->setModuleId($moduleId)
-            ->setType($result['type']);
+        return $result;
+    }
 
-        return $setting;
+    /**
+     * @param string $name
+     * @param string $moduleId
+     * @return array
+     */
+    private function getDataFromOxConfigDisplayTable(string $name, string $moduleId): array
+    {
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $queryBuilder
+            ->select('oxgrouping, oxpos, oxvarconstraint')
+            ->from('oxconfigdisplay')
+            ->where('oxcfgmodule = :moduleId')
+            ->andWhere('oxcfgvarname = :name')
+            ->setParameters([
+                'moduleId'  => 'module:' . $moduleId,
+                'name'      => $name,
+            ]);
+
+        $result = $queryBuilder->execute()->fetch();
+
+        return $result ?? [];
     }
 }

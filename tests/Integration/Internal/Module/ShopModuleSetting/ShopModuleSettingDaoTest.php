@@ -32,7 +32,14 @@ class ShopModuleSettingDaoTest extends TestCase
             ->setShopId(1)
             ->setName($name)
             ->setType($type)
-            ->setValue($value);
+            ->setValue($value)
+            ->setConstraints([
+                'first',
+                'second',
+                'third',
+            ])
+            ->setGroupName('testGroup')
+            ->setPositionInGroup(5);
 
         $settingDao->save($shopModuleSetting);
 

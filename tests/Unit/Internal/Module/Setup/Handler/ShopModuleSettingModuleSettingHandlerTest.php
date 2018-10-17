@@ -49,10 +49,12 @@ class ShopModuleSettingModuleSettingHandlerTest extends TestCase
             ModuleSetting::SHOP_MODULE_SETTING,
             [
                 [
-                    'group' => 'frontend',
-                    'name'  => 'blCustomGridFramework',
-                    'type'  => 'bool',
-                    'value' => 'false',
+                    'name'          => 'blCustomGridFramework',
+                    'type'          => 'bool',
+                    'value'         => 'false',
+                    'constraints'   => '1|2|3',
+                    'group'         => 'frontend',
+                    'position'      => 5,
                 ],
             ]
         );
@@ -63,7 +65,10 @@ class ShopModuleSettingModuleSettingHandlerTest extends TestCase
             ->setValue('false')
             ->setType('bool')
             ->setShopId(1)
-            ->setModuleId('testModule');
+            ->setModuleId('testModule')
+            ->setConstraints(['1', '2', '3',])
+            ->setGroupName('frontend')
+            ->setPositionInGroup(5);
 
         $shopModuleSettingDao = $this->getMockBuilder(ShopModuleSettingDaoInterface::class)->getMock();
         $shopModuleSettingDao

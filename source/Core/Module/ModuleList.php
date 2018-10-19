@@ -291,6 +291,10 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
 
         //Remove from caches.
         \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::resetModuleVariables();
+
+        $container = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
+        $dispatcher = $container->get('event_dispatcher');
+        $dispatcher->dispatch('oxidesales.modulelist.resetCache', new \OxidEsales\EshopCommunity\Internal\Application\Events\ResetCacheEvent());
     }
 
     /**

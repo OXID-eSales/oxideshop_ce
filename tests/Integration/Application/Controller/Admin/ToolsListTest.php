@@ -3,13 +3,34 @@
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
-namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
+
+namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller\Admin;
+
+use OxidEsales\Eshop\Application\Controller\Admin\ToolsList;
 
 /**
  * Tests for Tools_List class
  */
-class ToolsListTest extends \OxidTestCase
+class ToolsListTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
+    /**
+     * Temporary file name with path
+     *
+     * @var string
+     */
+    private $tempFile;
+
+    /**
+     * Clean up test case
+     *
+     * @return null
+     */
+    protected function tearDown()
+    {
+        if (file_exists($this->tempFile)){
+            unlink($this->tempFile);
+        }
+    }
 
     /**
      * Tools_List::Performsql() test case
@@ -28,17 +49,20 @@ class ToolsListTest extends \OxidTestCase
     }
 
     /**
-     * Tools_List::ProcessFiles() test case
-     *
-     * @return null
+     * ToolsList::performsql() test case
      */
-    public function testProcessFiles()
+    public function testDoNotProcessEmptySqlFile()
     {
-        // testing..
-        $_FILES['myfile']['name'] = array("test.txt");
+        $this->getSession()->setVariable('auth', 'oxdefaultadmin');
+        $tempFile = tempnam(sys_get_temp_dir() . '/test_temp_sql_file', 'test_');
+        $this->tempFile = $tempFile;
+        $_FILES['myfile']['name'] = [basename($tempFile)];
+        $_FILES['myfile']['tmp_name'] = [$tempFile];
 
-        $oView = oxNew('Tools_List');
-        $this->assertNull($oView->UNITprocessFiles());
+        $toolsList = oxNew(ToolsList::class);
+        $toolsList->performsql();
+
+        $this->assertFalse(isset($toolsList->aSQLs));
     }
 
     /**

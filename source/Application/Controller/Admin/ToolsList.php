@@ -142,7 +142,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
                 }
 
                 //reading SQL dump file
-                if ($sSource) {
+                if (filesize($sSource) > 0) {
                     $rHandle = fopen($sSource, "r");
                     $sContents = fread($rHandle, filesize($sSource));
                     fclose($rHandle);

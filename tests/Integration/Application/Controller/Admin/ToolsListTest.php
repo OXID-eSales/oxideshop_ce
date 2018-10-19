@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Controller\Admin\ToolsList;
+
 /**
  * Tests for Tools_List class
  */
@@ -16,7 +18,7 @@ class ToolsListTest extends \OxidEsales\TestingLibrary\UnitTestCase
      *
      * @var string
      */
-    private $sTempFile;
+    private $tempFile;
 
     /**
      * Clean up test case
@@ -25,8 +27,8 @@ class ToolsListTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     protected function tearDown()
     {
-        if (file_exists($this->sTempFile)){
-            unlink($this->sTempFile);
+        if (file_exists($this->tempFile)){
+            unlink($this->tempFile);
         }
     }
 
@@ -47,22 +49,20 @@ class ToolsListTest extends \OxidEsales\TestingLibrary\UnitTestCase
     }
 
     /**
-     * Tools_List::ProcessFiles() test case
-     *
-     * @return null
+     * ToolsList::performsql() test case
      */
-    public function testProcessTempSqlFiles()
+    public function testDoNotProcessEmptySqlFile()
     {
-        // testing..
-        $this->getSession()->setVariable('auth', "oxdefaultadmin");
-        $sTempFile = tempnam(sys_get_temp_dir() . '/test_temp_sql_file', 'test_');
-        $this->sTempFile = $sTempFile;
-        $_FILES['myfile']['name'] = array(basename($sTempFile));
-        $_FILES['myfile']['tmp_name'] = array($sTempFile);
+        $this->getSession()->setVariable('auth', 'oxdefaultadmin');
+        $tempFile = tempnam(sys_get_temp_dir() . '/test_temp_sql_file', 'test_');
+        $this->tempFile = $tempFile;
+        $_FILES['myfile']['name'] = [basename($tempFile)];
+        $_FILES['myfile']['tmp_name'] = [$tempFile];
 
-        $oView = oxNew('Tools_List');
-        $oView->performsql();
-        $this->assertFalse(isset($oView->aSQLs));
+        $toolsList = oxNew(ToolsList::class);
+        $toolsList->performsql();
+
+        $this->assertFalse(isset($toolsList->aSQLs));
     }
 
     /**

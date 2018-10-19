@@ -1368,10 +1368,9 @@ class SeoEncoderTest extends \OxidTestCase
         $sBaseUrl = $this->getConfig()->getConfigParam("sShopURL");
         $sSslUrl = str_replace("http:", "https:", $sBaseUrl);
 
-        $oConfig = $this->getMock(Config::class, array("getShopURL", "getSslShopUrl", "getConfigParam"));
+        $oConfig = $this->getMock(Config::class, array("getShopURL", "getSslShopUrl"));
         $oConfig->expects($this->any())->method('getShopURL')->will($this->returnValue($sBaseUrl));
         $oConfig->expects($this->any())->method('getSslShopUrl')->will($this->returnValue($sSslUrl));
-        $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(0));
 
         $oE = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array("getConfig"), array(), '', false);
 		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);

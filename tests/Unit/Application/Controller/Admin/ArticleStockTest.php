@@ -6,6 +6,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \Exception;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use \oxDb;
 use \oxTestModules;
@@ -227,6 +228,8 @@ class ArticleStockTest extends \OxidTestCase
      */
     public function testAddPriceShopMall()
     {
+        $this->markTestSkippedIfNoSubShop();
+
         //set default params for first save
         $this->setRequestParameter(
             "editval", array("oxprice2article__oxamountto" => 123,
@@ -234,12 +237,7 @@ class ArticleStockTest extends \OxidTestCase
         );
         //set oxid
         $sOXID = "_testId";
-
-        //expected shop id
-        $sShopId = $this->getTestConfig()->getShopEdition() == 'EE' ? '2' : '1';
-
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getShopId"));
-        $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue($sShopId));
+        $sShopId = Registry::getConfig()->getShopId();
 
         $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('isDerived'));
         $oBase->expects($this->any())->method('isDerived')->will($this->returnValue(false));
@@ -247,7 +245,6 @@ class ArticleStockTest extends \OxidTestCase
         oxTestModules::addModuleObject('oxbase', $oBase);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleStock::class, array('getConfig', 'resetContentCache', 'getEditObjectId', 'oxNew'), array(), '', false);
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oView->expects($this->atLeastOnce())->method('resetContentCache');
         $oView->expects($this->atLeastOnce())->method('getEditObjectId')->will($this->returnValue('_testArtId'));
 

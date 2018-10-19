@@ -5,6 +5,7 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Model\Manufacturer;
 
 use \oxField;
@@ -330,16 +331,17 @@ class ManufacturerTest extends \OxidTestCase
      */
     public function testGetIconUrlAccordingToNewFilesStructure()
     {
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
-        $oConfig->expects($this->at(0))->method('getConfigParam')->with('sManufacturerIconsize')->will($this->returnValue(false));
-        $oConfig->expects($this->at(1))->method('getConfigParam')->with('sIconsize')->will($this->returnValue('87*87'));
+        $width = 80;
+        $height = 90;
+
+        Registry::getConfig()->setConfigParam('sManufacturerIconsize', false);
+        Registry::getConfig()->setConfigParam('sIconsize', "$width*$height");
 
         $oManufacturer = $this->getMock(\OxidEsales\Eshop\Application\Model\Manufacturer::class, array("getConfig"), array(), '', false);
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oManufacturer->oxmanufacturers__oxicon = new oxField('big_matsol_1_mico.png');
 
         $sUrl = $this->getConfig()->getOutUrl() . basename($this->getConfig()->getPicturePath(""));
-        $sUrl .= "/generated/manufacturer/icon/87_87_75/big_matsol_1_mico.png";
+        $sUrl .= "/generated/manufacturer/icon/${width}_${height}_75/big_matsol_1_mico.png";
 
         $this->assertEquals($sUrl, $oManufacturer->getIconUrl());
     }

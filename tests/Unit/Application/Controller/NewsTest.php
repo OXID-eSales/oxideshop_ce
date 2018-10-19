@@ -52,10 +52,11 @@ class NewsTest extends \OxidTestCase
      */
     protected function tearDown()
     {
+        parent::tearDown();
+
         foreach ($this->aNews as $oNew) {
             $oNew->delete();
         }
-        parent::tearDown();
     }
 
     /**

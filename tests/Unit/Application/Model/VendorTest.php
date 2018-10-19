@@ -381,10 +381,11 @@ class VendorTest extends \OxidTestCase
     public function testGetIconUrlNewPath()
     {
         $vendor = oxNew(Vendor::class);
-        Registry::getConfig()->setConfigParam('sManufacturerIconsize', '100*100');
+        $config = Registry::getConfig();
+        $config->setConfigParam('sManufacturerIconsize', '100*100');
         $vendor->oxvendor__oxicon = new oxField('big_matsol_1_mico.png');
 
-        $sUrl = $vendor->getConfig()->getOutUrl() . basename($vendor->getConfig()->getPicturePath(''));
+        $sUrl = $config->getOutUrl() . basename($config->getPicturePath(''));
         $sUrl .= '/generated/vendor/icon/100_100_75/big_matsol_1_mico.png';
 
         $this->assertEquals($sUrl, $vendor->getIconUrl());

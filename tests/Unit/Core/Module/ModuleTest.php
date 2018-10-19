@@ -406,15 +406,12 @@ class ModuleTest extends \OxidTestCase
         $oConfig->expects($this->any())
             ->method('getModulesDir')
             ->will($this->returnValue("/var/path/to/modules/"));
+        Registry::set(Config::class, $oConfig);
 
-        $oModuleStub = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getModulePath', 'getConfig'));
+        $oModuleStub = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getModulePath'));
         $oModuleStub->expects($this->any())
             ->method('getModulePath')
             ->will($this->returnValue($sModuleId));
-
-        $oModuleStub->expects($this->any())
-            ->method('getConfig')
-            ->will($this->returnValue($oConfig));
 
         $aModule = array('id' => $sModId);
         /** @var oxModule $oModule */
@@ -456,16 +453,13 @@ class ModuleTest extends \OxidTestCase
         $oConfig->expects($this->any())
             ->method('getModulesDir')
             ->will($this->returnValue("/var/path/to/modules/"));
+        Registry::set(Config::class, $oConfig);
 
-        $oModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getModulePath', 'getConfig'));
+        $oModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getModulePath'));
         $oModule->expects($this->any())
             ->method('getModulePath')
             ->with($this->equalTo($sModId))
             ->will($this->returnValue("oe/module/"));
-
-        $oModule->expects($this->any())
-            ->method('getConfig')
-            ->will($this->returnValue($oConfig));
 
         $this->assertEquals("/var/path/to/modules/oe/module/", $oModule->getModuleFullPath($sModId));
     }
@@ -483,16 +477,13 @@ class ModuleTest extends \OxidTestCase
         $oConfig->expects($this->any())
             ->method('getModulesDir')
             ->will($this->returnValue("/var/path/to/modules/"));
+        Registry::set(Config::class, $oConfig);
 
-        $oModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getModulePath', 'getConfig'));
+        $oModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array('getModulePath'));
         $oModule->expects($this->any())
             ->method('getModulePath')
             ->with($this->equalTo($sModId))
             ->will($this->returnValue("oe/module/"));
-
-        $oModule->expects($this->any())
-            ->method('getConfig')
-            ->will($this->returnValue($oConfig));
 
         $aModule = array('id' => $sModId);
         $oModule->setModuleData($aModule);

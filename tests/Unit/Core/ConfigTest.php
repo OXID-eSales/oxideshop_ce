@@ -1533,17 +1533,37 @@ class ConfigTest extends \OxidTestCase
     /**
      * Testing getShopSecureHomeUrl getter
      */
-    public function testGetShopSecureHomeUrl()
+    public function testGetShopSecureHomeUrlReturnsSSLUrlIfSSLUrlIsSet()
     {
-        $sUrl = $this->shopUrl . 'index.php?';
+        $expectedUrl = $this->shopUrl . 'index.php?';
 
-        $oConfig = oxNew('oxConfig');
+        $oConfig = oxNew(Config::class);
+        $oConfig->setConfigParam('sSSLShopURL', '');
         $oConfig->setConfigParam('sShopURL', $this->shopUrl);
         $oConfig->init();
 
-        $this->setToRegistryOxUtilsUrlMock('index.php');
+        \OxidEsales\Eshop\Core\Registry::set(Config::class, $oConfig);
 
-        $this->assertEquals($sUrl, $oConfig->getShopSecureHomeUrl());
+        $this->assertEquals($expectedUrl, $oConfig->getShopSecureHomeUrl());
+    }
+
+
+    /**
+     * Testing getShopSecureHomeUrl getter
+     */
+    public function testGetShopSecureHomeUrlReturnsNonSSLUrlIfSSLUrlIsNotSet()
+    {
+        $sslUrl = 'https://www.example.com/';
+        $expectedUrl = $sslUrl . 'index.php?';
+
+        $oConfig = oxNew(Config::class);
+        $oConfig->setConfigParam('sSSLShopURL', $sslUrl);
+        $oConfig->setConfigParam('sShopURL', $this->shopUrl);
+        $oConfig->init();
+
+        \OxidEsales\Eshop\Core\Registry::set(Config::class, $oConfig);
+
+        $this->assertEquals($expectedUrl, $oConfig->getShopSecureHomeUrl());
     }
 
 

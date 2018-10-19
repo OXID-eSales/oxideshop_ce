@@ -42,4 +42,44 @@ class ModuleConfigurationTest extends TestCase
 
         $this->assertTrue($moduleConfiguration->hasSetting('testSetting'));
     }
+
+    public function testConfigurationHasClassExtension()
+    {
+        $moduleConfiguration = new ModuleConfiguration();
+
+        $moduleConfiguration->setSetting(
+            new ModuleSetting(
+                ModuleSetting::CLASS_EXTENSIONS,
+                [
+                    'extendedClassNamespace' => 'expectedExtensionNamespace',
+                ]
+            )
+        );
+
+        $this->assertTrue(
+            $moduleConfiguration->hasClassExtension('expectedExtensionNamespace')
+        );
+    }
+
+    public function testConfigurationDoesNotHaveClassExtension()
+    {
+        $moduleConfiguration = new ModuleConfiguration();
+
+        $this->assertFalse(
+            $moduleConfiguration->hasClassExtension('expectedExtensionNamespace')
+        );
+
+        $moduleConfiguration->setSetting(
+            new ModuleSetting(
+                ModuleSetting::CLASS_EXTENSIONS,
+                [
+                    'extendedClassNamespace' => 'anotherExtensionNamespace',
+                ]
+            )
+        );
+
+        $this->assertFalse(
+            $moduleConfiguration->hasClassExtension('expectedExtensionNamespace')
+        );
+    }
 }

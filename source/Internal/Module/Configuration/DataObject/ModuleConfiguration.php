@@ -8,6 +8,8 @@ declare(strict_types = 1);
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject;
 
+use function in_array;
+
 /**
  * @internal
  */
@@ -109,5 +111,24 @@ class ModuleConfiguration
     public function getSetting(string $settingName): ModuleSetting
     {
         return $this->settings[$settingName];
+    }
+
+    /**
+     * @param string $namespace
+     * @return bool
+     */
+    public function hasClassExtension(string $namespace): bool
+    {
+        $hasClassExtension = false;
+
+        if ($this->hasSetting(ModuleSetting::CLASS_EXTENSIONS)) {
+            $classExtensions = $this
+                ->getSetting(ModuleSetting::CLASS_EXTENSIONS)
+                ->getValue();
+
+            $hasClassExtension = in_array($namespace, $classExtensions, true);
+        }
+
+        return $hasClassExtension;
     }
 }

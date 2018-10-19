@@ -107,7 +107,7 @@ class ModuleActivationService implements ModuleActivationServiceInterface
         }
 
         throw new ModuleSettingHandlerNotFoundException(
-            'Handler for the setting ' . $setting->getName() . ' wasn\'t found.'
+            'Handler for the setting with name "' . $setting->getName() . '" wasn\'t found.'
         );
     }
 

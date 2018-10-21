@@ -15,6 +15,7 @@ use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Model\BaseModel;
+use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Application\Model\PriceAlarm;
 use OxidEsales\EshopCommunity\Application\Model\UserPayment;
 use OxidEsales\Eshop\Core\UtilsObject;
@@ -138,6 +139,7 @@ class UserTest extends \OxidTestCase
         }
         $oUser->setAdminMode(null);
         oxRegistry::getSession()->deleteVariable('deladrid');
+        $this->cleanUpTable('oxarticles', 'oxid');
 
         $this->getSession()->setVariable('usr', null);
         $this->getSession()->setVariable('auth', null);
@@ -197,6 +199,17 @@ class UserTest extends \OxidTestCase
         $oUser->oxuser__oxcountryid = new oxField("testCountry", oxField::T_RAW);
         $oUser->save();
 
+        $sArticleID = '_testArticleId';
+        $article = oxNew(Article::class);
+        $article->setId($sArticleID);
+        $article->oxarticles__oxprice = new oxField(30, oxField::T_RAW);
+        $article->oxarticles__oxartnum = new oxField($sArticleID, oxField::T_RAW);
+        $article->oxarticles__oxactive = new oxField('1', oxField::T_RAW);
+        $article->oxarticles__oxstock = new oxField(10);
+        $article->oxarticles__oxvarcount = new oxField(0);
+        $article->oxarticles__oxstockflag = new oxField(1); //standard - always buyable
+        $article->save();
+
         $sUserId = $oUser->getId();
         $sId = oxRegistry::getUtilsObject()->generateUID();
 
@@ -209,7 +222,6 @@ class UserTest extends \OxidTestCase
         $oDb->Execute($sQ);
 
         // adding article to order
-        $sArticleID = $oDb->getOne('select oxid from oxarticles order by rand() ');
         $sQ = 'insert into oxorderarticles ( oxid, oxorderid, oxamount, oxartid, oxartnum ) values ( "' . $sId . '", "' . $sId . '", 1, "' . $sArticleID . '", "' . $sArticleID . '" ) ';
         $oDb->Execute($sQ);
 
@@ -217,7 +229,6 @@ class UserTest extends \OxidTestCase
         $sQ = 'insert into oxuserbaskets ( oxid, oxuserid, oxtitle ) values ( "' . $sUserId . '", "' . $sUserId . '", "oxtest" ) ';
         $oDb->Execute($sQ);
 
-        $sArticleID = $oDb->getOne('select oxid from oxarticles order by rand() ');
         $sQ = 'insert into oxuserbasketitems ( oxid, oxbasketid, oxartid, oxamount ) values ( "' . $sUserId . '", "' . $sUserId . '", "' . $sArticleID . '", "1" ) ';
         $oDb->Execute($sQ);
 

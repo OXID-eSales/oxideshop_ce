@@ -1308,7 +1308,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function login($sUser, $sPassword, $blCookie = false)
     {
         $cookie = Registry::getUtilsServer()->getOxCookie();
-        if ($this->isAdmin() && !isset($cookie)) {
+        if ($this->isAdmin() && is_null($cookie)) {
             /** @var \OxidEsales\Eshop\Core\Exception\CookieException $oEx */
             $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\CookieException::class);
             $oEx->setMessage('ERROR_MESSAGE_COOKIE_NOCOOKIE');

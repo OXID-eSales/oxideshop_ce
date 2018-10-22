@@ -2312,6 +2312,8 @@ class Email extends \PHPMailer
     }
 
     /**
+     * Convert domain name to IDNA ASCII form.
+     *
      * @param string $idn The email address
      *
      * @return string
@@ -2319,12 +2321,12 @@ class Email extends \PHPMailer
     private function idnToAscii($idn)
     {
         if (function_exists('idn_to_ascii')) {
-            if (PHP_VERSION_ID < 50600) {
-                // for old PHP versions support
-                // remove it after the PHP 7.1 support is dropped
-                return idn_to_ascii($idn);
+            // for old PHP versions support
+            // remove it after the PHP 7.1 support is dropped
+            if (defined('INTL_IDNA_VARIANT_UTS46')) {
+                return idn_to_ascii($idn, 0, INTL_IDNA_VARIANT_UTS46);
             }
-            return idn_to_ascii($idn, 0, INTL_IDNA_VARIANT_UTS46);
+            return idn_to_ascii($idn);
         }
         return $idn;
     }

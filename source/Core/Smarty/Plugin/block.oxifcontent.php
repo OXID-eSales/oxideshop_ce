@@ -4,6 +4,9 @@
  * See LICENSE file for license details.
  */
 
+use OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\IfContentLogic;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+
 /**
  * Smarty plugin
  * -------------------------------------------------------------
@@ -32,26 +35,9 @@ function smarty_block_oxifcontent( $params, $content, &$smarty, &$repeat)
 
     if ($repeat) {
         if ( $sIdent || $sOxid ) {
-
-            static $aContentCache = [];
-
-            if ( ( $sIdent && isset( $aContentCache[$sIdent] ) ) ||
-                 ( $sOxid && isset( $aContentCache[$sOxid] ) ) ) {
-                $oContent = $sOxid ? $aContentCache[$sOxid] : $aContentCache[$sIdent];
-            } else {
-                $oContent = oxNew( "oxContent" );
-                $blLoaded = $sOxid ? $oContent->load( $sOxid ) : ( $oContent->loadbyIdent( $sIdent ) );
-                if ( $blLoaded && $oContent->isActive() ) {
-                    $aContentCache[$oContent->getId()] = $aContentCache[$oContent->getLoadId()] = $oContent;
-                } else {
-                    $oContent = false;
-                    if ( $sOxid ) {
-                        $aContentCache[$sOxid] = $oContent;
-                    } else {
-                        $aContentCache[$sIdent] = $oContent;
-                    }
-                }
-            }
+            /** @var IfContentLogic $ifContentLogic */
+            $ifContentLogic = ContainerFactory::getInstance()->getContainer()->get(IfContentLogic::class);
+            $oContent = $ifContentLogic->getContent($sIdent, $sOxid);
 
             $blLoaded = false;
             if ( $oContent ) {

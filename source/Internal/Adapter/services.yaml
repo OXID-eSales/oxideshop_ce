@@ -20,3 +20,6 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\IncludeDynamicLogic:
     class: OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\IncludeDynamicLogic
+
+  OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\IfContentLogic:
+    class: OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\IfContentLogic

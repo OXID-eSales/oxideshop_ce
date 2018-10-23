@@ -21,7 +21,7 @@ class ShopConfiguration
     /**
      * @var array
      */
-    private $chainGroups = [];
+    private $chains = [];
 
     /**
      * @param string $moduleId
@@ -78,28 +78,28 @@ class ShopConfiguration
     }
 
     /**
-     * @param string     $name
-     * @param ChainGroup $group
+     * @param string $name
+     * @param Chain  $group
      */
-    public function setChainGroup(string $name, ChainGroup $group)
+    public function setChain(string $name, Chain $group)
     {
-        $this->chainGroups[$name] = $group;
+        $this->chains[$name] = $group;
     }
 
     /**
      * @param string $name
-     * @return ChainGroup
+     * @return Chain
      */
-    public function getChainGroup(string $name): ChainGroup
+    public function getChain(string $name): Chain
     {
-        return $this->chainGroups[$name];
+        return $this->chains[$name];
     }
 
     /**
-     * @return ChainGroup
+     * @return array
      */
-    public function getChainGroups(): array
+    public function getChains(): array
     {
-        return $this->chainGroups;
+        return $this->chains;
     }
 }

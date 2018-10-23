@@ -9,7 +9,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ChainGroup;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 
 /**
@@ -40,7 +39,7 @@ class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterfac
         $data = [];
 
         $data['modules'] = $this->getModulesConfigurationData($configuration);
-        $data['moduleChains'] = $this->getModuleChainGroupsData($configuration);
+        $data['moduleChains'] = $this->getModuleChainData($configuration);
 
         return $data;
     }
@@ -58,7 +57,7 @@ class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterfac
         }
 
         if (isset($data['moduleChains'])) {
-            $this->setModuleChainGroups($shopConfiguration, $data['moduleChains']);
+            $this->setModuleChains($shopConfiguration, $data['moduleChains']);
         }
 
         return $shopConfiguration;
@@ -71,12 +70,7 @@ class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterfac
     private function setModulesConfiguration(ShopConfiguration $shopConfiguration, array $modulesData)
     {
         foreach ($modulesData as $moduleId => $moduleData) {
-            $moduleData = array_merge(
-                [
-                    'id' => $moduleId,
-                ],
-                $moduleData
-            );
+            $moduleData['id'] = $moduleId;
 
             $shopConfiguration->setModuleConfiguration(
                 $moduleId,
@@ -102,15 +96,17 @@ class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterfac
 
     /**
      * @param ShopConfiguration $shopConfiguration
-     * @param array             $chainGroupsData
+     * @param array             $chainsData
      */
-    private function setModuleChainGroups(ShopConfiguration $shopConfiguration, array $chainGroupsData)
+    private function setModuleChains(ShopConfiguration $shopConfiguration, array $chainsData)
     {
-        foreach ($chainGroupsData as $groupName => $chainGroupData) {
-            $chainGroup = new ChainGroup();
-            $this->setChains($chainGroup, $chainGroupsData[$groupName]);
+        foreach ($chainsData as $chainName => $chainData) {
+            $chain = new Chain();
+            $chain
+                ->setName($chainName)
+                ->setChain($chainData);
 
-            $shopConfiguration->setChainGroup($groupName, $chainGroup);
+            $shopConfiguration->setChain($chainName, $chain);
         }
     }
 
@@ -118,42 +114,11 @@ class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterfac
      * @param ShopConfiguration $shopConfiguration
      * @return array
      */
-    private function getModuleChainGroupsData(ShopConfiguration $shopConfiguration): array
+    private function getModuleChainData(ShopConfiguration $shopConfiguration): array
     {
         $data = [];
 
-        foreach ($shopConfiguration->getChainGroups() as $groupName => $group) {
-            $data[$groupName] = $this->getChainsData($group);
-        }
-
-        return $data;
-    }
-
-    /**
-     * @param ChainGroup $chainGroup
-     * @param array      $chainsData
-     */
-    private function setChains(ChainGroup $chainGroup, array $chainsData)
-    {
-        foreach ($chainsData as $chainId => $chainData) {
-            $chain = new Chain();
-            $chain
-                ->setName($chainId)
-                ->setChain($chainData);
-
-            $chainGroup->setChain($chain);
-        }
-    }
-
-    /**
-     * @param ChainGroup $chainGroup
-     * @return array
-     */
-    private function getChainsData(ChainGroup $chainGroup): array
-    {
-        $data = [];
-
-        foreach ($chainGroup->getChains() as $chain) {
+        foreach ($shopConfiguration->getChains() as $chain) {
             $data[$chain->getName()] = $chain->getChain();
         }
 

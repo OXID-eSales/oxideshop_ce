@@ -9,7 +9,7 @@ declare(strict_types = 1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Configuration\DataObject;
 
 use DomainException;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ChainGroup;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use PHPUnit\Framework\TestCase;
@@ -61,17 +61,17 @@ class ShopConfigurationTest extends TestCase
         $this->shopConfiguration->deleteModuleConfiguration('moduleIdNotPresent');
     }
 
-    public function testChainGroups()
+    public function testChains()
     {
-        $chainGroup = new ChainGroup();
+        $chain = new Chain();
 
         $this
             ->shopConfiguration
-            ->setChainGroup('classes', $chainGroup);
+            ->setChain('classes', $chain);
 
         $this->assertSame(
-            $chainGroup,
-            $this->shopConfiguration->getChainGroup('classes')
+            $chain,
+            $this->shopConfiguration->getChain('classes')
         );
     }
 }

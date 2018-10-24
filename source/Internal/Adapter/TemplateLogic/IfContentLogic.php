@@ -13,9 +13,10 @@ namespace OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic;
  */
 class IfContentLogic
 {
+
     /**
-     * @param $sIdent
-     * @param $sOxid
+     * @param string $sIdent
+     * @param string $sOxid
      *
      * @return array
      */

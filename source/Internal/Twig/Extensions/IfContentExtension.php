@@ -31,8 +31,8 @@ class IfContentExtension extends AbstractExtension
     }
 
     /**
-     * @param $sIdent
-     * @param $sOxid
+     * @param string $sIdent
+     * @param string $sOxid
      *
      * @return array
      */

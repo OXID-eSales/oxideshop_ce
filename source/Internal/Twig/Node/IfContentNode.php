@@ -7,7 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Twig\Node;
 
 use OxidEsales\EshopCommunity\Internal\Twig\Extensions\IfContentExtension;
-use Twig\Node\Node;
+use Twig_Node as Node;
 use Twig_Compiler as Compiler;
 
 /**
@@ -59,9 +59,7 @@ class IfContentNode extends Node
         $compiler->raw(");\n");
 
         $compiler
-            ->write("ob_start();\n")
             ->subcompile($this->getNode('body'))
-            ->write("echo ob_get_clean();\n")
             ->write("unset(")->subcompile($this->getNode('variable'))->raw(");\n");
         ;
     }

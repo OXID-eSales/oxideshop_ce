@@ -55,12 +55,16 @@ class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admi
             $oSmarty->assign("shop", $this->_aViewData["shop"]);
             $oSmarty->assign("isdemo", $myConfig->isDemoShop());
             $oSmarty->assign("aSystemInfo", $aSystemInfo);
+
+            ob_start();
             echo $oSmarty->fetch("systeminfo.tpl");
             echo("<br><br>");
 
             phpinfo();
+            $sMessage = ob_get_contents();
+            ob_end_clean();
 
-            \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("");
+            \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit($sMessage);
         } else {
             return \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("Access denied !");
         }

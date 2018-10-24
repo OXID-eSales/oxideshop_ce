@@ -348,9 +348,17 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * Method for sending any additional headers on every page requests.
      *
      * @param FrontendController $view
+     *
+     * @return \OxidEsales\EshopCommunity\Internal\Application\Events\ShopControlSendAdditionalHeadersEvent
      */
     protected function sendAdditionalHeaders($view)
     {
+        $container = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
+        $dispatcher = $container->get('event_dispatcher');
+        $event = new \OxidEsales\EshopCommunity\Internal\Application\Events\ShopControlSendAdditionalHeadersEvent();
+        $event->setShopControl($this);
+        $event->setController($view);
+        return $dispatcher->dispatch('oxidesales.shopcontrol.sendAdditionalHeaders', $event);
     }
 
     /**

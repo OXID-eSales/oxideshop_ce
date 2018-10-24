@@ -414,6 +414,11 @@ class OrderarticleTest extends \OxidTestCase
         $sFields = "Color : red, Material : wood ";
         $oOrderArticle = oxNew('oxOrderArticle');
         $this->assertEquals(array(0 => 0), $oOrderArticle->getOrderArticleSelectList('1126', $sFields));
+
+        // articles with selectlists and variants should work
+        $sFields = "Color : red || variantvalue1 | variantvalue2";
+        $oOrderArticle = oxNew('oxOrderArticle');
+        $this->assertEquals(array(0 => 0), $oOrderArticle->getOrderArticleSelectList('1126', $sFields));
     }
 
     public function testMakeSelListArrayPriceON()

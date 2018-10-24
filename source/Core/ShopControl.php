@@ -15,6 +15,7 @@ use oxOutput;
 use oxSystemComponentException;
 use PHPMailer;
 use ReflectionMethod;
+use Symfony\Component\Templating\TemplateNameParser;
 
 /**
  * Main shop actions controller. Processes user actions, logs
@@ -488,11 +489,14 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
             //$smarty->fetch($templateName, $view->getViewId());
 
+            //$smarty->fetch($templateName, $view->getViewId());
+
         //Output processing - useful for modules as sometimes you may want to process output manually.
         $output = $outputManager->process($output, $view->getClassName());
 
         return $outputManager->addVersionTags($output);
     }
+
 
     /**
      * @internal

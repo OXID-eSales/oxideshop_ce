@@ -7,8 +7,8 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\Command;
 
 use OxidEsales\Eshop\Core\Module\Module;
+use OxidEsales\Eshop\Core\Module\ModuleCache;
 use OxidEsales\Eshop\Core\Module\ModuleInstaller;
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -63,7 +63,7 @@ class ModuleActivateCommand extends Command
 
         /** @var Module $module */
         if (isset($modules[$moduleId])) {
-            $this->activateModule($output, $modules[$moduleId]);
+            $this->activateModule($output, $modules[$moduleId], $moduleId);
         } else {
             $output->writeLn('<error>'.sprintf(static::MESSAGE_MODULE_NOT_FOUND, $moduleId).'</error>');
         }
@@ -75,8 +75,7 @@ class ModuleActivateCommand extends Command
      */
     protected function activateModule(OutputInterface $output, Module $module)
     {
-        /** @var ModuleInstaller $moduleInstaller */
-        $moduleInstaller = Registry::get(ModuleInstaller::class);
+        $moduleInstaller = oxNew(ModuleInstaller::class, oxNew(ModuleCache::class, $module));
 
         if ($module->isActive()) {
             $output->writeLn('<info>'.sprintf(static::MESSAGE_MODULE_ALREADY_ACTIVE, $module->getId()).'</info>');

@@ -7,8 +7,8 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\Command;
 
 use OxidEsales\Eshop\Core\Module\Module;
+use OxidEsales\Eshop\Core\Module\ModuleCache;
 use OxidEsales\Eshop\Core\Module\ModuleInstaller;
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -63,7 +63,7 @@ class ModuleDeactivateCommand extends Command
         $modules = $this->shopAdapter->getModules();
 
         if (isset($modules[$moduleId])) {
-            $this->deactivateModule($output, $modules, $moduleId);
+            $this->deactivateModule($output, $modules[$moduleId], $moduleId);
         } else {
             $output->writeLn('<error>'.sprintf(static::MESSAGE_MODULE_NOT_FOUND, $moduleId).'</error>');
         }
@@ -71,14 +71,12 @@ class ModuleDeactivateCommand extends Command
 
     /**
      * @param OutputInterface $output
-     * @param Module[]        $modules
+     * @param Module          $module
      * @param string          $moduleId
      */
-    protected function deactivateModule(OutputInterface $output, array $modules, string $moduleId)
+    protected function deactivateModule(OutputInterface $output, Module $module, string $moduleId)
     {
-        /** @var ModuleInstaller $moduleInstaller */
-        $moduleInstaller = Registry::get(ModuleInstaller::class);
-        $module = $modules[$moduleId];
+        $moduleInstaller = oxNew(ModuleInstaller::class, oxNew(ModuleCache::class, $module));
         if ($module->isActive() && $moduleInstaller->deactivate($module)) {
             $output->writeLn('<info>' . sprintf(static::MESSAGE_MODULE_DEACTIVATED, $moduleId) . '</info>');
         } else {

@@ -828,6 +828,9 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
                         }
                         $sSelList .= "{$oItem->name} : {$oItem->value}";
                     }
+                    if ($sSelList !== '' && $oContent->getVarSelect() !== '') {
+                        $sSelList .= ' ||';
+                    }
                 }
 
                 $oOrderArticle = oxNew(\OxidEsales\Eshop\Application\Model\OrderArticle::class);
@@ -836,7 +839,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
                 $oOrderArticle->setId();
 
                 $oOrderArticle->oxorderarticles__oxartnum = clone $oProduct->oxarticles__oxartnum;
-                $oOrderArticle->oxorderarticles__oxselvariant = new \OxidEsales\Eshop\Core\Field(trim($sSelList . ' ' . $oProduct->oxarticles__oxvarselect->getRawValue()), \OxidEsales\Eshop\Core\Field::T_RAW);
+                $oOrderArticle->oxorderarticles__oxselvariant = new \OxidEsales\Eshop\Core\Field(trim($sSelList . ' ' . $oContent->getVarSelect()), \OxidEsales\Eshop\Core\Field::T_RAW);
                 $oOrderArticle->oxorderarticles__oxshortdesc = new \OxidEsales\Eshop\Core\Field($oProduct->oxarticles__oxshortdesc->getRawValue(), \OxidEsales\Eshop\Core\Field::T_RAW);
                 // #M974: duplicated entries for the name of variants in orders
                 $oOrderArticle->oxorderarticles__oxtitle = new \OxidEsales\Eshop\Core\Field(trim($oProduct->oxarticles__oxtitle->getRawValue()), \OxidEsales\Eshop\Core\Field::T_RAW);

@@ -389,6 +389,8 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
         if ($this->_aOrderArticleSelList === null) {
             $sOrderArtSelList = $sOrderArtSelList ? $sOrderArtSelList : $this->oxorderarticles__oxselvariant->value;
 
+            $sOrderArtSelList = explode(' || ', $sOrderArtSelList)[0];
+
             $aRet = [];
 
             if ($oArticle = $this->_getOrderArticle($sArtId)) {
@@ -418,6 +420,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
                                             if ($oStr->strtolower($oSel->name) == $sOrderArtSelValue) {
                                                 // found, adding to return array
                                                 $aRet[$iSelListNum] = $iSelValueNum;
+                                                break;
                                             }
                                             //next article list item
                                             $iSelValueNum++;

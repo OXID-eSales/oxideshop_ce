@@ -16,8 +16,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 interface ExecutorInterface
 {
     /**
-     * Executes commands.
-     *
      * @param InputInterface|null  $input
      * @param OutputInterface|null $output
      */

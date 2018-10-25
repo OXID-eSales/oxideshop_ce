@@ -7,27 +7,18 @@
 namespace OxidEsales\EshopCommunity\Internal\Utility;
 
 /**
+ * Contains necessary methods to provide basic information about the application.
  * @internal
  */
-interface ContextInterface
+interface FactsContextInterface
 {
     /**
      * @return string
      */
-    public function getLogLevel();
+    public function getContainerCacheFilePath(): string;
 
     /**
      * @return string
      */
-    public function getLogFilePath();
-
-    /**
-     * @return array
-     */
-    public function getRequiredContactFormFields();
-
-    /**
-     * @return int
-     */
-    public function getCurrentShopId();
+    public function getSourcePath(): string;
 }

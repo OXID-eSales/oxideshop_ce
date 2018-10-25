@@ -1,5 +1,4 @@
 <?php declare(strict_types=1);
-
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -9,7 +8,7 @@ namespace OxidEsales\EshopCommunity\Internal\Application\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Application\Events\ProjectYamlChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIConfigWrapper;
-use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\FactsContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Yaml\Yaml;
 
@@ -18,20 +17,17 @@ use Symfony\Component\Yaml\Yaml;
  */
 class ProjectYamlDao implements ProjectYamlDaoInterface
 {
-
     const PROJECT_FILE_NAME = 'project.yaml';
 
     /**
-     * @var ContextInterface $context
+     * @var FactsContextInterface $context
      */
     private $context;
 
     /**
-     * ProjectYamlDao constructor.
-     *
-     * @param ContextInterface $context
+     * @param FactsContextInterface $context
      */
-    public function __construct(ContextInterface $context)
+    public function __construct(FactsContextInterface $context)
     {
         $this->context = $context;
     }
@@ -55,7 +51,7 @@ class ProjectYamlDao implements ProjectYamlDaoInterface
     /**
      * @param string $path
      *
-     * @return array
+     * @return DIConfigWrapper
      */
     public function loadDIConfigFile(string $path): DIConfigWrapper
     {
@@ -73,6 +69,6 @@ class ProjectYamlDao implements ProjectYamlDaoInterface
      */
     private function getProjectFileName(): string
     {
-        return $this->context->getShopDir() . DIRECTORY_SEPARATOR . self::PROJECT_FILE_NAME;
+        return $this->context->getSourcePath() . DIRECTORY_SEPARATOR . self::PROJECT_FILE_NAME;
     }
 }

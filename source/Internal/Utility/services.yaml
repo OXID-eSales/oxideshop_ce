@@ -7,3 +7,6 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Utility\Context
     autowire: true
     public: false
+  OxidEsales\EshopCommunity\Internal\Utility\FactsContextInterface:
+    class: OxidEsales\EshopCommunity\Internal\Utility\FactsContext
+    public: false

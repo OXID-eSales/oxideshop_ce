@@ -39,7 +39,10 @@ class Executor implements ExecutorInterface
     }
 
     /**
-     * @inheritdoc
+     * Executes commands.
+     *
+     * @param InputInterface|null  $input
+     * @param OutputInterface|null $output
      */
     public function execute(InputInterface $input = null, OutputInterface $output = null)
     {

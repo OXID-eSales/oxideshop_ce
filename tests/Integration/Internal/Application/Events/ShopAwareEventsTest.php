@@ -34,7 +34,7 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
         );
         $facts->method('getSourcePath')->willReturn(__DIR__);
 
-        $builder = new ContainerBuilder($facts);
+        $builder = $this->makeContainerBuilder($facts);
         $this->container = $builder->getContainer();
         $definition = $this->container->getDefinition(ContextInterface::class);
         $definition->setClass(ContextStub::class);
@@ -75,5 +75,11 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
          */
         $event = $this->dispatcher->dispatch('oxidesales.testevent', new TestEvent());
         $this->assertEquals(1, $event->getNumberOfActiveHandlers());
+    }
+
+    protected function makeContainerBuilder(Facts $facts)
+    {
+        $containerBuilder = new ContainerBuilder($facts);
+        return $containerBuilder;
     }
 }

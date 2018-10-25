@@ -6,10 +6,9 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Application\Events;
 
+use OxidEsales\EshopCommunity\Internal\Application\Events\AbstractShopAwareEventSubscriber;
 
-use OxidEsales\EshopCommunity\Internal\Application\Events\ShopAwareEventSubscriber;
-
-class TestEventSubscriber extends ShopAwareEventSubscriber
+class TestEventSubscriber extends AbstractShopAwareEventSubscriber
 {
     private $stopPropagation = false;
 

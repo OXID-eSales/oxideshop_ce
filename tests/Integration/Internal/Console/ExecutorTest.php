@@ -6,19 +6,12 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Console;
 
-use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapter;
-use OxidEsales\EshopCommunity\Internal\Console\CommandsCollectionBuilder;
-use OxidEsales\EshopCommunity\Internal\Console\CommandsProvider\CommandsProvidableInterface;
-use OxidEsales\EshopCommunity\Internal\Console\Executor;
-use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\Console\Fixtures\TestCommand;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\Console\Fixtures\TestForActiveSubshopCommand;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
+use OxidEsales\EshopCommunity\Internal\Console\ExecutorInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\Facts\Facts;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\StreamOutput;
 
 class ExecutorTest extends TestCase
@@ -58,9 +51,12 @@ class ExecutorTest extends TestCase
      */
     private function makeExecutor(): ExecutorInterface
     {
-        $facts = $this->getMockBuilder(Facts::class)->setMethods(['getSourcePath'])->getMock();
+        $facts = $this->getMockBuilder(Facts::class)->setMethods(['getSourcePath', 'getCommunityEditionSourcePath'])->getMock();
+        $facts->method('getCommunityEditionSourcePath')->willReturn((new Facts)->getCommunityEditionSourcePath());
         $facts->method('getSourcePath')->willReturn(__DIR__ . '/Fixtures');
+
         $containerBuilder = new ContainerBuilder($facts);
+
         $container = $containerBuilder->getContainer();
         $container->compile();
         $executor = $container->get(ExecutorInterface::class);

@@ -11,18 +11,28 @@ namespace OxidEsales\EshopCommunity\Core;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Templating\TemplateNameParserInterface;
 
+/**
+ * Class SmartyEngine
+ *
+ * @package OxidEsales\EshopCommunity\Core
+ */
 class SmartyEngine implements EngineInterface
 {
+
+    /**
+     * @var \Smarty
+     */
     private $smarty;
 
     private $parser;
 
     private $cacheId;
+
     /**
      * Constructor.
      *
-     * @param \Smarty                     $environment A Smarty instance
-     * @param TemplateNameParserInterface $parser      A TemplateNameParserInterface instance
+     * @param \Smarty                     $smarty A Smarty instance
+     * @param TemplateNameParserInterface $parser A TemplateNameParserInterface instance
      */
     public function __construct(\Smarty $smarty, TemplateNameParserInterface $parser)
     {
@@ -32,6 +42,7 @@ class SmartyEngine implements EngineInterface
         $this->smarty = $smarty;
         // Set any of the required configuration.
     }
+
     /**
      * Renders a template.
      *
@@ -52,9 +63,11 @@ class SmartyEngine implements EngineInterface
         if (isset($this->cacheId)) {
             return $this->smarty->fetch($name, $this->cacheId);
         }
+
         // Render the template using Smarty.
         return $this->smarty->fetch($name);
     }
+
     /**
      * Returns true if the template exists.
      *
@@ -70,6 +83,7 @@ class SmartyEngine implements EngineInterface
     {
         return $this->smarty->templateExists($this->nameToString($name));
     }
+
     /**
      * Returns true if this class is able to render the given template.
      *
@@ -82,9 +96,13 @@ class SmartyEngine implements EngineInterface
     public function supports($name)
     {
         $template = $this->parser->parse($name);
+
         return 'smarty' === $template->get('engine');
     }
 
+    /**
+     * @param int $cacheId
+     */
     public function setCacheId($cacheId)
     {
         $this->cacheId = $cacheId;
@@ -92,6 +110,10 @@ class SmartyEngine implements EngineInterface
 
     /**
      * Converts a template name to string if it is anything other than a string.
+     *
+     * @param mixed $name
+     *
+     * @return string
      */
     private function nameToString($name)
     {

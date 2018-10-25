@@ -1,107 +1,115 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: vilma
- * Date: 02.08.18
- * Time: 09:34
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Core;
+namespace OxidEsales\EshopCommunity\Internal\Smarty;
 
-use Symfony\Component\Templating\EngineInterface;
+use OxidEsales\EshopCommunity\Internal\Templating\BaseEngineInterface;
 use Symfony\Component\Templating\TemplateNameParserInterface;
 
 /**
  * Class SmartyEngine
  *
- * @package OxidEsales\EshopCommunity\Core
+ * @package OxidEsales\EshopCommunity\Internal\Smarty
  */
-class SmartyEngine implements EngineInterface
+class SmartyEngine implements BaseEngineInterface
 {
 
     /**
+     * @var string
+     */
+    private $cacheId;
+
+    /**
+     * The template engine.
+     *
      * @var \Smarty
      */
-    private $smarty;
+    private $engine;
 
-    private $parser;
+    /**
+     * @var TemplateNameParserInterface
+     */
+    protected $parser;
 
-    private $cacheId;
+    /**
+     * Array of global parameters
+     *
+     * @var array
+     */
+    private $globals = [];
 
     /**
      * Constructor.
      *
-     * @param \Smarty                     $smarty A Smarty instance
-     * @param TemplateNameParserInterface $parser A TemplateNameParserInterface instance
+     * @param \Smarty                     $engine
+     * @param TemplateNameParserInterface $parser
      */
-    public function __construct(\Smarty $smarty, TemplateNameParserInterface $parser)
+    public function __construct(\Smarty $engine, TemplateNameParserInterface $parser)
     {
-        // The parser to use.
+        $this->engine = $engine;
         $this->parser = $parser;
-        // Create the Smarty template engine.
-        $this->smarty = $smarty;
-        // Set any of the required configuration.
     }
 
     /**
-     * Renders a template.
+     * Render the template.
      *
-     * @param string|TemplateReferenceInterface $name       A template name or a TemplateReferenceInterface instance
-     * @param array                             $parameters An array of parameters to pass to the template
+     * @param string $name       The name of the template
+     * @param array  $parameters Parameters to assign
      *
-     * @return string The evaluated template as a string
-     *
-     * @throws \RuntimeException if the template cannot be rendered
-     *
-     * @api
+     * @return string
      */
     public function render($name, array $parameters = array())
     {
-        foreach (array_keys($parameters) as $viewName) {
-            $this->smarty->assign_by_ref($viewName, $parameters[$viewName]);
+        // attach the global variables
+        // $parameters = array_replace($this->getGlobals(), $parameters);
+        foreach ($parameters as $key => $value) {
+            $this->engine->assign($key, $value);
         }
         if (isset($this->cacheId)) {
-            return $this->smarty->fetch($name, $this->cacheId);
+            return $this->engine->fetch($name, $this->cacheId);
         }
 
-        // Render the template using Smarty.
-        return $this->smarty->fetch($name);
+        return $this->engine->fetch($name);
     }
 
     /**
-     * Returns true if the template exists.
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function addGlobal($name, $value)
+    {
+        $this->globals[$name] = $value;
+        $this->engine->assign($name, $value);
+    }
+
+    /**
+     * Returns the assigned globals.
      *
-     * @param string|TemplateReferenceInterface $name A template name or a TemplateReferenceInterface instance
+     * @return array
+     */
+    public function getGlobals()
+    {
+        return $this->globals;
+    }
+
+    /**
+     * Checks whether the specified template exists.
+     * It can accept either a path to the template on the filesystem or a resource string specifying the template.
      *
-     * @return bool    true if the template exists, false otherwise
+     * @param string $name A template name
      *
-     * @throws \RuntimeException if the engine cannot handle the template name
-     *
-     * @api
+     * @return bool True if the template exists, false otherwise
      */
     public function exists($name)
     {
-        return $this->smarty->templateExists($this->nameToString($name));
+        return $this->engine->template_exists($name);
     }
 
     /**
-     * Returns true if this class is able to render the given template.
-     *
-     * @param string|TemplateReferenceInterface $name A template name or a TemplateReferenceInterface instance
-     *
-     * @return bool    true if this class supports the given template, false otherwise
-     *
-     * @api
-     */
-    public function supports($name)
-    {
-        $template = $this->parser->parse($name);
-
-        return 'smarty' === $template->get('engine');
-    }
-
-    /**
-     * @param int $cacheId
+     * @param string $cacheId
      */
     public function setCacheId($cacheId)
     {
@@ -109,14 +117,39 @@ class SmartyEngine implements EngineInterface
     }
 
     /**
-     * Converts a template name to string if it is anything other than a string.
+     * Returns true if this class is able to render the given template.
      *
-     * @param mixed $name
+     * @param string $name A template name
      *
-     * @return string
+     * @return Boolean True if this class supports the given resource, false otherwise
      */
-    private function nameToString($name)
+    public function supports($name)
     {
-        return is_string($name) ? $name : $name->toString();
+        $template = $this->parser->parse($name);
+
+        return in_array($template->get('engine'), array('smarty', 'tpl'), true);
+    }
+
+    /**
+     * Pass parameters to the Smarty instance.
+     *
+     * @param string $name  The name of the parameter.
+     * @param mixed  $value The value of the parameter.
+     */
+    public function __set($name, $value)
+    {
+        $this->engine->$name = $value;
+    }
+
+    /**
+     * Pass parameters to the Smarty instance.
+     *
+     * @param string $name The name of the parameter.
+     *
+     * @return mixed
+     */
+    public function __get($name)
+    {
+        return $this->engine->$name;
     }
 }

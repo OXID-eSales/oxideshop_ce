@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 use \oxField;
 use \Exception;
 use \oxDb;
+use OxidEsales\Eshop\Application\Controller\ArticleListController;
 use \oxRegistry;
 use \oxTestModules;
 
@@ -360,6 +361,24 @@ class AlistTest extends \OxidTestCase
         $oListView->executefilter();
 
         $this->assertEquals(array('somecategory' => array('0' => 'somefilter')), $this->getSessionParam('session_attrfilter'));
+    }
+
+    /**
+     * Test reset filter.
+     */
+    public function testResetFilter()
+    {
+        $this->setRequestParameter('attrfilter', 'somefilter');
+        $this->setRequestParameter('cnid', 'someCategory');
+
+        $articleListController = oxNew(ArticleListController::class);
+        $articleListController->executefilter();
+        $articleListController->resetFilter();
+
+        $this->assertSame(
+            [],
+            $this->getSessionParam('session_attrfilter')
+        );
     }
 
     /**

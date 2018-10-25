@@ -7,7 +7,6 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\EshopCommunity\Application\Controller\TemplateController;
-use OxidEsales\EshopCommunity\Core\SmartyEngine;
 use oxRegistry;
 use Symfony\Component\Templating\TemplateNameParser;
 
@@ -16,6 +15,7 @@ use Symfony\Component\Templating\TemplateNameParser;
  */
 class GenericExportDo extends \OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController
 {
+
     /**
      * Export class name
      *
@@ -59,10 +59,10 @@ class GenericExportDo extends \OxidEsales\Eshop\Application\Controller\Admin\Dyn
             $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
             $parameters = [
                 "sCustomHeader" => \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("sExportCustomHeader"),
-                "linenr" => $iCnt,
-                "article" => $oArticle,
-                "spr" => $myConfig->getConfigParam('sCSVSign'),
-                "encl" => $myConfig->getConfigParam('sGiCsvFieldEncloser')
+                "linenr"        => $iCnt,
+                "article"       => $oArticle,
+                "spr"           => $myConfig->getConfigParam('sCSVSign'),
+                "encl"          => $myConfig->getConfigParam('sGiCsvFieldEncloser')
             ];
 
             $template = $this->getTemplating();
@@ -79,24 +79,6 @@ class GenericExportDo extends \OxidEsales\Eshop\Application\Controller\Admin\Dyn
         return $this->getContainer()->get(\OxidEsales\EshopCommunity\Internal\Templating\TemplateEngineBridgeInterface::class);
     }
 
-    public function renderTemplate($templateName, $viewData, $view)
-    {
-        $templateNameParser = new TemplateNameParser();
-
-        // get Smarty is important here as it sets template directory correct
-        $smarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
-        $smarty->oxobject = $view;
-        // #2873: In demoshop for RSS we set php_handling to SMARTY_PHP_PASSTHRU
-        // as SMARTY_PHP_REMOVE removes not only php tags, but also xml
-        if ($this->getConfig()->isDemoShop()) {
-            $smarty->php_handling = SMARTY_PHP_PASSTHRU;
-        }
-
-        $templating = new SmartyEngine($smarty, $templateNameParser);
-        $templating->setCacheId($view->getViewId());
-
-        return $templating->render($templateName, $viewData);
-    }
     /**
      * writes one line into open export file
      *

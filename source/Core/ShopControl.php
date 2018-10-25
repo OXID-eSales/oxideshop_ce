@@ -3,6 +3,7 @@
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Application\Controller\FrontendController;
@@ -15,7 +16,6 @@ use oxOutput;
 use oxSystemComponentException;
 use PHPMailer;
 use ReflectionMethod;
-use Symfony\Component\Templating\TemplateNameParser;
 
 /**
  * Main shop actions controller. Processes user actions, logs
@@ -24,6 +24,7 @@ use Symfony\Component\Templating\TemplateNameParser;
  */
 class ShopControl extends \OxidEsales\Eshop\Core\Base
 {
+
     /**
      * Used to force handling, it allows other place like widget controller to skip it.
      *
@@ -478,25 +479,23 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             \OxidEsales\Eshop\Core\Registry::getUtilsView()->passAllErrorsToView($viewData, $errors);
         }
 
-      /*  foreach (array_keys($viewData) as $viewName) {
-            $smarty->assign_by_ref($viewName, $viewData[$viewName]);
-        }*/
+        /*  foreach (array_keys($viewData) as $viewName) {
+              $smarty->assign_by_ref($viewName, $viewData[$viewName]);
+          }*/
 
         // passing current view object to smarty
-       // $smarty->oxobject = $view;
+        // $smarty->oxobject = $view;
 
         $output = $templating->renderTemplate($templateName, $viewData, $view->getViewId());
 
-            //$smarty->fetch($templateName, $view->getViewId());
+        //$smarty->fetch($templateName, $view->getViewId());
 
-            //$smarty->fetch($templateName, $view->getViewId());
 
         //Output processing - useful for modules as sometimes you may want to process output manually.
         $output = $outputManager->process($output, $view->getClassName());
 
         return $outputManager->addVersionTags($output);
     }
-
 
     /**
      * @internal
@@ -578,7 +577,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
                 $activeView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
                 $parameters = [
                     "oViewConf" => $activeView->getViewConfig(),
-                    "oView" => $activeView
+                    "oView"     => $activeView
                 ];
                 $template = $this->getTemplating();
                 \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit($template->renderTemplate($tpl, $parameters));

@@ -11,13 +11,13 @@ namespace OxidEsales\EshopCommunity\Internal\Application\Events;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class ExecuteCacheEvent
+ * Class ResetCacheEvent
  *
  * @package OxidEsales\EshopCommunity\Internal\Application\Events
  */
-class ExecuteCacheEvent extends Event
+class ModuleListResetCacheEvent extends ResetCacheEvent
 {
-    const NAME = 'oxidesales.executeCache';
+    const NAME = 'oxidesales.modulelist.resetCache';
 
     /**
      * Handle event.

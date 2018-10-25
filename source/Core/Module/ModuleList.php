@@ -294,7 +294,8 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
 
         $container = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
         $dispatcher = $container->get('event_dispatcher');
-        $dispatcher->dispatch('oxidesales.modulelist.resetCache', new \OxidEsales\EshopCommunity\Internal\Application\Events\ResetCacheEvent());
+        $event = new \OxidEsales\EshopCommunity\Internal\Application\Events\ModuleListResetCacheEvent();
+        $dispatcher->dispatch($event::NAME, $event);
     }
 
     /**

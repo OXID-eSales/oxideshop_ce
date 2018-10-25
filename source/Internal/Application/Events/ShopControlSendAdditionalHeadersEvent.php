@@ -17,6 +17,8 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class ShopControlSendAdditionalHeadersEvent extends Event
 {
+    const NAME = 'oxidesales.shopcontrol.sendAdditionalHeaders';
+
     /**
      * Result
      *

@@ -618,7 +618,8 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
 
         $container = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
         $dispatcher = $container->get('event_dispatcher');
-        $dispatcher->dispatch('oxidesales.moduleinstaller.resetCache', new \OxidEsales\EshopCommunity\Internal\Application\Events\ResetCacheEvent());
+        $event = new \OxidEsales\EshopCommunity\Internal\Application\Events\ModuleInstallerResetCacheEvent();
+        $dispatcher->dispatch($event::NAME, $event);
     }
 
     /**

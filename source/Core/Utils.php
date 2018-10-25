@@ -1106,7 +1106,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         $container = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
         $dispatcher = $container->get('event_dispatcher');
         $event = new \OxidEsales\EshopCommunity\Internal\Application\Events\UtilsPrepareToExitEvent();
-        return $dispatcher->dispatch('oxidesales.utils.prepareToExit', $event);
+        return $dispatcher->dispatch($event::NAME, $event);
     }
 
     /**

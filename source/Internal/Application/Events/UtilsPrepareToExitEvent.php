@@ -17,6 +17,8 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class UtilsPrepareToExitEvent extends Event
 {
+    const NAME = 'oxidesales.utils.prepareToExit';
+
     /**
      * Result
      *

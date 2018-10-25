@@ -154,7 +154,8 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
         if ($function) {
             $container = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
             $dispatcher = $container->get('event_dispatcher');
-            $dispatcher->dispatch('oxidesales.listcomponentajax.executeCache', new \OxidEsales\EshopCommunity\Internal\Application\Events\ExecuteCacheEvent());
+            $event = new \OxidEsales\EshopCommunity\Internal\Application\Events\ListComponentAjaxExecuteCacheEvent();
+            $dispatcher->dispatch($event::NAME, $event);
         }
     }
 

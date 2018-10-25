@@ -614,7 +614,8 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     {
         $container = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
         $dispatcher = $container->get('event_dispatcher');
-        $dispatcher->dispatch('oxidesales.basecontroller.executeCache', new \OxidEsales\EshopCommunity\Internal\Application\Events\ExecuteCacheEvent());
+        $event = new \OxidEsales\EshopCommunity\Internal\Application\Events\BaseControllerExecuteCacheEvent();
+        $dispatcher->dispatch($event::NAME, $event);
 
     }
 

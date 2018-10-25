@@ -358,7 +358,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         $event = new \OxidEsales\EshopCommunity\Internal\Application\Events\ShopControlSendAdditionalHeadersEvent();
         $event->setShopControl($this);
         $event->setController($view);
-        return $dispatcher->dispatch('oxidesales.shopcontrol.sendAdditionalHeaders', $event);
+        return $dispatcher->dispatch($event::NAME, $event);
     }
 
     /**

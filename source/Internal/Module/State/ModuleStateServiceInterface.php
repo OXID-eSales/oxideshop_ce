@@ -14,9 +14,9 @@ interface ModuleStateServiceInterface
     /**
      * @param string $moduleName
      * @param int    $shopId
-     * @return string
+     * @return bool
      */
-    public function getState(string $moduleName, int $shopId): string;
+    public function isActive(string $moduleName, int $shopId): bool;
 
     /**
      * @param string $moduleName

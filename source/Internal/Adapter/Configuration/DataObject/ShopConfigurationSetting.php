@@ -14,6 +14,7 @@ namespace OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject;
 class ShopConfigurationSetting
 {
     const MODULE_CLASS_EXTENSIONS           = 'aModuleExtensions';
+    const MODULE_CLASS_EXTENSIONS_CHAIN     = 'aModules';
     const MODULE_CONTROLLERS                = 'aModuleControllers';
     const MODULE_VERSIONS                   = 'aModuleVersions';
     const MODULE_PATHS                      = 'aModulePaths';

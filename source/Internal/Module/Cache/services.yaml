@@ -1,0 +1,4 @@
+services:
+  OxidEsales\EshopCommunity\Internal\Module\Cache\ShopModuleCacheServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Cache\ShopModuleCacheService
+    autowire: true

@@ -7,7 +7,10 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
+use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopSettingType;
+use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
 
 /**
  * @internal
@@ -15,22 +18,75 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigura
 class ClassExtensionChainService implements ExtensionChainServiceInterface
 {
     /**
-     * @var ProjectConfigurationDaoInterface
-     */
-    private $projectConfigurationDao;
-
-    /**
      * @var ShopConfigurationSettingDaoInterface
      */
     private $shopConfigurationSettingDao;
 
-    private $moduleStateService;
+    /**
+     * @var ActiveClassExtensionChainResolverInterface
+     */
+    private $activeClassExtensionChainResolver;
+
+    /**
+     * @param ShopConfigurationSettingDaoInterface       $shopConfigurationSettingDao
+     * @param ActiveClassExtensionChainResolverInterface $activeClassExtensionChainResolver
+     */
+    public function __construct(
+        ShopConfigurationSettingDaoInterface        $shopConfigurationSettingDao,
+        ActiveClassExtensionChainResolverInterface  $activeClassExtensionChainResolver
+    ) {
+        $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
+        $this->activeClassExtensionChainResolver = $activeClassExtensionChainResolver;
+    }
 
     /**
      * @param int $shopId
      */
     public function updateChain(int $shopId)
     {
-        // TODO: Implement updateChain() method.
+        $activeClassExtensionChain = $this->activeClassExtensionChainResolver->getActiveExtensionChain($shopId);
+        $formattedClassExtensions = $this->formatClassExtensionChain($activeClassExtensionChain);
+
+        $shopConfigurationSetting = $this->getClassExtensionChainShopConfigurationSetting($shopId);
+        $shopConfigurationSetting->setValue($formattedClassExtensions);
+
+        $this->shopConfigurationSettingDao->save($shopConfigurationSetting);
+    }
+
+    /**
+     * @param Chain $chain
+     * @return array
+     */
+    private function formatClassExtensionChain(Chain $chain): array
+    {
+        $classExtensions = [];
+
+        foreach ($chain->getChain() as $shopClass => $moduleExtensionClasses) {
+            $classExtensions[$shopClass] = implode('&', $moduleExtensionClasses);
+        }
+
+        return $classExtensions;
+    }
+
+    /**
+     * @param int $shopId
+     * @return ShopConfigurationSetting
+     */
+    private function getClassExtensionChainShopConfigurationSetting(int $shopId): ShopConfigurationSetting
+    {
+        try {
+            $shopConfigurationSetting = $this->shopConfigurationSettingDao->get(
+                ShopConfigurationSetting::MODULE_CLASS_EXTENSIONS_CHAIN,
+                $shopId
+            );
+        } catch (EntryDoesNotExistDaoException $exception) {
+            $shopConfigurationSetting = new ShopConfigurationSetting();
+            $shopConfigurationSetting
+                ->setShopId($shopId)
+                ->setName(ShopConfigurationSetting::MODULE_CLASS_EXTENSIONS_CHAIN)
+                ->setType(ShopSettingType::ASSOCIATIVE_ARRAY);
+        }
+
+        return $shopConfigurationSetting;
     }
 }

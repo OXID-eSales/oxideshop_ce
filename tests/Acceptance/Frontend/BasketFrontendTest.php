@@ -1189,7 +1189,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->_continueToNextStep();
 
         //Order Step4
-        $this->openWindow($this->getSubShopAwareUrl(shopURL . "en/my-address/"), "222");
+        $this->openWindow($this->getSubShopAwareUrl(shopURL . "en/my-address/"), "222", true);
         $this->waitForText("%SHIPPING_ADDRESSES%");
         $this->click("userChangeShippingAddress");
         $this->waitForItemAppear("delCountrySelect");
@@ -1203,7 +1203,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->_continueToNextStep();
         $this->assertTextNotPresent("%ERROR_DELIVERY_ADDRESS_WAS_CHANGED_DURING_CHECKOUT%");
         //changing billing address once more
-        $this->openWindow($this->getSubShopAwareUrl(shopURL . "en/my-address/"), "222");
+        $this->openWindow($this->getSubShopAwareUrl(shopURL . "en/my-address/"), "222", true);
         $this->waitForText("%SHIPPING_ADDRESSES%");
         $this->click("userChangeAddress");
         $this->waitForItemAppear("invCountrySelect");

@@ -5,14 +5,14 @@ declare(strict_types=1);
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
-namespace OxidEsales\EshopCommunity\Internal\Application\Events;
+namespace OxidEsales\EshopCommunity\Internal\ShopEvents;
 
 use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Class CategoryExecuteDependencyEvent
  *
- * @package OxidEsales\EshopCommunity\Internal\Application\Events
+ * @package OxidEsales\EshopCommunity\Internal\ShopEvents
  */
 class CategoryExecuteDependencyEvent extends Event
 {
@@ -70,14 +70,5 @@ class CategoryExecuteDependencyEvent extends Event
     public function setCategoryIds($categoryIds)
     {
         $this->categoryIds = $categoryIds;
-    }
-
-    /**
-     * Handle event.
-     *
-     * @return null
-     */
-    public function handleEvent()
-    {
     }
 }

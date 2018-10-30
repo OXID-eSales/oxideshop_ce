@@ -6,14 +6,14 @@ declare(strict_types=1);
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Application\Events;
+namespace OxidEsales\EshopCommunity\Internal\ShopEvents;
 
 use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Class SmartyFunctionIncludeWidgetEvent
  *
- * @package OxidEsales\EshopCommunity\Internal\Application\Events
+ * @package OxidEsales\EshopCommunity\Internal\ShopEvents
  */
 class SmartyFunctionIncludeWidgetEvent extends Event
 {
@@ -35,16 +35,6 @@ class SmartyFunctionIncludeWidgetEvent extends Event
      * @var array
      */
     protected $parameters = [];
-
-    /**
-     * Handle event.
-     *
-     * @return null
-     */
-    public function handleEvent()
-    {
-
-    }
 
     /**
      * Setter for result.

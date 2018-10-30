@@ -6,14 +6,14 @@ declare(strict_types=1);
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Application\Events;
+namespace OxidEsales\EshopCommunity\Internal\ShopEvents;
 
 use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Class ShopControlFormOutputEvent
  *
- * @package OxidEsales\EshopCommunity\Internal\Application\Events
+ * @package OxidEsales\EshopCommunity\Internal\ShopEvents
  */
 class ShopControlFormOutputEvent extends Event
 {
@@ -23,15 +23,6 @@ class ShopControlFormOutputEvent extends Event
      * @var \OxidEsales\Eshop\Core\ShopControl
      */
     protected $shopControl = null;
-
-    /**
-     * Handle event.
-     *
-     * @return null
-     */
-    public function handleEvent()
-    {
-    }
 
     /**
      * Setter for ShopControl object.

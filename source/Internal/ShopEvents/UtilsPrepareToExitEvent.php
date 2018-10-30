@@ -6,14 +6,14 @@ declare(strict_types=1);
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Application\Events;
+namespace OxidEsales\EshopCommunity\Internal\ShopEvents;
 
 use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Class UtilsPrepareToExitEvent
  *
- * @package OxidEsales\EshopCommunity\Internal\Application\Events
+ * @package OxidEsales\EshopCommunity\Internal\ShopEvents
  */
 class UtilsPrepareToExitEvent extends Event
 {
@@ -25,15 +25,6 @@ class UtilsPrepareToExitEvent extends Event
      * @var bool
      */
     protected $result = false;
-
-    /**
-     * Handle event.
-     *
-     * @return null
-     */
-    public function handleEvent()
-    {
-    }
 
     /**
      * Setter for result.

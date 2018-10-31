@@ -48,6 +48,7 @@ class PrivateSalesFrontendTest extends FrontendTestCase
         $this->assertEquals("%YOU_ARE_HERE%: / %PAGE_TITLE_BASKET%", $this->getText("breadCrumb"));
         $this->assertElementPresent("//tr[@id='cartItem_1']//a/b[text()='Test product 0 [EN] šÄßüл']");
         $this->clickAndWait("link=%HOME%");
+        $this->waitForElement("//div[@id='miniBasket']");
         $this->waitForElementText("1", "//div[@id='miniBasket']/span");
         $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
         $this->assertEquals("%YOU_ARE_HERE%: / Test category 0 [EN] šÄßüл", $this->getText("breadCrumb"));
@@ -175,6 +176,7 @@ class PrivateSalesFrontendTest extends FrontendTestCase
         $this->clickAndWait("//form[@id='orderConfirmAgbTop']//button");
         $this->assertEquals("%YOU_ARE_HERE%: / %ORDER_COMPLETED%", $this->getText("breadCrumb"));
         $this->clickAndWait("link=%HOME%");
+        $this->waitForElement("//div[@id='miniBasket']");
         $this->assertElementNotPresent("//ul[@id='newItems']//input[@name='aid' and @value='1000']");
     }
 

@@ -1188,6 +1188,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->_continueToNextStep();
         $this->click("payment_oxidcashondel");
         $this->_continueToNextStep();
+        $this->assertTextNotPresent("%MESSAGE_PAYMENT_UNAVAILABLE_PAYMENT_ERROR%");
 
         //Order Step4
         $popupWindowId = microtime(true);

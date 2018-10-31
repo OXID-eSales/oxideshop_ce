@@ -15,6 +15,7 @@ class MyAccountFrontendTest extends FrontendTestCase
      * Login to eshop (popup in top of the page)
      *
      * @group myAccount
+     * @group investigate
      */
     public function testFrontendLoginBox()
     {
@@ -45,12 +46,14 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->assertTextPresent("%JUST_ARRIVED%");
 
         $this->clickAndWait("//ul[@id='topMenu']/li[1]/a");
+        $this->assertEquals("%GREETING%UserNamešÄßüл UserSurnamešÄßüл %LOGOUT%", $this->clearString($this->getText("//ul[@id='topMenu']/li[1]")));
         $this->assertEquals("%YOU_ARE_HERE%: / %MY_ACCOUNT% - example_test@oxid-esales.dev", $this->getText("breadCrumb"));
-        $this->clickAndWait("link=%HOME%");
+        $this->clickAndWait("//ul[@id='navigation']/li[1]/a");
         $this->assertElementNotPresent("breadCrumb");
         $this->assertEquals("%GREETING%UserNamešÄßüл UserSurnamešÄßüл %LOGOUT%", $this->clearString($this->getText("//ul[@id='topMenu']/li[1]")));
         $this->clickAndWait("//ul[@id='topMenu']/li[1]/a");
         $this->assertElementPresent("breadCrumb");
+        $this->assertEquals("%GREETING%UserNamešÄßüл UserSurnamešÄßüл %LOGOUT%", $this->clearString($this->getText("//ul[@id='topMenu']/li[1]")));
         $this->assertEquals("%YOU_ARE_HERE%: / %MY_ACCOUNT% - example_test@oxid-esales.dev", $this->getText("breadCrumb"));
         $this->assertElementPresent("//ul[@id='topMenu']//a[text()='%LOGOUT%']");
     }

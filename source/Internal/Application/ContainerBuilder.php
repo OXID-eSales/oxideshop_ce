@@ -9,6 +9,10 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Application;
 
 use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Dao\ProjectYamlDao;
+use OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Dao\ProjectYamlDaoInterface;
+use OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Service\ProjectYamlImportService;
+use OxidEsales\EshopCommunity\Internal\Utility\Context;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -52,20 +56,33 @@ class ContainerBuilder
     }
 
     /**
-     * Loads a 'project.yaml' file if it can be found in the shop directory
+     * Loads a 'project.yaml' file if it can be found in the shop directory.
      *
      * @param SymfonyContainerBuilder $symfonyContainer
      *
+     * @return void
      */
     private function loadProjectServices(SymfonyContainerBuilder $symfonyContainer)
     {
 
-        try {
-            $loader = new YamlFileLoader($symfonyContainer, new FileLocator($this->getShopSourcePath()));
-            $loader->load('project.yaml');
-        } catch (\Exception $e) {
-            // pass
+        if (! file_exists($this->getShopSourcePath() .
+                          DIRECTORY_SEPARATOR . ProjectYamlDaoInterface::PROJECT_FILE_NAME)) {
+            return;
         }
+        $this->cleanupProjectYaml();
+        $loader = new YamlFileLoader($symfonyContainer, new FileLocator($this->getShopSourcePath()));
+        $loader->load(ProjectYamlDaoInterface::PROJECT_FILE_NAME);
+    }
+
+    /**
+     * Removes imports from modules that have deleted on the file system.
+     */
+    private function cleanupProjectYaml()
+    {
+        $context = new Context(Registry::getConfig());
+        $projectYamlDao = new ProjectYamlDao($context);
+        $yamlImportService = new ProjectYamlImportService($projectYamlDao);
+        $yamlImportService->removeNonExistingImports();
     }
 
     /**

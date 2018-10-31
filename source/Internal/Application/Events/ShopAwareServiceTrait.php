@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * Copyright © OXID eSales AG. All rights reserved.
@@ -9,12 +8,23 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Application\Events;
 
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Interface ShopAwareEventSubscriberInterface
+ * Class ShopAwareEventSubscriber
  */
-interface ShopAwareEventSubscriberInterface
+trait ShopAwareServiceTrait
 {
+    /**
+     * @var ContextInterface
+     */
+    private $context;
+
+    /**
+     * @var array
+     */
+    private $activeShops;
+
     /**
      * This method is used by the DI container
      * to set an array of shop ids for which
@@ -22,7 +32,10 @@ interface ShopAwareEventSubscriberInterface
      *
      * @param array $activeShops
      */
-    public function setActiveShops(array $activeShops);
+    public function setActiveShops(array $activeShops)
+    {
+        $this->activeShops = $activeShops;
+    }
 
     /**
      * This is set by the DI container to provide
@@ -31,7 +44,10 @@ interface ShopAwareEventSubscriberInterface
      *
      * @param ContextInterface $context
      */
-    public function setContext(ContextInterface $context);
+    public function setContext(ContextInterface $context)
+    {
+        $this->context = $context;
+    }
 
     /**
      * This method is used by the event dispatcher to
@@ -40,5 +56,8 @@ interface ShopAwareEventSubscriberInterface
      *
      * @return bool
      */
-    public function isActive();
+    public function isActive()
+    {
+        return in_array(strval($this->context->getCurrentShopId()), $this->activeShops);
+    }
 }

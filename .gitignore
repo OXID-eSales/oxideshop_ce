@@ -39,3 +39,7 @@
 
 # DI cache
 /source/Internal/Application/containercache.php
+
+# DI for modules and packages
+/source/project.yaml
+/tests/Integration/Internal/ProjectDIConfig/Dao/project.yaml

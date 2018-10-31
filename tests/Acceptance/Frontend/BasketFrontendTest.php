@@ -1191,7 +1191,8 @@ class BasketFrontendTest extends FrontendTestCase
 
         //Order Step4
         $popupWindowId = microtime(true);
-        $this->openWindow($this->getSubShopAwareUrl(shopURL . "en/my-address/"), $popupWindowId, true);
+        $this->openWindow($this->getSubShopAwareUrl(shopURL), $popupWindowId, true);
+        $this->open($this->getSubShopAwareUrl(shopURL . "en/my-address/"));
         $this->waitForText("%SHIPPING_ADDRESSES%");
         $this->click("userChangeShippingAddress");
         $this->waitForItemAppear("delCountrySelect");
@@ -1205,7 +1206,8 @@ class BasketFrontendTest extends FrontendTestCase
         $this->_continueToNextStep();
         $this->assertTextNotPresent("%ERROR_DELIVERY_ADDRESS_WAS_CHANGED_DURING_CHECKOUT%");
         //changing billing address once more
-        $this->openWindow($this->getSubShopAwareUrl(shopURL . "en/my-address/"), $popupWindowId, true);
+        $this->openWindow($this->getSubShopAwareUrl(shopURL), $popupWindowId, true);
+        $this->open($this->getSubShopAwareUrl(shopURL . "en/my-address/"));
         $this->waitForText("%SHIPPING_ADDRESSES%");
         $this->click("userChangeAddress");
         $this->waitForItemAppear("invCountrySelect");

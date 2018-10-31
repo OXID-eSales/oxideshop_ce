@@ -15,6 +15,7 @@ class PrivateSalesFrontendTest extends FrontendTestCase
      * Basket exclusion: situation 1
      *
      * @group privateSales
+     * @group investigate
      */
     public function testBasketExclusionCase1()
     {
@@ -28,7 +29,7 @@ class PrivateSalesFrontendTest extends FrontendTestCase
         $this->assertEquals("%YOU_ARE_HERE%: / Kiteboarding / Kites", $this->getText("breadCrumb"));
 
         //enabling basket exclusion
-        $this->callShopSC('oxConfig', null, null, array('blBasketExcludeEnabled' => array("type" => "bool",  "value" => 'true' ) ));
+        $this->callShopSC('oxConfig', null, null, array('blBasketExcludeEnabled' => array("type" => "bool",  "value" => 1 ) ));
 
         //checking in frontend
         $this->clearCache();
@@ -113,6 +114,7 @@ class PrivateSalesFrontendTest extends FrontendTestCase
      * Private sales: basket expiration
      *
      * @group privateSales
+     * @group investigate
      */
     public function testPrivateShoppingBasketExpiration()
     {
@@ -120,7 +122,7 @@ class PrivateSalesFrontendTest extends FrontendTestCase
         $this->callShopSC("oxArticle", "save", "1000", array("oxstock" => 2, "oxstockflag" => 2), null, 1);
 
         //enabling functionality to set basket expiration for 20 sek.
-        $this->callShopSC("oxConfig", null, null, array("blPsBasketReservationEnabled" => array("type" => "bool",  "value" => 'true')));
+        $this->callShopSC("oxConfig", null, null, array("blPsBasketReservationEnabled" => array("type" => "bool",  "value" => 1)));
         $this->callShopSC("oxConfig", null, null, array("iPsBasketReservationTimeout" => array("type" => "str",  "value" => '20')));
 
         //checking in frontend

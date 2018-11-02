@@ -45,6 +45,7 @@ class HasRightsNodeTest extends TestCase
     {
         $loader = new ArrayLoader(['index' => 'foo']);
         $env = new \Twig_Environment($loader, ['debug' => true, 'cache' => false]);
+
         return $env;
     }
 }

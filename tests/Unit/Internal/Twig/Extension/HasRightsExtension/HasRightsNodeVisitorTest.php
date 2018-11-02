@@ -59,6 +59,7 @@ class HasRightsNodeVisitorTest extends TestCase
     {
         /** @var \Twig_Node $node */
         $node = $this->getMockBuilder('Twig_Node')->getMock();
+
         return $node;
     }
 
@@ -69,6 +70,7 @@ class HasRightsNodeVisitorTest extends TestCase
     {
         $loader = new ArrayLoader(['index' => 'foo']);
         $env = new \Twig_Environment($loader, ['debug' => true, 'cache' => false]);
+
         return $env;
     }
 }

@@ -13,6 +13,7 @@ use Twig\Loader\ArrayLoader;
 
 class HasRightsParserTest extends TestCase
 {
+
     /**
      * @var HasRightsParser
      */
@@ -101,10 +102,11 @@ class HasRightsParserTest extends TestCase
     {
         $loader = new ArrayLoader(['tokens' => 'foo']);
         $env = new \Twig_Environment($loader, ['debug' => false, 'cache' => false]);
-        if(!$env->hasExtension('hasrights')) {
+        if (!$env->hasExtension('hasrights')) {
             $env->addExtension(new HasRightsExtension());
             $env->addTokenParser(new HasRightsParser());
         }
+
         return $env;
     }
 

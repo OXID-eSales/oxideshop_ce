@@ -9,8 +9,9 @@ use Twig\Extension\AbstractExtension;
  */
 class OxidIncludeExtension extends AbstractExtension
 {
+
     /**
-     * {@inheritdoc}
+     * @return array|\Twig_Function[]
      */
     public function getFunctions()
     {

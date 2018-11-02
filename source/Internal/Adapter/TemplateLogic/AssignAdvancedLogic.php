@@ -6,14 +6,18 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic;
 
-
+/**
+ * Class AssignAdvancedLogic
+ *
+ * @package OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic
+ */
 class AssignAdvancedLogic
 {
 
     /**
      * Formats arrays and range() for template
      *
-     * @param $value
+     * @param string $value
      *
      * @return mixed
      */
@@ -21,11 +25,10 @@ class AssignAdvancedLogic
     {
         if (preg_match('/^\s*array\s*\(\s*(.*)\s*\)\s*$/s', $value, $match)) {
             eval('$value=array(' . str_replace("\n", "", $match[1]) . ');');
-        } else if (preg_match('/^\s*range\s*\(\s*(.*)\s*\)\s*$/s', $value, $match)) {
+        } elseif (preg_match('/^\s*range\s*\(\s*(.*)\s*\)\s*$/s', $value, $match)) {
             eval('$value=range(' . str_replace("\n", "", $match[1]) . ');');
         }
 
         return $value;
     }
-
 }

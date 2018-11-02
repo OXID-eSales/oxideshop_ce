@@ -15,6 +15,7 @@ use Symfony\Component\Templating\TemplateNameParser;
  */
 class GenericExportDo extends \OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController
 {
+
     /**
      * Export class name
      *
@@ -58,10 +59,10 @@ class GenericExportDo extends \OxidEsales\Eshop\Application\Controller\Admin\Dyn
             $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
             $parameters = [
                 "sCustomHeader" => \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("sExportCustomHeader"),
-                "linenr" => $iCnt,
-                "article" => $oArticle,
-                "spr" => $myConfig->getConfigParam('sCSVSign'),
-                "encl" => $myConfig->getConfigParam('sGiCsvFieldEncloser')
+                "linenr"        => $iCnt,
+                "article"       => $oArticle,
+                "spr"           => $myConfig->getConfigParam('sCSVSign'),
+                "encl"          => $myConfig->getConfigParam('sGiCsvFieldEncloser')
             ];
 
             $template = $this->getTemplating();

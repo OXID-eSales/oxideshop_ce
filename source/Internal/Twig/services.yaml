@@ -24,15 +24,10 @@ services:
     class: Symfony\Component\Templating\TemplateNameParser
     public: false
 
-  twig.loader.filesystem:
-    class: Twig\Loader\FilesystemLoader
-    arguments: ["@=service('OxidEsales\\\\EshopCommunity\\\\Internal\\\\Twig\\\\TwigContextInterface').getTemplateDirectories()"]
-    public: false
-
   twig.environment:
     class: Twig\Environment
     arguments:
-        - '@twig.loader.filesystem'
+        - '@twig.loader.chain'
         - "@=service('OxidEsales\\\\EshopCommunity\\\\Internal\\\\Twig\\\\TemplateEngineConfigurationInterface').getParameters()"
     public: false
     calls:
@@ -42,6 +37,7 @@ services:
         - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\MailtoExtension']]
         - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\UrlExtension']]
         - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\AssignAdvancedExtension']]
+        - [addExtension, ['@Twig_Extension_StringLoader']]
         - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\HasRightsExtension\HasRightsExtension']]
         - [addTokenParser, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\HasRightsExtension\HasRightsParser']]
 
@@ -51,6 +47,31 @@ services:
         - '@twig.environment'
         - '@Symfony\Component\Templating\TemplateNameParserInterface'
     public: false
+
+  OxidEsales\EshopCommunity\Internal\Twig\TemplateLoaderNameParser:
+    class: OxidEsales\EshopCommunity\Internal\Twig\TemplateLoaderNameParser
+    public: false
+
+# Loaders
+
+  twig.loader.filesystem:
+    class: Twig\Loader\FilesystemLoader
+    arguments: ["@=service('OxidEsales\\\\EshopCommunity\\\\Internal\\\\Twig\\\\TwigContextInterface').getTemplateDirectories()"]
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Twig\Loader\ContentTemplateLoader:
+    class: OxidEsales\EshopCommunity\Internal\Twig\Loader\ContentTemplateLoader
+    arguments:
+        - '@OxidEsales\EshopCommunity\Internal\Twig\TemplateLoaderNameParser'
+        - '@OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\ContentFactory'
+    public: false
+
+  twig.loader.chain:
+    class: Twig\Loader\ChainLoader
+    public: false
+    calls:
+        - [addLoader, ['@twig.loader.filesystem']]
+        - [addLoader, ['@OxidEsales\EshopCommunity\Internal\Twig\Loader\ContentTemplateLoader']]
 
 
 # Extensions
@@ -78,6 +99,8 @@ services:
     arguments:
       - '@OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\AssignAdvancedLogic'
 
+  Twig_Extension_StringLoader:
+    class: Twig_Extension_StringLoader
   OxidEsales\EshopCommunity\Internal\Twig\Extensions\HasRightsExtension\HasRightsParser:
     class: OxidEsales\EshopCommunity\Internal\Twig\Extensions\HasRightsExtension\HasRightsParser
 

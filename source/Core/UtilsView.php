@@ -202,7 +202,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         $tplVars = $smarty->_tpl_vars;
         $forceRecompile = $smarty->force_compile;
 
-        $templating->getEngine()->force_compile = $blRecompile;
+        $smarty->force_compile = $blRecompile;
 
         if (!$oActView) {
             $oActView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
@@ -222,7 +222,8 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         }
 
         // restore tpl vars for continuing smarty processing if it is in one
-        $templating->getEngine()->force_compile = $forceRecompile;
+        $smarty->_tpl_vars = $tplVars;
+        $smarty->force_compile = $forceRecompile;
 
         stopProfile("parseThroughSmarty");
 

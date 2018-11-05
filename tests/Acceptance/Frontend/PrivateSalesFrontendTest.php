@@ -48,8 +48,9 @@ class PrivateSalesFrontendTest extends FrontendTestCase
         $this->clickAndWait("tobasket");
         $this->assertEquals("%YOU_ARE_HERE%: / %PAGE_TITLE_BASKET%", $this->getText("breadCrumb"));
         $this->assertElementPresent("//tr[@id='cartItem_1']//a/b[text()='Test product 0 [EN] šÄßüл']");
+        #$this->clickAndWait("link=%HOME%");
+        $this->clickAndWait("//ul[@id='navigation']/li[1]/a");
         $this->assertTextPresent('WAHOO');
-        $this->clickAndWait("link=%HOME%");
         $this->waitForElement("//div[@id='miniBasket']");
         $this->waitForElementText("1", "//div[@id='miniBasket']/span");
         $this->clickAndWait("link=Test category 0 [EN] šÄßüл");

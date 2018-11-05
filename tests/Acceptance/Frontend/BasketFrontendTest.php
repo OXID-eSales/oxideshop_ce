@@ -1203,7 +1203,6 @@ class BasketFrontendTest extends FrontendTestCase
         $this->close();
         $this->selectWindow(null);
         // submit
-        $this->assertTextPresent('WAHOO');
         $this->_confirmAndOrder();
         //delivery country was changed and we are redirected to payment step
         $this->_continueToNextStep();
@@ -1218,6 +1217,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->waitForItemAppear("invCountrySelect");
         $this->select("invCountrySelect", "label=Austria");
         $this->clickAndWait("accUserSaveTop");
+        $this->assertTextPresent('WAHOO');
         $this->close();
         $this->selectWindow(null);
 

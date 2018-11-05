@@ -404,8 +404,6 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Add module templates to database.
-     *
      * Set module templates in the database.
      * we do not use delete and add combination because
      * the combination of deleting and adding does unnecessary writes and so it does not scale

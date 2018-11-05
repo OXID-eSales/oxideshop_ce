@@ -196,7 +196,7 @@ function ThisDate( sID)
                             <tr>
                                 <td class="edittext">[{oxmultilang ident="ORDER_MAIN_DELTYPE"}]:</td>
                                 <td class="edittext">
-                                    <select name="setDelSet" class="editinput" style="width: 135px;">
+                                    <select name="setDelSet" class="editinput" style="width: 135px;" [{$readonly}]>
                                     <option value="">----</option>
                                     [{foreach from=$oShipSet key=sShipSetId item=oShipSet}]
                                     <option value="[{$sShipSetId}]" [{if $edit->oxorder__oxdeltype->value == $sShipSetId}]SELECTED[{/if}]>[{$oShipSet->oxdeliveryset__oxtitle->value}]</option>

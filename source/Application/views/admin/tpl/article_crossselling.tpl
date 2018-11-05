@@ -32,7 +32,7 @@
       <td valign="top" class="edittext">
         [{block name="admin_article_crossselling_assign_crossselling"}]
           [{oxhasrights object=$edit readonly=$readonly}]
-            <input type="button" value="[{oxmultilang ident="ARTICLE_CROSSSELLING_ASSIGNCROSSSELLING"}]" class="edittext" onclick="JavaScript:showDialog('&cl=article_crossselling&aoc=1&oxid=[{$oxid}]');">
+            <input type="button" value="[{oxmultilang ident="ARTICLE_CROSSSELLING_ASSIGNCROSSSELLING"}]" class="edittext" onclick="JavaScript:showDialog('&cl=article_crossselling&aoc=1&oxid=[{$oxid}]');" [{$readonly}]>
           [{/oxhasrights}]
         [{/block}]
       </td>
@@ -40,7 +40,7 @@
       <td valign="top" class="edittext" align="left" width="50%">
         [{block name="admin_article_crossselling_assign_accessoires"}]
           [{oxhasrights object=$edit readonly=$readonly}]
-            <input type="button" value="[{oxmultilang ident="ARTICLE_CROSSSELLING_ASSIGNACCESSORIES"}]" class="edittext" onclick="JavaScript:showDialog('&cl=article_crossselling&aoc=2&oxid=[{$oxid}]');">
+            <input type="button" value="[{oxmultilang ident="ARTICLE_CROSSSELLING_ASSIGNACCESSORIES"}]" class="edittext" onclick="JavaScript:showDialog('&cl=article_crossselling&aoc=2&oxid=[{$oxid}]');" [{$readonly}]>
           [{/oxhasrights}]
         [{/block}]
       </td>

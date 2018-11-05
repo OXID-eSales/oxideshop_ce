@@ -19,9 +19,10 @@ function editThis( sID )
 //-->
 </script>
 
-[{assign var="readonly" value=""}]
 [{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
+[{else}]
+    [{assign var="readonly" value=""}]
 [{/if}]
 
 [{cycle assign="_clear_" values=",2"}]
@@ -273,7 +274,7 @@ function editThis( sID )
                 <tr>
                  <td valign="top" class="conftext">
                     <input type=hidden name=confbools[blPerfNoBasketSaving] value=false>
-                    <input type=checkbox class="confinput" name=confbools[blPerfNoBasketSaving] value=true  [{if ($confbools.blPerfNoBasketSaving)}]checked[{/if}]>
+                    <input type=checkbox class="confinput" name=confbools[blPerfNoBasketSaving] value=true  [{if ($confbools.blPerfNoBasketSaving)}]checked[{/if}] [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_PERF_DISBASKETSAVING"}]
                  </td>
                  <td valign="top" class="conftext" width="100%" >

@@ -126,7 +126,7 @@
             [{oxmultilang ident="DYNBASE_ADDCATTOCAMPAIGN"}]
             </td>
             <td class="edittext">
-            <input type="checkbox" name="blAppendCatToCampaign" value="true">
+            <input type="checkbox" name="blAppendCatToCampaign" value="true" [{$readonly}]>
             [{oxinputhelp ident="HELP_DYNBASE_ADDCATTOCAMPAIGN"}]
             </td>
         </tr>
@@ -135,7 +135,7 @@
                 [{oxmultilang ident="GENERAL_EXPORTLANGUAGE"}]
             </td>
             <td class="edittext">
-            <select name="iExportLanguage" class="saveinnewlanginput">
+            <select name="iExportLanguage" class="saveinnewlanginput" [{$readonly}]>
                 [{foreach from=$aLangs key=lang item=olang}]
                 <option value="[{$lang}]"[{if $olang->selected}]SELECTED[{/if}]>[{$olang->name}]</option>
                 [{/foreach}]

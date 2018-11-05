@@ -60,6 +60,12 @@
 
 <p>[{oxmultilang ident='OXDIAG_ABOUT'}]</p>
 
+[{if $readonly}]
+    [{assign var="readonly" value="readonly disabled"}]
+[{else}]
+    [{assign var="readonly" value=""}]
+[{/if}]
+
 [{include file="include/support_contact_form.tpl"}]
 
 <table>
@@ -80,27 +86,27 @@
                     <input type="hidden" name="runAnalysis" value="1">
 
                     <tr>
-                        <td><input type="checkbox" id="oxdiag_frm_modules" name="oxdiag_frm_modules" value="1" checked></td>
+                        <td><input type="checkbox" id="oxdiag_frm_modules" name="oxdiag_frm_modules" value="1" checked [{$readonly}]></td>
                         <td><label for="oxdiag_frm_modules">[{oxmultilang ident='OXDIAG_COLLECT_MODULES'}]</label></td>
                     </tr>
 
                     <tr>
-                        <td><input type="checkbox" id="oxdiag_frm_health" name="oxdiag_frm_health" value="1" checked></td>
+                        <td><input type="checkbox" id="oxdiag_frm_health" name="oxdiag_frm_health" value="1" checked [{$readonly}]></td>
                         <td><label for="oxdiag_frm_health">[{oxmultilang ident='OXDIAG_COLLECT_HEALTH'}]</label></td>
                     </tr>
 
                     <tr>
-                        <td><input type="checkbox" id="oxdiag_frm_php" name="oxdiag_frm_php" value="1" checked></td>
+                        <td><input type="checkbox" id="oxdiag_frm_php" name="oxdiag_frm_php" value="1" checked [{$readonly}]></td>
                         <td><label for="oxdiag_frm_php">[{oxmultilang ident='OXDIAG_COLLECT_PHP'}]</label></td>
                     </tr>
 
                     <tr>
-                        <td><input type="checkbox" id="oxdiag_frm_server" name="oxdiag_frm_server" value="1" checked></td>
+                        <td><input type="checkbox" id="oxdiag_frm_server" name="oxdiag_frm_server" value="1" checked [{$readonly}]></td>
                         <td><label for="oxdiag_frm_server">[{oxmultilang ident='OXDIAG_COLLECT_SERVER'}]</label></td>
                     </tr>
 
                     <tr>
-                        <td><input type="checkbox" id="oxdiag_frm_chkvers" name="oxdiag_frm_chkvers" onchange="handleCheck();" value="1"></td>
+                        <td><input type="checkbox" id="oxdiag_frm_chkvers" name="oxdiag_frm_chkvers" onchange="handleCheck();" value="1" [{$readonly}]></td>
                         <td id="labelCell"><label for="oxdiag_frm_chkvers">[{oxmultilang ident='OXDIAG_COLLECT_CHKVERS'}]</label>
                             <input type="button" id="helpBtn_chkvers" class="btnShowHelpPanel" onclick="handleHelp()">
                         </td>
@@ -109,12 +115,12 @@
 
                     <tr>
                         <td>&nbsp;</td>
-                        <td><input type="checkbox" name="listAllFiles" value="listAllFiles" id="listAllFiles" disabled="true"> <label for="listAllFiles">[{oxmultilang ident='OXDIAG_FORM_LIST_ALL_FILES'}]</label></td>
+                        <td><input type="checkbox" name="listAllFiles" value="listAllFiles" id="listAllFiles" disabled="true" [{$readonly}]> <label for="listAllFiles">[{oxmultilang ident='OXDIAG_FORM_LIST_ALL_FILES'}]</label></td>
                     </tr>
                 </table>
 
                 <br><br>
-                <input type="submit" class="edittext" id="submitButton" name="submitButton" value=" [{oxmultilang ident="OXDIAG_FORM_START_CHECK"}] " >
+                <input type="submit" class="edittext" id="submitButton" name="submitButton" value=" [{oxmultilang ident="OXDIAG_FORM_START_CHECK"}] " [{$readonly}]>
 
             </form>
             [{/if}]

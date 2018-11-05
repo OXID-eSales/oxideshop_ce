@@ -44,11 +44,11 @@ class PrivateSalesFrontendTest extends FrontendTestCase
         $this->assertTextPresent("%ROOT_CATEGORY_CHANGED%");
         $this->assertElementPresent("tobasket");
         $this->assertElementPresent("//button[text()='%CONTINUE_SHOPPING%']");
-        $this->assertTextPresent('WAHOO');
 
         $this->clickAndWait("tobasket");
         $this->assertEquals("%YOU_ARE_HERE%: / %PAGE_TITLE_BASKET%", $this->getText("breadCrumb"));
         $this->assertElementPresent("//tr[@id='cartItem_1']//a/b[text()='Test product 0 [EN] šÄßüл']");
+        $this->assertTextPresent('WAHOO');
         $this->clickAndWait("link=%HOME%");
         $this->waitForElement("//div[@id='miniBasket']");
         $this->waitForElementText("1", "//div[@id='miniBasket']/span");
@@ -176,10 +176,11 @@ class PrivateSalesFrontendTest extends FrontendTestCase
         $this->assertElementPresent("orderConfirmAgbTop");
         $this->check("//form[@id='orderConfirmAgbTop']//input[@name='ord_agb' and @value='1']");
         $this->clickAndWait("//form[@id='orderConfirmAgbTop']//button");
-        $this->assertTextPresent('WAHOO');
 
         $this->assertEquals("%YOU_ARE_HERE%: / %ORDER_COMPLETED%", $this->getText("breadCrumb"));
         $this->clickAndWait("link=%HOME%");
+        $this->assertTextPresent('WAHOO');
+
         $this->waitForElement("//div[@id='miniBasket']");
         $this->assertElementNotPresent("//ul[@id='newItems']//input[@name='aid' and @value='1000']");
     }

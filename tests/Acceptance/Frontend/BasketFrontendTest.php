@@ -1189,7 +1189,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->click("payment_oxidcashondel");
         $this->_continueToNextStep();
         $this->assertTextNotPresent("%MESSAGE_PAYMENT_UNAVAILABLE_PAYMENT_ERROR%");
-        $this->assertTextPresent('WAHOO');
+
 
         //Order Step4
         $popupWindowId = microtime(true);
@@ -1203,6 +1203,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->close();
         $this->selectWindow(null);
         // submit
+        $this->assertTextPresent('WAHOO');
         $this->_confirmAndOrder();
         //delivery country was changed and we are redirected to payment step
         $this->_continueToNextStep();

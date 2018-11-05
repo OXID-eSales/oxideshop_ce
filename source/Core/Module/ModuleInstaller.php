@@ -406,19 +406,6 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     /**
      * Add module templates to database.
      *
-     * @deprecated please use setTemplateBlocks this method will be removed because
-     * the combination of deleting and adding does unnessery writes and so it does not scale
-     * also it's more likely to get race conditions (in the moment the blocks are deleted)
-     *
-     * @param array  $moduleBlocks Module blocks array
-     * @param string $moduleId     Module id
-     */
-    protected function _addTemplateBlocks($moduleBlocks, $moduleId)
-    {
-        $this->setTemplateBlocks($moduleBlocks, $moduleId);
-    }
-
-    /**
      * Set module templates in the database.
      * we do not use delete and add combination because
      * the combination of deleting and adding does unnecessary writes and so it does not scale
@@ -428,7 +415,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      * @param array  $moduleBlocks Module blocks array
      * @param string $moduleId     Module id
      */
-    protected function setTemplateBlocks($moduleBlocks, $moduleId)
+    protected function _addTemplateBlocks($moduleBlocks, $moduleId)
     {
         $shopId = $this->getConfig()->getShopId();
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();

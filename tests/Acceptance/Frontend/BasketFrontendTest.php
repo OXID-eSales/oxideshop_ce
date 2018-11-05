@@ -1190,7 +1190,6 @@ class BasketFrontendTest extends FrontendTestCase
         $this->_continueToNextStep();
         $this->assertTextNotPresent("%MESSAGE_PAYMENT_UNAVAILABLE_PAYMENT_ERROR%");
 
-
         //Order Step4
         $popupWindowId = microtime(true);
         $this->openWindow(str_replace(':6081', '',shopURL), $popupWindowId, true);
@@ -1217,7 +1216,6 @@ class BasketFrontendTest extends FrontendTestCase
         $this->waitForItemAppear("invCountrySelect");
         $this->select("invCountrySelect", "label=Austria");
         $this->clickAndWait("accUserSaveTop");
-        $this->assertTextPresent('WAHOO');
         $this->close();
         $this->selectWindow(null);
 

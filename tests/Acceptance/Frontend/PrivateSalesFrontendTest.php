@@ -48,9 +48,8 @@ class PrivateSalesFrontendTest extends FrontendTestCase
         $this->clickAndWait("tobasket");
         $this->assertEquals("%YOU_ARE_HERE%: / %PAGE_TITLE_BASKET%", $this->getText("breadCrumb"));
         $this->assertElementPresent("//tr[@id='cartItem_1']//a/b[text()='Test product 0 [EN] šÄßüл']");
-        #$this->clickAndWait("link=%HOME%");
+        //$this->clickAndWait("link=%HOME%");
         $this->clickAndWait("//ul[@id='navigation']/li[1]/a");
-        #$this->assertTextPresent('WAHOO');
         $this->waitForElement("//div[@id='miniBasket']");
         $this->waitForElementText("1", "//div[@id='miniBasket']/span");
         $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
@@ -59,7 +58,6 @@ class PrivateSalesFrontendTest extends FrontendTestCase
         $this->clickAndWait("moreSubCat_1");
         $this->assertElementNotPresent("scRootCatChanged");
         $this->clickAndWait("//form[@name='tobasketproductList_1']//button");
-        $this->assertTextPresent('WAHOO');
         $this->waitForElementText("2", "//div[@id='miniBasket']/span");
 
         $this->clickAndWait("link=Kiteboarding");
@@ -178,11 +176,8 @@ class PrivateSalesFrontendTest extends FrontendTestCase
         $this->assertElementPresent("orderConfirmAgbTop");
         $this->check("//form[@id='orderConfirmAgbTop']//input[@name='ord_agb' and @value='1']");
         $this->clickAndWait("//form[@id='orderConfirmAgbTop']//button");
-
         $this->assertEquals("%YOU_ARE_HERE%: / %ORDER_COMPLETED%", $this->getText("breadCrumb"));
         $this->clickAndWait("link=%HOME%");
-        $this->assertTextPresent('WAHOO');
-
         $this->waitForElement("//div[@id='miniBasket']");
         $this->assertElementNotPresent("//ul[@id='newItems']//input[@name='aid' and @value='1000']");
     }

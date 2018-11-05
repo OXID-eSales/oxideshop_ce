@@ -48,10 +48,8 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->clickAndWait("//ul[@id='topMenu']/li[1]/a");
         $this->assertEquals("%GREETING%UserNamešÄßüл UserSurnamešÄßüл %LOGOUT%", $this->clearString($this->getText("//ul[@id='topMenu']/li[1]")));
         $this->assertEquals("%YOU_ARE_HERE%: / %MY_ACCOUNT% - example_test@oxid-esales.dev", $this->getText("breadCrumb"));
-        #$this->open(shopURL);
+        $this->open(shopURL);
         $this->clickAndWait("//ul[@id='navigation']/li[1]/a");
-        $this->click("//ul[@id='topMenu']/li[1]/a");
-        $this->assertTextPresent('WAHOO');
         $this->waitForElement("//div[@id='breadCrumb']", 3, true);
         $this->assertElementNotPresent("//div[@id='breadCrumb']");
         $this->assertEquals("%GREETING%UserNamešÄßüл UserSurnamešÄßüл %LOGOUT%", $this->clearString($this->getText("//ul[@id='topMenu']/li[1]")));

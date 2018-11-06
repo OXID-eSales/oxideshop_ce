@@ -29,4 +29,9 @@ interface ShopConfigurationSettingDaoInterface
      * @throws EntryDoesNotExistDaoException
      */
     public function get(string $name, int $shopId): ShopConfigurationSetting;
+
+    /**
+     * @param ShopConfigurationSetting $setting
+     */
+    public function delete(ShopConfigurationSetting $setting);
 }

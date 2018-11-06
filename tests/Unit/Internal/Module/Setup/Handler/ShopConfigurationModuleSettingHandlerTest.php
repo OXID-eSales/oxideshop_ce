@@ -132,6 +132,11 @@ class ShopConfigurationModuleSettingHandlerTest extends TestCase
 
                 return $setting;
             }
+
+            public function delete(ShopConfigurationSetting $setting)
+            {
+                unset($this->settings[$setting->getShopId()][$setting->getName()]);
+            }
         };
     }
 }

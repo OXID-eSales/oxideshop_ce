@@ -64,6 +64,8 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
      */
     public function save(ShopConfigurationSetting $shopConfigurationSetting)
     {
+        $this->delete($shopConfigurationSetting);
+
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
             ->insert('oxconfig')
@@ -103,6 +105,7 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
             ->from('oxconfig')
             ->where('oxshopid = :shopId')
             ->andWhere('oxvarname = :name')
+            ->andWhere('oxmodule = ""')
             ->setParameters([
                 'shopId'    => $shopId,
                 'name'      => $name,
@@ -123,5 +126,24 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
             ->setType($result['type']);
 
         return $setting;
+    }
+
+    /**
+     * @param ShopConfigurationSetting $setting
+     */
+    public function delete(ShopConfigurationSetting $setting)
+    {
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $queryBuilder
+            ->delete('oxconfig')
+            ->where('oxshopid = :shopId')
+            ->andWhere('oxvarname = :name')
+            ->andWhere('oxmodule = ""')
+            ->setParameters([
+                'shopId'    => $setting->getShopId(),
+                'name'      => $setting->getName(),
+            ]);
+
+        $queryBuilder->execute();
     }
 }

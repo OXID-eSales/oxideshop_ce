@@ -7,7 +7,9 @@
 namespace OxidEsales\EshopCommunity\Internal\Twig\Extensions;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\IncludeDynamicLogic;
+use OxidEsales\EshopCommunity\Internal\Twig\TokenParser\IncludeDynamicTokenParser;
 use Twig\Extension\AbstractExtension;
+use Twig\TokenParser\TokenParserInterface;
 
 /**
  * Class IncludeExtension
@@ -26,6 +28,14 @@ class IncludeExtension extends AbstractExtension
     public function __construct(IncludeDynamicLogic $includeDynamicLogic)
     {
         $this->includeDynamicLogic = $includeDynamicLogic;
+    }
+
+    /**
+     * @return TokenParserInterface[]
+     */
+    public function getTokenParsers()
+    {
+        return [new IncludeDynamicTokenParser()];
     }
 
     /**

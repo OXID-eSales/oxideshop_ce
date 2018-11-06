@@ -11,10 +11,8 @@ require_once dirname(__FILE__) . "/bootstrap.php";
  */
 redirectIfShopNotConfigured();
 
-if (array_key_exists('REQUEST_URI', $_SERVER)) {
-    writeToLog($_SERVER['REQUEST_URI'] . '    ' . serialize($_COOKIE));
-}
-
+writeToLog(serialize($_SERVER));
+writeToLog(serialize($_COOKIE));
 
 //Starts the shop
 OxidEsales\EshopCommunity\Core\Oxid::run();

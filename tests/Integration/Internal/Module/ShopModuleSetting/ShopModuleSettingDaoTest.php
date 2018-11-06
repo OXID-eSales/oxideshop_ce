@@ -9,9 +9,10 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\ShopModuleSetting;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\ShopModuleSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\ShopModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,10 +20,12 @@ use PHPUnit\Framework\TestCase;
  */
 class ShopModuleSettingDaoTest extends TestCase
 {
+    use ContainerTrait;
+
     /**
      * @dataProvider settingValueDataProvider
      */
-    public function testSettingSaving(string $name, string $type, $value)
+    public function testSave(string $name, string $type, $value)
     {
         $settingDao = $this->getShopModuleSettingDao();
 
@@ -60,11 +63,85 @@ class ShopModuleSettingDaoTest extends TestCase
     }
 
     /**
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException
+     */
+    public function testDelete()
+    {
+        $settingDao = $this->getShopModuleSettingDao();
+
+        $shopModuleSetting = new ShopModuleSetting();
+        $shopModuleSetting
+            ->setModuleId('testModuleId')
+            ->setShopId(1)
+            ->setName('testDelete')
+            ->setType('some')
+            ->setValue('some');
+
+        $settingDao->save($shopModuleSetting);
+
+        $settingDao->delete($shopModuleSetting);
+        $settingDao->get('testDelete', 'testModuleId', 1);
+    }
+
+    public function testUpdate()
+    {
+        $settingDao = $this->getShopModuleSettingDao();
+
+        $shopModuleSetting = new ShopModuleSetting();
+        $shopModuleSetting
+            ->setModuleId('testModuleId')
+            ->setShopId(1)
+            ->setName('testUpdate')
+            ->setType('some')
+            ->setValue('valueBeforeUpdate');
+
+        $settingDao->save($shopModuleSetting);
+
+        $shopModuleSetting->setValue('valueAfterUpdate');
+
+        $settingDao->save($shopModuleSetting);
+
+        $this->assertEquals(
+            $shopModuleSetting,
+            $settingDao->get('testUpdate', 'testModuleId', 1)
+        );
+    }
+
+    public function testUpdateDoesNotCreateDuplicationsInDatabase()
+    {
+        $moduleId = 'testModuleId';
+        $settingName = 'testSettingName';
+
+        $this->assertSame(0, $this->getOxConfigTableRowCount($settingName, 1, $moduleId));
+        $this->assertSame(0, $this->getOxDisplayConfigTableRowCount($settingName, $moduleId));
+
+        $shopModuleSetting = new ShopModuleSetting();
+        $shopModuleSetting
+            ->setModuleId($moduleId)
+            ->setShopId(1)
+            ->setName($settingName)
+            ->setType('some')
+            ->setValue('valueBeforeUpdate');
+
+        $settingDao = $this->getShopModuleSettingDao();
+        $settingDao->save($shopModuleSetting);
+
+        $this->assertSame(1, $this->getOxConfigTableRowCount($settingName, 1, $moduleId));
+        $this->assertSame(1, $this->getOxDisplayConfigTableRowCount($settingName, $moduleId));
+
+        $shopModuleSetting->setValue('valueAfterUpdate');
+        $settingDao->save($shopModuleSetting);
+
+        $this->assertSame(1, $this->getOxConfigTableRowCount($settingName, 1, $moduleId));
+        $this->assertSame(1, $this->getOxDisplayConfigTableRowCount($settingName, $moduleId));
+    }
+
+    /**
      * Checks if DAO is compatible with OxidEsales\Eshop\Core\Config
      *
      * @dataProvider settingValueDataProvider
      */
-    public function testSettingSavingCompatibility(string $name, string $type, $value)
+    public function testBackwardsCompatibility(string $name, string $type, $value)
     {
         $settingDao = $this->getShopModuleSettingDao();
 
@@ -115,19 +192,40 @@ class ShopModuleSettingDaoTest extends TestCase
 
     private function getShopModuleSettingDao()
     {
-        $containerBuilder = new ContainerBuilder();
-        $container = $containerBuilder->getContainer();
+        return $this->get(ShopModuleSettingDaoInterface::class);
+    }
 
-        $settingDaoDefinition = $container->getDefinition(ShopModuleSettingDaoInterface::class);
-        $settingDaoDefinition->setPublic(true);
+    private function getOxConfigTableRowCount(string $settingName, int $shopId, string $moduleId): int
+    {
+        $queryBuilder = $this->get(QueryBuilderFactoryInterface::class)->create();
+        $queryBuilder
+            ->select('*')
+            ->from('oxconfig')
+            ->where('oxshopid = :shopId')
+            ->andWhere('oxvarname = :name')
+            ->andWhere('oxmodule = :moduleId')
+            ->setParameters([
+                'shopId'    => $shopId,
+                'name'      => $settingName,
+                'moduleId'  => $moduleId,
+            ]);
 
-        $container->setDefinition(
-            ShopModuleSettingDaoInterface::class,
-            $settingDaoDefinition
-        );
+        return $queryBuilder->execute()->rowCount();
+    }
 
-        $container->compile();
+    private function getOxDisplayConfigTableRowCount(string $settingName, string $moduleId): int
+    {
+        $queryBuilder = $this->get(QueryBuilderFactoryInterface::class)->create();
+        $queryBuilder
+            ->select('*')
+            ->from('oxconfigdisplay')
+            ->andWhere('oxcfgvarname = :name')
+            ->andWhere('oxcfgmodule = :moduleId')
+            ->setParameters([
+                'name'      => $settingName,
+                'moduleId'  => 'module:' . $moduleId,
+            ]);
 
-        return $container->get(ShopModuleSettingDaoInterface::class);
+        return $queryBuilder->execute()->rowCount();
     }
 }

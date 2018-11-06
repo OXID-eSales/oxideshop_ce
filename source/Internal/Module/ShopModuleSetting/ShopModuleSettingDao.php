@@ -8,6 +8,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting;
 
+use function is_string;
+
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Service\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
@@ -67,8 +69,19 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
          * The same entity was splitted between two tables.
          * Till we can't refactor tables we have to save data in both.
          */
+        $this->deleteFromOxConfigTable($shopModuleSetting);
+        $this->deleteFromOxConfigDisplayTable($shopModuleSetting);
+
         $this->saveDataToOxConfigTable($shopModuleSetting);
         $this->saveDataToOxConfigDisplayTable($shopModuleSetting);
+    }
+
+    /**
+     * @param ShopModuleSetting $shopModuleSetting
+     */
+    public function delete(ShopModuleSetting $shopModuleSetting)
+    {
+        $this->deleteFromOxConfigTable($shopModuleSetting);
     }
 
     /**
@@ -98,7 +111,10 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
             ->setModuleId($moduleId)
             ->setType($settingsData['type']);
 
-        if (isset($settingsData['oxvarconstraint']) && is_string($settingsData['oxvarconstraint'])) {
+        if (isset($settingsData['oxvarconstraint'])
+            && is_string($settingsData['oxvarconstraint'])
+            && $settingsData['oxvarconstraint'] !== ''
+        ) {
             $setting->setConstraints(
                 explode('|', $settingsData['oxvarconstraint'])
             );
@@ -231,5 +247,43 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
         $result = $queryBuilder->execute()->fetch();
 
         return $result ?? [];
+    }
+
+    /**
+     * @param ShopModuleSetting $shopModuleSetting
+     */
+    private function deleteFromOxConfigTable(ShopModuleSetting $shopModuleSetting)
+    {
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $queryBuilder
+            ->delete('oxconfig')
+            ->where('oxshopid = :shopId')
+            ->andWhere('oxvarname = :name')
+            ->where('oxmodule = :moduleId')
+            ->setParameters([
+                'shopId'    => $shopModuleSetting->getShopId(),
+                'name'      => $shopModuleSetting->getName(),
+                'moduleId'  => $shopModuleSetting->getModuleId(),
+            ]);
+
+        $queryBuilder->execute();
+    }
+
+    /**
+     * @param ShopModuleSetting $shopModuleSetting
+     */
+    private function deleteFromOxConfigDisplayTable(ShopModuleSetting $shopModuleSetting)
+    {
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $queryBuilder
+            ->delete('oxconfigdisplay')
+            ->where('oxcfgmodule = :moduleId')
+            ->andWhere('oxcfgvarname = :name')
+            ->setParameters([
+                'moduleId'  => 'module:' . $shopModuleSetting->getModuleId(),
+                'name'      => $shopModuleSetting->getName(),
+            ]);
+
+        $queryBuilder->execute();
     }
 }

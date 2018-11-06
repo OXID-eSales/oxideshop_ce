@@ -241,5 +241,5 @@ function writeToLog($message)
 
     $message = "[$timestamp] " . $message . PHP_EOL;
 
-    file_put_contents(OX_LOG_FILE, $message, FILE_APPEND);
+    file_put_contents(OX_BASE_PATH . 'log' . DIRECTORY_SEPARATOR . 'shopdebug.log', $message, FILE_APPEND);
 }

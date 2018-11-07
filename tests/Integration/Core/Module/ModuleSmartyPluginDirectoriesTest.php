@@ -50,7 +50,7 @@ class ModuleSmartyPluginDirectoriesTest extends UnitTestCase
      */
     private function getContainer()
     {
-        //\OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->resetContainer();
+        \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->resetContainer();
         return \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
     }
 

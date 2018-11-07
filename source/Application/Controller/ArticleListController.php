@@ -5,11 +5,8 @@
  */
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxArticle;
 use oxArticleList;
-use oxCategory;
-use oxField;
-use oxRegistry;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * List of articles for a selected product group.
@@ -343,6 +340,18 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
             $sessionFilter[$activeCategory][$baseLanguageId] = $attributeFilter;
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('session_attrfilter', $sessionFilter);
         }
+    }
+
+    /**
+     * Reset filter.
+     */
+    public function resetFilter()
+    {
+        $activeCategory = Registry::getConfig()->getRequestParameter('cnid');
+        $sessionFilter = Registry::getSession()->getVariable('session_attrfilter');
+
+        unset($sessionFilter[$activeCategory]);
+        Registry::getSession()->setVariable('session_attrfilter', $sessionFilter);
     }
 
     /**

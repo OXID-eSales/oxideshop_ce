@@ -24,4 +24,15 @@ class GenericExport extends \OxidEsales\Eshop\Application\Controller\Admin\Dynam
      * @var string
      */
     public $sClassMain = 'genexport_main';
+
+    /**
+     * Current view ID getter helps to identify navigation position.
+     * Bypassing dynexportbase::getViewId
+     *
+     * @return string
+     */
+    public function getViewId()
+    {
+        return \OxidEsales\Eshop\Application\Controller\Admin\AdminController::getViewId();
+    }
 }

@@ -82,4 +82,15 @@ class GenericExportDo extends \OxidEsales\Eshop\Application\Controller\Admin\Dyn
 
         fwrite($this->fpFile, $sLine . "\n");
     }
+
+    /**
+     * Current view ID getter helps to identify navigation position.
+     * Bypassing dynexportbase::getViewId
+     *
+     * @return string
+     */
+    public function getViewId()
+    {
+        return \OxidEsales\Eshop\Application\Controller\Admin\AdminController::getViewId();
+    }
 }

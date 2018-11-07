@@ -41,7 +41,6 @@ services:
         - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\HasRightsExtension\HasRightsExtension']]
         - [addTokenParser, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\HasRightsExtension\HasRightsParser']]
         - [addExtension, ['@OxidEsales\EshopCommunity\Internal\Twig\Extensions\IfContentExtension']]
-        - [addTokenParser, ['@OxidEsales\EshopCommunity\Internal\Twig\TokenParser\IfContentTokenParser']]
 
   OxidEsales\EshopCommunity\Internal\Twig\TwigEngine:
     class: OxidEsales\EshopCommunity\Internal\Twig\TwigEngine
@@ -116,8 +115,3 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Twig\Extensions\IfContentExtension
     arguments:
       - '@OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\IfContentLogic'
-
-# Token parsers
-
-  OxidEsales\EshopCommunity\Internal\Twig\TokenParser\IfContentTokenParser:
-    class: OxidEsales\EshopCommunity\Internal\Twig\TokenParser\IfContentTokenParser

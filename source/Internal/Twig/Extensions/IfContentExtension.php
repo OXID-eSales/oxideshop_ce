@@ -7,7 +7,9 @@
 namespace OxidEsales\EshopCommunity\Internal\Twig\Extensions;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\IfContentLogic;
+use OxidEsales\EshopCommunity\Internal\Twig\TokenParser\IfContentTokenParser;
 use Twig\Extension\AbstractExtension;
+use Twig\TokenParser\TokenParserInterface;
 
 /**
  * Class IfContentExtension
@@ -28,6 +30,14 @@ class IfContentExtension extends AbstractExtension
     public function __construct(IfContentLogic $ifContentLogic)
     {
         $this->ifContentLogic = $ifContentLogic;
+    }
+
+    /**
+     * @return TokenParserInterface[]
+     */
+    public function getTokenParsers()
+    {
+        return [new IfContentTokenParser()];
     }
 
     /**

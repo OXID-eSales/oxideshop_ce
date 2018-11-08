@@ -27,6 +27,10 @@ div.admin-login-box form {
     padding: 20px 50px 15px;
 }
 
+img {
+    max-height: 40px;
+}
+
 label {
     float: none;
     width: 100%;

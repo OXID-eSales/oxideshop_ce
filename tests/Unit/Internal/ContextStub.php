@@ -19,6 +19,8 @@ class ContextStub implements ContextInterface
 
     private $shopDir = '/tmp';
 
+    private $containerCacheFile = '/tmp/containercache.php';
+
     /**
      * @var array
      */
@@ -104,4 +106,19 @@ class ContextStub implements ContextInterface
         return $this->shopDir;
     }
 
+    /**
+     * @return string
+     */
+    public function getContainerCacheFile(): string
+    {
+        return $this->containerCacheFile;
+    }
+
+    /**
+     * @param string $containerCacheFile
+     */
+    public function setContainerCacheFile(string $containerCacheFile)
+    {
+        $this->containerCacheFile = $containerCacheFile;
+    }
 }

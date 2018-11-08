@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Application;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Utility\Context;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 
@@ -102,9 +103,8 @@ class ContainerFactory
      */
     private function getCacheFilePath()
     {
-        $compileDir = Registry::getConfig()->getConfigParam('sCompileDir');
-
-        return $compileDir . '/containercache.php';
+        $context = new Context(Registry::getConfig());
+        return $context->getContainerCacheFile();
     }
 
     /**

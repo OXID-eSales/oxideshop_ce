@@ -1,0 +1,9 @@
+services:
+
+  OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\TestModule1\TestEventSubscriber:
+    class: OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\TestModule1\TestEventSubscriber
+    tags:
+      - { name: kernel.event_subscriber }
+
+  OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\TestModule1\OtherService:
+    class: OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\TestModule1\OtherService

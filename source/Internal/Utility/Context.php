@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Utility;
 
 use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Facts\Facts;
 
 /**
  * @internal
@@ -17,6 +18,11 @@ class Context implements ContextInterface
      * @var Config
      */
     private $config;
+
+    /**
+     * @var
+     */
+    private $facts;
 
     /**
      * Context constructor.
@@ -66,7 +72,15 @@ class Context implements ContextInterface
      */
     public function getShopDir()
     {
-        return $this->getConfigParameter('sShopDir');
+        return $this->getFacts()->getSourcePath();
+    }
+
+    /**
+     * @return string
+     */
+    public function getContainerCacheFile()
+    {
+        return $this->getConfigParameter('sCompileDir') . DIRECTORY_SEPARATOR . 'containercache.php';
     }
 
     /**
@@ -76,5 +90,16 @@ class Context implements ContextInterface
     private function getConfigParameter($name)
     {
         return $this->config->getConfigParam($name);
+    }
+
+    /**
+     * @return Facts
+     */
+    private function getFacts()
+    {
+        if ($this->facts == null) {
+            $this->facts = new Facts();
+        }
+        return $this->facts;
     }
 }

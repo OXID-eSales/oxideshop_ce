@@ -35,4 +35,9 @@ interface ContextInterface
      * @return string
      */
     public function getShopDir();
+
+    /**
+     * @return mixed
+     */
+    public function getContainerCacheFile();
 }

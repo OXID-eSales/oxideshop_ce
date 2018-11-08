@@ -27,8 +27,9 @@ div.admin-login-box form {
     padding: 20px 50px 15px;
 }
 
-img {
-    max-height: 40px;
+#shopLogo > img {
+    height: 40px;
+    width: 240px;
 }
 
 label {

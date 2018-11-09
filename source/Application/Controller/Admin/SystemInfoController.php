@@ -61,8 +61,7 @@ class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admi
             echo("<br><br>");
 
             phpinfo();
-            $sMessage = ob_get_contents();
-            ob_end_clean();
+            $sMessage = ob_get_clean();
 
             \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit($sMessage);
         } else {

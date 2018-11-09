@@ -142,6 +142,14 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
     {
         if ($function) {
             $this->$function();
+
+            $container = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
+            $dispatcher = $container->get('event_dispatcher');
+            $event = new \OxidEsales\EshopCommunity\Internal\ShopEvents\OnExecuteEvent();
+            $event->setClass(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class);
+            $event->setMethod('processRequest');
+            $event->setArguments([$function]);
+            $dispatcher->dispatch($event::NAME, $event);
         } else {
             $sQAdd = $this->_getQuery();
 
@@ -150,15 +158,6 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
             $sCountQ = $this->_getCountQuery($sQAdd);
 
             $this->_outputResponse($this->_getData($sCountQ, $sQ));
-        }
-        if ($function) {
-            $container = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
-            $dispatcher = $container->get('event_dispatcher');
-            $event = new \OxidEsales\EshopCommunity\Internal\ShopEvents\OnExecuteEvent();
-            $event->setClass(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class);
-            $event->setMethod('processRequest');
-            $event->setArguments([$function]);
-            $dispatcher->dispatch($event::NAME, $event);
         }
     }
 

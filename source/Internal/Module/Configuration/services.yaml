@@ -27,7 +27,7 @@ services:
     autowire: true
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface:
-    class: %module_configuration_path%\Dao\ProjectConfigurationDao
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDao
     arguments:
       - '@oxid_esales.module.configuration.project_configuration_yaml_file_storage'
       - '@OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ProjectConfigurationDataMapperInterface'
@@ -38,6 +38,7 @@ services:
     arguments:
       - '@oxid_esales.module.configuration.project_configuration_yaml_file_locator'
       - '/tmp/configuration.yaml'
+      - '@oxid_esales.common.storage.flock_store_lock_factory'
     public: false
 
   oxid_esales.module.configuration.project_configuration_yaml_file_locator:
@@ -45,19 +46,19 @@ services:
     public: false
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ProjectConfigurationDataMapperInterface:
-    class: %module_configuration_path%\DataMapper\ProjectConfigurationDataMapper
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ProjectConfigurationDataMapper
     arguments:
       - '@OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface'
     public: false
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface:
-    class: %module_configuration_path%\DataMapper\ShopConfigurationDataMapper
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ShopConfigurationDataMapper
     arguments:
       - '@OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationDataMapperInterface'
     public: false
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationDataMapperInterface:
-    class: %module_configuration_path%\DataMapper\ModuleConfigurationDataMapper
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationDataMapper
     arguments:
       - '@oxid_esales.module.configuration.validator.metadata_setting_validator'
     public: false

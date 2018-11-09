@@ -9,18 +9,23 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Common\Storage;
 
 use OxidEsales\EshopCommunity\Internal\Common\Storage\YamlFileStorage;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Lock\Factory;
 
 /**
  * @internal
  */
 class YamlFileStorageTest extends TestCase
 {
+
+    use ContainerTrait;
+
     /**
      * @var resource
      */
-    private $tempFileHandle = null;
+    private $tempFileHandle;
 
     public function testSaving()
     {
@@ -35,7 +40,8 @@ class YamlFileStorageTest extends TestCase
 
         $yamlFileStorage = new YamlFileStorage(
             new FileLocator(),
-            $this->getFilePath()
+            $this->getFilePath(),
+            $this->getLockFactoryFromContainer()
         );
 
         $yamlFileStorage->save($testData);
@@ -53,7 +59,8 @@ class YamlFileStorageTest extends TestCase
 
         $yamlFileStorage = new YamlFileStorage(
             new FileLocator(),
-            $filePath
+            $filePath,
+            $this->getLockFactoryFromContainer()
         );
 
         $yamlFileStorage->save(['testData']);
@@ -76,7 +83,8 @@ class YamlFileStorageTest extends TestCase
 
         $yamlFileStorage = new YamlFileStorage(
             new FileLocator(),
-            $filePath
+            $filePath,
+            $this->getLockFactoryFromContainer()
         );
 
         $yamlFileStorage->get();
@@ -90,7 +98,8 @@ class YamlFileStorageTest extends TestCase
 
         $yamlFileStorage = new YamlFileStorage(
             new FileLocator(),
-            $filePath
+            $filePath,
+            $this->getLockFactoryFromContainer()
         );
 
         $this->assertSame(
@@ -101,13 +110,14 @@ class YamlFileStorageTest extends TestCase
 
     public function testEmptyYamlArrayThrowsNoError()
     {
-        $yaml = "[]";
+        $yaml = '[]';
 
         file_put_contents($this->getFilePath(), $yaml);
 
         $yamlFileStorage = new YamlFileStorage(
             new FileLocator(),
-            $this->getFilePath()
+            $this->getFilePath(),
+            $this->getLockFactoryFromContainer()
         );
         $parsedYaml = $yamlFileStorage->get();
 
@@ -124,5 +134,16 @@ class YamlFileStorageTest extends TestCase
         }
 
         return stream_get_meta_data($this->tempFileHandle)['uri'];
+    }
+
+    /**
+     * @return Factory
+     */
+    private function getLockFactoryFromContainer(): Factory
+    {
+        /** @var Factory $lockFactory */
+        $lockFactory = $this->get('oxid_esales.common.storage.flock_store_lock_factory');
+
+        return $lockFactory;
     }
 }

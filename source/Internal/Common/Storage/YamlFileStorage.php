@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /**
  * Copyright © OXID eSales AG. All rights reserved.
@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Internal\Common\Storage;
 
 use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 use Symfony\Component\Config\FileLocatorInterface;
+use Symfony\Component\Lock\Factory;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -26,16 +27,23 @@ class YamlFileStorage implements ArrayStorageInterface
      * @var string
      */
     private $filePath;
+    /**
+     * @var Factory
+     */
+    private $lockFactory;
 
     /**
      * YamlFileStorage constructor.
+     *
      * @param FileLocatorInterface $fileLocator
      * @param string               $filePath
+     * @param Factory              $lockFactory
      */
-    public function __construct(FileLocatorInterface $fileLocator, string $filePath)
+    public function __construct(FileLocatorInterface $fileLocator, string $filePath, Factory $lockFactory)
     {
         $this->fileLocator = $fileLocator;
         $this->filePath = $filePath;
+        $this->lockFactory = $lockFactory;
     }
 
     /**
@@ -57,10 +65,17 @@ class YamlFileStorage implements ArrayStorageInterface
      */
     public function save(array $data)
     {
-        file_put_contents(
-            $this->getLocatedFilePath(),
-            Yaml::dump($data, 10, 2)
-        );
+        $lock = $this->lockFactory->createLock($this->filePath);
+        if ($lock->acquire(true)) {
+            try {
+                file_put_contents(
+                    $this->getLocatedFilePath(),
+                    Yaml::dump($data, 10, 2)
+                );
+            } finally {
+                $lock->release();
+            }
+        }
     }
 
     /**

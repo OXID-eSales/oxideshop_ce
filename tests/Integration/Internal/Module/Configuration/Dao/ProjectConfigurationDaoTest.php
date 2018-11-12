@@ -9,13 +9,11 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Configuration\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
-use OxidEsales\EshopCommunity\Internal\Common\Storage\YamlFileStorage;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\TestingLibrary\VfsStreamWrapper;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Config\FileLocator;
 
 /**
  * @internal
@@ -45,12 +43,13 @@ class ProjectConfigurationDaoTest extends TestCase
         $containerBuilder = new ContainerBuilder();
 
         $container = $containerBuilder->getContainer();
-        $container->set(
-            'oxid_esales.configuration.module.project_configuration_yaml_file_storage',
-            new YamlFileStorage(
-                new FileLocator(),
-                $this->getTestConfigurationFilePath()
-            )
+
+        $yamlFileStorageDefinition = $container->getDefinition('oxid_esales.module.configuration.project_configuration_yaml_file_storage');
+        $yamlFileStorageDefinition->setArgument('$filePath', $this->getTestConfigurationFilePath());
+
+        $container->setDefinition(
+            'oxid_esales.module.configuration.project_configuration_yaml_file_storage',
+            $yamlFileStorageDefinition
         );
 
         $projectConfigurationDaoDefinition = $container->getDefinition(ProjectConfigurationDaoInterface::class);

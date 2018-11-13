@@ -13,6 +13,7 @@ use function is_string;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Service\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Common\Database\TransactionServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 
@@ -42,22 +43,30 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
     private $shopAdapter;
 
     /**
+     * @var TransactionServiceInterface
+     */
+    private $transactionService;
+
+    /**
      * ShopModuleSettingDao constructor.
      * @param QueryBuilderFactoryInterface $queryBuilderFactory
      * @param ContextInterface             $context
      * @param ShopSettingEncoderInterface  $shopSettingEncoder
      * @param ShopAdapterInterface         $shopAdapter
+     * @param TransactionServiceInterface  $transactionService
      */
     public function __construct(
         QueryBuilderFactoryInterface    $queryBuilderFactory,
         ContextInterface                $context,
         ShopSettingEncoderInterface     $shopSettingEncoder,
-        ShopAdapterInterface            $shopAdapter
+        ShopAdapterInterface            $shopAdapter,
+        TransactionServiceInterface     $transactionService
     ) {
         $this->queryBuilderFactory = $queryBuilderFactory;
         $this->context = $context;
         $this->shopSettingEncoder = $shopSettingEncoder;
         $this->shopAdapter = $shopAdapter;
+        $this->transactionService = $transactionService;
     }
 
     /**
@@ -65,15 +74,24 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
      */
     public function save(ShopModuleSetting $shopModuleSetting)
     {
-        /**
-         * The same entity was splitted between two tables.
-         * Till we can't refactor tables we have to save data in both.
-         */
-        $this->deleteFromOxConfigTable($shopModuleSetting);
-        $this->deleteFromOxConfigDisplayTable($shopModuleSetting);
+        $this->transactionService->begin();
 
-        $this->saveDataToOxConfigTable($shopModuleSetting);
-        $this->saveDataToOxConfigDisplayTable($shopModuleSetting);
+        try {
+            /**
+             * The same entity was splitted between two tables.
+             * Till we can't refactor tables we have to save data in both.
+             */
+            $this->deleteFromOxConfigTable($shopModuleSetting);
+            $this->deleteFromOxConfigDisplayTable($shopModuleSetting);
+
+            $this->saveDataToOxConfigTable($shopModuleSetting);
+            $this->saveDataToOxConfigDisplayTable($shopModuleSetting);
+
+            $this->transactionService->commit();
+        } catch (\Throwable $throwable) {
+            $this->transactionService->rollback();
+            throw $throwable;
+        }
     }
 
     /**

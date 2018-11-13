@@ -45,7 +45,7 @@ class TransactionService implements TransactionServiceInterface
     /**
      * Rolls back the current transaction.
      */
-    public function rollBack()
+    public function rollback()
     {
         $this->connection->rollBack();
     }

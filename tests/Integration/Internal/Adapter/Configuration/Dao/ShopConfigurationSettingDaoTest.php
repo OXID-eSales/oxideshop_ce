@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Adapter\Configura
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
-use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
@@ -189,7 +188,7 @@ class ShopConfigurationSettingDaoTest extends TestCase
         ];
     }
 
-    private function getConfigurationSettingDao()
+    private function getConfigurationSettingDao(): ShopConfigurationSettingDaoInterface
     {
         return $this->get(ShopConfigurationSettingDaoInterface::class);
     }

@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
+use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
 
 /**
  * @internal
@@ -24,6 +25,8 @@ interface ShopConfigurationSettingDaoInterface
      * @param string $name
      * @param int    $shopId
      * @return ShopConfigurationSetting
+     *
+     * @throws EntryDoesNotExistDaoException
      */
     public function get(string $name, int $shopId): ShopConfigurationSetting;
 }

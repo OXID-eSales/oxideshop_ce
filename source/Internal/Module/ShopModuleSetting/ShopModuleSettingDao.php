@@ -71,6 +71,8 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
 
     /**
      * @param ShopModuleSetting $shopModuleSetting
+     *
+     * @throws \Throwable
      */
     public function save(ShopModuleSetting $shopModuleSetting)
     {

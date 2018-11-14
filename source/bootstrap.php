@@ -210,9 +210,7 @@ ini_set('url_rewriter.tags', '');
 function oxTriggerOfflinePageDisplay()
 {
     // Do not display the offline page, if this running in CLI mode
-    if ('cli' === strtolower(php_sapi_name())) {
-        echo 'Uncaught exception. See error log for more information.' . PHP_EOL;
-    } else {
+    if ('cli' !== strtolower(php_sapi_name())) {
         header("HTTP/1.1 500 Internal Server Error");
         header("Connection: close");
 

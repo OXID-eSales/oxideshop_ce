@@ -7,6 +7,8 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Exception;
 
 use OxidEsales\Eshop\Core\Exception\ExceptionHandler;
 use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\Registry;
+use Psr\Log\LoggerInterface;
 
 class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
@@ -33,25 +35,19 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     public function testExceptionHandlerReportsExceptionInDebugMode($exception)
     {
+        $this->setExpectedException(get_class($exception));
+
+        $logger = $this->getMockBuilder(LoggerInterface::class)->getMock();
+        $logger
+            ->expects($this->atLeastOnce())
+            ->method('error')
+            ->with($exception->getMessage(), [$exception]);
+
+        Registry::set('logger', $logger);
+
         $debug = true;
-
-        $exceptionHandlerMock = $this->getMock(
-            ExceptionHandler::class,
-            ['displayDebugMessage'],
-            [$debug]
-        );
-        $exceptionHandlerMock->expects($this->once())->method('displayDebugMessage');
-
-        try {
-            $exceptionHandlerMock->handleUncaughtException($exception);
-        } catch (\Exception $e) {
-            $this->fail('handleUncaughtException() throws an exception.');
-        }
-
-        $logFileContent = file_get_contents(OX_LOG_FILE);
-        file_put_contents(OX_LOG_FILE, '');
-
-        $this->assertContains($this->message, $logFileContent);
+        $exceptionHandler = oxNew(ExceptionHandler::class, $debug);
+        $exceptionHandler->handleUncaughtException($exception);
     }
 
     public function dataProviderExceptions()
@@ -85,77 +81,23 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     }
 
     /**
+     * @expectedException \Exception
+     *
      * @dataProvider dataProviderTestHandleUncaughtExceptionDebugStatus
      *
      * @param $debug
      */
     public function testHandleUncaughtExceptionWillAlwaysWriteToLogFile($debug)
     {
-        /** @var ExceptionHandler|\PHPUnit_Framework_MockObject_MockObject $exceptionHandlerMock */
-        $exceptionHandlerMock = $this->getMock(
-            ExceptionHandler::class,
-            ['writeExceptionToLog','displayOfflinePage','displayDebugMessage'],
-            [$debug]
-        );
-        $exceptionHandlerMock->expects($this->once())->method('writeExceptionToLog');
+        $logger = $this->getMockBuilder(LoggerInterface::class)->getMock();
+        $logger
+            ->expects($this->atLeastOnce())
+            ->method('error');
 
-        $exceptionHandlerMock->handleUncaughtException(new \Exception());
-    }
+        Registry::set('logger', $logger);
 
-    /**
-     * The message is different, if in CLI mode.
-     * Real message cannot be tested in UNIT or Integration tests
-     *
-     * @dataProvider dataProviderTestHandleUncaughtExceptionDebugStatus
-     *
-     * @covers \OxidEsales\Eshop\Core\Exception\ExceptionHandler::handleUncaughtException
-     */
-    public function testHandleUncaughtExceptionWillDisplayShortDebugMessageInCliMode($debug) {
-        /** @var ExceptionHandler|\PHPUnit_Framework_MockObject_MockObject $exceptionHandlerMock */
-        $exceptionHandlerMock = $this->getMock(
-            ExceptionHandler::class,
-            ['writeExceptionToLog'],
-            [$debug]
-        );
-
-        $exceptionHandlerMock->expects($this->any())->method('writeExceptionToLog')->willReturn(true);
-        ob_start();
-        $exceptionHandlerMock->handleUncaughtException(new \Exception());
-        $displayMessage = ob_get_clean();
-
-        $this->assertContains('Uncaught exception. See error log for more information.', $displayMessage);
-    }
-
-    /**
-     * @covers \OxidEsales\Eshop\Core\Exception\ExceptionHandler::handleUncaughtException
-     */
-    public function testHandleUncaughtExceptionWillDisplayDebugMessageIfDebugIsTrue() {
-        $debug = true;
-        /** @var ExceptionHandler|\PHPUnit_Framework_MockObject_MockObject $exceptionHandlerMock */
-        $exceptionHandlerMock = $this->getMock(
-            ExceptionHandler::class,
-            ['writeExceptionToLog','displayDebugMessage'],
-            [$debug]
-        );
-        $exceptionHandlerMock->expects($this->once())->method('displayDebugMessage');
-
-        $exceptionHandlerMock->handleUncaughtException(new \Exception());
-    }
-
-    /**
-     * @covers \OxidEsales\Eshop\Core\Exception\ExceptionHandler::handleUncaughtException
-     */
-    public function testHandleUncaughtExceptionWillDisplayOfflinePageIfDebugIsFalse() {
-        $debug = false;
-        /** @var ExceptionHandler|\PHPUnit_Framework_MockObject_MockObject $exceptionHandlerMock */
-        $exceptionHandlerMock = $this->getMock(
-            ExceptionHandler::class,
-            ['writeExceptionToLog','displayOfflinePage'],
-            [$debug]
-        );
-        $exceptionHandlerMock->expects($this->once())->method('displayOfflinePage');
-
-        $exceptionHandlerMock->handleUncaughtException(new \Exception());
+        $exceptionHandler = oxNew(ExceptionHandler::class, $debug);
+        $exceptionHandler->handleUncaughtException(new \Exception());
     }
 
     /**

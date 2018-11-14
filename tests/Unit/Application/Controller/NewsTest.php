@@ -102,7 +102,7 @@ class NewsTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
 
         $oNews = $this->getMock(\OxidEsales\Eshop\Application\Controller\NewsController::class, array('getConfig'));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $aResult = array();
         $aResults = array();
@@ -139,7 +139,7 @@ class NewsTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\NewsController::class, array('getConfig'));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals(oxRegistry::getLang()->translateString('LATEST_NEWS_AND_UPDATES_AT', oxRegistry::getLang()->getBaseLanguage(), false) . ' shop', $oView->getTitle());
     }

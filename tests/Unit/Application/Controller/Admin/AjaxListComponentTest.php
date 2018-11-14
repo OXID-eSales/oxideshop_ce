@@ -429,7 +429,7 @@ class AjaxListComponentTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(1));
 
         $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("getConfig", "_addFilter", "_getStartIndex", "_getSortCol", "_getSortDir", "_getTotalCount", "_getSorting", "_getLimit", "_getDataFields"));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oComponent->expects($this->exactly(2))->method('_addFilter')->will($this->returnValue("_addFilter"));
         $oComponent->expects($this->once())->method('_getStartIndex')->will($this->returnValue("_getStartIndex"));
         $oComponent->expects($this->once())->method('_getSortCol')->will($this->returnValue("_getSortCol"));
@@ -487,7 +487,7 @@ class AjaxListComponentTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(false));
 
         $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("getConfig"));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         oxTestModules::addFunction('oxUtils', 'oxResetFileCache', '{ throw new Exception( "oxResetFileCache" ); }');
         // testing..
@@ -514,7 +514,7 @@ class AjaxListComponentTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(false));
 
         $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("getConfig"));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         try {
             $oComponent->resetCounter('priceCatArticle');
@@ -539,7 +539,7 @@ class AjaxListComponentTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(false));
 
         $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("getConfig"));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         try {
             $oComponent->resetCounter('catArticle');
@@ -564,7 +564,7 @@ class AjaxListComponentTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(false));
 
         $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("getConfig"));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         try {
             $oComponent->resetCounter('vendorArticle');
@@ -589,7 +589,7 @@ class AjaxListComponentTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getConfigParam')->will($this->returnValue(false));
 
         $oComponent = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class, array("getConfig"));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         try {
             $oComponent->resetCounter('manufacturerArticle');

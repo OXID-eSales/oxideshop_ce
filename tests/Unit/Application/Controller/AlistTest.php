@@ -414,7 +414,7 @@ class AlistTest extends \OxidTestCase
 
         $oListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getActiveCategory', 'getConfig'));
         $oListView->expects($this->once())->method('getActiveCategory')->will($this->returnValue($oCat));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals('testsuffix', $oListView->getTitleSuffix());
     }
@@ -1120,7 +1120,7 @@ class AlistTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('getConfigParam')->will($this->returnValue(true));
 
         $oSubj = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getConfig'));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals(true, $oSubj->canSelectDisplayType());
     }

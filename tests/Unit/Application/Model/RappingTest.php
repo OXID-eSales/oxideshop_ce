@@ -175,7 +175,7 @@ class RappingTest extends \OxidTestCase
             ->will($this->returnValue('testDynPath'));
 
         $oWrapping = $this->getMock(\OxidEsales\Eshop\Application\Model\Wrapping::class, array('getConfig'), array(), '', false);
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oWrapping->oxwrapping__oxshopid = new oxField('123');
 
         $this->assertEquals('testDynPath', $oWrapping->getNoSslDynImageDir());

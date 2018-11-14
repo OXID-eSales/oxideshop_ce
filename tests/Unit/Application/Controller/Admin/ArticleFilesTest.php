@@ -174,7 +174,7 @@ class ArticleFilesTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(true));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleFiles::class, array("getConfig"), array(), '', false);
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oView->deletefile();
 
         $aErr = oxRegistry::getSession()->getVariable('Errors');
@@ -249,7 +249,7 @@ class ArticleFilesTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(false));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleFiles::class, array("getConfig"), array(), '', false);
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oView->upload();
 
         $oFile = oxNew("oxFile");
@@ -270,7 +270,7 @@ class ArticleFilesTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(true));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleFiles::class, array("getConfig"), array(), '', false);
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oView->upload();
 
         $aErr = oxRegistry::getSession()->getVariable('Errors');
@@ -311,7 +311,7 @@ class ArticleFilesTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(false));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleFiles::class, array("getConfig"), array(), '', false);
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oView->upload();
 
         $this->setAdminMode(true);

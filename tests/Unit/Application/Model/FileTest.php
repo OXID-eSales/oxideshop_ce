@@ -228,7 +228,7 @@ class FileTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getUploadedFile')->will($this->returnValue($aFileInfo));
 
         $oFile = $this->getMock(\OxidEsales\Eshop\Application\Model\File::class, array('getConfig', '_uploadFile', '_getHashedFileDir'), array(), '', false);
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oFile->expects($this->any())->method('_uploadFile')->will($this->returnValue(true));
         $oFile->expects($this->any())->method('_getHashedFileDir')->will($this->returnValue('eb'));
 
@@ -252,7 +252,7 @@ class FileTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getUploadedFile')->will($this->returnValue($aFileInfo));
 
         $oFile = $this->getMock(\OxidEsales\Eshop\Application\Model\File::class, array('getConfig', '_uploadFile', '_getHashedFileDir'), array(), '', false);
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oFile->expects($this->any())->method('_uploadFile')->will($this->returnValue(false));
         $oFile->expects($this->any())->method('_getHashedFileDir')->will($this->returnValue('eb'));
 

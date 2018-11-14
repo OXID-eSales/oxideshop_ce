@@ -147,7 +147,7 @@ class UserComponentTest extends \OxidTestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array("getUser", "getConfig", "_checkTermVersion", "getParent"), array(), '', false);
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
         $oView->expects($this->any())->method('getParent')->will($this->returnValue($oParent));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         try {
             $this->assertFalse($oView->render());
@@ -353,7 +353,7 @@ class UserComponentTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('isSsl')->will($this->returnValue(false));
 
         $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Integration\Application\Component\modcmp_user::class, array('getConfig'));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->setRequestParameter('cl', 'testclass');
         $this->setRequestParameter('cnid', 'catid');
@@ -376,7 +376,7 @@ class UserComponentTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('isSsl')->will($this->returnValue(true));
 
         $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Integration\Application\Component\modcmp_user::class, array('getConfig'));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $this->setRequestParameter('cl', 'testclass');
         $this->setRequestParameter('cnid', 'catid');
         $this->setRequestParameter('mnid', 'manId');

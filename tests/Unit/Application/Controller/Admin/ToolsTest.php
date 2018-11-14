@@ -40,7 +40,7 @@ class ToolsTest extends \OxidTestCase
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ToolsController::class, array("getConfig"), array(), '', false);
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $this->assertEquals("Access denied !", $oView->render());
     }
 }

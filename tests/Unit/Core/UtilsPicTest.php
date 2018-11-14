@@ -156,7 +156,7 @@ class UtilsPicTest extends \OxidTestCase
         $oConfig = $this->getMock('oxconfig');
 
         $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('getConfig'));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertFalse($oUtilsPic->UNITdeletePicture('xxx', 'yyy'));
     }
@@ -169,7 +169,7 @@ class UtilsPicTest extends \OxidTestCase
         $oConfig = $this->getMock('oxconfig');
 
         $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('getConfig'));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertFalse($oUtilsPic->UNITdeletePicture('nopic.jpg', 'yyy'));
         $this->assertFalse($oUtilsPic->UNITdeletePicture('nopic_ico.jpg', 'yyy'));
@@ -183,7 +183,7 @@ class UtilsPicTest extends \OxidTestCase
         $oConfig = $this->getMock('oxconfig');
 
         $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('getConfig'));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertFalse($oUtilsPic->UNITdeletePicture(time(), 'yyy'));
     }

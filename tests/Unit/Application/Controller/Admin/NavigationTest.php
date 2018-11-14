@@ -224,7 +224,7 @@ class NavigationTest extends \OxidTestCase
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationController::class, array("getConfig"), array(), '', false);
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $this->assertEquals("Version 4 is available.", $oView->UNITcheckVersion());
     }
 }

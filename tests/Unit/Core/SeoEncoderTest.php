@@ -584,7 +584,7 @@ class SeoEncoderTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('getShopUrl')->with($this->equalTo(1))->will($this->returnValue('url/'));
 
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('getConfig'), array(), '', false);
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals('PROCurl/seouri/CORP', $oEncoder->UNITgetFullUrl('seouri/', 1));
     }
@@ -1373,7 +1373,7 @@ class SeoEncoderTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getSslShopUrl')->will($this->returnValue($sSslUrl));
 
         $oE = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array("getConfig"), array(), '', false);
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals('aa?a=2', $oE->UNITtrimUrl($sBaseUrl . 'aa?sid=as23.&a=2', 0));
         $this->assertEquals('aa', $oE->UNITtrimUrl($sBaseUrl . 'aa?sid=as23.', 1));
@@ -1725,7 +1725,7 @@ class SeoEncoderTest extends \OxidTestCase
         // non admin
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('isAdmin', 'getConfig'), array(), '', false);
         $oEncoder->expects($this->exactly(3))->method('isAdmin')->will($this->returnValue(false));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $this->assertEquals(md5($sViewId) . "seo", $oEncoder->UNITgetCacheKey("oxarticle"));
 
         // + cache check

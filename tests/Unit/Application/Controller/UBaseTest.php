@@ -897,7 +897,7 @@ class UBaseTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('getActiveShop')->will($this->returnValue($oShop));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getConfig'));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $this->assertEquals('testsuffix', $oView->getTitleSuffix());
     }
 
@@ -912,7 +912,7 @@ class UBaseTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('getActiveShop')->will($this->returnValue($oShop));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getConfig'));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $this->assertEquals('testsuffix', $oView->getTitlePrefix());
     }
 
@@ -1187,7 +1187,7 @@ class UBaseTest extends \OxidTestCase
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getActiveView'));
         $oConfig->expects($this->once())->method('getActiveView')->will($this->returnValue($oActiveView));
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getConfig'));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $this->assertEquals('Links', $oView->getTitle());
     }
 

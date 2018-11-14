@@ -294,7 +294,7 @@ class BaseTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue(null));
 
         $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('getConfig', 'getShopId'), array(), '', false);
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oBase->expects($this->any())->method('getShopId')->will($this->returnValue(null));
 
         $this->assertNull($oBase->isDerived());
@@ -313,7 +313,7 @@ class BaseTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue('xxx'));
 
         $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('getConfig', 'getShopId'), array(), '', false);
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oBase->expects($this->any())->method('getShopId')->will($this->returnValue('xxx'));
 
         $this->assertSame($expected, $oBase->isDerived());
@@ -332,7 +332,7 @@ class BaseTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue('xxx'));
 
         $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('getConfig', 'getShopId'), array(), '', false);
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oBase->expects($this->any())->method('getShopId')->will($this->returnValue('yyy'));
 
         $this->assertSame($expected, $oBase->isDerived());

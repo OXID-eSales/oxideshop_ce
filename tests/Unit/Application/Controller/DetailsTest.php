@@ -1181,7 +1181,7 @@ class DetailsTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo('bl_perfLoadReviews'))->will($this->returnValue('test_isactive'));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleDetailsController::class, array('getConfig'));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertSame('test_isactive', $oView->isReviewActive());
     }

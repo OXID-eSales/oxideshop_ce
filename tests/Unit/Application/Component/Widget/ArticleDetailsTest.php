@@ -744,7 +744,7 @@ class ArticleDetailsTest extends \OxidTestCase
         $oProduct->expects($this->once())->method('getArticleRatingAverage')->will($this->returnValue(123.855));
 
         $oView = $this->getMock($this->getProxyClassName('oxwArticleDetails'), array('getConfig', 'isReviewActive', 'getProduct'));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oView->expects($this->once())->method('isReviewActive')->will($this->returnValue(true));
         $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
 
@@ -769,7 +769,7 @@ class ArticleDetailsTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo('bl_perfLoadReviews'))->will($this->returnValue('test_isactive'));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, array('getConfig'));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertSame('test_isactive', $oView->isReviewActive());
     }
@@ -783,7 +783,7 @@ class ArticleDetailsTest extends \OxidTestCase
         $oProduct->expects($this->once())->method('getArticleRatingCount')->will($this->returnValue(123));
 
         $oView = $this->getMock($this->getProxyClassName('oxwArticleDetails'), array('getConfig', 'isReviewActive', 'getProduct'));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oView->expects($this->once())->method('isReviewActive')->will($this->returnValue(true));
         $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
 

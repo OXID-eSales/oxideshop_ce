@@ -37,7 +37,7 @@ class CmpShopTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('getActiveShop')->will($this->returnValue($oShop));
 
         $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\ShopComponent::class, array("getConfig", "isAdmin"), array(), '', false);
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oCmp->expects($this->once())->method('isAdmin')->will($this->returnValue(false));
 
         $oCmp->render();

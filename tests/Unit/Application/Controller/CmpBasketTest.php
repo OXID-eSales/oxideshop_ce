@@ -161,7 +161,7 @@ class CmpBasketTest extends \OxidTestCase
         $o->expects($this->once())->method('_setLastCallFnc')->with($this->equalTo('changebasket'))->will($this->returnValue(null));
         $o->expects($this->once())->method('_addItems')->with($this->equalTo($aProducts))->will($this->returnValue($oBItem));
         $o->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $o->expects($this->never())->method('_getRedirectUrl')->will($this->returnValue(null));
 
         $this->assertSame(null, $o->changebasket('abc', 11, 'sel', 'persparam', 'override'));
@@ -474,7 +474,7 @@ class CmpBasketTest extends \OxidTestCase
 
         $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('getSession', 'getConfig'));
         $o->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals(
             null, $o->UNITaddItems(
@@ -516,7 +516,7 @@ class CmpBasketTest extends \OxidTestCase
 
         $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('getSession', 'getConfig'));
         $o->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals(
             null, $o->UNITaddItems(
@@ -559,7 +559,7 @@ class CmpBasketTest extends \OxidTestCase
 
         $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('getSession', 'getConfig'));
         $o->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals(
             null, $o->UNITaddItems(
@@ -590,7 +590,7 @@ class CmpBasketTest extends \OxidTestCase
 
         $o = $this->getMock(\OxidEsales\Eshop\Application\Component\BasketComponent::class, array('getSession', 'getConfig'));
         $o->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals(
             null, $o->UNITaddItems(

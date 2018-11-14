@@ -71,9 +71,9 @@ class ThemeTest extends \OxidTestCase
         $oTheme = $this->getMock(\OxidEsales\Eshop\Core\Theme::class, array('checkForActivationErrors', 'getConfig', 'getInfo'));
         $oTheme->expects($this->at(0))->method('checkForActivationErrors')->will($this->returnValue(false));
         $oTheme->expects($this->at(1))->method('getInfo')->with($this->equalTo('parentTheme'))->will($this->returnValue(''));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oTheme->expects($this->at(2))->method('getInfo')->with($this->equalTo('id'))->will($this->returnValue('currentT'));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oTheme->activate();
     }
 
@@ -98,8 +98,8 @@ class ThemeTest extends \OxidTestCase
         $oTheme = $this->getMock(\OxidEsales\Eshop\Core\Theme::class, array('checkForActivationErrors', 'getConfig', 'getInfo'));
         $oTheme->expects($this->at(0))->method('checkForActivationErrors')->will($this->returnValue(false));
         $oTheme->expects($this->at(1))->method('getInfo')->with($this->equalTo('parentTheme'))->will($this->returnValue('parentT'));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oTheme->expects($this->at(2))->method('getInfo')->with($this->equalTo('id'))->will($this->returnValue('currentT'));
         $oTheme->activate();
     }
@@ -113,7 +113,7 @@ class ThemeTest extends \OxidTestCase
             )
             ->will($this->returnValue('custom'));
         $oTheme = $this->getMock(\OxidEsales\Eshop\Core\Theme::class, array('getConfig'));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals('custom', $oTheme->getActiveThemeId());
     }
@@ -132,7 +132,7 @@ class ThemeTest extends \OxidTestCase
             )
             ->will($this->returnValue('maint'));
         $oTheme = $this->getMock(\OxidEsales\Eshop\Core\Theme::class, array('getConfig'));
-		\OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals('maint', $oTheme->getActiveThemeId());
     }

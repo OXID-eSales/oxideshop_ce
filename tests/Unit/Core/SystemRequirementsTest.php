@@ -7,6 +7,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\SystemRequirements;
+use OxidEsales\EshopCommunity\Core\Registry;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class SystemRequirementsTest extends \OxidTestCase
@@ -337,14 +338,13 @@ class SystemRequirementsTest extends \OxidTestCase
         );
         $configMock->expects($this->any())->method('getTemplatePath')->will($this->returnValueMap($map));
 
-        /** @var SystemRequirements|PHPUnit\Framework\MockObject\MockObject $systemRequirementsMock */
-        $systemRequirementsMock = $this->getMock(\OxidEsales\Eshop\Core\SystemRequirements::class, array("getConfig"));
-        $systemRequirementsMock->expects($this->any())->method('getConfig')->will($this->returnValue($configMock));
+        $systemRequirements = oxNew(\OxidEsales\Eshop\Core\SystemRequirements::class);
+        Registry::set(Config::class, $configMock);
 
-        $this->assertFalse($systemRequirementsMock->UNITcheckTemplateBlock('test0', 'nonimportanthere'));
-        $this->assertTrue($systemRequirementsMock->UNITcheckTemplateBlock('test1', 'block1'));
-        $this->assertTrue($systemRequirementsMock->UNITcheckTemplateBlock('test1', 'block2'));
-        $this->assertFalse($systemRequirementsMock->UNITcheckTemplateBlock('test1', 'block3'));
+        $this->assertFalse($systemRequirements->UNITcheckTemplateBlock('test0', 'nonimportanthere'));
+        $this->assertTrue($systemRequirements->UNITcheckTemplateBlock('test1', 'block1'));
+        $this->assertTrue($systemRequirements->UNITcheckTemplateBlock('test1', 'block2'));
+        $this->assertFalse($systemRequirements->UNITcheckTemplateBlock('test1', 'block3'));
     }
 
     /**

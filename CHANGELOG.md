@@ -68,6 +68,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\Email::$_oConfig`
 - `\OxidEsales\EshopCommunity\Core\Email::setConfig`
 - `\OxidEsales\EshopCommunity\Core\Email::getConfig`
+- `\OxidEsales\EshopCommunity\Core\SystemRequirements::getConfig`
 
 ### Fixed
 

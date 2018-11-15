@@ -1501,6 +1501,11 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * Config instance getter
+     *
+     * @deprecated since b-dev (2018-11-14); This method will be removed completely. Extend your views accordingly and use
+     *             $this->setViewData('someVar', 'some Value'); to provide the data to your templates
+     *
      * @return \OxidEsales\Eshop\Core\Config
      */
     public function getConfig()

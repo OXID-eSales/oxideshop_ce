@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - source/Application/views/admin/tpl/shop_license.tpl
 
 ### Deprecated
+- `\OxidEsales\EshopCommunity\Core\Controller\BaseController::getConfig`
+- `\OxidEsales\EshopCommunity\Core\ViewConfig::getConfig`
 
 ### Removed
 - \OxidEsales\EshopCommunity\Application\Controller\Admin\AdminController::getServiceUrl()

@@ -27,15 +27,15 @@ class EnvironmentConfigurationTest extends TestCase
     public function testGetShopConfiguration()
     {
         $shopConfiguration = new ShopConfiguration();
-        $this->environmentConfiguration->setShopConfiguration(0, $shopConfiguration);
+        $this->environmentConfiguration->addShopConfiguration(0, $shopConfiguration);
         $this->assertSame($shopConfiguration, $this->environmentConfiguration->getShopConfiguration(0));
     }
 
     public function testGetShopConfigurations()
     {
         $shopConfiguration = new ShopConfiguration();
-        $this->environmentConfiguration->setShopConfiguration(0, $shopConfiguration);
-        $this->environmentConfiguration->setShopConfiguration(1, $shopConfiguration);
+        $this->environmentConfiguration->addShopConfiguration(0, $shopConfiguration);
+        $this->environmentConfiguration->addShopConfiguration(1, $shopConfiguration);
 
         $this->assertSame(
             [
@@ -56,16 +56,16 @@ class EnvironmentConfigurationTest extends TestCase
     public function testGetShopIdsOfShopConfigurations()
     {
         $shopConfiguration = new ShopConfiguration();
-        $this->environmentConfiguration->setShopConfiguration(1, $shopConfiguration);
-        $this->environmentConfiguration->setShopConfiguration(2, $shopConfiguration);
+        $this->environmentConfiguration->addShopConfiguration(1, $shopConfiguration);
+        $this->environmentConfiguration->addShopConfiguration(2, $shopConfiguration);
         $this->assertEquals([1,2], $this->environmentConfiguration->getShopIdsOfShopConfigurations());
     }
 
     public function testDeleteShopConfiguration()
     {
         $shopConfiguration = new ShopConfiguration();
-        $this->environmentConfiguration->setShopConfiguration(1, $shopConfiguration);
-        $this->environmentConfiguration->setShopConfiguration(2, $shopConfiguration);
+        $this->environmentConfiguration->addShopConfiguration(1, $shopConfiguration);
+        $this->environmentConfiguration->addShopConfiguration(2, $shopConfiguration);
         $this->environmentConfiguration->deleteShopConfiguration(1);
         $this->assertEquals([2], $this->environmentConfiguration->getShopIdsOfShopConfigurations());
     }

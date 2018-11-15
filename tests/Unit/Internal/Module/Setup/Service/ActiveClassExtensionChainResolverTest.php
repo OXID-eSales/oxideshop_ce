@@ -57,15 +57,16 @@ class ActiveClassExtensionChainResolverTest extends TestCase
         $shopConfiguration = new ShopConfiguration();
         $shopConfiguration->setChain('classExtensions', $classExtensionChain);
 
-        $shopConfiguration->setModuleConfiguration('activeModuleName', $activeModuleConfiguration1);
-        $shopConfiguration->setModuleConfiguration('activeModuleName2', $activeModuleConfiguration2);
-        $shopConfiguration->setModuleConfiguration('notActiveModuleName', $notActiveModuleConfiguration);
+        $shopConfiguration
+            ->addModuleConfiguration($activeModuleConfiguration1)
+            ->addModuleConfiguration($activeModuleConfiguration2)
+            ->addModuleConfiguration($notActiveModuleConfiguration);
 
         $environmentConfiguration = new EnvironmentConfiguration();
-        $environmentConfiguration->setShopConfiguration(1, $shopConfiguration);
+        $environmentConfiguration->addShopConfiguration(1, $shopConfiguration);
 
         $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->setEnvironmentConfiguration('dev', $environmentConfiguration);
+        $projectConfiguration->addEnvironmentConfiguration('dev', $environmentConfiguration);
 
         $projectConfigurationDao = $this->getMockBuilder(ProjectConfigurationDaoInterface::class)->getMock();
         $projectConfigurationDao
@@ -113,7 +114,7 @@ class ActiveClassExtensionChainResolverTest extends TestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId($moduleName)
-            ->setSetting(
+            ->addSetting(
                 new ModuleSetting(ModuleSetting::CLASS_EXTENSIONS, $extensions)
             );
         return $moduleConfiguration;

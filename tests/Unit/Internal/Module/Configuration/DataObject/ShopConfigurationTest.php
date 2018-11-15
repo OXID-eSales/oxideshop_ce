@@ -28,22 +28,28 @@ class ShopConfigurationTest extends TestCase
     public function testGetModuleConfiguration()
     {
         $moduleConfiguration = new ModuleConfiguration();
-        $testModuleId = 'testModuleId';
-        $this->shopConfiguration->setModuleConfiguration($testModuleId, $moduleConfiguration);
-        $this->assertSame($moduleConfiguration, $this->shopConfiguration->getModuleConfiguration($testModuleId));
+        $moduleConfiguration->setId('testModuleId');
+
+        $this->shopConfiguration->addModuleConfiguration($moduleConfiguration);
+        $this->assertSame($moduleConfiguration, $this->shopConfiguration->getModuleConfiguration('testModuleId'));
     }
 
     public function testGetModuleConfigurations()
     {
-        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration1 = new ModuleConfiguration();
+        $moduleConfiguration1->setId('firstModule');
 
-        $this->shopConfiguration->setModuleConfiguration('firstModule', $moduleConfiguration);
-        $this->shopConfiguration->setModuleConfiguration('secondModule', $moduleConfiguration);
+        $moduleConfiguration2 = new ModuleConfiguration();
+        $moduleConfiguration2->setId('secondModule');
+
+        $this->shopConfiguration
+             ->addModuleConfiguration($moduleConfiguration1)
+             ->addModuleConfiguration($moduleConfiguration2);
 
         $this->assertSame(
             [
-                'firstModule'   => $moduleConfiguration,
-                'secondModule'  => $moduleConfiguration,
+                'firstModule'   => $moduleConfiguration1,
+                'secondModule'  => $moduleConfiguration2,
             ],
             $this->shopConfiguration->getModuleConfigurations()
         );

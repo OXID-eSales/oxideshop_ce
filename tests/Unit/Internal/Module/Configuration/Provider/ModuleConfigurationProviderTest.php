@@ -22,15 +22,16 @@ class ModuleConfigurationProviderTest extends TestCase
     public function testConfigurationGetter()
     {
         $expectedModuleConfiguration = new ModuleConfiguration();
+        $expectedModuleConfiguration->setId('testModuleId');
 
         $shopConfiguration = new ShopConfiguration();
-        $shopConfiguration->setModuleConfiguration('testModuleId', $expectedModuleConfiguration);
+        $shopConfiguration->addModuleConfiguration($expectedModuleConfiguration);
 
         $environmentConfiguration = new EnvironmentConfiguration();
-        $environmentConfiguration->setShopConfiguration(1, $shopConfiguration);
+        $environmentConfiguration->addShopConfiguration(1, $shopConfiguration);
 
         $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->setEnvironmentConfiguration('prod', $environmentConfiguration);
+        $projectConfiguration->addEnvironmentConfiguration('prod', $environmentConfiguration);
 
         $projectConfigurationDao = $this->getMockBuilder(ProjectConfigurationDaoInterface::class)->getMock();
         $projectConfigurationDao

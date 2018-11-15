@@ -23,7 +23,6 @@ class ProjectConfigurationDataMapperTest extends TestCase
     public function testEnvironmentsMapping()
     {
         $configurationData = [
-            'project_name'  => 'Module structure 2018',
             'environments'  => [
                 'dev' => [
                     'shops' => [],
@@ -35,10 +34,8 @@ class ProjectConfigurationDataMapperTest extends TestCase
         ];
 
         $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->setProjectName('Module structure 2018');
-
-        $projectConfiguration->setEnvironmentConfiguration('dev', new EnvironmentConfiguration());
-        $projectConfiguration->setEnvironmentConfiguration('prod',new EnvironmentConfiguration());
+        $projectConfiguration->addEnvironmentConfiguration('dev', new EnvironmentConfiguration());
+        $projectConfiguration->addEnvironmentConfiguration('prod',new EnvironmentConfiguration());
 
         $projectConfigurationDataMapper = new ProjectConfigurationDataMapper(
             $this->getMockBuilder(ShopConfigurationDataMapperInterface::class)->getMock()
@@ -58,7 +55,6 @@ class ProjectConfigurationDataMapperTest extends TestCase
     public function testShopsMapping()
     {
         $configurationData = [
-            'project_name'  => 'Module structure 2018',
             'environments'  => [
                 'dev' => [
                     'shops' => [
@@ -70,13 +66,12 @@ class ProjectConfigurationDataMapperTest extends TestCase
         ];
 
         $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->setProjectName('Module structure 2018');
 
         $environmentConfiguration = new EnvironmentConfiguration();
-        $environmentConfiguration->setShopConfiguration(1, new ShopConfiguration());
-        $environmentConfiguration->setShopConfiguration(2, new ShopConfiguration());
+        $environmentConfiguration->addShopConfiguration(1, new ShopConfiguration());
+        $environmentConfiguration->addShopConfiguration(2, new ShopConfiguration());
 
-        $projectConfiguration->setEnvironmentConfiguration(
+        $projectConfiguration->addEnvironmentConfiguration(
             'dev',
             $environmentConfiguration
         );

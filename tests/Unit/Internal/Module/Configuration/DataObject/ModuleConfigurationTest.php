@@ -22,7 +22,7 @@ class ModuleConfigurationTest extends TestCase
         $setting = new ModuleSetting('testSetting', []);
 
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->setSetting($setting);
+        $moduleConfiguration->addSetting($setting);
 
         $this->assertSame(
             $setting,
@@ -36,7 +36,7 @@ class ModuleConfigurationTest extends TestCase
 
         $this->assertFalse($moduleConfiguration->hasSetting('testSetting'));
 
-        $moduleConfiguration->setSetting(
+        $moduleConfiguration->addSetting(
             new ModuleSetting('testSetting', [])
         );
 
@@ -47,7 +47,7 @@ class ModuleConfigurationTest extends TestCase
     {
         $moduleConfiguration = new ModuleConfiguration();
 
-        $moduleConfiguration->setSetting(
+        $moduleConfiguration->addSetting(
             new ModuleSetting(
                 ModuleSetting::CLASS_EXTENSIONS,
                 [
@@ -69,7 +69,7 @@ class ModuleConfigurationTest extends TestCase
             $moduleConfiguration->hasClassExtension('expectedExtensionNamespace')
         );
 
-        $moduleConfiguration->setSetting(
+        $moduleConfiguration->addSetting(
             new ModuleSetting(
                 ModuleSetting::CLASS_EXTENSIONS,
                 [

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -23,7 +23,6 @@ class ProjectConfigurationDaoTest extends TestCase
     public function testProjectConfigurationGetter()
     {
         $projectConfigurationData = [
-            'project_name'  => 'Module structure 2018',
             'environments'  => [
                 'dev' => [
                     'shops' => [],

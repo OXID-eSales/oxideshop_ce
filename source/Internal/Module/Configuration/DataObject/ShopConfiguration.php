@@ -47,12 +47,14 @@ class ShopConfiguration
     }
 
     /**
-     * @param string              $moduleId
      * @param ModuleConfiguration $moduleConfiguration
+     * @return $this
      */
-    public function setModuleConfiguration(string $moduleId, ModuleConfiguration $moduleConfiguration)
+    public function addModuleConfiguration(ModuleConfiguration $moduleConfiguration)
     {
-        $this->moduleConfigurations[$moduleId] = $moduleConfiguration;
+        $this->moduleConfigurations[$moduleConfiguration->getId()] = $moduleConfiguration;
+
+        return $this;
     }
 
     /**

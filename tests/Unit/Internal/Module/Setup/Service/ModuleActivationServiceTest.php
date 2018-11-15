@@ -27,7 +27,7 @@ class ModuleActivationServiceTest extends TestCase
         $moduleSetting = new ModuleSetting('testSetting', 'value');
 
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->setSetting(
+        $moduleConfiguration->addSetting(
             $moduleSetting
         );
 
@@ -61,7 +61,7 @@ class ModuleActivationServiceTest extends TestCase
         $moduleSetting = new ModuleSetting('testSetting', 'value');
 
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->setSetting(
+        $moduleConfiguration->addSetting(
             $moduleSetting
         );
 
@@ -82,7 +82,7 @@ class ModuleActivationServiceTest extends TestCase
         $moduleSetting = new ModuleSetting('testSetting', 'value');
 
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->setSetting(
+        $moduleConfiguration->addSetting(
             $moduleSetting
         );
 

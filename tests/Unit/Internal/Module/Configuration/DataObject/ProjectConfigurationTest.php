@@ -15,6 +15,9 @@ use PHPUnit\Framework\TestCase;
 
 class ProjectConfigurationTest extends TestCase
 {
+    /**
+     * @var ProjectConfiguration
+     */
     private $projectConfiguration;
 
     protected function setUp()
@@ -26,8 +29,8 @@ class ProjectConfigurationTest extends TestCase
     public function testGetNamesOfEnvironmentConfigurations()
     {
         $environmentConfiguration = new EnvironmentConfiguration();
-        $this->projectConfiguration->setEnvironmentConfiguration('Testing', $environmentConfiguration);
-        $this->projectConfiguration->setEnvironmentConfiguration('Production', $environmentConfiguration);
+        $this->projectConfiguration->addEnvironmentConfiguration('Testing', $environmentConfiguration);
+        $this->projectConfiguration->addEnvironmentConfiguration('Production', $environmentConfiguration);
 
         $this->assertEquals(
             ['Testing', 'Production'],
@@ -38,8 +41,8 @@ class ProjectConfigurationTest extends TestCase
     public function testDeleteEnvironment()
     {
         $environmentConfiguration = new EnvironmentConfiguration();
-        $this->projectConfiguration->setEnvironmentConfiguration('Testing', $environmentConfiguration);
-        $this->projectConfiguration->setEnvironmentConfiguration('Production', $environmentConfiguration);
+        $this->projectConfiguration->addEnvironmentConfiguration('Testing', $environmentConfiguration);
+        $this->projectConfiguration->addEnvironmentConfiguration('Production', $environmentConfiguration);
         $this->projectConfiguration->deleteEnvironmentConfiguration('Testing');
 
         $this->assertEquals(['Production'], $this->projectConfiguration->getNamesOfEnvironmentConfigurations());
@@ -54,7 +57,7 @@ class ProjectConfigurationTest extends TestCase
     public function testGetEnvironmentConfiguration()
     {
         $environmentConfiguration = new EnvironmentConfiguration();
-        $this->projectConfiguration->setEnvironmentConfiguration('Testing', $environmentConfiguration);
+        $this->projectConfiguration->addEnvironmentConfiguration('Testing', $environmentConfiguration);
 
         $this->assertSame(
             $environmentConfiguration,
@@ -65,8 +68,8 @@ class ProjectConfigurationTest extends TestCase
     public function testGetEnvironmentConfigurations()
     {
         $environmentConfiguration = new EnvironmentConfiguration();
-        $this->projectConfiguration->setEnvironmentConfiguration('Testing', $environmentConfiguration);
-        $this->projectConfiguration->setEnvironmentConfiguration('Once more', $environmentConfiguration);
+        $this->projectConfiguration->addEnvironmentConfiguration('Testing', $environmentConfiguration);
+        $this->projectConfiguration->addEnvironmentConfiguration('Once more', $environmentConfiguration);
 
         $this->assertSame(
             [

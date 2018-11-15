@@ -89,7 +89,7 @@ class ModuleConfiguration
      *
      * @return $this
      */
-    public function setSetting(ModuleSetting $moduleSetting): ModuleConfiguration
+    public function addSetting(ModuleSetting $moduleSetting): ModuleConfiguration
     {
         $this->settings[$moduleSetting->getName()] = $moduleSetting;
         return $this;

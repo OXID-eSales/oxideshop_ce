@@ -27,8 +27,7 @@ class ProjectConfigurationDaoTest extends TestCase
             ->get(ProjectConfigurationDaoInterface::class);
 
         $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->setProjectName('testProject');
-        $projectConfiguration->setEnvironmentConfiguration('dev', new EnvironmentConfiguration());
+        $projectConfiguration->addEnvironmentConfiguration('dev', new EnvironmentConfiguration());
 
         $projectConfigurationDao->persistConfiguration($projectConfiguration);
 

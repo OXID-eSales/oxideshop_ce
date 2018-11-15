@@ -70,12 +70,10 @@ class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterfac
     private function setModulesConfiguration(ShopConfiguration $shopConfiguration, array $modulesData)
     {
         foreach ($modulesData as $moduleId => $moduleData) {
-            $moduleData['id'] = $moduleId;
+            $moduleConfiguration = $this->moduleConfigurationDataMapper->fromData($moduleData);
+            $moduleConfiguration->setId($moduleId);
 
-            $shopConfiguration->setModuleConfiguration(
-                $moduleId,
-                $this->moduleConfigurationDataMapper->fromData($moduleData)
-            );
+            $shopConfiguration->addModuleConfiguration($moduleConfiguration);
         }
     }
 

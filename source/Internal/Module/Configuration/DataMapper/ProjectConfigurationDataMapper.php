@@ -37,10 +37,9 @@ class ProjectConfigurationDataMapper implements ProjectConfigurationDataMapperIn
      */
     public function toData(ProjectConfiguration $configuration): array
     {
-        $data['project_name'] = $configuration->getProjectName();
-        $data['environments'] = $this->getEnvironmentConfigurationsData($configuration);
-
-        return $data;
+        return [
+            'environments' => $this->getEnvironmentConfigurationsData($configuration),
+        ];
     }
 
     /**
@@ -50,8 +49,6 @@ class ProjectConfigurationDataMapper implements ProjectConfigurationDataMapperIn
     public function fromData(array $data): ProjectConfiguration
     {
         $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->setProjectName($data['project_name']);
-
         $this->setEnvironmentConfigurations($projectConfiguration, $data['environments']);
 
         return $projectConfiguration;
@@ -70,7 +67,7 @@ class ProjectConfigurationDataMapper implements ProjectConfigurationDataMapperIn
                 $this->setShopsConfiguration($environmentConfiguration, $environmentData['shops']);
             }
 
-            $projectConfiguration->setEnvironmentConfiguration(
+            $projectConfiguration->addEnvironmentConfiguration(
                 $environmentName,
                 $environmentConfiguration
             );
@@ -84,7 +81,7 @@ class ProjectConfigurationDataMapper implements ProjectConfigurationDataMapperIn
     private function setShopsConfiguration(EnvironmentConfiguration $environmentConfiguration, array $shopsData)
     {
         foreach ($shopsData as $shopId => $shopData) {
-            $environmentConfiguration->setShopConfiguration(
+            $environmentConfiguration->addShopConfiguration(
                 $shopId,
                 $this->shopConfigurationDataMapper->fromData($shopData)
             );

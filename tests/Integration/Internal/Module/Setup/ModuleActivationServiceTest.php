@@ -92,34 +92,34 @@ class ModuleActivationServiceTest extends TestCase
             ->setId('testModuleConfiguration')
             ->setState('active');
 
-        $moduleConfiguration->setSetting(
+        $moduleConfiguration->addSetting(
             new ModuleSetting('path', 'somePath')
         )
-        ->setSetting(
+        ->addSetting(
             new ModuleSetting('version', 'v2.1')
         )
-        ->setSetting(new ModuleSetting(
+        ->addSetting(new ModuleSetting(
             'controllers',
             [
                 'originalClassNamespace' => 'moduleClassNamespace',
                 'otherOriginalClassNamespace' => 'moduleClassNamespace',
             ]
         ))
-        ->setSetting(new ModuleSetting(
+        ->addSetting(new ModuleSetting(
             'templates',
             [
                 'originalTemplate' => 'moduleTemplate',
                 'otherOriginalTemplate' => 'moduleTemplate',
             ]
         ))
-        ->setSetting(new ModuleSetting(
+        ->addSetting(new ModuleSetting(
             'smartyPluginDirectories',
             [
                 'firstSmartyDirectory',
                 'secondSmartyDirectory',
             ]
         ))
-        ->setSetting(new ModuleSetting(
+        ->addSetting(new ModuleSetting(
             'blocks',
             [
                 [
@@ -131,14 +131,14 @@ class ModuleActivationServiceTest extends TestCase
                 ],
             ]
         ))
-        ->setSetting(new ModuleSetting(
+        ->addSetting(new ModuleSetting(
             'extend',
             [
                 'originalClassNamespace' => 'moduleClassNamespace',
                 'otherOriginalClassNamespace' => 'moduleClassNamespace',
             ]
         ))
-        ->setSetting(new ModuleSetting(
+        ->addSetting(new ModuleSetting(
             ModuleSetting::SHOP_MODULE_SETTING,
             [
                 [
@@ -160,14 +160,13 @@ class ModuleActivationServiceTest extends TestCase
          */;
 
         $shopConfiguration = new ShopConfiguration();
-        $shopConfiguration->setModuleConfiguration('testModuleConfiguration', $moduleConfiguration);
+        $shopConfiguration->addModuleConfiguration($moduleConfiguration);
 
         $environmentConfiguration = new EnvironmentConfiguration();
-        $environmentConfiguration->setShopConfiguration(1, $shopConfiguration);
+        $environmentConfiguration->addShopConfiguration(1, $shopConfiguration);
 
         $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->setProjectName('testProject');
-        $projectConfiguration->setEnvironmentConfiguration('dev', $environmentConfiguration);
+        $projectConfiguration->addEnvironmentConfiguration('dev', $environmentConfiguration);
 
         return $projectConfiguration;
     }

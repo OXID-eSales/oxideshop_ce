@@ -15,31 +15,8 @@ use DomainException;
  */
 class ProjectConfiguration
 {
-    /**
-     * @var string
-     */
-    private $projectName;
-
     /** @var array */
     private $environmentConfigurations = [];
-
-    /**
-     * @return string
-     */
-    public function getProjectName(): string
-    {
-        return $this->projectName;
-    }
-
-    /**
-     * @param string $projectName
-     * @return ProjectConfiguration
-     */
-    public function setProjectName(string $projectName): ProjectConfiguration
-    {
-        $this->projectName = $projectName;
-        return $this;
-    }
 
     /**
      * @return array
@@ -76,7 +53,7 @@ class ProjectConfiguration
      * @param string                   $name
      * @param EnvironmentConfiguration $environmentConfiguration
      */
-    public function setEnvironmentConfiguration(string $name, EnvironmentConfiguration $environmentConfiguration)
+    public function addEnvironmentConfiguration(string $name, EnvironmentConfiguration $environmentConfiguration)
     {
         $this->environmentConfigurations[$name] = $environmentConfiguration;
     }

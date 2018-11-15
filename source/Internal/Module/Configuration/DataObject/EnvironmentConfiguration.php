@@ -53,7 +53,7 @@ class EnvironmentConfiguration
      * @param int               $shopId
      * @param ShopConfiguration $shopConfiguration
      */
-    public function setShopConfiguration(int $shopId, ShopConfiguration $shopConfiguration)
+    public function addShopConfiguration(int $shopId, ShopConfiguration $shopConfiguration)
     {
         $this->shopConfigurations[$shopId] = $shopConfiguration;
     }

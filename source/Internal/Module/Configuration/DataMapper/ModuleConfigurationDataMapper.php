@@ -37,6 +37,8 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
      */
     public function toData(ModuleConfiguration $configuration): array
     {
+        $data = [];
+
         $data['id']         = $configuration->getId();
         $data['state']      = $configuration->getState();
         $data['settings']   = $this->getSettingsData($configuration);
@@ -76,7 +78,7 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
         );
 
         foreach ($settings as $setting) {
-            $moduleConfiguration->setSetting(
+            $moduleConfiguration->addSetting(
                 $setting
             );
         }

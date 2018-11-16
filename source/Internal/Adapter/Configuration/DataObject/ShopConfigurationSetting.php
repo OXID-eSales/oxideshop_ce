@@ -21,6 +21,8 @@ class ShopConfigurationSetting
     const MODULE_TEMPLATES                  = 'aModuleTemplates';
     const MODULE_SMARTY_PLUGIN_DIRECTORIES  = 'moduleSmartyPluginDirectories';
 
+    const ACTIVE_MODULES = 'activeModules';
+
     /**
      * @var int
      */

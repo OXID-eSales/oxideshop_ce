@@ -12,11 +12,11 @@ namespace OxidEsales\EshopCommunity\Internal\Module\State;
 interface ModuleStateServiceInterface
 {
     /**
-     * @param string $moduleName
+     * @param string $moduleId
      * @param int    $shopId
      * @return bool
      */
-    public function isActive(string $moduleName, int $shopId): bool;
+    public function isActive(string $moduleId, int $shopId): bool;
 
     /**
      * @param string $moduleName

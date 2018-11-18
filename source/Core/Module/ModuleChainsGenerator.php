@@ -389,17 +389,16 @@ class ModuleChainsGenerator
     }
 
     /**
-     * If blDoNotDisableModuleOnError config value is false, disables bad module.
-     * To avoid problems with unit tests it only throw an exception if class does not exist.
+     * Writes/logs an error on module extension creation problem
      *
      * @param string $moduleClass
-     *
-     * @throws \OxidEsales\EshopCommunity\Core\Exception\SystemComponentException
      */
-    protected function onModuleExtensionCreationError($moduleClass)
-    {
-        $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
+    protected function onModuleExtensionCreationError($moduleClass) {
+        //not using oxNew withing this method to avoid endless loops
+        $module = new \OxidEsales\Eshop\Core\Module\Module;
         $moduleId = $module->getIdByPath($moduleClass);
+        $moduleId = $moduleId ? $moduleId : "(module id not availible)";
+
         $message = sprintf('Module class %s not found. Module ID %s', $moduleClass, $moduleId);
         $exception = new \OxidEsales\Eshop\Core\Exception\SystemComponentException($message);
         \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);

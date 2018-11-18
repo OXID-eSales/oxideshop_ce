@@ -396,10 +396,13 @@ class ModuleChainsGenerator
      *
      * @throws \OxidEsales\EshopCommunity\Core\Exception\SystemComponentException
      */
-    protected function onModuleExtensionCreationError($moduleClass)
-    {
-        $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
-        $moduleId = $module->getIdByPath($moduleClass);
+    protected function onModuleExtensionCreationError($moduleClass) {
+    
+        $moduleId = "(module id not availible)";
+        if (class_exists("\OxidEsales\Eshop\Core\Module\Module", false)) {
+            $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
+            $moduleId = $module->getIdByPath($moduleClass);
+        }
         $message = sprintf('Module class %s not found. Module ID %s', $moduleClass, $moduleId);
         $exception = new \OxidEsales\Eshop\Core\Exception\SystemComponentException($message);
         \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);

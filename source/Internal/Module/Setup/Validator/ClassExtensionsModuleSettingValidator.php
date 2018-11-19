@@ -36,6 +36,10 @@ class ClassExtensionsModuleSettingValidator implements ModuleSettingValidatorInt
      */
     public function validate(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
     {
+        if (!$this->canValidate($moduleSetting)) {
+            throw new ModuleSetupValidationException('Setting ' . $moduleSetting->getName() . ' can not be validated by this class.');
+        }
+
         foreach ($moduleSetting->getValue() as $classToBePatched => $moduleClass) {
             if ($this->shopAdapter->isNamespace($classToBePatched)) {
                 $this->validateClassToBePatchedNamespace($classToBePatched);

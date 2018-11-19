@@ -50,6 +50,10 @@ class ControllersModuleSettingValidator implements ModuleSettingValidatorInterfa
      */
     public function validate(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
     {
+        if (!$this->canValidate($moduleSetting)) {
+            throw new ModuleSetupValidationException('Setting ' . $moduleSetting->getName() . ' can not be validated by this class.');
+        }
+
         $shopControllerClassMap = $this->shopAdapter->getShopControllerClassMap();
 
         $controllerClassMap = array_merge(

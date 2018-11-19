@@ -12,6 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
+use OxidEsales\Facts\Facts;
 use OxidEsales\TestingLibrary\VfsStreamWrapper;
 use PHPUnit\Framework\TestCase;
 
@@ -39,7 +40,7 @@ class ProjectConfigurationDaoTest extends TestCase
 
     private function getContainer()
     {
-        $containerBuilder = new ContainerBuilder();
+        $containerBuilder = new ContainerBuilder(new Facts());
 
         $container = $containerBuilder->getContainer();
 

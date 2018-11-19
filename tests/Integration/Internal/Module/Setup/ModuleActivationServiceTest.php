@@ -18,9 +18,10 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectCo
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
-use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\ModuleEvents;
+use OxidEsales\Facts\Facts;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 
 /**
  * @internal
@@ -29,44 +30,45 @@ class ModuleActivationServiceTest extends TestCase
 {
     use ContainerTrait;
 
-    /** @var vfsStreamDirectory */
-    private $vfsStreamDirectory = null;
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
 
-    public function testActivation()
+    public function setUp()
     {
-        $this->createModuleStructure();
-        $container = $this->setupAndConfigureContainer();
+        $this->container = $this->setupAndConfigureContainer();
 
-        $projectConfigurationDao = $container->get(ProjectConfigurationDaoInterface::class);
+        $projectConfigurationDao = $this->container->get(ProjectConfigurationDaoInterface::class);
         $projectConfigurationDao->persistConfiguration($this->getTestProjectConfiguration());
 
-        $moduleActivationService = $container->get(ModuleActivationServiceInterface::class);
-        $moduleActivationService->activate('testModuleConfiguration', 1);
+        parent::setUp();
     }
 
-    /**
-     * We need to replace services in the container with a mock
-     *
-     * @return \Symfony\Component\DependencyInjection\ContainerBuilder
-     */
-    private function setupAndConfigureContainer()
+    public function testActivationEventWasExecuted()
     {
-        $containerBuilder = new ContainerBuilder();
-        $container = $containerBuilder->getContainer();
+        /** @var ModuleActivationServiceInterface $moduleActivationService */
+        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
 
-        $defintion = $container->getDefinition('oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator');
+        ob_start();
+        $moduleActivationService->activate('testModuleConfiguration', 1);
+        $eventMessage = ob_get_contents();
+        ob_end_clean();
 
-        $shopAdapter = $this->getShopAdapterMock();
+        $this->assertSame('Method onActivate was called', $eventMessage);
+    }
 
-        $defintion->setArguments([$shopAdapter]);
-        $container->setDefinition('oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator', $defintion);
+    public function testDeactivationEventWasExecuted()
+    {
+        /** @var ModuleActivationServiceInterface $moduleActivationService */
+        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
 
-        $this->setContainerDefinitionToPublic($container, ProjectConfigurationDaoInterface::class);
-        $this->setContainerDefinitionToPublic($container, ModuleActivationServiceInterface::class);
+        ob_start();
+        $moduleActivationService->deactivate('testModuleConfiguration', 1);
+        $eventMessage = ob_get_contents();
+        ob_end_clean();
 
-        $container->compile();
-
-        return $container;
+        $this->assertSame('Method onDeactivate was called', $eventMessage);
     }
 
     /**
@@ -80,7 +82,7 @@ class ModuleActivationServiceTest extends TestCase
 
         $shopAdapter
             ->method('getModuleFullPath')
-            ->willReturn(vfsStream::url('root/modules/smartyTestModule'));
+            ->willReturn(__DIR__ . '/../TestData/TestModule');
 
         return $shopAdapter;
     }
@@ -93,34 +95,34 @@ class ModuleActivationServiceTest extends TestCase
             ->setState('active');
 
         $moduleConfiguration->addSetting(
-            new ModuleSetting('path', 'somePath')
+            new ModuleSetting(ModuleSetting::PATH, 'somePath')
         )
         ->addSetting(
             new ModuleSetting('version', 'v2.1')
         )
         ->addSetting(new ModuleSetting(
-            'controllers',
+            ModuleSetting::CONTROLLERS,
             [
                 'originalClassNamespace' => 'moduleClassNamespace',
                 'otherOriginalClassNamespace' => 'moduleClassNamespace',
             ]
         ))
         ->addSetting(new ModuleSetting(
-            'templates',
+            ModuleSetting::TEMPLATES,
             [
                 'originalTemplate' => 'moduleTemplate',
                 'otherOriginalTemplate' => 'moduleTemplate',
             ]
         ))
         ->addSetting(new ModuleSetting(
-            'smartyPluginDirectories',
+            ModuleSetting::SMARTY_PLUGIN_DIRECTORIES,
             [
-                'firstSmartyDirectory',
-                'secondSmartyDirectory',
+                'SmartyPlugins/directory1',
+                'SmartyPlugins/directory2',
             ]
         ))
         ->addSetting(new ModuleSetting(
-            'blocks',
+            ModuleSetting::TEMPLATE_BLOCKS,
             [
                 [
                     'block'     => 'testBlock',
@@ -132,7 +134,7 @@ class ModuleActivationServiceTest extends TestCase
             ]
         ))
         ->addSetting(new ModuleSetting(
-            'extend',
+            ModuleSetting::CLASS_EXTENSIONS,
             [
                 'originalClassNamespace' => 'moduleClassNamespace',
                 'otherOriginalClassNamespace' => 'moduleClassNamespace',
@@ -149,15 +151,13 @@ class ModuleActivationServiceTest extends TestCase
                 ],
             ]
         ))
-        /**
-        ->setSetting(new ModuleSetting(
-            'events',
+        ->addSetting(new ModuleSetting(
+            ModuleSetting::EVENTS,
             [
-                'onActivate' => 'ModuleClass::onActivate',
-                'onDeactivate' => 'ModuleClass::onDeactivate',
+                'onActivate'    => ModuleEvents::class . '::onActivate',
+                'onDeactivate'  => ModuleEvents::class . '::onDeactivate'
             ]
-        ))
-         */;
+        ));
 
         $shopConfiguration = new ShopConfiguration();
         $shopConfiguration->addModuleConfiguration($moduleConfiguration);
@@ -171,23 +171,27 @@ class ModuleActivationServiceTest extends TestCase
         return $projectConfiguration;
     }
 
-    private function createModuleStructure()
+    /**
+     * We need to replace services in the container with a mock
+     *
+     * @return \Symfony\Component\DependencyInjection\ContainerBuilder
+     */
+    private function setupAndConfigureContainer()
     {
-        $structure = [
-            'modules' => [
-                'smartyTestModule' => [
-                    'firstSmartyDirectory' => [
-                        'smartyPlugin.php' => '*this is the first test smarty plugin*'
-                    ],
-                    'secondSmartyDirectory' => [
-                        'smartyPlugin.php' => '*this is the second test smarty plugin*'
-                    ],
-                ]
-            ]
-        ];
+        $containerBuilder = new ContainerBuilder(new Facts());
+        $container = $containerBuilder->getContainer();
 
-        if (!$this->vfsStreamDirectory) {
-            $this->vfsStreamDirectory = vfsStream::setup('root', null, $structure);
-        }
+        $definition = $container->getDefinition('oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator');
+
+        $shopAdapter = $this->getShopAdapterMock();
+        $definition->setArguments([$shopAdapter]);
+        $container->setDefinition('oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator', $definition);
+
+        $this->setContainerDefinitionToPublic($container, ProjectConfigurationDaoInterface::class);
+        $this->setContainerDefinitionToPublic($container, ModuleActivationServiceInterface::class);
+
+        $container->compile();
+
+        return $container;
     }
 }

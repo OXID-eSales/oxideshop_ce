@@ -12,9 +12,12 @@ use OxidEsales\EshopCommunity\Internal\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Provider\ModuleConfigurationProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Event\AfterModuleActivationEvent;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Event\BeforeModuleDeactivationEvent;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSettingHandlerNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ModuleSettingHandlerInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ModuleSettingValidatorInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @internal
@@ -42,15 +45,24 @@ class ModuleActivationService implements ModuleActivationServiceInterface
     private $moduleSettingValidators = [];
 
     /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
      * ModuleActivationService constructor.
+     *
      * @param ModuleConfigurationProviderInterface $moduleConfigurationProvider
+     * @param EventDispatcherInterface             $eventDispatcher
      * @param ModuleCacheServiceInterface          $moduleCacheService
      */
     public function __construct(
-        ModuleConfigurationProviderInterface    $moduleConfigurationProvider,
-        ModuleCacheServiceInterface             $moduleCacheService
+        ModuleConfigurationProviderInterface $moduleConfigurationProvider,
+        EventDispatcherInterface             $eventDispatcher,
+        ModuleCacheServiceInterface          $moduleCacheService
     ) {
         $this->moduleConfigurationProvider = $moduleConfigurationProvider;
+        $this->eventDispatcher = $eventDispatcher;
         $this->moduleCacheService = $moduleCacheService;
     }
 
@@ -61,9 +73,10 @@ class ModuleActivationService implements ModuleActivationServiceInterface
      */
     public function activate(string $moduleId, int $shopId)
     {
+        $environmentName = 'dev';
         $moduleConfiguration = $this->moduleConfigurationProvider->getModuleConfiguration(
             $moduleId,
-            'dev',
+            $environmentName,
             $shopId
         );
 
@@ -73,6 +86,11 @@ class ModuleActivationService implements ModuleActivationServiceInterface
          * @todo [II] wrap it in transaction.
          */
         $this->handleModuleSettingsOnActivation($moduleConfiguration, $moduleId, $shopId);
+
+        $this->eventDispatcher->dispatch(
+            AfterModuleActivationEvent::NAME,
+            new AfterModuleActivationEvent($environmentName, $shopId, $moduleId)
+        );
     }
 
     /**
@@ -81,9 +99,16 @@ class ModuleActivationService implements ModuleActivationServiceInterface
      */
     public function deactivate(string $moduleId, int $shopId)
     {
+        $environmentName = 'dev';
+
         $moduleConfiguration = $this
             ->moduleConfigurationProvider
-            ->getModuleConfiguration($moduleId, 'dev', $shopId);
+            ->getModuleConfiguration($moduleId, $environmentName, $shopId);
+
+        $this->eventDispatcher->dispatch(
+            BeforeModuleDeactivationEvent::NAME,
+            new BeforeModuleDeactivationEvent($environmentName, $shopId, $moduleId)
+        );
 
         foreach ($moduleConfiguration->getSettings() as $setting) {
             /** @var ModuleSettingHandlerInterface $handler */
@@ -91,7 +116,7 @@ class ModuleActivationService implements ModuleActivationServiceInterface
             $handler->handleOnModuleDeactivation($setting, $moduleId, $shopId);
         }
 
-        $this->moduleCacheService->invalidateModuleCache($moduleId, $shopId);
+        //$this->moduleCacheService->invalidateModuleCache($moduleId, $shopId);
     }
 
     /**

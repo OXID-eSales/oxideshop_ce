@@ -11,9 +11,11 @@ services:
       - [addHandler, ['@oxid_esales.module.setup.class_extensions_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.template_blocks_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.shop_module_setting_module_setting_handler']]
+      - [addHandler, ['@oxid_esales.module.setup.events_module_setting_handler']]
       - [addValidator, ['@oxid_esales.module.setup.validator.controllers_module_setting_validator']]
       - [addValidator, ['@oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator']]
       - [addValidator, ['@oxid_esales.module.setup.validator.class_extensions_module_setting_validator']]
+      - [addValidator, ['@oxid_esales.module.setup.validator.events_module_setting_validator']]
 
   oxid_esales.module.setup.version_module_setting_handler:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopConfigurationModuleSettingHandler
@@ -60,6 +62,13 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopModuleSettingModuleSettingHandler
     autowire: true
 
+  oxid_esales.module.setup.events_module_setting_handler:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopConfigurationModuleSettingHandler
+    arguments:
+      - !php/const OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting::EVENTS
+      - !php/const OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting::MODULE_EVENTS
+      - '@OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface'
+
   oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\SmartyPluginDirectoriesModuleSettingValidator
     autowire: true
@@ -71,3 +80,21 @@ services:
   oxid_esales.module.setup.validator.class_extensions_module_setting_validator:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ClassExtensionsModuleSettingValidator
     autowire: true
+
+  oxid_esales.module.setup.validator.events_module_setting_validator:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\EventsModuleSettingValidator
+    autowire: true
+
+  oxid_esales.module.setup.service.eventsubscriber.after_module_activation_event_subscriber:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\EventSubscriber\AfterModuleActivationSubscriber
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Module\Configuration\Provider\ModuleConfigurationProviderInterface'
+    tags:
+      - { name: kernel.event_subscriber }
+
+  oxid_esales.module.setup.service.eventsubscriber.before_module_deactivation_event_subscriber:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\EventSubscriber\BeforeModuleDeactivationSubscriber
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Module\Configuration\Provider\ModuleConfigurationProviderInterface'
+    tags:
+      - { name: kernel.event_subscriber }

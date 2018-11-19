@@ -17,6 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ModuleSettingHandler
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSettingNotValidException;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ModuleSettingValidatorInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @internal
@@ -32,11 +33,6 @@ class ModuleActivationServiceTest extends TestCase
             $moduleSetting
         );
 
-        $moduleConfigurationProvider = $this->getMockBuilder(ModuleConfigurationProviderInterface::class)->getMock();
-        $moduleConfigurationProvider
-            ->method('getModuleConfiguration')
-            ->willReturn($moduleConfiguration);
-
         $moduleSettingHandler = $this->getMockBuilder(ModuleSettingHandlerInterface::class)->getMock();
         $moduleSettingHandler
             ->expects($this->atLeastOnce())
@@ -48,10 +44,7 @@ class ModuleActivationServiceTest extends TestCase
             ->expects($this->atLeastOnce())
             ->method('handleOnModuleActivation');
 
-        $moduleActivationService = new ModuleActivationService(
-            $moduleConfigurationProvider,
-            $this->getMockBuilder(ModuleCacheServiceInterface::class)->getMock()
-        );
+        $moduleActivationService = $this->getModuleActivationServiceWithModuleConfiguration($moduleConfiguration);
         $moduleActivationService->addHandler($moduleSettingHandler);
 
         $moduleActivationService->activate('testModule', 1);
@@ -66,11 +59,6 @@ class ModuleActivationServiceTest extends TestCase
             $moduleSetting
         );
 
-        $moduleConfigurationProvider = $this->getMockBuilder(ModuleConfigurationProviderInterface::class)->getMock();
-        $moduleConfigurationProvider
-            ->method('getModuleConfiguration')
-            ->willReturn($moduleConfiguration);
-
         $moduleSettingHandler = $this->getMockBuilder(ModuleSettingHandlerInterface::class)->getMock();
         $moduleSettingHandler
             ->expects($this->atLeastOnce())
@@ -82,10 +70,7 @@ class ModuleActivationServiceTest extends TestCase
             ->expects($this->atLeastOnce())
             ->method('handleOnModuleDeactivation');
 
-        $moduleActivationService = new ModuleActivationService(
-            $moduleConfigurationProvider,
-            $this->getMockBuilder(ModuleCacheServiceInterface::class)->getMock()
-        );
+        $moduleActivationService = $this->getModuleActivationServiceWithModuleConfiguration($moduleConfiguration);
         $moduleActivationService->addHandler($moduleSettingHandler);
 
         $moduleActivationService->deactivate('testModule', 1);
@@ -103,15 +88,7 @@ class ModuleActivationServiceTest extends TestCase
             $moduleSetting
         );
 
-        $moduleConfigurationProvider = $this->getMockBuilder(ModuleConfigurationProviderInterface::class)->getMock();
-        $moduleConfigurationProvider
-            ->method('getModuleConfiguration')
-            ->willReturn($moduleConfiguration);
-
-        $moduleActivationService = new ModuleActivationService(
-            $moduleConfigurationProvider,
-            $this->getMockBuilder(ModuleCacheServiceInterface::class)->getMock()
-        );
+        $moduleActivationService = $this->getModuleActivationServiceWithModuleConfiguration($moduleConfiguration);
 
         $moduleActivationService->activate('testModule', 1);
     }
@@ -135,6 +112,15 @@ class ModuleActivationServiceTest extends TestCase
             ->method('validate')
             ->willThrowException(new ModuleSettingNotValidException());
 
+        $moduleActivationService = $this->getModuleActivationServiceWithModuleConfiguration($moduleConfiguration);
+
+        $moduleActivationService->addValidator($moduleSettingValidator);
+
+        $moduleActivationService->activate('testModule', 1);
+    }
+
+    private function getModuleActivationServiceWithModuleConfiguration(ModuleConfiguration $moduleConfiguration): ModuleActivationService
+    {
         $moduleConfigurationProvider = $this->getMockBuilder(ModuleConfigurationProviderInterface::class)->getMock();
         $moduleConfigurationProvider
             ->method('getModuleConfiguration')
@@ -142,11 +128,10 @@ class ModuleActivationServiceTest extends TestCase
 
         $moduleActivationService = new ModuleActivationService(
             $moduleConfigurationProvider,
+            $this->getMockBuilder(EventDispatcherInterface::class)->getMock(),
             $this->getMockBuilder(ModuleCacheServiceInterface::class)->getMock()
         );
 
-        $moduleActivationService->addValidator($moduleSettingValidator);
-
-        $moduleActivationService->activate('testModule', 1);
+        return $moduleActivationService;
     }
 }

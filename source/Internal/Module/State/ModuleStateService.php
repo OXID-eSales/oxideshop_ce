@@ -37,7 +37,10 @@ class ModuleStateService implements ModuleStateServiceInterface
      */
     public function isActive(string $moduleId, int $shopId): bool
     {
-        $activeModuleIdsSetting = $this->shopConfigurationSettingDao->get(ShopConfigurationSetting::ACTIVE_MODULES, $shopId);
+        $activeModuleIdsSetting = $this->shopConfigurationSettingDao->get(
+            ShopConfigurationSetting::ACTIVE_MODULES,
+            $shopId
+        );
 
         return in_array(
             $moduleId,

@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectCo
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ActiveClassExtensionChainResolver;
 use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
+use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -84,7 +85,8 @@ class ActiveClassExtensionChainResolverTest extends TestCase
 
         $classExtensionChainService = new ActiveClassExtensionChainResolver(
             $projectConfigurationDao,
-            $moduleStateService
+            $moduleStateService,
+            new ContextStub()
         );
 
         $expectedChain = new Chain();

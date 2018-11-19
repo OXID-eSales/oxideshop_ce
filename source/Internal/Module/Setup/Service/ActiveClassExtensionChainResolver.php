@@ -10,6 +10,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigura
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 
 /**
  * @internal
@@ -27,17 +28,26 @@ class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainReso
     private $moduleStateService;
 
     /**
-     * ActiveClassExtensionChainReslover constructor.
+     * @var ContextInterface
+     */
+    private $context;
+
+    /**
+     * ActiveClassExtensionChainResolver constructor.
      * @param ProjectConfigurationDaoInterface $projectConfigurationDao
      * @param ModuleStateServiceInterface      $moduleStateService
+     * @param ContextInterface                 $context
      */
     public function __construct(
-        ProjectConfigurationDaoInterface        $projectConfigurationDao,
-        ModuleStateServiceInterface             $moduleStateService
+        ProjectConfigurationDaoInterface $projectConfigurationDao,
+        ModuleStateServiceInterface $moduleStateService,
+        ContextInterface $context
     ) {
         $this->projectConfigurationDao = $projectConfigurationDao;
         $this->moduleStateService = $moduleStateService;
+        $this->context = $context;
     }
+
 
     /**
      * @param int $shopId
@@ -124,7 +134,7 @@ class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainReso
     {
         return $this->projectConfigurationDao
                     ->getConfiguration()
-                    ->getEnvironmentConfiguration('dev')
+                    ->getEnvironmentConfiguration($this->context->getEnvironment())
                     ->getShopConfiguration($shopId);
     }
 }

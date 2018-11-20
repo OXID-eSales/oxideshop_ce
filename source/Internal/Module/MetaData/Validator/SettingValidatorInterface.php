@@ -6,7 +6,7 @@ declare(strict_types=1);
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\Validator;
+namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator;
 
 /**
  * @internal

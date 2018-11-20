@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /**
  * Copyright © OXID eSales AG. All rights reserved.
@@ -20,9 +20,18 @@ class ModuleConfigurationDataMapperTest extends TestCase
     public function testMapping()
     {
         $configurationData = [
-            'id'        => 'moduleId',
-            'state'     => 'active',
-            'settings'  => [
+            'id'          => 'moduleId',
+            'title'       => 'title',
+            'description' => [
+                'de' => 'description de',
+                'en' => 'description en',
+            ],
+            'lang'        => 'en',
+            'thumbnail'   => 'logo.png',
+            'author'      => 'author',
+            'url'         => 'http://example.com',
+            'email'       => 'test@example.com',
+            'settings'    => [
                 'version'   => '1.0',
                 'path'      => 'relativePath',
                 'templates' => [

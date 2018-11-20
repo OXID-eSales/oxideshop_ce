@@ -144,4 +144,12 @@ class ShopAdapter implements ShopAdapterInterface
     {
         return NamespaceInformationProvider::classBelongsToShopEditionNamespace($namespace);
     }
+
+    /**
+     * @return array
+     */
+    public function getBackwardsCompatibilityClassMap(): array
+    {
+        return Registry::getBackwardsCompatibilityClassMap();
+    }
 }

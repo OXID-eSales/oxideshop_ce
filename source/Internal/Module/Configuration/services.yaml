@@ -62,9 +62,3 @@ services:
     arguments:
       - '@oxid_esales.module.configuration.validator.metadata_setting_validator'
     public: false
-
-  oxid_esales.module.configuration.validator.metadata_setting_validator:
-    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Validator\MetadataSettingValidator
-    arguments:
-      - '%oxid_esales.module.configuration.metadata_settings%'
-    public: false

@@ -146,7 +146,7 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
             $sViewTable = $this->_getViewName($aCol[1]);
             // multilanguage
 
-            $sCol = $aCol[3] ? $aCol[0] : $aCol[0];
+            $sCol = $aCol[0];
 
             if ($oConfig->getConfigParam('blVariantsSelection') && $aCol[0] == 'oxtitle') {
                 $sVarSelect = "$sViewTable.oxvarselect" . $sLangTag;
@@ -165,7 +165,7 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
             }
 
             // multilanguage
-            $sCol = $aCol[3] ? $aCol[0] : $aCol[0];
+            $sCol = $aCol[0];
             $sQ .= $this->_getViewName($aCol[1]) . '.' . $sCol . ' as _' . $iCnt;
         }
 

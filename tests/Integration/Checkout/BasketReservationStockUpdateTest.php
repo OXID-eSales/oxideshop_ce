@@ -353,7 +353,8 @@ class BasketReservationStockUpdateTest extends \OxidTestCase
 
         //Check for expected messages
         $messages = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('Errors');
-        $this->assertEquals($displayWarningCnt, count($messages['default']));
+        $messageCount = (isset($messages['default'])) ? count($messages['default']) : 0;
+        $this->assertEquals($displayWarningCnt, $messageCount);
 
         $this->assertEquals($expectedStockAfterToBasket, $this->getStock());
 

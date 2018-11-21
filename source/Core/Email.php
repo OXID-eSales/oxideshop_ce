@@ -1570,9 +1570,7 @@ class Email extends \PHPMailer
     public function setRecipient($address = null, $name = null)
     {
         try {
-            if (function_exists('idn_to_ascii')) {
-                $address = idn_to_ascii($address);
-            }
+            $address = $this->idnToAscii($address);
 
             parent::AddAddress($address, $name);
 
@@ -2311,5 +2309,25 @@ class Email extends \PHPMailer
         $productReviewLinkInclusionEnabled = $config->getConfigParam('includeProductReviewLinksInEmail', false);
 
         return  $reviewsEnabled && $productReviewLinkInclusionEnabled;
+    }
+
+    /**
+     * Convert domain name to IDNA ASCII form.
+     *
+     * @param string $idn The email address
+     *
+     * @return string
+     */
+    private function idnToAscii($idn)
+    {
+        if (function_exists('idn_to_ascii')) {
+            // for old PHP versions support
+            // remove it after the PHP 7.1 support is dropped
+            if (defined('INTL_IDNA_VARIANT_UTS46')) {
+                return idn_to_ascii($idn, 0, INTL_IDNA_VARIANT_UTS46);
+            }
+            return idn_to_ascii($idn);
+        }
+        return $idn;
     }
 }

@@ -449,8 +449,8 @@ class VarianthandlerTest extends \OxidTestCase
         $this->assertNotNull($aList);
         $this->assertEquals(2, count($aList));
 
-        $this->assertEquals(1, count($aList[0]));
-        $this->assertEquals(1, count($aList[1]));
+        $this->assertEquals(1, count($aList[0]->getSelections()));
+        $this->assertEquals(1, count($aList[1]->getSelections()));
 
         $oSel1 = current($aList[0]->getSelections());
         $oSel2 = current($aList[1]->getSelections());

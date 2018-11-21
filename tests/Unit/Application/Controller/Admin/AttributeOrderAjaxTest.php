@@ -82,7 +82,7 @@ class AttributeOrderAjaxTest extends \OxidTestCase
 
         $sViewTable = $this->getVieTableName();
 
-        $aData = array('startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from $sViewTable left join oxcategory2attribute on oxcategory2attribute.oxattrid = $sViewTable.oxid where oxobjectid = '$sOxid' ", 'records' => array(), 'totalRecords' => 0);
+        $aData = array('startIndex' => 0, 'sort' => '_0', 'dir' => 'asc', 'countsql' => "select count( * )  from $sViewTable left join oxcategory2attribute on oxcategory2attribute.oxattrid = $sViewTable.oxid where oxobjectid = '$sOxid' ", 'records' => array(), 'totalRecords' => 0);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AttributeOrderAjax::class, array("_output"));
         $oView->expects($this->any())->method('_output')->with($this->equalTo(json_encode($aData)));
@@ -103,7 +103,7 @@ class AttributeOrderAjaxTest extends \OxidTestCase
 
         $sViewTable = $this->getVieTableName();
 
-        $aData = array('startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from $sViewTable left join oxcategory2attribute on oxcategory2attribute.oxattrid = $sViewTable.oxid where oxobjectid = '$sOxid' ", 'records' => array(), 'totalRecords' => 0);
+        $aData = array('startIndex' => 0, 'sort' => '_0', 'dir' => 'asc', 'countsql' => "select count( * )  from $sViewTable left join oxcategory2attribute on oxcategory2attribute.oxattrid = $sViewTable.oxid where oxobjectid = '$sOxid' ", 'records' => array(), 'totalRecords' => 0);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AttributeOrderAjax::class, array("_output"));
         $oView->expects($this->any())->method('_output')->with($this->equalTo(json_encode($aData)));

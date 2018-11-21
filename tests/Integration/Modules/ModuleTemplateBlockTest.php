@@ -27,7 +27,7 @@ class ModuleTemplateBlockTest extends UnitTestCase
         );
 
         $pathFormatter = oxNew(ModuleTemplateBlockPathFormatter::class);
-        $pathFormatter->setModulesPath($shopPath . DIRECTORY_SEPARATOR . modules);
+        $pathFormatter->setModulesPath($shopPath . DIRECTORY_SEPARATOR . 'modules');
         $pathFormatter->setModuleId($moduleId);
         $pathFormatter->setFileName('blocks/blocktemplate.tpl');
 
@@ -51,7 +51,7 @@ class ModuleTemplateBlockTest extends UnitTestCase
         );
 
         $pathFormatter = oxNew(ModuleTemplateBlockPathFormatter::class);
-        $pathFormatter->setModulesPath($shopPath . DIRECTORY_SEPARATOR . modules);
+        $pathFormatter->setModulesPath($shopPath . DIRECTORY_SEPARATOR . 'modules');
         $pathFormatter->setModuleId($moduleId);
         $pathFormatter->setFileName('blocks/blocktemplate_notExist.tpl');
 

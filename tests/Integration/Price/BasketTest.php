@@ -129,8 +129,10 @@ class BasketTest extends BaseTestCase
 
         // Total discounts
         $expectedDiscounts = $expected['totals']['discounts'];
+        $expectedDiscountCount = (is_array($expectedDiscounts)) ? count($expectedDiscounts) : 0;
         $productDiscounts = $basket->getDiscounts();
-        $this->assertEquals(count($expectedDiscounts), count($productDiscounts), "Expected basket discount amount doesn't match actual");
+        $productDiscountsCount = (is_array($productDiscounts)) ? count($productDiscounts) : 0;
+        $this->assertEquals($expectedDiscountCount, $productDiscountsCount, "Expected basket discount amount doesn't match actual");
         if (!empty($expectedDiscounts)) {
             foreach ($productDiscounts as $discount) {
                 $this->assertEquals($expectedDiscounts[$discount->sOXID], $discount->fDiscount, "Total discount of {$discount->sOXID}");
@@ -139,8 +141,10 @@ class BasketTest extends BaseTestCase
 
         // Total vats
         $expectedVats = $expected['totals']['vats'];
+        $expectedVatsCount = (is_array($expectedVats)) ? count($expectedVats) : 0;
         $productVats = $basket->getProductVats();
-        $this->assertEquals(count($expectedVats), count($productVats), "Expected basket different vat amount doesn't match actual");
+        $productVatsCount = (is_array($productVats)) ? count($productVats) : 0;
+        $this->assertEquals($expectedVatsCount, $productVatsCount, "Expected basket different vat amount doesn't match actual");
         if (!empty($expectedVats)) {
             foreach ($productVats as $percent => $sum) {
                 $this->assertEquals($expectedVats[$percent], $sum, "Total Vat of {$percent}%");

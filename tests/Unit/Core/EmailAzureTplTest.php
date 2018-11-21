@@ -702,7 +702,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
         $oEmail->expects($this->any())->method('_getUseInlineImages')->will($this->returnValue(true));
-        $oEmail->expects($this->any())->method('getOrderFileList')->will($this->returnValue(array($oOrderFile)));
+        $oEmail->expects($this->any())->method('getOrderFileList')->will($this->returnValue([$oOrderFile]));
 
         $blRet = $oEmail->sendDownloadLinksMail($oOrder, 'testDownloadLinksSubject');
         $this->assertTrue($blRet, 'SendDownloadLinks mail was not sent to user');
@@ -952,7 +952,7 @@ class EmailAzureTplTest extends \OxidTestCase
 
         if ($aFields['sRecipient']) {
             $aRecipient = $oEmail->getRecipient();
-            $this->assertEquals($aFields['sRecipient'], $aRecipient[0][0], 'Incorect mail recipient');
+            $this->assertEquals(strtolower($aFields['sRecipient']), strtolower($aRecipient[0][0]), 'Incorect mail recipient');
         }
 
         if ($aFields['sRecipientName']) {

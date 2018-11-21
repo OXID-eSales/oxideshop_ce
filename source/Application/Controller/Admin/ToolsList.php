@@ -67,7 +67,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
                 $aQErrorMessages = [];
                 $aQErrorNumbers = [];
 
-                if (count($aQueries) > 0) {
+                if (!empty($aQueries) && is_array($aQueries)) {
                     $blStop = false;
                     $oDB = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
                     $iQueriesCounter = 0;

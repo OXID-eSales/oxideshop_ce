@@ -232,7 +232,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      */
     public function getRecommListsByIds($aArticleIds)
     {
-        if (count($aArticleIds)) {
+        if (is_array($aArticleIds) && count($aArticleIds)) {
             startProfile(__FUNCTION__);
 
             $sIds = implode(",", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aArticleIds));

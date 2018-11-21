@@ -518,7 +518,7 @@ class UtilsTest extends \OxidTestCase
         $aProfiles = oxRegistry::getUtils()->loadAdminProfile(array('640x480', '14'));
         $this->assertContains('640x480', $aProfiles[0]);
 
-        $aProfiles = oxRegistry::getUtils()->loadAdminProfile(v);
+        $aProfiles = oxRegistry::getUtils()->loadAdminProfile('v');
         $this->assertNull($aProfiles);
 
         $aProfiles = oxRegistry::getUtils()->loadAdminProfile("teststring");
@@ -824,7 +824,7 @@ class UtilsTest extends \OxidTestCase
         $this->assertEquals(true, oxRegistry::getUtils()->checkAccessRights());
 
         //  self::$test_sql_used = null;
-        modDB::getInstance()->addClassFunction('getOne', create_function('$sql', 'return 1;'));
+        modDB::getInstance()->addClassFunction('getOne', function ($sql) {return 1;});
 
         $mySession->setVariable("auth", "oxdefaultadmin");
         $this->assertEquals(true, oxRegistry::getUtils()->checkAccessRights());
@@ -832,7 +832,7 @@ class UtilsTest extends \OxidTestCase
 
 
         //self::$test_sql_used = null;
-        modDB::getInstance()->addClassFunction('getOne', create_function('$sql', 'return 0;'));
+        modDB::getInstance()->addClassFunction('getOne', function ($sql) {return 0;});
 
         $this->assertEquals(false, oxRegistry::getUtils()->checkAccessRights());
 
@@ -1179,7 +1179,7 @@ class UtilsTest extends \OxidTestCase
         oxTestModules::addFunction('oxUBase', 'render', '{throw new Exception();}');
 
         oxRegistry::getUtils()->handlePageNotFoundError('url aa');
-        $this->assertEquals(0, count(\OxidEsales\Eshop\Core\Registry::getUtilsView()->getTemplateOutputCall));
+        $this->assertNull(\OxidEsales\Eshop\Core\Registry::getUtilsView()->getTemplateOutputCall);
         $this->assertEquals(1, count(oxRegistry::getUtils()->showMessageAndExitCall));
         $this->assertEquals('Page not found.', oxRegistry::getUtils()->showMessageAndExitCall[0][0]);
         $expectedHeaders = array(

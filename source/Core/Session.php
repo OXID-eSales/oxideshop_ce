@@ -305,24 +305,26 @@ class Session extends \OxidEsales\Eshop\Core\Base
     /**
      * Initialize session data (calls php::session_start())
      *
-     * @return null
+     * @return bool
      */
     protected function _sessionStart()
     {
-        if ($this->needToSetHeaders()) {
-            //enforcing no caching when session is started
-            session_cache_limiter('nocache');
+        if (headers_sent()) {
+            if ($this->needToSetHeaders()) {
+                //enforcing no caching when session is started
+                session_cache_limiter('nocache');
 
-            //cache limiter workaround for AOL browsers
-            //as suggested at http://ilia.ws/archives/59-AOL-Browser-Woes.html
-            if (isset($_SERVER['HTTP_USER_AGENT']) &&
-                strpos($_SERVER['HTTP_USER_AGENT'], 'AOL') !== false
-            ) {
+                //cache limiter workaround for AOL browsers
+                //as suggested at http://ilia.ws/archives/59-AOL-Browser-Woes.html
+                if (isset($_SERVER['HTTP_USER_AGENT']) &&
+                    strpos($_SERVER['HTTP_USER_AGENT'], 'AOL') !== false
+                ) {
+                    session_cache_limiter(false);
+                    header("Cache-Control: no-store, private, must-revalidate, proxy-revalidate, post-check=0, pre-check=0, max-age=0, s-maxage=0");
+                }
+            } else {
                 session_cache_limiter(false);
-                header("Cache-Control: no-store, private, must-revalidate, proxy-revalidate, post-check=0, pre-check=0, max-age=0, s-maxage=0");
             }
-        } else {
-            session_cache_limiter(false);
         }
 
         $this->_blStarted = @session_start();

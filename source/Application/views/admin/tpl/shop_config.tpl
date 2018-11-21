@@ -637,17 +637,6 @@ function editThis(sID)
             <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="SHOP_OPTIONS_GROUP_PICTURES"}]</b></a>
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[iUseGDVersion] value="[{$confstrs.iUseGDVersion}]" [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_CONFIG_USEGDVERSION"}]
-                </dt>
-                <dd>
-                    [{oxmultilang ident="SHOP_CONFIG_USEGDVERSION"}]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-
-            <dl>
-                <dt>
                     <input type=hidden name=confbools[blAutoIcons] value=false>
                     <input type=checkbox name=confbools[blAutoIcons] value=true  [{if ($confbools.blAutoIcons)}]checked[{/if}] [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_AUTOICONS"}]

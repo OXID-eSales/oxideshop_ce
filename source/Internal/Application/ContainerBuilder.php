@@ -13,11 +13,13 @@ use OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Dao\ProjectYamlDaoInterface;
 use OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Service\ProjectYamlImportService;
 use OxidEsales\EshopCommunity\Internal\Utility\Context;
+use OxidEsales\Facts\Facts;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
 use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
+use Webmozart\PathUtil\Path;
 
 /**
  * @internal
@@ -32,6 +34,19 @@ class ContainerBuilder
     ];
 
     /**
+     * @var Facts
+     */
+    private $facts;
+
+    /**
+     * @param Facts $facts
+     */
+    public function __construct(Facts $facts)
+    {
+        $this->facts = $facts;
+    }
+
+    /**
      * @return Container
      */
     public function getContainer(): Container
@@ -39,6 +54,13 @@ class ContainerBuilder
         $symfonyContainer = new SymfonyContainerBuilder();
         $symfonyContainer->addCompilerPass(new RegisterListenersPass());
         $this->loadServiceFiles($symfonyContainer);
+        if ($this->facts->isProfessional()) {
+            $this->loadEditionServices($symfonyContainer, $this->facts->getProfessionalEditionRootPath());
+        }
+        if ($this->facts->isEnterprise()) {
+            $this->loadEditionServices($symfonyContainer, $this->facts->getProfessionalEditionRootPath());
+            $this->loadEditionServices($symfonyContainer, $this->facts->getEnterpriseEditionRootPath());
+        }
         $this->loadProjectServices($symfonyContainer);
 
         return $symfonyContainer;
@@ -50,7 +72,7 @@ class ContainerBuilder
     private function loadServiceFiles(SymfonyContainerBuilder $symfonyContainer)
     {
         foreach ($this->serviceFilePaths as $path) {
-            $loader = new YamlFileLoader($symfonyContainer, new FileLocator(__DIR__));
+            $loader = new YamlFileLoader($symfonyContainer, new FileLocator(Path::join($this->facts->getCommunityEditionSourcePath(), 'Internal/Application')));
             $loader->load($path);
         }
     }
@@ -65,12 +87,12 @@ class ContainerBuilder
     private function loadProjectServices(SymfonyContainerBuilder $symfonyContainer)
     {
 
-        if (! file_exists($this->getShopSourcePath() .
+        if (! file_exists($this->facts->getSourcePath() .
                           DIRECTORY_SEPARATOR . ProjectYamlDaoInterface::PROJECT_FILE_NAME)) {
             return;
         }
         $this->cleanupProjectYaml();
-        $loader = new YamlFileLoader($symfonyContainer, new FileLocator($this->getShopSourcePath()));
+        $loader = new YamlFileLoader($symfonyContainer, new FileLocator($this->facts->getSourcePath()));
         $loader->load(ProjectYamlDaoInterface::PROJECT_FILE_NAME);
     }
 
@@ -86,10 +108,12 @@ class ContainerBuilder
     }
 
     /**
-     * @return string
+     * @param SymfonyContainerBuilder $symfonyContainer
+     * @param string                  $editionPath
      */
-    private function getShopSourcePath()
+    private function loadEditionServices(SymfonyContainerBuilder $symfonyContainer, string $editionPath)
     {
-        return Registry::getConfig()->getConfigParam('sShopDir');
+        $servicesLoader = new YamlFileLoader($symfonyContainer, new FileLocator($editionPath));
+        $servicesLoader->load('Internal/Application/services.yaml');
     }
 }

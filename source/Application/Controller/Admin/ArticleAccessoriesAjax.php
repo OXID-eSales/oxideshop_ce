@@ -86,7 +86,7 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
 
         if ($sSynchSelId && $sSynchSelId != $sSelId) {
             // performance
-            $sSubSelect .= " select oxaccessoire2article.oxobjectid from oxaccessoire2article ";
+            $sSubSelect = " select oxaccessoire2article.oxobjectid from oxaccessoire2article ";
             $sSubSelect .= " where oxaccessoire2article.oxarticlenid = " . $oDb->quote($sSynchSelId) . " ";
             $sQAdd .= " and {$sArticleTable}.oxid not in ( $sSubSelect ) ";
         }

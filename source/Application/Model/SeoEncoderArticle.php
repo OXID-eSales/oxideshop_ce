@@ -230,7 +230,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
         $oView = $this->getConfig()->getActiveView();
         if ($oView instanceof \OxidEsales\Eshop\Application\Controller\FrontendController) {
             $oCat = $oView->getActiveCategory();
-        } elseif ($oView instanceof \OxidEsales\Eshop\Application\Controller\FrontendController) {
+        } elseif ($oView instanceof \OxidEsales\Eshop\Core\Controller\BaseController) {
             $oCat = $oView->getActCategory();
         }
 

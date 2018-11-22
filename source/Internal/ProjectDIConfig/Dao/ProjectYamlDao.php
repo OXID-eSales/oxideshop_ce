@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Dao;
 
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\ProjectDIConfig\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -48,6 +49,7 @@ class ProjectYamlDao implements ProjectYamlDaoInterface
         if (file_exists($this->context->getContainerCacheFile())) {
             unlink($this->context->getContainerCacheFile());
         }
+        ContainerFactory::reloadContainer();
     }
 
     /**

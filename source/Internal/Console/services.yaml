@@ -4,28 +4,11 @@ services:
     public: true
     arguments:
       - '@oxid_esales.console.symfony.component.console.application'
-      - '@oxid_esales.console.commands_collection_builder'
+      - '@oxid_esales.console.commands_provider.services_commands_provider'
 
   oxid_esales.console.symfony.component.console.application:
     class: Symfony\Component\Console\Application
     public: false
-
-  oxid_esales.console.commands_collection_builder:
-    class: OxidEsales\EshopCommunity\Internal\Console\CommandsCollectionBuilder
-    arguments:
-      - '@oxid_esales.console.commands_provider.component_commands_provider'
-      - '@oxid_esales.console.commands_provider.module_commands_provider'
-      - '@oxid_esales.console.commands_provider.services_commands_provider'
-
-  oxid_esales.console.commands_provider.component_commands_provider:
-    class: OxidEsales\EshopCommunity\Internal\Console\CommandsProvider\ComponentCommandsProvider
-    public: false
-    arguments: ['@oxid_esales.console.composer.repository.local_repository']
-
-  oxid_esales.console.commands_provider.module_commands_provider:
-    class: OxidEsales\EshopCommunity\Internal\Console\CommandsProvider\ModuleCommandsProvider
-    public: false
-    autowire: true
 
   oxid_esales.console.commands_provider.services_commands_provider:
     class: OxidEsales\EshopCommunity\Internal\Console\CommandsProvider\ServicesCommandsProvider

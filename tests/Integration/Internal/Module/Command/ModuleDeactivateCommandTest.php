@@ -23,7 +23,7 @@ class ModuleDeactivateCommandTest extends ModuleCommandsTestCase
 
         $consoleOutput = $this->execute(
             $this->getApplication(),
-            $this->get('oxid_esales.console.commands_collection_builder'),
+            $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
             new ArrayInput(['command' => 'oe:module:deactivate', 'module-id' => $moduleId])
         );
 
@@ -43,7 +43,7 @@ class ModuleDeactivateCommandTest extends ModuleCommandsTestCase
 
         $consoleOutput = $this->execute(
             $this->getApplication(),
-            $this->get('oxid_esales.console.commands_collection_builder'),
+            $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
             new ArrayInput(['command' => 'oe:module:deactivate', 'module-id' => $moduleId])
         );
 
@@ -57,7 +57,7 @@ class ModuleDeactivateCommandTest extends ModuleCommandsTestCase
         $moduleId = 'test';
         $consoleOutput = $this->execute(
             $this->getApplication(),
-            $this->get('oxid_esales.console.commands_collection_builder'),
+            $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
             new ArrayInput(['command' => 'oe:module:deactivate', 'module-id' => $moduleId])
         );
 

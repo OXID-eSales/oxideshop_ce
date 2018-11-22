@@ -19,7 +19,7 @@ class ModuleActivateCommandTest extends ModuleCommandsTestCase
         $moduleId = 'testmodule';
         $consoleOutput = $this->execute(
             $this->getApplication(),
-            $this->get('oxid_esales.console.commands_collection_builder'),
+            $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
             new ArrayInput(['command' => 'oe:module:activate', 'module-id' => $moduleId])
         );
 
@@ -39,7 +39,7 @@ class ModuleActivateCommandTest extends ModuleCommandsTestCase
         $moduleId = 'testmodule';
         $consoleOutput = $this->execute(
             $this->getApplication(),
-            $this->get('oxid_esales.console.commands_collection_builder'),
+            $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
             new ArrayInput(['command' => 'oe:module:activate', 'module-id' => $moduleId])
         );
 
@@ -53,7 +53,7 @@ class ModuleActivateCommandTest extends ModuleCommandsTestCase
         $moduleId = 'test';
         $consoleOutput = $this->execute(
             $this->getApplication(),
-            $this->get('oxid_esales.console.commands_collection_builder'),
+            $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
             new ArrayInput(['command' => 'oe:module:activate', 'module-id' => $moduleId])
         );
 

@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Console;
 
+use OxidEsales\EshopCommunity\Internal\Console\CommandsProvider\CommandsProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Console\CommandsProvider\ServicesCommandsProvider;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,20 +24,20 @@ class Executor implements ExecutorInterface
     private $application;
 
     /**
-     * @var CommandsCollectionBuilder
+     * @var ServicesCommandsProvider
      */
-    private $commandsCollectionBuilder;
+    private $servicesCommandsProvider;
 
     /**
      * @param Application               $application
-     * @param CommandsCollectionBuilder $commandsCollectionBuilder
+     * @param CommandsProviderInterface $commandsProvider
      */
     public function __construct(
         Application $application,
-        CommandsCollectionBuilder $commandsCollectionBuilder
+        CommandsProviderInterface $commandsProvider
     ) {
         $this->application = $application;
-        $this->commandsCollectionBuilder = $commandsCollectionBuilder;
+        $this->servicesCommandsProvider = $commandsProvider;
     }
 
     /**
@@ -46,7 +48,7 @@ class Executor implements ExecutorInterface
      */
     public function execute(InputInterface $input = null, OutputInterface $output = null)
     {
-        $this->application->addCommands($this->commandsCollectionBuilder->build()->toArray());
+        $this->application->addCommands($this->servicesCommandsProvider->getCommands());
         $this->application->run($input, $output);
     }
 }

@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Console;
 
-use OxidEsales\EshopCommunity\Internal\Console\CommandsCollectionBuilder;
+use OxidEsales\EshopCommunity\Internal\Console\CommandsProvider\CommandsProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Console\Executor;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\StreamOutput;
@@ -18,13 +18,13 @@ trait ConsoleTrait
 {
     /**
      * @param Application $application
-     * @param CommandsCollectionBuilder $commandsCollectionBuilder
+     * @param CommandsProviderInterface $commandsProvider
      * @param $input
      * @return string
      */
-    protected function execute(Application $application, CommandsCollectionBuilder $commandsCollectionBuilder, $input): string
+    protected function execute(Application $application, CommandsProviderInterface $commandsProvider, $input): string
     {
-        $executor = new Executor($application, $commandsCollectionBuilder);
+        $executor = new Executor($application, $commandsProvider);
 
         $output = new StreamOutput(fopen('php://memory', 'w', false));
         $executor->execute($input, $output);

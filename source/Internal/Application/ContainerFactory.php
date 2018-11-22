@@ -117,4 +117,12 @@ class ContainerFactory
         }
         return self::$instance;
     }
+
+    /**
+     * Forces reload of the ContainerFactory on next request.
+     */
+    public static function reloadContainer()
+    {
+        self::$instance = null;
+    }
 }

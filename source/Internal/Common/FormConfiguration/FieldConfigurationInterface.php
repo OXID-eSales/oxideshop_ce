@@ -18,7 +18,7 @@ interface FieldConfigurationInterface
 
     /**
      * @param string $name
-     * @return FieldConfiguration
+     * @return FieldConfigurationInterface
      */
     public function setName($name);
 
@@ -29,7 +29,7 @@ interface FieldConfigurationInterface
 
     /**
      * @param string $label
-     * @return FieldConfiguration
+     * @return FieldConfigurationInterface
      */
     public function setLabel($label);
 
@@ -40,7 +40,7 @@ interface FieldConfigurationInterface
 
     /**
      * @param bool $isRequired
-     * @return FieldConfiguration
+     * @return FieldConfigurationInterface
      */
     public function setIsRequired($isRequired);
 }

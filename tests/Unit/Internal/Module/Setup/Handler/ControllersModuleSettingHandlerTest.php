@@ -54,7 +54,7 @@ class ControllersModuleSettingHandlerTest extends TestCase
             ]
         );
 
-        $settingHandler->handle($moduleSetting, 'newModule', 1);
+        $settingHandler->handleOnModuleActivation($moduleSetting, 'newModule', 1);
 
         $this->assertSame(
             [
@@ -83,7 +83,7 @@ class ControllersModuleSettingHandlerTest extends TestCase
         $settingHandler = new ControllersModuleSettingHandler($shopConfigurationSettingDaoMock);
 
         $moduleSetting = new ModuleSetting(ModuleSetting::CONTROLLERS, []);
-        $settingHandler->handle($moduleSetting, 'newModule', 1);
+        $settingHandler->handleOnModuleActivation($moduleSetting, 'newModule', 1);
 
         $shopConfigurationSettingWithEmptyValue->setValue(['newmodule' => []]);
 
@@ -97,6 +97,49 @@ class ControllersModuleSettingHandlerTest extends TestCase
             $shopConfigurationSettingWithEmptyValue->getValue(),
             $shopConfigurationSetting->getValue()
         );
+    }
+
+    public function testHandlingOnModuleDeactivation()
+    {
+        $shopConfigurationSettingDaoMock = $this->getShopConfigurationSettingDaoMock();
+
+        $moduleControllers = new ShopConfigurationSetting();
+        $moduleControllers
+            ->setName(ShopConfigurationSetting::MODULE_CONTROLLERS)
+            ->setShopId(1)
+            ->setType(ShopSettingType::ARRAY)
+            ->setValue(['existingModule' => ['controller' => 'someNamespace']]);
+
+        $shopConfigurationSettingDaoMock
+            ->method('get')
+            ->willReturn($moduleControllers);
+
+        $settingHandler = new ControllersModuleSettingHandler($shopConfigurationSettingDaoMock);
+
+        $settingHandler->handleOnModuleDeactivation(
+            new ModuleSetting(ModuleSetting::CONTROLLERS, []),
+            'existingModule',
+            1
+        );
+
+        $this->assertSame(
+            [],
+            $shopConfigurationSettingDaoMock->get(ShopConfigurationSetting::MODULE_CONTROLLERS, 1)->getValue()
+        );
+    }
+
+    /**
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongSettingModuleSettingHandlerException
+     */
+    public function testHandleWrongSettingOnModuleDeactivation()
+    {
+        $shopConfigurationSettingDaoMock = $this->getShopConfigurationSettingDaoMock();
+
+        $settingHandler = new ControllersModuleSettingHandler($shopConfigurationSettingDaoMock);
+
+        $moduleSetting = new ModuleSetting('notControllesSetting', []);
+
+        $settingHandler->handleOnModuleDeactivation($moduleSetting, 'existingmodule', 1);
     }
 
     /**

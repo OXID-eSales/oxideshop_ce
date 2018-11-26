@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Handler;
 
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongSettingModuleSettingHandlerException;
 use OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\ShopModuleSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\ShopModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
@@ -34,32 +35,44 @@ class ShopModuleSettingModuleSettingHandler implements ModuleSettingHandlerInter
      * @param string        $moduleId
      * @param int           $shopId
      */
-    public function handle(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
+    public function handleOnModuleActivation(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
     {
+        if (!$this->canHandle($moduleSetting)) {
+            throw new WrongSettingModuleSettingHandlerException();
+        }
+
         foreach ($moduleSetting->getValue() as $shopModuleSettingData) {
             $shopModuleSetting = new ShopModuleSetting();
             $shopModuleSetting
                 ->setShopId($shopId)
-                ->setModuleId($moduleId)
-                ->setName($shopModuleSettingData['name'])
-                ->setType($shopModuleSettingData['type'])
-                ->setValue($shopModuleSettingData['value']);
+                ->setModuleId($moduleId);
 
-            if (isset($shopModuleSettingData['constraints'])) {
-                $shopModuleSetting->setConstraints(
-                    explode('|', $shopModuleSettingData['constraints'])
-                );
-            }
-
-            if (isset($shopModuleSettingData['group'])) {
-                $shopModuleSetting->setGroupName($shopModuleSettingData['group']);
-            }
-
-            if (isset($shopModuleSettingData['position'])) {
-                $shopModuleSetting->setPositionInGroup($shopModuleSettingData['position']);
-            }
+            $shopModuleSetting = $this->mapDataToShopModuleSetting($shopModuleSetting, $shopModuleSettingData);
 
             $this->shopModuleSettingDao->save($shopModuleSetting);
+        }
+    }
+
+    /**
+     * @param ModuleSetting $moduleSetting
+     * @param string        $moduleId
+     * @param int           $shopId
+     */
+    public function handleOnModuleDeactivation(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
+    {
+        if (!$this->canHandle($moduleSetting)) {
+            throw new WrongSettingModuleSettingHandlerException();
+        }
+
+        foreach ($moduleSetting->getValue() as $shopModuleSettingData) {
+            $shopModuleSetting = new ShopModuleSetting();
+            $shopModuleSetting
+                ->setShopId($shopId)
+                ->setModuleId($moduleId);
+
+            $shopModuleSetting = $this->mapDataToShopModuleSetting($shopModuleSetting, $shopModuleSettingData);
+
+            $this->shopModuleSettingDao->delete($shopModuleSetting);
         }
     }
 
@@ -70,5 +83,34 @@ class ShopModuleSettingModuleSettingHandler implements ModuleSettingHandlerInter
     public function canHandle(ModuleSetting $moduleSetting): bool
     {
         return $moduleSetting->getName() === ModuleSetting::SHOP_MODULE_SETTING;
+    }
+
+    /**
+     * @param ShopModuleSetting $shopModuleSetting
+     * @param array             $data
+     * @return ShopModuleSetting
+     */
+    private function mapDataToShopModuleSetting(ShopModuleSetting $shopModuleSetting, array $data): ShopModuleSetting
+    {
+        $shopModuleSetting
+            ->setName($data['name'])
+            ->setType($data['type'])
+            ->setValue($data['value']);
+
+        if (isset($data['constraints'])) {
+            $shopModuleSetting->setConstraints(
+                explode('|', $data['constraints'])
+            );
+        }
+
+        if (isset($data['group'])) {
+            $shopModuleSetting->setGroupName($data['group']);
+        }
+
+        if (isset($data['position'])) {
+            $shopModuleSetting->setPositionInGroup($data['position']);
+        }
+
+        return $shopModuleSetting;
     }
 }

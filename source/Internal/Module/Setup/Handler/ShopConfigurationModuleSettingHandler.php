@@ -53,8 +53,10 @@ class ShopConfigurationModuleSettingHandler implements ModuleSettingHandlerInter
      * @param ModuleSetting $moduleSetting
      * @param string        $moduleId
      * @param int           $shopId
+     *
+     * @throws WrongSettingModuleSettingHandlerException
      */
-    public function handle(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
+    public function handleOnModuleActivation(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
     {
         if (!$this->canHandle($moduleSetting)) {
             throw new WrongSettingModuleSettingHandlerException();
@@ -68,6 +70,29 @@ class ShopConfigurationModuleSettingHandler implements ModuleSettingHandlerInter
                 $moduleId => $moduleSetting->getValue(),
             ]
         );
+
+        $shopConfigurationSetting->setValue($shopSettingValue);
+
+        $this->shopConfigurationSettingDao->save($shopConfigurationSetting);
+    }
+
+    /**
+     * @param ModuleSetting $moduleSetting
+     * @param string        $moduleId
+     * @param int           $shopId
+     *
+     * @throws WrongSettingModuleSettingHandlerException
+     */
+    public function handleOnModuleDeactivation(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
+    {
+        if (!$this->canHandle($moduleSetting)) {
+            throw new WrongSettingModuleSettingHandlerException();
+        }
+
+        $shopConfigurationSetting = $this->getShopConfigurationSetting($shopId);
+
+        $shopSettingValue = $shopConfigurationSetting->getValue();
+        unset($shopSettingValue[$moduleId]);
 
         $shopConfigurationSetting->setValue($shopSettingValue);
 

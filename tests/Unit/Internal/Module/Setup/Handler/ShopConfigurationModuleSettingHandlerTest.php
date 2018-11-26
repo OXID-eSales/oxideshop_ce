@@ -57,7 +57,7 @@ class ShopConfigurationModuleSettingHandlerTest extends TestCase
     /**
      * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongSettingModuleSettingHandlerException
      */
-    public function testHandleWrongSetting()
+    public function testHandleWrongSettingOnModuleActivation()
     {
         $shopConfigurationSettingDao = $this
             ->getMockBuilder(ShopConfigurationSettingDaoInterface::class)
@@ -71,17 +71,37 @@ class ShopConfigurationModuleSettingHandlerTest extends TestCase
         );
         $moduleSetting = new ModuleSetting('someSetting', []);
 
-        $settingHandler->handle($moduleSetting, 'testModule', 1);
+        $settingHandler->handleOnModuleActivation($moduleSetting, 'testModule', 1);
     }
 
-    public function testHandleSetting()
+    /**
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongSettingModuleSettingHandlerException
+     */
+    public function testHandleWrongSettingOnModuleDeactivation()
+    {
+        $shopConfigurationSettingDao = $this
+            ->getMockBuilder(ShopConfigurationSettingDaoInterface::class)
+            ->getMock();
+
+
+        $settingHandler = new ShopConfigurationModuleSettingHandler(
+            'anotherSetting',
+            'shopSetting',
+            $shopConfigurationSettingDao
+        );
+        $moduleSetting = new ModuleSetting('someSetting', []);
+
+        $settingHandler->handleOnModuleDeactivation($moduleSetting, 'testModule', 1);
+    }
+
+    public function testHandleSettingOnModuleActivation()
     {
         $shopConfigurationSetting = new ShopConfigurationSetting();
         $shopConfigurationSetting
             ->setShopId(1)
             ->setName('shopSetting')
             ->setType(ShopSettingType::ARRAY)
-            ->setValue(['alreadyExistedModuleId' => 'alreadyExistedValue']);
+            ->setValue(['alreadyExistentModuleId' => 'alreadyExistentValue']);
 
         $shopConfigurationSettingDao = $this->getTestShopConfigurationSettingDao();
         $shopConfigurationSettingDao->save($shopConfigurationSetting);
@@ -93,16 +113,48 @@ class ShopConfigurationModuleSettingHandlerTest extends TestCase
         );
         $moduleSetting = new ModuleSetting('moduleSetting', 'testModulePath');
 
-        $settingHandler->handle($moduleSetting, 'testModule', 1);
+        $settingHandler->handleOnModuleActivation($moduleSetting, 'testModule', 1);
 
         $shopConfigurationSetting = $shopConfigurationSettingDao->get('shopSetting', 1);
 
         $this->assertEquals(
             [
-                'alreadyExistedModuleId' => 'alreadyExistedValue',
-                'testModule'             => 'testModulePath',
+                'alreadyExistentModuleId' => 'alreadyExistentValue',
+                'testModule'              => 'testModulePath',
             ],
             $shopConfigurationSetting->getValue()
+        );
+    }
+
+    public function testHandleSettingOnModuleDeactivation()
+    {
+        $shopConfigurationSetting = new ShopConfigurationSetting();
+        $shopConfigurationSetting
+            ->setShopId(1)
+            ->setName('shopSetting')
+            ->setType(ShopSettingType::ARRAY)
+            ->setValue([
+                'moduleToStayActive' => 'value',
+                'moduleToDeactivate' => 'value'
+            ]);
+
+        $shopConfigurationSettingDao = $this->getTestShopConfigurationSettingDao();
+        $shopConfigurationSettingDao->save($shopConfigurationSetting);
+
+        $settingHandler = new ShopConfigurationModuleSettingHandler(
+            'moduleSetting',
+            'shopSetting',
+            $shopConfigurationSettingDao
+        );
+        $moduleSetting = new ModuleSetting('moduleSetting', 'value');
+
+        $settingHandler->handleOnModuleDeactivation($moduleSetting, 'moduleToDeactivate', 1);
+
+        $this->assertEquals(
+            [
+                'moduleToStayActive' => 'value',
+            ],
+            $shopConfigurationSettingDao->get('shopSetting', 1)->getValue()
         );
     }
 

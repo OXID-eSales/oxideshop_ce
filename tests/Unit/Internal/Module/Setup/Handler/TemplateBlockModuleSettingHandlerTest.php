@@ -37,7 +37,7 @@ class TemplateBlockModuleSettingHandlerTest extends TestCase
         );
     }
 
-    public function testHandling()
+    public function testHandlingOnModuleActivation()
     {
         $moduleSetting = new ModuleSetting(
             ModuleSetting::TEMPLATE_BLOCKS,
@@ -69,7 +69,25 @@ class TemplateBlockModuleSettingHandlerTest extends TestCase
             ->with($templateBlockExtension);
 
         $settingHandler = new TemplateBlockModuleSettingHandler($templateBlockDao);
-        $settingHandler->handle(
+        $settingHandler->handleOnModuleActivation(
+            $moduleSetting,
+            'testModule',
+            1
+        );
+    }
+
+    public function testHandlingOnModuleDeactivation()
+    {
+        $moduleSetting = new ModuleSetting(ModuleSetting::TEMPLATE_BLOCKS, []);
+
+        $templateBlockDao = $this->getTemplateBlockDaoMock();
+        $templateBlockDao
+            ->expects($this->once())
+            ->method('deleteExtensions')
+            ->with('testModule', 1);
+
+        $settingHandler = new TemplateBlockModuleSettingHandler($templateBlockDao);
+        $settingHandler->handleOnModuleDeactivation(
             $moduleSetting,
             'testModule',
             1
@@ -77,8 +95,33 @@ class TemplateBlockModuleSettingHandlerTest extends TestCase
     }
 
     /**
-     * @return \PHPUnit\Framework\MockObject\MockObject
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongSettingModuleSettingHandlerException
      */
+    public function testHandleWrongSettingOnModuleActivation()
+    {
+        $handler = new TemplateBlockModuleSettingHandler($this->getTemplateBlockDaoMock());
+
+        $handler->handleOnModuleActivation(
+            new ModuleSetting('wrongSettingForThisHandler', []),
+            'testModule',
+            1
+        );
+    }
+
+    /**
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongSettingModuleSettingHandlerException
+     */
+    public function testHandleWrongSettingOnModuleDeactivation()
+    {
+        $handler = new TemplateBlockModuleSettingHandler($this->getTemplateBlockDaoMock());
+
+        $handler->handleOnModuleActivation(
+            new ModuleSetting('wrongSettingForThisHandler', []),
+            'testModule',
+            1
+        );
+    }
+
     private function getTemplateBlockDaoMock(): TemplateBlockExtensionDaoInterface
     {
         return $this

@@ -43,9 +43,71 @@ class ShopModuleSettingModuleSettingHandlerTest extends TestCase
         );
     }
 
-    public function testHandling()
+    public function testHandlingOnModuleActivation()
     {
-        $moduleSetting = new ModuleSetting(
+        $moduleSetting = $this->getTestModuleSetting();
+        $shopModuleSetting = $this->getTestShopModuleSetting();
+
+        $shopModuleSettingDao = $this->getMockBuilder(ShopModuleSettingDaoInterface::class)->getMock();
+        $shopModuleSettingDao
+            ->expects($this->once())
+            ->method('save')
+            ->with($shopModuleSetting);
+
+        $handler = new ShopModuleSettingModuleSettingHandler($shopModuleSettingDao);
+        $handler->handleOnModuleActivation($moduleSetting, 'testModule', 1);
+    }
+
+    public function testHandlingOnModuleDeactivation()
+    {
+        $moduleSetting = $this->getTestModuleSetting();
+        $shopModuleSetting = $this->getTestShopModuleSetting();
+
+        $shopModuleSettingDao = $this->getMockBuilder(ShopModuleSettingDaoInterface::class)->getMock();
+        $shopModuleSettingDao
+            ->expects($this->once())
+            ->method('delete')
+            ->with($shopModuleSetting);
+
+        $handler = new ShopModuleSettingModuleSettingHandler($shopModuleSettingDao);
+        $handler->handleOnModuleDeactivation($moduleSetting, 'testModule', 1);
+    }
+
+    /**
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongSettingModuleSettingHandlerException
+     */
+    public function testHandleWrongSettingOnModuleActivation()
+    {
+        $handler = new ShopModuleSettingModuleSettingHandler(
+            $this->getMockBuilder(ShopModuleSettingDaoInterface::class)->getMock()
+        );
+
+        $handler->handleOnModuleActivation(
+            new ModuleSetting('wrongSettingForThisHandler', []),
+            'testModule',
+            1
+        );
+    }
+
+    /**
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongSettingModuleSettingHandlerException
+     */
+    public function testHandleWrongSettingOnModuleDeactivation()
+    {
+        $handler = new ShopModuleSettingModuleSettingHandler(
+            $this->getMockBuilder(ShopModuleSettingDaoInterface::class)->getMock()
+        );
+
+        $handler->handleOnModuleActivation(
+            new ModuleSetting('wrongSettingForThisHandler', []),
+            'testModule',
+            1
+        );
+    }
+
+    private function getTestModuleSetting(): ModuleSetting
+    {
+        return new ModuleSetting(
             ModuleSetting::SHOP_MODULE_SETTING,
             [
                 [
@@ -58,7 +120,10 @@ class ShopModuleSettingModuleSettingHandlerTest extends TestCase
                 ],
             ]
         );
+    }
 
+    private function getTestShopModuleSetting(): ShopModuleSetting
+    {
         $shopModuleSetting = new ShopModuleSetting();
         $shopModuleSetting
             ->setName('blCustomGridFramework')
@@ -70,13 +135,6 @@ class ShopModuleSettingModuleSettingHandlerTest extends TestCase
             ->setGroupName('frontend')
             ->setPositionInGroup(5);
 
-        $shopModuleSettingDao = $this->getMockBuilder(ShopModuleSettingDaoInterface::class)->getMock();
-        $shopModuleSettingDao
-            ->expects($this->atLeastOnce())
-            ->method('save')
-            ->with($shopModuleSetting);
-
-        $handler = new ShopModuleSettingModuleSettingHandler($shopModuleSettingDao);
-        $handler->handle($moduleSetting, 'testModule', 1);
+        return $shopModuleSetting;
     }
 }

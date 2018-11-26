@@ -43,7 +43,7 @@ class ClassExtensionsModuleSettingHandlerTest extends TestCase
         );
     }
 
-    public function testHandling()
+    public function testHandlingOnModuleActivation()
     {
         $shopConfigurationSettingBeforeHandling = new ShopConfigurationSetting();
         $shopConfigurationSettingBeforeHandling
@@ -74,22 +74,67 @@ class ClassExtensionsModuleSettingHandlerTest extends TestCase
         ]);
 
         $handler = new ClassExtensionsModuleSettingHandler($shopConfigurationSettingDao);
-        $handler->handle($moduleSetting, 'newModuleId', 1);
+        $handler->handleOnModuleActivation($moduleSetting, 'newModuleId', 1);
+    }
+
+    public function testHandlingOnModuleDeactivation()
+    {
+        $shopConfigurationSettingBeforeHandling = new ShopConfigurationSetting();
+        $shopConfigurationSettingBeforeHandling
+            ->setValue([
+                'moduleIdToDeactivate' => ['extensionClass'],
+                'anotherModuleId'      => ['anotherExtensionClass'],
+            ]);
+
+        $shopConfigurationSettingDao = $this->getMockBuilder(ShopConfigurationSettingDaoInterface::class)->getMock();
+        $shopConfigurationSettingDao
+            ->method('get')
+            ->willReturn($shopConfigurationSettingBeforeHandling);
+
+        $shopConfigurationSettingAfterHandling = new ShopConfigurationSetting();
+        $shopConfigurationSettingAfterHandling
+            ->setValue([
+                'anotherModuleId' => ['anotherExtensionClass'],
+            ]);
+
+        $shopConfigurationSettingDao
+            ->expects($this->once())
+            ->method('save')
+            ->with($shopConfigurationSettingAfterHandling);
+
+        $moduleSetting = new ModuleSetting(ModuleSetting::CLASS_EXTENSIONS, []);
+
+        $handler = new ClassExtensionsModuleSettingHandler($shopConfigurationSettingDao);
+        $handler->handleOnModuleDeactivation($moduleSetting, 'moduleIdToDeactivate', 1);
     }
 
     /**
      * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongSettingModuleSettingHandlerException
      */
-    public function testHandleWrongSetting()
+    public function testHandleWrongSettingOnModuleActivation()
     {
         $shopConfigurationSettingDao = $this
             ->getMockBuilder(ShopConfigurationSettingDaoInterface::class)
             ->getMock();
 
+        $settingHandler = new ClassExtensionsModuleSettingHandler($shopConfigurationSettingDao);
+        $moduleSetting = new ModuleSetting('someSetting', []);
+
+        $settingHandler->handleOnModuleActivation($moduleSetting, 'testModule', 1);
+    }
+
+    /**
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongSettingModuleSettingHandlerException
+     */
+    public function testHandleWrongSettingOnModuleDeactivation()
+    {
+        $shopConfigurationSettingDao = $this
+            ->getMockBuilder(ShopConfigurationSettingDaoInterface::class)
+            ->getMock();
 
         $settingHandler = new ClassExtensionsModuleSettingHandler($shopConfigurationSettingDao);
         $moduleSetting = new ModuleSetting('someSetting', []);
 
-        $settingHandler->handle($moduleSetting, 'testModule', 1);
+        $settingHandler->handleOnModuleDeactivation($moduleSetting, 'testModule', 1);
     }
 }

@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Service;
 
+use OxidEsales\EshopCommunity\Internal\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Provider\ModuleConfigurationProviderInterface;
@@ -45,12 +46,49 @@ class ModuleActivationServiceTest extends TestCase
 
         $moduleSettingHandler
             ->expects($this->atLeastOnce())
-            ->method('handle');
+            ->method('handleOnModuleActivation');
 
-        $moduleActivationService = new ModuleActivationService($moduleConfigurationProvider);
+        $moduleActivationService = new ModuleActivationService(
+            $moduleConfigurationProvider,
+            $this->getMockBuilder(ModuleCacheServiceInterface::class)->getMock()
+        );
         $moduleActivationService->addHandler($moduleSettingHandler);
 
         $moduleActivationService->activate('testModule', 1);
+    }
+
+    public function testModuleSettingHandlersOnDeactivation()
+    {
+        $moduleSetting = new ModuleSetting('testSetting', 'value');
+
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->addSetting(
+            $moduleSetting
+        );
+
+        $moduleConfigurationProvider = $this->getMockBuilder(ModuleConfigurationProviderInterface::class)->getMock();
+        $moduleConfigurationProvider
+            ->method('getModuleConfiguration')
+            ->willReturn($moduleConfiguration);
+
+        $moduleSettingHandler = $this->getMockBuilder(ModuleSettingHandlerInterface::class)->getMock();
+        $moduleSettingHandler
+            ->expects($this->atLeastOnce())
+            ->method('canHandle')
+            ->with($moduleSetting)
+            ->willReturn(true);
+
+        $moduleSettingHandler
+            ->expects($this->atLeastOnce())
+            ->method('handleOnModuleDeactivation');
+
+        $moduleActivationService = new ModuleActivationService(
+            $moduleConfigurationProvider,
+            $this->getMockBuilder(ModuleCacheServiceInterface::class)->getMock()
+        );
+        $moduleActivationService->addHandler($moduleSettingHandler);
+
+        $moduleActivationService->deactivate('testModule', 1);
     }
 
     /**
@@ -70,7 +108,10 @@ class ModuleActivationServiceTest extends TestCase
             ->method('getModuleConfiguration')
             ->willReturn($moduleConfiguration);
 
-        $moduleActivationService = new ModuleActivationService($moduleConfigurationProvider);
+        $moduleActivationService = new ModuleActivationService(
+            $moduleConfigurationProvider,
+            $this->getMockBuilder(ModuleCacheServiceInterface::class)->getMock()
+        );
 
         $moduleActivationService->activate('testModule', 1);
     }
@@ -99,7 +140,11 @@ class ModuleActivationServiceTest extends TestCase
             ->method('getModuleConfiguration')
             ->willReturn($moduleConfiguration);
 
-        $moduleActivationService = new ModuleActivationService($moduleConfigurationProvider);
+        $moduleActivationService = new ModuleActivationService(
+            $moduleConfigurationProvider,
+            $this->getMockBuilder(ModuleCacheServiceInterface::class)->getMock()
+        );
+
         $moduleActivationService->addValidator($moduleSettingValidator);
 
         $moduleActivationService->activate('testModule', 1);

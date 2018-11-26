@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Service;
 
+use OxidEsales\EshopCommunity\Internal\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Provider\ModuleConfigurationProviderInterface;
@@ -26,6 +27,11 @@ class ModuleActivationService implements ModuleActivationServiceInterface
     private $moduleConfigurationProvider;
 
     /**
+     * @var ModuleCacheServiceInterface
+     */
+    private $moduleCacheService;
+
+    /**
      * @var array
      */
     private $moduleSettingHandlers = [];
@@ -38,11 +44,16 @@ class ModuleActivationService implements ModuleActivationServiceInterface
     /**
      * ModuleActivationService constructor.
      * @param ModuleConfigurationProviderInterface $moduleConfigurationProvider
+     * @param ModuleCacheServiceInterface          $moduleCacheService
      */
-    public function __construct(ModuleConfigurationProviderInterface $moduleConfigurationProvider)
-    {
+    public function __construct(
+        ModuleConfigurationProviderInterface    $moduleConfigurationProvider,
+        ModuleCacheServiceInterface             $moduleCacheService
+    ) {
         $this->moduleConfigurationProvider = $moduleConfigurationProvider;
+        $this->moduleCacheService = $moduleCacheService;
     }
+
 
     /**
      * @param string $moduleId
@@ -61,7 +72,26 @@ class ModuleActivationService implements ModuleActivationServiceInterface
         /**
          * @todo [II] wrap it in transaction.
          */
-        $this->handleModuleSettings($moduleConfiguration, $moduleId, $shopId);
+        $this->handleModuleSettingsOnActivation($moduleConfiguration, $moduleId, $shopId);
+    }
+
+    /**
+     * @param string $moduleId
+     * @param int    $shopId
+     */
+    public function deactivate(string $moduleId, int $shopId)
+    {
+        $moduleConfiguration = $this
+            ->moduleConfigurationProvider
+            ->getModuleConfiguration($moduleId, 'dev', $shopId);
+
+        foreach ($moduleConfiguration->getSettings() as $setting) {
+            /** @var ModuleSettingHandlerInterface $handler */
+            $handler = $this->getHandler($setting);
+            $handler->handleOnModuleDeactivation($setting, $moduleId, $shopId);
+        }
+
+        $this->moduleCacheService->invalidateModuleCache($moduleId, $shopId);
     }
 
     /**
@@ -85,11 +115,11 @@ class ModuleActivationService implements ModuleActivationServiceInterface
      * @param string              $moduleId
      * @param int                 $shopId
      */
-    private function handleModuleSettings(ModuleConfiguration $moduleConfiguration, string $moduleId, int $shopId)
+    private function handleModuleSettingsOnActivation(ModuleConfiguration $moduleConfiguration, string $moduleId, int $shopId)
     {
         foreach ($moduleConfiguration->getSettings() as $setting) {
             $handler = $this->getHandler($setting);
-            $handler->handle($setting, $moduleId, $shopId);
+            $handler->handleOnModuleActivation($setting, $moduleId, $shopId);
         }
     }
 
@@ -101,6 +131,7 @@ class ModuleActivationService implements ModuleActivationServiceInterface
     private function getHandler(ModuleSetting $setting): ModuleSettingHandlerInterface
     {
         foreach ($this->moduleSettingHandlers as $moduleSettingHandler) {
+            /** @var ModuleSettingHandlerInterface $moduleSettingHandler */
             if ($moduleSettingHandler->canHandle($setting)) {
                 return $moduleSettingHandler;
             }

@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\State;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
+use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateService;
 use PHPUnit\Framework\TestCase;
 
@@ -34,7 +35,21 @@ class ModuleStateServiceTest extends TestCase
         );
     }
 
-    public function getShopConfigurationSettingDao(): ShopConfigurationSettingDaoInterface
+    public function testIsActiveReturnsFalseIfNoActiveModules()
+    {
+        $shopConfigurationSettingDao = $this->getMockBuilder(ShopConfigurationSettingDaoInterface::class)->getMock();
+        $shopConfigurationSettingDao
+            ->method('get')
+            ->willThrowException(new EntryDoesNotExistDaoException());
+
+        $moduleStateService = new ModuleStateService($shopConfigurationSettingDao);
+
+        $this->assertFalse(
+            $moduleStateService->isActive('notActiveModuleId', 1)
+        );
+    }
+
+    private function getShopConfigurationSettingDao(): ShopConfigurationSettingDaoInterface
     {
         $activeModulesSetting = new ShopConfigurationSetting();
         $activeModulesSetting->setValue([

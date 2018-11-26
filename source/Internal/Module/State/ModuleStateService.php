@@ -10,6 +10,7 @@ use function in_array;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
+use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
 
 /**
  * @internal
@@ -37,16 +38,18 @@ class ModuleStateService implements ModuleStateServiceInterface
      */
     public function isActive(string $moduleId, int $shopId): bool
     {
-        $activeModuleIdsSetting = $this->shopConfigurationSettingDao->get(
-            ShopConfigurationSetting::ACTIVE_MODULES,
-            $shopId
-        );
+        try {
+            $activeModuleIdsSetting = $this->shopConfigurationSettingDao->get(
+                ShopConfigurationSetting::ACTIVE_MODULES,
+                $shopId
+            );
 
-        return in_array(
-            $moduleId,
-            $activeModuleIdsSetting->getValue(),
-            true
-        );
+            $isActive = in_array($moduleId, $activeModuleIdsSetting->getValue(), true);
+        } catch (EntryDoesNotExistDaoException $exception) {
+            $isActive = false;
+        }
+
+        return $isActive;
     }
 
     /**

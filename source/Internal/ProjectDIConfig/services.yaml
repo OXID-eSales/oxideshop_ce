@@ -2,10 +2,6 @@ services:
   _defaults:
     public: false
     autowire: true
-  OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Dao\ProjectYamlDaoInterface:
-    class: OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Dao\ProjectYamlDao
-  OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Service\ProjectYamlImportServiceInterface:
-    class: OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Service\ProjectYamlImportService
   OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Service\ShopActivationServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Service\ShopActivationService
     public: true

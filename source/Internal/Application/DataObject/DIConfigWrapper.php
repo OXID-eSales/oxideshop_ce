@@ -5,17 +5,20 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\ProjectDIConfig\DataObject;
+namespace OxidEsales\EshopCommunity\Internal\Application\DataObject;
 
-use OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Exception\NoServiceYamlException;
+use OxidEsales\EshopCommunity\Internal\Application\Exception\SystemServiceOverwriteException;
+use OxidEsales\EshopCommunity\Internal\Application\Exception\MissingServiceException;
+use Psr\Container\ContainerInterface;
+use OxidEsales\EshopCommunity\Internal\Application\Exception\NoServiceYamlException;
 
 /**
  * @internal
  */
 class DIConfigWrapper
 {
-
     const SERVICE_SECTION = 'services';
+    const RESOURCE_KEY = 'resource';
     const IMPORTS_SECTION = 'imports';
 
     /**
@@ -44,11 +47,11 @@ class DIConfigWrapper
 
         $this->addSectionIfMissing($this::IMPORTS_SECTION);
         foreach ($this->getImports() as $import) {
-            if ($import['resource'] == $normalizedImportPath) {
+            if ($import[$this::RESOURCE_KEY] === $normalizedImportPath) {
                 return;
             }
         }
-        $this->configArray[$this::IMPORTS_SECTION][] = ['resource' => $normalizedImportPath];
+        $this->configArray[$this::IMPORTS_SECTION][] = [$this::RESOURCE_KEY => $normalizedImportPath];
     }
 
     /**
@@ -58,7 +61,7 @@ class DIConfigWrapper
     {
         $importFileNames = [];
         foreach ($this->getImports() as $import) {
-            $importFileNames[] = $import['resource'];
+            $importFileNames[] = $import[$this::RESOURCE_KEY];
         }
         return $importFileNames;
     }
@@ -76,7 +79,7 @@ class DIConfigWrapper
 
         $imports = [];
         foreach ($this->getImports() as $import) {
-            if ($import['resource'] !== $normalizedImportPath) {
+            if ($import[$this::RESOURCE_KEY] !== $normalizedImportPath) {
                 $imports[] = $import;
             }
         }
@@ -92,7 +95,7 @@ class DIConfigWrapper
     {
         try {
             $this->getService($serviceKey);
-        } catch (\Exception $e) {
+        } catch (MissingServiceException $e) {
             return false;
         }
         return true;
@@ -102,17 +105,17 @@ class DIConfigWrapper
      * @param string $serviceKey
      *
      * @return DIServiceWrapper
-     * @throws \Exception
+     * @throws MissingServiceException
      */
     public function getService(string $serviceKey): DIServiceWrapper
     {
         /** @var DIServiceWrapper $service */
         foreach ($this->getServices() as $service) {
-            if ($service->getKey() == $serviceKey) {
+            if ($service->getKey() === $serviceKey) {
                 return $service;
             }
         }
-        throw new \Exception("Service $serviceKey not found");
+        throw new MissingServiceException("Service $serviceKey not found");
     }
 
     /**
@@ -132,6 +135,21 @@ class DIConfigWrapper
         $this->cleanUpConfig();
 
         return $this->configArray;
+    }
+
+    /**
+     * @param ContainerInterface $container
+     *
+     * @throws SystemServiceOverwriteException
+     */
+    public function checkServices(ContainerInterface $container)
+    {
+        /** @var DIServiceWrapper $service */
+        foreach ($this->getServices() as $service) {
+            if ($container->has($service->getKey())) {
+                throw new SystemServiceOverwriteException($service->getKey() . ' is already defined');
+            }
+        }
     }
 
     /**

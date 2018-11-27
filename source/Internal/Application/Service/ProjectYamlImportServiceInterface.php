@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Service;
+namespace OxidEsales\EshopCommunity\Internal\Application\Service;
 
 /**
  * Class ProjectYamlImportService

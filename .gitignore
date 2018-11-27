@@ -42,4 +42,4 @@
 
 # DI for modules and packages
 /source/project.yaml
-/tests/Integration/Internal/ProjectDIConfig/Dao/project.yaml
+/tests/Integration/Internal/Application/Dao/project.yaml

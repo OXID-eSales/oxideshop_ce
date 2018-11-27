@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Exception;
+namespace OxidEsales\EshopCommunity\Internal\Application\Exception;
 
 /**
  * Class NoServiceYamlException

@@ -1,0 +1,6 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+  OxidEsales\EshopCommunity\Internal\Application\Service\ProjectYamlImportServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Application\Service\ProjectYamlImportService

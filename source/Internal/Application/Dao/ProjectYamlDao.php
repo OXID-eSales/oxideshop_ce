@@ -5,11 +5,12 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Dao;
+namespace OxidEsales\EshopCommunity\Internal\Application\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\ProjectDIConfig\DataObject\DIConfigWrapper;
+use OxidEsales\EshopCommunity\Internal\Application\Events\ProjectYamlChangedEvent;
+use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -17,7 +18,10 @@ use Symfony\Component\Yaml\Yaml;
  */
 class ProjectYamlDao implements ProjectYamlDaoInterface
 {
-   /**
+
+    const PROJECT_FILE_NAME = 'project.yaml';
+
+    /**
      * @var ContextInterface $context
      */
     private $context;
@@ -46,10 +50,6 @@ class ProjectYamlDao implements ProjectYamlDaoInterface
     public function saveProjectConfigFile(DIConfigWrapper $config)
     {
         file_put_contents($this->getProjectFileName(), Yaml::dump($config->getConfigAsArray(), 3, 2));
-        if (file_exists($this->context->getContainerCacheFile())) {
-            unlink($this->context->getContainerCacheFile());
-        }
-        ContainerFactory::reloadContainer();
     }
 
     /**
@@ -59,13 +59,12 @@ class ProjectYamlDao implements ProjectYamlDaoInterface
      */
     public function loadDIConfigFile(string $path): DIConfigWrapper
     {
-        $yamlArray = null;
+        $yamlArray = [];
+
         if (file_exists($path)) {
-            $yamlArray = Yaml::parse(file_get_contents($path));
+            $yamlArray = Yaml::parse(file_get_contents($path)) ?? [];
         }
-        if (is_null($yamlArray)) {
-            $yamlArray = [];
-        }
+
         return new DIConfigWrapper($yamlArray);
     }
 
@@ -74,6 +73,6 @@ class ProjectYamlDao implements ProjectYamlDaoInterface
      */
     private function getProjectFileName(): string
     {
-        return $this->context->getShopDir() . DIRECTORY_SEPARATOR . ProjectYamlDaoInterface::PROJECT_FILE_NAME;
+        return $this->context->getShopDir() . DIRECTORY_SEPARATOR . self::PROJECT_FILE_NAME;
     }
 }

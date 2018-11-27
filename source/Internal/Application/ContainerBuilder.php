@@ -9,9 +9,8 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Application;
 
 use OxidEsales\EshopCommunity\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Dao\ProjectYamlDao;
-use OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Dao\ProjectYamlDaoInterface;
-use OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Service\ProjectYamlImportService;
+use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDao;
+use OxidEsales\EshopCommunity\Internal\Application\Service\ProjectYamlImportService;
 use OxidEsales\EshopCommunity\Internal\Utility\Context;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Config\FileLocator;
@@ -88,12 +87,12 @@ class ContainerBuilder
     {
 
         if (! file_exists($this->facts->getSourcePath() .
-                          DIRECTORY_SEPARATOR . ProjectYamlDaoInterface::PROJECT_FILE_NAME)) {
+                          DIRECTORY_SEPARATOR . ProjectYamlDao::PROJECT_FILE_NAME)) {
             return;
         }
         $this->cleanupProjectYaml();
         $loader = new YamlFileLoader($symfonyContainer, new FileLocator($this->facts->getSourcePath()));
-        $loader->load(ProjectYamlDaoInterface::PROJECT_FILE_NAME);
+        $loader->load(ProjectYamlDao::PROJECT_FILE_NAME);
     }
 
     /**

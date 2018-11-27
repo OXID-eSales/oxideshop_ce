@@ -6,20 +6,19 @@ declare(strict_types=1);
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\ProjectDIConfig\DataObject;
+namespace OxidEsales\EshopCommunity\Internal\Application\DataObject;
 
 use OxidEsales\EshopCommunity\Internal\Application\Events\ShopAwareInterface;
+use OxidEsales\EshopCommunity\Internal\DIProjectConfig\Exception\MissingUpdateCallException;
 
 /**
  * @internal
  */
 class DIServiceWrapper
 {
-
     const CALLS_SECTION = 'calls';
 
     const SET_ACTIVE_SHOPS_METHOD = 'setActiveShops';
-    const SET_ACTIVE_PARAMETERS = [[]];
     const SET_CONTEXT_METHOD = 'setContext';
     const SET_CONTEXT_PARAMETER = '@OxidEsales\EshopCommunity\Internal\Utility\ContextInterface';
 
@@ -61,7 +60,7 @@ class DIServiceWrapper
         $class = $this->getClass();
         $interfaces = class_implements($class);
 
-        return in_array(ShopAwareInterface::class, $interfaces);
+        return in_array(ShopAwareInterface::class, $interfaces, true);
     }
 
     /**
@@ -142,7 +141,7 @@ class DIServiceWrapper
      */
     private function getCalls(): array
     {
-        if (!key_exists($this::CALLS_SECTION, $this->serviceArray)) {
+        if (!array_key_exists($this::CALLS_SECTION, $this->serviceArray)) {
             return [];
         }
         $calls = [];
@@ -161,7 +160,7 @@ class DIServiceWrapper
     private function hasCall(string $methodName)
     {
         foreach ($this->getCalls() as $call) {
-            if ($call->getMethodName() == $methodName) {
+            if ($call->getMethodName() === $methodName) {
                 return true;
             }
         }
@@ -174,7 +173,7 @@ class DIServiceWrapper
      */
     private function addCall(DICallWrapper $call)
     {
-        if (!key_exists($this::CALLS_SECTION, $this->serviceArray)) {
+        if (!array_key_exists($this::CALLS_SECTION, $this->serviceArray)) {
             $this->serviceArray[$this::CALLS_SECTION] = [];
         }
         $this->serviceArray[$this::CALLS_SECTION][] = $call->getCallAsArray();
@@ -183,19 +182,21 @@ class DIServiceWrapper
     /**
      * @param DICallWrapper $call
      *
-     * @throws \Exception
+     * @throws MissingUpdateCallException
      * @return void
      */
     private function updateCall(DICallWrapper $call)
     {
-        for ($i = 0; $i < count($this->serviceArray[$this::CALLS_SECTION]); $i++) {
+        $callsCount = count($this->serviceArray[$this::CALLS_SECTION]);
+
+        for ($i = 0; $i < $callsCount; $i++) {
             $existingCall = new DICallWrapper($this->serviceArray[$this::CALLS_SECTION][$i]);
-            if ($existingCall->getMethodName() == $call->getMethodName()) {
+            if ($existingCall->getMethodName() === $call->getMethodName()) {
                 $this->serviceArray[$this::CALLS_SECTION][$i] = $call->getCallAsArray();
                 return;
             }
         }
-        throw new \Exception("Did not find call to update");
+        throw new MissingUpdateCallException();
     }
 
 
@@ -203,20 +204,19 @@ class DIServiceWrapper
      * @param string $methodName
      *
      * @return DICallWrapper
-     * @throws \Exception
+     * @throws MissingUpdateCallException
      */
     private function getCall(string $methodName): DICallWrapper
     {
-
-        if (key_exists($this::CALLS_SECTION, $this->serviceArray)) {
+        if (array_key_exists($this::CALLS_SECTION, $this->serviceArray)) {
             foreach ($this->serviceArray[$this::CALLS_SECTION] as $callArray) {
                 $call = new DICallWrapper($callArray);
-                if ($call->getMethodName() == $methodName) {
+                if ($call->getMethodName() === $methodName) {
                     return $call;
                 }
             }
         }
-        throw new \Exception("Call $methodName does not exist");
+        throw new MissingUpdateCallException();
     }
 
 
@@ -233,6 +233,6 @@ class DIServiceWrapper
      */
     private function hasClass(): bool
     {
-        return key_exists('class', $this->serviceArray);
+        return array_key_exists('class', $this->serviceArray);
     }
 }

@@ -129,7 +129,7 @@ class ControllersModuleSettingHandlerTest extends TestCase
     }
 
     /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongSettingModuleSettingHandlerException
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException
      */
     public function testHandleWrongSettingOnModuleDeactivation()
     {

@@ -7,7 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Handler;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongSettingModuleSettingHandlerException;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException;
 use OxidEsales\EshopCommunity\Internal\Module\TemplateExtension\TemplateBlockExtension;
 use OxidEsales\EshopCommunity\Internal\Module\TemplateExtension\TemplateBlockExtensionDaoInterface;
 
@@ -34,11 +34,13 @@ class TemplateBlockModuleSettingHandler implements ModuleSettingHandlerInterface
      * @param ModuleSetting $moduleSetting
      * @param string        $moduleId
      * @param int           $shopId
+     *
+     * @throws WrongModuleSettingException
      */
     public function handleOnModuleActivation(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
     {
         if (!$this->canHandle($moduleSetting)) {
-            throw new WrongSettingModuleSettingHandlerException();
+            throw new WrongModuleSettingException($moduleSetting, self::class);
         }
 
         $templateBlocksData = $moduleSetting->getValue();
@@ -56,11 +58,13 @@ class TemplateBlockModuleSettingHandler implements ModuleSettingHandlerInterface
      * @param ModuleSetting $moduleSetting
      * @param string        $moduleId
      * @param int           $shopId
+     *
+     * @throws WrongModuleSettingException
      */
     public function handleOnModuleDeactivation(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
     {
         if (!$this->canHandle($moduleSetting)) {
-            throw new WrongSettingModuleSettingHandlerException();
+            throw new WrongModuleSettingException($moduleSetting, self::class);
         }
 
         $this->templateBlockExtensionDao->deleteExtensions($moduleId, $shopId);

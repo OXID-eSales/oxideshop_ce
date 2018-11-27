@@ -55,7 +55,7 @@ class ShopConfigurationModuleSettingHandlerTest extends TestCase
     }
 
     /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongSettingModuleSettingHandlerException
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException
      */
     public function testHandleWrongSettingOnModuleActivation()
     {
@@ -75,7 +75,7 @@ class ShopConfigurationModuleSettingHandlerTest extends TestCase
     }
 
     /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongSettingModuleSettingHandlerException
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException
      */
     public function testHandleWrongSettingOnModuleDeactivation()
     {

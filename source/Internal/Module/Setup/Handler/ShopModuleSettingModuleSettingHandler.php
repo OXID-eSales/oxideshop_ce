@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Handler;
 
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongSettingModuleSettingHandlerException;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException;
 use OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\ShopModuleSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\ShopModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
@@ -34,11 +34,13 @@ class ShopModuleSettingModuleSettingHandler implements ModuleSettingHandlerInter
      * @param ModuleSetting $moduleSetting
      * @param string        $moduleId
      * @param int           $shopId
+     *
+     * @throws WrongModuleSettingException
      */
     public function handleOnModuleActivation(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
     {
         if (!$this->canHandle($moduleSetting)) {
-            throw new WrongSettingModuleSettingHandlerException();
+            throw new WrongModuleSettingException($moduleSetting, self::class);
         }
 
         foreach ($moduleSetting->getValue() as $shopModuleSettingData) {
@@ -57,11 +59,13 @@ class ShopModuleSettingModuleSettingHandler implements ModuleSettingHandlerInter
      * @param ModuleSetting $moduleSetting
      * @param string        $moduleId
      * @param int           $shopId
+     *
+     * @throws WrongModuleSettingException
      */
     public function handleOnModuleDeactivation(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
     {
         if (!$this->canHandle($moduleSetting)) {
-            throw new WrongSettingModuleSettingHandlerException();
+            throw new WrongModuleSettingException($moduleSetting, self::class);
         }
 
         foreach ($moduleSetting->getValue() as $shopModuleSettingData) {

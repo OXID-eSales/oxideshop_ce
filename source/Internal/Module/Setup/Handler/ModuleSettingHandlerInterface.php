@@ -7,7 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Handler;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongSettingModuleSettingHandlerException;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException;
 
 /**
  * @internal
@@ -19,7 +19,7 @@ interface ModuleSettingHandlerInterface
      * @param string        $moduleId
      * @param int           $shopId
      *
-     * @throws WrongSettingModuleSettingHandlerException
+     * @throws WrongModuleSettingException
      */
     public function handleOnModuleActivation(ModuleSetting $moduleSetting, string $moduleId, int $shopId);
 
@@ -28,7 +28,7 @@ interface ModuleSettingHandlerInterface
      * @param string        $moduleId
      * @param int           $shopId
      *
-     * @throws WrongSettingModuleSettingHandlerException
+     * @throws WrongModuleSettingException
      */
     public function handleOnModuleDeactivation(ModuleSetting $moduleSetting, string $moduleId, int $shopId);
 

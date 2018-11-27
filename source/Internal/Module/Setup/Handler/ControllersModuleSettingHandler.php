@@ -10,7 +10,7 @@ use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurati
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongSettingModuleSettingHandlerException;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
 
 /**
@@ -39,16 +39,12 @@ class ControllersModuleSettingHandler implements ModuleSettingHandlerInterface
      * @param string        $moduleId
      * @param int           $shopId
      *
-     * @throws WrongSettingModuleSettingHandlerException
+     * @throws WrongModuleSettingException
      */
     public function handleOnModuleActivation(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
     {
         if (!$this->canHandle($moduleSetting)) {
-            throw new WrongSettingModuleSettingHandlerException(
-                'The setting ' .
-                $moduleSetting->getName() .
-                ' can not be handled by the ControllersModuleSettingHandler'
-            );
+            throw new WrongModuleSettingException($moduleSetting, self::class);
         }
 
         $shopControllers = $this->getShopControllers($shopId);
@@ -70,14 +66,12 @@ class ControllersModuleSettingHandler implements ModuleSettingHandlerInterface
      * @param string        $moduleId
      * @param int           $shopId
      *
-     * @throws WrongSettingModuleSettingHandlerException
+     * @throws WrongModuleSettingException
      */
     public function handleOnModuleDeactivation(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
     {
         if (!$this->canHandle($moduleSetting)) {
-            throw new WrongSettingModuleSettingHandlerException(
-                'The setting ' . $moduleSetting->getName() . ' can not be handled by the ControllersModuleSettingHandler.'
-            );
+            throw new WrongModuleSettingException($moduleSetting, self::class);
         }
 
         $shopControllers = $this->getShopControllers($shopId);

@@ -11,7 +11,7 @@ use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConf
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongSettingModuleSettingHandlerException;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException;
 
 /**
  * @internal
@@ -36,12 +36,13 @@ class ClassExtensionsModuleSettingHandler implements ModuleSettingHandlerInterfa
      * @param ModuleSetting $moduleSetting
      * @param string        $moduleId
      * @param int           $shopId
-     * @throws WrongSettingModuleSettingHandlerException
+     *
+     * @throws WrongModuleSettingException
      */
     public function handleOnModuleActivation(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
     {
         if (!$this->canHandle($moduleSetting)) {
-            throw new WrongSettingModuleSettingHandlerException();
+            throw new WrongModuleSettingException($moduleSetting, self::class);
         }
 
         $shopConfigurationSetting = $this->getClassExtensionsShopConfigurationSetting($shopId);
@@ -58,11 +59,13 @@ class ClassExtensionsModuleSettingHandler implements ModuleSettingHandlerInterfa
      * @param ModuleSetting $moduleSetting
      * @param string        $moduleId
      * @param int           $shopId
+     *
+     * @throws WrongModuleSettingException
      */
     public function handleOnModuleDeactivation(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
     {
         if (!$this->canHandle($moduleSetting)) {
-            throw new WrongSettingModuleSettingHandlerException();
+            throw new WrongModuleSettingException($moduleSetting, self::class);
         }
 
         $shopConfigurationSetting = $this->getClassExtensionsShopConfigurationSetting($shopId);

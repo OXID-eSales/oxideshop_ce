@@ -1339,16 +1339,17 @@ class LangTest extends \OxidTestCase
      */
     public function testGetLanguageIdsWhenLangParamsNotExists()
     {
-        $aLangIds = array(0 => 'de', 1 => 'en');
+        $languageIds = array(0 => 'de', 1 => 'en');
 
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getConfigParam"));
-        $oConfig->expects($this->at(0))->method('getConfigParam')->with($this->equalTo('aLanguageParams'))->will($this->returnValue(null));
-        $oConfig->expects($this->at(1))->method('getConfigParam')->with($this->equalTo('aLanguages'))->will($this->returnValue($aLangIds));
+        $config = $this->getMockBuilder(\OxidEsales\Eshop\Core\Config::class)->setMethods(['getConfigParam'])->getMock();
+        $config->expects($this->at(0))->method('getConfigParam')->with($this->equalTo('aLanguageParams'))->will($this->returnValue(null));
+        $config->expects($this->at(1))->method('getConfigParam')->with($this->equalTo('aLanguages'))->will($this->returnValue($languageIds));
 
-        $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array("getConfig"));
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        $language = oxNew(\OxidEsales\Eshop\Core\Language::class);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
 
-        $this->assertEquals(array(0, 1), $oLang->getLanguageIds());
+        $this->assertEquals(array(0, 1), $language->getLanguageIds());
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, null);
     }
 
     /**

@@ -16,15 +16,6 @@ use PHPUnit\Framework\TestCase;
 class ShopAdapterTest extends TestCase
 {
     /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Adapter\Exception\ModuleNotLoadableException
-     */
-    public function testInvalidateCacheThrowsExceptionOnNonExistentModuleId()
-    {
-        $shopAdapter = new ShopAdapter();
-        $shopAdapter->invalidateModuleCache(uniqid('test', false));
-    }
-
-    /**
      * @expectedException \Exception
      */
     public function testGetModuleFullPathThrowsExceptionIfModulePathNotExisting()

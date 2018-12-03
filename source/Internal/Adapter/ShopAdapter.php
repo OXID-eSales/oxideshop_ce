@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Internal\Adapter;
 use OxidEsales\Eshop\Core\MailValidator;
 use OxidEsales\Eshop\Core\Module\ModuleList;
 use OxidEsales\Eshop\Core\Module\Module;
-use OxidEsales\Eshop\Core\Module\ModuleCache;
+use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\NamespaceInformationProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider;
@@ -52,13 +52,22 @@ class ShopAdapter implements ShopAdapterInterface
      */
     public function invalidateModuleCache(string $moduleId)
     {
+        /**
+         * @TODO we have to implement it in ShopModuleCacheService or use ModuleCache::resetCache() method.
+         */
         $module = oxNew(Module::class);
-        if (!$module->load($moduleId)) {
-            throw new ModuleNotLoadableException('The following module could not be loaded. ModuleId: ' . $moduleId);
-        }
 
-        $moduleCache = oxNew(ModuleCache::class, $module);
-        $moduleCache->resetCache();
+        $templates = $module->getTemplates($moduleId);
+        $utils = Registry::getUtils();
+        $utils->resetTemplateCache($templates);
+        $utils->resetLanguageCache();
+        $utils->resetMenuCache();
+
+        ModuleVariablesLocator::resetModuleVariables();
+
+        if (extension_loaded('apc') && ini_get('apc.enabled')) {
+            apc_clear_cache();
+        }
     }
 
     /**

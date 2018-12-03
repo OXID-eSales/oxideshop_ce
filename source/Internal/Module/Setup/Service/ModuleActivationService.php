@@ -91,6 +91,8 @@ class ModuleActivationService implements ModuleActivationServiceInterface
             AfterModuleActivationEvent::NAME,
             new AfterModuleActivationEvent($environmentName, $shopId, $moduleId)
         );
+
+        $this->moduleCacheService->invalidateModuleCache($moduleId, $shopId);
     }
 
     /**
@@ -101,14 +103,14 @@ class ModuleActivationService implements ModuleActivationServiceInterface
     {
         $environmentName = 'dev';
 
-        $moduleConfiguration = $this
-            ->moduleConfigurationProvider
-            ->getModuleConfiguration($moduleId, $environmentName, $shopId);
-
         $this->eventDispatcher->dispatch(
             BeforeModuleDeactivationEvent::NAME,
             new BeforeModuleDeactivationEvent($environmentName, $shopId, $moduleId)
         );
+
+        $moduleConfiguration = $this
+            ->moduleConfigurationProvider
+            ->getModuleConfiguration($moduleId, $environmentName, $shopId);
 
         foreach ($moduleConfiguration->getSettings() as $setting) {
             /** @var ModuleSettingHandlerInterface $handler */
@@ -116,7 +118,7 @@ class ModuleActivationService implements ModuleActivationServiceInterface
             $handler->handleOnModuleDeactivation($setting, $moduleId, $shopId);
         }
 
-        //$this->moduleCacheService->invalidateModuleCache($moduleId, $shopId);
+        $this->moduleCacheService->invalidateModuleCache($moduleId, $shopId);
     }
 
     /**

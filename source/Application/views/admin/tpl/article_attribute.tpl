@@ -42,7 +42,7 @@ function editThis( sID )
 
             [{block name="admin_article_attribute_assign_attribute"}]
                 [{oxhasrights object=$edit readonly=$readonly}]
-                    <input type="button" value="[{oxmultilang ident="ARTICLE_ATTRIBUTE_ASSIGNATTRIBUTE"}]" class="edittext" onclick="JavaScript:showDialog('&cl=article_attribute&aoc=1&oxid=[{$oxid}]');">
+                    <input type="button" value="[{oxmultilang ident="ARTICLE_ATTRIBUTE_ASSIGNATTRIBUTE"}]" class="edittext" onclick="JavaScript:showDialog('&cl=article_attribute&aoc=1&oxid=[{$oxid}]');" [{$readonly}]>
                 [{/oxhasrights}]
             [{/block}]
 
@@ -57,7 +57,7 @@ function editThis( sID )
         <td valign="top" class="edittext" align="left" width="50%">
             [{block name="admin_article_attribute_assign_selectlist"}]
                 [{oxhasrights object=$edit readonly=$readonly}]
-                    <input type="button" value="[{oxmultilang ident="ARTICLE_ATTRIBUTE_ASSIGNSELECTLIST"}]" class="edittext" onclick="JavaScript:showDialog('&cl=article_attribute&aoc=2&oxid=[{$oxid}]');">
+                    <input type="button" value="[{oxmultilang ident="ARTICLE_ATTRIBUTE_ASSIGNSELECTLIST"}]" class="edittext" onclick="JavaScript:showDialog('&cl=article_attribute&aoc=2&oxid=[{$oxid}]');" [{$readonly}]>
                 [{/oxhasrights}]
             [{/block}]
         </td>

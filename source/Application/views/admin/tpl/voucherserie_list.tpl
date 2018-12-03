@@ -1,9 +1,10 @@
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign box="list"}]
 [{assign var="where" value=$oView->getListFilter()}]
 
-[{assign var="readonly" value=""}]
 [{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
+[{else}]
+    [{assign var="readonly" value=""}]
 [{/if}]
 
 <script type="text/javascript">
@@ -41,28 +42,28 @@ window.onload = function ()
         </td>
         <td valign="top" class="listfilter" height="20">
             <div class="r1"><div class="b1">
-            <input class="listedit" type="text" size="30" maxlength="128" name="where[oxvoucherseries][oxserienr]" value="[{$where.oxvoucherseries.oxserienr}]">
+            <input class="listedit" type="text" size="30" maxlength="128" name="where[oxvoucherseries][oxserienr]" value="[{$where.oxvoucherseries.oxserienr}]" [{$readonly}]>
             </div></div>
         </td>
         <td valign="top" class="listfilter">
             <div class="r1"><div class="b1">
-            <input class="listedit" type="text" size="15" maxlength="128" name="where[oxvoucherseries][oxdiscount]" value="[{$where.oxvoucherseries.oxdiscount}]">
+            <input class="listedit" type="text" size="15" maxlength="128" name="where[oxvoucherseries][oxdiscount]" value="[{$where.oxvoucherseries.oxdiscount}]" [{$readonly}]>
             </div></div>
         </td>
         <td valign="top" class="listfilter">
             <div class="r1"><div class="b1">
-            <input class="listedit" type="text" size="15" maxlength="128" name="where[oxvoucherseries][oxbegindate]" value="[{$where.oxvoucherseries.oxbegindate}]">
+            <input class="listedit" type="text" size="15" maxlength="128" name="where[oxvoucherseries][oxbegindate]" value="[{$where.oxvoucherseries.oxbegindate}]" [{$readonly}]>
             </div></div>
         </td>
         <td valign="top" class="listfilter">
             <div class="r1"><div class="b1">
-            <input class="listedit" type="text" size="15" maxlength="128" name="where[oxvoucherseries][oxenddate]" value="[{$where.oxvoucherseries.oxenddate}]">
+            <input class="listedit" type="text" size="15" maxlength="128" name="where[oxvoucherseries][oxenddate]" value="[{$where.oxvoucherseries.oxenddate}]" [{$readonly}]>
             </div></div>
         </td>
         <td valign="top" class="listfilter" colspan="2">
             <div class="r1"><div class="b1">
-            <div class="find"><input class="listedit" type="submit" name="submitit" value="[{oxmultilang ident="GENERAL_SEARCH"}]"></div>
-            <input class="listedit" type="text" size="15" maxlength="128" name="where[oxvoucherseries][oxminimumvalue]" value="[{$where.oxvoucherseries.oxminimumvalue}]">
+            <div class="find"><input class="listedit" type="submit" name="submitit" value="[{oxmultilang ident="GENERAL_SEARCH"}]" [{$readonly}]></div>
+            <input class="listedit" type="text" size="15" maxlength="128" name="where[oxvoucherseries][oxminimumvalue]" value="[{$where.oxvoucherseries.oxminimumvalue}]" [{$readonly}]>
             </div></div>
         </td>
     [{/block}]

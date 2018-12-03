@@ -1,4 +1,11 @@
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign}]
+
+[{if $readonly}]
+    [{assign var="readonly" value="readonly disabled"}]
+[{else}]
+    [{assign var="readonly" value=""}]
+[{/if}]
+
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
     [{$oViewConf->getHiddenSid()}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
@@ -22,7 +29,7 @@
                     [{oxmultilang ident="GENERAL_TITLE"}]
                     </td>
                     <td class="edittext">
-                    <input type="text" class="editinput" style="width:100%" size="120" maxlength="[{$edit->oxnewsletter__oxtitle->fldmax_length}]" name="editval[oxnewsletter__oxtitle]" value="[{$edit->oxnewsletter__oxtitle->value}]">
+                    <input type="text" class="editinput" style="width:100%" size="120" maxlength="[{$edit->oxnewsletter__oxtitle->fldmax_length}]" name="editval[oxnewsletter__oxtitle]" value="[{$edit->oxnewsletter__oxtitle->value}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_GENERAL_TITLE"}]
                     </td>
                   </tr>
@@ -31,7 +38,7 @@
                     [{oxmultilang ident="NEWSLETTER_SUBJECT"}]
                     </td>
                     <td class="edittext">
-                    <input type="text" class="editinput" style="width:100%" size="120" maxlength="[{$edit->oxnewsletter__oxsubject->fldmax_length}]" name="editval[oxnewsletter__oxsubject]" value="[{$edit->oxnewsletter__oxsubject->value}]">
+                    <input type="text" class="editinput" style="width:100%" size="120" maxlength="[{$edit->oxnewsletter__oxsubject->fldmax_length}]" name="editval[oxnewsletter__oxsubject]" value="[{$edit->oxnewsletter__oxsubject->value}]" [{$readonly}]>
                     </td>
                   </tr>
                   <tr>
@@ -48,7 +55,7 @@
                 <td class="edittext">
                 </td>
                 <td class="edittext"><br>
-                <input type="submit" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'"">
+                <input type="submit" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'"" [{$readonly}]>
                 </td>
               </tr>
             </table>

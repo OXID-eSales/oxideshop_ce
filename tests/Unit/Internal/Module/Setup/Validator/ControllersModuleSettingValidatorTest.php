@@ -128,4 +128,21 @@ class ControllersModuleSettingValidatorTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException
+     */
+    public function testValidateThrowsExceptionIfNotAbleToValidateSetting()
+    {
+        $validator = new ControllersModuleSettingValidator(
+            $this->getMockBuilder(ShopAdapterInterface::class)->getMock(),
+            $this->getMockBuilder(ShopConfigurationSettingDaoInterface::class)->getMock()
+        );
+
+        $moduleSetting = new ModuleSetting(
+            'SettingWhichIsNotAbleToBeValidated',
+            ['onActivate' => 'MyClass::activate']
+        );
+        $validator->validate($moduleSetting, 'testModule', 1);
+    }
 }

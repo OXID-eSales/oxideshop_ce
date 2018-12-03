@@ -12,6 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSettingNotVa
 use OxidEsales\EshopCommunity\Internal\Common\Exception\DirectoryNotExistentException;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\DirectoryNotReadableException;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSetupValidationException;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException;
 
 /**
  * Class SmartyPluginDirectoriesModuleSettingValidator
@@ -48,11 +49,12 @@ class SmartyPluginDirectoriesModuleSettingValidator implements ModuleSettingVali
      * @throws DirectoryNotExistentException
      * @throws DirectoryNotReadableException
      * @throws ModuleSetupValidationException
+     * @throws WrongModuleSettingException
      */
     public function validate(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
     {
         if (!$this->canValidate($moduleSetting)) {
-            throw new ModuleSetupValidationException('Setting ' . $moduleSetting->getName() . ' can not be validated by this class.');
+            throw new WrongModuleSettingException($moduleSetting, self::class);
         }
 
         $directories = $moduleSetting->getValue();

@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Validator;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\InvalidClassExtensionNamespaceException;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException;
 
 /**
  * @internal
@@ -33,11 +34,13 @@ class ClassExtensionsModuleSettingValidator implements ModuleSettingValidatorInt
      * @param ModuleSetting $moduleSetting
      * @param string        $moduleId
      * @param int           $shopId
+     *
+     * @throws WrongModuleSettingException
      */
     public function validate(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
     {
         if (!$this->canValidate($moduleSetting)) {
-            throw new ModuleSetupValidationException('Setting ' . $moduleSetting->getName() . ' can not be validated by this class.');
+            throw new WrongModuleSettingException($moduleSetting, self::class);
         }
 
         foreach ($moduleSetting->getValue() as $classToBePatched => $moduleClass) {

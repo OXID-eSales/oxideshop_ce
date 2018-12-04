@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\TestModule1;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\TestModule;
 
 use OxidEsales\EshopCommunity\Internal\Application\Events\AbstractShopAwareEventSubscriber;
 use Symfony\Component\EventDispatcher\Event;

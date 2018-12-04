@@ -5,9 +5,10 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Service;
+namespace OxidEsales\EshopCommunity\Internal\Application\Service;
 
-use OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Dao\ProjectYamlDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Application\Service\ProjectYamlImportServiceInterface;
 
 /**
  * Class ProjectYamlImportService

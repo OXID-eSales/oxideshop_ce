@@ -1,0 +1,6 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+  OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Application\Dao\ContainerAwareProjectYamlDao

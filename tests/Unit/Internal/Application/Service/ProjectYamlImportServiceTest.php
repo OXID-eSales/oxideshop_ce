@@ -1,18 +1,16 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\Service;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Application\Service;
 
-use OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Dao\ProjectYamlDaoInterface;
-use OxidEsales\EshopCommunity\Internal\ProjectDIConfig\DataObject\DIConfigWrapper;
-use OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Exception\NoServiceYamlException;
-use OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Service\ProjectYamlImportService;
-use OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\Dao\ProjectYamlDaoStub;
+use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIConfigWrapper;
+use OxidEsales\EshopCommunity\Internal\Application\Exception\NoServiceYamlException;
+use OxidEsales\EshopCommunity\Internal\Application\Service\ProjectYamlImportService;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -53,7 +51,7 @@ class ProjectYamlImportServiceTest extends TestCase
         $this->dao->method('loadProjectConfigFile')->willReturn(new DIConfigWrapper([]));
         $this->service->addImport(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'TestModule1');
         $resource = $this->savedArray['imports'][0]['resource'];
-        $this->assertStringEndsWith('tests/Unit/Internal/ProjectDIConfig/TestModule1/services.yaml',
+        $this->assertStringEndsWith('tests/Unit/Internal/Application/TestModule1/services.yaml',
             $resource);
     }
 
@@ -74,7 +72,7 @@ class ProjectYamlImportServiceTest extends TestCase
         $this->service->removeImport(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'TestModule1');
         $resource = $this->savedArray['imports'][0]['resource'];
         $this->assertEquals(1, count($this->savedArray['imports']));
-        $this->assertStringEndsWith('tests/Unit/Internal/ProjectDIConfig/TestModule2/services.yaml',
+        $this->assertStringEndsWith('tests/Unit/Internal/Application/TestModule2/services.yaml',
             $resource);
     }
 

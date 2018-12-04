@@ -1,5 +1,7 @@
 imports:
+    - { resource: Dao/services.yaml }
     - { resource: Events/services.yaml }
+    - { resource: Service/services.yaml }
     - { resource: ../Utility/services.yaml }
     - { resource: ../Logger/services.yaml }
     - { resource: ../Common/services.yaml }
@@ -7,3 +9,4 @@ imports:
     - { resource: ../Form/services.yaml }
     - { resource: ../Adapter/services.yaml }
     - { resource: ../ProjectDIConfig/services.yaml }
+

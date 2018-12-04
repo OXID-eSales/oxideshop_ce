@@ -1,7 +1,14 @@
 services:
+  _defaults:
+    autowire: true
+    public: false
 
   event_dispatcher:
     class: OxidEsales\EshopCommunity\Internal\Application\Events\ShopAwareEventDispatcher
     arguments:
       $container: '@service_container'
+    public: true
 
+  OxidEsales\EshopCommunity\Internal\Application\Events\ConfigurationChangedEventSubscriber:
+    class: OxidEsales\EshopCommunity\Internal\Application\Events\ConfigurationChangedEventSubscriber
+    tags: ['kernel.event_subscriber']

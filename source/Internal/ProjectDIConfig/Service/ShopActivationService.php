@@ -7,10 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Service;
 
-use OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Dao\ProjectYamlDaoInterface;
-use OxidEsales\EshopCommunity\Internal\ProjectDIConfig\DataObject\DIConfigWrapper;
-use OxidEsales\EshopCommunity\Internal\ProjectDIConfig\DataObject\DIServiceWrapper;
-use OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Exception\NoServiceYamlException;
+use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIConfigWrapper;
+use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIServiceWrapper;
+use OxidEsales\EshopCommunity\Internal\Application\Exception\NoServiceYamlException;
 
 /**
  * @internal
@@ -52,7 +52,7 @@ class ShopActivationService implements ShopActivationServiceInterface
 
         /** @var DIServiceWrapper $service */
         foreach ($moduleConfig->getServices() as $service) {
-            if (! $service->isShopAware()) {
+            if (!$service->isShopAware()) {
                 continue;
             }
             if ($projectConfig->hasService($service->getKey())) {
@@ -83,7 +83,7 @@ class ShopActivationService implements ShopActivationServiceInterface
 
         /** @var DIServiceWrapper $service */
         foreach ($moduleConfig->getServices() as $service) {
-            if (! $service->isShopAware()) {
+            if (!$service->isShopAware()) {
                 continue;
             }
             $service = $projectConfig->getService($service->getKey());
@@ -101,8 +101,7 @@ class ShopActivationService implements ShopActivationServiceInterface
      */
     private function getModuleConfig(string $moduleConfigFile): DIConfigWrapper
     {
-
-        if (! file_exists($moduleConfigFile)) {
+        if (!file_exists($moduleConfigFile)) {
             throw new NoServiceYamlException();
         }
         return $this->dao->loadDIConfigFile($moduleConfigFile);

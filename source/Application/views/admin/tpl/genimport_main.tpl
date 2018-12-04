@@ -92,7 +92,7 @@
         <tr>
             <td class="edittext" height="40"></td>
             <td class="edittext">
-                <input type="checkbox" class="edittext" name="blContainsHeader" value="1">[{oxinputhelp ident="HELP_GENIMPORT_FIRSTCOLHEADER"}] [{oxmultilang ident="GENIMPORT_FIRSTCOLHEADER"}]
+                <input type="checkbox" class="edittext" name="blContainsHeader" value="1" [{$readonly}]>[{oxinputhelp ident="HELP_GENIMPORT_FIRSTCOLHEADER"}] [{oxmultilang ident="GENIMPORT_FIRSTCOLHEADER"}]
             </td>
         </tr>
         <tr>

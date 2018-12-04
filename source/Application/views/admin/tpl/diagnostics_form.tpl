@@ -23,6 +23,12 @@
 
 <p>[{oxmultilang ident='OXDIAG_ABOUT'}]</p>
 
+[{if $readonly}]
+    [{assign var="readonly" value="readonly disabled"}]
+[{else}]
+    [{assign var="readonly" value=""}]
+[{/if}]
+
 [{include file="include/support_contact_form.tpl"}]
 
 <table>
@@ -43,28 +49,28 @@
                     <input type="hidden" name="runAnalysis" value="1">
 
                     <tr>
-                        <td><input type="checkbox" id="oxdiag_frm_modules" name="oxdiag_frm_modules" value="1" checked></td>
+                        <td><input type="checkbox" id="oxdiag_frm_modules" name="oxdiag_frm_modules" value="1" checked [{$readonly}]></td>
                         <td><label for="oxdiag_frm_modules">[{oxmultilang ident='OXDIAG_COLLECT_MODULES'}]</label></td>
                     </tr>
 
                     <tr>
-                        <td><input type="checkbox" id="oxdiag_frm_health" name="oxdiag_frm_health" value="1" checked></td>
+                        <td><input type="checkbox" id="oxdiag_frm_health" name="oxdiag_frm_health" value="1" checked [{$readonly}]></td>
                         <td><label for="oxdiag_frm_health">[{oxmultilang ident='OXDIAG_COLLECT_HEALTH'}]</label></td>
                     </tr>
 
                     <tr>
-                        <td><input type="checkbox" id="oxdiag_frm_php" name="oxdiag_frm_php" value="1" checked></td>
+                        <td><input type="checkbox" id="oxdiag_frm_php" name="oxdiag_frm_php" value="1" checked [{$readonly}]></td>
                         <td><label for="oxdiag_frm_php">[{oxmultilang ident='OXDIAG_COLLECT_PHP'}]</label></td>
                     </tr>
 
                     <tr>
-                        <td><input type="checkbox" id="oxdiag_frm_server" name="oxdiag_frm_server" value="1" checked></td>
+                        <td><input type="checkbox" id="oxdiag_frm_server" name="oxdiag_frm_server" value="1" checked [{$readonly}]></td>
                         <td><label for="oxdiag_frm_server">[{oxmultilang ident='OXDIAG_COLLECT_SERVER'}]</label></td>
                     </tr>
                 </table>
 
                 <br><br>
-                <input type="submit" class="edittext" id="submitButton" name="submitButton" value=" [{oxmultilang ident="OXDIAG_FORM_START_CHECK"}] " >
+                <input type="submit" class="edittext" id="submitButton" name="submitButton" value=" [{oxmultilang ident="OXDIAG_FORM_START_CHECK"}] " [{$readonly}]>
 
             </form>
             [{/if}]

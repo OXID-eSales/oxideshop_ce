@@ -301,7 +301,7 @@ function editThis(sID)
             <dl>
                 <dt>
                     <input type=hidden name=confbools[blDisableDublArtOnCopy] value=false>
-                    <input type=checkbox name=confbools[blDisableDublArtOnCopy] value=true [{if ($confbools.blDisableDublArtOnCopy)}]checked[{/if}]>
+                    <input type=checkbox name=confbools[blDisableDublArtOnCopy] value=true [{if ($confbools.blDisableDublArtOnCopy)}]checked[{/if}] [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_DISABLEARTDUBLICATES"}]
                 </dt>
                 <dd>
@@ -312,7 +312,7 @@ function editThis(sID)
             <dl>
                 <dt>
                     <input type=hidden name=confbools[blAllowSuggestArticle] value=false>
-                    <input type=checkbox name=confbools[blAllowSuggestArticle] value=true [{if ($confbools.blAllowSuggestArticle)}]checked[{/if}]>
+                    <input type=checkbox name=confbools[blAllowSuggestArticle] value=true [{if ($confbools.blAllowSuggestArticle)}]checked[{/if}] [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE"}]
                 </dt>
                 <dd>
@@ -667,7 +667,7 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type="button" value="[{if isset($defcat) && isset($defcat->oxcategories__oxtitle)}][{$defcat->oxcategories__oxtitle->value}][{else}]---[{/if}]" onclick="JavaScript:showDialog('&cl=shop_config&aoc=1&oxid=[{$oxid|escape:'url'}]');">
+                    <input type="button" value="[{if isset($defcat) && isset($defcat->oxcategories__oxtitle)}][{$defcat->oxcategories__oxtitle->value}][{else}]---[{/if}]" onclick="JavaScript:showDialog('&cl=shop_config&aoc=1&oxid=[{$oxid|escape:'url'}]');" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_ACTIVECATEGORYBYSTART"}]
                 </dt>
                 <dd>
@@ -808,7 +808,7 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type=text class="txt" style="width: 250px;" name=confstrs[sDownloadsDir] value="[{$confstrs.sDownloadsDir}]">
+                    <input type=text class="txt" style="width: 250px;" name=confstrs[sDownloadsDir] value="[{$confstrs.sDownloadsDir}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_DOWNLOADS_PATH"}]
                 </dt>
                 <dd>
@@ -819,7 +819,7 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[iMaxDownloadsCount] value="[{$confstrs.iMaxDownloadsCount}]">
+                    <input type=text class="txt" name=confstrs[iMaxDownloadsCount] value="[{$confstrs.iMaxDownloadsCount}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_MAX_DOWNLOADS_COUNT"}]
                 </dt>
                 <dd>
@@ -830,7 +830,7 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[iLinkExpirationTime] value="[{$confstrs.iLinkExpirationTime}]">
+                    <input type=text class="txt" name=confstrs[iLinkExpirationTime] value="[{$confstrs.iLinkExpirationTime}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_LINK_EXPIRATION_TIME"}]
                 </dt>
                 <dd>
@@ -841,7 +841,7 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[iDownloadExpirationTime] value="[{$confstrs.iDownloadExpirationTime}]">
+                    <input type=text class="txt" name=confstrs[iDownloadExpirationTime] value="[{$confstrs.iDownloadExpirationTime}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_DOWNLOAD_EXPIRATION_TIME"}]
                 </dt>
                 <dd>
@@ -852,7 +852,7 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[iMaxDownloadsCountUnregistered] value="[{$confstrs.iMaxDownloadsCountUnregistered}]">
+                    <input type=text class="txt" name=confstrs[iMaxDownloadsCountUnregistered] value="[{$confstrs.iMaxDownloadsCountUnregistered}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_LINK_EXPIRATION_TIME_UNREGISTERED"}]
                 </dt>
                 <dd>
@@ -1111,7 +1111,7 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[sGiCsvFieldEncloser] value="[{$confstrs.sGiCsvFieldEncloser}]">
+                    <input type=text class="txt" name=confstrs[sGiCsvFieldEncloser] value="[{$confstrs.sGiCsvFieldEncloser}]" [{$readonly}]>
                 </dt>
                 <dd>
                     [{oxmultilang ident="SHOP_CONFIG_CSVFIELDENCLOSER"}]
@@ -1121,7 +1121,7 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[sCSVSign] value="[{$confstrs.sCSVSign}]">
+                    <input type=text class="txt" name=confstrs[sCSVSign] value="[{$confstrs.sCSVSign}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_CSVSEPARATOR"}]
                 </dt>
                 <dd>
@@ -1132,7 +1132,7 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[iExportNrofLines] value="[{$confstrs.iExportNrofLines}]">
+                    <input type=text class="txt" name=confstrs[iExportNrofLines] value="[{$confstrs.iExportNrofLines}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_EXPORTNUMBEROFLINES"}]
                 </dt>
                 <dd>
@@ -1143,7 +1143,7 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[iCntofMails] value="[{$confstrs.iCntofMails}]">
+                    <input type=text class="txt" name=confstrs[iCntofMails] value="[{$confstrs.iCntofMails}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_NUMBEROFEMAILSPERTICK"}]
                 </dt>
                 <dd>
@@ -1166,7 +1166,7 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type="text" class="txt" name="confstrs[sParcelService]" style="width: 300px;" value="[{$confstrs.sParcelService}]">
+                    <input type="text" class="txt" name="confstrs[sParcelService]" style="width: 300px;" value="[{$confstrs.sParcelService}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_PARCELSERVICE"}]
                 </dt>
                 <dd>

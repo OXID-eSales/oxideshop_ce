@@ -1,8 +1,9 @@
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign box="list"}]
 
-[{assign var="readonly" value=""}]
 [{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
+[{else}]
+    [{assign var="readonly" value=""}]
 [{/if}]
 
 <script type="text/javascript">

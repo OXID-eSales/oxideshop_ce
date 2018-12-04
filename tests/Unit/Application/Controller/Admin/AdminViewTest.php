@@ -131,7 +131,7 @@ class AdminViewTest extends \OxidTestCase
      *
      * @return null
      */
-    public function testGetViewId()
+    public function testGetViewIdMocked()
     {
         $oNavigation = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationTree::class, array('getClassId'));
         $oNavigation->expects($this->once())->method('getClassId')->will($this->returnValue('xxx'));
@@ -140,6 +140,44 @@ class AdminViewTest extends \OxidTestCase
         $oAdminView->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavigation));
 
         $this->assertEquals('xxx', $oAdminView->getViewId());
+    }
+
+    /**
+     * Test get view id without mock.
+     *
+     * @return null
+     */
+    public function testGetViewId()
+    {
+        $adminView = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ShopMain::class);
+        $this->assertEquals('tbclshop_main', $adminView->getViewId());
+    }
+
+    /**
+     * Test get view id.
+     * We simulate module chain extension case here.
+     *
+     * @return null
+     */
+    public function testGetViewIdExtended()
+    {
+        //In module case we'd call oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ShopMain::class)
+        // and get an instance of AdminViewTestShopMain::class.
+        $adminView = oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin\AdminViewTestShopMain::class);
+        $this->assertEquals('tbclshop_main', $adminView->getViewId());
+    }
+
+    /**
+     * Test get view id for class that should have no view id.
+     *
+     * @return null
+     */
+    public function testGetViewIdNoneExists()
+    {
+        //In module case we'd call oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ShopMain::class)
+        // and get an instance of AdminViewTestShopMain::class.
+        $adminView = oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin\AdminViewTestSomeClass::class);
+        $this->assertNull($adminView->getViewId());
     }
 
     /**
@@ -352,4 +390,24 @@ class AdminViewTest extends \OxidTestCase
         $oView->setEditObjectId("testSetId");
         $this->assertEquals("testSetId", $oView->getEditObjectId());
     }
+}
+
+/**
+ * Class testClass
+ *
+ * @package OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin
+ */
+class AdminViewTestShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\ShopMain
+{
+
+}
+
+/**
+ * Class AdminViewTestSomeClass
+ *
+ * @package OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin
+ */
+class AdminViewTestSomeClass extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
+{
+
 }

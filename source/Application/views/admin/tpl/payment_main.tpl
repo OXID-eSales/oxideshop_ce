@@ -75,13 +75,13 @@
                 <td class="edittext">
                   <table cellspacing="0" cellpadding="0" border="0">
                     <tr>
-                        <td><input type="checkbox" name="oxpayments__oxaddsumrules[]" value="1" [{if !$edit->oxpayments__oxaddsumrules->value || $edit->oxpayments__oxaddsumrules->value & 1}]checked[{/if}]> [{oxmultilang ident="PAYMENT_MAIN_ADDSUMRULES_ALLGOODS"}]</td>
+                        <td><input type="checkbox" name="oxpayments__oxaddsumrules[]" value="1" [{if !$edit->oxpayments__oxaddsumrules->value || $edit->oxpayments__oxaddsumrules->value & 1}]checked[{/if}] [{$readonly}]> [{oxmultilang ident="PAYMENT_MAIN_ADDSUMRULES_ALLGOODS"}]</td>
                         <td rowspan="5" valign="top">[{oxinputhelp ident="HELP_PAYMENT_MAIN_ADDSUMRULES"}]</td>
                     </tr>
-                    <tr><td><input type="checkbox" name="oxpayments__oxaddsumrules[]" value="2" [{if !$edit->oxpayments__oxaddsumrules->value || $edit->oxpayments__oxaddsumrules->value & 2}]checked[{/if}]> [{oxmultilang ident="PAYMENT_MAIN_ADDSUMRULES_DISCOUNTS"}]</td></tr>
-                    <tr><td><input type="checkbox" name="oxpayments__oxaddsumrules[]" value="4" [{if !$edit->oxpayments__oxaddsumrules->value || $edit->oxpayments__oxaddsumrules->value & 4}]checked[{/if}]> [{oxmultilang ident="PAYMENT_MAIN_ADDSUMRULES_VOUCHERS"}]</td></tr>
-                    <tr><td><input type="checkbox" name="oxpayments__oxaddsumrules[]" value="8" [{if !$edit->oxpayments__oxaddsumrules->value || $edit->oxpayments__oxaddsumrules->value & 8}]checked[{/if}]> [{oxmultilang ident="PAYMENT_MAIN_ADDSUMRULES_SHIPCOSTS"}]</td></tr>
-                    <tr><td><input type="checkbox" name="oxpayments__oxaddsumrules[]" value="16" [{if $edit->oxpayments__oxaddsumrules->value & 16}]checked[{/if}]> [{oxmultilang ident="PAYMENT_MAIN_ADDSUMRULES_GIFTS"}]</td></tr>
+                    <tr><td><input type="checkbox" name="oxpayments__oxaddsumrules[]" value="2" [{if !$edit->oxpayments__oxaddsumrules->value || $edit->oxpayments__oxaddsumrules->value & 2}]checked[{/if}] [{$readonly}]> [{oxmultilang ident="PAYMENT_MAIN_ADDSUMRULES_DISCOUNTS"}]</td></tr>
+                    <tr><td><input type="checkbox" name="oxpayments__oxaddsumrules[]" value="4" [{if !$edit->oxpayments__oxaddsumrules->value || $edit->oxpayments__oxaddsumrules->value & 4}]checked[{/if}] [{$readonly}]> [{oxmultilang ident="PAYMENT_MAIN_ADDSUMRULES_VOUCHERS"}]</td></tr>
+                    <tr><td><input type="checkbox" name="oxpayments__oxaddsumrules[]" value="8" [{if !$edit->oxpayments__oxaddsumrules->value || $edit->oxpayments__oxaddsumrules->value & 8}]checked[{/if}] [{$readonly}]> [{oxmultilang ident="PAYMENT_MAIN_ADDSUMRULES_SHIPCOSTS"}]</td></tr>
+                    <tr><td><input type="checkbox" name="oxpayments__oxaddsumrules[]" value="16" [{if $edit->oxpayments__oxaddsumrules->value & 16}]checked[{/if}] [{$readonly}]> [{oxmultilang ident="PAYMENT_MAIN_ADDSUMRULES_GIFTS"}]</td></tr>
                   </table>
                 </td>
             </tr>
@@ -141,7 +141,7 @@
                 <td class="edittext" valign="top">
                 </td>
                 <td class="edittext">
-                    <input type="text" class="edittext" name="sAddField" value="" size="128" style="width: 150px;">
+                    <input type="text" class="edittext" name="sAddField" value="" size="128" style="width: 150px;" [{$readonly}]>
                     <br>
                     <input type="submit" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_FIELDS_ADD"}]" onClick="Javascript:document.myedit.fnc.value='addfield'"" [{$readonly}] style="width: 125px;"><br>
                   <br>

@@ -147,7 +147,7 @@ function StornoThisArticle( sID)
 [{/foreach}]
 </table>
 
-<input type="submit" value="[{oxmultilang ident="ORDER_ARTICLE_UPDATE_STOCK"}]">
+<input type="submit" value="[{oxmultilang ident="ORDER_ARTICLE_UPDATE_STOCK"}]" [{$readonly}]>
 
 </form>
 

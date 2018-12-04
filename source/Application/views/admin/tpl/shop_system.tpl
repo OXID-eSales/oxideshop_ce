@@ -25,9 +25,10 @@ function editThis( sID )
 //-->
 </script>
 
-[{assign var="readonly" value=""}]
 [{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
+[{else}]
+    [{assign var="readonly" value=""}]
 [{/if}]
 
 [{cycle assign="_clear_" values=",2"}]

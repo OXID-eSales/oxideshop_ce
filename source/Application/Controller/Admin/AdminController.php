@@ -503,9 +503,8 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function getViewId()
     {
-        $sClassName = is_null($this->viewId) ? strtolower(get_class($this)) : $this->viewId;
-
-        return $this->getNavigation()->getClassId($sClassName);
+        $viewId = is_null($this->viewId) ? strtolower($this->getControllerKey()) : $this->viewId;
+        return $this->getNavigation()->getClassId($viewId);
     }
 
     /**
@@ -577,5 +576,33 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     protected function isNewEditObject()
     {
         return '-1' === (string) $this->getEditObjectId();
+    }
+
+    /**
+     * Get controller key also for chain extended class.
+     *
+     * @return null|string
+     */
+    protected function getControllerKey()
+    {
+        $actualClass = get_class($this);
+        $controllerKey = \OxidEsales\Eshop\Core\Registry::getControllerClassNameResolver()->getIdByClassName($actualClass);
+        if (is_null($controllerKey)) {
+            //we might not have found a class key because class is a module chain extended class
+            $controllerKey = \OxidEsales\Eshop\Core\Registry::getControllerClassNameResolver()->getIdByClassName($this->getShopParentClass());
+        }
+        return $controllerKey;
+    }
+
+    /**
+     * Method to figure out \OxidEsales\Eshop class.
+     */
+    protected function getShopParentClass()
+    {
+        $className = get_class($this); //actual class, might be shop class chain extended by module
+        while ($className && !\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopUnifiedNamespace($className)) {
+            $className = get_parent_class($className);
+        }
+        return $className;
     }
 }

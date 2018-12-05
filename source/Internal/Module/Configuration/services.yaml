@@ -22,8 +22,8 @@ parameters:
       - smartyPluginDirectories
 
 services:
-  OxidEsales\EshopCommunity\Internal\Module\Configuration\Provider\ModuleConfigurationProviderInterface:
-    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Provider\ModuleConfigurationProvider
+  OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDao
     autowire: true
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface:

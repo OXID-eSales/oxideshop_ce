@@ -17,9 +17,6 @@ class AfterModuleActivationEvent extends Event
 {
     const NAME = self::class;
 
-    /** @var string */
-    private $environmentName;
-
     /** @var int */
     private $shopId;
 
@@ -29,13 +26,11 @@ class AfterModuleActivationEvent extends Event
     /**
      * ModuleSetupEvent constructor.
      *
-     * @param string $environmentName
      * @param int    $shopId
      * @param string $moduleId
      */
-    public function __construct(string $environmentName, int $shopId, string $moduleId)
+    public function __construct(int $shopId, string $moduleId)
     {
-        $this->environmentName = $environmentName;
         $this->shopId = $shopId;
         $this->moduleId = $moduleId;
     }
@@ -46,14 +41,6 @@ class AfterModuleActivationEvent extends Event
     public function getModuleId():string
     {
         return $this->moduleId;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEnvironmentName(): string
-    {
-        return $this->environmentName;
     }
 
     /**

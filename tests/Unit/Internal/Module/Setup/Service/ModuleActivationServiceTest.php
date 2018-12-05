@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Service;
 use OxidEsales\EshopCommunity\Internal\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Provider\ModuleConfigurationProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationService;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ModuleSettingHandlerInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSettingNotValidException;
@@ -29,6 +29,7 @@ class ModuleActivationServiceTest extends TestCase
         $moduleSetting = new ModuleSetting('testSetting', 'value');
 
         $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->setId('testModule');
         $moduleConfiguration->addSetting(
             $moduleSetting
         );
@@ -100,6 +101,7 @@ class ModuleActivationServiceTest extends TestCase
         $moduleSetting = new ModuleSetting('testSetting', 'value');
 
         $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->setId('testModule');
         $moduleConfiguration->addSetting(
             $moduleSetting
         );
@@ -121,13 +123,13 @@ class ModuleActivationServiceTest extends TestCase
 
     private function getModuleActivationServiceWithModuleConfiguration(ModuleConfiguration $moduleConfiguration): ModuleActivationService
     {
-        $moduleConfigurationProvider = $this->getMockBuilder(ModuleConfigurationProviderInterface::class)->getMock();
-        $moduleConfigurationProvider
-            ->method('getModuleConfiguration')
+        $ModuleConfigurationDao = $this->getMockBuilder(ModuleConfigurationDaoInterface::class)->getMock();
+        $ModuleConfigurationDao
+            ->method('get')
             ->willReturn($moduleConfiguration);
 
         $moduleActivationService = new ModuleActivationService(
-            $moduleConfigurationProvider,
+            $ModuleConfigurationDao,
             $this->getMockBuilder(EventDispatcherInterface::class)->getMock(),
             $this->getMockBuilder(ModuleCacheServiceInterface::class)->getMock()
         );

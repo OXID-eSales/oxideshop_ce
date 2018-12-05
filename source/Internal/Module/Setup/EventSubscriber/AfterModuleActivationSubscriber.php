@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\EventSubscriber;
 
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Provider\ModuleConfigurationProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Event\AfterModuleActivationEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -17,16 +17,16 @@ class AfterModuleActivationSubscriber implements EventSubscriberInterface
 {
 
     /**
-     * @var ModuleConfigurationProviderInterface
+     * @var ModuleConfigurationDaoInterface
      */
-    private $moduleConfigurationProvider;
+    private $ModuleConfigurationDao;
 
     /**
-     * @param ModuleConfigurationProviderInterface $moduleConfigurationProvider
+     * @param ModuleConfigurationDaoInterface $ModuleConfigurationDao
      */
-    public function __construct(ModuleConfigurationProviderInterface $moduleConfigurationProvider)
+    public function __construct(ModuleConfigurationDaoInterface $ModuleConfigurationDao)
     {
-        $this->moduleConfigurationProvider = $moduleConfigurationProvider;
+        $this->ModuleConfigurationDao = $ModuleConfigurationDao;
     }
 
     /**
@@ -34,9 +34,8 @@ class AfterModuleActivationSubscriber implements EventSubscriberInterface
      */
     public function executeMetadataOnActivationEvent(AfterModuleActivationEvent $event)
     {
-        $moduleConfiguration = $this->moduleConfigurationProvider->getModuleConfiguration(
+        $moduleConfiguration = $this->ModuleConfigurationDao->get(
             $event->getModuleId(),
-            $event->getEnvironmentName(),
             $event->getShopId()
         );
         $events = $moduleConfiguration->getSetting('events')->getValue();

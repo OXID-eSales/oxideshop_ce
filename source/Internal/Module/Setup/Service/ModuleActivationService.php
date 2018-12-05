@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Service;
 use OxidEsales\EshopCommunity\Internal\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Provider\ModuleConfigurationProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Event\AfterModuleActivationEvent;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Event\BeforeModuleDeactivationEvent;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSettingHandlerNotFoundException;
@@ -25,14 +25,19 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class ModuleActivationService implements ModuleActivationServiceInterface
 {
     /**
-     * @var ModuleConfigurationProviderInterface
+     * @var ModuleConfigurationDaoInterface
      */
-    private $moduleConfigurationProvider;
+    private $ModuleConfigurationDao;
 
     /**
      * @var ModuleCacheServiceInterface
      */
     private $moduleCacheService;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
 
     /**
      * @var array
@@ -45,25 +50,26 @@ class ModuleActivationService implements ModuleActivationServiceInterface
     private $moduleSettingValidators = [];
 
     /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
      * ModuleActivationService constructor.
      *
-     * @param ModuleConfigurationProviderInterface $moduleConfigurationProvider
-     * @param EventDispatcherInterface             $eventDispatcher
-     * @param ModuleCacheServiceInterface          $moduleCacheService
+     * @param ModuleConfigurationDaoInterface $ModuleConfigurationDao
+     * @param EventDispatcherInterface        $eventDispatcher
+     * @param ModuleCacheServiceInterface     $moduleCacheService
      */
     public function __construct(
-        ModuleConfigurationProviderInterface $moduleConfigurationProvider,
-        EventDispatcherInterface             $eventDispatcher,
-        ModuleCacheServiceInterface          $moduleCacheService
+        ModuleConfigurationDaoInterface $ModuleConfigurationDao,
+        EventDispatcherInterface        $eventDispatcher,
+        ModuleCacheServiceInterface     $moduleCacheService
     ) {
-        $this->moduleConfigurationProvider = $moduleConfigurationProvider;
+        $this->ModuleConfigurationDao = $ModuleConfigurationDao;
         $this->eventDispatcher = $eventDispatcher;
         $this->moduleCacheService = $moduleCacheService;
+        //updateChain
+        //handle module yml services / ShopActivationService
+        // ACTIVE_MODULES: add to, delete from
+        //autoActivate - projectConfigurationDao
+        // State service
+        // transaction service
     }
 
 
@@ -73,23 +79,18 @@ class ModuleActivationService implements ModuleActivationServiceInterface
      */
     public function activate(string $moduleId, int $shopId)
     {
-        $environmentName = 'dev';
-        $moduleConfiguration = $this->moduleConfigurationProvider->getModuleConfiguration(
-            $moduleId,
-            $environmentName,
-            $shopId
-        );
+        $moduleConfiguration = $this->ModuleConfigurationDao->get($moduleId, $shopId);
 
-        $this->validateModuleSettings($moduleConfiguration, $moduleId, $shopId);
+        $this->validateModuleSettings($moduleConfiguration, $shopId);
 
         /**
          * @todo [II] wrap it in transaction.
          */
-        $this->handleModuleSettingsOnActivation($moduleConfiguration, $moduleId, $shopId);
+        $this->handleModuleSettingsOnActivation($moduleConfiguration, $shopId);
 
         $this->eventDispatcher->dispatch(
             AfterModuleActivationEvent::NAME,
-            new AfterModuleActivationEvent($environmentName, $shopId, $moduleId)
+            new AfterModuleActivationEvent($shopId, $moduleId)
         );
 
         $this->moduleCacheService->invalidateModuleCache($moduleId, $shopId);
@@ -101,16 +102,14 @@ class ModuleActivationService implements ModuleActivationServiceInterface
      */
     public function deactivate(string $moduleId, int $shopId)
     {
-        $environmentName = 'dev';
-
         $this->eventDispatcher->dispatch(
             BeforeModuleDeactivationEvent::NAME,
-            new BeforeModuleDeactivationEvent($environmentName, $shopId, $moduleId)
+            new BeforeModuleDeactivationEvent($shopId, $moduleId)
         );
 
         $moduleConfiguration = $this
-            ->moduleConfigurationProvider
-            ->getModuleConfiguration($moduleId, $environmentName, $shopId);
+            ->ModuleConfigurationDao
+            ->get($moduleId, $shopId);
 
         foreach ($moduleConfiguration->getSettings() as $setting) {
             /** @var ModuleSettingHandlerInterface $handler */
@@ -139,14 +138,13 @@ class ModuleActivationService implements ModuleActivationServiceInterface
 
     /**
      * @param ModuleConfiguration $moduleConfiguration
-     * @param string              $moduleId
      * @param int                 $shopId
      */
-    private function handleModuleSettingsOnActivation(ModuleConfiguration $moduleConfiguration, string $moduleId, int $shopId)
+    private function handleModuleSettingsOnActivation(ModuleConfiguration $moduleConfiguration, int $shopId)
     {
         foreach ($moduleConfiguration->getSettings() as $setting) {
             $handler = $this->getHandler($setting);
-            $handler->handleOnModuleActivation($setting, $moduleId, $shopId);
+            $handler->handleOnModuleActivation($setting, $moduleConfiguration->getId(), $shopId);
         }
     }
 
@@ -171,15 +169,14 @@ class ModuleActivationService implements ModuleActivationServiceInterface
 
     /**
      * @param ModuleConfiguration $moduleConfiguration
-     * @param string              $moduleId
      * @param int                 $shopId
      */
-    private function validateModuleSettings(ModuleConfiguration $moduleConfiguration, string $moduleId, int $shopId)
+    private function validateModuleSettings(ModuleConfiguration $moduleConfiguration, int $shopId)
     {
         foreach ($moduleConfiguration->getSettings() as $setting) {
             foreach ($this->moduleSettingValidators as $validator) {
                 if ($validator->canValidate($setting)) {
-                    $validator->validate($setting, $moduleId, $shopId);
+                    $validator->validate($setting, $moduleConfiguration->getId(), $shopId);
                 }
             }
         }

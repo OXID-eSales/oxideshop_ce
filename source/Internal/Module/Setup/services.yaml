@@ -88,13 +88,13 @@ services:
   oxid_esales.module.setup.service.eventsubscriber.after_module_activation_event_subscriber:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\EventSubscriber\AfterModuleActivationSubscriber
     arguments:
-      - '@OxidEsales\EshopCommunity\Internal\Module\Configuration\Provider\ModuleConfigurationProviderInterface'
+      - '@OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface'
     tags:
       - { name: kernel.event_subscriber }
 
   oxid_esales.module.setup.service.eventsubscriber.before_module_deactivation_event_subscriber:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\EventSubscriber\BeforeModuleDeactivationSubscriber
     arguments:
-      - '@OxidEsales\EshopCommunity\Internal\Module\Configuration\Provider\ModuleConfigurationProviderInterface'
+      - '@OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface'
     tags:
       - { name: kernel.event_subscriber }

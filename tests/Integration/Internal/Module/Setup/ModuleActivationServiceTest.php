@@ -165,7 +165,7 @@ class ModuleActivationServiceTest extends TestCase
         $environmentConfiguration->addShopConfiguration(1, $shopConfiguration);
 
         $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->addEnvironmentConfiguration('dev', $environmentConfiguration);
+        $projectConfiguration->addEnvironmentConfiguration('prod', $environmentConfiguration);
 
         return $projectConfiguration;
     }
@@ -180,11 +180,26 @@ class ModuleActivationServiceTest extends TestCase
         $containerBuilder = new ContainerBuilder(new Facts());
         $container = $containerBuilder->getContainer();
 
-        $definition = $container->getDefinition('oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator');
+        $smartyPluginDirectoriesValidatordefinition = $container->getDefinition(
+            'oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator'
+        );
 
         $shopAdapter = $this->getShopAdapterMock();
-        $definition->setArguments([$shopAdapter]);
-        $container->setDefinition('oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator', $definition);
+        $smartyPluginDirectoriesValidatordefinition->setArguments([$shopAdapter]);
+        $container->setDefinition(
+            'oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator',
+            $smartyPluginDirectoriesValidatordefinition
+        );
+
+        $projectConfigurationYmlStorageDefinition = $container->getDefinition('oxid_esales.module.configuration.project_configuration_yaml_file_storage');
+        $projectConfigurationYmlStorageDefinition->setArgument(
+            '$filePath',
+            tempnam(sys_get_temp_dir() . '/test_project_configuration', 'test_')
+        );
+        $container->setDefinition(
+            'oxid_esales.module.configuration.project_configuration_yaml_file_storage',
+            $projectConfigurationYmlStorageDefinition
+        );
 
         $this->setContainerDefinitionToPublic($container, ProjectConfigurationDaoInterface::class);
         $this->setContainerDefinitionToPublic($container, ModuleActivationServiceInterface::class);

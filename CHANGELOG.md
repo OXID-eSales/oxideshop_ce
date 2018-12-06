@@ -18,7 +18,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - New blocks:
   - `admin_module_sortlist` in `admin/tpl/module_sortlist.tpl` [PR-534](https://github.com/OXID-eSales/oxideshop_ce/pull/534)
 - Log missing translations [PR-520](https://github.com/OXID-eSales/oxideshop_ce/pull/520)
-- Introduce new feature - reset category filter [0002046](https://bugs.oxid-esales.com/view.php?id=2046)
+- New features:
+  - Reset category filter [0002046](https://bugs.oxid-esales.com/view.php?id=2046)
+  - OXID eShop console, which allows to register custom commands for modules and for components via `services.yaml`.
+  - New command to activate module.
+  - New command to deactivate module.
 
 ### Changed
 - category_main form layout improvements [PR-585](https://github.com/OXID-eSales/oxideshop_ce/pull/585)

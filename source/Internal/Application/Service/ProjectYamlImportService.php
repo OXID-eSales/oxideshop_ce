@@ -8,14 +8,12 @@
 namespace OxidEsales\EshopCommunity\Internal\Application\Service;
 
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Application\Service\ProjectYamlImportServiceInterface;
 
 /**
  * Class ProjectYamlImportService
  */
 class ProjectYamlImportService implements ProjectYamlImportServiceInterface
 {
-
     /**
      * @var ProjectYamlDaoInterface
      */
@@ -24,11 +22,11 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
     /**
      * ProjectYamlImportService constructor.
      *
-     * @param ProjectYamlDaoInterface $dao
+     * @param ProjectYamlDaoInterface $projectYamlDao
      */
-    public function __construct(ProjectYamlDaoInterface $dao)
+    public function __construct(ProjectYamlDaoInterface $projectYamlDao)
     {
-        $this->projectYamlDao = $dao;
+        $this->projectYamlDao = $projectYamlDao;
     }
 
     /**

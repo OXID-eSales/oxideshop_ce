@@ -22,4 +22,9 @@ interface ShopAdapterInterface
      * @return string
      */
     public function translateString($string);
+
+    /**
+     * @return array
+     */
+    public function getModules();
 }

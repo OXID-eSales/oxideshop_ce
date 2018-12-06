@@ -20,11 +20,6 @@ class Context implements ContextInterface
     private $config;
 
     /**
-     * @var
-     */
-    private $facts;
-
-    /**
      * Context constructor.
      * @param Config $config
      */
@@ -68,38 +63,11 @@ class Context implements ContextInterface
     }
 
     /**
-     * @return string
-     */
-    public function getShopDir()
-    {
-        return $this->getFacts()->getSourcePath();
-    }
-
-    /**
-     * @return string
-     */
-    public function getContainerCacheFile()
-    {
-        return $this->getConfigParameter('sCompileDir') . DIRECTORY_SEPARATOR . 'containercache.php';
-    }
-
-    /**
      * @param string $name
      * @return mixed
      */
     private function getConfigParameter($name)
     {
         return $this->config->getConfigParam($name);
-    }
-
-    /**
-     * @return Facts
-     */
-    private function getFacts()
-    {
-        if ($this->facts == null) {
-            $this->facts = new Facts();
-        }
-        return $this->facts;
     }
 }

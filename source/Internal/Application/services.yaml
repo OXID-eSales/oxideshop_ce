@@ -9,4 +9,6 @@ imports:
     - { resource: ../Form/services.yaml }
     - { resource: ../Adapter/services.yaml }
     - { resource: ../ProjectDIConfig/services.yaml }
+    - { resource: ../Console/services.yaml }
+    - { resource: ../Module/Command/services.yaml }
 

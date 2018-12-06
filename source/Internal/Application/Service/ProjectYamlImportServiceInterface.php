@@ -8,7 +8,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Application\Service;
 
 /**
- * Class ProjectYamlImportService
+ * @internal
  */
 interface ProjectYamlImportServiceInterface
 {

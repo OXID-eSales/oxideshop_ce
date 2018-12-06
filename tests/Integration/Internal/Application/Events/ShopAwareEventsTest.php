@@ -1,13 +1,10 @@
-<?php
-declare(strict_types=1);
-
+<?php declare(strict_types=1);
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Application\Events;
-
 
 use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
@@ -27,7 +24,6 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
      */
     private $dispatcher;
 
-
     public function setUp()
     {
 
@@ -38,7 +34,7 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
         );
         $facts->method('getSourcePath')->willReturn(__DIR__);
 
-        $builder = new ContainerBuilder($facts);
+        $builder = $this->makeContainerBuilder($facts);
         $this->container = $builder->getContainer();
         $definition = $this->container->getDefinition(ContextInterface::class);
         $definition->setClass(ContextStub::class);
@@ -53,14 +49,13 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
      * but propagation is stopped after the second handler, so
      * we should have 2 active event handlers
      */
-    public function testShopActivatedEvent() {
-
+    public function testShopActivatedEvent()
+    {
         /**
          * @var $event TestEvent
          */
         $event = $this->dispatcher->dispatch('oxidesales.testevent', new TestEvent());
         $this->assertEquals(2, $event->getNumberOfActiveHandlers());
-
     }
 
     /**
@@ -68,8 +63,8 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
      * but propagation is stopped after the second handler, so
      * we should have 1 active event handler
      */
-    public function testShopNotActivatedEvent() {
-
+    public function testShopNotActivatedEvent()
+    {
         /**
          * @var ContextStub $contextStub
          */
@@ -80,6 +75,11 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
          */
         $event = $this->dispatcher->dispatch('oxidesales.testevent', new TestEvent());
         $this->assertEquals(1, $event->getNumberOfActiveHandlers());
+    }
 
+    protected function makeContainerBuilder(Facts $facts)
+    {
+        $containerBuilder = new ContainerBuilder($facts);
+        return $containerBuilder;
     }
 }

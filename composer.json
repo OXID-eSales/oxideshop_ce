@@ -17,7 +17,8 @@
         "monolog/monolog": "^v1.23.0",
         "psr/container": "1.0.*",
         "symfony/event-dispatcher": "^3.4",
-        "symfony/dependency-injection": "^3.4"
+        "symfony/dependency-injection": "^3.4",
+        "symfony/console": "^v3.4.15"
     },
     "require-dev": {
         "oxid-esales/flow-theme": "^v3.0.2",
@@ -45,6 +46,7 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "bin": ["bin/oe-console"],
     "scripts": {
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",

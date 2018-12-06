@@ -1,6 +1,4 @@
-<?php
-declare(strict_types=1);
-
+<?php declare(strict_types=1);
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,10 +6,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Application;
 
-use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Console\ConsoleCommandPass;
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Application\Service\ProjectYamlImportService;
-use OxidEsales\EshopCommunity\Internal\Utility\Context;
+use OxidEsales\EshopCommunity\Internal\Utility\FactsContext;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
@@ -52,6 +50,7 @@ class ContainerBuilder
     {
         $symfonyContainer = new SymfonyContainerBuilder();
         $symfonyContainer->addCompilerPass(new RegisterListenersPass());
+        $symfonyContainer->addCompilerPass(new ConsoleCommandPass());
         $this->loadServiceFiles($symfonyContainer);
         if ($this->facts->isProfessional()) {
             $this->loadEditionServices($symfonyContainer, $this->facts->getProfessionalEditionRootPath());
@@ -100,8 +99,7 @@ class ContainerBuilder
      */
     private function cleanupProjectYaml()
     {
-        $context = new Context(Registry::getConfig());
-        $projectYamlDao = new ProjectYamlDao($context);
+        $projectYamlDao = new ProjectYamlDao(new FactsContext());
         $yamlImportService = new ProjectYamlImportService($projectYamlDao);
         $yamlImportService->removeNonExistingImports();
     }

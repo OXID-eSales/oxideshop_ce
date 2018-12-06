@@ -1,0 +1,40 @@
+services:
+  OxidEsales\EshopCommunity\Internal\Console\ExecutorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Console\Executor
+    public: true
+    arguments:
+      - '@oxid_esales.console.symfony.component.console.application'
+      - '@oxid_esales.console.commands_provider.services_commands_provider'
+
+  oxid_esales.console.symfony.component.console.application:
+    class: Symfony\Component\Console\Application
+    public: false
+
+  oxid_esales.console.commands_provider.services_commands_provider:
+    class: OxidEsales\EshopCommunity\Internal\Console\CommandsProvider\ServicesCommandsProvider
+    public: false
+    autowire: true
+
+  oxid_esales.console.composer.composer:
+    class: Composer\Composer
+    public: true
+    factory: 'oxid_esales.console.composer.factory:create'
+    arguments: ['@oxid_esales.console.composer.io.null_io']
+
+  oxid_esales.console.composer.factory:
+    class: Composer\Factory
+    public: false
+
+  oxid_esales.console.composer.io.null_io:
+    class: Composer\IO\NullIO
+    public: false
+
+  oxid_esales.console.composer.repository.manager:
+    class: Composer\Repository\RepositoryManager
+    factory: 'oxid_esales.console.composer.composer:getRepositoryManager'
+    public: false
+
+  oxid_esales.console.composer.repository.local_repository:
+    class: Composer\Repository\FilesystemRepository
+    factory: 'oxid_esales.console.composer.repository.manager:getLocalRepository'
+    public: false

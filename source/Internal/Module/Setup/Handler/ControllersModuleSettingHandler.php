@@ -77,7 +77,7 @@ class ControllersModuleSettingHandler implements ModuleSettingHandlerInterface
         $shopControllers = $this->getShopControllers($shopId);
 
         $shopSettingValue = $shopControllers->getValue();
-        unset($shopSettingValue[$moduleId]);
+        unset($shopSettingValue[strtolower($moduleId)]);
 
         $shopControllers->setValue($shopSettingValue);
 

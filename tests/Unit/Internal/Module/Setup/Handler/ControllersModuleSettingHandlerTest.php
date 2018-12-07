@@ -108,7 +108,7 @@ class ControllersModuleSettingHandlerTest extends TestCase
             ->setName(ShopConfigurationSetting::MODULE_CONTROLLERS)
             ->setShopId(1)
             ->setType(ShopSettingType::ARRAY)
-            ->setValue(['existingModule' => ['controller' => 'someNamespace']]);
+            ->setValue(['existingmodule' => ['controller' => 'someNamespace']]);
 
         $shopConfigurationSettingDaoMock
             ->method('get')

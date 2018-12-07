@@ -12,6 +12,8 @@ use OxidEsales\EshopCommunity\Internal\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Event\AfterModuleActivationEvent;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Event\BeforeModuleDeactivationEvent;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSetupException;
+use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -27,7 +29,7 @@ class ModuleActivationService implements ModuleActivationServiceInterface
     /**
      * @var ModuleCacheServiceInterface
      */
-    private $moduleCacheService;
+    //private $moduleCacheService;
 
     /**
      * @var EventDispatcherInterface
@@ -40,23 +42,31 @@ class ModuleActivationService implements ModuleActivationServiceInterface
     private $moduleSettingsHandlingService;
 
     /**
+     * @var ModuleStateServiceInterface
+     */
+    private $stateService;
+
+    /**
      * ModuleActivationService constructor.
      *
      * @param ModuleConfigurationDaoInterface        $ModuleConfigurationDao
      * @param EventDispatcherInterface               $eventDispatcher
-     * @param ModuleCacheServiceInterface            $moduleCacheService
      * @param ModuleSettingsHandlingServiceInterface $moduleSettingsHandlingService
+     * @param ModuleStateServiceInterface            $stateService
      */
     public function __construct(
         ModuleConfigurationDaoInterface         $ModuleConfigurationDao,
         EventDispatcherInterface                $eventDispatcher,
-        ModuleCacheServiceInterface             $moduleCacheService,
-        ModuleSettingsHandlingServiceInterface  $moduleSettingsHandlingService
+        //ModuleCacheServiceInterface             $moduleCacheService,
+        ModuleSettingsHandlingServiceInterface  $moduleSettingsHandlingService,
+        ModuleStateServiceInterface             $stateService
     ) {
         $this->moduleConfigurationDao = $ModuleConfigurationDao;
         $this->eventDispatcher = $eventDispatcher;
-        $this->moduleCacheService = $moduleCacheService;
+        //$this->moduleCacheService = $moduleCacheService;
         $this->moduleSettingsHandlingService = $moduleSettingsHandlingService;
+        $this->stateService = $stateService;
+        //$this->moduleCacheService = $moduleCacheService;
         //updateChain
         //handle module yml services / ShopActivationService
         // ACTIVE_MODULES: add to, delete from
@@ -72,6 +82,12 @@ class ModuleActivationService implements ModuleActivationServiceInterface
      */
     public function activate(string $moduleId, int $shopId)
     {
+        if ($this->stateService->isActive($moduleId, $shopId) === true) {
+            throw new ModuleSetupException('Module with id "'. $moduleId . '" is already active.');
+        }
+
+        $this->stateService->setActive($moduleId, $shopId);
+
         $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
 
         $this->moduleSettingsHandlingService->handleOnActivation($moduleConfiguration, $shopId);
@@ -81,7 +97,7 @@ class ModuleActivationService implements ModuleActivationServiceInterface
             new AfterModuleActivationEvent($shopId, $moduleId)
         );
 
-        $this->moduleCacheService->invalidateModuleCache($moduleId, $shopId);
+        //$this->moduleCacheService->invalidateModuleCache($moduleId, $shopId);
     }
 
     /**
@@ -90,6 +106,12 @@ class ModuleActivationService implements ModuleActivationServiceInterface
      */
     public function deactivate(string $moduleId, int $shopId)
     {
+        if ($this->stateService->isActive($moduleId, $shopId) === false) {
+            throw new ModuleSetupException('Module with id "'. $moduleId . '" is not active.');
+        }
+
+        $this->stateService->setDeactivated($moduleId, $shopId);
+
         $this->eventDispatcher->dispatch(
             BeforeModuleDeactivationEvent::NAME,
             new BeforeModuleDeactivationEvent($shopId, $moduleId)
@@ -99,6 +121,6 @@ class ModuleActivationService implements ModuleActivationServiceInterface
 
         $this->moduleSettingsHandlingService->handleOnDeactivation($moduleConfiguration, $shopId);
 
-        $this->moduleCacheService->invalidateModuleCache($moduleId, $shopId);
+        //$this->moduleCacheService->invalidateModuleCache($moduleId, $shopId);
     }
 }

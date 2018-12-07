@@ -17,6 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSet
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\ModuleEvents;
 use OxidEsales\Facts\Facts;
@@ -43,6 +44,23 @@ class ModuleActivationServiceTest extends TestCase
         $projectConfigurationDao->persistConfiguration($this->getTestProjectConfiguration());
 
         parent::setUp();
+    }
+
+    public function testActivation()
+    {
+        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
+
+        $moduleActivationService->activate('testModuleConfiguration', 1);
+
+        $this->assertTrue(
+            $this->container->get(ModuleStateServiceInterface::class)->isActive('testModuleConfiguration', 1)
+        );
+
+        $moduleActivationService->deactivate('testModuleConfiguration', 1);
+
+        $this->assertFalse(
+            $this->container->get(ModuleStateServiceInterface::class)->isActive('testModuleConfiguration', 1)
+        );
     }
 
     public function testActivationEventWasExecuted()

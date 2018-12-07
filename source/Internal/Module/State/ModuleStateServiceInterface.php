@@ -19,7 +19,14 @@ interface ModuleStateServiceInterface
     public function isActive(string $moduleId, int $shopId): bool;
 
     /**
-     * @param string $moduleName
+     * @param string $moduleId
+     * @param int    $shopId
      */
-    public function setDeleted(string $moduleName);
+    public function setActive(string $moduleId, int $shopId);
+
+    /**
+     * @param string $moduleId
+     * @param int    $shopId
+     */
+    public function setDeactivated(string $moduleId, int $shopId);
 }

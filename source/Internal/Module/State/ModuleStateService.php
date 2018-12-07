@@ -10,6 +10,7 @@ use function in_array;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
+use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
 
 /**
@@ -38,25 +39,62 @@ class ModuleStateService implements ModuleStateServiceInterface
      */
     public function isActive(string $moduleId, int $shopId): bool
     {
+        $activeModuleIdsSetting = $this->getActiveModulesShopConfigurationSetting($shopId);
+
+        return in_array($moduleId, $activeModuleIdsSetting->getValue(), true);
+    }
+
+    /**
+     * @param string $moduleId
+     * @param int    $shopId
+     */
+    public function setActive(string $moduleId, int $shopId)
+    {
+        $activeModuleIdsSetting = $this->getActiveModulesShopConfigurationSetting($shopId);
+
+        $activeModuleIds = $activeModuleIdsSetting->getValue();
+        $activeModuleIds[] = $moduleId;
+        $activeModuleIdsSetting->setValue($activeModuleIds);
+
+        $this->shopConfigurationSettingDao->save($activeModuleIdsSetting);
+    }
+
+    /**
+     * @param string $moduleId
+     * @param int    $shopId
+     */
+    public function setDeactivated(string $moduleId, int $shopId)
+    {
+        $activeModuleIdsSetting = $this->getActiveModulesShopConfigurationSetting($shopId);
+
+        $activeModuleIds = $activeModuleIdsSetting->getValue();
+
+        $activeModuleIds = array_diff($activeModuleIds, [$moduleId]);
+        $activeModuleIdsSetting->setValue($activeModuleIds);
+
+        $this->shopConfigurationSettingDao->save($activeModuleIdsSetting);
+    }
+
+    /**
+     * @param int $shopId
+     * @return ShopConfigurationSetting
+     */
+    private function getActiveModulesShopConfigurationSetting(int $shopId): ShopConfigurationSetting
+    {
         try {
             $activeModuleIdsSetting = $this->shopConfigurationSettingDao->get(
                 ShopConfigurationSetting::ACTIVE_MODULES,
                 $shopId
             );
-
-            $isActive = in_array($moduleId, $activeModuleIdsSetting->getValue(), true);
         } catch (EntryDoesNotExistDaoException $exception) {
-            $isActive = false;
+            $activeModuleIdsSetting = new ShopConfigurationSetting();
+            $activeModuleIdsSetting
+                ->setShopId($shopId)
+                ->setName(ShopConfigurationSetting::ACTIVE_MODULES)
+                ->setType(ShopSettingType::ARRAY)
+                ->setValue([]);
         }
 
-        return $isActive;
-    }
-
-    /**
-     * @param string $moduleId
-     */
-    public function setDeleted(string $moduleId)
-    {
-        // TODO: Implement setDeleted() method.
+        return $activeModuleIdsSetting;
     }
 }

@@ -21,27 +21,21 @@ class ExecutorTest extends TestCase
 
     public function testIfRegisteredCommandInList()
     {
-        $executor = $this->makeExecutor();
-        $output = new StreamOutput(fopen('php://memory', 'w', false));
-        $executor->execute(new ArrayInput(['command' => 'list']), $output);
+        $output = $this->executeCommand('list');
 
         $this->assertRegexp('/oe:tests:test-command/', $this->getOutputFromStream($output));
     }
 
     public function testCommandExecution()
     {
-        $executor = $this->makeExecutor();
-        $output = new StreamOutput(fopen('php://memory', 'w', false));
-        $executor->execute(new ArrayInput(['command' => 'oe:tests:test-command']), $output);
+        $output = $this->executeCommand('oe:tests:test-command');
 
         $this->assertSame('Command have been executed!'.PHP_EOL, $this->getOutputFromStream($output));
     }
 
     public function testCommandWithChangedNameExecution()
     {
-        $executor = $this->makeExecutor();
-        $output = new StreamOutput(fopen('php://memory', 'w', false));
-        $executor->execute(new ArrayInput(['command' => 'oe:tests:test-command-changed-name']), $output);
+        $output = $this->executeCommand('oe:tests:test-command-changed-name');
 
         $this->assertSame('Command have been executed!'.PHP_EOL, $this->getOutputFromStream($output));
     }
@@ -73,5 +67,17 @@ class ExecutorTest extends TestCase
         rewind($stream);
         $display = stream_get_contents($stream);
         return $display;
+    }
+
+    /**
+     * @param string $command
+     * @return StreamOutput
+     */
+    private function executeCommand(string $command): StreamOutput
+    {
+        $executor = $this->makeExecutor();
+        $output = new StreamOutput(fopen('php://memory', 'w', false));
+        $executor->execute(new ArrayInput(['command' => $command]), $output);
+        return $output;
     }
 }

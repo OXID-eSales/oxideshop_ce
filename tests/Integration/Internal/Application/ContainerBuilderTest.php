@@ -14,8 +14,7 @@ class ContainerBuilderTest extends TestCase
 {
     public function testWhenCeServicesLoaded()
     {
-        $facts = $this->getMockBuilder(Facts::class)->getMock();
-        $facts->method('getCommunityEditionSourcePath')->willReturn(__DIR__ . '/Fixtures/CE');
+        $facts = $this->makeFactsStub();
         $facts->method('isProfessional')->willReturn(false);
         $facts->method('isEnterprise')->willReturn(false);
         $container = $this->makeContainer($facts);
@@ -25,9 +24,7 @@ class ContainerBuilderTest extends TestCase
 
     public function testWhenPeOverwritesMainServices()
     {
-        $facts = $this->getMockBuilder(Facts::class)->getMock();
-        $facts->method('getCommunityEditionSourcePath')->willReturn(__DIR__ . '/Fixtures/CE');
-        $facts->method('getProfessionalEditionRootPath')->willReturn(__DIR__ . '/Fixtures/PE');
+        $facts = $this->makeFactsStub();
         $facts->method('isProfessional')->willReturn(true);
         $facts->method('isEnterprise')->willReturn(false);
         $container = $this->makeContainer($facts);
@@ -37,10 +34,7 @@ class ContainerBuilderTest extends TestCase
 
     public function testWhenEeOverwritesMainServices()
     {
-        $facts = $this->getMockBuilder(Facts::class)->getMock();
-        $facts->method('getCommunityEditionSourcePath')->willReturn(__DIR__ . '/Fixtures/CE');
-        $facts->method('getProfessionalEditionRootPath')->willReturn(__DIR__ . '/Fixtures/PE');
-        $facts->method('getEnterpriseEditionRootPath')->willReturn(__DIR__ . '/Fixtures/EE');
+        $facts = $this->makeFactsStub();
         $facts->method('isProfessional')->willReturn(false);
         $facts->method('isEnterprise')->willReturn(true);
         $container = $this->makeContainer($facts);
@@ -50,10 +44,9 @@ class ContainerBuilderTest extends TestCase
 
     public function testWhenProjectOverwritesMainServices()
     {
-        $facts = $this->getMockBuilder(Facts::class)->getMock();
+        $facts = $this->makeFactsStub();
         $facts->method('isProfessional')->willReturn(false);
         $facts->method('isEnterprise')->willReturn(false);
-        $facts->method('getCommunityEditionSourcePath')->willReturn(__DIR__ . '/Fixtures/CE');
         $facts->method('getSourcePath')->willReturn(__DIR__ . '/Fixtures/Project');
         $container = $this->makeContainer($facts);
 
@@ -62,10 +55,7 @@ class ContainerBuilderTest extends TestCase
 
     public function testWhenProjectOverwritesEditions()
     {
-        $facts = $this->getMockBuilder(Facts::class)->getMock();
-        $facts->method('getCommunityEditionSourcePath')->willReturn(__DIR__ . '/Fixtures/CE');
-        $facts->method('getProfessionalEditionRootPath')->willReturn(__DIR__ . '/Fixtures/PE');
-        $facts->method('getEnterpriseEditionRootPath')->willReturn(__DIR__ . '/Fixtures/EE');
+        $facts = $this->makeFactsStub();
         $facts->method('isEnterprise')->willReturn(true);
         $facts->method('getSourcePath')->willReturn(__DIR__ . '/Fixtures/Project');
         $container = $this->makeContainer($facts);
@@ -83,5 +73,17 @@ class ContainerBuilderTest extends TestCase
         $container = $containerBuilder->getContainer();
         $container->compile();
         return $container;
+    }
+
+    /**
+     * @return Facts|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private function makeFactsStub()
+    {
+        $facts = $this->getMockBuilder(Facts::class)->getMock();
+        $facts->method('getCommunityEditionSourcePath')->willReturn(__DIR__ . '/Fixtures/CE');
+        $facts->method('getProfessionalEditionRootPath')->willReturn(__DIR__ . '/Fixtures/PE');
+        $facts->method('getEnterpriseEditionRootPath')->willReturn(__DIR__ . '/Fixtures/EE');
+        return $facts;
     }
 }

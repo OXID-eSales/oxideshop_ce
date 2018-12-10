@@ -1319,6 +1319,24 @@ class EmailTest extends \OxidTestCase
         return $orderStub;
     }
 
+    private function getTemporaryFilePath()
+    {
+        $temporaryFileHandle = tmpfile();
+
+        return  stream_get_meta_data($temporaryFileHandle)['uri'];
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getFileToAttach()
+    {
+        $fileToAttach = $this->getTemporaryFilePath();
+        file_put_contents($fileToAttach, 'test');
+
+        return $fileToAttach;
+    }
+
     /**
      * @return \OxidEsales\Eshop\Core\Email|\PHPUnit_Framework_MockObject_MockObject
      */

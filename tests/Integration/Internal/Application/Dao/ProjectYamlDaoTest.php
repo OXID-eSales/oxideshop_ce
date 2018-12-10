@@ -10,7 +10,7 @@ use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIConfigWrapper;
-use OxidEsales\EshopCommunity\Internal\Utility\FactsContext;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -25,7 +25,7 @@ class ProjectYamlDaoTest extends TestCase
 
     public function setUp()
     {
-        $contextStub = $this->getMockBuilder(FactsContext::class)
+        $contextStub = $this->getMockBuilder(BasicContext::class)
             ->setMethods(['getSourcePath'])->getMock();
         $contextStub->method('getSourcePath')->willReturn(__DIR__);
         $this->dao = new ProjectYamlDao($contextStub);
@@ -34,7 +34,7 @@ class ProjectYamlDaoTest extends TestCase
     protected function tearDown()
     {
         parent::tearDown();
-        $projectFilePath = __DIR__ . DIRECTORY_SEPARATOR . FactsContext::GENERATED_PROJECT_FILE_NAME;
+        $projectFilePath = __DIR__ . DIRECTORY_SEPARATOR . BasicContext::GENERATED_PROJECT_FILE_NAME;
         if (file_exists($projectFilePath)) {
             unlink($projectFilePath);
         }
@@ -49,7 +49,7 @@ imports:
 
 EOT;
         file_put_contents(
-            __DIR__ . DIRECTORY_SEPARATOR . FactsContext::GENERATED_PROJECT_FILE_NAME,
+            __DIR__ . DIRECTORY_SEPARATOR . BasicContext::GENERATED_PROJECT_FILE_NAME,
             $testData
         );
 
@@ -60,7 +60,7 @@ EOT;
     public function testLoadingEmptyFile()
     {
         file_put_contents(
-            __DIR__ . DIRECTORY_SEPARATOR . FactsContext::GENERATED_PROJECT_FILE_NAME,
+            __DIR__ . DIRECTORY_SEPARATOR . BasicContext::GENERATED_PROJECT_FILE_NAME,
             ''
         );
 
@@ -91,7 +91,7 @@ EOT;
     public function testClearingCacheOnWriting()
     {
         $dao = $this->get(ProjectYamlDaoInterface::class);
-        $context = new FactsContext();
+        $context = new BasicContext();
 
         $projectYaml = new DIConfigWrapper([]);
 

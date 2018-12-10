@@ -6,13 +6,13 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Application\Events;
 
-use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * Class ShopAwareEventDispatcher
  */
-class ShopAwareEventDispatcher extends ContainerAwareEventDispatcher
+class ShopAwareEventDispatcher extends EventDispatcher
 {
     /**
      * @param \callable[] $listeners

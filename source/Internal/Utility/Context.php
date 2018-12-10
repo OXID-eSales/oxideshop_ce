@@ -7,12 +7,12 @@
 namespace OxidEsales\EshopCommunity\Internal\Utility;
 
 use OxidEsales\Eshop\Core\Config;
-use OxidEsales\Facts\Facts;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
 
 /**
  * @internal
  */
-class Context implements ContextInterface
+class Context extends BasicContext implements ContextInterface
 {
     /**
      * @var Config
@@ -68,14 +68,6 @@ class Context implements ContextInterface
     public function getCurrentShopId(): int
     {
         return $this->config->getShopId();
-    }
-
-    /**
-     * @return string
-     */
-    public function getShopDir(): string
-    {
-        return $this->getFacts()->getSourcePath();
     }
 
     /**

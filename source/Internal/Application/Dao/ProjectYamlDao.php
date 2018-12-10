@@ -7,7 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Application\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIConfigWrapper;
-use OxidEsales\EshopCommunity\Internal\Utility\FactsContextInterface;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -16,14 +16,14 @@ use Symfony\Component\Yaml\Yaml;
 class ProjectYamlDao implements ProjectYamlDaoInterface
 {
     /**
-     * @var FactsContextInterface $context
+     * @var BasicContextInterface $context
      */
     private $context;
 
     /**
-     * @param FactsContextInterface $context
+     * @param BasicContextInterface $context
      */
-    public function __construct(FactsContextInterface $context)
+    public function __construct(BasicContextInterface $context)
     {
         $this->context = $context;
     }

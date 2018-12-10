@@ -11,7 +11,7 @@ use Composer\Package\Package;
 use OxidEsales\ComposerPlugin\Installer\Package\ComponentInstaller;
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Utility\FactsContext;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\Facts\Facts;
 use PHPUnit\Framework\TestCase;
@@ -62,7 +62,7 @@ class ComponentInstallerTest extends TestCase
     private function doesServiceLineExists()
     {
         $contentsOfProjectFile = file_get_contents(
-            (new FactsContext())->getGeneratedProjectFilePath()
+            (new BasicContext())->getGeneratedProjectFilePath()
         );
 
         return (bool)strpos($contentsOfProjectFile, $this->servicesFilePath);

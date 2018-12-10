@@ -152,6 +152,26 @@ class DIConfigWrapper
     }
 
     /**
+     * Checks that the service classes configured for a
+     * module / package are really usable. It may happen
+     * that module code is still in the modules directory
+     * but is removed from autoloading. In this case, the
+     * services.yaml file should not be evaluated in any
+     * way.
+     *
+     * @return bool
+     */
+    public function checkServiceClassesCanBeLoaded(): bool
+    {
+        foreach ($this->getServices() as $service) {
+            if (! $service->checkClassExists()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * @return array
      */
     private function getImports(): array

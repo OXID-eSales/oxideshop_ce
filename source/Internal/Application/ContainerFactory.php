@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Application;
 
-use OxidEsales\EshopCommunity\Internal\Utility\FactsContext;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 
@@ -100,7 +100,7 @@ class ContainerFactory
      */
     private static function getCacheFilePath()
     {
-        $context = new FactsContext();
+        $context = new BasicContext();
         return $context->getContainerCacheFilePath();
     }
 

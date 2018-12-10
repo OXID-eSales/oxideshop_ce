@@ -1,13 +1,15 @@
 services:
+  _defaults:
+    autowire: true
+    public: false
+
   OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationService
-    autowire: true
     arguments:
       $classExtensionChainService: '@oxid_esales.module.setup.class_extension_chain_service'
 
   OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleSettingsHandlingServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleSettingsHandlingService
-    autowire: true
     calls:
       - [addHandler, ['@oxid_esales.module.setup.path_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.version_module_setting_handler']]
@@ -58,15 +60,12 @@ services:
 
   oxid_esales.module.setup.class_extensions_module_setting_handler:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ClassExtensionsModuleSettingHandler
-    autowire: true
 
   oxid_esales.module.setup.template_blocks_module_setting_handler:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\TemplateBlockModuleSettingHandler
-    autowire: true
 
   oxid_esales.module.setup.shop_module_setting_module_setting_handler:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopModuleSettingModuleSettingHandler
-    autowire: true
 
   oxid_esales.module.setup.events_module_setting_handler:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopConfigurationModuleSettingHandler
@@ -77,35 +76,32 @@ services:
 
   oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\SmartyPluginDirectoriesModuleSettingValidator
-    autowire: true
 
   oxid_esales.module.setup.validator.controllers_module_setting_validator:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ControllersModuleSettingValidator
-    autowire: true
 
   oxid_esales.module.setup.validator.class_extensions_module_setting_validator:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ClassExtensionsModuleSettingValidator
-    autowire: true
 
   oxid_esales.module.setup.validator.events_module_setting_validator:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\EventsModuleSettingValidator
-    autowire: true
 
   oxid_esales.module.setup.service.eventsubscriber.dispatch_legacy_events_subscriber:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\EventSubscriber\DispatchLegacyEventsSubscriber
-    autowire: true
+    tags:
+      - { name: kernel.event_subscriber }
+
+  oxid_esales.module.setup.service.eventsubscriber.event_logging_subscriber:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\EventSubscriber\EventLoggingSubscriber
     tags:
       - { name: kernel.event_subscriber }
 
   OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleServicesActivationServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleServicesActivationService
-    autowire: true
     public: true
 
   oxid_esales.module.setup.class_extension_chain_service:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ClassExtensionChainService
-    autowire: true
 
   OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ActiveClassExtensionChainResolverInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ActiveClassExtensionChainResolver
-    autowire: true

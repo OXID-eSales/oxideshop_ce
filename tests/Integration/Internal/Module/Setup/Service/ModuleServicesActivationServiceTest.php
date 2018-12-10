@@ -10,12 +10,14 @@ use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIServiceWrapper;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ServicesYamlConfigurationError;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleServicesActivationService;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleServicesActivationServiceInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\SomeModuleService;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\TestEventSubscriber;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ModuleServicesActivationServiceTest extends TestCase
 {
@@ -33,6 +35,11 @@ class ModuleServicesActivationServiceTest extends TestCase
     private $projectYamlDao;
 
     /**
+     * @var EventDispatcherInterface | MockObject
+     */
+    private $eventDispatcher;
+
+    /**
      * @var ModuleServicesActivationServiceInterface
      */
     private $shopActivationService;
@@ -46,14 +53,19 @@ class ModuleServicesActivationServiceTest extends TestCase
             ->method('saveProjectConfigFile')
             ->willReturnCallback([$this, 'saveProjectYaml']);
 
+        /** @var ShopAdapterInterface|MockObject $shopAdapter */
         $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
         $shopAdapter
             ->method('getModuleFullPath')
             ->willReturn($this->testModuleDirectory);
 
-        $this->shopActivationService = new ModuleServicesActivationService($this->projectYamlDao, $shopAdapter);
+        $this->eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)
+            ->getMock();
+
+        $this->shopActivationService = new ModuleServicesActivationService($this->projectYamlDao, $this->eventDispatcher, $shopAdapter);
     }
 
+    /** Callback function for mock to catch the given parameter */
     public function saveProjectYaml(DIConfigWrapper $config)
     {
         $this->projectYamlArray = $config->getConfigAsArray();
@@ -162,6 +174,36 @@ class ModuleServicesActivationServiceTest extends TestCase
 
         $this->assertArrayHasKey('imports', $this->projectYamlArray);
         $this->assertArrayNotHasKey('services', $this->projectYamlArray);
+    }
+
+    function testDeActivateServicesWithConfigurationError()
+    {
+
+        $moduleConfig = new DIConfigWrapper(['services' => ['testeventsubscriber' => ['class' => 'some/not/existing/class'],
+                                                            'otherservice' => ['class' => 'also/not/existing/class']]]);
+
+        $this->eventDispatcher->expects($this->once())->method('dispatch');
+        $this->projectYamlDao->expects($this->never())->method('loadProjectConfigFile');
+        $this->projectYamlDao->method('loadDIConfigFile')->willReturn($moduleConfig);
+
+        $this->shopActivationService->deactivateModuleServices($this->testModuleId, 1);
+
+    }
+
+    function testActivateServicesWithConfigurationError()
+    {
+
+        $this->expectException(ServicesYamlConfigurationError::class);
+
+        $moduleConfig = new DIConfigWrapper(['services' => ['testeventsubscriber' => ['class' => 'some/not/existing/class'],
+                                                            'otherservice' => ['class' => 'also/not/existing/class']]]);
+
+        $this->eventDispatcher->expects($this->once())->method('dispatch');
+        $this->projectYamlDao->expects($this->never())->method('loadProjectConfigFile');
+        $this->projectYamlDao->method('loadDIConfigFile')->willReturn($moduleConfig);
+
+        $this->shopActivationService->activateModuleServices($this->testModuleId, 1);
+
     }
 
     private function assertProjectYamlHasImport(string $import)

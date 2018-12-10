@@ -8,6 +8,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Service;
 
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSetupException;
+
 /**
  * @internal
  */

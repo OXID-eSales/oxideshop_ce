@@ -4,7 +4,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Utility;
+namespace OxidEsales\EshopCommunity\Internal\Application\Utility;
 
 use OxidEsales\Facts\Edition\EditionSelector;
 use OxidEsales\Facts\Facts;
@@ -14,7 +14,7 @@ use Webmozart\PathUtil\Path;
  * @inheritdoc
  * @internal
  */
-class FactsContext implements FactsContextInterface
+class BasicContext implements BasicContextInterface
 {
     const COMMUNITY_EDITION = EditionSelector::COMMUNITY;
 

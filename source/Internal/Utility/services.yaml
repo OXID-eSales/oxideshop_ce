@@ -1,12 +1,9 @@
 services:
+  _defaults:
+    public: false
+    autowire: true
   OxidEsales\Eshop\Core\Config:
     class: OxidEsales\Eshop\Core\Config
     factory: ['OxidEsales\Eshop\Core\Registry', getConfig]
-    public: false
   OxidEsales\EshopCommunity\Internal\Utility\ContextInterface:
     class: OxidEsales\EshopCommunity\Internal\Utility\Context
-    autowire: true
-    public: false
-  OxidEsales\EshopCommunity\Internal\Utility\FactsContextInterface:
-    class: OxidEsales\EshopCommunity\Internal\Utility\FactsContext
-    public: false

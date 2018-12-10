@@ -1,6 +1,4 @@
-<?php
-declare(strict_types=1);
-
+<?php declare(strict_types=1);
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -21,6 +19,7 @@ class ModuleConfigurationDataMapperTest extends TestCase
     {
         $configurationData = [
             'id'          => 'moduleId',
+            'autoActive'  => true,
             'title'       => 'title',
             'description' => [
                 'de' => 'description de',

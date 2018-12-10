@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Setup;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
@@ -48,19 +49,32 @@ class ModuleActivationServiceTest extends TestCase
 
     public function testActivation()
     {
+        $moduleStateService = $this->container->get(ModuleStateServiceInterface::class);
         $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
 
         $moduleActivationService->activate('testModuleConfiguration', 1);
 
-        $this->assertTrue(
-            $this->container->get(ModuleStateServiceInterface::class)->isActive('testModuleConfiguration', 1)
-        );
+        $this->assertTrue($moduleStateService->isActive('testModuleConfiguration', 1));
 
         $moduleActivationService->deactivate('testModuleConfiguration', 1);
 
-        $this->assertFalse(
-            $this->container->get(ModuleStateServiceInterface::class)->isActive('testModuleConfiguration', 1)
-        );
+        $this->assertFalse($moduleStateService->isActive('testModuleConfiguration', 1));
+    }
+
+    public function testSetAutoActiveInModuleConfiguration()
+    {
+        $moduleConfigurationDao = $this->container->get(ModuleConfigurationDaoInterface::class);
+        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
+
+        $moduleActivationService->activate('testModuleConfiguration', 1);
+        $moduleConfiguration = $moduleConfigurationDao->get('testModuleConfiguration', 1);
+
+        $this->assertTrue($moduleConfiguration->isAutoActive());
+
+        $moduleActivationService->deactivate('testModuleConfiguration', 1);
+        $moduleConfiguration = $moduleConfigurationDao->get('testModuleConfiguration', 1);
+
+        $this->assertFalse($moduleConfiguration->isAutoActive());
     }
 
     public function testActivationEventWasExecuted()

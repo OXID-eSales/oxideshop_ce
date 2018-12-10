@@ -19,6 +19,11 @@ class ModuleConfiguration
      */
     private $id = '';
     /**
+     * @var bool
+     */
+    private $autoActive = false;
+
+    /**
      * @var string
      */
     private $title = '';
@@ -152,6 +157,24 @@ class ModuleConfiguration
     {
         $this->thumbnail = $thumbnail;
 
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAutoActive(): bool
+    {
+        return $this->autoActive;
+    }
+
+    /**
+     * @param bool $autoActive
+     * @return ModuleConfiguration
+     */
+    public function setAutoActive(bool $autoActive)
+    {
+        $this->autoActive = $autoActive;
         return $this;
     }
 

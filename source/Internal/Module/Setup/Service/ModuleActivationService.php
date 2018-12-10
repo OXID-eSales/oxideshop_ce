@@ -27,11 +27,6 @@ class ModuleActivationService implements ModuleActivationServiceInterface
     private $moduleConfigurationDao;
 
     /**
-     * @var ModuleCacheServiceInterface
-     */
-    //private $moduleCacheService;
-
-    /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
@@ -86,11 +81,14 @@ class ModuleActivationService implements ModuleActivationServiceInterface
             throw new ModuleSetupException('Module with id "'. $moduleId . '" is already active.');
         }
 
-        $this->stateService->setActive($moduleId, $shopId);
-
         $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
 
         $this->moduleSettingsHandlingService->handleOnActivation($moduleConfiguration, $shopId);
+
+        $this->stateService->setActive($moduleId, $shopId);
+
+        $moduleConfiguration->setAutoActive(true);
+        $this->moduleConfigurationDao->save($moduleConfiguration, $shopId);
 
         $this->eventDispatcher->dispatch(
             AfterModuleActivationEvent::NAME,
@@ -110,8 +108,6 @@ class ModuleActivationService implements ModuleActivationServiceInterface
             throw new ModuleSetupException('Module with id "'. $moduleId . '" is not active.');
         }
 
-        $this->stateService->setDeactivated($moduleId, $shopId);
-
         $this->eventDispatcher->dispatch(
             BeforeModuleDeactivationEvent::NAME,
             new BeforeModuleDeactivationEvent($shopId, $moduleId)
@@ -120,6 +116,11 @@ class ModuleActivationService implements ModuleActivationServiceInterface
         $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
 
         $this->moduleSettingsHandlingService->handleOnDeactivation($moduleConfiguration, $shopId);
+
+        $this->stateService->setDeactivated($moduleId, $shopId);
+
+        $moduleConfiguration->setAutoActive(false);
+        $this->moduleConfigurationDao->save($moduleConfiguration, $shopId);
 
         //$this->moduleCacheService->invalidateModuleCache($moduleId, $shopId);
     }

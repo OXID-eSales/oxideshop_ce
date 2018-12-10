@@ -25,6 +25,7 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
     {
         $data = [
             'id'          => $configuration->getId(),
+            'autoActive'  => $configuration->isAutoActive(),
             'title'       => $configuration->getTitle(),
             'description' => $configuration->getDescription(),
             'lang'        => $configuration->getLang(),
@@ -39,26 +40,27 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
     }
 
     /**
-     * @param array $metaData
+     * @param array $data
      *
      * @return ModuleConfiguration
      */
-    public function fromData(array $metaData): ModuleConfiguration
+    public function fromData(array $data): ModuleConfiguration
     {
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
-            ->setId($metaData['id'])
-            ->setTitle($metaData['title'])
-            ->setDescription($metaData['description'])
-            ->setLang($metaData['lang'])
-            ->setThumbnail($metaData['thumbnail'])
-            ->setAuthor($metaData['author'])
-            ->setUrl($metaData['url'])
-            ->setEmail($metaData['email'])
+            ->setId($data['id'])
+            ->setAutoActive($data['autoActive'])
+            ->setTitle($data['title'])
+            ->setDescription($data['description'])
+            ->setLang($data['lang'])
+            ->setThumbnail($data['thumbnail'])
+            ->setAuthor($data['author'])
+            ->setUrl($data['url'])
+            ->setEmail($data['email'])
         ;
 
         if (isset($metaData['settings'])) {
-            $this->setSettings($moduleConfiguration, $metaData['settings']);
+            $this->setSettings($moduleConfiguration, $data['settings']);
         }
 
         return $moduleConfiguration;

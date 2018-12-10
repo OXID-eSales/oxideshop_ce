@@ -642,6 +642,8 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
 
     /**
      * Method to figure out \OxidEsales\Eshop class.
+     *
+     * @return string
      */
     protected function getShopParentClass()
     {

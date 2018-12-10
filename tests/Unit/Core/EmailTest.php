@@ -331,7 +331,7 @@ class EmailTest extends \OxidTestCase
      */
     public function testSendBackupMailWithAttachment()
     {
-        $fileToAttach = $this->createFile('alternativeFile.php', '');
+        $fileToAttach = $this->getFileToAttach();
         $filesToAttach = array(basename($fileToAttach));
         $filesToAttachDirectory = dirname($fileToAttach);
         $emailAddress = 'username@useremail.nl';
@@ -354,7 +354,7 @@ class EmailTest extends \OxidTestCase
      */
     public function testSendBackupMailWithAttachmentStatusCode()
     {
-        $fileToAttach = $this->createFile('alternativeFile.php', '');
+        $fileToAttach = $this->getFileToAttach();
         $filesToAttach = array(basename($fileToAttach));
         $filesToAttachDirectories = dirname($fileToAttach);
         $emailAddress = 'username@useremail.nl';
@@ -1131,6 +1131,24 @@ class EmailTest extends \OxidTestCase
 
         //testing actual From field Value
         $this->assertEquals("info@myoxideshop.com", $oEmail->getFrom());
+    }
+
+    private function getTemporaryFilePath()
+    {
+        $temporaryFileHandle = tmpfile();
+
+        return  stream_get_meta_data($temporaryFileHandle)['uri'];
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getFileToAttach()
+    {
+        $fileToAttach = $this->getTemporaryFilePath();
+        file_put_contents($fileToAttach, 'test');
+
+        return $fileToAttach;
     }
 
 }

@@ -59,6 +59,4 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationDataMapperInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationDataMapper
-    arguments:
-      - '@oxid_esales.module.configuration.validator.metadata_setting_validator'
     public: false

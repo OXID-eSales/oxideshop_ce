@@ -5,20 +5,21 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Module\MetaData;
+namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\DataMapper;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidator;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidatorInterface;
 
 /**
- * Class MetaDataDataMapper
+ * Class MetaDataMapper
  *
  * @internal
  *
- * @package OxidEsales\EshopCommunity\Internal\Module\MetaData
+ * @package OxidEsales\EshopCommunity\Internal\Module\MetaData\DataMapper
  */
 class MetaDataMapper implements ModuleConfigurationDataMapperInterface
 {
@@ -28,7 +29,7 @@ class MetaDataMapper implements ModuleConfigurationDataMapperInterface
     private $validator;
 
     /**
-     * MetaDataDataMapper constructor.
+     * MetaDataMapper constructor.
      *
      * @param MetaDataValidatorInterface $validator
      */

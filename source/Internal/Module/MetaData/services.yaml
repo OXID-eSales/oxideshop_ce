@@ -35,8 +35,8 @@ parameters:
       13: smartyPluginDirectories
 
 services:
-  oxid_esales.module.metadata.metadatamapper:
-    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataMapper
+  oxid_esales.module.metadata.datamapper.metadatamapper:
+    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\DataMapper\MetaDataMapper
     public: false
     autowire: true
 

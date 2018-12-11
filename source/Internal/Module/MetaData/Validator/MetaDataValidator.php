@@ -129,6 +129,8 @@ class MetaDataValidator implements MetaDataValidatorInterface
      * @param array  $supportedMetaDataKeys
      * @param string $sectionName
      * @param array  $sectionData
+     *
+     * @return null
      */
     private function validateMetaDataSection(array $supportedMetaDataKeys, string $sectionName, array $sectionData)
     {

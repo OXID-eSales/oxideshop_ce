@@ -1,7 +1,7 @@
 <?php
 
-use Step\Acceptance\ProductNavigation;
-use Step\Acceptance\Start;
+use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Step\Acceptance\ProductNavigation;
+use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Step\Acceptance\Start;
 
 class GiftRegistryCest
 {

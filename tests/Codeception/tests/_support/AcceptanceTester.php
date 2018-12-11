@@ -1,6 +1,6 @@
 <?php
 
-use Page\Home;
+use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Page\Home;
 
 /**
  * Inherited Methods

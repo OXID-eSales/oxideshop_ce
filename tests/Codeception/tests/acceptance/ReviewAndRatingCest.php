@@ -1,8 +1,8 @@
 <?php
 
-use Step\Acceptance\ProductNavigation;
-use Step\Acceptance\Start;
-use Step\Acceptance\Compare\ProductCompareList;
+use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Step\Acceptance\ProductNavigation;
+use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Step\Acceptance\Start;
+use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Step\Acceptance\Compare\ProductCompareList;
 
 class ReviewAndRatingCest
 {

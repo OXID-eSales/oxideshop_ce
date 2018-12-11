@@ -1,9 +1,9 @@
 <?php
 
-use Step\Acceptance\Start;
-use Step\Acceptance\UserRegistration;
-use Step\Acceptance\Basket;
-use Step\Acceptance\UserRegistrationInCheckout;
+use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Step\Acceptance\Start;
+use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Step\Acceptance\UserRegistration;
+use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Step\Acceptance\Basket;
+use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Step\Acceptance\UserRegistrationInCheckout;
 
 class UserRegistrationCest
 {

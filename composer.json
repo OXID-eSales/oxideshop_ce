@@ -19,8 +19,10 @@
         "symfony/event-dispatcher": "^3.4",
         "symfony/dependency-injection": "^3.4",
         "symfony/console": "^v3.4.15",
+        "oxid-esales/varnish-module": "dev-varnish_module-OXDEV-1387",
+        "oxid-esales/oxideshop-pe": "dev-master",
         "oxid-esales/oxideshop-ee": "dev-flow_theme_acc_tests-ARC-24",
-        "oxid-esales/oxideshop-pe": "dev-master"
+        "symfony/translation": "^4.2"
     },
     "require-dev": {
         "oxid-esales/flow-theme": "dev-master",
@@ -35,7 +37,7 @@
         "incenteev/composer-parameter-handler": "~v2.0",
         "oxid-esales/oxideshop-ide-helper": "^3.0",
         "oxid-esales/azure-theme": "^v1.4.1",
-         "codeception/codeception": "^2.3"
+        "codeception/codeception": "^2.3"
     },
     "autoload": {
         "psr-4": {
@@ -89,6 +91,10 @@
       "type": "vcs",
       "url": "https://github.com/OXID-eSales/oxideshop_ee"
     },
+      "oxid-esales/varnish-module": {
+          "type": "vcs",
+          "url": "https://github.com/OXID-eSales/varnish-module"
+      },
     "oxid-esales/oxideshop-pe": {
       "type": "vcs",
       "url": "https://github.com/OXID-eSales/oxideshop_pe"

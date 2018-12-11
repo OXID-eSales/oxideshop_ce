@@ -1,21 +1,21 @@
 <?php
 
-use Page\UserRegistration;
-use Page\Home;
-use Page\UserOrderHistory;
+use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Page\UserRegistration;
+use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Page\Home;
+use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Page\UserOrderHistory;
 
 class MainCest
 {
     public function frontPageWorks(AcceptanceTester $I)
     {
-        $I->amOnPage(\Page\Home::$URL);
+        $I->amOnPage(\OxidEsales\EshopCommunity\Tests\OxidAcceptance\Page\Home::$URL);
         $I->see($I->translate("HOME"));
     }
 
     public function shopBrowsing(AcceptanceTester $I)
     {
         // open start page
-        $I->amOnPage(\Page\Home::$URL);
+        $I->amOnPage(\OxidEsales\EshopCommunity\Tests\OxidAcceptance\Page\Home::$URL);
 
         $I->see($I->translate("HOME"));
         $I->see($I->translate('START_BARGAIN_HEADER'));

@@ -1,6 +1,6 @@
 <?php
 
-use Step\Acceptance\Basket;
+use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Step\Acceptance\Basket;
 
 class CheckoutProcessCest
 {
@@ -21,7 +21,7 @@ class CheckoutProcessCest
         ];
 
         //add Product to basket
-        /** @var \Page\Basket $basketPage */
+        /** @var OxidEsales\EshopCommunity\Tests\OxidAcceptance\Page\Basket $basketPage */
         $basket->addProductToBasket($basketItem1['id'], 1, 'basket')
             ->seeMiniBasketContains([$basketItem1], '50,00 €', 1);
 
@@ -40,7 +40,7 @@ class CheckoutProcessCest
         ];
 
         //add Product to basket
-        /** @var \Page\Basket $basketPage */
+        /** @var \OxidEsales\EshopCommunity\Tests\OxidAcceptance\Page\Basket $basketPage */
         $basket->addProductToBasket($basketItem1['id'], 1, 'basket');
         $basketPage = $basket->addProductToBasket($basketItem2['id'], 1, 'basket')
             ->seeMiniBasketContains([$basketItem1, $basketItem2], '200,00 €', 3);
@@ -82,7 +82,7 @@ class CheckoutProcessCest
         ];
 
         //add Product to basket
-        /** @var \Page\Basket $basketPage */
+        /** @var \OxidEsales\EshopCommunity\Tests\OxidAcceptance\Page\Basket $basketPage */
         $basket->addProductToBasket($basketItem1['id'], 5, 'basket');
         $basketPage = $basket->addProductToBasket($basketItem2['id'], 1, 'basket')
             ->seeBasketContains([$basketItem1, $basketItem2], '350,00 €');

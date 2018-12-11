@@ -1,8 +1,8 @@
 <?php
 
-use Step\Acceptance\ProductNavigation;
-use Step\Acceptance\Basket;
-use Step\Acceptance\Start;
+use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Step\Acceptance\ProductNavigation;
+use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Step\Acceptance\Basket;
+use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Step\Acceptance\Start;
 
 class ProductDetailsPageCest
 {
@@ -852,7 +852,7 @@ class ProductDetailsPageCest
         $I->updateInDatabase('oxarticles', ["OXBUNDLEID" => '1001'], ["OXID" => '1000']);
 
         //add Product to basket
-        /** @var \Page\Basket $basketPage */
+        /** @var \OxidEsales\EshopCommunity\Tests\OxidAcceptance\Page\Basket $basketPage */
         $basketPage = $basket->addProductToBasket('1000', 1, 'basket');
 
         $productData = [

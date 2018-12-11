@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Database\Adapter\Doctrine;
 
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use PDO;
 use Doctrine\DBAL\DBALException;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseErrorException;
@@ -43,7 +44,7 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
      */
     protected function createDatabase()
     {
-        return \oxDb::getDb();
+        return DatabaseProvider::getMaster();
     }
 
     /**

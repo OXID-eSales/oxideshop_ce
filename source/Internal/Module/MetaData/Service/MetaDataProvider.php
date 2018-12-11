@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Module\MetaData;
+namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Service;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\InvalidMetaDataEvent;
@@ -18,7 +18,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @internal
  *
- * @package OxidEsales\EshopCommunity\Internal\Module\MetaData
+ * @package OxidEsales\EshopCommunity\Internal\Module\MetaData\Service
  */
 class MetaDataProvider
 {

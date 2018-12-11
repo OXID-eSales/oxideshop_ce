@@ -4,14 +4,14 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Module\MetaData;
+namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Service;
 
 /**
  * Class MetaDataNormalizer
  *
  * @internal
  *
- * @package OxidEsales\EshopCommunity\Internal\Module\MetaData
+ * @package OxidEsales\EshopCommunity\Internal\Module\MetaData\Service
  */
 interface MetaDataNormalizerInterface
 {

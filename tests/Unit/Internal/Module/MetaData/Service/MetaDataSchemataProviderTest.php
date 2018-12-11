@@ -5,11 +5,16 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData\Service;
 
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataSchemataProvider;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataSchemataProvider;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class MetaDataSchemataProviderTest
+ *
+ * @package OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData\Service
+ */
 class MetaDataSchemataProviderTest extends TestCase
 {
     private $metaDataSchemata;

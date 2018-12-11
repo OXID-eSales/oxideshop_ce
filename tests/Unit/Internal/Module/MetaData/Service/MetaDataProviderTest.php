@@ -5,18 +5,18 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData\Service;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataProvider;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataNormalizer;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataNormalizer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class MetaDataProviderTest
  *
- * @package OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData
+ * @package OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData\Service
  */
 class MetaDataProviderTest extends TestCase
 {

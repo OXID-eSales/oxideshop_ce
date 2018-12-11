@@ -1,5 +1,5 @@
 parameters:
-  oxid_esales.module.configuration.metadata_schemata:
+  oxid_esales.module.metadata.metadata_schemata:
     '2.0':
       0: id
       1: version
@@ -45,17 +45,17 @@ services:
     public: false
     autowire: true
 
-  OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataSchemataProviderInterface:
-    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataSchemataProvider
+  OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataSchemataProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataSchemataProvider
     arguments:
-      - '%oxid_esales.module.configuration.metadata_schemata%'
+      - '%oxid_esales.module.metadata.metadata_schemata%'
     public: false
 
-  OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataNormalizerInterface:
-    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataNormalizer
+  OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataNormalizerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataNormalizer
     public: false
 
   oxid_esales.module.metadata.metadataprovider:
-    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataProvider
+    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider
     autowire: true
     public: false

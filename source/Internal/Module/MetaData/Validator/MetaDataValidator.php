@@ -9,8 +9,8 @@ namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator;
 
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\InvalidMetaDataEvent;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataProvider;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataSchemataProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataSchemataProviderInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

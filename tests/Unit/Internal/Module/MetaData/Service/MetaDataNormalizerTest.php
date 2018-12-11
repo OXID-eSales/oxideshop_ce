@@ -5,15 +5,15 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData\Service;
 
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataNormalizer;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataNormalizer;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class MetaDataNormalizerTest
  *
- * @package OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData
+ * @package OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData\Service
  */
 class MetaDataNormalizerTest extends TestCase
 {

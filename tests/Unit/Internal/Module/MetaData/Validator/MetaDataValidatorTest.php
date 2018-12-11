@@ -7,8 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Configuration\Validator;
 
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataProvider;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataSchemataProvider;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataSchemataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

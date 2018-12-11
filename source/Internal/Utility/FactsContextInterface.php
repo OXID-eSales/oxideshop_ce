@@ -21,4 +21,24 @@ interface FactsContextInterface
      * @return string
      */
     public function getSourcePath(): string;
+
+    /**
+     * @return string
+     */
+    public function getEdition(): string;
+
+    /**
+     * @return string
+     */
+    public function getCommunityEditionSourcePath(): string;
+
+    /**
+     * @return string
+     */
+    public function getProfessionalEditionRootPath(): string;
+
+    /**
+     * @return string
+     */
+    public function getEnterpriseEditionRootPath(): string;
 }

@@ -8,8 +8,8 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Console;
 
 use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Console\ExecutorInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\FactsContext;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
-use OxidEsales\Facts\Facts;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\StreamOutput;
@@ -45,11 +45,11 @@ class ExecutorTest extends TestCase
      */
     private function makeExecutor(): ExecutorInterface
     {
-        $facts = $this->getMockBuilder(Facts::class)->setMethods(['getSourcePath', 'getCommunityEditionSourcePath'])->getMock();
-        $facts->method('getCommunityEditionSourcePath')->willReturn((new Facts)->getCommunityEditionSourcePath());
-        $facts->method('getSourcePath')->willReturn(__DIR__ . '/Fixtures');
+        $context = $this->getMockBuilder(FactsContext::class)->setMethods(['getSourcePath', 'getCommunityEditionSourcePath'])->getMock();
+        $context->method('getCommunityEditionSourcePath')->willReturn((new FactsContext)->getCommunityEditionSourcePath());
+        $context->method('getSourcePath')->willReturn(__DIR__ . '/Fixtures');
 
-        $containerBuilder = new ContainerBuilder($facts);
+        $containerBuilder = new ContainerBuilder($context);
 
         $container = $containerBuilder->getContainer();
         $container->compile();

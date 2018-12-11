@@ -10,7 +10,8 @@ use OxidEsales\EshopCommunity\Internal\Console\ConsoleCommandPass;
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Application\Service\ProjectYamlImportService;
 use OxidEsales\EshopCommunity\Internal\Utility\FactsContext;
-use OxidEsales\Facts\Facts;
+use OxidEsales\EshopCommunity\Internal\Utility\FactsContextInterface;
+use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -24,23 +25,16 @@ use Webmozart\PathUtil\Path;
 class ContainerBuilder
 {
     /**
-     * @var array
+     * @var FactsContextInterface
      */
-    private $serviceFilePaths = [
-        'services.yaml',
-    ];
+    private $context;
 
     /**
-     * @var Facts
+     * @param FactsContextInterface $context
      */
-    private $facts;
-
-    /**
-     * @param Facts $facts
-     */
-    public function __construct(Facts $facts)
+    public function __construct(FactsContextInterface $context)
     {
-        $this->facts = $facts;
+        $this->context = $context;
     }
 
     /**
@@ -52,13 +46,7 @@ class ContainerBuilder
         $symfonyContainer->addCompilerPass(new RegisterListenersPass());
         $symfonyContainer->addCompilerPass(new ConsoleCommandPass());
         $this->loadServiceFiles($symfonyContainer);
-        if ($this->facts->isProfessional()) {
-            $this->loadEditionServices($symfonyContainer, $this->facts->getProfessionalEditionRootPath());
-        }
-        if ($this->facts->isEnterprise()) {
-            $this->loadEditionServices($symfonyContainer, $this->facts->getProfessionalEditionRootPath());
-            $this->loadEditionServices($symfonyContainer, $this->facts->getEnterpriseEditionRootPath());
-        }
+        $this->loadEditionServices($symfonyContainer);
         $this->loadProjectServices($symfonyContainer);
 
         return $symfonyContainer;
@@ -69,29 +57,27 @@ class ContainerBuilder
      */
     private function loadServiceFiles(SymfonyContainerBuilder $symfonyContainer)
     {
-        foreach ($this->serviceFilePaths as $path) {
-            $loader = new YamlFileLoader($symfonyContainer, new FileLocator(Path::join($this->facts->getCommunityEditionSourcePath(), 'Internal/Application')));
-            $loader->load($path);
-        }
+        $loader = new YamlFileLoader(
+            $symfonyContainer,
+            new FileLocator(Path::join($this->context->getCommunityEditionSourcePath(), 'Internal/Application'))
+        );
+        $loader->load('services.yaml');
     }
 
     /**
      * Loads a 'project.yaml' file if it can be found in the shop directory.
      *
      * @param SymfonyContainerBuilder $symfonyContainer
-     *
-     * @return void
      */
     private function loadProjectServices(SymfonyContainerBuilder $symfonyContainer)
     {
-
-        if (! file_exists($this->facts->getSourcePath() .
-                          DIRECTORY_SEPARATOR . ProjectYamlDao::PROJECT_FILE_NAME)) {
-            return;
+        try {
+            $this->cleanupProjectYaml();
+            $loader = new YamlFileLoader($symfonyContainer, new FileLocator($this->context->getSourcePath()));
+            $loader->load(ProjectYamlDao::PROJECT_FILE_NAME);
+        } catch (FileLocatorFileNotFoundException $exception) {
+            // In case project file not found, do nothing.
         }
-        $this->cleanupProjectYaml();
-        $loader = new YamlFileLoader($symfonyContainer, new FileLocator($this->facts->getSourcePath()));
-        $loader->load(ProjectYamlDao::PROJECT_FILE_NAME);
     }
 
     /**
@@ -106,11 +92,35 @@ class ContainerBuilder
 
     /**
      * @param SymfonyContainerBuilder $symfonyContainer
-     * @param string                  $editionPath
      */
-    private function loadEditionServices(SymfonyContainerBuilder $symfonyContainer, string $editionPath)
+    private function loadEditionServices(SymfonyContainerBuilder $symfonyContainer)
     {
-        $servicesLoader = new YamlFileLoader($symfonyContainer, new FileLocator($editionPath));
-        $servicesLoader->load('Internal/Application/services.yaml');
+        foreach ($this->getEditionsRootPaths() as $path) {
+            $servicesLoader = new YamlFileLoader($symfonyContainer, new FileLocator($path));
+            $servicesLoader->load('Internal/Application/services.yaml');
+        }
+    }
+
+    /**
+     * @return array
+     */
+    private function getEditionsRootPaths(): array
+    {
+        $allEditionPaths = [
+            FactsContext::COMMUNITY_EDITION => [
+                $this->context->getCommunityEditionSourcePath(),
+            ],
+            FactsContext::PROFESSIONAL_EDITION => [
+                $this->context->getCommunityEditionSourcePath(),
+                $this->context->getProfessionalEditionRootPath(),
+            ],
+            FactsContext::ENTERPRISE_EDITION => [
+                $this->context->getCommunityEditionSourcePath(),
+                $this->context->getProfessionalEditionRootPath(),
+                $this->context->getEnterpriseEditionRootPath(),
+            ],
+        ];
+
+        return $allEditionPaths[$this->context->getEdition()];
     }
 }

@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Application\Event
 
 use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\FactsContext;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -26,15 +27,14 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
 
     public function setUp()
     {
-
-        $facts = $this->getMockBuilder(Facts::class)
+        $context = $this->getMockBuilder(FactsContext::class)
             ->setMethods(['getSourcePath', 'getCommunityEditionSourcePath'])->getMock();
-        $facts->method('getCommunityEditionSourcePath')->willReturn(
+        $context->method('getCommunityEditionSourcePath')->willReturn(
             (new Facts)->getCommunityEditionSourcePath()
         );
-        $facts->method('getSourcePath')->willReturn(__DIR__);
+        $context->method('getSourcePath')->willReturn(__DIR__);
 
-        $builder = $this->makeContainerBuilder($facts);
+        $builder = $this->makeContainerBuilder($context);
         $this->container = $builder->getContainer();
         $definition = $this->container->getDefinition(ContextInterface::class);
         $definition->setClass(ContextStub::class);
@@ -77,9 +77,13 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(1, $event->getNumberOfActiveHandlers());
     }
 
-    protected function makeContainerBuilder(Facts $facts)
+    /**
+     * @param FactsContext $context
+     * @return ContainerBuilder
+     */
+    private function makeContainerBuilder(FactsContext $context): ContainerBuilder
     {
-        $containerBuilder = new ContainerBuilder($facts);
+        $containerBuilder = new ContainerBuilder($context);
         return $containerBuilder;
     }
 }

@@ -129,7 +129,7 @@ class MetaDataProvider
     private function addPathToData(array $normalizedMetaData): array
     {
         /**
-         * TODO Define how the path should be and implement this.
+         * @todo Define how the path should be and implement this.
          * if meta data file path is /var/www/eshop/source/modules/MyModule/metadata.php,
          * the path should be something like /modules/MyModule/ or modules/MyModule/ or MyModule/
          */

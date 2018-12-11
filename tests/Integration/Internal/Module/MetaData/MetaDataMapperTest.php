@@ -17,9 +17,9 @@ class MetaDataMapperTest extends TestCase
 {
     public function testModuleMetaData20()
     {
-        $moduleDirectory = ucfirst(__FUNCTION__);
+        $testModuleDirectory = ucfirst(__FUNCTION__);
         /** The content of metadata.php and $expectedModuleData must match  */
-        $metaDataFilePath = __DIR__ . DIRECTORY_SEPARATOR . 'TestData' . DIRECTORY_SEPARATOR . $moduleDirectory . DIRECTORY_SEPARATOR . 'metadata.php';
+        $metaDataFilePath = $this->getMetaDataFilePath($testModuleDirectory);
         $expectedModuleData = [
             'id'          => 'TestModuleMetaData20',
             'title'       => 'Module for testModuleMetaData20',
@@ -108,8 +108,7 @@ class MetaDataMapperTest extends TestCase
         $this->assertEquals($expectedModuleData['controllers'], $settings[ModuleSetting::CONTROLLERS]);
         $this->assertEquals($expectedModuleData['templates'], $settings[ModuleSetting::TEMPLATES]);
         $this->assertEquals($expectedModuleData['version'], $settings[ModuleSetting::VERSION]);
-        $this->assertEquals($moduleDirectory . DIRECTORY_SEPARATOR, $settings[ModuleSetting::PATH]);
-        //$this->assertEquals($moduleId, $settings[ModuleSetting::SMARTY_PLUGIN_DIRECTORIES]);
+        $this->assertEquals($testModuleDirectory . DIRECTORY_SEPARATOR, $settings[ModuleSetting::PATH]);
         $this->assertEquals($expectedModuleData['blocks'], $settings[ModuleSetting::TEMPLATE_BLOCKS]);
         $this->assertEquals($expectedModuleData['settings'], $settings[ModuleSetting::SHOP_MODULE_SETTING]);
         $this->assertEquals($expectedModuleData['events'], $settings[ModuleSetting::EVENTS]);
@@ -117,9 +116,9 @@ class MetaDataMapperTest extends TestCase
 
     public function testModuleMetaData21()
     {
-        $moduleDirectory = ucfirst(__FUNCTION__);
+        $testModuleDirectory = ucfirst(__FUNCTION__);
         /** The content of metadata.php and $expectedModuleData must match  */
-        $metaDataFilePath = __DIR__ . DIRECTORY_SEPARATOR . 'TestData' . DIRECTORY_SEPARATOR . $moduleDirectory . DIRECTORY_SEPARATOR . 'metadata.php';
+        $metaDataFilePath = $this->getMetaDataFilePath($testModuleDirectory);
         $expectedModuleData = [
             'id'                      => 'TestModuleMetaData21',
             'title'                   => 'Module for testModuleMetaData21',
@@ -211,7 +210,7 @@ class MetaDataMapperTest extends TestCase
         $this->assertEquals($expectedModuleData['controllers'], $settings[ModuleSetting::CONTROLLERS]);
         $this->assertEquals($expectedModuleData['templates'], $settings[ModuleSetting::TEMPLATES]);
         $this->assertEquals($expectedModuleData['version'], $settings[ModuleSetting::VERSION]);
-        $this->assertEquals($moduleDirectory . DIRECTORY_SEPARATOR, $settings[ModuleSetting::PATH]);
+        $this->assertEquals($testModuleDirectory . DIRECTORY_SEPARATOR, $settings[ModuleSetting::PATH]);
         $this->assertEquals($expectedModuleData['blocks'], $settings[ModuleSetting::TEMPLATE_BLOCKS]);
         $this->assertEquals($expectedModuleData['settings'], $settings[ModuleSetting::SHOP_MODULE_SETTING]);
         $this->assertEquals($expectedModuleData['events'], $settings[ModuleSetting::EVENTS]);
@@ -223,9 +222,9 @@ class MetaDataMapperTest extends TestCase
      */
     public function testModuleWithPartialMetaData()
     {
-        $moduleDirectory = ucfirst(__FUNCTION__);
+        $testModuleDirectory = ucfirst(__FUNCTION__);
         /** The content of metadata.php and $expectedModuleData must match  */
-        $metaDataFilePath = __DIR__ . DIRECTORY_SEPARATOR . 'TestData' . DIRECTORY_SEPARATOR . $moduleDirectory . DIRECTORY_SEPARATOR . 'metadata.php';
+        $metaDataFilePath = $this->getMetaDataFilePath($testModuleDirectory);
         $expectedModuleData = [
             'extend' => [
                 'OxidEsales\Eshop\Application\Model\Payment' => 'OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\TestData\TestModuleWithPartialMetaData\Payment',
@@ -259,7 +258,7 @@ class MetaDataMapperTest extends TestCase
         /**
          * The module directory name should be set as the module ID is missing in metadata.
          */
-        $this->assertEquals($moduleDirectory, $moduleConfiguration->getId());
+        $this->assertEquals($testModuleDirectory, $moduleConfiguration->getId());
         /**
          * Additionally an event should have been fired, which mentions the missing Id and is of level ERROR
          */
@@ -277,7 +276,7 @@ class MetaDataMapperTest extends TestCase
         $this->assertEquals([], $settings[ModuleSetting::CONTROLLERS]);
         $this->assertEquals([], $settings[ModuleSetting::TEMPLATES]);
         $this->assertEquals('', $settings[ModuleSetting::VERSION]);
-        $this->assertEquals($moduleDirectory . DIRECTORY_SEPARATOR, $settings[ModuleSetting::PATH]);
+        $this->assertEquals($testModuleDirectory . DIRECTORY_SEPARATOR, $settings[ModuleSetting::PATH]);
         $this->assertEquals([], $settings[ModuleSetting::TEMPLATE_BLOCKS]);
         $this->assertEquals([], $settings[ModuleSetting::SHOP_MODULE_SETTING]);
         $this->assertEquals([], $settings[ModuleSetting::EVENTS]);
@@ -292,9 +291,9 @@ class MetaDataMapperTest extends TestCase
      */
     public function testModuleWithSurplusData()
     {
-        $moduleDirectory = $moduleId = ucfirst(__FUNCTION__);
+        $testModuleDirectory = $moduleId = ucfirst(__FUNCTION__);
         /** The content of metadata.php and $expectedModuleData must match  */
-        $metaDataFilePath = __DIR__ . DIRECTORY_SEPARATOR . 'TestData' . DIRECTORY_SEPARATOR . $moduleDirectory . DIRECTORY_SEPARATOR . 'metadata.php';
+        $metaDataFilePath = $this->getMetaDataFilePath($testModuleDirectory);
         $expectedModuleData = [
             'id' => $moduleId,
         ];
@@ -345,5 +344,17 @@ class MetaDataMapperTest extends TestCase
 
         return $container;
     }
+
+    /**
+     * @param string $testModuleDirectory
+     *
+     * @return string
+     */
+    private function getMetaDataFilePath(string $testModuleDirectory): string
+    {
+        $metaDataFilePath = __DIR__ . DIRECTORY_SEPARATOR . 'TestData' . DIRECTORY_SEPARATOR . $testModuleDirectory . DIRECTORY_SEPARATOR . 'metadata.php';
+
+        return $metaDataFilePath;
+}
 }
 

@@ -335,7 +335,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * Stores config parameter value in config
      *
      * @param string $name  config parameter name
-     * @param string $value config parameter value
+     * @param mixed  $value config parameter value
      */
     public function setConfigParam($name, $value)
     {

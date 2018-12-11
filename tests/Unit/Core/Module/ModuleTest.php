@@ -9,8 +9,7 @@ use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Registry;
 use oxModule;
-use \shop;
-use \oxRegistry;
+use oxRegistry;
 
 /**
  * @group module
@@ -433,6 +432,7 @@ class ModuleTest extends \OxidTestCase
             'testExt2' => 'testExt2'
         );
 
+        Registry::getConfig()->reinitialize();
         $this->getConfig()->setConfigParam("aModulePaths", $aModulePaths);
 
         $oModule = oxNew('oxModule');

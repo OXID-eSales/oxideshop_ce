@@ -168,17 +168,17 @@ class MetaDataProvider
     }
 
     /**
-     * @param $sMetadataVersion
-     * @param $aModule
+     * @param mixed $metaDataVersion
+     * @param mixed $moduleData
      *
      * @throws InvalidMetaDataException
      */
-    private function validateMetaDataFileVariables($sMetadataVersion, $aModule)
+    private function validateMetaDataFileVariables($metaDataVersion, $moduleData)
     {
-        if ($sMetadataVersion === null || !is_scalar($sMetadataVersion)) {
+        if ($metaDataVersion === null || !is_scalar($metaDataVersion)) {
             throw new InvalidMetaDataException('The variable $sMetadataVersion must be present in ' . $this->filePath . ' and it must be a scalar');
         }
-        if ($aModule === null || !is_array($aModule)) {
+        if ($moduleData === null || !is_array($moduleData)) {
             throw new InvalidMetaDataException('The variable $aModule must be present in ' . $this->filePath . ' and it must be an array');
         }
     }

@@ -21,16 +21,16 @@ class MetaDataSchemataProvider implements MetaDataSchemataProviderInterface
     /**
      * @var array
      */
-    private $metaDataDefinitions;
+    private $metaDataSchemata;
 
     /**
      * MetaDataDefinition constructor.
      *
-     * @param array $metaDataDefinitions
+     * @param array $metaDataSchemata
      */
-    public function __construct(array $metaDataDefinitions)
+    public function __construct(array $metaDataSchemata)
     {
-        $this->metaDataDefinitions = $metaDataDefinitions;
+        $this->metaDataSchemata = $metaDataSchemata;
     }
 
     /**
@@ -38,7 +38,7 @@ class MetaDataSchemataProvider implements MetaDataSchemataProviderInterface
      */
     public function getMetaDataSchemata(): array
     {
-        return $this->metaDataDefinitions;
+        return $this->metaDataSchemata;
     }
 
     /**
@@ -50,11 +50,11 @@ class MetaDataSchemataProvider implements MetaDataSchemataProviderInterface
      */
     public function getMetaDataSchemaForVersion(string $metaDataVersion): array
     {
-        if (false === array_key_exists($metaDataVersion, $this->metaDataDefinitions)) {
+        if (false === array_key_exists($metaDataVersion, $this->metaDataSchemata)) {
             throw new UnsupportedMetaDataVersionException("Metadata version $metaDataVersion is not supported");
         }
 
-        return $this->metaDataDefinitions[$metaDataVersion];
+        return $this->metaDataSchemata[$metaDataVersion];
     }
 
     /**
@@ -66,11 +66,11 @@ class MetaDataSchemataProvider implements MetaDataSchemataProviderInterface
      */
     public function getFlippedMetaDataSchemaForVersion(string $metaDataVersion): array
     {
-        if (false === array_key_exists($metaDataVersion, $this->metaDataDefinitions)) {
+        if (false === array_key_exists($metaDataVersion, $this->metaDataSchemata)) {
             throw new UnsupportedMetaDataVersionException("Metadata version $metaDataVersion is not supported");
         }
 
-        return $this->arrayFlipRecursive($this->metaDataDefinitions[$metaDataVersion]);
+        return $this->arrayFlipRecursive($this->metaDataSchemata[$metaDataVersion]);
     }
 
     /**

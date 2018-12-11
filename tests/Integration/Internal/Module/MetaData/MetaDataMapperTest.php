@@ -70,16 +70,7 @@ class MetaDataMapperTest extends TestCase
             ],
         ];
 
-        $containerBuilder = new ContainerBuilder();
-        $container = $containerBuilder->getContainer();
-
-        $metaDataProviderDefinition = $container->getDefinition('oxid_esales.module.metadata.metadataprovider');
-        $metaDataProviderDefinition->setPublic(true);
-
-        $metaDataDataMapperDefinition = $container->getDefinition('oxid_esales.module.metadata.datamapper.metadatamapper');
-        $metaDataDataMapperDefinition->setPublic(true);
-
-        $container->compile();
+        $container = $this->getCompiledTestContainer();
 
         $errorLevel = '';
         $message = '';
@@ -182,16 +173,7 @@ class MetaDataMapperTest extends TestCase
             ],
         ];
 
-        $containerBuilder = new ContainerBuilder();
-        $container = $containerBuilder->getContainer();
-
-        $metaDataProviderDefinition = $container->getDefinition('oxid_esales.module.metadata.metadataprovider');
-        $metaDataProviderDefinition->setPublic(true);
-
-        $metaDataDataMapperDefinition = $container->getDefinition('oxid_esales.module.metadata.datamapper.metadatamapper');
-        $metaDataDataMapperDefinition->setPublic(true);
-
-        $container->compile();
+        $container = $this->getCompiledTestContainer();
 
         $errorLevel = '';
         $message = '';
@@ -251,16 +233,7 @@ class MetaDataMapperTest extends TestCase
             ],
         ];
 
-        $containerBuilder = new ContainerBuilder();
-        $container = $containerBuilder->getContainer();
-
-        $metaDataProviderDefinition = $container->getDefinition('oxid_esales.module.metadata.metadataprovider');
-        $metaDataProviderDefinition->setPublic(true);
-
-        $metaDataDataMapperDefinition = $container->getDefinition('oxid_esales.module.metadata.datamapper.metadatamapper');
-        $metaDataDataMapperDefinition->setPublic(true);
-
-        $container->compile();
+        $container = $this->getCompiledTestContainer();
 
         /**
          * As no module ID was set, an InvalidMetaDataEvent should be fired
@@ -326,16 +299,7 @@ class MetaDataMapperTest extends TestCase
             'id' => $moduleId,
         ];
 
-        $containerBuilder = new ContainerBuilder();
-        $container = $containerBuilder->getContainer();
-
-        $metaDataProviderDefinition = $container->getDefinition('oxid_esales.module.metadata.metadataprovider');
-        $metaDataProviderDefinition->setPublic(true);
-
-        $metaDataDataMapperDefinition = $container->getDefinition('oxid_esales.module.metadata.datamapper.metadatamapper');
-        $metaDataDataMapperDefinition->setPublic(true);
-
-        $container->compile();
+        $container = $this->getCompiledTestContainer();
 
         /**
          * As an extra key is present in metadata.php, an InvalidMetaDataEvent should be fired
@@ -361,6 +325,25 @@ class MetaDataMapperTest extends TestCase
         $this->assertContains('extrastuff', strtolower($message));
 
         $this->assertEquals($expectedModuleData['id'], $moduleConfiguration->getId());
+    }
+
+    /**
+     * @return \Symfony\Component\DependencyInjection\ContainerBuilder
+     */
+    private function getCompiledTestContainer(): \Symfony\Component\DependencyInjection\ContainerBuilder
+    {
+        $containerBuilder = new ContainerBuilder();
+        $container = $containerBuilder->getContainer();
+
+        $metaDataProviderDefinition = $container->getDefinition('oxid_esales.module.metadata.metadataprovider');
+        $metaDataProviderDefinition->setPublic(true);
+
+        $metaDataDataMapperDefinition = $container->getDefinition('oxid_esales.module.metadata.datamapper.metadatamapper');
+        $metaDataDataMapperDefinition->setPublic(true);
+
+        $container->compile();
+
+        return $container;
     }
 }
 

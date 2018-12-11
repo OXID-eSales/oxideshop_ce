@@ -93,25 +93,25 @@ class MetaDataMapperTest extends TestCase
         /**
          * No InvalidMetaDataEvents should be dispatched
          */
-        $this->assertEquals('', $message);
-        $this->assertEquals('', $errorLevel);
+        $this->assertSame('', $message);
+        $this->assertSame('', $errorLevel);
 
-        $this->assertEquals($expectedModuleData['id'], $moduleConfiguration->getId());
-        $this->assertEquals($expectedModuleData['title'], $moduleConfiguration->getTitle());
-        $this->assertEquals($expectedModuleData['description'], $moduleConfiguration->getDescription());
-        $this->assertEquals($expectedModuleData['lang'], $moduleConfiguration->getLang());
-        $this->assertEquals($expectedModuleData['thumbnail'], $moduleConfiguration->getThumbnail());
-        $this->assertEquals($expectedModuleData['author'], $moduleConfiguration->getAuthor());
-        $this->assertEquals($expectedModuleData['url'], $moduleConfiguration->getUrl());
-        $this->assertEquals($expectedModuleData['email'], $moduleConfiguration->getEmail());
-        $this->assertEquals($expectedModuleData['extend'], $settings[ModuleSetting::CLASS_EXTENSIONS]);
-        $this->assertEquals($expectedModuleData['controllers'], $settings[ModuleSetting::CONTROLLERS]);
-        $this->assertEquals($expectedModuleData['templates'], $settings[ModuleSetting::TEMPLATES]);
-        $this->assertEquals($expectedModuleData['version'], $settings[ModuleSetting::VERSION]);
-        $this->assertEquals($testModuleDirectory . DIRECTORY_SEPARATOR, $settings[ModuleSetting::PATH]);
-        $this->assertEquals($expectedModuleData['blocks'], $settings[ModuleSetting::TEMPLATE_BLOCKS]);
-        $this->assertEquals($expectedModuleData['settings'], $settings[ModuleSetting::SHOP_MODULE_SETTING]);
-        $this->assertEquals($expectedModuleData['events'], $settings[ModuleSetting::EVENTS]);
+        $this->assertSame($expectedModuleData['id'], $moduleConfiguration->getId());
+        $this->assertSame($expectedModuleData['title'], $moduleConfiguration->getTitle());
+        $this->assertSame($expectedModuleData['description'], $moduleConfiguration->getDescription());
+        $this->assertSame($expectedModuleData['lang'], $moduleConfiguration->getLang());
+        $this->assertSame($expectedModuleData['thumbnail'], $moduleConfiguration->getThumbnail());
+        $this->assertSame($expectedModuleData['author'], $moduleConfiguration->getAuthor());
+        $this->assertSame($expectedModuleData['url'], $moduleConfiguration->getUrl());
+        $this->assertSame($expectedModuleData['email'], $moduleConfiguration->getEmail());
+        $this->assertSame($expectedModuleData['extend'], $settings[ModuleSetting::CLASS_EXTENSIONS]);
+        $this->assertSame($expectedModuleData['controllers'], $settings[ModuleSetting::CONTROLLERS]);
+        $this->assertSame($expectedModuleData['templates'], $settings[ModuleSetting::TEMPLATES]);
+        $this->assertSame($expectedModuleData['version'], $settings[ModuleSetting::VERSION]);
+        $this->assertSame($testModuleDirectory . DIRECTORY_SEPARATOR, $settings[ModuleSetting::PATH]);
+        $this->assertSame($expectedModuleData['blocks'], $settings[ModuleSetting::TEMPLATE_BLOCKS]);
+        $this->assertSame($expectedModuleData['settings'], $settings[ModuleSetting::SHOP_MODULE_SETTING]);
+        $this->assertSame($expectedModuleData['events'], $settings[ModuleSetting::EVENTS]);
     }
 
     public function testModuleMetaData21()
@@ -198,23 +198,23 @@ class MetaDataMapperTest extends TestCase
         $this->assertEquals('', $message);
         $this->assertEquals('', $errorLevel);
 
-        $this->assertEquals($expectedModuleData['id'], $moduleConfiguration->getId());
-        $this->assertEquals($expectedModuleData['title'], $moduleConfiguration->getTitle());
-        $this->assertEquals($expectedModuleData['description'], $moduleConfiguration->getDescription());
-        $this->assertEquals($expectedModuleData['lang'], $moduleConfiguration->getLang());
-        $this->assertEquals($expectedModuleData['thumbnail'], $moduleConfiguration->getThumbnail());
-        $this->assertEquals($expectedModuleData['author'], $moduleConfiguration->getAuthor());
-        $this->assertEquals($expectedModuleData['url'], $moduleConfiguration->getUrl());
-        $this->assertEquals($expectedModuleData['email'], $moduleConfiguration->getEmail());
-        $this->assertEquals($expectedModuleData['extend'], $settings[ModuleSetting::CLASS_EXTENSIONS]);
-        $this->assertEquals($expectedModuleData['controllers'], $settings[ModuleSetting::CONTROLLERS]);
-        $this->assertEquals($expectedModuleData['templates'], $settings[ModuleSetting::TEMPLATES]);
-        $this->assertEquals($expectedModuleData['version'], $settings[ModuleSetting::VERSION]);
-        $this->assertEquals($testModuleDirectory . DIRECTORY_SEPARATOR, $settings[ModuleSetting::PATH]);
-        $this->assertEquals($expectedModuleData['blocks'], $settings[ModuleSetting::TEMPLATE_BLOCKS]);
-        $this->assertEquals($expectedModuleData['settings'], $settings[ModuleSetting::SHOP_MODULE_SETTING]);
-        $this->assertEquals($expectedModuleData['events'], $settings[ModuleSetting::EVENTS]);
-        $this->assertEquals($expectedModuleData['smartyPluginDirectories'], $settings[ModuleSetting::SMARTY_PLUGIN_DIRECTORIES]);
+        $this->assertSame($expectedModuleData['id'], $moduleConfiguration->getId());
+        $this->assertSame($expectedModuleData['title'], $moduleConfiguration->getTitle());
+        $this->assertSame($expectedModuleData['description'], $moduleConfiguration->getDescription());
+        $this->assertSame($expectedModuleData['lang'], $moduleConfiguration->getLang());
+        $this->assertSame($expectedModuleData['thumbnail'], $moduleConfiguration->getThumbnail());
+        $this->assertSame($expectedModuleData['author'], $moduleConfiguration->getAuthor());
+        $this->assertSame($expectedModuleData['url'], $moduleConfiguration->getUrl());
+        $this->assertSame($expectedModuleData['email'], $moduleConfiguration->getEmail());
+        $this->assertSame($expectedModuleData['extend'], $settings[ModuleSetting::CLASS_EXTENSIONS]);
+        $this->assertSame($expectedModuleData['controllers'], $settings[ModuleSetting::CONTROLLERS]);
+        $this->assertSame($expectedModuleData['templates'], $settings[ModuleSetting::TEMPLATES]);
+        $this->assertSame($expectedModuleData['version'], $settings[ModuleSetting::VERSION]);
+        $this->assertSame($testModuleDirectory . DIRECTORY_SEPARATOR, $settings[ModuleSetting::PATH]);
+        $this->assertSame($expectedModuleData['blocks'], $settings[ModuleSetting::TEMPLATE_BLOCKS]);
+        $this->assertSame($expectedModuleData['settings'], $settings[ModuleSetting::SHOP_MODULE_SETTING]);
+        $this->assertSame($expectedModuleData['events'], $settings[ModuleSetting::EVENTS]);
+        $this->assertSame($expectedModuleData['smartyPluginDirectories'], $settings[ModuleSetting::SMARTY_PLUGIN_DIRECTORIES]);
     }
 
     /**
@@ -256,7 +256,7 @@ class MetaDataMapperTest extends TestCase
         $settings = $moduleConfiguration->getSettings();
 
         /**
-         * The module directory name should be set as the module ID is missing in metadata.
+         * The module directory name should be set as the module ID is missing in metadata.Same
          */
         $this->assertEquals($testModuleDirectory, $moduleConfiguration->getId());
         /**
@@ -266,21 +266,21 @@ class MetaDataMapperTest extends TestCase
         $this->assertEquals(LogLevel::ERROR, $errorLevel);
 
         /** All methods should return type safe default values, if there were no values defined in metadata.php */
-        $this->assertEquals('', $moduleConfiguration->getTitle());
-        $this->assertEquals([], $moduleConfiguration->getDescription());
-        $this->assertEquals('', $moduleConfiguration->getLang());
-        $this->assertEquals('', $moduleConfiguration->getThumbnail());
-        $this->assertEquals('', $moduleConfiguration->getAuthor());
-        $this->assertEquals('', $moduleConfiguration->getUrl());
-        $this->assertEquals('', $moduleConfiguration->getEmail());
-        $this->assertEquals([], $settings[ModuleSetting::CONTROLLERS]);
-        $this->assertEquals([], $settings[ModuleSetting::TEMPLATES]);
-        $this->assertEquals('', $settings[ModuleSetting::VERSION]);
-        $this->assertEquals($testModuleDirectory . DIRECTORY_SEPARATOR, $settings[ModuleSetting::PATH]);
-        $this->assertEquals([], $settings[ModuleSetting::TEMPLATE_BLOCKS]);
-        $this->assertEquals([], $settings[ModuleSetting::SHOP_MODULE_SETTING]);
-        $this->assertEquals([], $settings[ModuleSetting::EVENTS]);
-        $this->assertEquals([], $settings[ModuleSetting::SMARTY_PLUGIN_DIRECTORIES]);
+        $this->assertSame('', $moduleConfiguration->getTitle());
+        $this->assertSame([], $moduleConfiguration->getDescription());
+        $this->assertSame('', $moduleConfiguration->getLang());
+        $this->assertSame('', $moduleConfiguration->getThumbnail());
+        $this->assertSame('', $moduleConfiguration->getAuthor());
+        $this->assertSame('', $moduleConfiguration->getUrl());
+        $this->assertSame('', $moduleConfiguration->getEmail());
+        $this->assertSame([], $settings[ModuleSetting::CONTROLLERS]);
+        $this->assertSame([], $settings[ModuleSetting::TEMPLATES]);
+        $this->assertSame('', $settings[ModuleSetting::VERSION]);
+        $this->assertSame($testModuleDirectory . DIRECTORY_SEPARATOR, $settings[ModuleSetting::PATH]);
+        $this->assertSame([], $settings[ModuleSetting::TEMPLATE_BLOCKS]);
+        $this->assertSame([], $settings[ModuleSetting::SHOP_MODULE_SETTING]);
+        $this->assertSame([], $settings[ModuleSetting::EVENTS]);
+        $this->assertSame([], $settings[ModuleSetting::SMARTY_PLUGIN_DIRECTORIES]);
 
         /** This is the only value defined in metadata.php */
         $this->assertEquals($expectedModuleData['extend'], $settings[ModuleSetting::CLASS_EXTENSIONS]);

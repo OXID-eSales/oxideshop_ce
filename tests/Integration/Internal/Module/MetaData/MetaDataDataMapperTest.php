@@ -316,7 +316,7 @@ class MetaDataDataMapperTest extends TestCase
     }
 
     /**
-     * @expectedException  \OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\UnsupportedMetaDataValueTypeException
+     * @expectedException  \OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException
      */
     public function testModuleWithSurplusData()
     {

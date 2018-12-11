@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator;
 
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\InvalidMetaDataEvent;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataDataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataSchemataProviderInterface;
 use Psr\Log\LogLevel;

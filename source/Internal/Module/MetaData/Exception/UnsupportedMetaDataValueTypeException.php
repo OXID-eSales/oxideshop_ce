@@ -5,14 +5,14 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator;
+namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception;
 
 /**
  * Class UnsupportedMetaDataValueTypeException
  *
  * @internal
  *
- * @package OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator
+ * @package OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception
  */
 class UnsupportedMetaDataValueTypeException extends \Exception
 {

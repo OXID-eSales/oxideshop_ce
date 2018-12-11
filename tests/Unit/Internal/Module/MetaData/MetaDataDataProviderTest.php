@@ -58,13 +58,13 @@ class MetaDataDataProviderTest extends TestCase
     }
 
     /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\InvalidMetaDataException
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\InvalidMetaDataException
      *
      * @dataProvider providerMissingMetaDataVariables
      *
      * @param string $metaDataContent
      *
-     * @throws \OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\InvalidMetaDataException
+     * @throws \OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\InvalidMetaDataException
      */
     public function testGetDataThrowsExceptionOnMissingMetaDataVariables(string $metaDataContent)
     {
@@ -89,7 +89,7 @@ class MetaDataDataProviderTest extends TestCase
     }
 
     /**
-     * @throws \OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\InvalidMetaDataException
+     * @throws \OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\InvalidMetaDataException
      */
     public function testGetDataProvidesConfiguredMetadataId()
     {
@@ -110,7 +110,7 @@ class MetaDataDataProviderTest extends TestCase
     }
 
     /**
-     * @throws \OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\InvalidMetaDataException
+     * @throws \OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\InvalidMetaDataException
      */
     public function testGetDataProvidesDirectoryNameForMetadataIdIfMetaDataIsNotConfigured()
     {
@@ -130,7 +130,7 @@ class MetaDataDataProviderTest extends TestCase
     }
 
     /**
-     * @throws \OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\InvalidMetaDataException
+     * @throws \OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\InvalidMetaDataException
      */
     public function testGetDataDispatchesEventIfMetaDataIsNotConfigured()
     {

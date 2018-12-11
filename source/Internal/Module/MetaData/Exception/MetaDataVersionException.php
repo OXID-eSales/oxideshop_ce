@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator;
+namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception;
 
 /**
  * @internal

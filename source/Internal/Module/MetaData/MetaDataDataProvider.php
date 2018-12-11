@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Internal\Module\MetaData;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\InvalidMetaDataEvent;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\InvalidMetaDataException;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\InvalidMetaDataException;
 use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

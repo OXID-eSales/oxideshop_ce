@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\MetaData;
 
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\UnsupportedMetaDataVersionException;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataVersionException;
 
 /**
  * Class MetaDataDefinition

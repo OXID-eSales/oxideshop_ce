@@ -48,7 +48,7 @@ class MetaDataValidatorTest extends TestCase
     }
 
     /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\UnsupportedMetaDataVersionException
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataVersionException
      */
     public function testValidateThrowsExceptionOnUnsupportedMetaDataVersion()
     {
@@ -176,7 +176,7 @@ class MetaDataValidatorTest extends TestCase
     }
 
     /**
-     * @expectedException  \OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\UnsupportedMetaDataValueTypeException
+     * @expectedException  \OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException
      */
     public function testValidateThrowsExceptionOnUnsupportedMetaDataValueType()
     {

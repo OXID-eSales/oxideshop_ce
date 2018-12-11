@@ -6,14 +6,14 @@
  */
 
 
-namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator;
+namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception;
 
 /**
  * Class UnsupportedMetaDataKeyException
  *
  * @internal
  *
- * @package OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator
+ * @package OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception
  */
 class UnsupportedMetaDataKeyException extends \Exception
 {

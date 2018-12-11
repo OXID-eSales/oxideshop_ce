@@ -75,7 +75,7 @@ class MetaDataSchemataProviderTest extends TestCase
     }
 
     /**
-     * @expectedException  \OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\UnsupportedMetaDataVersionException
+     * @expectedException  \OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataVersionException
      */
     public function testGetFlippedMetadataSchemaForVersionThrowsExceptionOnUnsupportedVersion()
     {
@@ -86,7 +86,7 @@ class MetaDataSchemataProviderTest extends TestCase
     }
 
     /**
-     * @expectedException  \OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\UnsupportedMetaDataVersionException
+     * @expectedException  \OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataVersionException
      */
     public function testGetMetadataSchemaForVersionThrowsExceptionOnUnsupportedVersion()
     {

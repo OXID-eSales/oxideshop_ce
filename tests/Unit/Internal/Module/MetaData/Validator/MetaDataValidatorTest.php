@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Configuration\Validator;
 
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataDataProvider;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataSchemataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidator;
 use PHPUnit\Framework\TestCase;
@@ -108,8 +108,8 @@ class MetaDataValidatorTest extends TestCase
     public function testExcludedSectionItemValidation()
     {
         $metaDataToValidate = [
-            '20only'    => 'value',
-            'section1'  => [
+            '20only'                                             => 'value',
+            'section1'                                           => [
                 [
                     'subkey1' => 'value1',
                     'subkey2' => 'value1',
@@ -119,23 +119,23 @@ class MetaDataValidatorTest extends TestCase
                     'subkey2' => 'value2',
                 ],
             ],
-            MetaDataDataProvider::METADATA_EXTEND    => [
+            MetaDataProvider::METADATA_EXTEND                    => [
                 'excludedsubkey1' => 'value2',
                 'excludedsubkey2' => 'value2',
             ],
-            MetaDataDataProvider::METADATA_CONTROLLERS    => [
+            MetaDataProvider::METADATA_CONTROLLERS               => [
                 'excludedsubkey1' => 'value2',
                 'excludedsubkey2' => 'value2',
             ],
-            MetaDataDataProvider::METADATA_EVENTS    => [
+            MetaDataProvider::METADATA_EVENTS                    => [
                 'excludedsubkey1' => 'value2',
                 'excludedsubkey2' => 'value2',
             ],
-            MetaDataDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES    => [
+            MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES => [
                 'excludedsubkey1' => 'value2',
                 'excludedsubkey2' => 'value2',
             ],
-            MetaDataDataProvider::METADATA_TEMPLATES => [
+            MetaDataProvider::METADATA_TEMPLATES                 => [
                 'excludedsectionkey1' => 'value1',
                 'excludedsectionkey2' => [
                     'excludedsubkey1' => 'value2',

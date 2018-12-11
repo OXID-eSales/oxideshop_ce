@@ -44,9 +44,9 @@ class MetaDataNormalizer implements MetaDataNormalizerInterface
     private function normalizeValues($key, $value)
     {
         $subItemsToNormalize = [
-            MetaDataDataProvider::METADATA_DESCRIPTION,
-            MetaDataDataProvider::METADATA_BLOCKS,
-            MetaDataDataProvider::METADATA_SETTINGS
+            MetaDataProvider::METADATA_DESCRIPTION,
+            MetaDataProvider::METADATA_BLOCKS,
+            MetaDataProvider::METADATA_SETTINGS
         ];
         if (\is_array($value) && in_array($key, $subItemsToNormalize, true)) {
             $normalizedValue = $this->lowerCaseArrayKeysRecursive($value);

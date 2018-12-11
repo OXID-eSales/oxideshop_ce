@@ -10,11 +10,10 @@ namespace OxidEsales\EshopCommunity\Internal\Module\MetaData;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\InvalidMetaDataEvent;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\UnsupportedMetaDataValueTypeException;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 
-class MetaDataDataMapperTest extends TestCase
+class MetaDataMapperTest extends TestCase
 {
     public function testModuleMetaData20()
     {
@@ -74,10 +73,10 @@ class MetaDataDataMapperTest extends TestCase
         $containerBuilder = new ContainerBuilder();
         $container = $containerBuilder->getContainer();
 
-        $metaDataProviderDefinition = $container->getDefinition('oxid_esales.module.metadata.metadatadataprovider');
+        $metaDataProviderDefinition = $container->getDefinition('oxid_esales.module.metadata.metadataprovider');
         $metaDataProviderDefinition->setPublic(true);
 
-        $metaDataDataMapperDefinition = $container->getDefinition('oxid_esales.module.metadata.metadatadatamapper');
+        $metaDataDataMapperDefinition = $container->getDefinition('oxid_esales.module.metadata.metadatamapper');
         $metaDataDataMapperDefinition->setPublic(true);
 
         $container->compile();
@@ -93,10 +92,10 @@ class MetaDataDataMapperTest extends TestCase
             }
         );
 
-        $metaDataDataProvider = $container->get('oxid_esales.module.metadata.metadatadataprovider');
+        $metaDataDataProvider = $container->get('oxid_esales.module.metadata.metadataprovider');
         $normalizedMetaData = $metaDataDataProvider->getData($metaDataFilePath);
 
-        $metaDataDataMapper = $container->get('oxid_esales.module.metadata.metadatadatamapper');
+        $metaDataDataMapper = $container->get('oxid_esales.module.metadata.metadatamapper');
         $moduleConfiguration = $metaDataDataMapper->fromData($normalizedMetaData);
         $settings = $moduleConfiguration->getSettings();
 
@@ -186,10 +185,10 @@ class MetaDataDataMapperTest extends TestCase
         $containerBuilder = new ContainerBuilder();
         $container = $containerBuilder->getContainer();
 
-        $metaDataProviderDefinition = $container->getDefinition('oxid_esales.module.metadata.metadatadataprovider');
+        $metaDataProviderDefinition = $container->getDefinition('oxid_esales.module.metadata.metadataprovider');
         $metaDataProviderDefinition->setPublic(true);
 
-        $metaDataDataMapperDefinition = $container->getDefinition('oxid_esales.module.metadata.metadatadatamapper');
+        $metaDataDataMapperDefinition = $container->getDefinition('oxid_esales.module.metadata.metadatamapper');
         $metaDataDataMapperDefinition->setPublic(true);
 
         $container->compile();
@@ -205,10 +204,10 @@ class MetaDataDataMapperTest extends TestCase
             }
         );
 
-        $metaDataDataProvider = $container->get('oxid_esales.module.metadata.metadatadataprovider');
+        $metaDataDataProvider = $container->get('oxid_esales.module.metadata.metadataprovider');
         $normalizedMetaData = $metaDataDataProvider->getData($metaDataFilePath);
 
-        $metaDataDataMapper = $container->get('oxid_esales.module.metadata.metadatadatamapper');
+        $metaDataDataMapper = $container->get('oxid_esales.module.metadata.metadatamapper');
         $moduleConfiguration = $metaDataDataMapper->fromData($normalizedMetaData);
         $settings = $moduleConfiguration->getSettings();
 
@@ -255,10 +254,10 @@ class MetaDataDataMapperTest extends TestCase
         $containerBuilder = new ContainerBuilder();
         $container = $containerBuilder->getContainer();
 
-        $metaDataProviderDefinition = $container->getDefinition('oxid_esales.module.metadata.metadatadataprovider');
+        $metaDataProviderDefinition = $container->getDefinition('oxid_esales.module.metadata.metadataprovider');
         $metaDataProviderDefinition->setPublic(true);
 
-        $metaDataDataMapperDefinition = $container->getDefinition('oxid_esales.module.metadata.metadatadatamapper');
+        $metaDataDataMapperDefinition = $container->getDefinition('oxid_esales.module.metadata.metadatamapper');
         $metaDataDataMapperDefinition->setPublic(true);
 
         $container->compile();
@@ -277,10 +276,10 @@ class MetaDataDataMapperTest extends TestCase
             }
         );
 
-        $metaDataDataProvider = $container->get('oxid_esales.module.metadata.metadatadataprovider');
+        $metaDataDataProvider = $container->get('oxid_esales.module.metadata.metadataprovider');
         $normalizedMetaData = $metaDataDataProvider->getData($metaDataFilePath);
 
-        $metaDataDataMapper = $container->get('oxid_esales.module.metadata.metadatadatamapper');
+        $metaDataDataMapper = $container->get('oxid_esales.module.metadata.metadatamapper');
         $moduleConfiguration = $metaDataDataMapper->fromData($normalizedMetaData);
         $settings = $moduleConfiguration->getSettings();
 
@@ -330,10 +329,10 @@ class MetaDataDataMapperTest extends TestCase
         $containerBuilder = new ContainerBuilder();
         $container = $containerBuilder->getContainer();
 
-        $metaDataProviderDefinition = $container->getDefinition('oxid_esales.module.metadata.metadatadataprovider');
+        $metaDataProviderDefinition = $container->getDefinition('oxid_esales.module.metadata.metadataprovider');
         $metaDataProviderDefinition->setPublic(true);
 
-        $metaDataDataMapperDefinition = $container->getDefinition('oxid_esales.module.metadata.metadatadatamapper');
+        $metaDataDataMapperDefinition = $container->getDefinition('oxid_esales.module.metadata.metadatamapper');
         $metaDataDataMapperDefinition->setPublic(true);
 
         $container->compile();
@@ -352,10 +351,10 @@ class MetaDataDataMapperTest extends TestCase
             }
         );
 
-        $metaDataDataProvider = $container->get('oxid_esales.module.metadata.metadatadataprovider');
+        $metaDataDataProvider = $container->get('oxid_esales.module.metadata.metadataprovider');
         $normalizedMetaData = $metaDataDataProvider->getData($metaDataFilePath);
 
-        $metaDataDataMapper = $container->get('oxid_esales.module.metadata.metadatadatamapper');
+        $metaDataDataMapper = $container->get('oxid_esales.module.metadata.metadatamapper');
         $moduleConfiguration = $metaDataDataMapper->fromData($normalizedMetaData);
 
         $this->assertEquals(LogLevel::ERROR, $errorLevel);

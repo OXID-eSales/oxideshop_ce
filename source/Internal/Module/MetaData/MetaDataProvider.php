@@ -20,7 +20,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @package OxidEsales\EshopCommunity\Internal\Module\MetaData
  */
-class MetaDataDataProvider
+class MetaDataProvider
 {
     const METADATA_ID = 'id';
     const METADATA_METADATA_VERSION = 'metaDataVersion';

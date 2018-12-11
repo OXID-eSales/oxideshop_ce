@@ -8,11 +8,11 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataDataMapper;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataMapper;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidatorInterface;
 use PHPUnit\Framework\TestCase;
 
-class MetaDataDataMapperTest extends TestCase
+class MetaDataMapperTest extends TestCase
 {
     private $metaDataValidatorStub;
 
@@ -31,7 +31,7 @@ class MetaDataDataMapperTest extends TestCase
      */
     public function testToDataThrowsException()
     {
-        $metaDataDataMapper = new MetaDataDataMapper($this->metaDataValidatorStub);
+        $metaDataDataMapper = new MetaDataMapper($this->metaDataValidatorStub);
 
         $moduleConfiguration = $this->getMockBuilder(ModuleConfiguration::class)
             ->disableOriginalConstructor()
@@ -48,7 +48,7 @@ class MetaDataDataMapperTest extends TestCase
      */
     public function testFromDataWillThrowExceptionOnInvalidParameterFormat($invalidData)
     {
-        $metaDataDataMapper = new MetaDataDataMapper($this->metaDataValidatorStub);
+        $metaDataDataMapper = new MetaDataMapper($this->metaDataValidatorStub);
         $metaDataDataMapper->fromData($invalidData);
     }
 

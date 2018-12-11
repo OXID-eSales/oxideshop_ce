@@ -8,17 +8,17 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataDataProvider;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataNormalizer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Class MetaDataDataProviderTest
+ * Class MetaDataProviderTest
  *
  * @package OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData
  */
-class MetaDataDataProviderTest extends TestCase
+class MetaDataProviderTest extends TestCase
 {
     /** @var EventDispatcherInterface */
     private $eventDispatcherStub;
@@ -44,7 +44,7 @@ class MetaDataDataProviderTest extends TestCase
      */
     public function testGetDataThrowsExceptionOnNonExistingFile()
     {
-        $metaDataProvider = new MetaDataDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
+        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
         $metaDataProvider->getData('non existing file');
     }
 
@@ -53,7 +53,7 @@ class MetaDataDataProviderTest extends TestCase
      */
     public function testGetDataThrowsExceptionOnDirectory()
     {
-        $metaDataProvider = new MetaDataDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
+        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
         $metaDataProvider->getData(__DIR__);
     }
 
@@ -72,7 +72,7 @@ class MetaDataDataProviderTest extends TestCase
         if (false === file_put_contents($metaDataFilePath, $metaDataContent)) {
             throw new \RuntimeException('Could not write to ' . $metaDataFilePath);
         }
-        $metaDataProvider = new MetaDataDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
+        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
         $metaDataProvider->getData($metaDataFilePath);
     }
 
@@ -103,7 +103,7 @@ class MetaDataDataProviderTest extends TestCase
         if (false === file_put_contents($metaDataFilePath, $metaDataContent)) {
             throw new \RuntimeException('Could not write to ' . $metaDataFilePath);
         }
-        $metaDataProvider = new MetaDataDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
+        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
         $metaData = $metaDataProvider->getData($metaDataFilePath);
 
         $this->assertEquals($moduleId, $metaData['moduleData']['id']);
@@ -123,7 +123,7 @@ class MetaDataDataProviderTest extends TestCase
         if (false === file_put_contents($metaDataFilePath, $metaDataContent)) {
             throw new \RuntimeException('Could not write to ' . $metaDataFilePath);
         }
-        $metaDataProvider = new MetaDataDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
+        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
         $metaData = $metaDataProvider->getData($metaDataFilePath);
 
         $this->assertEquals($metaDataDir, $metaData['moduleData']['id']);
@@ -145,7 +145,7 @@ class MetaDataDataProviderTest extends TestCase
         }
 
         $this->eventDispatcherStub->expects($this->atLeastOnce())->method('dispatch');
-        $metaDataProvider = new MetaDataDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
+        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
         $metaData = $metaDataProvider->getData($metaDataFilePath);
 
         $this->assertEquals($metaDataDir, $metaData['moduleData']['id']);
@@ -174,7 +174,7 @@ class MetaDataDataProviderTest extends TestCase
                 "oxorder"   => "EShopNamespace\\OrderClass",
             ]
         );
-        $metaDataProvider = new MetaDataDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
+        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
         $metaData = $metaDataProvider->getData($metaDataFilePath);
 
         $this->assertEquals(

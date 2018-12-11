@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator;
 
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\InvalidMetaDataEvent;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataDataProvider;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\MetaDataSchemataProviderInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -33,11 +33,11 @@ class MetaDataValidator implements MetaDataValidatorInterface
      * @var array
      */
     private static $sectionsExcludedFromItemValidation = [
-        MetaDataDataProvider::METADATA_EXTEND,
-        MetaDataDataProvider::METADATA_CONTROLLERS,
-        MetaDataDataProvider::METADATA_TEMPLATES,
-        MetaDataDataProvider::METADATA_EVENTS,
-        MetaDataDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES,
+        MetaDataProvider::METADATA_EXTEND,
+        MetaDataProvider::METADATA_CONTROLLERS,
+        MetaDataProvider::METADATA_TEMPLATES,
+        MetaDataProvider::METADATA_EVENTS,
+        MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES,
     ];
 
     /**

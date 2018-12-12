@@ -116,6 +116,37 @@ class MetaDataMapperTest extends TestCase
         $this->assertSame($expectedModuleData['events'], $settings[ModuleSetting::EVENTS]);
     }
 
+    /**
+     * @param string $testModuleDirectory
+     *
+     * @return string
+     */
+    private function getMetaDataFilePath(string $testModuleDirectory): string
+    {
+        $metaDataFilePath = __DIR__ . DIRECTORY_SEPARATOR . 'TestData' . DIRECTORY_SEPARATOR . $testModuleDirectory . DIRECTORY_SEPARATOR . 'metadata.php';
+
+        return $metaDataFilePath;
+    }
+
+    /**
+     * @return \Symfony\Component\DependencyInjection\ContainerBuilder
+     */
+    private function getCompiledTestContainer(): \Symfony\Component\DependencyInjection\ContainerBuilder
+    {
+        $containerBuilder = new ContainerBuilder();
+        $container = $containerBuilder->getContainer();
+
+        $metaDataProviderDefinition = $container->getDefinition('oxid_esales.module.metadata.service.metadataprovider');
+        $metaDataProviderDefinition->setPublic(true);
+
+        $metaDataDataMapperDefinition = $container->getDefinition('oxid_esales.module.metadata.datamapper.metadatamapper');
+        $metaDataDataMapperDefinition->setPublic(true);
+
+        $container->compile();
+
+        return $container;
+    }
+
     public function testModuleMetaData21()
     {
         $testModuleDirectory = ucfirst(__FUNCTION__);
@@ -327,36 +358,4 @@ class MetaDataMapperTest extends TestCase
 
         $this->assertEquals($expectedModuleData['id'], $moduleConfiguration->getId());
     }
-
-    /**
-     * @return \Symfony\Component\DependencyInjection\ContainerBuilder
-     */
-    private function getCompiledTestContainer(): \Symfony\Component\DependencyInjection\ContainerBuilder
-    {
-        $containerBuilder = new ContainerBuilder();
-        $container = $containerBuilder->getContainer();
-
-        $metaDataProviderDefinition = $container->getDefinition('oxid_esales.module.metadata.service.metadataprovider');
-        $metaDataProviderDefinition->setPublic(true);
-
-        $metaDataDataMapperDefinition = $container->getDefinition('oxid_esales.module.metadata.datamapper.metadatamapper');
-        $metaDataDataMapperDefinition->setPublic(true);
-
-        $container->compile();
-
-        return $container;
-    }
-
-    /**
-     * @param string $testModuleDirectory
-     *
-     * @return string
-     */
-    private function getMetaDataFilePath(string $testModuleDirectory): string
-    {
-        $metaDataFilePath = __DIR__ . DIRECTORY_SEPARATOR . 'TestData' . DIRECTORY_SEPARATOR . $testModuleDirectory . DIRECTORY_SEPARATOR . 'metadata.php';
-
-        return $metaDataFilePath;
 }
-}
-

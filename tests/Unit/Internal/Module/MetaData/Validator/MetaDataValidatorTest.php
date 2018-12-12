@@ -19,34 +19,6 @@ class MetaDataValidatorTest extends TestCase
     private $metaDataSchemaVersion20;
     private $metaDataSchemaVersion21;
 
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->metaDataSchemaVersion20 = [
-            '20only',
-            'section1' =>
-                ['subKey1',
-                 'subKey2',
-                ],
-            'extend',
-            'templates',
-        ];
-        $this->metaDataSchemaVersion21 = [
-            '21only',
-            'section1' =>
-                ['subKey1',
-                 'subKey2',
-                ],
-            'extend',
-            'templates',
-        ];
-        $this->metaDataSchemata = [
-            '2.0' => $this->metaDataSchemaVersion20,
-            '2.1' => $this->metaDataSchemaVersion21,
-        ];
-    }
-
     /**
      * @expectedException \OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataVersionException
      */
@@ -227,5 +199,33 @@ class MetaDataValidatorTest extends TestCase
         $validator = new MetaDataValidator($metaDataSchemata, $eventDispatcherStub);
 
         $validator->validate('2.0', $metaDataToValidate);
+    }
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->metaDataSchemaVersion20 = [
+            '20only',
+            'section1' =>
+                ['subKey1',
+                 'subKey2',
+                ],
+            'extend',
+            'templates',
+        ];
+        $this->metaDataSchemaVersion21 = [
+            '21only',
+            'section1' =>
+                ['subKey1',
+                 'subKey2',
+                ],
+            'extend',
+            'templates',
+        ];
+        $this->metaDataSchemata = [
+            '2.0' => $this->metaDataSchemaVersion20,
+            '2.1' => $this->metaDataSchemaVersion21,
+        ];
     }
 }

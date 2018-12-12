@@ -8,8 +8,8 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData\Service;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataNormalizer;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -28,16 +28,6 @@ class MetaDataProviderTest extends TestCase
 
     /** @var ShopAdapterInterface */
     private $shopAdapterStub;
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->eventDispatcherStub = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
-        $this->metaDataNormalizerStub = $this->getMockBuilder(MetaDataNormalizer::class)->getMock();
-        $this->metaDataNormalizerStub->method('normalizeData')->willReturnArgument(0);
-        $this->shopAdapterStub = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
-    }
 
     /**
      * @expectedException \InvalidArgumentException
@@ -60,7 +50,7 @@ class MetaDataProviderTest extends TestCase
     /**
      * @expectedException \OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\InvalidMetaDataException
      *
-     * @dataProvider providerMissingMetaDataVariables
+     * @dataProvider missingMetaDataVariablesDataProvider
      *
      * @param string $metaDataContent
      *
@@ -77,9 +67,19 @@ class MetaDataProviderTest extends TestCase
     }
 
     /**
+     * @return string
+     */
+    private function getPathToTemporaryFile(): string
+    {
+        $temporaryFileHandle = tmpfile();
+
+        return stream_get_meta_data($temporaryFileHandle)['uri'];
+    }
+
+    /**
      * @return array
      */
-    public function providerMissingMetaDataVariables(): array
+    public function missingMetaDataVariablesDataProvider(): array
     {
         return [
             ['<?php '],
@@ -203,19 +203,19 @@ class MetaDataProviderTest extends TestCase
             [
                 "EShopNamespace\\ArticleClass" => "VendorNamespace\\VendorClass1",
                 "EShopNamespace\\OrderClass"   => "VendorNamespace\\VendorClass2",
-                "EShopNamespace\\UserClass" => "VendorNamespace\\VendorClass3",
+                "EShopNamespace\\UserClass"    => "VendorNamespace\\VendorClass3",
             ],
             $metaData['moduleData']['extend']
         );
     }
 
-    /**
-     * @return string
-     */
-    private function getPathToTemporaryFile(): string
+    protected function setUp()
     {
-        $temporaryFileHandle = tmpfile();
+        parent::setUp();
 
-        return stream_get_meta_data($temporaryFileHandle)['uri'];
+        $this->eventDispatcherStub = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
+        $this->metaDataNormalizerStub = $this->getMockBuilder(MetaDataNormalizer::class)->getMock();
+        $this->metaDataNormalizerStub->method('normalizeData')->willReturnArgument(0);
+        $this->shopAdapterStub = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
     }
 }

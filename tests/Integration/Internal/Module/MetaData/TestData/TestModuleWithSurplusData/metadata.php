@@ -13,8 +13,8 @@ $sMetadataVersion = '2.0';
  * Module information
  */
 $aModule = [
-    'ID'          => 'TestModuleWithSurplusData',
-    'extraStuff' => [
+    'ID'             => 'TestModuleWithSurplusData',
+    'extraStuff'     => [
         'key1' => 'value1'
     ],
     'moreExtraStuff' => new \StdClass()

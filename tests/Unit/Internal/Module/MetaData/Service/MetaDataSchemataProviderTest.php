@@ -21,29 +21,6 @@ class MetaDataSchemataProviderTest extends TestCase
     private $schemaVersion20;
     private $schemaVersion21;
 
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->schemaVersion20 = [
-            '20only',
-            'subSchema' =>
-                ['subKey1',
-                 'subKey2',
-                ],
-        ];
-        $this->schemaVersion21 = [
-            '21only',
-            'subSchema' =>
-                ['subKey1',
-                 'subKey2',
-                ],
-        ];
-        $this->metaDataSchemata = [
-            '2.0' => $this->schemaVersion20,
-            '2.1' => $this->schemaVersion21,
-        ];
-    }
-
     public function testGetMetaDataSchemata()
     {
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);
@@ -66,7 +43,7 @@ class MetaDataSchemataProviderTest extends TestCase
     public function testGetFlippedMetadataSchemaForVersion()
     {
         $expectedSchema20 = [
-            '20only'        => 0,
+            '20only'    => 0,
             'subschema' => [
                 'subkey1' => 0,
                 'subkey2' => 1
@@ -99,5 +76,28 @@ class MetaDataSchemataProviderTest extends TestCase
         $metaDataSchema = new MetaDataSchemataProvider($this->metaDataSchemata);
 
         $metaDataSchema->getMetaDataSchemaForVersion($unsupportedVersion);
+    }
+
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->schemaVersion20 = [
+            '20only',
+            'subSchema' =>
+                ['subKey1',
+                 'subKey2',
+                ],
+        ];
+        $this->schemaVersion21 = [
+            '21only',
+            'subSchema' =>
+                ['subKey1',
+                 'subKey2',
+                ],
+        ];
+        $this->metaDataSchemata = [
+            '2.0' => $this->schemaVersion20,
+            '2.1' => $this->schemaVersion21,
+        ];
     }
 }

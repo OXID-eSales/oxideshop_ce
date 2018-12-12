@@ -108,7 +108,6 @@ class ShopAdapter implements ShopAdapterInterface
     }
 
     /**
-<<<<<<< HEAD
      * @return array
      */
     public function getModules()
@@ -119,7 +118,7 @@ class ShopAdapter implements ShopAdapterInterface
         return $moduleList->getList();
     }
 
-    /*
+    /**
      * @param string $namespace
      * @return bool
      */

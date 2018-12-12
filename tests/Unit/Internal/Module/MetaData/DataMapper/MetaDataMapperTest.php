@@ -26,18 +26,6 @@ class MetaDataMapperTest extends TestCase
         $this->metaDataValidatorStub->method('validate');
     }
 
-    /**
-     * @expectedException \DomainException
-     */
-    public function testToDataThrowsException()
-    {
-        $metaDataDataMapper = new MetaDataMapper($this->metaDataValidatorStub);
-
-        $moduleConfiguration = $this->getMockBuilder(ModuleConfiguration::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $metaDataDataMapper->toData($moduleConfiguration);
-    }
 
     /**
      * @dataProvider dataProviderInvalidData

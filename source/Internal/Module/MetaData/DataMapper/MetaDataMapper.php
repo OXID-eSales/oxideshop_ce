@@ -7,7 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\DataMapper;
 
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
@@ -21,7 +20,7 @@ use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidat
  *
  * @package OxidEsales\EshopCommunity\Internal\Module\MetaData\DataMapper
  */
-class MetaDataMapper implements ModuleConfigurationDataMapperInterface
+class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
 {
     /**
      * @var MetaDataValidator
@@ -36,20 +35,6 @@ class MetaDataMapper implements ModuleConfigurationDataMapperInterface
     public function __construct(MetaDataValidatorInterface $validator)
     {
         $this->validator = $validator;
-    }
-
-    /**
-     * @param ModuleConfiguration $configuration
-     *
-     * @throws \DomainException
-     *
-     * @return array
-     */
-    public function toData(ModuleConfiguration $configuration): array
-    {
-        throw new \DomainException(__CLASS__ . ' does not support calling method ' . __FUNCTION__);
-
-        return [];
     }
 
     /**

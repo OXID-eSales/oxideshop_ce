@@ -41,6 +41,7 @@ class MetaDataProvider
     const METADATA_TEMPLATES = 'templates';
     const METADATA_SETTINGS = 'settings';
     const METADATA_SMARTY_PLUGIN_DIRECTORIES = 'smartyplugindirectories';
+    const METADATA_CHECKSUM = 'checksum';
 
     /**
      * @var string
@@ -90,8 +91,10 @@ class MetaDataProvider
         }
         $this->filePath = $filePath;
         $normalizedMetaData = $this->getNormalizedMetaDataFileContent();
+        $normalizedMetaData = $this->addPathToData($normalizedMetaData);
+        $normalizedMetaData = $this->addCheckSumToData($normalizedMetaData);
 
-        return $this->addPathToData($normalizedMetaData);
+        return $normalizedMetaData;
     }
 
     /**
@@ -220,5 +223,17 @@ class MetaDataProvider
     private function getBackwardsCompatibilityClassMap(): array
     {
         return $this->shopAdapter->getBackwardsCompatibilityClassMap();
+    }
+
+    /**
+     * @param array $normalizedData
+     *
+     * @return array
+     */
+    private function addCheckSumToData(array $normalizedData)
+    {
+        $normalizedData[static::METADATA_CHECKSUM] = md5_file($this->filePath);
+
+        return $normalizedData;
     }
 }

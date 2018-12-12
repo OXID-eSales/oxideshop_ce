@@ -53,11 +53,13 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
 
         $mappedData = $this->getMappedData(
             $metaData[MetaDataProvider::METADATA_MODULE_DATA],
-            $metaData[MetaDataProvider::METADATA_PATH]
+            $metaData[MetaDataProvider::METADATA_PATH],
+            $metaData[MetaDataProvider::METADATA_CHECKSUM]
         );
 
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
+            ->setMetaDataCheckSum($mappedData[MetaDataProvider::METADATA_CHECKSUM])
             ->setId($mappedData[MetaDataProvider::METADATA_ID])
             ->setTitle($mappedData[MetaDataProvider::METADATA_TITLE])
             ->setDescription($mappedData[MetaDataProvider::METADATA_DESCRIPTION])
@@ -79,7 +81,8 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
         $mandatoryKeys = [
             MetaDataProvider::METADATA_METADATA_VERSION,
             MetaDataProvider::METADATA_MODULE_DATA,
-            MetaDataProvider::METADATA_PATH
+            MetaDataProvider::METADATA_PATH,
+            MetaDataProvider::METADATA_CHECKSUM
         ];
         foreach ($mandatoryKeys as $mandatoryKey) {
             if (false === array_key_exists($mandatoryKey, $data)) {
@@ -91,21 +94,23 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
     /**
      * @param array  $metaData
      * @param string $path
+     * @param string $metaDataChecksum
      *
      * @return array
      */
-    private function getMappedData(array $metaData, string $path): array
+    private function getMappedData(array $metaData, string $path, string $metaDataChecksum): array
     {
         $mappedData = [
-            'id'          => $metaData[MetaDataProvider::METADATA_ID] ?? '',
-            'title'       => $metaData[MetaDataProvider::METADATA_TITLE] ?? '',
-            'description' => $metaData[MetaDataProvider::METADATA_DESCRIPTION] ?? [],
-            'lang'        => $metaData[MetaDataProvider::METADATA_LANG] ?? '',
-            'thumbnail'   => $metaData[MetaDataProvider::METADATA_THUMBNAIL] ?? '',
-            'author'      => $metaData[MetaDataProvider::METADATA_AUTHOR] ?? '',
-            'url'         => $metaData[MetaDataProvider::METADATA_URL] ?? '',
-            'email'       => $metaData[MetaDataProvider::METADATA_EMAIL] ?? '',
-            'settings'    => [
+            MetaDataProvider::METADATA_ID          => $metaData[MetaDataProvider::METADATA_ID] ?? '',
+            MetaDataProvider::METADATA_CHECKSUM    => $metaDataChecksum ?? '',
+            MetaDataProvider::METADATA_TITLE       => $metaData[MetaDataProvider::METADATA_TITLE] ?? '',
+            MetaDataProvider::METADATA_DESCRIPTION => $metaData[MetaDataProvider::METADATA_DESCRIPTION] ?? [],
+            MetaDataProvider::METADATA_LANG        => $metaData[MetaDataProvider::METADATA_LANG] ?? '',
+            MetaDataProvider::METADATA_THUMBNAIL   => $metaData[MetaDataProvider::METADATA_THUMBNAIL] ?? '',
+            MetaDataProvider::METADATA_AUTHOR      => $metaData[MetaDataProvider::METADATA_AUTHOR] ?? '',
+            MetaDataProvider::METADATA_URL         => $metaData[MetaDataProvider::METADATA_URL] ?? '',
+            MetaDataProvider::METADATA_EMAIL       => $metaData[MetaDataProvider::METADATA_EMAIL] ?? '',
+            MetaDataProvider::METADATA_SETTINGS    => [
                 ModuleSetting::PATH                      => $path,
                 ModuleSetting::VERSION                   => $metaData[MetaDataProvider::METADATA_VERSION] ?? '',
                 ModuleSetting::CLASS_EXTENSIONS          => $metaData[MetaDataProvider::METADATA_EXTEND] ?? [],

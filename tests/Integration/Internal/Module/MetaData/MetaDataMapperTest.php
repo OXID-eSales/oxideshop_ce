@@ -20,6 +20,7 @@ class MetaDataMapperTest extends TestCase
         $testModuleDirectory = ucfirst(__FUNCTION__);
         /** The content of metadata.php and $expectedModuleData must match  */
         $metaDataFilePath = $this->getMetaDataFilePath($testModuleDirectory);
+        $metaDataCheckSum = md5_file($metaDataFilePath);
         $expectedModuleData = [
             'id'          => 'TestModuleMetaData20',
             'title'       => 'Module for testModuleMetaData20',
@@ -104,6 +105,7 @@ class MetaDataMapperTest extends TestCase
         $this->assertSame($expectedModuleData['author'], $moduleConfiguration->getAuthor());
         $this->assertSame($expectedModuleData['url'], $moduleConfiguration->getUrl());
         $this->assertSame($expectedModuleData['email'], $moduleConfiguration->getEmail());
+        $this->assertSame($metaDataCheckSum, $moduleConfiguration->getMetaDataCheckSum());
         $this->assertSame($expectedModuleData['extend'], $settings[ModuleSetting::CLASS_EXTENSIONS]);
         $this->assertSame($expectedModuleData['controllers'], $settings[ModuleSetting::CONTROLLERS]);
         $this->assertSame($expectedModuleData['templates'], $settings[ModuleSetting::TEMPLATES]);

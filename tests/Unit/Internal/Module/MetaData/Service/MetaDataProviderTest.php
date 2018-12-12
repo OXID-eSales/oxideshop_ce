@@ -106,7 +106,7 @@ class MetaDataProviderTest extends TestCase
         $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
         $metaData = $metaDataProvider->getData($metaDataFilePath);
 
-        $this->assertEquals($moduleId, $metaData['moduleData']['id']);
+        $this->assertEquals($moduleId, $metaData[MetaDataProvider::METADATA_MODULE_DATA][MetaDataProvider::METADATA_ID]);
     }
 
     /**
@@ -126,7 +126,29 @@ class MetaDataProviderTest extends TestCase
         $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
         $metaData = $metaDataProvider->getData($metaDataFilePath);
 
-        $this->assertEquals($metaDataDir, $metaData['moduleData']['id']);
+        $this->assertEquals($metaDataDir, $metaData[MetaDataProvider::METADATA_MODULE_DATA][MetaDataProvider::METADATA_ID]);
+    }
+
+    /**
+     * @throws \OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\InvalidMetaDataException
+     */
+    public function testGetDataProvidesMetaDataChecksum()
+    {
+        $metaDataFilePath = $this->getPathToTemporaryFile();
+        $metaDataDir = trim(dirname($metaDataFilePath), DIRECTORY_SEPARATOR);
+        $metaDataContent = '<?php
+            $sMetadataVersion = "2.0";
+            $aModule = [];
+        ';
+        if (false === file_put_contents($metaDataFilePath, $metaDataContent)) {
+            throw new \RuntimeException('Could not write to ' . $metaDataFilePath);
+        }
+
+        $metaDataChecksum = md5_file($metaDataFilePath);
+        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
+        $metaData = $metaDataProvider->getData($metaDataFilePath);
+
+        $this->assertEquals($metaDataChecksum, $metaData[MetaDataProvider::METADATA_CHECKSUM]);
     }
 
     /**
@@ -148,7 +170,7 @@ class MetaDataProviderTest extends TestCase
         $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
         $metaData = $metaDataProvider->getData($metaDataFilePath);
 
-        $this->assertEquals($metaDataDir, $metaData['moduleData']['id']);
+        $this->assertEquals($metaDataDir, $metaData[MetaDataProvider::METADATA_MODULE_DATA][MetaDataProvider::METADATA_ID]);
     }
 
     public function testGetDataConvertsBackwardsCompatibleClasses()

@@ -50,6 +50,10 @@ class ModuleConfiguration
      * @var array
      */
     private $settings = [];
+    /**
+     * @var string
+     */
+    private $metaDataChecksum;
 
     /**
      * @return string
@@ -209,6 +213,26 @@ class ModuleConfiguration
         $this->email = $email;
 
         return $this;
+    }
+
+    /**
+     * @param string $metaDataChecksum
+     *
+     * @return ModuleConfiguration
+     */
+    public function setMetaDataCheckSum(string $metaDataChecksum)
+    {
+        $this->metaDataChecksum = $metaDataChecksum;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMetaDataCheckSum()
+    {
+        return $this->metaDataChecksum;
     }
 
     /**

@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\DataMapper\MetaDataMapper;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidatorInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -44,8 +45,8 @@ class MetaDataMapperTest extends TestCase
     {
         return [
             'all mandatory keys are missing'    => [[]],
-            'key metaDataVersion is missing'    => [['moduleData' => '']],
-            'key moduleData version is missing' => [['metaDataVersion' => '']],
+            'key metaDataVersion is missing'    => [[MetaDataProvider::METADATA_MODULE_DATA => '']],
+            'key moduleData version is missing' => [[MetaDataProvider::METADATA_METADATA_VERSION => '']],
         ];
     }
 }

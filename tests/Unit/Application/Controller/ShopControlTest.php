@@ -8,7 +8,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use Exception;
 use modDB;
-use oxException;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Exception\ConnectionException;
@@ -400,7 +399,7 @@ class ShopControlTest extends \OxidTestCase
         $oOut->expects($this->at(3))->method('output')->with($this->equalTo($controllerClassName), $this->anything());
         $oOut->expects($this->at(4))->method('flushOutput')->will($this->returnValue(null));
 
-        $oSmarty = $this->getSmartyMock($this->getTemplateName($controllerClassName));
+        $oSmarty = $this->getSmartyMock('page/info/content.tpl');
 
         $oUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getSmarty'));
         $oUtilsView->expects($this->any())->method('getSmarty')->will($this->returnValue($oSmarty));
@@ -636,5 +635,4 @@ class ShopControlTest extends \OxidTestCase
 
         return $control->getTemplateName();
     }
-
 }

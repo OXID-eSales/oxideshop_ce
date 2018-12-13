@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Internal\Module\MetaData;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\InvalidMetaDataEvent;
+use OxidEsales\Facts\Facts;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 
@@ -133,7 +134,7 @@ class MetaDataMapperTest extends TestCase
      */
     private function getCompiledTestContainer(): \Symfony\Component\DependencyInjection\ContainerBuilder
     {
-        $containerBuilder = new ContainerBuilder();
+        $containerBuilder = new ContainerBuilder(new Facts());
         $container = $containerBuilder->getContainer();
 
         $metaDataProviderDefinition = $container->getDefinition('oxid_esales.module.metadata.service.metadataprovider');

@@ -192,6 +192,20 @@ class Base
     }
 
     /**
+     * Dispatch given event.
+     *
+     * @param \Symfony\Component\EventDispatcher\Event $event Event to dispatch
+     *
+     * @return \Symfony\Component\EventDispatcher\Event
+     */
+    public function dispatchEvent(\Symfony\Component\EventDispatcher\Event $event)
+    {
+        $container = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
+        $dispatcher = $container->get('event_dispatcher');
+        return $dispatcher->dispatch($event::NAME, $event);
+    }
+
+    /**
      * @internal
      *
      * @return ContainerInterface

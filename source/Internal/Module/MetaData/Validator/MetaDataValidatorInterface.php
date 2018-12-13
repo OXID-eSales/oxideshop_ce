@@ -18,8 +18,6 @@ interface MetaDataValidatorInterface
     /**
      * @param string $metaDataVersion
      * @param array  $metaData
-     *
-     * @throws UnsupportedMetaDataValueTypeException
      */
     public function validate(string $metaDataVersion, array $metaData);
 }

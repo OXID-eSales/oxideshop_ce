@@ -6,8 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Service;
 
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataVersionException;
-
 /**
  * Class MetaDataDefinition
  *
@@ -25,16 +23,12 @@ interface MetaDataSchemataProviderInterface
     /**
      * @param string $metaDataVersion
      *
-     * @throws UnsupportedMetaDataVersionException
-     *
      * @return array
      */
     public function getMetaDataSchemaForVersion(string $metaDataVersion): array;
 
     /**
      * @param string $metaDataVersion
-     *
-     * @throws UnsupportedMetaDataVersionException
      *
      * @return array
      */

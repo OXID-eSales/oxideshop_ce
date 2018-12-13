@@ -335,7 +335,7 @@ class EmailTest extends \OxidTestCase
      */
     public function testSendBackupMailWithAttachment()
     {
-        $fileToAttach = $this->createFile('alternativeFile.php', '');
+        $fileToAttach = $this->getFileToAttach();
         $filesToAttach = array(basename($fileToAttach));
         $filesToAttachDirectory = dirname($fileToAttach);
         $emailAddress = 'username@useremail.nl';
@@ -358,7 +358,7 @@ class EmailTest extends \OxidTestCase
      */
     public function testSendBackupMailWithAttachmentStatusCode()
     {
-        $fileToAttach = $this->createFile('alternativeFile.php', '');
+        $fileToAttach = $this->getFileToAttach();
         $filesToAttach = array(basename($fileToAttach));
         $filesToAttachDirectories = dirname($fileToAttach);
         $emailAddress = 'username@useremail.nl';
@@ -1341,6 +1341,27 @@ class EmailTest extends \OxidTestCase
         $emailStub->method('getOrderFileList')->will($this->returnValue(false));
 
         return $emailStub;
+    }
+
+    /**
+     * @return string
+     */
+    private function getTemporaryFilePath(): string
+    {
+        $temporaryFileHandle = tmpfile();
+
+        return  stream_get_meta_data($temporaryFileHandle)['uri'];
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getFileToAttach()
+    {
+        $fileToAttach = $this->getTemporaryFilePath();
+        file_put_contents($fileToAttach, 'test');
+
+        return $fileToAttach;
     }
 
     /**

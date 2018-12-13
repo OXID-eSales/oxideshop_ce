@@ -105,7 +105,7 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
         try {
             $sOutput = $oCurl->execute();
         } catch (ConnectionException $ex) {
-            $sOutput = "Connecting to $sUrl failed, please check network and firewalls";
+            $sOutput = "<div class='errorbox'>Connecting to $sUrl failed, please check network and firewalls</div>";
         }
         $sOutput = strip_tags($sOutput, "<br>, <b>");
         $aResult = explode("<br>", $sOutput);

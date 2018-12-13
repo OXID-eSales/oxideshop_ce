@@ -7,14 +7,17 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use Exception;
-use oxSystemComponentException;
+use OxidEsales\Eshop\Application\Model\OrderFileList;
+use OxidEsales\Eshop\Core\Exception\SystemComponentException;
+use OxidEsales\Eshop\Core\Str;
+use PHPMailer\PHPMailer\PHPMailer;
 
 /**
  * Mailing manager.
  * Collects mailing configuration, other parameters, performs mailing functions
  * (newsletters, ordering, registration emails, etc.).
  */
-class Email extends \PHPMailer
+class Email extends PHPMailer
 {
     /**
      * Default Smtp server port
@@ -247,7 +250,7 @@ class Email extends \PHPMailer
     /**
      * Smarty instance
      *
-     * @var smarty
+     * @var \Smarty
      */
     protected $_oSmarty = null;
 
@@ -261,7 +264,7 @@ class Email extends \PHPMailer
     /**
      * Shop object
      *
-     * @var object
+     * @var \OxidEsales\Eshop\Application\Model\Shop
      */
     protected $_oShop = null;
 
@@ -282,13 +285,12 @@ class Email extends \PHPMailer
 
         $myConfig = Registry::getConfig();
 
-        $this->_setMailerPluginDir();
         $this->setSmtp();
 
         $this->setUseInlineImages($myConfig->getConfigParam('blInlineImgEmail'));
         $this->setMailWordWrap(100);
 
-        $this->isHtml(true);
+        $this->isHTML(true);
         $this->setLanguage("en", $myConfig->getConfigParam('sShopDir') . "/Core/phpmailer/language/");
 
         $this->_getSmarty();
@@ -301,7 +303,7 @@ class Email extends \PHPMailer
      * @param string $method Methods name
      * @param array  $args   Argument array
      *
-     * @throws oxSystemComponentException Throws an exception if the called method does not exist or is not accessible in current class
+     * @throws SystemComponentException Throws an exception if the called method does not exist or is not accessible in current class
      *
      * @return string
      */
@@ -316,13 +318,13 @@ class Email extends \PHPMailer
             }
         }
 
-        throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException("Function '$method' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
+        throw new SystemComponentException("Function '$method' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
     }
 
     /**
      * Smarty instance getter, assigns this oxEmail instance to "oEmailView" variable
      *
-     * @return smarty
+     * @return \Smarty
      */
     protected function _getSmarty()
     {
@@ -405,7 +407,7 @@ class Email extends \PHPMailer
         $protocol = '';
         $smtpHost = $url;
         $match = [];
-        if (getStr()->preg_match('@^([0-9a-z]+://)?(.*)$@i', $url, $match)) {
+        if (Str::getStr()->preg_match('@^([0-9a-z]+://)?(.*)$@i', $url, $match)) {
             if ($match[1]) {
                 if (($match[1] == 'ssl://') || ($match[1] == 'tls://')) {
                     $this->set("SMTPSecure", substr($match[1], 0, 3));
@@ -466,7 +468,7 @@ class Email extends \PHPMailer
             $smtpPort = isset($this->SMTP_PORT)
                 ? $this->SMTP_PORT
                 : $this->smtpPort;
-            if (getStr()->preg_match('@^(.*?)(:([0-9]+))?$@i', $smtpHost, $match)) {
+            if (Str::getStr()->preg_match('@^(.*?)(:([0-9]+))?$@i', $smtpHost, $match)) {
                 $smtpHost = $match[1];
                 if (isset($match[3]) && (int) $match[3] !== 0) {
                     $smtpPort = (int) $match[3];
@@ -845,7 +847,7 @@ class Email extends \PHPMailer
             $this->setBody($body);
             $this->setAltBody($newsLetter->getPlainText());
         } else {
-            $this->isHtml(false);
+            $this->isHTML(false);
             $this->setBody($newsLetter->getPlainText());
         }
 
@@ -862,12 +864,12 @@ class Email extends \PHPMailer
      * Sets mailer additional settings and sends "SuggestMail" mail to user.
      * Returns true on success.
      *
-     * @param object $params  Mailing parameters object
-     * @param object $product Product object
+     * @param \OxidEsales\Eshop\Application\Model\User $user    Mailing parameters object
+     * @param object                                   $product Product object
      *
      * @return bool
      */
-    public function sendSuggestMail($params, $product)
+    public function sendSuggestMail($user, $product)
     {
         $myConfig = Registry::getConfig();
 
@@ -886,12 +888,12 @@ class Email extends \PHPMailer
         // mailer stuff
         // send not pretending from suggesting user, as different email domain rise spam filters
         $this->setFrom($shop->oxshops__oxinfoemail->value);
-        $this->setSMTP();
+        $this->setSmtp();
 
         // create messages
         $smarty = $this->_getSmarty();
         $this->setViewData("product", $product);
-        $this->setUser($params);
+        $this->setUser($user);
 
         $articleUrl = $product->getLink();
 
@@ -908,10 +910,10 @@ class Email extends \PHPMailer
 
         $this->setBody($smarty->fetch($this->_sSuggestTemplate));
         $this->setAltBody($smarty->fetch($this->_sSuggestTemplatePlain));
-        $this->setSubject($params->send_subject);
+        $this->setSubject($user->send_subject);
 
-        $this->setRecipient($params->rec_email, $params->rec_name);
-        $this->setReplyTo($params->send_email, $params->send_name);
+        $this->setRecipient($user->rec_email, $user->rec_name);
+        $this->setReplyTo($user->send_email, $user->send_name);
 
         return $this->send();
     }
@@ -920,11 +922,11 @@ class Email extends \PHPMailer
      * Sets mailer additional settings and sends "InviteMail" mail to user.
      * Returns true on success.
      *
-     * @param object $params Mailing parameters object
+     * @param \OxidEsales\Eshop\Application\Model\User $user Mailing parameters object
      *
      * @return bool
      */
-    public function sendInviteMail($params)
+    public function sendInviteMail($user)
     {
         $myConfig = Registry::getConfig();
 
@@ -935,12 +937,12 @@ class Email extends \PHPMailer
         $shop = $this->_getShop($currLang);
 
         // mailer stuff
-        $this->setFrom($params->send_email, $params->send_name);
-        $this->setSMTP();
+        $this->setFrom($user->send_email, $user->send_name);
+        $this->setSmtp();
 
         // create messages
         $smarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
-        $this->setUser($params);
+        $this->setUser($user);
 
         $homeUrl = $this->getViewConfig()->getHomeLink();
 
@@ -950,8 +952,8 @@ class Email extends \PHPMailer
             $homeUrl .= "su=" . $activeUser->getId();
         }
 
-        if (is_array($params->rec_email) && count($params->rec_email) > 0) {
-            foreach ($params->rec_email as $email) {
+        if (is_array($user->rec_email) && count($user->rec_email) > 0) {
+            foreach ($user->rec_email as $email) {
                 if (!empty($email)) {
                     $registerUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendParamSeparator($homeUrl);
                     //setting recipient user email
@@ -964,10 +966,10 @@ class Email extends \PHPMailer
                     $this->setBody($smarty->fetch($this->_sInviteTemplate));
 
                     $this->setAltBody($smarty->fetch($this->_sInviteTemplatePlain));
-                    $this->setSubject($params->send_subject);
+                    $this->setSubject($user->send_subject);
 
                     $this->setRecipient($email);
-                    $this->setReplyTo($params->send_email, $params->send_name);
+                    $this->setReplyTo($user->send_email, $user->send_name);
                     $this->send();
                     $this->clearAllRecipients();
                 }
@@ -1194,7 +1196,7 @@ class Email extends \PHPMailer
         }
 
         //may be changed later
-        $this->isHtml(false);
+        $this->isHTML(false);
 
         $this->setSubject($subject);
         $this->setBody($body);
@@ -1257,7 +1259,7 @@ class Email extends \PHPMailer
 
         // mailer stuff
         $this->setFrom($params->send_email, $params->send_name);
-        $this->setSMTP();
+        $this->setSmtp();
 
         // create messages
         $smarty = $this->_getSmarty();
@@ -1421,7 +1423,7 @@ class Email extends \PHPMailer
                         if (isset($imageCache[$fileName]) && $imageCache[$fileName]) {
                             $cId = $imageCache[$fileName];
                         } else {
-                            $cId = $myUtilsObject->generateUID();
+                            $cId = $myUtilsObject->generateUId();
                             $mIME = $myUtils->oxMimeContentType($fileName);
                             if ($mIME == 'image/jpeg' || $mIME == 'image/gif' || $mIME == 'image/png') {
                                 if ($this->addEmbeddedImage($fileName, $cId, "image", "base64", $mIME)) {
@@ -1536,7 +1538,7 @@ class Email extends \PHPMailer
         try {
             $address = $this->idnToAscii($address);
 
-            parent::AddAddress($address, $name);
+            parent::addAddress($address, $name);
 
             // copying values as original class does not allow to access recipients array
             $this->_aRecipients[] = [$address, $name];
@@ -2000,14 +2002,6 @@ class Email extends \PHPMailer
     }
 
     /**
-     * Sets path to PHPMailer plugins
-     */
-    protected function _setMailerPluginDir()
-    {
-        $this->set("PluginDir", getShopBasePath() . "Core/phpmailer/");
-    }
-
-    /**
      * Process email body and alt body thought oxOutput.
      * Calls \OxidEsales\Eshop\Core\Output::processEmail() on class instance.
      */
@@ -2190,15 +2184,15 @@ class Email extends \PHPMailer
      *
      * @param string $orderId order id
      *
-     * @return oxOrderFileList
+     * @return bool|OrderFileList
      */
     public function getOrderFileList($orderId)
     {
-        $orderList = oxNew(\OxidEsales\Eshop\Application\Model\OrderFileList::class);
-        $orderList->loadOrderFiles($orderId);
+        $orderFileList = oxNew(OrderFileList::class);
+        $orderFileList->loadOrderFiles($orderId);
 
-        if (count($orderList) > 0) {
-            return $orderList;
+        if (count($orderFileList) > 0) {
+            return $orderFileList;
         }
 
         return false;
@@ -2213,7 +2207,7 @@ class Email extends \PHPMailer
      */
     private function _clearSidFromBody($altBody)
     {
-        return \OxidEsales\Eshop\Core\Str::getStr()->preg_replace('/(\?|&(amp;)?)(force_)?(admin_)?sid=[A-Z0-9\.]+/i', '\1shp=' . Registry::getConfig()->getShopId(), $altBody);
+        return Str::getStr()->preg_replace('/(\?|&(amp;)?)(force_)?(admin_)?sid=[A-Z0-9\.]+/i', '\1shp=' . Registry::getConfig()->getShopId(), $altBody);
     }
 
     /**
@@ -2272,7 +2266,7 @@ class Email extends \PHPMailer
         $reviewsEnabled = $config->getConfigParam('bl_perfLoadReviews', false);
         $productReviewLinkInclusionEnabled = $config->getConfigParam('includeProductReviewLinksInEmail', false);
 
-        return  $reviewsEnabled && $productReviewLinkInclusionEnabled;
+        return $reviewsEnabled && $productReviewLinkInclusionEnabled;
     }
 
     /**
@@ -2290,8 +2284,10 @@ class Email extends \PHPMailer
             if (defined('INTL_IDNA_VARIANT_UTS46')) {
                 return idn_to_ascii($idn, 0, INTL_IDNA_VARIANT_UTS46);
             }
+
             return idn_to_ascii($idn);
         }
+
         return $idn;
     }
 }

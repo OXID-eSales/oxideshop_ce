@@ -12,7 +12,7 @@ use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Cache\DynamicContent\ContentCache;
 use oxOutput;
 use oxSystemComponentException;
-use PHPMailer;
+use PHPMailer\PHPMailer\PHPMailer;
 use ReflectionMethod;
 
 /**

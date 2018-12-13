@@ -995,15 +995,6 @@ class EmailTest extends \OxidTestCase
         $this->assertTrue($this->_oEmail->SMTPDebug);
     }
 
-    /*
-     * Test setting phpmailer plugin directory
-     */
-    public function testSetMailerPluginDir()
-    {
-        $this->_oEmail->UNITsetMailerPluginDir();
-        $this->assertEquals(getShopBasePath() . "Core/phpmailer/", $this->_oEmail->PluginDir);
-    }
-
     /**
      * Test passing mail body and alt body proccesing through oxoutput
      */

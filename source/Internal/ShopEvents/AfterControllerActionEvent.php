@@ -11,13 +11,13 @@ namespace OxidEsales\EshopCommunity\Internal\ShopEvents;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class OnExecuteEvent
+ * Class AfterControllerActionEvent
  *
  * @package OxidEsales\EshopCommunity\Internal\ShopEvents
  */
-class OnExecuteEvent extends Event
+class AfterControllerActionEvent extends Event
 {
-    const NAME = 'oxidesales.onexecute';
+    const NAME = 'oxidesales.aftercontrollerexecute';
 
     /**
      * @var string

@@ -11,11 +11,11 @@ namespace OxidEsales\EshopCommunity\Internal\ShopEvents;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class ShopControlFormOutputEvent
+ * Class ShopControlRenderEvent
  *
  * @package OxidEsales\EshopCommunity\Internal\ShopEvents
  */
-class ShopControlFormOutputEvent extends Event
+class ShopControlRenderEvent extends Event
 {
     const NAME = 'oxidesales.shopcontrol.formOutput';
 

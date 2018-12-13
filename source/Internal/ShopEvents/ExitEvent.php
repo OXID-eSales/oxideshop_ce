@@ -11,11 +11,11 @@ namespace OxidEsales\EshopCommunity\Internal\ShopEvents;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class UtilsPrepareToExitEvent
+ * Class ExitEvent
  *
  * @package OxidEsales\EshopCommunity\Internal\ShopEvents
  */
-class UtilsPrepareToExitEvent extends Event
+class ExitEvent extends Event
 {
     const NAME = 'oxidesales.utils.prepareToExit';
 

@@ -11,11 +11,11 @@ namespace OxidEsales\EshopCommunity\Internal\ShopEvents;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class SmartyFunctionIncludeWidgetEvent
+ * Class IncludeWidgetEvent
  *
  * @package OxidEsales\EshopCommunity\Internal\ShopEvents
  */
-class SmartyFunctionIncludeWidgetEvent extends Event
+class IncludeWidgetEvent extends Event
 {
     const NAME = 'oxidesales.smartyfunctionoxid.includeWidget';
 

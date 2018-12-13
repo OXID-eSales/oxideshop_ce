@@ -16,17 +16,27 @@
  *
  * @return string
  */
-function smarty_function_oxid_include_widget($params, &$oSmarty)
+function smarty_function_oxid_include_widget($params, &$smarty)
 {
-    $class = isset($params['cl']) ? strtolower($params['cl']) : '';
-    unset($params['cl']);
+    $event = new OxidEsales\EshopCommunity\Internal\ShopEvents\IncludeWidgetEvent();
+    $event->setParameters($params);
+    $event->setSmarty($smarty);
 
-    $parentViews = null;
-    if (!empty($params["_parent"])) {
-        $parentViews = explode("|", $params["_parent"]);
-        unset($params["_parent"]);
+    $container = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
+    $dispatcher = $container->get('event_dispatcher');
+    $event = $dispatcher->dispatch($event::NAME, $event);
+
+    if (!($result = $event->getResult())) {
+        $class = isset($params['cl']) ? strtolower($params['cl']) : '';
+        unset($params['cl']);
+        $parentViews = null;
+        if (!empty($params["_parent"])) {
+            $parentViews = explode("|", $params["_parent"]);
+            unset($params["_parent"]);
+        }
+        $shopControl = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\WidgetControl::class);
+        $result = $shopControl->start($class, null, $params, $parentViews);
     }
 
-    $widgetControl = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\WidgetControl::class);
-    return $widgetControl->start($class, null, $params, $parentViews);
+    return $result;
 }

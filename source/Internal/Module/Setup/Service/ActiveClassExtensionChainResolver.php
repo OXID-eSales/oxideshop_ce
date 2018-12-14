@@ -56,7 +56,7 @@ class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainReso
     public function getActiveExtensionChain(int $shopId): Chain
     {
         $shopConfiguration = $this->getShopConfiguration($shopId);
-        $classExtensionChain = $shopConfiguration->getChain('classExtensions');
+        $classExtensionChain = $shopConfiguration->getChain(Chain::CLASS_EXTENSIONS);
 
         $activeExtensions = [];
 
@@ -74,7 +74,7 @@ class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainReso
 
         $activeExtensionChain = new Chain();
         $activeExtensionChain
-            ->setName('classExtensions')
+            ->setName(Chain::CLASS_EXTENSIONS)
             ->setChain($activeExtensions);
 
         return $activeExtensionChain;

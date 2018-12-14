@@ -38,9 +38,13 @@ class AfterModuleActivationSubscriber implements EventSubscriberInterface
             $event->getModuleId(),
             $event->getShopId()
         );
-        $events = $moduleConfiguration->getSetting('events')->getValue();
-        if (is_array($events) && array_key_exists('onActivate', $events)) {
-            call_user_func($events['onActivate']);
+
+        if ($moduleConfiguration->hasSetting('events')) {
+            $events = $moduleConfiguration->getSetting('events')->getValue();
+
+            if (is_array($events) && array_key_exists('onActivate', $events)) {
+                call_user_func($events['onActivate']);
+            }
         }
     }
 

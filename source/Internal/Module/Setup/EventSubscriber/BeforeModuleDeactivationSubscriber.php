@@ -38,9 +38,13 @@ class BeforeModuleDeactivationSubscriber implements EventSubscriberInterface
             $event->getModuleId(),
             $event->getShopId()
         );
-        $events = $moduleConfiguration->getSetting('events')->getValue();
-        if (is_array($events) && array_key_exists('onDeactivate', $events)) {
-            call_user_func($events['onDeactivate']);
+
+        if ($moduleConfiguration->hasSetting('events')) {
+            $events = $moduleConfiguration->getSetting('events')->getValue();
+
+            if (is_array($events) && array_key_exists('onDeactivate', $events)) {
+                call_user_func($events['onDeactivate']);
+            }
         }
     }
 

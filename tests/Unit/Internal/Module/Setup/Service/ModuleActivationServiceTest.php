@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ExtensionChainServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationService;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleSettingsHandlingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
@@ -50,7 +51,8 @@ class ModuleActivationServiceTest extends TestCase
             $this->getMockBuilder(ModuleConfigurationDaoInterface::class)->getMock(),
             $this->getMockBuilder(EventDispatcherInterface::class)->getMock(),
             $this->getMockBuilder(ModuleSettingsHandlingServiceInterface::class)->getMock(),
-            $moduleStateService
+            $moduleStateService,
+            $this->getMockBuilder(ExtensionChainServiceInterface::class)->getMock()
         );
 
         return $moduleActivationService;

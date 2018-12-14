@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Service;
 
-use OxidEsales\EshopCommunity\Internal\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Event\AfterModuleActivationEvent;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Event\BeforeModuleDeactivationEvent;
@@ -42,32 +41,31 @@ class ModuleActivationService implements ModuleActivationServiceInterface
     private $stateService;
 
     /**
+     * @var ExtensionChainServiceInterface
+     */
+    private $classExtensionChainService;
+
+    /**
      * ModuleActivationService constructor.
      *
      * @param ModuleConfigurationDaoInterface        $ModuleConfigurationDao
      * @param EventDispatcherInterface               $eventDispatcher
      * @param ModuleSettingsHandlingServiceInterface $moduleSettingsHandlingService
      * @param ModuleStateServiceInterface            $stateService
+     * @param ExtensionChainServiceInterface         $classExtensionChainService
      */
     public function __construct(
         ModuleConfigurationDaoInterface         $ModuleConfigurationDao,
         EventDispatcherInterface                $eventDispatcher,
-        //ModuleCacheServiceInterface             $moduleCacheService,
         ModuleSettingsHandlingServiceInterface  $moduleSettingsHandlingService,
-        ModuleStateServiceInterface             $stateService
+        ModuleStateServiceInterface             $stateService,
+        ExtensionChainServiceInterface          $classExtensionChainService
     ) {
         $this->moduleConfigurationDao = $ModuleConfigurationDao;
         $this->eventDispatcher = $eventDispatcher;
-        //$this->moduleCacheService = $moduleCacheService;
         $this->moduleSettingsHandlingService = $moduleSettingsHandlingService;
         $this->stateService = $stateService;
-        //$this->moduleCacheService = $moduleCacheService;
-        //updateChain
-        //handle module yml services / ShopActivationService
-        // ACTIVE_MODULES: add to, delete from
-        //autoActivate - projectConfigurationDao
-        // State service
-        // transaction service
+        $this->classExtensionChainService = $classExtensionChainService;
     }
 
 
@@ -90,12 +88,12 @@ class ModuleActivationService implements ModuleActivationServiceInterface
         $moduleConfiguration->setAutoActive(true);
         $this->moduleConfigurationDao->save($moduleConfiguration, $shopId);
 
+        $this->classExtensionChainService->updateChain($shopId);
+
         $this->eventDispatcher->dispatch(
             AfterModuleActivationEvent::NAME,
             new AfterModuleActivationEvent($shopId, $moduleId)
         );
-
-        //$this->moduleCacheService->invalidateModuleCache($moduleId, $shopId);
     }
 
     /**
@@ -122,6 +120,6 @@ class ModuleActivationService implements ModuleActivationServiceInterface
         $moduleConfiguration->setAutoActive(false);
         $this->moduleConfigurationDao->save($moduleConfiguration, $shopId);
 
-        //$this->moduleCacheService->invalidateModuleCache($moduleId, $shopId);
+        $this->classExtensionChainService->updateChain($shopId);
     }
 }

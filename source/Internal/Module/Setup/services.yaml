@@ -2,6 +2,8 @@ services:
   OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationService
     autowire: true
+    arguments:
+      $classExtensionChainService: '@oxid_esales.module.setup.class_extension_chain_service'
 
   OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleSettingsHandlingServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleSettingsHandlingService
@@ -102,3 +104,11 @@ services:
       - '@OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface'
     tags:
       - { name: kernel.event_subscriber }
+
+  oxid_esales.module.setup.class_extension_chain_service:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ClassExtensionChainService
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ActiveClassExtensionChainResolverInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ActiveClassExtensionChainResolver
+    autowire: true

@@ -13,6 +13,7 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject;
  */
 class Chain
 {
+    const CLASS_EXTENSIONS = 'classExtensions';
     /**
      * @var string
      */

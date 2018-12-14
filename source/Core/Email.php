@@ -20,6 +20,14 @@ use PHPMailer\PHPMailer\PHPMailer;
 class Email extends PHPMailer
 {
     /**
+     * @deprecated since v6.3.2 (2018-12-14); This property will be removed completely. In v6.4 a new version of PHPMailer will be introduced, which uses const VERSION instead.
+     *
+     * The PHPMailer Version number.
+     * @var string
+     */
+    public $Version = '5.2.27';
+
+    /**
      * Default Smtp server port
      *
      * @deprecated use $smtpPort instead

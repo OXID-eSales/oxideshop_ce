@@ -50,6 +50,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 ### Deprecated
+- `\OxidEsales\EshopCommunity\Core\Email::$Version` This fixes a missing deprecation in PHPMailer, which is the parent 
+    class of `\OxidEsales\EshopCommunity\Core\Email`. PHPMailer will be upgraded to version 6 in the next minor release 
+    of OXID eShop CE as PHPMailer 5 will be no longer maintained. Please note, that there are some breaking changes for 
+    code which extends `\OxidEsales\EshopCommunity\Core\Email`. The impact should be really small, but you should be 
+    familiar with them, as there are also changes in the SMTP and POP3 classes. Please read the 
+   [PHPMailer changelog](https://github.com/PHPMailer/PHPMailer/blob/master/changelog.md#version-60-august-28th-2017)  
 
 ### Removed
 

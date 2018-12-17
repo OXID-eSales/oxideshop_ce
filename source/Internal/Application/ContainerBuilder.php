@@ -74,7 +74,7 @@ class ContainerBuilder
         try {
             $this->cleanupProjectYaml();
             $loader = new YamlFileLoader($symfonyContainer, new FileLocator($this->context->getSourcePath()));
-            $loader->load(ProjectYamlDao::PROJECT_FILE_NAME);
+            $loader->load(FactsContext::GENERATED_PROJECT_FILE_NAME);
         } catch (FileLocatorFileNotFoundException $exception) {
             // In case project file not found, do nothing.
         }

@@ -22,6 +22,8 @@ class FactsContext implements FactsContextInterface
 
     const ENTERPRISE_EDITION = EditionSelector::ENTERPRISE;
 
+    const GENERATED_PROJECT_FILE_NAME = 'generated_project.yaml';
+
     /**
      * @var Facts
      */
@@ -34,6 +36,14 @@ class FactsContext implements FactsContextInterface
     public function getContainerCacheFilePath(): string
     {
         return Path::join($this->getSourcePath(), 'tmp', 'containercache.php');
+    }
+
+    /**
+     * @return string
+     */
+    public function getGeneratedProjectFilePath(): string
+    {
+        return Path::join($this->getSourcePath() . DIRECTORY_SEPARATOR . static::GENERATED_PROJECT_FILE_NAME);
     }
 
     /**

@@ -10,10 +10,12 @@ namespace OxidEsales\EshopCommunity\Internal\Application\Service;
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDaoInterface;
 
 /**
- * Class ProjectYamlImportService
+ * @internal
  */
 class ProjectYamlImportService implements ProjectYamlImportServiceInterface
 {
+    const SERVICE_FILE_NAME = 'services.yaml';
+
     /**
      * @var ProjectYamlDaoInterface
      */
@@ -37,7 +39,7 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
     {
         $projectConfig = $this->projectYamlDao->loadProjectConfigFile();
 
-        $projectConfig->addImport($serviceDir . DIRECTORY_SEPARATOR . 'services.yaml');
+        $projectConfig->addImport($serviceDir . DIRECTORY_SEPARATOR . static::SERVICE_FILE_NAME);
 
         $this->projectYamlDao->saveProjectConfigFile($projectConfig);
     }
@@ -49,7 +51,7 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
     {
         $projectConfig = $this->projectYamlDao->loadProjectConfigFile();
 
-        $projectConfig->removeImport($serviceDir . DIRECTORY_SEPARATOR . 'services.yaml');
+        $projectConfig->removeImport($serviceDir . DIRECTORY_SEPARATOR . static::SERVICE_FILE_NAME);
 
         $this->projectYamlDao->saveProjectConfigFile($projectConfig);
     }

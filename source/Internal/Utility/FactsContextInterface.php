@@ -20,6 +20,11 @@ interface FactsContextInterface
     /**
      * @return string
      */
+    public function getGeneratedProjectFilePath(): string;
+
+    /**
+     * @return string
+     */
     public function getSourcePath(): string;
 
     /**

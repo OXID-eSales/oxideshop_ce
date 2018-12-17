@@ -1,5 +1,4 @@
 <?php declare(strict_types=1);
-
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,11 +9,7 @@ namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Service;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataVersionException;
 
 /**
- * Class MetaDataDefinition
- *
  * @internal
- *
- * @package OxidEsales\EshopCommunity\Internal\Module\MetaData\Service
  */
 class MetaDataSchemataProvider implements MetaDataSchemataProviderInterface
 {

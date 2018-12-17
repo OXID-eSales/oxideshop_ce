@@ -1,5 +1,4 @@
 <?php declare(strict_types=1);
-
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -16,11 +15,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Class MetaDataValidator
- *
  * @internal
- *
- * @package OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator
  */
 class MetaDataValidator implements MetaDataValidatorInterface
 {
@@ -97,7 +92,7 @@ class MetaDataValidator implements MetaDataValidatorInterface
             $level = LogLevel::ERROR;
             $message = 'The metadata key "' . $metaDataKey . '" is not supported in metadata version "' . $this->currentValidationMetaDataVersion . '"';
 
-            $event = new InvalidMetaDataEvent($level, $message);
+            $event = new BadMetaDataFoundEvent($level, $message);
             $this->eventDispatcher->dispatch($event::NAME, $event);
         }
     }

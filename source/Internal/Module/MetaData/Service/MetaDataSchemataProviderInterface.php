@@ -7,11 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Service;
 
 /**
- * Class MetaDataDefinition
- *
  * @internal
- *
- * @package OxidEsales\EshopCommunity\Internal\Module\MetaData\Service
  */
 interface MetaDataSchemataProviderInterface
 {

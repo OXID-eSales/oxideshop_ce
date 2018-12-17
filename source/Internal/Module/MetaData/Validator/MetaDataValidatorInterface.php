@@ -7,11 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator;
 
 /**
- * Class MetaDataValidator
- *
  * @internal
- *
- * @package OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator
  */
 interface MetaDataValidatorInterface
 {

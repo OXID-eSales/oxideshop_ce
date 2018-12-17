@@ -1,5 +1,4 @@
 <?php declare(strict_types=1);
-
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -14,11 +13,7 @@ use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Class MetaDataDataProvider
- *
  * @internal
- *
- * @package OxidEsales\EshopCommunity\Internal\Module\MetaData\Service
  */
 class MetaDataProvider
 {
@@ -161,7 +156,7 @@ class MetaDataProvider
             $level = LogLevel::ERROR;
             $message = 'No metadata key "id" was not found in ' . $this->filePath;
 
-            $event = new InvalidMetaDataEvent($level, $message);
+            $event = new BadMetaDataFoundEvent($level, $message);
             $this->eventDispatcher->dispatch($event::NAME, $event);
 
             $metaDataId = trim(basename($this->getModuleDirectoryName()), DIRECTORY_SEPARATOR);

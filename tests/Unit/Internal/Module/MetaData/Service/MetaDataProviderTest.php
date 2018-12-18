@@ -135,7 +135,6 @@ class MetaDataProviderTest extends TestCase
     public function testGetDataProvidesMetaDataChecksum()
     {
         $metaDataFilePath = $this->getPathToTemporaryFile();
-        $metaDataDir = trim(dirname($metaDataFilePath), DIRECTORY_SEPARATOR);
         $metaDataContent = '<?php
             $sMetadataVersion = "2.0";
             $aModule = [];

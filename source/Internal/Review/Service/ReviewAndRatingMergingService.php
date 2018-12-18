@@ -86,7 +86,7 @@ class ReviewAndRatingMergingService implements ReviewAndRatingMergingServiceInte
                     'ratingId'      => $rating->getId(),
                     'reviewId'      => false,
                     'rating'        => $rating->getRating(),
-                    'text'          => false,
+                    'text'          => '',
                     'objectId'      => $rating->getObjectId(),
                     'objectType'    => $rating->getType(),
                     'createdAt'     => $rating->getCreatedAt(),

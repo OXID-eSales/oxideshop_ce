@@ -18,21 +18,23 @@
         "psr/container": "1.0.*",
         "symfony/event-dispatcher": "^3.4",
         "symfony/dependency-injection": "^3.4",
-        "symfony/console": "^v3.4.15"
+        "symfony/console": "^v3.4.15",
+        "webmozart/path-util": "^2.3"
     },
     "require-dev": {
         "oxid-esales/flow-theme": "^v3.0.2",
         "oxid-esales/oxideshop-doctrine-migration-wrapper": "^v2.1.2",
         "oxid-esales/oxideshop-db-views-generator": "^v1.2.0",
         "oxid-esales/oxideshop-demodata-installer": "^v1.1.2",
-        "oxid-esales/oxideshop-composer-plugin": "^v2.0.3",
+        "oxid-esales/oxideshop-composer-plugin": "dev-master",
         "oxid-esales/oxideshop-unified-namespace-generator": "^2.0.0",
         "oxid-esales/testing-library": "dev-master",
         "oxid-esales/coding-standards": "^v3.0.5",
         "oxid-esales/coding-standards-wrapper": "^v1.0.0",
         "incenteev/composer-parameter-handler": "~v2.0",
         "oxid-esales/oxideshop-ide-helper": "^3.0",
-        "oxid-esales/azure-theme": "^v1.4.1"
+        "oxid-esales/azure-theme": "^v1.4.1",
+        "oxid-esales/oxideshop-facts": "^2.3.1"
     },
     "autoload": {
         "psr-4": {

@@ -18,7 +18,6 @@ use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewBridgeInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ContainerTest extends \PHPUnit\Framework\TestCase
 {

@@ -6,10 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Application\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Application\Events\ProjectYamlChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Utility\FactsContextInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -17,8 +15,6 @@ use Symfony\Component\Yaml\Yaml;
  */
 class ProjectYamlDao implements ProjectYamlDaoInterface
 {
-    const PROJECT_FILE_NAME = 'project.yaml';
-
     /**
      * @var FactsContextInterface $context
      */
@@ -37,7 +33,7 @@ class ProjectYamlDao implements ProjectYamlDaoInterface
      */
     public function loadProjectConfigFile(): DIConfigWrapper
     {
-        return $this->loadDIConfigFile($this->getProjectFileName());
+        return $this->loadDIConfigFile($this->context->getGeneratedProjectFilePath());
     }
 
     /**
@@ -45,7 +41,7 @@ class ProjectYamlDao implements ProjectYamlDaoInterface
      */
     public function saveProjectConfigFile(DIConfigWrapper $config)
     {
-        file_put_contents($this->getProjectFileName(), Yaml::dump($config->getConfigAsArray(), 3, 2));
+        file_put_contents($this->context->getGeneratedProjectFilePath(), Yaml::dump($config->getConfigAsArray(), 3, 2));
     }
 
     /**
@@ -62,13 +58,5 @@ class ProjectYamlDao implements ProjectYamlDaoInterface
         }
 
         return new DIConfigWrapper($yamlArray);
-    }
-
-    /**
-     * @return string
-     */
-    private function getProjectFileName(): string
-    {
-        return $this->context->getSourcePath() . DIRECTORY_SEPARATOR . self::PROJECT_FILE_NAME;
     }
 }

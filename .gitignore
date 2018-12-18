@@ -41,5 +41,5 @@
 /source/Internal/Application/containercache.php
 
 # DI for modules and packages
-/source/project.yaml
-/tests/Integration/Internal/Application/Dao/project.yaml
+/source/generated_project.yaml
+/tests/Integration/Internal/Application/Dao/generated_project.yaml

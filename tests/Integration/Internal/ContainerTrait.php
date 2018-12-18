@@ -6,8 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal;
 
-use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
-use OxidEsales\Facts\Facts;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilderFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
 
 /**
@@ -17,7 +16,7 @@ trait ContainerTrait
 {
     protected function get(string $serviceId)
     {
-        $containerBuilder = new ContainerBuilder(new Facts());
+        $containerBuilder = (new ContainerBuilderFactory())->create();
         $container = $containerBuilder->getContainer();
         $this->setContainerDefinitionToPublic($container, $serviceId);
         $container->compile();

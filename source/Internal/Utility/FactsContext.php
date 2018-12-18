@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Utility;
 
+use OxidEsales\Facts\Edition\EditionSelector;
 use OxidEsales\Facts\Facts;
 use Webmozart\PathUtil\Path;
 
@@ -15,6 +16,14 @@ use Webmozart\PathUtil\Path;
  */
 class FactsContext implements FactsContextInterface
 {
+    const COMMUNITY_EDITION = EditionSelector::COMMUNITY;
+
+    const PROFESSIONAL_EDITION = EditionSelector::PROFESSIONAL;
+
+    const ENTERPRISE_EDITION = EditionSelector::ENTERPRISE;
+
+    const GENERATED_PROJECT_FILE_NAME = 'generated_project.yaml';
+
     /**
      * @var Facts
      */
@@ -32,9 +41,49 @@ class FactsContext implements FactsContextInterface
     /**
      * @return string
      */
+    public function getGeneratedProjectFilePath(): string
+    {
+        return Path::join($this->getSourcePath() . DIRECTORY_SEPARATOR . static::GENERATED_PROJECT_FILE_NAME);
+    }
+
+    /**
+     * @return string
+     */
     public function getSourcePath(): string
     {
         return $this->getFacts()->getSourcePath();
+    }
+
+    /**
+     * @return string
+     */
+    public function getEdition(): string
+    {
+        return $this->getFacts()->getEdition();
+    }
+
+    /**
+     * @return string
+     */
+    public function getCommunityEditionSourcePath(): string
+    {
+        return $this->getFacts()->getCommunityEditionSourcePath();
+    }
+
+    /**
+     * @return string
+     */
+    public function getProfessionalEditionRootPath(): string
+    {
+        return $this->getFacts()->getProfessionalEditionRootPath();
+    }
+
+    /**
+     * @return string
+     */
+    public function getEnterpriseEditionRootPath(): string
+    {
+        return $this->getFacts()->getEnterpriseEditionRootPath();
     }
 
     /**

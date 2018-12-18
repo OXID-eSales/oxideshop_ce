@@ -34,7 +34,7 @@ class ProjectYamlDaoTest extends TestCase
     protected function tearDown()
     {
         parent::tearDown();
-        $projectFilePath = __DIR__ . DIRECTORY_SEPARATOR . 'project.yaml';
+        $projectFilePath = __DIR__ . DIRECTORY_SEPARATOR . FactsContext::GENERATED_PROJECT_FILE_NAME;
         if (file_exists($projectFilePath)) {
             unlink($projectFilePath);
         }
@@ -49,7 +49,7 @@ imports:
 
 EOT;
         file_put_contents(
-            __DIR__ . DIRECTORY_SEPARATOR . ProjectYamlDao::PROJECT_FILE_NAME,
+            __DIR__ . DIRECTORY_SEPARATOR . FactsContext::GENERATED_PROJECT_FILE_NAME,
             $testData
         );
 
@@ -60,7 +60,7 @@ EOT;
     public function testLoadingEmptyFile()
     {
         file_put_contents(
-            __DIR__ . DIRECTORY_SEPARATOR . ProjectYamlDao::PROJECT_FILE_NAME,
+            __DIR__ . DIRECTORY_SEPARATOR . FactsContext::GENERATED_PROJECT_FILE_NAME,
             ''
         );
 

@@ -1870,7 +1870,7 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
         $this->frame("list");
         $this->clickAndWait('link=test_11_tab');
         $this->frame("edit");
-        $this->click("//input[@value='CLICK_HERE']");
+        $this->clickAndWait("//input[@value='CLICK_HERE']");
 
         $this->selectWindow("ajaxpopup");
         $this->assertTextPresent('POPUP_HERE');
@@ -1901,7 +1901,7 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
         $this->frame("list");
         $this->clickAndWait('link=test_12_tab');
         $this->frame("edit");
-        $this->click("//input[@value='CLICK_HERE']");
+        $this->clickAndWait("//input[@value='CLICK_HERE']");
 
         $this->selectWindow("ajaxpopup");
         $this->assertTextPresent('POPUP_HERE');
@@ -1910,7 +1910,7 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
         $this->frame("list");
         $this->clickAndWait('link=test_12_tab');
         $this->frame("edit");
-        $this->click("//input[@value='CLICK_HERE']");
+        $this->clickAndWait("//input[@value='CLICK_HERE']");
 
         $this->selectWindow("ajaxpopup");
         $this->assertTextPresent('test_12_ajax_controller successfully called');

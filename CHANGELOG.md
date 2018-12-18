@@ -28,7 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - option `activeModules` in table oxconfig in order to determine the currently active modules
 
 - Events:
-    - `\OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\InvalidMetaDataEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\BadMetaDataFoundEvent`
 
 ### Changed
 - category_main form layout improvements [PR-585](https://github.com/OXID-eSales/oxideshop_ce/pull/585)

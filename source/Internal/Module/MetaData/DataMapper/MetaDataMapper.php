@@ -42,6 +42,7 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
         $this->validateParameterFormat($metaData);
 
         $this->validator->validate(
+            $metaData[MetaDataProvider::METADATA_FILEPATH],
             $metaData[MetaDataProvider::METADATA_METADATA_VERSION],
             $metaData[MetaDataProvider::METADATA_MODULE_DATA]
         );

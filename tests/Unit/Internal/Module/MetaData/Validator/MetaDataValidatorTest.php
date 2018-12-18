@@ -30,7 +30,7 @@ class MetaDataValidatorTest extends TestCase
         $eventDispatcherStub = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
         $validator = new MetaDataValidator($metaDataSchemata, $eventDispatcherStub);
 
-        $validator->validate('1.2', $metaDataToValidate);
+        $validator->validate('path/to/metadata.php', '1.2', $metaDataToValidate);
     }
 
     public function testValidateDispatchesEventOnUnsupportedMetaDataKey()
@@ -44,7 +44,7 @@ class MetaDataValidatorTest extends TestCase
         $eventDispatcherMock->expects($this->once())->method('dispatch');
         $validator = new MetaDataValidator($metaDataSchemata, $eventDispatcherMock);
 
-        $validator->validate('2.0', $metaDataToValidate);
+        $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
 
     /**
@@ -71,7 +71,7 @@ class MetaDataValidatorTest extends TestCase
         $eventDispatcherMock->expects($this->once())->method('dispatch');
         $validator = new MetaDataValidator($metaDataSchemata, $eventDispatcherMock);
 
-        $validator->validate('2.0', $metaDataToValidate);
+        $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
 
     /**
@@ -120,7 +120,7 @@ class MetaDataValidatorTest extends TestCase
         $eventDispatcherStub = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
         $validator = new MetaDataValidator($metaDataSchemata, $eventDispatcherStub);
 
-        $validator->validate('2.0', $metaDataToValidate);
+        $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
 
     public function testValidateIsCaseSensitive()
@@ -144,7 +144,7 @@ class MetaDataValidatorTest extends TestCase
         $eventDispatcherMock->expects($this->once())->method('dispatch');
         $validator = new MetaDataValidator($metaDataSchemata, $eventDispatcherMock);
 
-        $validator->validate('2.0', $metaDataToValidate);
+        $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
 
     /**
@@ -160,7 +160,7 @@ class MetaDataValidatorTest extends TestCase
         $eventDispatcherStub = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
         $validator = new MetaDataValidator($metaDataSchemata, $eventDispatcherStub);
 
-        $validator->validate('2.0', $metaDataToValidate);
+        $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
 
     public function testValidateThrowsNoExceptionOnIncompleteFirstLevel()
@@ -179,7 +179,7 @@ class MetaDataValidatorTest extends TestCase
         $eventDispatcherStub = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
         $validator = new MetaDataValidator($metaDataSchemata, $eventDispatcherStub);
 
-        $validator->validate('2.0', $metaDataToValidate);
+        $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
 
     public function testValidateThrowsNoExceptionOnIncompleteSecondLevel()
@@ -198,7 +198,7 @@ class MetaDataValidatorTest extends TestCase
         $eventDispatcherStub = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
         $validator = new MetaDataValidator($metaDataSchemata, $eventDispatcherStub);
 
-        $validator->validate('2.0', $metaDataToValidate);
+        $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
 
     protected function setUp()

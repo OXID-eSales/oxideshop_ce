@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Internal\Module\MetaData;
 
 use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\InvalidMetaDataEvent;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\BadMetaDataFoundEvent;
 use OxidEsales\Facts\Facts;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
@@ -74,13 +74,13 @@ class MetaDataMapperTest extends TestCase
 
         $container = $this->getCompiledTestContainer();
 
-        $errorLevel = '';
+        $filePath = '';
         $message = '';
         $eventDispatcher = $container->get('event_dispatcher');
         $eventDispatcher->addListener(
-            InvalidMetaDataEvent::NAME,
-            function (InvalidMetaDataEvent $event) use (&$errorLevel, &$message) {
-                $errorLevel = $event->getLevel();
+            BadMetaDataFoundEvent::NAME,
+            function (BadMetaDataFoundEvent $event) use (&$filePath, &$message) {
+                $filePath = $event->getMetaDataFilePath();
                 $message = $event->getMessage();
             }
         );
@@ -95,8 +95,8 @@ class MetaDataMapperTest extends TestCase
         /**
          * No InvalidMetaDataEvents should be dispatched
          */
+        $this->assertSame('', $filePath);
         $this->assertSame('', $message);
-        $this->assertSame('', $errorLevel);
 
         $this->assertSame($expectedModuleData['id'], $moduleConfiguration->getId());
         $this->assertSame($expectedModuleData['title'], $moduleConfiguration->getTitle());
@@ -116,38 +116,6 @@ class MetaDataMapperTest extends TestCase
         $this->assertSame($expectedModuleData['settings'], $settings[ModuleSetting::SHOP_MODULE_SETTING]);
         $this->assertSame($expectedModuleData['events'], $settings[ModuleSetting::EVENTS]);
     }
-
-    /**
-     * @param string $testModuleDirectory
-     *
-     * @return string
-     */
-    private function getMetaDataFilePath(string $testModuleDirectory): string
-    {
-        $metaDataFilePath = __DIR__ . DIRECTORY_SEPARATOR . 'TestData' . DIRECTORY_SEPARATOR . $testModuleDirectory . DIRECTORY_SEPARATOR . 'metadata.php';
-
-        return $metaDataFilePath;
-    }
-
-    /**
-     * @return \Symfony\Component\DependencyInjection\ContainerBuilder
-     */
-    private function getCompiledTestContainer(): \Symfony\Component\DependencyInjection\ContainerBuilder
-    {
-        $containerBuilder = new ContainerBuilder(new Facts());
-        $container = $containerBuilder->getContainer();
-
-        $metaDataProviderDefinition = $container->getDefinition('oxid_esales.module.metadata.service.metadataprovider');
-        $metaDataProviderDefinition->setPublic(true);
-
-        $metaDataDataMapperDefinition = $container->getDefinition('oxid_esales.module.metadata.datamapper.metadatamapper');
-        $metaDataDataMapperDefinition->setPublic(true);
-
-        $container->compile();
-
-        return $container;
-    }
-
     public function testModuleMetaData21()
     {
         $testModuleDirectory = ucfirst(__FUNCTION__);
@@ -208,13 +176,13 @@ class MetaDataMapperTest extends TestCase
 
         $container = $this->getCompiledTestContainer();
 
-        $errorLevel = '';
+        $filePath = '';
         $message = '';
         $eventDispatcher = $container->get('event_dispatcher');
         $eventDispatcher->addListener(
-            InvalidMetaDataEvent::NAME,
-            function (InvalidMetaDataEvent $event) use (&$errorLevel, &$message) {
-                $errorLevel = $event->getLevel();
+            BadMetaDataFoundEvent::NAME,
+            function (BadMetaDataFoundEvent $event) use (&$filePath, &$message) {
+                $filePath = $event->getMetaDataFilePath();
                 $message = $event->getMessage();
             }
         );
@@ -229,8 +197,8 @@ class MetaDataMapperTest extends TestCase
         /**
          * No InvalidMetaDataEvents should be dispatched
          */
+        $this->assertSame('', $filePath);
         $this->assertEquals('', $message);
-        $this->assertEquals('', $errorLevel);
 
         $this->assertSame($expectedModuleData['id'], $moduleConfiguration->getId());
         $this->assertSame($expectedModuleData['title'], $moduleConfiguration->getTitle());
@@ -271,13 +239,13 @@ class MetaDataMapperTest extends TestCase
         /**
          * As no module ID was set, an InvalidMetaDataEvent should be fired
          */
-        $errorLevel = '';
+        $filePath = '';
         $message = '';
         $eventDispatcher = $container->get('event_dispatcher');
         $eventDispatcher->addListener(
-            InvalidMetaDataEvent::NAME,
-            function (InvalidMetaDataEvent $event) use (&$errorLevel, &$message) {
-                $errorLevel = $event->getLevel();
+            BadMetaDataFoundEvent::NAME,
+            function (BadMetaDataFoundEvent $event) use (&$filePath, &$message) {
+                $filePath = $event->getMetaDataFilePath();
                 $message = $event->getMessage();
             }
         );
@@ -293,11 +261,12 @@ class MetaDataMapperTest extends TestCase
          * The module directory name should be set as the module ID is missing in metadata.Same
          */
         $this->assertEquals($testModuleDirectory, $moduleConfiguration->getId());
+
         /**
          * Additionally an event should have been fired, which mentions the missing Id and is of level ERROR
          */
+        $this->assertSame($metaDataFilePath, $filePath);
         $this->assertContains('id', strtolower($message));
-        $this->assertEquals(LogLevel::ERROR, $errorLevel);
 
         /** All methods should return type safe default values, if there were no values defined in metadata.php */
         $this->assertSame('', $moduleConfiguration->getTitle());
@@ -337,13 +306,13 @@ class MetaDataMapperTest extends TestCase
         /**
          * As an extra key is present in metadata.php, an InvalidMetaDataEvent should be fired
          */
-        $errorLevel = '';
+        $filePath = '';
         $message = '';
         $eventDispatcher = $container->get('event_dispatcher');
         $eventDispatcher->addListener(
-            InvalidMetaDataEvent::NAME,
-            function (InvalidMetaDataEvent $event) use (&$errorLevel, &$message) {
-                $errorLevel = $event->getLevel();
+            BadMetaDataFoundEvent::NAME,
+            function (BadMetaDataFoundEvent $event) use (&$filePath, &$message) {
+                $filePath = $event->getMetaDataFilePath();
                 $message = $event->getMessage();
             }
         );
@@ -354,9 +323,40 @@ class MetaDataMapperTest extends TestCase
         $metaDataDataMapper = $container->get('oxid_esales.module.metadata.datamapper.metadatamapper');
         $moduleConfiguration = $metaDataDataMapper->fromData($normalizedMetaData);
 
-        $this->assertEquals(LogLevel::ERROR, $errorLevel);
+        $this->assertSame($metaDataFilePath, $filePath);
         $this->assertContains('extrastuff', strtolower($message));
 
         $this->assertEquals($expectedModuleData['id'], $moduleConfiguration->getId());
+    }
+
+    /**
+     * @param string $testModuleDirectory
+     *
+     * @return string
+     */
+    private function getMetaDataFilePath(string $testModuleDirectory): string
+    {
+        $metaDataFilePath = __DIR__ . DIRECTORY_SEPARATOR . 'TestData' . DIRECTORY_SEPARATOR . $testModuleDirectory . DIRECTORY_SEPARATOR . 'metadata.php';
+
+        return $metaDataFilePath;
+    }
+
+    /**
+     * @return \Symfony\Component\DependencyInjection\ContainerBuilder
+     */
+    private function getCompiledTestContainer(): \Symfony\Component\DependencyInjection\ContainerBuilder
+    {
+        $containerBuilder = new ContainerBuilder(new Facts());
+        $container = $containerBuilder->getContainer();
+
+        $metaDataProviderDefinition = $container->getDefinition('oxid_esales.module.metadata.service.metadataprovider');
+        $metaDataProviderDefinition->setPublic(true);
+
+        $metaDataDataMapperDefinition = $container->getDefinition('oxid_esales.module.metadata.datamapper.metadatamapper');
+        $metaDataDataMapperDefinition->setPublic(true);
+
+        $container->compile();
+
+        return $container;
     }
 }

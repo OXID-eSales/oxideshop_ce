@@ -7,9 +7,8 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Service;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\InvalidMetaDataEvent;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\BadMetaDataFoundEvent;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\InvalidMetaDataException;
-use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -37,6 +36,7 @@ class MetaDataProvider
     const METADATA_SETTINGS = 'settings';
     const METADATA_SMARTY_PLUGIN_DIRECTORIES = 'smartyplugindirectories';
     const METADATA_CHECKSUM = 'checksum';
+    const METADATA_FILEPATH = 'metaDataFilePath';
 
     /**
      * @var string
@@ -87,6 +87,7 @@ class MetaDataProvider
         $this->filePath = $filePath;
         $normalizedMetaData = $this->getNormalizedMetaDataFileContent();
         $normalizedMetaData = $this->addPathToData($normalizedMetaData);
+        $normalizedMetaData = $this->addFilePathToData($normalizedMetaData);
         $normalizedMetaData = $this->addCheckSumToData($normalizedMetaData);
 
         return $normalizedMetaData;
@@ -137,6 +138,30 @@ class MetaDataProvider
     }
 
     /**
+     * @param array $normalizedMetaData
+     *
+     * @return array
+     */
+    private function addCheckSumToData(array $normalizedMetaData): array
+    {
+        $normalizedMetaData[static::METADATA_CHECKSUM] = md5_file($this->filePath);
+
+        return $normalizedMetaData;
+    }
+
+    /**
+     * @param array $normalizedMetaData
+     *
+     * @return mixed
+     */
+    private function addFilePathToData(array $normalizedMetaData): array
+    {
+        $normalizedMetaData[static::METADATA_FILEPATH] = $this->filePath;
+
+        return $normalizedMetaData;
+    }
+
+    /**
      * @return string
      */
     private function getModuleDirectoryName(): string
@@ -153,10 +178,9 @@ class MetaDataProvider
     {
         $metaDataId = $metaData[static::METADATA_ID] ?? '';
         if ('' === $metaDataId) {
-            $level = LogLevel::ERROR;
             $message = 'No metadata key "id" was not found in ' . $this->filePath;
 
-            $event = new BadMetaDataFoundEvent($level, $message);
+            $event = new BadMetaDataFoundEvent($this->filePath, $message);
             $this->eventDispatcher->dispatch($event::NAME, $event);
 
             $metaDataId = trim(basename($this->getModuleDirectoryName()), DIRECTORY_SEPARATOR);
@@ -218,17 +242,5 @@ class MetaDataProvider
     private function getBackwardsCompatibilityClassMap(): array
     {
         return $this->shopAdapter->getBackwardsCompatibilityClassMap();
-    }
-
-    /**
-     * @param array $normalizedData
-     *
-     * @return array
-     */
-    private function addCheckSumToData(array $normalizedData)
-    {
-        $normalizedData[static::METADATA_CHECKSUM] = md5_file($this->filePath);
-
-        return $normalizedData;
     }
 }

@@ -1,5 +1,4 @@
 <?php declare(strict_types=1);
-
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,11 +9,9 @@ namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Event;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class InvalidMetaDataEvent
- *
- * @package OxidEsales\EshopCommunity\Internal\Module\MetaData\Event
+ * @internal
  */
-class InvalidMetaDataEvent extends Event
+class BadMetaDataFoundEvent extends Event
 {
     /**
      * Name of the event
@@ -24,7 +21,7 @@ class InvalidMetaDataEvent extends Event
     /**
      * @var string
      */
-    private $level;
+    private $metaDataFilePath;
 
     /**
      * @var string
@@ -32,23 +29,23 @@ class InvalidMetaDataEvent extends Event
     private $message;
 
     /**
-     * InvalidMetaDataEvent constructor.
+     * BadMetaDataFoundEvent constructor.
      *
-     * @param string $level   A log level as defined in Psr\Log\LogLevel
+     * @param string $metaDataFilePath
      * @param string $message
      */
-    public function __construct(string $level, string $message)
+    public function __construct(string $metaDataFilePath, string $message)
     {
-        $this->level = $level;
+        $this->metaDataFilePath = $metaDataFilePath;
         $this->message = $message;
     }
 
     /**
-     * @return string Return a log level as defined in Psr\Log\LogLevel
+     * @return string
      */
-    public function getLevel(): string
+    public function getMetaDataFilePath(): string
     {
-        return $this->level;
+        return $this->metaDataFilePath;
     }
 
     /**

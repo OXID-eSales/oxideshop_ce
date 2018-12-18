@@ -6,11 +6,10 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator;
 
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\InvalidMetaDataEvent;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\BadMetaDataFoundEvent;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataSchemataProviderInterface;
-use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -46,6 +45,11 @@ class MetaDataValidator implements MetaDataValidatorInterface
     private $eventDispatcher;
 
     /**
+     * @var string
+     */
+    private $metaDataFilePath;
+
+    /**
      * MetaDataValidator constructor.
      *
      * @param MetaDataSchemataProviderInterface $metaDataSchemataProvider
@@ -60,14 +64,16 @@ class MetaDataValidator implements MetaDataValidatorInterface
     /**
      * Validate that a given metadata meets the specifications of a given metadata version
      *
+     * @param string $metaDataFilePath
      * @param string $metaDataVersion
      * @param array  $metaData
      *
      * @throws UnsupportedMetaDataValueTypeException
      */
-    public function validate(string $metaDataVersion, array $metaData)
+    public function validate(string $metaDataFilePath, string $metaDataVersion, array $metaData)
     {
         $this->currentValidationMetaDataVersion = $metaDataVersion;
+        $this->metaDataFilePath = $metaDataFilePath;
 
         $supportedMetaDataKeys = $this->metaDataSchemataProvider->getFlippedMetaDataSchemaForVersion($this->currentValidationMetaDataVersion);
         foreach ($metaData as $metaDataKey => $value) {
@@ -89,10 +95,9 @@ class MetaDataValidator implements MetaDataValidatorInterface
     private function validateMetaDataKey(array $supportedMetaDataKeys, string $metaDataKey)
     {
         if (false === array_key_exists($metaDataKey, $supportedMetaDataKeys)) {
-            $level = LogLevel::ERROR;
             $message = 'The metadata key "' . $metaDataKey . '" is not supported in metadata version "' . $this->currentValidationMetaDataVersion . '"';
 
-            $event = new BadMetaDataFoundEvent($level, $message);
+            $event = new BadMetaDataFoundEvent($this->metaDataFilePath, $message);
             $this->eventDispatcher->dispatch($event::NAME, $event);
         }
     }

@@ -1010,7 +1010,10 @@ class EmailTest extends \OxidTestCase
 
     public function testHeaderLine()
     {
-        $this->assertSame("testName: testVar" . "\r\n", $this->_oEmail->headerLine('testName', 'testVar'));
+        $headerLine = $this->_oEmail->headerLine('testName', 'testValue');
+
+        $this->assertContains('testName', $headerLine);
+        $this->assertContains('testValue', $headerLine);
     }
 
     public function testHeaderLineXMailer()

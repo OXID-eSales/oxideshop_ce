@@ -389,12 +389,9 @@ class ModuleChainsGenerator
     }
 
     /**
-     * If blDoNotDisableModuleOnError config value is false, disables bad module.
-     * To avoid problems with unit tests it only throw an exception if class does not exist.
+     * Writes/logs an error on module extension creation problem
      *
      * @param string $moduleClass
-     *
-     * @throws \OxidEsales\EshopCommunity\Core\Exception\SystemComponentException
      */
     protected function onModuleExtensionCreationError($moduleClass) {
     
@@ -453,6 +450,8 @@ class ModuleChainsGenerator
 
     /**
      * @return mixed
+     *
+     * @deprecated since v6.3.2 (2018-12-19); This method and config variable will be removed completely.
      */
     protected function getConfigBlDoNotDisableModuleOnError()
     {

@@ -29,7 +29,6 @@ class ModuleNamespaceTest extends BaseModuleTestCase
     {
         parent::setUp();
 
-        $this->getConfig()->setConfigParam('blDoNotDisableModuleOnError', true);
         $this->assertPrice();
     }
 

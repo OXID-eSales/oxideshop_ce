@@ -149,6 +149,7 @@ $this->aMultiLangTables = null;
 $this->blUseCron = false;
 
 // Do not disable module if class from extension path does not exist.
+// @deprecated since v6.3.2 (2018-12-19); This method and config variable will be removed completely.
 $this->blDoNotDisableModuleOnError = false;
 
 // Enable temporarily in case you can't access the backend due to broken views

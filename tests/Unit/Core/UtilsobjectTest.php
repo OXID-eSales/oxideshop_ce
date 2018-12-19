@@ -75,7 +75,6 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->delete('testArticle');
 
-        oxRegistry::get("oxConfigFile")->setVar('blDoNotDisableModuleOnError', $this->getConfigParam('blDoNotDisableModuleOnError'));
         oxRegistry::get("oxConfigFile")->setVar("sShopDir", $this->getConfigParam('sShopDir'));
 
         parent::tearDown();
@@ -274,8 +273,6 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
     
     public function testGetClassName_classNotExistDoNotDisableModuleOnError_errorThrow()
     {
-        oxRegistry::get("oxConfigFile")->setVar('blDoNotDisableModuleOnError', true);
-
         $sClassName = 'oxorder';
         $sClassNameWhichExtends = 'oemodulenameoxorder_different4';
         $oUtilsObject = $this->_prepareFakeModule($sClassName, $sClassNameWhichExtends);

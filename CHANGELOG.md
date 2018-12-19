@@ -100,6 +100,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Increase default quantity of productimages to 12 (from 7) [PR-514](https://github.com/OXID-eSales/oxideshop_ce/pull/514)
 - Make adding template blocks more fast andn reliable [PR-580](https://github.com/OXID-eSales/oxideshop_ce/pull/580)
 - Support PHP 7.2
+- Modules will not be disabled on class loading errors anymore, Error is just logged [PR-661](https://github.com/OXID-eSales/oxideshop_ce/pull/661)
 
 ### Removed
 - Removed old not used blAutoSearchOnCat option from shop_config tab [PR-654](https://github.com/OXID-eSales/oxideshop_ce/pull/654)
@@ -112,6 +113,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\Email::$_oConfig`
 - `\OxidEsales\EshopCommunity\Core\Email::setConfig`
 - `\OxidEsales\EshopCommunity\Core\Email::getConfig`
+- `blDoNotDisableModuleOnError` config option
 
 
 ## [6.3.2] - Unreleased

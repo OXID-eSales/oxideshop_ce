@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
-
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Application\DataObject;
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Application\DataObject;
 
 use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Application\Exception\SystemServiceOverwriteException;

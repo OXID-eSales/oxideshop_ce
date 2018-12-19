@@ -449,6 +449,8 @@ class ModuleChainsGenerator
 
     /**
      * @return mixed
+     *
+     * @deprecated since v6.3.2 (2018-12-19); This method and config variable will be removed completely.
      */
     protected function getConfigBlDoNotDisableModuleOnError()
     {

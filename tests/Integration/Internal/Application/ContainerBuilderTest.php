@@ -17,6 +17,7 @@ class ContainerBuilderTest extends TestCase
     {
         $context = $this->makeContextStub();
         $context->method('getEdition')->willReturn(EditionSelector::COMMUNITY);
+        $context->method('getGeneratedProjectFilePath')->willReturn('not_existing.yaml');
         $container = $this->makeContainer($context);
 
         $this->assertSame('CE service!', $container->get('oxid_esales.tests.internal.dummy_executor')->execute());
@@ -26,6 +27,7 @@ class ContainerBuilderTest extends TestCase
     {
         $facts = $this->makeContextStub();
         $facts->method('getEdition')->willReturn(EditionSelector::PROFESSIONAL);
+        $facts->method('getGeneratedProjectFilePath')->willReturn('not_existing.yaml');
         $container = $this->makeContainer($facts);
 
         $this->assertSame('Service overwriting for PE!', $container->get('oxid_esales.tests.internal.dummy_executor')->execute());
@@ -35,6 +37,7 @@ class ContainerBuilderTest extends TestCase
     {
         $facts = $this->makeContextStub();
         $facts->method('getEdition')->willReturn(EditionSelector::ENTERPRISE);
+        $facts->method('getGeneratedProjectFilePath')->willReturn('not_existing.yaml');
         $container = $this->makeContainer($facts);
 
         $this->assertSame('Service overwriting for EE!', $container->get('oxid_esales.tests.internal.dummy_executor')->execute());
@@ -44,7 +47,7 @@ class ContainerBuilderTest extends TestCase
     {
         $facts = $this->makeContextStub();
         $facts->method('getEdition')->willReturn(EditionSelector::COMMUNITY);
-        $facts->method('getSourcePath')->willReturn(__DIR__ . '/Fixtures/Project');
+        $facts->method('getGeneratedProjectFilePath')->willReturn(__DIR__ . '/Fixtures/Project/' . FactsContext::GENERATED_PROJECT_FILE_NAME);
         $container = $this->makeContainer($facts);
 
         $this->assertSame('Service overwriting for Project!', $container->get('oxid_esales.tests.internal.dummy_executor')->execute());
@@ -54,7 +57,7 @@ class ContainerBuilderTest extends TestCase
     {
         $facts = $this->makeContextStub();
         $facts->method('getEdition')->willReturn(EditionSelector::ENTERPRISE);
-        $facts->method('getSourcePath')->willReturn(__DIR__ . '/Fixtures/Project');
+        $facts->method('getGeneratedProjectFilePath')->willReturn(__DIR__ . '/Fixtures/Project/' . FactsContext::GENERATED_PROJECT_FILE_NAME);
         $container = $this->makeContainer($facts);
 
         $this->assertSame('Service overwriting for Project!', $container->get('oxid_esales.tests.internal.dummy_executor')->execute());

@@ -7,13 +7,13 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\EventSubscriber;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Event\AfterModuleActivationEvent;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Event\FinalizingModuleActivationEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @internal
  */
-class AfterModuleActivationSubscriber implements EventSubscriberInterface
+class FinalizingModuleActivationSubscriber implements EventSubscriberInterface
 {
 
     /**
@@ -30,9 +30,9 @@ class AfterModuleActivationSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param AfterModuleActivationEvent $event
+     * @param FinalizingModuleActivationEvent $event
      */
-    public function executeMetadataOnActivationEvent(AfterModuleActivationEvent $event)
+    public function executeMetadataOnActivationEvent(FinalizingModuleActivationEvent $event)
     {
         $moduleConfiguration = $this->ModuleConfigurationDao->get(
             $event->getModuleId(),
@@ -54,7 +54,7 @@ class AfterModuleActivationSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents() : array
     {
         return [
-            AfterModuleActivationEvent::NAME => 'executeMetadataOnActivationEvent',
+            FinalizingModuleActivationEvent::NAME => 'executeMetadataOnActivationEvent',
         ];
     }
 }

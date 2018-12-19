@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * Copyright © OXID eSales AG. All rights reserved.
@@ -9,8 +8,9 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Event\AfterModuleActivationEvent;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Event\FinalizingModuleActivationEvent;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Event\BeforeModuleDeactivationEvent;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Event\FinalizingModuleDeactivationEvent;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSetupException;
 use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -91,8 +91,8 @@ class ModuleActivationService implements ModuleActivationServiceInterface
         $this->classExtensionChainService->updateChain($shopId);
 
         $this->eventDispatcher->dispatch(
-            AfterModuleActivationEvent::NAME,
-            new AfterModuleActivationEvent($shopId, $moduleId)
+            FinalizingModuleActivationEvent::NAME,
+            new FinalizingModuleActivationEvent($shopId, $moduleId)
         );
     }
 
@@ -121,5 +121,10 @@ class ModuleActivationService implements ModuleActivationServiceInterface
         $this->moduleConfigurationDao->save($moduleConfiguration, $shopId);
 
         $this->classExtensionChainService->updateChain($shopId);
+
+        $this->eventDispatcher->dispatch(
+            FinalizingModuleDeactivationEvent::NAME,
+            new FinalizingModuleDeactivationEvent($shopId, $moduleId)
+        );
     }
 }

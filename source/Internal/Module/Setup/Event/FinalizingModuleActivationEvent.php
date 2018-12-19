@@ -9,11 +9,9 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Event;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class ModuleSetupEvent
- *
  * @internal
  */
-class AfterModuleActivationEvent extends Event
+class FinalizingModuleActivationEvent extends Event
 {
     const NAME = self::class;
 
@@ -24,8 +22,6 @@ class AfterModuleActivationEvent extends Event
     private $moduleId;
 
     /**
-     * ModuleSetupEvent constructor.
-     *
      * @param int    $shopId
      * @param string $moduleId
      */

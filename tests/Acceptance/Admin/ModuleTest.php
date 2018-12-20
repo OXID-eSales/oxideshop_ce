@@ -271,14 +271,15 @@ class ModuleTest extends ModuleBaseTest
 
         $this->openShop();
         $this->open(shopURL."en/About-Us/");
-        $this->assertTextNotPresent(strtoupper("About Us + info6"));
+        //Text can not have the info 6 postfix because responsible code was renamed
+        $this->assertNotTextPresent("About Us + info6");
         $this->clearCache();
         $this->openShop();
-        $this->assertTextNotPresent("Module #6 title EN");
+        $this->assertTextPresent("Module #6 title EN");
         $this->switchLanguage("Deutsch");
-        $this->assertTextNotPresent("Module #6 title DE");
+        $this->assertTextPresent("Module #6 title DE");
 
-        //checking if module is deactive after  vendor file rename
+        //checking if module is still active after  vendor file rename
         $this->loginAdmin("Extensions", "Modules");
         $this->frame("edit");
         $this->assertTextPresent("Invalid modules were detected");
@@ -286,18 +287,18 @@ class ModuleTest extends ModuleBaseTest
         $this->assertTextPresent("OxidEsales\\Eshop\\Application\\Controller\\ContentController => oxid/test6/view/myinfo6test");
         $this->clickAndWaitFrame("yesButton");
         $this->openListItem("link=Test module #6 (in vendor dir)");
-        $this->assertElementNotPresent("//form[@id='myedit']//input[@value='Deactivate']");
+        $this->assertElementPresent("//form[@id='myedit']//input[@value='Deactivate']");
 
-        //checking if module (oxblock, menu.xml) is disabled in shop after vendor file rename
+        //checking if module (oxblock, menu.xml) is still in shop after vendor file rename
         $this->clearCache();
         $this->openShop();
-        $this->assertTextNotPresent("Module #6 title EN");
+        $this->assertTextPresent("Module #6 title EN");
         $this->switchLanguage("Deutsch");
-        $this->assertTextNotPresent("Module #6 title DE");
+        $this->assertTextPresent("Module #6 title DE");
         $this->clearCache();
         $this->openShop();
         $this->open(shopURL."en/About-Us/");
-        $this->assertTextNotPresent("About Us + info6");
+        $this->assertTextPresent("About Us + info6");
 
         //file name is reset to the original
         $aModules = array('content' => 'oxid/test6/view/myinfo6');
@@ -341,13 +342,12 @@ class ModuleTest extends ModuleBaseTest
 
         //vendor dir name is changed from test6 to test6test
         $this->updateInformationAboutShopExtension('oxid/test6/view/myinfo6', 'oxid/test6test/view/myinfo6');
-
+        $this->clearCache();
         $this->openShop();
         $this->open(shopURL."en/About-Us/");
         $this->assertTextNotPresent("About Us + info6");
-        $this->assertTextPresent("About Us");
 
-        //checking if module is deactivated after /dir rename
+        //checking if module comes back again after /dir rename
         $this->loginAdmin("Extensions", "Modules");
         $this->frame("edit");
         $this->assertTextPresent("Invalid modules were detected");
@@ -357,22 +357,21 @@ class ModuleTest extends ModuleBaseTest
         $this->frame("list");
         $this->clickAndWait("link=Test module #6 (in vendor dir)");
         $this->frame("edit");
-        $this->assertElementNotPresent("//form[@id='myedit']//input[@value='Deactivate']");
+        $this->assertElementPresent("//form[@id='myedit']//input[@value='Deactivate']");
         $this->assertTextNotPresent("Invalid modules were detected");
 
-        //checking if module (oxblock, menu.xml) is disabled in shop after vendor dir rename
+        //checking if module (oxblock, menu.xml) is enabled in shop after vendor dir rename
         //NOTE: we need functionality to clean the tmp folder before reimplementing he check for oxblock
         $this->clearCache();
         $this->openShop();
         $this->clickAndWait("link=%HOME%");
 
-        $this->assertTextNotPresent("Module #6 title EN");
+        $this->assertTextPresent("Module #6 title EN");
         $this->switchLanguage("Deutsch");
-        $this->assertTextNotPresent("Module #6 title DE");
-        $this->clearCache();
+        $this->assertTextPresent("Module #6 title DE");
         $this->openShop();
         $this->open(shopURL."en/About-Us/");
-        $this->assertTextNotPresent("About Us + info6");
+        $this->assertTextPresent("About Us + info6");
 
         //checking if is restore the vendor dir name to original
         Registry::getConfig()->saveShopConfVar("aarr", "aModules", array());

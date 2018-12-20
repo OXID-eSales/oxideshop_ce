@@ -41,9 +41,7 @@ class ModuleConfigurationDaoTest extends TestCase
     public function testSaving()
     {
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration
-            ->setId('testId')
-            ->setState('deprecated');
+        $moduleConfiguration->setId('testId');
 
         $dao = $this->container->get(ModuleConfigurationDaoInterface::class);
         $dao->save($moduleConfiguration, 1);

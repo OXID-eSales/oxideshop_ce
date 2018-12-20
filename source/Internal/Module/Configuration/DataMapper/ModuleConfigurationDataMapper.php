@@ -59,7 +59,7 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
             ->setEmail($data['email'])
         ;
 
-        if (isset($metaData['settings'])) {
+        if (isset($data['settings'])) {
             $this->setSettings($moduleConfiguration, $data['settings']);
         }
 

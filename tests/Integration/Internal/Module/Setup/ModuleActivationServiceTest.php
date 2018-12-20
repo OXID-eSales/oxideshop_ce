@@ -191,9 +191,8 @@ class ModuleActivationServiceTest extends TestCase
     private function getTestModuleConfiguration(): ModuleConfiguration
     {
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration
-            ->setId('testModuleConfiguration');
-
+        $moduleConfiguration->setId($this->testModuleId);
+        /**
         $moduleConfiguration->addSetting(
             new ModuleSetting(ModuleSetting::PATH, 'somePath')
         )

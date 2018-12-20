@@ -463,7 +463,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
                 $insertSql = "insert into $langTable set " . $this->_getUpdateFieldsForTable($langTable, $this->getUseSkipSaveFields()) .
                              " on duplicate key update " . $this->_getUpdateFieldsForTable($langTable);
 
-                $ret = (bool) $this->executeDatabaseQuery($insertSql);
+                $this->executeDatabaseQuery($insertSql);
             }
         }
 

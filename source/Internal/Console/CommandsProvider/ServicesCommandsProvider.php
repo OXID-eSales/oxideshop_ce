@@ -7,7 +7,6 @@
 namespace OxidEsales\EshopCommunity\Internal\Console\CommandsProvider;
 
 use OxidEsales\EshopCommunity\Internal\Console\AbstractShopAwareCommand;
-use OxidEsales\EshopCommunity\Internal\Console\ConsoleCommandPass;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -40,8 +39,8 @@ class ServicesCommandsProvider implements CommandsProviderInterface
      */
     public function getCommands(): array
     {
-        if ($this->container->hasParameter(ConsoleCommandPass::COMMANDS_PARAMETER_NAME)) {
-            foreach ($this->container->getParameter(ConsoleCommandPass::COMMANDS_PARAMETER_NAME) as $id) {
+        if ($this->container->hasParameter('console.command.ids')) {
+            foreach ($this->container->getParameter('console.command.ids') as $id) {
                 $service = $this->container->get($id);
                 $this->setShopAwareCommands($service);
                 $this->setNonShopAwareCommands($service);

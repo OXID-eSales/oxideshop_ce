@@ -6,13 +6,13 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Application;
 
-use OxidEsales\EshopCommunity\Internal\Console\ConsoleCommandPass;
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Application\Service\ProjectYamlImportService;
 use OxidEsales\EshopCommunity\Internal\Utility\FactsContext;
 use OxidEsales\EshopCommunity\Internal\Utility\FactsContextInterface;
 use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Console\DependencyInjection\AddConsoleCommandPass;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
@@ -44,7 +44,7 @@ class ContainerBuilder
     {
         $symfonyContainer = new SymfonyContainerBuilder();
         $symfonyContainer->addCompilerPass(new RegisterListenersPass());
-        $symfonyContainer->addCompilerPass(new ConsoleCommandPass());
+        $symfonyContainer->addCompilerPass(new AddConsoleCommandPass());
         $this->loadServiceFiles($symfonyContainer);
         $this->loadEditionServices($symfonyContainer);
         $this->loadProjectServices($symfonyContainer);
@@ -73,8 +73,8 @@ class ContainerBuilder
     {
         try {
             $this->cleanupProjectYaml();
-            $loader = new YamlFileLoader($symfonyContainer, new FileLocator($this->context->getSourcePath()));
-            $loader->load(FactsContext::GENERATED_PROJECT_FILE_NAME);
+            $loader = new YamlFileLoader($symfonyContainer, new FileLocator());
+            $loader->load($this->context->getGeneratedProjectFilePath());
         } catch (FileLocatorFileNotFoundException $exception) {
             // In case project file not found, do nothing.
         }

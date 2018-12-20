@@ -91,17 +91,9 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\EventsModuleSettingValidator
     autowire: true
 
-  oxid_esales.module.setup.service.eventsubscriber.after_module_activation_event_subscriber:
-    class: OxidEsales\EshopCommunity\Internal\Module\Setup\EventSubscriber\FinalizingModuleActivationSubscriber
-    arguments:
-      - '@OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface'
-    tags:
-      - { name: kernel.event_subscriber }
-
-  oxid_esales.module.setup.service.eventsubscriber.before_module_deactivation_event_subscriber:
-    class: OxidEsales\EshopCommunity\Internal\Module\Setup\EventSubscriber\BeforeModuleDeactivationSubscriber
-    arguments:
-      - '@OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface'
+  oxid_esales.module.setup.service.eventsubscriber.dispatch_legacy_events_subscriber:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\EventSubscriber\DispatchLegacyEventsSubscriber
+    autowire: true
     tags:
       - { name: kernel.event_subscriber }
 

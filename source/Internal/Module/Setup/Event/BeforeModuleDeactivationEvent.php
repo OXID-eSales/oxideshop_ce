@@ -6,48 +6,12 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Event;
 
-use Symfony\Component\EventDispatcher\Event;
-
 /**
  * Class ModuleSetupEvent
  *
  * @internal
  */
-class BeforeModuleDeactivationEvent extends Event
+class BeforeModuleDeactivationEvent extends ModuleSetupEvent
 {
     const NAME = self::class;
-
-    /** @var int */
-    private $shopId;
-
-    /** @var string */
-    private $moduleId;
-
-    /**
-     * ModuleSetupEvent constructor.
-     *
-     * @param int    $shopId
-     * @param string $moduleId
-     */
-    public function __construct(int $shopId, string $moduleId)
-    {
-        $this->shopId = $shopId;
-        $this->moduleId = $moduleId;
-    }
-
-    /**
-     * @return string
-     */
-    public function getModuleId():string
-    {
-        return $this->moduleId;
-    }
-
-    /**
-     * @return int
-     */
-    public function getShopId(): int
-    {
-        return $this->shopId;
-    }
 }

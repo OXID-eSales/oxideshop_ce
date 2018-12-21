@@ -22,9 +22,9 @@ interface ModuleConfigurationDataMapperInterface
     public function toData(ModuleConfiguration $configuration): array;
 
     /**
-     * @param array $metaData
+     * @param array $data
      *
      * @return ModuleConfiguration
      */
-    public function fromData(array $metaData): ModuleConfiguration;
+    public function fromData(array $data): ModuleConfiguration;
 }

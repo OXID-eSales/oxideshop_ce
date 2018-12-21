@@ -1,25 +1,3 @@
-parameters:
-  module_configuration_path: OxidEsales\EshopCommunity\Internal\Module\Configuration
-  oxid_esales.module.configuration.metadata_settings:
-    v2.0:
-      - path
-      - version
-      - blocks
-      - controllers
-      - extend
-      - events
-      - settings
-      - templates
-    v2.1:
-      - path
-      - version
-      - blocks
-      - controllers
-      - extend
-      - events
-      - settings
-      - templates
-      - smartyPluginDirectories
 
 services:
   OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface:

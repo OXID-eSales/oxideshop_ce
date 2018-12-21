@@ -18,8 +18,7 @@ use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator as EshopModuleVariablesL
 use OxidEsales\Eshop\Core\Module\Module as EshopModule;
 use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryValidator as EshopModuleSmartyPluginDirectoryValidator;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Service\ShopActivationServiceInterface;
-use OxidEsales\Facts\Facts;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleServicesActivationServiceInterface;
 
 /**
  * Modules installer class.
@@ -142,8 +141,8 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      */
     private function activateShopAwareServices(\OxidEsales\Eshop\Core\Module\Module $module)
     {
-        /** @var ShopActivationServiceInterface $shopActivationService */
-        $shopActivationService = ContainerFactory::getInstance()->getContainer()->get(ShopActivationServiceInterface::class);
+        /** @var ModuleServicesActivationServiceInterface $shopActivationService */
+        $shopActivationService = ContainerFactory::getInstance()->getContainer()->get(ModuleServicesActivationServiceInterface::class);
         $shopActivationService->activateServicesForShops($module->getModuleFullPath(), [Registry::getConfig()->getShopId()]);
     }
 
@@ -152,8 +151,8 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      */
     private function deactivateShopAwareServices(\OxidEsales\Eshop\Core\Module\Module $module)
     {
-        /** @var ShopActivationServiceInterface $shopActivationService */
-        $shopActivationService = ContainerFactory::getInstance()->getContainer()->get(ShopActivationServiceInterface::class);
+        /** @var ModuleServicesActivationServiceInterface $shopActivationService */
+        $shopActivationService = ContainerFactory::getInstance()->getContainer()->get(ModuleServicesActivationServiceInterface::class);
         $shopActivationService->deactivateServicesForShops($module->getModuleFullPath(), [Registry::getConfig()->getShopId()]);
     }
 

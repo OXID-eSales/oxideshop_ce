@@ -4,7 +4,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Service;
+namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIConfigWrapper;
@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Application\Exception\NoServiceYamlExcept
 /**
  * @internal
  */
-class ShopActivationService implements ShopActivationServiceInterface
+class ModuleServicesActivationService implements ModuleServicesActivationServiceInterface
 {
 
     /**

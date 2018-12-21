@@ -80,12 +80,11 @@ class ShopConfiguration
     }
 
     /**
-     * @param string $name
-     * @param Chain  $group
+     * @param Chain $chain
      */
-    public function setChain(string $name, Chain $group)
+    public function addChain(Chain $chain)
     {
-        $this->chains[$name] = $group;
+        $this->chains[$chain->getName()] = $chain;
     }
 
     /**

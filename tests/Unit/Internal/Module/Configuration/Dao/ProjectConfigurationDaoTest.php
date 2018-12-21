@@ -14,6 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ShopConfi
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Config\Definition\NodeInterface;
 
 /**
  * @internal
@@ -33,15 +34,7 @@ class ProjectConfigurationDaoTest extends TestCase
             ],
         ];
 
-        $shopConfigurationDataMapper = $this
-            ->getMockBuilder(ShopConfigurationDataMapperInterface::class)
-            ->getMock();
-
-        $shopConfigurationDataMapper
-            ->method('fromData')
-            ->willReturn(new ShopConfiguration());
-
-        $projectConfigurationDataMapper = new ProjectConfigurationDataMapper($shopConfigurationDataMapper);
+        $projectConfigurationDataMapper = $this->getProjectConfigurationDataMapper();
 
         $arrayStorage = $this
             ->getMockBuilder(ArrayStorageInterface::class)
@@ -51,9 +44,15 @@ class ProjectConfigurationDaoTest extends TestCase
             ->method('get')
             ->willReturn($projectConfigurationData);
 
+        $node = $this->getMockBuilder(NodeInterface::class)->getMock();
+        $node
+            ->method('normalize')
+            ->willReturn($projectConfigurationData);
+
         $projectConfigurationDao = new ProjectConfigurationDao(
             $arrayStorage,
-            $projectConfigurationDataMapper
+            $projectConfigurationDataMapper,
+            $node
         );
 
         $this->assertEquals(
@@ -64,9 +63,7 @@ class ProjectConfigurationDaoTest extends TestCase
 
     public function testProjectConfigurationSaving()
     {
-        $projectConfigurationDataMapper = $this
-            ->getMockBuilder(ProjectConfigurationDataMapperInterface::class)
-            ->getMock();
+        $projectConfigurationDataMapper = $this->getProjectConfigurationDataMapper();
 
         $arrayStorage = $this
             ->getMockBuilder(ArrayStorageInterface::class)
@@ -76,11 +73,30 @@ class ProjectConfigurationDaoTest extends TestCase
             ->expects($this->atLeastOnce())
             ->method('save');
 
+        $node = $this->getMockBuilder(NodeInterface::class)->getMock();
+        $node
+            ->method('normalize')
+            ->willReturn([]);
+
         $projectConfigurationDao = new ProjectConfigurationDao(
             $arrayStorage,
-            $projectConfigurationDataMapper
+            $projectConfigurationDataMapper,
+            $node
         );
 
         $projectConfigurationDao->persistConfiguration(new ProjectConfiguration());
+    }
+
+    private function getProjectConfigurationDataMapper(): ProjectConfigurationDataMapperInterface
+    {
+        $shopConfigurationDataMapper = $this
+            ->getMockBuilder(ShopConfigurationDataMapperInterface::class)
+            ->getMock();
+
+        $shopConfigurationDataMapper
+            ->method('fromData')
+            ->willReturn(new ShopConfiguration());
+
+        return new ProjectConfigurationDataMapper($shopConfigurationDataMapper);
     }
 }

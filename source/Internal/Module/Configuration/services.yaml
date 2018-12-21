@@ -9,7 +9,14 @@ services:
     arguments:
       - '@oxid_esales.module.configuration.project_configuration_yaml_file_storage'
       - '@OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ProjectConfigurationDataMapperInterface'
+      - '@oxid_esales.module.configuration.node'
     public: false
+
+  oxid_esales.module.configuration.node:
+    factory: 'OxidEsales\EshopCommunity\Internal\Module\Configuration\Definition\TreeBuilderFactoryInterface:create'
+
+  OxidEsales\EshopCommunity\Internal\Module\Configuration\Definition\TreeBuilderFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Definition\TreeBuilderFactory
 
   oxid_esales.module.configuration.project_configuration_yaml_file_storage:
     class: OxidEsales\EshopCommunity\Internal\Common\Storage\YamlFileStorage

@@ -104,7 +104,7 @@ class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterfac
                 ->setName($chainName)
                 ->setChain($chainData);
 
-            $shopConfiguration->setChain($chainName, $chain);
+            $shopConfiguration->addChain($chain);
         }
     }
 

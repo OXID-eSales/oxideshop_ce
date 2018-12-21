@@ -70,10 +70,9 @@ class ShopConfigurationTest extends TestCase
     public function testChains()
     {
         $chain = new Chain();
+        $chain->setName('classes');
 
-        $this
-            ->shopConfiguration
-            ->setChain('classes', $chain);
+        $this->shopConfiguration->addChain($chain);
 
         $this->assertSame(
             $chain,

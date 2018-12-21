@@ -56,7 +56,7 @@ class ActiveClassExtensionChainResolverTest extends TestCase
         ]);
 
         $shopConfiguration = new ShopConfiguration();
-        $shopConfiguration->setChain('classExtensions', $classExtensionChain);
+        $shopConfiguration->addChain($classExtensionChain);
 
         $shopConfiguration
             ->addModuleConfiguration($activeModuleConfiguration1)

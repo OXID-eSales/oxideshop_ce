@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Service;
 
+use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIServiceWrapper;
@@ -18,6 +19,8 @@ use PHPUnit\Framework\TestCase;
 
 class ModuleServicesActivationServiceTest extends TestCase
 {
+    private $testModuleId = 'testModuleId';
+
     private $testModuleDirectory = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'TestModule';
 
     /**
@@ -39,7 +42,12 @@ class ModuleServicesActivationServiceTest extends TestCase
             ->method('saveProjectConfigFile')
             ->willReturnCallback([$this, 'saveProjectYaml']);
 
-        $this->shopActivationService = new ModuleServicesActivationService($this->projectYamlDao);
+        $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
+        $shopAdapter
+            ->method('getModuleFullPath')
+            ->willReturn($this->testModuleDirectory);
+
+        $this->shopActivationService = new ModuleServicesActivationService($this->projectYamlDao, $shopAdapter);
     }
 
     public function saveProjectYaml(DIConfigWrapper $config)
@@ -61,7 +69,9 @@ class ModuleServicesActivationServiceTest extends TestCase
         $this->projectYamlDao->method('loadProjectConfigFile')->willReturn($projectConfig);
         $this->projectYamlDao->method('loadDIConfigFile')->willReturn($moduleConfig);
 
-        $this->shopActivationService->activateServicesForShops($this->testModuleDirectory, [1, 4, 5]);
+        $this->shopActivationService->activateModuleServices($this->testModuleId, 1);
+        $this->shopActivationService->activateModuleServices($this->testModuleId, 4);
+        $this->shopActivationService->activateModuleServices($this->testModuleId, 5);
 
         $this->assertProjectYamlHasImport($this->getTestModuleServiceYamlPath());
         $this->assertModuleServiceIsActiveForShops('testEventSubscriber', [1,4,5]);
@@ -102,7 +112,7 @@ class ModuleServicesActivationServiceTest extends TestCase
         $this->projectYamlDao->method('loadProjectConfigFile')->willReturn($projectConfig);
         $this->projectYamlDao->method('loadDIConfigFile')->willReturn($moduleConfig);
 
-        $this->shopActivationService->deactivateServicesForShops($this->testModuleDirectory, [1]);
+        $this->shopActivationService->deactivateModuleServices($this->testModuleId, 1);
 
         $this->assertProjectYamlHasImport($this->getTestModuleServiceYamlPath());
         $this->assertModuleServiceIsActiveForShops('testEventSubscriber', [5]);
@@ -111,7 +121,6 @@ class ModuleServicesActivationServiceTest extends TestCase
     public function testDeactivateServicesForAllShops()
     {
         $shopAwareService = TestEventSubscriber::class;
-        $otherService = OtherService::class;
 
         $projectConfig = new DIConfigWrapper([
             'imports' => [
@@ -137,14 +146,15 @@ class ModuleServicesActivationServiceTest extends TestCase
         $moduleConfig = new DIConfigWrapper([
             'services' => [
                 'testEventSubscriber'   => ['class' => $shopAwareService],
-                'otherService'          => ['class' => $otherService],
+                'otherService'          => ['class' => OtherService::class],
             ]
         ]);
 
         $this->projectYamlDao->method('loadProjectConfigFile')->willReturn($projectConfig);
         $this->projectYamlDao->method('loadDIConfigFile')->willReturn($moduleConfig);
 
-        $this->shopActivationService->deactivateServicesForShops($this->testModuleDirectory, [5,1]);
+        $this->shopActivationService->deactivateModuleServices($this->testModuleId, 1);
+        $this->shopActivationService->deactivateModuleServices($this->testModuleId, 5);
 
         $this->assertArrayHasKey('imports', $this->projectYamlArray);
         $this->assertArrayNotHasKey('services', $this->projectYamlArray);

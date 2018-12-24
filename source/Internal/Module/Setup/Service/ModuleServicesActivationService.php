@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Service;
 
+use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIServiceWrapper;
@@ -20,26 +21,33 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
     /**
      * @var ProjectYamlDaoInterface $dao
      */
-    public $dao;
+    private $dao;
 
     /**
-     * ShopAwareServiceActivationService constructor.
-     *
-     * @param ProjectYamlDaoInterface $dao
+     * @var ShopAdapterInterface
      */
-    public function __construct(ProjectYamlDaoInterface $dao)
+    private $shopAdapter;
+
+    /**
+     * ModuleServicesActivationService constructor.
+     * @param ProjectYamlDaoInterface $dao
+     * @param ShopAdapterInterface    $shopAdapter
+     */
+    public function __construct(ProjectYamlDaoInterface $dao, ShopAdapterInterface $shopAdapter)
     {
         $this->dao = $dao;
+        $this->shopAdapter = $shopAdapter;
     }
 
     /**
-     * @param string $moduleDir
-     * @param array  $shopIds
+     * @param string $moduleId
+     * @param int    $shopId
      * @return void
+     * @throws \OxidEsales\EshopCommunity\Internal\Application\Exception\MissingServiceException
      */
-    public function activateServicesForShops(string $moduleDir, array $shopIds)
+    public function activateModuleServices(string $moduleId, int $shopId)
     {
-        $moduleConfigFile = $moduleDir . DIRECTORY_SEPARATOR . 'services.yaml';
+        $moduleConfigFile = $this->getModuleServicesFilePath($moduleId);
         try {
             $moduleConfig = $this->getModuleConfig($moduleConfigFile);
         } catch (NoServiceYamlException $e) {
@@ -57,7 +65,7 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
             if ($projectConfig->hasService($service->getKey())) {
                 $service = $projectConfig->getService($service->getKey());
             }
-            $service->addActiveShops($shopIds);
+            $service->addActiveShops([$shopId]);
             $projectConfig->addOrUpdateService($service);
         }
 
@@ -66,13 +74,14 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
 
 
     /**
-     * @param string $moduleDir
-     * @param array  $shopIds
+     * @param string $moduleId
+     * @param int    $shopId
      * @return void
+     * @throws \OxidEsales\EshopCommunity\Internal\Application\Exception\MissingServiceException
      */
-    public function deactivateServicesForShops(string $moduleDir, array $shopIds)
+    public function deactivateModuleServices(string $moduleId, int $shopId)
     {
-        $moduleConfigFile = $moduleDir . DIRECTORY_SEPARATOR . 'services.yaml';
+        $moduleConfigFile = $this->getModuleServicesFilePath($moduleId);
         try {
             $moduleConfig = $this->getModuleConfig($moduleConfigFile);
         } catch (NoServiceYamlException $e) {
@@ -86,7 +95,7 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
                 continue;
             }
             $service = $projectConfig->getService($service->getKey());
-            $service->removeActiveShops($shopIds);
+            $service->removeActiveShops([$shopId]);
             $projectConfig->addOrUpdateService($service);
         }
         $this->dao->saveProjectConfigFile($projectConfig);
@@ -104,5 +113,14 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
             throw new NoServiceYamlException();
         }
         return $this->dao->loadDIConfigFile($moduleConfigFile);
+    }
+
+    /**
+     * @param string $moduleId
+     * @return string
+     */
+    private function getModuleServicesFilePath(string $moduleId): string
+    {
+        return $this->shopAdapter->getModuleFullPath($moduleId) . DIRECTORY_SEPARATOR . 'services.yaml';
     }
 }

@@ -143,7 +143,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     {
         /** @var ModuleServicesActivationServiceInterface $shopActivationService */
         $shopActivationService = ContainerFactory::getInstance()->getContainer()->get(ModuleServicesActivationServiceInterface::class);
-        $shopActivationService->activateServicesForShops($module->getModuleFullPath(), [Registry::getConfig()->getShopId()]);
+        $shopActivationService->activateModuleServices($module->getId(), Registry::getConfig()->getShopId());
     }
 
     /**
@@ -153,7 +153,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     {
         /** @var ModuleServicesActivationServiceInterface $shopActivationService */
         $shopActivationService = ContainerFactory::getInstance()->getContainer()->get(ModuleServicesActivationServiceInterface::class);
-        $shopActivationService->deactivateServicesForShops($module->getModuleFullPath(), [Registry::getConfig()->getShopId()]);
+        $shopActivationService->deactivateModuleServices($module->getId(), Registry::getConfig()->getShopId());
     }
 
     /**

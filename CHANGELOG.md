@@ -29,6 +29,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Events:
     - `\OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\BadMetaDataFoundEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\BeforeModuleDeactivationEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\FinalizingModuleActivationEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\FinalizingModuleDeactivationEvent`
 
 ### Changed
 - category_main form layout improvements [PR-585](https://github.com/OXID-eSales/oxideshop_ce/pull/585)

@@ -16,12 +16,16 @@ interface ModuleActivationServiceInterface
     /**
      * @param string $moduleId
      * @param int    $shopId
+     *
+     * @throws ModuleSetupException
      */
     public function activate(string $moduleId, int $shopId);
 
     /**
      * @param string $moduleId
      * @param int    $shopId
+     *
+     * @throws ModuleSetupException
      */
     public function deactivate(string $moduleId, int $shopId);
 }

@@ -14,7 +14,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * @internal
  */
-class ModuleCacheEventSubscriber implements EventSubscriberInterface
+class InvalidateModuleCacheEventSubscriber implements EventSubscriberInterface
 {
     /**
      * @var ModuleCacheServiceInterface
@@ -22,7 +22,7 @@ class ModuleCacheEventSubscriber implements EventSubscriberInterface
     private $moduleCacheService;
 
     /**
-     * ModuleCacheEventSubscriber constructor.
+     * InvalidateModuleCacheEventSubscriber constructor.
      * @param ModuleCacheServiceInterface $moduleCacheService
      */
     public function __construct(ModuleCacheServiceInterface $moduleCacheService)

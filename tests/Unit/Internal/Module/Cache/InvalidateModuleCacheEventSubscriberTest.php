@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Cache;
 
-use OxidEsales\EshopCommunity\Internal\Module\Cache\ModuleCacheEventSubscriber;
+use OxidEsales\EshopCommunity\Internal\Module\Cache\InvalidateModuleCacheEventSubscriber;
 use OxidEsales\EshopCommunity\Internal\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Event\FinalizingModuleActivationEvent;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Event\FinalizingModuleDeactivationEvent;
@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  */
-class ModuleCacheEventSubscriberTest extends TestCase
+class InvalidateModuleCacheEventSubscriberTest extends TestCase
 {
     public function testSubscribedEvents()
     {
@@ -25,7 +25,7 @@ class ModuleCacheEventSubscriberTest extends TestCase
                 FinalizingModuleActivationEvent::NAME   => 'invalidateModuleCache',
                 FinalizingModuleDeactivationEvent::NAME => 'invalidateModuleCache',
             ],
-            ModuleCacheEventSubscriber::getSubscribedEvents()
+            InvalidateModuleCacheEventSubscriber::getSubscribedEvents()
         );
     }
 
@@ -38,7 +38,7 @@ class ModuleCacheEventSubscriberTest extends TestCase
 
         $event = new class(1, 'testModuleId') extends ModuleSetupEvent {};
 
-        $subscriber = new ModuleCacheEventSubscriber($moduleCacheService);
+        $subscriber = new InvalidateModuleCacheEventSubscriber($moduleCacheService);
         $subscriber->invalidateModuleCache($event);
     }
 }

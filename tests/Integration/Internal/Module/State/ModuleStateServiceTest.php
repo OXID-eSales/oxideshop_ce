@@ -17,6 +17,17 @@ class ModuleStateServiceTest extends TestCase
 {
     use ContainerTrait;
 
+    public function setUp()
+    {
+        $moduleStateService = $this->get(ModuleStateServiceInterface::class);
+
+        if ($moduleStateService->isActive('testModuleId', 1)) {
+            $moduleStateService->setDeactivated('testModuleId', 1);
+        }
+
+        parent::setUp();
+    }
+
     public function testSetActive()
     {
         $moduleStateService = $this->get(ModuleStateServiceInterface::class);
@@ -32,6 +43,17 @@ class ModuleStateServiceTest extends TestCase
         );
     }
 
+    /**
+     * @expectedException  \OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateIsAlreadySetException
+     */
+    public function testSetActiveIfActiveStateIsAlreadySet()
+    {
+        $moduleStateService = $this->get(ModuleStateServiceInterface::class);
+
+        $moduleStateService->setActive('testModuleId', 1);
+        $moduleStateService->setActive('testModuleId', 1);
+    }
+
     public function testSetDeactivated()
     {
         $moduleStateService = $this->get(ModuleStateServiceInterface::class);
@@ -43,5 +65,15 @@ class ModuleStateServiceTest extends TestCase
         $this->assertFalse(
             $moduleStateService->isActive('testModuleId', 1)
         );
+    }
+
+    /**
+     * @expectedException  \OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateIsAlreadySetException
+     */
+    public function testSetDeactivatedIfActiveStateIsNotSet()
+    {
+        $moduleStateService = $this->get(ModuleStateServiceInterface::class);
+
+        $moduleStateService->setDeactivated('testModuleId', 1);
     }
 }

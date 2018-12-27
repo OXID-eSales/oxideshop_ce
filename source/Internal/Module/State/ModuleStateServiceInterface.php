@@ -21,12 +21,16 @@ interface ModuleStateServiceInterface
     /**
      * @param string $moduleId
      * @param int    $shopId
+     *
+     * @throws ModuleStateIsAlreadySetException
      */
     public function setActive(string $moduleId, int $shopId);
 
     /**
      * @param string $moduleId
      * @param int    $shopId
+     *
+     * @throws ModuleStateIsAlreadySetException
      */
     public function setDeactivated(string $moduleId, int $shopId);
 }

@@ -47,9 +47,17 @@ class ModuleStateService implements ModuleStateServiceInterface
     /**
      * @param string $moduleId
      * @param int    $shopId
+     *
+     * @throws ModuleStateIsAlreadySetException
      */
     public function setActive(string $moduleId, int $shopId)
     {
+        if ($this->isActive($moduleId, $shopId)) {
+            throw new ModuleStateIsAlreadySetException(
+                'Active status for module "' . $moduleId . '" and shop with id "' . $shopId . '" is already set.'
+            );
+        }
+
         $activeModuleIdsSetting = $this->getActiveModulesShopConfigurationSetting($shopId);
 
         $activeModuleIds = $activeModuleIdsSetting->getValue();
@@ -62,9 +70,17 @@ class ModuleStateService implements ModuleStateServiceInterface
     /**
      * @param string $moduleId
      * @param int    $shopId
+     *
+     * @throws ModuleStateIsAlreadySetException
      */
     public function setDeactivated(string $moduleId, int $shopId)
     {
+        if (!$this->isActive($moduleId, $shopId)) {
+            throw new ModuleStateIsAlreadySetException(
+                'Deactivated status for module "' . $moduleId . '" and shop with id "' . $shopId . '" is already set.'
+            );
+        }
+
         $activeModuleIdsSetting = $this->getActiveModulesShopConfigurationSetting($shopId);
 
         $activeModuleIds = $activeModuleIdsSetting->getValue();

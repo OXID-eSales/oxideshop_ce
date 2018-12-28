@@ -39,6 +39,22 @@ date_default_timezone_set('Europe/Berlin');
 $this->sOXIDPHP = "oxid.php";
 
 /**
+ * String PSR3 log level Psr\Log\LogLevel
+ */
+$this->sLogLevel = 'error';
+
+/**
+ * Log all modifications performed in Admin
+ */
+$this->blLogChangesInAdmin = false;
+
+/**
+ * Should requests, coming via stdurl and not redirected to seo url be logged to seologs db table?
+ * Note: only active if in productive mode, as the eShop in non productive more will always log such urls
+ */
+$this->blSeoLogging = false;
+
+/**
  * Enable debug mode for template development or bugfixing
  * -1 = Log more messages and throw exceptions on errors (not recommended for production)
  * 0 = off
@@ -51,8 +67,11 @@ $this->sOXIDPHP = "oxid.php";
  */
 $this->iDebug = 0;
 
-// Log all modifications performed in Admin
-$this->blLogChangesInAdmin = false;
+/**
+ * Should template blocks be highlighted in frontend?
+ * This is mainly intended for module writers in non productive environment
+ */
+$this->blDebugTemplateBlocks = false;
 
 // Force admin email. Offline warnings are sent with high priority to this address.
 $this->sAdminEmail = '';
@@ -115,18 +134,6 @@ $this->aTrustedIPs = array();
  * slowly, while too high value may have spiking impact on the performance.
  */
 $this->iBasketReservationCleanPerRequest = 200;
-
-/**
- * Should template blocks be highlighted in frontend?
- * This is mainly intended for module writers in non productive environment
- */
-$this->blDebugTemplateBlocks = false;
-
-/**
- * Should requests, coming via stdurl and not redirected to seo url be logged to seologs db table?
- * Note: only active if in productive mode, as the eShop in non productive more will always log such urls
- */
-$this->blSeoLogging = false;
 
 /**
  * To override FrontendController::$_aUserComponentNames use this array option:
@@ -192,8 +199,3 @@ $this->blDelSetupDir = true;
  * @deprecated since v6.0 (2017-05-15); This property will be removed in the future as the shop will always use UTF-8.
  */
 $this->iUtfMode = 1;
-
-/**
- * String PSR3 log level Psr\Log\LogLevel
- */
-$this->sLogLevel = 'error';

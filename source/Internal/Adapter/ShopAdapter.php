@@ -79,14 +79,15 @@ class ShopAdapter implements ShopAdapterInterface
      */
     public function getModuleFullPath(string $moduleId) : string
     {
-        $module = oxNew(Module::class);
-        $fullPath = $module->getModuleFullPath($moduleId);
+        $modulePaths = Registry::getConfig()->getConfigParam('aModulePaths');
 
-        if ($fullPath === false) {
-            throw new Exception('Path to module with id ' . $moduleId . ' not found.');
-        }
+        /**
+         * @TODO We have to throw an exception here in the future, module path should exist.
+         *       Use module id for the BC.
+         */
+        $moduleRelativePath = $modulePaths[$moduleId] ?? $moduleId;
 
-        return $fullPath;
+        return Registry::getConfig()->getModulesDir() . $moduleRelativePath;
     }
 
     /**

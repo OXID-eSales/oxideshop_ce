@@ -9,18 +9,18 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Adapter;
 
-
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapter;
 use PHPUnit\Framework\TestCase;
 
 class ShopAdapterTest extends TestCase
 {
-    /**
-     * @expectedException \Exception
-     */
-    public function testGetModuleFullPathThrowsExceptionIfModulePathNotExisting()
+    public function testGetModuleFullPathReturnsPathWithModuleIdIfModulePathNotExisting()
     {
         $shopAdapter = new ShopAdapter();
-        $shopAdapter->getModuleFullPath('notExistingModule');
+
+        $this->assertContains(
+            'moduleId',
+            $shopAdapter->getModuleFullPath('moduleId')
+        );
     }
 }

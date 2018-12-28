@@ -4,7 +4,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Service;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDaoInterface;
@@ -21,7 +21,7 @@ class ModuleServicesActivationServiceTest extends TestCase
 {
     private $testModuleId = 'testModuleId';
 
-    private $testModuleDirectory = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'TestModule';
+    private $testModuleDirectory = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'TestData' . DIRECTORY_SEPARATOR . 'TestModule';
 
     /**
      * @var ProjectYamlDaoInterface | MockObject

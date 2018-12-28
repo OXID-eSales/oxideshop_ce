@@ -97,13 +97,6 @@ services:
     tags:
       - { name: kernel.event_subscriber }
 
-  oxid_esales.module.setup.service.eventsubscriber.before_module_deactivation_event_subscriber:
-    class: OxidEsales\EshopCommunity\Internal\Module\Setup\EventSubscriber\BeforeModuleDeactivationSubscriber
-    arguments:
-      - '@OxidEsales\EshopCommunity\Internal\Module\Configuration\Provider\ModuleConfigurationProviderInterface'
-    tags:
-      - { name: kernel.event_subscriber }
-
   OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleServicesActivationServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleServicesActivationService
     autowire: true

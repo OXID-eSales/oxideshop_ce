@@ -19,6 +19,7 @@
         "symfony/event-dispatcher": "^3.4",
         "symfony/dependency-injection": "^3.4",
         "symfony/console": "^v3.4.15",
+        "symfony/yaml": "^3.0",
         "webmozart/path-util": "^2.3"
     },
     "require-dev": {

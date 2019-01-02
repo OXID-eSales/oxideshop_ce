@@ -101,6 +101,7 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleServicesActivationService
     autowire: true
     public: true
+
   oxid_esales.module.setup.class_extension_chain_service:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ClassExtensionChainService
     autowire: true

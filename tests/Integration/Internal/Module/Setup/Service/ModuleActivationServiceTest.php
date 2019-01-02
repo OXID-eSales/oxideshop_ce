@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Setup\Serv
 
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
+use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapter;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
@@ -24,6 +25,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServ
 use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\ModuleEvents;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\SomeModuleService;
 use OxidEsales\Facts\Facts;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -172,18 +174,33 @@ class ModuleActivationServiceTest extends TestCase
         );
     }
 
+    public function testActivationOfModuleServices()
+    {
+        $moduleConfiguration = $this->getTestModuleConfiguration();
+        $this->persistModuleConfiguration($moduleConfiguration);
+
+        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
+        $moduleActivationService->activate($this->testModuleId, $this->shopId);
+
+        $this->assertInstanceOf(
+            SomeModuleService::class,
+            $this->setupAndConfigureContainer()->get(SomeModuleService::class)
+        );
+    }
+
     /**
      * @return ShopAdapterInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private function getShopAdapterMock()
     {
         $shopAdapter = $this
-            ->getMockBuilder(ShopAdapterInterface::class)
+            ->getMockBuilder(ShopAdapter::class)
+            ->setMethods(['getModuleFullPath'])
             ->getMock();
 
         $shopAdapter
             ->method('getModuleFullPath')
-            ->willReturn(__DIR__ . '/../TestData/TestModule');
+            ->willReturn(__DIR__ . '/../../TestData/TestModule');
 
         return $shopAdapter;
     }
@@ -192,6 +209,10 @@ class ModuleActivationServiceTest extends TestCase
     {
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId($this->testModuleId);
+
+        $moduleConfiguration->addSetting(
+            new ModuleSetting(ModuleSetting::PATH, 'TestModule')
+        );
         /**
         $moduleConfiguration->addSetting(
             new ModuleSetting(ModuleSetting::PATH, 'somePath')
@@ -297,16 +318,8 @@ class ModuleActivationServiceTest extends TestCase
         $containerBuilder = new ContainerBuilder(new Facts());
         $container = $containerBuilder->getContainer();
 
-        $smartyPluginDirectoriesValidatordefinition = $container->getDefinition(
-            'oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator'
-        );
-
-        $shopAdapter = $this->getShopAdapterMock();
-        $smartyPluginDirectoriesValidatordefinition->setArguments([$shopAdapter]);
-        $container->setDefinition(
-            'oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator',
-            $smartyPluginDirectoriesValidatordefinition
-        );
+        $container->set(ShopAdapterInterface::class, $this->getShopAdapterMock());
+        $container->autowire(ShopAdapterInterface::class, ShopAdapter::class);
 
         $projectConfigurationYmlStorageDefinition = $container->getDefinition('oxid_esales.module.configuration.project_configuration_yaml_file_storage');
         $projectConfigurationYmlStorageDefinition->setArgument(

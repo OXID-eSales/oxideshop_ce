@@ -5,12 +5,12 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestModule;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule;
 
 /**
  * @internal
  */
-class OtherService
+class SomeModuleService
 {
     public function doSomething()
     {

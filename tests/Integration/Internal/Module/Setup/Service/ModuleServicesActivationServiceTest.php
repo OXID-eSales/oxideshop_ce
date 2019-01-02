@@ -12,8 +12,8 @@ use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIServiceWrapper;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleServicesActivationService;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleServicesActivationServiceInterface;
-use OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\TestModule\OtherService;
-use OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\TestModule\TestEventSubscriber;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\SomeModuleService;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\TestEventSubscriber;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -21,7 +21,11 @@ class ModuleServicesActivationServiceTest extends TestCase
 {
     private $testModuleId = 'testModuleId';
 
-    private $testModuleDirectory = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'TestData' . DIRECTORY_SEPARATOR . 'TestModule';
+    private $testModuleDirectory = __DIR__ . DIRECTORY_SEPARATOR
+        . '..' . DIRECTORY_SEPARATOR
+        . '..' . DIRECTORY_SEPARATOR
+        . 'TestData' . DIRECTORY_SEPARATOR
+        . 'TestModule';
 
     /**
      * @var ProjectYamlDaoInterface | MockObject
@@ -62,7 +66,7 @@ class ModuleServicesActivationServiceTest extends TestCase
         $moduleConfig = new DIConfigWrapper([
             'services' => [
                 'testEventSubscriber'   => ['class' => TestEventSubscriber::class],
-                'otherService'          => ['class' => OtherService::class],
+                'otherService'          => ['class' => SomeModuleService::class],
             ],
         ]);
 
@@ -105,7 +109,7 @@ class ModuleServicesActivationServiceTest extends TestCase
         $moduleConfig = new DIConfigWrapper([
             'services' => [
                 'testEventSubscriber'   => ['class' => $shopAwareService],
-                'otherService'          => ['class' => OtherService::class],
+                'otherService'          => ['class' => SomeModuleService::class],
             ],
         ]);
 
@@ -146,7 +150,7 @@ class ModuleServicesActivationServiceTest extends TestCase
         $moduleConfig = new DIConfigWrapper([
             'services' => [
                 'testEventSubscriber'   => ['class' => $shopAwareService],
-                'otherService'          => ['class' => OtherService::class],
+                'otherService'          => ['class' => SomeModuleService::class],
             ]
         ]);
 

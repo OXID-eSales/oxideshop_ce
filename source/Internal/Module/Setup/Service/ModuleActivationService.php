@@ -46,26 +46,34 @@ class ModuleActivationService implements ModuleActivationServiceInterface
     private $classExtensionChainService;
 
     /**
+     * @var ModuleServicesActivationServiceInterface
+     */
+    private $moduleServicesActivationService;
+
+    /**
      * ModuleActivationService constructor.
      *
-     * @param ModuleConfigurationDaoInterface        $ModuleConfigurationDao
-     * @param EventDispatcherInterface               $eventDispatcher
-     * @param ModuleSettingsHandlingServiceInterface $moduleSettingsHandlingService
-     * @param ModuleStateServiceInterface            $stateService
-     * @param ExtensionChainServiceInterface         $classExtensionChainService
+     * @param ModuleConfigurationDaoInterface          $ModuleConfigurationDao
+     * @param EventDispatcherInterface                 $eventDispatcher
+     * @param ModuleSettingsHandlingServiceInterface   $moduleSettingsHandlingService
+     * @param ModuleStateServiceInterface              $stateService
+     * @param ExtensionChainServiceInterface           $classExtensionChainService
+     * @param ModuleServicesActivationServiceInterface $moduleServicesActivationService
      */
     public function __construct(
-        ModuleConfigurationDaoInterface         $ModuleConfigurationDao,
-        EventDispatcherInterface                $eventDispatcher,
-        ModuleSettingsHandlingServiceInterface  $moduleSettingsHandlingService,
-        ModuleStateServiceInterface             $stateService,
-        ExtensionChainServiceInterface          $classExtensionChainService
+        ModuleConfigurationDaoInterface             $ModuleConfigurationDao,
+        EventDispatcherInterface                    $eventDispatcher,
+        ModuleSettingsHandlingServiceInterface      $moduleSettingsHandlingService,
+        ModuleStateServiceInterface                 $stateService,
+        ExtensionChainServiceInterface              $classExtensionChainService,
+        ModuleServicesActivationServiceInterface    $moduleServicesActivationService
     ) {
         $this->moduleConfigurationDao = $ModuleConfigurationDao;
         $this->eventDispatcher = $eventDispatcher;
         $this->moduleSettingsHandlingService = $moduleSettingsHandlingService;
         $this->stateService = $stateService;
         $this->classExtensionChainService = $classExtensionChainService;
+        $this->moduleServicesActivationService = $moduleServicesActivationService;
     }
 
 
@@ -84,6 +92,8 @@ class ModuleActivationService implements ModuleActivationServiceInterface
         $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
 
         $this->moduleSettingsHandlingService->handleOnActivation($moduleConfiguration, $shopId);
+
+        $this->moduleServicesActivationService->activateModuleServices($moduleId, $shopId);
 
         $this->stateService->setActive($moduleId, $shopId);
 
@@ -118,6 +128,8 @@ class ModuleActivationService implements ModuleActivationServiceInterface
         $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
 
         $this->moduleSettingsHandlingService->handleOnDeactivation($moduleConfiguration, $shopId);
+
+        $this->moduleServicesActivationService->deactivateModuleServices($moduleId, $shopId);
 
         $this->stateService->setDeactivated($moduleId, $shopId);
 

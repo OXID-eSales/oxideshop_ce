@@ -18,6 +18,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Executor implements ExecutorInterface
 {
+    const SHOP_ID_PARAMETER_OPTION_NAME = 'shop-id';
+
     /**
      * @var Application
      */

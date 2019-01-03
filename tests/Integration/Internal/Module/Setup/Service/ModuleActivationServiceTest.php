@@ -295,7 +295,7 @@ class ModuleActivationServiceTest extends TestCase
             ]);
 
         $shopConfiguration = new ShopConfiguration();
-        $shopConfiguration->setChain(Chain::CLASS_EXTENSIONS, $chain);
+        $shopConfiguration->addChain($chain);
         $shopConfiguration->addModuleConfiguration($moduleConfiguration);
 
         $environmentConfiguration = new EnvironmentConfiguration();

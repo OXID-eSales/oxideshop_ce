@@ -35,6 +35,11 @@ interface BasicContextInterface
     /**
      * @return string
      */
+    public function getModulesPath(): string;
+
+    /**
+     * @return string
+     */
     public function getEdition(): string;
 
     /**

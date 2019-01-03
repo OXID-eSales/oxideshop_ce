@@ -80,6 +80,14 @@ class BasicContext implements BasicContextInterface
     /**
      * @return string
      */
+    public function getModulesPath() : string
+    {
+        return Path::join($this->getSourcePath(), 'modules');
+    }
+
+    /**
+     * @return string
+     */
     public function getEdition(): string
     {
         return $this->getFacts()->getEdition();

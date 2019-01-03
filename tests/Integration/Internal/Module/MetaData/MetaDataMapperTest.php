@@ -9,7 +9,8 @@ namespace OxidEsales\EshopCommunity\Test\Integration\Internal\Module\MetaData;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\BadMetaDataFoundEvent;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
+
+
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProviderInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

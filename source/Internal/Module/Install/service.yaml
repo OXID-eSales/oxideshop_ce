@@ -1,8 +1,13 @@
 services:
+  OxidEsales\EshopCommunity\Internal\Module\Install\ModuleCopyServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Install\ModuleCopyService
+    autowire: true
+  OxidEsales\EshopCommunity\Internal\Module\Install\OxidEshopPackageFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Install\OxidEshopOxidEshopPackageFactory
+    autowire: true
   OxidEsales\EshopCommunity\Internal\Module\Install\ModuleConfigurationInstallerInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Install\ModuleConfigurationInstaller
     autowire: true
-
   oxid_esales.module.install.lanched_shop_project_configuration_generator:
     class: OxidEsales\EshopCommunity\Internal\Module\Install\ProjectConfigurationGenerator
     arguments:

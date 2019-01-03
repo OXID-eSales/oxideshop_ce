@@ -170,7 +170,7 @@ class ModuleSmartyPluginDirectoriesTest extends \OxidEsales\TestingLibrary\UnitT
             ],
             'anotherModuleId' => [
                 '/Smarty/Plugin',
-                'Smarty/Plugin/Package/',
+                'Smarty/Plugin/OxidEshopPackage/',
             ]
         ];
 

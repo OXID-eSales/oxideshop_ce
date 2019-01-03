@@ -39,7 +39,7 @@ class TreeBuilderFactory implements TreeBuilderFactoryInterface
                                                         ->isRequired()
                                                         ->cannotBeEmpty()
                                                     ->end()
-                                                    ->scalarNode('state')
+                                                    ->scalarNode('autoActive')
                                                     ->end()
                                                     ->scalarNode('title')
                                                     ->end()

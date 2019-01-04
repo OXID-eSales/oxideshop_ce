@@ -883,12 +883,12 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     public function getSidForWidget()
     {
         $oSession = $this->getSession();
-
+        $sid = null;
         if (!$oSession->isActualSidInCookie()) {
-            return $oSession->getId();
+            $sid = $oSession->getId();
         }
 
-        return null;
+        return $sid;
     }
 
     /**

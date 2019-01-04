@@ -275,8 +275,8 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     /**
      * Sets value to parameter used by template engine.
      *
-     * @param mixed  $sPara  name of parameter to pass
-     * @param string $sValue value of parameter
+     * @param string $sPara  name of parameter to pass
+     * @param mixed  $sValue value of parameter
      */
     public function addTplParam($sPara, $sValue)
     {

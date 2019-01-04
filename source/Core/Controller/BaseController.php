@@ -430,11 +430,12 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function getViewDataElement($sParamId = null)
     {
+        $return = null;
         if ($sParamId && isset($this->_aViewData[$sParamId])) {
-            return $this->_aViewData[$sParamId];
+            $return = $this->_aViewData[$sParamId];
         }
 
-        return null;
+        return $return;
     }
 
     /**

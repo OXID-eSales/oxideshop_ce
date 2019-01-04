@@ -6,7 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Configuration\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
@@ -14,7 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleCon
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
-use OxidEsales\Facts\Facts;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -24,15 +22,8 @@ class ModuleConfigurationDaoTest extends TestCase
 {
     use ContainerTrait;
 
-    /**
-     * @var \Symfony\Component\DependencyInjection\ContainerBuilder
-     */
-    private $container;
-
     protected function setUp()
     {
-        $this->container = $this->getContainer();
-
         $this->prepareProjectConfiguration();
 
         parent::setUp();
@@ -43,7 +34,7 @@ class ModuleConfigurationDaoTest extends TestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('testId');
 
-        $dao = $this->container->get(ModuleConfigurationDaoInterface::class);
+        $dao = $this->get(ModuleConfigurationDaoInterface::class);
         $dao->save($moduleConfiguration, 1);
 
         $this->assertEquals(
@@ -62,36 +53,8 @@ class ModuleConfigurationDaoTest extends TestCase
         $projectConfiguration = new ProjectConfiguration();
         $projectConfiguration->addEnvironmentConfiguration('prod', $environmentConfiguration);
 
-        $dao = $this->container->get(ProjectConfigurationDaoInterface::class);
+        $dao = $this->get(ProjectConfigurationDaoInterface::class);
 
         $dao->persistConfiguration($projectConfiguration);
-    }
-
-    /**
-     * We need to replace services in the container with a mock
-     *
-     * @return \Symfony\Component\DependencyInjection\ContainerBuilder
-     */
-    private function getContainer()
-    {
-        $containerBuilder = new ContainerBuilder(new Facts());
-        $container = $containerBuilder->getContainer();
-
-        $projectConfigurationYmlStorageDefinition = $container->getDefinition('oxid_esales.module.configuration.project_configuration_yaml_file_storage');
-        $projectConfigurationYmlStorageDefinition->setArgument(
-            '$filePath',
-            tempnam(sys_get_temp_dir() . '/test_project_configuration', 'test_')
-        );
-        $container->setDefinition(
-            'oxid_esales.module.configuration.project_configuration_yaml_file_storage',
-            $projectConfigurationYmlStorageDefinition
-        );
-
-        $this->setContainerDefinitionToPublic($container, ProjectConfigurationDaoInterface::class);
-        $this->setContainerDefinitionToPublic($container, ModuleConfigurationDaoInterface::class);
-
-        $container->compile();
-
-        return $container;
     }
 }

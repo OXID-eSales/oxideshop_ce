@@ -12,7 +12,6 @@ use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurati
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapter;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
-use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
@@ -23,10 +22,9 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectCo
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\ModuleEvents;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\SomeModuleService;
-use OxidEsales\Facts\Facts;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
@@ -35,8 +33,6 @@ use Psr\Container\ContainerInterface;
  */
 class ModuleActivationServiceTest extends TestCase
 {
-    use ContainerTrait;
-
     /**
      * @var ContainerInterface
      */
@@ -315,24 +311,10 @@ class ModuleActivationServiceTest extends TestCase
      */
     private function setupAndConfigureContainer()
     {
-        $containerBuilder = new ContainerBuilder(new Facts());
-        $container = $containerBuilder->getContainer();
+        $container = (new TestContainerFactory())->create();
 
         $container->set(ShopAdapterInterface::class, $this->getShopAdapterMock());
         $container->autowire(ShopAdapterInterface::class, ShopAdapter::class);
-
-        $projectConfigurationYmlStorageDefinition = $container->getDefinition('oxid_esales.module.configuration.project_configuration_yaml_file_storage');
-        $projectConfigurationYmlStorageDefinition->setArgument(
-            '$filePath',
-            tempnam(sys_get_temp_dir() . '/test_project_configuration', 'test_')
-        );
-        $container->setDefinition(
-            'oxid_esales.module.configuration.project_configuration_yaml_file_storage',
-            $projectConfigurationYmlStorageDefinition
-        );
-
-        $this->setContainerDefinitionToPublic($container, ProjectConfigurationDaoInterface::class);
-        $this->setContainerDefinitionToPublic($container, ModuleActivationServiceInterface::class);
 
         $container->compile();
 

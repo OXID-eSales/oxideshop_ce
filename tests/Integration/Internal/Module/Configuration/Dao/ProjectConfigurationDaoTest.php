@@ -8,15 +8,13 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Configuration\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
-use OxidEsales\Facts\Facts;
-use OxidEsales\TestingLibrary\VfsStreamWrapper;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Common\Storage\ArrayStorageInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDao;
@@ -226,45 +224,10 @@ class ProjectConfigurationDaoTest extends TestCase
 
     private function getContainer()
     {
-        $containerBuilder = new ContainerBuilder(new Facts());
-
-        $container = $containerBuilder->getContainer();
-
-        $yamlFileStorageDefinition = $container->getDefinition('oxid_esales.module.configuration.project_configuration_yaml_file_storage');
-        $yamlFileStorageDefinition->setArgument('$filePath', $this->getTestConfigurationFilePath());
-
-        $container->setDefinition(
-            'oxid_esales.module.configuration.project_configuration_yaml_file_storage',
-            $yamlFileStorageDefinition
-        );
-
-        $projectConfigurationDaoDefinition = $container->getDefinition(ProjectConfigurationDaoInterface::class);
-        $projectConfigurationDaoDefinition->setPublic(true);
-
-        $container->setDefinition(
-            ProjectConfigurationDaoInterface::class,
-            $projectConfigurationDaoDefinition
-        );
-
+        $container = (new TestContainerFactory())->create();
         $container->compile();
 
         return $container;
-    }
-
-    /**
-     * @return string
-     */
-    private function getTestConfigurationFilePath(): string
-    {
-        $vfsStreamWrapper = new VfsStreamWrapper();
-        $relativePath = 'test/testProjectConfigurationDao.yaml';
-        $path = $vfsStreamWrapper->getRootPath() . $relativePath;
-
-        if (!is_file($path)) {
-            $vfsStreamWrapper->createFile($relativePath);
-        }
-
-        return $path;
     }
 
     private function getProjectConfigurationDataMapper(): ProjectConfigurationDataMapperInterface

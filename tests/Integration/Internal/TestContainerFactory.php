@@ -7,7 +7,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal;
 
 use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
-use OxidEsales\Facts\Facts;
+use OxidEsales\EshopCommunity\Internal\Utility\FactsContext;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
 
 /**
@@ -17,7 +17,7 @@ class TestContainerFactory
 {
     public function create(): SymfonyContainerBuilder
     {
-        $containerBuilder = new ContainerBuilder(new Facts());
+        $containerBuilder = new ContainerBuilder(new FactsContext());
         $container = $containerBuilder->getContainer();
 
         $container = $this->setAllServicesAsPublic($container);

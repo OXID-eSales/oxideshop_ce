@@ -1,5 +1,5 @@
 <?php
-namespace OxidEsales\EshopCommunity\Tests\OxidAcceptance\Step\Acceptance;
+namespace Step\Acceptance;
 
 use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Page\Home;
 
@@ -45,7 +45,7 @@ class Start extends \AcceptanceTester
     /**
      * @param $value
      *
-     * @return \OxidEsales\EshopCommunity\Tests\OxidAcceptance\Page\ProductSearchList
+     * @return \Page\ProductSearchList
      */
     public function searchFor($value)
     {

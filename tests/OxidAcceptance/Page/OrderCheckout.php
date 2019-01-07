@@ -3,26 +3,7 @@ namespace OxidEsales\EshopCommunity\Tests\OxidAcceptance\Page;
 
 class OrderCheckout extends Page
 {
-    // include url of current page
-    public static $URL = '';
-
-    public static $billingAddress = '//div[@id="orderAddress"]/div[1]/form/div[2]/div[2]';
-
-    public static $deliveryAddress = '//div[@id="orderAddress"]/div[2]/form/div[2]/div[2]';
-
-    public static $userRemarkHeader = '//div[@class="panel panel-default orderRemarks"]/div[1]/h3';
-
-    public static $userRemark = '//div[@class="panel panel-default orderRemarks"]/div[2]';
-
-    /**
-     * Basic route example for your current URL
-     * You can append any additional parameter to URL
-     * and use it in tests like: Page\Edit::route('/123-post');
-     */
-    public static function route($param)
-    {
-        return static::$URL.$param;
-    }
+    protected $webElementName = 'WebElement\OrderCheckout';
 
     public function clickOnSubmitOrder()
     {
@@ -35,7 +16,7 @@ class OrderCheckout extends Page
     {
         $I = $this->user;
         $addressInfo = $this->convertBillInformationIntoString($userBillAddress);
-        $I->assertEquals($I->clearString($addressInfo), $I->clearString($I->grabTextFrom(self::$billingAddress)));
+        $I->assertEquals($I->clearString($addressInfo), $I->clearString($I->grabTextFrom($this->webElement->billingAddress)));
         return $this;
     }
 
@@ -43,15 +24,15 @@ class OrderCheckout extends Page
     {
         $I = $this->user;
         $addressInfo = $this->convertDeliveryAddressIntoString($userDelAddress);
-        $I->assertEquals($I->clearString($addressInfo), $I->clearString($I->grabTextFrom(self::$deliveryAddress)));
+        $I->assertEquals($I->clearString($addressInfo), $I->clearString($I->grabTextFrom($this->webElement->deliveryAddress)));
         return $this;
     }
 
     public function validateRemarkText($userRemarkText)
     {
         $I = $this->user;
-        $I->see($I->translate('WHAT_I_WANTED_TO_SAY'), self::$userRemarkHeader);
-        $I->see($userRemarkText, self::$userRemark);
+        $I->see($I->translate('WHAT_I_WANTED_TO_SAY'), $this->webElement->userRemarkHeader);
+        $I->see($userRemarkText, $this->webElement->userRemark);
         return $this;
     }
 

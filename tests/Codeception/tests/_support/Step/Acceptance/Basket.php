@@ -1,5 +1,5 @@
 <?php
-namespace OxidEsales\EshopCommunity\Tests\OxidAcceptance\Step\Acceptance;
+namespace Step\Acceptance;
 
 use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Page\Header\MiniBasket;
 use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Page\UserCheckout;

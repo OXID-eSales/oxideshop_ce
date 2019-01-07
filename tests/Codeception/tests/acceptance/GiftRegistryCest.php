@@ -1,7 +1,7 @@
 <?php
 
-use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Step\Acceptance\ProductNavigation;
-use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Step\Acceptance\Start;
+use Step\Acceptance\ProductNavigation;
+use Step\Acceptance\Start;
 
 class GiftRegistryCest
 {
@@ -87,7 +87,7 @@ class GiftRegistryCest
 
         //open product details page
         $detailsPage = $giftRegistryPage->openProductDetailsPage(1);
-        $I->see($productData['title'], $detailsPage::$productTitle);
+        $I->see($productData['title'], $detailsPage->productTitle);
 
         $giftRegistryPage = $detailsPage->openUserGiftRegistryPage()
             ->addProductToBasket(1, 2);
@@ -206,7 +206,7 @@ class GiftRegistryCest
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
         $I->see($productData['title']);
 
-        $I->dontSeeElement($detailsPage::$addToGiftRegistryLink);
+        $I->dontSeeElement($detailsPage->addToGiftRegistryLink);
         $detailsPage->openAccountMenu();
         $I->dontSee($I->translate('MY_GIFT_REGISTRY'));
         $detailsPage->closeAccountMenu();

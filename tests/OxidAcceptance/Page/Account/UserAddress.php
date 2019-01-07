@@ -9,39 +9,7 @@ class UserAddress extends Page
 {
     use UserForm, AccountNavigation, AccountMenu;
 
-    // include url of current page
-    public static $URL = '/en/my-address/';
-
-    // include bread crumb of current page
-    public static $breadCrumb = '#breadcrumb';
-
-    public static $headerTitle = 'h1';
-
-    public static $openBillingAddressFormButton = '#userChangeAddress';
-
-    public static $userEmail = 'invadr[oxuser__oxusername]';
-
-    public static $userPassword = '//input[@name="user_password"]';
-
-    public static $saveUserAddressButton = '#accUserSaveTop';
-
-    public static $billingAddress = '#addressText';
-
-    public static $shippingAddress = '//div[@id="shippingAddress"]/div[1]/div[%s]/div/div[1]';
-
-    public static $openShipAddressPanel = '#showShipAddress';
-
-    public static $shipAddressPanel = '#shippingAddress';
-
-    public static $shipAddressForm = '#shippingAddressForm';
-
-    public static $openShipAddressForm = '//div[@id="shippingAddress"]/div[1]/div[%s]/div/div[1]/button[1]';
-
-    public static $deleteShipAddress = '//div[@id="shippingAddress"]/div[1]/div[%s]/div/div[1]/button[2]';
-
-    public static $selectShipAddress = '//div[@id="shippingAddress"]/div[1]/div[%s]/div/div[2]/label';
-
-    public static $newShipAddressForm = '//div[@class="panel panel-default dd-add-delivery-address"]';
+    protected $webElementName = 'WebElement\UserAddress';
 
     /**
      * @return $this
@@ -49,7 +17,7 @@ class UserAddress extends Page
     public function openUserBillingAddressForm()
     {
         $I = $this->user;
-        $I->click(self::$openBillingAddressFormButton);
+        $I->click($this->webElement->openBillingAddressFormButton);
         $I->waitForElementVisible(UserForm::$billCountryId);
         return $this;
     }
@@ -60,9 +28,9 @@ class UserAddress extends Page
     public function openShippingAddressForm()
     {
         $I = $this->user;
-        $I->click(self::$openShipAddressPanel);
-        $I->waitForElementVisible(self::$shipAddressPanel);
-        $I->dontSeeCheckboxIsChecked(self::$openShipAddressPanel);
+        $I->click($this->webElement->openShipAddressPanel);
+        $I->waitForElementVisible($this->webElement->shipAddressPanel);
+        $I->dontSeeCheckboxIsChecked($this->webElement->openShipAddressPanel);
         return $this;
     }
 
@@ -72,8 +40,8 @@ class UserAddress extends Page
     public function selectNewShippingAddress()
     {
         $I = $this->user;
-        $I->click(self::$newShipAddressForm);
-        $I->waitForElementVisible(self::$shipAddressForm);
+        $I->click($this->webElement->newShipAddressForm);
+        $I->waitForElementVisible($this->webElement->shipAddressForm);
         return $this;
     }
 
@@ -83,10 +51,10 @@ class UserAddress extends Page
     public function selectShippingAddress($id)
     {
         $I = $this->user;
-        $I->click(sprintf(self::$selectShipAddress, $id));
-        $I->waitForElementVisible(sprintf(self::$openShipAddressForm, $id));
-        $I->click(sprintf(self::$openShipAddressForm, $id));
-        $I->waitForElementVisible(self::$shipAddressForm);
+        $I->click(sprintf($this->webElement->selectShipAddress, $id));
+        $I->waitForElementVisible(sprintf($this->webElement->openShipAddressForm, $id));
+        $I->click(sprintf($this->webElement->openShipAddressForm, $id));
+        $I->waitForElementVisible($this->webElement->shipAddressForm);
         return $this;
     }
 
@@ -96,9 +64,9 @@ class UserAddress extends Page
     public function deleteShippingAddress($id)
     {
         $I = $this->user;
-        $I->click(sprintf(self::$selectShipAddress, $id));
-        $I->waitForElementVisible(sprintf(self::$deleteShipAddress, $id));
-        $I->click(sprintf(self::$deleteShipAddress, $id));
+        $I->click(sprintf($this->webElement->selectShipAddress, $id));
+        $I->waitForElementVisible(sprintf($this->webElement->deleteShipAddress, $id));
+        $I->click(sprintf($this->webElement->deleteShipAddress, $id));
         $I->click($I->translate('DELETE'));
         return $this;
     }
@@ -109,7 +77,7 @@ class UserAddress extends Page
     public function saveAddress()
     {
         $I = $this->user;
-        $I->click(self::$saveUserAddressButton);
+        $I->click($this->webElement->saveUserAddressButton);
         return $this;
     }
 
@@ -119,9 +87,9 @@ class UserAddress extends Page
     public function changeEmail($newEmail, $password)
     {
         $I = $this->user;
-        $I->fillField(self::$userEmail, $newEmail);
-        $I->waitForElementVisible(self::$userPassword);
-        $I->fillField(self::$userPassword, $password);
+        $I->fillField($this->webElement->userEmail, $newEmail);
+        $I->waitForElementVisible($this->webElement->userPassword);
+        $I->fillField($this->webElement->userPassword, $password);
         return $this->saveAddress();
     }
 
@@ -134,7 +102,7 @@ class UserAddress extends Page
     {
         $I = $this->user;
         $addressInfo = $this->convertBillInformationIntoString($userBillAddress);
-        $I->assertEquals($I->clearString($addressInfo), $I->clearString($I->grabTextFrom(self::$billingAddress)));
+        $I->assertEquals($I->clearString($addressInfo), $I->clearString($I->grabTextFrom($this->webElement->billingAddress)));
         return $this;
     }
 
@@ -148,7 +116,7 @@ class UserAddress extends Page
     {
         $I = $this->user;
         $addressInfo = $this->convertDeliveryAddressIntoString($userDelAddress);
-        $selectedShippingAddress = sprintf(self::$shippingAddress, $id);
+        $selectedShippingAddress = sprintf($this->webElement->shippingAddress, $id);
         $I->assertEquals($I->clearString($addressInfo), $I->clearString($I->grabTextFrom($selectedShippingAddress)));
         return $this;
     }

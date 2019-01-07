@@ -15,6 +15,7 @@ modules:
             window_size: 1920x1080
             clear_cookies: true
         - \Helper\Acceptance
+        - \Helper\ContainerModule
         - \Helper\TranslationsModule:
             shop_path: '%SHOP_SOURCE_PATH%'
             paths: 'Application/views/flow'

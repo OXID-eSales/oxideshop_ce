@@ -3,13 +3,13 @@ namespace OxidEsales\EshopCommunity\Tests\OxidAcceptance\Page\Account;
 
 trait AccountNavigation
 {
-    public static $newsletterSettingsLink = '//nav[@id="account_menu"]';
+    public $newsletterSettingsLink = '//nav[@id="account_menu"]';
 
-    public static $addressSettingsLink = '//nav[@id="account_menu"]';
+    public $addressSettingsLink = '//nav[@id="account_menu"]';
 
-    public static $giftRegistryLink = '//nav[@id="account_menu"]';
+    public $giftRegistryLink = '//nav[@id="account_menu"]';
 
-    public static $wishListLink = '//nav[@id="account_menu"]';
+    public $wishListLink = '//nav[@id="account_menu"]';
 
     /**
      * Opens account_newsletter page

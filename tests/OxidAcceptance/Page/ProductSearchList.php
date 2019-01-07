@@ -7,25 +7,16 @@ class ProductSearchList extends Page
 {
     use LanguageMenu;
 
-    // include url of current page
-    public static $URL = '';
-
-    public static $listItemTitle = '#searchList_%s';
-
-    public static $listItemDescription = '//form[@name="tobasketsearchList_%s"]/div[2]/div[2]/div/div[@class="shortdesc"]';
-
-    public static $listItemPrice = '//form[@name="tobasketsearchList_%s"]/div[2]/div[2]/div/div[@class="price"]/div/span[@class="lead text-nowrap"]';
-
-    public static $variantSelection = '#variantselector_searchList_%s button';
+    protected $webElementName = 'WebElement\ProductSearchList';
 
     /**
      * Basic route example for your current URL
      * You can append any additional parameter to URL
      * and use it in tests like: Page\Edit::route('/123-post');
      */
-    public static function route($param)
+    public function route($param)
     {
-        return static::$URL.'/index.php?'.http_build_query(['cl' => 'search', 'searchparam' => $param]);
+        return $this->webElement->URL.'/index.php?'.http_build_query(['cl' => 'search', 'searchparam' => $param]);
     }
 
     /**
@@ -37,9 +28,9 @@ class ProductSearchList extends Page
     public function seeProductData($productData, $itemId = 1)
     {
         $I = $this->user;
-        $I->see($productData['title'], sprintf(self::$listItemTitle, $itemId));
-        $I->see($productData['desc'], sprintf(self::$listItemDescription, $itemId));
-        $I->see($productData['price'], sprintf(self::$listItemPrice, $itemId));
+        $I->see($productData['title'], sprintf($this->webElement->listItemTitle, $itemId));
+        $I->see($productData['desc'], sprintf($this->webElement->listItemDescription, $itemId));
+        $I->see($productData['price'], sprintf($this->webElement->listItemPrice, $itemId));
         return $this;
     }
 
@@ -53,7 +44,7 @@ class ProductSearchList extends Page
     public function selectVariant($itemId, $variantValue, $waitForText = null)
     {
         $I = $this->user;
-        $I->click(sprintf(self::$variantSelection, $itemId));
+        $I->click(sprintf($this->webElement->variantSelection, $itemId));
         $I->click($variantValue);
         //wait for JS to finish
         $I->waitForJS("return $.active == 0;",10);
@@ -68,7 +59,7 @@ class ProductSearchList extends Page
     public function openProductDetailsPage($itemId)
     {
         $I = $this->user;
-        $I->click(sprintf(self::$listItemTitle, $itemId));
+        $I->click(sprintf($this->webElement->listItemTitle, $itemId));
         return new ProductDetails($I);
     }
 }

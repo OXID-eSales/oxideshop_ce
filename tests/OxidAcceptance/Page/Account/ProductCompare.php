@@ -9,29 +9,7 @@ class ProductCompare extends Page
 {
     use MiniBasket;
 
-    // include url of current page
-    public static $URL = '/en/my-product-comparison/';
-
-    // include bread crumb of current page
-    public static $breadCrumb = '#breadcrumb';
-
-    public static $headerTitle = 'h1';
-
-    public static $productTitle = '//tr[@class="products"]/td[%s]/div[2]/strong/a';
-
-    public static $productNumber = '//tr[@class="products"]/td[%s]/div[2]/span';
-
-    public static $productPrice = '//tr[@class="products"]/td[%s]/div[2]/form[1]/div[2]/div[1]/span[1]';
-
-    public static $attributeName = '//div[@id="compareLandscape"]/table/tbody/tr[%s]/th';
-
-    public static $attributeValue = '//div[@id="compareLandscape"]/table/tbody/tr[%s]/td[%s]';
-
-    public static $rightArrow = '#compareRight_%s';
-
-    public static $leftArrow = '#compareLeft_%s';
-
-    public static $removeButton = '#remove_cmp_%s';
+    protected $webElementName = 'WebElement\MiniBasket';
 
     /**
      * @param array $productData
@@ -42,10 +20,10 @@ class ProductCompare extends Page
     public function seeProductData($productData, $position = 1)
     {
         $I = $this->user;
-        $I->see($I->translate('PRODUCT_NO').': '.$productData['id'], sprintf(self::$productNumber, $position));
-        $I->see($productData['title'], sprintf(self::$productTitle, $position));
+        $I->see($I->translate('PRODUCT_NO').': '.$productData['id'], sprintf($this->webElement->productNumber, $position));
+        $I->see($productData['title'], sprintf($this->webElement->productTitle, $position));
         // TODO: uncomment
-        //$I->see($productData['price'], sprintf(self::$productPrice, $id));
+        //$I->see($productData['price'], sprintf($this->webElement->productPrice, $id));
         return $this;
     }
 
@@ -58,7 +36,7 @@ class ProductCompare extends Page
     public function seeProductAttributeName($attributeName, $attributeId)
     {
         $I = $this->user;
-        $I->see($attributeName, sprintf(self::$attributeName, ($attributeId+1)));
+        $I->see($attributeName, sprintf($this->webElement->attributeName, ($attributeId+1)));
         return $this;
     }
 
@@ -72,7 +50,7 @@ class ProductCompare extends Page
     public function seeProductAttributeValue($attributeValue, $attributeId, $position)
     {
         $I = $this->user;
-        $I->see($attributeValue, sprintf(self::$attributeValue, ($attributeId+1), $position));
+        $I->see($attributeValue, sprintf($this->webElement->attributeValue, ($attributeId+1), $position));
         return $this;
     }
 
@@ -86,7 +64,7 @@ class ProductCompare extends Page
     public function openProductDetailsPage($id)
     {
         $I = $this->user;
-        $I->click(sprintf(self::$productTitle, $id));
+        $I->click(sprintf($this->webElement->productTitle, $id));
         return new ProductDetails($I);
     }
 
@@ -98,7 +76,7 @@ class ProductCompare extends Page
     public function moveItemToRight($productId)
     {
         $I = $this->user;
-        $I->click(sprintf(self::$rightArrow, $productId));
+        $I->click(sprintf($this->webElement->rightArrow, $productId));
         return $this;
     }
 
@@ -110,7 +88,7 @@ class ProductCompare extends Page
     public function moveItemToLeft($productId)
     {
         $I = $this->user;
-        $I->click(sprintf(self::$leftArrow, $productId));
+        $I->click(sprintf($this->webElement->leftArrow, $productId));
         return $this;
     }
 
@@ -122,7 +100,7 @@ class ProductCompare extends Page
     public function removeProductFromList($productId)
     {
         $I = $this->user;
-        $I->click(sprintf(self::$removeButton, $productId));
+        $I->click(sprintf($this->webElement->removeButton, $productId));
         return $this;
     }
 

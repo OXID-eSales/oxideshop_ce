@@ -7,22 +7,7 @@ class UserCheckout extends Page
 {
     use UserForm, Navigation;
 
-    // include url of current page
-    public static $URL = '';
-
-    public static $noRegistrationOption = '//div[@id="optionNoRegistration"]/div/button';
-
-    public static $registrationOption = '//div[@id="optionRegistration"]/div[3]/button';
-
-    public static $openShipAddressForm = '#showShipAddress';
-
-    public static $orderRemark = '#orderRemark';
-
-    // include bread crumb of current page
-    public static $breadCrumb = '#breadcrumb';
-
-    //save form button
-    public static $nextStepButton = '#userNextStepBottom';
+    protected $webElementName = 'WebElement\UserCheckout';
 
     /**
      * @return $this
@@ -31,7 +16,7 @@ class UserCheckout extends Page
     {
         $I = $this->user;
         $I->see($I->translate('PURCHASE_WITHOUT_REGISTRATION'));
-        $I->click(self::$noRegistrationOption);
+        $I->click($this->webElement->noRegistrationOption);
         return $this;
     }
 
@@ -41,7 +26,7 @@ class UserCheckout extends Page
     public function selectOptionRegisterNewAccount()
     {
         $I = $this->user;
-        $I->click(self::$registrationOption);
+        $I->click($this->webElement->registrationOption);
         return $this;
     }
 
@@ -51,8 +36,8 @@ class UserCheckout extends Page
     public function goToNextStep()
     {
         $I = $this->user;
-        $I->click(self::$nextStepButton);
-        $I->waitForElement(self::$breadCrumb);
+        $I->click($this->webElement->nextStepButton);
+        $I->waitForElement($this->webElement->breadCrumb);
         return new PaymentCheckout($I);
     }
 
@@ -62,8 +47,8 @@ class UserCheckout extends Page
     public function tryToRegisterUser()
     {
         $I = $this->user;
-        $I->click(self::$nextStepButton);
-        $I->waitForElement(self::$breadCrumb);
+        $I->click($this->webElement->nextStepButton);
+        $I->waitForElement($this->webElement->breadCrumb);
         return $this;
     }
 
@@ -73,8 +58,8 @@ class UserCheckout extends Page
     public function openShippingAddressForm()
     {
         $I = $this->user;
-        $I->click(self::$openShipAddressForm);
-        $I->dontSeeCheckboxIsChecked(self::$openShipAddressForm);
+        $I->click($this->webElement->openShipAddressForm);
+        $I->dontSeeCheckboxIsChecked($this->webElement->openShipAddressForm);
         return $this;
     }
 
@@ -86,7 +71,7 @@ class UserCheckout extends Page
     public function enterOrderRemark($orderRemark)
     {
         $I = $this->user;
-        $I->fillField(self::$orderRemark, $orderRemark);
+        $I->fillField($this->webElement->orderRemark, $orderRemark);
         return $this;
     }
 }

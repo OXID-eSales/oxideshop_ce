@@ -1,6 +1,6 @@
 <?php
 
-use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Step\Acceptance\Basket;
+use Step\Acceptance\Basket;
 
 class CheckoutProcessCest
 {

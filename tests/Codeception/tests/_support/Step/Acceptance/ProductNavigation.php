@@ -1,11 +1,10 @@
 <?php
-namespace OxidEsales\EshopCommunity\Tests\OxidAcceptance\Step\Acceptance;
+namespace Step\Acceptance;
 
 use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Page\ProductDetails;
 
 class ProductNavigation extends \AcceptanceTester
 {
-
     /**
      * Open product details page.
      *
@@ -17,7 +16,9 @@ class ProductNavigation extends \AcceptanceTester
     {
         $I = $this;
 
-        $I->amOnPage(ProductDetails::route($productId));
-        return new ProductDetails($I);
+        $page = new ProductDetails($I);
+
+        $I->amOnPage($page->route($productId));
+        return $page;
     }
 }

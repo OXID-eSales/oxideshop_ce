@@ -11,43 +11,7 @@ class UserGiftRegistry extends Page
 {
     use MiniBasket, AccountMenu;
 
-    // include url of current page
-    public static $URL = '/en/my-gift-registry/';
-
-    // include bread crumb of current page
-    public static $breadCrumb = '#breadcrumb';
-
-    public static $headerTitle = 'h1';
-
-    public static $publicSelection = '#wishlist_blpublic';
-
-    public static $saveButton = '';
-
-    public static $giftRegistrySearch = '#input_account_wishlist';
-
-    public static $searchButton = '';
-
-    public static $foundListLink = '//ul[@class="wishlistResults"]/li/a';
-
-    public static $recipientName = 'editval[rec_name]';
-
-    public static $recipientEmail = 'editval[rec_email]';
-
-    public static $emailMessage = 'editval[send_message]';
-
-    public static $sendEmailButton = '';
-
-    public static $removeFromGitRegistry = '//button[@triggerform="remove_towishlistwishlistProductList_%s"]';
-
-    public static $productTitle = '#wishlistProductList_%s';
-
-    public static $productDescription = '//div[@id="wishlistProductList"]/div[%s]/div/form[1]/div[2]/div[2]/div[2]';
-
-    public static $productPrice = '#productPrice_wishlistProductList_%s';
-
-    public static $basketAmount = '#amountToBasket_wishlistProductList_%s';
-
-    public static $toBasketButton = '#toBasket_wishlistProductList_%s';
+    protected $webElementName = 'WebElement\UserGiftRegistry';
 
     /**
      * @param string $userName
@@ -57,7 +21,7 @@ class UserGiftRegistry extends Page
     public function searchForGiftRegistry($userName)
     {
         $I = $this->user;
-        $I->fillField(self::$giftRegistrySearch, $userName);
+        $I->fillField($this->webElement->giftRegistrySearch, $userName);
         $I->click($I->translate('SEARCH'));
         return $this;
     }
@@ -70,7 +34,7 @@ class UserGiftRegistry extends Page
     public function openFoundGiftRegistryList()
     {
         $I = $this->user;
-        $I->click(self::$foundListLink);
+        $I->click($this->webElement->foundListLink);
         $breadCrumb = $I->translate('YOU_ARE_HERE').':'.$I->translate('PUBLIC_GIFT_REGISTRIES');
         $I->see($breadCrumb, GiftRegistry::$breadCrumb);
         return new GiftRegistry($I);
@@ -87,9 +51,9 @@ class UserGiftRegistry extends Page
     {
         $I = $this->user;
         $this->openGiftRegistryEmailForm();
-        $I->fillField(self::$recipientName, $recipient);
-        $I->fillField(self::$recipientEmail, $email);
-        $I->fillField(self::$emailMessage, $message);
+        $I->fillField($this->webElement->recipientName, $recipient);
+        $I->fillField($this->webElement->recipientEmail, $email);
+        $I->fillField($this->webElement->emailMessage, $message);
         $I->click($I->translate('SUBMIT'));
         return $this;
     }
@@ -103,7 +67,7 @@ class UserGiftRegistry extends Page
         $I->click($I->translate('MESSAGE_SEND_GIFT_REGISTRY'));
         $I->waitForText($I->translate('SEND_GIFT_REGISTRY'));
         $breadCrumb = $I->translate('YOU_ARE_HERE').':'.$I->translate('MY_ACCOUNT').$I->translate('MY_GIFT_REGISTRY');
-        $I->see($breadCrumb, self::$breadCrumb);
+        $I->see($breadCrumb, $this->webElement->breadCrumb);
         return $this;
     }
 
@@ -115,7 +79,7 @@ class UserGiftRegistry extends Page
     public function removeFromGiftRegistry($itemPosition)
     {
         $I = $this->user;
-        $I->click(sprintf(self::$removeFromGitRegistry, $itemPosition));
+        $I->click(sprintf($this->webElement->removeFromGitRegistry, $itemPosition));
         return $this;
     }
 
@@ -125,7 +89,7 @@ class UserGiftRegistry extends Page
     public function makeListSearchable()
     {
         $I = $this->user;
-        $I->selectOption(self::$publicSelection, 1);
+        $I->selectOption($this->webElement->publicSelection, 1);
         $I->click($I->translate('SAVE'));
         return $this;
     }
@@ -136,7 +100,7 @@ class UserGiftRegistry extends Page
     public function makeListNotSearchable()
     {
         $I = $this->user;
-        $I->selectOption(self::$publicSelection, 0);
+        $I->selectOption($this->webElement->publicSelection, 0);
         $I->click($I->translate('SAVE'));
         return $this;
     }
@@ -150,9 +114,9 @@ class UserGiftRegistry extends Page
     public function seeProductData($productData, $itemPosition = 1)
     {
         $I = $this->user;
-        $I->see($productData['title'], sprintf(self::$productTitle, $itemPosition));
-        $I->see($productData['desc'], sprintf(self::$productDescription, $itemPosition));
-        $I->see($productData['price'], sprintf(self::$productPrice, $itemPosition));
+        $I->see($productData['title'], sprintf($this->webElement->productTitle, $itemPosition));
+        $I->see($productData['desc'], sprintf($this->webElement->productDescription, $itemPosition));
+        $I->see($productData['price'], sprintf($this->webElement->productPrice, $itemPosition));
         return $this;
     }
 
@@ -164,7 +128,7 @@ class UserGiftRegistry extends Page
     public function openProductDetailsPage($itemPosition)
     {
         $I = $this->user;
-        $I->click(sprintf(self::$productTitle, $itemPosition));
+        $I->click(sprintf($this->webElement->productTitle, $itemPosition));
         return new ProductDetails($I);
     }
 
@@ -177,8 +141,8 @@ class UserGiftRegistry extends Page
     public function addProductToBasket($itemPosition, $amount)
     {
         $I = $this->user;
-        $I->fillField(sprintf(self::$basketAmount, $itemPosition), $amount);
-        $I->click(sprintf(self::$toBasketButton, $itemPosition));
+        $I->fillField(sprintf($this->webElement->basketAmount, $itemPosition), $amount);
+        $I->click(sprintf($this->webElement->toBasketButton, $itemPosition));
         return $this;
     }
 

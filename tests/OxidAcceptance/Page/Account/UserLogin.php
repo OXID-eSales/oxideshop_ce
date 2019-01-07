@@ -5,19 +5,7 @@ use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Page\Page;
 
 class UserLogin extends Page
 {
-    // include url of current page
-    public static $URL = '/en/my-account/';
-
-    // include bread crumb of current page
-    public static $breadCrumb = '#breadcrumb';
-
-    public static $userAccountLoginName = '#loginUser';
-
-    public static $userAccountLoginPassword = '#loginPwd';
-
-    public static $userAccountLoginButton = '#loginButton';
-
-    public static $userForgotPasswordLink = '#forgotPasswordLink';
+    protected $webElementName = 'WebElement\UserLogin';
 
     /**
      * @param $userName
@@ -28,9 +16,9 @@ class UserLogin extends Page
     public function login($userName, $userPassword)
     {
         $I = $this->user;
-        $I->fillField(self::$userAccountLoginName, $userName);
-        $I->fillField(self::$userAccountLoginPassword, $userPassword);
-        $I->click(self::$userAccountLoginButton);
+        $I->fillField($this->webElement->userAccountLoginName, $userName);
+        $I->fillField($this->webElement->userAccountLoginPassword, $userPassword);
+        $I->click($this->webElement->userAccountLoginButton);
         $I->dontSee($I->translate('LOGIN'));
         return new UserAccount($I);
     }
@@ -44,7 +32,7 @@ class UserLogin extends Page
     {
         /** @var \AcceptanceTester $I */
         $I = $this->user;
-        $I->click(self::$userForgotPasswordLink);
+        $I->click($this->webElement->userForgotPasswordLink);
         $breadCrumbName = $I->translate("YOU_ARE_HERE") . ":" . $I->translate("FORGOT_PASSWORD");
         $I->see($breadCrumbName, UserPasswordReminder::$breadCrumb);
         return new UserPasswordReminder($I);

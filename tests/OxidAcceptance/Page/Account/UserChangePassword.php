@@ -8,21 +8,7 @@ class UserChangePassword extends Page
 {
     use AccountMenu;
 
-    // include url of current page
-    public static $URL = '/en/my-password/';
-
-    // include bread crumb of current page
-    public static $breadCrumb = '#breadcrumb';
-
-    public static $userOldPassword = '#passwordOld';
-
-    public static $userNewPassword = '#passwordNew';
-
-    public static $userConfirmNewPassword = '#passwordNewConfirm';
-
-    public static $userChangePasswordButton = '#savePass';
-
-    public static $errorMessage = '//div[@class="alert alert-danger"]';
+    protected $webElementName = 'WebElement\UserChangePassword';
 
     /**
      * Fill the password fields.
@@ -36,9 +22,9 @@ class UserChangePassword extends Page
     public function enterPasswords($oldPassword, $newPassword, $confirmPassword)
     {
         $I = $this->user;
-        $I->fillField(self::$userOldPassword, $oldPassword);
-        $I->fillField(self::$userNewPassword, $newPassword);
-        $I->fillField(self::$userConfirmNewPassword, $confirmPassword);
+        $I->fillField($this->webElement->userOldPassword, $oldPassword);
+        $I->fillField($this->webElement->userNewPassword, $newPassword);
+        $I->fillField($this->webElement->userConfirmNewPassword, $confirmPassword);
         return $this;
     }
 
@@ -55,7 +41,7 @@ class UserChangePassword extends Page
     {
         $I = $this->user;
         $this->enterPasswords($oldPassword, $newPassword, $confirmPassword);
-        $I->click(self::$userChangePasswordButton);
+        $I->click($this->webElement->userChangePasswordButton);
         return $this;
     }
 

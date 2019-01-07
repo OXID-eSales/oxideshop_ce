@@ -1,0 +1,10 @@
+services:
+  WebElement\ProductDetails:
+    class: OxidEsales\EshopCommunity\Tests\OxidAcceptance\WebElement\ProductDetails
+    public: true
+  WebElement\Basket:
+    class: OxidEsales\EshopCommunity\Tests\OxidAcceptance\WebElement\Basket
+    public: true
+  WebElement\Base:
+    class: OxidEsales\EshopCommunity\Tests\OxidAcceptance\WebElement\Base
+    public: true

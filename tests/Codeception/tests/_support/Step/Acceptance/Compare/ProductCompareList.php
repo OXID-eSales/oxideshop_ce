@@ -1,5 +1,5 @@
 <?php
-namespace OxidEsales\EshopCommunity\Tests\OxidAcceptance\Step\Acceptance\Compare;
+namespace Step\Acceptance\Compare;
 
 use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Page\ProductDetails;
 

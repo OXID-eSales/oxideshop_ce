@@ -9,25 +9,7 @@ class UserWishList extends Page
 {
     use MiniBasket;
 
-    // include url of current page
-    public static $URL = '/en/my-wish-list/';
-
-    // include bread crumb of current page
-    public static $breadCrumb = '#breadcrumb';
-
-    public static $headerTitle = 'h1';
-
-    public static $productTitle = '#noticelistProductList_%s';
-
-    public static $productDescription = '//div[@id="noticelistProductList"]/div[%s]/div/form[1]/div[2]/div[2]/div[2]';
-
-    public static $productPrice = '#productPrice_noticelistProductList_%s';
-
-    public static $basketAmount = '#amountToBasket_noticelistProductList_%s';
-
-    public static $toBasketButton = '#toBasket_noticelistProductList_%s';
-
-    public static $removeButton = '//button[@triggerform="remove_tonoticelistnoticelistProductList_%s"]';
+    protected $webElementName = 'WebElement\UserWishList';
 
     /**
      * @param array $productData
@@ -38,9 +20,9 @@ class UserWishList extends Page
     public function seeProductData($productData, $itemPosition = 1)
     {
         $I = $this->user;
-        $I->see($productData['title'], sprintf(self::$productTitle, $itemPosition));
-        $I->see($productData['desc'], sprintf(self::$productDescription, $itemPosition));
-        $I->see($productData['price'], sprintf(self::$productPrice, $itemPosition));
+        $I->see($productData['title'], sprintf($this->webElement->productTitle, $itemPosition));
+        $I->see($productData['desc'], sprintf($this->webElement->productDescription, $itemPosition));
+        $I->see($productData['price'], sprintf($this->webElement->productPrice, $itemPosition));
         return $this;
     }
 
@@ -52,7 +34,7 @@ class UserWishList extends Page
     public function openProductDetailsPage($itemPosition)
     {
         $I = $this->user;
-        $I->click(sprintf(self::$productTitle, $itemPosition));
+        $I->click(sprintf($this->webElement->productTitle, $itemPosition));
         return new ProductDetails($I);
     }
 
@@ -65,8 +47,8 @@ class UserWishList extends Page
     public function addProductToBasket($itemPosition, $amount)
     {
         $I = $this->user;
-        $I->fillField(sprintf(self::$basketAmount, $itemPosition), $amount);
-        $I->click(sprintf(self::$toBasketButton, $itemPosition));
+        $I->fillField(sprintf($this->webElement->basketAmount, $itemPosition), $amount);
+        $I->click(sprintf($this->webElement->toBasketButton, $itemPosition));
         return $this;
     }
 
@@ -78,7 +60,7 @@ class UserWishList extends Page
     public function removeProductFromList($itemPosition)
     {
         $I = $this->user;
-        $I->click(sprintf(self::$removeButton, $itemPosition));
+        $I->click(sprintf($this->webElement->removeButton, $itemPosition));
         return $this;
     }
 

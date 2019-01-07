@@ -19,7 +19,6 @@
         "symfony/event-dispatcher": "^3.4",
         "symfony/dependency-injection": "^3.4",
         "symfony/console": "^v3.4.15",
-        "oxid-esales/varnish-module": "dev-varnish_module-OXDEV-1387",
         "oxid-esales/oxideshop-pe": "dev-master",
         "oxid-esales/oxideshop-ee": "dev-flow_theme_acc_tests-ARC-24",
         "symfony/translation": "^4.2"

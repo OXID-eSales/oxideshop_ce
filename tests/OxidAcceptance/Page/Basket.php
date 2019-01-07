@@ -7,25 +7,7 @@ class Basket extends Page
 {
     use MiniBasket;
 
-    // include url of current page
-    public static $URL = '';
-
-    // include bread crumb of current page
-    public static $breadCrumb = '#breadcrumb';
-
-    public static $basketSummary = '#basketGrandTotal';
-
-    public static $basketItemAmount = '#basketcontents_table #am_%s';
-
-    public static $basketItemTotalPrice = '//tr[@id="table_cartItem_%s"]/td[@class="totalPrice"]';
-
-    public static $basketItemTitle = '//tr[@id="table_cartItem_%s"]/td[2]/div[2]/a';
-
-    public static $basketItemId = '//tr[@id="table_cartItem_%s"]/td[2]/div[2]/div[1]';
-
-    public static $basketBundledItemAmount = '//tr[@id="table_cartItem_%s"]/td[4]';
-
-    public static $basketUpdateButton = '#basketcontents_table #basketUpdate';
+    protected $webElementName = 'WebElement\Basket';
 
     /**
      * Declare UI map for this page here. CSS or XPath allowed.
@@ -38,9 +20,9 @@ class Basket extends Page
      * You can append any additional parameter to URL
      * and use it in tests like: Page\Edit::route('/123-post');
      */
-    public static function route($params)
+    public function route($params)
     {
-        return static::$URL.'/index.php?'.http_build_query($params);
+        return $this->webElement->URL.'/index.php?'.http_build_query($params);
     }
 
     /**
@@ -55,7 +37,7 @@ class Basket extends Page
     {
         $I = $this->user;
         $I->fillField('#basketcontents_table #am_1', $amount);
-        $I->click(self::$basketUpdateButton);
+        $I->click($this->webElement->basketUpdateButton);
         return $this;
     }
 
@@ -77,12 +59,12 @@ class Basket extends Page
         $I = $this->user;
         foreach ($basketProducts as $key => $basketProduct) {
             $itemPosition = $key + 1;
-            $I->see($I->translate('PRODUCT_NO') . ' ' . $basketProduct['id'], sprintf(self::$basketItemId, $itemPosition));
-            $I->see($basketProduct['title'], sprintf(self::$basketItemTitle, $itemPosition));
-            $I->see($basketProduct['totalPrice'], sprintf(self::$basketItemTotalPrice, $itemPosition));
-            $I->seeInField(sprintf(self::$basketItemAmount, $itemPosition), $basketProduct['amount']);
+            $I->see($I->translate('PRODUCT_NO') . ' ' . $basketProduct['id'], sprintf($this->webElement->basketItemId, $itemPosition));
+            $I->see($basketProduct['title'], sprintf($this->webElement->basketItemTitle, $itemPosition));
+            $I->see($basketProduct['totalPrice'], sprintf($this->webElement->basketItemTotalPrice, $itemPosition));
+            $I->seeInField(sprintf($this->webElement->basketItemAmount, $itemPosition), $basketProduct['amount']);
         }
-        $I->see($basketSummaryPrice, self::$basketSummary);
+        $I->see($basketSummaryPrice, $this->webElement->basketSummary);
         return $this;
     }
 
@@ -101,9 +83,9 @@ class Basket extends Page
     public function seeBasketContainsBundledProduct($basketProduct, $itemPosition)
     {
         $I = $this->user;
-        $I->see($I->translate('PRODUCT_NO') . ' ' . $basketProduct['id'], sprintf(self::$basketItemId, $itemPosition));
-        $I->see($basketProduct['title'], sprintf(self::$basketItemTitle, $itemPosition));
-        $I->see($basketProduct['amount'], sprintf(self::$basketBundledItemAmount, $itemPosition));
+        $I->see($I->translate('PRODUCT_NO') . ' ' . $basketProduct['id'], sprintf($this->webElement->basketItemId, $itemPosition));
+        $I->see($basketProduct['title'], sprintf($this->webElement->basketItemTitle, $itemPosition));
+        $I->see($basketProduct['amount'], sprintf($this->webElement->basketBundledItemAmount, $itemPosition));
         return $this;
     }
 
@@ -114,7 +96,7 @@ class Basket extends Page
     {
         $I = $this->user;
         $I->click($I->translate('CONTINUE_TO_NEXT_STEP'));
-        $I->waitForElement(self::$breadCrumb);
+        $I->waitForElement($this->webElement->breadCrumb);
         return new UserCheckout($I);
     }
 }

@@ -3,20 +3,7 @@ namespace OxidEsales\EshopCommunity\Tests\OxidAcceptance\Page;
 
 class NewsletterSubscription extends Page
 {
-    // include url of current page
-    public static $URL = '/en/newsletter/';
-
-    public static $userFirstName = '#newsletterFname';
-
-    public static $userLastName = '#newsletterLname';
-
-    public static $userEmail = '#newsletterUserName';
-
-    public static $newsletterSubmitButton = '#newsLetterSubmit';
-
-    public static $subscribeCheckbox = '#newsletterSubscribeOn';
-
-    public static $unSubscribeCheckbox = '#newsletterSubscribeOff';
+    protected $webElementName = 'WebElement\NewsletterSubscription';
 
     /**
      * Fill fields with user information.
@@ -30,9 +17,9 @@ class NewsletterSubscription extends Page
     public function enterUserData($userEmail, $userFirstName, $userLastName)
     {
         $I = $this->user;
-        $I->fillField(self::$userFirstName, $userFirstName);
-        $I->fillField(self::$userLastName, $userLastName);
-        $I->fillField(self::$userEmail, $userEmail);
+        $I->fillField($this->webElement->userFirstName, $userFirstName);
+        $I->fillField($this->webElement->userLastName, $userLastName);
+        $I->fillField($this->webElement->userEmail, $userEmail);
         return $this;
     }
 
@@ -45,8 +32,8 @@ class NewsletterSubscription extends Page
     {
         /** @var \AcceptanceTester $I */
         $I = $this->user;
-        $I->checkOption(self::$subscribeCheckbox);
-        $I->click(self::$newsletterSubmitButton);
+        $I->checkOption($this->webElement->subscribeCheckbox);
+        $I->click($this->webElement->newsletterSubmitButton);
         return $this;
     }
 }

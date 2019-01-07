@@ -5,17 +5,15 @@ use OxidEsales\EshopCommunity\Tests\OxidAcceptance\Page\Page;
 
 class NewsletterSettings extends Page
 {
-    // include url of current page
-    public static $URL = '/index.php?lang=1&cl=account_newsletter';
+    /**
+     * @var string
+     */
+    protected $webElementName = 'WebElement\NewsletterSettings';
 
-    // include bread crumb of current page
-    public static $breadCrumb = '#breadcrumb';
-
-    public static $headerTitle = 'h1';
-
-    public static $newsletterStatusSelect = '//button[@data-id="status"]';
-
-    public static $newsletterSubscribeButton = '#newsletterSettingsSave';
+    /**
+     * @var \OxidEsales\EshopCommunity\Tests\OxidAcceptance\WebElement\Account\NewsletterSettings
+     */
+    protected $webElement;
 
     /**
      * @return $this
@@ -23,9 +21,9 @@ class NewsletterSettings extends Page
     public function subscribeNewsletter()
     {
         $I = $this->user;
-        $I->click(self::$newsletterStatusSelect);
+        $I->click($this->webElement->newsletterStatusSelect);
         $I->click($I->translate('YES'));
-        $I->click(self::$newsletterSubscribeButton);
+        $I->click($this->webElement->newsletterSubscribeButton);
         $I->see($I->translate('MESSAGE_NEWSLETTER_SUBSCRIPTION_SUCCESS'));
         return $this;
     }
@@ -36,9 +34,9 @@ class NewsletterSettings extends Page
     public function unSubscribeNewsletter()
     {
         $I = $this->user;
-        $I->click(self::$newsletterStatusSelect);
+        $I->click($this->webElement->newsletterStatusSelect);
         $I->click($I->translate('NO'));
-        $I->click(self::$newsletterSubscribeButton);
+        $I->click($this->webElement->newsletterSubscribeButton);
         $I->see($I->translate('MESSAGE_NEWSLETTER_SUBSCRIPTION_CANCELED'));
         return $this;
     }
@@ -53,7 +51,7 @@ class NewsletterSettings extends Page
     public function seeNewsletterSubscribed()
     {
         $I = $this->user;
-        $I->see($I->translate('YES'), self::$newsletterStatusSelect);
+        $I->see($I->translate('YES'), $this->webElement->newsletterStatusSelect);
         return $this;
     }
 
@@ -67,7 +65,7 @@ class NewsletterSettings extends Page
     public function seeNewsletterUnSubscribed()
     {
         $I = $this->user;
-        $I->see($I->translate('NO'), self::$newsletterStatusSelect);
+        $I->see($I->translate('NO'), $this->webElement->newsletterStatusSelect);
         return $this;
     }
 

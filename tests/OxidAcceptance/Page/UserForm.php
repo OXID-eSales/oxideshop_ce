@@ -46,6 +46,14 @@ trait UserForm
     public static $delCountryId = "//button[@data-id='delCountrySelect']";
     public static $delStateId = "//button[@data-id='oxStateSelect_deladr[oxaddress__oxstateid]']";
 
+    protected $webElementName = 'WebElement\Base';
+
+    public function __construct(\AcceptanceTester $I)
+    {
+        $this->user = $I;
+        $this->webElement = $I->grabService($this->webElementName);
+    }
+
     /**
      * @param string $userLoginName
      *

@@ -25,6 +25,7 @@ use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\ModuleEvents;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\SomeModuleService;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
+use OxidEsales\TestingLibrary\Services\Library\DatabaseRestorer\DatabaseRestorer;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
@@ -40,12 +41,23 @@ class ModuleActivationServiceTest extends TestCase
     private $shopId = 1;
     private $environment = 'prod';
     private $testModuleId = 'testModuleId';
+    private $databaseRestorer;
 
     public function setUp()
     {
         $this->container = $this->setupAndConfigureContainer();
 
+        $this->databaseRestorer = new DatabaseRestorer();
+        $this->databaseRestorer->dumpDB(__CLASS__);
+
         parent::setUp();
+    }
+
+    protected function tearDown()
+    {
+        $this->databaseRestorer->restoreDB(__CLASS__);
+
+        parent::tearDown();
     }
 
     public function testActivation()
@@ -121,6 +133,10 @@ class ModuleActivationServiceTest extends TestCase
 
         /** @var ModuleActivationServiceInterface $moduleActivationService */
         $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
+
+        ob_start();
+        $moduleActivationService->activate($this->testModuleId, $this->shopId);
+        ob_end_clean();
 
         ob_start();
         $moduleActivationService->deactivate($this->testModuleId, $this->shopId);

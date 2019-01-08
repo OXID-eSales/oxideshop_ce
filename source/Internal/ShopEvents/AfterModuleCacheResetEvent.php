@@ -17,5 +17,5 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class AfterModuleCacheResetEvent extends Event
 {
-    const NAME = 'oxidesales.aftermodulecachereset';
+    const NAME = self::class;
 }

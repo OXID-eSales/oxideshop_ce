@@ -16,7 +16,7 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class ApplicationModelChangeEvent extends Event
 {
-    const NAME = 'oxidesales.application.modelchange';
+    const NAME = self::class;
 
     /**
      * Calling model class

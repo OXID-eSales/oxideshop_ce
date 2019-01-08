@@ -17,5 +17,5 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class AfterModuleCleanupEvent extends Event
 {
-    const NAME = 'oxidesales.aftermodulecleanup';
+    const NAME = self::class;
 }

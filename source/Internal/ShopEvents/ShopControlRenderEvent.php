@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class ShopControlRenderEvent extends Event
 {
-    const NAME = 'oxidesales.shopcontrol.formOutput';
+    const NAME = self::class;
 
     /**
      * @var \OxidEsales\Eshop\Core\ShopControl

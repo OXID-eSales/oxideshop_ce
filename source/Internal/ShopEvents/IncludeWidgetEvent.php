@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class IncludeWidgetEvent extends Event
 {
-    const NAME = 'oxidesales.smartyfunctionoxid.includeWidget';
+    const NAME = self::class;
 
     /**
      * Result

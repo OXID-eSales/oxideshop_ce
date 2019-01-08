@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class AfterControllerActionEvent extends Event
 {
-    const NAME = 'oxidesales.aftercontrollerexecute';
+    const NAME = self::class;
 
     /**
      * @var string

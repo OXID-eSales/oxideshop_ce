@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class ExitEvent extends Event
 {
-    const NAME = 'oxidesales.utils.prepareToExit';
+    const NAME = self::class;
 
     /**
      * Result

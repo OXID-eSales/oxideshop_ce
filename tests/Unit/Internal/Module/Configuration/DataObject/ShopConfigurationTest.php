@@ -79,4 +79,15 @@ class ShopConfigurationTest extends TestCase
             $this->shopConfiguration->getChain('classes')
         );
     }
+
+    public function testDefaultChains()
+    {
+        $chain = new Chain();
+        $chain->setName(Chain::CLASS_EXTENSIONS);
+
+        $this->assertEquals(
+            $chain,
+            $this->shopConfiguration->getChain(Chain::CLASS_EXTENSIONS)
+        );
+    }
 }

@@ -35,6 +35,11 @@ parameters:
       13: smartyPluginDirectories
 
 services:
+  OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider
+    public: false
+    autowire: true
+
   oxid_esales.module.metadata.datamapper.metadatamapper:
     class: OxidEsales\EshopCommunity\Internal\Module\MetaData\DataMapper\MetaDataMapper
     public: false
@@ -53,9 +58,4 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataNormalizerInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataNormalizer
-    public: false
-
-  oxid_esales.module.metadata.service.metadataprovider:
-    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider
-    autowire: true
     public: false

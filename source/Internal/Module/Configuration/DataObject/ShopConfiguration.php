@@ -1,5 +1,4 @@
-<?php
-declare(strict_types = 1);
+<?php declare(strict_types = 1);
 
 /**
  * Copyright © OXID eSales AG. All rights reserved.
@@ -22,6 +21,16 @@ class ShopConfiguration
      * @var array
      */
     private $chains = [];
+
+    /**
+     * ShopConfiguration constructor.
+     */
+    public function __construct()
+    {
+        $classExtensionChain = new Chain();
+        $classExtensionChain->setName(Chain::CLASS_EXTENSIONS);
+        $this->addChain($classExtensionChain);
+    }
 
     /**
      * @param string $moduleId

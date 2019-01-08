@@ -14,7 +14,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * @internal
  */
-class MetaDataProvider
+class MetaDataProvider implements MetaDataProviderInterface
 {
     const METADATA_ID = 'id';
     const METADATA_METADATA_VERSION = 'metaDataVersion';
@@ -104,7 +104,7 @@ class MetaDataProvider
          */
         $sMetadataVersion = null;
         $aModule = null;
-        include_once $this->filePath;
+        include $this->filePath;
 
         $this->validateMetaDataFileVariables($sMetadataVersion, $aModule);
 

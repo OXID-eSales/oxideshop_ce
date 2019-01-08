@@ -6,4 +6,5 @@ imports:
    - { resource: ShopModuleSetting/services.yaml }
    - { resource: State/services.yaml }
    - { resource: MetaData/services.yaml }
+   - { resource: Install/service.yaml }
    - { resource: Command/services.yaml }

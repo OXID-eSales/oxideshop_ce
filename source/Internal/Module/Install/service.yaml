@@ -1,0 +1,4 @@
+services:
+  OxidEsales\EshopCommunity\Internal\Module\Install\MetadataTransferringServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Install\MetadataTransferringService
+    autowire: true

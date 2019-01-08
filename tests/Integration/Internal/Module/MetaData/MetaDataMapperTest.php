@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Internal\Module\MetaData;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\BadMetaDataFoundEvent;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProviderInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -84,12 +85,11 @@ class MetaDataMapperTest extends TestCase
             }
         );
 
-        $metaDataDataProvider = $container->get('oxid_esales.module.metadata.service.metadataprovider');
+        $metaDataDataProvider = $container->get(MetaDataProviderInterface::class);
         $normalizedMetaData = $metaDataDataProvider->getData($metaDataFilePath);
 
         $metaDataDataMapper = $container->get('oxid_esales.module.metadata.datamapper.metadatamapper');
         $moduleConfiguration = $metaDataDataMapper->fromData($normalizedMetaData);
-        $settings = $moduleConfiguration->getSettings();
 
         /**
          * No InvalidMetaDataEvents should be dispatched
@@ -106,14 +106,39 @@ class MetaDataMapperTest extends TestCase
         $this->assertSame($expectedModuleData['url'], $moduleConfiguration->getUrl());
         $this->assertSame($expectedModuleData['email'], $moduleConfiguration->getEmail());
         $this->assertSame($metaDataCheckSum, $moduleConfiguration->getMetaDataCheckSum());
-        $this->assertSame($expectedModuleData['extend'], $settings[ModuleSetting::CLASS_EXTENSIONS]);
-        $this->assertSame($expectedModuleData['controllers'], $settings[ModuleSetting::CONTROLLERS]);
-        $this->assertSame($expectedModuleData['templates'], $settings[ModuleSetting::TEMPLATES]);
-        $this->assertSame($expectedModuleData['version'], $settings[ModuleSetting::VERSION]);
-        $this->assertSame($testModuleDirectory . DIRECTORY_SEPARATOR, $settings[ModuleSetting::PATH]);
-        $this->assertSame($expectedModuleData['blocks'], $settings[ModuleSetting::TEMPLATE_BLOCKS]);
-        $this->assertSame($expectedModuleData['settings'], $settings[ModuleSetting::SHOP_MODULE_SETTING]);
-        $this->assertSame($expectedModuleData['events'], $settings[ModuleSetting::EVENTS]);
+
+        $this->assertSame(
+            $expectedModuleData['extend'],
+            $moduleConfiguration->getSetting(ModuleSetting::CLASS_EXTENSIONS)->getValue()
+        );
+        $this->assertSame(
+            $expectedModuleData['controllers'],
+            $moduleConfiguration->getSetting(ModuleSetting::CONTROLLERS)->getValue()
+        );
+        $this->assertSame(
+            $expectedModuleData['templates'],
+            $moduleConfiguration->getSetting(ModuleSetting::TEMPLATES)->getValue()
+        );
+        $this->assertSame(
+            $expectedModuleData['version'],
+            $moduleConfiguration->getSetting(ModuleSetting::VERSION)->getValue()
+        );
+        $this->assertSame(
+            $testModuleDirectory . DIRECTORY_SEPARATOR,
+            $moduleConfiguration->getSetting(ModuleSetting::PATH)->getValue()
+        );
+        $this->assertSame(
+            $expectedModuleData['blocks'],
+            $moduleConfiguration->getSetting(ModuleSetting::TEMPLATE_BLOCKS)->getValue()
+        );
+        $this->assertSame(
+            $expectedModuleData['settings'],
+            $moduleConfiguration->getSetting(ModuleSetting::SHOP_MODULE_SETTING)->getValue()
+        );
+        $this->assertSame(
+            $expectedModuleData['events'],
+            $moduleConfiguration->getSetting(ModuleSetting::EVENTS)->getValue()
+        );
     }
     public function testModuleMetaData21()
     {
@@ -186,12 +211,11 @@ class MetaDataMapperTest extends TestCase
             }
         );
 
-        $metaDataDataProvider = $container->get('oxid_esales.module.metadata.service.metadataprovider');
+        $metaDataDataProvider = $container->get(MetaDataProviderInterface::class);
         $normalizedMetaData = $metaDataDataProvider->getData($metaDataFilePath);
 
         $metaDataDataMapper = $container->get('oxid_esales.module.metadata.datamapper.metadatamapper');
         $moduleConfiguration = $metaDataDataMapper->fromData($normalizedMetaData);
-        $settings = $moduleConfiguration->getSettings();
 
         /**
          * No InvalidMetaDataEvents should be dispatched
@@ -207,15 +231,42 @@ class MetaDataMapperTest extends TestCase
         $this->assertSame($expectedModuleData['author'], $moduleConfiguration->getAuthor());
         $this->assertSame($expectedModuleData['url'], $moduleConfiguration->getUrl());
         $this->assertSame($expectedModuleData['email'], $moduleConfiguration->getEmail());
-        $this->assertSame($expectedModuleData['extend'], $settings[ModuleSetting::CLASS_EXTENSIONS]);
-        $this->assertSame($expectedModuleData['controllers'], $settings[ModuleSetting::CONTROLLERS]);
-        $this->assertSame($expectedModuleData['templates'], $settings[ModuleSetting::TEMPLATES]);
-        $this->assertSame($expectedModuleData['version'], $settings[ModuleSetting::VERSION]);
-        $this->assertSame($testModuleDirectory . DIRECTORY_SEPARATOR, $settings[ModuleSetting::PATH]);
-        $this->assertSame($expectedModuleData['blocks'], $settings[ModuleSetting::TEMPLATE_BLOCKS]);
-        $this->assertSame($expectedModuleData['settings'], $settings[ModuleSetting::SHOP_MODULE_SETTING]);
-        $this->assertSame($expectedModuleData['events'], $settings[ModuleSetting::EVENTS]);
-        $this->assertSame($expectedModuleData['smartyPluginDirectories'], $settings[ModuleSetting::SMARTY_PLUGIN_DIRECTORIES]);
+        $this->assertSame(
+            $expectedModuleData['extend'],
+            $moduleConfiguration->getSetting(ModuleSetting::CLASS_EXTENSIONS)->getValue()
+        );
+        $this->assertSame(
+            $expectedModuleData['controllers'],
+            $moduleConfiguration->getSetting(ModuleSetting::CONTROLLERS)->getValue()
+        );
+        $this->assertSame(
+            $expectedModuleData['templates'],
+            $moduleConfiguration->getSetting(ModuleSetting::TEMPLATES)->getValue()
+        );
+        $this->assertSame(
+            $expectedModuleData['version'],
+            $moduleConfiguration->getSetting(ModuleSetting::VERSION)->getValue()
+        );
+        $this->assertSame(
+            $testModuleDirectory . DIRECTORY_SEPARATOR,
+            $moduleConfiguration->getSetting(ModuleSetting::PATH)->getValue()
+        );
+        $this->assertSame(
+            $expectedModuleData['blocks'],
+            $moduleConfiguration->getSetting(ModuleSetting::TEMPLATE_BLOCKS)->getValue()
+        );
+        $this->assertSame(
+            $expectedModuleData['settings'],
+            $moduleConfiguration->getSetting(ModuleSetting::SHOP_MODULE_SETTING)->getValue()
+        );
+        $this->assertSame(
+            $expectedModuleData['events'],
+            $moduleConfiguration->getSetting(ModuleSetting::EVENTS)->getValue()
+        );
+        $this->assertSame(
+            $expectedModuleData['smartyPluginDirectories'],
+            $moduleConfiguration->getSetting(ModuleSetting::SMARTY_PLUGIN_DIRECTORIES)->getValue()
+        );
     }
 
     /**
@@ -249,12 +300,11 @@ class MetaDataMapperTest extends TestCase
             }
         );
 
-        $metaDataDataProvider = $container->get('oxid_esales.module.metadata.service.metadataprovider');
+        $metaDataDataProvider = $container->get(MetaDataProviderInterface::class);
         $normalizedMetaData = $metaDataDataProvider->getData($metaDataFilePath);
 
         $metaDataDataMapper = $container->get('oxid_esales.module.metadata.datamapper.metadatamapper');
         $moduleConfiguration = $metaDataDataMapper->fromData($normalizedMetaData);
-        $settings = $moduleConfiguration->getSettings();
 
         /**
          * The module directory name should be set as the module ID is missing in metadata.Same
@@ -275,17 +325,12 @@ class MetaDataMapperTest extends TestCase
         $this->assertSame('', $moduleConfiguration->getAuthor());
         $this->assertSame('', $moduleConfiguration->getUrl());
         $this->assertSame('', $moduleConfiguration->getEmail());
-        $this->assertSame([], $settings[ModuleSetting::CONTROLLERS]);
-        $this->assertSame([], $settings[ModuleSetting::TEMPLATES]);
-        $this->assertSame('', $settings[ModuleSetting::VERSION]);
-        $this->assertSame($testModuleDirectory . DIRECTORY_SEPARATOR, $settings[ModuleSetting::PATH]);
-        $this->assertSame([], $settings[ModuleSetting::TEMPLATE_BLOCKS]);
-        $this->assertSame([], $settings[ModuleSetting::SHOP_MODULE_SETTING]);
-        $this->assertSame([], $settings[ModuleSetting::EVENTS]);
-        $this->assertSame([], $settings[ModuleSetting::SMARTY_PLUGIN_DIRECTORIES]);
 
         /** This is the only value defined in metadata.php */
-        $this->assertEquals($expectedModuleData['extend'], $settings[ModuleSetting::CLASS_EXTENSIONS]);
+        $this->assertEquals(
+            $expectedModuleData['extend'],
+            $moduleConfiguration->getSetting(ModuleSetting::CLASS_EXTENSIONS)->getValue()
+        );
     }
 
     /**
@@ -316,7 +361,7 @@ class MetaDataMapperTest extends TestCase
             }
         );
 
-        $metaDataDataProvider = $container->get('oxid_esales.module.metadata.service.metadataprovider');
+        $metaDataDataProvider = $container->get(MetaDataProviderInterface::class);
         $normalizedMetaData = $metaDataDataProvider->getData($metaDataFilePath);
 
         $metaDataDataMapper = $container->get('oxid_esales.module.metadata.datamapper.metadatamapper');

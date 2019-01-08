@@ -47,24 +47,85 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
             $metaData[MetaDataProvider::METADATA_MODULE_DATA]
         );
 
-        $mappedData = $this->getMappedData(
-            $metaData[MetaDataProvider::METADATA_MODULE_DATA],
-            $metaData[MetaDataProvider::METADATA_PATH],
-            $metaData[MetaDataProvider::METADATA_CHECKSUM]
-        );
+        $moduleData = $metaData[MetaDataProvider::METADATA_MODULE_DATA];
 
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
-            ->setMetaDataCheckSum($mappedData[MetaDataProvider::METADATA_CHECKSUM])
-            ->setId($mappedData[MetaDataProvider::METADATA_ID])
-            ->setTitle($mappedData[MetaDataProvider::METADATA_TITLE])
-            ->setDescription($mappedData[MetaDataProvider::METADATA_DESCRIPTION])
-            ->setLang($mappedData[MetaDataProvider::METADATA_LANG])
-            ->setThumbnail($mappedData[MetaDataProvider::METADATA_THUMBNAIL])
-            ->setAuthor($mappedData[MetaDataProvider::METADATA_AUTHOR])
-            ->setUrl($mappedData[MetaDataProvider::METADATA_URL])
-            ->setEmail($mappedData[MetaDataProvider::METADATA_EMAIL])
-            ->setSettings($mappedData[MetaDataProvider::METADATA_SETTINGS]);
+            ->setId($moduleData[MetaDataProvider::METADATA_ID])
+            ->setTitle($moduleData[MetaDataProvider::METADATA_TITLE] ?? '')
+            ->setDescription($moduleData[MetaDataProvider::METADATA_DESCRIPTION] ?? [])
+            ->setLang($moduleData[MetaDataProvider::METADATA_LANG] ?? '')
+            ->setThumbnail($moduleData[MetaDataProvider::METADATA_THUMBNAIL] ?? '')
+            ->setAuthor($moduleData[MetaDataProvider::METADATA_AUTHOR] ?? '')
+            ->setUrl($moduleData[MetaDataProvider::METADATA_URL] ?? '')
+            ->setEmail($moduleData[MetaDataProvider::METADATA_EMAIL] ?? '')
+            ->setMetaDataCheckSum($metaData[MetaDataProvider::METADATA_CHECKSUM]);
+
+        $moduleConfiguration = $this->mapModuleConfigurationSettings($moduleConfiguration, $metaData);
+
+        return $moduleConfiguration;
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     * @param array               $metaData
+     * @return ModuleConfiguration
+     */
+    private function mapModuleConfigurationSettings(ModuleConfiguration $moduleConfiguration, array $metaData): ModuleConfiguration
+    {
+        $moduleConfiguration->addSetting(
+            new ModuleSetting(ModuleSetting::PATH, $metaData[MetaDataProvider::METADATA_PATH])
+        );
+
+        $moduleData = $metaData[MetaDataProvider::METADATA_MODULE_DATA];
+
+        if (isset($moduleData[MetaDataProvider::METADATA_VERSION])) {
+            $moduleConfiguration->addSetting(
+                new ModuleSetting(ModuleSetting::VERSION, $moduleData[MetaDataProvider::METADATA_VERSION])
+            );
+        }
+
+        if (isset($moduleData[MetaDataProvider::METADATA_EXTEND])) {
+            $moduleConfiguration->addSetting(
+                new ModuleSetting(ModuleSetting::CLASS_EXTENSIONS, $moduleData[MetaDataProvider::METADATA_EXTEND])
+            );
+        }
+
+        if (isset($moduleData[MetaDataProvider::METADATA_BLOCKS])) {
+            $moduleConfiguration->addSetting(
+                new ModuleSetting(ModuleSetting::TEMPLATE_BLOCKS, $moduleData[MetaDataProvider::METADATA_BLOCKS])
+            );
+        }
+
+        if (isset($moduleData[MetaDataProvider::METADATA_CONTROLLERS])) {
+            $moduleConfiguration->addSetting(
+                new ModuleSetting(ModuleSetting::CONTROLLERS, $moduleData[MetaDataProvider::METADATA_CONTROLLERS])
+            );
+        }
+
+        if (isset($moduleData[MetaDataProvider::METADATA_EVENTS])) {
+            $moduleConfiguration->addSetting(
+                new ModuleSetting(ModuleSetting::EVENTS, $moduleData[MetaDataProvider::METADATA_EVENTS])
+            );
+        }
+
+        if (isset($moduleData[MetaDataProvider::METADATA_TEMPLATES])) {
+            $moduleConfiguration->addSetting(
+                new ModuleSetting(ModuleSetting::TEMPLATES, $moduleData[MetaDataProvider::METADATA_TEMPLATES])
+            );
+        }
+
+        if (isset($moduleData[MetaDataProvider::METADATA_SETTINGS])) {
+            $moduleConfiguration->addSetting(
+                new ModuleSetting(ModuleSetting::SHOP_MODULE_SETTING, $moduleData[MetaDataProvider::METADATA_SETTINGS])
+            );
+        }
+
+        if (isset($moduleData[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES])) {
+            $moduleConfiguration->addSetting(
+                new ModuleSetting(ModuleSetting::SMARTY_PLUGIN_DIRECTORIES, $moduleData[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES])
+            );
+        }
 
         return $moduleConfiguration;
     }
@@ -85,40 +146,5 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
                 throw new \InvalidArgumentException('The key "' . $mandatoryKey . '" must be present in the array passed in the parameter');
             }
         }
-    }
-
-    /**
-     * @param array  $metaData
-     * @param string $path
-     * @param string $metaDataChecksum
-     *
-     * @return array
-     */
-    private function getMappedData(array $metaData, string $path, string $metaDataChecksum): array
-    {
-        $mappedData = [
-            MetaDataProvider::METADATA_ID          => $metaData[MetaDataProvider::METADATA_ID] ?? '',
-            MetaDataProvider::METADATA_CHECKSUM    => $metaDataChecksum ?? '',
-            MetaDataProvider::METADATA_TITLE       => $metaData[MetaDataProvider::METADATA_TITLE] ?? '',
-            MetaDataProvider::METADATA_DESCRIPTION => $metaData[MetaDataProvider::METADATA_DESCRIPTION] ?? [],
-            MetaDataProvider::METADATA_LANG        => $metaData[MetaDataProvider::METADATA_LANG] ?? '',
-            MetaDataProvider::METADATA_THUMBNAIL   => $metaData[MetaDataProvider::METADATA_THUMBNAIL] ?? '',
-            MetaDataProvider::METADATA_AUTHOR      => $metaData[MetaDataProvider::METADATA_AUTHOR] ?? '',
-            MetaDataProvider::METADATA_URL         => $metaData[MetaDataProvider::METADATA_URL] ?? '',
-            MetaDataProvider::METADATA_EMAIL       => $metaData[MetaDataProvider::METADATA_EMAIL] ?? '',
-            MetaDataProvider::METADATA_SETTINGS    => [
-                ModuleSetting::PATH                      => $path,
-                ModuleSetting::VERSION                   => $metaData[MetaDataProvider::METADATA_VERSION] ?? '',
-                ModuleSetting::CLASS_EXTENSIONS          => $metaData[MetaDataProvider::METADATA_EXTEND] ?? [],
-                ModuleSetting::TEMPLATE_BLOCKS           => $metaData[MetaDataProvider::METADATA_BLOCKS] ?? [],
-                ModuleSetting::CONTROLLERS               => $metaData[MetaDataProvider::METADATA_CONTROLLERS] ?? [],
-                ModuleSetting::EVENTS                    => $metaData[MetaDataProvider::METADATA_EVENTS] ?? [],
-                ModuleSetting::TEMPLATES                 => $metaData[MetaDataProvider::METADATA_TEMPLATES] ?? [],
-                ModuleSetting::SHOP_MODULE_SETTING       => $metaData[MetaDataProvider::METADATA_SETTINGS] ?? [],
-                ModuleSetting::SMARTY_PLUGIN_DIRECTORIES => $metaData[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES] ?? []
-            ],
-        ];
-
-        return $mappedData;
     }
 }

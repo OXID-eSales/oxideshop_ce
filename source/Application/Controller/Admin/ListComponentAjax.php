@@ -144,9 +144,6 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
             $this->$function();
 
             $event = new \OxidEsales\EshopCommunity\Internal\ShopEvents\AfterControllerActionEvent();
-            $event->setClass(\OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax::class);
-            $event->setMethod('processRequest');
-            $event->setArguments([$function]);
             $this->dispatchEvent($event);
         } else {
             $sQAdd = $this->_getQuery();

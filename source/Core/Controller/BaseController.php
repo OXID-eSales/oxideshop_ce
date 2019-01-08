@@ -613,8 +613,6 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     protected function onExecuteNewAction()
     {
         $event = new \OxidEsales\EshopCommunity\Internal\ShopEvents\AfterControllerActionEvent();
-        $event->setClass(\OxidEsales\Eshop\Core\Controller\BaseController::class);
-        $event->setMethod('onExecuteNewAction');
         $this->dispatchEvent($event);
     }
 

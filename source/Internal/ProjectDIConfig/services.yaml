@@ -1,7 +1,0 @@
-services:
-  _defaults:
-    public: false
-    autowire: true
-  OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Service\ShopActivationServiceInterface:
-    class: OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Service\ShopActivationService
-    public: true

@@ -26,6 +26,14 @@ class ContextStub implements ContextInterface
     private $requiredContactFormFields;
 
     /**
+     * @return string
+     */
+    public function getEnvironment(): string
+    {
+        return 'dev';
+    }
+
+    /**
      * @param string $logLevel
      */
     public function setLogLevel($logLevel)
@@ -52,7 +60,7 @@ class ContextStub implements ContextInterface
     /**
      * @return string
      */
-    public function getLogFilePath()
+    public function getLogFilePath(): string
     {
         return $this->logFilePath;
     }
@@ -60,7 +68,7 @@ class ContextStub implements ContextInterface
     /**
      * @return array
      */
-    public function getRequiredContactFormFields()
+    public function getRequiredContactFormFields(): array
     {
         return $this->requiredContactFormFields;
     }
@@ -84,7 +92,7 @@ class ContextStub implements ContextInterface
     /**
      * @return int
      */
-    public function getCurrentShopId()
+    public function getCurrentShopId(): int
     {
         return $this->currentShopId;
     }
@@ -100,9 +108,17 @@ class ContextStub implements ContextInterface
     /**
      * @return string
      */
-    public function getShopDir()
+    public function getShopDir(): string
     {
         return $this->shopDir;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfigurationEncryptionKey(): string
+    {
+        return '';
     }
 
     /**

@@ -1,0 +1,61 @@
+parameters:
+  oxid_esales.module.metadata.service.metadata_schemata:
+    '2.0':
+      0: id
+      1: version
+      2: title
+      3: description
+      4: lang
+      5: thumbnail
+      6: author
+      7: url
+      8: email
+      9: extend
+      10: controllers
+      11: templates
+      blocks: [theme, template, block, file, position]
+      settings: [group, name, type, value, constraints, position]
+      12: events
+    '2.1':
+      0: id
+      1: version
+      2: title
+      3: description
+      4: lang
+      5: thumbnail
+      6: author
+      7: url
+      8: email
+      9: extend
+      10: controllers
+      11: templates
+      blocks: [theme, template, block, file, position]
+      settings: [group, name, type, value, constraints, position]
+      12: events
+      13: smartyPluginDirectories
+
+services:
+  oxid_esales.module.metadata.datamapper.metadatamapper:
+    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\DataMapper\MetaDataMapper
+    public: false
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidatorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidator
+    public: false
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataSchemataProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataSchemataProvider
+    arguments:
+      - '%oxid_esales.module.metadata.service.metadata_schemata%'
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataNormalizerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataNormalizer
+    public: false
+
+  oxid_esales.module.metadata.service.metadataprovider:
+    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider
+    autowire: true
+    public: false

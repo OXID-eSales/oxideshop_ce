@@ -1,0 +1,4 @@
+services:
+  OxidEsales\EshopCommunity\Internal\Module\TemplateExtension\TemplateBlockExtensionDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\TemplateExtension\TemplateBlockExtensionDao
+    autowire: true

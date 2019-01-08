@@ -14,20 +14,35 @@ interface ContextInterface
     /**
      * @return string
      */
+    public function getEnvironment(): string;
+
+    /**
+     * @return int
+     */
+    public function getCurrentShopId(): int;
+
+    /**
+     * @return string
+     */
     public function getLogLevel();
 
     /**
      * @return string
      */
-    public function getLogFilePath();
+    public function getLogFilePath(): string;
 
     /**
      * @return array
      */
-    public function getRequiredContactFormFields();
+    public function getRequiredContactFormFields(): array;
 
     /**
-     * @return int
+     * @return string
      */
-    public function getCurrentShopId();
+    public function getConfigurationEncryptionKey(): string;
+
+    /**
+     * @return mixed
+     */
+    public function getContainerCacheFile();
 }

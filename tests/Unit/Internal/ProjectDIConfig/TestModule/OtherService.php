@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\TestModule;
 
-use OxidEsales\EshopCommunity\Internal\Application\Events\AbstractShopAwareEventSubscriber;
-use Symfony\Component\EventDispatcher\Event;
-
 /**
  * @internal
  */
@@ -18,5 +15,4 @@ class OtherService
     {
         return null;
     }
-
 }

@@ -6,27 +6,20 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal;
 
-use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilderFactory;
-use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
-
 /**
  * @internal
  */
 trait ContainerTrait
 {
+    private $container;
+
     protected function get(string $serviceId)
     {
-        $containerBuilder = (new ContainerBuilderFactory())->create();
-        $container = $containerBuilder->getContainer();
-        $this->setContainerDefinitionToPublic($container, $serviceId);
-        $container->compile();
-        return $container->get($serviceId);
-    }
+        if ($this->container === null) {
+            $this->container = (new TestContainerFactory())->create();
+            $this->container->compile();
+        }
 
-    private function setContainerDefinitionToPublic(SymfonyContainerBuilder $container, string $definitionId)
-    {
-        $definition = $container->getDefinition($definitionId);
-        $definition->setPublic(true);
-        $container->setDefinition($definitionId, $definition);
+        return $this->container->get($serviceId);
     }
 }

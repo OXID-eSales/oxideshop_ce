@@ -17,7 +17,7 @@ class ShopList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function __construct()
     {
-        return parent::__construct('oxshop');
+        parent::__construct('oxshop');
     }
 
     /**

@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting;
 
 use function is_string;
 
-use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Service\ShopSettingEncoderInterface;
+use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Database\TransactionServiceInterface;

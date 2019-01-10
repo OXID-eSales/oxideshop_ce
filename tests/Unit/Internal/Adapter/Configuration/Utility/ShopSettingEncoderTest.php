@@ -6,9 +6,9 @@ declare(strict_types=1);
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Adapter\Configuration\Service;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Adapter\Configuration\Utility;
 
-use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Service\ShopSettingEncoder;
+use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Utility\ShopSettingEncoder;
 use PHPUnit\Framework\TestCase;
 
 /**

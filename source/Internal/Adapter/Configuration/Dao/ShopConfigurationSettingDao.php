@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
-use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Service\ShopSettingEncoderInterface;
+use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;

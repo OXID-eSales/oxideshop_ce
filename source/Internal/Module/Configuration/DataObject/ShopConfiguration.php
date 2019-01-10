@@ -102,6 +102,10 @@ class ShopConfiguration
      */
     public function getChain(string $name): Chain
     {
+        if (!isset($this->chains[$name])) {
+            throw new DomainException('There is no chain with name: ' . $name);
+        }
+
         return $this->chains[$name];
     }
 

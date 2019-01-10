@@ -90,4 +90,10 @@ class ShopConfigurationTest extends TestCase
             $this->shopConfiguration->getChain(Chain::CLASS_EXTENSIONS)
         );
     }
+
+    public function testGetChainIfChainDoesNotExist()
+    {
+        $this->expectException(DomainException::class);
+        $this->shopConfiguration->getChain('fakeChainId');
+    }
 }

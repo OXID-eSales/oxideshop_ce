@@ -19,7 +19,7 @@ use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 /**
  * @internal
  */
-class MetadataTransferringService implements MetadataTransferringServiceInterface
+class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterface
 {
     /**
      * @var string
@@ -47,7 +47,7 @@ class MetadataTransferringService implements MetadataTransferringServiceInterfac
     private $context;
 
     /**
-     * MetadataTransferringService constructor.
+     * ModuleConfigurationInstaller constructor.
      * @param ProjectConfigurationDaoInterface                 $projectConfigurationDao
      * @param MetaDataProviderInterface                        $metadataProvider
      * @param MetaDataToModuleConfigurationDataMapperInterface $metadataMapper

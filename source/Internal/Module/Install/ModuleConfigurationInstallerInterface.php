@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Install;
 /**
  * @internal
  */
-interface MetadataTransferringServiceInterface
+interface ModuleConfigurationInstallerInterface
 {
     /**
      * @param string $moduleFullPath

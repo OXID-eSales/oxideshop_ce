@@ -1,4 +1,4 @@
 services:
-  OxidEsales\EshopCommunity\Internal\Module\Install\MetadataTransferringServiceInterface:
-    class: OxidEsales\EshopCommunity\Internal\Module\Install\MetadataTransferringService
+  OxidEsales\EshopCommunity\Internal\Module\Install\ModuleConfigurationInstallerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Install\ModuleConfigurationInstaller
     autowire: true

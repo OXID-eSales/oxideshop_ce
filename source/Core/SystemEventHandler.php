@@ -157,9 +157,15 @@ class SystemEventHandler
      */
     public function onShopStart()
     {
-        $this->validateOnline();
-
         $this->validateOffline();
+    }
+
+    /**
+     * Perform shop finishing up related actions, like updating app server data.
+     */
+    public function onShopEnd()
+    {
+        $this->validateOnline();
     }
 
     /**

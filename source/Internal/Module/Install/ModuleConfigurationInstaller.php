@@ -69,14 +69,14 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
     /**
      * @param string $moduleFullPath
      */
-    public function transferMetadataToProjectConfiguration(string $moduleFullPath)
+    public function install(string $moduleFullPath)
     {
         $metadata = $this->metadataProvider->getData($this->getMetadataFilePath($moduleFullPath));
         $moduleConfiguration = $this->metadataMapper->fromData($metadata);
 
         $projectConfiguration = $this->projectConfigurationDao->getConfiguration();
         $projectConfiguration = $this->addModuleConfigurationToAllShops($moduleConfiguration, $projectConfiguration);
-        $projectConfiguration = $this->updateChainsInAllShops($moduleConfiguration, $projectConfiguration);
+        $projectConfiguration = $this->addClassExtensionsToChainForAllShops($moduleConfiguration, $projectConfiguration);
 
         $this->projectConfigurationDao->persistConfiguration($projectConfiguration);
     }
@@ -110,50 +110,24 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
      *
      * @return ProjectConfiguration
      */
-    private function updateChainsInAllShops(
+    private function addClassExtensionsToChainForAllShops(
         ModuleConfiguration $moduleConfiguration,
         ProjectConfiguration $projectConfiguration
     ): ProjectConfiguration {
+        if ($moduleConfiguration->hasSetting(ModuleSetting::CLASS_EXTENSIONS)) {
+            $classExtensions = $moduleConfiguration->getSetting(ModuleSetting::CLASS_EXTENSIONS);
 
-        $environmentConfiguration = $projectConfiguration->getEnvironmentConfiguration(
-            $this->context->getEnvironment()
-        );
+            $environmentConfiguration = $projectConfiguration->getEnvironmentConfiguration(
+                $this->context->getEnvironment()
+            );
 
-        foreach ($environmentConfiguration->getShopConfigurations() as $shopConfiguration) {
-            if ($moduleConfiguration->hasSetting(ModuleSetting::CLASS_EXTENSIONS)) {
-                $classExtensionChain = $this->addModuleExtensionsToChain(
-                    $moduleConfiguration->getSetting(ModuleSetting::CLASS_EXTENSIONS),
-                    $shopConfiguration->getChain(Chain::CLASS_EXTENSIONS)
-                );
-
-                $shopConfiguration->addChain($classExtensionChain);
+            foreach ($environmentConfiguration->getShopConfigurations() as $shopConfiguration) {
+                $classExtensionChain = $shopConfiguration->getChain(Chain::CLASS_EXTENSIONS);
+                $classExtensionChain->addExtensions($classExtensions->getValue());
             }
         }
 
         return $projectConfiguration;
-    }
-
-    /**
-     * @param ModuleSetting $classExtensions
-     * @param Chain         $classExtensionChain
-     *
-     * @return Chain
-     */
-    private function addModuleExtensionsToChain(ModuleSetting $classExtensions, Chain $classExtensionChain): Chain
-    {
-        foreach ($classExtensions->getValue() as $shopClass => $extension) {
-            $chain = $classExtensionChain->getChain();
-
-            if (array_key_exists($shopClass, $classExtensionChain->getChain())) {
-                array_push($chain[$shopClass], $extension);
-                $classExtensionChain->setChain($chain);
-            } else {
-                $chain[$shopClass] = [$extension];
-                $classExtensionChain->setChain($chain);
-            }
-        }
-
-        return $classExtensionChain;
     }
 
     /**

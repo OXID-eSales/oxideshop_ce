@@ -58,4 +58,27 @@ class Chain
         $this->chain = $chain;
         return $this;
     }
+
+    /**
+     * @param array $extensions
+     */
+    public function addExtensions(array $extensions)
+    {
+        foreach ($extensions as $extended => $extension) {
+            $this->addExtensionToChain($extended, $extension);
+        }
+    }
+
+    /**
+     * @param string $extended
+     * @param string $extension
+     */
+    private function addExtensionToChain(string $extended, string $extension)
+    {
+        if (array_key_exists($extended, $this->chain)) {
+            array_push($this->chain[$extended], $extension);
+        } else {
+            $this->chain[$extended] = [$extension];
+        }
+    }
 }

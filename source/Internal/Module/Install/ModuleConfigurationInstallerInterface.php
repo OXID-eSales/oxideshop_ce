@@ -14,5 +14,5 @@ interface ModuleConfigurationInstallerInterface
     /**
      * @param string $moduleFullPath
      */
-    public function transferMetadataToProjectConfiguration(string $moduleFullPath);
+    public function install(string $moduleFullPath);
 }

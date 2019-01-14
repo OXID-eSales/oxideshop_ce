@@ -42,7 +42,7 @@ class ModuleConfigurationInstallerTest extends TestCase
     public function testTransfer()
     {
         $transferringService = $this->get(ModuleConfigurationInstallerInterface::class);
-        $transferringService->transferMetadataToProjectConfiguration($this->modulePath);
+        $transferringService->install($this->modulePath);
 
         $this->assertProjectConfigurationHasModuleConfigurationForAllShops();
     }
@@ -50,7 +50,7 @@ class ModuleConfigurationInstallerTest extends TestCase
     public function testExtensionClassChainIsUpdatedAfterTransfer()
     {
         $transferringService = $this->get(ModuleConfigurationInstallerInterface::class);
-        $transferringService->transferMetadataToProjectConfiguration($this->modulePath);
+        $transferringService->install($this->modulePath);
 
         $environmentConfiguration = $this
             ->projectConfigurationDao

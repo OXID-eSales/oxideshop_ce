@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxRegistry;
+use OxidEsales\Eshop\Core\SystemEventHandler;
 
 /**
  * Encapsulates methods for application initialization.
@@ -100,7 +100,7 @@ class OxidStartController extends \OxidEsales\Eshop\Application\Controller\Front
     /**
      * Gets system event handler.
      *
-     * @return oxSystemEventHandler
+     * @return SystemEventHandler
      */
     protected function _getSystemEventHandler()
     {

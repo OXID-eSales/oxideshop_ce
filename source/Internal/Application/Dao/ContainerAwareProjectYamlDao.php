@@ -8,7 +8,7 @@ namespace OxidEsales\EshopCommunity\Internal\Application\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Application\Events\ProjectYamlChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIConfigWrapper;
-use OxidEsales\EshopCommunity\Internal\Utility\FactsContextInterface;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -24,10 +24,10 @@ class ContainerAwareProjectYamlDao extends ProjectYamlDao
     /**
      * ProjectYamlDao constructor.
      *
-     * @param FactsContextInterface    $context
+     * @param BasicContextInterface    $context
      * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(FactsContextInterface $context, EventDispatcherInterface $eventDispatcher)
+    public function __construct(BasicContextInterface $context, EventDispatcherInterface $eventDispatcher)
     {
         parent::__construct($context);
         $this->eventDispatcher = $eventDispatcher;

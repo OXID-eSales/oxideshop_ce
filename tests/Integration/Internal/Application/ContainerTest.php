@@ -8,16 +8,20 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Application;
 
 use Monolog\Logger;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Application\Events\ShopAwareEventDispatcher;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewAndRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewBridgeInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Definition;
 
 class ContainerTest extends \PHPUnit\Framework\TestCase
 {
@@ -53,29 +57,14 @@ class ContainerTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @dataProvider interfaceProvider
-     *
-     * @param $interface
-     */
-    public function testConfiguration($interface)
+    public function testAllServicesAreCorrectlyConfigured()
     {
-        $this->assertInstanceOf(
-            $interface,
-            $this->container->get($interface)
-        );
-    }
-
-    public function interfaceProvider()
-    {
-        return [
-            [UserReviewAndRatingBridgeInterface::class],
-            [ProductRatingBridgeInterface::class],
-            [UserRatingBridgeInterface::class],
-            [UserReviewBridgeInterface::class],
-            [LoggerInterface::class],
-            [ContactFormBridgeInterface::class],
-        ];
+        $testContainer = (new TestContainerFactory())->create();
+        $testContainer->compile();
+        foreach ($testContainer->getDefinitions() as $key => $definition) {
+            $testContainer->get($key);
+        };
+        $this->assertTrue(true);
     }
 
     /**

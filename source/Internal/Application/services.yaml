@@ -2,13 +2,4 @@ imports:
     - { resource: Dao/services.yaml }
     - { resource: Events/services.yaml }
     - { resource: Service/services.yaml }
-    - { resource: ../Utility/services.yaml }
-    - { resource: ../Logger/services.yaml }
-    - { resource: ../Common/services.yaml }
-    - { resource: ../Review/services.yaml }
-    - { resource: ../Form/services.yaml }
-    - { resource: ../Adapter/services.yaml }
-    - { resource: ../Module/services.yaml }
-    - { resource: ../Console/services.yaml }
-    - { resource: ../Module/Command/services.yaml }
-
+    - { resource: Utility/services.yaml }

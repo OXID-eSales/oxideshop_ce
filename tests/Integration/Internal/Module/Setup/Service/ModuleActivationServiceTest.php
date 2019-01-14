@@ -172,6 +172,7 @@ class ModuleActivationServiceTest extends TestCase
 
     public function testActivationOfModuleServices()
     {
+
         $moduleConfiguration = $this->getTestModuleConfiguration();
         $this->persistModuleConfiguration($moduleConfiguration);
 

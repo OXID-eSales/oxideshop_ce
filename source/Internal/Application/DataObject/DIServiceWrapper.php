@@ -116,6 +116,20 @@ class DIServiceWrapper
     }
 
     /**
+     * Check if the class for the service definition exists.
+     * If no class is defined, it also returns true.
+     *
+     * @return bool
+     */
+    public function checkClassExists()
+    {
+        if (! $this->hasClass()) {
+            return true;
+        }
+        return class_exists($this->getClass());
+    }
+
+    /**
      *
      */
     private function addShopAwareCallsIfMissing()

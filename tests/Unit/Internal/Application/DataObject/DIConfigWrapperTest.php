@@ -184,4 +184,23 @@ class DIConfigWrapperTest extends TestCase
         $config->checkServices(new ContainerStub());
     }
 
+    public function testServiceClassCheckWorking() {
+
+        $servicesYaml = new DIConfigWrapper(['services' =>
+                                                ['testmodulesubscriber' =>
+                                                     ['class' => 'OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\TestModule\TestEventSubscriber']]]);
+
+
+        $this->assertTrue($servicesYaml->checkServiceClassesCanBeLoaded());
+    }
+
+    public function testServiceClassCheckFailing() {
+
+        $servicesYaml = new DIConfigWrapper(['services' =>
+                                                 ['testmodulesubscriber' =>
+                                                      ['class' => 'OxidEsales\EshopCommunity\Tests\SomeNotExistingClass']]]);
+
+
+        $this->assertFalse($servicesYaml->checkServiceClassesCanBeLoaded());
+    }
 }

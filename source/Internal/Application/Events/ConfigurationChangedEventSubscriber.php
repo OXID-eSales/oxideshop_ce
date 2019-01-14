@@ -7,7 +7,6 @@
 namespace OxidEsales\EshopCommunity\Internal\Application\Events;
 
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -15,21 +14,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class ConfigurationChangedEventSubscriber implements EventSubscriberInterface
 {
-
-    /**
-     * @var ContextInterface $context
-     */
-    private $context;
-
-    /**
-     * ConfigurationChangedEventSubscriber constructor.
-     *
-     * @param ContextInterface $context
-     */
-    public function __construct(ContextInterface $context)
-    {
-        $this->context = $context;
-    }
 
     /**
      * @param ProjectYamlChangedEvent $event

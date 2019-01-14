@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Application;
 
-use OxidEsales\EshopCommunity\Internal\Utility\FactsContext;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
 
 /**
  * @internal
@@ -18,6 +18,6 @@ class ContainerBuilderFactory
      */
     public function create(): ContainerBuilder
     {
-        return new ContainerBuilder(new FactsContext());
+        return new ContainerBuilder(new BasicContext());
     }
 }

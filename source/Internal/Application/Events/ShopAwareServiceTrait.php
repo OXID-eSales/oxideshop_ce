@@ -7,7 +7,6 @@
 namespace OxidEsales\EshopCommunity\Internal\Application\Events;
 
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Class ShopAwareEventSubscriber

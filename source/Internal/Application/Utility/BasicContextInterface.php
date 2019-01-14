@@ -4,13 +4,13 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Utility;
+namespace OxidEsales\EshopCommunity\Internal\Application\Utility;
 
 /**
  * Contains necessary methods to provide basic information about the application.
  * @internal
  */
-interface FactsContextInterface
+interface BasicContextInterface
 {
     /**
      * @return string

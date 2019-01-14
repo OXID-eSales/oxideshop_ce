@@ -8,17 +8,13 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal;
 
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 
-class ContextStub implements ContextInterface
+class ContextStub extends BasicContextStub implements ContextInterface
 {
     private $logLevel = 'error';
 
     private $logFilePath = 'log.txt';
 
     private $currentShopId = 1;
-
-    private $shopDir = '/tmp';
-
-    private $containerCacheFile = '/tmp/containercache.php';
 
     /**
      * @var array
@@ -98,22 +94,6 @@ class ContextStub implements ContextInterface
     }
 
     /**
-     * @param string $shopDir
-     */
-    public function setShopDir($shopDir)
-    {
-        $this->shopDir = $shopDir;
-    }
-
-    /**
-     * @return string
-     */
-    public function getShopDir(): string
-    {
-        return $this->shopDir;
-    }
-
-    /**
      * @return string
      */
     public function getConfigurationEncryptionKey(): string
@@ -121,19 +101,4 @@ class ContextStub implements ContextInterface
         return '';
     }
 
-    /**
-     * @return string
-     */
-    public function getContainerCacheFile(): string
-    {
-        return $this->containerCacheFile;
-    }
-
-    /**
-     * @param string $containerCacheFile
-     */
-    public function setContainerCacheFile(string $containerCacheFile)
-    {
-        $this->containerCacheFile = $containerCacheFile;
-    }
 }

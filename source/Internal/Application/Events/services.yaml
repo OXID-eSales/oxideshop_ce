@@ -5,8 +5,6 @@ services:
 
   event_dispatcher:
     class: OxidEsales\EshopCommunity\Internal\Application\Events\ShopAwareEventDispatcher
-    arguments:
-      $container: '@service_container'
     public: true
 
   OxidEsales\EshopCommunity\Internal\Application\Events\ConfigurationChangedEventSubscriber:

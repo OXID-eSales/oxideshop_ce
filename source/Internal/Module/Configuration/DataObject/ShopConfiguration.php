@@ -98,6 +98,9 @@ class ShopConfiguration
 
     /**
      * @param string $name
+     *
+     * @throws DomainException
+     *
      * @return Chain
      */
     public function getChain(string $name): Chain

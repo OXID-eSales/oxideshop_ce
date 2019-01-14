@@ -6,8 +6,13 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Application\Model\Address;
+use OxidEsales\Eshop\Application\Model\User;
+use OxidEsales\Eshop\Core\Exception\ArticleInputException;
+use OxidEsales\Eshop\Core\Exception\StandardException;
+
 /**
- * Class for validating input
+ * Class for validating input.
  */
 class InputValidator extends \OxidEsales\Eshop\Core\Base
 {
@@ -22,7 +27,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     const INVALID_BANK_CODE = -4;
 
     /**
-     * Required fields for credit card payment
+     * Required fields for credit card payment.
      *
      * @var array
      */
@@ -35,7 +40,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     ];
 
     /**
-     * Input validation errors
+     * Input validation errors.
      *
      * @var array
      */
@@ -61,7 +66,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     ];
 
     /**
-     * Required fields for debit cards
+     * Required fields for debit cards.
      *
      * @var array
      */
@@ -79,11 +84,11 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Validates basket amount
+     * Validates basket amount.
      *
-     * @param float $dAmount amount of article
+     * @param float $dAmount Amount of article.
      *
-     * @throws oxArticleInputException if amount is not numeric or smaller 0
+     * @throws ArticleInputException If amount is not numeric or smaller 0.
      *
      * @return float
      */
@@ -118,9 +123,9 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      *    needed when creating new users.
      * On any error exception is thrown.
      *
-     * @param \OxidEsales\Eshop\Application\Model\User $oUser       active user
-     * @param string                                   $sLogin      user preferred login name
-     * @param array                                    $aInvAddress user information
+     * @param User   $oUser       Active user.
+     * @param string $sLogin      User preferred login name.
+     * @param array  $aInvAddress User information.
      *
      * @return string login name
      */
@@ -165,8 +170,8 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * Checks if email (used as login) is not empty and is
      * valid.
      *
-     * @param \OxidEsales\Eshop\Application\Model\User $oUser  active user
-     * @param string                                   $sEmail user email/login
+     * @param User   $oUser  Active user.
+     * @param string $sEmail User email/login.
      *
      * @return null
      */
@@ -193,12 +198,12 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * Checking if user password is fine. In case of error
      * exception is thrown
      *
-     * @param \OxidEsales\Eshop\Application\Model\User $oUser         active user
-     * @param string                                   $sNewPass      new user password
-     * @param string                                   $sConfPass     retyped user password
-     * @param bool                                     $blCheckLength option to check password length
+     * @param User   $oUser         Active user.
+     * @param string $sNewPass      New user password.
+     * @param string $sConfPass     Retyped user password.
+     * @param bool   $blCheckLength Option to check password length.
      *
-     * @return oxException|null
+     * @return Exception\StandardException|null
      */
     public function checkPassword($oUser, $sNewPass, $sConfPass, $blCheckLength = false)
     {
@@ -227,7 +232,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * min length of password
+     * Min length of password.
      *
      * @return int
      */
@@ -240,9 +245,9 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * Checking if all required fields were filled. In case of error
      * exception is thrown
      *
-     * @param \OxidEsales\Eshop\Application\Model\User $oUser            active user
-     * @param array                                    $aBillingAddress  billing address
-     * @param array                                    $aDeliveryAddress delivery address
+     * @param User  $oUser            Active user.
+     * @param array $aBillingAddress  Billing address.
+     * @param array $aDeliveryAddress Delivery address.
      */
     public function checkRequiredFields($oUser, $aBillingAddress, $aDeliveryAddress)
     {
@@ -252,8 +257,8 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
         /** @var \OxidEsales\Eshop\Application\Model\RequiredFieldsValidator $oFieldsValidator */
         $oFieldsValidator = oxNew(\OxidEsales\Eshop\Application\Model\RequiredFieldsValidator::class);
 
-        /** @var \OxidEsales\Eshop\Application\Model\User $oUser */
-        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
+        /** @var User $oUser */
+        $oUser = oxNew(User::class);
         $oBillingAddress = $this->_setFields($oUser, $aBillingAddress);
         $oFieldsValidator->setRequiredFields($oRequiredAddressFields->getBillingFields());
         $oFieldsValidator->validateFields($oBillingAddress);
@@ -278,10 +283,10 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     /**
      * Creates oxAddress object from given array.
      *
-     * @param \OxidEsales\Eshop\Application\Model\User|oxAddress $oObject
-     * @param array                                              $aFields
+     * @param User|Address $oObject
+     * @param array        $aFields
      *
-     * @return \OxidEsales\Eshop\Application\Model\User|oxAddress
+     * @return User|Address
      */
     private function _setFields($oObject, $aFields)
     {
@@ -294,11 +299,11 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Checks if user defined countries (billing and delivery) are active
+     * Checks if user defined countries (billing and delivery) are active.
      *
-     * @param \OxidEsales\Eshop\Application\Model\User $oUser       active user
-     * @param array                                    $aInvAddress billing address info
-     * @param array                                    $aDelAddress delivery address info
+     * @param User  $oUser       Active user.
+     * @param array $aInvAddress Billing address info.
+     * @param array $aDelAddress Delivery address info.
      */
     public function checkCountries($oUser, $aInvAddress, $aDelAddress)
     {
@@ -327,10 +332,10 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Checks if user passed VAT id is valid. Exception is thrown
-     * if id is not valid
+     * if id is not valid.
      *
-     * @param \OxidEsales\Eshop\Application\Model\User $oUser       active user
-     * @param array                                    $aInvAddress user input array
+     * @param User  $oUser       Active user.
+     * @param array $aInvAddress User input array.
      *
      * @return null
      */
@@ -364,7 +369,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
 
 
     /**
-     * Load and return oxCountry
+     * Load and return Country object.
      *
      * @param string $sCountryId
      *
@@ -389,9 +394,9 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns first user input validation error
+     * Returns first user input validation error.
      *
-     * @return exception
+     * @return StandardException
      */
     public function getFirstValidationError()
     {
@@ -449,10 +454,10 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      *
      * @deprecated since v6.0.0(2017-12-22); Use addValidationError.
      *
-     * @param string    $sFieldName field name
-     * @param exception $oErr       exception
+     * @param string            $sFieldName field name
+     * @param StandardException $oErr       exception
      *
-     * @return exception
+     * @return StandardException
      */
     protected function _addValidationError($sFieldName, $oErr)
     {
@@ -463,10 +468,10 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * Used to collect user validation errors. This method is called from all of
      * the input checking functionality to report found error.
      *
-     * @param string    $sFieldName field name
-     * @param exception $oErr       exception
+     * @param string            $sFieldName
+     * @param StandardException $oErr
      *
-     * @return exception
+     * @return StandardException
      */
     public function addValidationError($sFieldName, $oErr)
     {
@@ -533,7 +538,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     /**
      * If account number is shorter than 10, add zeros in front of number.
      *
-     * @param array $aDebitInfo Debit info
+     * @param array $aDebitInfo Debit info.
      *
      * @return array
      */
@@ -576,7 +581,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     /**
      * Clean up spaces.
      *
-     * @param array $aDebitInformation Debit information
+     * @param array $aDebitInformation Debit information.
      *
      * @return mixed
      */
@@ -589,9 +594,9 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Check if all need parameters entered
+     * Check if all need parameters entered.
      *
-     * @param array $aInvAddress Address
+     * @param array $aInvAddress Address.
      *
      * @return bool
      */
@@ -601,7 +606,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * VAT IN validator setter
+     * VAT IN validator setter.
      *
      * @param \OxidEsales\Eshop\Core\CompanyVatInValidator $oCompanyVatInValidator validator
      */
@@ -611,9 +616,9 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Return VAT IN validator
+     * Return VAT IN validator.
      *
-     * @param \OxidEsales\Eshop\Application\Model\Country $oCountry country according which VAT id should be checked
+     * @param \OxidEsales\Eshop\Application\Model\Country $oCountry Country according which VAT id should be checked.
      *
      * @return \OxidEsales\Eshop\Core\CompanyVatInValidator
      */
@@ -623,7 +628,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
             /** @var \OxidEsales\Eshop\Core\CompanyVatInValidator $oVatInValidator */
             $oVatInValidator = oxNew('oxCompanyVatInValidator', $oCountry);
 
-            /** @var  oxCompanyVatInCountryChecker $oValidator */
+            /** @var \OxidEsales\Eshop\Core\CompanyVatInCountryChecker $oValidator */
             $oValidator = oxNew(\OxidEsales\Eshop\Core\CompanyVatInCountryChecker::class);
 
             $oVatInValidator->addChecker($oValidator);

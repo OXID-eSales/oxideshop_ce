@@ -160,7 +160,13 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             }
 
             // redirect to basket
-            return $this->_getRedirectUrl();
+            $redirectUrl = $this->_getRedirectUrl();
+
+            $event = new \OxidEsales\EshopCommunity\Internal\ShopEvents\ToBasketEvent();
+            $event->setRedirectUrl($redirectUrl);
+            $this->dispatchEvent($event);
+
+            return $redirectUrl;
         }
     }
 
@@ -490,6 +496,10 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function executeUserChoice()
     {
+        $event = new \OxidEsales\EshopCommunity\Internal\ShopEvents\ToBasketEvent();
+        $event->setRedirectUrl('');
+        $this->dispatchEvent($event);
+
         // redirect to basket
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("tobasket")) {
             return "basket";

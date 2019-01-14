@@ -51,6 +51,9 @@ class ClearCookiesController extends \OxidEsales\Eshop\Application\Controller\Fr
         }
         $oUtilsServer->setOxCookie('language', '', time() - 10000, '/');
         $oUtilsServer->setOxCookie('displayedCookiesNotification', '', time() - 10000, '/');
+
+        $event = new \OxidEsales\EshopCommunity\Internal\ShopEvents\RemoveCookiesEvent();
+        $this->dispatchEvent($event);
     }
 
     /**

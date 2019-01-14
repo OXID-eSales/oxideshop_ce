@@ -309,7 +309,9 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _sessionStart()
     {
-        if (headers_sent()) {
+        $event = $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\ShopEvents\SetSessionCacheLimiterEvent());
+
+        if (headers_sent() && (false == $event->isLimiterSet())) {
             if ($this->needToSetHeaders()) {
                 //enforcing no caching when session is started
                 session_cache_limiter('nocache');
@@ -1136,5 +1138,6 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function sidToUrlEvent()
     {
+        $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeAppendSessionIdToUrlEvent());
     }
 }

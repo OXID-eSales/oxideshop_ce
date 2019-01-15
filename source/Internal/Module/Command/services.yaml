@@ -11,3 +11,10 @@ services:
     autowire: true
     tags:
     - { name: 'console.command', command: 'oe:module:deactivate' }
+
+  OxidEsales\EshopCommunity\Internal\Module\Command\InstallModuleConfigurationCommand:
+    class: OxidEsales\EshopCommunity\Internal\Module\Command\InstallModuleConfigurationCommand
+    public: true
+    autowire: true
+    tags:
+    - { name: 'console.command' }

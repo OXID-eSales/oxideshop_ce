@@ -46,7 +46,7 @@ class ProjectConfiguration
         if (array_key_exists($name, $this->environmentConfigurations)) {
             return $this->environmentConfigurations[$name];
         }
-        throw new DomainException('There is no environment configuration with name' . $name);
+        throw new DomainException('There is no environment configuration with name ' . $name);
     }
 
     /**
@@ -68,7 +68,7 @@ class ProjectConfiguration
         if (array_key_exists($name, $this->environmentConfigurations)) {
             unset($this->environmentConfigurations[$name]);
         } else {
-            throw new DomainException('There is no environment configuration with name' . $name);
+            throw new DomainException('There is no environment configuration with name ' . $name);
         }
     }
 }

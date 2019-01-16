@@ -21,6 +21,28 @@ use Symfony\Component\Config\Definition\NodeInterface;
  */
 class ProjectConfigurationDaoTest extends TestCase
 {
+    /**
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Configuration\Exception\ProjectConfigurationIsEmptyException
+     */
+    public function testProjectConfigurationGetterThrowsExceptionIfStorageIsEmpty()
+    {
+        $arrayStorage = $this
+            ->getMockBuilder(ArrayStorageInterface::class)
+            ->getMock();
+
+        $arrayStorage
+            ->method('get')
+            ->willReturn([]);
+
+        $projectConfigurationDao = new ProjectConfigurationDao(
+            $arrayStorage,
+            $this->getProjectConfigurationDataMapper(),
+            $this->getMockBuilder(NodeInterface::class)->getMock()
+        );
+
+        $projectConfigurationDao->getConfiguration();
+    }
+
     public function testProjectConfigurationGetter()
     {
         $projectConfigurationData = [

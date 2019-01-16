@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao;
 use OxidEsales\EshopCommunity\Internal\Common\Storage\ArrayStorageInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ProjectConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Exception\ProjectConfigurationIsEmptyException;
 use Symfony\Component\Config\Definition\NodeInterface;
 
 /**
@@ -50,10 +51,15 @@ class ProjectConfigurationDao implements ProjectConfigurationDaoInterface
 
     /**
      * @return ProjectConfiguration
+     * @throws ProjectConfigurationIsEmptyException
      */
     public function getConfiguration(): ProjectConfiguration
     {
         $data = $this->arrayStorage->get();
+
+        if (empty($data)) {
+            throw new ProjectConfigurationIsEmptyException('Project configuration cannot be empty.');
+        }
 
         return $this->projectConfigurationDataMapper->fromData(
             $this->node->normalize($data)

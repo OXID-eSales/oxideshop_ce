@@ -2,3 +2,7 @@ services:
   OxidEsales\EshopCommunity\Internal\Module\Install\ModuleConfigurationInstallerInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Install\ModuleConfigurationInstaller
     autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Module\Install\DefaultProjectConfigurationGeneratorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Install\DefaultProjectConfigurationGenerator
+    autowire: true

@@ -24,6 +24,11 @@ interface ContextInterface extends BasicContextInterface
     public function getCurrentShopId(): int;
 
     /**
+     * @return array
+     */
+    public function getAllShopIds(): array;
+
+    /**
      * @return string
      */
     public function getContainerCacheFile(): string;

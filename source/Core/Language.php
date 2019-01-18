@@ -1334,7 +1334,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
                 $aLanguages = $this->_getLanguageIdsFromLanguagesArray($aConfigLanguages);
             }
 
-            $aConfigDecodedValues = array_unique(array_merge($aConfigDecodedValues, $aLanguages));
+            $aConfigDecodedValues = array_unique($aConfigDecodedValues + $aLanguages);
         }
 
         return $aConfigDecodedValues;

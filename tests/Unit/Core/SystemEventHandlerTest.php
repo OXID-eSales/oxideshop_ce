@@ -47,7 +47,7 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $systemEventHandler->onAdminLogin(1);
     }
 
-    public function testOnShopStartSendShopInformationForFirstTime()
+    public function testOnShopEndSendShopInformationForFirstTime()
     {
         $systemEventHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
 
@@ -61,10 +61,10 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $onlineLicenseCheck = $onlineLicenseCheckMock;
         $systemEventHandler->setOnlineLicenseCheck($onlineLicenseCheck);
 
-        $systemEventHandler->onShopStart();
+        $systemEventHandler->onShopEnd();
     }
 
-    public function testOnShopStartSendShopInformationNotFirstTime()
+    public function testOnShopNedSendShopInformationNotFirstTime()
     {
         $onlineLicenseCheckValidityTime = 24 * 60 * 60;
         $onlineLicenseInvalidTime = time() - $onlineLicenseCheckValidityTime;
@@ -83,10 +83,10 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $onlineLicenseCheck = $onlineLicenseCheckMock;
         $systemEventHandler->setOnlineLicenseCheck($onlineLicenseCheck);
 
-        $systemEventHandler->onShopStart();
+        $systemEventHandler->onShopEnd();
     }
 
-    public function testOnShopStartDoNotSendShopInformationTimeNotExpired()
+    public function testOnShopEndDoNotSendShopInformationTimeNotExpired()
     {
         $this->setConfigParam('sOnlineLicenseNextCheckTime', time() + (24 * 60 * 60));
         $this->setConfigParam('sOnlineLicenseCheckTime', date('H:i:s'));
@@ -103,10 +103,10 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $onlineLicenseCheck = $onlineLicenseCheckMock;
         $systemEventHandler->setOnlineLicenseCheck($onlineLicenseCheck);
 
-        $systemEventHandler->onShopStart();
+        $systemEventHandler->onShopEnd();
     }
 
-    public function testOnShopStartDoNotSendShopInformationIfSearchEngine()
+    public function testOnEndStartDoNotSendShopInformationIfSearchEngine()
     {
         /** @var \OxidEsales\Eshop\Core\Utils $utils */
         $utils = \OxidEsales\Eshop\Core\Registry::getUtils();
@@ -124,10 +124,10 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $onlineLicenseCheck = $onlineLicenseCheckMock;
         $systemEventHandler->setOnlineLicenseCheck( $onlineLicenseCheck );
 
-        $systemEventHandler->onShopStart();
+        $systemEventHandler->onShopEnd();
     }
 
-    public function testOnShopStartSetWhenToSendInformationForFirstTimeCorrectFormat()
+    public function testOnShopEndSetWhenToSendInformationForFirstTimeCorrectFormat()
     {
         $systemEventHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
 
@@ -136,7 +136,7 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
             ->getMock();
         /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheck $onlineLicenseCheck */
         $systemEventHandler->setOnlineLicenseCheck($onlineLicenseCheck);
-        $systemEventHandler->onShopStart();
+        $systemEventHandler->onShopEnd();
 
         $checkTime = $this->getConfigParam('sOnlineLicenseCheckTime');
         $this->assertNotNull($checkTime);
@@ -148,7 +148,7 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     /**
      * @param string $checkTime
      *
-     * @depends testOnShopStartSetWhenToSendInformationForFirstTimeCorrectFormat
+     * @depends testOnShopEndSetWhenToSendInformationForFirstTimeCorrectFormat
      */
     public function testInformationSendTimeIsBetweenCorrectHours($checkTime)
     {
@@ -158,7 +158,7 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->assertTrue($hour > 7, 'Get hour: '. $hour);
     }
 
-    public function testOnShopStartDoNotChangeWhenToSendInformation()
+    public function testOnShopEndDoNotChangeWhenToSendInformation()
     {
         $systemEventHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
 
@@ -168,16 +168,16 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheck $onlineLicenseCheck */
         $systemEventHandler->setOnlineLicenseCheck($onlineLicenseCheck);
 
-        $systemEventHandler->onShopStart();
+        $systemEventHandler->onShopEnd();
         $checkTime1 = $this->getConfigParam('sOnlineLicenseCheckTime');
 
-        $systemEventHandler->onShopStart();
+        $systemEventHandler->onShopEnd();
         $checkTime2 = $this->getConfigParam('sOnlineLicenseCheckTime');
 
         $this->assertSame($checkTime1, $checkTime2);
     }
 
-    public function testOnShopStartLicenseCheckNextSendTimeUpdated()
+    public function testOnShopEndLicenseCheckNextSendTimeUpdated()
     {
         // 2014-05-13 19:53:20
         $currentTime = 1400000000;
@@ -204,7 +204,7 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $systemEventHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
         $systemEventHandler->setOnlineLicenseCheck($onlineLicenseCheck);
 
-        $systemEventHandler->onShopStart();
+        $systemEventHandler->onShopEnd();
 
         $nextCheckTime = $this->getConfigParam('sOnlineLicenseNextCheckTime');
         $this->assertSame($expectedNextCheckTime, $nextCheckTime);
@@ -249,7 +249,7 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $systemEventHandler->setOnlineLicenseCheck($onlineLicenseCheck);
 
-        $systemEventHandler->onShopStart();
+        $systemEventHandler->onShopEnd();
     }
 
     public function testShopInformationSendingWhenSendingIsNotAllowedInCommunityEdition()

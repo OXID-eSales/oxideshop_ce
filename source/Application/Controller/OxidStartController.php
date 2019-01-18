@@ -65,6 +65,9 @@ class OxidStartController extends \OxidEsales\Eshop\Application\Controller\Front
      */
     public function pageClose()
     {
+        $systemEventHandler = $this->_getSystemEventHandler();
+        $systemEventHandler->onShopEnd();
+
         $mySession = $this->getSession();
 
         if (isset($mySession)) {

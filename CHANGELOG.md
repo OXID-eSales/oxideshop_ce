@@ -79,6 +79,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Fixed return type in Basket::getDiscounts [PR-659](https://github.com/OXID-eSales/oxideshop_ce/pull/659)
 - Remove unused variables, decrease complexity [PR-668](https://github.com/OXID-eSales/oxideshop_ce/pull/668)
+- If an item-discount is not assigned to an article or a category it should be available to all articles [PR-679](https://github.com/OXID-eSales/oxideshop_ce/pull/679) [0006582](https://bugs.oxid-esales.com/view.php?id=6582)
 
 ### Added
 - New methods:

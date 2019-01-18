@@ -761,7 +761,7 @@ class DiscountTest extends \OxidTestCase
         $oArticle->setId($testAid);
 
         $oDiscount = $this->getMock(\OxidEsales\Eshop\Application\Model\Discount::class, array('_checkForArticleCategories'));
-        $oDiscount->expects($this->once())->method('_checkForArticleCategories')->with($this->isInstanceOf('\OxidEsales\EshopCommunity\Application\Model\Article'));
+        $oDiscount->expects($this->never())->method('_checkForArticleCategories')->with($this->isInstanceOf('\OxidEsales\EshopCommunity\Application\Model\Article'));
         $oDiscount->oxdiscount__oxaddsumtype = new oxField('itm');
         $oDiscount->setId('testdid');
 
@@ -1056,6 +1056,32 @@ class DiscountTest extends \OxidTestCase
         $this->assertTrue($oDiscount->isForBundleItem($oParentProduct));
         $this->assertTrue($oDiscount->isForBundleItem($oProduct));
         $this->assertFalse($oDiscount->isForBundleItem($oUnrelatedProduct));
+    }
+
+    /**
+     * Test case for #0006582: itm discount should work without assigning any article or category
+     *
+     * When an itm discount is created without an assignment to an article or a category, the discount should be
+     * available for every product like any other discount.
+     *
+     * @return null
+     */
+    public function testForCase6582()
+    {
+        // creating test discount
+        $sDiscountId = '_' . uniqid(rand());
+
+        // inserting test discount
+        $query = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto, oxaddsumtype, oxaddsum )
+               values ( '{$sDiscountId}', '" . $this->getConfig()->getBaseShopId() . "', '1', 'Test', '5', '10', '0', 'itm', '10' )";
+        $this->addToDatabase($query, 'oxdiscount');
+
+        $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class);
+
+        // testing
+        $oDiscount = oxNew('oxDiscount');
+        $oDiscount->load($sDiscountId);
+        $this->assertTrue($oDiscount->isForBundleItem($oProduct));
     }
 
     public function testGetNextOxsortReturnsIncrementedValue() {

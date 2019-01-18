@@ -320,6 +320,10 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             return false;
         }
 
+        if ($this->isGlobalDiscount()) {
+            return true;
+        }
+
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQ = "select 1 from oxobject2discount where oxdiscountid=" . $oDb->quote($this->getId());
         $sQ .= $this->_getProductCheckQuery($oArticle);

@@ -1,27 +1,12 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link          http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
- * @version       OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
+use OxidEsales\EshopCommunity\Internal\Application\Container;
 
 if (!defined('ESHOP_CONFIG_FILE')) {
     define('ESHOP_CONFIG_FILE', 'config.inc.php');
@@ -99,14 +84,14 @@ if (!function_exists('startProfile')) {
     function startProfile($sProfileName)
     {
         global $aStartTimes;
-        global $aExecutionCounts;
-        if (!isset($aExecutionCounts[$sProfileName])) {
-            $aExecutionCounts[$sProfileName] = 0;
+        global $executionCounts;
+        if (!isset($executionCounts[$sProfileName])) {
+            $executionCounts[$sProfileName] = 0;
         }
         if (!isset($aStartTimes[$sProfileName])) {
             $aStartTimes[$sProfileName] = 0;
         }
-        $aExecutionCounts[$sProfileName]++;
+        $executionCounts[$sProfileName]++;
         $aStartTimes[$sProfileName] = microtime(true);
     }
 }
@@ -208,5 +193,19 @@ if (!function_exists('getRequestUrl')) {
     function getRequestUrl($sParams = '', $blReturnUrl = false)
     {
         return Registry::get(Request::class)->getRequestUrl($sParams, $blReturnUrl);
+    }
+}
+
+if (!function_exists('getLogger')) {
+    /**
+     * Returns the Logger
+     *
+     * @return \Psr\Log\LoggerInterface
+     */
+    function getLogger()
+    {
+        $container = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
+
+        return $container->get(\Psr\Log\LoggerInterface::class);
     }
 }

@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
@@ -36,26 +20,34 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         parent::setUp();
         $this->getConfig()->saveShopConfVar('str', 'sOnlineLicenseNextCheckTime', null);
         $this->getConfig()->saveShopConfVar('str', 'sOnlineLicenseCheckTime', null);
-        $this->getConfig()->setConfigParam('blLoadDynContents', true);
+        $this->getConfig()->setConfigParam('blSendTechnicalInformationToOxid', true);
     }
 
-    public function testOnAdminLoginOnlineModuleVersionNotifier()
+    public function testOnAdminLoginSendModuleInformation()
     {
         $systemEventHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
 
-        $moduleNotifierMock = $this->getMockBuilder(\OxidEsales\Eshop\Core\OnlineModuleVersionNotifier::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $moduleNotifierMock->expects($this->once())->method("versionNotify");
-
-        /** @var \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier $moduleNotifier */
-        $moduleNotifier = $moduleNotifierMock;
-        $systemEventHandler->setOnlineModuleVersionNotifier($moduleNotifier);
+        $this->assertModuleVersionNotifierCalled($systemEventHandler, 'once');
 
         $systemEventHandler->onAdminLogin(1);
     }
 
-    public function testOnShopStartSendShopInformationForFirstTime()
+    public function testOnAdminLoginDoNotSendModuleInformationWhenNotConfigured()
+    {
+        if ($this->getTestConfig()->getShopEdition() !== 'CE') {
+            $this->markTestSkipped('This test is for Community edition only');
+        }
+
+        $this->getConfig()->setConfigParam('blSendTechnicalInformationToOxid', false);
+
+        $systemEventHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
+
+        $this->assertModuleVersionNotifierCalled($systemEventHandler, 'never');
+
+        $systemEventHandler->onAdminLogin(1);
+    }
+
+    public function testOnShopEndSendShopInformationForFirstTime()
     {
         $systemEventHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
 
@@ -69,10 +61,10 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $onlineLicenseCheck = $onlineLicenseCheckMock;
         $systemEventHandler->setOnlineLicenseCheck($onlineLicenseCheck);
 
-        $systemEventHandler->onShopStart();
+        $systemEventHandler->onShopEnd();
     }
 
-    public function testOnShopStartSendShopInformationNotFirstTime()
+    public function testOnShopNedSendShopInformationNotFirstTime()
     {
         $onlineLicenseCheckValidityTime = 24 * 60 * 60;
         $onlineLicenseInvalidTime = time() - $onlineLicenseCheckValidityTime;
@@ -91,10 +83,10 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $onlineLicenseCheck = $onlineLicenseCheckMock;
         $systemEventHandler->setOnlineLicenseCheck($onlineLicenseCheck);
 
-        $systemEventHandler->onShopStart();
+        $systemEventHandler->onShopEnd();
     }
 
-    public function testOnShopStartDoNotSendShopInformationTimeNotExpired()
+    public function testOnShopEndDoNotSendShopInformationTimeNotExpired()
     {
         $this->setConfigParam('sOnlineLicenseNextCheckTime', time() + (24 * 60 * 60));
         $this->setConfigParam('sOnlineLicenseCheckTime', date('H:i:s'));
@@ -111,10 +103,10 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $onlineLicenseCheck = $onlineLicenseCheckMock;
         $systemEventHandler->setOnlineLicenseCheck($onlineLicenseCheck);
 
-        $systemEventHandler->onShopStart();
+        $systemEventHandler->onShopEnd();
     }
 
-    public function testOnShopStartDoNotSendShopInformationIfSearchEngine()
+    public function testOnEndStartDoNotSendShopInformationIfSearchEngine()
     {
         /** @var \OxidEsales\Eshop\Core\Utils $utils */
         $utils = \OxidEsales\Eshop\Core\Registry::getUtils();
@@ -132,10 +124,10 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $onlineLicenseCheck = $onlineLicenseCheckMock;
         $systemEventHandler->setOnlineLicenseCheck( $onlineLicenseCheck );
 
-        $systemEventHandler->onShopStart();
+        $systemEventHandler->onShopEnd();
     }
 
-    public function testOnShopStartSetWhenToSendInformationForFirstTimeCorrectFormat()
+    public function testOnShopEndSetWhenToSendInformationForFirstTimeCorrectFormat()
     {
         $systemEventHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
 
@@ -144,7 +136,7 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
             ->getMock();
         /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheck $onlineLicenseCheck */
         $systemEventHandler->setOnlineLicenseCheck($onlineLicenseCheck);
-        $systemEventHandler->onShopStart();
+        $systemEventHandler->onShopEnd();
 
         $checkTime = $this->getConfigParam('sOnlineLicenseCheckTime');
         $this->assertNotNull($checkTime);
@@ -156,7 +148,7 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     /**
      * @param string $checkTime
      *
-     * @depends testOnShopStartSetWhenToSendInformationForFirstTimeCorrectFormat
+     * @depends testOnShopEndSetWhenToSendInformationForFirstTimeCorrectFormat
      */
     public function testInformationSendTimeIsBetweenCorrectHours($checkTime)
     {
@@ -166,7 +158,7 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->assertTrue($hour > 7, 'Get hour: '. $hour);
     }
 
-    public function testOnShopStartDoNotChangeWhenToSendInformation()
+    public function testOnShopEndDoNotChangeWhenToSendInformation()
     {
         $systemEventHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
 
@@ -176,16 +168,16 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheck $onlineLicenseCheck */
         $systemEventHandler->setOnlineLicenseCheck($onlineLicenseCheck);
 
-        $systemEventHandler->onShopStart();
+        $systemEventHandler->onShopEnd();
         $checkTime1 = $this->getConfigParam('sOnlineLicenseCheckTime');
 
-        $systemEventHandler->onShopStart();
+        $systemEventHandler->onShopEnd();
         $checkTime2 = $this->getConfigParam('sOnlineLicenseCheckTime');
 
         $this->assertSame($checkTime1, $checkTime2);
     }
 
-    public function testOnShopStartLicenseCheckNextSendTimeUpdated()
+    public function testOnShopEndLicenseCheckNextSendTimeUpdated()
     {
         // 2014-05-13 19:53:20
         $currentTime = 1400000000;
@@ -212,7 +204,7 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $systemEventHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
         $systemEventHandler->setOnlineLicenseCheck($onlineLicenseCheck);
 
-        $systemEventHandler->onShopStart();
+        $systemEventHandler->onShopEnd();
 
         $nextCheckTime = $this->getConfigParam('sOnlineLicenseNextCheckTime');
         $this->assertSame($expectedNextCheckTime, $nextCheckTime);
@@ -245,7 +237,7 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testShopInformationSendingWhenSendingIsAllowed()
     {
         $this->prepareCurrentTime(1400000000);
-        $this->getConfig()->setConfigParam('blLoadDynContents', true);
+        $this->getConfig()->setConfigParam('blSendTechnicalInformationToOxid', true);
 
         $systemEventHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
 
@@ -257,7 +249,7 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $systemEventHandler->setOnlineLicenseCheck($onlineLicenseCheck);
 
-        $systemEventHandler->onShopStart();
+        $systemEventHandler->onShopEnd();
     }
 
     public function testShopInformationSendingWhenSendingIsNotAllowedInCommunityEdition()
@@ -266,7 +258,7 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
             $this->markTestSkipped('This test is for Community edition only.');
         }
         $this->prepareCurrentTime(1400000000);
-        $this->getConfig()->setConfigParam('blLoadDynContents', false);
+        $this->getConfig()->setConfigParam('blSendTechnicalInformationToOxid', false);
 
         $systemEventHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
 
@@ -287,5 +279,24 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     private function prepareCurrentTime($currentTime)
     {
         $this->setTime($currentTime);
+    }
+
+    /**
+     * Inject mock to check if version notifier triggered correct number of times.
+     * Etc. once or never.
+     *
+     * @param SystemEventHandler $systemEventHandler object in which mock is injected.
+     * @param string $timesCalled PHPUnit method name of how many times method should be called.
+     */
+    private function assertModuleVersionNotifierCalled($systemEventHandler, $timesCalled)
+    {
+        $moduleNotifierMock = $this->getMockBuilder(\OxidEsales\Eshop\Core\OnlineModuleVersionNotifier::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $moduleNotifierMock->expects($this->$timesCalled())->method("versionNotify");
+
+        /** @var \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier $moduleNotifier */
+        $moduleNotifier = $moduleNotifierMock;
+        $systemEventHandler->setOnlineModuleVersionNotifier($moduleNotifier);
     }
 }

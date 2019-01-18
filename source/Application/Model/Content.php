@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Model;
@@ -33,7 +17,6 @@ use oxDb;
  */
 class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
-
     /**
      * Current class name.
      *
@@ -307,7 +290,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $sUrl = '';
         if ($blFull) {
             //always returns shop url, not admin
-            $sUrl = $this->getConfig()->getShopUrl($iLang, false);
+            $sUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl($iLang, false);
         }
 
         if ($this->oxcontents__oxloadid->value === 'oxcredits') {
@@ -368,7 +351,8 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
     {
-        if ('oxcontent' === strtolower($sFieldName) || 'oxcontents__oxcontent' === strtolower($sFieldName)) {
+        $sLoweredFieldName = strtolower($sFieldName);
+        if ('oxcontent' === $sLoweredFieldName || 'oxcontents__oxcontent' === $sLoweredFieldName) {
             $iDataType = \OxidEsales\Eshop\Core\Field::T_RAW;
         }
 
@@ -418,7 +402,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         $blSaved = parent::save();
         if ($blSaved && $this->oxcontents__oxloadid->value === 'oxagb') {
-            $sShopId = $this->getConfig()->getShopId();
+            $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
             $sVersion = $this->oxcontents__oxtermversion->value;
 
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();

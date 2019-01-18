@@ -1,30 +1,12 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxConfig;
-use oxRegistry;
-use oxException;
+use OxidEsales\Eshop\Core\Registry as EshopRegistry;
 
 /**
  * Admin article main deliveryset manager.
@@ -67,14 +49,15 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
                 $iCount = 0;
                 foreach ($this->_aConfParams as $sType => $sParam) {
                     $this->_aViewData[$sParam] = $aDbVariables['vars'][$sType];
-                    $iCount += count($aDbVariables['vars'][$sType]);
+                    $variableCount = (is_array($aDbVariables['vars'][$sType])) ? count($aDbVariables['vars'][$sType]) : 0;
+                    $iCount += $variableCount;
                 }
-            } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
-                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
-                $oEx->debugOut();
+            } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
+                EshopRegistry::getUtilsView()->addErrorToDisplay($exception);
+                EshopRegistry::getLogger()->error($exception->getMessage(), [$exception]);
             }
         } else {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_MODULE_NOT_LOADED'));
+            EshopRegistry::getUtilsView()->addErrorToDisplay(new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_MODULE_NOT_LOADED'));
         }
 
         $this->_aViewData["oModule"] = $oModule;
@@ -105,7 +88,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
      */
     public function _loadMetadataConfVars($aModuleSettings)
     {
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $aConfVars = [
             "bool"     => [],
@@ -179,7 +162,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
      */
     public function saveConfVars()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $this->resetContentCache();
 

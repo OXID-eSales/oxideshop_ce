@@ -100,18 +100,7 @@ function editThis(sID)
     <div class="groupExp">
         <div>
             <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="SHOP_OPTIONS_GROUP_SEARCH"}]</b></a>
-            <dl>
-                <dt>
-                    <input type=hidden name=confbools[blAutoSearchOnCat] value=false>
-                    <input type=checkbox name=confbools[blAutoSearchOnCat] value=true  [{if ($confbools.blAutoSearchOnCat)}]checked[{/if}] [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_CONFIG_AUTOSEARCHONCAT"}]
-                </dt>
-                <dd>
-                    [{oxmultilang ident="SHOP_CONFIG_AUTOSEARCHONCAT"}]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-
+          
             <dl>
                 <dt>
                     <textarea class="txtfield" name=confarrs[aSearchCols] [{$readonly}]>[{$confarrs.aSearchCols}]</textarea>
@@ -312,7 +301,7 @@ function editThis(sID)
             <dl>
                 <dt>
                     <input type=hidden name=confbools[blDisableDublArtOnCopy] value=false>
-                    <input type=checkbox name=confbools[blDisableDublArtOnCopy] value=true [{if ($confbools.blDisableDublArtOnCopy)}]checked[{/if}]>
+                    <input type=checkbox name=confbools[blDisableDublArtOnCopy] value=true [{if ($confbools.blDisableDublArtOnCopy)}]checked[{/if}] [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_DISABLEARTDUBLICATES"}]
                 </dt>
                 <dd>
@@ -320,7 +309,42 @@ function editThis(sID)
                 </dd>
                 <div class="spacer"></div>
             </dl>
-         </div>
+            <dl>
+                <dt>
+                    <input type=hidden name=confbools[blAllowSuggestArticle] value=false>
+                    <input type=checkbox name=confbools[blAllowSuggestArticle] value=true [{if ($confbools.blAllowSuggestArticle)}]checked[{/if}] [{$readonly}]>
+                    [{oxinputhelp ident="HELP_SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+
+            <dl>
+                <dt>
+                    <input type=hidden name=confbools[bl_perfLoadReviews] value=false>
+                    <input type=checkbox name=confbools[bl_perfLoadReviews] value=true  [{if ($confbools.bl_perfLoadReviews)}]checked[{/if}] [{$readonly}]>
+                    [{oxinputhelp ident="HELP_SHOP_CONFIG_LOADREVIEWS"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="SHOP_CONFIG_LOADREVIEWS"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+
+            <dl>
+                <dt>
+                    <input type=hidden name=confbools[includeProductReviewLinksInEmail] value=false>
+                    <input type=checkbox name=confbools[includeProductReviewLinksInEmail] value=true  [{if ($confbools.includeProductReviewLinksInEmail)}]checked[{/if}] [{$readonly}]>
+                    [{oxinputhelp ident="HELP_SHOP_CONFIG_INCLUDE_PRODUCT_REVIEW_LINKS_IN_ORDER_EMAIL"}]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="SHOP_CONFIG_INCLUDE_PRODUCT_REVIEW_LINKS_IN_ORDER_EMAIL"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+        </div>
     </div>
 
     <div class="groupExp">
@@ -643,7 +667,7 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type="button" value="[{if isset($defcat) && isset($defcat->oxcategories__oxtitle)}][{$defcat->oxcategories__oxtitle->value}][{else}]---[{/if}]" onclick="JavaScript:showDialog('&cl=shop_config&aoc=1&oxid=[{$oxid|escape:'url'}]');">
+                    <input type="button" value="[{if isset($defcat) && isset($defcat->oxcategories__oxtitle)}][{$defcat->oxcategories__oxtitle->value}][{else}]---[{/if}]" onclick="JavaScript:showDialog('&cl=shop_config&aoc=1&oxid=[{$oxid|escape:'url'}]');" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_ACTIVECATEGORYBYSTART"}]
                 </dt>
                 <dd>
@@ -784,7 +808,7 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type=text class="txt" style="width: 250px;" name=confstrs[sDownloadsDir] value="[{$confstrs.sDownloadsDir}]">
+                    <input type=text class="txt" style="width: 250px;" name=confstrs[sDownloadsDir] value="[{$confstrs.sDownloadsDir}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_DOWNLOADS_PATH"}]
                 </dt>
                 <dd>
@@ -795,7 +819,7 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[iMaxDownloadsCount] value="[{$confstrs.iMaxDownloadsCount}]">
+                    <input type=text class="txt" name=confstrs[iMaxDownloadsCount] value="[{$confstrs.iMaxDownloadsCount}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_MAX_DOWNLOADS_COUNT"}]
                 </dt>
                 <dd>
@@ -806,7 +830,7 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[iLinkExpirationTime] value="[{$confstrs.iLinkExpirationTime}]">
+                    <input type=text class="txt" name=confstrs[iLinkExpirationTime] value="[{$confstrs.iLinkExpirationTime}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_LINK_EXPIRATION_TIME"}]
                 </dt>
                 <dd>
@@ -817,7 +841,7 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[iDownloadExpirationTime] value="[{$confstrs.iDownloadExpirationTime}]">
+                    <input type=text class="txt" name=confstrs[iDownloadExpirationTime] value="[{$confstrs.iDownloadExpirationTime}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_DOWNLOAD_EXPIRATION_TIME"}]
                 </dt>
                 <dd>
@@ -828,7 +852,7 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[iMaxDownloadsCountUnregistered] value="[{$confstrs.iMaxDownloadsCountUnregistered}]">
+                    <input type=text class="txt" name=confstrs[iMaxDownloadsCountUnregistered] value="[{$confstrs.iMaxDownloadsCountUnregistered}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_LINK_EXPIRATION_TIME_UNREGISTERED"}]
                 </dt>
                 <dd>
@@ -906,17 +930,19 @@ function editThis(sID)
                 <div class="spacer"></div>
             </dl>
 
+            [{if $oView->informationSendingToOxidConfigurable()}]
             <dl>
                 <dt>
-                    <input type=hidden name="confbools[blLoadDynContents]" value="false">
-                    <input type=checkbox name="confbools[blLoadDynContents]" value="true"  [{if ($confbools.blLoadDynContents)}]checked[{/if}] [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_CONFIG_LOAD_DYNAMIC_PAGES"}]
+                    <input type=hidden name="confbools[blSendTechnicalInformationToOxid]" value="false">
+                    <input type=checkbox name="confbools[blSendTechnicalInformationToOxid]" value="true"  [{if ($confbools.blSendTechnicalInformationToOxid)}]checked[{/if}] [{$readonly}]>
+                    [{oxinputhelp ident="HELP_SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID"}]
                 </dt>
                 <dd>
-                    [{oxmultilang ident="SHOP_CONFIG_LOAD_DYNAMIC_PAGES"}]
+                    [{oxmultilang ident="SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID"}]
                 </dd>
                 <div class="spacer"></div>
             </dl>
+            [{/if}]
 
             <dl>
                 <dt>
@@ -941,6 +967,24 @@ function editThis(sID)
                 </dt>
                 <dd>
                     [{oxmultilang ident="SHOP_CONFIG_MUSTFILLFIELDS"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+
+            <dl>
+                <dt>
+                </dt>
+                <dd>
+                    [{oxmultilang ident="SHOP_CONFIG_FIELDS_CONTACTFORM"}]
+                    [{oxinputhelp ident="HELP_SHOP_CONFIG_FIELDS_CONTACTFORM"}]
+                    <input type="hidden" name="confarrs[contactFormRequiredFields][]" value="">
+                    [{foreach from=$contactFormFieldConfigurations item=formFieldConfiguration}]
+                    <div style="margin-left:10px;">
+                        <input type="checkbox" name="confarrs[contactFormRequiredFields][]" value=[{$formFieldConfiguration.name}] [{if $formFieldConfiguration.isRequired}]checked[{/if}] [{$readonly}] [{$disabled}]>
+                        <label>[{oxmultilang ident=$formFieldConfiguration.label}]</label>
+                        <br />
+                    </div>
+                    [{/foreach}]
                 </dd>
                 <div class="spacer"></div>
             </dl>
@@ -1067,7 +1111,7 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[sGiCsvFieldEncloser] value="[{$confstrs.sGiCsvFieldEncloser}]">
+                    <input type=text class="txt" name=confstrs[sGiCsvFieldEncloser] value="[{$confstrs.sGiCsvFieldEncloser}]" [{$readonly}]>
                 </dt>
                 <dd>
                     [{oxmultilang ident="SHOP_CONFIG_CSVFIELDENCLOSER"}]
@@ -1077,7 +1121,7 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[sCSVSign] value="[{$confstrs.sCSVSign}]">
+                    <input type=text class="txt" name=confstrs[sCSVSign] value="[{$confstrs.sCSVSign}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_CSVSEPARATOR"}]
                 </dt>
                 <dd>
@@ -1088,7 +1132,7 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[iExportNrofLines] value="[{$confstrs.iExportNrofLines}]">
+                    <input type=text class="txt" name=confstrs[iExportNrofLines] value="[{$confstrs.iExportNrofLines}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_EXPORTNUMBEROFLINES"}]
                 </dt>
                 <dd>
@@ -1099,7 +1143,7 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[iCntofMails] value="[{$confstrs.iCntofMails}]">
+                    <input type=text class="txt" name=confstrs[iCntofMails] value="[{$confstrs.iCntofMails}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_NUMBEROFEMAILSPERTICK"}]
                 </dt>
                 <dd>
@@ -1122,7 +1166,7 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type="text" class="txt" name="confstrs[sParcelService]" style="width: 300px;" value="[{$confstrs.sParcelService}]">
+                    <input type="text" class="txt" name="confstrs[sParcelService]" style="width: 300px;" value="[{$confstrs.sParcelService}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_PARCELSERVICE"}]
                 </dt>
                 <dd>
@@ -1145,6 +1189,39 @@ function editThis(sID)
                 </dt>
                 <dd>
                     [{oxmultilang ident="SHOP_CONFIG_DEBIT_OLD_BANK_INFORMATION_NOT_ALLOWED"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+        </div>
+    </div>
+    <div class="groupExp">
+        <div>
+            <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{oxmultilang ident="SHOP_OPTIONS_GROUP_ACCOUNT_SETTINGS"}]</b></a>
+            <dl>
+                <dt>
+                    <input type=hidden name=confbools[blAllowUsersToDeleteTheirAccount] value=false>
+                    <input
+                        type=checkbox
+                        name=confbools[blAllowUsersToDeleteTheirAccount]
+                        value=true [{if ($confbools.blAllowUsersToDeleteTheirAccount)}]checked[{/if}] [{$readonly}]
+                    >
+                </dt>
+                <dd>
+                    [{oxmultilang ident="SHOP_CONFIG_ALLOW_USERS_TO_DELETE_THEIR_ACCOUNT"}]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            <dl>
+                <dt>
+                    <input type=hidden name=confbools[blAllowUsersToManageTheirReviews] value=false>
+                    <input
+                            type=checkbox
+                            name=confbools[blAllowUsersToManageTheirReviews]
+                            value=true [{if ($confbools.blAllowUsersToManageTheirReviews)}]checked[{/if}] [{$readonly}]
+                    >
+                </dt>
+                <dd>
+                    [{oxmultilang ident="SHOP_CONFIG_ALLOW_USERS_MANAGE_REVIEWS"}]
                 </dd>
                 <div class="spacer"></div>
             </dl>

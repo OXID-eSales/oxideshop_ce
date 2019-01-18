@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine;
@@ -43,7 +27,6 @@ use PDO;
  */
 class Database implements DatabaseInterface
 {
-
     /** @var int code of Mysql duplicated key error. */
     const MYSQL_DUPLICATE_KEY_ERROR_CODE = 1062;
 
@@ -324,6 +307,8 @@ class Database implements DatabaseInterface
                 $exception = $this->convertException($exception);
                 $this->handleException($exception);
             }
+        } else {
+            \OxidEsales\Eshop\Core\Registry::getLogger()->warning('Given statement does not produce output and was not executed', [debug_backtrace()]);
         }
 
         return false;
@@ -900,6 +885,7 @@ class Database implements DatabaseInterface
     {
         $message = $exception->getMessage();
         $code = $exception->getCode();
+        $exceptionClass = DatabaseErrorException::class;
 
         switch (true) {
             case $exception instanceof Exception\ConnectionException:
@@ -915,7 +901,7 @@ class Database implements DatabaseInterface
                 // ConnectionException will be mapped to DatabaseConnectionException::class
                 // no break
             case is_a($exception->getPrevious(), '\Exception') && in_array($exception->getPrevious()->getCode(), ['2003']):
-                $exceptionClass = \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException::class;
+                $exceptionClass = DatabaseConnectionException::class;
                 break;
             case $exception instanceof DBALException:
                 /**
@@ -927,13 +913,10 @@ class Database implements DatabaseInterface
                 /** @var $pdoException PDOException */
                 $pdoException = $exception->getPrevious();
 
-                if ($pdoException->errorInfo[1]) {
+                if ($pdoException instanceof PDOException) {
                     $code = $this->convertErrorCode($pdoException->errorInfo[1]);
-                }
-                if ($pdoException->errorInfo[2]) {
                     $message = $pdoException->errorInfo[2];
                 }
-                $exceptionClass = DatabaseErrorException::class;
 
                 break;
             case $exception instanceof PDOException:
@@ -942,22 +925,15 @@ class Database implements DatabaseInterface
                  * See http://php.net/manual/de/class.pdoexception.php For details and discussion.
                  * Fortunately in some cases we can access PDOException and recover the original SQL error code and message.
                  */
-                if ($exception->errorInfo[1]) {
-                    $code = $this->convertErrorCode($exception->errorInfo[1]);
-                }
-                if ($exception->errorInfo[2]) {
-                    $message = $exception->errorInfo[2];
-                }
+                $code = $this->convertErrorCode($exception->errorInfo[1]);
+                $message = $exception->errorInfo[2];
+
                 /** In case the original code (int) cannot be recovered, code is set to 0 */
                 if (!is_integer($code)) {
                     $code = 0;
                 }
 
-                $exceptionClass = DatabaseErrorException::class;
-
                 break;
-            default:
-                $exceptionClass = DatabaseErrorException::class;
         }
 
         /** @var \oxException $convertedException */
@@ -991,7 +967,7 @@ class Database implements DatabaseInterface
     {
         /** The exception has to be converted into an instance of oxException in order to be logged like this */
         $exception = $this->convertException($exception);
-        $exception->debugOut();
+        \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
     }
 
     /**
@@ -1043,6 +1019,8 @@ class Database implements DatabaseInterface
 
         if ($this->doesStatementProduceOutput($query)) {
             $result = $statement->fetchAll();
+        } else {
+            \OxidEsales\Eshop\Core\Registry::getLogger()->warning('Given statement does not produce output and was not executed', [debug_backtrace()]);
         }
 
         return $result;

@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Setup;
@@ -246,33 +230,21 @@ class View extends Core
     }
 
     /**
-     * Returns image file path
-     *
-     * @return string
-     */
-    public function getImageDir()
-    {
-        return getInstallPath() . 'out/admin/img';
-    }
-
-    /**
      * If demo data installation is OFF, tries to delete demo pictures also
      * checks if setup deletion is ON and deletes setup files if possible,
      * return deletion status
      *
+     * @param array $aSetupConfig if to delete setup directory.
+     * @param array $aDemoConfig  database and demo data configuration.
+     *
      * @return bool
      */
-    public function isDeletedSetup()
+    public function isDeletedSetup($aSetupConfig, $aDemoConfig)
     {
-        //finalizing installation
-        $blDeleted = true;
-        /** @var Session $oSession */
-        $oSession = $this->getInstance("Session");
         /** @var Utilities $oUtils */
         $oUtils = $this->getInstance("Utilities");
         $sPath = getShopBasePath();
 
-        $aDemoConfig = $oSession->getSessionParam("aDB");
         if (!isset($aDemoConfig['dbiDemoData']) || $aDemoConfig['dbiDemoData'] != '1') {
             // "/generated" cleanup
             $oUtils->removeDir($sPath . "out/pictures/generated", true);
@@ -281,10 +253,11 @@ class View extends Core
             $oUtils->removeDir($sPath . "out/pictures/master", true, 1, ["nopic.jpg"]);
         }
 
-        $aSetupConfig = $oSession->getSessionParam("aSetupConfig");
         if (isset($aSetupConfig['blDelSetupDir']) && $aSetupConfig['blDelSetupDir']) {
             // removing setup files
             $blDeleted = $oUtils->removeDir($sPath . EditionPathProvider::SETUP_DIRECTORY, true);
+        } else {
+            $blDeleted = false;
         }
 
         return $blDeleted;

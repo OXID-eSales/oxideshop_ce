@@ -1,30 +1,13 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
-use oxAdminDetails;
+use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FieldConfigurationInterface;
+use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormBridgeInterface;
 use Exception;
 
 /**
@@ -34,7 +17,6 @@ use Exception;
  */
 class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     protected $_sThisTemplate = 'shop_config.tpl';
     protected $_aSkipMultiline = ['aHomeCountry'];
     protected $_aParseFloat = ['iMinOrderPrice'];
@@ -56,7 +38,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         parent::render();
 
@@ -115,6 +97,19 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
         // checking if cUrl is enabled
         $this->_aViewData["blCurlIsActive"] = (!function_exists('curl_init')) ? false : true;
 
+        /** @var ContactFormBridgeInterface $contactFormBridge */
+        $contactFormBridge = $this->getContainer()->get(ContactFormBridgeInterface::class);
+        $contactFormConfiguration = $contactFormBridge->getContactFormConfiguration();
+
+        /** @var FieldConfigurationInterface $fieldConfiguration */
+        foreach ($contactFormConfiguration->getFieldConfigurations() as $fieldConfiguration) {
+            $this->_aViewData['contactFormFieldConfigurations'][] = [
+                'name' => $fieldConfiguration->getName(),
+                'label' => $fieldConfiguration->getLabel(),
+                'isRequired' => $fieldConfiguration->isRequired(),
+            ];
+        }
+
         return $this->_sThisTemplate;
     }
 
@@ -133,7 +128,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      */
     public function saveConfVars()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $this->resetContentCache();
 
@@ -199,7 +194,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      */
     public function loadConfVars($sShopId, $sModule)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $aConfVars = [
             "bool"   => [],
             "str"    => [],
@@ -245,6 +240,22 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
             'constraints' => $aVarConstraints,
             'grouping'    => $aGrouping,
         ];
+    }
+
+    /**
+     * If allow to configure information sending to OXID.
+     * For PE and EE users it is always turned on.
+     *
+     * @return bool
+     */
+    public function informationSendingToOxidConfigurable()
+    {
+        $facts = new \OxidEsales\Facts\Facts();
+        if (!$facts->isCommunity()) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -463,7 +474,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
     {
         $sEditId = parent::getEditObjectId();
         if (!$sEditId) {
-            return $this->getConfig()->getShopId();
+            return \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
         }
 
         return $sEditId;

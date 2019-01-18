@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Price;
 
@@ -145,8 +129,10 @@ class BasketTest extends BaseTestCase
 
         // Total discounts
         $expectedDiscounts = $expected['totals']['discounts'];
+        $expectedDiscountCount = (is_array($expectedDiscounts)) ? count($expectedDiscounts) : 0;
         $productDiscounts = $basket->getDiscounts();
-        $this->assertEquals(count($expectedDiscounts), count($productDiscounts), "Expected basket discount amount doesn't match actual");
+        $productDiscountsCount = (is_array($productDiscounts)) ? count($productDiscounts) : 0;
+        $this->assertEquals($expectedDiscountCount, $productDiscountsCount, "Expected basket discount amount doesn't match actual");
         if (!empty($expectedDiscounts)) {
             foreach ($productDiscounts as $discount) {
                 $this->assertEquals($expectedDiscounts[$discount->sOXID], $discount->fDiscount, "Total discount of {$discount->sOXID}");
@@ -155,8 +141,10 @@ class BasketTest extends BaseTestCase
 
         // Total vats
         $expectedVats = $expected['totals']['vats'];
+        $expectedVatsCount = (is_array($expectedVats)) ? count($expectedVats) : 0;
         $productVats = $basket->getProductVats();
-        $this->assertEquals(count($expectedVats), count($productVats), "Expected basket different vat amount doesn't match actual");
+        $productVatsCount = (is_array($productVats)) ? count($productVats) : 0;
+        $this->assertEquals($expectedVatsCount, $productVatsCount, "Expected basket different vat amount doesn't match actual");
         if (!empty($expectedVats)) {
             foreach ($productVats as $percent => $sum) {
                 $this->assertEquals($expectedVats[$percent], $sum, "Total Vat of {$percent}%");

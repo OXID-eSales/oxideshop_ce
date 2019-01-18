@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
@@ -28,12 +12,11 @@ use Exception;
 
 /**
  * Admin article main user manager.
- * Performs collection and updatind (on user submit) main item information.
+ * Performs collection and updating (on user submit) main item information.
  * Admin Menu: User Administration -> Users -> Main.
  */
 class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     private $_sSaveError = null;
 
     /**
@@ -81,7 +64,7 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
             if (!($oUser->oxuser__oxrights->value == "malladmin" && !$blisMallAdmin)) {
                 // generate selected right
                 reset($aUserRights);
-                while (list(, $val) = each($aUserRights)) {
+                foreach ($aUserRights as $val) {
                     if ($val->id == $oUser->oxuser__oxrights->value) {
                         $val->selected = 1;
                         break;

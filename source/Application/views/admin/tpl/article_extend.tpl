@@ -109,7 +109,7 @@ function processUnitInput( oSelect, sInputId )
                   <input type="text" class="editinput" size="10" maxlength="[{$edit->oxarticles__oxunitquantity->fldmax_length}]" name="editval[oxarticles__oxunitquantity]" value="[{$edit->oxarticles__oxunitquantity->value}]" [{$readonly}]>
                   &nbsp;&nbsp;&nbsp;&nbsp; [{oxmultilang ident="ARTICLE_EXTEND_UNITNAME"}]:
                     [{if $oView->getUnitsArray()}]
-                        <select name="editval[oxarticles__oxunitname]" onChange="JavaScript:processUnitInput( this, 'unitinput' )">
+                        <select name="editval[oxarticles__oxunitname]" onChange="JavaScript:processUnitInput( this, 'unitinput' )" [{$readonly}]>
                             <option value="">-</option>
                             [{foreach from=$oView->getUnitsArray() key=sKey item=sUnit}]
                                 [{assign var="sUnitSelected" value=""}]
@@ -121,7 +121,7 @@ function processUnitInput( oSelect, sInputId )
                             [{/foreach}]
                         </select> /
                     [{/if}]
-                  <input type="text" id="unitinput" class="editinput" size="10" maxlength="[{$edit->oxarticles__oxunitname->fldmax_length}]" name="editval[oxarticles__oxunitname]" value="[{if !$blUseSelection}][{$edit->oxarticles__oxunitname->value}][{/if}]" [{if $blUseSelection}]disabled="true"[{/if}] [{include file="help.tpl" helpid=article_unit}]>
+                  <input type="text" id="unitinput" class="editinput" size="10" maxlength="[{$edit->oxarticles__oxunitname->fldmax_length}]" name="editval[oxarticles__oxunitname]" value="[{if !$blUseSelection}][{$edit->oxarticles__oxunitname->value}][{/if}]" [{if $blUseSelection}]disabled="true"[{/if}] [{include file="help.tpl" helpid=article_unit}] [{$readonly}]>
                   [{oxinputhelp ident="HELP_ARTICLE_EXTEND_UNITQUANTITY"}]
                 </td>
               </tr>
@@ -245,7 +245,7 @@ function processUnitInput( oSelect, sInputId )
                 </td>
                 <td class="edittext">
                   <input type="hidden" name="editval[oxarticles__oxskipdiscounts]" value='0'>
-                  <input class="edittext" type="checkbox" name="editval[oxarticles__oxskipdiscounts]" value='1' [{if $edit->oxarticles__oxskipdiscounts->value == 1}]checked[{/if}]>
+                  <input class="edittext" type="checkbox" name="editval[oxarticles__oxskipdiscounts]" value='1' [{if $edit->oxarticles__oxskipdiscounts->value == 1}]checked[{/if}] [{$readonly}]>
                   [{oxinputhelp ident="HELP_ARTICLE_EXTEND_SKIPDISCOUNTS"}]
                 </td>
               </tr>
@@ -272,7 +272,7 @@ function processUnitInput( oSelect, sInputId )
           <tr>
             <td class="edittext"></td>
             <td class="edittext">
-              <input type="submit" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'"" ><br>
+              <input type="submit" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'"" [{$readonly}]><br>
             </td>
           </tr>
           <tr>
@@ -310,7 +310,7 @@ function processUnitInput( oSelect, sInputId )
                         &nbsp;<a href="[{$oViewConf->getSelfLink()}]&cl=article_extend&amp;mediaid=[{$oMediaUrl->oxmediaurls__oxid->value}]&amp;fnc=deletemedia&amp;oxid=[{$oxid}]&amp;editlanguage=[{$editlanguage}]" onClick='return confirm("[{oxmultilang ident="GENERAL_YOUWANTTODELETE"}]")'><img src="[{$oViewConf->getImageUrl()}]/delete_button.gif" border=0></a>&nbsp;
                         </td>
                         <td class="listitem[{$oddclass}]" width=250>
-                        <input style="width:100%" class="edittext" type="text" name="aMediaUrls[[{$oMediaUrl->oxmediaurls__oxid->value}]][oxmediaurls__oxdesc]" value="[{$oMediaUrl->oxmediaurls__oxdesc->value}]">
+                        <input style="width:100%" class="edittext" type="text" name="aMediaUrls[[{$oMediaUrl->oxmediaurls__oxid->value}]][oxmediaurls__oxdesc]" value="[{$oMediaUrl->oxmediaurls__oxdesc->value}]" [{$readonly}]>
                         </td>
                     </tr>
                 [{/foreach}]
@@ -318,7 +318,7 @@ function processUnitInput( oSelect, sInputId )
                 [{if $aMediaUrls->count()}]
                     <tr>
                       <td colspan="3" align="right">
-                        <input class="edittext" type="button" onclick="this.form.fnc.value='updateMedia';this.form.submit();" [{$readonly}] value="[{oxmultilang ident="ARTICLE_EXTEND_UPDATEMEDIA"}]">
+                        <input class="edittext" type="button" onclick="this.form.fnc.value='updateMedia';this.form.submit();" [{$readonly}] value="[{oxmultilang ident="ARTICLE_EXTEND_UPDATEMEDIA"}]" [{$readonly}]>
                         <br><br>
                       </td>
                     </tr>
@@ -356,23 +356,23 @@ function processUnitInput( oSelect, sInputId )
             <table cellspacing="0" cellpadding="0" border="0">
                 <tr>
                     [{oxhasrights object=$edit field='oxupdateprice' readonly=$readonly}]
-                        <td>[{oxmultilang ident="ARTICLE_EXTEND_UPDATEPRICE"}]: ([{$oActCur->sign}]):&nbsp;</td><td><input type="text" class="editinput" size="4" maxlength="[{$edit->oxarticles__oxupdateprice->fldmax_length}]" name="editval[oxarticles__oxupdateprice]" value="[{$edit->oxarticles__oxupdateprice->value}]"></td>
+                        <td>[{oxmultilang ident="ARTICLE_EXTEND_UPDATEPRICE"}]: ([{$oActCur->sign}]):&nbsp;</td><td><input type="text" class="editinput" size="4" maxlength="[{$edit->oxarticles__oxupdateprice->fldmax_length}]" name="editval[oxarticles__oxupdateprice]" value="[{$edit->oxarticles__oxupdateprice->value}]" [{$readonly}]></td>
                     [{/oxhasrights}]
                     [{oxhasrights object=$edit field='oxupdatepricea' readonly=$readonly}]
-                        <td>&nbsp;[{oxmultilang ident="ARTICLE_EXTEND_UPDATEPRICEA"}]:&nbsp;</td><td><input type="text" class="editinput" size="4" maxlength="[{$edit->oxarticles__oxupdatepricea->fldmax_length}]" name="editval[oxarticles__oxupdatepricea]" value="[{$edit->oxarticles__oxupdatepricea->value}]"></td>
+                        <td>&nbsp;[{oxmultilang ident="ARTICLE_EXTEND_UPDATEPRICEA"}]:&nbsp;</td><td><input type="text" class="editinput" size="4" maxlength="[{$edit->oxarticles__oxupdatepricea->fldmax_length}]" name="editval[oxarticles__oxupdatepricea]" value="[{$edit->oxarticles__oxupdatepricea->value}]" [{$readonly}]></td>
                     [{/oxhasrights}]
                     [{oxhasrights object=$edit field='oxupdatepriceb' readonly=$readonly}]
-                        <td>&nbsp;[{oxmultilang ident="ARTICLE_EXTEND_UPDATEPRICEB"}]:&nbsp;</td><td><input type="text" class="editinput" size="4" maxlength="[{$edit->oxarticles__oxupdatepriceb->fldmax_length}]" name="editval[oxarticles__oxupdatepriceb]" value="[{$edit->oxarticles__oxupdatepriceb->value}]"></td>
+                        <td>&nbsp;[{oxmultilang ident="ARTICLE_EXTEND_UPDATEPRICEB"}]:&nbsp;</td><td><input type="text" class="editinput" size="4" maxlength="[{$edit->oxarticles__oxupdatepriceb->fldmax_length}]" name="editval[oxarticles__oxupdatepriceb]" value="[{$edit->oxarticles__oxupdatepriceb->value}]" [{$readonly}]></td>
                     [{/oxhasrights}]
                     [{oxhasrights object=$edit field='oxupdatepricec' readonly=$readonly}]
-                        <td>&nbsp;[{oxmultilang ident="ARTICLE_EXTEND_UPDATEPRICEC"}]:&nbsp;</td><td><input type="text" class="editinput" size="4" maxlength="[{$edit->oxarticles__oxupdatepricec->fldmax_length}]" name="editval[oxarticles__oxupdatepricec]" value="[{$edit->oxarticles__oxupdatepricec->value}]"></td>
+                        <td>&nbsp;[{oxmultilang ident="ARTICLE_EXTEND_UPDATEPRICEC"}]:&nbsp;</td><td><input type="text" class="editinput" size="4" maxlength="[{$edit->oxarticles__oxupdatepricec->fldmax_length}]" name="editval[oxarticles__oxupdatepricec]" value="[{$edit->oxarticles__oxupdatepricec->value}]" [{$readonly}]></td>
                     [{/oxhasrights}]
                 </tr>
                 [{oxhasrights object=$edit field='oxupdatepricetime' readonly=$readonly}]
                 <tr>
                     <td>[{oxmultilang ident="ARTICLE_EXTEND_UPDATEPRICETIME"}]:&nbsp;</td>
                     <td colspan="7">
-                        <input type="text" class="editinput" size="20" maxlength="20" name="editval[oxarticles__oxupdatepricetime]" value="[{$edit->oxarticles__oxupdatepricetime->value|oxformdate}]">
+                        <input type="text" class="editinput" size="20" maxlength="20" name="editval[oxarticles__oxupdatepricetime]" value="[{$edit->oxarticles__oxupdatepricetime->value|oxformdate}]" [{$readonly}]>
                     </td>
                 </tr>
                 [{/oxhasrights}]

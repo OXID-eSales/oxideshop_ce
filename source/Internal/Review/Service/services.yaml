@@ -1,0 +1,24 @@
+services:
+  OxidEsales\EshopCommunity\Internal\Review\Service\UserRatingServiceInterface:
+    class: %review_path%\Service\UserRatingService
+    autowire: true
+    public: false
+  OxidEsales\EshopCommunity\Internal\Review\Service\UserReviewServiceInterface:
+    class: %review_path%\Service\UserReviewService
+    autowire: true
+    public: false
+  OxidEsales\EshopCommunity\Internal\Review\Service\ReviewAndRatingMergingServiceInterface:
+    class: %review_path%\Service\ReviewAndRatingMergingService
+    autowire: true
+    public: false
+  OxidEsales\EshopCommunity\Internal\Review\Service\UserReviewAndRatingServiceInterface:
+    class: %review_path%\Service\UserReviewAndRatingService
+    autowire: true
+    public: false
+  OxidEsales\EshopCommunity\Internal\Review\Service\RatingCalculatorServiceInterface:
+    class: %review_path%\Service\RatingCalculatorService
+    public: false
+  OxidEsales\EshopCommunity\Internal\Review\Service\ProductRatingServiceInterface:
+    class: %review_path%\Service\ProductRatingService
+    autowire: true
+    public: false

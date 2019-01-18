@@ -1,28 +1,12 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxRegistry;
-use oxUtilsUrl;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Application\Container;
 
 /**
  * Current user "My account" window.
@@ -116,6 +100,13 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
      * @var bool
      */
     protected $_blBargainAction = true;
+
+    /**
+     * Status of the account deletion
+     *
+     * @var bool
+     */
+    private $accountDeletionStatus;
 
     /**
      * Loads action articles. If user is logged and returns name of
@@ -212,7 +203,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
         if (($sourceClass = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sourcecl")) &&
             $this->_oaComponents['oxcmp_user']->getLoginStatus() === USER_LOGIN_SUCCESS
         ) {
-            $redirectUrl = $this->getConfig()->getShopUrl() . 'index.php?cl=' . rawurlencode($sourceClass);
+            $redirectUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl() . 'index.php?cl=' . rawurlencode($sourceClass);
 
             // building redirect link
             foreach ($this->getNavigationParams() as $key => $value) {
@@ -357,7 +348,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
     {
         $title = parent::getTitle();
 
-        if ($this->getConfig()->getActiveView()->getClassName() == 'account') {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView()->getClassName() == 'account') {
             $baseLanguageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
             $title = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('PAGE_TITLE_ACCOUNT', $baseLanguageId, false);
             if ($user = $this->getUser()) {
@@ -367,5 +358,63 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
         }
 
         return $title;
+    }
+
+    /**
+     * Deletes User account.
+     */
+    public function deleteAccount()
+    {
+        $this->accountDeletionStatus = false;
+        $user = $this->getUser();
+
+        /**
+         * Setting derived to false allows mall users to delete their account being in a different shop as the shop
+         * the account was originally created in.
+         */
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blMallUsers')) {
+            $user->setIsDerived(false);
+        }
+
+        if ($this->canUserAccountBeDeleted() && $user->delete()) {
+            $this->accountDeletionStatus = true;
+            $user->logout();
+            $session = $this->getSession();
+            $session->destroy();
+        }
+    }
+
+    /**
+     * Returns true if User is allowed to delete own account.
+     *
+     * @return bool
+     */
+    public function isUserAllowedToDeleteOwnAccount()
+    {
+        $allowUsersToDeleteTheirAccount = Registry::getConfig()->getConfigParam('blAllowUsersToDeleteTheirAccount');
+
+        $user = $this->getUser();
+
+        return $allowUsersToDeleteTheirAccount && $user && !$user->isMallAdmin();
+    }
+
+    /**
+     * Template variable getter. Returns true, if a user account has been sucessfully deleted, else false.
+     *
+     * @return bool
+     */
+    public function getAccountDeletionStatus()
+    {
+        return $this->accountDeletionStatus;
+    }
+
+    /**
+     * Checks if possible to delete user.
+     *
+     * @return bool
+     */
+    private function canUserAccountBeDeleted()
+    {
+        return $this->getSession()->checkSessionChallenge() && $this->isUserAllowedToDeleteOwnAccount();
     }
 }

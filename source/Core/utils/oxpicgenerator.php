@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 // checks if GD library version getter does not exist
@@ -165,16 +149,17 @@ if (!function_exists("resizeGif")) {
             list($iNewWidth, $iNewHeight) = $aResult;
             $hDestinationImage = ($iGDVer == 1) ? imagecreate($iNewWidth, $iNewHeight) : imagecreatetruecolor($iNewWidth, $iNewHeight);
             $hSourceImage = imagecreatefromgif($sSrc);
-            $iTransparentColor = imagecolorresolve($hSourceImage, 255, 255, 255);
+
             $iFillColor = imagecolorresolve($hDestinationImage, 255, 255, 255);
             imagefill($hDestinationImage, 0, 0, $iFillColor);
-            imagecolortransparent($hSourceImage, $iTransparentColor);
+            imagecolortransparent($hDestinationImage, $iFillColor);
+
             if ($iGDVer == 1) {
                 imagecopyresized($hDestinationImage, $hSourceImage, 0, 0, 0, 0, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeight);
             } else {
                 imagecopyresampled($hDestinationImage, $hSourceImage, 0, 0, 0, 0, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeight);
             }
-            imagecolortransparent($hDestinationImage, $iFillColor);
+
             imagegif($hDestinationImage, $sTarget);
             imagedestroy($hDestinationImage);
             imagedestroy($hSourceImage);
@@ -256,7 +241,7 @@ if (!function_exists("resizeJpeg")) {
             if ($hDestinationImage === null) {
                 $hDestinationImage = $iGdVer == 1 ? imagecreate($iNewWidth, $iNewHeight) : imagecreatetruecolor($iNewWidth, $iNewHeight);
             }
-            $hSourceImage = imagecreatefromjpeg($sSrc);
+            $hSourceImage = imagecreatefromstring(file_get_contents($sSrc));
             if (copyAlteredImage($hDestinationImage, $hSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer)) {
                 imagejpeg($hDestinationImage, $sTarget, $iDefQuality);
                 imagedestroy($hDestinationImage);

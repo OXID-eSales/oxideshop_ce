@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
@@ -43,17 +27,17 @@ class CmpUtilsTest extends \OxidTestCase
         $this->setRequestParameter("addcompare", true);
         $this->setRequestParameter('removecompare', null);
 
-        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
+        /** @var oxArticle|PHPUnit\Framework\MockObject\MockObject $oProduct */
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getId", "setOnComparisonList"));
         $oProduct->expects($this->exactly(2))->method('getId')->will($this->returnValue("1126"));
         $oProduct->expects($this->exactly(2))->method('setOnComparisonList')->with($this->equalTo(true));
 
-        /** @var oxView|PHPUnit_Framework_MockObject_MockObject $oParentView */
+        /** @var oxView|PHPUnit\Framework\MockObject\MockObject $oParentView */
         $oParentView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getViewProduct", "getViewProductList"));
         $oParentView->expects($this->once())->method('getViewProduct')->will($this->returnValue($oProduct));
         $oParentView->expects($this->once())->method('getViewProductList')->will($this->returnValue(array($oProduct)));
 
-        /** @var oxcmp_utils|PHPUnit_Framework_MockObject_MockObject $oCmp */
+        /** @var oxcmp_utils|PHPUnit\Framework\MockObject\MockObject $oCmp */
         $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\UtilsComponent::class, array("getParent"));
         $oCmp->expects($this->once())->method('getParent')->will($this->returnValue($oParentView));
         $oCmp->toCompareList("1126");
@@ -73,17 +57,17 @@ class CmpUtilsTest extends \OxidTestCase
         $this->setRequestParameter('removecompare', true);
         $this->setRequestParameter('aFiltcompproducts', array("1126"));
 
-        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
+        /** @var oxArticle|PHPUnit\Framework\MockObject\MockObject $oProduct */
         $oProduct = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("getId", "setOnComparisonList"));
         $oProduct->expects($this->exactly(2))->method('getId')->will($this->returnValue("1126"));
         $oProduct->expects($this->exactly(2))->method('setOnComparisonList')->with($this->equalTo(false));
 
-        /** @var oxView|PHPUnit_Framework_MockObject_MockObject $oParentView */
+        /** @var oxView|PHPUnit\Framework\MockObject\MockObject $oParentView */
         $oParentView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getViewProduct", "getViewProductList"));
         $oParentView->expects($this->once())->method('getViewProduct')->will($this->returnValue($oProduct));
         $oParentView->expects($this->once())->method('getViewProductList')->will($this->returnValue(array($oProduct)));
 
-        /** @var oxcmp_utils|PHPUnit_Framework_MockObject_MockObject $oCmp */
+        /** @var oxcmp_utils|PHPUnit\Framework\MockObject\MockObject $oCmp */
         $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\UtilsComponent::class, array("getParent"));
         $oCmp->expects($this->once())->method('getParent')->will($this->returnValue($oParentView));
         $oCmp->toCompareList("1126");
@@ -96,12 +80,12 @@ class CmpUtilsTest extends \OxidTestCase
      */
     public function testToNoticeList()
     {
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
-        /** @var oxcmp_utils|PHPUnit_Framework_MockObject_MockObject $oCmp */
+        /** @var oxcmp_utils|PHPUnit\Framework\MockObject\MockObject $oCmp */
         $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\UtilsComponent::class, array("_toList"));
         $oCmp->expects($this->once())->method('_toList')->with($this->equalTo('noticelist'), $this->equalTo('1126'), $this->equalTo(999), $this->equalTo('sel'));
         $oCmp->toNoticeList('1126', 999, 'sel');
@@ -114,21 +98,21 @@ class CmpUtilsTest extends \OxidTestCase
      */
     public function testToWishList()
     {
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $oSession */
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
         $oSession->expects($this->exactly(2))->method('checkSessionChallenge')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
         $this->getConfig()->setConfigParam("bl_showWishlist", false);
 
-        /** @var oxcmp_utils|PHPUnit_Framework_MockObject_MockObject $oCmp */
+        /** @var oxcmp_utils|PHPUnit\Framework\MockObject\MockObject $oCmp */
         $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\UtilsComponent::class, array("_toList"));
         $oCmp->expects($this->never())->method('_toList');
         $oCmp->toWishList('1126', 999, 'sel');
 
         $this->getConfig()->setConfigParam("bl_showWishlist", true);
 
-        /** @var oxcmp_utils|PHPUnit_Framework_MockObject_MockObject $oCmp */
+        /** @var oxcmp_utils|PHPUnit\Framework\MockObject\MockObject $oCmp */
         $oCmp = $this->getMock(\OxidEsales\Eshop\Application\Component\UtilsComponent::class, array("_toList"));
         $oCmp->expects($this->once())->method('_toList')->with($this->equalTo('wishlist'), $this->equalTo('1126'), $this->equalTo(999), $this->equalTo('sel'));
         $oCmp->toWishList('1126', 999, 'sel');

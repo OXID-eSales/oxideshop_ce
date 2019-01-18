@@ -1,34 +1,22 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
 
-use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
-use OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
-use OxidEsales\DoctrineMigrationWrapper\Migrations;
+use OxidEsales\DatabaseViewsGenerator\ViewsGenerator;
+use \OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
+use \OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use \OxidEsales\Facts\Facts;
+use \OxidEsales\Eshop\Core\Edition\EditionSelector;
+use \OxidEsales\DoctrineMigrationWrapper\Migrations;
+use OxidEsales\DoctrineMigrationWrapper\MigrationsBuilder;
+use OxidEsales\DemoDataInstaller\DemoDataInstallerBuilder;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
  * Setup utilities class
@@ -40,14 +28,9 @@ class Utilities extends Core
     const DEMODATA_PACKAGE_NAME = 'oxideshop-demodata-%s';
 
     const DEMODATA_PACKAGE_SOURCE_DIRECTORY = 'src';
-    const COMPOSER_VENDOR_BIN_DIRECTORY = 'bin';
 
     const DEMODATA_SQL_FILENAME = 'demodata.sql';
     const LICENSE_TEXT_FILENAME = "lizenz.txt";
-
-    const DATABASE_VIEW_REGENERATION_BINARY_FILENAME = 'oe-eshop-db_views_generate';
-    const DATABASE_MIGRATION_BINARY_FILENAME = 'oe-eshop-doctrine_migration';
-    const DEMODATA_ASSETS_INSTALL_BINARY_FILENAME = 'oe-eshop-demodata_install';
 
     /**
      * Unable to find file
@@ -191,43 +174,40 @@ class Utilities extends Core
     /**
      * Updates config.inc.php file contents.
      *
-     * @param array $aParams paths parameters
+     * @param array $parameters Configuration parameters as submitted by the user
      *
      * @throws Exception File can't be found, opened for reading or written.
      */
-    public function updateConfigFile($aParams)
+    public function updateConfigFile($parameters)
     {
-        $sConfPath = $aParams['sShopDir'] . "/config.inc.php";
+        $configFile = '';
+        $language = $this->getInstance("Language");
 
-        $oLang = $this->getInstance("Language");
-
-        $this->handleMissingConfigFileException($sConfPath);
+        if (isset($parameters['sShopDir'])) {
+            $configFile = $parameters['sShopDir'] . "/config.inc.php";
+        }
+        $this->handleMissingConfigFileException($configFile);
 
         clearstatcache();
-        @chmod($sConfPath, getDefaultFileMode());
-        if (($fp = fopen($sConfPath, "r"))) {
-            $sConfFile = fread($fp, filesize($sConfPath));
-            fclose($fp);
-        } else {
-            throw new Exception(sprintf($oLang->getText('ERROR_COULD_NOT_OPEN_CONFIG_FILE'), $sConfPath));
+        // Make config file writable, as it may be write protected
+        @chmod($configFile, getDefaultFileMode());
+        if (!$configFileContent = file_get_contents($configFile)) {
+            throw new Exception(sprintf($language->getText('ERROR_COULD_NOT_OPEN_CONFIG_FILE'), $configFile));
         }
 
         // overwriting settings
-        foreach ($aParams as $sParamName => $sParamValue) {
-            // non integer type variables must be surrounded by quotes
-            if ($sParamName[0] != 'i') {
-                $sParamValue = "'{$sParamValue}'";
-            }
-            $sConfFile = preg_replace("/(this->{$sParamName}).*'<.*>'.*;/", "\\1 = " . $sParamValue . ";", $sConfFile);
+        foreach ($parameters as $configOption => $value) {
+            $search = ["\'", "'" ];
+            $replace = ["\\\'", "\'"];
+            $escapedValue = str_replace($search, $replace, $value);
+            $configFileContent = str_replace("<{$configOption}>", $escapedValue, $configFileContent);
         }
 
-        if (($fp = fopen($sConfPath, "w"))) {
-            fwrite($fp, $sConfFile);
-            fclose($fp);
-            @chmod($sConfPath, getDefaultConfigFileMode());
-        } else {
-            throw new Exception(sprintf($oLang->getText('ERROR_CONFIG_FILE_IS_NOT_WRITABLE'), $aParams['sShopDir']));
+        if (!file_put_contents($configFile, $configFileContent)) {
+            throw new Exception(sprintf($language->getText('ERROR_CONFIG_FILE_IS_NOT_WRITABLE'), $configFile));
         }
+        // Make config file read-only, this is our recomnedation for config.inc.php
+        @chmod($configFile, getDefaultConfigFileMode());
     }
 
     /**
@@ -456,51 +436,42 @@ class Utilities extends Core
 
     /**
      * Calls external database views regeneration command.
+     *
+     * @return bool Was the call a success?
      */
     public function executeExternalRegenerateViewsCommand()
     {
-        $regenerateViewsCommand = $this->formCommandToVendor(self::DATABASE_VIEW_REGENERATION_BINARY_FILENAME);
-        $this->executeShellCommand($regenerateViewsCommand);
+        $ViewsGenerator = new ViewsGenerator();
+
+        return $ViewsGenerator->generate();
     }
 
     /**
      * Calls external database migration command.
+     *
+     * @param ConsoleOutput $output Add a possibility to provide a custom output handler.
+     * @param Facts|null    $facts  A possible facts mock
      */
-    public function executeExternalDatabaseMigrationCommand()
+    public function executeExternalDatabaseMigrationCommand(ConsoleOutput $output = null, Facts $facts = null)
     {
-        $databaseMigrateCommand = $this->formCommandToVendor(self::DATABASE_MIGRATION_BINARY_FILENAME) . ' ' . Migrations::MIGRATE_COMMAND;
-        $this->executeShellCommand($databaseMigrateCommand);
+        $migrations = $this->createMigrations($facts);
+        $migrations->setOutput($output);
+
+        $command = Migrations::MIGRATE_COMMAND;
+
+        $migrations->execute($command);
     }
 
     /**
      * Calls external demodata assets install command.
+     *
+     * @return int Error code of the install command.
      */
     public function executeExternalDemodataAssetsInstallCommand()
     {
-        $installDemoDataCommand = $this->formCommandToVendor(self::DEMODATA_ASSETS_INSTALL_BINARY_FILENAME);
-        $this->executeShellCommand($installDemoDataCommand);
-    }
+        $demoDataInstaller = $this->createDemoDataInstaller();
 
-    /**
-     * Execute shell command and capture output when return code is non zero.
-     *
-     * @param string $command Command to execute.
-     *
-     * @throws CommandExecutionFailedException When execution returns non zero return code.
-     */
-    private function executeShellCommand($command)
-    {
-        $commandWithStdErrRedirection = $command . " 2>&1";
-
-        exec($commandWithStdErrRedirection, $outputLines, $returnCode);
-
-        if (($returnCode !== 0)) {
-            $exception = new CommandExecutionFailedException($command);
-            $exception->setReturnCode($returnCode);
-            $exception->setCommandOutput($returnCode !== 127 ? $outputLines : ['Impossible to execute the command.']);
-
-            throw $exception;
-        }
+        return $demoDataInstaller->execute();
     }
 
     /**
@@ -511,16 +482,6 @@ class Utilities extends Core
     private function getVendorDirectory()
     {
         return VENDOR_PATH;
-    }
-
-    /**
-     * Return path to composer vendor bin directory.
-     *
-     * @return string
-     */
-    private function getVendorBinaryDirectory()
-    {
-        return $this->getVendorDirectory() . self::COMPOSER_VENDOR_BIN_DIRECTORY;
     }
 
     /**
@@ -609,12 +570,12 @@ class Utilities extends Core
      */
     public function getActiveEditionDemodataPackagePath()
     {
-        $editionSelector = new EditionSelector();
+        $facts = new Facts();
 
-        return $this->getUtilitiesInstance()->getVendorDirectory()
+        return $this->getVendorDirectory()
             . EditionRootPathProvider::EDITIONS_DIRECTORY
             . DIRECTORY_SEPARATOR
-            . sprintf(self::DEMODATA_PACKAGE_NAME, strtolower($editionSelector->getEdition()));
+            . sprintf(self::DEMODATA_PACKAGE_NAME, strtolower($facts->getEdition()));
     }
 
     /**
@@ -649,20 +610,24 @@ class Utilities extends Core
     }
 
     /**
-     * Form command to script file in Vendor directory.
+     * @param Facts $facts The facts object to use for the creation of the migrations.
      *
-     * @param string $command
-     *
-     * @return string
+     * @return Migrations
      */
-    private function formCommandToVendor($command)
+    protected function createMigrations(Facts $facts = null)
     {
-        $migrateCommand = implode(
-            DIRECTORY_SEPARATOR,
-            [$this->getVendorBinaryDirectory(), $command]
-        );
-        $migrateCommand = '"' . $migrateCommand . '"';
+        $migrationsBuilder = new MigrationsBuilder();
 
-        return $migrateCommand;
+        return $migrationsBuilder->build($facts);
+    }
+
+    /**
+     * @return \OxidEsales\DemoDataInstaller\DemoDataInstaller
+     */
+    protected function createDemoDataInstaller()
+    {
+        $demoDataInstallerBuilder = new DemoDataInstallerBuilder();
+
+        return $demoDataInstallerBuilder->build();
     }
 }

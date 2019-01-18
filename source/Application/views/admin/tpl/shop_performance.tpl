@@ -19,9 +19,10 @@ function editThis( sID )
 //-->
 </script>
 
-[{assign var="readonly" value=""}]
 [{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
+[{else}]
+    [{assign var="readonly" value=""}]
 [{/if}]
 
 [{cycle assign="_clear_" values=",2"}]
@@ -173,17 +174,6 @@ function editThis( sID )
 
                 <tr>
                  <td valign="top" class="conftext">
-                    <input type=hidden name=confbools[bl_perfLoadReviews] value=false>
-                    <input type=checkbox name=confbools[bl_perfLoadReviews] value=true  [{if ($confbools.bl_perfLoadReviews)}]checked[{/if}] [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_PERF_LOADREVIEWS"}]
-                 </td>
-                 <td valign="top" class="conftext" width="100%">
-                  [{oxmultilang ident="SHOP_PERF_LOADREVIEWS"}]
-                 </td>
-                </tr>
-
-                <tr>
-                 <td valign="top" class="conftext">
                     <input type=hidden name=confbools[bl_perfLoadCrossselling] value=false>
                     <input type=checkbox name=confbools[bl_perfLoadCrossselling] value=true  [{if ($confbools.bl_perfLoadCrossselling)}]checked[{/if}] [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_PERF_LOADCROSSSELLING"}]
@@ -273,7 +263,7 @@ function editThis( sID )
                 <tr>
                  <td valign="top" class="conftext">
                     <input type=hidden name=confbools[blPerfNoBasketSaving] value=false>
-                    <input type=checkbox class="confinput" name=confbools[blPerfNoBasketSaving] value=true  [{if ($confbools.blPerfNoBasketSaving)}]checked[{/if}]>
+                    <input type=checkbox class="confinput" name=confbools[blPerfNoBasketSaving] value=true  [{if ($confbools.blPerfNoBasketSaving)}]checked[{/if}] [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_PERF_DISBASKETSAVING"}]
                  </td>
                  <td valign="top" class="conftext" width="100%" >

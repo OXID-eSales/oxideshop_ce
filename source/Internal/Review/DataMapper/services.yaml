@@ -1,0 +1,10 @@
+services:
+  oxid_esales.review.product_rating_mapper:
+    class: %review_path%\DataMapper\ProductRatingDataMapper
+    public: false
+  oxid_esales.review.rating_mapper:
+    class: %review_path%\DataMapper\RatingDataMapper
+    public: false
+  oxid_esales.review.review_mapper:
+    class: %review_path%\DataMapper\ReviewDataMapper
+    public: false

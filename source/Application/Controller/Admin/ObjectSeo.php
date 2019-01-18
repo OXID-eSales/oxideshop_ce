@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
@@ -77,7 +61,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         // saving/updating seo params
         if (($sOxid = $this->_getSaveObjectId())) {
             $aSeoData = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aSeoData');
-            $iShopId = $this->getConfig()->getShopId();
+            $iShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
             $iLang = $this->getEditLang();
 
             // checkbox handling
@@ -147,7 +131,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
      */
     public function getEntryMetaData($sMetaType)
     {
-        return $this->_getEncoder()->getMetaData($this->getEditObjectId(), $sMetaType, $this->getConfig()->getShopId(), $this->getEditLang());
+        return $this->_getEncoder()->getMetaData($this->getEditObjectId(), $sMetaType, \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId(), $this->getEditLang());
     }
 
     /**
@@ -158,7 +142,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     public function isEntryFixed()
     {
         $iLang = (int) $this->getEditLang();
-        $iShopId = $this->getConfig()->getShopId();
+        $iShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
 
         $sQ = "select oxfixed from oxseo where
                    oxseo.oxobjectid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($this->getEditObjectId()) . " and

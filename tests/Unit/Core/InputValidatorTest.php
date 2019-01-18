@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
@@ -107,7 +91,7 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testValidateBasketAmountBadInput($notAllowedAmount)
     {
         $this->getConfig()->setConfigParam('blAllowUnevenAmounts', false);
-        $this->setExpectedException(\OxidEsales\Eshop\Core\Exception\ArticleInputException::class);
+        $this->expectException(\OxidEsales\Eshop\Core\Exception\ArticleInputException::class);
         $this->_oValidator->validateBasketAmount($notAllowedAmount);
     }
 
@@ -301,7 +285,7 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
     }
 
     /**
-     * Test case for oxinputvalidator::_addValidationError()
+     * Test case for oxinputvalidator::addValidationError()
      *               oxinputvalidator::getFieldValidationErrors()
      *               oxinputvalidator::getFirstValidationError()
      *
@@ -313,9 +297,9 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->assertEquals(array(), $oValidator->getFieldValidationErrors());
         $this->assertNull($oValidator->getFirstValidationError());
 
-        $oValidator->UNITaddValidationError("userid", "err");
-        $oValidator->UNITaddValidationError("fieldname", "err");
-        $oValidator->UNITaddValidationError("error", "err");
+        $oValidator->addValidationError("userid", "err");
+        $oValidator->addValidationError("fieldname", "err");
+        $oValidator->addValidationError("error", "err");
 
         $this->assertEquals(array("userid" => array("err"), "fieldname" => array("err"), "error" => array("err")), $oValidator->getFieldValidationErrors());
         $this->assertEquals("err", $oValidator->getFirstValidationError());
@@ -480,8 +464,8 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $oUser = oxNew('oxuser');
         $oUser->setId("testlalaa_");
 
-        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('_addValidationError'));
-        $oValidator->expects($this->at(0))->method('_addValidationError')
+        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('addValidationError'));
+        $oValidator->expects($this->at(0))->method('addValidationError')
             ->with(
                 $this->equalTo('oxuser__oxfname'),
                 $this->logicalAnd(
@@ -489,7 +473,7 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
                     $this->attributeEqualTo('message', oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'))
                 )
             );
-        $oValidator->expects($this->at(1))->method('_addValidationError')
+        $oValidator->expects($this->at(1))->method('addValidationError')
             ->with(
                 $this->equalTo('oxuser__oxlname'),
                 $this->logicalAnd(
@@ -533,8 +517,8 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $aInvAdress = array('oxuser__oxfname' => 'xxx', 'oxuser__oxbirthdate' => array('year' => '123'));
         $aDelAdress = array('oxaddress__oxlname' => 'yyy');
 
-        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('_addValidationError'));
-        $oValidator->expects($this->never())->method('_addValidationError');
+        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('addValidationError'));
+        $oValidator->expects($this->never())->method('addValidationError');
 
         $oValidator->checkRequiredFields(new oxUser(), $aInvAdress, $aDelAdress);
     }
@@ -544,8 +528,8 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $user = oxNew('oxuser');
         $user->setId("testlalaa_");
 
-        $validator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('_addValidationError'));
-        $validator->expects($this->never())->method('_addValidationError');
+        $validator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('addValidationError'));
+        $validator->expects($this->never())->method('addValidationError');
 
         $validator->checkPassword($user, '1234567', '1234567', true);
     }
@@ -557,8 +541,8 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $this->setConfigParam('iPasswordLength', 7);
 
-        $validator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('_addValidationError'));
-        $validator->expects($this->never())->method('_addValidationError');
+        $validator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('addValidationError'));
+        $validator->expects($this->never())->method('addValidationError');
 
         $validator->checkPassword($user, '1234567', '1234567', true);
     }
@@ -570,8 +554,8 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $this->setConfigParam('iPasswordLength', 8);
 
-        $validator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('_addValidationError'));
-        $validator->expects($this->atLeastOnce())->method('_addValidationError');
+        $validator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('addValidationError'));
+        $validator->expects($this->atLeastOnce())->method('addValidationError');
 
         $validator->checkPassword($user, '1234567', '1234567', true);
     }
@@ -584,8 +568,8 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     public function testCheckPasswordUserWithoutPasswordNothingMustHappen()
     {
-        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('_addValidationError'));
-        $oValidator->expects($this->never())->method('_addValidationError');
+        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('addValidationError'));
+        $oValidator->expects($this->never())->method('addValidationError');
 
         $oValidator->checkPassword(new oxuser(), '', '');
     }
@@ -601,8 +585,8 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $oUser = oxNew('oxuser');
         $oUser->setId("testlalaa_");
 
-        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('_addValidationError'));
-        $oValidator->expects($this->once())->method('_addValidationError')
+        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('addValidationError'));
+        $oValidator->expects($this->once())->method('addValidationError')
             ->with(
                 $this->equalTo('oxuser__oxpassword'),
                 $this->logicalAnd(
@@ -625,10 +609,10 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $oUser = oxNew('oxuser');
         $oUser->setId("testlalaa_");
 
-        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('_addValidationError'));
+        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('addValidationError'));
         $expectedErrorMessage = oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_TOO_SHORT');
 
-        $oValidator->expects($this->once())->method('_addValidationError')
+        $oValidator->expects($this->once())->method('addValidationError')
             ->with(
                 $this->equalTo('oxuser__oxpassword'),
                 $this->logicalAnd(
@@ -651,8 +635,8 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $oUser = oxNew('oxuser');
         $oUser->setId("testlalaa_");
 
-        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('_addValidationError'));
-        $oValidator->expects($this->once())->method('_addValidationError')
+        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('addValidationError'));
+        $oValidator->expects($this->once())->method('addValidationError')
             ->with(
                 $this->equalTo('oxuser__oxpassword'),
                 $this->logicalAnd(
@@ -675,8 +659,8 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $oUser = oxNew('oxuser');
         $oUser->setId("testlalaa_");
 
-        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('_addValidationError'));
-        $oValidator->expects($this->once())->method('_addValidationError')
+        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('addValidationError'));
+        $oValidator->expects($this->once())->method('addValidationError')
             ->with(
                 $this->equalTo('oxuser__oxusername'),
                 $this->logicalAnd(
@@ -699,8 +683,8 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
        $oUser = oxNew('oxuser');
         $oUser->setId("testlalaa_");
 
-        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('_addValidationError'));
-        $oValidator->expects($this->once())->method('_addValidationError')
+        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('addValidationError'));
+        $oValidator->expects($this->once())->method('addValidationError')
             ->with(
                 $this->equalTo('oxuser__oxusername'),
                 $this->logicalAnd(
@@ -731,8 +715,8 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $oLang = oxRegistry::getLang();
         $sMsg = sprintf($oLang->translateString('ERROR_MESSAGE_USER_USEREXISTS', $oLang->getTplLanguage()), $aInvAdress['oxuser__oxusername']);
 
-        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('_addValidationError'));
-        $oValidator->expects($this->once())->method('_addValidationError')
+        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('addValidationError'));
+        $oValidator->expects($this->once())->method('addValidationError')
             ->with(
                 $this->equalTo('oxuser__oxusername'),
                 $this->logicalAnd(
@@ -760,8 +744,8 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $aInvAdress['oxuser__oxusername'] = 'a@a.a';
         $aInvAdress['oxuser__oxpassword'] = '';
 
-        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('_addValidationError'));
-        $oValidator->expects($this->once())->method('_addValidationError')
+        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('addValidationError'));
+        $oValidator->expects($this->once())->method('addValidationError')
             ->with(
                 $this->equalTo('oxuser__oxpassword'),
                 $this->logicalAnd(
@@ -790,8 +774,8 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $invoiceAdress['oxuser__oxusername'] = 'a@a.a';
         $invoiceAdress['oxuser__oxpassword'] = 'b@b.b';
 
-        $validator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('_addValidationError'));
-        $validator->expects($this->once())->method('_addValidationError')
+        $validator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('addValidationError'));
+        $validator->expects($this->once())->method('addValidationError')
             ->with(
                 $this->equalTo('oxuser__oxpassword'),
                 $this->logicalAnd(

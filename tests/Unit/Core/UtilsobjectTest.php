@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
@@ -97,23 +81,6 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
         parent::tearDown();
     }
 
-    private function getOrderClassName()
-    {
-        $orderClassName = 'oxorder';
-
-        if ($this->getConfig()->getEdition() === 'EE') {
-            $orderClassName = 'OxidEsales\EshopEnterprise\Application\Model\Order';
-        }
-        if ($this->getConfig()->getEdition() === 'PE') {
-            $orderClassName = 'OxidEsales\EshopProfessional\Application\Model\Order';
-        }
-        if ($this->getConfig()->getEdition() === 'CE') {
-            $orderClassName = 'OxidEsales\EshopCommunity\Application\Model\Order';
-        }
-
-        return $orderClassName;
-    }
-
     /**
      * Test, that the method getInstance creates the object of the correct current edition namespace.
      */
@@ -188,7 +155,7 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
          * Real error handling on missing files is disabled for the tests, but when the shop tries to include that not
          * existing file we expect an error to be thrown
          */
-        $this->setExpectedException(\PHPUnit_Framework_Error_Warning::class);
+        $this->expectException(\PHPUnit\Framework\Error\Warning::class);
 
         $structure = array(
             'modules' => array(
@@ -224,9 +191,7 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     public function testOxNewCreationOfNonExistingClassContainsClassNameInExceptionMessage()
     {
-        $this->stubExceptionToNotWriteToLog(SystemComponentException::class,  SystemComponentException::class);
-
-        $this->setExpectedException(SystemComponentException::class, 'non_existing_class');
+        $this->expectException(SystemComponentException::class); $this->expectExceptionMessage( 'non_existing_class');
 
         oxNew("non_existing_class");
     }

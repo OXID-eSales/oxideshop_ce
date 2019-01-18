@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link          http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version       OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
@@ -55,7 +39,7 @@ class Environment
     protected $fixtureDirectory = 'TestData';
 
     /**
-     * @var \PHPUnit_Framework_TestCase
+     * @var \PHPUnit\Framework\TestCase
      */
     protected $phpUnit;
 
@@ -94,9 +78,9 @@ class Environment
      * If you use this method, a mock prevents the validation of modules. This method has to be called
      * before the method prepare()
      *
-     * @param \PHPUnit_Framework_TestCase
+     * @param \PHPUnit\Framework\TestCase
      */
-    public function doNotValidateModules(\PHPUnit_Framework_TestCase $phpUnit)
+    public function doNotValidateModules(\PHPUnit\Framework\TestCase $phpUnit)
     {
         $this->phpUnit = $phpUnit;
     }
@@ -283,7 +267,7 @@ class Environment
      *
      * @param \OxidEsales\Eshop\Core\Module\Module $module
      *
-     * @return \OxidEsales\Eshop\Core\Module\ModuleInstaller|\PHPUnit_Framework_MockObject_MockObject
+     * @return \OxidEsales\Eshop\Core\Module\ModuleInstaller|\PHPUnit\Framework\MockObject\MockObject
      */
     protected function getModuleInstaller($module)
     {

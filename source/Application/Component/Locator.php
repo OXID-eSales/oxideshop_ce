@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Component;
@@ -31,7 +15,6 @@ use oxSeoEncoderCategory;
  */
 class Locator extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Locator type
      */
@@ -96,11 +79,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
     {
         // if no active category is loaded - lets check for category passed by post/get
         if (($oCategory = $oLocatorTarget->getActiveCategory())) {
-            $sOrderBy = null;
-            if ($oLocatorTarget->showSorting()) {
-                $sOrderBy = $oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent());
-            }
-
+            $sOrderBy = $oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent());
             $oIdList = $this->_loadIdsInList($oCategory, $oCurrArticle, $sOrderBy);
 
             //page number
@@ -149,9 +128,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
 
             // loading data for article navigation
             $oIdList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
-            if ($oLocatorTarget->showSorting()) {
-                $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
-            }
+            $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
             $oIdList->loadVendorIds($sVendorId);
 
             //page number
@@ -195,9 +172,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
 
             // loading data for article navigation
             $oIdList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
-            if ($oLocatorTarget->showSorting()) {
-                $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
-            }
+            $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
             $oIdList->loadManufacturerIds($sManufacturerId);
 
             //page number
@@ -260,9 +235,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
 
             // loading data for article navigation
             $oIdList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
-            if ($oLocatorTarget->showSorting()) {
-                $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
-            }
+            $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
             $oIdList->loadSearchIds($sSearchParam, $sSearchCat, $sSearchVendor, $sSearchManufacturer);
 
             //page number
@@ -427,7 +400,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
 
         // maybe there is no page number passed, but we still can find the position in id's list
         if (!$iPageNr && $oIdList && $oArticle) {
-            $iNrofCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
+            $iNrofCatArticles = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofCatArticles');
             $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
             $sParentIdField = 'oxarticles__oxparentid';
             $sArticleId = $oArticle->$sParentIdField->value ? $oArticle->$sParentIdField->value : $oArticle->getId();
@@ -464,9 +437,6 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getProductPos($oArticle, $oIdList, $oLocatorTarget)
     {
-        $iCnt = 1;
-        $iPos = 0;
-
         // variant handling
         $sOxid = $oArticle->oxarticles__oxparentid->value ? $oArticle->oxarticles__oxparentid->value : $oArticle->getId();
         if ($oIdList->count() && isset($oIdList[$sOxid])) {

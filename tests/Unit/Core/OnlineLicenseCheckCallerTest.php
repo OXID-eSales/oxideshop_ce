@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
@@ -40,8 +24,6 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
 
     public function testIfCorrectRequestPassedToXmlFormatter()
     {
-        $this->stubExceptionToNotWriteToLog();
-
         /** @var oxOnlineLicenseCheckRequest $oRequest */
         $oRequest = $this->getMock(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest::class, array(), array(), '', false);
 
@@ -62,8 +44,6 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
 
     public function testServiceCallWithCorrectRequest()
     {
-        $this->stubExceptionToNotWriteToLog();
-
         $oSimpleXml = $this->getMock('oxSimpleXml');
         $oSimpleXml->expects($this->any())->method('objectToXml')->will($this->returnValue('formed_xml'));
         /** @var oxSimpleXml $oSimpleXml */
@@ -101,7 +81,7 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
      */
     public function testUnexpectedExceptionIsThrownOnIncorrectResponse($sMessage, $sResponseXml)
     {
-        $this->setExpectedException('oxException', $sMessage);
+        $this->expectException('oxException'); $this->expectExceptionMessage( $sMessage);
 
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute', 'getStatusCode'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($sResponseXml));
@@ -122,8 +102,6 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
 
     public function testCorrectResponseReturned()
     {
-        $this->stubExceptionToNotWriteToLog();
-
         $oExpectedResponse = oxNew('oxOnlineLicenseCheckResponse');
         $oExpectedResponse->code = 0;
         $oExpectedResponse->message = 'ACK';
@@ -145,31 +123,48 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
         $this->assertEquals($oExpectedResponse, $oOnlineLicenseCaller->doRequest($oRequest));
     }
 
-    public function testCheckIfKeyWasRemovedWhenSendEmail()
+    public function testLicenseKeysWereRemovedFromEmailBody()
     {
-        $this->stubExceptionToNotWriteToLog();
+        /** A normal request would among other things contain the license keys  */
+        $oRequest = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest::class);
+        $oRequest->keys = ['key' => ['license_key_1', 'license_key_2',]];
+
+        /**
+         * The business logic sets the removes the license keys in the request, which is passed to the email builder.
+         * The request is converted to a XML string and passed to the email builder as  email body.
+         */
+        $emailRequest = clone $oRequest;
+        $emailRequest->keys = null;
+        $simpleXml = new \OxidEsales\Eshop\Core\SimpleXml();
+        $expectedEmailBody = $simpleXml->objectToXml($emailRequest,'olcRequest');
 
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute'));
-        $oCurl->expects($this->any())->method('execute')->will($this->throwException(new Exception()));
-        /** @var oxCurl $oCurl */
+        $stubbedExceptionMessage = 'This is a stubbed exception';
+        $oCurl->expects($this->any())->method('execute')->will($this->throwException(new Exception($stubbedExceptionMessage)));
 
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('send'));
         $oEmail->expects($this->any())->method('send');
-        /** @var oxEmail $oEmail */
 
         $oEmailBuilder = $this->getMock(\OxidEsales\Eshop\Core\OnlineServerEmailBuilder::class, array('build'));
-        $oEmailBuilder->expects($this->any())->method('build')->will($this->returnValue($oEmail));
-        /** @var OnlineServerEmailBuilder $oEmailBuilder */
+        $oEmailBuilder->expects($this->any())
+            ->method('build')
+            ->with($expectedEmailBody)
+            ->will($this->returnValue($oEmail));
 
-        $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, new oxSimpleXml());
-        $oRequest = oxNew('oxOnlineLicenseCheckRequest');
-        $oRequest->keys = '_testKeys';
+        $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl, $oEmailBuilder, $simpleXml);
 
         $this->getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 5);
-        $this->setExpectedException('oxException', 'OLC_ERROR_RESPONSE_NOT_VALID');
-        $oOnlineLicenseCaller->doRequest($oRequest);
+        try {
+            $oOnlineLicenseCaller->doRequest($oRequest);
+        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
+            $this->assertSame('OLC_ERROR_RESPONSE_NOT_VALID', $exception->getMessage());
+        }
 
-        $this->assertEquals($oCurl->getParameters(), $oRequest->keys);
+        /**
+         * The business logic will log the to the exception log, whenever an email is sent, but will not re-throw the error
+         */
+        $expectedExceptionClass = Exception::class;
+        $this->assertLoggedException($expectedExceptionClass, $stubbedExceptionMessage);
     }
 
     /**

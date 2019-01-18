@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 $aLang = [
@@ -80,7 +64,7 @@ $aLang = [
 'MOD_SERVER_PERMISSIONS'                        => 'Files/folders access rights',
 'MOD_ALLOW_URL_FOPEN'                           => 'allow_url_fopen and fsockopen to port 80',
 'MOD_PHP4_COMPAT'                               => 'Zend compatibility mode must be off',
-'MOD_PHP_VERSION'                               => 'PHP version 5.6 or 7.0',
+'MOD_PHP_VERSION'                               => 'PHP version 7.0 or 7.1',
 'MOD_REQUEST_URI'                               => 'REQUEST_URI set',
 'MOD_LIB_XML2'                                  => 'LIB XML2',
 'MOD_PHP_XML'                                   => 'DOM',
@@ -110,8 +94,8 @@ $aLang = [
 'STEP_0_ERROR_URL'                              => 'http://www.oxid-esales.com/en/products/community-edition/system-requirements',
 'STEP_0_TEXT'                                   => '<ul class="req">'.
                                                    '<li class="pass"> - Your system fits the requirement.</li>'.
-                                                   '<li class="pmin"> - The requirement is not or only partly fit. The OXID eShop will work anyway and can be installed.</li>'.
-                                                   '<li class="fail"> - Your system doesn\'t fit the requirement. The OXID eShop will not work without it and cannot be installed.</li>'.
+                                                   '<li class="pmin"> - The requirement is not or only partly fit. OXID eShop will work anyway and can be installed.</li>'.
+                                                   '<li class="fail"> - Your system doesn\'t fit the requirement. OXID eShop will not work without it and cannot be installed.</li>'.
                                                    '<li class="null"> - The requirement could  not be checked.'.
                                                    '</ul>',
 'STEP_0_DESC'                                   => 'In this step we check if your system fits the requirements:',
@@ -192,15 +176,12 @@ $aLang = [
 'SETUP_CONFIG_PERMISSIONS'                      => 'Due to security reasons put your config.inc.php file to read-only mode!',
 
 'SELECT_SETUP_LANG'                             => 'Installation language',
-'SELECT_SHOP_LOCATION'                          => 'Your market',
 'SELECT_PLEASE_CHOOSE'                          => 'Please choose',
-'SELECT_SHOP_LOCATION_HINT'                     => 'Please choose the market to which shop is focused. According to it, additional e-commerce Services will be loaded from OXID server, if you allow that.',
 'SELECT_DELIVERY_COUNTRY'                       => 'Main delivery country',
 'SELECT_DELIVERY_COUNTRY_HINT'                  => 'If needed, activate easily more delivery countries in admin.',
 'SELECT_SHOP_LANG'                              => 'Shop language',
 'SELECT_SHOP_LANG_HINT'                         => 'If needed, activate easily more languages in admin.',
 'SELECT_SETUP_LANG_SUBMIT'                      => 'Select',
-'USE_DYNAMIC_PAGES'                             => 'Enable connection with the OXID servers. You find more information in our ',
 'PRIVACY_POLICY'                                => 'privacy statements',
 
 'LOAD_DYN_CONTENT_NOTICE'                       => '<p>If checkbox is set, you will see an additional menu in the admin area of your OXID eShop.</p><p>In that menu you get further information about e-commerce services like Google product search.</p> <p>You can change these settings at any time.</p>',
@@ -209,4 +190,14 @@ $aLang = [
 
 'EXTERNAL_COMMAND_ERROR_1'                      => 'Error while executing command \'%s\'. Return code: \'%d\'.',
 'EXTERNAL_COMMAND_ERROR_2'                      => 'The command returns the following message:',
+
+'SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID'      => 'Allow a connection to OXID eSales servers for improving the quality of our open source products.',
+'HELP_SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID' => 'No business relevant date or client information will be transmitted. '
+                                                        .'The collected data exclusively apply to technological information. '
+                                                        .'To improve the quality of our products, information like this will be collected:'
+                                                        .'<ul>'
+                                                        .'  <li>number of the OXID eShop Community Edition installations world wide</li>'
+                                                        .'  <li>average number of installed extensions per OXID eShop</li>'
+                                                        .'  <li>top spread extensions for OXID eShop</li>'
+                                                        .'</ul>',
 ];

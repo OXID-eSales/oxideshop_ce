@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
@@ -33,7 +17,6 @@ use oxOrder;
  */
 class ThankYouController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
-
     /**
      * User basket object
      *
@@ -124,6 +107,12 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
         // delete it from the session
         $oBasket->deleteBasket();
         \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable('sess_challenge');
+        
+        // if not in order-context, redirect to start
+        $order = $this->getOrder();
+        if (!$order || !$order->getFieldData('oxordernr')) {
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopHomeURL() . '&cl=start');
+        }
     }
 
     /**
@@ -136,7 +125,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     public function render()
     {
         if (!$this->_oBasket || !$this->_oBasket->getProductsCount()) {
-            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . '&cl=start', true, 302);
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopHomeUrl() . '&cl=start', true, 302);
         }
 
         parent::render();
@@ -202,7 +191,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     {
         if ($this->_dConvIndex === null) {
             // currency conversion index value
-            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
             $this->_dConvIndex = 1 / $oCur->rate;
         }
 
@@ -232,7 +221,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     {
         if ($this->_sIPaymentAccount === null) {
             $this->_sIPaymentAccount = false;
-            $this->_sIPaymentAccount = $this->getConfig()->getConfigParam('iShopID_iPayment_Account');
+            $this->_sIPaymentAccount = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iShopID_iPayment_Account');
         }
 
         return $this->_sIPaymentAccount;
@@ -247,7 +236,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     {
         if ($this->_sIPaymentUser === null) {
             $this->_sIPaymentUser = false;
-            $this->_sIPaymentUser = $this->getConfig()->getConfigParam('iShopID_iPayment_User');
+            $this->_sIPaymentUser = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iShopID_iPayment_User');
         }
 
         return $this->_sIPaymentUser;
@@ -262,7 +251,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     {
         if ($this->_sIPaymentPassword === null) {
             $this->_sIPaymentPassword = false;
-            $this->_sIPaymentPassword = $this->getConfig()->getConfigParam('iShopID_iPayment_Passwort');
+            $this->_sIPaymentPassword = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iShopID_iPayment_Passwort');
         }
 
         return $this->_sIPaymentPassword;

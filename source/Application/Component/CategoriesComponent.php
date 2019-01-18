@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Component;
@@ -31,7 +15,6 @@ use oxRegistry;
  */
 class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
-
     /**
      * More category object.
      *
@@ -74,7 +57,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
         parent::init();
 
         // Performance
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         if ($myConfig->getConfigParam('blDisableNavBars') &&
             $myConfig->getTopActiveView()->getIsOrderStep()
         ) {
@@ -130,7 +113,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
         // loaded article - then checking additional parameters
         $oProduct = $this->getProduct();
         if ($oProduct) {
-            $myConfig = $this->getConfig();
+            $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
             $sActManufacturer = $myConfig->getConfigParam('bl_perfLoadManufacturerTree') ? $sActManufacturer : null;
 
@@ -142,7 +125,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
         // Checking for the default category
         if ($sActCat === null && !$oProduct && !$sActManufacturer) {
             // set remote cat
-            $sActCat = $this->getConfig()->getActiveShop()->oxshops__oxdefcat->value;
+            $sActCat = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveShop()->oxshops__oxdefcat->value;
             if ($sActCat == 'oxrootid') {
                 // means none selected
                 $sActCat = null;
@@ -180,7 +163,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      */
     protected function _loadManufacturerTree($sActManufacturer)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         if ($myConfig->getConfigParam('bl_perfLoadManufacturerTree')) {
             $oManufacturerTree = $this->getManufacturerList();
             $shopHomeURL = $myConfig->getShopHomeUrl();
@@ -210,7 +193,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
         parent::render();
 
         // Performance
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oParentView = $this->getParent();
 
         if ($myConfig->getConfigParam('bl_perfLoadManufacturerTree') && $this->_oManufacturerTree) {

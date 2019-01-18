@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
 
@@ -32,20 +16,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
  */
 class OnlineLicenseCheckRequestFormationTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
-    /**
-     * imitating package revision file and return shop dir
-     *
-     * @return string path to virtual shop directory with pkg.rev file
-     */
-    private function mockPackageRevisionFile()
-    {
-        $vfsStream = $this->getVfsStreamWrapper();
-        $shopDir = "shopdir";
-        $vfsStream->createFile($shopDir . DIRECTORY_SEPARATOR . 'pkg.rev', 'somerevisionstring');
-        $fakeShopDir = $vfsStream->getRootPath() . $shopDir . DIRECTORY_SEPARATOR;
-        return $fakeShopDir;
-    }
-
     /**
      *
      */
@@ -67,24 +37,15 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidEsales\TestingLibrary\
             'lastAdminUsage' => $validNodeTime
         ));
 
-        // imitating package revision file
-        $config->setConfigParam('sShopDir', $this->mockPackageRevisionFile());
-
         $edition = $config->getEdition();
         $version = $config->getVersion();
         $shopUrl = $config->getShopUrl();
-        $revision = $config->getRevision();
         $iAdminUsers = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 1;
 
         $xml = '<?xml version="1.0" encoding="utf-8"?>'."\n";
         $xml .= '<olcRequest>';
         $xml .=   '<pVersion>1.1</pVersion>';
         $xml .=   '<keys><key>license_key</key></keys>';
-        if ($revision) {
-            $xml .= "<revision>$revision</revision>";
-        } else {
-            $xml .= '<revision></revision>';
-        }
         $xml .=   '<productSpecificInformation>';
         $xml .=     '<servers>';
         $xml .=       '<server>';
@@ -155,13 +116,9 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidEsales\TestingLibrary\
             'isValid' => true,
         ));
 
-        // imitating package revision file
-        $config->setConfigParam('sShopDir', $this->mockPackageRevisionFile());
-
         $edition = $config->getEdition();
         $version = $config->getVersion();
         $shopUrl = $config->getShopUrl();
-        $revision = $config->getRevision();
         $adminUsers = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 1;
 
         $sXml = '<?xml version="1.0" encoding="utf-8"?>'."\n";
@@ -171,11 +128,6 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidEsales\TestingLibrary\
         $sXml .=   '<key>license_key</key>';
         $sXml .=   '<key state="new">new_serial</key>';
         $sXml .=   '</keys>';
-        if ($revision) {
-            $sXml .= "<revision>$revision</revision>";
-        } else {
-            $sXml .= '<revision></revision>';
-        }
         $sXml .=   '<productSpecificInformation>';
         $sXml .=     '<servers>';
         $sXml .=       '<server>';

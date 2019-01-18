@@ -12,9 +12,10 @@ function _groupExp(el) {
 </script>
 [{include file="include/rdfa_script.tpl"}]
 
-[{assign var="readonly" value=""}]
 [{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
+[{else}]
+    [{assign var="readonly" value=""}]
 [{/if}]
 
 [{assign var="aContents" value=$oView->getContentList()}]
@@ -198,7 +199,7 @@ function _groupExp(el) {
             <dl>
                 <div>[{oxmultilang ident="SHOP_RDFA_DATA_EXTENDED"}]</div>
                 <dt>
-                    <input type=text class="txt" name=confstrs[sRDFaLogoUrl] value="[{$confstrs.sRDFaLogoUrl}]">
+                    <input type=text class="txt" name=confstrs[sRDFaLogoUrl] value="[{$confstrs.sRDFaLogoUrl}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_RDFA_LOGO_URL"}]
                 </dt>
                 <dd>
@@ -208,7 +209,7 @@ function _groupExp(el) {
             </dl>
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[sRDFaLongitude] value="[{$confstrs.sRDFaLongitude}]">
+                    <input type=text class="txt" name=confstrs[sRDFaLongitude] value="[{$confstrs.sRDFaLongitude}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_RDFA_GEO_LONGITUDE"}]
                 </dt>
                 <dd>
@@ -216,7 +217,7 @@ function _groupExp(el) {
                 </dd>
                 <div class="spacer"></div>
                 <dt>
-                    <input type=text class="txt" name=confstrs[sRDFaLatitude] value="[{$confstrs.sRDFaLatitude}]">
+                    <input type=text class="txt" name=confstrs[sRDFaLatitude] value="[{$confstrs.sRDFaLatitude}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_RDFA_GEO_LATITUDE"}]
                 </dt>
                 <dd>
@@ -226,7 +227,7 @@ function _groupExp(el) {
             </dl>
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[sRDFaGLN] value="[{$confstrs.sRDFaGLN}]">
+                    <input type=text class="txt" name=confstrs[sRDFaGLN] value="[{$confstrs.sRDFaGLN}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_RDFA_GLN}]
                 </dt>
                 <dd>
@@ -236,7 +237,7 @@ function _groupExp(el) {
             </dl>
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[sRDFaNAICS] value="[{$confstrs.sRDFaNAICS}]">
+                    <input type=text class="txt" name=confstrs[sRDFaNAICS] value="[{$confstrs.sRDFaNAICS}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_RDFA_NAICS}]
                 </dt>
                 <dd>
@@ -246,7 +247,7 @@ function _groupExp(el) {
             </dl>
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[sRDFaISIC] value="[{$confstrs.sRDFaISIC}]">
+                    <input type=text class="txt" name=confstrs[sRDFaISIC] value="[{$confstrs.sRDFaISIC}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_RDFA_ISIC}]
                 </dt>
                 <dd>
@@ -256,7 +257,7 @@ function _groupExp(el) {
             </dl>
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[sRDFaDUNS] value="[{$confstrs.sRDFaDUNS}]">
+                    <input type=text class="txt" name=confstrs[sRDFaDUNS] value="[{$confstrs.sRDFaDUNS}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_RDFA_DUNS}]
                 </dt>
                 <dd>
@@ -287,7 +288,7 @@ function _groupExp(el) {
             </dl>
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[iRDFaMinRating] value="[{$confstrs.iRDFaMinRating}]">
+                    <input type=text class="txt" name=confstrs[iRDFaMinRating] value="[{$confstrs.iRDFaMinRating}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_RDFA_RATING_MIN"}]
                 </dt>
                 <dd>
@@ -298,7 +299,7 @@ function _groupExp(el) {
 
             <dl>
                 <dt>
-                    <input type=text class="txt" name=confstrs[iRDFaMaxRating] value="[{$confstrs.iRDFaMaxRating}]">
+                    <input type=text class="txt" name=confstrs[iRDFaMaxRating] value="[{$confstrs.iRDFaMaxRating}]" [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_RDFA_RATING_MAX"}]
                 </dt>
                 <dd>
@@ -387,48 +388,8 @@ function _groupExp(el) {
 
 </form>
 <br><br>
-
+[{* @deprecated since v6.0-rc.3 (2017-10-16); GR-Notify registration feature is removed. *}]
 [{block name="admin_shop_rdfa_submiturl"}]
-<form name="submitUrl" id="submitUrl" action="[{$oViewConf->getSelfLink()}]" method="post">
-    [{$oViewConf->getHiddenSid()}]
-    <input type="hidden" name="cl" value="shop_rdfa">
-    <input type="hidden" name="fnc" value="submitUrl">
-    <input type="hidden" name="oxid" value="[{$oxid}]">
-    <input type="hidden" name="editval[oxshops__oxid]" value="[{$oxid}]">
-        <fieldset title="[{oxmultilang ident="SHOP_RDFA_SUBMIT_URL"}]" style="padding-left: 5px;width:120px;">
-            <legend>[{oxmultilang ident="SHOP_RDFA_SUBMIT_URL"}] [{oxinputhelp ident="HELP_SHOP_RDFA_SUBMIT_URL"}]</legend><br>
-            <table cellspacing="0" cellpadding="0" border="0" width="120">
-                [{if $submitMessage}]
-                    <tr>
-                        <td colspan="2">
-                            <div>[{oxmultilang ident=$submitMessage}]</div>
-                      </td>
-                    </tr>
-                [{/if}]
-                <tr>
-                   <td class="edittext" width="120">
-                        [{oxmultilang ident="SHOP_RDFA_URL"}]
-                    </td>
-                    <td class="edittext">
-                        <input class="edittext" type="text" name="aSubmitUrl[url]" class="edittext" [{$readonly}]>
-                    </td>
-                </tr>
-                <tr>
-                   <td class="edittext" width="120">
-                        [{oxmultilang ident="SHOP_RDFA_EMAIL"}]
-                    </td>
-                    <td class="edittext">
-                        <input class="edittext" type="text" name="aSubmitUrl[email]" class="edittext" [{$readonly}]>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                      <input type="submit" class="edittext" value="[{oxmultilang ident="SHOP_RDFA_SUBMIT"}]" onClick="Javascript:document.submitUrl.fnc.value='submitUrl'" [{$readonly}]>
-                    </td>
-                </tr>
-            </table>
-        </fieldset>
-    </form>
 [{/block}]
 
 

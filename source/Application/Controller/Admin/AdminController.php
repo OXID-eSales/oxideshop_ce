@@ -1,35 +1,19 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
-use oxRegistry;
+use OxidEsales\Eshop\Core\ShopVersion;
 use oxDb;
 use oxNavigationTree;
 use oxShop;
 
 /**
- * @internal This class should not be directly extended, instead of it oxAdminView class should be used.
+ * Main Controller class for admin area.
  */
 class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
@@ -83,18 +67,11 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     /**
      * Shop Version
      *
+     * @deprecated since v6.0.0-rc.2 (2017-08-23); Use  OxidEsales\Eshop\Core\ShopVersion::getVersion() instead.
+     *
      * @var string
      */
     protected $_sShopVersion = null;
-
-    /**
-     * Shop dynamic pages url
-     *
-     * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
-     *
-     * @var string
-     */
-    protected $_sServiceUrl = null;
 
     /**
      * Session user rights
@@ -129,14 +106,14 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function __construct()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $myConfig->setConfigParam('blAdmin', true);
         $this->setAdminMode(true);
 
         if ($oShop = $this->_getEditShop($myConfig->getShopId())) {
             // passing shop info
             $this->_sShopTitle = $oShop->oxshops__oxname->getRawValue();
-            $this->_sShopVersion = $oShop->oxshops__oxversion->value;
+            $this->_sShopVersion = oxNew(ShopVersion::class)->getVersion();
         }
     }
 
@@ -150,7 +127,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     protected function _getEditShop($sShopId)
     {
         if (!$this->_oEditShop) {
-            $this->_oEditShop = $this->getConfig()->getActiveShop();
+            $this->_oEditShop = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveShop();
             if ($this->_oEditShop->getId() != $sShopId) {
                 $oEditShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
                 if ($oEditShop->load($sShopId)) {
@@ -169,8 +146,6 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function init()
     {
-        $myConfig = $this->getConfig();
-
         // authorization check
         if (!$this->_authorize()) {
             \OxidEsales\Eshop\Core\Registry::getUtils()->redirect('index.php?cl=login', true, 302);
@@ -198,8 +173,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function addGlobalParams($oShop = null)
     {
-        $mySession = $this->getSession();
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
 
         $oShop = parent::addGlobalParams($oShop);
@@ -214,14 +188,9 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         $oViewConf = $this->getViewConfig();
         $oViewConf->setViewConfigParam('selflink', \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($sURL . 'index.php?editlanguage=' . $this->_iEditLang, false));
         $oViewConf->setViewConfigParam('ajaxlink', str_replace('&amp;', '&', \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($sURL . 'oxajax.php?editlanguage=' . $this->_iEditLang, false)));
-        $oViewConf->setViewConfigParam('sServiceUrl', $this->getServiceUrl());
-        $oViewConf->setViewConfigParam('blLoadDynContents', $myConfig->getConfigParam('blLoadDynContents'));
-        $oViewConf->setViewConfigParam('sShopCountry', $myConfig->getConfigParam('sShopCountry'));
 
-        // set langugae in admin
-        $iDynInterfaceLanguage = $myConfig->getConfigParam('iDynInterfaceLanguage');
-        //$this->_aViewData['adminlang'] = isset( $iDynInterfaceLanguage )?$iDynInterfaceLanguage:$myConfig->getConfigParam( 'iAdminLanguage' );
-        $this->_aViewData['adminlang'] = isset($iDynInterfaceLanguage) ? $iDynInterfaceLanguage : $oLang->getTplLanguage();
+        // set language of admin backend
+        $this->_aViewData['adminlang'] = $oLang->getTplLanguage();
         $this->_aViewData['charset'] = $this->getCharSet();
 
         //setting active currency object
@@ -237,59 +206,19 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected function _getServiceProtocol()
     {
-        return $this->getConfig()->isSsl() ? 'https' : 'http';
-    }
-
-    /**
-     * Returns service URL
-     *
-     * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
-     *
-     * @param string $sLangAbbr language abbr.
-     *
-     * @return string
-     */
-    public function getServiceUrl($sLangAbbr = null)
-    {
-        if ($this->_sServiceUrl === null) {
-            $sProtocol = $this->_getServiceProtocol();
-
-            $editionSelector = new EditionSelector();
-            $sUrl = $sProtocol . '://admin.oxid-esales.com/' . $editionSelector->getEdition() . '/';
-
-            $sCountry = $this->_getCountryByCode($this->getConfig()->getConfigParam('sShopCountry'));
-
-            if (!$sLangAbbr) {
-                $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
-                $sLangAbbr = $oLang->getLanguageAbbr($oLang->getTplLanguage());
-            }
-
-            if ($sLangAbbr != "de") {
-                $sLangAbbr = "en";
-            }
-
-            $this->_sServiceUrl = $sUrl . $this->_getShopVersionNr() . "/{$sCountry}/{$sLangAbbr}/";
-        }
-
-        return $this->_sServiceUrl;
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->isSsl() ? 'https' : 'http';
     }
 
     /**
      * Returns shop version
      *
+     * @deprecated since v6.0.0-rc.2 (2017-08-23); Use  OxidEsales\Eshop\Core\ShopVersion::getVersion() instead.
+     *
      * @return string
      */
     protected function _getShopVersionNr()
     {
-        $myConfig = $this->getConfig();
-
-        if ($sShopID = $myConfig->getShopId()) {
-            $sQ = "select oxversion from oxshops where oxid = '$sShopID' ";
-            // Value does not change that often, reading from slave is ok here (see ESDEV-3804 and ESDEV-3822).
-            $sVersion = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ);
-        }
-
-        return trim(preg_replace("/(^[^0-9]+)(.+)$/", "$2", $sVersion));
+        return oxNew(ShopVersion::class)->getVersion();
     }
 
     /**
@@ -352,7 +281,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     {
         $sReturn = parent::render();
 
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
 
         // sets up navigation data
@@ -445,7 +374,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function resetContentCache($blForceReset = null)
     {
-        $blDeleteCacheOnLogout = $this->getConfig()->getConfigParam('blClearCacheOnLogout');
+        $blDeleteCacheOnLogout = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blClearCacheOnLogout');
         if (!$blDeleteCacheOnLogout || $blForceReset) {
             \OxidEsales\Eshop\Core\Registry::getUtils()->oxResetFileCache();
         }
@@ -460,7 +389,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function resetCounter($sCounterType, $sValue = null)
     {
-        $blDeleteCacheOnLogout = $this->getConfig()->getConfigParam('blClearCacheOnLogout');
+        $blDeleteCacheOnLogout = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blClearCacheOnLogout');
         $myUtilsCount = \OxidEsales\Eshop\Core\Registry::getUtilsCount();
 
         if (!$blDeleteCacheOnLogout) {
@@ -511,8 +440,6 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected function _getCountryByCode($sCountryCode)
     {
-        $myConfig = $this->getConfig();
-
         //default country
         $sCountry = 'international';
 
@@ -576,9 +503,8 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function getViewId()
     {
-        $sClassName = is_null($this->viewId) ? strtolower(get_class($this)) : $this->viewId;
-
-        return $this->getNavigation()->getClassId($sClassName);
+        $viewId = is_null($this->viewId) ? strtolower($this->getControllerKey()) : $this->viewId;
+        return $this->getNavigation()->getClassId($viewId);
     }
 
     /**
@@ -640,5 +566,45 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     {
         $this->_sEditObjectId = $sId;
         $this->_aViewData["updatelist"] = 1;
+    }
+
+    /**
+     * Returns true if editable object is new.
+     *
+     * @return bool
+     */
+    protected function isNewEditObject()
+    {
+        return '-1' === (string) $this->getEditObjectId();
+    }
+
+    /**
+     * Get controller key also for chain extended class.
+     *
+     * @return null|string
+     */
+    protected function getControllerKey()
+    {
+        $actualClass = get_class($this);
+        $controllerKey = \OxidEsales\Eshop\Core\Registry::getControllerClassNameResolver()->getIdByClassName($actualClass);
+        if (is_null($controllerKey)) {
+            //we might not have found a class key because class is a module chain extended class
+            $controllerKey = \OxidEsales\Eshop\Core\Registry::getControllerClassNameResolver()->getIdByClassName($this->getShopParentClass());
+        }
+        return $controllerKey;
+    }
+
+    /**
+     * Method to figure out \OxidEsales\Eshop class.
+     *
+     * @return string
+     */
+    protected function getShopParentClass()
+    {
+        $className = get_class($this); //actual class, might be shop class chain extended by module
+        while ($className && !\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopUnifiedNamespace($className)) {
+            $className = get_parent_class($className);
+        }
+        return $className;
     }
 }

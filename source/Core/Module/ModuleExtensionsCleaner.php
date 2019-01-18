@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Core\Module;
@@ -27,11 +11,10 @@ namespace OxidEsales\EshopCommunity\Core\Module;
  *
  * @package  OxidEsales\EshopCommunity\Core\Module
  * @internal Do not make a module extension for this class.
- * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
+ * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ModuleExtensionsCleaner
 {
-
     /**
      * Removes garbage ( module not used extensions ) from all installed extensions list.
      * For example: some classes were renamed, so these should be removed.
@@ -72,7 +55,7 @@ class ModuleExtensionsCleaner
 
         $path = '';
         if (isset($modulePaths[$moduleId])) {
-            $path = $modulePaths[$moduleId];
+            $path = $modulePaths[$moduleId] . "/";
         }
 
         // TODO: This condition should be removed. Need to check integration tests.
@@ -104,11 +87,22 @@ class ModuleExtensionsCleaner
     {
         $garbage = $moduleInstalledExtensions;
 
-        foreach ($moduleMetaDataExtensions as $className => $classPath) {
-            if (isset($garbage[$className])) {
-                unset($garbage[$className][array_search($classPath, $garbage[$className])]);
-                if (count($garbage[$className]) == 0) {
-                    unset($garbage[$className]);
+        foreach ($garbage as $installedClassName => $installedClassPaths) {
+            if (isset($moduleMetaDataExtensions[$installedClassName])) {
+                // In case more than one extension is specified per module.
+                $metaDataExtensionPaths = $moduleMetaDataExtensions[$installedClassName];
+                if (!is_array($metaDataExtensionPaths)) {
+                    $metaDataExtensionPaths = [$metaDataExtensionPaths];
+                }
+
+                foreach ($installedClassPaths as $index => $installedClassPath) {
+                    if (in_array($installedClassPath, $metaDataExtensionPaths)) {
+                        unset($garbage[$installedClassName][$index]);
+                    }
+                }
+
+                if (count($garbage[$installedClassName]) == 0) {
+                    unset($garbage[$installedClassName]);
                 }
             }
         }

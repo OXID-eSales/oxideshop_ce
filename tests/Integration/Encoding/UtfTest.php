@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Encoding;
 
@@ -31,6 +15,8 @@ use oxDb;
 use oxEmail;
 use oxField;
 use oxGroups;
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Model\RssFeed;
 use oxLinks;
 use oxList;
@@ -1140,7 +1126,7 @@ class UtfTest extends \OxidTestCase
         $this->getConfig()->setConfigParam('bl_perfParseLongDescinSmarty', false);
 
         $rssFeed = oxNew('oxrssfeed');
-        $rssFeed->setConfig($config);
+        Registry::set(Config::class, $config);
 
         $shortDescription = 'agentūrų Литовские für';
         $longDescription = new stdClass();
@@ -1177,10 +1163,9 @@ class UtfTest extends \OxidTestCase
         $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getActiveShop'));
         $oShop = oxNew('oxShop');
         $oShop->oxshops__oxname = new oxField($sValue);
-        $oShop->oxshops__oxversion = new oxField('oxversion');
         $oCfg->expects($this->any())->method('getActiveShop')->will($this->returnValue($oShop));
 
-        $oRss->setConfig($oCfg);
+        Registry::set(Config::class, $oCfg);
         $this->assertEquals($sValue . '/Test', $oRss->UNITprepareFeedName('Test'));
     }
 
@@ -1212,7 +1197,7 @@ class UtfTest extends \OxidTestCase
                 }
             )
         );
-        $rssFeedMock->setConfig($config);
+        Registry::set(Config::class, $config);
 
         $expectedSearchArticleTitle = 'Test Shop/SEARCH_FOR_PRODUCTS_CATEGORY_VENDOR_MANUFACTURERtssscat' . $value . 'man';
         $this->assertEquals($expectedSearchArticleTitle, $rssFeedMock->getSearchArticlesTitle('tsss', 'cat', $value, 'man'));
@@ -1371,8 +1356,8 @@ class UtfTest extends \OxidTestCase
     {
         $sValue = 'ūЛü';
 
-        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array("_addValidationError"));
-        $oValidator->expects($this->once())->method('_addValidationError')->with($this->equalTo("oxuser__oxpassword"));
+        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array("addValidationError"));
+        $oValidator->expects($this->once())->method('addValidationError')->with($this->equalTo("oxuser__oxpassword"));
         $oValidator->checkPassword(new oxUser(), $sValue, $sValue, true);
     }
 

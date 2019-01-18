@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
@@ -96,6 +80,8 @@ class ViewTest extends \OxidTestCase
      */
     protected function tearDown()
     {
+        parent::tearDown();
+
         modOxView::reset();
 
         // restoring
@@ -104,8 +90,6 @@ class ViewTest extends \OxidTestCase
         oxRegistry::getUtils()->seoIsActive(true);
 
         oxTestModules::cleanUp();
-
-        parent::tearDown();
     }
 
     public function testIsDemoShop()
@@ -114,7 +98,7 @@ class ViewTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(false));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('getConfig'));
-        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertFalse($oView->isDemoShop());
     }
@@ -361,9 +345,9 @@ class ViewTest extends \OxidTestCase
         $config->expects($this->never())->method('getShopUrl');
 
         $view = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('getConfig'));
-        $view->expects($this->once())->method('getConfig')->will($this->returnValue($config));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
 
-        $this->setExpectedException('oxSystemComponentException', 'ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND' . ' testAction');
+        $this->expectException('oxSystemComponentException'); $this->expectExceptionMessage( 'ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND' . ' testAction');
         $view->_executeNewAction("testAction");
     }
 
@@ -384,7 +368,7 @@ class ViewTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('getShopUrl')->will($this->returnValue('shopurl/'));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('getConfig'));
-        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $sUrl = $oView->_executeNewAction("details");
         $this->assertEquals('shopurl/index.php?cl=details&' . $this->getSession()->sid(), oxUtilsHelper::$sRedirectUrl);
 
@@ -396,7 +380,7 @@ class ViewTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('getShopUrl')->will($this->returnValue('shopurl/'));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('getConfig'));
-        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $sUrl = $oView->_executeNewAction("details?someparam=12");
         $this->assertEquals("shopurl/index.php?cl=details&someparam=12&" . $this->getSession()->sid(), oxUtilsHelper::$sRedirectUrl);
     }
@@ -415,7 +399,7 @@ class ViewTest extends \OxidTestCase
         $oConfig->expects($this->never())->method('getShopUrl');
 
         $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('getConfig'));
-        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $sUrl = $oView->UNITexecuteNewAction("details?fnc=somefnc&anid=someanid");
         $this->assertEquals('SSLshopurl/index.php?cl=details&fnc=somefnc&anid=someanid&' . $this->getSession()->sid(), oxUtilsHelper::$sRedirectUrl);
     }
@@ -427,13 +411,14 @@ class ViewTest extends \OxidTestCase
         oxAddClassModule("oxUtilsHelper", "oxutils");
 
         $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isSsl', 'getSslShopUrl', 'getShopUrl'));
+        $config->setConfigParam('sAdminSSLURL', '');
         $config->expects($this->once())->method('isSsl')->will($this->returnValue(true));
         $config->expects($this->once())->method('getSslShopUrl')->will($this->returnValue('SSLshopurl/'));
         $config->expects($this->never())->method('getShopUrl');
         $config->setConfigParam('sAdminDir', 'admin');
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('getConfig', 'isAdmin'));
-        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($config));
+        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('isAdmin'));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
         $oView->expects($this->once())->method('isAdmin')->will($this->returnValue(true));
         $oView->UNITexecuteNewAction("details?fnc=somefnc&anid=someanid");
         $this->assertEquals('SSLshopurl/admin/index.php?cl=details&fnc=somefnc&anid=someanid&' . $this->getSession()->sid(), oxUtilsHelper::$sRedirectUrl);
@@ -484,7 +469,7 @@ class ViewTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getVersion')->will($this->returnValue($getVersion));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('getConfig'), array(), '', false);
-        $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals($isBetaVersion, $oView->isBetaVersion());
     }
@@ -512,7 +497,7 @@ class ViewTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getVersion')->will($this->returnValue($getVersion));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('getConfig'), array(), '', false);
-        $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals($isRCVersion, $oView->isRCVersion());
     }
@@ -688,26 +673,6 @@ class ViewTest extends \OxidTestCase
         $this->assertEquals($sTest2, $oView->getBelboonParam());
     }
 
-    /**
-     * oxView::getRevision() test case
-     *
-     * @return null
-     */
-
-    public function testGetRevision()
-    {
-        $sTest = "testRevision";
-        $this->getConfig()->setConfigParam("blStockOnDefaultMessage", $sTest);
-
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getRevision"));
-        $oConfig->expects($this->once())->method("getRevision")->will($this->returnValue($sTest));
-
-        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getConfig"));
-        $oView->expects($this->once())->method("getConfig")->will($this->returnValue($oConfig));
-
-        $this->assertEquals($sTest, $oView->getRevision());
-    }
-
     public function testGetSidForWidget()
     {
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('isActualSidInCookie', 'getId'));
@@ -769,7 +734,7 @@ class ViewTest extends \OxidTestCase
         $this->assertEmpty(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('ViewTestModuleControllerResult'));
         $view = oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\ViewTestFirstModuleController::class);
 
-        $this->setExpectedException(\Exception::class, 'Bail out before redirect, all is well.');
+        $this->expectException(\Exception::class); $this->expectExceptionMessage( 'Bail out before redirect, all is well.');
         $view->executeFunction('doSomething');
     }
 

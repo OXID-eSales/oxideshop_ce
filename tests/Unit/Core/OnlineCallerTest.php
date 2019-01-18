@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
@@ -54,8 +38,6 @@ class OnlineCallerTest extends \OxidTestCase
 
     public function testCallWhenFailsAndItsLastAllowedCall()
     {
-        $this->stubExceptionToNotWriteToLog();
-
         /** @var oxOnlineCaller $oCaller */
         $oCaller = $this->getMockForAbstractClass(
             'oxOnlineCaller',
@@ -70,8 +52,6 @@ class OnlineCallerTest extends \OxidTestCase
 
     public function testCallWhenFailsAndThereAreNotAllowedCallsCount()
     {
-        $this->stubExceptionToNotWriteToLog();
-
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('send'));
         // Email send function must be called.
         $oEmail->expects($this->once())->method('send')->will($this->returnValue(true));
@@ -89,12 +69,16 @@ class OnlineCallerTest extends \OxidTestCase
 
         $oCaller->call($this->_getRequest());
         $this->assertSame(0, $this->getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
+
+        /**
+         * Although no exception is thrown, the underlying error will be logged in EXCEPTION_LOG.txt
+         */
+        $expectedExceptionClass = Exception::class;
+        $this->assertLoggedException($expectedExceptionClass);
     }
 
     public function testCallWhenStatusCodeIndicatesError()
     {
-        $this->stubExceptionToNotWriteToLog();
-
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute', 'getStatusCode'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue('_testResult'));
         $oCurl->expects($this->any())->method('getStatusCode')->will($this->returnValue(500));
@@ -109,6 +93,7 @@ class OnlineCallerTest extends \OxidTestCase
         $oCaller->call($this->_getRequest());
 
         $this->assertSame(5, $this->getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
+        $this->getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 0);
     }
 
     /**
@@ -116,8 +101,6 @@ class OnlineCallerTest extends \OxidTestCase
      */
     public function testCallSetsTimeoutOptionForCurlExecution()
     {
-        $this->stubExceptionToNotWriteToLog();
-
         // Arrange
         $curlDouble = new oxOnlineCallerOxCurlOptionDouble();
 
@@ -195,18 +178,6 @@ class OnlineCallerTest extends \OxidTestCase
         $oRequest->shopUrl = '_testUrl';
 
         return $oRequest;
-    }
-
-    /**
-     * @return string
-     */
-    private function _getResponseXML()
-    {
-        $sResultXML = '<?xml version="1.0" encoding="utf-8"?>
-<onlineRequest><clusterId>_testClusterId</clusterId><edition>_testEdition</edition><version>_testVersion</version><shopUrl>_testUrl</shopUrl><pVersion/><productId>eShop</productId></onlineRequest>
-';
-
-        return $sResultXML;
     }
 
     /**

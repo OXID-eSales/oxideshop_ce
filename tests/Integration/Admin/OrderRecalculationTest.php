@@ -1,32 +1,18 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2015
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Admin;
 
 use oxBasket;
 use oxDb;
 use oxField;
+use OxidEsales\Eshop\Application\Model\Order;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\UtilsObject;
 use oxOrder;
 use oxRegistry;
-use oxUtilsObject;
 
 class OrderRecalculationTest extends \OxidTestCase
 {
@@ -140,7 +126,7 @@ class OrderRecalculationTest extends \OxidTestCase
      */
     public function testPlaceOrderWithoutVouchersTriggerRecalculateOrderMain($editValues, $expectedDiscount)
     {
-        $defaultVat = oxRegistry::getSession()->getConfig()->getConfigParam('dDefaultVAT');
+        $defaultVat = Registry::getConfig()->getConfigParam('dDefaultVAT');
         $buyAmount = 10;
 
         $expectedOrderTotalBruttoSum = $buyAmount * self::TEST_ARTICLE_PRICE;
@@ -201,7 +187,7 @@ class OrderRecalculationTest extends \OxidTestCase
         //relative discount, 20% off on each voucher
         $this->createVouchers();
 
-        $defaultVat = oxRegistry::getSession()->getConfig()->getConfigParam('dDefaultVAT');
+        $defaultVat = Registry::getConfig()->getConfigParam('dDefaultVAT');
         $buyAmount = 10;
         $payDate = date('Y-m-d H:i:s');
 
@@ -274,7 +260,7 @@ class OrderRecalculationTest extends \OxidTestCase
         //discount of 20% when buying 10 or more articles T-666
         $this->createDiscount(); //is summed up with the voucherDiscount
 
-        $defaultVat = oxRegistry::getSession()->getConfig()->getConfigParam('dDefaultVAT');
+        $defaultVat = Registry::getConfig()->getConfigParam('dDefaultVAT');
         $buyAmount = 10;
         $payDate = date('Y-m-d H:i:s');
 
@@ -358,7 +344,7 @@ class OrderRecalculationTest extends \OxidTestCase
         //discount of 20% when buying 10 or more articles T-666
         $this->createDiscount(); //is summed up with the voucherDiscount
 
-        $defaultVat = oxRegistry::getSession()->getConfig()->getConfigParam('dDefaultVAT');
+        $defaultVat = Registry::getConfig()->getConfigParam('dDefaultVAT');
         $buyAmount = 10;
         $payDate = date('Y-m-d H:i:s');
 
@@ -462,7 +448,11 @@ class OrderRecalculationTest extends \OxidTestCase
      */
     private function createOrder()
     {
-        $order = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array('validateDeliveryAddress', '_sendOrderByEmail'));
+        $order = $this->getMock(Order::class, array(
+            'validateDeliveryAddress',
+            '_sendOrderByEmail',
+            'validatePayment',
+        ));
         // sending order by email is always successful for tests
         $order->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(1));
         //mocked to circumvent delivery address change md5 check from requestParameter

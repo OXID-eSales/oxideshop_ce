@@ -1,8 +1,9 @@
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign}]
 
-[{assign var="readonly" value=""}]
 [{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
+[{else}]
+    [{assign var="readonly" value=""}]
 [{/if}]
 
 <script type="text/javascript">
@@ -179,7 +180,7 @@ function changeFnc( fncName )
                         [{oxmultilang ident="VOUCHERSERIE_MAIN_RANDOMNUM"}]
                     </td>
                     <td>
-                        <input type="radio" name="randomVoucherNr" value="1" checked [{$readonly}]>
+                        <input type="radio" name="randomVoucherNr" value="1" checked [{$readonly}] onclick="document.getElementById('voucherNr').required = false;">
                         [{oxinputhelp ident="HELP_VOUCHERSERIE_MAIN_RANDOMNUM"}]
                     </td>
                 </tr>
@@ -188,8 +189,8 @@ function changeFnc( fncName )
                         [{oxmultilang ident="VOUCHERSERIE_MAIN_VOUCHERNUM"}]
                     </td>
                     <td>
-                        <input type="radio" name="randomVoucherNr" id="randomVoucherNr" value="0" [{$readonly}]>
-                        <input class="editinput" size="29" type="text" name="voucherNr" [{$readonly}] onfocus="document.getElementById('randomVoucherNr').checked='true';">
+                        <input type="radio" name="randomVoucherNr" id="randomVoucherNr" value="0" [{$readonly}] onclick="document.getElementById('voucherNr').required = true;">
+                        <input class="editinput" size="29" type="text" name="voucherNr" id="voucherNr" [{$readonly}] onfocus="document.getElementById('randomVoucherNr').checked='true'; document.getElementById('voucherNr').required = true;">
                         [{oxinputhelp ident="HELP_VOUCHERSERIE_MAIN_VOUCHERNUM"}]
                     </td>
                 </tr>

@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
@@ -1572,7 +1556,7 @@ EOT;
      */
     public function testLoadHistoryArticlesSingleArticle()
     {
-        /** @var oxArticleList|PHPUnit_Framework_MockObject_MockObject $articleList */
+        /** @var oxArticleList|PHPUnit\Framework\MockObject\MockObject $articleList */
         $articleList = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('loadIds', 'sortByIds'));
         $articleList->expects($this->any())->method("loadIds")->will($this->returnValue(true));
         $articleList->expects($this->any())->method("sortByIds")->will($this->returnValue(true));
@@ -1696,7 +1680,7 @@ EOT;
 
         $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('selectString'));
         $oTest->expects($this->never())->method("selectString");
-        $oTest->loadIds(null);
+        $oTest->loadIds([]);
     }
 
     /**
@@ -1756,8 +1740,8 @@ EOT;
         $oTest = $this->getProxyClass("oxArticleList");
         $oTest->selectString("select oxid from oxarticles where oxid = '2000'");
         $this->assertEquals('2000', $oTest['2000']->getId());
-        //this should be lazy loaded
-        $this->assertFalse(isset($oTest['2000']->oxarticles__oxinsert));
+
+        $this->assertFalse($oTest['2000']->isPropertyLoaded('oxarticles__oxinsert'));
         $this->assertEquals($sDate, $oTest['2000']->oxarticles__oxinsert->value);
     }
 
@@ -1773,11 +1757,11 @@ EOT;
         $oTest = $this->getProxyClass("oxArticleList");
         $oTest->selectString("select oxid from oxarticles where oxid = '2000' or oxid = '1354'");
         $this->assertEquals('2000', $oTest['2000']->getId());
-        //this should be lazy loaded
-        $this->assertFalse(isset($oTest['2000']->oxarticles__oxinsert));
+
+        $this->assertFalse($oTest['2000']->isPropertyLoaded('oxarticles__oxinsert'));
         $this->assertEquals($sDate, $oTest['2000']->oxarticles__oxinsert->value);
-        //article 2
-        $this->assertFalse(isset($oTest['1354']->oxarticles__oxinsert));
+
+        $this->assertFalse($oTest['1354']->isPropertyLoaded('oxarticles__oxinsert'));
         $this->assertEquals($sDate, $oTest['1354']->oxarticles__oxinsert->value);
     }
 
@@ -1998,7 +1982,7 @@ EOT;
     public function testLoadOrderArticlesNoOrders()
     {
         $oTest = oxNew('oxArticleList');
-        $oTest->loadOrderArticles(null);
+        $oTest->loadOrderArticles([]);
         $this->assertEquals(0, $oTest->count());
     }
 

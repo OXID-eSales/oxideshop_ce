@@ -1,5 +1,11 @@
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign}]
 
+[{if $readonly}]
+    [{assign var="readonly" value="readonly disabled"}]
+[{else}]
+    [{assign var="readonly" value=""}]
+[{/if}]
+
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
     [{$oViewConf->getHiddenSid()}]
     <input type="hidden" name="oxid" value="[{$oxid}]">
@@ -24,7 +30,7 @@
                 [{oxmultilang ident="NEWSLETTER_PLAIN_TEXT"}]
                 </td>
                 <td class="edittext">
-                <textarea class="editinput" cols="150" rows="15" wrap="VIRTUAL" name="editval[oxnewsletter__oxplaintemplate]">[{$edit->oxnewsletter__oxplaintemplate->value}]</textarea><br>
+                <textarea class="editinput" cols="150" rows="15" wrap="VIRTUAL" name="editval[oxnewsletter__oxplaintemplate]" [{$readonly}]>[{$edit->oxnewsletter__oxplaintemplate->value}]</textarea><br>
                 [{oxinputhelp ident="HELP_NEWSLETTER_PLAIN_TEXT"}]
                 </td>
             </tr>
@@ -33,7 +39,7 @@
             <td class="edittext">
             </td>
             <td class="edittext"><br>
-            <input type="submit" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'"">
+            <input type="submit" class="edittext" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'"" [{$readonly}]>
             </td>
         </tr>
         </table>

@@ -1,26 +1,11 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
+use OxidEsales\Eshop\Core\ShopVersion;
 use \oxUtils;
 use \oxOutput;
 use \oxconfig;
@@ -83,19 +68,15 @@ class OutputTest extends \OxidTestCase
 
     public function testAddVersionTags()
     {
-        $config = $this->getConfig();
-        $version = new oxField("9.9", oxField::T_RAW);
-        $config->getActiveShop()->oxshops__oxversion = $version;
+        $version = oxNew(ShopVersion::class)->getVersion();
         $currentYear = date("Y");
 
-        $majorVersion = '9';
+        $majorVersion = explode('.', $version)[0];
 
         $output = oxNew('oxOutput');
         // should add tag only to first head item
         $test = "<head>foo</head>bar<head>test2</head>";
         $result = $output->addVersionTags($test);
-        //reset value
-        $config->getActiveShop()->oxshops__oxversion = new oxField($version, oxField::T_RAW);
 
         $editionName = $this->getEditionName();
         $this->assertNotEquals($test, $result);
@@ -107,18 +88,14 @@ class OutputTest extends \OxidTestCase
      */
     public function testAddVersionTagsUpperCase()
     {
-        $config = $this->getConfig();
-        $version = new oxField("9.9", oxField::T_RAW);
-        $config->getActiveShop()->oxshops__oxversion = $version;
+        $version = oxNew(ShopVersion::class)->getVersion();
         $sCurYear = date("Y");
 
-        $sMajorVersion = '9';
+        $sMajorVersion = explode('.', $version)[0];
 
         $oOutput = oxNew('oxOutput');
         $sTest = "<head>foo</Head>bar";
         $sRes = $oOutput->addVersionTags($sTest);
-        //reset value
-        $config->getActiveShop()->oxshops__oxversion = new oxField($version, oxField::T_RAW);
 
         $editionName = $this->getEditionName();
         $this->assertNotEquals($sTest, $sRes);

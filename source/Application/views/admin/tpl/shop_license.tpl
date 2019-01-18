@@ -3,9 +3,10 @@
 [{if $error}]<div class="errorbox">[{$error}]</div>[{/if}]
 [{if $message}]<div class="messagebox">[{$message}]</div>[{/if}]
 
-[{assign var="readonly" value=""}]
 [{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
+[{else}]
+    [{assign var="readonly" value=""}]
 [{/if}]
 
 <form name="transfer" id="transfer" action="[{$oViewConf->getSelfLink()}]" method="post">
@@ -26,7 +27,7 @@
         </td>
         <td class="edittext">
             <b>[{oxmultilang ident="GENERAL_OXIDESHOP"}]
-               [{$oView->getShopEdition()}] [{$oView->getShopVersion()}]_[{$oView->getRevision()}]
+               [{$oView->getShopEdition()}] [{$oView->getShopVersion()}]
                [{if $oView->isDemoVersion()}]
                    [{oxmultilang ident="SHOP_LICENSE_DEMO"}]
                [{/if}]

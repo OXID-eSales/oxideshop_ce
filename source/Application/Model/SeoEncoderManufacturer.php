@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Model;
@@ -91,29 +75,29 @@ class SeoEncoderManufacturer extends \OxidEsales\Eshop\Core\SeoEncoder
     /**
      * Returns Manufacturer SEO url for specified page
      *
-     * @param \OxidEsales\Eshop\Application\Model\Manufacturer $oManufacturer manufacturer object
-     * @param int                                              $iPage         page tu prepare number
-     * @param int                                              $iLang         language
-     * @param bool                                             $blFixed       fixed url marker (default is null)
+     * @param \OxidEsales\Eshop\Application\Model\Manufacturer $manufacturer Manufacturer object
+     * @param int                                              $pageNumber   Number of the page which should be prepared.
+     * @param int                                              $languageId   Language id.
+     * @param bool                                             $isFixed      Fixed url marker (default is null).
      *
      * @return string
      */
-    public function getManufacturerPageUrl($oManufacturer, $iPage, $iLang = null, $blFixed = null)
+    public function getManufacturerPageUrl($manufacturer, $pageNumber, $languageId = null, $isFixed = null)
     {
-        if (!isset($iLang)) {
-            $iLang = $oManufacturer->getLanguage();
+        if (!isset($languageId)) {
+            $languageId = $manufacturer->getLanguage();
         }
-        $sStdUrl = $oManufacturer->getBaseStdLink($iLang) . '&amp;pgNr=' . $iPage;
-        $sParams = $sParams = (int) ($iPage + 1);
+        $stdUrl = $manufacturer->getBaseStdLink($languageId);
+        $parameters = null;
 
-        $sStdUrl = $this->_trimUrl($sStdUrl, $iLang);
-        $sSeoUrl = $this->getManufacturerUri($oManufacturer, $iLang) . $sParams . "/";
+        $stdUrl = $this->_trimUrl($stdUrl, $languageId);
+        $seoUrl = $this->getManufacturerUri($manufacturer, $languageId);
 
-        if ($blFixed === null) {
-            $blFixed = $this->_isFixed('oxmanufacturers', $oManufacturer->getId(), $iLang);
+        if ($isFixed === null) {
+            $isFixed = $this->_isFixed('oxmanufacturer', $manufacturer->getId(), $languageId);
         }
 
-        return $this->_getFullUrl($this->_getPageUri($oManufacturer, 'oxmanufacturers', $sStdUrl, $sSeoUrl, $sParams, $iLang, $blFixed), $iLang);
+        return $this->assembleFullPageUrl($manufacturer, 'oxmanufacturer', $stdUrl, $seoUrl, $pageNumber, $parameters, $languageId, $isFixed);
     }
 
     /**

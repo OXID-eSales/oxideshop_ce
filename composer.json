@@ -5,30 +5,37 @@
     "keywords": ["oxid", "modules", "eShop"],
     "homepage": "https://www.oxid-esales.com/en/home.html",
     "license": [
-        "GPL-3.0",
+        "GPL-3.0-only",
         "proprietary"
     ],
     "require": {
-        "php": ">=5.6",
-        "phpmailer/phpmailer": "^v5.2.22",
-        "smarty/smarty": "^v2.6.30",
-        "oxid-esales/flow-theme": "dev-master || ^2.2.0",
-        "oxid-esales/oxideshop-doctrine-migration-wrapper": "^v2.0.0",
-        "oxid-esales/oxideshop-db-views-generator": "^v1.1.0",
-        "oxid-esales/eshop-edition-facts": "^v1.0.0",
-        "doctrine/dbal": "v2.5.12",
-        "oxid-esales/oxideshop-demodata-installer": "^v1.1.0",
-        "oxid-esales/oxideshop-composer-plugin": "^v2.0.0",
-        "oxid-esales/oxideshop-unified-namespace-generator": "dev-master || ^1.0.0",
-        "ddoe/wysiwyg-editor-module": "^v1.0.0"
+        "php": "^7.0",
+        "phpmailer/phpmailer": "^v6.0.6",
+        "smarty/smarty": "^v2.6.31",
+        "doctrine/dbal": "^v2.5.13",
+        "doctrine/collections": "^1.4.0",
+        "monolog/monolog": "^v1.23.0",
+        "psr/container": "1.0.*",
+        "symfony/event-dispatcher": "^3.4",
+        "symfony/dependency-injection": "^3.4",
+        "symfony/lock": "^3.4",
+        "symfony/console": "^v3.4.15",
+        "webmozart/path-util": "^2.3"
     },
     "require-dev": {
+        "oxid-esales/flow-theme": "^v3.0.2",
+        "oxid-esales/oxideshop-doctrine-migration-wrapper": "^v2.1.2",
+        "oxid-esales/oxideshop-db-views-generator": "^v1.2.0",
+        "oxid-esales/oxideshop-demodata-installer": "^v1.1.2",
+        "oxid-esales/oxideshop-composer-plugin": "dev-master",
+        "oxid-esales/oxideshop-unified-namespace-generator": "^2.0.0",
         "oxid-esales/testing-library": "dev-master",
-        "oxid-esales/coding-standards": "^v3.0.2",
-        "oxid-esales/coding-standards-wrapper": "dev-master",
+        "oxid-esales/coding-standards": "^v3.0.5",
+        "oxid-esales/coding-standards-wrapper": "^v1.0.0",
         "incenteev/composer-parameter-handler": "~v2.0",
-        "oxid-esales/oxideshop-ide-helper": "^2.0",
-        "oxid-esales/azure-theme": "dev-b-1.4"
+        "oxid-esales/oxideshop-ide-helper": "^3.0",
+        "oxid-esales/azure-theme": "^v1.4.1",
+        "oxid-esales/oxideshop-facts": "^2.3.1"
     },
     "autoload": {
         "psr-4": {
@@ -42,6 +49,7 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "bin": ["bin/oe-console"],
     "scripts": {
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
@@ -53,10 +61,7 @@
         ],
         "oe:ide-helper:generate": [
             "if [ -f ./vendor/bin/oe-eshop-ide_helper ]; then oe-eshop-ide_helper; fi"
-        ],
-        "oe:migration:run": "oe-eshop-doctrine_migration migrations:migrate",
-        "oe:migration:new": "oe-eshop-doctrine_migration migrations:generate",
-        "oe:views:regenerate": "oe-eshop-db_views_regenerate"
+        ]
     },
     "extra": {
         "oxideshop": {
@@ -64,7 +69,8 @@
                 "Application/Component/**/*",
                 "Application/Controller/**/*",
                 "Application/Model/**/*",
-                "Core/**/*"
+                "Core/**/*",
+                "Internal/**/*"
             ]
         },
         "incenteev-parameters": {

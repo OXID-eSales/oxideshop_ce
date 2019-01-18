@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Tests\Acceptance\Frontend;
@@ -46,7 +30,6 @@ class ShopSetUpTest extends FrontendTestCase
     const DEMODATA_SQL_FILENAME = 'demodata.sql';
     const DATABASE_SCHEMA_SQL_FILENAME = 'database_schema.sql';
     const INITIAL_DATA_SQL_FILENAME = 'initial_data.sql';
-    const EN_LANGUAGE_SQL_FILENAME = 'en.sql';
     const HTACCESS_FILENAME = '.htaccess';
     const PACKAGE_INDICATOR_FILENAME = 'pkg.info';
     const DB_MIGRATE_SCRIPT_FILENAME = 'oe-eshop-doctrine_migration';
@@ -116,21 +99,15 @@ class ShopSetUpTest extends FrontendTestCase
 
         // Step 2
         $this->assertTextPresent("Welcome to OXID eShop installation wizard");
-        $this->assertElementPresent("location_lang");
-        $this->assertEquals("Please choose Germany, Austria, SwitzerlandAny other", trim(preg_replace("/[ \r\n]*[\r\n][ \r\n]*/", ' ', $this->getText("location_lang"))));
         $this->assertElementPresent("check_for_updates_ckbox");
         $this->assertEquals("off", $this->getValue("check_for_updates_ckbox"));
 
         $this->check("check_for_updates_ckbox");
 
         if (getenv('OXID_LOCALE') == 'international') {
-            $this->select("location_lang", "Any other");
-            $this->assertEquals("Any other", $this->getSelectedLabel("location_lang"));
             $this->assertElementPresent("sShopLang");
             $this->select("sShopLang", "English");
         } else {
-            $this->select("location_lang", "Germany, Austria, Switzerland");
-            $this->assertEquals("Germany, Austria, Switzerland", $this->getSelectedLabel("location_lang"));
             $this->assertElementPresent("sShopLang");
             $this->select("sShopLang", "Deutsch");
         }
@@ -139,15 +116,18 @@ class ShopSetUpTest extends FrontendTestCase
         $this->select("country_lang", "Germany");
         $this->checkForErrors();
 
-        if ($this->getTestConfig()->getShopEdition() === 'PE' && getenv('OXID_LOCALE') == 'germany') {
+        if ($this->getTestConfig()->getShopEdition() === 'CE') {
             //there is no such checkbox for EE or utf mode
-            $this->assertElementPresent("use_dynamic_pages_ckbox");
-            $this->assertElementVisible("use_dynamic_pages_ckbox");
-            $this->assertEquals("off", $this->getValue("use_dynamic_pages_ckbox"));
-            $this->check("use_dynamic_pages_ckbox");
-            $this->assertEquals("on", $this->getValue("use_dynamic_pages_ckbox"));
+            $this->assertElementPresent("send_technical_information_to_oxid_checkbox");
+            $this->assertElementVisible("send_technical_information_to_oxid_checkbox");
+            $this->assertEquals("off", $this->getValue("send_technical_information_to_oxid_checkbox"));
+            $this->check("send_technical_information_to_oxid_checkbox");
+            $this->assertEquals("on", $this->getValue("send_technical_information_to_oxid_checkbox"));
             $this->checkForErrors();
+        } else {
+            $this->assertElementNotPresent("send_technical_information_to_oxid_checkbox");
         }
+
         $this->clickContinueAndProceedTo(self::LICENSE_STEP);
 
         // Step 3
@@ -251,7 +231,7 @@ class ShopSetUpTest extends FrontendTestCase
         $this->frame("navigation");
         $this->frame("basefrm");
         $this->waitForText("Home");
-        $this->assertTextPresent("Welcome to the OXID eShop Admin.", "Missing text: Welcome to the OXID eShop Admin.");
+        $this->assertTextPresent("Welcome to OXID eShop Admin.", "Missing text: Welcome to the OXID eShop Admin.");
     }
 
     /**
@@ -461,7 +441,6 @@ class ShopSetUpTest extends FrontendTestCase
      */
     public function testSetupRedirectsToDatabaseEntryPageWhenSetupSqlFileIsMissing($setupSqlFile)
     {
-        $this->skipLanguageSqlFilenameCase($setupSqlFile);
         $this->skipInitialDataSqlCaseIfDemodataPackageIsInUse($setupSqlFile);
 
         $this->hideSetupSqlFile($setupSqlFile);
@@ -526,10 +505,8 @@ class ShopSetUpTest extends FrontendTestCase
         $this->provideEshopLoginParameters('test@test.com', '123456');
         $this->click(self::FINISH_CE_STEP);
 
-        if ($setupSqlFile !== self::EN_LANGUAGE_SQL_FILENAME) {
-            $this->waitForText("ERROR: Issue while inserting this SQL statements:");
-            $this->assertTextPresent("SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax;");
-        }
+        $this->waitForText("ERROR: Issue while inserting this SQL statements:");
+        $this->assertTextPresent("SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax;");
     }
 
     public function setupSqlFilesProvider()
@@ -537,7 +514,6 @@ class ShopSetUpTest extends FrontendTestCase
         return [
             [self::DATABASE_SCHEMA_SQL_FILENAME],
             [self::INITIAL_DATA_SQL_FILENAME],
-            [self::EN_LANGUAGE_SQL_FILENAME],
         ];
     }
 
@@ -714,110 +690,10 @@ class ShopSetUpTest extends FrontendTestCase
         $this->click(self::FINISH_CE_STEP);
 
         $this->waitForText("Error while executing command");
-        $this->assertTextPresent(self::DB_MIGRATE_SCRIPT_FILENAME);
-        $this->assertTextPresent("Return code: '1'");
+        $this->assertTextPresent("Return code: '0'");
         $this->assertTextPresent("INVALID_SQL_SYNTAX");
 
         $this->deleteInvalidMigration();
-    }
-
-    /**
-     * @group setup
-     */
-    public function testSetupShowsErrorMessageWhenMigrationExecutableIsMissing()
-    {
-        $this->clearDatabase();
-        list($host, $port, $name, $user, $password) = $this->getDatabaseParameters();
-
-        $this->hideDatabaseMigrationExecutableFile();
-
-        $this->goToSetup();
-
-        $this->selectSetupLanguage();
-        $this->clickContinueAndProceedTo(self::WELCOME_STEP);
-
-        $this->selectEshopLanguage();
-        $this->clickContinueAndProceedTo(self::LICENSE_STEP);
-
-        $this->selectAgreeWithLicense(true);
-        $this->clickContinueAndProceedTo(self::DATABASE_INFO_STEP);
-
-        $this->provideDatabaseParameters($host, $port, $name, $user, $password);
-        $this->clickContinueAndProceedTo(self::DIRECTORY_LOGIN_STEP);
-
-        $this->provideEshopLoginParameters('test@test.com', '123456', '123456');
-        $this->click(self::FINISH_CE_STEP);
-
-        $this->waitForText("Error while executing command");
-        $this->assertTextPresent(self::DB_MIGRATE_SCRIPT_FILENAME);
-
-        $this->showDatabaseMigrationExecutableFile();
-    }
-
-    /**
-     * @group setup
-     */
-    public function testSetupShowsErrorMessageWhenViewRegenerationReturnsErrorCode()
-    {
-        $this->clearDatabase();
-        list($host, $port, $name, $user, $password) = $this->getDatabaseParameters();
-
-        $this->goToSetup();
-
-        $this->modifyViewRegenerationToReturnBadReturnCode();
-
-        $this->selectSetupLanguage();
-        $this->clickContinueAndProceedTo(self::WELCOME_STEP);
-
-        $this->selectEshopLanguage();
-        $this->clickContinueAndProceedTo(self::LICENSE_STEP);
-
-        $this->selectAgreeWithLicense(true);
-        $this->clickContinueAndProceedTo(self::DATABASE_INFO_STEP);
-
-        $this->provideDatabaseParameters($host, $port, $name, $user, $password);
-        $this->clickContinueAndProceedTo(self::DIRECTORY_LOGIN_STEP);
-
-        $this->provideEshopLoginParameters('test@test.com', '123456', '123456');
-        $this->click(self::FINISH_CE_STEP);
-
-        $this->waitForText("Error while executing command");
-        $this->assertTextPresent(self::DB_VIEWS_REGENERATE_SCRIPT_FILENAME);
-
-        $this->restoreViewRegenerationBinaryFile();
-    }
-
-    /**
-     * @group setup
-     */
-    public function testSetupShowsErrorMessageWhenViewsRegenerationExecutableIsMissing()
-    {
-        $this->clearDatabase();
-        list($host, $port, $name, $user, $password) = $this->getDatabaseParameters();
-
-        $this->hideDatabaseViewRegenerationExecutableFile();
-
-        $this->goToSetup();
-
-        $this->selectSetupLanguage();
-        $this->clickContinueAndProceedTo(self::WELCOME_STEP);
-
-        $this->selectEshopLanguage();
-        $this->clickContinueAndProceedTo(self::LICENSE_STEP);
-
-        $this->selectAgreeWithLicense(true);
-        $this->clickContinueAndProceedTo(self::DATABASE_INFO_STEP);
-
-        $this->provideDatabaseParameters($host, $port, $name, $user, $password);
-        $this->clickContinueAndProceedTo(self::DIRECTORY_LOGIN_STEP);
-
-        $this->provideEshopLoginParameters('test@test.com', '123456', '123456');
-        $this->click(self::FINISH_CE_STEP);
-
-        $this->waitForText("Error while executing command");
-        $this->assertTextPresent(self::DB_VIEWS_REGENERATE_SCRIPT_FILENAME);
-
-        $this->showDatabaseMigrationExecutableFile();
     }
 
     /**
@@ -1300,7 +1176,6 @@ class ShopSetUpTest extends FrontendTestCase
 
     private function selectEshopLanguage()
     {
-        $this->select("location_lang", "Germany, Austria, Switzerland");
         $this->select("sShopLang", "English");
         $this->select("country_lang", "Germany");
     }
@@ -1411,13 +1286,6 @@ SCRIPT;
             $this->markTestSkipped(
                 self::INITIAL_DATA_SQL_FILENAME . " file is not available nor used if 'demodata' package is present."
             );
-        }
-    }
-
-    private function skipLanguageSqlFilenameCase($setupSqlFile)
-    {
-        if ($setupSqlFile === self::EN_LANGUAGE_SQL_FILENAME) {
-            $this->markTestSkipped('Skipping this case to match functionality from current Setup implementation.');
         }
     }
 

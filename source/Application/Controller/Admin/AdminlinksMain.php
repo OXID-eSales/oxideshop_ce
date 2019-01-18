@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
@@ -32,7 +16,6 @@ use stdClass;
  */
 class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Sets link information data (or leaves empty), returns name of template
      * file "adminlinks_main.tpl".
@@ -41,14 +24,12 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
-
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
+        $oLinks = oxNew(\OxidEsales\Eshop\Application\Model\Links::class, getViewName('oxlinks'));
+
         if (isset($soxId) && $soxId != "-1") {
-            // load object
-            $oLinks = oxNew("oxlinks", getViewName('oxlinks'));
             $oLinks->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oLinks->getAvailableInLangs();
@@ -118,7 +99,7 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         }
 
         $iEditLanguage = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editlanguage");
-        $oLinks = oxNew("oxlinks", getViewName('oxlinks'));
+        $oLinks = oxNew(\OxidEsales\Eshop\Application\Model\Links::class, getViewName('oxlinks'));
 
         if ($soxId != "-1") {
             //$oLinks->load( $soxId );
@@ -159,7 +140,7 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             $aParams['oxlinks__oxactive'] = 0;
         }
 
-        $oLinks = oxNew("oxlinks", getViewName('oxlinks'));
+        $oLinks = oxNew(\OxidEsales\Eshop\Application\Model\Links::class, getViewName('oxlinks'));
         $iEditLanguage = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editlanguage");
 
         if ($soxId != "-1") {

@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
@@ -34,7 +18,6 @@ use Exception;
  */
 class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
-
     /**
      * Current class template name
      *
@@ -84,7 +67,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
                 $aQErrorMessages = [];
                 $aQErrorNumbers = [];
 
-                if (count($aQueries) > 0) {
+                if (!empty($aQueries) && is_array($aQueries)) {
                     $blStop = false;
                     $oDB = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
                     $iQueriesCounter = 0;
@@ -143,12 +126,9 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
     {
         if (isset($_FILES['myfile']['name'])) {
             // process all files
-            while (list($key, $value) = each($_FILES['myfile']['name'])) {
+            foreach ($_FILES['myfile']['name'] as $key => $value) {
                 $aSource = $_FILES['myfile']['tmp_name'];
                 $sSource = $aSource[$key];
-                $aFiletype = explode("@", $key);
-                $key = $aFiletype[1];
-                $sType = $aFiletype[0];
                 $value = strtolower($value);
                 // add type to name
                 $aFilename = explode(".", $value);
@@ -162,7 +142,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
                 }
 
                 //reading SQL dump file
-                if ($sSource) {
+                if (filesize($sSource) > 0) {
                     $rHandle = fopen($sSource, "r");
                     $sContents = fread($rHandle, filesize($sSource));
                     fclose($rHandle);
@@ -188,7 +168,6 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      */
     protected function _prepareSQL($sSQL, $iSQLlen)
     {
-        $sChar = "";
         $sStrStart = "";
         $blString = false;
         $oStr = getStr();

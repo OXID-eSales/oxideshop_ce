@@ -1,35 +1,17 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
-use OxidEsales\Eshop\Core\ShopVersion;
-use OxidEsales\Eshop\Core\SystemRequirements;
-use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\EshopCommunity\Setup\Controller\ModuleStateMapGenerator;
-use OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
-use OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException;
+use \OxidEsales\Facts\Edition\EditionSelector;
+use \OxidEsales\Eshop\Core\SystemRequirements;
+use \OxidEsales\EshopCommunity\Setup\Controller\ModuleStateMapGenerator;
+use \OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
+use \OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException;
 
 /**
  * Class holds scripts (controllers) needed to perform shop setup steps
@@ -97,7 +79,6 @@ class Controller extends Core
                 "aLanguages" => getLanguages(),
                 "sShopLang" => $session->getSessionParam('sShopLang'),
                 "sLanguage" => $this->getLanguageInstance()->getLanguage(),
-                "sLocationLang" => $session->getSessionParam('location_lang'),
                 "sCountryLang" => $session->getSessionParam('country_lang')
             ]
         );
@@ -355,18 +336,11 @@ class Controller extends Core
                 $this->installShopData($database, $demodataInstallationRequired);
             } catch (CommandExecutionFailedException $exception) {
                 $this->handleCommandExecutionFailedException($exception);
+
                 throw new SetupControllerExitException();
             } catch (Exception $exception) {
                 // there where problems with queries
                 $view->setMessage($language->getText('ERROR_BAD_DEMODATA') . "<br><br>" . $exception->getMessage());
-
-                throw new SetupControllerExitException();
-            }
-
-            try {
-                $this->getUtilitiesInstance()->executeExternalRegenerateViewsCommand();
-            } catch (CommandExecutionFailedException $exception) {
-                $this->handleCommandExecutionFailedException($exception);
 
                 throw new SetupControllerExitException();
             }
@@ -376,12 +350,11 @@ class Controller extends Core
             throw new SetupControllerExitException();
         }
 
-        //update dyn pages / shop country config options (from first step)
+        //update if send information to OXID / shop country config options (from first step)
         $database->saveShopSettings([]);
 
-        // update shop version
-        $version = ShopVersion::getVersion();
-        $database->execSql("update `oxshops` set `oxversion` = '{$version}'");
+        // This value will not change, as it's deprecated and will be removed in next major version.
+        $database->execSql("update `oxshops` set `oxversion` = '6.0.0'");
 
         try {
             $adminData = $session->getSessionParam('aAdminData');
@@ -507,13 +480,29 @@ class Controller extends Core
     {
         $session = $this->getSessionInstance();
         $pathCollection = $session->getSessionParam("aPath");
+        $aSetupConfig = $session->getSessionParam("aSetupConfig");
+        $aDB = $session->getSessionParam("aDB");
+
+        try {
+            $this->getUtilitiesInstance()->executeExternalRegenerateViewsCommand(); // move to last step possible?
+        } catch (CommandExecutionFailedException $exception) {
+            $this->handleCommandExecutionFailedException($exception);
+
+            throw new SetupControllerExitException();
+        } catch (Exception $exception) {
+            $view = $this->getView();
+            $view->setMessage($exception->getMessage());
+
+            throw new SetupControllerExitException();
+        }
 
         $this->setViewOptions(
             'finish.php',
             'STEP_6_TITLE',
             [
                 "aPath" => $pathCollection,
-                "aSetupConfig" => $session->getSessionParam("aSetupConfig"),
+                "aSetupConfig" => $aSetupConfig,
+                "aDB" => $aDB,
                 "blWritableConfig" => is_writable($pathCollection['sShopDir'] . "/config.inc.php")
             ]
         );
@@ -611,24 +600,35 @@ class Controller extends Core
      * Installs demo data or initial, dependent on parameter
      *
      * @param \OxidEsales\EshopCommunity\Setup\Database $database
-     * @param int                                       $demodataRequired
+     * @param int                                       $demoDataRequired
+     *
+     * @throws SetupControllerExitException
      */
-    private function installShopData($database, $demodataRequired = 0)
+    private function installShopData($database, $demoDataRequired = 0)
     {
         $baseSqlDir = $this->getUtilitiesInstance()->getSqlDirectory(EditionSelector::COMMUNITY);
 
-        // If demo data files are provided.
-        if ($demodataRequired && $this->getUtilitiesInstance()->isDemodataPrepared()) {
-            $this->getUtilitiesInstance()->executeExternalDatabaseMigrationCommand();
+        try {
+            // If demo data files are provided.
+            if ($demoDataRequired && $this->getUtilitiesInstance()->isDemodataPrepared()) {
+                $this->getUtilitiesInstance()->executeExternalDatabaseMigrationCommand();
 
-            // Install demo data.
-            $database->queryFile($this->getUtilitiesInstance()->getActiveEditionDemodataPackageSqlFilePath());
-            // Copy demo data files.
-            $this->getUtilitiesInstance()->executeExternalDemodataAssetsInstallCommand();
-        } else {
-            $database->queryFile("$baseSqlDir/initial_data.sql");
+                // Install demo data.
+                $database->queryFile($this->getUtilitiesInstance()->getActiveEditionDemodataPackageSqlFilePath());
+                // Copy demo data files.
+                $this->getUtilitiesInstance()->executeExternalDemodataAssetsInstallCommand();
+            } else {
+                $database->queryFile("$baseSqlDir/initial_data.sql");
 
-            $this->getUtilitiesInstance()->executeExternalDatabaseMigrationCommand();
+                $this->getUtilitiesInstance()->executeExternalDatabaseMigrationCommand();
+            }
+        } catch (Exception $exception) {
+            $commandException = new CommandExecutionFailedException('Migration', $exception->getCode(), $exception);
+            $commandException->setCommandOutput([$exception->getMessage()]);
+
+            $this->handleCommandExecutionFailedException($commandException);
+
+            throw new SetupControllerExitException();
         }
     }
 

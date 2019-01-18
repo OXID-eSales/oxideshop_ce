@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Setup;
 
@@ -39,8 +23,6 @@ class SetupTest extends \OxidTestCase
 {
     /**
      * Testing Setup::setTitle() and Setup::getTitle()
-     *
-     * @return null
      */
     public function testSetTitleAndGetTitle()
     {
@@ -53,8 +35,6 @@ class SetupTest extends \OxidTestCase
 
     /**
      * Testing Setup::setMessage() and Setup::getMessage()
-     *
-     * @return null
      */
     public function testSetMessageAndGetMessage()
     {
@@ -67,8 +47,6 @@ class SetupTest extends \OxidTestCase
 
     /**
      * Testing Setup::getCurrentStep()
-     *
-     * @return null
      */
     public function testGetCurrentStep()
     {
@@ -85,8 +63,6 @@ class SetupTest extends \OxidTestCase
 
     /**
      * Testing Setup::setNextStep() and Setup::getNextStep()
-     *
-     * @return null
      */
     public function testSetNextStepAndGetNextStep()
     {
@@ -99,8 +75,6 @@ class SetupTest extends \OxidTestCase
 
     /**
      * Testing Setup::alreadySetUp()
-     *
-     * @return null
      */
     public function testAlreadySetUp()
     {
@@ -112,8 +86,6 @@ class SetupTest extends \OxidTestCase
 
     /**
      * Testing Setup::getShopId()
-     *
-     * @return null
      */
     public function testGetShopId()
     {
@@ -131,8 +103,6 @@ class SetupTest extends \OxidTestCase
 
     /**
      * Testing Setup::getSteps()
-     *
-     * @return null
      */
     public function testGetSteps()
     {
@@ -150,8 +120,6 @@ class SetupTest extends \OxidTestCase
 
     /**
      * Testing Setup::getStep()
-     *
-     * @return null
      */
     public function testGetStep()
     {
@@ -164,8 +132,6 @@ class SetupTest extends \OxidTestCase
 
     /**
      * Testing Setup::getModuleClass()
-     *
-     * @return null
      */
     public function testGetModuleClass()
     {

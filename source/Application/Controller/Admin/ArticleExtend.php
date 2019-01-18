@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
@@ -37,7 +21,6 @@ use Exception;
  */
 class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Unit array
      *
@@ -92,7 +75,7 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
         $this->prepareBundledArticlesDataForView($article);
 
-        $iAoc = $this->getConfig()->getRequestParameter("aoc");
+        $iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc");
         if ($iAoc == 1) {
             $oArticleExtendAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ArticleExtendAjax::class);
             $this->_aViewData['oxajax'] = $oArticleExtendAjax->getColumns();
@@ -120,10 +103,10 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     {
         parent::save();
 
-        $aMyFile = $this->getConfig()->getUploadedFile("myfile");
-        $aMediaFile = $this->getConfig()->getUploadedFile("mediaFile");
+        $aMyFile = \OxidEsales\Eshop\Core\Registry::getConfig()->getUploadedFile("myfile");
+        $aMediaFile = \OxidEsales\Eshop\Core\Registry::getConfig()->getUploadedFile("mediaFile");
         if (is_array($aMyFile['name']) && reset($aMyFile['name']) || $aMediaFile['name']) {
-            $myConfig = $this->getConfig();
+            $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
             if ($myConfig->isDemoShop()) {
                 $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
                 $oEx->setMessage('ARTICLE_EXTEND_UPLOADISDISABLED');
@@ -166,8 +149,8 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         $oArticle->save();
 
         //saving media file
-        $sMediaUrl = $this->getConfig()->getRequestParameter("mediaUrl");
-        $sMediaDesc = $this->getConfig()->getRequestParameter("mediaDesc");
+        $sMediaUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("mediaUrl");
+        $sMediaDesc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("mediaDesc");
 
         if (($sMediaUrl && $sMediaUrl != 'http://') || $aMediaFile['name'] || $sMediaDesc) {
             if (!$sMediaDesc) {
@@ -209,7 +192,7 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     public function deletemedia()
     {
         $soxId = $this->getEditObjectId();
-        $sMediaId = $this->getConfig()->getRequestParameter("mediaid");
+        $sMediaId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("mediaid");
         if ($sMediaId && $soxId) {
             $oMediaUrl = oxNew(\OxidEsales\Eshop\Application\Model\MediaUrl::class);
             $oMediaUrl->load($sMediaId);
@@ -237,7 +220,7 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
      */
     public function updateMedia()
     {
-        $aMediaUrls = $this->getConfig()->getRequestParameter('aMediaUrls');
+        $aMediaUrls = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aMediaUrls');
         if (is_array($aMediaUrls)) {
             foreach ($aMediaUrls as $sMediaId => $aMediaParams) {
                 $oMedia = oxNew(\OxidEsales\Eshop\Application\Model\MediaUrl::class);
@@ -285,7 +268,7 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     protected function prepareBundledArticlesDataForView($article)
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDB();
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $articleTable = getViewName('oxarticles', $this->_iEditLang);
         $query = "select {$articleTable}.oxtitle, {$articleTable}.oxartnum, {$articleTable}.oxvarselect " .

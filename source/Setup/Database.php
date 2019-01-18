@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Setup;
@@ -27,13 +11,13 @@ use Exception;
 use PDO;
 use PDOException;
 use PDOStatement;
+use \OxidEsales\Facts\Facts;
 
 /**
  * Setup database manager class
  */
 class Database extends Core
 {
-
     /**
      * Connection resource object
      *
@@ -283,7 +267,7 @@ class Database extends Core
     public function createDb($sDbName)
     {
         try {
-            $this->execSql("CREATE DATABASE `$sDbName`");
+            $this->execSql("CREATE DATABASE `$sDbName` CHARACTER SET utf8 COLLATE utf8_general_ci;");
             $this->connectDb($sDbName);
         } catch (Exception $e) {
             $oSetup = $this->getInstance("Setup");
@@ -308,10 +292,11 @@ class Database extends Core
 
         $oPdo = $this->getConnection();
 
-        $this->setIfDynamicPagesShouldBeUsed($oSession);
-
-        $blUseDynPages = isset($aParams["use_dyn_pages"]) ? $aParams["use_dyn_pages"] : $oSession->getSessionParam('use_dynamic_pages');
-        $sLocationLang = isset($aParams["location_lang"]) ? $aParams["location_lang"] : $oSession->getSessionParam('location_lang');
+        $blSendTechnicalInformationToOxid = true;
+        $facts = new Facts();
+        if ($facts->isCommunity()) {
+            $blSendTechnicalInformationToOxid = isset($aParams["send_technical_information_to_oxid"]) ? $aParams["send_technical_information_to_oxid"] : $oSession->getSessionParam('send_technical_information_to_oxid');
+        }
         $blCheckForUpdates = isset($aParams["check_for_updates"]) ? $aParams["check_for_updates"] : $oSession->getSessionParam('check_for_updates');
         $sCountryLang = isset($aParams["country_lang"]) ? $aParams["country_lang"] : $oSession->getSessionParam('country_lang');
         $sShopLang = isset($aParams["sShopLang"]) ? $aParams["sShopLang"] : $oSession->getSessionParam('sShopLang');
@@ -320,13 +305,7 @@ class Database extends Core
         $oPdo->exec("update oxcountry set oxactive = '0'");
         $oPdo->exec("update oxcountry set oxactive = '1' where oxid = '$sCountryLang'");
 
-        // if it is international eshop, setting admin user country to selected one
-        if ($oSession->getSessionParam('location_lang') != "de") {
-            $oPdo->exec("UPDATE oxuser SET oxcountryid = '$sCountryLang' where OXUSERNAME='admin'");
-        }
-
-        $oPdo->exec("delete from oxconfig where oxvarname = 'blLoadDynContents'");
-        $oPdo->exec("delete from oxconfig where oxvarname = 'sShopCountry'");
+        $oPdo->exec("delete from oxconfig where oxvarname = 'blSendTechnicalInformationToOxid'");
         $oPdo->exec("delete from oxconfig where oxvarname = 'blCheckForUpdates'");
         $oPdo->exec("delete from oxconfig where oxvarname = 'sDefaultLang'");
         // $this->execSql( "delete from oxconfig where oxvarname = 'aLanguageParams'" );
@@ -337,19 +316,9 @@ class Database extends Core
             [
                 'oxid' => $oUtils->generateUid(),
                 'shopId' => $sBaseShopId,
-                'name' => 'blLoadDynContents',
+                'name' => 'blSendTechnicalInformationToOxid',
                 'type' => 'bool',
-                'value' => $blUseDynPages
-            ]
-        );
-
-        $oInsert->execute(
-            [
-                'oxid' => $oUtils->generateUid(),
-                'shopId' => $sBaseShopId,
-                'name' => 'sShopCountry',
-                'type' => 'str',
-                'value' => $sLocationLang
+                'value' => $blSendTechnicalInformationToOxid
             ]
         );
 
@@ -494,18 +463,5 @@ class Database extends Core
             "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
                              values('$sID', '$baseShopId', 'blSendShopDataToOxid', 'bool', ENCODE( '$blSendShopDataToOxid', '" . $configKey->sConfigKey . "'))"
         );
-    }
-
-    /**
-     * Set to session if dynamic pages should be used.
-     *
-     * @param Session $session
-     */
-    protected function setIfDynamicPagesShouldBeUsed($session)
-    {
-        // disabling usage of dynamic pages if shop country is international
-        if ($session->getSessionParam('location_lang') === null) {
-            $session->setSessionParam('use_dynamic_pages', 'false');
-        }
     }
 }

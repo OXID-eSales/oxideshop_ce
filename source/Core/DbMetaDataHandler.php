@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Core;
@@ -562,8 +546,9 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $configFile = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class);
+
         $originalSkipViewUsageStatus = $configFile->getVar('blSkipViewUsage');
-        $config->setConfigParam('blSkipViewUsage', 1);
+        $this->setConfigToDoNotUseViews($config);
 
         $this->safeGuardAdditionalMultiLanguageTables();
 
@@ -590,6 +575,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
 
         return $success;
     }
+
 
     /**
      * Make sure that e.g. OXID is always used from core table when creating views.
@@ -618,7 +604,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
     protected function safeGuardAdditionalMultiLanguageTables()
     {
         $maxLang = $this->getCurrentMaxLangId();
-        $multiLanguageTables = $this->getConfig()->getConfigParam('aMultiLangTables');
+        $multiLanguageTables = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aMultiLangTables');
 
         if (!is_array($multiLanguageTables) || empty($multiLanguageTables)) {
             return; //nothing to do
@@ -685,5 +671,21 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
     protected function validateTableName($tableName)
     {
         return true;
+    }
+
+    /**
+     * Forces shop to do not use views.
+     *
+     * @param Config $config
+     */
+    private function setConfigToDoNotUseViews(Config $config)
+    {
+        /**
+         * If Config property is not null before calling Config::setConfigParam()
+         * the value will be overwritten in Config::getConfigParam by value from
+         * the config file.
+         */
+        $config->blSkipViewUsage = null;
+        $config->setConfigParam('blSkipViewUsage', 1);
     }
 }

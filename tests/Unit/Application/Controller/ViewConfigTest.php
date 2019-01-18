@@ -1,34 +1,21 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\ViewConfig;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Model\CountryList;
-
-use \stdClass;
-use \oxRegistry;
-use \oxTestModules;
+use oxTestModules;
+use stdClass;
 
 class ViewConfigTest extends \OxidTestCase
 {
+
     /**
      * oxViewConfig::getHelpPageLink() test case
      *
@@ -115,7 +102,7 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testGetHomeLink($iDefaultShopLanguage, $iDefaultBrowserLanguage, $sExpectedUrl)
     {
-        /** @var $oLang oxLang | PHPUnit_Framework_MockObject_MockObject */
+        /** @var $oLang oxLang | PHPUnit\Framework\MockObject\MockObject */
         $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array('detectLanguageByBrowser'));
         $oLang
             ->expects($this->any())
@@ -155,16 +142,9 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testGetShowWishlist()
     {
-        $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
-        $oCfg->expects($this->once())
-            ->method('getConfigParam')
-            ->with($this->equalTo('bl_showWishlist'))
-            ->will($this->returnValue('lalala'));
-        $oVC = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig'));
-        $oVC->expects($this->once())
-            ->method('getConfig')
-            ->will($this->returnValue($oCfg));
-        $this->assertEquals('lalala', $oVC->getShowWishlist());
+        Registry::getConfig()->setConfigParam('bl_showWishlist', 'lalala');
+        $viewConfig = oxNew(\OxidEsales\Eshop\Core\ViewConfig::class);
+        $this->assertEquals('lalala', $viewConfig->getShowWishlist());
     }
 
     /**
@@ -180,8 +160,8 @@ class ViewConfigTest extends \OxidTestCase
         $oCfg->expects($this->at(1))->method('getConfigParam')->with($this->equalTo('blDisableNavBars'))->will($this->returnValue(true));
         $oCfg->expects($this->at(2))->method('getActiveView')->will($this->returnValue($oView));
 
-        $oVC = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig'));
-        $oVC->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
+        $oVC = oxNew(\OxidEsales\Eshop\Core\ViewConfig::class);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
         $this->assertFalse($oVC->getShowCompareList());
     }
 
@@ -190,16 +170,9 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testGetShowListmania()
     {
-        $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
-        $oCfg->expects($this->once())
-            ->method('getConfigParam')
-            ->with($this->equalTo('bl_showListmania'))
-            ->will($this->returnValue('lalala'));
-        $oVC = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig'));
-        $oVC->expects($this->once())
-            ->method('getConfig')
-            ->will($this->returnValue($oCfg));
-        $this->assertEquals('lalala', $oVC->getShowListmania());
+        Registry::getConfig()->setConfigParam('bl_showListmania', 'lalala');
+        $viewConfig = oxNew(\OxidEsales\Eshop\Core\ViewConfig::class);
+        $this->assertEquals('lalala', $viewConfig->getShowListmania());
     }
 
     /**
@@ -207,16 +180,9 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testGetShowVouchers()
     {
-        $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
-        $oCfg->expects($this->once())
-            ->method('getConfigParam')
-            ->with($this->equalTo('bl_showVouchers'))
-            ->will($this->returnValue('lalala'));
-        $oVC = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig'));
-        $oVC->expects($this->once())
-            ->method('getConfig')
-            ->will($this->returnValue($oCfg));
-        $this->assertEquals('lalala', $oVC->getShowVouchers());
+        Registry::getConfig()->setConfigParam('bl_showVouchers', 'lalala');
+        $viewConfig = oxNew(\OxidEsales\Eshop\Core\ViewConfig::class);
+        $this->assertEquals('lalala', $viewConfig->getShowVouchers());
     }
 
     /**
@@ -224,16 +190,9 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testGetShowGiftWrapping()
     {
-        $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
-        $oCfg->expects($this->once())
-            ->method('getConfigParam')
-            ->with($this->equalTo('bl_showGiftWrapping'))
-            ->will($this->returnValue('lalala'));
-        $oVC = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig'));
-        $oVC->expects($this->once())
-            ->method('getConfig')
-            ->will($this->returnValue($oCfg));
-        $this->assertEquals('lalala', $oVC->getShowGiftWrapping());
+        Registry::getConfig()->setConfigParam('bl_showGiftWrapping', 'lalala');
+        $viewConfig = oxNew(\OxidEsales\Eshop\Core\ViewConfig::class);
+        $this->assertEquals('lalala', $viewConfig->getShowGiftWrapping());
     }
 
     public function testGetRemoteAccessToken()
@@ -255,16 +214,14 @@ class ViewConfigTest extends \OxidTestCase
         $oCfg->expects($this->once())
             ->method('isSsl')
             ->will($this->returnValue(false));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
 
         $oVC = $this->getMock(
             'oxviewconfig'
-            , array('getConfig', 'getTopActionClassName', 'getActCatId', 'getActTplName', 'getActContentLoadId'
+            , array('getTopActionClassName', 'getActCatId', 'getActTplName', 'getActContentLoadId'
                     , 'getActArticleId', 'getActSearchParam', 'getActSearchTag', 'getActListType', 'getActRecommendationId')
         );
 
-        $oVC->expects($this->any())
-            ->method('getConfig')
-            ->will($this->returnValue($oCfg));
         $oVC->expects($this->once())
             ->method('getTopActionClassName')
             ->will($this->returnValue('actionclass'));
@@ -307,16 +264,14 @@ class ViewConfigTest extends \OxidTestCase
         $oCfg->expects($this->once())
             ->method('isSsl')
             ->will($this->returnValue(true));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
 
         $oVC = $this->getMock(
             'oxviewconfig'
-            , array('getConfig', 'getTopActionClassName', 'getActCatId', 'getActTplName', 'getActContentLoadId'
+            , array('getTopActionClassName', 'getActCatId', 'getActTplName', 'getActContentLoadId'
                     , 'getActArticleId', 'getActSearchParam', 'getActSearchTag', 'getActListType', 'getActRecommendationId')
         );
 
-        $oVC->expects($this->any())
-            ->method('getConfig')
-            ->will($this->returnValue($oCfg));
         $oVC->expects($this->once())
             ->method('getTopActionClassName')
             ->will($this->returnValue('actionclass'));
@@ -358,11 +313,9 @@ class ViewConfigTest extends \OxidTestCase
         $oCfg->expects($this->once())
             ->method('getActiveView')
             ->will($this->returnValue($oV));
-        $oVC = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig'));
-        $oVC->expects($this->once())
-            ->method('getConfig')
-            ->will($this->returnValue($oCfg));
-        $this->assertEquals('lalala', $oVC->getActionClassName());
+        $viewConfig = oxNew(ViewConfig::class);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
+        $this->assertEquals('lalala', $viewConfig->getActionClassName());
     }
 
     /**
@@ -377,11 +330,10 @@ class ViewConfigTest extends \OxidTestCase
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getTopActiveView"));
         $oConfig->expects($this->once())->method("getTopActiveView")->will($this->returnValue($oView));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
-        $oViewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array("getConfig"));
-        $oViewConfig->expects($this->once())->method("getConfig")->will($this->returnValue($oConfig));
-
-        $this->assertEquals("testViewClass", $oViewConfig->getTopActiveClassName());
+        $viewConfig = oxNew(ViewConfig::class);
+        $this->assertEquals("testViewClass", $viewConfig->getTopActiveClassName());
     }
 
     public function testGetShowBasketTimeoutWhenFunctionalityIsOnAndTimeLeft()
@@ -503,110 +455,173 @@ class ViewConfigTest extends \OxidTestCase
         $this->assertTrue($oView->getCountryList() instanceof countrylist);
     }
 
+    /**
+     * test return value of getModulePath method
+     *
+     * @return void
+     */
     public function testGetModulePath()
     {
-        $config = $this->getConfig();
-        $fakeShopDirectory = $this->createModuleStructure();
-        $config->setConfigParam("sShopDir", $fakeShopDirectory . "/");
+        $config = $this->fakeModuleStructure();
 
-        /** @var oxViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
-        $viewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig'));
-        $viewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($config));
+        $viewConfig = oxNew(\OxidEsales\Eshop\Core\ViewConfig::class);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
+        $fakeShopDirectory = $config->getConfigParam('sShopDir');
+        $this->assertEquals($fakeShopDirectory . "modules/test1/out", $viewConfig->getModulePath('test1', 'out'));
+        $this->assertEquals($fakeShopDirectory . "modules/test1/out/", $viewConfig->getModulePath('test1', '/out/'));
 
-        $this->assertEquals($fakeShopDirectory . "/modules/test1/out", $viewConfig->getModulePath('test1', 'out'));
-        $this->assertEquals($fakeShopDirectory . "/modules/test1/out/", $viewConfig->getModulePath('test1', '/out/'));
+        $this->assertEquals(
+            $fakeShopDirectory . "modules/test1/out/blocks/test2.tpl",
+            $viewConfig->getModulePath('test1', 'out/blocks/test2.tpl')
+        );
 
-        $this->assertEquals($fakeShopDirectory . "/modules/test1/out/blocks/test2.tpl", $viewConfig->getModulePath('test1', 'out/blocks/test2.tpl'));
-        $this->assertEquals($fakeShopDirectory . "/modules/test1/out/blocks/test2.tpl", $viewConfig->getModulePath('test1', '/out/blocks/test2.tpl'));
+        $this->assertEquals(
+            $fakeShopDirectory . "modules/test1/out/blocks/test2.tpl",
+            $viewConfig->getModulePath('test1', '/out/blocks/test2.tpl')
+        );
     }
 
+    /**
+     * test that a exception with a specific error message is thrown if the requested file is not found
+     * (only in debug mode)
+     *
+     * @return void
+     */
     public function testGetModulePathExceptionThrownWhenPathNotFoundAndDebugEnabled()
     {
-        $config = $this->getConfig();
+        $config = $this->fakeModuleStructure();
         $config->setConfigParam("iDebug", -1);
+        $fakeShopDirectory = $config->getConfigParam('sShopDir');
+        $message = "Requested file not found for module test1 (" .
+                   $fakeShopDirectory . "modules/test1/out/blocks/non_existing_template.tpl)";
+        $this->expectException('\OxidEsales\EshopCommunity\Core\Exception\FileException');
+        $this->expectExceptionMessage($message);
 
-        $fakeShopDirectory = $this->createModuleStructure();
-        $config->setConfigParam("sShopDir", $fakeShopDirectory);
-
-        $message = "Requested file not found for module test1 (" . $fakeShopDirectory . "modules/test1/out/blocks/non_existing_template.tpl)";
-        $this->setExpectedException('\OxidEsales\EshopCommunity\Core\Exception\FileException', $message);
-
-        /** @var oxViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
+        /** @var oxViewConfig|PHPUnit\Framework\MockObject\MockObject $viewConfig */
         $viewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig'));
         $viewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($config));
 
         $viewConfig->getModulePath('test1', '/out/blocks/non_existing_template.tpl');
     }
 
-    public function testGetModulePathExceptionThrownWhenPathNotFoundAndDebugDisabled()
+    /**
+     * Test that _no_ exception is thrown even if the file does not exist,
+     * because shop should be stable against errors when running in production.
+     * The error will be logged anyway.
+     *
+     * @return void
+     */
+    public function testGetModulePathNoExceptionThrownWhenPathNotFoundAndDebugDisabled()
     {
-        $config = $this->getConfig();
-        $config->setConfigParam("iDebug", 0);
+        Registry::getConfig()->setConfigParam("iDebug", 0);
 
-        $fakeShopDirectory = $this->createModuleStructure();
-        $config->setConfigParam("sShopDir", $fakeShopDirectory . "/");
+        $viewConfig = oxNew(\OxidEsales\Eshop\Core\ViewConfig::class);
+        $modulePath = $viewConfig->getModulePath('test1', '/out/blocks/non_existing_template.tpl');
 
-        /** @var oxViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
-        $viewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig'));
-        $viewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($config));
+        $this->assertEquals('', $modulePath);
 
-        $this->assertEquals('', $viewConfig->getModulePath('test1', '/out/blocks/non_existing_template.tpl'));
+        /**
+         * Although no exception is thrown, the underlying error will be logged in EXCEPTION_LOG.txt
+         */
+        $expectedExceptionClass = \OxidEsales\Eshop\Core\Exception\FileException::class;
+        $this->assertLoggedException($expectedExceptionClass);
     }
 
+    /**
+     * test that get module url returns the correct url
+     *
+     * @return void
+     */
     public function testGetModuleUrl()
     {
-        $config = $this->getConfig();
-        $config->setConfigParam("iDebug", -1);
+        $config = $this->fakeModuleStructure();
 
-        $fakeShopDirectory = $this->createModuleStructure();
-        $config->setConfigParam("sShopDir", $fakeShopDirectory);
-
-        /** @var oxViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
+        /** @var oxViewConfig|PHPUnit\Framework\MockObject\MockObject $viewConfig */
         $viewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig'));
         $viewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($config));
 
         $baseUrl = $config->getCurrentShopUrl();
         $this->assertEquals("{$baseUrl}modules/test1/out", $viewConfig->getModuleUrl('test1', 'out'));
         $this->assertEquals("{$baseUrl}modules/test1/out/", $viewConfig->getModuleUrl('test1', '/out/'));
-        $this->assertEquals("{$baseUrl}modules/test1/out/blocks/test2.tpl", $viewConfig->getModuleUrl('test1', 'out/blocks/test2.tpl'));
-        $this->assertEquals("{$baseUrl}modules/test1/out/blocks/test2.tpl", $viewConfig->getModuleUrl('test1', '/out/blocks/test2.tpl'));
+        $this->assertEquals(
+            "{$baseUrl}modules/test1/out/blocks/test2.tpl",
+            $viewConfig->getModuleUrl('test1', 'out/blocks/test2.tpl')
+        );
+        $this->assertEquals(
+            "{$baseUrl}modules/test1/out/blocks/test2.tpl",
+            $viewConfig->getModuleUrl('test1', '/out/blocks/test2.tpl')
+        );
+        $this->assertEquals("{$baseUrl}modules/test1/", $viewConfig->getModuleUrl('test1'));
+
+        //test if the subject under test still generates a valid module url in admin mode
+        $config->setAdminMode(true);
+        $viewConfig->setAdminMode(true);
+        $config->setConfigParam('sAdminDir', 'admin');
+
+        //in our test environment the domain for admin area is the normal shopurl
+        //When using subshops it is important that getModuleUrl does not return the subshopurl in admin mode
+        //because of browser security restrictions take effect when loading resources from differt domains
+        $adminUrlWithoutAdminPath = $baseUrl;
+        $this->assertEquals(
+            "{$adminUrlWithoutAdminPath}modules/test1/out/blocks/test2.tpl",
+            $viewConfig->getModuleUrl('test1', 'out/blocks/test2.tpl')
+        );
+
+        //Test when sShopURL is set and not sSSLShopURL, nor sAdminSSLURL
+        $config->setConfigParam('sSSLShopURL', '');
+        $config->setConfigParam('sAdminSSLURL', '');
+        $config->setConfigParam('sShopURL', 'http://shop.localhost.local/');
+        $this->assertEquals("http://shop.localhost.local/modules/test1/", $viewConfig->getModuleUrl('test1'));
+
+        //Test when sSSLShopURL is set and sAdminSSLURL is not set
+        $config->setIsSsl(true);
+        $config->setConfigParam('sSSLShopURL', 'https://shop.localhost.local/');
+        $this->assertEquals("https://shop.localhost.local/modules/test1/", $viewConfig->getModuleUrl('test1'));
+
+        //Test if getModuleUrl returns the right url if adminssl url is set
+        $config->setConfigParam('sAdminSSLURL', 'https://admin.localhost.local/admin/');
+        $config->setIsSsl(true);
+        //Next assert is only to guarantee excpected internal behavior to find problems faster
+        $this->assertEquals("https://admin.localhost.local/admin/", $config->getCurrentShopUrl());
+        //The module url is expected to start with the admin url but without the admin directory
+        $this->assertEquals("https://admin.localhost.local/modules/test1/", $viewConfig->getModuleUrl('test1'));
     }
 
     public function testGetModuleUrlExceptionThrownWhenPathNotFoundAndDebugEnabled()
     {
-        $config = $this->getConfig();
-        $config->setConfigParam("iDebug", -1);
 
-        $fakeShopDirectory = $this->createModuleStructure();
-        $config->setConfigParam("sShopDir", $fakeShopDirectory);
+        $config = $this->fakeModuleStructure();
+        $fakeShopDirectory = $config->getConfigParam('sShopDir');
+        $message = "Requested file not found for module test1 (" . $fakeShopDirectory .
+                   "modules/test1/out/blocks/non_existing_template.tpl)";
+        $this->expectException(\OxidEsales\Eshop\Core\Exception\FileException::class);
+        $this->expectExceptionMessage($message);
 
-        $message = "Requested file not found for module test1 (" . $fakeShopDirectory . "modules/test1/out/blocks/non_existing_template.tpl)";
-        $this->setExpectedException('oxFileException', $message);
-
-        /** @var oxViewConfig|PHPUnit_Framework_MockObject_MockObject $viewConfig */
-        $viewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig'));
-        $viewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($config));
+        $viewConfig = oxNew(\OxidEsales\Eshop\Core\ViewConfig::class);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
 
         $viewConfig->getModuleUrl('test1', '/out/blocks/non_existing_template.tpl');
     }
 
-    public function testViewThemeParam()
+    /**
+     * @covers \OxidEsales\EshopCommunity\Core\ViewConfig::getViewThemeParam
+     */
+    public function testGetViewThemeParamReadsDirectlyFromConfig()
     {
-        $oVC = oxNew('oxViewConfig');
+        $configStub = $this->getMockBuilder(Config::class)
+            ->setMethods(['isThemeOption'])
+            ->getMock();
+        $configStub->method('isThemeOption')->willReturn('true');
 
-        $oV = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isThemeOption'));
-        $oV->expects($this->any())->method('getSession')->will($this->returnValue(false));
+        $viewConfig = oxNew(ViewConfig::class);
+        Registry::set(Config::class, $configStub);
 
-        $this->assertEquals(false, $oVC->getViewThemeParam('aaa'));
+        $viewConfig->getConfig()->setConfigParam('someParameter', 'someValue');
+        $this->assertEquals('someValue', $viewConfig->getViewThemeParam('someParameter'));
 
-        $oV = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isThemeOption'));
-        $oV->expects($this->any())->method('getSession')->will($this->returnValue(true));
-
-        $this->getConfig()->setConfigParam('bl_showListmania', 1);
-        $this->assertEquals(1, $oVC->getViewThemeParam('bl_showListmania'));
-
-        $this->getConfig()->setConfigParam('bl_showListmania', 0);
-        $this->assertEquals(0, $oVC->getViewThemeParam('bl_showListmania'));
+        /** Set and read the value again to discover caching issues */
+        $viewConfig->getConfig()->setConfigParam('someParameter', 'otherValue');
+        $this->assertEquals('otherValue', $viewConfig->getViewThemeParam('someParameter'));
     }
 
     /**
@@ -669,7 +684,8 @@ class ViewConfigTest extends \OxidTestCase
     public function testGetImageUrl()
     {
         $oViewConf = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getImageUrl"));
-        $oViewConf->expects($this->once())->method("getImageUrl")->will($this->returnValue("shopUrl/out/theme/img/imgFile"));
+        $oViewConf->expects($this->once())->method("getImageUrl")
+            ->will($this->returnValue("shopUrl/out/theme/img/imgFile"));
         $this->assertEquals("shopUrl/out/theme/img/imgFile", $oViewConf->getImageUrl('imgFile'));
 
         $oViewConf = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getImageUrl"));
@@ -685,8 +701,8 @@ class ViewConfigTest extends \OxidTestCase
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getShopHomeURL"));
         $oConfig->expects($this->once())->method("getShopHomeURL")->will($this->returnValue("testShopUrl"));
 
-        $oViewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig'));
-        $oViewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+        $oViewConfig = oxNew(\OxidEsales\Eshop\Core\ViewConfig::class);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals("testShopUrl", $oViewConfig->getSelfLink());
     }
@@ -699,8 +715,8 @@ class ViewConfigTest extends \OxidTestCase
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getShopSecureHomeURL"));
         $oConfig->expects($this->once())->method("getShopSecureHomeURL")->will($this->returnValue("testSecureShopUrl"));
 
-        $oViewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig'));
-        $oViewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+        $oViewConfig = oxNew(\OxidEsales\Eshop\Core\ViewConfig::class);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals("testSecureShopUrl", $oViewConfig->getSslSelfLink());
     }
@@ -714,7 +730,7 @@ class ViewConfigTest extends \OxidTestCase
         $oConfig->expects($this->never())->method("getShopSecureHomeURL");
 
         $oViewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getConfig', 'isAdmin', 'getSelfLink'));
-        $oViewConfig->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oViewConfig->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
         $oViewConfig->expects($this->once())->method("getSelfLink")->will($this->returnValue("testShopUrl"));
 
@@ -1941,15 +1957,15 @@ class ViewConfigTest extends \OxidTestCase
     public function providerGetNavUrlParamsNavigation()
     {
         return [
-            'empty params' => [
+            'empty params'         => [
                 [],
                 ''
             ],
-            'one param' => [
+            'one param'            => [
                 ["testKey" => "testValue"],
                 "&amp;testKey=testValue"
             ],
-            'two params' => [
+            'two params'           => [
                 ["testKey1" => "testValue1", "testKey2" => "testValue2"],
                 "&amp;testKey1=testValue1&amp;testKey2=testValue2"
             ],
@@ -1999,22 +2015,22 @@ class ViewConfigTest extends \OxidTestCase
     public function providerGetNavFormParams()
     {
         return [
-            'empty params' => [
+            'empty params'         => [
                 [],
                 ''
             ],
-            'one param' => [
+            'one param'            => [
                 ["testKey" => "testVal"],
-                '<input type="hidden" name="testKey" value="testVal" />'.PHP_EOL
+                '<input type="hidden" name="testKey" value="testVal" />' . PHP_EOL
             ],
-            'two params' => [
+            'two params'           => [
                 ["testKey1" => "testVal1", "testKey2" => "testVal2"],
-                '<input type="hidden" name="testKey1" value="testVal1" />'.PHP_EOL
-                .'<input type="hidden" name="testKey2" value="testVal2" />'.PHP_EOL
+                '<input type="hidden" name="testKey1" value="testVal1" />' . PHP_EOL
+                . '<input type="hidden" name="testKey2" value="testVal2" />' . PHP_EOL
             ],
             'two params one empty' => [
                 ["testKey1" => "testVal1", "testKey2" => null],
-                '<input type="hidden" name="testKey1" value="testVal1" />'.PHP_EOL
+                '<input type="hidden" name="testKey1" value="testVal1" />' . PHP_EOL
             ]
         ];
     }
@@ -2128,7 +2144,6 @@ class ViewConfigTest extends \OxidTestCase
 
         $this->getConfig()->setConfigParam("iPasswordLength", 66);
         $this->assertEquals(66, $oViewConf->getPasswordLength());
-
     }
 
     /**
@@ -2137,7 +2152,7 @@ class ViewConfigTest extends \OxidTestCase
     public function testGetActiveTheme_mainTheme()
     {
         $oViewConf = oxNew('oxViewConfig');
-        $oViewConf->getConfig()->setConfigParam("sTheme", "testTheme");
+        Registry::getConfig()->setConfigParam("sTheme", "testTheme");
         $this->assertEquals('testTheme', $oViewConf->getActiveTheme());
     }
 
@@ -2147,8 +2162,8 @@ class ViewConfigTest extends \OxidTestCase
     public function testGetActiveTheme_customTheme()
     {
         $oViewConf = oxNew('oxViewConfig');
-        $oViewConf->getConfig()->setConfigParam("sCustomTheme", "testCustomTheme");
-        $oViewConf->getConfig()->setConfigParam("sTheme", "testTheme");
+        Registry::getConfig()->setConfigParam("sCustomTheme", "testCustomTheme");
+        Registry::getConfig()->setConfigParam("sTheme", "testTheme");
         $this->assertEquals('testCustomTheme', $oViewConf->getActiveTheme());
     }
 
@@ -2196,12 +2211,12 @@ class ViewConfigTest extends \OxidTestCase
      * @dataProvider _dpGetSessionChallengeToken
      *
      * @param boolean $isSessionStarted Was session started.
-     * @param integer $callTimes method How many times getSessionChallengeToken is expected to be called.
+     * @param integer $callTimes        method How many times getSessionChallengeToken is expected to be called.
      * @param string  $token            Security token.
      */
     public function testGetSessionChallengeToken($isSessionStarted, $callTimes, $token)
     {
-        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $session */
+        /** @var oxSession|PHPUnit\Framework\MockObject\MockObject $session */
         $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('isSessionStarted', 'getSessionChallengeToken'));
 
         $session->expects($this->once())->method('isSessionStarted')->will($this->returnValue($isSessionStarted));
@@ -2230,6 +2245,7 @@ class ViewConfigTest extends \OxidTestCase
 
     /**
      * oxViewConfig::oePayPalIsModuleActive()
+     *
      * @dataProvider _dpIsModuleActive
      */
     public function testIsModuleActive($aModules, $aModuleVersions, $aDisabledModules, $sModuleId, $blModuleIsActive)
@@ -2275,11 +2291,11 @@ class ViewConfigTest extends \OxidTestCase
     public function testIsModuleActive_VersionCheck($sFrom, $sTo, $blModuleStateExpected)
     {
         $aModules = array(
-            'order' => 'oe/oepaypal/controllers/oepaypalorder',
+            'order'  => 'oe/oepaypal/controllers/oepaypalorder',
             'order2' => 'oe/oepaypal2/controllers/oepaypalorder',
         );
         $aModuleVersions = array(
-            'oepaypal' => '2.0',
+            'oepaypal'  => '2.0',
             'oepaypal2' => '5.0'
         );
         $this->setConfigParam('aModules', $aModules);
@@ -2295,24 +2311,43 @@ class ViewConfigTest extends \OxidTestCase
     public function testGetEdition()
     {
         $oViewConfig = oxNew('oxViewConfig');
-        $this->assertEquals( $this->getConfig()->getEdition(), $oViewConfig->getEdition() );
+        $this->assertEquals($this->getConfig()->getEdition(), $oViewConfig->getEdition());
     }
 
     /**
-     * Creates module structre for testing.
+     * fakes a module directory structure in a virtual filesystem
+     * and applies that fake structure to the current config object
+     *
+     * @return \oxConfig config object that uses fake structure
+     */
+    private function fakeModuleStructure()
+    {
+        $config = $this->getConfig();
+        $config->setConfigParam("iDebug", -1);
+
+        $fakeShopDirectory = $this->createModuleStructure();
+        $config->setConfigParam("sShopDir", $fakeShopDirectory);
+
+        return $config;
+    }
+
+
+    /**
+     * Creates module structure for testing.
      *
      * @return string Path to modules root.
      */
     private function createModuleStructure()
     {
         $structure = array(
+            'log' => array('oxideshop.log' => ''),
             'modules' => array(
                 'test1' => array(
                     'out' => array(
                         'blocks' => array(
                             'test2.tpl' => '*this is module test block*'
                         ),
-                        'lang' => array(
+                        'lang'   => array(
                             'de' => array(
                                 'test_lang.php' => ''
                             )

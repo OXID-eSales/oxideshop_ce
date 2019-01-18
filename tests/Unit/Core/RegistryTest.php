@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
@@ -27,6 +11,7 @@ use oxLang;
 use oxSession;
 use oxStr;
 use oxUtils;
+use Psr\Log\LoggerInterface;
 use stdClass;
 
 /**
@@ -309,6 +294,15 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
     }
 
     /**
+     * Test Registry::getRequest().
+     */
+    public function testRegistryGetRequest()
+    {
+        $object = Registry::getRequest();
+        $this->assertTrue(is_a($object, \OxidEsales\Eshop\Core\Request::class));
+    }
+
+    /**
      * Test Registry::getSeoDecoder().
      */
     public function testRegistryGetSeoDecoder()
@@ -454,6 +448,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
         return [
             ['getInputValidator', \OxidEsales\Eshop\Core\InputValidator::class],
             ['getPictureHandler', \OxidEsales\Eshop\Core\PictureHandler::class],
+            ['getRequest', \OxidEsales\Eshop\Core\Request::class],
             ['getSeoDecoder', \OxidEsales\Eshop\Core\SeoDecoder::class],
             ['getSeoEncoder', \OxidEsales\Eshop\Core\SeoEncoder::class],
             ['getUtilsCount', \OxidEsales\Eshop\Core\UtilsCount::class],
@@ -470,6 +465,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
             ['getLang', \OxidEsales\Eshop\Core\Language::class],
             ['getUtils', \OxidEsales\Eshop\Core\Utils::class],
             ['getUtilsObject', \OxidEsales\Eshop\Core\UtilsObject::class],
+            ['getLogger', LoggerInterface::class]
         ];
     }
 
@@ -494,6 +490,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
         return [
             ['getInputValidator'],
             ['getPictureHandler'],
+            ['getRequest'],
             ['getSeoDecoder'],
             ['getSeoEncoder'],
             ['getUtilsCount'],
@@ -510,6 +507,7 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
             ['getLang'],
             ['getUtils'],
             ['getUtilsObject'],
+            ['getLogger'],
         ];
     }
 }

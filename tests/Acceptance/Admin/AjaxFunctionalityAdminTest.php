@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin;
@@ -1869,5 +1853,75 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
         $this->assertElementText("1 user Group šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]");
         $this->assertElementText("[last] user Group šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[21]/td[1]");
         $this->close();
+    }
+
+    /**
+     * Test case for bugfix 0006711 and 0006668
+     *
+     * Activates module with ajax functionality.
+     * Checks that ajax call succeed.
+     */
+    public function testOxAjaxContainerClassResolution()
+    {
+        $this->loginAdmin("Extensions", "Modules");
+
+        $this->activateModule("Test module #11");
+
+        $this->frame("list");
+        $this->clickAndWait('link=test_11_tab');
+        $this->frame("edit");
+        $this->clickAndWait("//input[@value='CLICK_HERE']");
+
+        $this->selectWindow("ajaxpopup");
+        $this->assertTextPresent('POPUP_HERE');
+        $this->close();
+
+        $this->frame("list");
+        $this->clickAndWait('link=test_11_tab');
+        $this->frame("edit");
+        $this->clickAndWait("//input[@value='CLICK_HERE']");
+
+        $this->selectWindow("ajaxpopup");
+        $this->assertTextPresent('test_11_ajax_controller successfully called');
+        $this->close();
+    }
+
+    /**
+     * Test case for bugfix 0006711 and 0006668
+     *
+     * Activates module with ajax functionality.
+     * Checks that ajax call succeed.
+     */
+    public function testOxAjaxContainerClassResolutionMetadata1Module()
+    {
+        $this->loginAdmin("Extensions", "Modules");
+
+        $this->activateModule("Test module #12");
+
+        $this->frame("list");
+        $this->clickAndWait('link=test_12_tab');
+        $this->frame("edit");
+        $this->clickAndWait("//input[@value='CLICK_HERE']");
+
+        $this->selectWindow("ajaxpopup");
+        $this->assertTextPresent('POPUP_HERE');
+        $this->close();
+
+        $this->frame("list");
+        $this->clickAndWait('link=test_12_tab');
+        $this->frame("edit");
+        $this->clickAndWait("//input[@value='CLICK_HERE']");
+
+        $this->selectWindow("ajaxpopup");
+        $this->assertTextPresent('test_12_ajax_controller successfully called');
+        $this->close();
+    }
+
+    private function activateModule($moduleName)
+    {
+        $this->clickAndWait("link={$moduleName}");
+        $this->frame("edit");
+        $this->clickAndWait("//form[@id='myedit']//input[@value='Activate']");
+        $this->assertElementPresent("//form[@id='myedit']//input[@value='Deactivate']");
     }
 }

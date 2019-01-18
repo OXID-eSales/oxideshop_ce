@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
@@ -32,7 +16,6 @@ use Exception;
  */
 class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
-
     /**
      * Columns array
      *
@@ -65,7 +48,7 @@ class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Adm
      */
     protected function _getQuery()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sCatTable = $this->_getViewName('oxcategories');
@@ -133,29 +116,24 @@ class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Adm
         }
 
         if ($oAttribute->load($soxId) && is_array($aAddCategory)) {
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->startTransaction();
-            try {
-                $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-                foreach ($aAddCategory as $sAdd) {
-                    $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
-                    $oNewGroup->init("oxcategory2attribute");
-                    $sOxSortField = 'oxcategory2attribute__oxsort';
-                    $sObjectIdField = 'oxcategory2attribute__oxobjectid';
-                    $sAttributeIdField = 'oxcategory2attribute__oxattrid';
-                    $sOxIdField = 'oxattribute__oxid';
-                    $oNewGroup->$sObjectIdField = new \OxidEsales\Eshop\Core\Field($sAdd);
-                    $oNewGroup->$sAttributeIdField = new \OxidEsales\Eshop\Core\Field($oAttribute->$sOxIdField->value);
-                    $sSql = "select max(oxsort) + 1 from oxcategory2attribute where oxobjectid = '$sAdd' ";
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
+            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
+            foreach ($aAddCategory as $sAdd) {
+                $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
+                $oNewGroup->init("oxcategory2attribute");
+                $sOxSortField = 'oxcategory2attribute__oxsort';
+                $sObjectIdField = 'oxcategory2attribute__oxobjectid';
+                $sAttributeIdField = 'oxcategory2attribute__oxattrid';
+                $sOxIdField = 'oxattribute__oxid';
+                $oNewGroup->$sObjectIdField = new \OxidEsales\Eshop\Core\Field($sAdd);
+                $oNewGroup->$sAttributeIdField = new \OxidEsales\Eshop\Core\Field($oAttribute->$sOxIdField->value);
 
-                    $oNewGroup->$sOxSortField = new \OxidEsales\Eshop\Core\Field(( int ) $database->getOne($sSql));
-                    $oNewGroup->save();
-                }
-            } catch (Exception $exception) {
-                \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
-                throw $exception;
+                $sSql = "select max(oxsort) + 1 from oxcategory2attribute where oxobjectid = '$sAdd' ";
+
+                $oNewGroup->$sOxSortField = new \OxidEsales\Eshop\Core\Field(( int ) $database->getOne($sSql));
+                $oNewGroup->save();
             }
         }
-        \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->commitTransaction();
 
         $this->resetContentCache();
     }

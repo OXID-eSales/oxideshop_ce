@@ -1,27 +1,12 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \Exception;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use \oxDb;
 use \oxTestModules;
@@ -164,7 +149,7 @@ class ArticleStockTest extends \OxidTestCase
 
         $oDb = oxDb::getDb();
 
-        /** @var Article_Stock|PHPUnit_Framework_MockObject_MockObject $oView */
+        /** @var Article_Stock|PHPUnit\Framework\MockObject\MockObject $oView */
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleStock::class, array("resetContentCache"), array(), '', false);
         $oView->expects($this->atLeastOnce())->method('resetContentCache');
 
@@ -235,58 +220,4 @@ class ArticleStockTest extends \OxidTestCase
         $oView->deleteprice();
         $this->assertFalse($oDb->getOne("select 1 from oxprice2article where oxid='_testId'"));
     }
-
-    /**
-     * Article_stock::addprice test case when updating existing stock prices in subshop
-     *
-     * @return null
-     */
-    public function testAddPriceShopMall()
-    {
-        //set default params for first save
-        $this->setRequestParameter(
-            "editval", array("oxprice2article__oxamountto" => 123,
-                             "pricetype"                   => "oxaddabs", "price" => 9)
-        );
-        //set oxid
-        $sOXID = "_testId";
-
-        //expected shop id
-        $sShopId = $this->getTestConfig()->getShopEdition() == 'EE' ? '2' : '1';
-
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getShopId"));
-        $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue($sShopId));
-
-        $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('isDerived'));
-        $oBase->expects($this->any())->method('isDerived')->will($this->returnValue(false));
-
-        oxTestModules::addModuleObject('oxbase', $oBase);
-
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleStock::class, array('getConfig', 'resetContentCache', 'getEditObjectId', 'oxNew'), array(), '', false);
-        $oView->expects($this->atLeastOnce())->method('getConfig')->will($this->returnValue($oConfig));
-        $oView->expects($this->atLeastOnce())->method('resetContentCache');
-        $oView->expects($this->atLeastOnce())->method('getEditObjectId')->will($this->returnValue('_testArtId'));
-
-        //init db
-        $oDb = oxDb::getDb();
-
-        //first add new stock price
-        $oView->addprice($sOXID);
-        $this->assertEquals("123", $oDb->getOne("select oxamountto from oxprice2article where oxid='_testId'"));
-
-        //pass update params
-        $aParams = array("oxprice2article__oxamountto" => 777, "pricetype" => "oxaddabs", "price" => 20);
-        $oView->addprice($sOXID, $aParams);
-        $this->assertEquals("777", $oDb->getOne("select oxamountto from oxprice2article where oxid='_testId'"));
-        $this->assertEquals($sShopId, $oDb->getOne("select oxshopid from oxprice2article where oxid='_testId'"));
-
-        //update only amount to
-        $aParams = array("oxprice2article__oxamountto" => 10101);
-        $oView->addprice($sOXID, $aParams);
-        $this->assertEquals("10101", $oDb->getOne("select oxamountto from oxprice2article where oxid='_testId'"));
-        $this->assertEquals($sShopId, $oDb->getOne("select oxshopid from oxprice2article where oxid='_testId'"));
-
-    }
-
-
 }

@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
@@ -31,7 +15,6 @@ use Exception;
  */
 class DeliverySetPaymentAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
-
     /**
      * Columns array
      *
@@ -59,8 +42,8 @@ class DeliverySetPaymentAjax extends \OxidEsales\Eshop\Application\Controller\Ad
     protected function _getQuery()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sId = $this->getConfig()->getRequestParameter('oxid');
-        $sSynchId = $this->getConfig()->getRequestParameter('synchoxid');
+        $sId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
+        $sSynchId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
         $sPayTable = $this->_getViewName('oxpayments');
 
@@ -86,7 +69,7 @@ class DeliverySetPaymentAjax extends \OxidEsales\Eshop\Application\Controller\Ad
     public function removePayFromSet()
     {
         $aChosenCntr = $this->_getActionIds('oxobject2payment.oxid');
-        if ($this->getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2payment.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenCntr)) {
@@ -103,35 +86,29 @@ class DeliverySetPaymentAjax extends \OxidEsales\Eshop\Application\Controller\Ad
     public function addPayToSet()
     {
         $aChosenSets = $this->_getActionIds('oxpayments.oxid');
-        $soxId = $this->getConfig()->getRequestParameter('synchoxid');
+        $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
         // adding
-        if ($this->getConfig()->getRequestParameter('all')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sPayTable = $this->_getViewName('oxpayments');
             $aChosenSets = $this->_getAll($this->_addFilter("select $sPayTable.oxid " . $this->_getQuery()));
         }
         if ($soxId && $soxId != "-1" && is_array($aChosenSets)) {
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->startTransaction();
-            try {
-                $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-                foreach ($aChosenSets as $sChosenSet) {
-                    // check if we have this entry already in
-                    // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-                    $sID = $database->getOne("select oxid from oxobject2payment where oxpaymentid = " . $database->quote($sChosenSet) . "  and oxobjectid = " . $database->quote($soxId) . " and oxtype = 'oxdelset'");
-                    if (!isset($sID) || !$sID) {
-                        $oObject = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
-                        $oObject->init('oxobject2payment');
-                        $oObject->oxobject2payment__oxpaymentid = new \OxidEsales\Eshop\Core\Field($sChosenSet);
-                        $oObject->oxobject2payment__oxobjectid = new \OxidEsales\Eshop\Core\Field($soxId);
-                        $oObject->oxobject2payment__oxtype = new \OxidEsales\Eshop\Core\Field("oxdelset");
-                        $oObject->save();
-                    }
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
+            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
+            foreach ($aChosenSets as $sChosenSet) {
+                // check if we have this entry already in
+                // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+                $sID = $database->getOne("select oxid from oxobject2payment where oxpaymentid = " . $database->quote($sChosenSet) . "  and oxobjectid = " . $database->quote($soxId) . " and oxtype = 'oxdelset'");
+                if (!isset($sID) || !$sID) {
+                    $oObject = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
+                    $oObject->init('oxobject2payment');
+                    $oObject->oxobject2payment__oxpaymentid = new \OxidEsales\Eshop\Core\Field($sChosenSet);
+                    $oObject->oxobject2payment__oxobjectid = new \OxidEsales\Eshop\Core\Field($soxId);
+                    $oObject->oxobject2payment__oxtype = new \OxidEsales\Eshop\Core\Field("oxdelset");
+                    $oObject->save();
                 }
-            } catch (Exception $exception) {
-                \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
-                throw $exception;
             }
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->commitTransaction();
         }
     }
 }

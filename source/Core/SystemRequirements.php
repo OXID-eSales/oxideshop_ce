@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Core;
@@ -119,7 +103,7 @@ class SystemRequirements
      *
      * @var string
      */
-    protected $_sReqInfoUrl = "http://oxidforge.org/en/installation.html";
+    protected $_sReqInfoUrl = "https://oxidforge.org/en/system-requirements";
 
     /**
      * Module or system configuration mapping with installation info url anchor
@@ -127,7 +111,7 @@ class SystemRequirements
      * @var array
      */
     protected $_aInfoMap = [
-        "php_version"        => "PHP_version_at_least_5.6",
+        "php_version"        => "PHP_version_at_least_7.0",
         "php_xml"            => "DOM",
         "open_ssl"           => "OpenSSL",
         "soap"               => "SOAP",
@@ -186,16 +170,6 @@ class SystemRequirements
         throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException(
             "Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL
         );
-    }
-
-    /**
-     * Returns config instance
-     *
-     * @return \oxConfig
-     */
-    public function getConfig()
-    {
-        return \OxidEsales\Eshop\Core\Registry::getConfig();
     }
 
     /**
@@ -356,7 +330,7 @@ class SystemRequirements
      */
     protected function _getShopHostInfoFromConfig()
     {
-        $sShopURL = $this->getConfig()->getConfigParam('sShopURL');
+        $sShopURL = Registry::getConfig()->getConfigParam('sShopURL');
         if (preg_match('#^(https?://)?([^/:]+)(:([0-9]+))?(/.*)?$#i', $sShopURL, $m)) {
             $sHost = $m[2];
             $iPort = (int) $m[4];
@@ -385,7 +359,7 @@ class SystemRequirements
      */
     protected function _getShopSSLHostInfoFromConfig()
     {
-        $sSSLShopURL = $this->getConfig()->getConfigParam('sSSLShopURL');
+        $sSSLShopURL = Registry::getConfig()->getConfigParam('sSSLShopURL');
         if (preg_match('#^(https?://)?([^/:]+)(:([0-9]+))?(/.*)?$#i', $sSSLShopURL, $m)) {
             $sHost = $m[2];
             $iPort = (int) $m[4];
@@ -571,9 +545,9 @@ class SystemRequirements
     {
         $requirementFits = null;
 
-        $minimalRequiredVersion = '5.5.0';
-        $minimalRecommendedVersion = '5.6.0';
-        $maximalRecommendedVersion = '7.0.9999';
+        $minimalRequiredVersion = '7.0.0';
+        $minimalRecommendedVersion = '7.0.0';
+        $maximalRecommendedVersion = '7.1.9999';
 
         $installedPhpVersion = $this->getPhpVersion();
 
@@ -825,7 +799,7 @@ class SystemRequirements
      */
     public function checkCollation()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = Registry::getConfig();
 
         $aCollations = [];
         $sCollation = '';
@@ -1078,10 +1052,10 @@ class SystemRequirements
      */
     protected function _checkTemplateBlock($sTemplate, $sBlockName)
     {
-        $sTplFile = $this->getConfig()->getTemplatePath($sTemplate, false);
+        $sTplFile = Registry::getConfig()->getTemplatePath($sTemplate, false);
         if (!$sTplFile || !file_exists($sTplFile)) {
             // check if file is in admin theme
-            $sTplFile = $this->getConfig()->getTemplatePath($sTemplate, true);
+            $sTplFile = Registry::getConfig()->getTemplatePath($sTemplate, true);
             if (!$sTplFile || !file_exists($sTplFile)) {
                 return false;
             }
@@ -1146,7 +1120,7 @@ class SystemRequirements
     protected function fetchBlockRecords()
     {
         $activeThemeId = oxNew(\OxidEsales\Eshop\Core\Theme::class)->getActiveThemeId();
-        $config = $this->getConfig();
+        $config = Registry::getConfig();
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
         $query = "select * from oxtplblocks where oxactive=1 and oxshopid=? and oxtheme in ('', ?)";

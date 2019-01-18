@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Model;
@@ -33,7 +17,6 @@ use oxException;
  */
 class File extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-
     /**
      * No active user exception code.
      */
@@ -109,7 +92,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function processFile($sFileIndex)
     {
-        $aFileInfo = $this->getConfig()->getUploadedFile($sFileIndex);
+        $aFileInfo = \OxidEsales\Eshop\Core\Registry::getConfig()->getUploadedFile($sFileIndex);
 
         $this->_checkArticleFile($aFileInfo);
 
@@ -215,7 +198,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
         $sFileName = $this->oxfiles__oxfilename->value;
 
         //security check for demo shops
-        if ($this->getConfig()->isDemoShop()) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop()) {
             $sFileName = basename($sFileName);
         }
 
@@ -432,7 +415,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
         $iMaxCount = $this->oxfiles__oxmaxdownloads->value;
         //if value is -1, takes global options
         if ($iMaxCount < 0) {
-            $iMaxCount = $this->getConfig()->getConfigParam("iMaxDownloadsCount");
+            $iMaxCount = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("iMaxDownloadsCount");
         }
 
         return $iMaxCount;
@@ -448,7 +431,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
         $iMaxCount = $this->oxfiles__oxmaxunregdownloads->value;
         //if value is -1, takes global options
         if ($iMaxCount < 0) {
-            $iMaxCount = $this->getConfig()->getConfigParam("iMaxDownloadsCountUnregistered");
+            $iMaxCount = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("iMaxDownloadsCountUnregistered");
         }
 
         return $iMaxCount;
@@ -464,7 +447,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
         $iExpTime = $this->oxfiles__oxlinkexptime->value;
         //if value is -1, takes global options
         if ($iExpTime < 0) {
-            $iExpTime = $this->getConfig()->getConfigParam("iLinkExpirationTime");
+            $iExpTime = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("iLinkExpirationTime");
         }
 
         return $iExpTime;
@@ -480,7 +463,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
         $iExpTime = $this->oxfiles__oxdownloadexptime->value;
         //if value is -1, takes global options
         if ($iExpTime < 0) {
-            $iExpTime = $this->getConfig()->getConfigParam("iDownloadExpirationTime");
+            $iExpTime = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("iDownloadExpirationTime");
         }
 
         return $iExpTime;

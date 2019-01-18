@@ -1,33 +1,19 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxRegistry;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Article suggestion page.
- * Collects some article base information, sets default recomendation text,
+ * Collects some article base information, sets default recommendation text,
  * sends suggestion mail to user.
+ *
+ * @deprecated since v6.2.0 (2017-02-15); Recommendations feature will be moved to an own module.
  */
 class SuggestController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
@@ -78,6 +64,15 @@ class SuggestController extends \OxidEsales\Eshop\Application\Controller\Fronten
     protected $_aSuggestData = null;
 
     /**
+     * Assures, that controller would not be accessed if functionality disabled.
+     */
+    public function init()
+    {
+        $this->redirectToHomeIfDisabled();
+        parent::init();
+    }
+
+    /**
      * Sends product suggestion mail and returns a URL according to
      * URL formatting rules.
      *
@@ -108,7 +103,6 @@ class SuggestController extends \OxidEsales\Eshop\Application\Controller\Fronten
             }
         }
 
-        $oUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
         if (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams["rec_email"]) || !oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams["send_email"])) {
             $oUtilsView->addErrorToDisplay('SUGGEST_INVALIDMAIL');
 
@@ -161,7 +155,7 @@ class SuggestController extends \OxidEsales\Eshop\Application\Controller\Fronten
         if ($this->_oProduct === null) {
             $this->_oProduct = false;
 
-            if ($sProductId = $this->getConfig()->getRequestParameter('anid')) {
+            if ($sProductId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('anid')) {
                 $oProduct = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                 $oProduct->load($sProductId);
                 $this->_oProduct = $oProduct;
@@ -289,5 +283,15 @@ class SuggestController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $aPaths[] = $aPath;
 
         return $aPaths;
+    }
+
+    /**
+     * In case functionality disabled, redirects to home page.
+     */
+    private function redirectToHomeIfDisabled()
+    {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blAllowSuggestArticle') !== true) {
+            Registry::getUtils()->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopHomeUrl(), true, 301);
+        }
     }
 }

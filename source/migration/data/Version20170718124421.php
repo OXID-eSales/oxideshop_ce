@@ -1,4 +1,8 @@
 <?php
+/**
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
 
 namespace OxidEsales\EshopCommunity\Migrations;
 
@@ -27,9 +31,5 @@ class Version20170718124421 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        $this->addSql("ALTER TABLE `oxtplblocks` 
-          CHANGE `OXMODULE` `OXMODULE` char(32) 
-          character set latin1 collate latin1_general_ci NOT NULL 
-          COMMENT 'Module, which uses this template';");
     }
 }

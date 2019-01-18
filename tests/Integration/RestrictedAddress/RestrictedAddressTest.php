@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\RestrictedAddress;
 
@@ -68,50 +52,6 @@ class RestrictedAddressTest extends \OxidTestCase
         $location = "Location: " .  $shopUrl . 'index.php?force_sid=' . $this->extractSessionId($result) .
                      "&cl=start&redirected=1\r\n";
         $this->assertContains($location, $result, 'User should be redirected to shop front page.');
-    }
-
-    /**
-     * DataProvider returns shop URL list to call.
-     *
-     * @return array
-     */
-    public function providerRequestGetRevisionThatResultsInNoValidNewActionGetsRedirectedToStart()
-    {
-        $shopUrl = $this->getConfig()->getShopMainUrl();
-
-        return array(
-                array($shopUrl . '?fnc=getRevision'),
-                array($shopUrl . 'Startseite/?fnc=getRevision'),
-                array($shopUrl . '?fnc=getRevision&n2=v2'),
-                array($shopUrl . 'Startseite/?fnc=getRevision&n2=v2'),
-                array($shopUrl . '?name=value&fnc=getRevision'),
-                array($shopUrl . 'Startseite/?name=value&fnc=getRevision'),
-                array($shopUrl . '?name=value&fnc=getRevision&n2=v2'),
-                array($shopUrl . 'Startseite/?name=value&fnc=getRevision&n2=v2')
-        );
-    }
-
-    /**
-     * Same test as before for function call to getRevision. In case we have no revision
-     * no new action is called, if function getRevision returns a value, shop redirects
-     * to start page as the return value is no valid view class.
-     *
-     * @dataProvider providerRequestGetRevisionThatResultsInNoValidNewActionGetsRedirectedToStart
-     */
-    public function testRequestGetRevisionThatResultsInNoValidNewActionGetsRedirectedToStart($forbiddenUrl)
-    {
-        $shopUrl = $this->getConfig()->getShopMainUrl();
-
-        $result = $this->callPage($forbiddenUrl);
-
-        $location = "Location: " .  $shopUrl . 'index.php?force_sid=' . $this->extractSessionId($result) .
-                     "&cl=start&redirected=1\r\n";
-        if (false == $this->getConfig()->getRevision()) {
-            $this->assertNotContains("Location:", $result, 'No revision means no redirect, no Location header');
-        } else {
-            $this->assertContains($location, $result, 'User should be redirected to shop front page.');
-        }
-
     }
 
     /**

@@ -1,26 +1,13 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Core;
+
+use OxidEsales\Eshop\Application\Component\Widget\WidgetController;
+use OxidEsales\Eshop\Core\Exception\ObjectException;
 
 /**
  * Main shop actions controller. Processes user actions, logs
@@ -31,6 +18,9 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
 {
     /**
      * Skip handler set for widget as it already set in oxShopControl.
+     *
+     * @deprecated since v.6.0.0 (2017-10-11); Not used any more, was used in _setDefaultExceptionHandler()
+     * which was already removed.
      *
      * @var bool
      */
@@ -80,7 +70,7 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
      */
     protected function _runLast()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if ($oConfig->hasActiveViewsChain()) {
             // Removing current active view.
@@ -104,11 +94,13 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
      * @param array  $parameters Parameters array
      * @param array  $viewsChain Array of views keys that should be initialized as well
      *
+     * @throws ObjectException
+     *
      * @return \OxidEsales\Eshop\Core\Controller\BaseController Current active view
      */
     protected function _initializeViewObject($class, $function, $parameters = null, $viewsChain = null)
     {
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $activeViewsIds = $config->getActiveViewsIds();
         $activeViewsIds = array_map("strtolower", $activeViewsIds);
         $classKey = Registry::getControllerClassNameResolver()->getIdByClassName($class);
@@ -132,6 +124,12 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
         }
 
         $widgetViewObject = parent::_initializeViewObject($class, $function, $parameters, null);
+
+        if (!is_a($widgetViewObject, WidgetController::class)) {
+            /** @var ObjectException $exception */
+            $exception = oxNew(ObjectException::class, get_class($widgetViewObject) . ' is not an instance of ' . WidgetController::class);
+            throw $exception;
+        }
 
         // Set template name for current widget.
         if (!empty($parameters['oxwtemplate'])) {

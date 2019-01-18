@@ -1,31 +1,12 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxArticle;
 use oxArticleList;
-use oxCategory;
-use oxField;
-use oxRegistry;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * List of articles for a selected product group.
@@ -184,7 +165,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      */
     public function render()
     {
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $category = $this->getCategoryToRender();
 
@@ -227,7 +208,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      */
     protected function getCategoryToRender()
     {
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $this->_blIsCat = false;
 
@@ -255,9 +236,15 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     protected function _checkRequestedPage()
     {
         $pageCount = $this->getPageCount();
+        $currentPageNumber = $this->getActPage();
         // redirecting to first page in case requested page does not exist
-        if ($pageCount && (($pageCount - 1) < $this->getActPage())) {
+        if ($pageCount && (($pageCount - 1) < $currentPageNumber)) {
             \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getActiveCategory()->getLink(), false);
+        }
+        if (!$pageCount && $currentPageNumber) {
+            // display error if category has no products, but page number is entered
+            $this->_iActPage = 0;
+            error_404_handler($this->getActiveCategory()->getLink());
         }
     }
 
@@ -356,6 +343,18 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
+     * Reset filter.
+     */
+    public function resetFilter()
+    {
+        $activeCategory = Registry::getConfig()->getRequestParameter('cnid');
+        $sessionFilter = Registry::getSession()->getVariable('session_attrfilter');
+
+        unset($sessionFilter[$activeCategory]);
+        Registry::getSession()->setVariable('session_attrfilter', $sessionFilter);
+    }
+
+    /**
      * Loads and returns article list of active category.
      *
      * @param \OxidEsales\Eshop\Application\Model\Category $category category object
@@ -364,7 +363,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      */
     protected function _loadArticles($category)
     {
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $numberOfCategoryArticles = (int) $config->getConfigParam('iNrofCatArticles');
         $numberOfCategoryArticles = $numberOfCategoryArticles ? $numberOfCategoryArticles : 1;
@@ -398,6 +397,11 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      */
     public function getActPage()
     {
+        //Fake oxmore category has no subpages so we can set the page number to zero
+        if ('oxmore' == \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\Request::class)->getRequestParameter('cnid')) {
+            return 0;
+        }
+
         return $this->_getRequestPageNr();
     }
 
@@ -493,7 +497,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
 
         // and final component ..
         //changed for #2776
-        if (($suffix = $this->getConfig()->getActiveShop()->oxshops__oxtitleprefix->value)) {
+        if (($suffix = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveShop()->oxshops__oxtitleprefix->value)) {
             $description .= " {$suffix}";
         }
 
@@ -749,7 +753,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     public function getTitleSuffix()
     {
         if ($this->getActiveCategory()->oxcategories__oxshowsuffix->value) {
-            return $this->getConfig()->getActiveShop()->oxshops__oxtitlesuffix->value;
+            return \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveShop()->oxshops__oxtitlesuffix->value;
         }
     }
 
@@ -995,7 +999,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     {
         if ($this->_aBargainArticleList === null) {
             $this->_aBargainArticleList = [];
-            if ($this->getConfig()->getConfigParam('bl_perfLoadAktion') && $this->_isActCategory()) {
+            if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadAktion') && $this->_isActCategory()) {
                 $articleList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                 $articleList->loadActionArticles('OXBARGAIN');
                 if ($articleList->count()) {
@@ -1055,7 +1059,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      */
     public function canSelectDisplayType()
     {
-        return $this->getConfig()->getConfigParam('blShowListDisplayType');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowListDisplayType');
     }
 
     /**

@@ -264,7 +264,7 @@ window.onload = function ()
                 <select name="art_category" class="editinput" onChange="Javascript:top.oxid.admin.changeLstrt()" [{$readonly}]>
                 <option value="-1">[{oxmultilang ident="ARTICLE_MAIN_NONE"}]</option>
                 [{foreach from=$oView->getCategoryList() item=pcat}]
-                <option value="[{$pcat->oxcategories__oxid->value}]">[{$pcat->oxcategories__oxtitle->value|oxtruncate:40:"..":true}]</option>
+                <option value="[{$pcat->oxcategories__oxid->value}]">[{$pcat->oxcategories__oxtitle->getRawValue()|oxtruncate:40:"..":true}]</option>
                 [{/foreach}]
                 </select>
                 [{oxinputhelp ident="HELP_"}]
@@ -289,7 +289,7 @@ window.onload = function ()
     <!-- Anfang rechte Seite -->
           <td valign="top" class="edittext" align="left" style="width:100%;height:99%;padding-left:5px;padding-bottom:30px;padding-top:10px;">
             [{block name="admin_article_main_editor"}]
-              [{include file="include/editor.tpl" checkrights='oxlongdesc'}]
+              [{include file="include/editor.tpl"}]
             [{/block}]
           </td>
     <!-- Ende rechte Seite -->

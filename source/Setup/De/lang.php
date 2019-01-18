@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 $aLang = [
@@ -81,7 +65,7 @@ $aLang = [
 'MOD_SERVER_PERMISSIONS'                        => 'Dateizugriffsrechte',
 'MOD_ALLOW_URL_FOPEN'                           => 'allow_url_fopen und fsockopen auf Port 80',
 'MOD_PHP4_COMPAT'                               => 'Zend Kompatibilitätsmodus muss ausgeschaltet sein',
-'MOD_PHP_VERSION'                               => 'PHP Version 5.6 oder 7.0',
+'MOD_PHP_VERSION'                               => 'PHP Version 7.0 oder 7.1',
 'MOD_REQUEST_URI'                               => 'REQUEST_URI vorhanden',
 'MOD_LIB_XML2'                                  => 'LIB XML2',
 'MOD_PHP_XML'                                   => 'DOM',
@@ -193,15 +177,12 @@ $aLang = [
 'SETUP_CONFIG_PERMISSIONS'                      => 'WICHTIG: Aus Sicherheitsgründen setzen Sie Ihre config.inc.php Datei auf read-only-Modus!',
 
 'SELECT_SETUP_LANG'                             => 'Sprache für Installation',
-'SELECT_SHOP_LOCATION'                          => 'Ihre Region',
 'SELECT_PLEASE_CHOOSE'                          => 'Bitte auswählen',
-'SELECT_SHOP_LOCATION_HINT'                     => 'Bitte wählen Sie eine Region, auf die der Shop ausgerichtet ist. Abhängig davon werden zusätzliche E-Commerce Services vom OXID Server nachgeladen, wenn Sie das erlauben.',
 'SELECT_DELIVERY_COUNTRY'                       => 'Hauptlieferland',
 'SELECT_DELIVERY_COUNTRY_HINT'                  => 'Aktivieren Sie weitere Lieferländer im Administrationsbereich, falls benötigt.',
 'SELECT_SHOP_LANG'                              => 'Sprache für Shop',
 'SELECT_SHOP_LANG_HINT'                         => 'Aktivieren Sie weitere Sprachen im Administrationsbereich, falls gewünscht.',
 'SELECT_SETUP_LANG_SUBMIT'                      => 'Auswählen',
-'USE_DYNAMIC_PAGES'                             => 'Verbindung mit den OXID Servern erlauben. Mehr Informationen in unseren ',
 'PRIVACY_POLICY'                                => 'Datenschutzerläuterungen',
 
 'LOAD_DYN_CONTENT_NOTICE'                       => '<p>Wenn diese Option gesetzt ist, sehen Sie ein zusätzliches Menü im Administrationsbereich Ihres OXID eShop.</p><p>Über dieses Menü erhalten Sie weitere Informationen über E-Commerce Services, wie z.B. Google Produktsuche oder econda.</p> <p>Sie können diese Einstellung im Administrationsbereich jederzeit wieder ändern.</p>',
@@ -210,4 +191,14 @@ $aLang = [
 
 'EXTERNAL_COMMAND_ERROR_1'                      => 'Fehler beim Ausführen des Kommandos \'%s\'. Returncode: \'%d\'.',
 'EXTERNAL_COMMAND_ERROR_2'                      => 'Das Kommando gibt folgende Meldung zurück:',
+
+'SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID'      => 'Verbindung mit den OXID eSales Servern erlauben, um die Qualität unserer Open-Source-Produkte zu verbessern.',
+'HELP_SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID' => 'Es werden keine geschäftsrelevanten Daten oder Kundeninformationen übermittelt. '
+                                                        .'Die gesammelten Daten sind ausschließlich technologische Informationen. '
+                                                        .'Um unsere Produktqualität zu verbessern, werden Informationen wie diese erhoben:'
+                                                        .'<ul>'
+                                                        .'  <li>Anzahl der installierten OXID eShop Community Editions weltweit</li>'
+                                                        .'  <li>durchschnittliche Anzahl installierter Erweiterungen pro OXID eShop</li>'
+                                                        .'  <li>die meist verbreiteten Erweiterungen für den OXID eShop</li>'
+                                                        .'</ul>',
 ];

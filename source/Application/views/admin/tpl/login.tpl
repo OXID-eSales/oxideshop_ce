@@ -24,7 +24,7 @@
             <input type="hidden" name="fnc" value="checklogin">
             <input type="hidden" name="cl" value="login">
 
-            [{if $Errors.default|@count}]
+            [{if !empty($Errors.default)}]
                 [{include file="inc_error.tpl" Errorlist=$Errors.default}]
             [{/if}]
 

@@ -3,7 +3,7 @@ html, body {
     height: 100%;
     padding: 0;
     margin: 0;
-    font: 11px Trebuchet MS, Tahoma, Verdana, Arial, Helvetica, sans-serif;
+    font: 11px Open Sans, Tahoma, Verdana, Arial, Helvetica, sans-serif;
 }
 
 div.admin-login-box {
@@ -51,7 +51,7 @@ label {
 input, select {
     width: 220px;
     margin-bottom: 2px;
-    font-face: Trebuchet MS, Tahoma, Verdana, Arial, Helvetica, sans-serif;
+    font-face: Open Sans, Tahoma, Verdana, Arial, Helvetica, sans-serif;
 }
 
 select {

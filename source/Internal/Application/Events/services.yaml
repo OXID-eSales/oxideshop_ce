@@ -1,0 +1,12 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  event_dispatcher:
+    class: OxidEsales\EshopCommunity\Internal\Application\Events\ShopAwareEventDispatcher
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Application\Events\ConfigurationChangedEventSubscriber:
+    class: OxidEsales\EshopCommunity\Internal\Application\Events\ConfigurationChangedEventSubscriber
+    tags: ['kernel.event_subscriber']

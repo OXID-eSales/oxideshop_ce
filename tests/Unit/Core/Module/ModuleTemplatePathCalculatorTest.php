@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Module;
 
@@ -26,7 +10,7 @@ use OxidEsales\EshopCommunity\Core\FileSystem\FileSystem;
 use OxidEsales\EshopCommunity\Core\Module\ModuleTemplatePathCalculator;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use oxModuleList;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @group module
@@ -142,7 +126,7 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
      */
     public function testCalculateModuleTemplatePathExceptions($templateName, $expectedPath, $configTheme, $configCustomTheme)
     {
-        $this->setExpectedException('oxException');
+        $this->expectException('oxException');
 
         $calculator = $this->getModuleTemplatePathCalculator($this->pathToModules, $configTheme, $configCustomTheme);
         $calculator->calculateModuleTemplatePath($templateName);
@@ -153,9 +137,7 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
      */
     public function testCalculateModuleTemplatePathWithNoActiveModules()
     {
-        $this->setExpectedException('oxException');
-
-        /** @var oxModuleList|PHPUnit_Framework_MockObject_MockObject $moduleListMock */
+        /** @var oxModuleList|PHPUnit\Framework\MockObject\MockObject $moduleListMock */
         $moduleListMock = $this->getMock(oxModuleList::class, ['getActiveModuleInfo']);
         $moduleListMock->method('getActiveModuleInfo')->willReturn([]);
 
@@ -164,9 +146,9 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
 
         try {
             $templatePathCalculator->calculateModuleTemplatePath('someTemplateName.tpl');
-        } catch (Exception $e) {
-            $this->assertRegExp("@^Cannot find template@i", $e->getMessage());
-            throw $e;
+            $this->fail('An exception should have been thrown');
+        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
+            $this->assertRegExp("@^Cannot find template@i", $exception->getMessage());
         }
     }
 
@@ -175,9 +157,9 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
      */
     public function testCalculateModuleTemplatePathFileNotExists()
     {
-        $this->setExpectedException('oxException', 'Cannot find template file "/test_path/first_default.tpl"');
+        $this->expectException('oxException'); $this->expectExceptionMessage( 'Cannot find template file "/test_path/first_default.tpl"');
 
-        /** @var oxModuleList|PHPUnit_Framework_MockObject_MockObject $moduleListMock */
+        /** @var oxModuleList|PHPUnit\Framework\MockObject\MockObject $moduleListMock */
         $moduleListMock = $this->getMock(oxModuleList::class, ['getActiveModuleInfo']);
         $moduleListMock->method('getActiveModuleInfo')->willReturn([$this->exampleModuleId => true]);
 
@@ -202,11 +184,11 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
         $this->setConfigParam('sTheme', $configTheme);
         $this->setConfigParam('sCustomTheme', $configCustomTheme);
 
-        /** @var oxModuleList|PHPUnit_Framework_MockObject_MockObject $moduleListMock */
+        /** @var oxModuleList|PHPUnit\Framework\MockObject\MockObject $moduleListMock */
         $moduleListMock = $this->getMock(oxModuleList::class, ['getActiveModuleInfo']);
         $moduleListMock->method('getActiveModuleInfo')->willReturn([$this->exampleModuleId => true]);
 
-        /** @var FileSystem|PHPUnit_Framework_MockObject_MockObject $fileSystemMock */
+        /** @var FileSystem|PHPUnit\Framework\MockObject\MockObject $fileSystemMock */
         $fileSystemMock = $this->getMock(FileSystem::class, ['isReadable']);
         $fileSystemMock->method('isReadable')->willReturn($this->returnValue(true));
 

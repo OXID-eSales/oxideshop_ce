@@ -89,28 +89,28 @@ function _groupExp(el) {
                                     <tr>
                                         <td class="edittext">[{oxmultilang ident="GENERAL_MAX_DOWNLOADS_COUNT"}]</td>
                                         <td class="edittext">
-                                            <input type=text class="txt" name="newfile[oxfiles__oxmaxdownloads]">
+                                            <input type=text class="txt" name="newfile[oxfiles__oxmaxdownloads]" [{$readonly}]>
                                             [{oxinputhelp ident="HELP_ARTICLE_FILES_MAX_DOWNLOADS_COUNT"}]
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="edittext">[{oxmultilang ident="GENERAL_LINK_EXPIRATION_TIME_UNREGISTERED"}]</td>
                                         <td class="edittext">
-                                            <input type=text class="txt" name="newfile[oxfiles__oxmaxunregdownloads]">
+                                            <input type=text class="txt" name="newfile[oxfiles__oxmaxunregdownloads]" [{$readonly}]>
                                             [{oxinputhelp ident="HELP_ARTICLE_FILES_LINK_EXPIRATION_TIME_UNREGISTERED"}]
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="edittext">[{oxmultilang ident="GENERAL_LINK_EXPIRATION_TIME"}]</td>
                                         <td class="edittext">
-                                            <input type=text class="txt" name="newfile[oxfiles__oxlinkexptime]">
+                                            <input type=text class="txt" name="newfile[oxfiles__oxlinkexptime]" [{$readonly}]>
                                             [{oxinputhelp ident="HELP_ARTICLE_FILES_LINK_EXPIRATION_TIME"}]
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="edittext">[{oxmultilang ident="GENERAL_DOWNLOAD_EXPIRATION_TIME"}]</td>
                                         <td class="edittext">
-                                            <input type=text class="txt" name="newfile[oxfiles__oxdownloadexptime]">
+                                            <input type=text class="txt" name="newfile[oxfiles__oxdownloadexptime]" [{$readonly}]>
                                             [{oxinputhelp ident="HELP_ARTICLE_FILES_DOWNLOAD_EXPIRATION_TIME"}]
                                         </td>
                                     </tr>
@@ -123,7 +123,7 @@ function _groupExp(el) {
               [{/block}]
                 <tr>
                   <td>
-                    <input type="submit" class="saveButton" value="[{oxmultilang ident="ARTICLE_FILES_NEW_UPLOAD"}]" onclick="Javascript:document.newFileUpload.fnc.value='upload'">
+                    <input type="submit" class="saveButton" value="[{oxmultilang ident="ARTICLE_FILES_NEW_UPLOAD"}]" onclick="Javascript:document.newFileUpload.fnc.value='upload'" [{$readonly}]>
                   </td>
                 </tr>
             </table>
@@ -155,7 +155,7 @@ function _groupExp(el) {
                                       </td>
                                       <td class="edittext">
                                           <input class="edittext" type="hidden" name="editval[oxarticles__oxisdownloadable]" value='0'>
-                                          <input class="edittext" type="checkbox" name="editval[oxarticles__oxisdownloadable]" value='1' [{if $edit->oxarticles__oxisdownloadable->value == 1}]checked[{/if}] [{if $oxparentid}]readonly disabled[{/if}]>
+                                          <input class="edittext" type="checkbox" name="editval[oxarticles__oxisdownloadable]" value='1' [{if $edit->oxarticles__oxisdownloadable->value == 1}]checked[{/if}] [{if $oxparentid}]readonly disabled[{/if}] [{$readonly}]>
                                           [{oxinputhelp ident="HELP_ARTICLE_IS_DOWNLOADABLE"}]
                                       </td>
                                   </tr>
@@ -221,7 +221,7 @@ function _groupExp(el) {
                                         [{/block}]
                                     [{/foreach}]
                               [{/if}]
-                          <input type="submit" class="saveButton" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'">
+                          <input type="submit" class="saveButton" name="save" value="[{oxmultilang ident="GENERAL_SAVE"}]" onClick="Javascript:document.myedit.fnc.value='save'" [{$readonly}]>
                       </form>
                   </td>
               </tr>

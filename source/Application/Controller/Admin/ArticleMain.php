@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
@@ -36,7 +20,6 @@ use OxidEsales\Eshop\Application\Model\Article;
  */
 class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Loads article parameters and passes them to Smarty engine, returns
      * name of template file "article_main.tpl".
@@ -47,16 +30,16 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     {
         parent::render();
 
-        $this->getConfig()->setConfigParam('bl_perfLoadPrice', true);
+        \OxidEsales\Eshop\Core\Registry::getConfig()->setConfigParam('bl_perfLoadPrice', true);
 
-        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
+        $oArticle = $this->createArticle();
         $oArticle->enablePriceLoad();
 
         $this->_aViewData['edit'] = $oArticle;
 
         $sOxId = $this->getEditObjectId();
-        $sVoxId = $this->getConfig()->getRequestParameter("voxid");
-        $sOxParentId = $this->getConfig()->getRequestParameter("oxparentid");
+        $sVoxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("voxid");
+        $sOxParentId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxparentid");
 
         // new variant ?
         if (isset($sVoxId) && $sVoxId == "-1" && isset($sOxParentId) && $sOxParentId && $sOxParentId != "-1") {
@@ -114,7 +97,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             "oxarticles__oxlongdesc",
             "details.tpl.css"
         );
-        $this->_aViewData["blUseTimeCheck"] = $this->getConfig()->getConfigParam('blUseTimeCheck');
+        $this->_aViewData["blUseTimeCheck"] = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blUseTimeCheck');
 
         return "article_main.tpl";
     }
@@ -133,7 +116,6 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         if ($oObject) {
             $oDescField = $oObject->getLongDescription();
             $sEditObjectValue = $this->_processEditValue($oDescField->getRawValue());
-            $oDescField = new \OxidEsales\Eshop\Core\Field($sEditObjectValue, \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
         return $sEditObjectValue;
@@ -146,7 +128,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     {
         parent::save();
 
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $soxId = $this->getEditObjectId();
         $aParams = $oConfig->getRequestParameter("editval");
 
@@ -166,7 +148,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             unset($aParams['oxarticles__oxparentid']);
         }
 
-        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
+        $oArticle = $this->createArticle();
         $oArticle->setLanguage($this->_iEditLang);
 
         if ($soxId != "-1") {
@@ -289,7 +271,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     public function copyArticle($sOldId = null, $sNewId = null, $sParentId = null)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $sOldId = $sOldId ? $sOldId : $this->getEditObjectId();
         $sNewId = $sNewId ? $sNewId : \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID();
@@ -544,7 +526,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     protected function _copyStaffelpreis($sOldId, $sNewId)
     {
-        $sShopId = $this->getConfig()->getShopId();
+        $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
         $oPriceList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oPriceList->init("oxbase", "oxprice2article");
         $sQ = "select * from oxprice2article where oxartid = '{$sOldId}' and oxshopid = '{$sShopId}' " .
@@ -762,5 +744,15 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     protected function saveAdditionalArticleData($article, $parameters)
     {
         return $article;
+    }
+
+    /**
+     * @return \OxidEsales\Eshop\Application\Model\Article
+     */
+    protected function createArticle()
+    {
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
+
+        return $oArticle;
     }
 }

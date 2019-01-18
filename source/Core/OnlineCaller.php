@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Core;
@@ -29,13 +13,12 @@ use \Exception;
  * Class oxOnlineCaller makes call to given URL which is taken from child classes and sends request parameter.
  *
  * @internal Do not make a module extension for this class.
- * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
+ * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  *
  * @ignore   This class will not be included in documentation.
  */
 abstract class OnlineCaller
 {
-
     const ALLOWED_HTTP_FAILED_CALLS_COUNT = 4;
 
     /** Amount of seconds for curl execution timeout. */
@@ -104,13 +87,14 @@ abstract class OnlineCaller
             $statusCode = $this->_getCurl()->getStatusCode();
             if ($statusCode != 200) {
                 /** @var \OxidEsales\Eshop\Core\Exception\StandardException $oException */
-                $oException = new StandardException();
+                $oException = new StandardException('cUrl call to ' . $this->_getCurl()->getUrl() . ' failed with HTTP status '. $statusCode);
                 throw $oException;
             }
             $this->_resetFailedCallsCount($iFailedCallsCount);
         } catch (Exception $oEx) {
-            $this->_castExceptionAndWriteToLog($oEx);
             if ($iFailedCallsCount > self::ALLOWED_HTTP_FAILED_CALLS_COUNT) {
+                \OxidEsales\Eshop\Core\Registry::getLogger()->error($oEx->getMessage(), [$oEx]);
+
                 $sXml = $this->_formEmail($oRequest);
                 $this->_sendEmail($sXml);
                 $this->_resetFailedCallsCount($iFailedCallsCount);
@@ -120,22 +104,6 @@ abstract class OnlineCaller
         }
 
         return $sOutputXml;
-    }
-
-    /**
-     * Depending on the type of exception, first cast the exception and then write it to log.
-     *
-     * @param \Exception $oEx
-     */
-    protected function _castExceptionAndWriteToLog(\Exception $oEx)
-    {
-        if (!($oEx instanceof \OxidEsales\Eshop\Core\Exception\StandardException)) {
-            $oOxException = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
-            $oOxException->setMessage($oEx->getMessage());
-            $oOxException->debugOut();
-        } else {
-            $oEx->debugOut();
-        }
     }
 
     /**
@@ -175,7 +143,7 @@ abstract class OnlineCaller
     /**
      * Gets curl.
      *
-     * @return \oxCurl
+     * @return \OxidEsales\Eshop\Core\Curl
      */
     protected function _getCurl()
     {

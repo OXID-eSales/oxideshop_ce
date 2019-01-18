@@ -1,31 +1,15 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\ShopVersion;
+
 /**
  * Admin selectlist list manager.
- *
- * @internal This class should not be directly extended, instead of it oxAdminDetails class should be used.
  */
 class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
@@ -46,14 +30,14 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
         $sReturn = parent::render();
 
         // generate help link
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sDir = $myConfig->getConfigParam('sShopDir') . '/documentation/admin';
         if (is_dir($sDir)) {
             $sDir = $myConfig->getConfigParam('sShopURL') . 'documentation/admin';
         } else {
             $languageId = $this->getDocumentationLanguageId();
-            $oShop = $this->_getEditShop(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('actshop'));
-            $sDir = "http://docu.oxid-esales.com/PE/{$oShop->oxshops__oxversion->value}/" . $languageId . '/admin';
+            $shopVersion = oxNew(ShopVersion::class)->getVersion();
+            $sDir = "http://docu.oxid-esales.com/PE/{$shopVersion}/" . $languageId . '/admin';
         }
 
         $this->_aViewData['sHelpURL'] = $sDir;
@@ -111,9 +95,9 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
         // A. replace ONLY if long description is not processed by smarty, or users will not be able to
         // store smarty tags ([{$shop->currenthomedir}]/[{$oViewConf->getCurrentHomeDir()}]) in long
         // descriptions, which are filled dynamically
-        if (!$this->getConfig()->getConfigParam('bl_perfParseLongDescinSmarty')) {
+        if (!\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfParseLongDescinSmarty')) {
             $aReplace = ['[{$shop->currenthomedir}]', '[{$oViewConf->getCurrentHomeDir()}]'];
-            $sValue = str_replace($aReplace, $this->getConfig()->getCurrentShopURL(false), $sValue);
+            $sValue = str_replace($aReplace, \OxidEsales\Eshop\Core\Registry::getConfig()->getCurrentShopURL(false), $sValue);
         }
 
         return $sValue;
@@ -172,9 +156,11 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
     protected function generateTextEditor($width, $height, $object, $field, $stylesheet = null)
     {
         $objectValue = $this->_getEditValue($object, $field);
-        $textEditor = oxNew(\OxidEsales\Eshop\Application\Controller\TextEditorHandler::class);
-        $textEditor->setStyleSheet($stylesheet);
-        return $textEditor->renderTextEditor($width, $height, $objectValue, $field);
+
+        $textEditorHandler = $this->createTextEditorHandler();
+        $this->configureTextEditorHandler($textEditorHandler, $object, $field, $stylesheet);
+
+        return $textEditorHandler->renderTextEditor($width, $height, $objectValue, $field);
     }
 
     /**
@@ -344,5 +330,41 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
                 }
             }
         }
+    }
+
+    /**
+     * Create the handler for the text editor.
+     *
+     * Note: the parameters editedObject and field are not used here but in the enterprise edition.
+     *
+     * @param \OxidEsales\Eshop\Application\Controller\TextEditorHandler $textEditorHandler
+     * @param mixed                                                      $editedObject      The object we want to edit.
+     *                                                                                      Either type of
+     *                                                                                      \OxidEsales\Eshop\Core\BaseModel
+     *                                                                                      if you want to persist or
+     *                                                                                      anything else
+     * @param string                                                     $field             The input field we want to edit
+     * @param string                                                     $stylesheet        The name of the CSS file
+     *
+     */
+    protected function configureTextEditorHandler(
+        \OxidEsales\Eshop\Application\Controller\TextEditorHandler $textEditorHandler,
+        $editedObject,
+        $field,
+        $stylesheet
+    ) {
+        $textEditorHandler->setStyleSheet($stylesheet);
+    }
+
+    /**
+     * Create the handler for the text editor.
+     *
+     * @return \OxidEsales\Eshop\Application\Controller\TextEditorHandler The text editor handler
+     */
+    protected function createTextEditorHandler()
+    {
+        $textEditorHandler = oxNew(\OxidEsales\Eshop\Application\Controller\TextEditorHandler::class);
+
+        return $textEditorHandler;
     }
 }

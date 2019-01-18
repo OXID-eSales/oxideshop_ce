@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
@@ -98,7 +82,7 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
             $minimalPosition = null;
             $minimalValue = null;
             reset($dataFields);
-            while (list($position, $fields) = each($dataFields)) {
+            foreach ($dataFields as $position => $fields) {
                 // already set ?
                 if ($fields['_3'] == '0') {
                     $minimalPosition = null;
@@ -163,7 +147,7 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      */
     public function addCat()
     {
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $categoriesToAdd = $this->_getActionIds('oxcategories.oxid');
         $oxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
         $shopId = $config->getShopId();
@@ -176,32 +160,26 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
         }
 
         if (isset($categoriesToAdd) && is_array($categoriesToAdd)) {
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->startTransaction();
-            try {
-                $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
+            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
 
-                $objectToCategory = oxNew(\OxidEsales\Eshop\Application\Model\Object2Category::class);
+            $objectToCategory = oxNew(\OxidEsales\Eshop\Application\Model\Object2Category::class);
 
-                foreach ($categoriesToAdd as $sAdd) {
-                    // check, if it's already in, then don't add it again
-                    $sSelect = "select 1 from " . $objectToCategoryView . " as oxobject2category where oxobject2category.oxcatnid= "
-                               . $database->quote($sAdd) . " and oxobject2category.oxobjectid = " . $database->quote($oxId) . " ";
-                    if ($database->getOne($sSelect)) {
-                        continue;
-                    }
-
-                    $objectToCategory->setId(md5($oxId . $sAdd . $shopId));
-                    $objectToCategory->oxobject2category__oxobjectid = new \OxidEsales\Eshop\Core\Field($oxId);
-                    $objectToCategory->oxobject2category__oxcatnid = new \OxidEsales\Eshop\Core\Field($sAdd);
-                    $objectToCategory->oxobject2category__oxtime = new \OxidEsales\Eshop\Core\Field(time());
-
-                    $objectToCategory->save();
+            foreach ($categoriesToAdd as $sAdd) {
+                // check, if it's already in, then don't add it again
+                $sSelect = "select 1 from " . $objectToCategoryView . " as oxobject2category where oxobject2category.oxcatnid= "
+                           . $database->quote($sAdd) . " and oxobject2category.oxobjectid = " . $database->quote($oxId) . " ";
+                if ($database->getOne($sSelect)) {
+                    continue;
                 }
-            } catch (Exception $exception) {
-                \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
-                throw $exception;
+
+                $objectToCategory->setId(md5($oxId . $sAdd . $shopId));
+                $objectToCategory->oxobject2category__oxobjectid = new \OxidEsales\Eshop\Core\Field($oxId);
+                $objectToCategory->oxobject2category__oxcatnid = new \OxidEsales\Eshop\Core\Field($sAdd);
+                $objectToCategory->oxobject2category__oxtime = new \OxidEsales\Eshop\Core\Field(time());
+
+                $objectToCategory->save();
             }
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->commitTransaction();
 
             $this->_updateOxTime($oxId);
 

@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Model;
@@ -36,7 +20,6 @@ use oxField;
  */
 class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
-
     /**
      * Current object class name
      *
@@ -224,22 +207,13 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     {
         $blAdd = false;
         if ($sOXID) {
-            // Transaction picks master automatically (see ESDEV-3804 and ESDEV-3822).
-            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
+            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
-            $database->startTransaction();
-            try {
-                if (!$database->getOne("select oxid from oxobject2list where oxobjectid=" . $database->quote($sOXID) . " and oxlistid=" . $database->quote($this->getId()))) {
-                    $sUid = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID();
-                    $sQ = "insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( '$sUid', " . $database->quote($sOXID) . ", " . $database->quote($this->getId()) . ", " . $database->quote($sDesc) . " )";
-                    $blAdd = $database->execute($sQ);
-                }
-
-                $database->commitTransaction();
-            } catch (Exception $exception) {
-                $database->rollbackTransaction();
-
-                throw $exception;
+            if (!$database->getOne("select oxid from oxobject2list where oxobjectid=" . $database->quote($sOXID) . " and oxlistid=" . $database->quote($this->getId()))) {
+                $sUid = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID();
+                $sQ = "insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( '$sUid', " . $database->quote($sOXID) . ", " . $database->quote($this->getId()) . ", " . $database->quote($sDesc) . " )";
+                $blAdd = $database->execute($sQ);
             }
         }
 
@@ -258,7 +232,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      */
     public function getRecommListsByIds($aArticleIds)
     {
-        if (count($aArticleIds)) {
+        if (is_array($aArticleIds) && count($aArticleIds)) {
             startProfile(__FUNCTION__);
 
             $sIds = implode(",", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aArticleIds));
@@ -266,8 +240,8 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
             $oRecommList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oRecommList->init('oxrecommlist');
 
-            $iShopId = $this->getConfig()->getShopId();
-            $iCnt = $this->getConfig()->getConfigParam('iNrofCrossellArticles');
+            $iShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
+            $iCnt = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofCrossellArticles');
 
             $oRecommList->setSqlLimit(0, $iCnt);
 
@@ -352,7 +326,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
             $iActPage = ($iActPage < 0) ? 0 : $iActPage;
 
             // load only lists which we show on screen
-            $iNrofCatArticles = $this->getConfig()->getConfigParam('iNrofCatArticles');
+            $iNrofCatArticles = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofCatArticles');
             $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
 
             $oRecommList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
@@ -394,7 +368,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      */
     protected function _getSearchSelect($sSearchStr)
     {
-        $iShopId = $this->getConfig()->getShopId();
+        $iShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
         $sSearchStrQuoted = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote("%$sSearchStr%");
 
         $sSelect = "select distinct rl.* from oxrecommlists as rl";
@@ -509,7 +483,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
         $sUrl = '';
         if ($blFull) {
             //always returns shop url, not admin
-            $sUrl = $this->getConfig()->getShopUrl($iLang, false);
+            $sUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl($iLang, false);
         }
 
         return $sUrl . "index.php?cl=recommlist" . ($blAddId ? "&amp;recommid=" . $this->getId() : "");
@@ -533,7 +507,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     public function save()
     {
         if (!$this->oxrecommlists__oxtitle->value) {
-            throw oxNew("oxObjectException", 'EXCEPTION_RECOMMLIST_NOTITLE');
+            throw oxNew(\OxidEsales\Eshop\Core\Exception\ObjectException::class, 'EXCEPTION_RECOMMLIST_NOTITLE');
         }
         $this->onSave();
 

@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Model;
@@ -34,7 +18,6 @@ use oxCategory;
  */
 class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
 {
-
     /**
      * Product parent title cache
      *
@@ -131,7 +114,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
     protected function _getRecomm($oArticle, $iLang)
     {
         $oList = null;
-        $oView = $this->getConfig()->getActiveView();
+        $oView = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView();
         if ($oView instanceof \OxidEsales\Eshop\Application\Controller\FrontendController) {
             $oList = $oView->getActiveRecommList();
         }
@@ -146,7 +129,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      */
     protected function _getListType()
     {
-        return $this->getConfig()->getActiveView()->getListType();
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView()->getListType();
     }
 
     /**
@@ -218,12 +201,10 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
         //load details link from DB
         if ($blRegenerate || !($sSeoUri = $this->_loadFromDb('oxarticle', $oArticle->getId(), $iLang, null, $sActCatId, true))) {
             if ($oActCat) {
-                $blInCat = false;
-                if ($oActCat->isPriceCategory()) {
-                    $blInCat = $oArticle->inPriceCategory($sActCatId);
-                } else {
-                    $blInCat = $oArticle->inCategory($sActCatId);
-                }
+                $blInCat = $oActCat->isPriceCategory()
+                    ? $oArticle->inPriceCategory($sActCatId)
+                    : $oArticle->inCategory($sActCatId);
+
                 if ($blInCat) {
                     $sSeoUri = $this->_createArticleCategoryUri($oArticle, $oActCat, $iLang);
                 }
@@ -246,10 +227,10 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
     protected function _getCategory($oArticle, $iLang)
     {
         $oCat = null;
-        $oView = $this->getConfig()->getActiveView();
+        $oView = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView();
         if ($oView instanceof \OxidEsales\Eshop\Application\Controller\FrontendController) {
             $oCat = $oView->getActiveCategory();
-        } elseif ($oView instanceof \OxidEsales\Eshop\Application\Controller\FrontendController) {
+        } elseif ($oView instanceof \OxidEsales\Eshop\Core\Controller\BaseController) {
             $oCat = $oView->getActCategory();
         }
 
@@ -348,8 +329,6 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      */
     protected function _prepareArticleTitle($oArticle)
     {
-        $sTitle = '';
-
         // create title part for uri
         if (!($sTitle = $oArticle->oxarticles__oxtitle->value)) {
             // taking parent article title
@@ -372,7 +351,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
             $sTitle .= ($sTitle ? ' ' : '') . $oArticle->oxarticles__oxartnum->value;
         }
 
-        return $this->_prepareTitle($sTitle, false, $oArticle->getLanguage()) . '.html';
+        return $this->_prepareTitle($sTitle, false, $oArticle->getLanguage()) . $this->_getUrlExtension();
     }
 
     /**
@@ -433,7 +412,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      */
     protected function _getVendor($oArticle, $iLang)
     {
-        $oView = $this->getConfig()->getActiveView();
+        $oView = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView();
 
         $oVendor = null;
         if ($sActVendorId = $oArticle->oxarticles__oxvendorid->value) {
@@ -512,7 +491,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
     {
         $oManufacturer = null;
         if ($sActManufacturerId = $oArticle->oxarticles__oxmanufacturerid->value) {
-            $oView = $this->getConfig()->getActiveView();
+            $oView = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView();
 
             if ($oView instanceof \OxidEsales\Eshop\Application\Controller\FrontendController && ($oActManufacturer = $oView->getActManufacturer())) {
                 $oManufacturer = $oActManufacturer;

@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Model;
@@ -31,7 +15,6 @@ use oxRegistry;
  */
 class SeoEncoderRecomm extends \OxidEsales\Eshop\Core\SeoEncoder
 {
-
     /**
      * Returns SEO uri for tag.
      *
@@ -43,7 +26,7 @@ class SeoEncoderRecomm extends \OxidEsales\Eshop\Core\SeoEncoder
     public function getRecommUri($oRecomm, $iLang = null)
     {
         if (!($sSeoUrl = $this->_loadFromDb('dynamic', $oRecomm->getId(), $iLang))) {
-            $myConfig = $this->getConfig();
+            $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
             // fetching part of base url
             $sSeoUrl = $this->_getStaticUri(
@@ -83,24 +66,24 @@ class SeoEncoderRecomm extends \OxidEsales\Eshop\Core\SeoEncoder
     /**
      * Returns tag SEO url for specified page
      *
-     * @param \OxidEsales\Eshop\Application\Model\RecommendationList $oRecomm recommendation list object
-     * @param int                                                    $iPage   page tu prepare number
-     * @param int                                                    $iLang   language
-     * @param bool                                                   $blFixed fixed url marker (default is false)
+     * @param \OxidEsales\Eshop\Application\Model\RecommendationList $recomm     Recommendation list object.
+     * @param int                                                    $pageNumber Number of the page which should be prepared.
+     * @param int                                                    $languageId Language id.
+     * @param bool                                                   $isFixed    Fixed url marker (default is null).
      *
      * @return string
      */
-    public function getRecommPageUrl($oRecomm, $iPage, $iLang = null, $blFixed = false)
+    public function getRecommPageUrl($recomm, $pageNumber, $languageId = null, $isFixed = false)
     {
-        if (!isset($iLang)) {
-            $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        if (!isset($languageId)) {
+            $languageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         }
-        $sStdUrl = $oRecomm->getBaseStdLink($iLang) . '&amp;pgNr=' . $iPage;
-        $sParams = (int) ($iPage + 1);
+        $stdUrl = $recomm->getBaseStdLink($languageId);
+        $parameters = null;
 
-        $sStdUrl = $this->_trimUrl($sStdUrl, $iLang);
-        $sSeoUrl = $this->getRecommUri($oRecomm, $iLang) . $sParams . "/";
+        $stdUrl = $this->_trimUrl($stdUrl, $languageId);
+        $seoUrl = $this->getRecommUri($recomm, $languageId);
 
-        return $this->_getFullUrl($this->_getPageUri($oRecomm, 'dynamic', $sStdUrl, $sSeoUrl, $sParams, $iLang, $blFixed), $iLang);
+        return $this->assembleFullPageUrl($recomm, 'dynamic', $stdUrl, $seoUrl, $pageNumber, $parameters, $languageId, $isFixed);
     }
 }

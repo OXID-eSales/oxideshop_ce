@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Core;
@@ -351,11 +335,13 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * Stores config parameter value in config
      *
      * @param string $name  config parameter name
-     * @param string $value config parameter value
+     * @param mixed  $value config parameter value
      */
     public function setConfigParam($name, $value)
     {
-        if (isset($this->$name)) {
+        if (isset($this->_aConfigParams[$name])) {
+            $this->_aConfigParams[$name] = $value;
+        } elseif (isset($this->$name)) {
             $this->$name = $value;
         } else {
             $this->_aConfigParams[$name] = $value;
@@ -374,9 +360,55 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * Initialize configuration variables
+     *
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseException
+     * @param int $shopID
+     */
+    public function initVars($shopID)
+    {
+        $this->_loadVarsFromFile();
+
+        $this->_setDefaults();
+
+        $configLoaded = $this->_loadVarsFromDb($shopID);
+        // loading shop config
+        if (empty($shopID) || !$configLoaded) {
+            // if no config values where loaded (some problems with DB), throwing an exception
+            $exception = new \OxidEsales\Eshop\Core\Exception\DatabaseException(
+                "Unable to load shop config values from database",
+                0,
+                new \Exception()
+            );
+            throw $exception;
+        }
+
+        // loading theme config options
+        $this->_loadVarsFromDb($shopID, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'));
+
+        // checking if custom theme (which has defined parent theme) config options should be loaded over parent theme (#3362)
+        if ($this->getConfigParam('sCustomTheme')) {
+            $this->_loadVarsFromDb($shopID, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sCustomTheme'));
+        }
+
+        // loading modules config
+        $this->_loadVarsFromDb($shopID, null, Config::OXMODULE_MODULE_PREFIX);
+
+        $this->loadAdditionalConfiguration();
+
+        // Admin handling
+        $this->setConfigParam('blAdmin', isAdmin());
+
+        if (defined('OX_ADMIN_DIR')) {
+            $this->setConfigParam('sAdminDir', OX_ADMIN_DIR);
+        }
+
+        $this->_loadVarsFromFile();
+    }
+
+    /**
      * Starts session manager
      *
-     * @throws oxConnectionException
      * @return null
      */
     public function init()
@@ -387,49 +419,12 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
         $this->_blInit = true;
 
-        $this->_loadVarsFromFile();
-
-        $this->_setDefaults();
-
         try {
-            $shopID = $this->getShopId();
-            $configLoaded = $this->_loadVarsFromDb($shopID);
-            // loading shop config
-            if (empty($shopID) || !$configLoaded) {
-                // if no config values where loaded (some problems with DB), throwing an exception
-                $exception = new \OxidEsales\Eshop\Core\Exception\DatabaseException(
-                    "Unable to load shop config values from database",
-                    0,
-                    new \Exception()
-                );
-                throw $exception;
-            }
+            // config params initialization
+            $this->initVars($this->getShopId());
 
-            // loading theme config options
-            $this->_loadVarsFromDb($shopID, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'));
-
-            // checking if custom theme (which has defined parent theme) config options should be loaded over parent theme (#3362)
-            if ($this->getConfigParam('sCustomTheme')) {
-                $this->_loadVarsFromDb($shopID, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sCustomTheme'));
-            }
-
-            // loading modules config
-            $this->_loadVarsFromDb($shopID, null, Config::OXMODULE_MODULE_PREFIX);
-
-            $this->loadAdditionalConfiguration();
-
+            // application initialization
             $this->initializeShop();
-
-            // Admin handling
-            $this->setConfigParam('blAdmin', isAdmin());
-
-            if (defined('OX_ADMIN_DIR')) {
-                $this->setConfigParam('sAdminDir', OX_ADMIN_DIR);
-            }
-
-            $this->_loadVarsFromFile();
-
-            //application initialization
             $this->_oStart = oxNew(\OxidEsales\Eshop\Application\Controller\OxidStartController::class);
             $this->_oStart->appInit();
         } catch (\OxidEsales\Eshop\Core\Exception\DatabaseException $exception) {
@@ -512,7 +507,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         // #1173M  for EE - not all pic are deleted
         if (is_null($this->getConfigParam('iPicCount'))) {
-            $this->setConfigParam('iPicCount', 7);
+            $this->setConfigParam('iPicCount', 12);
         }
 
         if (is_null($this->getConfigParam('iZoomPicCount'))) {
@@ -652,7 +647,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @param string $name Name of parameter.
      * @param bool   $raw  Get unescaped parameter.
      *
-     * @deprecated on b-dev (2015-06-10); Use Request::getRequestParameter() or Request::getRequestEscapedParameter().
+     * @deprecated on b-dev (2015-06-10); Use Request::getRequestEscapedParameter().
      *
      * @return mixed
      */
@@ -1082,13 +1077,17 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getActShopCurrencyObject()
     {
-        $cur = $this->getShopCurrency();
-        $currencies = $this->getCurrencyArray();
-        if (!isset($currencies[$cur])) {
-            return $this->_oActCurrencyObject = reset($currencies); // reset() returns the first element
+        if ($this->_oActCurrencyObject === null) {
+            $cur = $this->getShopCurrency();
+            $currencies = $this->getCurrencyArray();
+            if (!isset($currencies[$cur])) {
+                $this->_oActCurrencyObject = reset($currencies); // reset() returns the first element
+            } else {
+                $this->_oActCurrencyObject = $currencies[$cur];
+            }
         }
 
-        return $this->_oActCurrencyObject = $currencies[$cur];
+        return $this->_oActCurrencyObject;
     }
 
     /**
@@ -1496,7 +1495,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         if (!$finalTemplatePath) {
             $templatePathCalculator = $this->getModuleTemplatePathCalculator();
-            $templatePathCalculator->setModulesPath($this->getConfig()->getModulesDir());
+            $templatePathCalculator->setModulesPath($this->getModulesDir());
             try {
                 $finalTemplatePath = $templatePathCalculator->calculateModuleTemplatePath($templateName);
             } catch (Exception $e) {
@@ -1632,7 +1631,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         // processing currency configuration data
         $currencies = [];
         reset($confCurrencies);
-        while (list($key, $val) = each($confCurrencies)) {
+        foreach ($confCurrencies as $key => $val) {
             if ($val) {
                 $cur = new stdClass();
                 $cur->id = $key;
@@ -1694,7 +1693,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns OXID eShop edition
+     * Returns OXID eShop edition.
+     *
+     * @deprecated since v6.0.0-rc.2 (2017-08-24); Use \OxidEsales\Facts\Facts::getEdition() instead.
      *
      * @return string
      */
@@ -1721,33 +1722,13 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns shops version number (eg. '4.4.2')
      *
+     * @deprecated since v6.0.0-rc.2 (2017-08-23); Use  OxidEsales\Eshop\Core\ShopVersion::getVersion() instead.
+     *
      * @return string
      */
     public function getVersion()
     {
-        return $this->getActiveShop()->oxshops__oxversion->value;
-    }
-
-    /**
-     * Returns build revision number or false on read error.
-     *
-     * @return bool|string
-     */
-    public function getRevision()
-    {
-        $fileName = $this->getConfigParam('sShopDir') . "/pkg.rev";
-
-        $rev = false;
-
-        if (file_exists($fileName) && is_readable($fileName)) {
-            $rev = trim(file_get_contents($fileName));
-        }
-
-        if (!$rev) {
-            return false;
-        }
-
-        return $rev;
+        return oxNew(\OxidEsales\Eshop\Core\ShopVersion::class)->getVersion();
     }
 
     /**

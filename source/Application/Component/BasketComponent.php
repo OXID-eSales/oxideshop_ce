@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Component;
@@ -36,7 +20,6 @@ use oxNoArticleException;
  */
 class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
-
     /**
      * Marking object as component
      *
@@ -76,7 +59,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function init()
     {
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         if ($oConfig->getConfigParam('blPsBasketReservationEnabled')) {
             if ($oReservations = $this->getSession()->getBasketReservations()) {
                 if (!$oReservations->getTimeLeft()) {
@@ -96,7 +79,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         parent::init();
 
         // Basket exclude
-        if ($this->getConfig()->getConfigParam('blBasketExcludeEnabled')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blBasketExcludeEnabled')) {
             if ($oBasket = $this->getSession()->getBasket()) {
                 $this->getParent()->setRootCatChanged($this->isRootCatChanged() && $oBasket->getContents());
             }
@@ -139,7 +122,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     public function toBasket($sProductId = null, $dAmount = null, $aSel = null, $aPersParam = null, $blOverride = false)
     {
         // adding to basket is not allowed ?
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         if (\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()) {
             return;
         }
@@ -283,7 +266,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $sPosition .= ($iPageNr > 0) ? 'pgNr=' . $iPageNr . '&' : '';
 
         // reload and backbutton blocker
-        if ($this->getConfig()->getConfigParam('iNewBasketItemMessage') == 3) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNewBasketItemMessage') == 3) {
             // saving return to shop link to session
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('_backtoshop', $controllerId . $sPosition);
 
@@ -307,7 +290,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         if (!is_array($persistedParameters)) {
             return null;
         }
-        return array_filter($persistedParameters, 'trim') ?: null;
+        return array_filter($persistedParameters) ?: null;
     }
 
     /**
@@ -384,7 +367,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected function _addItems($products)
     {
-        $activeView = $this->getConfig()->getActiveView();
+        $activeView = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView();
         $errorDestination = $activeView->getErrorDestination();
 
         $basket = $this->getSession()->getBasket();
@@ -394,8 +377,11 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         foreach ($products as $addProductId => $productInfo) {
             $data = $this->prepareProductInformation($addProductId, $productInfo);
-            $productAmount = $basketInfo->aArticles[$data['id']];
-            $products[$addProductId]['oldam'] = isset($productAmount) ? $productAmount : 0;
+            $productAmount = 0;
+            if (isset($basketInfo->aArticles[$data['id']])) {
+                $productAmount = $basketInfo->aArticles[$data['id']];
+            }
+            $products[$addProductId]['oldam'] = $productAmount;
 
             //If we already changed articles so they now exactly match existing ones,
             //we need to make sure we get the amounts correct
@@ -405,8 +391,14 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
             $basketItem = $this->addItemToBasket($basket, $data, $errorDestination);
 
-            if (($basketItem instanceof \OxidEsales\Eshop\Application\Model\BasketItem) && $basketItem->getBasketItemKey()) {
-                $basketItemAmounts[$basketItem->getBasketItemKey()] += $data['amount'];
+            if (($basketItem instanceof \OxidEsales\Eshop\Application\Model\BasketItem)) {
+                $basketItemKey = $basketItem->getBasketItemKey();
+                if ($basketItemKey) {
+                    if (! isset($basketItemAmounts[$basketItemKey])) {
+                        $basketItemAmounts[$basketItemKey] = 0;
+                    }
+                    $basketItemAmounts[$basketItemKey] += $data['amount'];
+                }
             }
 
             if (!$basketItem) {
@@ -568,7 +560,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         } catch (\OxidEsales\Eshop\Core\Exception\OutOfStockException $exception) {
             $exception->setDestination($errorDestination);
             // #950 Change error destination to basket popup
-            if (!$errorDestination && $this->getConfig()->getConfigParam('iNewBasketItemMessage') == 2) {
+            if (!$errorDestination && \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNewBasketItemMessage') == 2) {
                 $errorDestination = 'popup';
             }
             \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($exception, false, (bool) $errorDestination, $errorDestination);

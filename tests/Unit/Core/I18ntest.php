@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
@@ -496,7 +480,7 @@ class I18ntest extends \OxidTestCase
 
         $sTable = 'oxi18n';
 
-        /** @var oxI18n|PHPUnit_Framework_MockObject_MockObject $oI18n */
+        /** @var oxI18n|PHPUnit\Framework\MockObject\MockObject $oI18n */
         $oI18n = $this->getMock(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class, array('getCoreTableName', 'getViewName', 'isMultilingualField', 'getLanguage'));
         $oI18n->expects($this->any())->method('getCoreTableName')->will($this->returnValue($sTable));
         $oI18n->expects($this->once())->method('getViewName')->will($this->returnValue('oxi18n'));
@@ -995,7 +979,6 @@ class I18ntest extends \OxidTestCase
             if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {
                     $sValue = $rs->fields["Default"];
-                    $sType = $rs->fields["Type"];
                     $sField = $rs->fields["Field"];
 
                     // overwriting default values

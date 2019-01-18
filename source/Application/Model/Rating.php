@@ -1,29 +1,12 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-use oxRegistry;
+use OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridgeInterface;
 
 /**
  * Article rate manager.
@@ -32,7 +15,6 @@ use oxRegistry;
  */
 class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-
     /**
      * Shop control variable
      *
@@ -68,7 +50,7 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function allowRating($sUserId, $sType, $sObjectId)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if ($iRatingLogsTimeout = $myConfig->getConfigParam('iRatingLogsTimeout')) {
             $sExpDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - $iRatingLogsTimeout * 24 * 60 * 60);
@@ -96,11 +78,9 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $sQuerySnipet = '';
+        $sQuerySnipet = " AND `oxobjectid` = " . $oDb->quote($sObjectId);
         if (is_array($aIncludedObjectsIds) && count($aIncludedObjectsIds) > 0) {
             $sQuerySnipet = " AND ( `oxobjectid` = " . $oDb->quote($sObjectId) . " OR `oxobjectid` in ('" . implode("', '", $aIncludedObjectsIds) . "') )";
-        } else {
-            $sQuerySnipet = " AND `oxobjectid` = " . $oDb->quote($sObjectId);
         }
 
         $sSelect = "
@@ -133,11 +113,9 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $sQuerySnipet = '';
+        $sQuerySnipet = " AND `oxobjectid` = " . $oDb->quote($sObjectId);
         if (is_array($aIncludedObjectsIds) && count($aIncludedObjectsIds) > 0) {
             $sQuerySnipet = " AND ( `oxobjectid` = " . $oDb->quote($sObjectId) . " OR `oxobjectid` in ('" . implode("', '", $aIncludedObjectsIds) . "') )";
-        } else {
-            $sQuerySnipet = " AND `oxobjectid` = " . $oDb->quote($sObjectId);
         }
 
         $sSelect = "
@@ -174,5 +152,47 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getObjectId()
     {
         return $this->oxratings__oxobjectid->value;
+    }
+
+    /**
+     * Delete this object from the database, returns true if entry was deleted.
+     *
+     * @param string $oxid Object ID(default null)
+     *
+     * @return bool
+     */
+    public function delete($oxid = null)
+    {
+        $isProductRating = $this->isProductObjectType();
+
+        $isDeleted = parent::delete($oxid);
+
+        if ($isProductRating) {
+            $this->updateProductRating();
+        }
+
+        return $isDeleted;
+    }
+
+
+    /**
+     * Returns true if Rating belongs to Product.
+     *
+     * @return bool
+     */
+    private function isProductObjectType()
+    {
+        return $this->getObjectType() === 'oxarticle';
+    }
+
+    /**
+     * Updates Product rating.
+     */
+    private function updateProductRating()
+    {
+        $this
+            ->getContainer()
+            ->get(ProductRatingBridgeInterface::class)
+            ->updateProductRating($this->getObjectId());
     }
 }

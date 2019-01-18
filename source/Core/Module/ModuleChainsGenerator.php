@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Core\Module;
@@ -28,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Core\Module;
  *            oxNew will enter in an endless loop, if you try to do that.
  *
  * @internal Do not make a module extension for this class.
- * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
+ * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ModuleChainsGenerator
 {
@@ -252,8 +236,13 @@ class ModuleChainsGenerator
             $extensionPath = str_replace(chr(0), '', $extensionPath);
 
             if ($this->createClassExtension($parentClass, $extensionPath)) {
-                $parentClass = basename($extensionPath);
-                $lastClass = basename($extensionPath);
+                if (\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($extensionPath)) {
+                    $parentClass = $extensionPath;
+                    $lastClass = $extensionPath;
+                } else {
+                    $parentClass = basename($extensionPath);
+                    $lastClass = basename($extensionPath);
+                }
             }
         }
 
@@ -373,7 +362,27 @@ class ModuleChainsGenerator
      */
     protected function handleSpecialCases($requestedClass)
     {
-        if (($requestedClass == "oxconfig") || ($requestedClass == \OxidEsales\Eshop\Core\Config::class)) {
+        // We do actually have to check the whole inheritance chain in case two OXID modules each have an extension
+        // on oxconfig. Checking for $requestedClass only would cover only one inheritance step.
+        
+        $isConfigClass = false;
+        $currentClass = $requestedClass;
+        $safetyCount = 0;
+        do {
+            if (($currentClass == "oxconfig") || ($currentClass == \OxidEsales\Eshop\Core\Config::class)) {
+                $isConfigClass = true;
+                break;
+            }
+
+            if ($safetyCount++ === 200) {
+                throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException('Recursion limit reached while traversing class inheritance chain.');
+            }
+
+            // We can be sure that the parent class of the current class is actually defined due to the way
+            // the extension chain is traversed.
+        } while ($currentClass = get_parent_class($currentClass));
+
+        if ($isConfigClass) {
             $config = new \OxidEsales\Eshop\Core\Config();
             \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
         }
@@ -400,7 +409,7 @@ class ModuleChainsGenerator
                 $moduleId = $module->getIdByPath($moduleClass);
                 $message = sprintf('Module class %s not found. Module ID %s disabled', $moduleClass, $moduleId);
                 $exception = new \OxidEsales\Eshop\Core\Exception\SystemComponentException($message);
-                $exception->debugOut();
+                \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
             }
         } else {
             $exception =  new \OxidEsales\Eshop\Core\Exception\SystemComponentException();

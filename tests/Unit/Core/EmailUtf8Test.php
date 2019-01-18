@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\core;
 
@@ -26,27 +10,6 @@ use oxStr;
 
 class EmailUtf8Test extends \OxidTestCase
 {
-
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-    }
-
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
-    protected function tearDown()
-    {
-        parent::tearDown();
-    }
-
     /**
      * Testing email charset
      *
@@ -101,7 +64,7 @@ class EmailUtf8Test extends \OxidTestCase
         $oBasket->expects($this->any())->method('getCosts')->will($this->returnValue($oPrice));
         $oBasket->expects($this->any())->method('getBruttoSum')->will($this->returnValue(7));
 
-        $oPayment = oxNew('oxPayment');
+        $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
         $oPayment->oxpayments__oxdesc = new oxField("testPaymentDesc");
 
         $oUser = oxNew("oxuser");
@@ -128,7 +91,7 @@ class EmailUtf8Test extends \OxidTestCase
         $oShop = oxNew("oxshop");
         $oShop->load($this->getConfig()->getShopId());
 
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
+        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop", "getOrderFileList"));
         $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($oShop));
         $oEmail->expects($this->any())->method('getOrderFileList')->will($this->returnValue(false));
@@ -154,5 +117,54 @@ class EmailUtf8Test extends \OxidTestCase
         $this->assertTrue($oStr->strpos($sBody, "Vielen Dank für Ihre Bestellung!") > 0);
         $this->assertTrue($oStr->strpos($sBody, "Bitte fügen Sie hier Ihre vollständige Anbieterkennzeichnung ein.") > 0);
     }
-}
 
+    public function testSendForgotPwdEmailIsCaseInsensitive()
+    {
+        $realEmailAddress = 'admin';
+        $userProvidedEmailAddress = 'ADMIN';
+
+        $oEmailMock = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("send", "setRecipient"));
+        $oEmailMock->expects($this->once())->method("setRecipient")->with($realEmailAddress, 'John Doe');
+        $oEmailMock->expects($this->once())->method("send")->will($this->returnValue(true));
+
+        $oEmailMock->sendForgotPwdEmail($userProvidedEmailAddress);
+    }
+
+    /**
+     * Test for bug #0008618
+     *
+     * @dataProvider dataProviderTestSendForgotPwdEmailSendsToEmailAddressStoredInDatabase
+     */
+    public function testSendForgotPwdEmailSendsToEmailAddressStoredInDatabase($bogusEmailAddress)
+    {
+        $realEmailAddress = 'admin';
+
+        $oEmailMock = $this->getMock(\OxidEsales\Eshop\Core\Email::class, ["send", "setRecipient"]);
+        $oEmailMock->expects($this->atLeastOnce())->method("setRecipient")->with($realEmailAddress, 'John Doe');
+        $oEmailMock->expects($this->atLeastOnce())->method("send")->will($this->returnValue(true));
+
+        $oEmailMock->sendForgotPwdEmail($bogusEmailAddress);
+    }
+
+    public function dataProviderTestSendForgotPwdEmailSendsToEmailAddressStoredInDatabase()
+    {
+        return [
+            ['Admin'],
+            ['Àdmin'],
+            ['Ádmin'],
+            ['Âdmin'],
+            ['Ãdmin'],
+            ['Ädmin'],
+            ['Ådmin'],
+            ['àdmin'],
+            ['ádmin'],
+            ['âdmin'],
+            ['ãdmin'],
+            ['ädmin'],
+            ['ådmin'],
+            ['Ādmin'],
+            ['Ądmin'],
+            ['ądmin']
+        ];
+    }
+}

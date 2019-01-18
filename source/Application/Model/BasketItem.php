@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Model;
@@ -34,7 +18,6 @@ use stdClass;
  */
 class BasketItem extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Product ID
      *
@@ -396,7 +379,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
         if ($this->getStockCheckStatus() == true) {
             $dArtStockAmount = $this->getSession()->getBasket()->getArtStockInBasket($oArticle->getId(), $sItemKey);
             $selectForUpdate = false;
-            if ($this->getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
+            if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
                 $selectForUpdate = true;
             }
             $iOnStock = $oArticle->checkForStock($this->_dAmount, $dArtStockAmount, $selectForUpdate);
@@ -460,7 +443,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
     public function getIconUrl()
     {
         // icon url must be (re)loaded in case icon is not set or shop was switched between ssl/nonssl
-        if ($this->_sIconUrl === null || $this->_blSsl != $this->getConfig()->isSsl()) {
+        if ($this->_sIconUrl === null || $this->_blSsl != \OxidEsales\Eshop\Core\Registry::getConfig()->isSsl()) {
             $this->_sIconUrl = $this->getArticle()->getIconUrl();
         }
 
@@ -734,7 +717,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      */
     protected function _setArticle($sProductId)
     {
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oArticle = $this->getArticle(true, $sProductId);
 
         // product ID
@@ -782,7 +765,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
         $this->_sTitle = $oOrderArticle->oxarticles__oxtitle->value;
 
         // shop Ids
-        $this->_sShopId = $this->getConfig()->getShopId();
+        $this->_sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
         $this->_sNativeShopId = $oOrderArticle->oxarticles__oxshopid->value;
     }
 
@@ -804,7 +787,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
         $this->_aSelList = $aSelList;
 
         //
-        if (count($this->_aSelList) && is_array($this->_aSelList)) {
+        if (is_array($this->_aSelList) && count($this->_aSelList)) {
             foreach ($this->_aSelList as $conkey => $iSel) {
                 $this->_aChosenSelectlist[$conkey] = new stdClass();
                 $this->_aChosenSelectlist[$conkey]->name = $aSelectLists[$conkey]['name'];

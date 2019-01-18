@@ -1,27 +1,12 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use modDB;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Controller\BaseController;
 use \oxRegistry;
 
@@ -66,7 +51,7 @@ class WidgetControlTest extends \OxidTestCase
 
 
         $oControl = $this->getMock(\OxidEsales\Eshop\Core\WidgetControl::class, array("getConfig"));
-        $oControl->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $oControl->UNITrunLast();
 
@@ -90,8 +75,8 @@ class WidgetControlTest extends \OxidTestCase
         $this->assertEquals("testValue", $oView->getViewParameter("testParam"));
 
         // checking active view object
-        $this->assertEquals(1, count($oControl->getConfig()->getActiveViewsList()));
-        $this->assertEquals("oxwCookieNote", $oControl->getConfig()->getActiveView()->getClassName());
+        $this->assertEquals(1, count(Registry::getConfig()->getActiveViewsList()));
+        $this->assertEquals("oxwCookieNote", Registry::getConfig()->getActiveView()->getClassName());
     }
 
     /**
@@ -110,14 +95,14 @@ class WidgetControlTest extends \OxidTestCase
         $this->assertEquals("testValue", $oView->getViewParameter("testParam"));
 
         // checking active view objects
-        $aActiveViews = $oControl->getConfig()->getActiveViewsList();
+        $aActiveViews = Registry::getConfig()->getActiveViewsList();
 
         $this->assertEquals(3, count($aActiveViews));
         $this->assertEquals("account", $aActiveViews[0]->getClassName());
         $this->assertInstanceOf(BaseController::class, $aActiveViews[1]);
         $this->assertEquals("oxwCookieNote", $aActiveViews[2]->getClassName());
 
-        $this->assertEquals("oxwCookieNote", $oControl->getConfig()->getActiveView()->getClassName());
+        $this->assertEquals("oxwCookieNote", Registry::getConfig()->getActiveView()->getClassName());
     }
 
 }

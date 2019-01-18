@@ -1,31 +1,19 @@
 <?php
+declare(strict_types=1);
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-use \oxField;
-use \oxPrice;
-use \oxDb;
-use \oxRegistry;
-use \oxTestModules;
+use oxDb;
+use oxField;
+use OxidEsales\Eshop\Application\Model\BasketItem;
+use OxidEsales\Eshop\Application\Model\Shop;
+use OxidEsales\Eshop\Core\Price;
+use oxPrice;
+use oxRegistry;
+use oxTestModules;
 
 class EmailTest extends \OxidTestCase
 {
@@ -169,7 +157,7 @@ class EmailTest extends \OxidTestCase
         $utilsObjectMock = $this->getMock(\OxidEsales\Eshop\Core\UtilsObject::class, ['generateUId']);
         $utilsObjectMock->expects($this->any())->method('generateUId')->will($this->returnValue('xxx'));
 
-        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $email */
+        /** @var oxEmail|PHPUnit\Framework\MockObject\MockObject $email */
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('getBody', 'addEmbeddedImage', 'setBody', 'getUtilsObjectInstance'));
         $email->expects($this->at(1))->method('getUtilsObjectInstance')->will($this->returnValue($utilsObjectMock));
         $email->expects($this->at(2))->method('addEmbeddedImage')->with($this->equalTo($imageDirectory . 'stars.jpg'), $this->equalTo('xxx'), $this->equalTo("image"), $this->equalTo("base64"), $this->equalTo('image/jpeg'))->will($this->returnValue(true));
@@ -280,7 +268,6 @@ class EmailTest extends \OxidTestCase
      */
     public function testSendOrderEMailToOwnerAddsHistoryRecord()
     {
-        $myConfig = $this->getConfig();
         $myDb = oxDb::getDb();
 
         $oPayment = oxNew('oxPayment');
@@ -319,8 +306,6 @@ class EmailTest extends \OxidTestCase
      */
     public function testSendForgotPwdEmailToNotExistingUser()
     {
-        $myConfig = $this->getConfig();
-
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
         $oEmail->expects($this->never())->method('_sendMail');
         $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
@@ -347,7 +332,7 @@ class EmailTest extends \OxidTestCase
      */
     public function testSendBackupMailWithAttachment()
     {
-        $fileToAttach = $this->createFile('alternativeFile.php', '');
+        $fileToAttach = $this->getFileToAttach();
         $filesToAttach = array(basename($fileToAttach));
         $filesToAttachDirectory = dirname($fileToAttach);
         $emailAddress = 'username@useremail.nl';
@@ -356,7 +341,7 @@ class EmailTest extends \OxidTestCase
         $status = array();
         $errors = array();
 
-        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $email */
+        /** @var oxEmail|PHPUnit\Framework\MockObject\MockObject $email */
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
         $email->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $email->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
@@ -370,7 +355,7 @@ class EmailTest extends \OxidTestCase
      */
     public function testSendBackupMailWithAttachmentStatusCode()
     {
-        $fileToAttach = $this->createFile('alternativeFile.php', '');
+        $fileToAttach = $this->getFileToAttach();
         $filesToAttach = array(basename($fileToAttach));
         $filesToAttachDirectories = dirname($fileToAttach);
         $emailAddress = 'username@useremail.nl';
@@ -379,7 +364,7 @@ class EmailTest extends \OxidTestCase
         $status = array();
         $errors = array();
 
-        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $email */
+        /** @var oxEmail|PHPUnit\Framework\MockObject\MockObject $email */
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
         $email->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
         $email->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
@@ -406,7 +391,7 @@ class EmailTest extends \OxidTestCase
         $status = array();
         $errors = array();
 
-        /** @var oxEmail|PHPUnit_Framework_MockObject_MockObject $email */
+        /** @var oxEmail|PHPUnit\Framework\MockObject\MockObject $email */
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
         $oEmail->expects($this->never())->method('_sendMail');
         $oEmail->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
@@ -454,7 +439,7 @@ class EmailTest extends \OxidTestCase
         $this->_oArticle->oxarticles__oxremindamount = new oxField('0', oxField::T_RAW);
         $this->_oArticle->save();
 
-        $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array('getArticle', 'getProductId'));
+        $oBasketItem = $this->getMock(BasketItem::class, array('getArticle', 'getProductId'));
         $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($this->_oArticle));
         $oBasketItem->expects($this->any())->method('getProductId')->will($this->returnValue('_testArticleId'));
 
@@ -479,7 +464,7 @@ class EmailTest extends \OxidTestCase
         $this->_oArticle->oxarticles__oxremindamount = new oxField('9', oxField::T_RAW);
         $this->_oArticle->save();
 
-        $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array('getArticle', 'getProductId'));
+        $oBasketItem = $this->getMock(BasketItem::class, array('getArticle', 'getProductId'));
         $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($this->_oArticle));
         $oBasketItem->expects($this->any())->method('getProductId')->will($this->returnValue('_testArticleId'));
 
@@ -504,7 +489,7 @@ class EmailTest extends \OxidTestCase
         $this->_oArticle->oxarticles__oxremindamount = new oxField('10', oxField::T_RAW);
         $this->_oArticle->save();
 
-        $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array('getArticle', 'getProductId'));
+        $oBasketItem = $this->getMock(BasketItem::class, array('getArticle', 'getProductId'));
         $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($this->_oArticle));
         $oBasketItem->expects($this->any())->method('getProductId')->will($this->returnValue('_testArticleId'));
 
@@ -807,7 +792,7 @@ class EmailTest extends \OxidTestCase
     public function testSendMailErrorMsg()
     {
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("getRecipient", "getMailer", "_sendMail", "_sendMailErrorMsg"));
-        $oEmail->expects($this->at(0))->method('getRecipient')->will($this->returnValue(1));
+        $oEmail->expects($this->at(0))->method('getRecipient')->will($this->returnValue([1]));
         $oEmail->expects($this->at(1))->method('getMailer')->will($this->returnValue("smtp"));
         $oEmail->expects($this->at(2))->method('_sendMail')->will($this->returnValue(false));
         $oEmail->expects($this->at(3))->method('_sendMailErrorMsg');
@@ -824,7 +809,7 @@ class EmailTest extends \OxidTestCase
     public function testSendMailErrorMsg_failsOnlySmtp()
     {
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("getRecipient", "getMailer", "_sendMail", "_sendMailErrorMsg"));
-        $oEmail->expects($this->at(0))->method('getRecipient')->will($this->returnValue(1));
+        $oEmail->expects($this->at(0))->method('getRecipient')->will($this->returnValue([1]));
         $oEmail->expects($this->at(1))->method('getMailer')->will($this->returnValue("smtp"));
         $oEmail->expects($this->at(2))->method('_sendMail')->will($this->returnValue(false));
         $oEmail->expects($this->at(3))->method('_sendMailErrorMsg');
@@ -841,7 +826,7 @@ class EmailTest extends \OxidTestCase
     public function testSendMailErrorMsg_failsMail()
     {
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("getRecipient", "getMailer", "_sendMail", "_sendMailErrorMsg"));
-        $oEmail->expects($this->at(0))->method('getRecipient')->will($this->returnValue(1));
+        $oEmail->expects($this->at(0))->method('getRecipient')->will($this->returnValue([1]));
         $oEmail->expects($this->at(1))->method('getMailer')->will($this->returnValue("mail"));
         $oEmail->expects($this->at(2))->method('_sendMail')->will($this->returnValue(false));
         $oEmail->expects($this->at(3))->method('_sendMailErrorMsg');
@@ -1010,15 +995,6 @@ class EmailTest extends \OxidTestCase
         $this->assertTrue($this->_oEmail->SMTPDebug);
     }
 
-    /*
-     * Test setting phpmailer plugin directory
-     */
-    public function testSetMailerPluginDir()
-    {
-        $this->_oEmail->UNITsetMailerPluginDir();
-        $this->assertEquals(getShopBasePath() . "Core/phpmailer/", $this->_oEmail->PluginDir);
-    }
-
     /**
      * Test passing mail body and alt body proccesing through oxoutput
      */
@@ -1034,7 +1010,10 @@ class EmailTest extends \OxidTestCase
 
     public function testHeaderLine()
     {
-        $this->assertEquals("testName: testVar" . PHP_EOL, $this->_oEmail->headerLine('testName', 'testVar'));
+        $headerLine = $this->_oEmail->headerLine('testName', 'testValue');
+
+        $this->assertContains('testName', $headerLine);
+        $this->assertContains('testValue', $headerLine);
     }
 
     public function testHeaderLineXMailer()
@@ -1149,5 +1128,240 @@ class EmailTest extends \OxidTestCase
         $this->assertEquals("info@myoxideshop.com", $oEmail->getFrom());
     }
 
-}
+    public function testProductReviewLinksAreIncludedByDefaultInSendedNowMail()
+    {
+        $orderStub = $this->getOrderStub();
+        $emailStub = $this->getEmailStub();
 
+        $emailStub->sendSendedNowMail($orderStub);
+
+        $body = $emailStub->getBody();
+
+        $this->assertTrue($this->isReviewLinkIncluded($body), 'Links to product reviews are included in the email body by default');
+    }
+
+    /**
+     * @param bool   $configParameterLoadReviewsValue
+     * @param bool   $isReviewLinkExpectedToBeIncluded
+     * @param string $message
+     *
+     * @dataProvider dataProviderTestProductReviewLinksAreIncludedInSendedNowMailAccordingConfiguration
+     */
+    public function testProductReviewLinksAreIncludedInSendedNowMailAccordingConfiguration(
+        bool $configParameterLoadReviewsValue,
+        bool $isReviewLinkExpectedToBeIncluded,
+        string $message
+    )
+    {
+        $this->setConfigParam('bl_perfLoadReviews', $configParameterLoadReviewsValue);
+        $orderStub = $this->getOrderStub();
+        $emailStub = $this->getEmailStub();
+
+        $emailStub->sendSendedNowMail($orderStub);
+
+        $body = $emailStub->getBody();
+
+        $this->assertSame($isReviewLinkExpectedToBeIncluded, $this->isReviewLinkIncluded($body), $message);
+    }
+
+    public function dataProviderTestProductReviewLinksAreIncludedInSendedNowMailAccordingConfiguration()
+    {
+        return [
+            [
+                'configParameterLoadReviewsValue'  => true,
+                'isReviewLinkExpectedToBeIncluded' => true,
+                'message'                          => 'Links to product reviews are included in the email body'
+            ],
+            [
+                'configParameterLoadReviewsValue'  => false,
+                'isReviewLinkExpectedToBeIncluded' => false,
+                'message'                          => 'No links to product reviews are included in the email body'
+            ],
+
+        ];
+    }
+
+    public function testProductReviewLinksAreNotIncludedByDefaultInOrderEmail()
+    {
+        $orderStub = $this->getOrderStub();
+        $emailStub = $this->getEmailStub();
+
+        $emailStub->sendOrderEmailToUser($orderStub);
+
+        $body = $emailStub->getBody();
+
+        $this->assertFalse($this->isReviewLinkIncluded($body));
+    }
+
+    /**
+     * @param bool   $configParameterLoadReviews
+     * @param bool   $configParameterIncludeProductReviewLinksInEmail
+     * @param bool   $isReviewLinkExpectedToBeIncluded
+     * @param string $message
+     *
+     * @dataProvider dataProviderTestProductReviewLinksAreIncludedInOrderEmailAccordingConfiguration
+     */
+    public function testProductReviewLinksAreIncludedInOrderEmailAccordingConfiguration(
+        bool $configParameterLoadReviews,
+        bool $configParameterIncludeProductReviewLinksInEmail,
+        bool $isReviewLinkExpectedToBeIncluded,
+        string $message
+    )
+    {
+        $this->setConfigParam('bl_perfLoadReviews', $configParameterLoadReviews);
+        $this->setConfigParam('includeProductReviewLinksInEmail', $configParameterIncludeProductReviewLinksInEmail);
+        $orderStub = $this->getOrderStub();
+        $emailStub = $this->getEmailStub();
+
+        $emailStub->sendOrderEmailToUser($orderStub);
+
+        $body = $emailStub->getBody();
+
+        $this->assertSame($isReviewLinkExpectedToBeIncluded, $this->isReviewLinkIncluded($body), $message);
+    }
+
+    public function dataProviderTestProductReviewLinksAreIncludedInOrderEmailAccordingConfiguration()
+    {
+        return [
+            [
+                'configParameterLoadReviewsValue'                 => true,
+                'configParameterIncludeProductReviewLinksInEmail' => true,
+                'isReviewLinkExpectedToBeIncluded'                => true,
+                'message'                                         => 'Links to product reviews are included in the email body'
+            ],
+            [
+                'configParameterLoadReviewsValue'                 => true,
+                'configParameterIncludeProductReviewLinksInEmail' => false,
+                'isReviewLinkExpectedToBeIncluded'                => false,
+                'message'                                         => 'No links to product reviews are included in the email body'
+            ],
+            [
+                'configParameterLoadReviewsValue'                 => false,
+                'configParameterIncludeProductReviewLinksInEmail' => true,
+                'isReviewLinkExpectedToBeIncluded'                => false,
+                'message'                                         => 'No links to product reviews are included in the email body'
+            ],
+            [
+                'configParameterLoadReviewsValue'                 => false,
+                'configParameterIncludeProductReviewLinksInEmail' => false,
+                'isReviewLinkExpectedToBeIncluded'                => false,
+                'message'                                         => 'No links to product reviews are included in the email body'
+            ],
+        ];
+    }
+
+    /**
+     * @param $basketContents
+     * @param $basketArticles
+     *
+     * @return \OxidEsales\Eshop\Application\Model\Order|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getOrderStub()
+    {
+        $priceStub = $this->getMockBuilder(Price::class)
+            ->getMock();
+        $priceStub->method('getPrice')->will($this->returnValue(256));
+        $priceStub->method('getBruttoPrice')->will($this->returnValue(8));
+
+        $basketItemStub = $this->getMockBuilder(BasketItem::class)
+            ->setMethods(['getPrice', 'getUnitPrice', 'getRegularUnitPrice', 'getTitle'])
+            ->getMock();
+        $basketItemStub->method('getPrice')->will($this->returnValue($priceStub));
+        $basketItemStub->method('getUnitPrice')->will($this->returnValue($priceStub));
+        $basketItemStub->method('getRegularUnitPrice')->will($this->returnValue($priceStub));
+        $basketItemStub->method('getTitle')->will($this->returnValue("testarticle"));
+
+        // insert test article
+        $article = oxNew("oxArticle");
+        $article->setId('_testArticleId');
+        $article->setId('_testArticleId');
+        $article->oxarticles__oxtitle = new oxField();
+
+        $priceStub->setPrice(0);
+
+        $basketStub = $this->getMockBuilder(\OxidEsales\Eshop\Application\Model\Basket::class)
+            ->setMethods(['getBasketArticles', 'getContents', 'getCosts', 'getBruttoSum',])
+            ->getMock();
+        $basketStub->method('getBasketArticles')->will($this->returnValue([$article]));
+        $basketStub->method('getContents')->will($this->returnValue([$basketItemStub]));
+        $basketStub->method('getCosts')->will($this->returnValue($priceStub));
+        $basketStub->method('getBruttoSum')->will($this->returnValue(7));
+
+        $payment = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
+        $payment->oxpayments__oxdesc = new oxField("testPaymentDesc");
+
+        $user = oxNew("oxuser");
+        $user->setId('_testUserId');
+        $user->oxuser__oxusername = new oxField('username@useremail.nl', oxField::T_RAW);
+        $user->oxuser__oxfname = new oxField('testUserFName', oxField::T_RAW);
+        $user->oxuser__oxlname = new oxField('testUserLName', oxField::T_RAW);
+
+        $orderStub = $this->getMockBuilder(\OxidEsales\Eshop\Application\Model\Order::class)
+            ->setMethods(['getOrderUser', 'getBasket', 'getPayment'])
+            ->getMock();
+        $orderStub->method('getOrderUser')->will($this->returnValue($user));
+        $orderStub->method('getBasket')->will($this->returnValue($basketStub));
+        $orderStub->method('getPayment')->will($this->returnValue($payment));
+
+        $orderStub->oxorder__oxordernr = new oxField('987654321', oxField::T_RAW);
+        $orderStub->oxorder__oxbillfname = new oxField('');
+        $orderStub->oxorder__oxbilllname = new oxField('');
+        $orderStub->oxorder__oxbilladdinfo = new oxField('');
+        $orderStub->oxorder__oxbillstreet = new oxField('');
+        $orderStub->oxorder__oxbillcity = new oxField('');
+        $orderStub->oxorder__oxbillcountry = new oxField('');
+        $orderStub->oxorder__oxbillcompany = new oxField('');
+        $orderStub->oxorder__oxdeltype = new oxField("oxidstandard");
+
+        return $orderStub;
+    }
+
+    /**
+     * @return \OxidEsales\Eshop\Core\Email|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getEmailStub()
+    {
+        $shop = oxNew(Shop::class);
+        $shop->load($this->getConfig()->getShopId());
+
+        $emailStub = $this->getMockBuilder(\OxidEsales\Eshop\Core\Email::class)
+            ->setMethods(['_sendMail', '_getShop', 'getOrderFileList'])
+            ->getMock();;
+        $emailStub->method('_sendMail')->will($this->returnValue(true));
+        $emailStub->method('_getShop')->will($this->returnValue($shop));
+        $emailStub->method('getOrderFileList')->will($this->returnValue(false));
+
+        return $emailStub;
+    }
+
+    /**
+     * @return string
+     */
+    private function getTemporaryFilePath(): string
+    {
+        $temporaryFileHandle = tmpfile();
+
+        return  stream_get_meta_data($temporaryFileHandle)['uri'];
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getFileToAttach()
+    {
+        $fileToAttach = $this->getTemporaryFilePath();
+        file_put_contents($fileToAttach, 'test');
+
+        return $fileToAttach;
+    }
+
+    /**
+     * @param $body
+     *
+     * @return bool
+     */
+    private function isReviewLinkIncluded($body): bool
+    {
+        return false !== strpos($body, 'cl=review');
+    }
+}

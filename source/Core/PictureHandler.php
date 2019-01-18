@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Core;
@@ -27,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class PictureHandler extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Deletes master picture and all images generated from it.
      * If third parameter is false, skips master image delete, only
@@ -41,7 +24,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
      */
     public function deleteArticleMasterPicture($oObject, $iIndex, $blDeleteMasterPicture = true)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $myUtilsPic = \OxidEsales\Eshop\Core\Registry::getUtilsPic();
         $oUtilsFile = \OxidEsales\Eshop\Core\Registry::getUtilsFile();
         $blGeneratedImagesOnly = !$blDeleteMasterPicture;
@@ -101,7 +84,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
     public function deleteMainIcon($oObject)
     {
         if (($sMainIcon = $oObject->oxarticles__oxicon->value)) {
-            $sPath = $this->getConfig()->getPictureDir(false) . \OxidEsales\Eshop\Core\Registry::getUtilsFile()->getImageDirByType("ICO");
+            $sPath = \OxidEsales\Eshop\Core\Registry::getConfig()->getPictureDir(false) . \OxidEsales\Eshop\Core\Registry::getUtilsFile()->getImageDirByType("ICO");
             \OxidEsales\Eshop\Core\Registry::getUtilsPic()->safePictureDelete($sMainIcon, $sPath, "oxarticles", "oxicon");
         }
     }
@@ -115,7 +98,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
     {
         if (($sThumb = $oObject->oxarticles__oxthumb->value)) {
             // deleting article main icon and thumb picture
-            $sPath = $this->getConfig()->getPictureDir(false) . \OxidEsales\Eshop\Core\Registry::getUtilsFile()->getImageDirByType("TH");
+            $sPath = \OxidEsales\Eshop\Core\Registry::getConfig()->getPictureDir(false) . \OxidEsales\Eshop\Core\Registry::getUtilsFile()->getImageDirByType("TH");
             \OxidEsales\Eshop\Core\Registry::getUtilsPic()->safePictureDelete($sThumb, $sPath, "oxarticles", "oxthumb");
         }
     }
@@ -132,7 +115,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
     {
         // checking if oxzoom field exists
         $oDbHandler = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
-        $iZoomPicCount = (int) $this->getConfig()->getConfigParam('iZoomPicCount');
+        $iZoomPicCount = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iZoomPicCount');
 
         if ($iIndex > $iZoomPicCount || !$oDbHandler->fieldExists("oxzoom" . $iIndex, "oxarticles")) {
             if ($sZoomPicName = $this->getZoomName($oObject->{"oxarticles__oxpic" . $iIndex}->value, $iIndex)) {
@@ -147,7 +130,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
 
         if ($sZoomPicName && $sZoomPicName != "nopic.jpg") {
             // deleting zoom picture
-            $sPath = $this->getConfig()->getPictureDir(false) . \OxidEsales\Eshop\Core\Registry::getUtilsFile()->getImageDirByType("Z" . $iIndex);
+            $sPath = \OxidEsales\Eshop\Core\Registry::getConfig()->getPictureDir(false) . \OxidEsales\Eshop\Core\Registry::getUtilsFile()->getImageDirByType("Z" . $iIndex);
             \OxidEsales\Eshop\Core\Registry::getUtilsPic()->safePictureDelete($sZoomPicName, $sPath, "oxarticles", $sFieldToCheck);
         }
     }
@@ -223,12 +206,13 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
      */
     public function getImageSize($aImgSizes, $sIndex = null)
     {
+        $aSize = [];
         if (isset($sIndex) && is_array($aImgSizes) && isset($aImgSizes[$sIndex])) {
             $aSize = explode('*', $aImgSizes[$sIndex]);
         } elseif (is_string($aImgSizes)) {
             $aSize = explode('*', $aImgSizes);
         }
-        if (2 == count($aSize)) {
+        if (is_array($aSize) && 2 == count($aSize)) {
             $x = (int) $aSize[0];
             $y = (int) $aSize[1];
             if ($x && $y) {
@@ -258,7 +242,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
             return ['path' => false, 'url' => $sAltUrl];
         }
 
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sPath = $oConfig->getPicturePath($sFilePath . $sFile, $blAdmin, $iLang, $iShopId);
         if (!$sPath) {
             return ['path' => false, 'url' => false];
@@ -281,7 +265,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
      */
     public function getAltImageUrl($sFilePath, $sFile, $blSSL = null)
     {
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $sAltUrl = $oConfig->getConfigParam('sAltImageUrl');
         if (!$sAltUrl) {
@@ -326,7 +310,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
         if ($sPath && $sFile && ($aSize = $this->getImageSize($sSize, $sIndex))) {
             $aPicInfo = $this->_getPictureInfo("master/" . ($sAltPath ? $sAltPath : $sPath), $sFile, $this->isAdmin(), $bSsl);
             if ($aPicInfo['url'] && $aSize[0] && $aSize[1]) {
-                $sDirName = "{$aSize[0]}_{$aSize[1]}_" . $this->getConfig()->getConfigParam('sDefaultImageQuality');
+                $sDirName = "{$aSize[0]}_{$aSize[1]}_" . \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sDefaultImageQuality');
                 $sUrl = str_replace("/master/" . ($sAltPath ? $sAltPath : $sPath), "/generated/{$sPath}{$sDirName}/", $aPicInfo['url']);
             }
         }

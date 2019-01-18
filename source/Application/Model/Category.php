@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Model;
@@ -34,7 +18,6 @@ use oxField;
  */
 class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
-
     /**
      * Subcategories array.
      *
@@ -288,7 +271,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
 
         $sOXID = isset($sOXID) ? $sOXID : $this->getId();
 
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $blRet = false;
 
@@ -445,7 +428,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      */
     public function getNrOfArticles()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if (!isset($this->_iNrOfArticles)
             && !$this->isAdmin()
@@ -482,7 +465,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     public function getIsVisible()
     {
         if (!isset($this->_blIsVisible)) {
-            if ($this->getConfig()->getConfigParam('blDontShowEmptyCategories')) {
+            if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blDontShowEmptyCategories')) {
                 $blEmpty = ($this->getNrOfArticles() < 1) && !$this->getHasVisibleSubCats();
             } else {
                 $blEmpty = false;
@@ -513,7 +496,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     {
         if ($this->_sDynImageDir === null) {
             $sThisShop = $this->oxcategories__oxshopid->value;
-            $this->_sDynImageDir = $this->getConfig()->getPictureUrl(null, false, null, null, $sThisShop);
+            $this->_sDynImageDir = \OxidEsales\Eshop\Core\Registry::getConfig()->getPictureUrl(null, false, null, null, $sThisShop);
         }
 
         return $this->_sDynImageDir;
@@ -625,7 +608,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
         $sUrl = '';
         if ($blFull) {
             //always returns shop url, not admin
-            $sUrl = $this->getConfig()->getShopUrl($iLang, false);
+            $sUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl($iLang, false);
         }
 
         //always returns shop url, not admin
@@ -993,22 +976,24 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     /**
      * Sets data field value
      *
-     * @param string $sFieldName index OR name (eg. 'oxarticles__oxtitle') of a data field to set
-     * @param string $sValue     value of data field
-     * @param int    $iDataType  field type
+     * @param string $fieldName index OR name (eg. 'oxarticles__oxtitle') of a data field to set
+     * @param string $value     value of data field
+     * @param int    $dataType  field type
      *
      * @return null
      */
-    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
+    protected function _setFieldData($fieldName, $value, $dataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
     {
         //preliminary quick check saves 3% of execution time in category lists by avoiding redundant strtolower() call
-        if ($sFieldName[2] == 'l' || $sFieldName[2] == 'L' || (isset($sFieldName[16]) && ($sFieldName[16] == 'l' || $sFieldName[16] == 'L'))) {
-            if ('oxlongdesc' === strtolower($sFieldName) || 'oxcategories__oxlongdesc' === strtolower($sFieldName)) {
-                $iDataType = \OxidEsales\Eshop\Core\Field::T_RAW;
+        $fieldNameIndex2 = $fieldName[2];
+        if ($fieldNameIndex2 === 'l' || $fieldNameIndex2 === 'L' || (isset($fieldName[16]) && ($fieldName[16] == 'l' || $fieldName[16] == 'L'))) {
+            $loweredFieldName = strtolower($fieldName);
+            if ('oxlongdesc' === $loweredFieldName || 'oxcategories__oxlongdesc' === $loweredFieldName) {
+                $dataType = \OxidEsales\Eshop\Core\Field::T_RAW;
             }
         }
 
-        return parent::_setFieldData($sFieldName, $sValue, $iDataType);
+        return parent::_setFieldData($fieldName, $value, $dataType);
     }
 
     /**
@@ -1019,7 +1004,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     public function getIconUrl()
     {
         if (($sIcon = $this->oxcategories__oxicon->value)) {
-            $oConfig = $this->getConfig();
+            $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
             $sSize = $oConfig->getConfigParam('sCatIconsize');
             if (!isset($sSize)) {
                 $sSize = $oConfig->getConfigParam('sIconsize');
@@ -1037,7 +1022,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     public function getThumbUrl()
     {
         if (($sIcon = $this->oxcategories__oxthumb->value)) {
-            $sSize = $this->getConfig()->getConfigParam('sCatThumbnailsize');
+            $sSize = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sCatThumbnailsize');
 
             return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getPicUrl("category/thumb/", $sIcon, $sSize);
         }
@@ -1051,7 +1036,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     public function getPromotionIconUrl()
     {
         if (($sIcon = $this->oxcategories__oxpromoicon->value)) {
-            $sSize = $this->getConfig()->getConfigParam('sCatPromotionsize');
+            $sSize = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sCatPromotionsize');
 
             return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getPicUrl("category/promo_icon/", $sIcon, $sSize);
         }

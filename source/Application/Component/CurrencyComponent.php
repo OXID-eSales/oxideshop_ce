@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Component;
@@ -31,7 +15,6 @@ use oxRegistry;
  */
 class CurrencyComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
-
     /**
      * Array of available currencies.
      *
@@ -67,7 +50,7 @@ class CurrencyComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     public function init()
     {
         // Performance
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         if (!$myConfig->getConfigParam('bl_perfLoadCurrency')) {
             //#861C -  show first currency
             $aCurrencies = $myConfig->getCurrencyArray();
@@ -120,11 +103,11 @@ class CurrencyComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $oParentView->setActCurrency($this->_oActCur);
 
         $oUrlUtils = \OxidEsales\Eshop\Core\Registry::getUtilsUrl();
-        $sUrl = $oUrlUtils->cleanUrl($this->getConfig()->getTopActiveView()->getLink(), ["cur"]);
+        $sUrl = $oUrlUtils->cleanUrl(\OxidEsales\Eshop\Core\Registry::getConfig()->getTopActiveView()->getLink(), ["cur"]);
 
-        if ($this->getConfig()->getConfigParam('bl_perfLoadCurrency')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadCurrency')) {
             reset($this->aCurrencies);
-            while (list(, $oItem) = each($this->aCurrencies)) {
+            foreach ($this->aCurrencies as $oItem) {
                 $oItem->link = $oUrlUtils->processUrl($sUrl, true, ["cur" => $oItem->id]);
             }
         }

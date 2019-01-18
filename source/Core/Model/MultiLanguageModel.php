@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Core\Model;
@@ -29,7 +13,6 @@ use oxObjectException;
  */
 class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-
     /**
      * Name of class.
      *
@@ -233,11 +216,11 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         // checks if object field data is not empty in all available languages
         // and formats not available in languages array
-        if (is_array($rs) && count($rs[0])) {
+        if (isset($rs[0]) && is_array($rs[0]) && count($rs[0])) {
             foreach ($multiLangFields as $fieldId => $multiLangIds) {
                 foreach ($multiLangIds as $multiLangId) {
                     $fieldName = ($multiLangId == 0) ? $fieldId : $fieldId . '_' . $multiLangId;
-                    if ($rs['0'][strtoupper($fieldName)]) {
+                    if ($rs[0][strtoupper($fieldName)]) {
                         unset($notInLang[$multiLangId]);
                         continue;
                     }
@@ -425,18 +408,6 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * If needed, check if field can be updated
-     *
-     * @param string $fieldName
-     *
-     * @return bool
-     */
-    protected function checkFieldCanBeUpdated($fieldName)
-    {
-        return true;
-    }
-
-    /**
      * Get object fields sql part for base table
      * used for updates or inserts:
      * return e.g.  fldName1 = 'value1',fldName2 = 'value2'...
@@ -480,7 +451,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
                 $insertSql = "insert into $langTable set " . $this->_getUpdateFieldsForTable($langTable, $this->getUseSkipSaveFields()) .
                              " on duplicate key update " . $this->_getUpdateFieldsForTable($langTable);
 
-                $ret = (bool) $this->executeDatabaseQuery($insertSql);
+                $this->executeDatabaseQuery($insertSql);
             }
         }
 

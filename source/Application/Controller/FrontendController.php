@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
@@ -31,6 +15,7 @@ use oxDb;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewAndRatingBridgeInterface;
 use oxManufacturer;
 use oxManufacturerList;
 use oxPrice;
@@ -407,6 +392,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /** @var string Logged in user name. */
     protected $_sActiveUsername = null;
 
+    /** @var boolean is VAT included in prices */
+    protected $_blIsVatIncluded = null;
+
     /** @var array Components which needs to be initialized/rendered (depending on cache and its cache status). */
     protected static $_aCollectedComponentNames = null;
 
@@ -429,6 +417,35 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     protected $_blCanAcceptFormData = null;
 
     /**
+     * Return true, if the review manager should be shown.
+     *
+     * @return bool
+     */
+    public function isUserAllowedToManageOwnReviews()
+    {
+        return (bool) Registry::getConfig()->getConfigParam('blAllowUsersToManageTheirReviews');
+    }
+
+    /**
+     * Get the total number of reviews for the active user.
+     *
+     * @return integer Number of reviews
+     */
+    public function getReviewAndRatingItemsCount()
+    {
+        $user = $this->getUser();
+        $count = 0;
+        if ($user) {
+            $count = $this
+                ->getContainer()
+                ->get(UserReviewAndRatingBridgeInterface::class)
+                ->getReviewAndRatingListCount($user->getId());
+        }
+
+        return $count;
+    }
+
+    /**
      * Returns component names.
      *
      * At the moment it is not possible to override $_aCollectedComponentNames in oxUBase,
@@ -441,7 +458,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         if (self::$_aCollectedComponentNames === null) {
             self::$_aCollectedComponentNames = array_merge($this->_aComponentNames, $this->_aUserComponentNames);
 
-            if (($userComponentNames = $this->getConfig()->getConfigParam('aUserComponentNames'))) {
+            if (($userComponentNames = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aUserComponentNames'))) {
                 self::$_aCollectedComponentNames = array_merge(self::$_aCollectedComponentNames, $userComponentNames);
             }
 
@@ -470,13 +487,13 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         if (!isSearchEngineUrl() && $utils->seoIsActive() && ($requestUrl = getRequestUrl())) {
             // fetching standard url and looking for it in seo table
             if ($this->_canRedirect() && ($redirectUrl = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->fetchSeoUrl($requestUrl))) {
-                $utils->redirect($this->getConfig()->getCurrentShopUrl() . $redirectUrl, false, 301);
+                $utils->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getCurrentShopUrl() . $redirectUrl, false, 301);
             } elseif (VIEW_INDEXSTATE_INDEX == $this->noIndex()) {
                 // forcing to set no index/follow meta
                 $this->_forceNoIndex();
 
-                if ($this->getConfig()->getConfigParam('blSeoLogging')) {
-                    $shopId = $this->getConfig()->getShopId();
+                if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blSeoLogging')) {
+                    $shopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
                     $languageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
                     $id = md5(strtolower($requestUrl) . $shopId . $languageId);
 
@@ -561,7 +578,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     protected function generateViewId()
     {
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $viewId = $this->generateViewIdBase();
 
         $viewId .= "|" . ((int) $this->_blForceNoIndex) . '|' . ((int) $this->isRootCatChanged());
@@ -591,7 +608,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     protected function generateViewIdBase()
     {
         $languageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
-        $currencyId = (int) $this->getConfig()->getShopCurrency();
+        $currencyId = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getShopCurrency();
 
         return "ox|$languageId|$currencyId";
     }
@@ -603,7 +620,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function showSorting()
     {
-        return $this->_blShowSorting && $this->getConfig()->getConfigParam('blShowSorting');
+        return $this->_blShowSorting && \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowSorting');
     }
 
     /**
@@ -689,9 +706,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function getListType()
     {
         if ($this->_sListType == null) {
-            if ($listType = $this->getConfig()->getRequestParameter('listtype')) {
+            if ($listType = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('listtype')) {
                 $this->_sListType = $listType;
-            } elseif ($listType = $this->getConfig()->getGlobalParameter('listtype')) {
+            } elseif ($listType = \OxidEsales\Eshop\Core\Registry::getConfig()->getGlobalParameter('listtype')) {
                 $this->_sListType = $listType;
             }
         }
@@ -710,14 +727,14 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $this->_sListDisplayType = $this->getCustomListDisplayType();
 
             if (!$this->_sListDisplayType) {
-                $this->_sListDisplayType = $this->getConfig()->getConfigParam('sDefaultListDisplayType');
+                $this->_sListDisplayType = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sDefaultListDisplayType');
             }
 
             $this->_sListDisplayType = in_array(( string ) $this->_sListDisplayType, $this->_aListDisplayTypes) ?
                 $this->_sListDisplayType : 'infogrid';
 
             // writing to session
-            if ($this->getConfig()->getRequestParameter('ldtype')) {
+            if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('ldtype')) {
                 \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('ldtype', $this->_sListDisplayType);
             }
         }
@@ -733,7 +750,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function getCustomListDisplayType()
     {
         if ($this->_sCustomListDisplayType == null) {
-            $this->_sCustomListDisplayType = $this->getConfig()->getRequestParameter('ldtype');
+            $this->_sCustomListDisplayType = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('ldtype');
 
             if (!$this->_sCustomListDisplayType) {
                 $this->_sCustomListDisplayType = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('ldtype');
@@ -751,7 +768,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function setListType($type)
     {
         $this->_sListType = $type;
-        $this->getConfig()->setGlobalParameter('listtype', $type);
+        \OxidEsales\Eshop\Core\Registry::getConfig()->setGlobalParameter('listtype', $type);
     }
 
     /**
@@ -763,7 +780,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     {
         if ($this->_blLoadCurrency == null) {
             $this->_blLoadCurrency = false;
-            if ($loadCurrency = $this->getConfig()->getConfigParam('bl_perfLoadCurrency')) {
+            if ($loadCurrency = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadCurrency')) {
                 $this->_blLoadCurrency = $loadCurrency;
             }
         }
@@ -780,7 +797,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     {
         if ($this->_blDontShowEmptyCats == null) {
             $this->_blDontShowEmptyCats = false;
-            if ($dontShowEmptyCats = $this->getConfig()->getConfigParam('blDontShowEmptyCategories')) {
+            if ($dontShowEmptyCats = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blDontShowEmptyCategories')) {
                 $this->_blDontShowEmptyCats = $dontShowEmptyCats;
             }
         }
@@ -795,7 +812,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function showCategoryArticlesCount()
     {
-        return $this->getConfig()->getConfigParam('bl_perfShowActionCatArticleCnt');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfShowActionCatArticleCnt');
     }
 
     /**
@@ -807,7 +824,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     {
         if ($this->_blLoadLanguage == null) {
             $this->_blLoadLanguage = false;
-            if ($loadLanguage = $this->getConfig()->getConfigParam('bl_perfLoadLanguages')) {
+            if ($loadLanguage = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadLanguages')) {
                 $this->_blLoadLanguage = $loadLanguage;
             }
         }
@@ -823,7 +840,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function getTopNavigationCatCnt()
     {
         if ($this->_iTopCatNavItmCnt == null) {
-            $topCategoryNavigationItemsCount = $this->getConfig()->getConfigParam('iTopNaviCatCount');
+            $topCategoryNavigationItemsCount = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iTopNaviCatCount');
             $this->_iTopCatNavItmCnt = $topCategoryNavigationItemsCount ? $topCategoryNavigationItemsCount : 5;
         }
 
@@ -910,7 +927,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $sortOrder &&
             Registry::getUtils()->isValidAlpha($sortOrder) &&
             in_array(Str::getStr()->strtolower($sortOrder), $sortDirections) &&
-            in_array($sortBy, oxNew(\OxidEsales\Eshop\Application\Model\Article::class)->getFieldNames())
+            in_array($sortBy, $this->getSortColumns())
         ) {
             return ['sortby' => $sortBy, 'sortdir' => $sortOrder];
         }
@@ -1013,7 +1030,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     {
         $seoObjectId = $this->_getSeoObjectId();
         $baseLanguageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
-        $shopId = $this->getConfig()->getShopId();
+        $shopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
 
         if ($seoObjectId && \OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() &&
             ($keywords = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getMetaData($seoObjectId, $dataType, $shopId, $baseLanguageId))
@@ -1140,10 +1157,12 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     {
         if ($this->_blForceNoIndex) {
             $this->_iViewIndexState = VIEW_INDEXSTATE_NOINDEXFOLLOW;
-        } elseif ($this->getConfig()->getRequestParameter('cur')) {
+        } elseif (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cur')) {
             $this->_iViewIndexState = VIEW_INDEXSTATE_NOINDEXNOFOLLOW;
+        } elseif (0 < \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\Request::class)->getRequestParameter('pgNr')) {
+            $this->_iViewIndexState = VIEW_INDEXSTATE_NOINDEXFOLLOW;
         } else {
-            switch ($this->getConfig()->getRequestParameter('fnc')) {
+            switch (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('fnc')) {
                 case 'tocomparelist':
                 case 'tobasket':
                     $this->_iViewIndexState = VIEW_INDEXSTATE_NOINDEXNOFOLLOW;
@@ -1179,7 +1198,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     protected function _setNrOfArtPerPage()
     {
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         //setting default values to avoid possible errors showing article list
         $numberOfCategoryArticles = $config->getConfigParam('iNrofCatArticles');
@@ -1265,7 +1284,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
 
             // removing duplicate words
             if ($removeDuplicatedWords) {
-                $meta = $this->_removeDuplicatedWords($meta, $this->getConfig()->getConfigParam('aSkipTags'));
+                $meta = $this->_removeDuplicatedWords($meta, \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aSkipTags'));
             }
 
             // some special cases
@@ -1293,7 +1312,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         $string = $this->_prepareMetaDescription($keywords, -1, false);
 
         if ($removeDuplicatedWords) {
-            $string = $this->_removeDuplicatedWords($string, $this->getConfig()->getConfigParam('aSkipTags'));
+            $string = $this->_removeDuplicatedWords($string, \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aSkipTags'));
         }
 
         return trim($string);
@@ -1347,7 +1366,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function getNavigationParams()
     {
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $params['cnid'] = $this->getCategoryId();
         $params['mnid'] = $config->getRequestParameter('mnid');
 
@@ -1438,7 +1457,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function getTitleSuffix()
     {
-        return $this->getConfig()->getActiveShop()->oxshops__oxtitlesuffix->value;
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveShop()->oxshops__oxtitlesuffix->value;
     }
 
     /**
@@ -1455,7 +1474,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function getTitlePrefix()
     {
-        return $this->getConfig()->getActiveShop()->oxshops__oxtitleprefix->value;
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveShop()->oxshops__oxtitleprefix->value;
     }
 
 
@@ -1500,7 +1519,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     {
         $result = '';
         $listType = $this->getListType();
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         switch ($listType) {
             default:
@@ -1540,7 +1559,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $languageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         }
 
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive()) {
             if ($displayObj = $this->_getSubject($languageId)) {
@@ -1613,7 +1632,15 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         $class = $this->getClassName();
         $function = $this->getFncName();
 
-        $forbiddenFunctions = ['tobasket', 'login_noredirect', 'addVoucher', 'moveleft', 'moveright'];
+        $forbiddenFunctions = [
+            'tobasket',
+            'login_noredirect',
+            'addVoucher',
+            'moveleft',
+            'moveright',
+            'deleteReviewAndRating',
+        ];
+
         if (in_array($function, $forbiddenFunctions)) {
             $function = '';
         }
@@ -1732,7 +1759,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function showSearch()
     {
-        return !($this->getConfig()->getConfigParam('blDisableNavBars') && $this->getIsOrderStep());
+        return !(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blDisableNavBars') && $this->getIsOrderStep());
     }
 
     /**
@@ -1753,7 +1780,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function getSortColumns()
     {
         if ($this->_aSortColumns === null) {
-            $this->setSortColumns($this->getConfig()->getConfigParam('aSortCols'));
+            $this->setSortColumns(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aSortCols'));
         }
 
         return $this->_aSortColumns;
@@ -1797,7 +1824,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     {
         if ($this->_oActiveRecommList === null) {
             $this->_oActiveRecommList = false;
-            if ($recommendationListId = $this->getConfig()->getRequestParameter('recommid')) {
+            if ($recommendationListId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recommid')) {
                 $this->_oActiveRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
                 $this->_oActiveRecommList->load($recommendationListId);
             }
@@ -1849,7 +1876,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function getTitle()
     {
         $language = \OxidEsales\Eshop\Core\Registry::getLang();
-        $translationName = 'PAGE_TITLE_' . strtoupper($this->getConfig()->getActiveView()->getClassName());
+        $translationName = 'PAGE_TITLE_' . strtoupper(\OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView()->getClassName());
         $translated = $language->translateString($translationName, \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage(), false);
 
         return $translationName == $translated ? null : $translated;
@@ -1865,9 +1892,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     {
         if (!isset($this->_sActiveLangAbbr)) {
             $languageService = \OxidEsales\Eshop\Core\Registry::getLang();
-            if ($this->getConfig()->getConfigParam('bl_perfLoadLanguages')) {
+            if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadLanguages')) {
                 $languages = $languageService->getLanguageArray();
-                while (list($key, $language) = each($languages)) {
+                foreach ($languages as $language) {
                     if ($language->selected) {
                         $this->_sActiveLangAbbr = $language->abbr;
                         break;
@@ -1910,7 +1937,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         if ($this->_sAdditionalParams === null) {
             // #1018A
             $this->_sAdditionalParams = parent::getAdditionalParams();
-            $this->_sAdditionalParams .= 'cl=' . $this->getConfig()->getTopActiveView()->getClassName();
+            $this->_sAdditionalParams .= 'cl=' . \OxidEsales\Eshop\Core\Registry::getConfig()->getTopActiveView()->getClassName();
 
             // #1834M - special char search
             $searchParamForLink = rawurlencode(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchparam', true));
@@ -1946,7 +1973,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function generatePageNavigationUrl()
     {
-        return $this->getConfig()->getShopHomeUrl() . $this->_getRequestParams(false);
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getShopHomeUrl() . $this->_getRequestParams(false);
     }
 
     /**
@@ -2091,7 +2118,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
 
         if ($this->getIsOrderStep()) {
             // disabling navigation during order ...
-            if ($this->getConfig()->getConfigParam('blDisableNavBars')) {
+            if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blDisableNavBars')) {
                 $this->_iNewsRealStatus = 1;
                 $this->setShowNewsletter(0);
             }
@@ -2138,7 +2165,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function getActPage()
     {
         if ($this->_iActPage === null) {
-            $this->_iActPage = ( int ) $this->getConfig()->getRequestParameter('pgNr');
+            $this->_iActPage = ( int ) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pgNr');
             $this->_iActPage = ($this->_iActPage < 0) ? 0 : $this->_iActPage;
         }
 
@@ -2159,7 +2186,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         // and we still need some object to mount navigation info
         if ($this->_oActVendor === null) {
             $this->_oActVendor = false;
-            $vendorId = $this->getConfig()->getRequestParameter('cnid');
+            $vendorId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid');
             $vendorId = $vendorId ? str_replace('v_', '', $vendorId) : $vendorId;
             $vendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
             if ($vendor->load($vendorId)) {
@@ -2184,7 +2211,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         // and we still need some object to mount navigation info
         if ($this->_oActManufacturer === null) {
             $this->_oActManufacturer = false;
-            $manufacturerId = $this->getConfig()->getRequestParameter('mnid');
+            $manufacturerId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('mnid');
             $manufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
             if ($manufacturer->load($manufacturerId)) {
                 $this->_oActManufacturer = $manufacturer;
@@ -2223,7 +2250,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     {
         if ($this->_oActSearch === null) {
             $this->_oActSearch = new stdClass();
-            $url = $this->getConfig()->getShopHomeUrl();
+            $url = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopHomeUrl();
             $this->_oActSearch->link = "{$url}cl=search";
         }
 
@@ -2290,7 +2317,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         if ($this->_blTop5Action) {
             if ($this->_aTop5ArticleList === null) {
                 $this->_aTop5ArticleList = false;
-                $config = $this->getConfig();
+                $config = \OxidEsales\Eshop\Core\Registry::getConfig();
                 if ($config->getConfigParam('bl_perfLoadAktion')) {
                     // top 5 articles
                     $artList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
@@ -2316,7 +2343,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         if ($this->_blBargainAction) {
             if ($this->_aBargainArticleList === null) {
                 $this->_aBargainArticleList = [];
-                if ($this->getConfig()->getConfigParam('bl_perfLoadAktion')) {
+                if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadAktion')) {
                     $articleList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                     $articleList->loadActionArticles('OXBARGAIN');
                     if ($articleList->count()) {
@@ -2356,7 +2383,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function getMinOrderPrice()
     {
         if ($this->_sMinOrderPrice === null && $this->isLowOrderPrice()) {
-            $minOrderPrice = \OxidEsales\Eshop\Core\Price::getPriceInActCurrency($this->getConfig()->getConfigParam('iMinOrderPrice'));
+            $minOrderPrice = \OxidEsales\Eshop\Core\Price::getPriceInActCurrency(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iMinOrderPrice'));
             $this->_sMinOrderPrice = \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($minOrderPrice);
         }
 
@@ -2381,7 +2408,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     protected function _canRedirect()
     {
         foreach ($this->_aBlockRedirectParams as $param) {
-            if ($this->getConfig()->getRequestParameter($param) !== null) {
+            if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter($param) !== null) {
                 return false;
             }
         }
@@ -2497,7 +2524,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function getCatMoreUrl()
     {
-        return $this->getConfig()->getShopHomeUrl() . 'cnid=oxmore';
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getShopHomeUrl() . 'cnid=oxmore';
     }
 
     /**
@@ -2548,7 +2575,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $this->_aMustFillFields = false;
 
             // passing must-be-filled-fields info
-            $mustFillFields = $this->getConfig()->getConfigParam('aMustFillFields');
+            $mustFillFields = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aMustFillFields');
             if (is_array($mustFillFields)) {
                 $this->_aMustFillFields = array_flip($mustFillFields);
             }
@@ -2594,7 +2621,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         if ($this->_blCanAcceptFormData === null) {
             $this->_blCanAcceptFormData = false;
 
-            $formId = $this->getConfig()->getRequestParameter("uformid");
+            $formId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("uformid");
             $sessionFormId = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("sessionuformid");
 
             // testing if form and session ids matches
@@ -2684,7 +2711,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function isEnabledPrivateSales()
     {
         if ($this->_blEnabledPrivateSales === null) {
-            $this->_blEnabledPrivateSales = (bool) $this->getConfig()->getConfigParam('blPsLoginEnabled');
+            $this->_blEnabledPrivateSales = (bool) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blPsLoginEnabled');
             if ($this->_blEnabledPrivateSales && ($canPreview = \OxidEsales\Eshop\Core\Registry::getUtils()->canPreview()) !== null) {
                 $this->_blEnabledPrivateSales = !$canPreview;
             }
@@ -2741,7 +2768,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function getInvoiceAddress()
     {
         if ($this->_aInvoiceAddress == null) {
-            $invoiceAddress = $this->getConfig()->getRequestParameter('invadr');
+            $invoiceAddress = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('invadr');
             if ($invoiceAddress) {
                 $this->_aInvoiceAddress = $invoiceAddress;
             }
@@ -2758,7 +2785,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function getDeliveryAddress()
     {
         if ($this->_aDeliveryAddress == null) {
-            $config = $this->getConfig();
+            $config = \OxidEsales\Eshop\Core\Registry::getConfig();
             //do not show deladr if address was reloaded
             if (!$config->getRequestParameter('reloadaddress')) {
                 $this->_aDeliveryAddress = $config->getRequestParameter('deladr');
@@ -2797,7 +2824,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     {
         if ($this->_sActiveUsername == null) {
             $this->_sActiveUsername = false;
-            $username = $this->getConfig()->getRequestParameter('lgn_usr');
+            $username = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('lgn_usr');
             if ($username) {
                 $this->_sActiveUsername = $username;
             } elseif ($user = $this->getUser()) {
@@ -2815,7 +2842,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function getWishlistUserId()
     {
-        return $this->getConfig()->getRequestParameter('wishid');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('wishid');
     }
 
     /**
@@ -2853,7 +2880,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function getNewBasketItemMsgType()
     {
-        return (int) $this->getConfig()->getConfigParam("iNewBasketItemMessage");
+        return (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("iNewBasketItemMessage");
     }
 
     /**
@@ -2865,7 +2892,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function isActive($name)
     {
-        return $this->getConfig()->getConfigParam("bl" . $name . "Enabled");
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("bl" . $name . "Enabled");
     }
 
     /**
@@ -2875,7 +2902,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function isEnabledDownloadableFiles()
     {
-        return (bool) $this->getConfig()->getConfigParam("blEnableDownloads");
+        return (bool) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("blEnableDownloads");
     }
 
     /**
@@ -2885,7 +2912,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function showRememberMe()
     {
-        return (bool) $this->getConfig()->getConfigParam('blShowRememberMe');
+        return (bool) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowRememberMe');
     }
 
     /**
@@ -2896,17 +2923,11 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function isVatIncluded()
     {
-        $config = $this->getConfig();
-        $user = $this->getUser();
-
-        if ($user === false) {
-            $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
+        if ($this->_blIsVatIncluded !== null) {
+            return $this->_blIsVatIncluded;
         }
 
-        $country = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
-        $country->load($user->getActiveCountry());
-        $countryBillsNotVat = $country->oxcountry__oxvatstatus->value !== null && $country->oxcountry__oxvatstatus->value == 0;
-
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         /*
          * Do not show "inclusive VAT" when:
          *
@@ -2919,14 +2940,31 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
          * oxcountry__oxvatstatus: Vat status: 0 - Do not bill VAT, 1 - Do not bill VAT only if provided valid VAT ID
          * if country is not available (no session) oxvatstatus->value will return null
          */
-        if ($config->getConfigParam('blShowNetPrice') ||
-            $config->getConfigParam('bl_perfCalcVatOnlyForBasketOrder') ||
-            $countryBillsNotVat
-        ) {
-            return false;
+        if ($config->getConfigParam('blShowNetPrice') || $config->getConfigParam('bl_perfCalcVatOnlyForBasketOrder')) {
+            return $this->_blIsVatIncluded = false;
         }
 
-        return true;
+        $user = $this->getUser();
+        if ($user !== false) {
+            if ($user->getFieldData('oxustid') && $user->getFieldData('oxustidstatus') == 1) {
+                return $this->_blIsVatIncluded = false;
+            }
+        } else {
+            $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
+        }
+
+        $activeCountry = $user->getActiveCountry();
+        if ($activeCountry !== '') {
+            $country = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
+            if ($country->load($activeCountry) &&
+                $country->oxcountry__oxvatstatus->value !== null &&
+                $country->oxcountry__oxvatstatus->value == 0
+            ) {
+                return $this->_blIsVatIncluded = false;
+            }
+        }
+
+        return $this->_blIsVatIncluded = true;
     }
 
     /**
@@ -2936,7 +2974,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function isPriceCalculated()
     {
-        return (bool) $this->getConfig()->getConfigParam('bl_perfLoadPrice');
+        return (bool) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadPrice');
     }
 
     /**
@@ -2947,7 +2985,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function getWishlistName()
     {
         if ($this->getUser()) {
-            $wishId = $this->getConfig()->getRequestParameter('wishid');
+            $wishId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('wishid');
             $userId = ($wishId) ? $wishId : \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('wishid');
             if ($userId) {
                 $wishUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
@@ -2968,5 +3006,17 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function getWidgetLink()
     {
         return \OxidEsales\Eshop\Core\Registry::getConfig()->getWidgetUrl();
+    }
+
+    /**
+     * Template variable getter. Returns article list count in comparison.
+     *
+     * @return integer
+     */
+    public function getCompareItemsCnt()
+    {
+        $compareController = oxNew(\OxidEsales\Eshop\Application\Controller\CompareController::class);
+
+        return $compareController->getCompareItemsCnt();
     }
 }

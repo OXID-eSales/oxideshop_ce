@@ -1,28 +1,13 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Core\Controller;
 
 use OxidEsales\EshopCommunity\Core\ShopVersion;
+use Psr\Container\ContainerInterface;
 
 /**
  * Base view class. Collects and passes data to template engine, sets some global
@@ -210,7 +195,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function getViewParameter($sKey)
     {
-        return (isset($this->_aViewParams[$sKey])) ? $this->_aViewParams[$sKey] : $this->getConfig()->getRequestParameter($sKey);
+        return (isset($this->_aViewParams[$sKey])) ? $this->_aViewParams[$sKey] : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter($sKey);
     }
 
     /**
@@ -301,7 +286,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
         if ($sBelboon = $this->getSession()->getVariable('belboon')) {
             return $sBelboon;
         }
-        if (($sBelboon = $this->getConfig()->getRequestParameter('belboon'))) {
+        if (($sBelboon = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('belboon'))) {
             $this->getSession()->setVariable('belboon', $sBelboon);
         }
 
@@ -567,7 +552,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     protected function _executeNewAction($sNewAction)
     {
         if ($sNewAction) {
-            $myConfig = $this->getConfig();
+            $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
             // page parameters is the part which goes after '?'
             $params = explode('?', $sNewAction);
@@ -661,17 +646,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function getShopEdition()
     {
-        return $this->getConfig()->getEdition();
-    }
-
-    /**
-     * Returns shop revision
-     *
-     * @return string
-     */
-    public function getRevision()
-    {
-        return $this->getConfig()->getRevision();
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getEdition();
     }
 
     /**
@@ -681,7 +656,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function getPackageInfo()
     {
-        return $this->getConfig()->getPackageInfo();
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getPackageInfo();
     }
 
     /**
@@ -713,7 +688,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     public function isDemoVersion()
     {
         if ($this->_blDemoVersion == null) {
-            $this->_blDemoVersion = $this->getConfig()->detectVersion() == 1;
+            $this->_blDemoVersion = \OxidEsales\Eshop\Core\Registry::getConfig()->detectVersion() == 1;
         }
 
         return $this->_blDemoVersion;
@@ -726,7 +701,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function isBetaVersion()
     {
-        return (stripos($this->getConfig()->getVersion(), 'beta') !== false);
+        return (stripos(\OxidEsales\Eshop\Core\Registry::getConfig()->getVersion(), 'beta') !== false);
     }
 
     /**
@@ -736,7 +711,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function isRCVersion()
     {
-        return (stripos($this->getConfig()->getVersion(), 'rc') !== false);
+        return (stripos(\OxidEsales\Eshop\Core\Registry::getConfig()->getVersion(), 'rc') !== false);
     }
 
     /**
@@ -757,7 +732,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     public function isDemoShop()
     {
         if ($this->_blDemoShop == null) {
-            $this->_blDemoShop = $this->getConfig()->isDemoShop();
+            $this->_blDemoShop = \OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop();
         }
 
         return $this->_blDemoShop;
@@ -823,7 +798,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function getCategoryId()
     {
-        if ($this->_sCategoryId == null && ($sCatId = $this->getConfig()->getRequestParameter('cnid'))) {
+        if ($this->_sCategoryId == null && ($sCatId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid'))) {
             $this->_sCategoryId = $sCatId;
         }
 
@@ -904,5 +879,28 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     public function showPersParam($persParamKey)
     {
         return true;
+    }
+
+    /**
+     * @internal
+     *
+     * @return ContainerInterface
+     */
+    protected function getContainer()
+    {
+        return \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
+    }
+
+    /**
+     * Config instance getter
+     *
+     * @deprecated since b-dev (2018-11-14); This method will be removed completely. Extend your views accordingly and use
+     *             $this->setViewData('someVar', 'some Value') to provide the data to your templates
+     *
+     * @return \OxidEsales\Eshop\Core\Config
+     */
+    public function getConfig()
+    {
+        return \OxidEsales\Eshop\Core\Registry::getConfig();
     }
 }

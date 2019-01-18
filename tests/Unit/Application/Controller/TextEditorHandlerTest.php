@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
@@ -31,7 +15,7 @@ class TextEditorHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     public function testRenderTextEditorNoRichTextEditor()
     {
-        $expEditorHtml = "<textarea id='editor_sField' style='width:100px; height:100px;'>sEditObjectValue</textarea>";
+        $expEditorHtml = "<textarea id='editor_sField' name='sField' style='width:100px; height:100px;'>sEditObjectValue</textarea>";
 
         $textEditorHandler = $this->getMock(\OxidEsales\EshopCommunity\Application\Controller\TextEditorHandler::class, array('renderRichTextEditor'));
         $textEditorHandler->expects($this->any())->method('renderRichTextEditor')->will($this->returnValue(''));
@@ -78,10 +62,10 @@ class TextEditorHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function renderPlainTextEditorDataProvider()
     {
         return array(
-            array(100, 100, "<textarea id='editor_sField' style='width:100px; height:100px;'>sEditObjectValue</textarea>"),
-            array('100%', '100%', "<textarea id='editor_sField' style='width:100%; height:100%;'>sEditObjectValue</textarea>"),
-            array(100, '100%', "<textarea id='editor_sField' style='width:100px; height:100%;'>sEditObjectValue</textarea>"),
-            array('100%', 100, "<textarea id='editor_sField' style='width:100%; height:100px;'>sEditObjectValue</textarea>"),
+            array(100, 100, "<textarea id='editor_sField' name='sField' style='width:100px; height:100px;'>sEditObjectValue</textarea>"),
+            array('100%', '100%', "<textarea id='editor_sField' name='sField' style='width:100%; height:100%;'>sEditObjectValue</textarea>"),
+            array(100, '100%', "<textarea id='editor_sField' name='sField' style='width:100px; height:100%;'>sEditObjectValue</textarea>"),
+            array('100%', 100, "<textarea id='editor_sField' name='sField' style='width:100%; height:100px;'>sEditObjectValue</textarea>"),
         );
     }
 
@@ -98,4 +82,31 @@ class TextEditorHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->assertEquals($expCssFile, $textEditorHandler->getStyleSheet());
     }
 
+    /**
+     * Test, that by default the text editor is not disabled.
+     *
+     * @group texteditordisabled
+     */
+    public function testIsTextEditorDisabledIsFalseOnDefault()
+    {
+        $textEditorHandler = oxNew(\OxidEsales\EshopCommunity\Application\Controller\TextEditorHandler::class);
+
+        $this->assertFalse($textEditorHandler->isTextEditorDisabled());
+
+        return $textEditorHandler;
+    }
+
+    /**
+     * Test, that switching the text editor to disabled works.
+     *
+     * @group texteditordisabled
+     */
+    public function testDisableTextEditorLeadsToRightResult()
+    {
+        $textEditorHandler = $this->testIsTextEditorDisabledIsFalseOnDefault();
+
+        $textEditorHandler->disableTextEditor();
+
+        $this->assertTrue($textEditorHandler->isTextEditorDisabled());
+    }
 }

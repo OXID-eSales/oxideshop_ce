@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
@@ -94,7 +78,7 @@ class oxArticle_Extended extends oxArticle
         }
     }
 
-    function getPrice()
+    function getPrice($dAmount = 1)
     {
         if ($this->oPriceCache) {
             return $this->oPriceCache;
@@ -208,7 +192,7 @@ class DiscountTest extends \OxidTestCase
      */
     public function testSaveOxSortNotNumeric()
     {
-        $this->setExpectedException('OxidEsales\EshopCommunity\Core\Exception\InputException', 'DISCOUNT_ERROR_OXSORT_NOT_A_NUMBER');
+        $this->expectException('OxidEsales\EshopCommunity\Core\Exception\InputException'); $this->expectExceptionMessage( 'DISCOUNT_ERROR_OXSORT_NOT_A_NUMBER');
 
         $id = '_testSaveOxSortNotNumeric';
         $shopId = 1;
@@ -227,7 +211,7 @@ class DiscountTest extends \OxidTestCase
      */
     public function testSaveOxSortNotUnique()
     {
-        $this->setExpectedException('OxidEsales\EshopCommunity\Core\Exception\InputException', 'DISCOUNT_ERROR_OXSORT_NOT_UNIQUE');
+        $this->expectException('OxidEsales\EshopCommunity\Core\Exception\InputException'); $this->expectExceptionMessage( 'DISCOUNT_ERROR_OXSORT_NOT_UNIQUE');
         $oxSort = 1;
 
        /** Save the first record */
@@ -941,7 +925,7 @@ class DiscountTest extends \OxidTestCase
 
     public function testIsForBasketAmountForAmountDiscountIfSimpleDiscountType()
     {
-        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getBasePrice', 'getId'));
+        $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getBasePrice', 'getId', 'getPrice'));
         $oArticle->expects($this->never())->method('getPrice');
 
         $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array('getArticle', 'getAmount'));

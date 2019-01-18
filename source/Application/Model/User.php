@@ -1,35 +1,15 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\Eshop\Core\UtilsDate;
-use oxDb;
-use OxidEsales\Eshop\Core\UtilsObject;
-use oxInputValidator;
 use oxUserException;
-use oxConnectionException;
 
 /**
  * User manager.
@@ -200,7 +180,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function __construct()
     {
-        $this->setMallUsersStatus($this->getConfig()->getConfigParam('blMallUsers'));
+        $this->setMallUsersStatus(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blMallUsers'));
 
         parent::__construct();
         $this->init('oxuser');
@@ -582,50 +562,50 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Removes user data stored in some DB tables (such as oxuserpayments, oxaddress
      * oxobject2group, oxremark, etc). Return true on success.
      *
-     * @param string $sOXID object ID (default null)
+     * @param string $oxid object ID (default null)
      *
      * @return bool
      */
-    public function delete($sOXID = null)
+    public function delete($oxid = null)
     {
-
-        if (!$sOXID) {
-            $sOXID = $this->getId();
+        if (!$oxid) {
+            $oxid = $this->getId();
         }
-        if (!$sOXID) {
+        if (!$oxid) {
             return false;
         }
 
-        $blDeleted = parent::delete($sOXID);
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $database->startTransaction();
+        try {
+            if (parent::delete($oxid)) {
+                $quotedUserId = $database->quote($oxid);
 
-        if ($blDeleted) {
-            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sOXIDQuoted = $oDb->quote($sOXID);
+                $this->deleteAddresses($database);
+                $this->deleteUserFromGroups($database);
+                $this->deleteBaskets($database);
+                $this->deleteNewsletterSubscriptions($database);
+                $this->deleteDeliveries($database);
+                $this->deleteDiscounts($database);
+                $this->deleteRecommendationLists($database);
+                $this->deleteReviews($database);
+                $this->deleteRatings($database);
+                $this->deletePriceAlarms($database);
+                $this->deleteAcceptedTerms($database);
+                $this->deleteNotOrderRelatedRemarks($database);
 
-            // deleting stored payment, address, group dependencies, remarks info
-            $oDb->execute("delete from oxaddress where oxaddress.oxuserid = {$sOXIDQuoted}");
-            $oDb->execute("delete from oxobject2group where oxobject2group.oxobjectid = {$sOXIDQuoted}");
+                $this->deleteAdditionally($quotedUserId);
+            }
 
-            // deleting notice/wish lists
-            $oDb->execute("delete oxuserbasketitems.* from oxuserbasketitems, oxuserbaskets where oxuserbasketitems.oxbasketid = oxuserbaskets.oxid and oxuserid = {$sOXIDQuoted}");
-            $oDb->execute("delete from oxuserbaskets where oxuserid = {$sOXIDQuoted}");
+            $database->commitTransaction();
+            $deleted = true;
+        } catch (\Exception $exeption) {
+            $database->rollbackTransaction();
 
-            // deleting newsletter subscription
-            $oDb->execute("delete from oxnewssubscribed where oxuserid = {$sOXIDQuoted}");
-
-            // delivery and delivery sets
-            $oDb->execute("delete from oxobject2delivery where oxobjectid = {$sOXIDQuoted}");
-
-            // discounts
-            $oDb->execute("delete from oxobject2discount where oxobjectid = {$sOXIDQuoted}");
-
-            $this->deleteAdditionally($sOXIDQuoted);
-
-            // and leaving all order related information
-            $oDb->execute("delete from oxremark where oxparentid = {$sOXIDQuoted} and oxtype !='o'");
+            throw $exeption;
         }
 
-        return $blDeleted;
+        return $deleted;
     }
 
     /**
@@ -678,7 +658,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         //TODO: transfer this validation to newsletter part
         $sShopSelect = '';
         if (!$this->_blMallUsers && $this->oxuser__oxrights->value != 'malladmin') {
-            $sShopSelect = ' AND oxshopid = "' . $this->getConfig()->getShopId() . '" ';
+            $sShopSelect = ' AND oxshopid = "' . \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId() . '" ';
         }
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
@@ -743,7 +723,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $iCnt = 0;
         if ($this->getId() && $this->oxuser__oxregister->value > 1) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sQ = 'select count(*) from oxorder where oxuserid = ' . $oDb->quote($this->getId()) . ' AND oxorderdate >= ' . $oDb->quote($this->oxuser__oxregister->value) . ' and oxshopid = "' . $this->getConfig()->getShopId() . '" ';
+            $sQ = 'select count(*) from oxorder where oxuserid = ' . $oDb->quote($this->getId()) . ' AND oxorderdate >= ' . $oDb->quote($this->oxuser__oxregister->value) . ' and oxshopid = "' . \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId() . '" ';
             $iCnt = (int) $oDb->getOne($sQ);
         }
 
@@ -830,7 +810,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function createUser()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sShopID = $this->getConfig()->getShopId();
+        $sShopID = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
 
         // check if user exists AND there is no password - in this case we update otherwise we try to insert
         $sSelect = "select oxid from oxuser where oxusername = " . $oDb->quote($this->oxuser__oxusername->value) . " and oxpassword = '' ";
@@ -931,7 +911,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         if (is_numeric($iSuccess) && $iSuccess != 2 && $iSuccess <= 3) {
             //adding user to particular customer groups
-            $myConfig = $this->getConfig();
+            $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
             $dMidlleCustPrice = (float) $myConfig->getConfigParam('sMidlleCustPrice');
             $dLargeCustPrice = (float) $myConfig->getConfigParam('sLargeCustPrice');
 
@@ -1045,7 +1025,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getBoni()
     {
-        if (!$iBoni = $this->getConfig()->getConfigParam('iCreditRating')) {
+        if (!$iBoni = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iCreditRating')) {
             $iBoni = 1000;
         }
 
@@ -1218,7 +1198,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _assignAddress($aDelAddress)
     {
         if (is_array($aDelAddress) && count($aDelAddress)) {
-            $sAddressId = $this->getConfig()->getRequestParameter('oxaddressid');
+            $sAddressId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxaddressid');
             $sAddressId = ($sAddressId === null || $sAddressId == -1 || $sAddressId == -2) ? null : $sAddressId;
 
             $oAddress = oxNew(\OxidEsales\Eshop\Application\Model\Address::class);
@@ -1327,14 +1307,15 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function login($sUser, $sPassword, $blCookie = false)
     {
-        if ($this->isAdmin() && !count(Registry::getUtilsServer()->getOxCookie())) {
+        $cookie = Registry::getUtilsServer()->getOxCookie();
+        if ($this->isAdmin() && is_null($cookie)) {
             /** @var \OxidEsales\Eshop\Core\Exception\CookieException $oEx */
             $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\CookieException::class);
             $oEx->setMessage('ERROR_MESSAGE_COOKIE_NOCOOKIE');
             throw $oEx;
         }
 
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
 
         if ($sPassword) {
@@ -1386,7 +1367,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         // Registry::getSession()->deleteVariable( 'deladrid' );
 
         // delete cookie
-        Registry::getUtilsServer()->deleteUserCookie($this->getConfig()->getShopID());
+        Registry::getUtilsServer()->deleteUserCookie(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopID());
 
         // unsetting global user
         $this->setUser(null);
@@ -1415,7 +1396,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function loadActiveUser($blForceAdmin = false)
     {
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $blAdmin = $this->isAdmin() || $blForceAdmin;
 
@@ -1464,7 +1445,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _getCookieUserId()
     {
         $sUserID = null;
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sShopID = $oConfig->getShopId();
         if (($sSet = Registry::getUtilsServer()->getUserCookie($sShopID))) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -1508,8 +1489,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _ldapLogin($sUser, $sPassword, $sShopID, $sShopSelect)
     {
-        $aLDAPParams = $this->getConfig()->getConfigParam('aLDAPParams');
-        $oLDAP = oxNew("oxLDAP", $aLDAPParams['HOST'], $aLDAPParams['PORT']);
+        $aLDAPParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aLDAPParams');
+        $oLDAP = oxNew(\OxidEsales\Eshop\Core\LDAP::class, $aLDAPParams['HOST'], $aLDAPParams['PORT']);
 
         // maybe this is LDAP user but supplied email Address instead of LDAP login
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -1573,7 +1554,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sAuthRights = null;
 
         // choosing possible user rights index
@@ -1659,7 +1640,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function checkIfEmailExists($sEmail)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
         $iShopId = $myConfig->getShopId();
@@ -1718,14 +1699,14 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $iActPage = ($iActPage < 0) ? 0 : $iActPage;
 
         // load only lists which we show on screen
-        $iNrofCatArticles = $this->getConfig()->getConfigParam('iNrofCatArticles');
+        $iNrofCatArticles = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofCatArticles');
         $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
 
 
         $oRecommList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oRecommList->init('oxrecommlist');
         $oRecommList->setSqlLimit($iNrofCatArticles * $iActPage, $iNrofCatArticles);
-        $iShopId = $this->getConfig()->getShopId();
+        $iShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
         $sSelect = 'select * from oxrecommlists where oxuserid =' . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sOXID) . ' and oxshopid ="' . $iShopId . '"';
         $oRecommList->selectString($sSelect);
 
@@ -1750,7 +1731,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         if ($this->_iCntRecommLists === null || $sOx) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $this->_iCntRecommLists = 0;
-            $iShopId = $this->getConfig()->getShopId();
+            $iShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
             $sSelect = 'select count(oxid) from oxrecommlists where oxuserid = ' . $oDb->quote($sOx) . ' and oxshopid ="' . $iShopId . '"';
             $this->_iCntRecommLists = $oDb->getOne($sSelect);
         }
@@ -1771,7 +1752,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $blForeignGroupExists = false;
         $blInlandGroupExists = false;
 
-        $aHomeCountry = $this->getConfig()->getConfigParam('aHomeCountry');
+        $aHomeCountry = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aHomeCountry');
         // foreigner ?
         if (is_array($aHomeCountry)) {
             if (in_array($sCountryId, $aHomeCountry)) {
@@ -2009,7 +1990,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function isTermsAccepted()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sShopId = $this->getConfig()->getShopId();
+        $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
         $sUserId = $oDb->quote($this->getId());
 
         return (bool) $oDb->getOne("select 1 from oxacceptedterms where oxuserid={$sUserId} and oxshopid='{$sShopId}'");
@@ -2022,7 +2003,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sUserId = $oDb->quote($this->getId());
-        $sShopId = $this->getConfig()->getShopId();
+        $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
         $sVersion = oxNew(\OxidEsales\Eshop\Application\Model\Content::class)->getTermsVersion();
 
         $oDb->execute("replace oxacceptedterms set oxuserid={$sUserId}, oxshopid='{$sShopId}', oxtermversion='{$sVersion}'");
@@ -2040,7 +2021,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function setCreditPointsForRegistrant($sUserId, $sRecEmail)
     {
         $blSet = false;
-        $iPoints = $this->getConfig()->getConfigParam('dPointsForRegistration');
+        $iPoints = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('dPointsForRegistration');
         // check if this invitation is still not accepted
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
@@ -2070,7 +2051,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function setCreditPointsForInviter()
     {
         $blSet = false;
-        $iPoints = $this->getConfig()->getConfigParam('dPointsForInvitation');
+        $iPoints = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('dPointsForInvitation');
         if ($iPoints) {
             $iNewPoints = $this->oxuser__oxpoints->value + $iPoints;
             $this->oxuser__oxpoints = new Field($iNewPoints, Field::T_RAW);
@@ -2112,8 +2093,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQ = "SELECT `oxid` FROM `oxuser` WHERE `oxusername` = " . $oDb->quote($sUserName);
-        if (!$this->getConfig()->getConfigParam('blMallUsers')) {
-            $sQ .= " AND `oxshopid` = " . $oDb->quote($this->getConfig()->getShopId());
+        if (!\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blMallUsers')) {
+            $sQ .= " AND `oxshopid` = " . $oDb->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopId());
         }
 
         return $oDb->getOne($sQ);
@@ -2137,7 +2118,17 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function isPriceViewModeNetto()
     {
-        return (bool) $this->getConfig()->getConfigParam('blShowNetPrice');
+        return (bool) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowNetPrice');
+    }
+
+    /**
+     * Returns true if User is mall admin.
+     *
+     * @return bool
+     */
+    public function isMallAdmin()
+    {
+        return 'malladmin' === $this->oxuser__oxrights->value;
     }
 
     /**
@@ -2186,7 +2177,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $blDemoMode = false;
 
-        if ($this->getConfig()->isDemoShop()) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop()) {
             $blDemoMode = true;
         }
 
@@ -2300,5 +2291,166 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function getUtilsObjectInstance()
     {
         return Registry::getUtilsObject();
+    }
+
+    /**
+     * Deletes User from groups.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteUserFromGroups(DatabaseInterface $database)
+    {
+        $database->execute(
+            'delete from oxobject2group where oxobject2group.oxobjectid = ?',
+            [$this->getId()]
+        );
+    }
+
+    /**
+     * Deletes deliveries.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteDeliveries(DatabaseInterface $database)
+    {
+        $database->execute(
+            'delete from oxobject2delivery where oxobjectid = ?',
+            [$this->getId()]
+        );
+    }
+
+    /**
+     * Deletes discounts.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteDiscounts(DatabaseInterface $database)
+    {
+        $database->execute(
+            'delete from oxobject2discount where oxobjectid = ?',
+            [$this->getId()]
+        );
+    }
+
+    /**
+     * Deletes user accepted terms.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteAcceptedTerms(DatabaseInterface $database)
+    {
+        $database->execute(
+            'delete from oxacceptedterms where oxuserid = ?',
+            [$this->getId()]
+        );
+    }
+
+    /**
+     * Deletes User addresses.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteAddresses(DatabaseInterface $database)
+    {
+        $ids = $database->getCol('SELECT oxid FROM oxaddress WHERE oxuserid = ?', [$this->getId()]);
+        array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\Address::class);
+    }
+
+    /**
+     * Deletes noticelists, wishlists or saved baskets
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteBaskets(DatabaseInterface $database)
+    {
+        $ids = $database->getCol('SELECT oxid FROM oxuserbaskets WHERE oxuserid = ?', [$this->getId()]);
+        array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\UserBasket::class);
+    }
+
+    /**
+     * Deletes not Order related remarks.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteNotOrderRelatedRemarks(DatabaseInterface $database)
+    {
+        $ids = $database->getCol('SELECT oxid FROM oxremark WHERE oxparentid = ? and oxtype !=\'o\'', [$this->getId()]);
+        array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\Remark::class);
+    }
+
+    /**
+     * Deletes recommendation lists.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteRecommendationLists(DatabaseInterface $database)
+    {
+        $ids = $database->getCol('SELECT oxid FROM oxrecommlists WHERE oxuserid = ? ', [$this->getId()]);
+        array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\RecommendationList::class);
+    }
+
+    /**
+     * Deletes newsletter subscriptions.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteNewsletterSubscriptions(DatabaseInterface $database)
+    {
+        $ids = $database->getCol('SELECT oxid FROM oxnewssubscribed WHERE oxuserid = ? ', [$this->getId()]);
+        array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\NewsSubscribed::class);
+    }
+
+
+    /**
+     * Deletes User reviews.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteReviews(DatabaseInterface $database)
+    {
+        $ids = $database->getCol('select oxid from oxreviews where oxuserid = ?', [$this->getId()]);
+        array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\Review::class);
+    }
+
+    /**
+     * Deletes User ratings.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deleteRatings(DatabaseInterface $database)
+    {
+        $ids = $database->getCol('SELECT oxid FROM oxratings WHERE oxuserid = ?', [$this->getId()]);
+        array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\Rating::class);
+    }
+
+    /**
+     * Deletes price alarms.
+     *
+     * @param DatabaseInterface $database
+     */
+    private function deletePriceAlarms(DatabaseInterface $database)
+    {
+        $ids = $database->getCol('SELECT oxid FROM oxpricealarm WHERE oxuserid = ?', [$this->getId()]);
+        array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\PriceAlarm::class);
+    }
+
+    /**
+     * Callback function for array_walk to delete items using the delete method of the given model class
+     *
+     * @param string  $id        Id of the item to be deleted
+     * @param integer $key       Key of the array
+     * @param string  $className Model class to be used
+     */
+    private function deleteItemById($id, $key, $className)
+    {
+        /** @var \OxidEsales\Eshop\Core\Model\BaseModel $modelObject */
+        $modelObject = oxNew($className);
+
+        if ($modelObject->load($id)) {
+            if ($this->_blMallUsers) {
+                $modelObject->setIsDerived(false);
+            }
+            $modelObject->delete();
+        }
     }
 }

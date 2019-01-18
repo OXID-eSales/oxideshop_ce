@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
@@ -129,26 +113,24 @@ class ManufacturerlistTest extends \OxidTestCase
     public function testRenderManufacturerHasNoProductsAssigned()
     {
         $this->setRequestParameter("pgNr", 999);
-        oxTestModules::addFunction("oxUtils", "handlePageNotFoundError", "{ throw new Exception('OK'); }");
+        $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('handlePageNotFoundError'));
+        $utils->expects($this->once())->method('handlePageNotFoundError');
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
 
-        $sActManufacturer = '9434afb379a46d6c141de9c9e5b94fcf';
+        $actManufacturer = '9434afb379a46d6c141de9c9e5b94fcf';
 
-        $oManufacturerTree = oxNew('oxManufacturerList');
-        $oManufacturerTree->buildManufacturerTree('manufacturerlist', $sActManufacturer, $this->getConfig()->getShopHomeURL());
+        $manufacturerTree = oxNew('oxManufacturerList');
+        $manufacturerTree->buildManufacturerTree('manufacturerlist', $actManufacturer, $this->getConfig()->getShopHomeURL());
 
-        $oManufacturer = oxNew('oxManufacturer');
-        $oManufacturer->setId("123");
-        $oManufacturer->setIsVisible(true);
+        $manufacturer = oxNew('oxManufacturer');
+        $manufacturer->setId("123");
+        $manufacturer->setIsVisible(true);
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ManufacturerListController::class, array("getManufacturerTree", "getActManufacturer"));
-        $oView->expects($this->any())->method('getManufacturerTree')->will($this->returnValue($oManufacturerTree));
-        $oView->expects($this->any())->method('getActManufacturer')->will($this->returnValue($oManufacturer));
+        $view = $this->getMock(\OxidEsales\Eshop\Application\Controller\ManufacturerListController::class, array("getManufacturerTree", "getActManufacturer"));
+        $view->expects($this->any())->method('getManufacturerTree')->will($this->returnValue($manufacturerTree));
+        $view->expects($this->any())->method('getActManufacturer')->will($this->returnValue($manufacturer));
 
-        try {
-            $oView->render();
-        } catch (Exception $oExcp) {
-            $this->fail('failed redirect on inactive category');
-        }
+        $view->render();
     }
 
     /**

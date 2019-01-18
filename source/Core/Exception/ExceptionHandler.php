@@ -1,26 +1,12 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Core\Exception;
+
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Exception handler, deals with all high level exceptions (caught in oxShopControl)
@@ -28,16 +14,9 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
 class ExceptionHandler
 {
     /**
-     * Log file path/name
-     *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
-     *
-     * @var string
-     */
-    protected $_sFileName;
-
-    /**
      * Shop debug
+     *
+     * @deprecated since v6.3 (2018-04-25); This functionality will be removed completely. Use an appropriate Monolog channel in the future.
      *
      * @var integer
      */
@@ -51,7 +30,6 @@ class ExceptionHandler
     public function __construct($iDebug = 0)
     {
         $this->_iDebug = (int) $iDebug;
-        $this->_sFileName = basename(OX_LOG_FILE);
     }
 
     /**
@@ -82,66 +60,20 @@ class ExceptionHandler
     }
 
     /**
-     * Set the debug level
-     *
-     * @param int $iDebug debug level (0== no debug)
-     */
-    public function setIDebug($iDebug)
-    {
-        $this->_iDebug = $iDebug;
-    }
-
-    /**
-     * Set log file name. The file will always be created in the same directory as OX_LOG_FILE
-     *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
-     *
-     * @param string $fileName file name
-     */
-    public function setLogFileName($fileName)
-    {
-        /**
-         *  If $fileName !== basename($fileName) throw exception
-         */
-        $fileName = basename($fileName);
-
-        $this->_sFileName = $fileName;
-    }
-
-    /**
-     * Get log file path/name
-     *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
-     *
-     * @return string
-     */
-    public function getLogFileName()
-    {
-        return basename($this->_sFileName);
-    }
-
-    /**
      * Handler for uncaught exceptions. As this is the las resort no fancy business logic should be applied here.
      *
-     * @param \Exception $exception exception object
+     * @param \Throwable $exception exception object
      *
      * @return void
      **/
-    public function handleUncaughtException(\Exception $exception)
+    public function handleUncaughtException(\Throwable $exception)
     {
-        /**
-         * Report the exception
-         */
-        $logWritten = (bool) $this->writeExceptionToLog($exception);
+        Registry::getLogger()->error(
+            $exception->getMessage(),
+            [$exception]
+        );
 
-        /**
-         * Render an error message.
-         */
-        if ($this->_iDebug) {
-            $this->displayDebugMessage($exception, $logWritten);
-        } else {
-            $this->displayOfflinePage();
-        }
+        $this->renderErrorMessage($exception);
 
         /**
          * Do not exit the application in UNIT tests
@@ -164,80 +96,43 @@ class ExceptionHandler
         $this->handleUncaughtException($exception);
     }
 
-    /**
-     * Write a formatted log entry to the log file.
-     *
-     * @param \Exception $exception
-     *
-     * @return int|false The function returns the number of bytes that were written to the file, or false on failure.
-     */
-    public function writeExceptionToLog(\Exception $exception)
-    {
-        /** self::_sFileName is @deprecated since v6.0 (2017-03-30); Logging mechanism will change in the future. */
-        $logFile = dirname(OX_LOG_FILE) . DIRECTORY_SEPARATOR . $this->_sFileName;
-        $logMessage = $this->getFormattedException($exception);
-
-        return file_put_contents($logFile, $logMessage, FILE_APPEND) !== false ? true : false;
-    }
 
     /**
-     * Render an error message.
-     * If offline.html exists its content is displayed.
-     * Like this the error message is overridable within that file.
-     * Do not display an error message, if this file is included during a CLI command
-     *
-     * @return null
+     * Exit the application with error status 1
      */
-    public function displayOfflinePage()
+    protected function exitApplication()
     {
-        /** Just display a small note in CLI mode */
-        $phpSapiName = strtolower(php_sapi_name());
-        if ('cli' === $phpSapiName) {
-            echo 'Uncaught exception. See ' . $this->getLogFileName() . PHP_EOL;
-            return;
-        }
-
-        \oxTriggerOfflinePageDisplay();
-
-        return;
+        exit(1);
     }
 
     /**
      * Print a debug message to the screen.
      *
-     * @param \Exception $exception  The exception to be treated
-     * @param bool       $logWritten True, if an entry was written to the log file
+     * @param \Throwable $exception The exception to be treated
      *
-     * @return null
+     * @deprecated since v6.3 (2018-04-25); This method will be removed completely. Use an appropriate Monolog channel in the future.
      */
-    protected function displayDebugMessage(\Exception $exception, $logWritten)
+    private function displayDebugMessage(\Throwable $exception)
     {
-        $loggingErrorMessage = $logWritten ? '' : 'Could not write log file' . PHP_EOL;
-
-        /** Just display a small note in CLI mode */
-        $phpSapiName = strtolower(php_sapi_name());
-        if ('cli' === $phpSapiName) {
-            echo 'Uncaught exception. See ' . $this->getLogFileName() . PHP_EOL . $loggingErrorMessage;
-            return;
-        }
         if (method_exists($exception, 'getString')) {
             $displayMessage = $exception->getString();
         } else {
             $displayMessage = $this->getFormattedException($exception);
         }
-        echo '<pre>' . $displayMessage . $loggingErrorMessage . '</pre>';
 
-        return;
+        echo '<pre>' . $displayMessage . '</pre>';
     }
 
     /**
      * Return a formatted exception to be written to the log file.
      *
-     * @param \Exception $exception
+     * @param  \Throwable $exception
+     *
+     * @deprecated since v6.3 (2018-04-25); This method will be removed completely. Use an appropriate Monolog channel in the future.
      *
      * @return string
      */
-    protected function getFormattedException(\Exception $exception)
+    private function getFormattedException(\Throwable $exception)
     {
         $time = microtime(true);
         $micro = sprintf("%06d", ($time - floor($time)) * 1000000);
@@ -258,10 +153,14 @@ class ExceptionHandler
     }
 
     /**
-     * Exit the application with error status 1
+     * @param \Throwable $exception
      */
-    protected function exitApplication()
+    private function renderErrorMessage(\Throwable $exception)
     {
-        exit(1);
+        if ($this->_iDebug) {
+            $this->displayDebugMessage($exception);
+        } else {
+            \oxTriggerOfflinePageDisplay();
+        }
     }
 }

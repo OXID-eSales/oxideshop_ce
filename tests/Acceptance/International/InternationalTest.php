@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Tests\Acceptance\International;
@@ -33,6 +17,11 @@ class InternationalTest extends AcceptanceTestCase
     /** @var string Language id. In international edition English ID is 0. */
     protected $translateLanguageId = 0;
 
+    public function setUp()
+    {
+        $this->markTestSkipped('This functionality was removed and should be cleaned up with the story OXDEV-1595');
+        parent::setUp();
+    }
     /* -------------------------- Admin side only functions ------------------------ */
 
     /**
@@ -430,14 +419,13 @@ class InternationalTest extends AcceptanceTestCase
             $this->frame("edit");
             //testing list frame for errors
             $this->frame("list");
-            $this->openTab("System");
-            $this->click("link=Other settings");
-            $this->select("confstrs[sShopCountry]", "label=Germany, Austria, Switzerland");
-            $this->clickAndWaitFrame("save", "list");
-            $this->frame("list");
             $this->openTab("Settings");
             $this->click("link=Administration");
-            $this->check("//input[@name='confbools[blLoadDynContents]' and @value='true']");
+
+            if ($this->getTestConfig()->getShopEdition() === 'CE') {
+                $this->check("//input[@name='confbools[blSendTechnicalInformationToOxid]' and @value='true']");
+            }
+
             $this->clickAndWaitFrame("save", "list");
             $this->frame("header");
             $this->assertElementPresent("link=Logout");
@@ -450,7 +438,7 @@ class InternationalTest extends AcceptanceTestCase
             $this->clickAndWait("//input[@type='submit']");
 
             $this->frame("basefrm");
-            $this->waitForText("Welcome to the OXID eShop Admin");
+            $this->waitForText("Welcome to OXID eShop Admin");
             $this->checkForErrors();
             $this->frame("navigation");
             $this->checkForErrors();

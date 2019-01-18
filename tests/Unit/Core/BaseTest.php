@@ -1,26 +1,11 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
+use OxidEsales\Eshop\Core\Registry;
 use \oxObjectException;
 
 use Exception;
@@ -50,20 +35,6 @@ class _oxBase extends oxBase
         //$this->_sCacheKey = (rand(0, pow(10,10)));
         parent::__construct();
         $this->_sCacheKey = null;
-    }
-
-    /**
-     * Sets the names to main and view tables, loads metadata of each table.
-     *
-     * @param string $sTableName       Name of DB object table
-     * @param bool   $blForceAllFields Forces initialisation of all fields overriding lazy loading functionality
-     *
-     * @return null
-     */
-    public function init($sTableName = null, $blForceAllFields = false)
-    {
-        //$this->_sCacheKey = null;
-        return parent::init($sTableName, $blForceAllFields);
     }
 
     /**
@@ -323,7 +294,7 @@ class BaseTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue(null));
 
         $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('getConfig', 'getShopId'), array(), '', false);
-        $oBase->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oBase->expects($this->any())->method('getShopId')->will($this->returnValue(null));
 
         $this->assertNull($oBase->isDerived());
@@ -342,7 +313,7 @@ class BaseTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue('xxx'));
 
         $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('getConfig', 'getShopId'), array(), '', false);
-        $oBase->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oBase->expects($this->any())->method('getShopId')->will($this->returnValue('xxx'));
 
         $this->assertSame($expected, $oBase->isDerived());
@@ -361,7 +332,7 @@ class BaseTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue('xxx'));
 
         $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('getConfig', 'getShopId'), array(), '', false);
-        $oBase->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oBase->expects($this->any())->method('getShopId')->will($this->returnValue('yyy'));
 
         $this->assertSame($expected, $oBase->isDerived());
@@ -465,7 +436,8 @@ class BaseTest extends \OxidTestCase
     {
         $oBase = new _oxBase();
         $oBase->setClassVar("_blIsDerived", true);
-        $this->assertFalse(isset($oBase->blIsDerived));
+
+        $this->assertFalse($oBase->isPropertyLoaded('blIsDerived'));
         $this->assertTrue($oBase->blIsDerived);
     }
 
@@ -478,7 +450,8 @@ class BaseTest extends \OxidTestCase
     {
         $oBase = new _oxBase();
         $oBase->setClassVar("_sOXID", 'test id');
-        $this->assertFalse(isset($oBase->sOXID));
+
+        $this->assertFalse($oBase->isPropertyLoaded('sOXID'));
         $this->assertEquals('test id', $oBase->sOXID);
     }
 
@@ -532,7 +505,7 @@ class BaseTest extends \OxidTestCase
     public function testMagicGetLazyLoadingNonExistingFieldWithDebug()
     {
         $oBase = new _oxBase();
-        $oBase->getConfig()->setConfigParam('iDebug', -1);
+        Registry::getConfig()->setConfigParam('iDebug', -1);
         $oBase->setClassVar("_blUseLazyLoading", true);
         $oBase->init("oxarticles");
         $oBase->setId("2000");
@@ -548,7 +521,7 @@ class BaseTest extends \OxidTestCase
     public function testMagicGetLazyLoadingNonExistingFieldWithoutDebug()
     {
         $oBase = new _oxBase();
-        $oBase->getConfig()->setConfigParam('iDebug', 0);
+        Registry::getConfig()->setConfigParam('iDebug', 0);
         $oBase->setClassVar("_blUseLazyLoading", true);
         $oBase->init("oxarticles");
         $oBase->setId("2000");
@@ -573,7 +546,7 @@ class BaseTest extends \OxidTestCase
         $oBase->init();
         $oBase->load(2000);
 
-        $this->assertEquals(array('oxid' => 0), $oBase->getClassVar("_aFieldNames"));
+        $this->assertFalse($oBase->isPropertyLoaded('oxid'));
         $this->assertEquals("2000", $oBase->getId());
         $this->assertEquals("2000", $oBase->oxarticles__oxid->value);
     }
@@ -595,15 +568,15 @@ class BaseTest extends \OxidTestCase
         $oBase->init();
         $oBase->load(2000);
 
-        $this->assertEquals(array('oxid' => 0), $oBase->getClassVar("_aFieldNames"));
+        $this->assertFalse($oBase->isPropertyLoaded('oxarticles__oxtitle'));
+        $this->assertFalse($oBase->isPropertyLoaded('oxarticles__oxshortdesc'));
 
         //making sure 2 fields are used
         $sVal = $oBase->oxarticles__oxtitle->value;
         $sVal = $oBase->oxarticles__oxshortdesc->value;
 
-        //testing initial load
-        $aFieldNames = array("oxid" => 0, "oxtitle" => 0, "oxshortdesc" => 0);
-        $this->assertEquals($aFieldNames, $oBase->getClassVar("_aFieldNames"));
+        $this->assertTrue($oBase->isPropertyLoaded('oxarticles__oxtitle'));
+        $this->assertTrue($oBase->isPropertyLoaded('oxarticles__oxshortdesc'));
 
         $oBase = new _oxBase();
         $oBase->setClassVar("_sCoreTable", "oxarticles");
@@ -612,9 +585,8 @@ class BaseTest extends \OxidTestCase
         $oBase->init();
         $oBase->load(2000);
 
-        //test final load
-        $aFieldNames = array("oxid" => 0);
-        $this->assertEquals($aFieldNames, $oBase->getClassVar("_aFieldNames"));
+        $this->assertFalse($oBase->isPropertyLoaded('oxarticles__oxtitle'));
+        $this->assertFalse($oBase->isPropertyLoaded('oxarticles__oxshortdesc'));
     }
 
     /**
@@ -631,15 +603,15 @@ class BaseTest extends \OxidTestCase
         $oBase->init();
         $oBase->load(2000);
 
-        $this->assertEquals(array('oxid' => 0), $oBase->getClassVar("_aFieldNames"));
+        $this->assertFalse($oBase->isPropertyLoaded('oxarticles__oxtitle'));
+        $this->assertFalse($oBase->isPropertyLoaded('oxarticles__oxshortdesc'));
 
         //making sure 2 fields are used
         $sVal = $oBase->oxarticles__oxtitle->value;
         $sVal = $oBase->oxarticles__oxshortdesc->value;
 
-        //testing initial load
-        $aFieldNames = array("oxid" => 0, "oxtitle" => 0, "oxshortdesc" => 0);
-        $this->assertEquals($aFieldNames, $oBase->getClassVar("_aFieldNames"));
+        $this->assertTrue($oBase->isPropertyLoaded('oxarticles__oxtitle'));
+        $this->assertTrue($oBase->isPropertyLoaded('oxarticles__oxshortdesc'));
 
         oxBaseHelper::cleanup();
         $oBase = new _oxBase();
@@ -648,8 +620,9 @@ class BaseTest extends \OxidTestCase
         $oBase->modifyCacheKey("lazyloadingtest1", true);
         $oBase->init();
         $oBase->load(2000);
-        //test final load
-        $this->assertEquals($aFieldNames, $oBase->getClassVar("_aFieldNames"));
+
+        $this->assertTrue($oBase->isPropertyLoaded('oxarticles__oxtitle'));
+        $this->assertTrue($oBase->isPropertyLoaded('oxarticles__oxshortdesc'));
     }
 
     /**
@@ -691,7 +664,9 @@ class BaseTest extends \OxidTestCase
         $oBase->setClassVar("_sCoreTable", "oxarticles");
         $oBase->setClassVar("_blUseLazyLoading", "true");
         $oBase->initDataStructure();
-        $this->assertFalse(isset($oBase->oxarticles__oxtitle));
+
+        $this->assertFalse($oBase->isPropertyLoaded('oxactions__oxtitle'));
+
         $aFieldNames = $oBase->getClassVar("_aFieldNames");
         $this->assertFalse(isset($aFieldNames['oxtitle']));;
     }
@@ -892,11 +867,12 @@ class BaseTest extends \OxidTestCase
         $oBase = new _oxBase();
         $oBase->setClassVar("_blUseLazyLoading", true);
         $oBase->init("oxactions");
-        $this->assertFalse(isset($oBase->oxactions__oxtitle));
+
+        $this->assertFalse($oBase->isPropertyLoaded('oxactions__oxtitle'));
 
         $oBase->DisableLazyLoading();
         $this->assertFalse($oBase->getClassVar("_blUseLazyLoading"));
-        $this->assertTrue(isset($oBase->oxactions__oxtitle));
+        $this->assertTrue($oBase->isPropertyLoaded('oxactions__oxtitle'));
     }
 
     /**
@@ -1015,7 +991,7 @@ class BaseTest extends \OxidTestCase
         $oBase = new _oxBase();
         $oBase->init("oxactions");
         $rs = array("oxid" => "oxstart", "oxtitle" => "Startseite unten");
-        while (list($name, $value) = each($rs)) {
+        foreach ($rs as $name => $value) {
             $oBase->setFieldData($name, $value);
         }
         $this->assertEquals($oBase->oxactions__oxid->value, "oxstart");
@@ -1032,7 +1008,7 @@ class BaseTest extends \OxidTestCase
         $oBase = new _oxBase();
         $oBase->init("oxactions");
         $rs = array("oxid" => "oxstart", "oxactions__oxtitle" => "Startseite unten");
-        while (list($name, $value) = each($rs)) {
+        foreach ($rs as $name => $value) {
             $oBase->setFieldData($name, $value);
         }
         $this->assertEquals($oBase->oxactions__oxid->value, "oxstart");
@@ -1050,7 +1026,7 @@ class BaseTest extends \OxidTestCase
         $oBase->setClassVar("_blUseLazyLoading", true);
         $oBase->init("oxactions");
         $rs = array("oxid" => "oxstart", "oxactions__oxtestval" => "Startseite unten", "oxtestval2" => "TestVal2");
-        while (list($name, $value) = each($rs)) {
+        foreach ($rs as $name => $value) {
             $oBase->setFieldData($name, $value);
         }
         //standard field
@@ -1076,7 +1052,7 @@ class BaseTest extends \OxidTestCase
         $aFieldNames = $oBase->getNonPublicVar('_aFieldNames');
         $this->assertFalse(isset($aFieldNames['oxtitle']));
         $rs = array("oxid" => "oxstart", "oxtitle" => "Startseite unten");
-        while (list($name, $value) = each($rs)) {
+        foreach ($rs as $name => $value) {
             $oBase->UNITsetFieldData($name, $value);
         }
         //standard field
@@ -1162,8 +1138,10 @@ class BaseTest extends \OxidTestCase
         $oBase->enableLazyLoading();
         $oBase->init("oxactions");
         $oBase->load("oxstart");
+
         $this->assertEquals("oxstart", $oBase->getId());
-        $this->assertFalse(isset($oBase->oxactions__oxtitle));
+
+        $this->assertFalse($oBase->isPropertyLoaded('oxactions__oxtitle'));
     }
 
     /**
@@ -1180,7 +1158,7 @@ class BaseTest extends \OxidTestCase
 
         $this->assertEquals("2000", $oBase->getId());
         $this->assertEquals("Wanduhr ROBOT", $oBase->oxarticles__oxtitle->value);
-        $this->assertFalse(isset($oBase->oxarticles__oxprice));
+        $this->assertFalse($oBase->isPropertyLoaded('oxactions__oxtitle'));
     }
 
     /**
@@ -2343,15 +2321,157 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function testGetFieldNames()
+    public function testGetFieldNamesOnBase()
     {
         $oBase = oxNew('oxBase');
         $this->assertEquals(array("oxid"), $oBase->getFieldNames());
+
+        $oBase->init("notExistingTable");
+        $this->assertEquals(array("oxid"), $oBase->getFieldNames());
+    }
+
+    /**
+     * Field names getter test
+     *
+     * @return null
+     */
+    public function testGetFieldNamesNoLazyLoading()
+    {
+        // Content model has NO lazy loading enabled.
+        $oBase = oxNew('oxContent');
+
+        $aFieldNames = $oBase->getFieldNames();
+
+        $this->assertTrue(is_array($aFieldNames) && count($aFieldNames) > 0);
+        $this->assertTrue(
+            in_array("oxtitle", $aFieldNames),
+            "oxtitle expected to be in array:  ". serialize($aFieldNames)
+        );
+    }
+
+    /**
+     * Field names getter test
+     *
+     * @return null
+     */
+    public function testGetFieldNamesWithLazyLoading()
+    {
+        // Article model has lazy loading enabled.
+        $oBase = oxNew('oxArticle');
 
         $oBase->init("oxarticles");
         $aFieldNames = $oBase->getFieldNames();
 
         $this->assertTrue(is_array($aFieldNames) && count($aFieldNames) > 0);
         $this->assertTrue(in_array("oxtitle", $aFieldNames));
+    }
+
+    /**
+     * Field names getter test
+     *
+     * @return null
+     */
+    public function testGetFieldNamesWithLazyLoadingOnAdmin()
+    {
+        $this->setAdminMode(true);
+
+        // Article model has lazy loading enabled.
+        $oBase = oxNew('oxArticle');
+
+        $oBase->init("oxarticles");
+        $oBase->setEnableMultilang(false);
+        $aFieldNames = $oBase->getFieldNames();
+
+        $this->assertTrue(is_array($aFieldNames) && count($aFieldNames) > 0);
+        $this->assertTrue(in_array("oxtitle", $aFieldNames));
+    }
+
+    public function testFunctionIsPropertyLoadedReturnsFalseWhenPropertyIsNotLoaded()
+    {
+        $model = new _oxBase();
+        $model->setClassVar("_blUseLazyLoading", true);
+
+        $this->assertFalse($model->isPropertyLoaded('propertyName'));
+    }
+
+    public function testFunctionIsPropertyLoadedReturnsTrueWhenPropertyIsLoaded()
+    {
+        $model = new _oxBase();
+        $model->setClassVar("_blUseLazyLoading", true);
+        $model->propertyName = 'someValue';
+
+        $this->assertTrue($model->isPropertyLoaded('propertyName'));
+    }
+
+    public function testFunctionIsPropertyLoadedReturnsFalseWhenPropertyIsNull()
+    {
+        $model = new _oxBase();
+        $model->setClassVar("_blUseLazyLoading", true);
+        $model->propertyName = null;
+
+        $this->assertFalse($model->isPropertyLoaded('propertyName'));
+    }
+
+    public function testFunctionIsPropertyLoadedReturnsTrueWhenPropertyIsFalse()
+    {
+        $model = new _oxBase();
+        $model->setClassVar("_blUseLazyLoading", true);
+        $model->propertyName = false;
+
+        $this->assertTrue($model->isPropertyLoaded('propertyName'));
+    }
+
+    public function testFunctionIsPropertyLoadedReturnsTrueWhenPropertyIsEmptyString()
+    {
+        $model = new _oxBase();
+        $model->setClassVar("_blUseLazyLoading", true);
+        $model->propertyName = '';
+
+        $this->assertTrue($model->isPropertyLoaded('propertyName'));
+    }
+
+
+    public function testLazyLoadingMagicIssetReturnsFalseWhenPropertyIsNotLoaded()
+    {
+        $model = new _oxBase();
+        $model->setClassVar("_blUseLazyLoading", true);
+
+        $this->assertFalse(isset($model->propertyName));
+    }
+
+    public function testLazyLoadingMagicIssetReturnsFalseWhenPropertyIsNull()
+    {
+        $model = new _oxBase();
+        $model->setClassVar("_blUseLazyLoading", true);
+        $model->propertyName = null;
+
+        $this->assertFalse(isset($model->propertyName));
+    }
+
+    public function testLazyLoadingMagicIssetReturnsTrueWhenPropertyIsFalse()
+    {
+        $model = new _oxBase();
+        $model->setClassVar("_blUseLazyLoading", true);
+        $model->propertyName = false;
+
+        $this->assertTrue(isset($model->propertyName));
+    }
+
+    public function testLazyLoadingMagicIssetReturnsTrueWhenPropertyIsEmptyString()
+    {
+        $model = new _oxBase();
+        $model->setClassVar("_blUseLazyLoading", true);
+        $model->propertyName = '';
+
+        $this->assertTrue(isset($model->propertyName));
+    }
+
+    public function testLazyLoadingMagicIssetReturnsTrueWhenPropertyIsLoaded()
+    {
+        $model = new _oxBase();
+        $model->setClassVar("_blUseLazyLoading", true);
+        $model->propertyName = 'someValue';
+
+        $this->assertTrue(isset($model->propertyName));
     }
 }

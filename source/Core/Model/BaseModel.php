@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Core\Model;
@@ -33,7 +17,10 @@ DEFINE('ACTION_UPDATE_STOCK', 4);
 
 use Exception;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use oxObjectException;
+use \OxidEsales\Eshop\Core\Field;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class BaseModel
@@ -41,7 +28,6 @@ use oxObjectException;
  */
 class BaseModel extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Unique object ID. Normally representing record oxid field value
      *
@@ -220,7 +206,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     public function __construct()
     {
         // set active shop
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $this->_sCacheKey = $this->getViewName();
 
         $this->_addSkippedSaveFieldsForMapping();
@@ -343,7 +329,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         }
 
         //returns stdClass implementing __toString() method due to uknown scenario where this var should be used.
-        if (!isset($this->$variableName)) {
+        if (!$this->isPropertyLoaded($variableName)) {
             $this->$variableName = null;
         }
 
@@ -369,7 +355,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      */
     public function __isset($variableName)
     {
-        return isset($this->$variableName);
+        return $this->isPropertyLoaded($variableName) || $this->isPropertyField($variableName);
     }
 
     /**
@@ -395,7 +381,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     public function oxClone($object)
     {
         $classVariables = get_object_vars($object);
-        while (list($name, $value) = each($classVariables)) {
+        foreach ($classVariables as $name => $value) {
             if (is_object($object->$name)) {
                 $this->$name = clone $object->$name;
             } else {
@@ -480,13 +466,14 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
             return;
         }
 
-        reset($dbRecord);
-        while (list($name, $value) = each($dbRecord)) {
+        foreach ($dbRecord as $name => $value) {
             $this->_setFieldData($name, $value);
         }
 
         $oxidField = $this->_getFieldLongName('oxid');
-        $this->_sOXID = $this->$oxidField->value;
+        if ($this->$oxidField instanceof Field) {
+            $this->_sOXID = $this->$oxidField->value;
+        }
     }
 
     /**
@@ -542,7 +529,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         }
 
         $idFieldName = $this->getCoreTableName() . '__oxid';
-        $this->$idFieldName = new \OxidEsales\Eshop\Core\Field($this->_sOXID, \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->$idFieldName = new Field($this->_sOXID, Field::T_RAW);
 
         return $this->_sOXID;
     }
@@ -710,7 +697,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
 
         if ($whereCondition) {
             reset($whereCondition);
-            while (list($name, $value) = each($whereCondition)) {
+            foreach ($whereCondition as $name => $value) {
                 $query .= ' and ' . $name . ' = ' . $database->quote($value);
             }
         }
@@ -837,7 +824,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         }
 
         // #739A - should be executed here because of date/time formatting feature
-        if ($this->isAdmin() && !$this->getConfig()->getConfigParam('blSkipFormatConversion')) {
+        if ($this->isAdmin() && !\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blSkipFormatConversion')) {
             foreach ($this->_aFieldNames as $name => $value) {
                 $longName = $this->_getFieldLongName($name);
                 if (isset($this->$longName->fldtype) && $this->$longName->fldtype == 'datetime') {
@@ -1101,7 +1088,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      *
      * @param bool $forceFullStructure Whether to force loading of full data structure
      *
-     * @return array
+     * @return array|bool
      */
     protected function _getNonCachedFieldNames($forceFullStructure = false)
     {
@@ -1179,7 +1166,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
 
         //already set?
         $fieldLongName = $this->_getFieldLongName($fieldName);
-        if (isset($this->$fieldLongName)) {
+        if ($this->isPropertyLoaded($fieldLongName)) {
             return;
         }
 
@@ -1187,7 +1174,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         $field = false;
 
         if (isset($type)) {
-            $field = new \OxidEsales\Eshop\Core\Field();
+            $field = new Field();
             $field->fldtype = $type;
             //T2008-01-29
             //can't clone as the fields are objects and are not fully cloned
@@ -1196,7 +1183,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
 
         if (isset($length)) {
             if (!$field) {
-                $field = new \OxidEsales\Eshop\Core\Field();
+                $field = new Field();
             }
             $field->fldmax_length = $length;
             $this->_blIsSimplyClonable = false;
@@ -1230,7 +1217,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * @param string $fieldValue Value of data field
      * @param int    $dataType   Field type
      */
-    protected function _setFieldData($fieldName, $fieldValue, $dataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
+    protected function _setFieldData($fieldName, $fieldValue, $dataType = Field::T_TEXT)
     {
         $longFieldName = $this->_getFieldLongName($fieldName);
         //$sLongFieldName = $this->_sCoreTable . "__" . strtolower($sFieldName);
@@ -1242,22 +1229,30 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
 
 
         //in non lazy loading case we just add a field and do not care about it more
-        if (!$this->_blUseLazyLoading && !isset($this->$longFieldName)) {
+        if (!$this->_blUseLazyLoading
+            && !$this->isPropertyLoaded($longFieldName)
+        ) {
             $fieldsList = $this->_getAllFields(true);
             if (isset($fieldsList[strtolower($fieldName)])) {
                 $this->_addField($fieldName, $this->_getFieldStatus($fieldName));
             }
         }
         // if we have a double field we replace "," with "." in case somebody enters it in european format
-        if (isset($this->$longFieldName) && isset($this->$longFieldName->fldtype) && $this->$longFieldName->fldtype == 'double') {
+        $isPropertyLoaded = $this->isPropertyLoaded($longFieldName);
+        if ($isPropertyLoaded
+            && isset($this->$longFieldName->fldtype)
+            && $this->$longFieldName->fldtype == 'double'
+        ) {
             $fieldValue = str_replace(',', '.', $fieldValue);
         }
 
         // isset is REQUIRED here not to use getter
-        if (isset($this->$longFieldName) && is_object($this->$longFieldName)) {
+        if ($isPropertyLoaded
+            && is_object($this->$longFieldName)
+        ) {
             $this->$longFieldName->setValue($fieldValue, $dataType);
         } else {
-            $this->$longFieldName = new \OxidEsales\Eshop\Core\Field($fieldValue, $dataType);
+            $this->$longFieldName = new Field($fieldValue, $dataType);
         }
     }
 
@@ -1302,15 +1297,15 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     /**
      * returns quoted field value for using in update statement
      *
-     * @param string                       $fieldName name of field
-     * @param \OxidEsales\Eshop\Core\Field $field     field object
+     * @param string $fieldName name of field
+     * @param Field  $field     field object
      *
      * @return string
      */
     protected function _getUpdateFieldValue($fieldName, $field)
     {
         $fieldValue = null;
-        if ($field instanceof \OxidEsales\Eshop\Core\Field) {
+        if ($field instanceof Field) {
             $fieldValue = $field->getRawValue();
         } elseif (isset($field->value)) {
             $fieldValue = $field->value;
@@ -1397,7 +1392,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         $coreTableName = $this->getCoreTableName();
 
         $idKey = \OxidEsales\Eshop\Core\Registry::getUtils()->getArrFldName($coreTableName . '.oxid');
-        $this->$idKey = new \OxidEsales\Eshop\Core\Field($this->getId(), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->$idKey = new Field($this->getId(), Field::T_RAW);
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $updateQuery = "update {$coreTableName} set " . $this->_getUpdateFields() .
@@ -1432,7 +1427,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      */
     protected function _insert()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
 
         // let's get a new ID
@@ -1441,18 +1436,17 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         }
 
         $idKey = $myUtils->getArrFldName($this->getCoreTableName() . '.oxid');
-        $this->$idKey = new \OxidEsales\Eshop\Core\Field($this->getId(), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->$idKey = new Field($this->getId(), Field::T_RAW);
         $insertSql = "Insert into {$this->getCoreTableName()} set ";
 
         $shopIdField = $myUtils->getArrFldName($this->getCoreTableName() . '.oxshopid');
 
-        if (isset($this->$shopIdField)
-            && (!$this->$shopIdField instanceof \OxidEsales\Eshop\Core\Field
-                || !$this->$shopIdField->value)
+        if ($this->isPropertyLoaded($shopIdField)
+            && (!$this->isPropertyField($shopIdField) || !$this->$shopIdField->value)
         ) {
-            $this->$shopIdField = new \OxidEsales\Eshop\Core\Field(
+            $this->$shopIdField = new Field(
                 $myConfig->getShopId(),
-                \OxidEsales\Eshop\Core\Field::T_RAW
+                Field::T_RAW
             );
         }
 
@@ -1533,7 +1527,13 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      */
     public function getFieldNames()
     {
-        return array_keys($this->_aFieldNames);
+        $fieldNames = $this->_aFieldNames;
+
+        if (!$this->isAdmin() && $this->_blUseLazyLoading) {
+            $fieldNames = $this->_getNonCachedFieldNames(true);
+        }
+
+        return array_keys($fieldNames);
     }
 
     /**
@@ -1556,6 +1556,18 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     public function getLanguage()
     {
         return -1;
+    }
+
+    /**
+     * Returns true if the property is loaded.
+     *
+     * @param  string $name
+     *
+     * @return bool
+     */
+    public function isPropertyLoaded($name)
+    {
+        return property_exists($this, $name) && $this->$name !== null;
     }
 
     /**
@@ -1589,5 +1601,27 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         //set default value cache time to 60 seconds
         //because active from setting is based on minutes
         return 60;
+    }
+
+    /**
+     * Returns true if the property is a Field.
+     *
+     * @param  string $name
+     *
+     * @return bool
+     */
+    private function isPropertyField($name)
+    {
+        return $this->$name instanceof Field;
+    }
+
+    /**
+     * @internal
+     *
+     * @return ContainerInterface
+     */
+    protected function getContainer()
+    {
+        return ContainerFactory::getInstance()->getContainer();
     }
 }

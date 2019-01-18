@@ -1,26 +1,11 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\Registry;
 use \stdClass;
 use \Exception;
 use \oxRegistry;
@@ -165,8 +150,7 @@ class NavigationTest extends \OxidTestCase
         $this->getSession()->setVariable('dynvalue', "testDynValue");
         $this->getSession()->setVariable('paymentid', "testPaymentId");
 
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getConfigParam"));
-        $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo("blClearCacheOnLogout"))->will($this->returnValue(true));
+        Registry::getConfig()->setConfigParam('blClearCacheOnLogout', true);
 
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("destroy", "getId"));
         $oSession->expects($this->once())->method('destroy');
@@ -175,7 +159,6 @@ class NavigationTest extends \OxidTestCase
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationController::class, array("getSession", "getConfig", "resetContentCache"), array(), '', false);
         $oView->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
-        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
         $oView->expects($this->once())->method('resetContentCache');
         $oView->logout();
 
@@ -202,74 +185,6 @@ class NavigationTest extends \OxidTestCase
             $oView->exturl();
         } catch (Exception $oExcp) {
             $this->assertEquals("showMessageAndExit", $oExcp->getMessage(), "Error in Navigation::exturl()");
-
-            return;
-        }
-        $this->fail("Error in Navigation::exturl()");
-    }
-
-    /**
-     * Navigation::Exturl() test case
-     *
-     * @return null
-     */
-    public function testExturlUrlDefinedByParam()
-    {
-        $sUrl = "http://admin.oxid-esales.com";
-
-        // creating test file
-        $rFile = fopen($this->getConfig()->getConfigParam('sCompileDir') . "/" . md5($sUrl) . '.html', "w+");
-        fwrite($rFile, "</head>");
-        fclose($rFile);
-
-        oxTestModules::addFunction('oxUtils', 'getRemoteCachePath', '{ return true; }');
-        oxTestModules::addFunction('oxUtils', 'redirect', '{ return true; }');
-        oxTestModules::addFunction('oxUtils', 'showMessageAndExit', '{ throw new Exception($aA[0]); }');
-
-        $this->setRequestParameter("url", $sUrl);
-
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getConfigParam", "getVersion", "getFullEdition"));
-        $oConfig->expects($this->at(0))->method('getConfigParam')->with($this->equalTo("blLoadDynContents"))->will($this->returnValue(true));
-        $oConfig->expects($this->at(1))->method('getConfigParam')->with($this->equalTo("sCompileDir"))->will($this->returnValue($this->getConfig()->getConfigParam('sCompileDir')));
-        $oConfig->expects($this->once())->method('getVersion')->will($this->returnValue("getVersion"));
-        $oConfig->expects($this->once())->method('getFullEdition')->will($this->returnValue("getFullEdition"));
-
-        try {
-            // testing..
-            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationController::class, array("getConfig"), array(), '', false);
-            $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
-            $oView->exturl();
-        } catch (Exception $oExcp) {
-            $sCurYear = date("Y");
-            $this->assertEquals("<base href=\"http:/\"></head>\n  <!-- OXID eShop getFullEdition, Version getVersion, Shopping Cart System (c) OXID eSales AG 2003 - {$sCurYear} - http://www.oxid-esales.com -->", $oExcp->getMessage(), "Error in Navigation::exturl()");
-
-            return;
-        }
-        $this->fail("Error in Navigation::exturl()");
-    }
-
-    /**
-     * Navigation::Exturl() test case
-     *
-     * @return null
-     */
-    public function testExturlUrlDefinedByParamBlLoadDynContentsFalse()
-    {
-        oxTestModules::addFunction('oxUtils', 'redirect', '{ throw new Exception($aA[0]); }');
-        $this->setRequestParameter("url", "testUrl");
-
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getConfigParam"));
-        $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo("blLoadDynContents"))->will($this->returnValue(false));
-        $oConfig->expects($this->never())->method('getVersion');
-        $oConfig->expects($this->never())->method('getFullEdition');
-
-        try {
-            // testing..
-            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationController::class, array("getConfig"), array(), '', false);
-            $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
-            $oView->exturl();
-        } catch (Exception $oExcp) {
-            $this->assertEquals("testUrl", $oExcp->getMessage(), "Error in Navigation::exturl()");
 
             return;
         }
@@ -309,7 +224,7 @@ class NavigationTest extends \OxidTestCase
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationController::class, array("getConfig"), array(), '', false);
-        $oView->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $this->assertEquals("Version 4 is available.", $oView->UNITcheckVersion());
     }
 }

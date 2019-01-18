@@ -1,26 +1,12 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use \oxList;
@@ -1062,7 +1048,7 @@ class ArticleTest extends \OxidTestCase
         $oAmPriceList[$oP2A->getId()] = $oP2A;
 
         $oArticle = oxNew('oxArticle');
-        $oArticle->getConfig()->setConfigParam('bl_perfCalcVatOnlyForBasketOrder', 0);
+        Registry::getConfig()->setConfigParam('bl_perfCalcVatOnlyForBasketOrder', 0);
         $oArticle->load('1126');
 
         $oAmPriceList = $oArticle->UNITfillAmountPriceList($oAmPriceList);
@@ -1106,7 +1092,7 @@ class ArticleTest extends \OxidTestCase
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('_applyVAT') /*, array(), '', false*/);
         // one for main, two for am prices
         $oArticle->expects($this->exactly(1))->method('_applyVAT');
-        $oArticle->getConfig()->setConfigParam('bl_perfCalcVatOnlyForBasketOrder', 0);
+        Registry::getConfig()->setConfigParam('bl_perfCalcVatOnlyForBasketOrder', 0);
         $oArticle->load('1126');
 
         $oArticle->UNITfillAmountPriceList($oAmPriceList);
@@ -2133,7 +2119,7 @@ class ArticleTest extends \OxidTestCase
         $amountPriceList = oxNew('oxAmountPriceList');
         $amountPriceList->assign(array($item));
 
-        /** @var oxArticle|PHPUnit_Framework_TestCase $article */
+        /** @var oxArticle|PHPUnit\Framework\TestCase $article */
         $article = oxNew('oxArticle');
         $article->setAmountPriceList($amountPriceList);
         $article->oxarticles__oxprice = new oxField(10, oxField::T_RAW);
@@ -4501,27 +4487,24 @@ class ArticleTest extends \OxidTestCase
     }
 
     /**
-     * Test get displayable in basket/order attributes, when all are not dispayable.
+     * Test get displayable in basket/order attributes
      *
      * @return null
      */
     public function testGetAttributesDisplayableInBasket()
     {
-        $sSelect = "update oxattribute set oxdisplayinbasket = 1 where oxid = '8a142c3f0b9527634.96987022' ";
-        oxDb::getDB()->execute($sSelect);
-        $sSelect = "update oxattribute set oxdisplayinbasket = 1 where oxid = 'd8842e3b7c5e108c1.63072778' "; // texture
-        oxDb::getDB()->execute($sSelect);
 
-        $oArticle = oxNew('oxArticle');
-        $oArticle->load('1672');
+        $attrList = $this->getMock('oxAttributeList',array('loadAttributesDisplayableInBasket'));
+        $attrList
+            ->expects($this->once())
+            ->method('loadAttributesDisplayableInBasket')
+            ->with($this->equalTo('1672'),$this->equalTo('1351'));
+        $oArticle = $this->getMock('oxArticle',array('newAttributeList'));
+        $oArticle->expects($this->once())->method('newAttributeList')->willReturn($attrList);
+        $oArticle->setId('1672');
         $oArticle->oxarticles__oxparentid = new oxField('1351');
-        $oArticle->save();
 
-        $aAttrList = $oArticle->getAttributesDisplayableInBasket();
-        $sAttribValue = $aAttrList['8a142c3f0c0baa3f4.54955953']->oxattribute__oxvalue->rawValue;
-        $sAttribParentValue = $aAttrList['d8842e3b7d4e7acb1.34583879']->oxattribute__oxvalue->rawValue;
-        $this->assertEquals('25 cm', $sAttribValue);
-        $this->assertEquals('Granit', $sAttribParentValue);
+        $oArticle->getAttributesDisplayableInBasket();
     }
 
     /**
@@ -4769,14 +4752,14 @@ class ArticleTest extends \OxidTestCase
         $oArticle->load("09646538b54bac72b4ccb92fb5e3649f");
         $oArticle->zz = true;
 
-        $this->assertFalse(isset($oArticle->oxarticles__oxpic1));
-        $this->assertFalse(isset($oArticle->oxarticles__oxzoom1));
+        $this->assertFalse($oArticle->isPropertyLoaded('oxarticles__oxpic1'));
+        $this->assertFalse($oArticle->isPropertyLoaded('oxarticles__oxzoom1'));
 
         //first time access
-        $sPic = $oArticle->oxarticles__oxpic1->value;
-        $sZoomPic = $oArticle->oxarticles__oxzoom1->value;
+        $picture    = $oArticle->oxarticles__oxpic1->value;
+        $zoom       = $oArticle->oxarticles__oxzoom1->value;
 
-        $this->assertTrue(isset($oArticle->oxarticles__oxpic1));
+        $this->assertTrue($oArticle->isPropertyLoaded('oxarticles__oxpic1'));
         $this->assertEquals("front_z1.jpg", $oArticle->oxarticles__oxpic1->value);
     }
 
@@ -4790,13 +4773,13 @@ class ArticleTest extends \OxidTestCase
         $oArticle = oxNew('oxArticleHelper');
         $oArticle->load("2000");
 
-        $this->assertFalse(isset($oArticle->oxarticles__oxthumb));
+        $this->assertFalse($oArticle->isPropertyLoaded('oxarticles__oxthumb'));
 
         //first time access
-        $sPic = $oArticle->oxarticles__oxthumb->value;
+        $thumb = $oArticle->oxarticles__oxthumb->value;
 
-        $this->assertTrue(isset($oArticle->oxarticles__oxthumb));
-        $this->assertEquals("2000_th.jpg", $oArticle->oxarticles__oxthumb->value);
+        $this->assertTrue($oArticle->isPropertyLoaded('oxarticles__oxthumb'));
+        $this->assertEquals("2000_th.jpg", $thumb);
     }
 
     /**
@@ -4809,13 +4792,13 @@ class ArticleTest extends \OxidTestCase
         $oArticle = oxNew('oxArticleHelper');
         $oArticle->load("2000");
 
-        $this->assertFalse(isset($oArticle->oxarticles__oxicon));
+        $this->assertFalse($oArticle->isPropertyLoaded('oxarticles__oxicon'));
 
         //first time access
-        $sPic = $oArticle->oxarticles__oxicon->value;
+        $icon = $oArticle->oxarticles__oxicon->value;
 
-        $this->assertTrue(isset($oArticle->oxarticles__oxicon));
-        $this->assertEquals("2000_ico.jpg", $oArticle->oxarticles__oxicon->value);
+        $this->assertTrue($oArticle->isPropertyLoaded('oxarticles__oxicon'));
+        $this->assertEquals("2000_ico.jpg", $icon);
     }
 
     /**
@@ -5572,26 +5555,32 @@ class ArticleTest extends \OxidTestCase
     public function testGetDeliveryDate()
     {
         $oArticle = $this->_createArticle('_testArt');
-        $oArticle->oxarticles__oxdelivery = new oxField('2008-01-01', oxField::T_RAW);
+        $oArticle->oxarticles__oxdelivery = new oxField(date('Y-m-d'), oxField::T_RAW);
         $oArticle->save();
 
-        $sDelDate = '01.01.2008';
-        if ($oArticle->getLanguage() == 1) {
-            $sDelDate = '2008-01-01';
-        }
+        $sDelDate = date('d.m.Y');
 
         $this->assertEquals($sDelDate, $oArticle->getDeliveryDate());
     }
 
     /**
      * Test get delivery date when not set.
-     *
-     * @return null
      */
     public function testGetDeliveryDateIfNotSet()
     {
         $oArticle = $this->_createArticle('_testArt');
         $oArticle->oxarticles__oxdelivery = new oxField('0000-00-00', oxField::T_RAW);
+        $oArticle->save();
+        $this->assertFalse($oArticle->getDeliveryDate());
+    }
+
+    /**
+     * Test get delivery date is false if in past.
+     */
+    public function testGetDeliveryDateIfInPast()
+    {
+        $oArticle = $this->_createArticle('_testArt');
+        $oArticle->oxarticles__oxdelivery = new oxField('2017-12-13', oxField::T_RAW);
         $oArticle->save();
         $this->assertFalse($oArticle->getDeliveryDate());
     }
@@ -5757,7 +5746,7 @@ class ArticleTest extends \OxidTestCase
         $oConfig->expects($this->never())->method('getPictureUrl');
 
         $oArticle = $this->getProxyClass("oxarticle");
-        $oArticle->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
 
         $this->assertNull($oArticle->getPictureUrl(0));
     }
@@ -5832,7 +5821,7 @@ class ArticleTest extends \OxidTestCase
         $oConfig->expects($this->never())->method('getPictureUrl');
 
         $oArticle = $this->getProxyClass("oxarticle");
-        $oArticle->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
 
         $this->assertNull($oArticle->getZoomPictureUrl());
     }
@@ -6508,7 +6497,7 @@ class ArticleTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getMasterPicturePath')->with($this->equalTo('product/1/testPic1.jpg'))->will($this->returnValue(false));
 
         $oArticle = $this->getProxyClass("oxarticle");
-        $oArticle->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
         $oArticle->oxarticles__oxpic1 = new oxField('testPic1.jpg');
 
         $this->assertFalse($oArticle->UNIThasMasterImage(1));
@@ -6526,7 +6515,7 @@ class ArticleTest extends \OxidTestCase
         $oConfig->expects($this->never())->method('getMasterPicturePath');
 
         $oArticle = $this->getProxyClass("oxarticle");
-        $oArticle->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
         $oArticle->oxarticles__oxpic1 = new oxField('nopic.jpg');
 
         $this->assertFalse($oArticle->UNIThasMasterImage(1));
@@ -6544,7 +6533,7 @@ class ArticleTest extends \OxidTestCase
         $oConfig->expects($this->never())->method('getMasterPicturePath');
 
         $oArticle = $this->getProxyClass("oxarticle");
-        $oArticle->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
         $oArticle->oxarticles__oxpic1 = new oxField('');
 
         $this->assertFalse($oArticle->UNIThasMasterImage(1));
@@ -6562,7 +6551,7 @@ class ArticleTest extends \OxidTestCase
         $oConfig->expects($this->at(1))->method('getMasterPicturePath')->with($this->equalTo('product/2/testPic2.jpg'))->will($this->returnValue(true));
 
         $oArticle = $this->getProxyClass("oxarticle");
-        $oArticle->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
         $oArticle->oxarticles__oxpic1 = new oxField('testPic1.jpg');
         $oArticle->oxarticles__oxpic2 = new oxField('2/testPic2.jpg');
 
@@ -6581,13 +6570,12 @@ class ArticleTest extends \OxidTestCase
         $oConfig->expects($this->any())->method('getMasterPicturePath')->will($this->returnValue(true));
 
         $oArticle = $this->getProxyClass("oxArticle");
-        $oArticle->setConfig($oConfig);
+        Registry::set(Config::class, $oConfig);
         $oArticle->oxarticles__oxpic1 = new oxField('testPic1.jpg', oxField::T_RAW);
 
         $oArticle2 = $this->getMock($this->getProxyClassName("oxArticle"), array("isVariant", "getParentArticle"));
         $oArticle2->expects($this->any())->method('isVariant')->will($this->returnValue(true));
         $oArticle2->expects($this->any())->method('getParentArticle')->will($this->returnValue($oArticle));
-        $oArticle2->setConfig($oConfig);
         $oArticle2->oxarticles__oxpic1 = new oxField('testPic1.jpg');
 
         $this->assertFalse($oArticle2->UNIThasMasterImage(1));

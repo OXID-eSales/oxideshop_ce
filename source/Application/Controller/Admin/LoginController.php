@@ -1,30 +1,12 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use OxidEsales\Eshop\Application\Model\User;
-use oxRegistry;
-use oxView;
+use OxidEsales\Eshop\Core\ShopVersion;
 
 /**
  * Administrator login form.
@@ -40,7 +22,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     public function __construct()
     {
-        $this->getConfig()->setConfigParam('blAdmin', true);
+        \OxidEsales\Eshop\Core\Registry::getConfig()->setConfigParam('blAdmin', true);
         $this->_sThisAction = "login";
     }
 
@@ -52,7 +34,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         // automatically redirect to SSL login
         if (!$myConfig->isSsl() && strpos($myConfig->getConfigParam('sAdminSSLURL'), 'https://') === 0) {
@@ -94,12 +76,11 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     protected function setShopConfigParameters()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $oBaseShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         $oBaseShop->load($myConfig->getBaseShopId());
-        $sVersion = $oBaseShop->oxshops__oxversion->value;
-        $this->getViewConfig()->setViewConfigParam('sShopVersion', $sVersion);
+        $this->getViewConfig()->setViewConfigParam('sShopVersion', oxNew(ShopVersion::class)->getVersion());
     }
 
     /**
@@ -145,9 +126,6 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         } catch (\OxidEsales\Eshop\Core\Exception\ConnectionException $oEx) {
             $myUtilsView->addErrorToDisplay($oEx);
         }
-
-        // success
-        \OxidEsales\Eshop\Core\Registry::getUtils()->logger("login successful");
 
         //execute onAdminLogin() event
         $oEvenHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);

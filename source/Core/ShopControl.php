@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Core;
 
@@ -28,7 +12,7 @@ use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Cache\DynamicContent\ContentCache;
 use oxOutput;
 use oxSystemComponentException;
-use PHPMailer;
+use PHPMailer\PHPMailer\PHPMailer;
 use ReflectionMethod;
 
 /**
@@ -38,9 +22,11 @@ use ReflectionMethod;
  */
 class ShopControl extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Used to force handling, it allows other place like widget controller to skip it.
+     *
+     * @deprecated since v.6.0.0 (2017-10-11); Not used any more, was used in _setDefaultExceptionHandler()
+     * which was already removed.
      *
      * @var bool
      */
@@ -274,7 +260,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected function _process($class, $function, $parameters = null, $viewsChain = null)
     {
         startProfile('process');
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         // executing maintenance tasks
         $this->_executeMaintenanceTasks();
@@ -389,7 +375,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         $view->setFncName($function);
         $view->setViewParameters($parameters);
 
-        $this->getConfig()->setActiveView($view);
+        \OxidEsales\Eshop\Core\Registry::getConfig()->setActiveView($view);
 
         $this->onViewCreation($view);
 
@@ -467,7 +453,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         $templateName = $view->render();
 
         // check if template dir exists
-        $templateFile = $this->getConfig()->getTemplatePath($templateName, $this->isAdmin());
+        $templateFile = \OxidEsales\Eshop\Core\Registry::getConfig()->getTemplatePath($templateName, $this->isAdmin());
         if (!file_exists($templateFile)) {
             $ex = oxNew(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class);
             $ex->setMessage('EXCEPTION_SYSTEMCOMPONENT_TEMPLATENOTFOUND' . ' ' . $templateName);
@@ -478,7 +464,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             if ($this->_isDebugMode()) {
                 \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($ex);
             }
-            $ex->debugOut();
+            \OxidEsales\Eshop\Core\Registry::getLogger()->error($ex->getMessage(), [$ex]);
         }
 
         // Output processing. This is useful for modules. As sometimes you may want to process output manually.
@@ -561,7 +547,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected function _runOnce()
     {
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         //Ensures config values are available, database connection is established,
         //session is started, a possible SeoUrl is decoded, globals and environment variables are set.
@@ -599,7 +585,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             $errorReporting = $errorReporting ^ E_DEPRECATED;
         }
 
-        if ($this->getConfig()->isProductiveMode() && !ini_get('log_errors')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->isProductiveMode() && !ini_get('log_errors')) {
             $errorReporting = 0;
         }
 
@@ -656,7 +642,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected function stopMonitoring($view)
     {
         if ($this->_isDebugMode() && !$this->isAdmin()) {
-            $debugLevel = $this->getConfig()->getConfigParam('iDebug');
+            $debugLevel = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iDebug');
             $debugInfo = oxNew(\OxidEsales\Eshop\Core\DebugInfo::class);
 
             $logId = md5(time() . rand() . rand());
@@ -695,7 +681,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     {
         $debugInfo = oxNew(\OxidEsales\Eshop\Core\DebugInfo::class);
 
-        $debugLevel = $this->getConfig()->getConfigParam('iDebug');
+        $debugLevel = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iDebug');
 
         $message = '';
 
@@ -722,27 +708,27 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected function _handleSystemException($exception)
     {
-        $exception->debugOut();
+        \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
 
         if ($this->_isDebugMode()) {
             \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($exception);
             $this->_process('exceptionError', 'displayExceptionError');
         } else {
-            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . 'cl=start', true, 302);
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopHomeUrl() . 'cl=start', true, 302);
         }
     }
 
     /**
-     * Handle routing exception.
-     * Reason: requested controller id has not matching class --> log if in debug mode and redirect to start page.
+     * Handle routing exception, which is thrown, if the class name for the requested controller id could not be resolved.
      *
      * @param RoutingException $exception
      */
     protected function handleRoutingException($exception)
     {
-        if ($this->_isDebugMode()) {
-            $exception->debugOut();
-        }
+        /**
+         * @todo after removal of the BC layer this method will retrow the exception
+         * throw $exception
+         */
     }
 
     /**
@@ -755,7 +741,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         if ($this->_isDebugMode()) {
             \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($exception);
         }
-        \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . 'cl=start', true, 302);
+        \OxidEsales\Eshop\Core\Registry::getUtils()->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopHomeUrl() . 'cl=start', true, 302);
     }
 
     /**
@@ -821,7 +807,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         if (!$exception instanceof \OxidEsales\Eshop\Core\Exception\StandardException) {
             $exception = new \OxidEsales\Eshop\Core\Exception\StandardException($exception->getMessage(), $exception->getCode(), $exception);
         }
-        $exception->debugOut();
+        \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
     }
 
     /**

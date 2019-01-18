@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
@@ -127,8 +111,6 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
         $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $oUser->oxuser__oxusername = new \OxidEsales\Eshop\Core\Field($aParams['oxuser__oxusername'], \OxidEsales\Eshop\Core\Field::T_RAW);
 
-        $blUserLoaded = false;
-
         // if such user does not exist
         if (!$oUser->exists()) {
             // and subscribe is off - error, on - create
@@ -139,7 +121,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
             } else {
                 $oUser->oxuser__oxactive = new \OxidEsales\Eshop\Core\Field(1, \OxidEsales\Eshop\Core\Field::T_RAW);
                 $oUser->oxuser__oxrights = new \OxidEsales\Eshop\Core\Field('user', \OxidEsales\Eshop\Core\Field::T_RAW);
-                $oUser->oxuser__oxshopid = new \OxidEsales\Eshop\Core\Field($this->getConfig()->getShopId(), \OxidEsales\Eshop\Core\Field::T_RAW);
+                $oUser->oxuser__oxshopid = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopId(), \OxidEsales\Eshop\Core\Field::T_RAW);
                 $oUser->oxuser__oxfname = new \OxidEsales\Eshop\Core\Field($aParams['oxuser__oxfname'], \OxidEsales\Eshop\Core\Field::T_RAW);
                 $oUser->oxuser__oxlname = new \OxidEsales\Eshop\Core\Field($aParams['oxuser__oxlname'], \OxidEsales\Eshop\Core\Field::T_RAW);
                 $oUser->oxuser__oxsal = new \OxidEsales\Eshop\Core\Field($aParams['oxuser__oxsal'], \OxidEsales\Eshop\Core\Field::T_RAW);
@@ -156,7 +138,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
             //removing user from subscribe list before adding
             $oUser->setNewsSubscription(false, false);
 
-            $blOrderOptInEmail = $this->getConfig()->getConfigParam('blOrderOptInEmail');
+            $blOrderOptInEmail = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blOrderOptInEmail');
             if ($oUser->setNewsSubscription(true, $blOrderOptInEmail)) {
                 // done, confirmation required?
                 if ($blOrderOptInEmail) {
@@ -229,7 +211,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
     {
         if ($this->_oActionArticles === null) {
             $this->_oActionArticles = false;
-            if ($this->getConfig()->getConfigParam('bl_perfLoadAktion')) {
+            if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadAktion')) {
                 $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                 $oArtList->loadActionArticles('OXTOPSTART');
                 if ($oArtList->count()) {
@@ -268,7 +250,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
     {
         if ($this->_sHomeCountryId === null) {
             $this->_sHomeCountryId = false;
-            $aHomeCountry = $this->getConfig()->getConfigParam('aHomeCountry');
+            $aHomeCountry = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aHomeCountry');
             if (is_array($aHomeCountry)) {
                 $this->_sHomeCountryId = current($aHomeCountry);
             }

@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Core;
@@ -30,7 +14,6 @@ use Exception;
  */
 class Utils extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Cached currency precision
      *
@@ -120,7 +103,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         $aRet = [];
         $aPieces = explode('@@', $sIn);
-        while (list($sKey, $sVal) = each($aPieces)) {
+        foreach ($aPieces as $sVal) {
             if ($sVal) {
                 $aName = explode('__', $sVal);
                 if (isset($aName[0]) && isset($aName[1])) {
@@ -143,7 +126,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         $sRet = "";
         reset($aIn);
-        while (list($sKey, $sVal) = each($aIn)) {
+        foreach ($aIn as $sKey => $sVal) {
             $sRet .= $sKey;
             $sRet .= "__";
             $sRet .= $sVal;
@@ -236,7 +219,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         }
         startProfile("isSearchEngine");
 
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $blIsSe = false;
 
         if (!($myConfig->getConfigParam('iDebug') && $this->isAdmin())) {
@@ -316,7 +299,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
 
         if (is_null($iCurPrecision)) {
             if (!$oCur) {
-                $oCur = $this->getConfig()->getActShopCurrencyObject();
+                $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
             }
 
             $iCurPrecision = $oCur->decimal;
@@ -871,7 +854,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function checkAccessRights()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $blIsAuth = false;
 
@@ -984,7 +967,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             return $this->_blSeoIsActive;
         }
 
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if (($this->_blSeoIsActive = $myConfig->getConfigParam('blSeoMode')) === null) {
             $this->_blSeoIsActive = true;
@@ -1090,8 +1073,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
 
         try { //may occur in case db is lost
             $this->getSession()->freeze();
-        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
-            $oEx->debugOut();
+        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
+            \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
             //do nothing else to make sure the redirect takes place
         }
 
@@ -1161,7 +1144,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     protected function _fillExplodeArray($aName, $dVat = null)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oObject = new stdClass();
         $aPrice = explode('!P!', $aName[0]);
 
@@ -1226,9 +1209,9 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         $blCalculationModeNetto = $this->_isPriceViewModeNetto();
 
-        $oCurrency = $this->getConfig()->getActShopCurrencyObject();
+        $oCurrency = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
 
-        $blEnterNetPrice = $this->getConfig()->getConfigParam('blEnterNetPrice');
+        $blEnterNetPrice = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blEnterNetPrice');
         if ($blCalculationModeNetto && !$blEnterNetPrice) {
             $dPrice = round(\OxidEsales\Eshop\Core\Price::brutto2Netto($dPrice, $dVat), $oCurrency->decimal);
         } elseif (!$blCalculationModeNetto && $blEnterNetPrice) {
@@ -1245,7 +1228,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     protected function _isPriceViewModeNetto()
     {
-        $blResult = (bool) $this->getConfig()->getConfigParam('blShowNetPrice');
+        $blResult = (bool) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowNetPrice');
         $oUser = $this->_getArticleUser();
         if ($oUser) {
             $blResult = $oUser->isPriceViewModeNetto();
@@ -1312,30 +1295,16 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function logger($sText, $blNewline = false)
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if ($myConfig->getConfigParam('iDebug') == -2) {
             if (gettype($sText) != 'string') {
                 $sText = var_export($sText, true);
             }
-            $sLogMsg = "----------------------------------------------\n{$sText}" . (($blNewline) ? "\n" : "") . "\n";
-            $this->writeToLog($sLogMsg, "log.txt");
+            $logMessage = "----------------------------------------------\n{$sText}" . (($blNewline) ? "\n" : "") . "\n";
+            $logger = Registry::getLogger();
+            $logger->debug($logMessage);
         }
-    }
-
-    /**
-     * Applies ROT13 encoding to $sStr
-     *
-     * @param string $sStr to encoding string
-     *
-     * @return string
-     */
-    public function strRot13($sStr)
-    {
-        $sFrom = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $sTo = 'nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM';
-
-        return strtr($sStr, $sFrom, $sTo);
     }
 
     /**
@@ -1353,7 +1322,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         $versionPrefix = $this->getEditionCacheFilePrefix();
 
-        $sPath = realpath($this->getConfig()->getConfigParam('sCompileDir'));
+        $sPath = realpath(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sCompileDir'));
 
         if (!$sPath) {
             return false;
@@ -1400,8 +1369,15 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     public function setLangCache($sCacheName, $aLangCache)
     {
         $sCache = "<?php\n\$aLangCache = " . var_export($aLangCache, true) . ";\n?>";
+        $sFileName = $this->getCacheFilePath($sCacheName);
+        $cacheDirectory = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sCompileDir');
 
-        return file_put_contents($this->getCacheFilePath($sCacheName), $sCache, LOCK_EX);
+        $tmpFile = $cacheDirectory . basename($sFileName) . uniqid('.temp', true) . '.txt';
+        $blRes = file_put_contents($tmpFile, $sCache, LOCK_EX);
+
+        rename($tmpFile, $sFileName);
+
+        return $blRes;
     }
 
     /**
@@ -1418,29 +1394,6 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         }
 
         return $sUrl;
-    }
-
-    /**
-     * Writes given log message. Returns write state
-     *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
-     *
-     * @param string $logMessage  log message
-     * @param string $logFileName log file name
-     *
-     * @return bool
-     */
-    public function writeToLog($logMessage, $logFileName)
-    {
-        $logFilePath = $this->getConfig()->getLogsDir() . $logFileName;
-        $writeSucceed = false;
-
-        if (($logFileResource = fopen($logFilePath, 'a')) !== false) {
-            fwrite($logFileResource, $logMessage);
-            $writeSucceed = fclose($logFileResource);
-        }
-
-        return $writeSucceed;
     }
 
     /**

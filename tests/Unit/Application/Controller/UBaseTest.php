@@ -1,26 +1,12 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
 use oxUBaseHelper;
 use \stdClass;
 use \oxField;
@@ -868,7 +854,7 @@ class UBaseTest extends \OxidTestCase
         $myConfig->expects($this->once())
             ->method('getActiveView')
             ->will($this->returnValue($oView));
-        $oView->setConfig($myConfig);
+        Registry::set(Config::class, $myConfig);
         $oView->getAdditionalParams();
 
         $sAdditionalParams = '';
@@ -911,7 +897,7 @@ class UBaseTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('getActiveShop')->will($this->returnValue($oShop));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getConfig'));
-        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $this->assertEquals('testsuffix', $oView->getTitleSuffix());
     }
 
@@ -926,7 +912,7 @@ class UBaseTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('getActiveShop')->will($this->returnValue($oShop));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getConfig'));
-        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $this->assertEquals('testsuffix', $oView->getTitlePrefix());
     }
 
@@ -1201,7 +1187,7 @@ class UBaseTest extends \OxidTestCase
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getActiveView'));
         $oConfig->expects($this->once())->method('getActiveView')->will($this->returnValue($oActiveView));
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getConfig'));
-        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $this->assertEquals('Links', $oView->getTitle());
     }
 
@@ -1460,7 +1446,7 @@ class UBaseTest extends \OxidTestCase
         $utils->expects($this->never())->method('redirect');
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
 
-        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
+        /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $config */
         $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isProductiveMode'));
         $config->expects($this->any())->method('isProductiveMode')->will($this->returnValue(1));
 
@@ -1468,7 +1454,7 @@ class UBaseTest extends \OxidTestCase
         $userBase->expects($this->any())->method('_canRedirect')->will($this->returnValue(false));
         $userBase->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $userBase->expects($this->once())->method('_forceNoIndex');
-        $userBase->expects($this->any())->method('getConfig')->will($this->returnValue($config));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
 
         $userBase->UNITprocessRequest();
 
@@ -1488,7 +1474,7 @@ class UBaseTest extends \OxidTestCase
         $utils->expects($this->never())->method('redirect');
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
 
-        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $config */
+        /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $config */
         $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isProductiveMode'));
         $config->expects($this->any())->method('isProductiveMode')->will($this->returnValue(1));
         $config->setConfigParam('blSeoLogging', 1);
@@ -1497,7 +1483,7 @@ class UBaseTest extends \OxidTestCase
         $oUBase->expects($this->any())->method('_canRedirect')->will($this->returnValue(false));
         $oUBase->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $oUBase->expects($this->once())->method('_forceNoIndex');
-        $oUBase->expects($this->any())->method('getConfig')->will($this->returnValue($config));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
 
         $oUBase->UNITprocessRequest();
 
@@ -1685,9 +1671,9 @@ class UBaseTest extends \OxidTestCase
         oxTestModules::addModuleObject('oxActionList', $oList);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("getPromoFinishedList", "getPromoCurrentList", "getPromoFutureList"));
-        $oView->expects($this->once())->method('getPromoFinishedList')->will($this->returnValue(1));
-        $oView->expects($this->once())->method('getPromoCurrentList')->will($this->returnValue(1));
-        $oView->expects($this->once())->method('getPromoFutureList')->will($this->returnValue(1));
+        $oView->expects($this->once())->method('getPromoFinishedList')->will($this->returnValue([1]));
+        $oView->expects($this->once())->method('getPromoCurrentList')->will($this->returnValue([1]));
+        $oView->expects($this->once())->method('getPromoFutureList')->will($this->returnValue([1]));
 
         $this->assertTrue($oView->getShowPromotionList());
     }
@@ -1987,7 +1973,7 @@ class UBaseTest extends \OxidTestCase
     public function testGetCatMoreUrl()
     {
         $oUBase = oxNew('oxUBase');
-        $this->assertEquals($oUBase->getConfig()->getShopHomeURL() . 'cnid=oxmore', $oUBase->getCatMoreUrl());
+        $this->assertEquals(Registry::getConfig()->getShopHomeURL() . 'cnid=oxmore', $oUBase->getCatMoreUrl());
     }
 
     /*
@@ -2245,11 +2231,7 @@ class UBaseTest extends \OxidTestCase
     {
         $this->getConfig()->setConfigParam('blShowNetPrice', true);
 
-        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getActiveCountry'));
-        $oUser->expects($this->once())->method('getActiveCountry')->will($this->returnValue(''));
-
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getUser'));
-        $oView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
+        $oView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
         $this->assertFalse($oView->isVatIncluded());
     }
 
@@ -2440,54 +2422,71 @@ class UBaseTest extends \OxidTestCase
         $this->assertEquals($sTitle, $oUBase->getPageTitle());
     }
 
+    public function providerGetUserSelectedSortingValidSorting()
+    {
+        return [
+            ['oxid', 'asc'],
+            ['oxid', 'desc'],
+            ['oxtitle', 'asc'],
+            ['notArticleColumn', 'asc'],
+        ];
+    }
+
     /**
+     * Test case for bug fix #0006445 #0006579 #0006083
+     *
      * test for getUserSelectedSorting
-     * @see https://bugs.oxid-esales.com/view.php?id=6083
+     *
+     * @param string $columnName    column name which is used to sort by.
+     * @param string $sortDirection sort direction asc or desc.
+     *
+     * @dataProvider providerGetUserSelectedSortingValidSorting
      */
-    public function testGetUserSelectedSortingValidSorting()
+    public function testGetUserSelectedSortingValidSorting($columnName, $sortDirection)
     {
         /** @var BaseController $baseController */
         $baseController = oxNew('oxUBase');
 
-        $_GET[$baseController->getSortOrderByParameterName()] = 'oxid';
-        $_GET[$baseController->getSortOrderParameterName()] = 'asc';
-        $this->assertEquals(
-            array('sortby' => 'oxid', 'sortdir' => 'asc'),
-            $baseController->getUserSelectedSorting()
-        );
+        $this->setConfigParam('aSortCols', ['oxid', 'oxtitle', 'notArticleColumn']);
 
-        $_GET[$baseController->getSortOrderParameterName()] = 'desc';
+        $_GET[$baseController->getSortOrderByParameterName()] = $columnName;
+        $_GET[$baseController->getSortOrderParameterName()] = $sortDirection;
         $this->assertEquals(
-            array('sortby' => 'oxid', 'sortdir' => 'desc'),
+            ['sortby' => $columnName, 'sortdir' => $sortDirection],
             $baseController->getUserSelectedSorting()
         );
     }
 
+    public function providerGetUserSelectedSortingInvalidSorting()
+    {
+        return [
+            ['oxid', 'notExisting'],
+            ['oxid', null],
+            ['notExisting', 'asc'],
+            [null, 'asc'],
+        ];
+    }
+
     /**
+     * Test case for bug fix #0006445 #0006579 #0006083
+     *
      * test for getUserSelectedSorting
-     * @see https://bugs.oxid-esales.com/view.php?id=6083
+     *
+     * @param string $columnName    column name which is used to sort by.
+     * @param string $sortDirection sort direction asc or desc.
+     *
+     * @dataProvider providerGetUserSelectedSortingInvalidSorting
      */
-    public function testGetUserSelectedSortingInvalidSorting()
+    public function testGetUserSelectedSortingInvalidSorting($columnName, $sortDirection)
     {
         /** @var BaseController $baseController */
         $baseController = oxNew('oxUBase');
 
+        $this->setConfigParam('aSortCols', ['oxid', 'oxtitle']);
+
         //not existing field name
-        $_GET[$baseController->getSortOrderByParameterName()] = 'foobar';
-        $_GET[$baseController->getSortOrderParameterName()] = 'asc';
-        $this->assertNull($baseController->getUserSelectedSorting());
-
-        //empty field name
-        $_GET[$baseController->getSortOrderByParameterName()] = '';
-        $this->assertNull($baseController->getUserSelectedSorting());
-
-        //not existing order direction
-        $_GET[$baseController->getSortOrderByParameterName()] = 'oxid';
-        $_GET[$baseController->getSortOrderParameterName()] = 'foobar';
-        $this->assertNull($baseController->getUserSelectedSorting());
-
-        //empty order direction
-        $_GET[$baseController->getSortOrderParameterName()] = '';
+        $_GET[$baseController->getSortOrderByParameterName()] = $columnName;
+        $_GET[$baseController->getSortOrderParameterName()] = $sortDirection;
         $this->assertNull($baseController->getUserSelectedSorting());
     }
 

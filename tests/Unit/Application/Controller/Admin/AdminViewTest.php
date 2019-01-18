@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
@@ -64,7 +48,7 @@ class AdminViewTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('isSsl')->will($this->returnValue(true));
 
         $oAdminView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminController::class, array("getConfig"), array(), '', false);
-        $oAdminView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals("https", $oAdminView->UNITgetServiceProtocol());
 
@@ -73,39 +57,9 @@ class AdminViewTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('isSsl')->will($this->returnValue(false));
 
         $oAdminView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminController::class, array("getConfig"), array(), '', false);
-        $oAdminView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals("http", $oAdminView->UNITgetServiceProtocol());
-    }
-
-    /**
-     * Test get service url.
-     *
-     * @return null
-     */
-    public function testGetServiceUrl()
-    {
-        $sPref = $this->getConfig()->getEdition();
-
-        // no lang abbr
-        $this->getProxyClass(AdminController::class);
-        $oAdminView = $this->getMock("OxidEsales_Eshop_Application_Controller_Admin_AdminControllerProxy", array("_getServiceProtocol", "_getCountryByCode", "_getShopVersionNr"), array(), '', false);
-        $oAdminView->expects($this->any())->method('_getServiceProtocol')->will($this->returnValue("testprotocol"));
-        $oAdminView->expects($this->any())->method('_getCountryByCode')->will($this->returnValue("testcountrycode"));
-        $oAdminView->expects($this->any())->method('_getShopVersionNr')->will($this->returnValue("testshopversion"));
-
-        $this->getSession()->setVariable('tpllanguage', 'de');
-
-        $sTestUrl = "testprotocol://admin.oxid-esales.com/$sPref/testshopversion/testcountrycode/de/";
-        $this->assertEquals($sTestUrl, $oAdminView->getServiceUrl());
-
-        $oAdminView->setNonPublicVar('_sServiceUrl', null);
-        $sTestUrl = "testprotocol://admin.oxid-esales.com/$sPref/testshopversion/testcountrycode/en/";
-        $this->assertEquals($sTestUrl, $oAdminView->getServiceUrl('fr'));
-
-        $oAdminView->setNonPublicVar('_sServiceUrl', null);
-        $sTestUrl = "testprotocol://admin.oxid-esales.com/$sPref/testshopversion/testcountrycode/en/";
-        $this->assertEquals($sTestUrl, $oAdminView->getServiceUrl("en"));
     }
 
     /**
@@ -177,7 +131,7 @@ class AdminViewTest extends \OxidTestCase
      *
      * @return null
      */
-    public function testGetViewId()
+    public function testGetViewIdMocked()
     {
         $oNavigation = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationTree::class, array('getClassId'));
         $oNavigation->expects($this->once())->method('getClassId')->will($this->returnValue('xxx'));
@@ -186,6 +140,44 @@ class AdminViewTest extends \OxidTestCase
         $oAdminView->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavigation));
 
         $this->assertEquals('xxx', $oAdminView->getViewId());
+    }
+
+    /**
+     * Test get view id without mock.
+     *
+     * @return null
+     */
+    public function testGetViewId()
+    {
+        $adminView = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ShopMain::class);
+        $this->assertEquals('tbclshop_main', $adminView->getViewId());
+    }
+
+    /**
+     * Test get view id.
+     * We simulate module chain extension case here.
+     *
+     * @return null
+     */
+    public function testGetViewIdExtended()
+    {
+        //In module case we'd call oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ShopMain::class)
+        // and get an instance of AdminViewTestShopMain::class.
+        $adminView = oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin\AdminViewTestShopMain::class);
+        $this->assertEquals('tbclshop_main', $adminView->getViewId());
+    }
+
+    /**
+     * Test get view id for class that should have no view id.
+     *
+     * @return null
+     */
+    public function testGetViewIdNoneExists()
+    {
+        //In module case we'd call oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ShopMain::class)
+        // and get an instance of AdminViewTestShopMain::class.
+        $adminView = oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin\AdminViewTestSomeClass::class);
+        $this->assertNull($adminView->getViewId());
     }
 
     /**
@@ -398,4 +390,24 @@ class AdminViewTest extends \OxidTestCase
         $oView->setEditObjectId("testSetId");
         $this->assertEquals("testSetId", $oView->getEditObjectId());
     }
+}
+
+/**
+ * Class testClass
+ *
+ * @package OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin
+ */
+class AdminViewTestShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\ShopMain
+{
+
+}
+
+/**
+ * Class AdminViewTestSomeClass
+ *
+ * @package OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin
+ */
+class AdminViewTestSomeClass extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
+{
+
 }

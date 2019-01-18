@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Core;
@@ -31,7 +15,6 @@ use OxidEsales\Eshop\Core\Edition\EditionSelector;
  */
 class ViewConfig extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Active shop object. Can only be accessed when it is assigned
      *
@@ -133,7 +116,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getActContentLoadId()
     {
-        $sTplName = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxloadid');
+        $sTplName = $this->getConfig()->getRequestParameter('oxloadid');
         // #M1176: Logout from CMS page
         if (!$sTplName && $this->getConfig()->getTopActiveView()) {
             $sTplName = $this->getConfig()->getTopActiveView()->getViewConfig()->getViewConfigParam('oxloadid');
@@ -149,7 +132,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getActTplName()
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('tpl');
+        return $this->getConfig()->getRequestParameter('tpl');
     }
 
     /**
@@ -240,7 +223,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getActCatId()
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid');
+        return $this->getConfig()->getRequestParameter('cnid');
     }
 
     /**
@@ -250,7 +233,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getActArticleId()
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('anid');
+        return $this->getConfig()->getRequestParameter('anid');
     }
 
     /**
@@ -260,7 +243,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getActSearchParam()
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchparam');
+        return $this->getConfig()->getRequestParameter('searchparam');
     }
 
     /**
@@ -272,7 +255,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getActRecommendationId()
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recommid');
+        return $this->getConfig()->getRequestParameter('recommid');
     }
 
     /**
@@ -282,7 +265,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getActListType()
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('listtype');
+        return $this->getConfig()->getRequestParameter('listtype');
     }
 
     /**
@@ -292,7 +275,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getActManufacturerId()
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('mnid');
+        return $this->getConfig()->getRequestParameter('mnid');
     }
 
     /**
@@ -302,7 +285,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getContentId()
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxcid');
+        return $this->getConfig()->getRequestParameter('oxcid');
     }
 
     /**
@@ -818,13 +801,13 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         $sListType = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('ldtype');
 
         if (is_null($sListType)) {
-            $sListType = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sDefaultListDisplayType');
+            $sListType = $this->getConfig()->getConfigParam('sDefaultListDisplayType');
         }
 
         if ('grid' === $sListType) {
-            $aNrOfCatArticles = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aNrofCatArticlesInGrid');
+            $aNrOfCatArticles = $this->getConfig()->getConfigParam('aNrofCatArticlesInGrid');
         } else {
-            $aNrOfCatArticles = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aNrofCatArticles');
+            $aNrOfCatArticles = $this->getConfig()->getConfigParam('aNrofCatArticles');
         }
 
         return $aNrOfCatArticles;
@@ -872,6 +855,18 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * Returns config param "blAllowSuggestArticle" value.
+     *
+     * @deprecated since v6.2.0 (2017-02-15); Recommendations feature will be moved to an own module.
+     *
+     * @return bool
+     */
+    public function getShowSuggest()
+    {
+        return $this->getConfig()->getConfigParam('blAllowSuggestArticle');
+    }
+
+    /**
      * Returns config param "bl_showVouchers" value
      *
      * @return bool
@@ -899,7 +894,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getActLanguageId()
     {
         if (($sValue = $this->getViewConfigParam('lang')) === null) {
-            $iLang = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('lang');
+            $iLang = $this->getConfig()->getRequestParameter('lang');
             $sValue = ($iLang !== null) ? $iLang : \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
             $this->setViewConfigParam('lang', $sValue);
         }
@@ -1162,7 +1157,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      * @param string $sModule module name (directory name in modules dir)
      * @param string $sFile   file name to lookup
      *
-     * @throws oxFileException
+     * @throws \OxidEsales\EshopCommunity\Core\Exception\FileException
      *
      * @return string
      */
@@ -1177,13 +1172,21 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         if (file_exists($sFile) || is_dir($sFile)) {
             return $sFile;
         } else {
-            /** @var \OxidEsales\Eshop\Core\Exception\FileException $oEx */
-            $oEx = oxNew("oxFileException", "Requested file not found for module $sModule ($sFile)");
-            $oEx->debugOut();
-            if (!$this->getConfig()->getConfigParam('iDebug')) {
+            /**
+             * Do not call oxNew in the exception handling of the module subsystem system, as the same module system will be
+             * involved when calling oxNew
+             */
+            $exception = new \OxidEsales\Eshop\Core\Exception\FileException("Requested file not found for module $sModule ($sFile)");
+            if ($this->getConfig()->getConfigParam('iDebug')) {
+                throw $exception;
+            } else {
+                /**
+                 * This error should be reported, as it will be the cause of an unexpected behavior of the shop an the
+                 * operator should be given a chance to analyse the issue.
+                 */
+                \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
                 return '';
             }
-            throw $oEx;
         }
     }
 
@@ -1193,15 +1196,41 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      * @param string $sModule module name (directory name in modules dir)
      * @param string $sFile   file name to lookup
      *
-     * @throws oxFileException
+     * @throws \oxFileException
      *
      * @return string
      */
     public function getModuleUrl($sModule, $sFile = '')
     {
+        $c = $this->getConfig();
+        $shopUrl = null;
+        if ($this->isAdmin()) {
+            if ($c->isSsl()) {
+                // From admin and with SSL we try to use sAdminSSLURL config directive
+                $shopUrl = $c->getConfigParam('sAdminSSLURL');
+                if ($shopUrl) {
+                    // but we don't need the admin directory
+                    $adminDir = '/'.$c->getConfigParam('sAdminDir');
+                    $shopUrl = substr($shopUrl, 0, -strlen($adminDir));
+                } else {
+                    // if no sAdminSSLURL directive were defined we use sSSLShopURL config directive instead
+                    $shopUrl = $c->getConfigParam('sSSLShopURL');
+                }
+            }
+            // From admin and with no config usefull directive, we use the sShopURL directive
+            if (!$shopUrl) {
+                $shopUrl = $c->getConfigParam('sShopURL');
+            }
+        }
+        // We are either in front, or in admin with no $sShopURL defined
+        if (!$shopUrl) {
+            $shopUrl = $c->getCurrentShopUrl();
+        }
+        $shopUrl = rtrim($shopUrl, '/');
+
         $sUrl = str_replace(
-            rtrim($this->getConfig()->getConfigParam('sShopDir'), '/'),
-            rtrim($this->getConfig()->getCurrentShopUrl(false), '/'),
+            rtrim($c->getConfigParam('sShopDir'), '/'),
+            $shopUrl,
             $this->getModulePath($sModule, $sFile)
         );
 
@@ -1469,5 +1498,18 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getDynUrlParameters($listType)
     {
         return '';
+    }
+
+    /**
+     * Config instance getter
+     *
+     * @deprecated since b-dev (2018-11-14); This method will be removed completely. Extend your views accordingly and use
+     *             $this->setViewData('someVar', 'some Value'); to provide the data to your templates
+     *
+     * @return \OxidEsales\Eshop\Core\Config
+     */
+    public function getConfig()
+    {
+        return \OxidEsales\Eshop\Core\Registry::getConfig();
     }
 }

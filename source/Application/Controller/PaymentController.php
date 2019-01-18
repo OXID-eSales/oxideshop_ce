@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
@@ -31,7 +15,6 @@ use oxRegistry;
  */
 class PaymentController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
-
     /**
      * Paymentlist
      *
@@ -159,7 +142,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if ($myConfig->getConfigParam('blPsBasketReservationEnabled')) {
             $this->getSession()->getBasketReservations()->renewExpiration();
@@ -222,7 +205,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     protected function _setDefaultEmptyPayment()
     {
         // no shipping method there !!
-        if ($this->getConfig()->getConfigParam('blOtherCountryOrder')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blOtherCountryOrder')) {
             $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
             if ($oPayment->load('oxempty')) {
                 $this->_oEmptyPayment = $oPayment;
@@ -269,7 +252,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $oBasket = $oSession->getBasket();
         $oBasket->setShipping(null);
         $oBasket->onUpdate();
-        $oSession->setVariable('sShipSet', $this->getConfig()->getRequestParameter('sShipSet'));
+        $oSession->setVariable('sShipSet', \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sShipSet'));
     }
 
     /**
@@ -285,7 +268,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function validatePayment()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oSession = $this->getSession();
 
         //#1308C - check user. Function is executed before render(), and oUser is not set!
@@ -487,7 +470,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function isOldDebitValidationEnabled()
     {
-        return !$this->getConfig()->getConfigParam('blSkipDebitOldBankInfo');
+        return !\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blSkipDebitOldBankInfo');
     }
 
     /**
@@ -736,6 +719,6 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function isPaymentVatSplitted()
     {
-        return $this->getConfig()->getConfigParam('blShowVATForPayCharge');
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowVATForPayCharge');
     }
 }

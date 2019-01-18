@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
@@ -32,7 +16,6 @@ use Exception;
  */
 class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
-
     /**
      * If true extended column selection will be build
      *
@@ -73,7 +56,7 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
      */
     protected function _getQuery()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         // looking for table/view
         $sArtTable = $this->_getViewName('oxarticles');
@@ -125,7 +108,7 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
         $sQ = parent::_addFilter($sQ);
 
         // display variants or not ?
-        if ($this->getConfig()->getConfigParam('blVariantsSelection')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blVariantsSelection')) {
             $sQ .= ' group by ' . $this->_getViewName('oxarticles') . '.oxid ';
 
             $oStr = getStr();
@@ -182,7 +165,7 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
      */
     public function addArtToAct()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $aArticles = $this->_getActionIds('oxarticles.oxid');
         $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
@@ -193,37 +176,31 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
             $aArticles = $this->_getAll($this->_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }
 
-        \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->startTransaction();
-        try {
-            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sArtTable = $this->_getViewName('oxarticles');
-            $sQ = "select max(oxactions2article.oxsort) from oxactions2article join {$sArtTable} " .
-                  "on {$sArtTable}.oxid=oxactions2article.oxartid " .
-                  "where oxactions2article.oxactionid = " . $database->quote($soxId) .
-                  " and oxactions2article.oxshopid = '" . $myConfig->getShopId() .
-                  "'and $sArtTable.oxid is not null";
+        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
+        $sArtTable = $this->_getViewName('oxarticles');
+        $sQ = "select max(oxactions2article.oxsort) from oxactions2article join {$sArtTable} " .
+              "on {$sArtTable}.oxid=oxactions2article.oxartid " .
+              "where oxactions2article.oxactionid = " . $database->quote($soxId) .
+              " and oxactions2article.oxshopid = '" . $myConfig->getShopId() .
+              "'and $sArtTable.oxid is not null";
 
-            $iSort = ((int) $database->getOne($sQ)) + 1;
+        $iSort = ((int) $database->getOne($sQ)) + 1;
 
-            $articleAdded = false;
-            if ($soxId && $soxId != "-1" && is_array($aArticles)) {
-                $sShopId = $myConfig->getShopId();
-                foreach ($aArticles as $sAdd) {
-                    $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
-                    $oNewGroup->init('oxactions2article');
-                    $oNewGroup->oxactions2article__oxshopid = new \OxidEsales\Eshop\Core\Field($sShopId);
-                    $oNewGroup->oxactions2article__oxactionid = new \OxidEsales\Eshop\Core\Field($soxId);
-                    $oNewGroup->oxactions2article__oxartid = new \OxidEsales\Eshop\Core\Field($sAdd);
-                    $oNewGroup->oxactions2article__oxsort = new \OxidEsales\Eshop\Core\Field($iSort++);
-                    $oNewGroup->save();
-                }
-                $articleAdded = true;
+        $articleAdded = false;
+        if ($soxId && $soxId != "-1" && is_array($aArticles)) {
+            $sShopId = $myConfig->getShopId();
+            foreach ($aArticles as $sAdd) {
+                $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
+                $oNewGroup->init('oxactions2article');
+                $oNewGroup->oxactions2article__oxshopid = new \OxidEsales\Eshop\Core\Field($sShopId);
+                $oNewGroup->oxactions2article__oxactionid = new \OxidEsales\Eshop\Core\Field($soxId);
+                $oNewGroup->oxactions2article__oxartid = new \OxidEsales\Eshop\Core\Field($sAdd);
+                $oNewGroup->oxactions2article__oxsort = new \OxidEsales\Eshop\Core\Field($iSort++);
+                $oNewGroup->save();
             }
-        } catch (Exception $exception) {
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
-            throw $exception;
+            $articleAdded = true;
         }
-        \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->commitTransaction();
 
         return $articleAdded;
     }
@@ -233,7 +210,7 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
      */
     public function setSorting()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sArtTable = $this->_getViewName('oxarticles');
         $sSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
         $sSelect = "select * from $sArtTable left join oxactions2article on $sArtTable.oxid=oxactions2article.oxartid ";

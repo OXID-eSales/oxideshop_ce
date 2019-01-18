@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Core;
@@ -64,7 +48,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
             $this->_aAddUrlParams = $this->getBaseAddUrlParams();
 
             // appending currency
-            if (($iCur = $this->getConfig()->getShopCurrency())) {
+            if (($iCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopCurrency())) {
                 $this->_aAddUrlParams['cur'] = $iCur;
             }
         }
@@ -109,7 +93,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
             $sSep = '&amp;';
         }
 
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         if (!$oStr->preg_match('/[&?](amp;)?cur=[0-9]+/i', $sUrl)) {
             $iCur = (int) $oConfig->getShopCurrency();
             if ($iCur) {
@@ -130,7 +114,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      */
     public function prepareCanonicalUrl($sUrl)
     {
-        $oConfig = $this->getConfig();
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         /** @var \OxidEsales\Eshop\Core\StrRegular $oStr */
         $oStr = getStr();
 
@@ -227,7 +211,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     public function addShopHost($sUrl)
     {
         if (!preg_match("#^https?://#i", $sUrl)) {
-            $sShopUrl = $this->getConfig()->getSslShopUrl();
+            $sShopUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getSslShopUrl();
             $sUrl = $sShopUrl . $sUrl;
         }
 
@@ -286,7 +270,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      */
     public function getActiveShopHost()
     {
-        $shopUrl = $this->getConfig()->getShopUrl();
+        $shopUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl();
 
         return $this->extractHost($shopUrl);
     }
@@ -546,7 +530,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     {
         if ($this->_aHosts === null) {
             $this->_aHosts = [];
-            $oConfig = $this->getConfig();
+            $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
             $this->_addMallHosts($this->_aHosts);
 

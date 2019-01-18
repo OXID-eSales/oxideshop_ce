@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Component\Widget;
 
@@ -760,7 +744,7 @@ class ArticleDetailsTest extends \OxidTestCase
         $oProduct->expects($this->once())->method('getArticleRatingAverage')->will($this->returnValue(123.855));
 
         $oView = $this->getMock($this->getProxyClassName('oxwArticleDetails'), array('getConfig', 'isReviewActive', 'getProduct'));
-        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oView->expects($this->once())->method('isReviewActive')->will($this->returnValue(true));
         $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
 
@@ -785,7 +769,7 @@ class ArticleDetailsTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo('bl_perfLoadReviews'))->will($this->returnValue('test_isactive'));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Component\Widget\ArticleDetails::class, array('getConfig'));
-        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertSame('test_isactive', $oView->isReviewActive());
     }
@@ -799,7 +783,7 @@ class ArticleDetailsTest extends \OxidTestCase
         $oProduct->expects($this->once())->method('getArticleRatingCount')->will($this->returnValue(123));
 
         $oView = $this->getMock($this->getProxyClassName('oxwArticleDetails'), array('getConfig', 'isReviewActive', 'getProduct'));
-        $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oView->expects($this->once())->method('isReviewActive')->will($this->returnValue(true));
         $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
 

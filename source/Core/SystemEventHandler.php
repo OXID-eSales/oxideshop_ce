@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Core;
@@ -28,11 +12,10 @@ use Exception;
  * Contains system event handler methods
  *
  * @internal Do not make a module extension for this class.
- * @see      http://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
+ * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class SystemEventHandler
 {
-
     /**
      * @var \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier
      */
@@ -162,7 +145,9 @@ class SystemEventHandler
         // Will be used by the upcoming online one click installer.
         // Is still under development - still changes at the remote server are necessary - therefore ignoring the results for now
         try {
-            $this->getOnlineModuleVersionNotifier()->versionNotify();
+            if ($this->isSendingShopDataEnabled()) {
+                $this->getOnlineModuleVersionNotifier()->versionNotify();
+            }
         } catch (Exception $o) {
         }
     }
@@ -172,9 +157,15 @@ class SystemEventHandler
      */
     public function onShopStart()
     {
-        $this->validateOnline();
-
         $this->validateOffline();
+    }
+
+    /**
+     * Perform shop finishing up related actions, like updating app server data.
+     */
+    public function onShopEnd()
+    {
+        $this->validateOnline();
     }
 
     /**
@@ -193,8 +184,8 @@ class SystemEventHandler
             if ($this->isSendingShopDataEnabled() && !\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()) {
                 $this->sendShopInformation();
             }
-        } catch (Exception $eException) {
-            \OxidEsales\Eshop\Core\Registry::getUtils()->logger("OLC-Error: " . $eException->getMessage());
+        } catch (Exception $exception) {
+            \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
         }
     }
 
@@ -205,7 +196,7 @@ class SystemEventHandler
      */
     protected function isSendingShopDataEnabled()
     {
-        return (bool) $this->getConfig()->getConfigParam('blLoadDynContents');
+        return (bool) $this->getConfig()->getConfigParam('blSendTechnicalInformationToOxid');
     }
 
     /**

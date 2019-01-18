@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Core;
@@ -27,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class UtilsCount extends \OxidEsales\Eshop\Core\Base
 {
-
     /**
      * Users view id, used to identify current state cache
      *
@@ -301,7 +284,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     public function resetCatArticleCount($sCatId = null)
     {
         if (!$sCatId) {
-            $this->getConfig()->setGlobalParameter('aLocalCatCache', null);
+            \OxidEsales\Eshop\Core\Registry::getConfig()->setGlobalParameter('aLocalCatCache', null);
             \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalCatCache', '');
         } else {
             // loading from cache
@@ -349,7 +332,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     public function resetVendorArticleCount($sVendorId = null)
     {
         if (!$sVendorId) {
-            $this->getConfig()->setGlobalParameter('aLocalVendorCache', null);
+            \OxidEsales\Eshop\Core\Registry::getConfig()->setGlobalParameter('aLocalVendorCache', null);
             \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalVendorCache', '');
         } else {
             // loading from cache
@@ -369,7 +352,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     public function resetManufacturerArticleCount($sManufacturerId = null)
     {
         if (!$sManufacturerId) {
-            $this->getConfig()->setGlobalParameter('aLocalManufacturerCache', null);
+            \OxidEsales\Eshop\Core\Registry::getConfig()->setGlobalParameter('aLocalManufacturerCache', null);
             \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalManufacturerCache', '');
         } else {
             // loading from cache
@@ -388,7 +371,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getCatCache()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         // first look at the local cache
         $aLocalCatCache = $myConfig->getGlobalParameter('aLocalCatCache');
@@ -414,7 +397,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      */
     protected function _setCatCache($aCache)
     {
-        $this->getConfig()->setGlobalParameter('aLocalCatCache', $aCache);
+        \OxidEsales\Eshop\Core\Registry::getConfig()->setGlobalParameter('aLocalCatCache', $aCache);
         \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalCatCache', $aCache);
     }
 
@@ -425,7 +408,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      */
     protected function _setVendorCache($aCache)
     {
-        $this->getConfig()->setGlobalParameter('aLocalVendorCache', $aCache);
+        \OxidEsales\Eshop\Core\Registry::getConfig()->setGlobalParameter('aLocalVendorCache', $aCache);
         \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalVendorCache', $aCache);
     }
 
@@ -436,7 +419,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      */
     protected function _setManufacturerCache($aCache)
     {
-        $this->getConfig()->setGlobalParameter('aLocalManufacturerCache', $aCache);
+        \OxidEsales\Eshop\Core\Registry::getConfig()->setGlobalParameter('aLocalManufacturerCache', $aCache);
         \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalManufacturerCache', $aCache);
     }
 
@@ -447,7 +430,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getVendorCache()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         // first look at the local cache
         $aLocalVendorCache = $myConfig->getGlobalParameter('aLocalVendorCache');
@@ -472,7 +455,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getManufacturerCache()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         // first look at the local cache
         $aLocalManufacturerCache = $myConfig->getGlobalParameter('aLocalManufacturerCache');
@@ -505,7 +488,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
 
         // loading R&R data from session
         $userSessionGroups = $this->getCurrentUserSessionGroups();
-        $this->_sUserViewId = md5($this->getConfig()->getShopID() . \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageTag() . serialize($userSessionGroups) . (int) $this->isAdmin());
+        $this->_sUserViewId = md5(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopID() . \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageTag() . serialize($userSessionGroups) . (int) $this->isAdmin());
 
         return $this->_sUserViewId;
     }

@@ -1,28 +1,15 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxRegistry;
+use OxidEsales\Eshop\Core\Email;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Common\Form\FormField;
+use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormBridgeInterface;
 
 /**
  * Contact window.
@@ -33,7 +20,6 @@ use oxRegistry;
  */
 class ContactController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
-
     /**
      * Entered user data.
      *
@@ -77,6 +63,27 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
     protected $_iViewIndexState = VIEW_INDEXSTATE_NOINDEXNOFOLLOW;
 
     /**
+     * @return string
+     */
+    public function render()
+    {
+        /** @var ContactFormBridgeInterface $contactFormBridge */
+        $contactFormBridge = $this->getContainer()->get(ContactFormBridgeInterface::class);
+        $form = $contactFormBridge->getContactForm();
+
+        /** @var FormField $formField */
+        foreach ($form->getFields() as $key => $formField) {
+            $this->_aViewData['contactFormFields'][$key] = [
+                'name' => $formField->getName(),
+                'label' => $formField->getLabel(),
+                'isRequired' => $formField->isRequired(),
+            ];
+        }
+
+        return parent::render();
+    }
+
+    /**
      * Composes and sends user written message, returns false if some parameters
      * are missing.
      *
@@ -84,35 +91,23 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function send()
     {
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval');
+        $contactFormBridge = $this->getContainer()->get(ContactFormBridgeInterface::class);
 
-        // checking email address
-        if (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams['oxuser__oxusername'])) {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_INPUT_NOVALIDEMAIL');
+        $form = $contactFormBridge->getContactForm();
+        $form->handleRequest($this->getMappedContactFormRequest());
 
-            return false;
-        }
-
-        $sSubject = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('c_subject');
-        if (!$aParams['oxuser__oxfname'] || !$aParams['oxuser__oxlname'] || !$aParams['oxuser__oxusername'] || !$sSubject) {
-            // even if there is no exception, use this as a default display method
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_INPUT_NOTALLFIELDS');
-
-            return false;
-        }
-
-        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
-        $sMessage = $oLang->translateString('MESSAGE_FROM') . " " .
-                    $oLang->translateString($aParams['oxuser__oxsal']) . " " .
-                    $aParams['oxuser__oxfname'] . " " .
-                    $aParams['oxuser__oxlname'] . "(" . $aParams['oxuser__oxusername'] . ")<br /><br />" .
-                    nl2br(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('c_message'));
-
-        $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
-        if ($oEmail->sendContactMail($aParams['oxuser__oxusername'], $sSubject, $sMessage)) {
-            $this->_blContactSendStatus = 1;
+        if ($form->isValid()) {
+            $this->sendContactMail(
+                $form->email->getValue(),
+                $form->subject->getValue(),
+                $contactFormBridge->getContactFormMessage($form)
+            );
         } else {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL');
+            foreach ($form->getErrors() as $error) {
+                Registry::getUtilsView()->addErrorToDisplay($error);
+            }
+
+            return false;
         }
     }
 
@@ -124,7 +119,7 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getUserData()
     {
         if ($this->_oUserData === null) {
-            $this->_oUserData = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval');
+            $this->_oUserData = Registry::getConfig()->getRequestParameter('editval');
         }
 
         return $this->_oUserData;
@@ -138,7 +133,7 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getContactSubject()
     {
         if ($this->_sContactSubject === null) {
-            $this->_sContactSubject = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('c_subject');
+            $this->_sContactSubject = Registry::getConfig()->getRequestParameter('c_subject');
         }
 
         return $this->_sContactSubject;
@@ -152,7 +147,7 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getContactMessage()
     {
         if ($this->_sContactMessage === null) {
-            $this->_sContactMessage = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('c_message');
+            $this->_sContactMessage = Registry::getConfig()->getRequestParameter('c_message');
         }
 
         return $this->_sContactMessage;
@@ -175,14 +170,18 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function getBreadCrumb()
     {
-        $aPaths = [];
-        $aPath = [];
+        $title = Registry::getLang()->translateString(
+            'CONTACT',
+            Registry::getLang()->getBaseLanguage(),
+            false
+        );
 
-        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('CONTACT', \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage(), false);
-        $aPath['link'] = $this->getLink();
-        $aPaths[] = $aPath;
-
-        return $aPaths;
+        return [
+            [
+                'title' => $title,
+                'link'  => $this->getLink(),
+            ]
+        ];
     }
 
     /**
@@ -192,6 +191,42 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function getTitle()
     {
-        return $this->getConfig()->getActiveShop()->oxshops__oxcompany->value;
+        return \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveShop()->oxshops__oxcompany->value;
+    }
+
+    /**
+     * @return array
+     */
+    private function getMappedContactFormRequest()
+    {
+        $request = Registry::getRequest();
+        $personData = $request->getRequestEscapedParameter('editval');
+
+        return [
+            'email'         => $personData['oxuser__oxusername'],
+            'firstName'     => $personData['oxuser__oxfname'],
+            'lastName'      => $personData['oxuser__oxlname'],
+            'salutation'    => $personData['oxuser__oxsal'],
+            'subject'       => $request->getRequestEscapedParameter('c_subject'),
+            'message'       => $request->getRequestEscapedParameter('c_message'),
+        ];
+    }
+
+    /**
+     * Send a contact mail.
+     *
+     * @param string $email
+     * @param string $subject
+     * @param string $message
+     */
+    private function sendContactMail($email, $subject, $message)
+    {
+        $mailer = oxNew(Email::class);
+
+        if ($mailer->sendContactMail($email, $subject, $message)) {
+            $this->_blContactSendStatus = 1;
+        } else {
+            Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL');
+        }
     }
 }

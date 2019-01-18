@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
@@ -144,77 +128,6 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Adds to element DynTabs
-     *
-     * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
-     *
-     * @param object $dom dom element to add links
-     */
-    protected function _addDynLinks($dom)
-    {
-        $myUtilsFile = \OxidEsales\Eshop\Core\Registry::getUtilsFile();
-
-        $url = 'index.php?'; // session parameters will be included later (after cache processor)
-
-        $xPath = new DomXPath($dom);
-        $nodeList = $xPath->query("//OXMENU[@type='dyn']/MAINMENU/SUBMENU");
-
-        foreach ($nodeList as $node) {
-            // fetching class
-            $cl = $node->getAttribute('cl');
-            $cl = "cl=dynscreen&menu=$cl";
-
-            // fetching params
-            $param = $node->getAttribute('clparam');
-            $param = $param ? "&$param" : '';
-
-            // setting list node if its is not set yet
-            if (!$node->getAttribute('list')) {
-                $node->setAttribute('list', 'dynscreen_list');
-                $node->setAttribute('listparam', 'menu=' . $node->getAttribute('cl'));
-            }
-
-            // setting link
-            $node->setAttribute('link', "{$url}{$cl}{$param}");
-
-            // setting id
-            $node->parentNode->setAttribute('id', 'dyn_menu');
-
-            // setting id to its parent
-
-            // fetching class
-            $class = $node->getAttribute('cl');
-
-            // always display the "about" tab no matter what licence
-
-            if ($myUtilsFile->checkFile("{$this->_sDynIncludeUrl}pages/{$class}_about.php")) {
-                $tabElem = new DOMElement('TAB');
-                $node->appendChild($tabElem);
-                $tabElem->setAttribute('external', 'true');
-                $tabElem->setAttribute('location', "{$this->_sDynIncludeUrl}pages/{$class}_about.php");
-                $tabElem->setAttribute('id', 'dyn_about');
-            }
-
-            // checking for technics page
-            if ($myUtilsFile->checkFile("{$this->_sDynIncludeUrl}pages/{$class}_technics.php")) {
-                $tabElem = new DOMElement('TAB');
-                $node->appendChild($tabElem);
-                $tabElem->setAttribute('external', 'true');
-                $tabElem->setAttribute('location', "{$this->_sDynIncludeUrl}pages/{$class}_technics.php");
-                $tabElem->setAttribute('id', 'dyn_interface');
-            }
-
-            // checking for setup page
-            if (class_exists($class)) {
-                $tabElem = new DOMElement('TAB');
-                $node->appendChild($tabElem);
-                $tabElem->setAttribute('id', 'dyn_interface');
-                $tabElem->setAttribute('cl', $class);
-            }
-        }
-    }
-
-    /**
      * add session parameters to local urls
      *
      * @param object $dom dom element to add links
@@ -306,7 +219,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      */
     protected function _checkDemoShopDenials($dom)
     {
-        if (!$this->getConfig()->isDemoShop()) {
+        if (!\OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop()) {
             // nothing to check for non demo shop
             return;
         }
@@ -474,16 +387,9 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getMenuFiles()
     {
-        $myConfig = $this->getConfig();
-        $myOxUtlis = \OxidEsales\Eshop\Core\Registry::getUtils();
-
         $editionPathSelector = new EditionPathProvider(new EditionRootPathProvider(new EditionSelector()));
         $fullAdminDir = $editionPathSelector->getViewsDirectory() . 'admin' . DIRECTORY_SEPARATOR;
         $menuFile = $fullAdminDir . 'menu.xml';
-
-        $tmpDir = $myConfig->getConfigParam('sCompileDir');
-        $dynLang = $this->_getDynMenuLang();
-        $localDynPath = "{$tmpDir}{$dynLang}_dynscreen.xml";
 
         // including std file
         if (file_exists($menuFile)) {
@@ -513,69 +419,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-        $loadDynContents = $myConfig->getConfigParam('blLoadDynContents');
-        $shopCountry = $myConfig->getConfigParam('sShopCountry');
-
-        // including dyn menu file
-        $dynPath = null;
-
-        if ($loadDynContents) {
-            if ($shopCountry) {
-                $remoteDynUrl = $this->_getDynMenuUrl($dynLang, $loadDynContents);
-
-                // loading remote file from server only once
-                $loadRemote = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("loadedremotexml");
-
-                // very basic check if its valid xml file
-                if ((!isset($loadRemote) || $loadRemote) && ($dynPath = $myOxUtlis->getRemoteCachePath($remoteDynUrl, $localDynPath))) {
-                    $dynPath = $this->_checkDynFile($dynPath);
-                }
-
-                // caching last load state
-                \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("loadedremotexml", $dynPath ? true : false);
-            }
-        }
-
-        // loading dynpages
-        if ($dynPath) {
-            // for not loading/showing the dynpages, we set don't add the dyn path to the files to load:
-            // $filesToLoad[] = $dynPath;
-        }
-
         return $filesToLoad;
-    }
-
-    /**
-     * Checks if dyn file is valid for inclusion
-     *
-     * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
-     *
-     * @param string $dynFilePath dyn file path
-     *
-     * @return bool
-     */
-    protected function _checkDynFile($dynFilePath)
-    {
-        $dynFile = null;
-        if (file_exists($dynFilePath)) {
-            $line = null;
-            if (($handle = @fopen($dynFilePath, 'r'))) {
-                $line = stream_get_line($handle, 100, "?>");
-                fclose($handle);
-
-                // checking xml file header
-                if ($line && stripos($line, '<?xml') !== false) {
-                    $dynFile = $dynFilePath;
-                }
-            }
-
-            // cleanup ..
-            if (!$dynFile) {
-                @unlink($dynFilePath);
-            }
-        }
-
-        return $dynFile;
     }
 
     /**
@@ -603,10 +447,10 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
             if (is_array($filesToLoad = $this->_getMenuFiles())) {
                 // now checking if xml files are newer than cached file
                 $reload = false;
-                $dynLang = $this->_getDynMenuLang();
+                $templateLanguageCode = $this->getTemplateLanguageCode();
 
-                $shopId = $this->getConfig()->getActiveShop()->getShopId();
-                $cacheName = 'menu_' . $dynLang . $shopId . '_xml';
+                $shopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveShop()->getShopId();
+                $cacheName = 'menu_' . $templateLanguageCode . $shopId . '_xml';
                 $cacheFile = $myOxUtlis->getCacheFilePath($cacheName);
                 $cacheContents = $myOxUtlis->fromFileCache($cacheName);
                 if ($cacheContents && file_exists($cacheFile) && ($cacheModTime = filemtime($cacheFile))) {
@@ -630,11 +474,6 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
 
                     // adds links to menu items
                     $this->_addLinks($this->_oInitialDom);
-
-                    // @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
-                    // adds links to dynamic parts
-                    $this->_addDynLinks($this->_oInitialDom);
-                    // END deprecated
 
                     // writing to cache
                     $myOxUtlis->toFileCache($cacheName, $this->_oInitialDom->saveXML());
@@ -774,7 +613,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getAdminUrl()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if (($adminSslUrl = $myConfig->getConfigParam('sAdminSSLURL'))) {
             $url = trim($adminSslUrl, '/');
@@ -827,45 +666,16 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
 
 
     /**
-     * Get dynamic pages url or local path
-     *
-     * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
-     *
-     * @param int    $lang            language id
-     * @param string $loadDynContents get local or remote content path
+     * Get template language code
      *
      * @return string
      */
-    protected function _getDynMenuUrl($lang, $loadDynContents)
+    protected function getTemplateLanguageCode()
     {
-        if (!$loadDynContents) {
-            // getting dyn info from oxid server is off, so getting local menu path
-            $fullAdminDir = getShopBasePath() . 'Application/views/admin';
+        $language = \OxidEsales\Eshop\Core\Registry::getLang();
+        $templateLanguageCode = $language->getLanguageArray()[$language->getTplLanguage()]->abbr;
 
-            return $fullAdminDir . "/dynscreen_local.xml";
-        }
-        $adminView = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\AdminController::class);
-        $this->_sDynIncludeUrl = $adminView->getServiceUrl($lang);
-
-        return $this->_sDynIncludeUrl . "menue/dynscreen.xml";
-    }
-
-    /**
-     * Get dynamic pages language code
-     *
-     * @deprecated since v5.3 (2016-05-20); Dynpages will be removed.
-     *
-     * @return string
-     */
-    protected function _getDynMenuLang()
-    {
-        $myConfig = $this->getConfig();
-        $lang = \OxidEsales\Eshop\Core\Registry::getLang();
-
-        $dynLang = $myConfig->getConfigParam('iDynInterfaceLanguage');
-        $dynLang = isset($dynLang) ? $dynLang : ($lang->getTplLanguage());
-
-        return $lang->getLanguageArray()[$dynLang]->abbr;
+        return $templateLanguageCode;
     }
 
     /**

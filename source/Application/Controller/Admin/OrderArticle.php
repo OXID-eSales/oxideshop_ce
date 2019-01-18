@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
@@ -33,7 +17,6 @@ use oxField;
  */
 class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-
     /**
      * Product which was currently found by search
      *
@@ -223,8 +206,6 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         // order and order article exits?
         if ($oOrderArticle->load($sOrderArtId) && $oOrder->load($sOrderId)) {
-            $myConfig = $this->getConfig();
-
             // deleting record
             $oOrderArticle->delete();
 
@@ -238,7 +219,7 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      */
     public function storno()
     {
-        $myConfig = $this->getConfig();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $sOrderArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sArtID');
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\OrderArticle::class);
@@ -281,7 +262,7 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         if (is_array($aOrderArticles) && $oOrder->load($this->getEditObjectId())) {
-            $myConfig = $this->getConfig();
+            $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
             $oOrderArticles = $oOrder->getOrderArticles(true);
 
             $blUseStock = $myConfig->getConfigParam('blUseStock');

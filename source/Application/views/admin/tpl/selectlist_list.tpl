@@ -41,6 +41,7 @@ window.onload = function ()
     [{/block}]
     <td valign="top" class="listfilter" height="20" colspan="2">
         <div class="r1"><div class="b1">
+        <input class="listedit" type="text" size="50" maxlength="128" name="where[oxselectlist][oxident]" value="[{$where.oxselectlist.oxident}]">
         <div class="find">
             <select name="changelang" class="editinput" onChange="Javascript:top.oxid.admin.changeLanguage();">
             [{foreach from=$languages item=lang}]
@@ -77,7 +78,6 @@ window.onload = function ()
         <td valign="top" class="[{$listclass}]" height="15"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{$listitem->oxselectlist__oxid->value}]');" class="[{$listclass}]">[{$listitem->oxselectlist__oxident->value}]</a></div></td>
         <td class="[{$listclass}]">
           [{if !$readonly}]
-            <a href="Javascript:top.oxid.admin.deleteThis('[{$listitem->oxselectlist__oxid->value}]');" class="delete" id="del.[{$_cnt}]" [{include file="help.tpl" helpid=item_delete}]></a>
             [{include file='include/select_list_actions.tpl'}]
           [{/if}]
         </td>

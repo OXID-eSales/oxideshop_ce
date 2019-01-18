@@ -1,29 +1,14 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link          http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2017
- * @version       OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\SystemRequirements;
-use PHPUnit_Framework_MockObject_MockObject;
+use OxidEsales\EshopCommunity\Core\Registry;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class SystemRequirementsTest extends \OxidTestCase
 {
@@ -50,7 +35,7 @@ class SystemRequirementsTest extends \OxidTestCase
 
     public function testGetModuleInfo()
     {
-        /** @var SystemRequirements|PHPUnit_Framework_MockObject_MockObject $systemRequirementsMock */
+        /** @var SystemRequirements|PHPUnit\Framework\MockObject\MockObject $systemRequirementsMock */
         $systemRequirementsMock = $this->getMock(\OxidEsales\Eshop\Core\SystemRequirements::class, array('checkMbString', 'checkModRewrite'));
 
         $systemRequirementsMock->expects($this->once())->method('checkMbString');
@@ -66,7 +51,7 @@ class SystemRequirementsTest extends \OxidTestCase
      */
     public function testCheckServerPermissions()
     {
-        /** @var SystemRequirements|PHPUnit_Framework_MockObject_MockObject $systemRequirementsMock */
+        /** @var SystemRequirements|PHPUnit\Framework\MockObject\MockObject $systemRequirementsMock */
         $systemRequirementsMock = $this->getMock(\OxidEsales\Eshop\Core\SystemRequirements::class, array('isAdmin'));
         $systemRequirementsMock->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
 
@@ -148,7 +133,7 @@ class SystemRequirementsTest extends \OxidTestCase
 
     public function testGetSysReqStatus()
     {
-        /** @var SystemRequirements|PHPUnit_Framework_MockObject_MockObject $systemRequirementsMock */
+        /** @var SystemRequirements|PHPUnit\Framework\MockObject\MockObject $systemRequirementsMock */
         $systemRequirementsMock = $this->getMock(\OxidEsales\Eshop\Core\SystemRequirements::class, array('getSystemInfo'));
         $systemRequirementsMock->expects($this->once())->method('getSystemInfo');
 
@@ -162,10 +147,10 @@ class SystemRequirementsTest extends \OxidTestCase
      */
     public function testGetReqInfoUrl()
     {
-        $sUrl = "http://oxidforge.org/en/installation.html";
+        $sUrl = "https://oxidforge.org/en/system-requirements";
         $systemRequirements = new \OxidEsales\Eshop\Core\SystemRequirements();
 
-        $this->assertEquals($sUrl . "#PHP_version_at_least_5.6", $systemRequirements->getReqInfoUrl("php_version"));
+        $this->assertEquals($sUrl . "#PHP_version_at_least_7.0", $systemRequirements->getReqInfoUrl("php_version"));
         $this->assertEquals($sUrl, $systemRequirements->getReqInfoUrl("none"));
         $this->assertEquals($sUrl . "#Zend_Optimizer", $systemRequirements->getReqInfoUrl("zend_optimizer"));
     }
@@ -341,7 +326,7 @@ class SystemRequirementsTest extends \OxidTestCase
      */
     public function testCheckTemplateBlock()
     {
-        /** @var Config|PHPUnit_Framework_MockObject_MockObject $configMock */
+        /** @var Config|PHPUnit\Framework\MockObject\MockObject $configMock */
         $configMock = $this->getMock(Config::class, array('getTemplatePath'));
 
         $testTemplate = $this->createFile('checkTemplateBlock.tpl', '[{block name="block1"}][{/block}][{block name="block2"}][{/block}]');
@@ -353,14 +338,13 @@ class SystemRequirementsTest extends \OxidTestCase
         );
         $configMock->expects($this->any())->method('getTemplatePath')->will($this->returnValueMap($map));
 
-        /** @var SystemRequirements|PHPUnit_Framework_MockObject_MockObject $systemRequirementsMock */
-        $systemRequirementsMock = $this->getMock(\OxidEsales\Eshop\Core\SystemRequirements::class, array("getConfig"));
-        $systemRequirementsMock->expects($this->any())->method('getConfig')->will($this->returnValue($configMock));
+        $systemRequirements = oxNew(\OxidEsales\Eshop\Core\SystemRequirements::class);
+        Registry::set(Config::class, $configMock);
 
-        $this->assertFalse($systemRequirementsMock->UNITcheckTemplateBlock('test0', 'nonimportanthere'));
-        $this->assertTrue($systemRequirementsMock->UNITcheckTemplateBlock('test1', 'block1'));
-        $this->assertTrue($systemRequirementsMock->UNITcheckTemplateBlock('test1', 'block2'));
-        $this->assertFalse($systemRequirementsMock->UNITcheckTemplateBlock('test1', 'block3'));
+        $this->assertFalse($systemRequirements->UNITcheckTemplateBlock('test0', 'nonimportanthere'));
+        $this->assertTrue($systemRequirements->UNITcheckTemplateBlock('test1', 'block1'));
+        $this->assertTrue($systemRequirements->UNITcheckTemplateBlock('test1', 'block2'));
+        $this->assertFalse($systemRequirements->UNITcheckTemplateBlock('test1', 'block3'));
     }
 
     /**
@@ -379,7 +363,7 @@ class SystemRequirementsTest extends \OxidTestCase
             'OXMODULE'    => '_OXMODULE_',
         );
 
-        /** @var SystemRequirements|PHPUnit_Framework_MockObject_MockObject $systemRequirementsMock */
+        /** @var SystemRequirements|PHPUnit\Framework\MockObject\MockObject $systemRequirementsMock */
         $systemRequirementsMock = $this->getMock(\OxidEsales\Eshop\Core\SystemRequirements::class, array('_checkTemplateBlock', 'fetchBlockRecords'));
         $systemRequirementsMock->expects($this->exactly(1))->method('_checkTemplateBlock')
             ->with($this->equalTo("_OXTEMPLATE_"), $this->equalTo("_OXBLOCKNAME_"))
@@ -415,7 +399,7 @@ class SystemRequirementsTest extends \OxidTestCase
             'OXMODULE'    => '_OXMODULE_',
         );
 
-        /** @var SystemRequirements|PHPUnit_Framework_MockObject_MockObject $systemRequirementsMock */
+        /** @var SystemRequirements|PHPUnit\Framework\MockObject\MockObject $systemRequirementsMock */
         $systemRequirementsMock = $this->getMock(\OxidEsales\Eshop\Core\SystemRequirements::class, array('_checkTemplateBlock', 'fetchBlockRecords'));
         $systemRequirementsMock->expects($this->exactly(1))->method('_checkTemplateBlock')
             ->with($this->equalTo("_OXTEMPLATE_"), $this->equalTo("_OXBLOCKNAME_"))
@@ -432,21 +416,22 @@ class SystemRequirementsTest extends \OxidTestCase
     public function providerCheckPhpVersion()
     {
         return array(
-            array('5.2', 0),
-            array('5.2.3', 0),
-            array('5.3.0', 0),
-            array('5.3', 0),
-            array('5.3.25', 0),
-            array('5.4', 0),
-            array('5.4.2', 0),
-            array('5.5.50', 1),
-            array('5.6.0', 2),
-            array('5.6.27', 2),
-            array('7.0.0', 2),
-            array('7.0.8-0ubuntu0.16.04.3', 2),
-            array('7.0.12-2ubuntu2', 2),
-            array('7.1.0', 1),
-            array('7.1.22', 1),
+            array('5.2', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
+            array('5.2.3', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
+            array('5.3.0', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
+            array('5.3', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
+            array('5.3.25', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
+            array('5.4', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
+            array('5.4.2', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
+            array('5.5.50', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
+            array('5.6.0', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
+            array('5.6.27', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
+            array('7.0.0', SystemRequirements::MODULE_STATUS_OK),
+            array('7.0.8-0ubuntu0.16.04.3', SystemRequirements::MODULE_STATUS_OK),
+            array('7.0.12-2ubuntu2', SystemRequirements::MODULE_STATUS_OK),
+            array('7.1.0', SystemRequirements::MODULE_STATUS_OK),
+            array('7.1.22', SystemRequirements::MODULE_STATUS_OK),
+            array('7.2.0', SystemRequirements::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS)
         );
     }
 
@@ -458,7 +443,7 @@ class SystemRequirementsTest extends \OxidTestCase
      */
     public function testCheckPhpVersion($sVersion, $iResult)
     {
-        /** @var SystemRequirements|PHPUnit_Framework_MockObject_MockObject $systemRequirementsMock */
+        /** @var SystemRequirements|PHPUnit\Framework\MockObject\MockObject $systemRequirementsMock */
         $systemRequirementsMock = $this->getMock(\OxidEsales\Eshop\Core\SystemRequirements::class, array('getPhpVersion'));
         $systemRequirementsMock->expects($this->once())->method('getPhpVersion')->will($this->returnValue($sVersion));
 

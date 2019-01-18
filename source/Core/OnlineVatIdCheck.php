@@ -1,23 +1,7 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
- *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @copyright (C) OXID eSales AG 2003-2016
- * @version   OXID eShop CE
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Core;
@@ -33,7 +17,6 @@ use SoapFault;
  */
 class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
 {
-
     /**
      * Keeps service check state
      *
@@ -103,20 +86,14 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
      * @param string $sErrStr  error message
      * @param string $sErrFile error file
      * @param int    $iErrLine error line
-     *
-     * @return bool
      */
     public function catchWarning($iErrNo, $sErrStr, $sErrFile, $iErrLine)
     {
-        // message to write to exception log
-        $sLogMessage = "Warning: $sErrStr in $sErrFile on line $iErrLine";
-
-        // fetching exception log file name
-        $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
-        $sLogFileName = $oEx->getLogFileName();
-
-        // logs error message
-        return \OxidEsales\Eshop\Core\Registry::getUtils()->writeToLog($sLogMessage, $sLogFileName);
+        \OxidEsales\Eshop\Core\Registry::getLogger()->warning($sErrStr, [
+            'file' => $sErrFile,
+            'line' => $iErrLine,
+            'code' => $iErrNo
+        ]);
     }
 
     /**

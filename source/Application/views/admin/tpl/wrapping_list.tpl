@@ -1,9 +1,10 @@
 [{include file="headitem.tpl" title="WRAPPING_LIST_TITLE"|oxmultilangassign box="list"}]
 [{assign var="where" value=$oView->getListFilter()}]
 
-[{assign var="readonly" value=""}]
 [{if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]
+[{else}]
+    [{assign var="readonly" value=""}]
 [{/if}]
 
 <script type="text/javascript">
@@ -41,7 +42,7 @@ window.onload = function ()
         </td>
         <td valign="top" class="listfilter" height="20">
             <div class="r1"><div class="b1">
-            <input class="listedit" type="text" size="20" maxlength="128" name="where[oxwrapping][oxname]" value="[{$where.oxwrapping.oxname}]">
+            <input class="listedit" type="text" size="20" maxlength="128" name="where[oxwrapping][oxname]" value="[{$where.oxwrapping.oxname}]" [{$readonly}]>
             </div></div>
         </td>
         <td valign="top" class="listfilter" colspan="2">
@@ -52,9 +53,9 @@ window.onload = function ()
                 <option value="[{$lang->id}]" [{if $lang->selected}]SELECTED[{/if}]>[{$lang->name}]</option>
                 [{/foreach}]
                 </select>
-                <input class="listedit" type="submit" name="submitit" value="[{oxmultilang ident="GENERAL_SEARCH"}]">
+                <input class="listedit" type="submit" name="submitit" value="[{oxmultilang ident="GENERAL_SEARCH"}]" [{$readonly}]>
             </div>
-            <input class="listedit" type="text" size="20" maxlength="128" name="where[oxwrapping][oxpic]" value="[{$where.oxwrapping.oxpic}]">
+            <input class="listedit" type="text" size="20" maxlength="128" name="where[oxwrapping][oxpic]" value="[{$where.oxwrapping.oxpic}]" [{$readonly}]>
             </div></div>
         </td>
     [{/block}]

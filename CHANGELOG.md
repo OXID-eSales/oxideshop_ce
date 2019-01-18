@@ -126,8 +126,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [6.3.2] - Unreleased
 
 ### Added
+- Add method SystemEventHandler::onShopEnd() to be called for finishing actions e.g. from ShopControl::pageClose().
 
 ### Changed
+- Call to SystemEventHandler::validateOnline() is now called as finishing action rather than startup.
 
 ### Deprecated
 - `\OxidEsales\EshopCommunity\Core\Email::$Version` This fixes a missing deprecation in PHPMailer, which is the parent 

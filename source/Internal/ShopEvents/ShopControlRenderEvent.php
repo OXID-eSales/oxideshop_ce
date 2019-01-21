@@ -22,14 +22,14 @@ class ShopControlRenderEvent extends Event
     /**
      * @var \OxidEsales\Eshop\Core\ShopControl
      */
-    protected $shopControl = null;
+    private $shopControl;
 
     /**
-     * Setter for ShopControl object.
+     * Class constructor.
      *
      * @param \OxidEsales\Eshop\Core\ShopControl $shopControl ShopControl object
      */
-    public function setShopControl(\OxidEsales\Eshop\Core\ShopControl $shopControl)
+    public function __construct(\OxidEsales\Eshop\Core\ShopControl $shopControl)
     {
         $this->shopControl = $shopControl;
     }
@@ -39,7 +39,7 @@ class ShopControlRenderEvent extends Event
      *
      * @return \OxidEsales\Eshop\Core\ShopControl
      */
-    public function getShopControl()
+    public function getShopControl(): \OxidEsales\Eshop\Core\ShopControl
     {
         return $this->shopControl;
     }

@@ -293,7 +293,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
         \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::resetModuleVariables();
 
         //notify services
-        $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModuleCleanupEvent());
+        $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\ShopEvents\ModuleCleanupDoneEvent());
     }
 
     /**

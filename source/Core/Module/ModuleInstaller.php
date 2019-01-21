@@ -661,7 +661,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
             $this->getModuleCache()->resetCache();
         }
 
-        $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModuleCacheResetEvent());
+        $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\ShopEvents\ModuleCacheResettedEvent());
     }
 
     /**

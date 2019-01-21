@@ -18,10 +18,7 @@
  */
 function smarty_function_oxid_include_widget($params, &$smarty)
 {
-    $event = new OxidEsales\EshopCommunity\Internal\ShopEvents\IncludeWidgetEvent();
-    $event->setParameters($params);
-    $event->setSmarty($smarty);
-
+    $event = new OxidEsales\EshopCommunity\Internal\ShopEvents\IncludeWidgetEvent($smarty, $params);
     $container = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
     $dispatcher = $container->get('event_dispatcher');
     $event = $dispatcher->dispatch($event::NAME, $event);

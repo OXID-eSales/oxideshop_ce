@@ -24,17 +24,29 @@ class IncludeWidgetEvent extends Event
      *
      * @var string
      */
-    protected $result = '';
+    private $result = '';
 
     /**
      * @var Smarty
      */
-    protected $smarty = null;
+    private $smarty;
 
     /**
      * @var array
      */
-    protected $parameters = [];
+    private $parameters;
+
+    /**
+     * IncludeWidgetEvent constructor.
+     *
+     * @param \Smarty $smarty     Smarty object
+     * @param array   $parameters Parameters needed for smarty
+     */
+    public function __construct(\Smarty $smarty, array $parameters)
+    {
+        $this->smarty = $smarty;
+        $this->parameters = $parameters;
+    }
 
     /**
      * Setter for result.
@@ -47,31 +59,11 @@ class IncludeWidgetEvent extends Event
     }
 
     /**
-     * Setter for parameters.
-     *
-     * @param array $parameters Parameters
-     */
-    public function setParameters($parameters)
-    {
-        $this->parameters = $parameters;
-    }
-
-    /**
-     * Setter for Smarty.
-     *
-     * @param Smarty $smarty Smarty object
-     */
-    public function setSmarty($smarty)
-    {
-        $this->smarty = $smarty;
-    }
-
-    /**
      * Getter for parameters
      *
      * @return array
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
@@ -79,9 +71,9 @@ class IncludeWidgetEvent extends Event
     /**
      * Getter for smarty.
      *
-     * @return Smarty
+     * @return \Smarty
      */
-    public function getSmarty()
+    public function getSmarty(): \Smarty
     {
         return $this->smarty;
     }
@@ -91,7 +83,7 @@ class IncludeWidgetEvent extends Event
      *
      * @return string
      */
-    public function getResult()
+    public function getResult(): string
     {
         return $this->result;
     }

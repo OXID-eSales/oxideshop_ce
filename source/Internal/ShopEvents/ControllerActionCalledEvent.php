@@ -11,11 +11,11 @@ namespace OxidEsales\EshopCommunity\Internal\ShopEvents;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class AfterModuleCleanupEvent
+ * Class ControllerActionCalledEvent
  *
  * @package OxidEsales\EshopCommunity\Internal\ShopEvents
  */
-class AfterModuleCleanupEvent extends Event
+class ControllerActionCalledEvent extends Event
 {
     const NAME = self::class;
 }

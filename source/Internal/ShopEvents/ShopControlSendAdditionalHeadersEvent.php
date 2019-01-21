@@ -24,46 +24,40 @@ class ShopControlSendAdditionalHeadersEvent extends Event
      *
      * @var bool
      */
-    protected $result = false;
+    private $result = false;
 
     /**
      * @var \OxidEsales\Eshop\Core\Controller\BaseController
      */
-    protected $controller = null;
+    private $controller;
 
     /**
      * @var \OxidEsales\Eshop\Core\ShopControl
      */
-    protected $shopControl = null;
+    private $shopControl;
 
     /**
-     * Setter for ShopControl object.
+     * ShopControlSendAdditionalHeadersEvent constructor.
      *
-     * @param \OxidEsales\Eshop\Core\ShopControl $shopControl ShopControl object
+     * @param \OxidEsales\Eshop\Core\ShopControl               $shopControl ShopControl object
+     * @param \OxidEsales\Eshop\Core\Controller\BaseController $controller  Controller
      */
-    public function setShopControl(\OxidEsales\Eshop\Core\ShopControl $shopControl)
-    {
+    public function __construct(
+        \OxidEsales\Eshop\Core\ShopControl $shopControl,
+        \OxidEsales\Eshop\Core\Controller\BaseController $controller
+    ) {
         $this->shopControl = $shopControl;
+        $this->controller = $controller;
     }
 
     /**
      * Setter for result.
      *
-     * @param string $result
+     * @param bool $result Event result
      */
-    public function setResult($result)
+    public function setResult(bool $result)
     {
         $this->result = $result;
-    }
-
-    /**
-     * Setter for controller object.
-     *
-     * @param \OxidEsales\Eshop\Core\Controller\BaseController controller object
-     */
-    public function setController(\OxidEsales\Eshop\Core\Controller\BaseController $controller)
-    {
-        $this->controller = $controller;
     }
 
     /**
@@ -71,7 +65,7 @@ class ShopControlSendAdditionalHeadersEvent extends Event
      *
      * @return \OxidEsales\Eshop\Core\ShopControl
      */
-    public function getShopControl()
+    public function getShopControl(): \OxidEsales\Eshop\Core\ShopControl
     {
         return $this->shopControl;
     }
@@ -81,7 +75,7 @@ class ShopControlSendAdditionalHeadersEvent extends Event
      *
      * @return bool
      */
-    public function getResult()
+    public function getResult(): bool
     {
         return $this->result;
     }
@@ -91,7 +85,7 @@ class ShopControlSendAdditionalHeadersEvent extends Event
      *
      * @return \OxidEsales\Eshop\Core\Controller\BaseController
      */
-    public function getController()
+    public function getController(): \OxidEsales\Eshop\Core\Controller\BaseController
     {
         return $this->controller;
     }

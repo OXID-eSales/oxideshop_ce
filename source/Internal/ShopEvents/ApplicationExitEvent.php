@@ -11,11 +11,11 @@ namespace OxidEsales\EshopCommunity\Internal\ShopEvents;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class ExitEvent
+ * Class ApplicationExitEvent
  *
  * @package OxidEsales\EshopCommunity\Internal\ShopEvents
  */
-class ExitEvent extends Event
+class ApplicationExitEvent extends Event
 {
     const NAME = self::class;
 
@@ -24,14 +24,14 @@ class ExitEvent extends Event
      *
      * @var bool
      */
-    protected $result = false;
+    private $result = false;
 
     /**
      * Setter for result.
      *
-     * @param string $result
+     * @param bool $result
      */
-    public function setResult($result)
+    public function setResult(bool $result)
     {
         $this->result = $result;
     }
@@ -41,7 +41,7 @@ class ExitEvent extends Event
      *
      * @return bool
      */
-    public function getResult()
+    public function getResult(): bool
     {
         return $this->result;
     }

@@ -6,7 +6,7 @@
     "homepage": "https://www.oxid-esales.com/en/home.html",
     "license": "GPL-3.0-only",
     "require": {
-        "php": "^7.0",
+        "php": "^7.1",
         "phpmailer/phpmailer": "^v6.0.6",
         "smarty/smarty": "^v2.6.31",
         "doctrine/dbal": "^v2.5.13",
@@ -17,16 +17,19 @@
         "symfony/dependency-injection": "^3.4",
         "symfony/lock": "^3.4",
         "symfony/console": "^v3.4.15",
-        "webmozart/path-util": "^2.3"
+        "webmozart/path-util": "^2.3",
+        "oxid-esales/oxideshop-pe": "dev-master",
+        "oxid-esales/oxideshop-ee": "dev-flow_theme_acc_tests-ARC-24",
+        "oxid-esales/geo-blocking-module": "dev-master"
     },
     "require-dev": {
-        "oxid-esales/flow-theme": "^v3.0.2",
+        "oxid-esales/flow-theme": "dev-master",
         "oxid-esales/oxideshop-doctrine-migration-wrapper": "^v2.1.2",
         "oxid-esales/oxideshop-db-views-generator": "^v1.2.0",
         "oxid-esales/oxideshop-demodata-installer": "^v1.1.2",
         "oxid-esales/oxideshop-composer-plugin": "dev-master",
         "oxid-esales/oxideshop-unified-namespace-generator": "^2.0.0",
-        "oxid-esales/testing-library": "dev-master",
+        "oxid-esales/testing-library": "dev-flow_theme_acc_tests-ARC-24",
         "oxid-esales/coding-standards": "^v3.0.5",
         "oxid-esales/coding-standards-wrapper": "^v1.0.0",
         "incenteev/composer-parameter-handler": "~v2.0",
@@ -79,6 +82,32 @@
                 "shop_tests_path": "SHOP_TESTS_PATH",
                 "partial_module_paths": "PARTIAL_MODULE_PATHS"
             }
+        }
+    },
+  "repositories": {
+    "oxid-esales/oxideshop-ee": {
+      "type": "vcs",
+      "url": "https://github.com/OXID-eSales/oxideshop_ee"
+    },
+      "oxid-esales/geo-blocking-module": {
+          "type": "vcs",
+          "url": "https://github.com/OXID-eSales/geo-blocking-module"
+      },
+      "oxid-esales/codeception-module": {
+          "type": "vcs",
+          "url": "https://github.com/OXID-eSales/codeception-oxideshop-module"
+      },
+      "oxid-esales/codeception-page-object": {
+          "type": "vcs",
+          "url": "https://github.com/OXID-eSales/codeception-page-object"
+      },
+    "oxid-esales/oxideshop-pe": {
+      "type": "vcs",
+      "url": "https://github.com/OXID-eSales/oxideshop_pe"
+    },
+        "oxid-esales/wave-theme": {
+            "type": "vcs",
+            "url": "https://github.com/OXID-eSales/wave-theme"
         }
     }
 }

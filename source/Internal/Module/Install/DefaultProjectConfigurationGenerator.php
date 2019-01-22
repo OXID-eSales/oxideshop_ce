@@ -60,10 +60,24 @@ class DefaultProjectConfigurationGenerator implements DefaultProjectConfiguratio
     {
         $environmentConfiguration = new EnvironmentConfiguration();
 
-        foreach ($this->context->getAllShopIds() as $shopId) {
+        foreach ($this->getShopIds() as $shopId) {
             $environmentConfiguration->addShopConfiguration($shopId, new ShopConfiguration());
         }
 
         return $environmentConfiguration;
+    }
+
+    /**
+     * @return array
+     */
+    private function getShopIds(): array
+    {
+        if ($this->context->isShopSetUp()) {
+            return $this->context->getAllShopIds();
+        }
+
+        return [
+            $this->context->getDefaultShopId(),
+        ];
     }
 }

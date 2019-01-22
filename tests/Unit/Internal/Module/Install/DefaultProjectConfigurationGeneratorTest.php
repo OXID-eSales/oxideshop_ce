@@ -13,33 +13,60 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfi
 use OxidEsales\EshopCommunity\Internal\Module\Install\DefaultProjectConfigurationGenerator;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @internal
  */
 class DefaultProjectConfigurationGeneratorTest extends TestCase
 {
+    private $defaultShopId = 100500;
     private $environment = 'prod';
     private $shops = [1, 2, 3];
 
-    public function testGenerateDefaultConfiguration()
+    public function testGenerateDefaultConfigurationIfShopIsSetUp()
     {
         $projectConfigurationDao = $this->getMockBuilder(ProjectConfigurationDaoInterface::class)->getMock();
         $projectConfigurationDao
             ->expects($this->once())
             ->method('persistConfiguration')
-            ->with($this->getExpectedDefaultProjectConfiguration());
+            ->with($this->getExpectedDefaultProjectConfiguration($this->shops));
 
-        $generator = new DefaultProjectConfigurationGenerator($projectConfigurationDao, $this->getContext());
+        $context = $this->getContext();
+        $context
+            ->method('isShopSetUp')
+            ->willReturn(true);
+
+        $generator = new DefaultProjectConfigurationGenerator($projectConfigurationDao, $context);
 
         $generator->generate();
     }
 
-    private function getExpectedDefaultProjectConfiguration(): ProjectConfiguration
+    public function testGenerateDefaultConfigurationIfShopIsNotSetUp()
+    {
+        $projectConfigurationDao = $this->getMockBuilder(ProjectConfigurationDaoInterface::class)->getMock();
+        $projectConfigurationDao
+            ->expects($this->once())
+            ->method('persistConfiguration')
+            ->with(
+                $this->getExpectedDefaultProjectConfiguration([$this->defaultShopId])
+            );
+
+        $context = $this->getContext();
+        $context
+            ->method('isShopSetUp')
+            ->willReturn(false);
+
+        $generator = new DefaultProjectConfigurationGenerator($projectConfigurationDao, $context);
+
+        $generator->generate();
+    }
+
+    private function getExpectedDefaultProjectConfiguration(array $shops): ProjectConfiguration
     {
         $environmentConfiguration = new EnvironmentConfiguration();
 
-        foreach ($this->shops as $shopId) {
+        foreach ($shops as $shopId) {
             $environmentConfiguration->addShopConfiguration($shopId, new ShopConfiguration());
         }
 
@@ -49,11 +76,15 @@ class DefaultProjectConfigurationGeneratorTest extends TestCase
         return $projectConfiguration;
     }
 
-    private function getContext(): ContextInterface
+    /**
+     * @return ContextInterface | MockObject
+     */
+    private function getContext(): MockObject
     {
         $context = $this->getMockBuilder(ContextInterface::class)->getMock();
         $context->method('getEnvironment')->willReturn($this->environment);
         $context->method('getAllShopIds')->willReturn($this->shops);
+        $context->method('getDefaultShopId')->willReturn($this->defaultShopId);
 
         return $context;
     }

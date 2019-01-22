@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Application\Utility;
 
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use OxidEsales\Facts\Edition\EditionSelector;
 use OxidEsales\Facts\Facts;
 use Webmozart\PathUtil\Path;
@@ -23,6 +24,11 @@ class BasicContext implements BasicContextInterface
     const ENTERPRISE_EDITION = EditionSelector::ENTERPRISE;
 
     const GENERATED_PROJECT_FILE_NAME = 'generated_project.yaml';
+
+    /**
+     * @var string
+     */
+    private $configFileName = 'config.inc.php';
 
     /**
      * @var Facts
@@ -84,6 +90,24 @@ class BasicContext implements BasicContextInterface
     public function getEnterpriseEditionRootPath(): string
     {
         return $this->getFacts()->getEnterpriseEditionRootPath();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShopSetUp(): bool
+    {
+        $configFilePath = $this->getSourcePath() . $this->configFileName;
+
+        return file_exists($configFilePath);
+    }
+
+    /**
+     * @return int
+     */
+    public function getDefaultShopId(): int
+    {
+        return ShopIdCalculator::BASE_SHOP_ID;
     }
 
     /**

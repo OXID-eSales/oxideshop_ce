@@ -278,6 +278,9 @@ class ModuleTest extends ModuleBaseTest
         $this->switchLanguage("Deutsch");
         $this->assertTextNotPresent("Module #6 title DE");
 
+        // Check if error logged
+        $this->assertLoggedException(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class, "Module class myinfo6test not found");
+
         //checking if module is deactive after  vendor file rename
         $this->loginAdmin("Extensions", "Modules");
         $this->frame("edit");
@@ -346,6 +349,9 @@ class ModuleTest extends ModuleBaseTest
         $this->open(shopURL."en/About-Us/");
         $this->assertTextNotPresent("About Us + info6");
         $this->assertTextPresent("About Us");
+
+        // Check if error logged
+        $this->assertLoggedException(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class, "Module class myinfo6 not found. Module ID (module id not availible)");
 
         //checking if module is deactivated after /dir rename
         $this->loginAdmin("Extensions", "Modules");

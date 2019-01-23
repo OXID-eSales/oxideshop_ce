@@ -42,8 +42,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - OXID eShop console, which allows to register custom commands for modules and for components via `services.yaml`.
   - New command to activate module.
   - New command to deactivate module.
+  - New oe-console command to install module configuration: oe:module:install-configuration
   - New parameter in config file to change database connection charset - `dbCharset` [PR-670](https://github.com/OXID-eSales/oxideshop_ce/pull/670)
-  - New command to install module configuration.
 
 - Module configuration:
     - option `activeModules` in table oxconfig in order to determine the currently active modules

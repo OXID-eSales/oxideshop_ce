@@ -85,6 +85,10 @@ class ProjectConfigurationDaoTest extends TestCase
     {
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('testModuleConfiguration');
+        $moduleConfiguration->setDescription([
+            'de' => 'ja',
+            'en' => 'no',
+        ]);
 
         $moduleConfiguration
             ->addSetting(
@@ -137,10 +141,11 @@ class ProjectConfigurationDaoTest extends TestCase
                 ModuleSetting::SHOP_MODULE_SETTING,
                 [
                     [
-                        'group' => 'frontend',
-                        'name'  => 'sGridRow',
-                        'type'  => 'str',
-                        'value' => 'row',
+                        'group'         => 'frontend',
+                        'name'          => 'sGridRow',
+                        'type'          => 'str',
+                        'value'         => 'row',
+                        'constraints'   => ['first', 'second'],
                     ],
                 ]
             ))

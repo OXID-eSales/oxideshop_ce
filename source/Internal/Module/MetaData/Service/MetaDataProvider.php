@@ -82,7 +82,7 @@ class MetaDataProvider implements MetaDataProviderInterface
     public function getData(string $filePath): array
     {
         if (!is_readable($filePath) || is_dir($filePath)) {
-            throw new \InvalidArgumentException('File ' . $filePath . ' is not a readable or not even a file');
+            throw new \InvalidArgumentException('File ' . $filePath . ' is not readable or not even a file.');
         }
         $this->filePath = $filePath;
         $normalizedMetaData = $this->getNormalizedMetaDataFileContent();

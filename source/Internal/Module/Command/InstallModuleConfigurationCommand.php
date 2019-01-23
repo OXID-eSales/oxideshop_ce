@@ -18,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class InstallModuleConfigurationCommand extends Command
 {
     const MESSAGE_INSTALLATION_WAS_SUCCESSFUL   = 'Module configuration has been installed.';
-    const MESSAGE_INSTALLATION_FAILED           = 'An error occurred while module configuration installing.';
+    const MESSAGE_INSTALLATION_FAILED           = 'An error occurred while installing module configuration.';
 
     /**
      * @var ModuleConfigurationInstallerInterface
@@ -42,13 +42,15 @@ class InstallModuleConfigurationCommand extends Command
     {
         $this
             ->setName('oe:module:install-configuration')
-            ->setDescription('Install module configuration.')
-            ->addArgument('module-path', InputArgument::REQUIRED, 'Module path');
+            ->setDescription('Install module configuration into project configuration file. Module configuration already present in the project configuration file will be overwriten.')
+            ->addArgument('module-path', InputArgument::REQUIRED, 'Path to module source, e.g. vendor/myvendor/mymodule');
     }
 
     /**
      * @param InputInterface  $input
      * @param OutputInterface $output
+     *
+     * @throws \Throwable
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

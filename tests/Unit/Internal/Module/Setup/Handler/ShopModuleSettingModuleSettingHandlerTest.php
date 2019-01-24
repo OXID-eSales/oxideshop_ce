@@ -114,7 +114,7 @@ class ShopModuleSettingModuleSettingHandlerTest extends TestCase
                     'name'          => 'blCustomGridFramework',
                     'type'          => 'bool',
                     'value'         => 'false',
-                    'constraints'   => '1|2|3',
+                    'constraints'   => ['1', '2', '3',],
                     'group'         => 'frontend',
                     'position'      => 5,
                 ],

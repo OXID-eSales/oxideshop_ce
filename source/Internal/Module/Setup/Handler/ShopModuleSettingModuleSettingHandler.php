@@ -102,9 +102,7 @@ class ShopModuleSettingModuleSettingHandler implements ModuleSettingHandlerInter
             ->setValue($data['value']);
 
         if (isset($data['constraints'])) {
-            $shopModuleSetting->setConstraints(
-                explode('|', $data['constraints'])
-            );
+            $shopModuleSetting->setConstraints($data['constraints']);
         }
 
         if (isset($data['group'])) {

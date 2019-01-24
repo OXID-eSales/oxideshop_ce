@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Module\MetaData;
+namespace OxidEsales\EshopCommunity\Test\Integration\Internal\Module\MetaData;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\BadMetaDataFoundEvent;
@@ -63,7 +63,7 @@ class MetaDataMapperTest extends TestCase
                 ],
             ],
             'settings'    => [
-                ['group' => 'main', 'name' => 'setting_1', 'type' => 'select', 'value' => '0', 'constraints' => '0|1|2|3', 'position' => 3],
+                ['group' => 'main', 'name' => 'setting_1', 'type' => 'select', 'value' => '0', 'constraints' => ['0', '1', '2', '3'], 'position' => 3],
                 ['group' => 'main', 'name' => 'setting_2', 'type' => 'password', 'value' => 'changeMe']
             ],
             'events'      => [
@@ -186,7 +186,7 @@ class MetaDataMapperTest extends TestCase
                 ],
             ],
             'settings'                => [
-                ['group' => 'main', 'name' => 'setting_1', 'type' => 'select', 'value' => '0', 'constraints' => '0|1|2|3', 'position' => 3],
+                ['group' => 'main', 'name' => 'setting_1', 'type' => 'select', 'value' => '0', 'constraints' => ['0', '1', '2', '3'], 'position' => 3],
                 ['group' => 'main', 'name' => 'setting_2', 'type' => 'password', 'value' => 'changeMe']
             ],
             'events'                  => [

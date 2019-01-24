@@ -27,7 +27,26 @@ class MetaDataNormalizer implements MetaDataNormalizerInterface
             $normalizedMetaData[$normalizedKey] = $normalizedValue;
         }
 
+        if (isset($normalizedMetaData[MetaDataProvider::METADATA_SETTINGS])) {
+            $normalizedMetaData[MetaDataProvider::METADATA_SETTINGS] = $this->convertModuleSettingConstraintsToArray($normalizedMetaData[MetaDataProvider::METADATA_SETTINGS]);
+        }
+
         return $normalizedMetaData;
+    }
+
+    /**
+     * @param array $metadataModuleSettings
+     * @return array
+     */
+    private function convertModuleSettingConstraintsToArray(array $metadataModuleSettings): array
+    {
+        foreach ($metadataModuleSettings as $key => $setting) {
+            if (isset($setting['constraints'])) {
+                $metadataModuleSettings[$key]['constraints'] = explode('|', $setting['constraints']);
+            }
+        }
+
+        return $metadataModuleSettings;
     }
 
     /**

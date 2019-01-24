@@ -87,7 +87,7 @@ class MetaDataNormalizerTest extends TestCase
                     'name'        => 'value1',
                     'type'        => 'value1',
                     'value'       => 'value1',
-                    'constraints' => 'value1',
+                    'constraints' => ['value1'],
                     'position'    => 1
                 ],
                 [
@@ -95,7 +95,7 @@ class MetaDataNormalizerTest extends TestCase
                     'name'        => 'value2',
                     'type'        => 'value2',
                     'value'       => 'value2',
-                    'constraints' => 'value2',
+                    'constraints' => ['value2'],
                     'position'    => 2
                 ],
             ],
@@ -119,5 +119,25 @@ class MetaDataNormalizerTest extends TestCase
         $normalizedData = $metaDataNormalizer->normalizeData($metaData);
 
         $this->assertEquals($expectedNormalizedData, $normalizedData);
+    }
+
+    public function testNormalizerConvertsModuleSettingConstraintsToArray()
+    {
+        $metadata = [
+            'settings' => [
+                ['constraints' => '1|2|3'],
+                ['constraints' => 'le|la|les'],
+            ]
+        ];
+
+        $this->assertSame(
+            [
+                'settings' => [
+                    ['constraints' => ['1', '2', '3']],
+                    ['constraints' => ['le', 'la', 'les']],
+                ]
+            ],
+            (new MetaDataNormalizer())->normalizeData($metadata)
+        );
     }
 }

@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - template source/Application/views/admin/tpl/dynscreen_local.tpl
 - template source/Application/views/admin/tpl/version_checker_result.tpl
 - `sOXIDPHP` parameter in `config.inc.php`
+- `blDoNotDisableModuleOnError` parameter in `config.inc.php`
 - \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::writeExceptionToLog
 - \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::displayOfflinePage
 - \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::setLogFileName
@@ -69,6 +70,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\Email::setConfig`
 - `\OxidEsales\EshopCommunity\Core\Email::getConfig`
 - `\OxidEsales\EshopCommunity\Core\SystemRequirements::getConfig`
+- `\OxidEsales\EshopCommunity\Core\Module::getConfigBlDoNotDisableModuleOnError`
 
 ### Fixed
 

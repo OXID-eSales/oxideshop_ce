@@ -393,8 +393,8 @@ class ModuleChainsGenerator
      *
      * @param string $moduleClass
      */
-    protected function onModuleExtensionCreationError($moduleClass) {
-
+    protected function onModuleExtensionCreationError($moduleClass)
+    {
         $moduleId = "(module id not availible)";
         if (class_exists("\OxidEsales\Eshop\Core\Module\Module", false)) {
             $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);

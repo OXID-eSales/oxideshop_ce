@@ -18,31 +18,4 @@ use Symfony\Component\EventDispatcher\Event;
 class ApplicationExitEvent extends Event
 {
     const NAME = self::class;
-
-    /**
-     * Result
-     *
-     * @var bool
-     */
-    private $result = false;
-
-    /**
-     * Setter for result.
-     *
-     * @param bool $result
-     */
-    public function setResult(bool $result)
-    {
-        $this->result = $result;
-    }
-
-    /**
-     * Getter for result
-     *
-     * @return bool
-     */
-    public function getResult(): bool
-    {
-        return $this->result;
-    }
 }

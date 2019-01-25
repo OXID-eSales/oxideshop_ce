@@ -23,6 +23,13 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     protected $_aViewData = [];
 
     /**
+     * View parameters array
+     *
+     * @var array
+     */
+    protected $_aViewParams = [];
+
+    /**
      * Location of a executed class file.
      *
      * @var string
@@ -39,14 +46,14 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     /**
      * If this is a component we will have our parent view here.
      *
-     * @var \OxidEsales\Eshop\Core\Controller\BaseController
+     * @var \OxidEsales\Eshop\Core\Controller\BaseController|null
      */
     protected $_oParent = null;
 
     /**
      * Flag if this object is a component or not
      *
-     * @var bool
+     * @var bool|null
      */
     protected $_blIsComponent = false;
 
@@ -269,7 +276,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      * Sets value to parameter used by template engine.
      *
      * @param string $sPara  name of parameter to pass
-     * @param string $sValue value of parameter
+     * @param mixed  $sValue value of parameter
      */
     public function addTplParam($sPara, $sValue)
     {
@@ -423,9 +430,12 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function getViewDataElement($sParamId = null)
     {
+        $return = null;
         if ($sParamId && isset($this->_aViewData[$sParamId])) {
-            return $this->_aViewData[$sParamId];
+            $return = $this->_aViewData[$sParamId];
         }
+
+        return $return;
     }
 
     /**
@@ -470,8 +480,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Set parent object. If this is a component we will have our parent view here.
-     *
-     * @param object $oParent parent object
+     * @param \OxidEsales\Eshop\Core\Controller\BaseController $oParent parent object
      */
     public function setParent($oParent = null)
     {
@@ -481,7 +490,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     /**
      * Get parent object
      *
-     * @return BaseController
+     * @return \OxidEsales\Eshop\Core\Controller\BaseController|null
      */
     public function getParent()
     {
@@ -491,7 +500,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     /**
      * Set flag if this object is a component or not
      *
-     * @param bool $blIsComponent flag if this object is a component
+     * @param bool|null $blIsComponent flag if this object is a component
      */
     public function setIsComponent($blIsComponent = null)
     {
@@ -501,7 +510,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     /**
      * Get flag if this object is a component
      *
-     * @return bool
+     * @return bool|null
      */
     public function getIsComponent()
     {
@@ -858,15 +867,17 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      * This basically happens on session change,
      * when session cookie is not equals to the actual session ID.
      *
-     * @return string
+     * @return string|null
      */
     public function getSidForWidget()
     {
         $oSession = $this->getSession();
-
+        $sid = null;
         if (!$oSession->isActualSidInCookie()) {
-            return $oSession->getId();
+            $sid = $oSession->getId();
         }
+
+        return $sid;
     }
 
     /**

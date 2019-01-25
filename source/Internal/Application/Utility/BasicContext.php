@@ -28,12 +28,21 @@ class BasicContext implements BasicContextInterface
     /**
      * @var string
      */
-    private $configFileName = 'config.inc.php';
+    private $configFileName;
 
     /**
      * @var Facts
      */
     private $facts;
+
+    /**
+     * BasicContext constructor.
+     * @param string $configFileName
+     */
+    public function __construct(string $configFileName)
+    {
+        $this->configFileName = $configFileName;
+    }
 
     /**
      * @todo change placement of containercache.php file and move logic to Facts.
@@ -97,7 +106,7 @@ class BasicContext implements BasicContextInterface
      */
     public function isShopSetUp(): bool
     {
-        $configFilePath = $this->getSourcePath() . $this->configFileName;
+        $configFilePath = $this->getSourcePath() . DIRECTORY_SEPARATOR. $this->configFileName;
 
         return file_exists($configFilePath);
     }

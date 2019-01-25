@@ -45,8 +45,11 @@ class ExecutorTest extends TestCase
      */
     private function makeExecutor(): ExecutorInterface
     {
-        $context = $this->getMockBuilder(BasicContext::class)->setMethods(['getSourcePath', 'getCommunityEditionSourcePath'])->getMock();
-        $context->method('getCommunityEditionSourcePath')->willReturn((new BasicContext())->getCommunityEditionSourcePath());
+        $context = $this
+            ->getMockBuilder(BasicContext::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getSourcePath'])
+            ->getMock();
         $context->method('getSourcePath')->willReturn(__DIR__ . '/Fixtures');
 
         $containerBuilder = new ContainerBuilder($context);

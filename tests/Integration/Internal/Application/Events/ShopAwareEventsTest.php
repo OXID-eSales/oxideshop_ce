@@ -28,6 +28,7 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
     public function setUp()
     {
         $context = $this->getMockBuilder(BasicContext::class)
+            ->disableOriginalConstructor()
             ->setMethods(['getSourcePath', 'getCommunityEditionSourcePath'])->getMock();
         $context->method('getCommunityEditionSourcePath')->willReturn(
             (new Facts)->getCommunityEditionSourcePath()

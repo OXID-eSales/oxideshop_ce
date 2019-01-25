@@ -80,7 +80,11 @@ class ContainerBuilderTest extends TestCase
      */
     private function makeContextStub()
     {
-        $context = $this->getMockBuilder(BasicContext::class)->getMock();
+        $context = $this
+            ->getMockBuilder(BasicContext::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $context->method('getCommunityEditionSourcePath')->willReturn(__DIR__ . '/Fixtures/CE');
         $context->method('getProfessionalEditionRootPath')->willReturn(__DIR__ . '/Fixtures/PE');
         $context->method('getEnterpriseEditionRootPath')->willReturn(__DIR__ . '/Fixtures/EE');

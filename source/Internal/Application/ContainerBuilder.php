@@ -92,7 +92,7 @@ class ContainerBuilder
      */
     private function cleanupProjectYaml()
     {
-        $projectYamlDao = new ProjectYamlDao(new BasicContext());
+        $projectYamlDao = new ProjectYamlDao($this->context);
         $yamlImportService = new ProjectYamlImportService($projectYamlDao);
         $yamlImportService->removeNonExistingImports();
     }

@@ -9,9 +9,11 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\ComposerPlugin;
 use Composer\IO\NullIO;
 use Composer\Package\Package;
 use OxidEsales\ComposerPlugin\Installer\Package\ComponentInstaller;
+use OxidEsales\EshopCommunity\Internal\Application\BootstrapContainer\BootstrapContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\Facts\Facts;
 use PHPUnit\Framework\TestCase;
@@ -61,8 +63,9 @@ class ComponentInstallerTest extends TestCase
 
     private function doesServiceLineExists()
     {
+        $context = BootstrapContainerFactory::getBootstrapContainer()->get(BasicContextInterface::class);
         $contentsOfProjectFile = file_get_contents(
-            (new BasicContext())->getGeneratedProjectFilePath()
+            $context->getGeneratedProjectFilePath()
         );
 
         return (bool)strpos($contentsOfProjectFile, $this->servicesFilePath);

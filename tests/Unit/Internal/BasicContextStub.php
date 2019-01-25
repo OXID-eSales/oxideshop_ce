@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal;
 
-use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
+use OxidEsales\EshopCommunity\Internal\Application\BootstrapContainer\BootstrapContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 
 /**
@@ -25,7 +25,8 @@ class BasicContextStub implements BasicContextInterface
     
     public function __construct()
     {
-        $basicContext = new BasicContext();
+        $basicContext = BootstrapContainerFactory::getBootstrapContainer()->get(BasicContextInterface::class);
+
         $this->communityEditionSourcePath = $basicContext->getCommunityEditionSourcePath();
         $this->containerCacheFilePath = $basicContext->getContainerCacheFilePath();
         $this->edition = $basicContext->getEdition();
@@ -145,5 +146,21 @@ class BasicContextStub implements BasicContextInterface
     public function setSourcePath(string $sourcePath)
     {
         $this->sourcePath = $sourcePath;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShopSetUp(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDefaultShopId(): int
+    {
+        return 1;
     }
 }

@@ -24,7 +24,7 @@
         "oxid-esales/oxideshop-doctrine-migration-wrapper": "^v2.1.2",
         "oxid-esales/oxideshop-db-views-generator": "^v1.2.0",
         "oxid-esales/oxideshop-demodata-installer": "^v1.1.2",
-        "oxid-esales/oxideshop-composer-plugin": "dev-master",
+        "oxid-esales/oxideshop-composer-plugin": "dev-master-new_module_configuration-OXDEV-1285",
         "oxid-esales/oxideshop-unified-namespace-generator": "^2.0.0",
         "oxid-esales/testing-library": "dev-b-6.x",
         "oxid-esales/coding-standards-wrapper": "v2.0.0",

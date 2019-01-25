@@ -1,4 +1,9 @@
+parameters:
+  config_file_name: config.inc.php
+
 services:
   OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface:
     class: OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext
-    public: false
+    arguments:
+      $configFileName: '%config_file_name%'
+    public: true

@@ -6,11 +6,13 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\ProjectDIConfig\Dao;
 
+use OxidEsales\EshopCommunity\Internal\Application\BootstrapContainer\BootstrapContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -26,6 +28,7 @@ class ProjectYamlDaoTest extends TestCase
     public function setUp()
     {
         $contextStub = $this->getMockBuilder(BasicContext::class)
+            ->disableOriginalConstructor()
             ->setMethods(['getSourcePath'])->getMock();
         $contextStub->method('getSourcePath')->willReturn(__DIR__);
         $this->dao = new ProjectYamlDao($contextStub);
@@ -90,7 +93,7 @@ EOT;
     public function testClearingCacheOnWriting()
     {
         $dao = $this->get(ProjectYamlDaoInterface::class);
-        $context = new BasicContext();
+        $context = BootstrapContainerFactory::getBootstrapContainer()->get(BasicContextInterface::class);
 
         $projectYaml = new DIConfigWrapper([]);
 

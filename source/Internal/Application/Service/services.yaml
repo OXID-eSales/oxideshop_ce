@@ -4,3 +4,4 @@ services:
     autowire: true
   OxidEsales\EshopCommunity\Internal\Application\Service\ProjectYamlImportServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Application\Service\ProjectYamlImportService
+    public: true

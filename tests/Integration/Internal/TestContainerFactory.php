@@ -6,8 +6,9 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal;
 
+use OxidEsales\EshopCommunity\Internal\Application\BootstrapContainer\BootstrapContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
-use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
 
 /**
@@ -17,9 +18,12 @@ class TestContainerFactory
 {
     public function create(): SymfonyContainerBuilder
     {
-        $containerBuilder = new ContainerBuilder(new BasicContext());
-        $container = $containerBuilder->getContainer();
+        $bootstrapContainer = BootstrapContainerFactory::getBootstrapContainer();
+        $containerBuilder = new ContainerBuilder(
+            $bootstrapContainer->get(BasicContextInterface::class)
+        );
 
+        $container = $containerBuilder->getContainer();
         $container = $this->setAllServicesAsPublic($container);
         $container = $this->setTestProjectConfigurationFile($container);
 

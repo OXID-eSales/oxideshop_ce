@@ -142,8 +142,6 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
     {
         if ($function) {
             $this->$function();
-
-            $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\ShopEvents\ControllerActionCalledEvent());
         } else {
             $sQAdd = $this->_getQuery();
 

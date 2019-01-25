@@ -60,7 +60,7 @@ class MetaDataProvider implements MetaDataProviderInterface
 
 
     /**
-     * MetaDataDataProvider constructor.
+     * MetaDataProvider constructor.
      *
      * @param EventDispatcherInterface    $eventDispatcher
      * @param MetaDataNormalizerInterface $metaDataNormalizer

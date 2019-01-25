@@ -4,3 +4,6 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Module\Bridge\ModuleListBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Bridge\ModuleListBridge
+
+  OxidEsales\EshopCommunity\Internal\Module\Bridge\ModuleBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Bridge\ModuleBridge

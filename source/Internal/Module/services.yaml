@@ -1,4 +1,5 @@
 imports:
+   - { resource: Bridge/services.yaml }
    - { resource: Setup/services.yaml }
    - { resource: Configuration/services.yaml }
    - { resource: Cache/services.yaml }

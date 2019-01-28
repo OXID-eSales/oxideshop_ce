@@ -14,6 +14,8 @@ use oxOutput;
 use oxSystemComponentException;
 use PHPMailer\PHPMailer\PHPMailer;
 use ReflectionMethod;
+use OxidEsales\EshopCommunity\Internal\ShopEvents\ViewRenderedEvent;
+use OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeHeadersSendEvent;
 
 /**
  * Main shop actions controller. Processes user actions, logs
@@ -275,6 +277,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
         $output = $this->formOutput($view);
 
+        $this->dispatchEvent(new ViewRenderedEvent($this));
+
         $outputManager = $this->_getOutputManager();
         $outputManager->setCharset($view->getCharSet());
 
@@ -282,6 +286,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             $outputManager->setOutputFormat(\OxidEsales\Eshop\Core\Output::OUTPUT_FORMAT_JSON);
             $outputManager->output('errors', $this->_getFormattedErrors($view->getClassName()));
         }
+
+        $this->dispatchEvent(new BeforeHeadersSendEvent($this, $view));
 
         $outputManager->sendHeaders();
 
@@ -348,12 +354,9 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * Method for sending any additional headers on every page requests.
      *
      * @param FrontendController $view
-     *
-     * @return \OxidEsales\EshopCommunity\Internal\ShopEvents\ShopControlSendAdditionalHeadersEvent
      */
     protected function sendAdditionalHeaders($view)
     {
-        return $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\ShopEvents\ShopControlSendAdditionalHeadersEvent($this, $view));
     }
 
     /**

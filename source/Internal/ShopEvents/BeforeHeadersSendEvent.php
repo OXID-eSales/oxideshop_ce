@@ -11,20 +11,13 @@ namespace OxidEsales\EshopCommunity\Internal\ShopEvents;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class ShopControlSendAdditionalHeadersEvent
+ * Class BeforeHeadersSendEvent
  *
  * @package OxidEsales\EshopCommunity\Internal\ShopEvents
  */
-class ShopControlSendAdditionalHeadersEvent extends Event
+class BeforeHeadersSendEvent extends Event
 {
     const NAME = self::class;
-
-    /**
-     * Result
-     *
-     * @var bool
-     */
-    private $result = false;
 
     /**
      * @var \OxidEsales\Eshop\Core\Controller\BaseController
@@ -37,7 +30,7 @@ class ShopControlSendAdditionalHeadersEvent extends Event
     private $shopControl;
 
     /**
-     * ShopControlSendAdditionalHeadersEvent constructor.
+     * BeforeHeadersSendEvent constructor.
      *
      * @param \OxidEsales\Eshop\Core\ShopControl               $shopControl ShopControl object
      * @param \OxidEsales\Eshop\Core\Controller\BaseController $controller  Controller
@@ -51,16 +44,6 @@ class ShopControlSendAdditionalHeadersEvent extends Event
     }
 
     /**
-     * Setter for result.
-     *
-     * @param bool $result Event result
-     */
-    public function setResult(bool $result)
-    {
-        $this->result = $result;
-    }
-
-    /**
      * Getter for ShopControl object.
      *
      * @return \OxidEsales\Eshop\Core\ShopControl
@@ -68,16 +51,6 @@ class ShopControlSendAdditionalHeadersEvent extends Event
     public function getShopControl(): \OxidEsales\Eshop\Core\ShopControl
     {
         return $this->shopControl;
-    }
-
-    /**
-     * Getter for result
-     *
-     * @return bool
-     */
-    public function getResult(): bool
-    {
-        return $this->result;
     }
 
     /**

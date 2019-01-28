@@ -11,11 +11,11 @@ namespace OxidEsales\EshopCommunity\Internal\ShopEvents;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class ShopControlRenderEvent
+ * Class ViewRenderedEvent
  *
  * @package OxidEsales\EshopCommunity\Internal\ShopEvents
  */
-class ShopControlRenderEvent extends Event
+class ViewRenderedEvent extends Event
 {
     const NAME = self::class;
 

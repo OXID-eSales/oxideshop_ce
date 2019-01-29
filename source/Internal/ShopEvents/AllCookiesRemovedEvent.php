@@ -11,11 +11,11 @@ namespace OxidEsales\EshopCommunity\Internal\ShopEvents;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class RemoveCookiesEvent
+ * Class AllCookiesRemovedEvent
  *
  * @package OxidEsales\EshopCommunity\Internal\ShopEvents
  */
-class RemoveCookiesEvent extends Event
+class AllCookiesRemovedEvent extends Event
 {
     const NAME = self::class;
 }

@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxRegistry;
+use \OxidEsales\EshopCommunity\Internal\ShopEvents\AllCookiesRemovedEvent;
 
 /**
  * CMS - loads pages and displays it
@@ -52,8 +52,7 @@ class ClearCookiesController extends \OxidEsales\Eshop\Application\Controller\Fr
         $oUtilsServer->setOxCookie('language', '', time() - 10000, '/');
         $oUtilsServer->setOxCookie('displayedCookiesNotification', '', time() - 10000, '/');
 
-        $event = new \OxidEsales\EshopCommunity\Internal\ShopEvents\RemoveCookiesEvent();
-        $this->dispatchEvent($event);
+        $this->dispatchEvent(new AllCookiesRemovedEvent());
     }
 
     /**

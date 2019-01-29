@@ -77,4 +77,12 @@ class ProjectConfigurationDao implements ProjectConfigurationDaoInterface
             $this->node->normalize($data)
         );
     }
+
+    /**
+     * @return bool
+     */
+    public function isConfigurationEmpty(): bool
+    {
+        return empty($this->arrayStorage->get());
+    }
 }

@@ -109,6 +109,48 @@ class ProjectConfigurationDaoTest extends TestCase
         $projectConfigurationDao->persistConfiguration(new ProjectConfiguration());
     }
 
+    public function testIsConfigurationEmptyWithEmptyConfiguration()
+    {
+        $arrayStorage = $this
+            ->getMockBuilder(ArrayStorageInterface::class)
+            ->getMock();
+
+        $arrayStorage
+            ->method('get')
+            ->willReturn([]);
+
+        $projectConfigurationDao = new ProjectConfigurationDao(
+            $arrayStorage,
+            $this->getProjectConfigurationDataMapper(),
+            $this->getMockBuilder(NodeInterface::class)->getMock()
+        );
+
+        $this->assertTrue(
+            $projectConfigurationDao->isConfigurationEmpty()
+        );
+    }
+
+    public function testIsConfigurationEmptyWithNotEmptyConfiguration()
+    {
+        $arrayStorage = $this
+            ->getMockBuilder(ArrayStorageInterface::class)
+            ->getMock();
+
+        $arrayStorage
+            ->method('get')
+            ->willReturn(['something']);
+
+        $projectConfigurationDao = new ProjectConfigurationDao(
+            $arrayStorage,
+            $this->getProjectConfigurationDataMapper(),
+            $this->getMockBuilder(NodeInterface::class)->getMock()
+        );
+
+        $this->assertFalse(
+            $projectConfigurationDao->isConfigurationEmpty()
+        );
+    }
+
     private function getProjectConfigurationDataMapper(): ProjectConfigurationDataMapperInterface
     {
         $shopConfigurationDataMapper = $this

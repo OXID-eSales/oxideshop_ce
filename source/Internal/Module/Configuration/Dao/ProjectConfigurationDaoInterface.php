@@ -22,4 +22,9 @@ interface ProjectConfigurationDaoInterface
      * @param ProjectConfiguration $configuration
      */
     public function persistConfiguration(ProjectConfiguration $configuration);
+
+    /**
+     * @return bool
+     */
+    public function isConfigurationEmpty(): bool;
 }

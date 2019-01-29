@@ -129,8 +129,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\Email::getConfig`
 - `blDoNotDisableModuleOnError` config option
 
+## [6.3.3] - Unreleased
 
-## [6.3.2] - Unreleased
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [6.3.2] - 2019-01-22
 
 ### Added
 - Add method SystemEventHandler::onShopEnd() to be called for finishing actions e.g. from ShopControl::pageClose().
@@ -146,17 +157,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     familiar with them, as there are also changes in the SMTP and POP3 classes. Please read the 
    [PHPMailer changelog](https://github.com/PHPMailer/PHPMailer/blob/master/changelog.md#version-60-august-28th-2017)  
 
-### Removed
-
 ### Fixed
 - Wrong behaviour from getOrderArticleSelectList when values from selectionlists and variantselections are selected [PR-507](https://github.com/OXID-eSales/oxideshop_ce/pull/507) [0006539](https://bugs.oxid-esales.com/view.php?id=6539)
 - Fix SQL file upload error [Bug #5764](https://bugs.oxid-esales.com/view.php?id=5764)
 - Fixed admin login display in Windows 7 IE11 [PR-671](https://github.com/OXID-eSales/oxideshop_ce/pull/671)
 - Fix content page data of 8th+ language edit [PR-674](https://github.com/OXID-eSales/oxideshop_ce/pull/674)
 - Fix unusable shop after activation of a module with migrated metadata (v2) [PR-663](https://github.com/OXID-eSales/oxideshop_ce/pull/663)
-
-### Security
-
+- Fix issue with shop roles readonly. [Bug 6851](https://bugs.oxid-esales.com/view.php?id=6851) 
 
 ## [6.3.1] - 2018-10-16
 
@@ -263,19 +270,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Use error_404_handler in article list controller in place of outdated 404 handling [PR-643](https://github.com/OXID-eSales/oxideshop_ce/pull/643)
 - Fix indents in config.inc.php.dist [PR-527](https://github.com/OXID-eSales/oxideshop_ce/pull/527)
-
-## [6.2.2] unreleased
-
-### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-- Fix issue with shop roles readonly. [Bug 6851](https://bugs.oxid-esales.com/view.php?id=6851) 
 
 ## [6.2.1] - 2018-07-31
 
@@ -586,7 +580,8 @@ See
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
 
-[6.3.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.1...b-6.1.x
+[6.3.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.2...b-6.1.x
+[6.3.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.1...v6.3.2
 [6.3.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.0...v6.3.1
 [6.3.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.1...v6.3.0
 [6.2.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.0...v6.2.1

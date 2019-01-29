@@ -14,19 +14,9 @@ use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface
 interface ContextInterface extends BasicContextInterface
 {
     /**
-     * @return string
-     */
-    public function getEnvironment(): string;
-
-    /**
      * @return int
      */
     public function getCurrentShopId(): int;
-
-    /**
-     * @return array
-     */
-    public function getAllShopIds(): array;
 
     /**
      * @return string

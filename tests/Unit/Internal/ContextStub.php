@@ -24,14 +24,6 @@ class ContextStub extends BasicContextStub implements ContextInterface
     private $requiredContactFormFields = [];
 
     /**
-     * @return string
-     */
-    public function getEnvironment(): string
-    {
-        return 'dev';
-    }
-
-    /**
      * @param string $logLevel
      */
     public function setLogLevel($logLevel)

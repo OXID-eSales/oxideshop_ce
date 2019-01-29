@@ -15,6 +15,11 @@ interface BasicContextInterface
     /**
      * @return string
      */
+    public function getEnvironment(): string;
+
+    /**
+     * @return string
+     */
     public function getContainerCacheFilePath(): string;
 
     /**
@@ -56,4 +61,9 @@ interface BasicContextInterface
      * @return int
      */
     public function getDefaultShopId(): int;
+
+    /**
+     * @return array
+     */
+    public function getAllShopIds(): array;
 }

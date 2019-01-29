@@ -45,6 +45,14 @@ class BasicContext implements BasicContextInterface
     }
 
     /**
+     * @return string
+     */
+    public function getEnvironment(): string
+    {
+        return 'prod';
+    }
+
+    /**
      * @todo change placement of containercache.php file and move logic to Facts.
      * @return string
      */
@@ -128,5 +136,15 @@ class BasicContext implements BasicContextInterface
             $this->facts = new Facts();
         }
         return $this->facts;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllShopIds(): array
+    {
+        return [
+            $this->getDefaultShopId(),
+        ];
     }
 }

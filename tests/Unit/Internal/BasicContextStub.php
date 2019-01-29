@@ -39,6 +39,14 @@ class BasicContextStub implements BasicContextInterface
     /**
      * @return string
      */
+    public function getEnvironment(): string
+    {
+        return 'dev';
+    }
+
+    /**
+     * @return string
+     */
     public function getCommunityEditionSourcePath(): string
     {
         return $this->communityEditionSourcePath;
@@ -162,5 +170,13 @@ class BasicContextStub implements BasicContextInterface
     public function getDefaultShopId(): int
     {
         return 1;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllShopIds(): array
+    {
+        return [$this->getDefaultShopId()];
     }
 }

@@ -20,8 +20,6 @@ class Context extends BasicContext implements ContextInterface
     private $config;
 
     /**
-     * Context constructor.
-     *
      * @param Config $config
      */
     public function __construct(Config $config)
@@ -32,17 +30,9 @@ class Context extends BasicContext implements ContextInterface
     /**
      * @return string
      */
-    public function getEnvironment(): string
+    public function getLogLevel()
     {
-        return 'prod';
-    }
-
-    /**
-     * @return string
-     */
-    public function getLogLevel(): string
-    {
-        return $this->getConfigParameter('sLogLevel', '');
+        return $this->getConfigParameter('sLogLevel');
     }
 
     /**
@@ -58,7 +48,9 @@ class Context extends BasicContext implements ContextInterface
      */
     public function getRequiredContactFormFields(): array
     {
-        return $this->getConfigParameter('contactFormRequiredFields', []);
+        $contactFormRequiredFields = $this->getConfigParameter('contactFormRequiredFields');
+
+        return $contactFormRequiredFields === null ? [] : $contactFormRequiredFields;
     }
 
     /**
@@ -74,7 +66,13 @@ class Context extends BasicContext implements ContextInterface
      */
     public function getAllShopIds(): array
     {
-        return $this->config->getShopIds();
+        $integerShopIds = [];
+
+        foreach ($this->config->getShopIds() as $shopId) {
+            $integerShopIds[] = (int) $shopId;
+        }
+
+        return $integerShopIds;
     }
 
     /**

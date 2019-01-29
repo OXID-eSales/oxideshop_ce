@@ -161,7 +161,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
             // redirect to basket
             $redirectUrl = $this->_getRedirectUrl();
-            $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\ShopEvents\ToBasketEvent($redirectUrl));
+            $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\ShopEvents\BasketChangedEvent($this));
 
             return $redirectUrl;
         }
@@ -493,7 +493,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function executeUserChoice()
     {
-        $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\ShopEvents\ToBasketEvent(''));
+        $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\ShopEvents\BasketChangedEvent($this));
 
         // redirect to basket
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("tobasket")) {

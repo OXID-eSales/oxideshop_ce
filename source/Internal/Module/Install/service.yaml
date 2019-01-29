@@ -3,6 +3,14 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Module\Install\ModuleConfigurationInstaller
     autowire: true
 
-  OxidEsales\EshopCommunity\Internal\Module\Install\DefaultProjectConfigurationGeneratorInterface:
+  oxid_esales.module.install.lanched_shop_default_project_configuration_generator:
     class: OxidEsales\EshopCommunity\Internal\Module\Install\DefaultProjectConfigurationGenerator
+    arguments:
+      $context: '@OxidEsales\EshopCommunity\Internal\Utility\ContextInterface'
+    autowire: true
+
+  oxid_esales.module.install.installed_shop_default_project_configuration_generator:
+    class: OxidEsales\EshopCommunity\Internal\Module\Install\DefaultProjectConfigurationGenerator
+    arguments:
+      $context: '@OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface'
     autowire: true

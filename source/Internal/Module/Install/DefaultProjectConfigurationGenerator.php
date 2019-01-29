@@ -6,11 +6,11 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Install;
 
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
-use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 
 /**
  * @internal
@@ -23,16 +23,16 @@ class DefaultProjectConfigurationGenerator implements DefaultProjectConfiguratio
     private $projectConfigurationDao;
 
     /**
-     * @var ContextInterface
+     * @var BasicContextInterface
      */
     private $context;
 
     /**
      * DefaultProjectConfigurationGenerator constructor.
      * @param ProjectConfigurationDaoInterface $projectConfigurationDao
-     * @param ContextInterface                 $context
+     * @param BasicContextInterface            $context
      */
-    public function __construct(ProjectConfigurationDaoInterface $projectConfigurationDao, ContextInterface $context)
+    public function __construct(ProjectConfigurationDaoInterface $projectConfigurationDao, BasicContextInterface $context)
     {
         $this->projectConfigurationDao = $projectConfigurationDao;
         $this->context = $context;
@@ -60,24 +60,10 @@ class DefaultProjectConfigurationGenerator implements DefaultProjectConfiguratio
     {
         $environmentConfiguration = new EnvironmentConfiguration();
 
-        foreach ($this->getShopIds() as $shopId) {
+        foreach ($this->context->getAllShopIds() as $shopId) {
             $environmentConfiguration->addShopConfiguration($shopId, new ShopConfiguration());
         }
 
         return $environmentConfiguration;
-    }
-
-    /**
-     * @return array
-     */
-    private function getShopIds(): array
-    {
-        if ($this->context->isShopSetUp()) {
-            return $this->context->getAllShopIds();
-        }
-
-        return [
-            $this->context->getDefaultShopId(),
-        ];
     }
 }

@@ -20,11 +20,10 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class DefaultProjectConfigurationGeneratorTest extends TestCase
 {
-    private $defaultShopId = 100500;
     private $environment = 'prod';
     private $shops = [1, 2, 3];
 
-    public function testGenerateDefaultConfigurationIfShopIsSetUp()
+    public function testGenerateDefaultConfiguration()
     {
         $projectConfigurationDao = $this->getMockBuilder(ProjectConfigurationDaoInterface::class)->getMock();
         $projectConfigurationDao
@@ -33,29 +32,6 @@ class DefaultProjectConfigurationGeneratorTest extends TestCase
             ->with($this->getExpectedDefaultProjectConfiguration($this->shops));
 
         $context = $this->getContext();
-        $context
-            ->method('isShopSetUp')
-            ->willReturn(true);
-
-        $generator = new DefaultProjectConfigurationGenerator($projectConfigurationDao, $context);
-
-        $generator->generate();
-    }
-
-    public function testGenerateDefaultConfigurationIfShopIsNotSetUp()
-    {
-        $projectConfigurationDao = $this->getMockBuilder(ProjectConfigurationDaoInterface::class)->getMock();
-        $projectConfigurationDao
-            ->expects($this->once())
-            ->method('persistConfiguration')
-            ->with(
-                $this->getExpectedDefaultProjectConfiguration([$this->defaultShopId])
-            );
-
-        $context = $this->getContext();
-        $context
-            ->method('isShopSetUp')
-            ->willReturn(false);
 
         $generator = new DefaultProjectConfigurationGenerator($projectConfigurationDao, $context);
 
@@ -84,7 +60,6 @@ class DefaultProjectConfigurationGeneratorTest extends TestCase
         $context = $this->getMockBuilder(ContextInterface::class)->getMock();
         $context->method('getEnvironment')->willReturn($this->environment);
         $context->method('getAllShopIds')->willReturn($this->shops);
-        $context->method('getDefaultShopId')->willReturn($this->defaultShopId);
 
         return $context;
     }

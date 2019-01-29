@@ -17,4 +17,4 @@ services:
     public: true
     autowire: true
     tags:
-    - { name: 'console.command' }
+    - { name: 'console.command', command: 'oe:module:install-configuration' }

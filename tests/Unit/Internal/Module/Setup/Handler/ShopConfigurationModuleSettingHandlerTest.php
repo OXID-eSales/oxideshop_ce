@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Handler;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopSettingType;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopConfigurationModuleSettingHandler;
 use PHPUnit\Framework\TestCase;
@@ -18,82 +19,6 @@ use PHPUnit\Framework\TestCase;
  */
 class ShopConfigurationModuleSettingHandlerTest extends TestCase
 {
-    public function testCanHandleSetting()
-    {
-        $shopConfigurationSettingDao = $this
-            ->getMockBuilder(ShopConfigurationSettingDaoInterface::class)
-            ->getMock();
-
-        $settingHandler = new ShopConfigurationModuleSettingHandler(
-            'someSetting',
-            'shopSetting',
-            $shopConfigurationSettingDao
-        );
-        $moduleSetting = new ModuleSetting('someSetting', []);
-
-        $this->assertTrue(
-            $settingHandler->canHandle($moduleSetting)
-        );
-    }
-
-    public function testCanNotHandleSetting()
-    {
-        $shopConfigurationSettingDao = $this
-            ->getMockBuilder(ShopConfigurationSettingDaoInterface::class)
-            ->getMock();
-
-        $settingHandler = new ShopConfigurationModuleSettingHandler(
-            'anotherSetting',
-            'shopSetting',
-            $shopConfigurationSettingDao
-        );
-        $moduleSetting = new ModuleSetting('someSetting', []);
-
-        $this->assertFalse(
-            $settingHandler->canHandle($moduleSetting)
-        );
-    }
-
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException
-     */
-    public function testHandleWrongSettingOnModuleActivation()
-    {
-        $shopConfigurationSettingDao = $this
-            ->getMockBuilder(ShopConfigurationSettingDaoInterface::class)
-            ->getMock();
-
-
-        $settingHandler = new ShopConfigurationModuleSettingHandler(
-            'anotherSetting',
-            'shopSetting',
-            $shopConfigurationSettingDao
-        );
-        $moduleSetting = new ModuleSetting('someSetting', []);
-
-        $settingHandler->handleOnModuleActivation($moduleSetting, 'testModule', 1);
-    }
-
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException
-     */
-    public function testHandleWrongSettingOnModuleDeactivation()
-    {
-        $shopConfigurationSettingDao = $this
-            ->getMockBuilder(ShopConfigurationSettingDaoInterface::class)
-            ->getMock();
-
-
-        $settingHandler = new ShopConfigurationModuleSettingHandler(
-            'anotherSetting',
-            'shopSetting',
-            $shopConfigurationSettingDao
-        );
-        $moduleSetting = new ModuleSetting('someSetting', []);
-
-        $settingHandler->handleOnModuleDeactivation($moduleSetting, 'testModule', 1);
-    }
-
     public function testHandleSettingOnModuleActivation()
     {
         $shopConfigurationSetting = new ShopConfigurationSetting();
@@ -113,7 +38,11 @@ class ShopConfigurationModuleSettingHandlerTest extends TestCase
         );
         $moduleSetting = new ModuleSetting('moduleSetting', 'testModulePath');
 
-        $settingHandler->handleOnModuleActivation($moduleSetting, 'testModule', 1);
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->setId('testModule');
+        $moduleConfiguration->addSetting($moduleSetting);
+
+        $settingHandler->handleOnModuleActivation($moduleConfiguration, 1);
 
         $shopConfigurationSetting = $shopConfigurationSettingDao->get('shopSetting', 1);
 
@@ -148,7 +77,11 @@ class ShopConfigurationModuleSettingHandlerTest extends TestCase
         );
         $moduleSetting = new ModuleSetting('moduleSetting', 'value');
 
-        $settingHandler->handleOnModuleDeactivation($moduleSetting, 'moduleToDeactivate', 1);
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->setId('moduleToDeactivate');
+        $moduleConfiguration->addSetting($moduleSetting);
+
+        $settingHandler->handleOnModuleDeactivation($moduleConfiguration, 1);
 
         $this->assertEquals(
             [

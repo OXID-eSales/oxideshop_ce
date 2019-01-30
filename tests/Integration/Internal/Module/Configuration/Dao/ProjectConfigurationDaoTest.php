@@ -84,19 +84,16 @@ class ProjectConfigurationDaoTest extends TestCase
     private function getTestProjectConfiguration(): ProjectConfiguration
     {
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->setId('testModuleConfiguration');
-        $moduleConfiguration->setDescription([
-            'de' => 'ja',
-            'en' => 'no',
-        ]);
+        $moduleConfiguration
+            ->setId('testModuleConfiguration')
+            ->setPath('somePath')
+            ->setVersion('v2.1')
+            ->setDescription([
+                'de' => 'ja',
+                'en' => 'no',
+            ]);
 
         $moduleConfiguration
-            ->addSetting(
-                new ModuleSetting(ModuleSetting::PATH, 'somePath')
-            )
-            ->addSetting(
-                new ModuleSetting(ModuleSetting::VERSION, 'v2.1')
-            )
             ->addSetting(new ModuleSetting(
                 ModuleSetting::CONTROLLERS,
                 [

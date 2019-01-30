@@ -8,11 +8,10 @@ services:
     arguments:
       $classExtensionChainService: '@oxid_esales.module.setup.class_extension_chain_service'
 
-  OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleSettingsHandlingServiceInterface:
-    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleSettingsHandlingService
+  OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleConfigurationHandlingServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleConfigurationHandlingService
     calls:
       - [addHandler, ['@oxid_esales.module.setup.path_module_setting_handler']]
-      - [addHandler, ['@oxid_esales.module.setup.version_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.templates_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.controllers_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.smarty_plugin_directories_module_setting_handler']]
@@ -25,19 +24,8 @@ services:
       - [addValidator, ['@oxid_esales.module.setup.validator.class_extensions_module_setting_validator']]
       - [addValidator, ['@oxid_esales.module.setup.validator.events_module_setting_validator']]
 
-  oxid_esales.module.setup.version_module_setting_handler:
-    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopConfigurationModuleSettingHandler
-    arguments:
-      - !php/const OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting::VERSION
-      - !php/const OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting::MODULE_VERSIONS
-      - '@OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface'
-
   oxid_esales.module.setup.path_module_setting_handler:
-    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopConfigurationModuleSettingHandler
-    arguments:
-      - !php/const OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting::PATH
-      - !php/const OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting::MODULE_PATHS
-      - '@OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface'
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ModulePathHandler
 
   oxid_esales.module.setup.templates_module_setting_handler:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopConfigurationModuleSettingHandler

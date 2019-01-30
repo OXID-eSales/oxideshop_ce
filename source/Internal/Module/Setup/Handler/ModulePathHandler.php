@@ -10,13 +10,12 @@ use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurati
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 
 /**
  * @internal
  */
-class ClassExtensionsModuleSettingHandler implements ModuleConfigurationHandlerInterface
+class ModulePathHandler implements ModuleConfigurationHandlerInterface
 {
     /**
      * @var ShopConfigurationSettingDaoInterface
@@ -24,7 +23,7 @@ class ClassExtensionsModuleSettingHandler implements ModuleConfigurationHandlerI
     private $shopConfigurationSettingDao;
 
     /**
-     * ClassExtensionsModuleSettingHandler constructor.
+     * ModulePathHandler constructor.
      * @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
      */
     public function __construct(ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao)
@@ -38,18 +37,13 @@ class ClassExtensionsModuleSettingHandler implements ModuleConfigurationHandlerI
      */
     public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId)
     {
-        if ($this->canHandle($configuration)) {
-            $moduleSetting = $configuration->getSetting(ModuleSetting::CLASS_EXTENSIONS);
+        $pathsSetting = $this->getShopConfigurationSetting($shopId);
+        $paths = $pathsSetting->getValue();
 
-            $shopConfigurationSetting = $this->getClassExtensionsShopConfigurationSetting($shopId);
+        $paths[$configuration->getId()] = $configuration->getPath();
+        $pathsSetting->setValue($paths);
 
-            $shopConfigurationSettingValue = $shopConfigurationSetting->getValue();
-            $shopConfigurationSettingValue[$configuration->getId()] = array_values($moduleSetting->getValue());
-
-            $shopConfigurationSetting->setValue($shopConfigurationSettingValue);
-
-            $this->shopConfigurationSettingDao->save($shopConfigurationSetting);
-        }
+        $this->shopConfigurationSettingDao->save($pathsSetting);
     }
 
     /**
@@ -58,43 +52,31 @@ class ClassExtensionsModuleSettingHandler implements ModuleConfigurationHandlerI
      */
     public function handleOnModuleDeactivation(ModuleConfiguration $configuration, int $shopId)
     {
-        if ($this->canHandle($configuration)) {
-            $shopConfigurationSetting = $this->getClassExtensionsShopConfigurationSetting($shopId);
+        $pathsSetting = $this->getShopConfigurationSetting($shopId);
+        $paths = $pathsSetting->getValue();
 
-            $shopConfigurationSettingValue = $shopConfigurationSetting->getValue();
-            unset($shopConfigurationSettingValue[$configuration->getId()]);
+        unset($paths[$configuration->getId()]);
+        $pathsSetting->setValue($paths);
 
-            $shopConfigurationSetting->setValue($shopConfigurationSettingValue);
-
-            $this->shopConfigurationSettingDao->save($shopConfigurationSetting);
-        }
-    }
-
-    /**
-     * @param ModuleConfiguration $configuration
-     * @return bool
-     */
-    private function canHandle(ModuleConfiguration $configuration): bool
-    {
-        return $configuration->hasSetting(ModuleSetting::CLASS_EXTENSIONS);
+        $this->shopConfigurationSettingDao->save($pathsSetting);
     }
 
     /**
      * @param int $shopId
      * @return ShopConfigurationSetting
      */
-    private function getClassExtensionsShopConfigurationSetting(int $shopId): ShopConfigurationSetting
+    private function getShopConfigurationSetting(int $shopId): ShopConfigurationSetting
     {
         try {
             $shopConfigurationSetting = $this->shopConfigurationSettingDao->get(
-                ShopConfigurationSetting::MODULE_CLASS_EXTENSIONS,
+                ShopConfigurationSetting::MODULE_PATHS,
                 $shopId
             );
         } catch (EntryDoesNotExistDaoException $exception) {
             $shopConfigurationSetting = new ShopConfigurationSetting();
             $shopConfigurationSetting
                 ->setShopId($shopId)
-                ->setName(ShopConfigurationSetting::MODULE_CLASS_EXTENSIONS)
+                ->setName(ShopConfigurationSetting::MODULE_PATHS)
                 ->setType(ShopSettingType::ARRAY)
                 ->setValue([]);
         }

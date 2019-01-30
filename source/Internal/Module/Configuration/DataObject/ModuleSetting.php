@@ -16,8 +16,6 @@ class ModuleSetting
     const CLASS_EXTENSIONS          = 'extend';
     const CONTROLLERS               = 'controllers';
     const TEMPLATES                 = 'templates';
-    const VERSION                   = 'version';
-    const PATH                      = 'path';
     const SMARTY_PLUGIN_DIRECTORIES = 'smartyPluginDirectories';
     const TEMPLATE_BLOCKS           = 'blocks';
     const SHOP_MODULE_SETTING       = 'settings';

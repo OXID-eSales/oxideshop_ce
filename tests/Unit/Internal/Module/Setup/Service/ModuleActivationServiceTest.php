@@ -11,7 +11,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurat
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ExtensionChainServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationService;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleServicesActivationServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleSettingsHandlingServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleConfigurationHandlingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -51,7 +51,7 @@ class ModuleActivationServiceTest extends TestCase
         $moduleActivationService = new ModuleActivationService(
             $this->getMockBuilder(ModuleConfigurationDaoInterface::class)->getMock(),
             $this->getMockBuilder(EventDispatcherInterface::class)->getMock(),
-            $this->getMockBuilder(ModuleSettingsHandlingServiceInterface::class)->getMock(),
+            $this->getMockBuilder(ModuleConfigurationHandlingServiceInterface::class)->getMock(),
             $moduleStateService,
             $this->getMockBuilder(ExtensionChainServiceInterface::class)->getMock(),
             $this->getMockBuilder(ModuleServicesActivationServiceInterface::class)->getMock()

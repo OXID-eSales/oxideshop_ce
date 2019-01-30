@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Handler;
 
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\ShopModuleSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\ShopModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
@@ -17,35 +18,14 @@ use PHPUnit\Framework\TestCase;
  */
 class ShopModuleSettingModuleSettingHandlerTest extends TestCase
 {
-    public function testCanHandle()
-    {
-        $handler = new ShopModuleSettingModuleSettingHandler(
-            $this->getMockBuilder(ShopModuleSettingDaoInterface::class)->getMock()
-        );
-
-        $moduleSetting = new ModuleSetting(ModuleSetting::SHOP_MODULE_SETTING, []);
-
-        $this->assertTrue(
-            $handler->canHandle($moduleSetting)
-        );
-    }
-
-    public function testCanNotHandle()
-    {
-        $handler = new ShopModuleSettingModuleSettingHandler(
-            $this->getMockBuilder(ShopModuleSettingDaoInterface::class)->getMock()
-        );
-
-        $moduleSetting = new ModuleSetting('anotherSetting', []);
-
-        $this->assertFalse(
-            $handler->canHandle($moduleSetting)
-        );
-    }
-
     public function testHandlingOnModuleActivation()
     {
         $moduleSetting = $this->getTestModuleSetting();
+
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->setId('testModule');
+        $moduleConfiguration->addSetting($moduleSetting);
+
         $shopModuleSetting = $this->getTestShopModuleSetting();
 
         $shopModuleSettingDao = $this->getMockBuilder(ShopModuleSettingDaoInterface::class)->getMock();
@@ -55,12 +35,17 @@ class ShopModuleSettingModuleSettingHandlerTest extends TestCase
             ->with($shopModuleSetting);
 
         $handler = new ShopModuleSettingModuleSettingHandler($shopModuleSettingDao);
-        $handler->handleOnModuleActivation($moduleSetting, 'testModule', 1);
+        $handler->handleOnModuleActivation($moduleConfiguration, 1);
     }
 
     public function testHandlingOnModuleDeactivation()
     {
         $moduleSetting = $this->getTestModuleSetting();
+
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->setId('testModule');
+        $moduleConfiguration->addSetting($moduleSetting);
+
         $shopModuleSetting = $this->getTestShopModuleSetting();
 
         $shopModuleSettingDao = $this->getMockBuilder(ShopModuleSettingDaoInterface::class)->getMock();
@@ -70,39 +55,7 @@ class ShopModuleSettingModuleSettingHandlerTest extends TestCase
             ->with($shopModuleSetting);
 
         $handler = new ShopModuleSettingModuleSettingHandler($shopModuleSettingDao);
-        $handler->handleOnModuleDeactivation($moduleSetting, 'testModule', 1);
-    }
-
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException
-     */
-    public function testHandleWrongSettingOnModuleActivation()
-    {
-        $handler = new ShopModuleSettingModuleSettingHandler(
-            $this->getMockBuilder(ShopModuleSettingDaoInterface::class)->getMock()
-        );
-
-        $handler->handleOnModuleActivation(
-            new ModuleSetting('wrongSettingForThisHandler', []),
-            'testModule',
-            1
-        );
-    }
-
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException
-     */
-    public function testHandleWrongSettingOnModuleDeactivation()
-    {
-        $handler = new ShopModuleSettingModuleSettingHandler(
-            $this->getMockBuilder(ShopModuleSettingDaoInterface::class)->getMock()
-        );
-
-        $handler->handleOnModuleActivation(
-            new ModuleSetting('wrongSettingForThisHandler', []),
-            'testModule',
-            1
-        );
+        $handler->handleOnModuleDeactivation($moduleConfiguration, 1);
     }
 
     private function getTestModuleSetting(): ModuleSetting

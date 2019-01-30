@@ -17,7 +17,18 @@ class ModuleConfiguration
     /**
      * @var string
      */
-    private $id = '';
+    private $id;
+
+    /**
+     * @var string
+     */
+    private $path;
+
+    /**
+     * @var string
+     */
+    private $version = '';
+
     /**
      * @var bool
      */
@@ -76,6 +87,44 @@ class ModuleConfiguration
     public function setId(string $id): ModuleConfiguration
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
+    /**
+     * @param string $path
+     * @return ModuleConfiguration
+     */
+    public function setPath(string $path): ModuleConfiguration
+    {
+        $this->path = $path;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVersion(): string
+    {
+        return $this->version;
+    }
+
+    /**
+     * @param string $version
+     *
+     * @return ModuleConfiguration
+     */
+    public function setVersion(string $version)
+    {
+        $this->version = $version;
 
         return $this;
     }

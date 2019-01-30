@@ -52,6 +52,8 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId($moduleData[MetaDataProvider::METADATA_ID])
+            ->setPath($metaData[MetaDataProvider::METADATA_PATH])
+            ->setVersion($moduleData[MetaDataProvider::METADATA_VERSION] ?? '')
             ->setTitle($moduleData[MetaDataProvider::METADATA_TITLE] ?? '')
             ->setDescription($moduleData[MetaDataProvider::METADATA_DESCRIPTION] ?? [])
             ->setLang($moduleData[MetaDataProvider::METADATA_LANG] ?? '')
@@ -73,17 +75,7 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
      */
     private function mapModuleConfigurationSettings(ModuleConfiguration $moduleConfiguration, array $metaData): ModuleConfiguration
     {
-        $moduleConfiguration->addSetting(
-            new ModuleSetting(ModuleSetting::PATH, $metaData[MetaDataProvider::METADATA_PATH])
-        );
-
         $moduleData = $metaData[MetaDataProvider::METADATA_MODULE_DATA];
-
-        if (isset($moduleData[MetaDataProvider::METADATA_VERSION])) {
-            $moduleConfiguration->addSetting(
-                new ModuleSetting(ModuleSetting::VERSION, $moduleData[MetaDataProvider::METADATA_VERSION])
-            );
-        }
 
         if (isset($moduleData[MetaDataProvider::METADATA_EXTEND])) {
             $moduleConfiguration->addSetting(

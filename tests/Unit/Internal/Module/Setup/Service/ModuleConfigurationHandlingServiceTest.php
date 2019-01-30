@@ -9,8 +9,8 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleSettingsHandlingService;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ModuleSettingHandlerInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleConfigurationHandlingService;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ModuleConfigurationHandlerInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSettingNotValidException;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ModuleSettingValidatorInterface;
 use PHPUnit\Framework\TestCase;
@@ -18,9 +18,9 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  */
-class ModuleSettingsHandlingServiceTest extends TestCase
+class ModuleConfigurationHandlingServiceTest extends TestCase
 {
-    public function testModuleSettingHandlersOnActivation()
+    public function testHandlingOnActivation()
     {
         $moduleSetting = new ModuleSetting('testSetting', 'value');
 
@@ -28,24 +28,18 @@ class ModuleSettingsHandlingServiceTest extends TestCase
         $moduleConfiguration->setId('testModule');
         $moduleConfiguration->addSetting($moduleSetting);
 
-        $moduleSettingHandler = $this->getMockBuilder(ModuleSettingHandlerInterface::class)->getMock();
-        $moduleSettingHandler
-            ->expects($this->atLeastOnce())
-            ->method('canHandle')
-            ->with($moduleSetting)
-            ->willReturn(true);
-
-        $moduleSettingHandler
+        $handler = $this->getMockBuilder(ModuleConfigurationHandlerInterface::class)->getMock();
+        $handler
             ->expects($this->atLeastOnce())
             ->method('handleOnModuleActivation');
 
-        $moduleSettingsHandlingService = new ModuleSettingsHandlingService();
-        $moduleSettingsHandlingService->addHandler($moduleSettingHandler);
+        $moduleSettingsHandlingService = new ModuleConfigurationHandlingService();
+        $moduleSettingsHandlingService->addHandler($handler);
 
         $moduleSettingsHandlingService->handleOnActivation($moduleConfiguration, 1);
     }
 
-    public function testModuleSettingHandlersOnDeactivation()
+    public function testHandlingOnDeactivation()
     {
         $moduleSetting = new ModuleSetting('testSetting', 'value');
 
@@ -53,36 +47,16 @@ class ModuleSettingsHandlingServiceTest extends TestCase
         $moduleConfiguration->setId('testModule');
         $moduleConfiguration->addSetting($moduleSetting);
 
-        $moduleSettingHandler = $this->getMockBuilder(ModuleSettingHandlerInterface::class)->getMock();
-        $moduleSettingHandler
-            ->expects($this->atLeastOnce())
-            ->method('canHandle')
-            ->with($moduleSetting)
-            ->willReturn(true);
+        $handler = $this->getMockBuilder(ModuleConfigurationHandlerInterface::class)->getMock();
 
-        $moduleSettingHandler
+        $handler
             ->expects($this->atLeastOnce())
             ->method('handleOnModuleDeactivation');
 
-        $moduleSettingsHandlingService = new ModuleSettingsHandlingService();
-        $moduleSettingsHandlingService->addHandler($moduleSettingHandler);
+        $moduleSettingsHandlingService = new ModuleConfigurationHandlingService();
+        $moduleSettingsHandlingService->addHandler($handler);
 
         $moduleSettingsHandlingService->handleOnDeactivation($moduleConfiguration, 1);
-    }
-
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSettingHandlerNotFoundException
-     */
-    public function testModuleSettingHandlerDoesNotExist()
-    {
-        $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->addSetting(
-            new ModuleSetting('testSetting', 'value')
-        );
-
-        $moduleSettingsHandlingService = new ModuleSettingsHandlingService();
-
-        $moduleSettingsHandlingService->handleOnActivation($moduleConfiguration, 1);
     }
 
     public function testModuleSettingInvalid()
@@ -103,7 +77,7 @@ class ModuleSettingsHandlingServiceTest extends TestCase
             ->method('validate')
             ->willThrowException(new ModuleSettingNotValidException());
 
-        $moduleSettingsHandlingService = new ModuleSettingsHandlingService();
+        $moduleSettingsHandlingService = new ModuleConfigurationHandlingService();
 
         $moduleSettingsHandlingService->addValidator($moduleSettingValidator);
 

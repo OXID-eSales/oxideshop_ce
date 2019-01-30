@@ -32,7 +32,9 @@ class ModuleConfigurationDaoTest extends TestCase
     public function testSaving()
     {
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->setId('testId');
+        $moduleConfiguration
+            ->setId('testId')
+            ->setPath('somePath');
 
         $dao = $this->get(ModuleConfigurationDaoInterface::class);
         $dao->save($moduleConfiguration, 1);

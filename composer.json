@@ -4,10 +4,7 @@
     "type": "oxideshop",
     "keywords": ["oxid", "modules", "eShop"],
     "homepage": "https://www.oxid-esales.com/en/home.html",
-    "license": [
-        "GPL-3.0-only",
-        "proprietary"
-    ],
+    "license": "GPL-3.0-only",
     "require": {
         "php": "^7.0",
         "phpmailer/phpmailer": "^v5.2.27",

@@ -14,6 +14,8 @@ use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
 use stdClass;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Event\ShopConfigurationChangedEvent;
+use OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\Event\ShopModuleSettingChangedEvent;
+use OxidEsales\EshopCommunity\Internal\Theme\Event\ThemeSettingChangedEvent;
 
 //max integer
 define('MAX_64BIT_INTEGER', '18446744073709551615');
@@ -2310,7 +2312,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Inform services if configuration data was changed in database.
+     * Inform respective services if shop/module/theme related configuration data was changed in database.
      *
      * @param string  $varName   Variable name
      * @param integer $shopId    Shop id
@@ -2320,6 +2322,10 @@ class Config extends \OxidEsales\Eshop\Core\Base
     {
         if (empty($extension)) {
             $this->dispatchEvent(new ShopConfigurationChangedEvent($varName, (int) $shopId));
+        } elseif (false !== strpos($extension, self::OXMODULE_MODULE_PREFIX)) {
+            $this->dispatchEvent(new ShopModuleSettingChangedEvent($varName, (int) $shopId, $extension));
+        } elseif (false !== strpos($extension, self::OXMODULE_THEME_PREFIX)) {
+            $this->dispatchEvent(new ThemeSettingChangedEvent($varName, (int) $shopId, $extension));
         }
     }
 }

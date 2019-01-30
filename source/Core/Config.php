@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
 use stdClass;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
+use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Event\ShopConfigurationChangedEvent;
 
 //max integer
 define('MAX_64BIT_INTEGER', '18446744073709551615');
@@ -1861,6 +1862,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $query = "insert into oxconfig (oxid, oxshopid, oxmodule, oxvarname, oxvartype, oxvarvalue)
                values($newOXIDdQuoted, $shopIdQuoted, $moduleQuoted, $varNameQuoted, $varTypeQuoted, ENCODE( $varValueQuoted, $configKeyQuoted) )";
         $db->execute($query);
+
+        $this->informServicesAfterConfigurationChanged($varName, $shopId, $module);
     }
 
     /**
@@ -2304,5 +2307,19 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $exceptionHandler = new \OxidEsales\Eshop\Core\Exception\ExceptionHandler();
 
         return $exceptionHandler;
+    }
+
+    /**
+     * Inform services if configuration data was changed in database.
+     *
+     * @param string  $varName   Variable name
+     * @param integer $shopId    Shop id
+     * @param string  $extension Module or theme name in case of extension config change
+     */
+    protected function informServicesAfterConfigurationChanged($varName, $shopId, $extension = '')
+    {
+        if (empty($extension)) {
+            $this->dispatchEvent(new ShopConfigurationChangedEvent($varName, (int) $shopId));
+        }
     }
 }

@@ -11,11 +11,11 @@ namespace OxidEsales\EshopCommunity\Internal\ShopEvents;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class BeforeAppendSessionIdToUrlEvent
+ * Class BeforeSessionStartEvent
  *
  * @package OxidEsales\EshopCommunity\Internal\ShopEvents
  */
-class BeforeAppendSessionIdToUrlEvent extends Event
+class BeforeSessionStartEvent extends Event
 {
     const NAME = self::class;
 }

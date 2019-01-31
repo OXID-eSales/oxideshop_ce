@@ -291,9 +291,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
 
         //Remove from caches.
         \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::resetModuleVariables();
-
-        //notify services
-        $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\ShopEvents\ModuleCleanupDoneEvent());
     }
 
     /**

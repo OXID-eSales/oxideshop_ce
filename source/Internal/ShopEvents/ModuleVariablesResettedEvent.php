@@ -11,13 +11,13 @@ namespace OxidEsales\EshopCommunity\Internal\ShopEvents;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class ModuleCacheResettedEvent
+ * Class ModuleVariablesResettedEvent
  *
  * @deprecated in b-6.x (2019-01-23); Temporary event, remove before release.
  *
  * @package OxidEsales\EshopCommunity\Internal\ShopEvents
  */
-class ModuleCacheResettedEvent extends Event
+class ModuleVariablesResettedEvent extends Event
 {
     const NAME = self::class;
 }

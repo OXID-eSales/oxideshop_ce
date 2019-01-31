@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Core\Module;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\FileCache;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\ShopEvents\ModuleVariablesResettedEvent;
 
 /**
  * Selects module variables from database or cache.
@@ -92,6 +93,10 @@ class ModuleVariablesLocator
     {
         self::$moduleVariables = [];
         FileCache::clearCache();
+
+        $container = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
+        $dispatcher = $container->get('event_dispatcher');
+        $dispatcher->dispatch(ModuleVariablesResettedEvent::NAME, new ModuleVariablesResettedEvent);
     }
 
     /**

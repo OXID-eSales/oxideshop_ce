@@ -1103,11 +1103,14 @@ class Utils extends \OxidEsales\Eshop\Core\Base
 
         $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\ShopEvents\ApplicationExitEvent());
 
-        if (!headers_sent() && $this->isSearchEngine()) {
-            $header = oxNew(\OxidEsales\Eshop\Core\Header::class);
+        if ($this->isSearchEngine()) {
+            $header = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\Header::class);
             $header->setNonCacheable();
-            $header->sendHeader();
         }
+
+        //Send headers that have been registered
+        $header = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\Header::class);
+        $header->sendHeader();
     }
 
     /**

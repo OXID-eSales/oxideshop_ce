@@ -291,6 +291,10 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
         $outputManager->sendHeaders();
 
+        //Send headers that have been registered
+        $header = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\Header::class);
+        $header->sendHeader();
+
         $this->sendAdditionalHeaders($view);
 
         $outputManager->output('content', $output);

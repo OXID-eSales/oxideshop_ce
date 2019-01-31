@@ -46,3 +46,6 @@ services:
   OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationDataMapperInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationDataMapper
     public: false
+
+  OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleConfigurationMergingServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleConfigurationMergingService

@@ -47,42 +47,6 @@ class ModuleConfigurationInstallerTest extends TestCase
         $this->assertProjectConfigurationHasModuleConfigurationForAllShops();
     }
 
-    public function testExtensionClassChainIsUpdatedAfterInstall()
-    {
-        $moduleConfigurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
-        $moduleConfigurationInstaller->install($this->modulePath);
-
-        $environmentConfiguration = $this
-            ->projectConfigurationDao
-            ->getConfiguration()
-            ->getEnvironmentConfiguration('prod');
-
-        $shopConfigurationWithAlreadyExistentChain = $environmentConfiguration->getShopConfiguration(1);
-
-        $this->assertSame(
-            [
-                'shopClass'             => [
-                    'alreadyInstalledShopClass',
-                    'anotherAlreadyInstalledShopClass',
-                    'testModuleClassExtendsShopClass',
-                ],
-                'someAnotherShopClass'  => ['alreadyInstalledShopClass'],
-            ],
-            $shopConfigurationWithAlreadyExistentChain->getChain(Chain::CLASS_EXTENSIONS)->getChain()
-        );
-
-        $shopConfigurationWithoutAlreadyExistentChain = $environmentConfiguration->getShopConfiguration(2);
-
-        $this->assertSame(
-            [
-                'shopClass'             => [
-                    'testModuleClassExtendsShopClass',
-                ],
-            ],
-            $shopConfigurationWithoutAlreadyExistentChain->getChain(Chain::CLASS_EXTENSIONS)->getChain()
-        );
-    }
-
     public function testIsInstalled()
     {
         $moduleConfigurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);

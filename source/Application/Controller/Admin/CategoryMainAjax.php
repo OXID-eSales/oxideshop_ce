@@ -6,10 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
-use oxField;
 use Exception;
+use OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelUpdateEvent;
 
 /**
  * Class manages category articles
@@ -240,6 +238,11 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
 
         $this->resetArtSeoUrl($aArticles, $sCategoryID);
         $this->resetCounter("catArticle", $sCategoryID);
+
+        //notify services
+        $relation = oxNew(\OxidEsales\Eshop\Application\Model\Object2Category::class);
+        $relation->setCategoryId($sCategoryID);
+        $this->dispatchEvent(new AfterModelUpdateEvent($relation));
     }
 
     /**

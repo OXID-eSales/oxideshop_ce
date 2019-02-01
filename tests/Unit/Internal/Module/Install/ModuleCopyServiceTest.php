@@ -17,6 +17,8 @@ use OxidEsales\EshopCommunity\Internal\Module\Install\PackageServiceInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 /**
  * @internal
@@ -45,24 +47,20 @@ class ModuleCopyServiceTest extends TestCase
         $context = $this->getContext();
         $packageService = $this->getPackageService($packageName, $extra);
 
-        $copyGlobService = $this->getMockBuilder(CopyGlobServiceInterface::class)->getMock();
-        $copyGlobService->expects($this->any())
-                        ->method('copy')
-                        ->with(
-                            $packagePath . DIRECTORY_SEPARATOR . $extra['oxideshop']['source-directory'],
-                            $context->getModulesPath() . DIRECTORY_SEPARATOR . $extra['oxideshop']['target-directory'],
-                            [
-                                $extra['oxideshop']['blacklist-filter'][0],
-                                $extra['oxideshop']['blacklist-filter'][1],
-                                $extra['oxideshop']['blacklist-filter'][2],
-                                $extra['oxideshop']['blacklist-filter'][3],
-                                $extra['oxideshop']['blacklist-filter'][4],
-                                OxidEshopPackage::BLACKLIST_VCS_DIRECTORY_FILTER,
-                                OxidEshopPackage::BLACKLIST_VCS_IGNORE_FILE
-                            ]
-                        );
+        $finder = new Finder();
 
-        $moduleCopyService = new ModuleCopyService($packageService, $context, $copyGlobService);
+        $fileSystem = $this->getMockBuilder(Filesystem::class)->getMock();
+        $fileSystem
+            ->expects($this->once())
+            ->method('mirror')
+            ->with(
+                $packagePath . DIRECTORY_SEPARATOR . $extra['oxideshop']['source-directory'],
+                $context->getModulesPath() . DIRECTORY_SEPARATOR . $extra['oxideshop']['target-directory'],
+                $finder,
+                ['override' => true]
+            );
+
+        $moduleCopyService = new ModuleCopyService($packageService, $context, $fileSystem);
         $moduleCopyService->copy($packagePath);
     }
 
@@ -112,12 +110,9 @@ class ModuleCopyServiceTest extends TestCase
      */
     private function getPackageService(string $packageName, array $extraParameters = []) : OxidEshopPackageFactoryInterface
     {
-        $package = new OxidEshopPackage();
-        $package->setName($packageName);
-        $package->setExtraParameters($extraParameters);
+        $package = new OxidEshopPackage($packageName, $extraParameters);
 
-        $packageService = $this->getMockBuilder(OxidEshopPackageFactoryInterface::class)
-            ->setMethods(['getPackage'])->getMock();
+        $packageService = $this->getMockBuilder(OxidEshopPackageFactoryInterface::class)->getMock();
         $packageService->method('getPackage')->willReturn($package);
 
         return $packageService;

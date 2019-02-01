@@ -10,6 +10,8 @@ use OxidEsales\EshopCommunity\Internal\Common\Exception\DirectoryExistentExcepti
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Common\CopyGlob\CopyGlobServiceInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Webmozart\PathUtil\Path;
 
 /**
@@ -27,24 +29,24 @@ class ModuleCopyService implements ModuleCopyServiceInterface
     /** @var BasicContextInterface $context */
     private $context;
 
-    /** @var CopyGlobServiceInterface $copyGlobService */
-    private $copyGlobService;
+    /** @var CopyGlobServiceInterface $fileSystemService */
+    private $fileSystemService;
 
     /**
      * ModuleCopyService constructor.
      *
      * @param OxidEshopPackageFactoryInterface $packageService
      * @param BasicContextInterface            $basicContext
-     * @param CopyGlobServiceInterface         $copyGlobService
+     * @param Filesystem                       $fileSystemService
      */
     public function __construct(
         OxidEshopPackageFactoryInterface $packageService,
         BasicContextInterface $basicContext,
-        CopyGlobServiceInterface $copyGlobService
+        Filesystem $fileSystemService
     ) {
         $this->packageService = $packageService;
         $this->context = $basicContext;
-        $this->copyGlobService = $copyGlobService;
+        $this->fileSystemService = $fileSystemService;
     }
 
     /**
@@ -58,12 +60,10 @@ class ModuleCopyService implements ModuleCopyServiceInterface
     {
         if ($this->isInstalled($packagePath)) {
             $package = $this->packageService->getPackage($packagePath);
-
-            $exception = new DirectoryExistentException($this->formTargetPath($package));
-            throw $exception;
+            throw new DirectoryExistentException($this->getTargetPath($package));
         }
 
-        $this->triggerCopyGlobService($packagePath);
+        $this->copyFiles($packagePath);
     }
 
     /**
@@ -71,7 +71,7 @@ class ModuleCopyService implements ModuleCopyServiceInterface
      */
     public function forceCopy(string $packagePath)
     {
-        $this->triggerCopyGlobService($packagePath);
+        $this->copyFiles($packagePath);
     }
 
     /**
@@ -82,49 +82,29 @@ class ModuleCopyService implements ModuleCopyServiceInterface
     private function isInstalled(string $packagePath): bool
     {
         $package = $this->packageService->getPackage($packagePath);
-        return file_exists($this->formTargetPath($package));
+        return file_exists($this->getTargetPath($package));
     }
 
     /**
      * @param string $packagePath
      */
-    private function triggerCopyGlobService(string $packagePath)
+    private function copyFiles(string $packagePath)
     {
         $package = $this->packageService->getPackage($packagePath);
 
-        $filtersToApply = [
-            $this->getBlacklistFilterValue($package),
-            $this->getVCSFilter(),
-        ];
+        $sourceDirectory = $this->getSourcePath($packagePath, $package);
 
-        $this->copyGlobService->copy(
-            $this->formSourcePath($packagePath, $package),
-            $this->formTargetPath($package),
-            $this->getCombinedFilters($filtersToApply)
+        $finder = new Finder();
+        $finder
+            ->in($sourceDirectory)
+            ->notName($package->getBlackListFilters());
+
+        $this->fileSystemService->mirror(
+            $sourceDirectory,
+            $this->getTargetPath($package),
+            $finder,
+            ['override' => true]
         );
-    }
-
-    /**
-     * Return the value defined in composer extra parameters for blacklist filtering.
-     *
-     * @param OxidEshopPackage $package
-     *
-     * @return array
-     */
-    private function getBlacklistFilterValue(OxidEshopPackage $package) : array
-    {
-        $extra = $package->getExtraParameters();
-        return $extra[OxidEshopPackage::EXTRA_PARAMETER_KEY_ROOT][OxidEshopPackage::EXTRA_PARAMETER_FILTER_BLACKLIST] ?? [];
-    }
-
-    /**
-     * Get VCS glob filter expression
-     *
-     * @return array
-     */
-    private function getVCSFilter() : array
-    {
-        return [OxidEshopPackage::BLACKLIST_VCS_DIRECTORY_FILTER, OxidEshopPackage::BLACKLIST_VCS_IGNORE_FILE];
     }
 
     /**
@@ -136,14 +116,11 @@ class ModuleCopyService implements ModuleCopyServiceInterface
      *
      * @return string
      */
-    private function formSourcePath(string $packagePath, OxidEshopPackage $package) : string
+    private function getSourcePath(string $packagePath, OxidEshopPackage $package) : string
     {
-        $extra = $package->getExtraParameters();
-        $sourceDirectory = $extra[OxidEshopPackage::EXTRA_PARAMETER_KEY_ROOT][OxidEshopPackage::EXTRA_PARAMETER_KEY_SOURCE] ?? '';
-
-        return !empty($sourceDirectory)?
-            Path::join($packagePath, $sourceDirectory):
-            $packagePath;
+        return !empty($package->getSourceDirectory())
+            ? Path::join($packagePath, $package->getSourceDirectory())
+            : $packagePath;
     }
 
     /**
@@ -151,28 +128,9 @@ class ModuleCopyService implements ModuleCopyServiceInterface
      *
      * @return string
      */
-    private function formTargetPath(OxidEshopPackage $package) : string
+    private function getTargetPath(OxidEshopPackage $package) : string
     {
-        $extra = $package->getExtraParameters();
-        $targetDirectory = $extra[OxidEshopPackage::EXTRA_PARAMETER_KEY_ROOT][OxidEshopPackage::EXTRA_PARAMETER_KEY_TARGET] ?? $package->getName();
-
+        $targetDirectory = $package->getTargetDirectory();
         return Path::join($this->context->getModulesPath(), $targetDirectory);
-    }
-
-    /**
-     * Combine multiple glob expression lists into one list
-     *
-     * @param array $listOfGlobExpressionLists E.g. [["*.txt", "*.pdf"], ["*.md"]]
-     *
-     * @return array
-     */
-    private function getCombinedFilters(array $listOfGlobExpressionLists) : array
-    {
-        $filters = [];
-        foreach ($listOfGlobExpressionLists as $filter) {
-            $filters = array_merge($filters, $filter);
-        }
-
-        return $filters;
     }
 }

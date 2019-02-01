@@ -1,6 +1,8 @@
 services:
   OxidEsales\EshopCommunity\Internal\Module\Install\ModuleCopyServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Install\ModuleCopyService
+    arguments:
+      $fileSystemService: '@oxid_esales.symfony.file_system'
     autowire: true
   OxidEsales\EshopCommunity\Internal\Module\Install\OxidEshopPackageFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Install\OxidEshopOxidEshopPackageFactory

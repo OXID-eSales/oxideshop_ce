@@ -12,65 +12,58 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject;
  */
 class OxidEshopPackage
 {
-    /** Name of directory to be excluded for VCS */
-    const BLACKLIST_VCS_DIRECTORY = '.git';
-
-    /** Name of ignore files to be excluded for VCS */
-    const BLACKLIST_VCS_IGNORE_FILE = '.gitignore';
-
-    /** Used to install third party integrations. */
-    const EXTRA_PARAMETER_KEY_TARGET = 'target-directory';
-
-    /** Used to determine third party package internal source path. */
-    const EXTRA_PARAMETER_KEY_SOURCE = 'source-directory';
-
-    /** Glob expression to filter all files, might be used to filter whole directory. */
-    const BLACKLIST_ALL_FILES = '**/*';
-
-    /** List of glob expressions used to blacklist files being copied. */
-    const EXTRA_PARAMETER_FILTER_BLACKLIST = 'blacklist-filter';
-
-    /** Glob filter expression to exclude VCS files */
-    const BLACKLIST_VCS_DIRECTORY_FILTER = OxidEshopPackage::BLACKLIST_VCS_DIRECTORY . DIRECTORY_SEPARATOR . OxidEshopPackage::BLACKLIST_ALL_FILES;
-
-    /** First level key of the section extra in composer.json */
-    const EXTRA_PARAMETER_KEY_ROOT = 'oxideshop';
-
     /** @var string $name */
-    private $name = '';
+    private $name;
 
-    /** @var array $extra */
-    private $extraParameters = [];
+    /**
+     * @var array
+     */
+    private $blackListFilters;
+
+    /**
+     * @var string
+     */
+    private $sourceDirectory;
+
+    /**
+     * @var string
+     */
+    private $targetDirectory;
+
+    /**
+     * @param string $name
+     * @param array  $extraParameters
+     */
+    public function __construct(string $name, array $extraParameters)
+    {
+        $this->name = $name;
+
+        $this->blackListFilters = $extraParameters['oxideshop']['blacklist-filter'] ?? [];
+        $this->sourceDirectory  = $extraParameters['oxideshop']['source-directory'] ?? '';
+        $this->targetDirectory  = $extraParameters['oxideshop']['target-directory'] ?? $this->name;
+    }
 
     /**
      * @return array
      */
-    public function getExtraParameters(): array
+    public function getBlackListFilters(): array
     {
-        return $this->extraParameters;
-    }
-
-    /**
-     * @param array $extra
-     */
-    public function setExtraParameters(array $extra)
-    {
-        $this->extraParameters = $extra;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName(string $name)
-    {
-        $this->name = $name;
+        return $this->blackListFilters;
     }
 
     /**
      * @return string
      */
-    public function getName(): string
+    public function getSourceDirectory(): string
     {
-        return $this->name;
+        return $this->sourceDirectory;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTargetDirectory(): string
+    {
+        return $this->targetDirectory;
     }
 }

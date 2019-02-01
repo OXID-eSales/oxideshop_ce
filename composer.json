@@ -17,7 +17,8 @@
         "symfony/dependency-injection": "^3.4",
         "symfony/lock": "^3.4",
         "symfony/console": "^v3.4.15",
-        "webmozart/path-util": "^2.3"
+        "webmozart/path-util": "^2.3",
+        "symfony/finder": "^3.4"
     },
     "require-dev": {
         "oxid-esales/flow-theme": "^v3.0.2",

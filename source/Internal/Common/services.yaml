@@ -30,3 +30,6 @@ services:
   OxidEsales\EshopCommunity\Internal\Common\CopyGlob\CopyGlobServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Common\CopyGlob\CopyGlobService
     autowire: true
+
+  oxid_esales.symfony.file_system:
+    class: Symfony\Component\Filesystem\Filesystem

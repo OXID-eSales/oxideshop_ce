@@ -4,14 +4,14 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Install;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Install\Service;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Install\ModuleConfigurationInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -30,7 +30,7 @@ class ModuleConfigurationInstallerTest extends TestCase
 
     public function setUp()
     {
-        $this->modulePath = realpath(__DIR__ . '/../TestData/TestModule/');
+        $this->modulePath = realpath(__DIR__ . '/../../TestData/TestModule/');
 
         $this->projectConfigurationDao = $this->get(ProjectConfigurationDaoInterface::class);
 

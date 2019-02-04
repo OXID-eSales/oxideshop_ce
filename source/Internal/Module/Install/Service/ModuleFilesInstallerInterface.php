@@ -4,16 +4,16 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Module\Install;
+namespace OxidEsales\EshopCommunity\Internal\Module\Install\Service;
 
 /**
- * Interface ModuleCopyServiceInterface
+ * Interface ModuleFilesInstallerInterface
  *
  * @internal
  *
  * @package OxidEsales\EshopCommunity\Internal\Module\Setup\Install
  */
-interface ModuleCopyServiceInterface
+interface ModuleFilesInstallerInterface
 {
 
     /**

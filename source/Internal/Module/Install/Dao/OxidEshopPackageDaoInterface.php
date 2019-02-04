@@ -4,14 +4,14 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Module\Install;
+namespace OxidEsales\EshopCommunity\Internal\Module\Install\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\OxidEshopPackage;
+use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
 
 /**
  * @internal
  */
-interface OxidEshopPackageFactoryInterface
+interface OxidEshopPackageDaoInterface
 {
 
     /**

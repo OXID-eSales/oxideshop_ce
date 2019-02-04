@@ -22,7 +22,8 @@ class BasicContextStub implements BasicContextInterface
     private $generatedProjectFilePath;
     private $professionalEditionRootPath;
     private $sourcePath;
-    
+    private $modulesPath;
+
     public function __construct()
     {
         $basicContext = BootstrapContainerFactory::getBootstrapContainer()->get(BasicContextInterface::class);
@@ -34,6 +35,7 @@ class BasicContextStub implements BasicContextInterface
         $this->generatedProjectFilePath = $basicContext->getGeneratedProjectFilePath();
         $this->professionalEditionRootPath = $basicContext->getProfessionalEditionRootPath();
         $this->sourcePath = $basicContext->getSourcePath();
+        $this->modulesPath = $basicContext->getModulesPath();
     }
 
     /**
@@ -178,5 +180,13 @@ class BasicContextStub implements BasicContextInterface
     public function getAllShopIds(): array
     {
         return [$this->getDefaultShopId()];
+    }
+
+    /**
+     * @return string
+     */
+    public function getModulesPath(): string
+    {
+        return $this->modulesPath;
     }
 }

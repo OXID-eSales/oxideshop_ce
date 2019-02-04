@@ -14,8 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Module\Install\ModuleCopyService;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Install\OxidEshopPackageFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Install\PackageServiceInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -81,11 +79,9 @@ class ModuleCopyServiceTest extends TestCase
 
         $packageName = 'myvendor/mymodule';
 
-
-        $container = $this->getCompiledTestContainer();
         $context = $this->getContext();
         $packageService = $this->getPackageService($packageName, []);
-        $copyGlobService = $container->get(CopyGlobServiceInterface::class);
+        $copyGlobService = $this->getCopyGlobService();
 
         $this->expectException(\OxidEsales\EshopCommunity\Internal\Common\Exception\DirectoryExistentException::class);
 
@@ -136,16 +132,5 @@ class ModuleCopyServiceTest extends TestCase
     {
         $copyGlobServiceInterface = $this->getMockBuilder(CopyGlobServiceInterface::class)->getMock();
         return $copyGlobServiceInterface;
-    }
-
-    /**
-     * @return \Symfony\Component\DependencyInjection\ContainerBuilder
-     */
-    private function getCompiledTestContainer(): \Symfony\Component\DependencyInjection\ContainerBuilder
-    {
-        $container = (new TestContainerFactory())->create();
-        $container->compile();
-
-        return $container;
     }
 }

@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfi
 /**
  * @internal
  */
-class DefaultProjectConfigurationGenerator implements DefaultProjectConfigurationGeneratorInterface
+class ProjectConfigurationGenerator implements ProjectConfigurationGeneratorInterface
 {
     /**
      * @var ProjectConfigurationDaoInterface

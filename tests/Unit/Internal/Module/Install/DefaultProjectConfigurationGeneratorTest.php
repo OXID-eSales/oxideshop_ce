@@ -10,7 +10,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigura
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Install\DefaultProjectConfigurationGenerator;
+use OxidEsales\EshopCommunity\Internal\Module\Install\ProjectConfigurationGenerator;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -33,7 +33,7 @@ class DefaultProjectConfigurationGeneratorTest extends TestCase
 
         $context = $this->getContext();
 
-        $generator = new DefaultProjectConfigurationGenerator($projectConfigurationDao, $context);
+        $generator = new ProjectConfigurationGenerator($projectConfigurationDao, $context);
 
         $generator->generate();
     }

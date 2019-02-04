@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Install;
 /**
  * @internal
  */
-interface DefaultProjectConfigurationGeneratorInterface
+interface ProjectConfigurationGeneratorInterface
 {
     /**
      * Generates default project configuration.

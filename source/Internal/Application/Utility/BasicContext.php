@@ -112,7 +112,7 @@ class BasicContext implements BasicContextInterface
     /**
      * @return bool
      */
-    public function isShopSetUp(): bool
+    public function isShopLaunched(): bool
     {
         $configFilePath = $this->getSourcePath() . DIRECTORY_SEPARATOR. $this->configFileName;
 

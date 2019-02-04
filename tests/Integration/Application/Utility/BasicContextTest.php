@@ -29,13 +29,13 @@ class BasicContextTest extends TestCase
 
     public function testIsShopSetUp()
     {
-        $this->assertTrue($this->basicContext->isShopSetUp());
+        $this->assertTrue($this->basicContext->isShopLaunched());
     }
 
     public function testIsShopSetUpReturnsFalseIfConfigFileDoesNotExist()
     {
         $context = new BasicContext('nonExistentFile');
-        $this->assertFalse($context->isShopSetUp());
+        $this->assertFalse($context->isShopLaunched());
     }
 
     public function testGetDefaultShopId()

@@ -55,7 +55,7 @@ interface BasicContextInterface
     /**
      * @return bool
      */
-    public function isShopSetUp(): bool;
+    public function isShopLaunched(): bool;
 
     /**
      * @return int

@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject;
+namespace OxidEsales\EshopCommunity\Internal\Module\Install\DataObject;
 
 /**
  * @internal

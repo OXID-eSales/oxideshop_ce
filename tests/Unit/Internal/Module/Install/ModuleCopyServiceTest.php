@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Install;
 use org\bovigo\vfs\vfsStream;
 use OxidEsales\EshopCommunity\Internal\Common\CopyGlob\CopyGlobServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\DirectoryExistentException;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\OxidEshopPackage;
+use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Module\Install\ModuleCopyService;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Install\OxidEshopPackageFactoryInterface;

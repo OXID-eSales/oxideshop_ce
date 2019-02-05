@@ -63,6 +63,17 @@ class ContainerBuilderTest extends TestCase
         $this->assertSame('Service overwriting for Project!', $container->get('oxid_esales.tests.internal.dummy_executor')->execute());
     }
 
+    public function testGraphQLTypeIntegration()
+    {
+        $context = $this->makeContextStub();
+        $context->method('getEdition')->willReturn(EditionSelector::COMMUNITY);
+        $context->method('getGeneratedProjectFilePath')->willReturn('not_existing.yaml');
+        $container = $this->makeContainer($context);
+
+        $this->assertTrue($container->get('query_type_factory')->verifySubType());
+        $this->assertTrue($container->get('mutation_type_factory')->verifySubType());
+    }
+
     /**
      * @param BasicContext $context
      * @return \Symfony\Component\DependencyInjection\Container

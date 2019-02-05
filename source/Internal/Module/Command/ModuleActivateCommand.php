@@ -63,7 +63,7 @@ class ModuleActivateCommand extends Command
 
         /** @var Module $module */
         if (isset($modules[$moduleId])) {
-            $this->activateModule($output, $modules[$moduleId], $moduleId);
+            $this->activateModule($output, $modules[$moduleId]);
         } else {
             $output->writeLn('<error>'.sprintf(static::MESSAGE_MODULE_NOT_FOUND, $moduleId).'</error>');
         }

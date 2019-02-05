@@ -47,21 +47,6 @@ class InternationalTest extends AcceptanceTestCase
     }
 
     /**
-     * Adds tests sql data to database.
-     *
-     * @param string $testSuitePath
-     */
-    public function addTestData($testSuitePath)
-    {
-        $editionEntryPointProvider = new EditionRootPathProvider(new EditionSelector());
-        $editionPathProvider = new EditionPathProvider($editionEntryPointProvider);
-        $sInternationalConverter = $editionPathProvider->getDatabaseSqlDirectory() . '/en.sql';
-        $this->importSql($sInternationalConverter);
-
-        parent::addTestData($testSuitePath);
-    }
-
-    /**
      * simple user account opening
      * @group international
      */

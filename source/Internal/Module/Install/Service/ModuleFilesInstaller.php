@@ -87,7 +87,7 @@ class ModuleFilesInstaller implements ModuleFilesInstallerInterface
      *
      * @return bool
      */
-    private function isInstalled(string $packagePath): bool
+    public function isInstalled(string $packagePath): bool
     {
         $package = $this->packageDao->getPackage($packagePath);
         return file_exists($this->getTargetPath($package));
@@ -103,9 +103,11 @@ class ModuleFilesInstaller implements ModuleFilesInstallerInterface
         $sourceDirectory = $this->getSourcePath($packagePath, $package);
 
         $finder = $this->finderFactory->create();
-        $finder
-            ->in($sourceDirectory)
-            ->notName($package->getBlackListFilters());
+        $finder->in($sourceDirectory);
+
+        foreach ($package->getBlackListFilters() as $filter) {
+            $finder->notName($filter);
+        }
 
         $this->fileSystemService->mirror(
             $sourceDirectory,

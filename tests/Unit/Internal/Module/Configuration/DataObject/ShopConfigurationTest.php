@@ -55,6 +55,22 @@ class ShopConfigurationTest extends TestCase
         );
     }
 
+    public function testHasModuleConfiguration()
+    {
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->setId('testModule');
+
+        $this->assertFalse(
+            $this->shopConfiguration->hasModuleConfiguration('testModule')
+        );
+
+        $this->shopConfiguration->addModuleConfiguration($moduleConfiguration);
+
+        $this->assertTrue(
+            $this->shopConfiguration->hasModuleConfiguration('testModule')
+        );
+    }
+
     public function testGetModuleConfigurationThrowsExceptionIfModuleIdNotPresent()
     {
         $this->expectException(DomainException::class);

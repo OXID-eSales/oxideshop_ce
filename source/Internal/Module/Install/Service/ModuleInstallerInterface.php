@@ -9,12 +9,12 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Install\Service;
 /**
  * @internal
  */
-interface ModuleConfigurationInstallerInterface
+interface ModuleInstallerInterface
 {
     /**
-     * @param string $moduleFullPath
+     * @param string $packagePath
      */
-    public function install(string $moduleFullPath);
+    public function install(string $packagePath);
 
     /**
      * @param string $packagePath

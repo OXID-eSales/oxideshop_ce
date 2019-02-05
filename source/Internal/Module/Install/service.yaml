@@ -1,15 +1,22 @@
 services:
+  OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstallerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstaller
+    autowire: true
+
   OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleFilesInstallerInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleFilesInstaller
     arguments:
       $fileSystemService: '@oxid_esales.symfony.file_system'
     autowire: true
+
   OxidEsales\EshopCommunity\Internal\Module\Install\Dao\OxidEshopPackageDaoInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Install\Dao\OxidEshopPackageDao
     autowire: true
+
   OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleConfigurationInstallerInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleConfigurationInstaller
     autowire: true
+
   oxid_esales.module.install.service.lanched_shop_project_configuration_generator:
     class: OxidEsales\EshopCommunity\Internal\Module\Install\Service\ProjectConfigurationGenerator
     arguments:

@@ -32,4 +32,10 @@ interface ModuleFilesInstallerInterface
      *
      */
     public function forceCopy(string $packagePath);
+
+    /**
+     * @param string $packagePath
+     * @return bool
+     */
+    public function isInstalled(string $packagePath): bool;
 }

@@ -37,7 +37,7 @@ class ModuleConfiguration
     /**
      * @var string
      */
-    private $title = '';
+    private $title = [];
     /**
      * @var array
      */
@@ -130,19 +130,19 @@ class ModuleConfiguration
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getTitle(): string
+    public function getTitle(): array
     {
         return $this->title;
     }
 
     /**
-     * @param string $title
+     * @param array $title
      *
      * @return ModuleConfiguration
      */
-    public function setTitle(string $title): ModuleConfiguration
+    public function setTitle(array $title): ModuleConfiguration
     {
         $this->title = $title;
 

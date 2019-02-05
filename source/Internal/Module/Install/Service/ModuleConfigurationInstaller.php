@@ -82,6 +82,30 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
     }
 
     /**
+     * @param string $moduleFullPath
+     * @return bool
+     */
+    public function isInstalled(string $moduleFullPath): bool
+    {
+        $metadata = $this->metadataProvider->getData($this->getMetadataFilePath($moduleFullPath));
+        $moduleConfiguration = $this->metadataMapper->fromData($metadata);
+
+        $projectConfiguration = $this->projectConfigurationDao->getConfiguration();
+        $environmentConfiguration = $projectConfiguration->getEnvironmentConfiguration(
+            $this->context->getEnvironment()
+        );
+
+        foreach ($environmentConfiguration->getShopConfigurations() as $shopConfiguration) {
+            /** @var $shopConfiguration ShopConfiguration */
+            if ($shopConfiguration->hasModuleConfiguration($moduleConfiguration->getId())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @param ModuleConfiguration  $moduleConfiguration
      * @param ProjectConfiguration $projectConfiguration
      *

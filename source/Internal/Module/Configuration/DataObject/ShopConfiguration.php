@@ -119,4 +119,13 @@ class ShopConfiguration
     {
         return $this->chains;
     }
+
+    /**
+     * @param string $moduleId
+     * @return bool
+     */
+    public function hasModuleConfiguration(string $moduleId): bool
+    {
+        return isset($this->moduleConfigurations[$moduleId]);
+    }
 }

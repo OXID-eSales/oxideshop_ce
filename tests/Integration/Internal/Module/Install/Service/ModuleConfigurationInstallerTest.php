@@ -39,18 +39,18 @@ class ModuleConfigurationInstallerTest extends TestCase
         parent::setUp();
     }
 
-    public function testTransfer()
+    public function testInstall()
     {
-        $transferringService = $this->get(ModuleConfigurationInstallerInterface::class);
-        $transferringService->install($this->modulePath);
+        $configurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
+        $configurationInstaller->install($this->modulePath);
 
         $this->assertProjectConfigurationHasModuleConfigurationForAllShops();
     }
 
-    public function testExtensionClassChainIsUpdatedAfterTransfer()
+    public function testExtensionClassChainIsUpdatedAfterInstall()
     {
-        $transferringService = $this->get(ModuleConfigurationInstallerInterface::class);
-        $transferringService->install($this->modulePath);
+        $moduleConfigurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
+        $moduleConfigurationInstaller->install($this->modulePath);
 
         $environmentConfiguration = $this
             ->projectConfigurationDao
@@ -80,6 +80,21 @@ class ModuleConfigurationInstallerTest extends TestCase
                 ],
             ],
             $shopConfigurationWithoutAlreadyExistentChain->getChain(Chain::CLASS_EXTENSIONS)->getChain()
+        );
+    }
+
+    public function testIsInstalled()
+    {
+        $moduleConfigurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
+
+        $this->assertFalse(
+            $moduleConfigurationInstaller->isInstalled($this->modulePath)
+        );
+
+        $moduleConfigurationInstaller->install($this->modulePath);
+
+        $this->assertTrue(
+            $moduleConfigurationInstaller->isInstalled($this->modulePath)
         );
     }
 

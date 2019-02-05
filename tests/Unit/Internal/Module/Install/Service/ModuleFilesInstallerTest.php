@@ -52,15 +52,9 @@ class ModuleFilesInstallerTest extends TestCase
             ->willReturn($finder);
 
         $finder
-            ->expects($this->once())
+            ->expects($this->exactly(count($extra['oxideshop']['blacklist-filter'])))
             ->method('notName')
-            ->with([
-                'documentation/**/*.*',
-                'CHANGELOG.md',
-                'composer.json',
-                'CONTRIBUTING.md',
-                'README.md'
-            ]);
+            ->willReturn($finder);
 
         $finderFactory = $this->getMockBuilder(FinderFactoryInterface::class)->getMock();
         $finderFactory->method('create')->willReturn($finder);
@@ -100,7 +94,7 @@ class ModuleFilesInstallerTest extends TestCase
         $this->expectException(DirectoryExistentException::class);
 
         $moduleCopyService = new ModuleFilesInstaller(
-            $packageService = $this->getPackageService($packageName, []),
+            $this->getPackageService($packageName, []),
             $this->getContext(),
             $this->getMockBuilder(Filesystem::class)->getMock(),
             $this->getMockBuilder(FinderFactoryInterface::class)->getMock()
@@ -128,7 +122,7 @@ class ModuleFilesInstallerTest extends TestCase
     /**
      * @return BasicContextInterface
      */
-    private function getContext() : BasicContextInterface
+    private function getContext(): BasicContextInterface
     {
         $context = $this->getMockBuilder(BasicContextInterface::class)->getMock();
         $context->method('getModulesPath')->willReturn(vfsStream::url('root/source/modules'));

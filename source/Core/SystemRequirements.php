@@ -741,7 +741,7 @@ class SystemRequirements
      */
     public function checkIniSet()
     {
-        return (@ini_set('session.name', 'sid') !== false) ? 2 : 0;
+        return (@ini_set('memory_limit', @ini_get('memory_limit')) !== false) ? 2 : 0;
     }
 
     /**

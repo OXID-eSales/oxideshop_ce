@@ -22,6 +22,10 @@ class MetaDataNormalizerTest extends TestCase
         $metaData =
             [
                 'ID'          => 'value1',
+                'title'       => [
+                    'en' => 'title en',
+                    'de' => 'title de',
+                ],
                 'DESCRIPTION' => [
                     'DE' => 'value1',
                     'EN' => 'value2',
@@ -72,6 +76,10 @@ class MetaDataNormalizerTest extends TestCase
             ];
         $expectedNormalizedData = [
             'id'          => 'value1',
+            'title'       => [
+                'en' => 'title en',
+                'de' => 'title de',
+            ],
             'description' => [
                 'de' => 'value1',
                 'en' => 'value2',
@@ -142,6 +150,40 @@ class MetaDataNormalizerTest extends TestCase
                     ['constraints' => ['1', '2', '3']],
                     ['constraints' => ['le', 'la', 'les']],
                 ]
+            ],
+            (new MetaDataNormalizer())->normalizeData($metadata)
+        );
+    }
+
+    public function testNormalizerConvertsTitleToArrayWithDefaultLanguageIfItIsString()
+    {
+        $metadata = [
+            'title' => 'Some module',
+        ];
+
+        $this->assertSame(
+            [
+                'title' => [
+                    'en' => 'Some module',
+                ]
+            ],
+            (new MetaDataNormalizer())->normalizeData($metadata)
+        );
+    }
+
+    public function testNormalizerConvertsTitleToArrayWithCustomLanguageIfItIsStringAndLangOptionIsSet()
+    {
+        $metadata = [
+            'title' => 'Some module',
+            'lang'  => 'esperanto',
+        ];
+
+        $this->assertSame(
+            [
+                'title' => [
+                    'esperanto' => 'Some module',
+                ],
+                'lang'  => 'esperanto',
             ],
             (new MetaDataNormalizer())->normalizeData($metadata)
         );

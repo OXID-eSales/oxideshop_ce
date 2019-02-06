@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Service;
 
+use is_string;
+
 /**
  * @internal
  */
@@ -31,6 +33,10 @@ class MetaDataNormalizer implements MetaDataNormalizerInterface
             $normalizedMetaData[MetaDataProvider::METADATA_SETTINGS] = $this->convertModuleSettingConstraintsToArray($normalizedMetaData[MetaDataProvider::METADATA_SETTINGS]);
         }
 
+        if (isset($normalizedMetaData[MetaDataProvider::METADATA_TITLE])) {
+            $normalizedMetaData = $this->normalizeModuleTitle($normalizedMetaData);
+        }
+
         return $normalizedMetaData;
     }
 
@@ -47,6 +53,25 @@ class MetaDataNormalizer implements MetaDataNormalizerInterface
         }
 
         return $metadataModuleSettings;
+    }
+
+    /**
+     * @param array $normalizedMetaData
+     * @return array
+     */
+    private function normalizeModuleTitle(array $normalizedMetaData): array
+    {
+        $title = $normalizedMetaData[MetaDataProvider::METADATA_TITLE];
+
+        if (is_string($title)) {
+            $defaultLanguage = $normalizedMetaData[MetaDataProvider::METADATA_LANG] ?? 'en';
+            $normalizedTitle = [
+                $defaultLanguage => $title,
+            ];
+            $normalizedMetaData[MetaDataProvider::METADATA_TITLE] = $normalizedTitle;
+        }
+
+        return $normalizedMetaData;
     }
 
     /**

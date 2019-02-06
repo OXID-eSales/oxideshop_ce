@@ -54,7 +54,6 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
             ->setId($moduleData[MetaDataProvider::METADATA_ID])
             ->setPath($metaData[MetaDataProvider::METADATA_PATH])
             ->setVersion($moduleData[MetaDataProvider::METADATA_VERSION] ?? '')
-            ->setTitle($moduleData[MetaDataProvider::METADATA_TITLE] ?? '')
             ->setDescription($moduleData[MetaDataProvider::METADATA_DESCRIPTION] ?? [])
             ->setLang($moduleData[MetaDataProvider::METADATA_LANG] ?? '')
             ->setThumbnail($moduleData[MetaDataProvider::METADATA_THUMBNAIL] ?? '')
@@ -62,6 +61,10 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
             ->setUrl($moduleData[MetaDataProvider::METADATA_URL] ?? '')
             ->setEmail($moduleData[MetaDataProvider::METADATA_EMAIL] ?? '')
             ->setMetaDataCheckSum($metaData[MetaDataProvider::METADATA_CHECKSUM]);
+
+        if (isset($moduleData[MetaDataProvider::METADATA_TITLE])) {
+            $moduleConfiguration->setTitle($moduleData[MetaDataProvider::METADATA_TITLE]);
+        }
 
         $moduleConfiguration = $this->mapModuleConfigurationSettings($moduleConfiguration, $metaData);
 

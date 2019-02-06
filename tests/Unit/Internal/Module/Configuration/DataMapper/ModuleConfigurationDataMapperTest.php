@@ -21,7 +21,7 @@ class ModuleConfigurationDataMapperTest extends TestCase
             'path'        => 'relativePath',
             'version'     => '7.0',
             'autoActive'  => true,
-            'title'       => 'title',
+            'title'       => ['en' => 'title'],
             'description' => [
                 'de' => 'description de',
                 'en' => 'description en',

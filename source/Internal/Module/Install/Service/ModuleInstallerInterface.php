@@ -6,19 +6,21 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Install\Service;
 
+use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
+
 /**
  * @internal
  */
 interface ModuleInstallerInterface
 {
     /**
-     * @param string $packagePath
+     * @param OxidEshopPackage $package
      */
-    public function install(string $packagePath);
+    public function install(OxidEshopPackage $package);
 
     /**
-     * @param string $packagePath
+     * @param OxidEshopPackage $package
      * @return bool
      */
-    public function isInstalled(string $packagePath): bool;
+    public function isInstalled(OxidEshopPackage $package): bool;
 }

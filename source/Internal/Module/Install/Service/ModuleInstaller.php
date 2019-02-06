@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Install\Service;
 
+use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
+
 /**
  * @internal
  */
@@ -35,21 +37,22 @@ class ModuleInstaller implements ModuleInstallerInterface
     }
 
     /**
-     * @param string $packagePath
+     * @param OxidEshopPackage $package
      */
-    public function install(string $packagePath)
+    public function install(OxidEshopPackage $package)
     {
-        $this->moduleFilesInstaller->forceCopy($packagePath);
-        $this->moduleConfigurationInstaller->install($packagePath);
+        $this->moduleFilesInstaller->install($package);
+        $this->moduleConfigurationInstaller->install($package->getPackagePath());
     }
 
     /**
-     * @param string $packagePath
+     * @param string           $packagePath
+     * @param OxidEshopPackage $package
      * @return bool
      */
-    public function isInstalled(string $packagePath): bool
+    public function isInstalled(OxidEshopPackage $package): bool
     {
-        return $this->moduleFilesInstaller->isInstalled($packagePath)
-            && $this->moduleConfigurationInstaller->isInstalled($packagePath);
+        return $this->moduleFilesInstaller->isInstalled($package)
+            && $this->moduleConfigurationInstaller->isInstalled($package->getPackagePath());
     }
 }

@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Install\Service;
 
+use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleFilesInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstaller;
@@ -17,12 +18,13 @@ class ModuleInstallerTest extends TestCase
     public function testInstallTriggersAllInstallers()
     {
         $path = 'packagePath';
+        $package = new OxidEshopPackage('dummy', $path, []);
 
         $moduleFilesInstaller = $this->getMockBuilder(ModuleFilesInstallerInterface::class)->getMock();
         $moduleFilesInstaller
             ->expects($this->once())
-            ->method('forceCopy')
-            ->with($path);
+            ->method('install')
+            ->with($package);
 
         $moduleProjectConfigurationInstaller = $this->getMockBuilder(ModuleConfigurationInstallerInterface::class)->getMock();
         $moduleProjectConfigurationInstaller
@@ -31,7 +33,7 @@ class ModuleInstallerTest extends TestCase
             ->with($path);
 
         $moduleInstaller = new ModuleInstaller($moduleFilesInstaller, $moduleProjectConfigurationInstaller);
-        $moduleInstaller->install($path);
+        $moduleInstaller->install($package);
     }
 
     /**
@@ -53,7 +55,7 @@ class ModuleInstallerTest extends TestCase
 
         $this->assertSame(
             $moduleInstalled,
-            $moduleInstaller->isInstalled('somePath')
+            $moduleInstaller->isInstalled(new OxidEshopPackage('dummy', 'somePath', []))
         );
     }
 

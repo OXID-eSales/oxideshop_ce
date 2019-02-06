@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Install\Service;
 
+use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
+
 /**
  * Interface ModuleFilesInstallerInterface
  *
@@ -15,27 +17,18 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Install\Service;
  */
 interface ModuleFilesInstallerInterface
 {
-
-    /**
-     * Copies package from vendor directory to eShop source directory
-     *
-     * @param string $packagePath Path to the package like /var/www/vendor/oxid-esales/paypal
-     *
-     */
-    public function copy(string $packagePath);
-
     /**
      * Copies package from vendor directory to eShop source directory.
-     * In contract to copy(), this method even copies if the target directory is already present.
+     * Even copies if the target directory is already present.
      *
-     * @param string $packagePath Path to the package like /var/www/vendor/oxid-esales/paypal
+     * @param OxidEshopPackage $package
      *
      */
-    public function forceCopy(string $packagePath);
+    public function install(OxidEshopPackage $package);
 
     /**
-     * @param string $packagePath
+     * @param OxidEshopPackage $package
      * @return bool
      */
-    public function isInstalled(string $packagePath): bool;
+    public function isInstalled(OxidEshopPackage $package): bool;
 }

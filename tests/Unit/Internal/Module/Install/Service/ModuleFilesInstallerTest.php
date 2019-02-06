@@ -7,12 +7,10 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Install;
 
 use org\bovigo\vfs\vfsStream;
-use OxidEsales\EshopCommunity\Internal\Common\Exception\DirectoryExistentException;
 use OxidEsales\EshopCommunity\Internal\Common\FileSystem\FinderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleFilesInstaller;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Install\Dao\OxidEshopPackageDaoInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -40,9 +38,10 @@ class ModuleFilesInstallerTest extends TestCase
             ]
         ];
 
+        $package = new OxidEshopPackage($packageName, $packagePath, $extra);
+
         vfsStream::setup();
         $context = $this->getContext();
-        $packageService = $this->getPackageService($packageName, $extra);
 
         $finder = $this->getMockBuilder(Finder::class)->getMock();
         $finder
@@ -70,53 +69,8 @@ class ModuleFilesInstallerTest extends TestCase
                 ['override' => true]
             );
 
-        $moduleCopyService = new ModuleFilesInstaller($packageService, $context, $fileSystem, $finderFactory);
-        $moduleCopyService->copy($packagePath);
-    }
-
-    public function testCopyThrowsExceptionIfTargetDirectoryAlreadyPresent()
-    {
-        $structure = [
-            'source' => [
-                'modules' => [
-                    'myvendor' => [
-                        'mymodule' => [
-                            'metadata.php' => ''
-                        ]
-                    ]
-                ]
-            ]
-        ];
-        vfsStream::setup('root', null, $structure);
-
-        $packageName = 'myvendor/mymodule';
-
-        $this->expectException(DirectoryExistentException::class);
-
-        $moduleCopyService = new ModuleFilesInstaller(
-            $this->getPackageService($packageName, []),
-            $this->getContext(),
-            $this->getMockBuilder(Filesystem::class)->getMock(),
-            $this->getMockBuilder(FinderFactoryInterface::class)->getMock()
-        );
-
-        $moduleCopyService->copy('pathDoesNotMatterHere');
-    }
-
-    /**
-     * @param string $packageName
-     * @param array  $extraParameters
-     *
-     * @return OxidEshopPackageDaoInterface
-     */
-    private function getPackageService(string $packageName, array $extraParameters = []): OxidEshopPackageDaoInterface
-    {
-        $package = new OxidEshopPackage($packageName, $extraParameters);
-
-        $packageService = $this->getMockBuilder(OxidEshopPackageDaoInterface::class)->getMock();
-        $packageService->method('getPackage')->willReturn($package);
-
-        return $packageService;
+        $moduleCopyService = new ModuleFilesInstaller($context, $fileSystem, $finderFactory);
+        $moduleCopyService->install($package);
     }
 
     /**

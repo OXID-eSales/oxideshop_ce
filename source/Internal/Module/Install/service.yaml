@@ -9,10 +9,6 @@ services:
       $fileSystemService: '@oxid_esales.symfony.file_system'
     autowire: true
 
-  OxidEsales\EshopCommunity\Internal\Module\Install\Dao\OxidEshopPackageDaoInterface:
-    class: OxidEsales\EshopCommunity\Internal\Module\Install\Dao\OxidEshopPackageDao
-    autowire: true
-
   OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleConfigurationInstallerInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleConfigurationInstaller
     autowire: true

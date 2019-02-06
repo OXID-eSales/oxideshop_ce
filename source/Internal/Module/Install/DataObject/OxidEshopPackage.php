@@ -31,12 +31,19 @@ class OxidEshopPackage
     private $targetDirectory;
 
     /**
+     * @var string
+     */
+    private $packagePath;
+
+    /**
      * @param string $name
+     * @param string $packagePath
      * @param array  $extraParameters
      */
-    public function __construct(string $name, array $extraParameters)
+    public function __construct(string $name, string $packagePath, array $extraParameters)
     {
         $this->name = $name;
+        $this->packagePath = $packagePath;
 
         $this->blackListFilters = $extraParameters['oxideshop']['blacklist-filter'] ?? [];
         $this->sourceDirectory  = $extraParameters['oxideshop']['source-directory'] ?? '';
@@ -66,4 +73,14 @@ class OxidEshopPackage
     {
         return $this->targetDirectory;
     }
+
+    /**
+     * @return string
+     */
+    public function getPackagePath(): string
+    {
+        return $this->packagePath;
+    }
+
+
 }

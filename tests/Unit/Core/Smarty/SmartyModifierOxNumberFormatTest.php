@@ -8,10 +8,15 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Smarty;
 use \oxRegistry;
 
 $filePath = oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/Smarty/Plugin/modifier.oxnumberformat.php';
+$oxidEsalesFilePath =  __DIR__ . '/../../../../source/Core/Smarty/Plugin/modifier.oxnumberformat.php';
+$oxVmFilePath = __DIR__ . '/../../../../vendor/oxid-esales/oxideshop-ce/source/Core/Smarty/Plugin/modifier.oxnumberformat.php';
+
 if (file_exists($filePath)) {
     require_once $filePath;
+} else if (file_exists($oxidEsalesFilePath)){
+    require_once $oxidEsalesFilePath;
 } else {
-    require_once dirname(__FILE__) . '/../../../../source/Core/Smarty/Plugin/modifier.oxnumberformat.php';
+    require_once $oxVmFilePath;
 }
 
 class SmartyModifierOxNumberFormatTest extends \OxidTestCase

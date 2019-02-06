@@ -8,10 +8,15 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Smarty;
 use \oxRegistry;
 
 $filePath = oxRegistry::getConfig()->getConfigParam('sCoreDir') . 'Smarty/Plugin/modifier.oxfilesize.php';
+$oxidEsalesFilePath =  __DIR__ . '/../../../../source/Core/Smarty/Plugin/modifier.oxfilesize.php';
+$oxVmFilePath = __DIR__ . '/../../../../vendor/oxid-esales/oxideshop-ce/source/Core/Smarty/Plugin/modifier.oxfilesize.php';
+
 if (file_exists($filePath)) {
     require_once $filePath;
+} else if (file_exists($oxidEsalesFilePath)){
+    require_once $oxidEsalesFilePath;
 } else {
-    require_once dirname(__FILE__) . '/../../../../source/Core/Smarty/Plugin/modifier.oxfilesize.php';
+    require_once $oxVmFilePath;
 }
 
 

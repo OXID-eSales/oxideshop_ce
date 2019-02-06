@@ -12,10 +12,15 @@ use \oxPrice;
 use \Smarty;
 
 $filePath = oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/Smarty/Plugin/function.oxprice.php';
+$oxidEsalesFilePath =  __DIR__ . '/../../../../source/Core/Smarty/Plugin/function.oxprice.php';
+$oxVmFilePath = __DIR__ . '/../../../../vendor/oxid-esales/oxideshop-ce/source/Core/Smarty/Plugin/function.oxprice.php';
+
 if (file_exists($filePath)) {
     require_once $filePath;
+} else if(file_exists($oxidEsalesFilePath)) {
+    require_once $oxidEsalesFilePath;
 } else {
-    require_once dirname(__FILE__) . '/../../../../source/Core/Smarty/Plugin/function.oxprice.php';
+    require_once $oxVmFilePath;
 }
 
 class PluginSmartyOxPriceTest extends \OxidTestCase

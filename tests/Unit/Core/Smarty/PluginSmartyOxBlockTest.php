@@ -11,10 +11,15 @@ use \oxRegistry;
 use \oxTestModules;
 
 $filePath = oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'Core/Smarty/Plugin/prefilter.oxblock.php';
+$oxidEsalesFilePath = __DIR__ . '/../../../../source/Core/Smarty/Plugin/prefilter.oxblock.php';
+$oxVmFilePath = __DIR__ . '/../../../../vendor/oxid-esales/oxideshop-ce/source/Core/Smarty/Plugin/prefilter.oxblock.php';
+
 if (file_exists($filePath)) {
     require_once $filePath;
-} else {
-    require_once dirname(__FILE__) . '/../../../../source/Core/Smarty/Plugin/prefilter.oxblock.php';
+} elseif (file_exists($oxidEsalesFilePath)){
+    require_once $oxidEsalesFilePath;
+}else{
+    require_once $oxVmFilePath;
 }
 
 class PluginSmartyOxBlockTest extends \OxidTestCase

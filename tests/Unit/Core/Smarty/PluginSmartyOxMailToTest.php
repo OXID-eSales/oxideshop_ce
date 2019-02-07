@@ -9,13 +9,10 @@ use \Smarty;
 use \oxRegistry;
 
 $filePath = oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/Smarty/Plugin/function.oxmailto.php';
-$oxidEsalesFilePath =  __DIR__ . '/../../../../source/Core/Smarty/Plugin/function.oxmailto.php';
 $oxVmFilePath = __DIR__ . '/../../../../vendor/oxid-esales/oxideshop-ce/source/Core/Smarty/Plugin/function.oxmailto.php';
 
 if (file_exists($filePath)) {
     require_once $filePath;
-} else if (file_exists($oxidEsalesFilePath)){
-    require_once $oxidEsalesFilePath;
 } else {
     require_once $oxVmFilePath;
 }

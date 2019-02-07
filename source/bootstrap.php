@@ -14,22 +14,6 @@ define('OX_OFFLINE_FILE', OX_BASE_PATH . 'offline.html');
 define('VENDOR_PATH', INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR);
 
 /**
- * Where CORE_AUTOLOADER_PATH points depends on how OXID eShop has been installed. If it is installed as part of a
- * compilation, the directory 'Core', where the auto load classes are located, does not reside inside OX_BASE_PATH,
- * but inside VENDOR_PATH.
- */
-if (!is_dir(OX_BASE_PATH . 'Core')) {
-    define('CORE_AUTOLOADER_PATH', VENDOR_PATH .
-                                   'oxid-esales' . DIRECTORY_SEPARATOR .
-                                   'oxideshop-ce' . DIRECTORY_SEPARATOR .
-                                   'source' . DIRECTORY_SEPARATOR .
-                                   'Core' . DIRECTORY_SEPARATOR .
-                                   'Autoload' . DIRECTORY_SEPARATOR);
-} else {
-    define('CORE_AUTOLOADER_PATH', OX_BASE_PATH . 'Core' . DIRECTORY_SEPARATOR . 'Autoload' . DIRECTORY_SEPARATOR);
-}
-
-/**
  * Provide a handler for catchable fatal errors, like failed requirement of files.
  * No information about paths or file names must be disclosed to the frontend,
  * as this would be a security problem on productive systems.
@@ -142,6 +126,20 @@ unset($bootstrapConfigFileReader);
  * It will always come first, even if you move it after the other autoloaders as it registers itself with prepend = true
  */
 require_once VENDOR_PATH . 'autoload.php';
+
+/**
+ * Where CORE_AUTOLOADER_PATH points depends on how OXID eShop has been installed. If it is installed as part of a
+ * compilation, the directory 'Core', where the auto load classes are located, does not reside inside OX_BASE_PATH,
+ * but inside VENDOR_PATH.
+ */
+if (!is_dir(OX_BASE_PATH . 'Core')) {
+    define('CORE_AUTOLOADER_PATH',
+            (new \OxidEsales\Facts\Facts)->getCommunityEditionSourcePath() . DIRECTORY_SEPARATOR .
+            'Core' . DIRECTORY_SEPARATOR .
+            'Autoload' . DIRECTORY_SEPARATOR);
+} else {
+    define('CORE_AUTOLOADER_PATH', OX_BASE_PATH . 'Core' . DIRECTORY_SEPARATOR . 'Autoload' . DIRECTORY_SEPARATOR);
+}
 
 /*
  * Register the backwards compatibility autoloader.

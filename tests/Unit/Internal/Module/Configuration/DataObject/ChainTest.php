@@ -60,4 +60,64 @@ class ChainTest extends TestCase
             $chain->getChain()
         );
     }
+
+    public function testRemoveExtension()
+    {
+        $chain = new Chain();
+        $chain->setChain(
+            [
+                'extendedClass1' => [
+                    'extension1',
+                    'extension2',
+                ],
+                'extendedClass2' => [
+                    'extension3',
+                ],
+                'extendedClass3' => [
+                    'extension4'
+                ]
+            ]
+        );
+        $chain->removeExtension('extendedClass1', 'extension1');
+        $chain->removeExtension('extendedClass2', 'extension3');
+
+        $this->assertEquals(
+          [
+              'extendedClass1' => [
+                  'extension2',
+              ],
+              'extendedClass3' => [
+                  'extension4'
+              ]
+          ],
+          $chain->getChain()
+        );
+    }
+
+    /**
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Configuration\Exception\ExtensionNotInChainException
+     *
+     * @dataProvider invalidExtensionProvider
+     */
+    public function testRemoveExtensionThrowsExceptionIfClassNotExistsInChain($extended, $extension)
+    {
+        $chain = new Chain();
+        $chain->setChain(
+            [
+                'extendedClass1' => [
+                    'extension1',
+                    'extension2',
+                ]
+            ]
+        );
+        $chain->removeExtension($extended, $extension);
+    }
+
+    public function invalidExtensionProvider()
+    {
+        return [
+            ['notExistingExtended', 'notExistingExtension'],
+            ['extendedClass1', 'notExistingExtension']
+        ];
+    }
 }

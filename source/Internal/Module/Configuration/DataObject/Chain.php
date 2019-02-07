@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject;
 
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Exception\ExtensionNotInChainException;
+
 /**
  * @internal
  */
@@ -66,6 +68,31 @@ class Chain
     {
         foreach ($extensions as $extended => $extension) {
             $this->addExtensionToChain($extended, $extension);
+        }
+    }
+
+    /**
+     * @param string $extended
+     * @param string $extension
+     *
+     * @throws ExtensionNotInChainException
+     */
+    public function removeExtension(string $extended, string $extension)
+    {
+        if (false === array_key_exists($extended, $this->chain) ||
+            false === \array_search($extension, $this->chain[$extended], true)) {
+            throw new ExtensionNotInChainException(
+                'There is no class ' . $extended . ' extended by class ' .
+                $extension . ' in the current chain'
+            );
+        }
+
+        $resultOffset = \array_search($extension, $this->chain[$extended], true);
+        unset($this->chain[$extended][$resultOffset]);
+        $this->chain[$extended] = \array_values($this->chain[$extended]);
+
+        if (empty($this->chain[$extended])) {
+            unset($this->chain[$extended]);
         }
     }
 

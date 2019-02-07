@@ -65,6 +65,10 @@ class ModuleConfigurationMergingServiceTest extends TestCase
             ],
             $shopConfiguration->getChain(Chain::CLASS_EXTENSIONS)->getChain()
         );
+        $this->assertEquals(
+            $moduleConfiguration,
+            $shopConfiguration->getModuleConfiguration('newModule')
+        );
     }
 
     public function testMergeModuleConfigurationOfAlreadyInstalledModule()
@@ -75,6 +79,25 @@ class ModuleConfigurationMergingServiceTest extends TestCase
         $moduleConfigurationMergingService = new ModuleConfigurationMergingService();
         $shopConfiguration = $moduleConfigurationMergingService->merge(
             $this->getShopConfigurationWithAlreadyInstalledModule(),
+            $moduleConfiguration
+        );
+
+        $this->assertEquals(
+            $moduleConfiguration,
+            $shopConfiguration->getModuleConfiguration('installedModule')
+        );
+    }
+
+    public function testMergeSetsModuleConfigurationIfNoExistingModuleConfigurationInstalled()
+    {
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->setId('installedModule');
+
+        $shopConfiguration = new ShopConfiguration();
+
+        $moduleConfigurationMergingService = new ModuleConfigurationMergingService();
+        $shopConfiguration = $moduleConfigurationMergingService->merge(
+            $shopConfiguration,
             $moduleConfiguration
         );
 

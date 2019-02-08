@@ -46,7 +46,6 @@ class ModuleInstaller implements ModuleInstallerInterface
     }
 
     /**
-     * @param string           $packagePath
      * @param OxidEshopPackage $package
      * @return bool
      */

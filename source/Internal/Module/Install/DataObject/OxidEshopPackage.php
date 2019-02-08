@@ -12,9 +12,6 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Install\DataObject;
  */
 class OxidEshopPackage
 {
-    /** @var string $name */
-    private $name;
-
     /**
      * @var array
      */
@@ -42,12 +39,11 @@ class OxidEshopPackage
      */
     public function __construct(string $name, string $packagePath, array $extraParameters)
     {
-        $this->name = $name;
         $this->packagePath = $packagePath;
 
         $this->blackListFilters = $extraParameters['oxideshop']['blacklist-filter'] ?? [];
         $this->sourceDirectory  = $extraParameters['oxideshop']['source-directory'] ?? '';
-        $this->targetDirectory  = $extraParameters['oxideshop']['target-directory'] ?? $this->name;
+        $this->targetDirectory  = $extraParameters['oxideshop']['target-directory'] ?? $name;
     }
 
     /**
@@ -81,6 +77,4 @@ class OxidEshopPackage
     {
         return $this->packagePath;
     }
-
-
 }

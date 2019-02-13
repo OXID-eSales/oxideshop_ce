@@ -578,6 +578,11 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $address->load($addressId);
         if ($this->canUserDeleteShippingAddress($address) && $this->getSession()->checkSessionChallenge()) {
             $address->delete($addressId);
+            
+            // Unset selection in session of deleted shipping-address
+            if ($addressId === $this->getSession()->getVariable('deladrid')) {
+                $this->getSession()->deleteVariable('deladrid');
+            }
         }
     }
 

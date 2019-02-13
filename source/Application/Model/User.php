@@ -510,7 +510,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         );
 
         // processing birth date which came from output as array
-        if (is_array($this->oxuser__oxbirthdate->value)) {
+        if ($this->oxuser__oxbirthdate && is_array($this->oxuser__oxbirthdate->value)) {
             $this->oxuser__oxbirthdate = new \OxidEsales\Eshop\Core\Field(
                 $this->convertBirthday($this->oxuser__oxbirthdate->value),
                 \OxidEsales\Eshop\Core\Field::T_RAW
@@ -806,7 +806,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Inserts new or updates existing user
      *
-     * @throws oxUserException exception
+     * @throws UserException exception
      *
      * @return bool
      */
@@ -1045,7 +1045,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param array  $aInvAddress array of user profile data
      * @param array  $aDelAddress array of user profile data
      *
-     * @throws oxUserException, oxInputException
+     * @throws UserException, oxInputException
      */
     public function checkValues($sLogin, $sPassword, $sPassword2, $aInvAddress, $aDelAddress)
     {
@@ -1143,7 +1143,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param array  $aInvAddress user billing address
      * @param array  $aDelAddress delivery address
      *
-     * @throws oxUserException, oxInputException, oxConnectionException
+     * @throws UserException, oxInputException, oxConnectionException
      */
     public function changeUserData($sUser, $sPassword, $sPassword2, $aInvAddress, $aDelAddress)
     {
@@ -1336,7 +1336,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @throws object
      * @throws oxCookieException
-     * @throws oxUserException
+     * @throws UserException
      *
      * @return bool
      */

@@ -146,7 +146,7 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getObjectType()
     {
-        return $this->oxreviews__oxtype->value;
+        return is_object($this->oxreviews__oxtype) ? $this->oxreviews__oxtype->value : $this->oxreviews__oxtype;
     }
 
     /**
@@ -156,7 +156,7 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getObjectId()
     {
-        return $this->oxreviews__oxobjectid->value;
+        return is_object($this->oxreviews__oxobjectid) ? $this->oxreviews__oxobjectid->value : $this->oxreviews__oxobjectid;
     }
 
     /**

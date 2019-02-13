@@ -24,7 +24,7 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
     {
         parent::setUp();
 
-        $this->logFilePath = tempnam(sys_get_temp_dir() . '/test_logger', 'test_');
+        $this->logFilePath = tempnam(sys_get_temp_dir(), 'test_');
     }
 
     public function tearDown()

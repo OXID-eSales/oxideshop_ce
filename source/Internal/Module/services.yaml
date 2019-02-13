@@ -1,11 +1,9 @@
 imports:
    - { resource: Bridge/services.yaml }
    - { resource: Setup/services.yaml }
-   - { resource: Configuration/services.yaml }
    - { resource: Cache/services.yaml }
    - { resource: TemplateExtension/services.yaml }
    - { resource: ShopModuleSetting/services.yaml }
    - { resource: State/services.yaml }
-   - { resource: MetaData/services.yaml }
-   - { resource: Install/service.yaml }
+   - { resource: Install/services.yaml }
    - { resource: Command/services.yaml }

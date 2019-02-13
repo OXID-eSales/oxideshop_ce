@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Service;
 
-use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\BadMetaDataFoundEvent;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\InvalidMetaDataException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -55,23 +55,25 @@ class MetaDataProvider implements MetaDataProviderInterface
     private $metaDataNormalizer;
 
     /**
-     * @var ShopAdapterInterface
+     * @var BasicContextInterface
      */
-    private $shopAdapter;
-
+    private $context;
 
     /**
      * MetaDataProvider constructor.
      *
      * @param EventDispatcherInterface    $eventDispatcher
      * @param MetaDataNormalizerInterface $metaDataNormalizer
-     * @param ShopAdapterInterface        $shopAdapter
+     * @param BasicContextInterface       $context
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher, MetaDataNormalizerInterface $metaDataNormalizer, ShopAdapterInterface $shopAdapter)
-    {
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        MetaDataNormalizerInterface $metaDataNormalizer,
+        BasicContextInterface $context
+    ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->metaDataNormalizer = $metaDataNormalizer;
-        $this->shopAdapter = $shopAdapter;
+        $this->context = $context;
     }
 
     /**
@@ -242,6 +244,6 @@ class MetaDataProvider implements MetaDataProviderInterface
      */
     private function getBackwardsCompatibilityClassMap(): array
     {
-        return $this->shopAdapter->getBackwardsCompatibilityClassMap();
+        return $this->context->getBackwardsCompatibilityClassMap();
     }
 }

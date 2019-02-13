@@ -71,4 +71,9 @@ interface BasicContextInterface
      * @return array
      */
     public function getAllShopIds(): array;
+
+    /**
+     * @return array
+     */
+    public function getBackwardsCompatibilityClassMap(): array;
 }

@@ -6,8 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao;
 
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 
 /**
  * @internal
@@ -20,16 +20,16 @@ class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
     private $projectConfigurationDao;
 
     /**
-     * @var ContextInterface
+     * @var BasicContextInterface
      */
     private $context;
 
     /**
      * ModuleConfigurationDao constructor.
      * @param ProjectConfigurationDaoInterface $projectConfigurationDao
-     * @param ContextInterface                 $context
+     * @param BasicContextInterface            $context
      */
-    public function __construct(ProjectConfigurationDaoInterface $projectConfigurationDao, ContextInterface $context)
+    public function __construct(ProjectConfigurationDaoInterface $projectConfigurationDao, BasicContextInterface $context)
     {
         $this->projectConfigurationDao = $projectConfigurationDao;
         $this->context = $context;

@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData\Service;
 
-use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataNormalizer;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
 use PHPUnit\Framework\TestCase;
@@ -26,15 +26,15 @@ class MetaDataProviderTest extends TestCase
     /** @var MetaDataNormalizer */
     private $metaDataNormalizerStub;
 
-    /** @var ShopAdapterInterface */
-    private $shopAdapterStub;
+    /** @var BasicContextInterface */
+    private $contextStub;
 
     /**
      * @expectedException \InvalidArgumentException
      */
     public function testGetDataThrowsExceptionOnNonExistingFile()
     {
-        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
+        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->contextStub);
         $metaDataProvider->getData('non existing file');
     }
 
@@ -43,7 +43,7 @@ class MetaDataProviderTest extends TestCase
      */
     public function testGetDataThrowsExceptionOnDirectory()
     {
-        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
+        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->contextStub);
         $metaDataProvider->getData(__DIR__);
     }
 
@@ -62,7 +62,7 @@ class MetaDataProviderTest extends TestCase
         if (false === file_put_contents($metaDataFilePath, $metaDataContent)) {
             throw new \RuntimeException('Could not write to ' . $metaDataFilePath);
         }
-        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
+        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->contextStub);
         $metaDataProvider->getData($metaDataFilePath);
     }
 
@@ -103,7 +103,7 @@ class MetaDataProviderTest extends TestCase
         if (false === file_put_contents($metaDataFilePath, $metaDataContent)) {
             throw new \RuntimeException('Could not write to ' . $metaDataFilePath);
         }
-        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
+        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->contextStub);
         $metaData = $metaDataProvider->getData($metaDataFilePath);
 
         $this->assertEquals($moduleId, $metaData[MetaDataProvider::METADATA_MODULE_DATA][MetaDataProvider::METADATA_ID]);
@@ -123,7 +123,7 @@ class MetaDataProviderTest extends TestCase
         if (false === file_put_contents($metaDataFilePath, $metaDataContent)) {
             throw new \RuntimeException('Could not write to ' . $metaDataFilePath);
         }
-        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
+        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->contextStub);
         $metaData = $metaDataProvider->getData($metaDataFilePath);
 
         $this->assertEquals($metaDataDir, $metaData[MetaDataProvider::METADATA_MODULE_DATA][MetaDataProvider::METADATA_ID]);
@@ -144,7 +144,7 @@ class MetaDataProviderTest extends TestCase
         }
 
         $metaDataChecksum = md5_file($metaDataFilePath);
-        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
+        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->contextStub);
         $metaData = $metaDataProvider->getData($metaDataFilePath);
 
         $this->assertEquals($metaDataChecksum, $metaData[MetaDataProvider::METADATA_CHECKSUM]);
@@ -166,7 +166,7 @@ class MetaDataProviderTest extends TestCase
         }
 
         $this->eventDispatcherStub->expects($this->atLeastOnce())->method('dispatch');
-        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
+        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->contextStub);
         $metaData = $metaDataProvider->getData($metaDataFilePath);
 
         $this->assertEquals($metaDataDir, $metaData[MetaDataProvider::METADATA_MODULE_DATA][MetaDataProvider::METADATA_ID]);
@@ -189,13 +189,15 @@ class MetaDataProviderTest extends TestCase
         if (false === file_put_contents($metaDataFilePath, $metaDataContent)) {
             throw new \RuntimeException('Could not write to ' . $metaDataFilePath);
         }
-        $this->shopAdapterStub->method('getBackwardsCompatibilityClassMap')->willReturn(
+
+        $basicContext = $this->getMockBuilder(BasicContextInterface::class)->getMock();
+        $basicContext->method('getBackwardsCompatibilityClassMap')->willReturn(
             [
                 "oxarticle" => "EShopNamespace\\ArticleClass",
                 "oxorder"   => "EShopNamespace\\OrderClass",
             ]
         );
-        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->shopAdapterStub);
+        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $basicContext);
         $metaData = $metaDataProvider->getData($metaDataFilePath);
 
         $this->assertEquals(
@@ -215,6 +217,6 @@ class MetaDataProviderTest extends TestCase
         $this->eventDispatcherStub = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
         $this->metaDataNormalizerStub = $this->getMockBuilder(MetaDataNormalizer::class)->getMock();
         $this->metaDataNormalizerStub->method('normalizeData')->willReturnArgument(0);
-        $this->shopAdapterStub = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
+        $this->contextStub = $this->getMockBuilder(BasicContextInterface::class)->getMock();
     }
 }

@@ -1,0 +1,7 @@
+services:
+
+  oxid_esales.module.install.service.lanched_shop_project_configuration_generator:
+    class: OxidEsales\EshopCommunity\Internal\Module\Install\Service\ProjectConfigurationGenerator
+    arguments:
+      $context: '@OxidEsales\EshopCommunity\Internal\Utility\ContextInterface'
+    autowire: true

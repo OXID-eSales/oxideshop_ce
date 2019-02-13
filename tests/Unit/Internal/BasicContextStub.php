@@ -189,4 +189,12 @@ class BasicContextStub implements BasicContextInterface
     {
         return $this->modulesPath;
     }
+
+    /**
+     * @return array
+     */
+    public function getBackwardsCompatibilityClassMap(): array
+    {
+        return [];
+    }
 }

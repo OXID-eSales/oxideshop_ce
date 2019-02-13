@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Application\Utility;
 
+use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityClassMapProvider;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use OxidEsales\Facts\Edition\EditionSelector;
 use OxidEsales\Facts\Facts;
@@ -162,5 +163,13 @@ class BasicContext implements BasicContextInterface
     private function areUnifiedNamespacesGenerated(): bool
     {
         return class_exists('\OxidEsales\Eshop\Core\Registry');
+    }
+
+    /**
+     * @return array
+     */
+    public function getBackwardsCompatibilityClassMap(): array
+    {
+        return (new BackwardsCompatibilityClassMapProvider())->getMap();
     }
 }

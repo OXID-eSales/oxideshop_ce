@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Install\Service;
 
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
@@ -51,13 +52,13 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
      * @param ProjectConfigurationDaoInterface                 $projectConfigurationDao
      * @param MetaDataProviderInterface                        $metadataProvider
      * @param MetaDataToModuleConfigurationDataMapperInterface $metadataMapper
-     * @param ContextInterface                                 $context
+     * @param BasicContextInterface                            $context
      */
     public function __construct(
         ProjectConfigurationDaoInterface                    $projectConfigurationDao,
         MetaDataProviderInterface                           $metadataProvider,
         MetaDataToModuleConfigurationDataMapperInterface    $metadataMapper,
-        ContextInterface                                    $context
+        BasicContextInterface                               $context
     ) {
         $this->projectConfigurationDao = $projectConfigurationDao;
         $this->metadataProvider = $metadataProvider;

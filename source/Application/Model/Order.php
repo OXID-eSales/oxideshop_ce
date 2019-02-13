@@ -1148,7 +1148,10 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
         if ($soxAddressId) {
             $oDelAdress = oxNew(\OxidEsales\Eshop\Application\Model\Address::class);
-            $oDelAdress->load($soxAddressId);
+            if( !$oDelAdress->load($soxAddressId) ) {
+                // Could lead to an exception in _setUser(), if not fully loaded object is returned
+                return null;
+            }
 
             //get delivery country name from delivery country id
             if ($oDelAdress->oxaddress__oxcountryid->value && $oDelAdress->oxaddress__oxcountryid->value != -1) {

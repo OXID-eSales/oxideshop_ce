@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Password\Bridge;
 
 use OxidEsales\Eshop\Core\Hasher;
+use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashBcryptServiceOptionsProvider;
 use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceInterface;
 
@@ -19,13 +20,21 @@ class PasswordServiceBridge implements PasswordServiceBridgeInterface
      * @var PasswordHashServiceFactoryInterface
      */
     private $passwordHashServiceFactory;
+    /**
+     * @var PasswordHashBcryptServiceOptionsProvider
+     */
+    private $passwordHashBcryptServiceOptionsProvider;
 
     /**
-     * @param PasswordHashServiceFactoryInterface $passwordHashServiceFactory
+     * @param PasswordHashServiceFactoryInterface      $passwordHashServiceFactory
+     * @param PasswordHashBcryptServiceOptionsProvider $passwordHashBcryptServiceOptionsProvider
      */
-    public function __construct(PasswordHashServiceFactoryInterface $passwordHashServiceFactory)
-    {
+    public function __construct(
+        PasswordHashServiceFactoryInterface $passwordHashServiceFactory,
+        PasswordHashBcryptServiceOptionsProvider $passwordHashBcryptServiceOptionsProvider
+    ) {
         $this->passwordHashServiceFactory = $passwordHashServiceFactory;
+        $this->passwordHashBcryptServiceOptionsProvider = $passwordHashBcryptServiceOptionsProvider;
     }
 
     /**
@@ -37,5 +46,13 @@ class PasswordServiceBridge implements PasswordServiceBridgeInterface
     {
 
         return $this->passwordHashServiceFactory->getPasswordHashService($algorithm);
+    }
+
+    /**
+     * @return int
+     */
+    public function getBcryptCostOption(): int
+    {
+        return $this->passwordHashBcryptServiceOptionsProvider->getCost();
     }
 }

@@ -1907,13 +1907,13 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function encodePassword(string $password, $salt): string
     {
-        $algorithm = Registry::getConfig()->getConfigParam('hashing_algorithm') ?? 'bcrypt';
+        $algorithm = Registry::getConfig()->getConfigParam('passwordHashingAlgorithm') ?? 'bcrypt';
         $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
         $passwordHashService = $passwordServiceBridge->getPasswordHashService($algorithm);
 
-        $oHasher = oxNew(PasswordHasher::class, $passwordHashService);
+        $passwordHasher = oxNew(PasswordHasher::class, $passwordHashService);
 
-        return $oHasher->hash($password, $salt);
+        return $passwordHasher->hash($password, $salt);
     }
 
     /**

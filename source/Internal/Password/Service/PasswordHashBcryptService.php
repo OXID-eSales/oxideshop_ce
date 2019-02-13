@@ -25,14 +25,43 @@ class PasswordHashBcryptService implements PasswordHashServiceInterface
      */
     public function hash(string $password, array $options = []): string
     {
-        if (array_key_exists('salt', $options) && !is_scalar($options['salt'])) {
-            throw new PasswordHashException('The salt option MUST be a scalar and it SHOULD be a string of at least 22 characters.');
-        }
+        $this->validateSaltOption($options);
+        $this->validateCostOption($options);
 
-        if (false === $hash = password_hash($password, PASSWORD_BCRYPT, $options)) {
+        $hash = password_hash($password, PASSWORD_BCRYPT, $options);
+
+        if (false === $hash) {
             throw new PasswordHashException('The password could not have been hashed');
         }
 
         return $hash;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @throws PasswordHashException
+     */
+    private function validateSaltOption(array $options)
+    {
+        if (array_key_exists('salt', $options) &&
+            !is_scalar($options['salt'])
+        ) {
+            throw new PasswordHashException('The salt option MUST be a scalar and it SHOULD be a string of at least 22 characters.');
+        }
+    }
+
+    /**
+     * @param array $options
+     *
+     * @throws PasswordHashException
+     */
+    private function validateCostOption(array $options)
+    {
+        if (array_key_exists('cost', $options) &&
+            (!is_numeric($options['cost']) || $options['cost'] < 4)
+        ) {
+            throw new PasswordHashException('The cost option MUST be a number and it must not be smaller than 3.');
+        }
     }
 }

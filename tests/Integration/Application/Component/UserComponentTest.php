@@ -408,18 +408,23 @@ class UserComponentTest extends \OxidTestCase
         $this->assertSame(null, $oCU->UNITchangeUser_noRedirect());
     }
 
-    // FS#1925
+    /**
+     * FS#1925
+     */
     public function testBlockedUser()
     {
         $myDB = oxDb::getDB();
         $sTable = getViewName('oxuser');
         $iLastCustNr = ( int ) $myDB->getOne('select max( oxcustnr ) from ' . $sTable) + 1;
         $oUser = oxNew('oxuser');
+        $salt = md5('salt');
+        $paswordHash = $oUser->encodePassword('secret', $salt);
         $oUser->oxuser__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
         $oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
         $oUser->oxuser__oxrights = new oxField('user', oxField::T_RAW);
         $oUser->oxuser__oxusername = new oxField('test@oxid-esales.com', oxField::T_RAW);
-        $oUser->oxuser__oxpassword = new oxField(crc32('Test@oxid-esales.com'), oxField::T_RAW);
+        $oUser->oxuser__oxpassword = new oxField($paswordHash);
+        $oUser->oxuser__oxpasssalt = new oxField($salt, oxField::T_RAW);
         $oUser->oxuser__oxcustnr = new oxField($iLastCustNr + 1, oxField::T_RAW);
         $oUser->oxuser__oxcountryid = new oxField("testCountry", oxField::T_RAW);
         $oUser->save();
@@ -430,7 +435,7 @@ class UserComponentTest extends \OxidTestCase
 
         $oUser2 = oxNew('oxuser');
         $oUser2->load($oUser->getId());
-        $oUser2->login('test@oxid-esales.com', crc32('Test@oxid-esales.com'));
+        $oUser2->login('test@oxid-esales.com', 'secret');
 
         $myDB = oxDb::getDB();
         $sQ = 'insert into oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) values ( "' . $oUser2->getId() . '", "' . $this->getConfig()->getShopId() . '", "' . $oUser2->getId() . '", "oxidblocked" )';
@@ -442,12 +447,11 @@ class UserComponentTest extends \OxidTestCase
         } catch (Exception $oE) {
             if ($oE->getCode() === 123) {
                 $oUser2->logout();
-
-                return;
+                $exceptionThrown = true;
             }
         }
         $oUser->logout();
-        $this->fail('first assert should throw an exception');
+        $this->assertTrue($exceptionThrown, 'first assert should throw an exception');
     }
 
     /**
@@ -720,8 +724,6 @@ class UserComponentTest extends \OxidTestCase
 
     /**
      * Test createUser().
-     *
-     * @return null
      */
     public function testCreateUser()
     {
@@ -1539,23 +1541,23 @@ class UserComponentTest extends \OxidTestCase
         $this->setRequestParameter('option', 3);
 
         $untrimmedInvoiceAddress = [
-            'oxuser__oxfname'       => ' Simon ',
-            'oxuser__oxlname'       => ' de la Serna ',
-            'oxuser__oxstreetnr'    => 'nr',
-            'oxuser__oxstreet'      => 'street ',
-            'oxuser__oxzip'         => 'zip',
-            'oxuser__oxcity'        => 'city',
-            'oxuser__oxcountryid'   => 'a7c40f631fc920687.20179984',
+            'oxuser__oxfname'     => ' Simon ',
+            'oxuser__oxlname'     => ' de la Serna ',
+            'oxuser__oxstreetnr'  => 'nr',
+            'oxuser__oxstreet'    => 'street ',
+            'oxuser__oxzip'       => 'zip',
+            'oxuser__oxcity'      => 'city',
+            'oxuser__oxcountryid' => 'a7c40f631fc920687.20179984',
         ];
 
         $untrimmedDeliveryAddress = [
-            'oxaddress__oxfname'        => ' Simon ',
-            'oxaddress__oxlname'        => ' de la Serna ',
-            'oxaddress__oxstreetnr'     => 'nr',
-            'oxaddress__oxstreet'       => 'street ',
-            'oxaddress__oxzip'          => 'zip',
-            'oxaddress__oxcity'         => 'city',
-            'oxaddress__oxcountryid'    => 'a7c40f631fc920687.20179984',
+            'oxaddress__oxfname'     => ' Simon ',
+            'oxaddress__oxlname'     => ' de la Serna ',
+            'oxaddress__oxstreetnr'  => 'nr',
+            'oxaddress__oxstreet'    => 'street ',
+            'oxaddress__oxzip'       => 'zip',
+            'oxaddress__oxcity'      => 'city',
+            'oxaddress__oxcountryid' => 'a7c40f631fc920687.20179984',
         ];
 
         $trimmedAddressValues = [

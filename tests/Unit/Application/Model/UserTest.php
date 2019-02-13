@@ -484,17 +484,18 @@ class UserTest extends \OxidTestCase
 
     public function testIsSamePassword()
     {
-        $oUser = oxNew('oxUser');
+        $user = oxNew(User::class);
 
         // plain password in db
-        $oUser->oxuser__oxpassword = new oxfield('aaa');
-        $this->assertFalse($oUser->isSamePassword('aaa'));
-        $this->assertFalse($oUser->isSamePassword('bbb'));
+        $user->oxuser__oxpassword = new Field('secret');
+        $user->oxuser__oxpasssalt = new Field(md5('salt'));
+        $this->assertFalse($user->isSamePassword('secret'));
+        $this->assertFalse($user->isSamePassword('WRONG-secret'));
 
         // hashed
-        $oUser->setPassword('xxx');
-        $this->assertTrue($oUser->isSamePassword('xxx'));
-        $this->assertFalse($oUser->isSamePassword('yyy'));
+        $user->setPassword('xxx');
+        $this->assertTrue($user->isSamePassword('xxx'));
+        $this->assertFalse($user->isSamePassword('yyy'));
     }
 
     public function testSetPassword()
@@ -508,14 +509,28 @@ class UserTest extends \OxidTestCase
         $this->assertTrue('' == $oUser->oxuser__oxpassword->value);
     }
 
-    public function testEncodePassword()
+    public function testEncodePasswordDefaultAlgorithmIsBcrypt()
     {
-        $sPassword = 'xxx';
-        $sSalt = 'yyy';
-        $sEncPass = hash('sha512', $sPassword . $sSalt);
+        $password = 'secret';
+        $salt = md5('salt');
 
-        $oUser = oxNew('oxUser');
-        $this->assertEquals($sEncPass, $oUser->encodePassword($sPassword, $sSalt));
+        $user = oxNew(User::class);
+        $passwordHash = $user->encodePassword($password, $salt);
+
+        $algorithm = password_get_info($passwordHash)['algo'];
+
+        $this->assertEquals(PASSWORD_BCRYPT, $algorithm);
+    }
+
+    public function testEncodePasswordIsDeterministic()
+    {
+        $password = 'secret';
+        $salt = md5('salt');
+        $user = new User();
+        $passwordHash_1 = $user->encodePassword($password, $salt);
+        $passwordHash_2 = $user->encodePassword($password, $salt);
+
+        $this->assertSame($passwordHash_1, $passwordHash_2);
     }
 
     public function testGetUpdateId()
@@ -1281,8 +1296,8 @@ class UserTest extends \OxidTestCase
         $oDb = $this->getDb();
         $iLastCustNr = ( int ) $oDb->getOne('select max( oxcustnr ) from oxuser') + 1;
         $sShopId = $this->getConfig()->getShopId();
-        $sQ = 'insert into oxuser (oxid, oxshopid, oxactive, oxrights, oxusername, oxpassword, oxcustnr, oxcountryid) ';
-        $sQ .= 'values ( "oxtestuser", "' . $sShopId . '", "1", "user", "testuser", "", "' . $iLastCustNr . '", "testCountry" )';
+        $sQ = 'insert into oxuser (oxid, oxshopid, oxactive, oxrights, oxusername, oxpassword, oxcustnr, oxcountryid) '.
+              'values ( "oxtestuser", "' . $sShopId . '", "1", "user", "testuser", "", "' . $iLastCustNr . '", "testCountry" )';
         $oDb->execute($sQ);
 
         $oUser = oxNew('oxUser');
@@ -1680,8 +1695,8 @@ class UserTest extends \OxidTestCase
         $sGroupId = $oDb->getOne($sQ);
 
         // checking
-        $sQ = 'REPLACE INTO oxobject2group ( oxid, oxshopid, oxobjectid, oxgroupsid ) ';
-        $sQ .= 'VALUES ( "_testO2G_id", "' . $myConfig->getShopId() . '", "' . $sUserId . '", "' . $sGroupId . '" ) ';
+        $sQ = 'REPLACE INTO oxobject2group ( oxid, oxshopid, oxobjectid, oxgroupsid ) ' .
+              'VALUES ( "_testO2G_id", "' . $myConfig->getShopId() . '", "' . $sUserId . '", "' . $sGroupId . '" ) ';
         $oDb->Execute($sQ);
 
         // loading to initialize group list
@@ -2202,15 +2217,15 @@ class UserTest extends \OxidTestCase
      */
     public function testLoginByPassingCustomerNumberNotAllowed()
     {
+        $exceptionThrown = false;
         $oUser = oxNew('oxUser');
         try {
             $oUser->login(1, oxADMIN_PASSWD);
         } catch (Exception $oExcp) {
+            $exceptionThrown = true;
             $this->assertEquals('ERROR_MESSAGE_USER_NOVALIDLOGIN', $oExcp->getMessage());
-
-            return;
         }
-        $this->fail('exception must be thrown');
+        $this->assertTrue($exceptionThrown, 'exception must be thrown');
     }
 
     /**
@@ -2218,18 +2233,17 @@ class UserTest extends \OxidTestCase
      */
     public function testLoginButUnableToLoadExceptionWillBeThrown()
     {
+        $exceptionThrown = false;
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('load'));
         $oUser->expects($this->atLeastOnce())->method('load')->will($this->returnValue(false));
 
         try {
             $oUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD);
         } catch (Exception $oExcp) {
-
+            $exceptionThrown = true;
             $this->assertEquals('ERROR_MESSAGE_USER_NOVALIDLOGIN', $oExcp->getMessage());
-
-            return;
         }
-        $this->fail('exception must be thrown due to problems loading user object');
+        $this->assertTrue($exceptionThrown, 'exception must be thrown due to problems loading user object');
     }
 
     /**
@@ -2237,17 +2251,20 @@ class UserTest extends \OxidTestCase
      */
     public function testLoginOxidNotSet()
     {
-        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('load', '_ldapLogin'));
-        $oUser->expects($this->atLeastOnce())->method('load')->will($this->returnValue(true));
+        $exceptionThrown = false;
+        /** @var User $oUser */
+        $oUser = $this->getMockBuilder(\OxidEsales\Eshop\Application\Model\User::class)
+            ->setMethods(['load'])
+            ->getMock();
+        $oUser->method('load')->will($this->returnValue(false));
 
         try {
             $oUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD);
         } catch (Exception $oExcp) {
+            $exceptionThrown = true;
             $this->assertEquals('ERROR_MESSAGE_USER_NOVALIDLOGIN', $oExcp->getMessage());
-
-            return;
         }
-        $this->fail('exception must be thrown due to problems loading user object');
+        $this->assertTrue($exceptionThrown, 'exception must be thrown due to problems loading user object');
     }
 
     /**
@@ -2255,17 +2272,17 @@ class UserTest extends \OxidTestCase
      */
     public function testLoginCookieMustBeSet()
     {
+        $exceptionThrown = false;
         oxTestModules::addFunction('oxUtilsServer', 'setUserCookie', '{ throw new Exception( "cookie is set" ); }');
 
         $oUser = oxNew('oxUser');
         try {
             $this->assertTrue($oUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD, true));
         } catch (Exception $oExcp) {
+            $exceptionThrown = true;
             $this->assertEquals("cookie is set", $oExcp->getMessage());
-
-            return;
         }
-        $this->fail('forced exception must be thrown');
+        $this->assertTrue($exceptionThrown, 'forced exception must be thrown');
     }
 
     /**
@@ -2281,8 +2298,6 @@ class UserTest extends \OxidTestCase
             $this->assertTrue($oUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD, true));
         } catch (Exception $oExcp) {
             $this->fail('Cookie should not be set, it\'s disabled.');
-
-            return;
         }
     }
 

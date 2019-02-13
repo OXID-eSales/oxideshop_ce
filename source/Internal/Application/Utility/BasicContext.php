@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Application\Utility;
 
-use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use OxidEsales\Facts\Edition\EditionSelector;
 use OxidEsales\Facts\Facts;
 use Webmozart\PathUtil\Path;
@@ -124,7 +124,7 @@ class BasicContext implements BasicContextInterface
     {
         $configFilePath = $this->getSourcePath() . DIRECTORY_SEPARATOR. $this->configFileName;
 
-        return file_exists($configFilePath);
+        return file_exists($configFilePath) && $this->areUnifiedNamespacesGenerated();
     }
 
     /**
@@ -154,5 +154,13 @@ class BasicContext implements BasicContextInterface
         return [
             $this->getDefaultShopId(),
         ];
+    }
+
+    /**
+     * @return bool
+     */
+    private function areUnifiedNamespacesGenerated(): bool
+    {
+        return class_exists('\OxidEsales\Eshop\Core\Registry');
     }
 }

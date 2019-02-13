@@ -83,10 +83,45 @@ class ModuleFilesInstaller implements ModuleFilesInstallerInterface
         $finder->in($sourceDirectory);
 
         foreach ($blackListFilters as $filter) {
-            $finder->notName($filter);
+            if ($this->isDirectoryFilter($filter)) {
+                $finder->notPath($this->getDirectoryForFilter($filter));
+            } else {
+                $finder->notName($this->normalizeFileFilter($filter));
+            }
         }
 
         return $finder;
+    }
+
+    /**
+     * @param string $filter
+     * @return bool
+     */
+    private function isDirectoryFilter(string $filter): bool
+    {
+        return substr($filter, -5) === '/**/*';
+    }
+
+    /**
+     * @param string $filter
+     * @return string
+     */
+    private function getDirectoryForFilter(string $filter): string
+    {
+        return substr($filter, 0, -5);
+    }
+
+    /**
+     * @param string $filter
+     * @return string
+     */
+    private function normalizeFileFilter(string $filter): string
+    {
+        if (substr($filter, 0, 3) === '**/') {
+            $filter = substr($filter, 3);
+        }
+
+        return $filter;
     }
 
     /**

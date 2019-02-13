@@ -152,6 +152,22 @@ class ModuleFilesInstallerTest extends TestCase
         $this->assertFileNotExists($this->getModulesPath() . '/' . $this->packageName . '/readme.txt');
     }
 
+    public function testBlacklistedFilesAreSkippedWhenSingleFileNameBlacklistFilterIsDefined()
+    {
+        $installer = $this->getFilesInstaller();
+        $package = $this->createPackage([
+            'oxideshop' => [
+                'blacklist-filter' => [
+                    'readme.txt'
+                ]
+            ]
+        ]);
+
+        $installer->install($package);
+
+        $this->assertFileNotExists($this->getModulesPath() . '/' . $this->packageName . '/readme.txt');
+    }
+
     public function testVCSFilesAreSkippedWhenNoBlacklistFilterIsDefined()
     {
         $installer = $this->getFilesInstaller();
@@ -180,7 +196,7 @@ class ModuleFilesInstallerTest extends TestCase
         $package = $this->createPackage([
             'oxideshop' => [
                 'blacklist-filter' => [
-                    'BlackListDirectory/**/*.*',
+                    'BlackListDirectory/**/*',
                 ]
             ]
         ]);

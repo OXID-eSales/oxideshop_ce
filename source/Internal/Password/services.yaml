@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Password\Bridge\PasswordServiceBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Password\Bridge\PasswordServiceBridge
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceFactory

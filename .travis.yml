@@ -12,8 +12,17 @@ php:
 matrix:
   fast_finish: true
 
-# TRAVIS_ERROR_LEVEL = E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_STRICT
-env: TRAVIS_ERROR_LEVEL=22519 OX_BASE_PATH="$TRAVIS_BUILD_DIR/source/" OXID_ESHOP_CS_THRESHOLD=14
+# Numeric values of error reporting levels:
+# 32767: E_ALL
+# 30711: E_ALL & ~E_NOTICE & ~E_STRICT
+# 24575: E_ALL & ~E_DEPRECATED
+# 24567: E_ALL & ~E_DEPRECATED & ~E_NOTICE
+# 22527: E_ALL & ~E_DEPRECATED & ~E_STRICT
+# 22519: E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_STRICT
+#
+# Keep TRAVIS_ERROR_LEVEL in sync with the value in vendor/oxid-esales/testing-library/base.php
+#
+env: TRAVIS_ERROR_LEVEL=32767 OX_BASE_PATH="$TRAVIS_BUILD_DIR/source/" OXID_ESHOP_CS_THRESHOLD=14
 
 services: mysql
 

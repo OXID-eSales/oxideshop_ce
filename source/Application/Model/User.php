@@ -7,9 +7,12 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
+use OxidEsales\Eshop\Core\Exception\UserException;
 use OxidEsales\Eshop\Core\Field;
+use OxidEsales\Eshop\Core\PasswordHasher;
+use OxidEsales\Eshop\Core\PasswordSaltGenerator;
 use OxidEsales\Eshop\Core\Registry;
-use oxUserException;
+use OxidEsales\EshopCommunity\Internal\Password\Bridge\PasswordServiceBridgeInterface;
 
 /**
  * User manager.
@@ -830,8 +833,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $sQ = "select oxid from oxuser where oxusername = " . $oDb->quote($this->oxuser__oxusername->value) . " and oxusername != '' ";
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
             if ($masterDb->getOne($sQ)) {
-                /** @var \OxidEsales\Eshop\Core\Exception\UserException $oEx */
-                $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\UserException::class);
+                /** @var UserException $oEx */
+                $oEx = oxNew(UserException::class);
                 $oLang = Registry::getLang();
                 $oEx->setMessage(sprintf($oLang->translateString('ERROR_MESSAGE_USER_USEREXISTS', $oLang->getTplLanguage()), $this->oxuser__oxusername->value));
                 throw $oEx;
@@ -844,8 +847,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $oDb->execute("delete from oxaddress where oxaddress.oxuserid = " . $oDb->quote($this->oxuser__oxid->value) . " ");
             $oDb->execute("update oxuserpayments set oxuserpayments.oxuserid = " . $oDb->quote($this->oxuser__oxusername->value) . " where oxuserpayments.oxuserid = " . $oDb->quote($this->oxuser__oxid->value) . " ");
         } else {
-            /** @var \OxidEsales\Eshop\Core\Exception\UserException $oEx */
-            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\UserException::class);
+            /** @var UserException $oEx */
+            $oEx = oxNew(UserException::class);
             $oEx->setMessage('ERROR_MESSAGE_USER_USERCREATIONFAILED');
             throw $oEx;
         }
@@ -1247,6 +1250,35 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
+     * @param string $user
+     * @param string $password
+     * @param string $shopId
+     * @param bool   $isAdmin
+     *
+     * @return string
+     */
+    protected function _getLoginQueryHashedWithSha512(string $user, string $password, string $shopId, bool $isAdmin): string
+    {
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+
+        $userSelect = "oxuser.oxusername = " . $database->quote($user);
+
+        $shopSelect = $this->formQueryPartForAdminView($shopId, $isAdmin);
+
+        $salt = $database->getOne("SELECT `oxpasssalt` FROM `oxuser` WHERE  " . $userSelect . $shopSelect);
+
+        $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
+        $passwordHashService = $passwordServiceBridge->getPasswordHashService('sha512');
+        $passwordHash = $passwordHashService->hash($password. $salt);
+
+        $passSelect = " oxuser.oxpassword = " . $database->quote($passwordHash);
+
+        $select = "select `oxid` from oxuser where oxuser.oxactive = 1 and {$passSelect} and {$userSelect} {$shopSelect} ";
+
+        return $select;
+    }
+
+    /**
      * Builds and returns user login query
      *
      * @param string $sUser     login name
@@ -1267,8 +1299,11 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $sShopSelect = $this->formQueryPartForAdminView($sShopID, $blAdmin);
 
         $sSalt = $oDb->getOne("SELECT `oxpasssalt` FROM `oxuser` WHERE  " . $sUserSelect . $sShopSelect);
-
-        $sPassSelect = " oxuser.oxpassword = " . $oDb->quote($this->encodePassword($sPassword, $sSalt));
+        if (false !== $sSalt) {
+            $sPassSelect = " oxuser.oxpassword = " . $oDb->quote($this->encodePassword($sPassword, $sSalt));
+        } else {
+            $sPassSelect = '1';
+        }
 
         $sSelect = "select `oxid` from oxuser where oxuser.oxactive = 1 and {$sPassSelect} and {$sUserSelect} {$sShopSelect} ";
 
@@ -1345,8 +1380,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
             return true;
         } else {
-            /** @var \OxidEsales\Eshop\Core\Exception\UserException $oEx */
-            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\UserException::class);
+            /** @var UserException $oEx */
+            $oEx = oxNew(UserException::class);
             $oEx->setMessage('ERROR_MESSAGE_USER_NOVALIDLOGIN');
             throw $oEx;
         }
@@ -1533,8 +1568,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
                 $this->load($sOXID);
             }
         } else {
-            /** @var \OxidEsales\Eshop\Core\Exception\UserException $oEx */
-            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\UserException::class);
+            /** @var UserException $oEx */
+            $oEx = oxNew(UserException::class);
             $oEx->setMessage('ERROR_MESSAGE_USER_NOVALUES');
             throw $oEx;
         }
@@ -1863,55 +1898,60 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Encodes and returns given password
+     * Returns a non-deterministic cryptographic hash for a given password
      *
-     * @param string $sPassword password to encode
-     * @param string $sSalt     any unique string value
+     * @param string $password password to encode
+     * @param string $salt     any unique string value
      *
      * @return string
      */
-    public function encodePassword($sPassword, $sSalt)
+    public function encodePassword(string $password, $salt): string
     {
-        /** @var \OxidEsales\Eshop\Core\Sha512Hasher $oSha512Hasher */
-        $oSha512Hasher = oxNew(\OxidEsales\Eshop\Core\Sha512Hasher::class);
-        /** @var \OxidEsales\Eshop\Core\PasswordHasher $oHasher */
-        $oHasher = oxNew('oxPasswordHasher', $oSha512Hasher);
+        $algorithm = Registry::getConfig()->getConfigParam('hashing_algorithm') ?? 'bcrypt';
+        $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
+        $passwordHashService = $passwordServiceBridge->getPasswordHashService($algorithm);
 
-        return $oHasher->hash($sPassword, $sSalt);
+        $oHasher = oxNew(PasswordHasher::class, $passwordHashService);
+
+        return $oHasher->hash($password, $salt);
     }
 
     /**
      * Sets new password for user ( save is not called)
      *
-     * @param string $sPassword password
+     * @param string $password password
      */
-    public function setPassword($sPassword = null)
+    public function setPassword($password = null)
     {
-        /** @var \OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker $oOpenSSLFunctionalityChecker */
-        $oOpenSSLFunctionalityChecker = oxNew(\OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker::class);
+        /** @var \OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker $openSSLFunctionalityChecker */
+        $openSSLFunctionalityChecker = oxNew(\OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker::class);
         // setting salt if password is not empty
-        /** @var  oxPasswordSaltGenerator $oSaltGenerator */
-        $oSaltGenerator = oxNew('oxPasswordSaltGenerator', $oOpenSSLFunctionalityChecker);
+        /** @var  PasswordSaltGenerator $saltGenerator */
+        $saltGenerator = oxNew(PasswordSaltGenerator::class, $openSSLFunctionalityChecker);
 
-        $sSalt = $sPassword ? $oSaltGenerator->generate() : '';
+        $salt = $password ? $saltGenerator->generateStrongSalt() : '';
 
         // encoding only if password was not empty (e.g. user registration without pass)
-        $sPassword = $sPassword ? $this->encodePassword($sPassword, $sSalt) : '';
+        $password = $password ? $this->encodePassword($password, $salt) : '';
 
-        $this->oxuser__oxpassword = new \OxidEsales\Eshop\Core\Field($sPassword, \OxidEsales\Eshop\Core\Field::T_RAW);
-        $this->oxuser__oxpasssalt = new \OxidEsales\Eshop\Core\Field($sSalt, \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxuser__oxpassword = new \OxidEsales\Eshop\Core\Field($password, \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxuser__oxpasssalt = new \OxidEsales\Eshop\Core\Field($salt, \OxidEsales\Eshop\Core\Field::T_RAW);
     }
 
     /**
      * Checks if user entered password is the same as old
      *
-     * @param string $sNewPass new password
+     * @param string $password new password
      *
      * @return bool
      */
-    public function isSamePassword($sNewPass)
+    public function isSamePassword($password)
     {
-        return $this->encodePassword($sNewPass, $this->oxuser__oxpasssalt->value) == $this->oxuser__oxpassword->value;
+        $salt = $this->oxuser__oxpasssalt->value;
+        $newHash = $this->encodePassword($password, $salt);
+        $oldHash = $this->oxuser__oxpassword->value;
+
+        return  $newHash === $oldHash;
     }
 
     /**
@@ -2134,37 +2174,49 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Initiates user login against data in DB.
      *
-     * @param string $sUser     User
-     * @param string $sPassword Password
-     * @param string $sShopID   Shop id
+     * @param string $userName User
+     * @param string $password Password
+     * @param string $shopID   Shop id
      *
-     * @throws object
+     * @throws UserException
+     *
+     * @return void
      */
-    protected function _dbLogin($sUser, $sPassword, $sShopID)
+    protected function _dbLogin(string $userName, $password, $shopID)
     {
-        $blOldHash = false;
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $isPasswordRehashingNecessary = false;
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         if ($this->_isDemoShop() && $this->isAdmin()) {
-            $sUserOxId = $oDb->getOne($this->_getDemoShopLoginQuery($sUser, $sPassword));
+            $userId = $database->getOne($this->_getDemoShopLoginQuery($userName, $password));
         } else {
-            $sUserOxId = $oDb->getOne($this->_getLoginQuery($sUser, $sPassword, $sShopID, $this->isAdmin()));
-            if (!$sUserOxId) {
-                $sUserOxId = $oDb->getOne($this->_getLoginQueryHashedWithMD5($sUser, $sPassword, $sShopID, $this->isAdmin()));
-                $blOldHash = true;
+            $userId = $database->getOne($this->_getLoginQuery($userName, $password, $shopID, $this->isAdmin()));
+            if (!$userId) {
+                $userId = $database->getOne($this->_getLoginQueryHashedWithSha512($userName, $password, $shopID, $this->isAdmin()));
+                if ($userId) {
+                    $isPasswordRehashingNecessary = true;
+                }
+            }
+            if (!$userId) {
+                $userId = $database->getOne($this->_getLoginQueryHashedWithMD5($userName, $password, $shopID, $this->isAdmin()));
+                if ($userId) {
+                    $isPasswordRehashingNecessary = true;
+                }
             }
         }
 
-        if ($sUserOxId) {
-            if (!$this->load($sUserOxId)) {
-                /** @var \OxidEsales\Eshop\Core\Exception\UserException $oEx */
-                $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\UserException::class);
-                $oEx->setMessage('ERROR_MESSAGE_USER_NOVALIDLOGIN');
-                throw $oEx;
-            } elseif ($blOldHash && $this->getId()) {
-                $this->setPassword($sPassword);
-                $this->save();
-            }
+        /** Return here to give other log-in mechanisms the possibility to be triggered */
+        if (!$userId) {
+            return;
+        }
+
+        if (!$this->load($userId)) {
+            throw oxNew(UserException::class, 'ERROR_MESSAGE_USER_NOVALIDLOGIN');
+        }
+
+        if ($isPasswordRehashingNecessary) {
+            $this->setPassword($password);
+            $this->save();
         }
     }
 
@@ -2199,8 +2251,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         if ($sPassword == "admin" && $sUser == "admin") {
             $sSelect = "SELECT `oxid` FROM `oxuser` WHERE `oxrights` = 'malladmin' ";
         } else {
-            /** @var \OxidEsales\Eshop\Core\Exception\UserException $oEx */
-            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\UserException::class);
+            /** @var UserException $oEx */
+            $oEx = oxNew(UserException::class);
             $oEx->setMessage('ERROR_MESSAGE_USER_NOVALIDLOGIN');
             throw $oEx;
         }

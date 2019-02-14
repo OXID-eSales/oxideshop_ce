@@ -43,7 +43,7 @@ class BasicContext implements BasicContextInterface
      */
     public function getGeneratedProjectFilePath(): string
     {
-        return Path::join($this->getSourcePath() . DIRECTORY_SEPARATOR . static::GENERATED_PROJECT_FILE_NAME);
+        return Path::join($this->getSourcePath(), static::GENERATED_PROJECT_FILE_NAME);
     }
 
     /**

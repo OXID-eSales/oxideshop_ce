@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData;
 
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\DataMapper\MetaDataMapper;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidatorInterface;
@@ -36,6 +37,31 @@ class MetaDataMapperTest extends TestCase
             'key metaDataVersion is missing'    => [[MetaDataProvider::METADATA_MODULE_DATA => '']],
             'key moduleData version is missing' => [[MetaDataProvider::METADATA_METADATA_VERSION => '']],
         ];
+    }
+
+    public function testMetadataFilesMapping()
+    {
+        $metadata = [
+            MetaDataProvider::METADATA_METADATA_VERSION => '0',
+            MetaDataProvider::METADATA_PATH             => '',
+            MetaDataProvider::METADATA_FILEPATH         => '',
+            MetaDataProvider::METADATA_CHECKSUM         => '',
+            MetaDataProvider::METADATA_MODULE_DATA      => [
+                MetaDataProvider::METADATA_ID       => 'id',
+                MetaDataProvider::METADATA_FILES    => [
+                    'name' => 'path',
+                ]
+            ]
+        ];
+        $metaDataDataMapper = new MetaDataMapper($this->metaDataValidatorStub);
+        $moduleConfiguration = $metaDataDataMapper->fromData($metadata);
+
+        $this->assertSame(
+            [
+                'name' => 'path',
+            ],
+            $moduleConfiguration->getSetting(ModuleSetting::CLASSES_WITHOUT_NAMESPACE)->getValue()
+        );
     }
 
     protected function setUp()

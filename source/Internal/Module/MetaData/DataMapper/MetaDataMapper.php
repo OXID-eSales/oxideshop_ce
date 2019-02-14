@@ -83,6 +83,12 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
             );
         }
 
+        if (isset($moduleData[MetaDataProvider::METADATA_FILES])) {
+            $moduleConfiguration->addSetting(
+                new ModuleSetting(ModuleSetting::CLASSES_WITHOUT_NAMESPACE, $moduleData[MetaDataProvider::METADATA_FILES])
+            );
+        }
+
         if (isset($moduleData[MetaDataProvider::METADATA_BLOCKS])) {
             $moduleConfiguration->addSetting(
                 new ModuleSetting(ModuleSetting::TEMPLATE_BLOCKS, $moduleData[MetaDataProvider::METADATA_BLOCKS])
@@ -130,8 +136,7 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
         $mandatoryKeys = [
             MetaDataProvider::METADATA_METADATA_VERSION,
             MetaDataProvider::METADATA_MODULE_DATA,
-            MetaDataProvider::METADATA_PATH,
-            MetaDataProvider::METADATA_CHECKSUM
+            MetaDataProvider::METADATA_PATH
         ];
         foreach ($mandatoryKeys as $mandatoryKey) {
             if (false === array_key_exists($mandatoryKey, $data)) {

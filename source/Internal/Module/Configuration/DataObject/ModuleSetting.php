@@ -13,13 +13,14 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject;
  */
 class ModuleSetting
 {
-    const CLASS_EXTENSIONS          = 'extend';
+    const CLASS_EXTENSIONS          = 'classExtensions';
     const CONTROLLERS               = 'controllers';
     const TEMPLATES                 = 'templates';
     const SMARTY_PLUGIN_DIRECTORIES = 'smartyPluginDirectories';
     const TEMPLATE_BLOCKS           = 'blocks';
     const SHOP_MODULE_SETTING       = 'settings';
     const EVENTS                    = 'events';
+    const CLASSES_WITHOUT_NAMESPACE = 'classesWithoutNamespace';
 
     /**
      * @var string

@@ -62,6 +62,13 @@ services:
       - !php/const OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting::MODULE_EVENTS
       - '@OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface'
 
+  oxid_esales.module.setup.files_without_namespace_module_setting_handler:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopConfigurationModuleSettingHandler
+    arguments:
+      - !php/const OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting::CLASSES_WITHOUT_NAMESPACE
+      - !php/const OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting::MODULE_CLASSES_WITHOUT_NAMESPACES
+      - '@OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface'
+
   oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\SmartyPluginDirectoriesModuleSettingValidator
 

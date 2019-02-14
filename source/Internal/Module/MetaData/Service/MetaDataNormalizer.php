@@ -60,7 +60,8 @@ class MetaDataNormalizer implements MetaDataNormalizerInterface
         $subItemsToNormalize = [
             MetaDataProvider::METADATA_DESCRIPTION,
             MetaDataProvider::METADATA_BLOCKS,
-            MetaDataProvider::METADATA_SETTINGS
+            MetaDataProvider::METADATA_SETTINGS,
+            MetaDataProvider::METADATA_FILES
         ];
         if (\is_array($value) && in_array($key, $subItemsToNormalize, true)) {
             $normalizedValue = $this->lowerCaseArrayKeysRecursive($value);

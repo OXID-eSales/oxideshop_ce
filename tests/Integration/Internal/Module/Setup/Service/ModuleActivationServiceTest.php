@@ -223,13 +223,7 @@ class ModuleActivationServiceTest extends TestCase
         $moduleConfiguration->setId($this->testModuleId);
         $moduleConfiguration->setPath('TestModule');
 
-        /**
-        $moduleConfiguration->addSetting(
-            new ModuleSetting(ModuleSetting::PATH, 'somePath')
-        )
-            ->addSetting(
-                new ModuleSetting('version', 'v2.1')
-            )
+        $moduleConfiguration
             ->addSetting(new ModuleSetting(
                 ModuleSetting::CONTROLLERS,
                 [
@@ -271,6 +265,13 @@ class ModuleActivationServiceTest extends TestCase
                 ]
             ))
             ->addSetting(new ModuleSetting(
+                ModuleSetting::CLASSES_WITHOUT_NAMESPACE,
+                [
+                    'oxpspaymorrowadminerrorlog' => 'oxps/paymorrow/controllers/admin/oxpspaymorrowadminerrorlog.php',
+                    'oxpspaymorrowpaymentmap'    => 'oxps/paymorrow/controllers/admin/oxpspaymorrowpaymentmap.php',
+                ]
+            ))
+            ->addSetting(new ModuleSetting(
                 ModuleSetting::SHOP_MODULE_SETTING,
                 [
                     [
@@ -280,15 +281,8 @@ class ModuleActivationServiceTest extends TestCase
                         'value' => 'row',
                     ],
                 ]
-            ))
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::EVENTS,
-                [
-                    'onActivate'    => ModuleEvents::class . '::onActivate',
-                    'onDeactivate'  => ModuleEvents::class . '::onDeactivate'
-                ]
             ));
-        */
+
         return $moduleConfiguration;
     }
 

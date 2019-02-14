@@ -37,6 +37,7 @@ class MetaDataProvider implements MetaDataProviderInterface
     const METADATA_SMARTY_PLUGIN_DIRECTORIES = 'smartyplugindirectories';
     const METADATA_CHECKSUM = 'checksum';
     const METADATA_FILEPATH = 'metaDataFilePath';
+    const METADATA_FILES = 'files';
 
     /**
      * @var string

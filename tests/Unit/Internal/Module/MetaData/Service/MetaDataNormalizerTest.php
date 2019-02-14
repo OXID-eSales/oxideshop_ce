@@ -65,7 +65,10 @@ class MetaDataNormalizerTest extends TestCase
                         'FILE'     => 'value2',
                         'POSITION' => 'value2'
                     ],
-                ]
+                ],
+                'FILES' => [
+                    'className' => 'dir/filename.php',
+                ],
             ];
         $expectedNormalizedData = [
             'id'          => 'value1',
@@ -112,7 +115,10 @@ class MetaDataNormalizerTest extends TestCase
                     'file'     => 'value2',
                     'position' => 'value2'
                 ],
-            ]
+            ],
+            'files' => [
+                'classname' => 'dir/filename.php',
+            ],
         ];
 
         $metaDataNormalizer = new MetaDataNormalizer();

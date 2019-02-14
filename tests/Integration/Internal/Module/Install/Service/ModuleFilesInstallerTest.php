@@ -168,28 +168,6 @@ class ModuleFilesInstallerTest extends TestCase
         $this->assertFileNotExists($this->getModulesPath() . '/' . $this->packageName . '/readme.txt');
     }
 
-    public function testVCSFilesAreSkippedWhenNoBlacklistFilterIsDefined()
-    {
-        $installer = $this->getFilesInstaller();
-        $package = $this->createPackage();
-
-        $installer->install($package);
-
-        $this->assertDirectoryExists($this->modulePackagePath . '/.git');
-        $this->assertDirectoryNotExists($this->getModulesPath() . '/' . $this->packageName . '/.git');
-    }
-
-    public function testVCSFilesAreSkippedWhenBlacklistFilterIsDefined()
-    {
-        $installer = $this->getFilesInstaller();
-        $package = $this->createPackage();
-
-        $installer->install($package);
-
-        $this->assertDirectoryExists($this->modulePackagePath . '/.git');
-        $this->assertDirectoryNotExists($this->getModulesPath() . '/' . $this->packageName . '/.git');
-    }
-
     public function testBlacklistedDirectoryIsSkippedWhenBlacklistFilterIsDefined()
     {
         $installer = $this->getFilesInstaller();

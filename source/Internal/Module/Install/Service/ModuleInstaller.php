@@ -42,7 +42,7 @@ class ModuleInstaller implements ModuleInstallerInterface
     public function install(OxidEshopPackage $package)
     {
         $this->moduleFilesInstaller->install($package);
-        $this->moduleConfigurationInstaller->install($package->getPackagePath());
+        $this->moduleConfigurationInstaller->install($package->getPackageSourcePath());
     }
 
     /**
@@ -52,6 +52,6 @@ class ModuleInstaller implements ModuleInstallerInterface
     public function isInstalled(OxidEshopPackage $package): bool
     {
         return $this->moduleFilesInstaller->isInstalled($package)
-            && $this->moduleConfigurationInstaller->isInstalled($package->getPackagePath());
+            && $this->moduleConfigurationInstaller->isInstalled($package->getPackageSourcePath());
     }
 }

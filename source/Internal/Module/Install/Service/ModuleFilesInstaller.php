@@ -52,11 +52,10 @@ class ModuleFilesInstaller implements ModuleFilesInstallerInterface
      */
     public function install(OxidEshopPackage $package)
     {
-        $sourceDirectory = $this->getSourcePath($package);
-        $finder = $this->getFinder($sourceDirectory, $package->getBlackListFilters());
+        $finder = $this->getFinder($package->getPackageSourcePath(), $package->getBlackListFilters());
 
         $this->fileSystemService->mirror(
-            $sourceDirectory,
+            $package->getPackageSourcePath(),
             $this->getTargetPath($package),
             $finder,
             ['override' => true]
@@ -122,21 +121,6 @@ class ModuleFilesInstaller implements ModuleFilesInstallerInterface
         }
 
         return $filter;
-    }
-
-    /**
-     * If module source directory option provided add it's relative path.
-     * Otherwise return plain package path.
-     *
-     * @param OxidEshopPackage $package
-     *
-     * @return string
-     */
-    private function getSourcePath(OxidEshopPackage $package) : string
-    {
-        return !empty($package->getSourceDirectory())
-            ? Path::join($package->getPackagePath(), $package->getSourceDirectory())
-            : $package->getPackagePath();
     }
 
     /**

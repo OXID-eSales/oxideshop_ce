@@ -57,14 +57,6 @@ class OxidEshopPackage
     /**
      * @return string
      */
-    public function getSourceDirectory(): string
-    {
-        return $this->sourceDirectory;
-    }
-
-    /**
-     * @return string
-     */
     public function getTargetDirectory(): string
     {
         return $this->targetDirectory;
@@ -73,8 +65,10 @@ class OxidEshopPackage
     /**
      * @return string
      */
-    public function getPackagePath(): string
+    public function getPackageSourcePath() : string
     {
-        return $this->packagePath;
+        return !empty($this->sourceDirectory)
+            ? $this->packagePath . DIRECTORY_SEPARATOR . $this->sourceDirectory
+            : $this->packagePath;
     }
 }

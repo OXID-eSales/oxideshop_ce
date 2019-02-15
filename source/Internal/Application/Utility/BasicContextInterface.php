@@ -76,4 +76,9 @@ interface BasicContextInterface
      * @return array
      */
     public function getBackwardsCompatibilityClassMap(): array;
+
+    /**
+     * @return string
+     */
+    public function getProjectConfigurationPath(): string;
 }

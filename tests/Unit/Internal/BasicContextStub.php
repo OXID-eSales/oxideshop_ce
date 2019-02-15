@@ -197,4 +197,12 @@ class BasicContextStub implements BasicContextInterface
     {
         return [];
     }
+
+    /**
+     * @return string
+     */
+    public function getProjectConfigurationPath(): string
+    {
+        return $this->getSourcePath() . '/tmp/project_configuration.yml';
+    }
 }

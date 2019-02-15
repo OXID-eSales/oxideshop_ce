@@ -172,4 +172,12 @@ class BasicContext implements BasicContextInterface
     {
         return (new BackwardsCompatibilityClassMapProvider())->getMap();
     }
+
+    /**
+     * @return string
+     */
+    public function getProjectConfigurationPath(): string
+    {
+        return $this->getSourcePath() . '/project_configuration.yml';
+    }
 }

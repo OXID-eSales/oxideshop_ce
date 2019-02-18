@@ -79,12 +79,12 @@
     <td class="edittext">&nbsp;<b>[{if $edit->oxorder__oxcurrency->value}] [{$edit->oxorder__oxcurrency->value}] [{else}] [{$currency->name}] [{/if}]</b></td>
   </tr>
   [{/if}]
+  [{/block}]
   [{block name="admin_order_overview_info_sumtotal"}]
   <tr>
     <td class="edittext" height="25">[{oxmultilang ident="GENERAL_SUMTOTAL"}]&nbsp;&nbsp;</td>
     <td class="edittext" align="right"><b>[{$edit->getFormattedTotalOrderSum()}]</b></td>
     <td class="edittext">&nbsp;<b>[{if $edit->oxorder__oxcurrency->value}] [{$edit->oxorder__oxcurrency->value}] [{else}] [{$currency->name}] [{/if}]</b></td>
-  </tr>
-  [{/block}]
+  </tr>  
   [{/block}]
 </table>

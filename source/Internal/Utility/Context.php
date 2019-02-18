@@ -87,6 +87,14 @@ class Context extends BasicContext implements ContextInterface
     }
 
     /**
+     * @return integer
+     */
+    public function getPasswordHashingBcryptCost(): int
+    {
+        return $this->getConfigParameter('passwordHashingBcryptCost', 10);
+    }
+
+    /**
      * @param string $name
      * @param null   $default
      *

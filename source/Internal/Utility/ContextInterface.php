@@ -42,4 +42,9 @@ interface ContextInterface extends BasicContextInterface
      * @return string
      */
     public function getConfigurationEncryptionKey(): string;
+
+    /**
+     * @return integer
+     */
+    public function getPasswordHashingBcryptCost(): int;
 }

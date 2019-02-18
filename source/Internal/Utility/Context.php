@@ -88,10 +88,12 @@ class Context extends BasicContext implements ContextInterface
 
     /**
      * @param string $name
+     * @param null   $default
+     *
      * @return mixed
      */
-    private function getConfigParameter($name)
+    private function getConfigParameter($name, $default = null)
     {
-        return $this->config->getConfigParam($name);
+        return $this->config->getConfigParam($name, $default);
     }
 }

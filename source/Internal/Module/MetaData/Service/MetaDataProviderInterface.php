@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Service;
 
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\InvalidMetaDataException;
+
 /**
  * @internal
  */

@@ -35,7 +35,7 @@ class ModuleConfiguration
     private $autoActive = false;
 
     /**
-     * @var string
+     * @var array
      */
     private $title = [];
     /**

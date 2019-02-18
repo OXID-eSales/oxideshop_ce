@@ -5,6 +5,8 @@
  */
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityClassMapProvider;
+
 /**
  * Object registry design pattern implementation. Stores the instances of objects
  */
@@ -357,7 +359,7 @@ class Registry
     public static function getBackwardsCompatibilityClassMap()
     {
         if (is_null(self::$backwardsCompatibilityClassMap)) {
-            $classMap = include CORE_AUTOLOADER_PATH . 'BackwardsCompatibilityClassMap.php';
+            $classMap = (new BackwardsCompatibilityClassMapProvider())->getMap();
             self::$backwardsCompatibilityClassMap = $classMap;
         }
 

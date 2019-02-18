@@ -1,5 +1,20 @@
 parameters:
   oxid_esales.module.metadata.service.metadata_schemata:
+    '1.0':
+      0: id
+      1: version
+      2: title
+      3: description
+      4: lang
+      5: thumbnail
+      6: author
+      7: url
+      8: email
+      9: extend
+      11: templates
+      blocks: [theme, template, block, file, position]
+      settings: [group, name, type, value, constraints, position]
+      13: files
     '1.1':
       0: id
       1: version
@@ -11,7 +26,6 @@ parameters:
       7: url
       8: email
       9: extend
-      10: controllers
       11: templates
       blocks: [theme, template, block, file, position]
       settings: [group, name, type, value, constraints, position]

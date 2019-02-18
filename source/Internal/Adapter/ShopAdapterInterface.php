@@ -69,9 +69,4 @@ interface ShopAdapterInterface
      * @return bool
      */
     public function isShopEditionNamespace(string $namespace): bool;
-
-    /**
-     * @return array
-     */
-    public function getBackwardsCompatibilityClassMap(): array;
 }

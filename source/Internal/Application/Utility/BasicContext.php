@@ -58,7 +58,7 @@ class BasicContext implements BasicContextInterface
      */
     public function getContainerCacheFilePath(): string
     {
-        return Path::join($this->getSourcePath(), 'tmp', 'containercache.php');
+        return Path::join($this->getSourcePath(), 'tmp', 'container_cache.php');
     }
 
     /**

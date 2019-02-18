@@ -267,8 +267,8 @@ class ModuleActivationServiceTest extends TestCase
             ->addSetting(new ModuleSetting(
                 ModuleSetting::CLASSES_WITHOUT_NAMESPACE,
                 [
-                    'oxpspaymorrowadminerrorlog' => 'oxps/paymorrow/controllers/admin/oxpspaymorrowadminerrorlog.php',
-                    'oxpspaymorrowpaymentmap'    => 'oxps/paymorrow/controllers/admin/oxpspaymorrowpaymentmap.php',
+                    'class1' => 'class1.php',
+                    'class2' => 'class2.php',
                 ]
             ))
             ->addSetting(new ModuleSetting(

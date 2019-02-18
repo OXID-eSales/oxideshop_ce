@@ -48,7 +48,7 @@ class ContextStub extends BasicContextStub implements ContextInterface
     /**
      * @return string
      */
-    public function getLogLevel()
+    public function getLogLevel(): string
     {
         return $this->logLevel;
     }

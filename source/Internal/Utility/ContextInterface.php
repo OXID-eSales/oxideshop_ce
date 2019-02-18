@@ -26,7 +26,12 @@ interface ContextInterface extends BasicContextInterface
     /**
      * @return string
      */
-    public function getLogLevel();
+    public function getContainerCacheFile(): string;
+
+    /**
+     * @return string
+     */
+    public function getLogLevel(): string ;
 
     /**
      * @return string

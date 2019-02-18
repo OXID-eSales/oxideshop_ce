@@ -13,7 +13,7 @@ class MonologConfigurationTest extends PHPUnit\Framework\TestCase
     public function testDefaultLogLevel()
     {
         $stub = new ContextStub();
-        $stub->setLogLevel(null);
+        $stub->setLogLevel('');
 
         $configuration = new MonologConfiguration(
             "OXID Logger",

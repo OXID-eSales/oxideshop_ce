@@ -70,6 +70,27 @@ class YamlFileStorageTest extends TestCase
         );
     }
 
+    public function testCreatesNewDirectoryAndFileIfDoNotExist()
+    {
+        $filePath = $this->getFilePath();
+        unlink($filePath);
+
+        $filePath = $this->getFilePath() . '/fileInNonExistentDirectory.yml';
+
+        $yamlFileStorage = new YamlFileStorage(
+            new FileLocator(),
+            $filePath,
+            $this->getLockFactoryFromContainer()
+        );
+
+        $yamlFileStorage->save(['testData']);
+
+        $this->assertSame(
+            ['testData'],
+            $yamlFileStorage->get()
+        );
+    }
+
     /**
      * @expectedException \Symfony\Component\Yaml\Exception\ParseException
      */

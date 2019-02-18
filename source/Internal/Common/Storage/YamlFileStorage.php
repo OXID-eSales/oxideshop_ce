@@ -25,6 +25,7 @@ class YamlFileStorage implements ArrayStorageInterface
      * @var string
      */
     private $filePath;
+
     /**
      * @var Factory
      */
@@ -84,6 +85,7 @@ class YamlFileStorage implements ArrayStorageInterface
         try {
             $filePath = $this->fileLocator->locate($this->filePath);
         } catch (FileLocatorFileNotFoundException $exception) {
+            $this->createFileDirectory();
             $this->createFile();
             $filePath = $this->fileLocator->locate($this->filePath);
         }
@@ -92,10 +94,23 @@ class YamlFileStorage implements ArrayStorageInterface
     }
 
     /**
+     * Creates file directory if it doesn't exist.
+     */
+    private function createFileDirectory()
+    {
+        if (!file_exists(dirname($this->filePath))) {
+            mkdir(dirname($this->filePath));
+        }
+    }
+
+    /**
      * Creates file.
      */
     private function createFile()
     {
+        if (!file_exists(dirname($this->filePath))) {
+            mkdir(dirname($this->filePath));
+        }
         touch($this->filePath);
     }
 }

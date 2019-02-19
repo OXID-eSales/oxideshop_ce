@@ -1389,20 +1389,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     }
 
     /**
-     * Fetch all the rows of the oxdoctrinetest table.
-     *
-     * @return array All rows of the oxdoctrinetest table.
-     */
-    protected function fetchAllTestTableRows()
-    {
-        $masterDb = oxDb::getMaster();
-
-        return $masterDb
-            ->select('SELECT * FROM ' . self::TABLE_NAME, array())
-            ->fetchAll();
-    }
-
-    /**
      * Fetch the oxId of the first oxdoctrinetest table row.
      *
      * @return array|false The oxId of the first oxdoctrinetest table row.

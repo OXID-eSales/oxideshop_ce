@@ -55,7 +55,7 @@ class FileCache
         $fileName = $this->getCacheFilePath($key);
         $cacheDirectory = $this->getCacheDir();
 
-        $tmpFile = $cacheDirectory . basename($fileName) . uniqid('.temp', true) . '.txt';
+        $tmpFile = $cacheDirectory . "/" . basename($fileName) . uniqid('.temp', true) . '.txt';
         file_put_contents($tmpFile, serialize($value), LOCK_EX);
 
         rename($tmpFile, $fileName);

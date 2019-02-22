@@ -1414,17 +1414,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     }
 
     /**
-     * Helper methods to be used in all tests extending this class
-     */
-    /**
-     * Assure, that the table oxdoctrinetest is empty. If it is not empty, the test will fail.
-     */
-    protected function assureTestTableIsEmpty()
-    {
-        $this->assertEmpty($this->fetchAllTestTableRows(), "Table '" . self::TABLE_NAME . "' is empty");
-    }
-
-    /**
      * Get an instance of ConfigFile based on a empty file.
      *
      * @return ConfigFile

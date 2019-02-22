@@ -567,7 +567,7 @@ return [
     'oxwidgetcontrol'                     => 'OxidEsales\\Eshop\\Core\\WidgetControl',
 
     /*
-     * @deprecated sience 2019-11-23 (6.2.1). ReverseProxy functionality extracted to module, please use those classes from the new place.
+     * @deprecated since 2019-11-23 (6.2.1). ReverseProxy functionality extracted to module, please use respective module classes.
      */
     'oxreverseproxyconnector'             => 'OxidEsales\\Eshop\\Core\\Cache\\Generic\\Connector\\ReverseProxyCacheConnector',
     'oxreverseproxybackend'               => 'OxidEsales\\Eshop\\Core\\Cache\\ReverseProxy\\ReverseProxyBackend',

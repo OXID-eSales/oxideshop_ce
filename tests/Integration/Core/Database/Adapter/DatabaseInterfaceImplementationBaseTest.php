@@ -101,6 +101,7 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
         parent::setUp();
 
         $this->initializeDatabase();
+        $this->truncateTestTable();
         $this->assureTestTableIsEmpty();
     }
 
@@ -264,16 +265,7 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
 
     protected function assureTestTableIsEmpty()
     {
-        if (!$this->isEmptyTestTable()) {
-            $this->truncateTestTable();
-        }
-
-        $this->assertEmpty($this->fetchAllTestTableRows(), "Problem while truncating the table '" . self::TABLE_NAME . "'!");
-    }
-
-    protected function isEmptyTestTable()
-    {
-        return empty($this->fetchAllTestTableRows());
+        $this->assertEmpty($this->fetchAllTestTableRows(), "Table '" . self::TABLE_NAME . "' is empty");
     }
 
     protected function fetchAllTestTableRows()

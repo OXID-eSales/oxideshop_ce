@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - New methods:
   - `OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay::getValues` [PR-660](https://github.com/OXID-eSales/oxideshop_ce/pull/660)
   - `OxidEsales\EshopCommunity\Application\Model\Article::getStock` [PR-640](https://github.com/OXID-eSales/oxideshop_ce/pull/640)
+  - `OxidEsales\EshopCommunity\Application\Model\Article::getActionType` 
+  - `OxidEsales\EshopCommunity\Application\Model\Article::getStockStatusOnLoad` 
+  - `OxidEsales\EshopCommunity\Core\Base::dispatchEvent` 
 - Log a warnings for missused db method calls [PR-649](https://github.com/OXID-eSales/oxideshop_ce/pull/649)
 - New blocks:
   - `admin_module_sortlist` in `admin/tpl/module_sortlist.tpl` [PR-534](https://github.com/OXID-eSales/oxideshop_ce/pull/534)
@@ -37,6 +40,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\BeforeModuleDeactivationEvent`
     - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\FinalizingModuleActivationEvent`
     - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\FinalizingModuleDeactivationEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Event\ShopConfigurationChangedEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\Event\ShopModuleSettingChangedEvent`
+    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelDeleteEvent`
+    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelInsertEvent`
+    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelUpdateEvent`
+    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\AllCookiesRemovedEvent`
+    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\ApplicationExitEvent`
+    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\BasketChangedEvent`
+    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeHeadersSendEvent`
+    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeModelDeleteEvent`
+    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeModelUpdateEvent`
+    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeSessionStartEvent`
+    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\ViewRenderedEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Theme\Event\ThemeSettingChangedEvent`
+    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\ModuleVariablesResettedEvent` - this event will be removed before release
 - Configuration options in `config.inc.php`
     - `passwordHashingAlgorithm` with default value: PASSWORD_BCRYPT
     - `passwordHashingBcryptCost` with default value: 10

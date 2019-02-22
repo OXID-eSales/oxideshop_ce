@@ -309,8 +309,6 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _sessionStart()
     {
-        $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeSessionStartEvent());
-
         if (headers_sent()) {
             if ($this->needToSetHeaders()) {
                 //enforcing no caching when session is started

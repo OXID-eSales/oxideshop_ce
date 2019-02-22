@@ -33,7 +33,7 @@ class ProjectYamlDao implements ProjectYamlDaoInterface
      */
     public function loadProjectConfigFile(): DIConfigWrapper
     {
-        return $this->loadDIConfigFile($this->context->getGeneratedProjectFilePath());
+        return $this->loadDIConfigFile($this->context->getGeneratedServicesFilePath());
     }
 
     /**
@@ -41,7 +41,7 @@ class ProjectYamlDao implements ProjectYamlDaoInterface
      */
     public function saveProjectConfigFile(DIConfigWrapper $config)
     {
-        file_put_contents($this->context->getGeneratedProjectFilePath(), Yaml::dump($config->getConfigAsArray(), 3, 2));
+        file_put_contents($this->context->getGeneratedServicesFilePath(), Yaml::dump($config->getConfigAsArray(), 3, 2));
     }
 
     /**

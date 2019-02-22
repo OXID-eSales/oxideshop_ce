@@ -7,21 +7,13 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Application;
 
 use Monolog\Logger;
-use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Application\Events\ShopAwareEventDispatcher;
-use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
-use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserRatingBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewAndRatingBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ContainerTest extends \PHPUnit\Framework\TestCase
@@ -33,21 +25,14 @@ class ContainerTest extends \PHPUnit\Framework\TestCase
 
     public function setUp()
     {
-        if (file_exists($this->getCacheFilePath())) {
-            unlink($this->getCacheFilePath());
-        }
+        ContainerFactory::resetContainer();
 
-        // Ensure that we always have a new instance
-        $class = new \ReflectionClass(ContainerFactory::class);
-        $factory = $class->newInstanceWithoutConstructor();
-        $this->container = $factory->getContainer();
+        $this->container = ContainerFactory::getInstance()->getContainer();
     }
 
     public function tearDown()
     {
-        if (file_exists($this->getCacheFilePath())) {
-            unlink($this->getCacheFilePath());
-        }
+        ContainerFactory::resetContainer();
     }
 
     public function testGetInstance()
@@ -113,7 +98,7 @@ EOT;
      */
     public function testCacheIsCreated()
     {
-        $this->assertTrue(file_exists($this->getCacheFilePath()));
+        $this->assertFileExists($this->getCacheFilePath());
     }
 
     /**
@@ -131,8 +116,6 @@ EOT;
      */
     private function getCacheFilePath()
     {
-        $compileDir = Registry::getConfig()->getConfigParam('sCompileDir');
-
-        return $compileDir . '/containercache.php';
+        return $this->container->get(ContextInterface::class)->getContainerCacheFilePath();
     }
 }

@@ -13,11 +13,13 @@ use PHPUnit\Framework\TestCase;
 
 class ContainerBuilderTest extends TestCase
 {
+    private $generatedProjectYmlFileName = 'generated_project.yaml';
+
     public function testWhenCeServicesLoaded()
     {
         $context = $this->makeContextStub();
         $context->method('getEdition')->willReturn(EditionSelector::COMMUNITY);
-        $context->method('getGeneratedProjectFilePath')->willReturn('not_existing.yaml');
+        $context->method('getGeneratedServicesFilePath')->willReturn('not_existing.yaml');
         $container = $this->makeContainer($context);
 
         $this->assertSame('CE service!', $container->get('oxid_esales.tests.internal.dummy_executor')->execute());
@@ -27,7 +29,7 @@ class ContainerBuilderTest extends TestCase
     {
         $context = $this->makeContextStub();
         $context->method('getEdition')->willReturn(EditionSelector::PROFESSIONAL);
-        $context->method('getGeneratedProjectFilePath')->willReturn('not_existing.yaml');
+        $context->method('getGeneratedServicesFilePath')->willReturn('not_existing.yaml');
         $container = $this->makeContainer($context);
 
         $this->assertSame('Service overwriting for PE!', $container->get('oxid_esales.tests.internal.dummy_executor')->execute());
@@ -37,7 +39,7 @@ class ContainerBuilderTest extends TestCase
     {
         $context = $this->makeContextStub();
         $context->method('getEdition')->willReturn(EditionSelector::ENTERPRISE);
-        $context->method('getGeneratedProjectFilePath')->willReturn('not_existing.yaml');
+        $context->method('getGeneratedServicesFilePath')->willReturn('not_existing.yaml');
         $container = $this->makeContainer($context);
 
         $this->assertSame('Service overwriting for EE!', $container->get('oxid_esales.tests.internal.dummy_executor')->execute());
@@ -47,7 +49,7 @@ class ContainerBuilderTest extends TestCase
     {
         $context = $this->makeContextStub();
         $context->method('getEdition')->willReturn(EditionSelector::COMMUNITY);
-        $context->method('getGeneratedProjectFilePath')->willReturn(__DIR__ . '/Fixtures/Project/' . BasicContext::GENERATED_PROJECT_FILE_NAME);
+        $context->method('getGeneratedServicesFilePath')->willReturn(__DIR__ . '/Fixtures/Project/' . $this->generatedProjectYmlFileName);
         $container = $this->makeContainer($context);
 
         $this->assertSame('Service overwriting for Project!', $container->get('oxid_esales.tests.internal.dummy_executor')->execute());
@@ -57,7 +59,7 @@ class ContainerBuilderTest extends TestCase
     {
         $context = $this->makeContextStub();
         $context->method('getEdition')->willReturn(EditionSelector::ENTERPRISE);
-        $context->method('getGeneratedProjectFilePath')->willReturn(__DIR__ . '/Fixtures/Project/' . BasicContext::GENERATED_PROJECT_FILE_NAME);
+        $context->method('getGeneratedServicesFilePath')->willReturn(__DIR__ . '/Fixtures/Project/' . $this->generatedProjectYmlFileName);
         $container = $this->makeContainer($context);
 
         $this->assertSame('Service overwriting for Project!', $container->get('oxid_esales.tests.internal.dummy_executor')->execute());

@@ -29,15 +29,18 @@ class ProjectYamlDaoTest extends TestCase
     {
         $contextStub = $this->getMockBuilder(BasicContext::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getSourcePath'])->getMock();
-        $contextStub->method('getSourcePath')->willReturn(__DIR__);
+            ->setMethods(['getGeneratedServicesFilePath'])->getMock();
+        $contextStub
+            ->method('getGeneratedServicesFilePath')
+            ->willReturn($this->getTestGeneratedServicesFilePath());
+
         $this->dao = new ProjectYamlDao($contextStub);
     }
 
     protected function tearDown()
     {
         parent::tearDown();
-        $projectFilePath = __DIR__ . DIRECTORY_SEPARATOR . BasicContext::GENERATED_PROJECT_FILE_NAME;
+        $projectFilePath = $this->getTestGeneratedServicesFilePath();
         if (file_exists($projectFilePath)) {
             unlink($projectFilePath);
         }
@@ -52,7 +55,7 @@ imports:
 
 EOT;
         file_put_contents(
-            __DIR__ . DIRECTORY_SEPARATOR . BasicContext::GENERATED_PROJECT_FILE_NAME,
+            $this->getTestGeneratedServicesFilePath(),
             $testData
         );
 
@@ -63,7 +66,7 @@ EOT;
     public function testLoadingEmptyFile()
     {
         file_put_contents(
-            __DIR__ . DIRECTORY_SEPARATOR . BasicContext::GENERATED_PROJECT_FILE_NAME,
+            $this->getTestGeneratedServicesFilePath(),
             ''
         );
 
@@ -110,5 +113,10 @@ EOT;
         ContainerFactory::getInstance()->getContainer();
         // Verify container has been rebuild be checking that a cachefile exists
         $this->assertFileExists($context->getContainerCacheFilePath());
+    }
+
+    private function getTestGeneratedServicesFilePath(): string
+    {
+        return __DIR__ . DIRECTORY_SEPARATOR . 'generated_project.yaml';
     }
 }

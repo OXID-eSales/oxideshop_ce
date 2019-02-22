@@ -24,8 +24,6 @@ class BasicContext implements BasicContextInterface
 
     const ENTERPRISE_EDITION = EditionSelector::ENTERPRISE;
 
-    const GENERATED_PROJECT_FILE_NAME = 'generated_project.yaml';
-
     /**
      * @var Facts
      */
@@ -40,7 +38,7 @@ class BasicContext implements BasicContextInterface
     }
 
     /**
-     * @todo change placement of containercache.php file and move logic to Facts.
+     * @todo change placement of container cache file and move logic to Facts.
      * @return string
      */
     public function getContainerCacheFilePath(): string
@@ -51,9 +49,9 @@ class BasicContext implements BasicContextInterface
     /**
      * @return string
      */
-    public function getGeneratedProjectFilePath(): string
+    public function getGeneratedServicesFilePath(): string
     {
-        return Path::join($this->getSourcePath(), static::GENERATED_PROJECT_FILE_NAME);
+        return Path::join($this->getShopRootPath(), 'var', 'generated', 'generated_services.yaml');
     }
 
     /**
@@ -146,7 +144,31 @@ class BasicContext implements BasicContextInterface
      */
     public function getProjectConfigurationPath(): string
     {
-        return $this->getSourcePath() . '/project_configuration.yml';
+        return $this->getConfigurationDirectoryPath() . 'project_configuration.yml';
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfigurationDirectoryPath(): string
+    {
+        return $this->getShopRootPath() . '/var/configuration/';
+    }
+
+    /**
+     * @return string
+     */
+    public function getShopRootPath(): string
+    {
+        return $this->getFacts()->getShopRootPath();
+    }
+
+    /**
+     * @return bool
+     */
+    private function areUnifiedNamespacesGenerated(): bool
+    {
+        return class_exists('\OxidEsales\Eshop\Core\Registry');
     }
 
     /**

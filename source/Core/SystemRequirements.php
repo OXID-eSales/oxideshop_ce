@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
+use OxidEsales\Facts\Facts;
 
 /**
  * System requirements class.
@@ -291,6 +292,8 @@ class SystemRequirements
             $sTmp = $sCfgTmp;
         }
 
+        $shopRootPath = (new Facts())->getShopRootPath();
+
         $aPathsToCheck = [
             $sPath . 'out/pictures/promo/',
             $sPath . 'out/pictures/master/',
@@ -298,6 +301,7 @@ class SystemRequirements
             $sPath . 'out/pictures/media/', // @deprecated, use out/media instead
             $sPath . 'out/media/',
             $sPath . 'log/',
+            $shopRootPath . '/var/',
             $sTmp
         ];
         $iModStat = 2;

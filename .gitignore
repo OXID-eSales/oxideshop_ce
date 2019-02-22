@@ -38,8 +38,8 @@
 .DS_Store
 
 # DI cache
-/source/Internal/Application/containercache.php
+/source/Internal/Application/container_cache.php
 
 # DI for modules and packages
-/source/generated_project.yaml
+/var/generated_services.yaml
 /tests/Integration/Internal/Application/Dao/generated_project.yaml

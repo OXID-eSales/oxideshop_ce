@@ -99,7 +99,7 @@ class YamlFileStorage implements ArrayStorageInterface
     private function createFileDirectory()
     {
         if (!file_exists(dirname($this->filePath))) {
-            mkdir(dirname($this->filePath));
+            mkdir(dirname($this->filePath), 0777, true);
         }
     }
 
@@ -108,9 +108,6 @@ class YamlFileStorage implements ArrayStorageInterface
      */
     private function createFile()
     {
-        if (!file_exists(dirname($this->filePath))) {
-            mkdir(dirname($this->filePath));
-        }
         touch($this->filePath);
     }
 }

@@ -19,10 +19,11 @@ class BasicContextStub implements BasicContextInterface
     private $containerCacheFilePath;
     private $edition;
     private $enterpriseEditionRootPath;
-    private $generatedProjectFilePath;
+    private $generatedServicesFilePath;
     private $professionalEditionRootPath;
     private $sourcePath;
     private $modulesPath;
+    private $shopRootPath;
     private $configFilePath;
 
     public function __construct()
@@ -33,11 +34,12 @@ class BasicContextStub implements BasicContextInterface
         $this->containerCacheFilePath = $basicContext->getContainerCacheFilePath();
         $this->edition = $basicContext->getEdition();
         $this->enterpriseEditionRootPath = $basicContext->getEnterpriseEditionRootPath();
-        $this->generatedProjectFilePath = $basicContext->getGeneratedProjectFilePath();
+        $this->generatedServicesFilePath = $basicContext->getGeneratedServicesFilePath();
         $this->professionalEditionRootPath = $basicContext->getProfessionalEditionRootPath();
         $this->sourcePath = $basicContext->getSourcePath();
         $this->modulesPath = $basicContext->getModulesPath();
         $this->configFilePath = $basicContext->getConfigFilePath();
+        $this->shopRootPath = $basicContext->getShopRootPath();
     }
 
     /**
@@ -115,17 +117,17 @@ class BasicContextStub implements BasicContextInterface
     /**
      * @return string
      */
-    public function getGeneratedProjectFilePath(): string
+    public function getGeneratedServicesFilePath(): string
     {
-        return $this->generatedProjectFilePath;
+        return $this->generatedServicesFilePath;
     }
 
     /**
-     * @param string $generatedProjectFilePath
+     * @param string $generatedServicesFilePath
      */
-    public function setGeneratedProjectFilePath(string $generatedProjectFilePath)
+    public function setGeneratedServicesFilePath(string $generatedServicesFilePath)
     {
-        $this->generatedProjectFilePath = $generatedProjectFilePath;
+        $this->generatedServicesFilePath = $generatedServicesFilePath;
     }
 
     /**
@@ -214,5 +216,21 @@ class BasicContextStub implements BasicContextInterface
     public function getConfigTableName(): string
     {
         return 'oxconfig';
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfigurationDirectoryPath(): string
+    {
+        return $this->getSourcePath() . '/tmp/';
+    }
+
+    /**
+     * @return string
+     */
+    public function getShopRootPath(): string
+    {
+        return $this->shopRootPath;
     }
 }

@@ -25,7 +25,7 @@ interface BasicContextInterface
     /**
      * @return string
      */
-    public function getGeneratedProjectFilePath(): string;
+    public function getGeneratedServicesFilePath(): string;
 
     /**
      * @return string
@@ -76,6 +76,16 @@ interface BasicContextInterface
      * @return string
      */
     public function getProjectConfigurationPath(): string;
+
+    /**
+     * @return string
+     */
+    public function getConfigurationDirectoryPath(): string;
+
+    /**
+     * @return string
+     */
+    public function getShopRootPath(): string;
 
     /**
      * @return string

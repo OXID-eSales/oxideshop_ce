@@ -454,7 +454,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Assigns DB field values to object fields. Returns true on success.
+     * Assigns DB field values to object fields.
      *
      * @param array $dbRecord Associative data values array
      *

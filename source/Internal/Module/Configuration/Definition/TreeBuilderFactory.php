@@ -110,6 +110,8 @@ class TreeBuilderFactory implements TreeBuilderFactoryInterface
                                                                         ->end()
                                                                         ->scalarNode('value')
                                                                         ->end()
+                                                                        ->scalarNode('position')
+                                                                        ->end()
                                                                         ->arrayNode('constraints')
                                                                             ->scalarPrototype()->end()
                                                                         ->end()

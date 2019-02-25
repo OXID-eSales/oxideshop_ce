@@ -142,6 +142,7 @@ class ProjectConfigurationDaoTest extends TestCase
                         'name'          => 'sGridRow',
                         'type'          => 'str',
                         'value'         => 'row',
+                        'position'      => '2',
                         'constraints'   => ['first', 'second'],
                     ],
                 ]

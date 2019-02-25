@@ -8,6 +8,8 @@ namespace OxidEsales\EshopCommunity\Core\Controller;
 
 use OxidEsales\EshopCommunity\Core\ShopVersion;
 use Psr\Container\ContainerInterface;
+use OxidEsales\EshopCommunity\Internal\ShopEvents\AfterRequestProcessedEvent;
+
 
 /**
  * Base view class. Collects and passes data to template engine, sets some global
@@ -601,6 +603,8 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
             }
 
             $this->onExecuteNewAction();
+
+            $this->dispatchEvent(new AfterRequestProcessedEvent);
 
             //#M341 do not add redirect parameter
             \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($url, (bool) $myConfig->getRequestParameter('redirected'), 302);

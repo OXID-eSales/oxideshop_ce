@@ -24,6 +24,8 @@ use oxsha512hasher;
  */
 class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
+    const USER_COOKIE_SALT = 'user_cookie_salt';
+
     /**
      * Shop control variable
      *
@@ -169,7 +171,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * @var bool
      */
-    private $isPasswordRehashingNecessary = false;
+    private $isOutdatedPasswordHashingAlgorithmUsed = false;
 
     /**
      * Gets state object.
@@ -1337,8 +1339,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oConfig = $this->getConfig();
 
         $shopId = $oConfig->getShopId();
-        $passwordHashFromDatabase = $this->getPasswordHashFromDatabase($userName, $shopId);
         if ($password && !$this->isLoaded()) {
+            $passwordHashFromDatabase = $this->getPasswordHashFromDatabase($userName, $shopId);
             $userIsAuthenticated = password_verify($password, $passwordHashFromDatabase);
             if ($userIsAuthenticated) {
                 $this->loadAuthenticatedUser($userName, $shopId);
@@ -1369,17 +1371,25 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         // cookie must be set ?
         if ($setSessionCookie && $oConfig->getConfigParam('blShowRememberMe')) {
-            Registry::getUtilsServer()->setUserCookie($this->oxuser__oxusername->value, $this->oxuser__oxpassword->value, $oConfig->getShopId(), 31536000, $this->oxuser__oxpasssalt->value);
+            Registry::getUtilsServer()->setUserCookie(
+                $this->oxuser__oxusername->value,
+                $this->oxuser__oxpassword->value,
+                $oConfig->getShopId(),
+                31536000,
+                static::USER_COOKIE_SALT
+
+            );
         }
 
-
+        //
         $algorithm = Registry::getConfig()->getConfigParam('passwordHashingAlgorithm') ?? PASSWORD_DEFAULT;
         $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
         $passwordHashService = $passwordServiceBridge->getPasswordHashService($algorithm);
-        $passwordNeedsRehash = $passwordHashService->passwordNeedsRehash($passwordHashFromDatabase);
+        $passwordNeedsRehash = $passwordHashService->passwordNeedsRehash($passwordHashFromDatabase) || $this->isOutdatedPasswordHashingAlgorithmUsed;
         if ($passwordNeedsRehash) {
             $generatedPasswordHash = $passwordHashService->hash($password);
             $this->oxuser__oxpassword = new \OxidEsales\Eshop\Core\Field($generatedPasswordHash, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $this->oxuser__oxpasssalt = new \OxidEsales\Eshop\Core\Field('');
             $this->save();
         }
 
@@ -1392,17 +1402,31 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @throws UserException
      */
-    public function loadAuthenticatedUser(string $userName, int $shopId)
+    protected function loadAuthenticatedUser(string $userName, int $shopId)
+    {
+        $userId = $this->getIdByUserName($userName);
+        if (!$this->load($userId)) {
+            throw oxNew(UserException::class, 'ERROR_MESSAGE_USER_NOVALIDLOGIN');
+        }
+    }
+
+    /**
+     * @param string $userName
+     * @param int    $shopId
+     *
+     * @return false|string
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     */
+    protected function getAuthenticatedUserId(string $userName, int $shopId)
     {
         $database = DatabaseProvider::getDb();
         $query = 'SELECT `OXID` FROM `oxuser` WHERE `oxusername` = ? AND `OXSHOPID` = ?';
 
         $userId = $database->getOne($query, [$userName, $shopId]);
 
-        if (!$this->load($userId)) {
-            throw oxNew(UserException::class, 'ERROR_MESSAGE_USER_NOVALIDLOGIN');
-        }
+        return $userId;
     }
+
 
     /**
      * Logs out session user. Returns true on success
@@ -1509,7 +1533,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $rs = $oDb->select($sSelect);
             if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {
-                    $sTest = crypt($rs->fields[1], $rs->fields[2]);
+                    $sTest = crypt($rs->fields[1], static::USER_COOKIE_SALT);
                     if ($sTest == $sPWD) {
                         // found
                         $sUserID = $rs->fields[0];
@@ -1933,6 +1957,21 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
+     * @param string $password
+     *
+     * @return string
+     */
+    public function hashPassword(string $password): string
+    {
+        $algorithm = Registry::getConfig()->getConfigParam('passwordHashingAlgorithm') ?? PASSWORD_DEFAULT;
+        $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
+        $passwordHashService = $passwordServiceBridge->getPasswordHashService($algorithm);
+        $passwordHash = $passwordHashService->hash($password);
+
+        return $passwordHash;
+    }
+
+    /**
      * Sets new password for user ( save is not called)
      *
      * @param string $password password
@@ -1942,10 +1981,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         if (empty($password)) {
             $passwordHash = '';
         } else {
-            $algorithm = Registry::getConfig()->getConfigParam('passwordHashingAlgorithm') ?? PASSWORD_DEFAULT;
-            $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
-            $passwordHashService = $passwordServiceBridge->getPasswordHashService($algorithm);
-            $passwordHash = $passwordHashService->hash($password);
+            $passwordHash = $this->hashPassword($password);
         }
 
         $this->oxuser__oxpassword = new \OxidEsales\Eshop\Core\Field($passwordHash, \OxidEsales\Eshop\Core\Field::T_RAW);
@@ -1961,11 +1997,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function isSamePassword($password)
     {
-        $salt = $this->oxuser__oxpasssalt->value;
-        $newHash = $this->encodePassword($password, $salt);
-        $oldHash = $this->oxuser__oxpassword->value;
-
-        return  $newHash === $oldHash;
+        return  password_verify($password, $this->oxuser__oxpassword->value);
     }
 
     /**
@@ -2137,21 +2169,25 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * retruns user id by user name
+     * return user id by user name
      *
-     * @param string $sUserName user name
+     * @param string $userName
      *
-     * @return string
+     * @return false|string
      */
-    public function getIdByUserName($sUserName)
+    public function getIdByUserName($userName)
     {
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sQ = "SELECT `oxid` FROM `oxuser` WHERE `oxusername` = " . $oDb->quote($sUserName);
-        if (!$this->getConfig()->getConfigParam('blMallUsers')) {
-            $sQ .= " AND `oxshopid` = " . $oDb->quote($this->getConfig()->getShopId());
-        }
+        $shopId = Registry::getConfig()->getShopId();
+        $userId = DatabaseProvider::getDb()
+            ->getOne(
+                'SELECT `OXID` FROM `oxuser` WHERE `OXUSERNAME` = ? AND `OXSHOPID` = ?',
+                [
+                    $userName,
+                    $shopId
+                ]
+            );
 
-        return $oDb->getOne($sQ);
+        return $userId;
     }
 
     /**
@@ -2214,9 +2250,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             return;
         }
 
-        if (!$this->load($userId)) {
-            throw oxNew(UserException::class, 'ERROR_MESSAGE_USER_NOVALIDLOGIN');
-        }
+        $this->loadAuthenticatedUser($userName, $shopID);
+        $this->isOutdatedPasswordHashingAlgorithmUsed = true;
     }
 
     /**

@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\EshopCommunity\Application\Model\User;
+
 /**
  * Server data manipulation class
  */
@@ -293,7 +295,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
             $blSsl = false;
         }
 
-        $this->_aUserCookie[$sShopId] = $sUser . '@@@' . crypt($sPassword, $sSalt);
+        $this->_aUserCookie[$sShopId] = $sUser . '@@@' . crypt($sPassword, User::USER_COOKIE_SALT);
         $this->setOxCookie('oxid_' . $sShopId, $this->_aUserCookie[$sShopId], \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() + $iTimeout, '/', null, true, $blSsl);
         $this->setOxCookie('oxid_' . $sShopId . '_autologin', '1', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() + $iTimeout, '/', null, true, false);
     }

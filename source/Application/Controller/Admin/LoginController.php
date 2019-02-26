@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\Exception\UserException;
 use OxidEsales\Eshop\Core\ShopVersion;
 
 /**
@@ -101,13 +102,18 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             /** @var \OxidEsales\Eshop\Application\Model\User $oUser */
             $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             $oUser->login($sUser, $sPass);
+
+            if ($oUser->oxuser__oxrights->value === 'user') {
+                throw oxNew(UserException::class, 'ERROR_MESSAGE_USER_NOVALIDLOGIN');
+            }
+
             $iSubshop = (int) $oUser->oxuser__oxrights->value;
             if ($iSubshop) {
                 \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("shp", $iSubshop);
                 \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('currentadminshop', $iSubshop);
                 \OxidEsales\Eshop\Core\Registry::getConfig()->setShopId($iSubshop);
             }
-        } catch (\OxidEsales\Eshop\Core\Exception\UserException $oEx) {
+        } catch (UserException $oEx) {
             $myUtilsView->addErrorToDisplay('LOGIN_ERROR');
             $oStr = getStr();
             $this->addTplParam('user', $oStr->htmlspecialchars($sUser));

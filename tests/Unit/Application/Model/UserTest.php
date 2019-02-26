@@ -511,11 +511,8 @@ class UserTest extends \OxidTestCase
 
     public function testEncodePasswordDefaultAlgorithmIsBcrypt()
     {
-        $password = 'secret';
-        $salt = md5('salt');
-
         $user = oxNew(User::class);
-        $passwordHash = $user->encodePassword($password, $salt);
+        $passwordHash = $user->hashPassword('secret');
 
         $algorithm = password_get_info($passwordHash)['algo'];
 
@@ -2133,7 +2130,6 @@ class UserTest extends \OxidTestCase
     {
         oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxUtilsServerHelper2::class, 'oxutilsserver');
         $sShopId = $this->getConfig()->getShopId();
-        $sTempPassword = oxADMIN_PASSWD;
 
         //not logged in
         $oActUser = oxNew('oxUser');
@@ -2141,13 +2137,11 @@ class UserTest extends \OxidTestCase
         $testUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('isAdmin'));
         $testUser->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
 
-        $aResults = $this->getDb(oxDb::FETCH_MODE_ASSOC)->getAll('select OXPASSSALT, OXPASSWORD from oxuser where OXID="oxdefaultadmin"');
-        $sPassSalt = $aResults[0]['OXPASSSALT'];
-        $sOriginalPassword = $aResults[0]['OXPASSWORD'];
-        $sTemporaryPassword = $oActUser->encodePassword($sOriginalPassword, $sPassSalt);
+        $sOriginalPassword = $this->getDb()->getOne('select OXPASSWORD from oxuser where OXID="oxdefaultadmin"');
+        $sTemporaryPassword = $oActUser->hashPassword($sOriginalPassword);
         $sSql = "update oxuser set OXPASSWORD = '{$sTemporaryPassword}'  where OXID='oxdefaultadmin'";
         $this->addToDatabase($sSql, 'oxuser');
-        $sVal = oxADMIN_LOGIN . '@@@' . crypt($sTemporaryPassword, $sPassSalt);
+        $sVal = oxADMIN_LOGIN . '@@@' . crypt($sTemporaryPassword, \OxidEsales\EshopCommunity\Application\Model\User::USER_COOKIE_SALT);
         \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie('oxid_' . $sShopId, $sVal);
 
         $oActUser->loadActiveUser();
@@ -2156,7 +2150,7 @@ class UserTest extends \OxidTestCase
         $sSql = "update oxuser set OXPASSWORD = '{$sOriginalPassword}' where OXID='oxdefaultadmin'";
         $this->addToDatabase($sSql, 'oxuser');
 
-        $this->assertEquals($oActUser->oxuser__oxusername->value, oxADMIN_LOGIN);
+        $this->assertEquals(oxADMIN_LOGIN, $oActUser->oxuser__oxusername->value);
     }
 
     /**
@@ -2639,7 +2633,10 @@ class UserTest extends \OxidTestCase
 
         \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setUserCookie(
             $oUser->oxuser__oxusername->value,
-            $oUser->oxuser__oxpassword->value, null, 31536000, $oUser->oxuser__oxpasssalt->value
+            $oUser->oxuser__oxpassword->value,
+            null,
+            31536000,
+            User::USER_COOKIE_SALT
         );
 
         $sCookie = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getUserCookie();

@@ -58,11 +58,6 @@ interface BasicContextInterface
     public function getEnterpriseEditionRootPath(): string;
 
     /**
-     * @return bool
-     */
-    public function isShopLaunched(): bool;
-
-    /**
      * @return int
      */
     public function getDefaultShopId(): int;
@@ -81,4 +76,14 @@ interface BasicContextInterface
      * @return string
      */
     public function getProjectConfigurationPath(): string;
+
+    /**
+     * @return string
+     */
+    public function getConfigFilePath(): string;
+
+    /**
+     * @return string
+     */
+    public function getConfigTableName(): string;
 }

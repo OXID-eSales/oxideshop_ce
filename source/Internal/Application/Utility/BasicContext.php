@@ -27,23 +27,9 @@ class BasicContext implements BasicContextInterface
     const GENERATED_PROJECT_FILE_NAME = 'generated_project.yaml';
 
     /**
-     * @var string
-     */
-    private $configFileName;
-
-    /**
      * @var Facts
      */
     private $facts;
-
-    /**
-     * BasicContext constructor.
-     * @param string $configFileName
-     */
-    public function __construct(string $configFileName)
-    {
-        $this->configFileName = $configFileName;
-    }
 
     /**
      * @return string
@@ -119,16 +105,6 @@ class BasicContext implements BasicContextInterface
     }
 
     /**
-     * @return bool
-     */
-    public function isShopLaunched(): bool
-    {
-        $configFilePath = $this->getSourcePath() . DIRECTORY_SEPARATOR. $this->configFileName;
-
-        return file_exists($configFilePath) && $this->areUnifiedNamespacesGenerated();
-    }
-
-    /**
      * @return int
      */
     public function getDefaultShopId(): int
@@ -158,14 +134,6 @@ class BasicContext implements BasicContextInterface
     }
 
     /**
-     * @return bool
-     */
-    private function areUnifiedNamespacesGenerated(): bool
-    {
-        return class_exists('\OxidEsales\Eshop\Core\Registry');
-    }
-
-    /**
      * @return array
      */
     public function getBackwardsCompatibilityClassMap(): array
@@ -179,5 +147,21 @@ class BasicContext implements BasicContextInterface
     public function getProjectConfigurationPath(): string
     {
         return $this->getSourcePath() . '/project_configuration.yml';
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfigFilePath(): string
+    {
+        return $this->getSourcePath() . '/config.inc.php';
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfigTableName(): string
+    {
+        return 'oxconfig';
     }
 }

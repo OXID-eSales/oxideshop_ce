@@ -5,3 +5,9 @@ services:
   OxidEsales\EshopCommunity\Internal\Application\Service\ProjectYamlImportServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Application\Service\ProjectYamlImportService
     public: true
+
+  OxidEsales\EshopCommunity\Internal\Application\Service\ShopStateServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Application\Service\ShopStateService
+    arguments:
+      $anyUnifiedNamespace: '\OxidEsales\Eshop\Core\Registry'
+    public: true

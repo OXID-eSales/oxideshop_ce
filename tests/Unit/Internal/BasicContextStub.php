@@ -23,6 +23,7 @@ class BasicContextStub implements BasicContextInterface
     private $professionalEditionRootPath;
     private $sourcePath;
     private $modulesPath;
+    private $configFilePath;
 
     public function __construct()
     {
@@ -36,6 +37,7 @@ class BasicContextStub implements BasicContextInterface
         $this->professionalEditionRootPath = $basicContext->getProfessionalEditionRootPath();
         $this->sourcePath = $basicContext->getSourcePath();
         $this->modulesPath = $basicContext->getModulesPath();
+        $this->configFilePath = $basicContext->getConfigFilePath();
     }
 
     /**
@@ -159,14 +161,6 @@ class BasicContextStub implements BasicContextInterface
     }
 
     /**
-     * @return bool
-     */
-    public function isShopLaunched(): bool
-    {
-        return true;
-    }
-
-    /**
      * @return int
      */
     public function getDefaultShopId(): int
@@ -204,5 +198,21 @@ class BasicContextStub implements BasicContextInterface
     public function getProjectConfigurationPath(): string
     {
         return $this->getSourcePath() . '/tmp/project_configuration.yml';
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfigFilePath(): string
+    {
+        return $this->configFilePath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfigTableName(): string
+    {
+        return 'oxconfig';
     }
 }

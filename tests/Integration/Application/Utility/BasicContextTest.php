@@ -7,7 +7,6 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Utility;
 
 use OxidEsales\EshopCommunity\Internal\Application\BootstrapContainer\BootstrapContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
@@ -27,15 +26,9 @@ class BasicContextTest extends TestCase
         parent::setUp();
     }
 
-    public function testIsShopSetUp()
+    public function testGetConfigFilePath()
     {
-        $this->assertTrue($this->basicContext->isShopLaunched());
-    }
-
-    public function testIsShopSetUpReturnsFalseIfConfigFileDoesNotExist()
-    {
-        $context = new BasicContext('nonExistentFile');
-        $this->assertFalse($context->isShopLaunched());
+        $this->assertFileExists($this->basicContext->getConfigFilePath());
     }
 
     public function testGetDefaultShopId()

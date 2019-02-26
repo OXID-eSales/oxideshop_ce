@@ -15,9 +15,16 @@ interface PasswordHashServiceInterface
      * Creates a password hash
      *
      * @param string $password
-     * @param array  $options
      *
      * @return string
      */
-    public function hash(string $password, array $options = []): string;
+    public function hash(string $password): string;
+
+
+    /**
+     * @param string $passwordHash
+     *
+     * @return bool
+     */
+    public function passwordNeedsRehash(string $passwordHash): bool;
 }

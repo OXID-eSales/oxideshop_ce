@@ -10,5 +10,9 @@ services:
   OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceFactory
 
-  oxid_esales.password.password_hash_bcrypt_service_options_provider:
+  OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashBcryptServiceOptionsProvider:
     class: OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashBcryptServiceOptionsProvider
+
+  OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashBcryptService:
+    class: OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashBcryptService
+    public: true

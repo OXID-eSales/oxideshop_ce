@@ -14,18 +14,35 @@ use OxidEsales\EshopCommunity\Internal\Password\Exception\PasswordHashException;
 class PasswordHashBcryptService implements PasswordHashServiceInterface
 {
     /**
+     * @var PasswordHashBcryptServiceOptionsProvider
+     */
+    private $passwordHashBcryptServiceOptionsProvider;
+
+    /**
+     * PasswordHashBcryptService constructor.
+     *
+     * @param PasswordHashBcryptServiceOptionsProvider $passwordHashBcryptServiceOptionsProvider
+     */
+    public function __construct(\OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashBcryptServiceOptionsProvider $passwordHashBcryptServiceOptionsProvider)
+    {
+        $this->passwordHashBcryptServiceOptionsProvider = $passwordHashBcryptServiceOptionsProvider;
+    }
+
+    /**
      * Creates a password hash
      *
      * @param string $password
-     * @param array  $options
      *
      * @throws PasswordHashException
      *
      * @return string
      */
-    public function hash(string $password, array $options = []): string
+    public function hash(string $password): string
     {
-        $this->validateSaltOption($options);
+        $options = [
+            'cost' => $this->passwordHashBcryptServiceOptionsProvider->getCost(),
+        ];
+
         $this->validateCostOption($options);
 
         $hash = password_hash($password, PASSWORD_BCRYPT, $options);
@@ -38,17 +55,19 @@ class PasswordHashBcryptService implements PasswordHashServiceInterface
     }
 
     /**
-     * @param array $options
+     * @param string $passwordHash
      *
-     * @throws PasswordHashException
+     * @return bool
      */
-    private function validateSaltOption(array $options)
+    public function passwordNeedsRehash(string $passwordHash): bool
     {
-        if (array_key_exists('salt', $options) &&
-            !is_scalar($options['salt'])
-        ) {
-            throw new PasswordHashException('The salt option MUST be a scalar and it SHOULD be a string of at least 22 characters.');
-        }
+        $options = [
+            'cost' => $this->passwordHashBcryptServiceOptionsProvider->getCost(),
+        ];
+
+        $this->validateCostOption($options);
+
+        return password_needs_rehash($passwordHash, PASSWORD_BCRYPT, $options);
     }
 
     /**
@@ -61,7 +80,7 @@ class PasswordHashBcryptService implements PasswordHashServiceInterface
         if (array_key_exists('cost', $options) &&
             (!is_numeric($options['cost']) || $options['cost'] < 4)
         ) {
-            throw new PasswordHashException('The cost option MUST be a number and it must not be smaller than 3.');
+            throw new PasswordHashException('The cost option MUST be a number and it MUST not be smaller than 3.');
         }
     }
 }

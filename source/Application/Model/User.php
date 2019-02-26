@@ -2519,19 +2519,4 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $modelObject->delete();
         }
     }
-
-    /**
-     * @param $password
-     *
-     * @return string
-     */
-    private function getGeneratedPasswordHash($password): string
-    {
-        $algorithm = Registry::getConfig()->getConfigParam('passwordHashingAlgorithm') ?? PASSWORD_DEFAULT;
-        $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
-        $passwordHashService = $passwordServiceBridge->getPasswordHashService($algorithm);
-        $generatedPasswordHash = $passwordHashService->hash($password);
-
-        return $generatedPasswordHash;
-}
 }

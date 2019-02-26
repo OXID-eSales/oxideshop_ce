@@ -22,7 +22,7 @@ class PasswordHashServiceFactoryTest extends TestCase
     {
         $this->expectException(\OxidEsales\EshopCommunity\Internal\Password\Exception\PasswordHashException::class);
 
-        $algorithm = 'non-existent';
+        $algorithm = 1234;
         $factory = new PasswordHashServiceFactory();
 
         $factory->getPasswordHashService($algorithm);
@@ -30,22 +30,9 @@ class PasswordHashServiceFactoryTest extends TestCase
 
     /**
      */
-    public function testGetPasswordHashServiceReturnsInstanceOfSha512Service()
-    {
-        $algorithm = PasswordHashServiceFactory::ALGORITHM_SHA_512;
-        $factory = new PasswordHashServiceFactory();
-
-        $service = $factory->getPasswordHashService($algorithm);
-
-        $this->assertInstanceOf(Hasher::class, $service);
-    }
-
-    /**
-     */
     public function testGetPasswordHashServiceReturnsInstanceOfBcryptService()
     {
-        $algorithm = PasswordHashServiceFactory::ALGORITHM_BCRYPT;
-        $options = [];
+        $algorithm = PASSWORD_BCRYPT;
         $factory = new PasswordHashServiceFactory();
 
         $service = $factory->getPasswordHashService($algorithm);

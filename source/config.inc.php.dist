@@ -195,11 +195,9 @@ $this->aSlaveHosts = null;
 $this->blDelSetupDir = true;
 
 /**
- * Supported values are:
- * - bcrypt // default
- * - sha512
+ * Supported values are the PASSWORD_* constants available in your PHP version:
  */
-$this->passwordHashingAlgorithm = 'bcrypt';
+$this->passwordHashingAlgorithm = PASSWORD_BCRYPT;
 
 /**
  * See http://php.net/manual/en/function.password-hash.php for options and values

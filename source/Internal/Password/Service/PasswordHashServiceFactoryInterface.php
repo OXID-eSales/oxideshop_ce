@@ -14,9 +14,9 @@ use OxidEsales\Eshop\Core\Hasher;
 interface PasswordHashServiceFactoryInterface
 {
     /**
-     * @param string $algorithm
+     * @param int $algorithm
      *
-     * @return PasswordHashServiceInterface|Hasher
+     * @return PasswordHashServiceInterface
      */
-    public function getPasswordHashService(string $algorithm);
+    public function getPasswordHashService(int $algorithm): PasswordHashServiceInterface;
 }

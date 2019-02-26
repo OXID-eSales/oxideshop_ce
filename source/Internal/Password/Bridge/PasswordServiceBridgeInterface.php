@@ -18,10 +18,5 @@ interface PasswordServiceBridgeInterface
      *
      * @return PasswordHashServiceInterface
      */
-    public function getPasswordHashService(string $algorithm);
-
-    /**
-     * @return int
-     */
-    public function getBcryptCostOption(): int;
+    public function getPasswordHashService(int $algorithm): PasswordHashServiceInterface;
 }

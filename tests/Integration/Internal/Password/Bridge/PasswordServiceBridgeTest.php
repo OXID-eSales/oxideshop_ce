@@ -17,26 +17,15 @@ class PasswordServiceBridgeTest extends TestCase
 {
     use ContainerTrait;
 
-    public function testGetPasswordHashServiceReturnsWorkingPasswordHashServiceSha512()
-    {
-        /** @var PasswordServiceBridgeInterface $passwordServiceBridge */
-        $passwordServiceBridge = $this->get(PasswordServiceBridgeInterface::class);
-        $passwordHashService = $passwordServiceBridge->getPasswordHashService('sha512', []);
-        $hash = $passwordHashService->hash('secret');
-
-        $this->assertInstanceOf(Hasher::class, $passwordHashService);
-        $this->assertNotEmpty($hash);
-    }
-
     public function testGetPasswordHashServiceReturnsWorkingPasswordHashServiceBcrypt()
     {
         /** @var PasswordServiceBridgeInterface $passwordServiceBridge */
         $passwordServiceBridge = $this->get(PasswordServiceBridgeInterface::class);
-        $passwordHashService = $passwordServiceBridge->getPasswordHashService('bcrypt', ['foo' => 'bar']);
+        $passwordHashService = $passwordServiceBridge->getPasswordHashService(PASSWORD_BCRYPT);
         $hash = $passwordHashService->hash('secret');
         $info = password_get_info($hash);
 
         $this->assertInstanceOf(PasswordHashBcryptService::class, $passwordHashService);
-        $this->assertSame('bcrypt', $info['algoName']);
+        $this->assertSame(PASSWORD_BCRYPT, $info['algo']);
     }
 }

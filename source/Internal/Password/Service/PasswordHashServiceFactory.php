@@ -6,34 +6,30 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Password\Service;
 
-use OxidEsales\Eshop\Core\Hasher;
-use OxidEsales\Eshop\Core\Sha512Hasher;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Password\Exception\PasswordHashException;
+use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashBcryptService;
 
 /**
  * @internal
  */
 class PasswordHashServiceFactory implements PasswordHashServiceFactoryInterface
 {
-    const ALGORITHM_SHA_512 = 'sha512';
-    const ALGORITHM_BCRYPT = 'bcrypt';
-
     /**
-     * @param string $algorithm
+     * @param int $algorithm
      *
      * @throws PasswordHashException
      *
-     * @return  PasswordHashServiceInterface|Hasher
+     * @return  PasswordHashServiceInterface
      */
-    public function getPasswordHashService(string $algorithm)
+    public function getPasswordHashService(int $algorithm): PasswordHashServiceInterface
     {
         $map = $this->getAlgorithmToClassMap();
-        $result = isset($map[$algorithm]);
         if (false === isset($map[$algorithm])) {
             throw new PasswordHashException('The requested hashing algorithm is not supported: "' . $algorithm . '"');
         }
 
-        return new $map[$algorithm]();
+        return ContainerFactory::getInstance()->getContainer()->get($map[$algorithm]);
     }
 
     /**
@@ -42,8 +38,7 @@ class PasswordHashServiceFactory implements PasswordHashServiceFactoryInterface
     private function getAlgorithmToClassMap(): array
     {
         return [
-            'sha512' => Sha512Hasher::class,
-            'bcrypt' => PasswordHashBcryptService::class
+            PASSWORD_BCRYPT => \OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashBcryptService::class,
         ];
     }
 }

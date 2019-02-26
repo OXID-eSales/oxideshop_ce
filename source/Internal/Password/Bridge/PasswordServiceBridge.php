@@ -38,21 +38,13 @@ class PasswordServiceBridge implements PasswordServiceBridgeInterface
     }
 
     /**
-     * @param string $algorithm
+     * @param int $algorithm
      *
-     * @return PasswordHashServiceInterface|Hasher
+     * @return PasswordHashServiceInterface
      */
-    public function getPasswordHashService(string $algorithm)
+    public function getPasswordHashService(int $algorithm): PasswordHashServiceInterface
     {
 
         return $this->passwordHashServiceFactory->getPasswordHashService($algorithm);
-    }
-
-    /**
-     * @return int
-     */
-    public function getBcryptCostOption(): int
-    {
-        return $this->passwordHashBcryptServiceOptionsProvider->getCost();
     }
 }

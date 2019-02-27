@@ -25,6 +25,7 @@ services:
       - '@oxid_esales.module.configuration.project_configuration_yaml_file_locator'
       - '@=service("OxidEsales\\EshopCommunity\\Internal\\Application\\Utility\\BasicContextInterface").getProjectConfigurationPath()'
       - '@oxid_esales.common.storage.flock_store_lock_factory'
+      - '@oxid_esales.symfony.file_system'
     public: false
 
   oxid_esales.module.configuration.project_configuration_yaml_file_locator:

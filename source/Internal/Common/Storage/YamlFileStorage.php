@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Internal\Common\Storage;
 
 use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 use Symfony\Component\Config\FileLocatorInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Lock\Factory;
 use Symfony\Component\Yaml\Yaml;
 
@@ -32,17 +33,27 @@ class YamlFileStorage implements ArrayStorageInterface
     private $lockFactory;
 
     /**
+     * @var Filesystem
+     */
+    private $filesystemService;
+
+    /**
      * YamlFileStorage constructor.
-     *
      * @param FileLocatorInterface $fileLocator
      * @param string               $filePath
      * @param Factory              $lockFactory
+     * @param Filesystem           $filesystemService
      */
-    public function __construct(FileLocatorInterface $fileLocator, string $filePath, Factory $lockFactory)
-    {
+    public function __construct(
+        FileLocatorInterface $fileLocator,
+        string $filePath,
+        Factory $lockFactory,
+        Filesystem $filesystemService
+    ) {
         $this->fileLocator = $fileLocator;
         $this->filePath = $filePath;
         $this->lockFactory = $lockFactory;
+        $this->filesystemService = $filesystemService;
     }
 
     /**
@@ -98,8 +109,8 @@ class YamlFileStorage implements ArrayStorageInterface
      */
     private function createFileDirectory()
     {
-        if (!file_exists(dirname($this->filePath))) {
-            mkdir(dirname($this->filePath), 0777, true);
+        if (!file_exists(\dirname($this->filePath))) {
+            $this->filesystemService->mkdir(\dirname($this->filePath));
         }
     }
 

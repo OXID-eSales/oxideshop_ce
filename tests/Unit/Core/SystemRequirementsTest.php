@@ -7,7 +7,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\SystemRequirements;
-use PHPUnit\Framework\MockObject\MockObject;
 
 class SystemRequirementsTest extends \OxidTestCase
 {
@@ -44,16 +43,29 @@ class SystemRequirementsTest extends \OxidTestCase
 
     /**
      * Testing SystemRequirements::checkServerPermissions()
-     *
-     * @return null
      */
     public function testCheckServerPermissions()
     {
-        /** @var SystemRequirements|PHPUnit\Framework\MockObject\MockObject $systemRequirementsMock */
-        $systemRequirementsMock = $this->getMock(\OxidEsales\Eshop\Core\SystemRequirements::class, array('isAdmin'));
-        $systemRequirementsMock->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
+        $systemRequirementsMock = $this
+            ->getMockBuilder(SystemRequirements::class)
+            ->setMethods(['isAdmin'])
+            ->getMock();
+
+        $systemRequirementsMock->method('isAdmin')->willReturn(false);
 
         $this->assertEquals(2, $systemRequirementsMock->checkServerPermissions());
+    }
+
+    public function testCheckServerPermissionsReturnsSetupBlockedStatusIfDirectoriesDoNotExist()
+    {
+        $systemRequirementsMock = $this
+            ->getMockBuilder(SystemRequirements::class)
+            ->setMethods(['isAdmin'])
+            ->getMock();
+
+        $systemRequirementsMock->method('isAdmin')->willReturn(false);
+
+        $this->assertEquals(0, $systemRequirementsMock->checkServerPermissions('nonExistentSourcePath'));
     }
 
 

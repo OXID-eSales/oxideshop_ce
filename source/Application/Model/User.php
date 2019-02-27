@@ -192,7 +192,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function __construct()
     {
-        $this->setMallUsersStatus($this->getConfig()->getConfigParam('blMallUsers'));
+        $this->setMallUsersStatus(Registry::getConfig()->getConfigParam('blMallUsers'));
 
         parent::__construct();
         $this->init('oxuser');

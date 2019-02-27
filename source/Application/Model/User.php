@@ -1339,6 +1339,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oConfig = $this->getConfig();
 
         $shopId = $oConfig->getShopId();
+
+        /** New authentication */
         if ($password && !$this->isLoaded()) {
             $passwordHashFromDatabase = $this->getPasswordHashFromDatabase($userName, $shopId);
             $userIsAuthenticated = password_verify($password, $passwordHashFromDatabase);
@@ -1347,10 +1349,12 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             }
         }
 
+        /** Old authentication + authorization */
         if ($password && !$this->isLoaded()) {
             $this->_dbLogin($userName, $password, $shopId);
         }
 
+        /** Event for authentication, authorization or whatsoever */
         $this->onLogin($userName, $password);
 
         //login successful?
@@ -1377,20 +1381,21 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
                 $oConfig->getShopId(),
                 31536000,
                 static::USER_COOKIE_SALT
-
             );
         }
 
-        //
-        $algorithm = Registry::getConfig()->getConfigParam('passwordHashingAlgorithm') ?? PASSWORD_DEFAULT;
-        $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
-        $passwordHashService = $passwordServiceBridge->getPasswordHashService($algorithm);
-        $passwordNeedsRehash = $passwordHashService->passwordNeedsRehash($passwordHashFromDatabase) || $this->isOutdatedPasswordHashingAlgorithmUsed;
-        if ($passwordNeedsRehash) {
-            $generatedPasswordHash = $passwordHashService->hash($password);
-            $this->oxuser__oxpassword = new \OxidEsales\Eshop\Core\Field($generatedPasswordHash, \OxidEsales\Eshop\Core\Field::T_RAW);
-            $this->oxuser__oxpasssalt = new \OxidEsales\Eshop\Core\Field('');
-            $this->save();
+        /** Rehash password, if needed */
+        if ($password) {
+            $algorithm = Registry::getConfig()->getConfigParam('passwordHashingAlgorithm') ?? PASSWORD_DEFAULT;
+            $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
+            $passwordHashService = $passwordServiceBridge->getPasswordHashService($algorithm);
+            $passwordNeedsRehash = $passwordHashService->passwordNeedsRehash($passwordHashFromDatabase) || $this->isOutdatedPasswordHashingAlgorithmUsed;
+            if ($passwordNeedsRehash) {
+                $generatedPasswordHash = $passwordHashService->hash($password);
+                $this->oxuser__oxpassword = new \OxidEsales\Eshop\Core\Field($generatedPasswordHash, \OxidEsales\Eshop\Core\Field::T_RAW);
+                $this->oxuser__oxpasssalt = new \OxidEsales\Eshop\Core\Field('');
+                $this->save();
+            }
         }
 
         return true;

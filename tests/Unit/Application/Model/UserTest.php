@@ -2732,7 +2732,6 @@ class UserTest extends \OxidTestCase
         $this->assertFalse($oUser->addToGroup("nonsense"));
     }
 
-
     public function testGetIdByUserName()
     {
         $oUser = oxNew('oxUser');
@@ -2747,18 +2746,10 @@ class UserTest extends \OxidTestCase
         $oUser->oxuser__oxshopid = new oxField('xxx');
         $oUser->save();
 
-
-        $this->getConfig()->setConfigParam('blMallUsers', false);
         $oU = oxNew('oxUser');
         $this->assertEquals('_testId_1', $oU->getIdByUserName('aaa@bbb.lt'));
         $this->assertFalse($oU->getIdByUserName('bbb@ccc.lt'));
-
-        $this->getConfig()->setConfigParam('blMallUsers', true);
-        $oU = oxNew('oxUser');
-        $this->assertEquals('_testId_1', $oU->getIdByUserName('aaa@bbb.lt'));
-        $this->assertEquals('_testId_2', $oU->getIdByUserName('bbb@ccc.lt'));
     }
-
 
     public function testIsPriceViewModeNetto()
     {

@@ -34,7 +34,11 @@ class MetaDataNormalizer implements MetaDataNormalizerInterface
         }
 
         if (isset($normalizedMetaData[MetaDataProvider::METADATA_TITLE])) {
-            $normalizedMetaData = $this->normalizeModuleTitle($normalizedMetaData);
+            $normalizedMetaData = $this->normalizeMultiLanguageField($normalizedMetaData, MetaDataProvider::METADATA_TITLE);
+        }
+
+        if (isset($normalizedMetaData[MetaDataProvider::METADATA_DESCRIPTION])) {
+            $normalizedMetaData = $this->normalizeMultiLanguageField($normalizedMetaData, MetaDataProvider::METADATA_DESCRIPTION);
         }
 
         return $normalizedMetaData;
@@ -56,19 +60,20 @@ class MetaDataNormalizer implements MetaDataNormalizerInterface
     }
 
     /**
-     * @param array $normalizedMetaData
+     * @param array  $normalizedMetaData
+     * @param string $fieldName
      * @return array
      */
-    private function normalizeModuleTitle(array $normalizedMetaData): array
+    private function normalizeMultiLanguageField(array $normalizedMetaData, string $fieldName): array
     {
-        $title = $normalizedMetaData[MetaDataProvider::METADATA_TITLE];
+        $title = $normalizedMetaData[$fieldName];
 
         if (is_string($title)) {
             $defaultLanguage = $normalizedMetaData[MetaDataProvider::METADATA_LANG] ?? 'en';
             $normalizedTitle = [
                 $defaultLanguage => $title,
             ];
-            $normalizedMetaData[MetaDataProvider::METADATA_TITLE] = $normalizedTitle;
+            $normalizedMetaData[$fieldName] = $normalizedTitle;
         }
 
         return $normalizedMetaData;

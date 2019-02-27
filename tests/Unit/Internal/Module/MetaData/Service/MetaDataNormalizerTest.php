@@ -155,37 +155,51 @@ class MetaDataNormalizerTest extends TestCase
         );
     }
 
-    public function testNormalizerConvertsTitleToArrayWithDefaultLanguageIfItIsString()
+    /**
+     * @dataProvider multiLanguageFieldDataProvider
+     */
+    public function testNormalizerConvertsMultiLanguageFieldToArrayWithDefaultLanguageIfItIsString(string $fieldName, string $value)
     {
         $metadata = [
-            'title' => 'Some module',
+            $fieldName => $value,
         ];
 
         $this->assertSame(
             [
-                'title' => [
-                    'en' => 'Some module',
+                $fieldName => [
+                    'en' => $value,
                 ]
             ],
             (new MetaDataNormalizer())->normalizeData($metadata)
         );
     }
 
-    public function testNormalizerConvertsTitleToArrayWithCustomLanguageIfItIsStringAndLangOptionIsSet()
+    /**
+     * @dataProvider multiLanguageFieldDataProvider
+     */
+    public function testNormalizerConvertsMultiLanguageFieldToArrayWithCustomLanguageIfItIsStringAndLangOptionIsSet(string $fieldName, string $value)
     {
         $metadata = [
-            'title' => 'Some module',
+            $fieldName => $value,
             'lang'  => 'esperanto',
         ];
 
         $this->assertSame(
             [
-                'title' => [
-                    'esperanto' => 'Some module',
+                $fieldName => [
+                    'esperanto' => $value,
                 ],
                 'lang'  => 'esperanto',
             ],
             (new MetaDataNormalizer())->normalizeData($metadata)
         );
+    }
+
+    public function multiLanguageFieldDataProvider(): array
+    {
+        return [
+            ['title', 'some value'],
+            ['description', 'some value'],
+        ];
     }
 }

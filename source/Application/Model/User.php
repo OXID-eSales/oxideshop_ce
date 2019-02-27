@@ -1336,7 +1336,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             throw oxNew(CookieException::class, 'ERROR_MESSAGE_COOKIE_NOCOOKIE');
         }
 
-        $oConfig = $this->getConfig();
+        $oConfig = Registry::getConfig();
 
         $shopId = $oConfig->getShopId();
 
@@ -1389,7 +1389,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $algorithm = Registry::getConfig()->getConfigParam('passwordHashingAlgorithm') ?? PASSWORD_DEFAULT;
             $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
             $passwordHashService = $passwordServiceBridge->getPasswordHashService($algorithm);
-            $passwordNeedsRehash = $passwordHashService->passwordNeedsRehash($passwordHashFromDatabase) || $this->isOutdatedPasswordHashingAlgorithmUsed;
+            $passwordHashFromDatabase = $this->getPasswordHashFromDatabase($userName, $shopId);
+            $passwordNeedsRehash = $this->isOutdatedPasswordHashingAlgorithmUsed || $passwordHashService->passwordNeedsRehash($passwordHashFromDatabase);
             if ($passwordNeedsRehash) {
                 $generatedPasswordHash = $passwordHashService->hash($password);
                 $this->oxuser__oxpassword = new \OxidEsales\Eshop\Core\Field($generatedPasswordHash, \OxidEsales\Eshop\Core\Field::T_RAW);

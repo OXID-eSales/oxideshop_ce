@@ -33,7 +33,7 @@ class LoginTest extends UserTestCase
     /**
      * Tries to login with old password from different subshop, makes sure there are no crashes
      */
-    public function testAdminLoginWithOldPasswordMultishop()
+    public function testAdminLoginWithOldPasswordMultiShop()
     {
 
         $this->setAdminMode(true);

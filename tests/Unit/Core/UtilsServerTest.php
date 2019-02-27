@@ -5,6 +5,7 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
+use OxidEsales\Eshop\Application\Model\User;
 use \oxRegistry;
 use \oxTestModules;
 
@@ -251,12 +252,12 @@ class UtilsServerTest extends \OxidTestCase
     public function testGetSetAndDeleteUserCookie()
     {
         $this->setTime(0);
-        $sCryptedVal = 'admin@@@' . crypt('admin', 'test_salt');
+        $sCryptedVal = 'admin@@@' . crypt('admin', User::USER_COOKIE_SALT);
         $oUtils = oxNew('oxutilsserver');
 
         $this->assertNull($oUtils->getUserCookie());
 
-        $oUtils->setUserCookie('admin', 'admin', null, 31536000, 'test_salt');
+        $oUtils->setUserCookie('admin', 'admin', null, 31536000, User::USER_COOKIE_SALT);
         $this->assertEquals($sCryptedVal, $oUtils->getUserCookie());
 
 

@@ -10,6 +10,7 @@ use OxidEsales\EshopCommunity\Internal\Application\Events\ProjectYamlChangedEven
 use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @internal
@@ -22,14 +23,14 @@ class ContainerAwareProjectYamlDao extends ProjectYamlDao
     private $eventDispatcher;
 
     /**
-     * ProjectYamlDao constructor.
-     *
+     * ContainerAwareProjectYamlDao constructor.
      * @param BasicContextInterface    $context
      * @param EventDispatcherInterface $eventDispatcher
+     * @param Filesystem               $filesystem
      */
-    public function __construct(BasicContextInterface $context, EventDispatcherInterface $eventDispatcher)
+    public function __construct(BasicContextInterface $context, EventDispatcherInterface $eventDispatcher, Filesystem $filesystem)
     {
-        parent::__construct($context);
+        parent::__construct($context, $filesystem);
         $this->eventDispatcher = $eventDispatcher;
     }
 

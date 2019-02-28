@@ -34,7 +34,10 @@ class ProjectYamlDaoTest extends TestCase
             ->method('getGeneratedServicesFilePath')
             ->willReturn($this->getTestGeneratedServicesFilePath());
 
-        $this->dao = new ProjectYamlDao($contextStub);
+        $this->dao = new ProjectYamlDao(
+            $contextStub,
+            $this->get('oxid_esales.symfony.file_system')
+        );
     }
 
     protected function tearDown()

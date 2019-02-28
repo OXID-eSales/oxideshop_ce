@@ -1236,24 +1236,32 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * MD5 encoding is used in legacy eShop versions.
      * We still allow to perform the login for users registered in the previous eshop versions.
      *
-     * @param string $sUser     login name
-     * @param string $sPassword login password
-     * @param string $sShopID   shopid
-     * @param bool   $blAdmin   admin/non admin mode
+     * @param string $userName login name
+     * @param string $password login password
+     * @param string $shopId   shopid
+     * @param bool   $isAdmin  admin/non admin mode
      *
      * @return string
      */
-    protected function _getLoginQueryHashedWithMD5($sUser, $sPassword, $sShopID, $blAdmin)
+    protected function _getLoginQueryHashedWithMD5($userName, $password, $shopId, $isAdmin)
     {
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $sUserSelect = "oxuser.oxusername = " . $oDb->quote($sUser);
-        $sPassSelect = " oxuser.oxpassword = BINARY MD5( CONCAT( " . $oDb->quote($sPassword) . ", UNHEX( oxuser.oxpasssalt ) ) ) ";
-        $sShopSelect = $this->formQueryPartForAdminView($sShopID, $blAdmin);
+        $userNameCondition = $this->formQueryPartForUserName($userName, $database);
+        $passwordCondition = $this->formQueryPartForMD5Password($password, $database);
+        $shopOrRightsCondition = $this->formQueryPartForAdminView($shopId, $isAdmin);
+        $activeCondition =  'oxuser.oxactive = 1';
 
-        $sSelect = "select `oxid` from oxuser where oxuser.oxactive = 1 and {$sPassSelect} and {$sUserSelect} {$sShopSelect} ";
+        $query = "SELECT `oxid`
+                    FROM oxuser 
+                    WHERE 1  
+                    AND $activeCondition 
+                    AND $passwordCondition 
+                    AND $userNameCondition 
+                    $shopOrRightsCondition
+                    ";
 
-        return $sSelect;
+        return $query;
     }
 
     /**
@@ -1266,20 +1274,21 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _getLoginQueryHashedWithSha512(string $userName, string $password, string $shopId, bool $isAdmin): string
     {
-        $database = DatabaseProvider::getDb();
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $userNameCondition = $this->formQueryPartForUserName($userName, $database);
+        $shopOrRightsCondition = $this->formQueryPartForAdminView($shopId, $isAdmin);
+        $passwordCondition = $this->formQueryPartForSha512Password($password, $database, $userNameCondition, $shopOrRightsCondition);
+        $activeCondition =  'oxuser.oxactive = 1';
 
-        $userSelect = "oxuser.oxusername = " . $database->quote($userName);
 
-        $shopSelect = $this->formQueryPartForAdminView($shopId, $isAdmin);
-
-        $salt = $database->getOne("SELECT `oxpasssalt` FROM `oxuser` WHERE  " . $userSelect . $shopSelect);
-        if (false !== $salt) {
-            $passwordSelect = " oxuser.oxpassword = " . $database->quote($this->encodePassword($password, $salt));
-        } else {
-            $passwordSelect = '1';
-        }
-
-        $query = "select `oxid` from oxuser where oxuser.oxactive = 1 and {$passwordSelect} and {$userSelect} {$shopSelect} ";
+        $query = "SELECT `oxid`
+                    FROM oxuser 
+                    WHERE 1  
+                    AND $activeCondition 
+                    AND $passwordCondition 
+                    AND $userNameCondition 
+                    $shopOrRightsCondition
+                    ";
 
         return $query;
     }
@@ -1392,7 +1401,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $passwordHashFromDatabase = $this->getPasswordHashFromDatabase($userName, $shopId);
             $passwordNeedsRehash = $this->isOutdatedPasswordHashingAlgorithmUsed || $passwordHashService->passwordNeedsRehash($passwordHashFromDatabase);
             if ($passwordNeedsRehash) {
-                $generatedPasswordHash = $passwordHashService->hash($password);
+                $generatedPasswordHash = $this->hashPassword($password);
                 $this->oxuser__oxpassword = new \OxidEsales\Eshop\Core\Field($generatedPasswordHash, \OxidEsales\Eshop\Core\Field::T_RAW);
                 $this->oxuser__oxpasssalt = new \OxidEsales\Eshop\Core\Field('');
                 $this->save();
@@ -1972,9 +1981,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $algorithm = Registry::getConfig()->getConfigParam('passwordHashingAlgorithm') ?? PASSWORD_DEFAULT;
         $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
         $passwordHashService = $passwordServiceBridge->getPasswordHashService($algorithm);
-        $passwordHash = $passwordHashService->hash($password);
 
-        return $passwordHash;
+        return $passwordHashService->hash($password);
     }
 
     /**
@@ -2241,14 +2249,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _dbLogin(string $userName, $password, $shopID)
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-
-        if ($this->_isDemoShop() && $this->isAdmin()) {
-            $userId = $database->getOne($this->_getDemoShopLoginQuery($userName, $password));
-        } else {
-            $userId = $database->getOne($this->_getLoginQuery($userName, $password, $shopID, $this->isAdmin()));
-            if (!$userId) {
-                $userId = $database->getOne($this->_getLoginQueryHashedWithMD5($userName, $password, $shopID, $this->isAdmin()));
-            }
+        $userId = $database->getOne($this->_getLoginQuery($userName, $password, $shopID, $this->isAdmin()));
+        if (!$userId) {
+            $userId = $database->getOne($this->_getLoginQueryHashedWithMD5($userName, $password, $shopID, $this->isAdmin()));
         }
 
         /** Return here to give other log-in mechanisms the possibility to be triggered */
@@ -2373,6 +2376,14 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function onLogin($userName, $password)
     {
+        /** Demo shop log in */
+        if (!$this->isLoaded() && $this->_isDemoShop() && $this->isAdmin()) {
+            $database = DatabaseProvider::getDb();
+            $userId = $database->getOne($this->_getDemoShopLoginQuery($userName, $password));
+            if ($userId) {
+                $this->load($userId);
+            }
+        }
     }
 
     /**
@@ -2539,6 +2550,52 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $ids = $database->getCol('SELECT oxid FROM oxpricealarm WHERE oxuserid = ?', [$this->getId()]);
         array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\PriceAlarm::class);
+    }
+
+    /**
+     * @param string            $password
+     * @param DatabaseInterface $database
+     * @param string            $userCondition
+     * @param string            $shopCondition
+     *
+     * @return string
+     */
+    protected function formQueryPartForSha512Password(string $password, DatabaseInterface $database, string $userCondition, string $shopCondition): string
+    {
+        $salt = $database->getOne("SELECT `oxpasssalt` FROM `oxuser` WHERE  1 AND $userCondition AND $shopCondition");
+        if (false !== $salt) {
+            $passwordSelect = " oxuser.oxpassword = " . $database->quote($this->encodePassword($password, $salt));
+        } else {
+            $passwordSelect = '1';
+        }
+
+        return $passwordSelect;
+    }
+
+    /**
+     * @param                   $sPassword
+     * @param DatabaseInterface $oDb
+     *
+     * @return string
+     */
+    protected function formQueryPartForMD5Password($sPassword, DatabaseInterface $oDb): string
+    {
+        $sPassSelect = " oxuser.oxpassword = BINARY MD5( CONCAT( " . $oDb->quote($sPassword) . ", UNHEX( oxuser.oxpasssalt ) ) ) ";
+
+        return $sPassSelect;
+    }
+
+    /**
+     * @param                   $sUser
+     * @param DatabaseInterface $oDb
+     *
+     * @return string
+     */
+    protected function formQueryPartForUserName($sUser, DatabaseInterface $oDb): string
+    {
+        $sUserSelect = "oxuser.oxusername = " . $oDb->quote($sUser);
+
+        return $sUserSelect;
     }
 
     /**

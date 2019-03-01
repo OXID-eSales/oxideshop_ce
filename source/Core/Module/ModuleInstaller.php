@@ -6,11 +6,9 @@
 namespace OxidEsales\EshopCommunity\Core\Module;
 
 use OxidEsales\Eshop\Core\Exception\ModuleValidationException;
-use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\FileCache;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Routing\Module\ClassProviderStorage;
-use OxidEsales\Eshop\Core\SettingsHandler;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
 use OxidEsales\Eshop\Core\SubShopSpecificFileCache;
 use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryRepository as EshopModuleSmartyPluginDirectoryRepository;
@@ -18,7 +16,7 @@ use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator as EshopModuleVariablesL
 use OxidEsales\Eshop\Core\Module\Module as EshopModule;
 use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryValidator as EshopModuleSmartyPluginDirectoryValidator;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleServicesActivationServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 
 /**
  * Modules installer class.
@@ -74,120 +72,49 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     /**
      * Activate extension by merging module class inheritance information with shop module array
      *
-     * @param \OxidEsales\Eshop\Core\Module\Module $module
+     * @param EshopModule $module
      *
      * @return bool
      */
-    public function activate(\OxidEsales\Eshop\Core\Module\Module $module)
+    public function activate(EshopModule $module)
     {
-        $result = false;
-        if ($moduleId = $module->getId()) {
-            $this->_addExtensions($module);
-            $this->_removeFromDisabledList($moduleId);
+        $this
+            ->getModuleActivationBridge()
+            ->activate(
+                $module->getId(),
+                Registry::getConfig()->getShopId()
+            );
 
-            if (version_compare($module->getMetaDataVersion(), '2.0', '<')) {
-                /** Support for the key 'files' was removed in MetaData version 2.0 */
-                $this->_addModuleFiles($module->getInfo("files"), $moduleId);
-            }
-
-            $this->_addTemplateBlocks($module->getInfo("blocks"), $moduleId);
-            $this->_addTemplateFiles($module->getInfo("templates"), $moduleId);
-            $settingsHandler = oxNew(SettingsHandler::class);
-            $settingsHandler->setModuleType('module')->run($module);
-            $this->_addModuleVersion($module->getInfo("version"), $moduleId);
-            $this->_addModuleExtensions($module->getExtensions(), $moduleId);
-            $this->_addModuleEvents($module->getInfo("events"), $moduleId);
-
-            if (version_compare($module->getMetaDataVersion(), '2.0', '>=')) {
-                try {
-                    /** Support for the key 'controllers' was added in MetaData version 2.0 */
-                    $this->addModuleControllers($module->getControllers(), $moduleId);
-                } catch (ModuleValidationException $exception) {
-                    $this->deactivate($module);
-                    $lang = Registry::getLang();
-                    $message = sprintf($lang->translateString('ERROR_METADATA_CONTROLLERS_NOT_UNIQUE', null, true), $exception->getMessage());
-
-                    $standardException = oxNew(StandardException::class);
-                    $standardException->setMessage($message);
-
-                    throw $standardException;
-                }
-            }
-
-            if (version_compare($module->getMetaDataVersion(), '2.1', '>=')) {
-                try {
-                    $this->addModuleSmartyPluginDirectories($module);
-                } catch (\Exception $exception) {
-                    $this->deactivate($module);
-
-                    throw oxNew(StandardException::class, $exception->getMessage());
-                }
-            }
-
-            $this->activateShopAwareServices($module);
-
-            $this->resetCache();
-
-            $this->_callEvent('onActivate', $moduleId);
-
-            $result = true;
-        }
-
-        return $result;
-    }
-
-    /**
-     * @param EshopModule $module
-     */
-    private function activateShopAwareServices(\OxidEsales\Eshop\Core\Module\Module $module)
-    {
-        /** @var ModuleServicesActivationServiceInterface $shopActivationService */
-        $shopActivationService = ContainerFactory::getInstance()->getContainer()->get(ModuleServicesActivationServiceInterface::class);
-        $shopActivationService->activateModuleServices($module->getId(), Registry::getConfig()->getShopId());
-    }
-
-    /**
-     * @param EshopModule $module
-     */
-    private function deactivateShopAwareServices(\OxidEsales\Eshop\Core\Module\Module $module)
-    {
-        /** @var ModuleServicesActivationServiceInterface $shopActivationService */
-        $shopActivationService = ContainerFactory::getInstance()->getContainer()->get(ModuleServicesActivationServiceInterface::class);
-        $shopActivationService->deactivateModuleServices($module->getId(), Registry::getConfig()->getShopId());
+        return true;
     }
 
     /**
      * Deactivate extension by adding disable module class information to disabled module array
      *
-     * @param \OxidEsales\Eshop\Core\Module\Module $module
+     * @param EshopModule $module
      *
      * @return bool
      */
-    public function deactivate(\OxidEsales\Eshop\Core\Module\Module $module)
+    public function deactivate(EshopModule $module)
     {
-        $result = false;
-        if ($moduleId = $module->getId()) {
-            $this->_callEvent('onDeactivate', $moduleId);
+        $this
+            ->getModuleActivationBridge()
+            ->deactivate(
+                $module->getId(),
+                Registry::getConfig()->getShopId()
+            );
 
-            $this->_addToDisabledList($moduleId);
+        return true;
+    }
 
-            //removing recoverable options
-            $this->_deleteBlock($moduleId);
-            $this->_deleteTemplateFiles($moduleId);
-            $this->_deleteModuleFiles($moduleId);
-            $this->_deleteModuleEvents($moduleId);
-            $this->_deleteModuleVersions($moduleId);
-            $this->deleteModuleControllers($moduleId);
-            $this->deleteModuleSmartyPluginDirectories($moduleId);
-
-            $this->deactivateShopAwareServices($module);
-
-            $this->resetCache();
-
-            $result = true;
-        }
-
-        return $result;
+    /**
+     * @return ModuleActivationBridgeInterface
+     */
+    private function getModuleActivationBridge(): ModuleActivationBridgeInterface
+    {
+        return ContainerFactory::getInstance()
+            ->getContainer()
+            ->get(ModuleActivationBridgeInterface::class);
     }
 
     /**

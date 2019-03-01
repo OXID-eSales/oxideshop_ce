@@ -3,6 +3,10 @@ services:
     autowire: true
     public: false
 
+  OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridge
+    public: true
+
   OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationService
     arguments:

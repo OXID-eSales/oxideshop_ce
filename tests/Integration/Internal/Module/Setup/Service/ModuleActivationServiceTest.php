@@ -22,7 +22,6 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectCo
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\ModuleEvents;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\SomeModuleService;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use OxidEsales\TestingLibrary\Services\Library\DatabaseRestorer\DatabaseRestorer;
@@ -92,58 +91,6 @@ class ModuleActivationServiceTest extends TestCase
         $moduleConfiguration = $moduleConfigurationDao->get($this->testModuleId, $this->shopId);
 
         $this->assertFalse($moduleConfiguration->isAutoActive());
-    }
-
-    public function testActivationEventWasExecuted()
-    {
-        $moduleConfiguration = $this->getTestModuleConfiguration();
-        $moduleConfiguration->addSetting(new ModuleSetting(
-            ModuleSetting::EVENTS,
-            [
-                'onActivate'    => ModuleEvents::class . '::onActivate',
-                'onDeactivate'  => ModuleEvents::class . '::onDeactivate',
-            ]
-        ));
-
-        $this->persistModuleConfiguration($moduleConfiguration);
-
-        /** @var ModuleActivationServiceInterface $moduleActivationService */
-        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
-
-        ob_start();
-        $moduleActivationService->activate($this->testModuleId, $this->shopId);
-        $eventMessage = ob_get_contents();
-        ob_end_clean();
-
-        $this->assertSame('Method onActivate was called', $eventMessage);
-    }
-
-    public function testDeactivationEventWasExecuted()
-    {
-        $moduleConfiguration = $this->getTestModuleConfiguration();
-        $moduleConfiguration->addSetting(new ModuleSetting(
-            ModuleSetting::EVENTS,
-            [
-                'onActivate'    => ModuleEvents::class . '::onActivate',
-                'onDeactivate'  => ModuleEvents::class . '::onDeactivate',
-            ]
-        ));
-
-        $this->persistModuleConfiguration($moduleConfiguration);
-
-        /** @var ModuleActivationServiceInterface $moduleActivationService */
-        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
-
-        ob_start();
-        $moduleActivationService->activate($this->testModuleId, $this->shopId);
-        ob_end_clean();
-
-        ob_start();
-        $moduleActivationService->deactivate($this->testModuleId, $this->shopId);
-        $eventMessage = ob_get_contents();
-        ob_end_clean();
-
-        $this->assertSame('Method onDeactivate was called', $eventMessage);
     }
 
     public function testClassExtensionChainUpdate()

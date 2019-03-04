@@ -6,9 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxField;
-use oxDb;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Newsletter manager.
@@ -60,7 +58,7 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxnewsletter');
+        $this->init(TABLE\OXNEWSLETTER);
     }
 
     /**

@@ -6,9 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-use oxRegistry;
-use oxField;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Category manager.
@@ -136,7 +134,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxcategories');
+        $this->init(TABLE\OXCATEGORIES);
     }
 
     /**

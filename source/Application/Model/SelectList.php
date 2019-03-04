@@ -6,8 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxDb;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Select list manager
@@ -56,7 +55,7 @@ class SelectList extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impleme
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxselectlist');
+        $this->init(TABLE\OXSELECTLIST);
     }
 
     /**

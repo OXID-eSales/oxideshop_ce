@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxField;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Manages product assignment to category.
@@ -26,7 +26,7 @@ class Object2Category extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxobject2category');
+        $this->init(TABLE\OXOBJECT2CATEGORY);
     }
 
     /**

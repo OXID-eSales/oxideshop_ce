@@ -6,8 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxDb;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Payment manager.
@@ -108,7 +107,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         $this->setPaymentVatOnTop($this->getConfig()->getConfigParam('blPaymentVatOnTop'));
         parent::__construct();
-        $this->init('oxpayments');
+        $this->init(TABLE\OXPAYMENTS);
     }
 
     /**

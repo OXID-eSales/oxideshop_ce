@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\Database\TABLE;
+
 /**
  * Media URL handler
  *
@@ -25,7 +27,7 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxmediaurls');
+        $this->init(TABLE\OXMEDIAURLS);
     }
 
     /**

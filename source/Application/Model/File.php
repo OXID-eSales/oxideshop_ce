@@ -6,9 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxField;
-use oxRegistry;
-use oxDb;
+use OxidEsales\Eshop\Core\Database\TABLE;
 use oxException;
 
 /**
@@ -27,7 +25,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @var string
      */
-    protected $_sCoreTable = 'oxfiles';
+    protected $_sCoreTable = TABLE\OXFILES;
 
     /**
      * Current class name

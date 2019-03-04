@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxField;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Links manager.
@@ -29,7 +29,7 @@ class Links extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxlinks');
+        $this->init(TABLE\OXLINKS);
     }
 
     /**

@@ -7,13 +7,8 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
-use oxArticleInputException;
-use OxidEsales\Eshop\Core\DatabaseProvider;
-use OxidEsales\Eshop\Core\Registry;
-use oxNoArticleException;
-use oxOutOfStockException;
+use OxidEsales\Eshop\Core\{DatabaseProvider, Registry, Database\TABLE, Price as ShopPrice};
 use oxField;
-use OxidEsales\Eshop\Core\Price as ShopPrice;
 use OxidEsales\Eshop\Application\Model\Payment as EshopPayment;
 
 /**
@@ -247,7 +242,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxorder');
+        $this->init(TABLE\OXORDER);
 
         // set usage of separate orders numbering for different shops
         $this->setSeparateNumbering($this->getConfig()->getConfigParam('blSeparateNumbering'));

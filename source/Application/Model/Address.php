@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\Database\TABLE;
+
 /**
  * Address handler
  */
@@ -50,7 +52,7 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxaddress');
+        $this->init(TABLE\OXADDRESS);
     }
 
     /**

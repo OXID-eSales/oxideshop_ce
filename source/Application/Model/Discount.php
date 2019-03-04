@@ -6,9 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
-use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\{Exception\StandardException, Database\TABLE};
 use stdClass;
 
 /**
@@ -58,7 +56,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxdiscount');
+        $this->init(TABLE\OXDISCOUNT);
     }
 
     /**

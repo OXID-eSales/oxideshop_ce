@@ -6,9 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxField;
-use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
-use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
+use OxidEsales\Eshop\Core\{Exception\DatabaseErrorException, Database\TABLE};
 
 /**
  * Manages object (users, discounts, deliveries...) assignment to groups.
@@ -27,7 +25,7 @@ class Object2Group extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxobject2group');
+        $this->init(TABLE\OXOBJECT2GROUP);
         $this->oxobject2group__oxshopid = new \OxidEsales\Eshop\Core\Field($this->getConfig()->getShopId(), \OxidEsales\Eshop\Core\Field::T_RAW);
     }
 

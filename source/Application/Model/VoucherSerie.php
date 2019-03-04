@@ -6,8 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxDb;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Voucher serie manager.
@@ -34,7 +33,7 @@ class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxvoucherseries');
+        $this->init(TABLE\OXVOUCHERSERIES);
     }
 
     /**

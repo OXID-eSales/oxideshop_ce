@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Order delivery manager.
@@ -123,7 +123,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxdelivery');
+        $this->init(TABLE\OXDELIVERY);
         $this->setDelVatOnTop($this->getConfig()->getConfigParam('blDeliveryVatOnTop'));
     }
 

@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * State handler
@@ -26,7 +26,7 @@ class State extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function __construct()
     {
         parent::__construct();
-        $this->init("oxstates");
+        $this->init(TABLE\OXSTATES);
     }
 
     /**

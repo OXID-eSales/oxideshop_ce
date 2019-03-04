@@ -6,8 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxPrice;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Lightweight variant handler. Implemnets only absolutely needed oxArticle methods.
@@ -72,7 +71,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
     {
         parent::__construct();
         $this->_sCacheKey = "simplevariants";
-        $this->init('oxarticles');
+        $this->init(TABLE\OXARTICLES);
     }
 
     /**

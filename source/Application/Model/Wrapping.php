@@ -6,8 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxDb;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Wrapping manager.
@@ -54,7 +53,7 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $this->setWrappingVat($oConfig->getConfigParam('dDefaultVAT'));
         $this->setWrappingVatOnTop($oConfig->getConfigParam('blWrappingVatOnTop'));
         parent::__construct();
-        $this->init('oxwrapping');
+        $this->init(TABLE\OXWRAPPING);
     }
 
     /**

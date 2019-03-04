@@ -6,10 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxDb;
-use oxField;
-use oxUtilsView;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * News manager.
@@ -41,7 +38,7 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxnews');
+        $this->init(TABLE\OXNEWS);
     }
 
     /**

@@ -6,8 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxField;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Manufacturer manager
@@ -71,7 +70,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     {
         $this->setShowArticleCnt($this->getConfig()->getConfigParam('bl_perfShowActionCatArticleCnt'));
         parent::__construct();
-        $this->init('oxmanufacturers');
+        $this->init(TABLE\OXMANUFACTURERS);
     }
 
     /**

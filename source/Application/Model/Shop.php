@@ -6,8 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxDb;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Shop manager.
@@ -96,7 +95,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             return;
         }
 
-        $this->init('oxshops');
+        $this->init(TABLE\OXSHOPS);
 
         if ($iMax = $this->getConfig()->getConfigParam('iMaxShopId')) {
             $this->setMaxShopId($iMax);

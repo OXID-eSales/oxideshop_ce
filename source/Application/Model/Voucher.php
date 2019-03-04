@@ -6,10 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
 use stdClass;
-use oxRegistry;
-use oxField;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Voucher manager.
@@ -40,7 +38,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxvouchers');
+        $this->init(TABLE\OXVOUCHERS);
     }
 
     /**

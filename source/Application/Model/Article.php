@@ -7,13 +7,9 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
-use oxDb;
 use oxField;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\{Registry, Database\TABLE};
 use oxList;
-use oxPrice;
-use oxRegistry;
-use oxSeoEncoderArticle;
 
 // defining supported link types
 define('OXARTICLE_LINKTYPE_CATEGORY', 0);
@@ -479,7 +475,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             }
         }
         parent::__construct();
-        $this->init('oxarticles');
+        $this->init(TABLE\OXARTICLES);
     }
 
     /**

@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewAndRatingBridgeInterface;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Article review manager.
@@ -36,7 +37,7 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxreviews');
+        $this->init(TABLE\OXREVIEWS);
     }
 
     /**

@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Order delivery set manager.
@@ -27,7 +27,7 @@ class DeliverySet extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxdeliveryset');
+        $this->init(TABLE\OXDELIVERYSET);
     }
 
     /**

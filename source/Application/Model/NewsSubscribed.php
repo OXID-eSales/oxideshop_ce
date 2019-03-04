@@ -6,8 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-use oxField;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Newsletter Subscriptions manager
@@ -45,7 +44,7 @@ class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         parent::__construct();
 
-        $this->init('oxnewssubscribed');
+        $this->init(TABLE\OXNEWSSUBSCRIBED);
     }
 
     /**

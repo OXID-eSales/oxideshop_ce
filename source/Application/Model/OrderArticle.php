@@ -7,9 +7,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use OxidEsales\EshopCommunity\Application\Model\Contract\ArticleInterface;
-use oxRegistry;
-use oxField;
-use oxDb;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Order article manager.
@@ -86,7 +84,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxorderarticles');
+        $this->init(TABLE\OXORDERARTICLES);
     }
 
     /**

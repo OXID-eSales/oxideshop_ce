@@ -6,8 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxField;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Remark manager.
@@ -35,7 +34,7 @@ class Remark extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxremark');
+        $this->init(TABLE\OXREMARK);
     }
 
     /**

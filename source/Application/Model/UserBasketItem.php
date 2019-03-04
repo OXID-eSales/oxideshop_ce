@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxField;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Shopping basket item manager.
@@ -57,7 +57,7 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $this->setVariantParentBuyable($this->getConfig()->getConfigParam('blVariantParentBuyable'));
         parent::__construct();
-        $this->init('oxuserbasketitems');
+        $this->init(TABLE\OXUSERBASKETITEMS);
     }
 
     /**

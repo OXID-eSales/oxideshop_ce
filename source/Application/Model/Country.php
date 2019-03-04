@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Country manager
@@ -34,7 +34,7 @@ class Country extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxcountry');
+        $this->init(TABLE\OXCOUNTRY);
     }
 
     /**

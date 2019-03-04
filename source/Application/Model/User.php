@@ -6,9 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
-use OxidEsales\Eshop\Core\Field;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\{Database\Adapter\DatabaseInterface, Field, Registry, Database\TABLE};
 use oxUserException;
 
 /**
@@ -183,7 +181,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $this->setMallUsersStatus($this->getConfig()->getConfigParam('blMallUsers'));
 
         parent::__construct();
-        $this->init('oxuser');
+        $this->init(TABLE\OXUSER);
     }
 
     /**

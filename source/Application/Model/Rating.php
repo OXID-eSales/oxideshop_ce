@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridgeInterface;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Article rate manager.
@@ -35,7 +36,7 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxratings');
+        $this->init(TABLE\OXRATINGS);
     }
 
     /**

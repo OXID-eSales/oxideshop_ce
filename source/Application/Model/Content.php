@@ -6,9 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxField;
-use oxDb;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Content manager.
@@ -82,7 +80,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxcontents');
+        $this->init(TABLE\OXCONTENTS);
     }
 
     /**

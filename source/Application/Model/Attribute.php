@@ -6,9 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-use oxRegistry;
-use oxField;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Article attributes manager.
@@ -51,7 +49,7 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxattribute');
+        $this->init(TABLE\OXATTRIBUTE);
     }
 
     /**

@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Group manager.
@@ -28,7 +28,7 @@ class Groups extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxgroups');
+        $this->init(TABLE\OXGROUPS);
     }
 
     /**

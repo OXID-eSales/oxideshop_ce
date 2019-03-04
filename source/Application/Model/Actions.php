@@ -6,12 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-use oxField;
-use oxRegistry;
-use oxUtilsUrl;
-use oxUtilsView;
-use oxUtilsFile;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Article actions manager. Collects and keeps actions of chosen article.
@@ -32,7 +27,7 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function __construct()
     {
         parent::__construct();
-        $this->init("oxactions");
+        $this->init(TABLE\OXACTIONS);
     }
 
     /**

@@ -6,8 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxField;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Article file link manager.
@@ -38,7 +37,7 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxorderfiles');
+        $this->init(TABLE\OXORDERFILES);
     }
 
     /**

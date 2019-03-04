@@ -7,10 +7,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
-use oxDb;
-use oxRegistry;
-use oxList;
-use oxField;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Recommendation list manager class.
@@ -54,7 +51,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     public function __construct()
     {
         parent::__construct();
-        $this->init('oxrecommlists');
+        $this->init(TABLE\OXRECOMMLISTS);
     }
 
     /**

@@ -1274,7 +1274,22 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _getLoginQueryHashedWithSha512(string $userName, string $password, string $shopId, bool $isAdmin): string
     {
-        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+
+    }
+
+    /**
+     * Builds and returns user login query
+     *
+     * @param string $userName
+     * @param string $password
+     * @param int    $shopId
+     * @param bool   $isAdmin
+     *
+     * @return string
+     */
+    protected function _getLoginQuery($userName, $password, $shopId, $isAdmin)
+    {
+        $database = DatabaseProvider::getDb();
         $userNameCondition = $this->formQueryPartForUserName($userName, $database);
         $shopOrRightsCondition = $this->formQueryPartForAdminView($shopId, $isAdmin);
         $passwordCondition = $this->formQueryPartForSha512Password($password, $database, $userNameCondition, $shopOrRightsCondition);
@@ -1291,21 +1306,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
                     ";
 
         return $query;
-    }
-
-    /**
-     * Builds and returns user login query
-     *
-     * @param string $userName
-     * @param string $password
-     * @param int    $shopId
-     * @param bool   $isAdmin
-     *
-     * @return string
-     */
-    protected function _getLoginQuery($userName, $password, $shopId, $isAdmin)
-    {
-        return $this->_getLoginQueryHashedWithSha512($userName, $password, $shopId, $isAdmin);
     }
 
     /**
@@ -1351,7 +1351,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         /** New authentication */
         if ($password && !$this->isLoaded()) {
-            $passwordHashFromDatabase = $this->getPasswordHashFromDatabase($userName, $shopId);
+            $passwordHashFromDatabase = $this->getPasswordHashFromDatabase($userName, $shopId, $this->isAdmin());
             $userIsAuthenticated = password_verify($password, $passwordHashFromDatabase);
             if ($userIsAuthenticated) {
                 $this->loadAuthenticatedUser($userName, $shopId);
@@ -1398,7 +1398,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $algorithm = Registry::getConfig()->getConfigParam('passwordHashingAlgorithm') ?? PASSWORD_DEFAULT;
             $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
             $passwordHashService = $passwordServiceBridge->getPasswordHashService($algorithm);
-            $passwordHashFromDatabase = $this->getPasswordHashFromDatabase($userName, $shopId);
+            $isLoginToAdminBackend = $this->isAdmin();
+            $passwordHashFromDatabase = $this->getPasswordHashFromDatabase($userName, $shopId, $isLoginToAdminBackend);
             $passwordNeedsRehash = $this->isOutdatedPasswordHashingAlgorithmUsed || $passwordHashService->passwordNeedsRehash($passwordHashFromDatabase);
             if ($passwordNeedsRehash) {
                 $generatedPasswordHash = $this->hashPassword($password);
@@ -1419,7 +1420,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function loadAuthenticatedUser(string $userName, int $shopId)
     {
-        $userId = $this->getIdByUserName($userName);
+        $isLoginToAdminBackend = $this->isAdmin();
+        $userId = $this->getAuthenticatedUserId($userName, $shopId, $isLoginToAdminBackend);
         if (!$this->load($userId)) {
             throw oxNew(UserException::class, 'ERROR_MESSAGE_USER_NOVALIDLOGIN');
         }
@@ -1428,20 +1430,28 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * @param string $userName
      * @param int    $shopId
+     * @param bool   $isLoginToAdminBackend
      *
      * @return false|string
      * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
      */
-    protected function getAuthenticatedUserId(string $userName, int $shopId)
+    protected function getAuthenticatedUserId(string $userName, int $shopId, bool $isLoginToAdminBackend)
     {
         $database = DatabaseProvider::getDb();
-        $query = 'SELECT `OXID` FROM `oxuser` WHERE `oxusername` = ? AND `OXSHOPID` = ?';
+        $userNameCondition = $this->formQueryPartForUserName($userName, $database);
+        $shopOrRightsCondition = $this->formQueryPartForAdminView($shopId, $isLoginToAdminBackend);
+        $activeCondition =  'oxuser.oxactive = 1';
 
-        $userId = $database->getOne($query, [$userName, $shopId]);
+        $query = "SELECT `OXID`
+                    FROM oxuser 
+                    WHERE 1  
+                    AND $activeCondition 
+                    AND $userNameCondition 
+                    $shopOrRightsCondition
+                    ";
 
-        return $userId;
+        return $database->getOne($query);
     }
-
 
     /**
      * Logs out session user. Returns true on success
@@ -2266,16 +2276,27 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * @param string $userName
      * @param int    $shopId
+     * @param bool   $isLoginToAdminBackend
      *
      * @return false|string
      * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
      */
-    public function getPasswordHashFromDatabase(string $userName, int $shopId)
+    public function getPasswordHashFromDatabase(string $userName, int $shopId, bool $isLoginToAdminBackend)
     {
         $database = DatabaseProvider::getDb();
-        $result = $database->getOne('SELECT OXPASSWORD FROM oxuser WHERE OXUSERNAME = ? AND OXSHOPID = ?', [$userName, $shopId]);
+        $userNameCondition = $this->formQueryPartForUserName($userName, $database);
+        $shopOrRightsCondition = $this->formQueryPartForAdminView($shopId, $isLoginToAdminBackend);
+        $activeCondition =  'oxuser.oxactive = 1';
 
-        return $result;
+        $query = "SELECT `oxpassword`
+                    FROM oxuser 
+                    WHERE 1  
+                    AND $activeCondition 
+                    AND $userNameCondition 
+                    $shopOrRightsCondition
+                    ";
+
+        return $database->getOne($query);
     }
 
     /**
@@ -2562,25 +2583,25 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function formQueryPartForSha512Password(string $password, DatabaseInterface $database, string $userCondition, string $shopCondition): string
     {
-        $salt = $database->getOne("SELECT `oxpasssalt` FROM `oxuser` WHERE  1 AND $userCondition AND $shopCondition");
+        $salt = $database->getOne("SELECT `oxpasssalt` FROM `oxuser` WHERE  1 AND $userCondition $shopCondition");
         if (false !== $salt) {
-            $passwordSelect = " oxuser.oxpassword = " . $database->quote($this->encodePassword($password, $salt));
+            $passwordSelect = ' oxuser.oxpassword = ' . $database->quote($this->encodePassword($password, $salt));
         } else {
-            $passwordSelect = '1';
+            $passwordSelect = ' 1 ';
         }
 
         return $passwordSelect;
     }
 
     /**
-     * @param                   $sPassword
-     * @param DatabaseInterface $oDb
+     * @param string            $password
+     * @param DatabaseInterface $databaseb
      *
      * @return string
      */
-    protected function formQueryPartForMD5Password($sPassword, DatabaseInterface $oDb): string
+    protected function formQueryPartForMD5Password($password, DatabaseInterface $databaseb): string
     {
-        $sPassSelect = " oxuser.oxpassword = BINARY MD5( CONCAT( " . $oDb->quote($sPassword) . ", UNHEX( oxuser.oxpasssalt ) ) ) ";
+        $sPassSelect = ' oxuser.oxpassword = BINARY MD5( CONCAT( ' . $databaseb->quote($password) . ', UNHEX( oxuser.oxpasssalt ) ) ) ';
 
         return $sPassSelect;
     }

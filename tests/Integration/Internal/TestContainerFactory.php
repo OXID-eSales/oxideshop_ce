@@ -40,7 +40,7 @@ class TestContainerFactory
         $projectConfigurationYmlStorageDefinition = $container->getDefinition('oxid_esales.module.configuration.project_configuration_yaml_file_storage');
         $projectConfigurationYmlStorageDefinition->setArgument(
             '$filePath',
-            tempnam(sys_get_temp_dir() . '/test_project_configuration', 'test_')
+            tempnam(sys_get_temp_dir(), 'test_')
         );
         $container->setDefinition(
             'oxid_esales.module.configuration.project_configuration_yaml_file_storage',

@@ -23,6 +23,7 @@ services:
       - [addHandler, ['@oxid_esales.module.setup.template_blocks_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.shop_module_setting_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.events_module_setting_handler']]
+      - [addHandler, ['@oxid_esales.module.setup.files_without_namespace_module_setting_handler']]
       - [addValidator, ['@oxid_esales.module.setup.validator.controllers_module_setting_validator']]
       - [addValidator, ['@oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator']]
       - [addValidator, ['@oxid_esales.module.setup.validator.class_extensions_module_setting_validator']]

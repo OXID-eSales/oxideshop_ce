@@ -6,7 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use OxidEsales\Eshop\Core\{Exception\StandardException, Database\TABLE};
+use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\Database\TABLE;
 use stdClass;
 
 /**

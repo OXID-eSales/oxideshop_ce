@@ -6,7 +6,10 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use OxidEsales\Eshop\Core\{Database\Adapter\DatabaseInterface, Field, Registry, Database\TABLE};
+use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
+use OxidEsales\Eshop\Core\Field;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Database\TABLE;
 use oxUserException;
 
 /**

@@ -6,7 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use OxidEsales\Eshop\Core\{Exception\DatabaseErrorException, Database\TABLE};
+use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
+use OxidEsales\Eshop\Core\Database\TABLE;
 
 /**
  * Manages object (users, discounts, deliveries...) assignment to groups.

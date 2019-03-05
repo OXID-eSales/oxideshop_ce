@@ -7,7 +7,10 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
-use OxidEsales\Eshop\Core\{DatabaseProvider, Registry, Database\TABLE, Price as ShopPrice};
+use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Database\TABLE;
+use OxidEsales\Eshop\Core\Price as ShopPrice;
 use oxField;
 use OxidEsales\Eshop\Application\Model\Payment as EshopPayment;
 

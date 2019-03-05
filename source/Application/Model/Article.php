@@ -8,7 +8,8 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
 use oxField;
-use OxidEsales\Eshop\Core\{Registry, Database\TABLE};
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Database\TABLE;
 use oxList;
 
 // defining supported link types

@@ -16,6 +16,7 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleConfigurationHandlingService
     calls:
       - [addHandler, ['@oxid_esales.module.setup.path_module_setting_handler']]
+      - [addHandler, ['@oxid_esales.module.setup.version_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.templates_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.controllers_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.smarty_plugin_directories_module_setting_handler']]
@@ -28,6 +29,9 @@ services:
       - [addValidator, ['@oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator']]
       - [addValidator, ['@oxid_esales.module.setup.validator.class_extensions_module_setting_validator']]
       - [addValidator, ['@oxid_esales.module.setup.validator.events_module_setting_validator']]
+
+  oxid_esales.module.setup.version_module_setting_handler:
+      class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ModuleVersionHandler
 
   oxid_esales.module.setup.path_module_setting_handler:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ModulePathHandler

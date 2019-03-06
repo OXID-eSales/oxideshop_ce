@@ -1,5 +1,5 @@
 services:
-  OxidEsales\EshopCommunity\Internal\Module\Cache\ShopModuleCacheServiceInterface:
+  OxidEsales\EshopCommunity\Internal\Module\Cache\ModuleCacheServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Cache\ShopModuleCacheService
     autowire: true
   oxid_esales.module.cache.invalidate_module_cache_event_subscriber:

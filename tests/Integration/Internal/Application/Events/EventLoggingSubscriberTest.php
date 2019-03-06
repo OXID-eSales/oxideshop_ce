@@ -46,7 +46,7 @@ class EventLoggingSubscriberTest extends UnitTestCase
         $context->setLogFilePath(__dir__ . DIRECTORY_SEPARATOR . 'test.log');
 
         /** @var EventDispatcherInterface $dispatcher */
-        $dispatcher = $this->container->get('event_dispatcher');
+        $dispatcher = $this->container->get(EventDispatcherInterface::class);
         $dispatcher->dispatch(ServicesYamlConfigurationErrorEvent::NAME,
             new ServicesYamlConfigurationErrorEvent('just/some/path/services.yaml'));
 

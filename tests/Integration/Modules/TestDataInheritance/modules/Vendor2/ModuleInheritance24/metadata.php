@@ -13,7 +13,7 @@ $sMetadataVersion = '2.0';
  * Module information
  */
 $aModule = array(
-    'id'           => 'ModuleInheritance24', // maybe find a better name for that
+    'id'           => 'Vendor2/ModuleInheritance24', // maybe find a better name for that
     'title'        => 'Test PHP class inheritance 2.4',
     'description'  => 'Namespace module class extends other module namespace class which extends from shop namespace class',
     'thumbnail'    => 'picture.png',

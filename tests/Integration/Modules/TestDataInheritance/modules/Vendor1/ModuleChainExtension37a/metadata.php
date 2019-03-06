@@ -13,7 +13,7 @@ $sMetadataVersion = '2.0';
  * Module information
  */
 $aModule = array(
-    'id'          => 'module_chain_extension_3_7a',
+    'id'          => 'Vendor1/ModuleChainExtension37a',
     'title'       => 'Test OXID eShop class module chain extension 3.7a',
     'description' => 'The test has three test modules - they are sorted in every possible order in different test cases.',
     'thumbnail'   => 'picture.png',

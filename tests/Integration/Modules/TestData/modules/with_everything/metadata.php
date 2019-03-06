@@ -21,11 +21,6 @@ $aModule = array(
     'author'       => 'OXID eSales AG',
     'extend'       => array(
         'oxarticle' => 'with_everything/myarticle',
-        'oxorder' => array(
-            'with_everything/myorder1',
-            'with_everything/myorder2',
-            'with_everything/myorder3',
-        ),
         'oxuser' => 'with_everything/myuser',
     ),
     'blocks' => array(

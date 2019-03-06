@@ -10,6 +10,7 @@ use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @internal
@@ -25,7 +26,7 @@ class BootstrapContainerFactory
     public static function getBootstrapContainer(): ContainerInterface
     {
         $symfonyContainer = new ContainerBuilder();
-        $symfonyContainer->addCompilerPass(new RegisterListenersPass());
+        $symfonyContainer->addCompilerPass(new RegisterListenersPass(EventDispatcherInterface::class));
         $loader = new YamlFileLoader($symfonyContainer, new \Symfony\Component\Config\FileLocator(__DIR__));
         $loader->load('..' . DIRECTORY_SEPARATOR . 'services.yaml');
         $symfonyContainer->compile();

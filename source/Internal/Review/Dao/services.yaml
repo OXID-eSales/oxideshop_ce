@@ -1,18 +1,18 @@
 services:
   OxidEsales\EshopCommunity\Internal\Review\Dao\ProductRatingDaoInterface:
-    class: %review_path%\Dao\ProductRatingDao
+    class: OxidEsales\EshopCommunity\Internal\Review\Dao\ProductRatingDao
     arguments:
       $queryBuilderFactory: '@OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface'
       $mapper: '@oxid_esales.review.product_rating_mapper'
     public: false
   OxidEsales\EshopCommunity\Internal\Review\Dao\RatingDaoInterface:
-    class: %review_path%\Dao\RatingDao
+    class: OxidEsales\EshopCommunity\Internal\Review\Dao\RatingDao
     arguments:
       $queryBuilderFactory: '@OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface'
       $mapper: '@oxid_esales.review.rating_mapper'
     public: false
   OxidEsales\EshopCommunity\Internal\Review\Dao\ReviewDaoInterface:
-    class: %review_path%\Dao\ReviewDao
+    class: OxidEsales\EshopCommunity\Internal\Review\Dao\ReviewDao
     arguments:
       $queryBuilderFactory: '@OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface'
       $mapper: '@oxid_esales.review.review_mapper'

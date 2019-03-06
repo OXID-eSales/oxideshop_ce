@@ -41,7 +41,7 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
 
         $this->container->compile();
 
-        $this->dispatcher = $this->container->get('event_dispatcher');
+        $this->dispatcher = $this->container->get(EventDispatcherInterface::class);
     }
 
     /**

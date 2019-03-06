@@ -13,6 +13,7 @@ services:
     public: false
 
   oxid_esales.module.configuration.node:
+    class: Symfony\Component\Config\Definition\NodeInterface
     factory: 'OxidEsales\EshopCommunity\Internal\Module\Configuration\Definition\TreeBuilderFactoryInterface:create'
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\Definition\TreeBuilderFactoryInterface:

@@ -11,6 +11,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSet
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\BadMetaDataFoundEvent;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MetaDataMapperTest extends TestCase
 {
@@ -74,7 +75,7 @@ class MetaDataMapperTest extends TestCase
 
         $filePath = '';
         $message = '';
-        $eventDispatcher = $container->get('event_dispatcher');
+        $eventDispatcher = $container->get(EventDispatcherInterface::class);
         $eventDispatcher->addListener(
             BadMetaDataFoundEvent::NAME,
             function (BadMetaDataFoundEvent $event) use (&$filePath, &$message) {
@@ -176,7 +177,7 @@ class MetaDataMapperTest extends TestCase
 
         $filePath = '';
         $message = '';
-        $eventDispatcher = $container->get('event_dispatcher');
+        $eventDispatcher = $container->get(EventDispatcherInterface::class);
         $eventDispatcher->addListener(
             BadMetaDataFoundEvent::NAME,
             function (BadMetaDataFoundEvent $event) use (&$filePath, &$message) {
@@ -239,7 +240,7 @@ class MetaDataMapperTest extends TestCase
          */
         $filePath = '';
         $message = '';
-        $eventDispatcher = $container->get('event_dispatcher');
+        $eventDispatcher = $container->get(EventDispatcherInterface::class);
         $eventDispatcher->addListener(
             BadMetaDataFoundEvent::NAME,
             function (BadMetaDataFoundEvent $event) use (&$filePath, &$message) {
@@ -306,7 +307,7 @@ class MetaDataMapperTest extends TestCase
          */
         $filePath = '';
         $message = '';
-        $eventDispatcher = $container->get('event_dispatcher');
+        $eventDispatcher = $container->get(EventDispatcherInterface::class);
         $eventDispatcher->addListener(
             BadMetaDataFoundEvent::NAME,
             function (BadMetaDataFoundEvent $event) use (&$filePath, &$message) {

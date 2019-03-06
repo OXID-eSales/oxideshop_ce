@@ -22,6 +22,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ContainerTest extends \PHPUnit\Framework\TestCase
 {
@@ -123,7 +124,7 @@ EOT;
      */
     public function testEventDispatcher()
     {
-        $this->assertInstanceOf(ShopAwareEventDispatcher::class, $this->container->get('event_dispatcher'));
+        $this->assertInstanceOf(ShopAwareEventDispatcher::class, $this->container->get(EventDispatcherInterface::class));
     }
 
     /**

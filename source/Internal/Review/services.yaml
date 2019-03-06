@@ -1,6 +1,3 @@
-parameters:
-  review_path: OxidEsales\EshopCommunity\Internal\Review
-
 imports:
     - { resource: DataMapper/services.yaml }
     - { resource: Dao/services.yaml }

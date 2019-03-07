@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge;
 
+use OxidEsales\Eshop\Core\Config;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface;
 
 /**
@@ -19,13 +20,21 @@ class ModuleActivationBridge implements ModuleActivationBridgeInterface
     private $moduleActivationService;
 
     /**
+     * @var Config
+     */
+    private $config;
+
+    /**
      * ModuleActivationBridge constructor.
      * @param ModuleActivationServiceInterface $moduleActivationService
+     * @param Config                           $config
      */
-    public function __construct(ModuleActivationServiceInterface $moduleActivationService)
+    public function __construct(ModuleActivationServiceInterface $moduleActivationService, Config $config)
     {
         $this->moduleActivationService = $moduleActivationService;
+        $this->config = $config;
     }
+
 
     /**
      * @param string $moduleId
@@ -34,6 +43,7 @@ class ModuleActivationBridge implements ModuleActivationBridgeInterface
     public function activate(string $moduleId, int $shopId)
     {
         $this->moduleActivationService->activate($moduleId, $shopId);
+        $this->config->reinitialize();
     }
 
     /**
@@ -43,5 +53,6 @@ class ModuleActivationBridge implements ModuleActivationBridgeInterface
     public function deactivate(string $moduleId, int $shopId)
     {
         $this->moduleActivationService->deactivate($moduleId, $shopId);
+        $this->config->reinitialize();
     }
 }

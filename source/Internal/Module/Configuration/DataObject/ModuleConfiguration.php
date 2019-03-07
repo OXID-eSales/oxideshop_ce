@@ -122,7 +122,7 @@ class ModuleConfiguration
      *
      * @return ModuleConfiguration
      */
-    public function setVersion(string $version)
+    public function setVersion(string $version): ModuleConfiguration
     {
         $this->version = $version;
 

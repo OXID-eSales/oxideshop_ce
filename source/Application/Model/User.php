@@ -1265,19 +1265,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * @param string $userName
-     * @param string $password
-     * @param string $shopId
-     * @param bool   $isAdmin
-     *
-     * @return string
-     */
-    protected function _getLoginQueryHashedWithSha512(string $userName, string $password, string $shopId, bool $isAdmin): string
-    {
-
-    }
-
-    /**
      * Builds and returns user login query
      *
      * @param string $userName

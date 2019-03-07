@@ -52,6 +52,55 @@ class ShopModuleSettingDaoTest extends TestCase
         );
     }
 
+    public function testSaveSeveralSettings()
+    {
+        $settingDao = $this->getShopModuleSettingDao();
+
+        $shopModuleSetting1 = new ShopModuleSetting();
+        $shopModuleSetting1
+            ->setModuleId('testModuleId')
+            ->setShopId(1)
+            ->setName('first')
+            ->setType('arr')
+            ->setValue('first')
+            ->setConstraints([
+                'first',
+                'second',
+                'third',
+            ])
+            ->setGroupName('testGroup')
+            ->setPositionInGroup(5);
+
+        $settingDao->save($shopModuleSetting1);
+
+        $shopModuleSetting2 = new ShopModuleSetting();
+        $shopModuleSetting2
+            ->setModuleId('testModuleId')
+            ->setShopId(1)
+            ->setName('second')
+            ->setType('int')
+            ->setValue('second')
+            ->setConstraints([
+                '1',
+                '2',
+                '3',
+            ])
+            ->setGroupName('testGroup')
+            ->setPositionInGroup(5);
+
+        $settingDao->save($shopModuleSetting2);
+
+        $this->assertEquals(
+            $shopModuleSetting1,
+            $settingDao->get('first', 'testModuleId', 1)
+        );
+
+        $this->assertEquals(
+            $shopModuleSetting2,
+            $settingDao->get('second', 'testModuleId', 1)
+        );
+    }
+
     /**
      * @expectedException \OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException
      */
@@ -157,7 +206,7 @@ class ShopModuleSettingDaoTest extends TestCase
 
         $this->assertSame(
             $settingDao->get($name, 'testModuleId', 1)->getValue(),
-            Registry::getConfig()->getShopConfVar($name, 1, 'testModuleId')
+            Registry::getConfig()->getShopConfVar($name, 1, 'module:testModuleId')
         );
     }
 
@@ -207,7 +256,7 @@ class ShopModuleSettingDaoTest extends TestCase
             ->setParameters([
                 'shopId'    => $shopId,
                 'name'      => $settingName,
-                'moduleId'  => $moduleId,
+                'moduleId'  => 'module:' . $moduleId,
             ]);
 
         return $queryBuilder->execute()->rowCount();

@@ -171,7 +171,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * @var bool
      */
-    private $isOutdatedPasswordHashingAlgorithmUsed = false;
+    private $isOutdatedPasswordHashAlgorithmUsed = false;
 
     /**
      * Gets state object.
@@ -1327,18 +1327,19 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function login($userName, $password, $setSessionCookie = false)
     {
+        $isLoginAttemptToAdminBackend = $this->isAdmin();
+
         $cookie = Registry::getUtilsServer()->getOxCookie();
-        if ($cookie === null && $this->isAdmin()) {
+        if ($cookie === null && $isLoginAttemptToAdminBackend) {
             throw oxNew(CookieException::class, 'ERROR_MESSAGE_COOKIE_NOCOOKIE');
         }
 
-        $oConfig = Registry::getConfig();
+        $config = Registry::getConfig();
+        $shopId = $config->getShopId();
 
-        $shopId = $oConfig->getShopId();
-
-        /** New authentication */
+        /** New authentication mechanism */
+        $passwordHashFromDatabase = $this->getPasswordHashFromDatabase($userName, $shopId, $isLoginAttemptToAdminBackend);
         if ($password && !$this->isLoaded()) {
-            $passwordHashFromDatabase = $this->getPasswordHashFromDatabase($userName, $shopId, $this->isAdmin());
             $userIsAuthenticated = password_verify($password, $passwordHashFromDatabase);
             if ($userIsAuthenticated) {
                 $this->loadAuthenticatedUser($userName, $shopId);
@@ -1350,50 +1351,47 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $this->_dbLogin($userName, $password, $shopId);
         }
 
-        /** Event for authentication, authorization or whatsoever */
+        /** If needed, store a rehashed password with the authenticated user */
+        if ($password && $this->isLoaded()) {
+            $algorithm = Registry::getConfig()->getConfigParam('passwordHashingAlgorithm') ?? PASSWORD_DEFAULT;
+            $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
+            $passwordHashService = $passwordServiceBridge->getPasswordHashService($algorithm);
+            $passwordNeedsRehash = $this->isOutdatedPasswordHashAlgorithmUsed || $passwordHashService->passwordNeedsRehash($passwordHashFromDatabase);
+            if ($passwordNeedsRehash) {
+                $generatedPasswordHash = $this->hashPassword($password);
+                $this->oxuser__oxpassword = new Field($generatedPasswordHash, Field::T_RAW);
+                /** As the use of a salt is deprecated and an empty salt will be stored */
+                $this->oxuser__oxpasssalt = new Field('');
+                $this->save();
+            }
+        }
+
+        /** Event for alternative authentication and authorization mechanisms, or whatsoever */
         $this->onLogin($userName, $password);
 
-        //login successful?
+        /** If the user has not been loaded until this point authentication & authorization is considered as failed */
         if (!$this->isLoaded()) {
             throw oxNew(UserException::class, 'ERROR_MESSAGE_USER_NOVALIDLOGIN');
         }
 
-        // yes, successful login
-
         //resetting active user
         $this->setUser(null);
 
-        if ($this->isAdmin()) {
+        if ($isLoginAttemptToAdminBackend) {
             Registry::getSession()->setVariable('auth', $this->oxuser__oxid->value);
         } else {
             Registry::getSession()->setVariable('usr', $this->oxuser__oxid->value);
         }
 
         // cookie must be set ?
-        if ($setSessionCookie && $oConfig->getConfigParam('blShowRememberMe')) {
+        if ($setSessionCookie && $config->getConfigParam('blShowRememberMe')) {
             Registry::getUtilsServer()->setUserCookie(
                 $this->oxuser__oxusername->value,
                 $this->oxuser__oxpassword->value,
-                $oConfig->getShopId(),
+                $config->getShopId(),
                 31536000,
                 static::USER_COOKIE_SALT
             );
-        }
-
-        /** Rehash password, if needed */
-        if ($password) {
-            $algorithm = Registry::getConfig()->getConfigParam('passwordHashingAlgorithm') ?? PASSWORD_DEFAULT;
-            $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
-            $passwordHashService = $passwordServiceBridge->getPasswordHashService($algorithm);
-            $isLoginToAdminBackend = $this->isAdmin();
-            $passwordHashFromDatabase = $this->getPasswordHashFromDatabase($userName, $shopId, $isLoginToAdminBackend);
-            $passwordNeedsRehash = $this->isOutdatedPasswordHashingAlgorithmUsed || $passwordHashService->passwordNeedsRehash($passwordHashFromDatabase);
-            if ($passwordNeedsRehash) {
-                $generatedPasswordHash = $this->hashPassword($password);
-                $this->oxuser__oxpassword = new \OxidEsales\Eshop\Core\Field($generatedPasswordHash, \OxidEsales\Eshop\Core\Field::T_RAW);
-                $this->oxuser__oxpasssalt = new \OxidEsales\Eshop\Core\Field('');
-                $this->save();
-            }
         }
 
         return true;
@@ -2257,7 +2255,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         $this->loadAuthenticatedUser($userName, $shopID);
-        $this->isOutdatedPasswordHashingAlgorithmUsed = true;
+        $this->isOutdatedPasswordHashAlgorithmUsed = true;
     }
 
     /**

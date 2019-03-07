@@ -23,7 +23,7 @@ class PasswordHashBcryptService implements PasswordHashServiceInterface
      *
      * @param PasswordHashBcryptServiceOptionsProvider $passwordHashBcryptServiceOptionsProvider
      */
-    public function __construct(\OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashBcryptServiceOptionsProvider $passwordHashBcryptServiceOptionsProvider)
+    public function __construct(PasswordHashBcryptServiceOptionsProvider $passwordHashBcryptServiceOptionsProvider)
     {
         $this->passwordHashBcryptServiceOptionsProvider = $passwordHashBcryptServiceOptionsProvider;
     }
@@ -40,6 +40,7 @@ class PasswordHashBcryptService implements PasswordHashServiceInterface
     public function hash(string $password): string
     {
         $options = [
+            /* 'salt' => '', the salt option is deprecated for security reasons and must not be used **/
             'cost' => $this->passwordHashBcryptServiceOptionsProvider->getCost(),
         ];
 

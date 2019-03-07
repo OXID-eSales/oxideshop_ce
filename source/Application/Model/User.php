@@ -1339,8 +1339,11 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         /** New authentication mechanism */
         $passwordHashFromDatabase = $this->getPasswordHashFromDatabase($userName, $shopId, $isLoginAttemptToAdminBackend);
+        $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
         if ($password && !$this->isLoaded()) {
-            $userIsAuthenticated = password_verify($password, $passwordHashFromDatabase);
+            $userIsAuthenticated = $passwordServiceBridge
+                ->getPasswordVerificationService()
+                ->verifyPassword($password, $passwordHashFromDatabase);
             if ($userIsAuthenticated) {
                 $this->loadAuthenticatedUser($userName, $shopId);
             }
@@ -1354,7 +1357,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         /** If needed, store a rehashed password with the authenticated user */
         if ($password && $this->isLoaded()) {
             $algorithm = Registry::getConfig()->getConfigParam('passwordHashingAlgorithm') ?? PASSWORD_DEFAULT;
-            $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
             $passwordHashService = $passwordServiceBridge->getPasswordHashService($algorithm);
             $passwordNeedsRehash = $this->isOutdatedPasswordHashAlgorithmUsed || $passwordHashService->passwordNeedsRehash($passwordHashFromDatabase);
             if ($passwordNeedsRehash) {

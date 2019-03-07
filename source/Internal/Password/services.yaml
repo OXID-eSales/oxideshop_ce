@@ -16,3 +16,6 @@ services:
   OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashBcryptService:
     class: OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashBcryptService
     public: true
+
+  OxidEsales\EshopCommunity\Internal\Password\Service\PasswordVerificationServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Password\Service\PasswordVerificationService

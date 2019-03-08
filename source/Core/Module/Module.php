@@ -6,6 +6,10 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+
 /**
  * Module class.
  *
@@ -321,16 +325,18 @@ class Module extends \OxidEsales\Eshop\Core\Base
      */
     public function isActive()
     {
-        $blActive = false;
-        $sId = $this->getId();
-        if (!is_null($sId)) {
-            $blActive = !$this->_isInDisabledList($sId);
-            if ($blActive && $this->hasExtendClass()) {
-                $blActive = $this->_isExtensionsActive();
-            }
+        if ($this->getId() === null) {
+            return false;
         }
 
-        return $blActive;
+        $moduleActivationBridge = ContainerFactory::getInstance()
+            ->getContainer()
+            ->get(ModuleActivationBridgeInterface::class);
+
+        return $moduleActivationBridge->isActive(
+            $this->getId(),
+            Registry::getConfig()->getShopId()
+        );
     }
 
     /**

@@ -22,4 +22,11 @@ interface ModuleActivationBridgeInterface
      * @param int    $shopId
      */
     public function deactivate(string $moduleId, int $shopId);
+
+    /**
+     * @param string $moduleId
+     * @param int    $shopId
+     * @return bool
+     */
+    public function isActive(string $moduleId, int $shopId): bool;
 }

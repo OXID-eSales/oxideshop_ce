@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge;
 
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
 
 /**
  * @internal
@@ -20,6 +21,11 @@ class ModuleActivationBridge implements ModuleActivationBridgeInterface
     private $moduleActivationService;
 
     /**
+     * @var ModuleStateServiceInterface
+     */
+    private $moduleStateService;
+
+    /**
      * @var Config
      */
     private $config;
@@ -27,14 +33,18 @@ class ModuleActivationBridge implements ModuleActivationBridgeInterface
     /**
      * ModuleActivationBridge constructor.
      * @param ModuleActivationServiceInterface $moduleActivationService
-     * @param Config                           $config
+     * @param ModuleStateServiceInterface $moduleStateService
+     * @param Config $config
      */
-    public function __construct(ModuleActivationServiceInterface $moduleActivationService, Config $config)
-    {
+    public function __construct(
+        ModuleActivationServiceInterface $moduleActivationService,
+        ModuleStateServiceInterface $moduleStateService,
+        Config $config
+    ) {
         $this->moduleActivationService = $moduleActivationService;
+        $this->moduleStateService = $moduleStateService;
         $this->config = $config;
     }
-
 
     /**
      * @param string $moduleId
@@ -54,5 +64,15 @@ class ModuleActivationBridge implements ModuleActivationBridgeInterface
     {
         $this->moduleActivationService->deactivate($moduleId, $shopId);
         $this->config->reinitialize();
+    }
+
+    /**
+     * @param string $moduleId
+     * @param int    $shopId
+     * @return bool
+     */
+    public function isActive(string $moduleId, int $shopId): bool
+    {
+        return $this->moduleStateService->isActive($moduleId, $shopId);
     }
 }

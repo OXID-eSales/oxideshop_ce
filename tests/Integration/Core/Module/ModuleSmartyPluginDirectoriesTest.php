@@ -6,7 +6,11 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Module;
 
-use OxidEsales\EshopCommunity\Tests\Integration\Modules\Environment;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
+use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\Eshop\Core\UtilsView;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
@@ -15,13 +19,17 @@ use OxidEsales\TestingLibrary\UnitTestCase;
  */
 class ModuleSmartyPluginDirectoriesTest extends UnitTestCase
 {
+    public function setUpBeforeTestSuite()
+    {
+        parent::setUpBeforeTestSuite();
+        $this->activateTestModule();
+    }
+
     /**
      * Smarty should know about the smarty plugin directories of the modules being activated.
      */
     public function testModuleSmartyPluginDirectoryIsIncludedOnModuleActivation()
     {
-        $this->activateTestModule();
-
         $utilsView = oxNew(UtilsView::class);
         $smarty = $utilsView->getSmarty(true);
 
@@ -36,8 +44,6 @@ class ModuleSmartyPluginDirectoriesTest extends UnitTestCase
 
     public function testSmartyPluginDirectoriesOrder()
     {
-        $this->activateTestModule();
-
         $utilsView = oxNew(UtilsView::class);
         $smarty = $utilsView->getSmarty(true);
 
@@ -79,9 +85,19 @@ class ModuleSmartyPluginDirectoriesTest extends UnitTestCase
 
     private function activateTestModule()
     {
-        $modules = ['with_metadata_v21'];
-        $environment = new Environment();
-        $environment->prepare($modules);
-        $environment->activateModules($modules);
+        $container = ContainerFactory::getInstance()->getContainer();
+        $container
+            ->get(ModuleInstallerInterface::class)
+            ->install(
+                new OxidEshopPackage(
+                    'with_metadata_v21',
+                    __DIR__ . '/Fixtures/with_metadata_v21',
+                    []
+                )
+            );
+
+        $container
+            ->get(ModuleActivationBridgeInterface::class)
+            ->activate('with_metadata_v21', Registry::getConfig()->getShopId());
     }
 }

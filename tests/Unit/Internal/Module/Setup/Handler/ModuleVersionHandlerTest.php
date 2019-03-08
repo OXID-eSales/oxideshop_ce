@@ -10,11 +10,10 @@ use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurati
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ModulePathHandler;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ModuleVersionHandler;
 use PHPUnit\Framework\TestCase;
 
-class ModulePathHandlerTest extends TestCase
+class ModuleVersionHandlerTest extends TestCase
 {
     public function testHandleOnModuleActivation()
     {

@@ -5,6 +5,8 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use oxModuleList;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -34,8 +36,9 @@ class ModuleRemoveTest extends BaseModuleTestCase
      */
     public function testModuleRemove($aInstallModules, $aRemovedExtensions, $aResultToAssert)
     {
-        $oEnvironment = new Environment();
-        $oEnvironment->prepare($aInstallModules);
+        foreach ($aInstallModules as $id) {
+            $this->installAndActivateModule($id);
+        }
 
         /** @var oxModuleList|MockObject $oModuleList */
         $oModuleList = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, array('getDeletedExtensions'));
@@ -62,13 +65,21 @@ class ModuleRemoveTest extends BaseModuleTestCase
             $this->markTestSkipped("This test case is only actual when SubShops are available.");
         }
 
-        $oEnvironment = new Environment();
-        $oEnvironment->prepare($aInstallModules); //install modules in shop 1
+        $this->prepareProjectConfigurationWitSubshops();
+
+        foreach ($aInstallModules as $id) {
+            $this->installAndActivateModule($id, 1);
+        }
 
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsObject::class, null);
+
+        $oEnvironment = new Environment();
         $oEnvironment->setShopId(2);
         $_POST['shp'] = 2;
-        $oEnvironment->activateModules($aInstallModules);  //activate modules in shop 2
+
+        foreach ($aInstallModules as $id) {
+            $this->installAndActivateModule($id, 2);
+        }
 
         /** @var oxModuleList|MockObject $oModuleList */
         $oModuleList = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, array('getDeletedExtensions'));
@@ -146,17 +157,6 @@ class ModuleRemoveTest extends BaseModuleTestCase
                     'extending_3_blocks' => '1.0',
                     'with_events'        => '1.0',
                 ),
-                'events'          => array(
-                    'extending_1_class'  => null,
-                    'with_2_templates'   => null,
-                    'with_2_settings'    => null,
-                    'with_2_files'       => null,
-                    'extending_3_blocks' => null,
-                    'with_events'        => array(
-                        'onActivate'   => 'MyEvents::onActivate',
-                        'onDeactivate' => 'MyEvents::onDeactivate'
-                    ),
-                ),
             ),
         );
     }
@@ -179,11 +179,7 @@ class ModuleRemoveTest extends BaseModuleTestCase
                 'with_everything' => array(
                     'extensions' => array(
                         'oxarticle' => 'with_everything/myarticle',
-                        'oxorder'   => array(
-                            'with_everything/myorder1',
-                            'with_everything/myorder2',
-                            'with_everything/myorder3',
-                        ),
+                        'oxorder'   => 'with_everything/myorder1',
                         'oxuser'    => 'with_everything/myuser',
                     )
                 )
@@ -226,17 +222,6 @@ class ModuleRemoveTest extends BaseModuleTestCase
                     'with_2_files'       => '1.0',
                     'extending_3_blocks' => '1.0',
                     'with_events'        => '1.0',
-                ),
-                'events'          => array(
-                    'extending_1_class'  => null,
-                    'with_2_templates'   => null,
-                    'with_2_settings'    => null,
-                    'with_2_files'       => null,
-                    'extending_3_blocks' => null,
-                    'with_events'        => array(
-                        'onActivate'   => 'MyEvents::onActivate',
-                        'onDeactivate' => 'MyEvents::onDeactivate'
-                    ),
                 ),
             ),
         );
@@ -307,19 +292,6 @@ class ModuleRemoveTest extends BaseModuleTestCase
                     'with_metadata_v2'   => '1.0',
                     'with_events'        => '1.0',
                 ),
-                'events'          => array(
-                    'extending_1_class'     => null,
-                    'with_2_templates'      => null,
-                    'with_2_files'          => null,
-                    'with_2_settings'       => null,
-                    'extending_3_blocks'    => null,
-                    'with_metadata_v2'      => null,
-                    'with_more_metadata_v2' => null,
-                    'with_events'           => array(
-                        'onActivate'   => 'MyEvents::onActivate',
-                        'onDeactivate' => 'MyEvents::onDeactivate'
-                    ),
-                ),
                 'controllers'  => [
                     'with_metadata_v2' => [
                         'with_metadata_v2_mymodulecontroller' => 'OxidEsales\EshopCommunity\Tests\Integration\Modules\testData\modules\with_metadata_v2\MyModuleController',
@@ -328,5 +300,17 @@ class ModuleRemoveTest extends BaseModuleTestCase
                 ]
             ),
         );
+    }
+
+    private function prepareProjectConfigurationWitSubshops()
+    {
+        $projectConfigurationDao = $this->container->get(ProjectConfigurationDaoInterface::class);
+        $projectConfiguration = $projectConfigurationDao->getConfiguration();
+
+        foreach ($projectConfiguration->getEnvironmentConfigurations() as $environmentConfiguration) {
+            $environmentConfiguration->addShopConfiguration(2, new ShopConfiguration());
+        }
+
+        $projectConfigurationDao->persistConfiguration($projectConfiguration);
     }
 }

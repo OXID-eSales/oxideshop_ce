@@ -20,10 +20,6 @@ $aModule = array(
     'version'      => '1.0',
     'author'       => 'OXID eSales AG',
     'extend'       => array(
-        'oxorder' => array(
-            'extending_1_class_3_extensions/myorder1',
-            'extending_1_class_3_extensions/myorder2',
-            'extending_1_class_3_extensions/myorder3',
-        )
+        'oxorder' => 'extending_1_class_3_extensions/myorder1',
     )
 );

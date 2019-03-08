@@ -5,6 +5,9 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
+
 class ModuleDeactivationTest extends BaseModuleTestCase
 {
     /**
@@ -34,8 +37,9 @@ class ModuleDeactivationTest extends BaseModuleTestCase
      */
     public function testModuleDeactivation($aInstallModules, $sModuleId, $aResultToAssert)
     {
-        $oEnvironment = new Environment();
-        $oEnvironment->prepare($aInstallModules);
+        foreach ($aInstallModules as $moduleId) {
+            $this->installAndActivateModule($moduleId);
+        }
 
         $oModule = oxNew('oxModule');
         $this->deactivateModule($oModule, $sModuleId);
@@ -57,13 +61,22 @@ class ModuleDeactivationTest extends BaseModuleTestCase
         if ($this->getTestConfig()->getShopEdition() != 'EE') {
             $this->markTestSkipped("This test case is only actual when SubShops are available.");
         }
-        $oModule = oxNew('oxModule');
-        $oEnvironment = new Environment();
-        $oEnvironment->prepare($aInstallModules);
 
+        $this->prepareProjectConfigurationWitSubshops();
+
+        foreach ($aInstallModules as $moduleId) {
+            $this->installAndActivateModule($moduleId);
+        }
+
+        $oModule = oxNew('oxModule');
+
+        $oEnvironment = new Environment();
         $oEnvironment->setShopId(2);
-        $oEnvironment->activateModules($aInstallModules);
-        $this->deactivateModule($oModule, $sModuleId);
+        foreach ($aInstallModules as $moduleId) {
+            $this->installAndActivateModule($moduleId, 2);
+        }
+
+        $this->deactivateModule($oModule, $sModuleId, 2);
 
         $this->runAsserts($aResultToAssert);
     }
@@ -94,9 +107,7 @@ class ModuleDeactivationTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
-                    \OxidEsales\Eshop\Application\Model\Article::class =>'with_everything/myarticle',
-                    \OxidEsales\Eshop\Application\Model\User::class => 'with_everything/myuser',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder',
                 ),
                 'files'           => array(
                     'with_2_files' => array(
@@ -108,8 +119,6 @@ class ModuleDeactivationTest extends BaseModuleTestCase
                     ),
                 ),
                 'settings'        => array(
-                    array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
-                    array('group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'),
                     array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
                     array('group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'),
                 ),
@@ -129,17 +138,6 @@ class ModuleDeactivationTest extends BaseModuleTestCase
                     'with_2_files'       => '1.0',
                     'extending_3_blocks' => '1.0',
                     'with_events'        => '1.0',
-                ),
-                'events'          => array(
-                    'extending_1_class'  => null,
-                    'with_2_templates'   => null,
-                    'with_2_settings'    => null,
-                    'with_2_files'       => null,
-                    'extending_3_blocks' => null,
-                    'with_events'        => array(
-                        'onActivate'   => 'MyEvents::onActivate',
-                        'onDeactivate' => 'MyEvents::onDeactivate'
-                    ),
                 ),
             )
         );
@@ -165,25 +163,15 @@ class ModuleDeactivationTest extends BaseModuleTestCase
             // environment asserts
             array(
                 'blocks'          => array(),
-                'extend'          => array(
-                    \OxidEsales\Eshop\Application\Model\Article::class =>'with_everything/myarticle',
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
-                    \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
-                ),
+                'extend'          => array(),
                 'files'           => array(),
-                'settings'        => array(
-                    array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
-                    array('group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'),
-                ),
+                'settings'        => array(),
                 'disabledModules' => array(
                     'with_everything'
                 ),
                 'templates'       => array(),
                 'versions'        => array(
                     'no_extending' => '1.0',
-                ),
-                'events'          => array(
-                    'no_extending' => null,
                 ),
             )
         );
@@ -211,8 +199,8 @@ class ModuleDeactivationTest extends BaseModuleTestCase
             array(
                 'blocks'          => array(),
                 'extend'          => array(
-                    \OxidEsales\Eshop\Application\Model\Order::class => 'extending_1_class_3_extensions/myorder1&extending_1_class_3_extensions/myorder2&' .
-                                   'extending_1_class_3_extensions/myorder3&extending_1_class/myorder&' .
+                    \OxidEsales\Eshop\Application\Model\Order::class =>
+                                   'extending_1_class/myorder&' .
                                    'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myorder',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myuser',
@@ -227,11 +215,6 @@ class ModuleDeactivationTest extends BaseModuleTestCase
                     'extending_3_classes_with_1_extension' => '1.0',
                     'extending_1_class'                    => '1.0',
                     'extending_3_classes'                  => '1.0',
-                ),
-                'events'          => array(
-                    'extending_3_classes_with_1_extension' => null,
-                    'extending_1_class'                    => null,
-                    'extending_3_classes'                  => null,
                 ),
             )
         );
@@ -265,7 +248,7 @@ class ModuleDeactivationTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                 ),
@@ -310,21 +293,6 @@ class ModuleDeactivationTest extends BaseModuleTestCase
                     'with_events'        => '1.0',
                     'with_everything'    => '1.0',
                 ),
-                'events'          => array(
-                    'extending_1_class'  => null,
-                    'with_2_templates'   => null,
-                    'with_2_settings'    => null,
-                    'with_2_files'       => null,
-                    'extending_3_blocks' => null,
-                    'with_events'        => array(
-                        'onActivate'   => 'MyEvents::onActivate',
-                        'onDeactivate' => 'MyEvents::onDeactivate'
-                    ),
-                    'with_everything'    => array(
-                        'onActivate'   => 'MyEvents::onActivate',
-                        'onDeactivate' => 'MyEvents::onDeactivate'
-                    ),
-                ),
             )
         );
     }
@@ -358,9 +326,6 @@ class ModuleDeactivationTest extends BaseModuleTestCase
                 'templates'       => array(),
                 'versions'        => array(
                     'no_extending' => '1.0',
-                ),
-                'events'          => array(
-                    'no_extending' => null,
                 ),
             )
         );
@@ -396,9 +361,6 @@ class ModuleDeactivationTest extends BaseModuleTestCase
                 'versions'        => array(
                     'no_extending' => '1.0',
                 ),
-                'events'          => array(
-                    'no_extending' => null,
-                ),
             )
         );
     }
@@ -425,10 +387,7 @@ class ModuleDeactivationTest extends BaseModuleTestCase
                 'blocks'          => array(),
                 'extend'          => array(),
                 'files'           => array(),
-                'settings'        => array(
-                    array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
-                    array('group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'),
-                ),
+                'settings'        => array(),
                 'disabledModules' => array(
                     'with_2_settings'
                 ),
@@ -436,10 +395,19 @@ class ModuleDeactivationTest extends BaseModuleTestCase
                 'versions'        => array(
                     'no_extending' => '1.0',
                 ),
-                'events'          => array(
-                    'no_extending' => null,
-                ),
             )
         );
+    }
+
+    private function prepareProjectConfigurationWitSubshops()
+    {
+        $projectConfigurationDao = $this->container->get(ProjectConfigurationDaoInterface::class);
+        $projectConfiguration = $projectConfigurationDao->getConfiguration();
+
+        foreach ($projectConfiguration->getEnvironmentConfigurations() as $environmentConfiguration) {
+            $environmentConfiguration->addShopConfiguration(2, new ShopConfiguration());
+        }
+
+        $projectConfigurationDao->persistConfiguration($projectConfiguration);
     }
 }

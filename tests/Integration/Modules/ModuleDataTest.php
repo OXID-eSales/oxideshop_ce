@@ -26,6 +26,8 @@ class ModuleDataTest extends BaseModuleTestCase
      */
     public function testIncludeModuleMetaDataIncludeEmptyMetadata()
     {
+        $this->markTestSkipped('Wont work. We use yml file instead.');
+
         $module = oxNew(Module::class);
 
         $metaDataFile = $this->testModuleDirectory . 'emptyMetaData.php';
@@ -46,6 +48,8 @@ class ModuleDataTest extends BaseModuleTestCase
      */
     public function testIncludeModuleMetaDataIncludeSetsModuleData()
     {
+        $this->markTestSkipped('Wont work. We use yml file instead.');
+
         $metaDataFile = $this->testModuleDirectory . 'metadata.php';
 
         $module = oxNew(Module::class);
@@ -62,6 +66,8 @@ class ModuleDataTest extends BaseModuleTestCase
      */
     public function testIncludeModuleMetaDataIncludeSetsMetaDataVersion()
     {
+        $this->markTestSkipped('Wont work. We use yml file instead.');
+
         $metaDataFile = $this->testModuleDirectory . 'metadata.php';
 
         $module = oxNew(Module::class);

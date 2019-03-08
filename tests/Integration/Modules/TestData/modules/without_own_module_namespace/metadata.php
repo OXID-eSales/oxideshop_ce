@@ -1,5 +1,7 @@
 <?php
 
+$sMetadataVersion = '1.1';
+
 /**
  * Module information
  */

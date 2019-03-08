@@ -20,7 +20,7 @@ class ModuleTranslationsTest extends BaseModuleTestCase
      */
     public function testTranslation()
     {
-        $this->installAndActivateModule(oxNew(Module::class), 'translation_Application');
+        $this->installAndActivateModule('translation_Application');
 
         // reset translations object
         Registry::set(\OxidEsales\Eshop\Core\Language::class, null);

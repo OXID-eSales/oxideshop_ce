@@ -12,7 +12,7 @@ use unifiednamespace_module1\Model\TestContent;
 /**
  * Metadata version
  */
-$sMetadataVersion = '1.2';
+$sMetadataVersion = '1.1';
 
 /**
  * Module information - the commented things are not working atm or will not be implemented

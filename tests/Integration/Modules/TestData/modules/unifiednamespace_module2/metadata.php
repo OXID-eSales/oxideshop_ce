@@ -11,7 +11,7 @@
 /**
  * Metadata version
  */
-$sMetadataVersion = '1.2';
+$sMetadataVersion = '1.1';
 
 /**
  * Module information

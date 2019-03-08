@@ -5,6 +5,8 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
+use OxidEsales\Eshop\Core\Module\Module;
+
 class ModuleActivationTest extends BaseModuleTestCase
 {
     /**
@@ -34,13 +36,14 @@ class ModuleActivationTest extends BaseModuleTestCase
      */
     public function testModuleActivation($aInstallModules, $sModule, $aResultToAsserts)
     {
-        $oEnvironment = new Environment();
-        $oEnvironment->prepare($aInstallModules);
+        foreach ($aInstallModules as $moduleId) {
+            $this->installAndActivateModule($moduleId);
+        }
 
-        $oModule = oxNew('oxModule');
+        $oModule = oxNew(Module::class);
         $oModule->load($sModule);
         $this->deactivateModule($oModule);
-        $this->activateModule($oModule);
+        $this->installAndActivateModule($oModule->getId());
 
         $this->runAsserts($aResultToAsserts);
     }
@@ -73,7 +76,7 @@ class ModuleActivationTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                 ),
@@ -113,20 +116,6 @@ class ModuleActivationTest extends BaseModuleTestCase
                     'with_events'        => '1.0',
                     'with_everything'    => '1.0',
                 ),
-                'events'          => array(
-                    'extending_1_class'  => null,
-                    'with_2_templates'   => null,
-                    'with_2_files'       => null,
-                    'extending_3_blocks' => null,
-                    'with_events'        => array(
-                        'onActivate'   => 'MyEvents::onActivate',
-                        'onDeactivate' => 'MyEvents::onDeactivate'
-                    ),
-                    'with_everything'    => array(
-                        'onActivate'   => 'MyEvents::onActivate',
-                        'onDeactivate' => 'MyEvents::onDeactivate'
-                    ),
-                ),
             )
         );
     }
@@ -156,7 +145,7 @@ class ModuleActivationTest extends BaseModuleTestCase
                 ),
                 'extend'          => array(
                     \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'with_everything/myorder1',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                 ),
                 'files'           => array(
@@ -179,13 +168,6 @@ class ModuleActivationTest extends BaseModuleTestCase
                 'versions'        => array(
                     'no_extending'    => '1.0',
                     'with_everything' => '1.0',
-                ),
-                'events'          => array(
-                    'no_extending'    => null,
-                    'with_everything' => array(
-                        'onActivate'   => 'MyEvents::onActivate',
-                        'onDeactivate' => 'MyEvents::onDeactivate'
-                    ),
                 ),
             )
         );
@@ -214,9 +196,9 @@ class ModuleActivationTest extends BaseModuleTestCase
             array(
                 'blocks'          => array(),
                 'extend'          => array(
+
                     \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&extending_3_classes_with_1_extension/mybaseclass&' .
-                                   'extending_3_classes/myorder&extending_1_class_3_extensions/myorder1&' .
-                                   'extending_1_class_3_extensions/myorder2&extending_1_class_3_extensions/myorder3',
+                                   'extending_3_classes/myorder&extending_1_class_3_extensions/myorder1',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myuser',
                 ),
@@ -229,12 +211,6 @@ class ModuleActivationTest extends BaseModuleTestCase
                     'extending_1_class'                    => '1.0',
                     'extending_3_classes'                  => '1.0',
                     'extending_1_class_3_extensions'       => '1.0',
-                ),
-                'events'          => array(
-                    'extending_3_classes_with_1_extension' => null,
-                    'extending_1_class'                    => null,
-                    'extending_3_classes'                  => null,
-                    'extending_1_class_3_extensions'       => null,
                 ),
             )
         );
@@ -268,7 +244,7 @@ class ModuleActivationTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                 ),
@@ -312,22 +288,6 @@ class ModuleActivationTest extends BaseModuleTestCase
                     'with_events'        => '1.0',
                     'with_everything'    => '1.0',
                 ),
-                'events'          => array(
-                    'extending_1_class'  => null,
-                    'with_2_templates'   => null,
-                    'with_2_settings'    => null,
-                    'with_2_files'       => null,
-                    'extending_3_blocks' => null,
-                    'no_extending'       => null,
-                    'with_events'        => array(
-                        'onActivate'   => 'MyEvents::onActivate',
-                        'onDeactivate' => 'MyEvents::onDeactivate'
-                    ),
-                    'with_everything'    => array(
-                        'onActivate'   => 'MyEvents::onActivate',
-                        'onDeactivate' => 'MyEvents::onDeactivate'
-                    ),
-                ),
             )
         );
     }
@@ -366,10 +326,6 @@ class ModuleActivationTest extends BaseModuleTestCase
                     'no_extending' => '1.0',
                     'with_2_files' => '1.0',
                 ),
-                'events'          => array(
-                    'no_extending' => null,
-                    'with_2_files' => null,
-                ),
             )
         );
     }
@@ -405,10 +361,6 @@ class ModuleActivationTest extends BaseModuleTestCase
                 'versions'        => array(
                     'no_extending'    => '1.0',
                     'with_2_settings' => '1.0',
-                ),
-                'events'          => array(
-                    'no_extending'    => null,
-                    'with_2_settings' => null,
                 ),
             )
         );
@@ -447,10 +399,6 @@ class ModuleActivationTest extends BaseModuleTestCase
                 'versions'        => array(
                     'no_extending'     => '1.0',
                     'with_2_templates' => '1.0',
-                ),
-                'events'          => array(
-                    'no_extending'     => null,
-                    'with_2_templates' => null,
                 ),
             )
         );

@@ -5,6 +5,8 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
+use OxidEsales\Eshop\Core\Module\Module;
+
 /**
  * @group module
  * @package Integration\Modules
@@ -13,13 +15,7 @@ class ModuleWithNoMetadataSupportTest extends BaseModuleTestCase
 {
     public function testModulesWithoutMetadataShouldBeAddToCleanup()
     {
-        // modules to be activated during test preparation
-        $aInstallModules = array(
-            'extending_1_class'
-        );
-
-        $oEnvironment = new Environment();
-        $oEnvironment->prepare($aInstallModules);
+        $this->installAndActivateModule('extending_1_class');
 
         //adding module without metadata
         $aModules = $this->getConfig()->getConfigParam('aModules');
@@ -35,13 +31,7 @@ class ModuleWithNoMetadataSupportTest extends BaseModuleTestCase
 
     public function testModulesWithoutMetadataShouldBeAddToCleanupAllModulesWithMetadata()
     {
-        // modules to be activated during test preparation
-        $aInstallModules = array(
-            'extending_1_class'
-        );
-
-        $oEnvironment = new Environment();
-        $oEnvironment->prepare($aInstallModules);
+        $this->installAndActivateModule('extending_1_class');
 
         $oModuleList = oxNew('oxModuleList');
         $aGarbage = $oModuleList->getDeletedExtensions();

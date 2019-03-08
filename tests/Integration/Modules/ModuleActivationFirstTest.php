@@ -5,6 +5,9 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
+
 class ModuleActivationFirstTest extends BaseModuleTestCase
 {
     /**
@@ -34,11 +37,11 @@ class ModuleActivationFirstTest extends BaseModuleTestCase
      */
     public function testModuleActivation($aInstallModules, $sModule, $aResultToAsserts)
     {
-        $oEnvironment = new Environment();
-        $oEnvironment->prepare($aInstallModules);
+        foreach ($aInstallModules as $moduleId) {
+            $this->installAndActivateModule($moduleId);
+        }
 
-        $oModule = oxNew('oxModule');
-        $this->activateModule($oModule, $sModule);
+        $this->installAndActivateModule($sModule);
 
         $this->runAsserts($aResultToAsserts);
     }
@@ -57,23 +60,25 @@ class ModuleActivationFirstTest extends BaseModuleTestCase
         if ($this->getTestConfig()->getShopEdition() != 'EE') {
             $this->markTestSkipped("This test case is only actual when SubShops are available.");
         }
-        $oEnvironment = new Environment();
-        $oEnvironment->prepare($aInstallModules);
-        $oModule = oxNew('oxModule');
 
-        $oEnvironment->setShopId(2);
-        $oEnvironment->activateModules($aInstallModules);
+        $this->prepareProjectConfigurationWitSubshops();
 
-        $oEnvironment->setShopId(1);
-        $this->activateModule($oModule, $sModule);
+        foreach ($aInstallModules as $moduleId) {
+            $this->installAndActivateModule($moduleId);
+        }
 
-        $oEnvironment->setShopId(2);
-        $this->activateModule($oModule, $sModule);
+        foreach ($aInstallModules as $moduleId) {
+            $this->installAndActivateModule($moduleId, 2);
+        }
 
-        $oEnvironment->setShopId(1);
-        $this->deactivateModule($oModule, $sModule);
+        $this->installAndActivateModule($sModule, 1);
+        $this->installAndActivateModule($sModule, 2);
 
-        $oEnvironment->setShopId(2);
+        $this->deactivateModule(oxNew('oxModule'), $sModule);
+
+        $environment = new Environment();
+        $environment->setShopId(2);
+
         $this->runAsserts($aResultToAsserts);
     }
 
@@ -105,7 +110,7 @@ class ModuleActivationFirstTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                 ),
@@ -145,20 +150,6 @@ class ModuleActivationFirstTest extends BaseModuleTestCase
                     'with_events'        => '1.0',
                     'with_everything'    => '1.0',
                 ),
-                'events'          => array(
-                    'extending_1_class'  => null,
-                    'with_2_templates'   => null,
-                    'with_2_files'       => null,
-                    'extending_3_blocks' => null,
-                    'with_events'        => array(
-                        'onActivate'   => 'MyEvents::onActivate',
-                        'onDeactivate' => 'MyEvents::onDeactivate'
-                    ),
-                    'with_everything'    => array(
-                        'onActivate'   => 'MyEvents::onActivate',
-                        'onDeactivate' => 'MyEvents::onDeactivate'
-                    ),
-                ),
             )
         );
     }
@@ -188,7 +179,7 @@ class ModuleActivationFirstTest extends BaseModuleTestCase
                 ),
                 'extend'          => array(
                     \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'with_everything/myorder1',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                 ),
                 'files'           => array(
@@ -211,13 +202,6 @@ class ModuleActivationFirstTest extends BaseModuleTestCase
                 'versions'        => array(
                     'no_extending'    => '1.0',
                     'with_everything' => '1.0',
-                ),
-                'events'          => array(
-                    'no_extending'    => null,
-                    'with_everything' => array(
-                        'onActivate'   => 'MyEvents::onActivate',
-                        'onDeactivate' => 'MyEvents::onDeactivate'
-                    ),
                 ),
             )
         );
@@ -248,8 +232,7 @@ class ModuleActivationFirstTest extends BaseModuleTestCase
                 'extend'          => array(
                     \OxidEsales\Eshop\Application\Model\Order::class   => '' .
                                    'extending_1_class/myorder&extending_3_classes_with_1_extension/mybaseclass&' .
-                                   'extending_3_classes/myorder&extending_1_class_3_extensions/myorder1&' .
-                                   'extending_1_class_3_extensions/myorder2&extending_1_class_3_extensions/myorder3',
+                                   'extending_3_classes/myorder&extending_1_class_3_extensions/myorder1',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myuser',
                 ),
@@ -262,12 +245,6 @@ class ModuleActivationFirstTest extends BaseModuleTestCase
                     'extending_1_class'                    => '1.0',
                     'extending_3_classes'                  => '1.0',
                     'extending_1_class_3_extensions'       => '1.0',
-                ),
-                'events'          => array(
-                    'extending_3_classes_with_1_extension' => null,
-                    'extending_1_class'                    => null,
-                    'extending_3_classes'                  => null,
-                    'extending_1_class_3_extensions'       => null,
                 ),
             )
         );
@@ -301,7 +278,7 @@ class ModuleActivationFirstTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                 ),
@@ -345,22 +322,6 @@ class ModuleActivationFirstTest extends BaseModuleTestCase
                     'with_events'        => '1.0',
                     'with_everything'    => '1.0',
                 ),
-                'events'          => array(
-                    'extending_1_class'  => null,
-                    'with_2_templates'   => null,
-                    'with_2_settings'    => null,
-                    'with_2_files'       => null,
-                    'extending_3_blocks' => null,
-                    'no_extending'       => null,
-                    'with_events'        => array(
-                        'onActivate'   => 'MyEvents::onActivate',
-                        'onDeactivate' => 'MyEvents::onDeactivate'
-                    ),
-                    'with_everything'    => array(
-                        'onActivate'   => 'MyEvents::onActivate',
-                        'onDeactivate' => 'MyEvents::onDeactivate'
-                    ),
-                ),
             )
         );
     }
@@ -399,10 +360,6 @@ class ModuleActivationFirstTest extends BaseModuleTestCase
                     'no_extending' => '1.0',
                     'with_2_files' => '1.0',
                 ),
-                'events'          => array(
-                    'no_extending' => null,
-                    'with_2_files' => null,
-                ),
             )
         );
     }
@@ -438,10 +395,6 @@ class ModuleActivationFirstTest extends BaseModuleTestCase
                 'versions'        => array(
                     'no_extending'    => '1.0',
                     'with_2_settings' => '1.0',
-                ),
-                'events'          => array(
-                    'no_extending'    => null,
-                    'with_2_settings' => null,
                 ),
             )
         );
@@ -481,11 +434,19 @@ class ModuleActivationFirstTest extends BaseModuleTestCase
                     'no_extending'     => '1.0',
                     'with_2_templates' => '1.0',
                 ),
-                'events'          => array(
-                    'no_extending'     => null,
-                    'with_2_templates' => null,
-                ),
             )
         );
+    }
+
+    private function prepareProjectConfigurationWitSubshops()
+    {
+        $projectConfigurationDao = $this->container->get(ProjectConfigurationDaoInterface::class);
+        $projectConfiguration = $projectConfigurationDao->getConfiguration();
+
+        foreach ($projectConfiguration->getEnvironmentConfigurations() as $environmentConfiguration) {
+            $environmentConfiguration->addShopConfiguration(2, new ShopConfiguration());
+        }
+
+        $projectConfigurationDao->persistConfiguration($projectConfiguration);
     }
 }

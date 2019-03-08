@@ -18,6 +18,8 @@ class ModuleWithNoMetadataTest extends \OxidTestCase
      */
     public function testGetDisabledModules()
     {
+        $this->markTestSkipped('We don not use aDisabledModules anymore, no sense to test.');
+
         $this->getConfig()->setConfigParam("aDisabledModules", []);
 
         $sShopDir = realpath(dirname(__FILE__)) . '/TestData/';

@@ -5,8 +5,6 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
-use OxidEsales\EshopCommunity\Core\Registry;
-
 /**
  * Class UnifiedNameSpaceClassMapTest
  *
@@ -15,7 +13,6 @@ use OxidEsales\EshopCommunity\Core\Registry;
  */
 class UnifiedNameSpaceClassMapTest extends BaseModuleTestCase
 {
-
     /**
      * @var Environment The helper object for the environment.
      */
@@ -27,11 +24,6 @@ class UnifiedNameSpaceClassMapTest extends BaseModuleTestCase
     public function setUp()
     {
         parent::setUp();
-
-        $configFile = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class);
-        $configFile->setVar('sShopDir', realpath(__DIR__ . '/TestData'));
-
-        Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $configFile);
 
         $this->environment = new Environment();
     }
@@ -209,7 +201,9 @@ class UnifiedNameSpaceClassMapTest extends BaseModuleTestCase
      */
     public function testUnifiedNamespaceModules($modulesToActivate, $expectedInheritanceChain, $expectedInheritanceChainPE, $expectedInheritanceChainEE, $expectedTitle)
     {
-        $this->environment->prepare($modulesToActivate);
+        foreach ($modulesToActivate as $moduleId) {
+            $this->installAndActivateModule($moduleId);
+        }
 
         $createdContentController = oxNew('Content');
 
@@ -234,7 +228,7 @@ class UnifiedNameSpaceClassMapTest extends BaseModuleTestCase
      * @param object $objectUnderTest          The object, which should have the given inheritance chain.
      * @param array  $expectedInheritanceChain The inheritance chain we expect.
      */
-    protected function assertObjectHasInheritances($objectUnderTest, $expectedInheritanceChain)
+    private function assertObjectHasInheritances($objectUnderTest, $expectedInheritanceChain)
     {
         $classParents = array_keys(class_parents($objectUnderTest));
         $resultInheritanceChain = array_merge(array(get_class($objectUnderTest)), $classParents);

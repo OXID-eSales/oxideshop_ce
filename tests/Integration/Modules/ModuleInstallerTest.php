@@ -7,8 +7,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Tests\Integration\Modules\BaseModuleTestCase;
-use OxidEsales\EshopCommunity\Tests\Integration\Modules\Environment;
 
 class ModuleInstallerTest extends BaseModuleTestCase
 {
@@ -28,29 +26,16 @@ class ModuleInstallerTest extends BaseModuleTestCase
     ]];
 
     /**
-     * Standard setup method. Calls parent first.
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $environment = new Environment();
-        $environment->setShopConfigParameters();
-    }
-
-    /**
      * Test, that the module activation adds the controllers of the module to the oxconfig.
      */
     public function testModuleInstallerActivateAddsControllersToOxConfig()
     {
-        $beforeActivation = $this->fetchOxConfigModuleControllers();
-
         $this->activate();
 
-        $afterActivation = $this->fetchOxConfigModuleControllers();
-        $actualDifference = array_diff($afterActivation, $beforeActivation);
-
-        $this->assertEquals(self::MODULE_CONTROLLERS, $actualDifference, 'While module activation were not added the expected controllers to the module controller map!');
+        $this->assertEquals(
+            self::MODULE_CONTROLLERS,
+            $this->fetchOxConfigModuleControllers(),
+            'While module activation were not added the expected controllers to the module controller map!');
     }
 
     /**
@@ -79,7 +64,7 @@ class ModuleInstallerTest extends BaseModuleTestCase
     {
         $module = oxNew(Module::class);
 
-        $this->activateModule($module, self::MODULE_ID);
+        $this->installAndActivateModule(self::MODULE_ID);
 
         return $module;
     }

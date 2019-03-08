@@ -5,6 +5,12 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
+use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
+use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
 /**
  * Base class for module integration tests.
  *
@@ -14,31 +20,31 @@ abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCas
 {
 
     /**
+     * @var ContainerBuilder
+     */
+    protected $container;
+
+    /**
      * Ensure a clean environment before each test
      */
     protected function setUp()
     {
         parent::setUp();
 
+        $this->container = $this->getContainer();
+
         $environment = new Environment();
         $environment->clean();
     }
 
-    /**
-     * Activates module.
-     *
-     * @param \OxidEsales\Eshop\Core\Module\Module $module
-     * @param string   $moduleId
-     */
-    protected function activateModule($module, $moduleId = null)
+    protected function installAndActivateModule(string $moduleId, int $shopId = 1)
     {
-        if ($moduleId) {
-            $module->load($moduleId);
-        }
-        $moduleCache = oxNew(\OxidEsales\Eshop\Core\Module\ModuleCache::class, $module);
-        $moduleInstaller = oxNew(\OxidEsales\Eshop\Core\Module\ModuleInstaller::class, $moduleCache);
+        $installService = $this->container->get(ModuleInstallerInterface::class);
+        $package = new OxidEshopPackage($moduleId, __DIR__ . '/TestData/modules/' . $moduleId, []);
+        $installService->install($package);
 
-        $moduleInstaller->activate($module);
+        $activationService = $this->container->get(ModuleActivationBridgeInterface::class);
+        $activationService->activate($moduleId, $shopId);
     }
 
     /**
@@ -47,15 +53,15 @@ abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCas
      * @param \OxidEsales\Eshop\Core\Module\Module $module
      * @param string   $moduleId
      */
-    protected function deactivateModule($module, $moduleId = null)
+    protected function deactivateModule($module, $moduleId = null, int $shopId = 1)
     {
-        if ($moduleId) {
-            $module->load($moduleId);
+        if (!$moduleId) {
+            $moduleId = $module->getId();
         }
-        $moduleCache = oxNew(\OxidEsales\Eshop\Core\Module\ModuleCache::class, $module);
-        $moduleInstaller = oxNew(\OxidEsales\Eshop\Core\Module\ModuleInstaller::class, $moduleCache);
 
-        $moduleInstaller->deactivate($module);
+        $activationService = $this->container->get(ModuleActivationBridgeInterface::class);
+
+        $activationService->deactivate($moduleId, $shopId);
     }
 
     /**
@@ -74,7 +80,11 @@ abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCas
         }
 
         if (isset($expectedResult['extend'])) {
-            $this->assertTrue($validator->checkExtensions($expectedResult['extend']), 'Extensions do not match expectations');
+            $this->assertEquals(
+                $expectedResult['extend'],
+                $config->getConfigParam('aModules'),
+                'Extensions do not match expectations'
+            );
         }
 
         if (isset($expectedResult['files'])) {
@@ -94,15 +104,15 @@ abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCas
         }
 
         if (isset($expectedResult['versions'])) {
-            $this->assertTrue($validator->checkVersions($expectedResult['versions']), 'Versions do not match expectations');
+            $this->assertEquals(
+                $expectedResult['versions'],
+                $config->getConfigParam('aModuleVersions'),
+                'Versions do not match expectations'
+            );
         }
 
         if (isset($expectedResult['templates'])) {
             $this->assertTrue($validator->checkTemplates($expectedResult['templates']), 'Templates do not match expectations');
-        }
-
-        if (isset($expectedResult['disabledModules'])) {
-            $this->assertTrue($validator->checkDisabledModules($expectedResult['disabledModules']), 'Disabled modules do not match expectations');
         }
 
         if (isset($expectedResult['settings_values'])) {
@@ -111,5 +121,15 @@ abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCas
                 'Config values does not match expectations'
             );
         }
+    }
+
+    private function getContainer(): ContainerBuilder
+    {
+        $container = (new TestContainerFactory())->create();
+        $container->compile();
+
+        $container->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')->generate();
+
+        return $container;
     }
 }

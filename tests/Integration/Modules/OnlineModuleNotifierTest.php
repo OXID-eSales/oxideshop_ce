@@ -5,6 +5,7 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
+use OxidEsales\Eshop\Core\Module\Module;
 use oxOnlineModulesNotifierRequest;
 use oxOnlineModuleVersionNotifier;
 use oxOnlineModuleVersionNotifierCaller;
@@ -21,8 +22,9 @@ class OnlineModuleNotifierTest extends BaseModuleTestCase
      */
     public function testVersionNotify()
     {
-        $oEnvironment = new Environment();
-        $oEnvironment->prepare(array('extending_1_class', 'extending_1_class_3_extensions', 'with_everything'));
+        $this->installAndActivateModule('extending_1_class');
+        $this->installAndActivateModule('extending_1_class_3_extensions');
+        $this->installAndActivateModule('with_everything');
 
         /** @var oxOnlineModuleVersionNotifierCaller|MockObject $oCaller */
         $oCaller = $this->getMock(\OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller::class, array('doRequest'), array(), '', false);

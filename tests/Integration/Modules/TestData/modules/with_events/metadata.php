@@ -22,8 +22,4 @@ $aModule = array(
     'files' => array(
         'MyEvents'  => 'with_events/files/myevents.php',
     ),
-    'events'       => array(
-        'onActivate'   => 'MyEvents::onActivate',
-        'onDeactivate' => 'MyEvents::onDeactivate'
-    ),
 );

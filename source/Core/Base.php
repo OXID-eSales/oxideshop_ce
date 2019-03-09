@@ -70,7 +70,7 @@ class Base
     }
 
     /**
-     * Session instance getter
+     * Session instance getter 
      *
      * @return \OxidEsales\Eshop\Core\Session
      */

@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Password\Service;
 
+use OxidEsales\EshopCommunity\Internal\Password\Exception\PasswordHashException;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 
 /**
@@ -29,10 +30,34 @@ class PasswordHashBcryptServiceOptionsProvider
     }
 
     /**
-     * @return int
+     * @return array
      */
-    public function getCost(): int
+    public function getOptions(): array
     {
-        return $this->context->getPasswordHashingBcryptCost();
+        $cost = $this->context->getPasswordHashingBcryptCost();
+        $this->validateCostOption($cost);
+
+        $options = [
+            /* 'salt' => '', the salt option is deprecated for security reasons and must not be used **/
+            'cost' => $cost,
+        ];
+
+        return $options;
+    }
+
+
+    /**
+     * @param int $cost
+     *
+     * @throws PasswordHashException
+     */
+    private function validateCostOption(int $cost)
+    {
+        if ($cost < 4) {
+            throw new PasswordHashException('The cost option for bcrypt must not be smaller than 4.');
+        }
+        if ($cost > 31) {
+            throw new PasswordHashException('The cost option for bcrypt must not be bigger than 31.');
+        }
     }
 }

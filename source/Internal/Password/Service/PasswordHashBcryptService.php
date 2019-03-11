@@ -62,11 +62,7 @@ class PasswordHashBcryptService implements PasswordHashServiceInterface
      */
     public function passwordNeedsRehash(string $passwordHash): bool
     {
-        $options = [
-            'cost' => $this->passwordHashBcryptServiceOptionsProvider->getCost(),
-        ];
-
-        $this->validateCostOption($options);
+        $options = $this->passwordHashBcryptServiceOptionsProvider->getOptions();
 
         return password_needs_rehash($passwordHash, PASSWORD_BCRYPT, $options);
     }

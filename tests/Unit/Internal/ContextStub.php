@@ -106,6 +106,7 @@ class ContextStub extends BasicContextStub implements ContextInterface
      */
     public function getPasswordHashingBcryptCost(): int
     {
+        /** The 'cost' option defines the CPU cost of hash generation. For testing the minimal possible value is chosen */
         return 4;
     }
 

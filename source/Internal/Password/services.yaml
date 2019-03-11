@@ -19,3 +19,8 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Password\Service\PasswordVerificationServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Password\Service\PasswordVerificationService
+    arguments:
+      ['@OxidEsales\EshopCommunity\Internal\Password\Service\PasswordPolicyServiceInterface']
+
+  OxidEsales\EshopCommunity\Internal\Password\Service\PasswordPolicyServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Password\Service\PasswordPolicyService

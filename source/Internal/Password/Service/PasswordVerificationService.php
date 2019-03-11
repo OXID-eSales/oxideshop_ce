@@ -12,6 +12,21 @@ namespace OxidEsales\EshopCommunity\Internal\Password\Service;
 class PasswordVerificationService implements PasswordVerificationServiceInterface
 {
     /**
+     * @var PasswordPolicyService
+     */
+    private $passwordPolicyService;
+
+    /**
+     * PasswordVerificationService constructor.
+     *
+     * @param PasswordPolicyServiceInterface $passwordPolicyService
+     */
+    public function __construct(PasswordPolicyServiceInterface $passwordPolicyService)
+    {
+        $this->passwordPolicyService = $passwordPolicyService;
+    }
+
+    /**
      * Verify that a given password matches a given hash
      *
      * @param string $password
@@ -21,6 +36,9 @@ class PasswordVerificationService implements PasswordVerificationServiceInterfac
      */
     public function verifyPassword(string $password, string $passwordHash): bool
     {
+        $this->passwordPolicyService->enforcePasswordPolicy($password);
+
         return password_verify($password, $passwordHash);
     }
+
 }

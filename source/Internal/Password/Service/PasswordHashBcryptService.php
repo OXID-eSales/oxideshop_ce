@@ -17,15 +17,23 @@ class PasswordHashBcryptService implements PasswordHashServiceInterface
      * @var PasswordHashBcryptServiceOptionsProvider
      */
     private $passwordHashBcryptServiceOptionsProvider;
+    /**
+     * @var PasswordPolicyServiceInterface
+     */
+    private $passwordPolicyService;
 
     /**
      * PasswordHashBcryptService constructor.
      *
      * @param PasswordHashBcryptServiceOptionsProvider $passwordHashBcryptServiceOptionsProvider
+     * @param PasswordPolicyServiceInterface           $passwordPolicyService
      */
-    public function __construct(PasswordHashBcryptServiceOptionsProvider $passwordHashBcryptServiceOptionsProvider)
-    {
+    public function __construct(
+        PasswordHashBcryptServiceOptionsProvider $passwordHashBcryptServiceOptionsProvider,
+        PasswordPolicyServiceInterface $passwordPolicyService
+    ) {
         $this->passwordHashBcryptServiceOptionsProvider = $passwordHashBcryptServiceOptionsProvider;
+        $this->passwordPolicyService = $passwordPolicyService;
     }
 
     /**
@@ -39,14 +47,14 @@ class PasswordHashBcryptService implements PasswordHashServiceInterface
      */
     public function hash(string $password): string
     {
-        $options = [
-            /* 'salt' => '', the salt option is deprecated for security reasons and must not be used **/
-            'cost' => $this->passwordHashBcryptServiceOptionsProvider->getCost(),
-        ];
+        $this->passwordPolicyService->enforcePasswordPolicy($password);
 
-        $this->validateCostOption($options);
-
-        $hash = password_hash($password, PASSWORD_BCRYPT, $options);
+        $options = $this->passwordHashBcryptServiceOptionsProvider->getOptions();
+        $hash = password_hash(
+            $password,
+            PASSWORD_BCRYPT,
+            $options
+        );
 
         if (false === $hash) {
             throw new PasswordHashException('The password could not have been hashed');
@@ -65,19 +73,5 @@ class PasswordHashBcryptService implements PasswordHashServiceInterface
         $options = $this->passwordHashBcryptServiceOptionsProvider->getOptions();
 
         return password_needs_rehash($passwordHash, PASSWORD_BCRYPT, $options);
-    }
-
-    /**
-     * @param array $options
-     *
-     * @throws PasswordHashException
-     */
-    private function validateCostOption(array $options)
-    {
-        if (array_key_exists('cost', $options) &&
-            (!is_numeric($options['cost']) || $options['cost'] < 4)
-        ) {
-            throw new PasswordHashException('The cost option MUST be a number and it MUST not be smaller than 3.');
-        }
     }
 }

@@ -4,7 +4,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Service;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Password\Service;
 
 use OxidEsales\EshopCommunity\Core\Hasher;
 use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashBcryptService;

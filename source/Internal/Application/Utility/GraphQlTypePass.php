@@ -24,66 +24,77 @@ class GraphQlTypePass implements CompilerPassInterface
 {
 
     /**
-     * @var string $queryTypeFactoryId The container key for the query
-     *                                 type factory
+     * @var string $graphQlSchemaFactoryId
      */
-    protected $queryTypeFactoryId;
+    protected $graphQlSchemaFactoryId;
     /**
-     * @var string $queryTypeTag The tag string for query types
+     * @var string $graphQlPermissionsServiceId
      */
-    protected $queryTypeTag;
+    protected $graphQlPermissionsServiceId;
     /**
-     * @var string $mutationTypeFactoryId The container key for the
-     *                                    mutation type factory
+     * @var string $graphqlQueryTag The tag string for query types
      */
-    protected $mutationTypeFactoryId;
+    protected $graphqlQueryTag;
+
     /**
-     * @var string $mutationTypeTag The tag string for the mutation types
+     * @var string $graphqlQueryTag The tag string for query types
      */
-    protected $mutationTypeTag;
+    protected $graphqlMutationTag;
+
+    /**
+     * @var string $graphqlPermissionsTag The tag permission providers
+     */
+    protected $graphqlPermissionsTag;
 
     /**
      * GraphQlTypePass constructor.
      *
-     * @param string $queryTypeFactoryId
-     * @param string $queryTypeTag
-     * @param string $mutationTypeFactoryId
-     * @param string $mutationTypeTag
+     * @param string $graphQlSchemaFactoryId
+     * @param string $graphqlQueryTag
      */
     public function __construct(
-        $queryTypeFactoryId = 'query_type_factory',
-        $queryTypeTag = 'graphql_query_type',
-        $mutationTypeFactoryId = 'mutation_type_factory',
-        $mutationTypeTag = 'graphql_mutation_type'
-    ) {
-        $this->queryTypeFactoryId = $queryTypeFactoryId;
-        $this->queryTypeTag = $queryTypeTag;
-        $this->mutationTypeFactoryId = $mutationTypeFactoryId;
-        $this->mutationTypeTag = $mutationTypeTag;
+        $graphQlSchemaFactoryId = 'OxidEsales\GraphQl\Framework\SchemaFactoryInterface',
+        $graphQlPermissionsServiceId = 'OxidEsales\GraphQl\Service\PermissionsServiceInterface',
+        $graphqlQueryTag = 'graphql_query_provider',
+        $graphqlMutationTag = 'graphql_mutation_provider',
+        $graphqlPermissionsTag = 'graphql_permissions_provider'
+    )
+    {
+        $this->graphQlSchemaFactoryId = $graphQlSchemaFactoryId;
+        $this->graphQlPermissionsServiceId = $graphQlPermissionsServiceId;
+        $this->graphqlQueryTag = $graphqlQueryTag;
+        $this->graphqlMutationTag = $graphqlMutationTag;
+        $this->graphqlPermissionsTag = $graphqlPermissionsTag;
     }
 
     /**
      * @param ContainerBuilder $container
+     *
      * @return null
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition($this->queryTypeFactoryId) && !$container->hasAlias($this->queryTypeFactoryId)) {
+        if (!$container->hasDefinition($this->graphQlSchemaFactoryId) &&
+            !$container->hasAlias($this->graphQlSchemaFactoryId)) {
             return;
         }
 
-        if (!$container->hasDefinition($this->mutationTypeFactoryId) && !$container->hasAlias($this->mutationTypeFactoryId)) {
+        $graphQlSchemaFactoryDefinition = $container->findDefinition($this->graphQlSchemaFactoryId);
+
+        foreach ($container->findTaggedServiceIds($this->graphqlQueryTag, true) as $id => $type) {
+            $graphQlSchemaFactoryDefinition->addMethodCall('addQueryProvider', array(new Reference($id)));
+        }
+        foreach ($container->findTaggedServiceIds($this->graphqlMutationTag, true) as $id => $type) {
+            $graphQlSchemaFactoryDefinition->addMethodCall('addMutationProvider', array(new Reference($id)));
+        }
+
+        if (!$container->hasDefinition($this->graphQlPermissionsServiceId) &&
+            !$container->hasAlias($this->graphQlPermissionsServiceId)) {
             return;
         }
-
-        $queryTypeFactoryDefinition = $container->findDefinition($this->queryTypeFactoryId);
-        $mutationTypeFactoryDefinition = $container->findDefinition($this->mutationTypeFactoryId);
-
-        foreach ($container->findTaggedServiceIds($this->queryTypeTag, true) as $id => $type) {
-            $queryTypeFactoryDefinition->addMethodCall('addSubType', array(new Reference($id)));
-        }
-        foreach ($container->findTaggedServiceIds($this->mutationTypeTag, true) as $id => $type) {
-            $mutationTypeFactoryDefinition->addMethodCall('addSubType', array(new Reference($id)));
+        $permissionsService = $container->findDefinition($this->graphQlPermissionsServiceId);
+        foreach ($container->findTaggedServiceIds($this->graphqlPermissionsTag, true) as $id => $type) {
+            $permissionsService->addMethodCall('addPermissionsProvider', array(new Reference($id)));
         }
     }
 }

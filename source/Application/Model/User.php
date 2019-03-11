@@ -2594,16 +2594,16 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * @param                   $sUser
-     * @param DatabaseInterface $oDb
+     * @param string            $user
+     * @param DatabaseInterface $database
      *
      * @return string
      */
-    protected function formQueryPartForUserName($sUser, DatabaseInterface $oDb): string
+    protected function formQueryPartForUserName($user, DatabaseInterface $database): string
     {
-        $sUserSelect = "oxuser.oxusername = " . $oDb->quote($sUser);
+        $condition = 'oxuser.oxusername = ' . $database->quote($user);
 
-        return $sUserSelect;
+        return $condition;
     }
 
     /**

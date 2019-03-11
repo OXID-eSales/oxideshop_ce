@@ -40,5 +40,4 @@ class PasswordVerificationService implements PasswordVerificationServiceInterfac
 
         return password_verify($password, $passwordHash);
     }
-
 }

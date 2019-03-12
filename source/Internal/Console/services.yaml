@@ -8,7 +8,7 @@ services:
 
   oxid_esales.console.symfony.component.console.application:
     class: Symfony\Component\Console\Application
-    public: false
+    public: true
 
   oxid_esales.console.commands_provider.services_commands_provider:
     class: OxidEsales\EshopCommunity\Internal\Console\CommandsProvider\ServicesCommandsProvider

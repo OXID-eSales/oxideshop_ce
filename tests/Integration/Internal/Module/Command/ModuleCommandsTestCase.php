@@ -6,8 +6,13 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Command;
 
-use OxidEsales\Eshop\Core\Module\ModuleList;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
+use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopSettingType;
+use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
+use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Console\ConsoleTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
@@ -34,13 +39,34 @@ class ModuleCommandsTestCase extends TestCase
     {
         $fileSystem = new Filesystem();
         $fileSystem->remove(Registry::getConfig()->getModulesDir() . '/testmodule');
-        $moduleList = oxNew(ModuleList::class);
-        $moduleList->cleanup();
+
+        $activeModules = new ShopConfigurationSetting();
+        $activeModules
+            ->setName(ShopConfigurationSetting::ACTIVE_MODULES)
+            ->setValue([])
+            ->setShopId(1)
+            ->setType(ShopSettingType::ASSOCIATIVE_ARRAY);
+
+        $this->get(ShopConfigurationSettingDaoInterface::class)->save($activeModules);
     }
 
-    protected function prepareTestData()
+    protected function installModule(string $id)
     {
-        $fileSystem = new Filesystem();
-        $fileSystem->mirror(__DIR__ . '/Fixtures', Registry::getConfig()->getConfigParam('sShopDir'));
+        $this
+            ->get(ModuleInstallerInterface::class)
+            ->install(
+                new OxidEshopPackage(
+                    $id,
+                    __DIR__ . '/Fixtures/modules/' . $id,
+                    []
+                )
+            );
+    }
+
+    protected function activateModule(string $id)
+    {
+        $this
+            ->get(ModuleActivationBridgeInterface::class)
+            ->activate($id, 1);
     }
 }

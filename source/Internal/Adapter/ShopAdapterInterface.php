@@ -38,11 +38,6 @@ interface ShopAdapterInterface
     /**
      * @return array
      */
-    public function getModules();
-
-    /**
-     * @return array
-     */
     public function getShopControllerClassMap(): array;
 
     /**

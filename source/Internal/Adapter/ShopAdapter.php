@@ -7,7 +7,6 @@
 namespace OxidEsales\EshopCommunity\Internal\Adapter;
 
 use OxidEsales\Eshop\Core\MailValidator;
-use OxidEsales\Eshop\Core\Module\ModuleList;
 use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\NamespaceInformationProvider;
@@ -106,17 +105,6 @@ class ShopAdapter implements ShopAdapterInterface
         $shopControllerMapProvider = oxNew(ShopControllerMapProvider::class);
 
         return $shopControllerMapProvider->getControllerMap();
-    }
-
-    /**
-     * @return array
-     */
-    public function getModules()
-    {
-        $moduleList = oxNew(ModuleList::class);
-        $moduleList->getModulesFromDir(Registry::getConfig()->getModulesDir());
-
-        return $moduleList->getList();
     }
 
     /**

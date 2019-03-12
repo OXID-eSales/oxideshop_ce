@@ -18,6 +18,7 @@ trait ContainerTrait
         if ($this->container === null) {
             $this->container = (new TestContainerFactory())->create();
             $this->container->compile();
+            $this->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')->generate();
         }
 
         return $this->container->get($serviceId);

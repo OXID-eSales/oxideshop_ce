@@ -23,7 +23,9 @@ class PasswordHashArgon2idServiceTest extends TestCase
      */
     public function testPasswordHashArgon2iServiceEnforcesPasswordPolicy()
     {
-        if (!defined('PASSWORD_ARGON2ID')) {
+        if (!defined('PASSWORD_ARGON2ID') ||
+            Registry::getConfig()->getConfigParam('passwordHashingAlgorithm', PASSWORD_DEFAULT) !== PASSWORD_ARGON2ID
+        ) {
             $this->markTestSkipped('The password hashing algorithm "PASSWORD_ARGON2ID" is not available');
         }
         $this->expectException(PasswordPolicyException::class);

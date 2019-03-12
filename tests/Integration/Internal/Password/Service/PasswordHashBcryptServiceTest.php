@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Password\Service;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Password\Exception\PasswordPolicyException;
 use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashBcryptService;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
@@ -23,7 +24,9 @@ class PasswordHashBcryptServiceTest extends TestCase
      */
     public function testPasswordHashServiceBcryptEnforcesPasswordPolicy()
     {
-        if (!defined('PASSWORD_BCRYPT')) {
+        if (!defined('PASSWORD_BCRYPT') ||
+            Registry::getConfig()->getConfigParam('passwordHashingAlgorithm', PASSWORD_DEFAULT) !== PASSWORD_BCRYPT
+        ) {
             $this->markTestSkipped('The password hashing algorithm "PASSWORD_BCRYPT" is not available');
         }
         $this->expectException(PasswordPolicyException::class);

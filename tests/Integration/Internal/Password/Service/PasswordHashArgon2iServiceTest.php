@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Password\Service;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Password\Exception\PasswordPolicyException;
 use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashArgon2iService;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
@@ -23,7 +24,9 @@ class PasswordHashArgon2iServiceTest extends TestCase
      */
     public function testPasswordHashArgon2iServiceEnforcesPasswordPolicy()
     {
-        if (!defined('PASSWORD_ARGON2I')) {
+        if (!defined('PASSWORD_ARGON2I') ||
+            Registry::getConfig()->getConfigParam('passwordHashingAlgorithm', PASSWORD_DEFAULT) !== PASSWORD_ARGON2I
+        ) {
             $this->markTestSkipped('The password hashing algorithm "PASSWORD_ARGON2I" is not available');
         }
         $this->expectException(PasswordPolicyException::class);

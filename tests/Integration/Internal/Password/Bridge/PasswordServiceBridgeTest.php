@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Password\Bridge;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Password\Bridge\PasswordServiceBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
@@ -22,7 +23,9 @@ class PasswordServiceBridgeTest extends TestCase
      */
     public function testGetPasswordHashServiceReturnsWorkingPasswordHashServiceBcrypt()
     {
-        if (!defined('PASSWORD_BCRYPT')) {
+        if (!defined('PASSWORD_BCRYPT') ||
+            Registry::getConfig()->getConfigParam('passwordHashingAlgorithm', PASSWORD_DEFAULT) !== PASSWORD_BCRYPT
+        ) {
             $this->markTestSkipped('The password hashing algorithm "PASSWORD_BCRYPT" is not available');
         }
         /** @var PasswordServiceBridgeInterface $passwordServiceBridge */
@@ -39,7 +42,9 @@ class PasswordServiceBridgeTest extends TestCase
      */
     public function testGetPasswordHashServiceReturnsWorkingPasswordHashServiceArgon2i()
     {
-        if (!defined('PASSWORD_ARGON2I')) {
+        if (!defined('PASSWORD_ARGON2I') ||
+            Registry::getConfig()->getConfigParam('passwordHashingAlgorithm', PASSWORD_DEFAULT) !== PASSWORD_ARGON2I
+        ) {
             $this->markTestSkipped('The password hashing algorithm "PASSWORD_ARGON2I" is not available');
         }
         /** @var PasswordServiceBridgeInterface $passwordServiceBridge */
@@ -57,7 +62,9 @@ class PasswordServiceBridgeTest extends TestCase
      */
     public function testGetPasswordHashServiceReturnsWorkingPasswordHashServiceArgon2id()
     {
-        if (!defined('PASSWORD_ARGON2ID')) {
+        if (!defined('PASSWORD_ARGON2ID') ||
+            Registry::getConfig()->getConfigParam('passwordHashingAlgorithm', PASSWORD_DEFAULT) !== PASSWORD_ARGON2ID
+        ) {
             $this->markTestSkipped('The password hashing algorithm "PASSWORD_ARGON2ID" is not available');
         }
         /** @var PasswordServiceBridgeInterface $passwordServiceBridge */

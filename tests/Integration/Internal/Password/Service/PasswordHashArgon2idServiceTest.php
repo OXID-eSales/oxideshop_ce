@@ -7,30 +7,31 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Password\Service;
 
 use OxidEsales\EshopCommunity\Internal\Password\Exception\PasswordPolicyException;
-use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordVerificationServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashArgon2idService;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class PasswordVerificationServiceTest
+ * Class PasswordHashBcryptServiceTest
  */
-class PasswordVerificationServiceTest extends TestCase
+class PasswordHashArgon2idServiceTest extends TestCase
 {
     use ContainerTrait;
 
     /**
-     * End-to-end test to ensure, that the password policy checking is called during password verification
+     * End-to-end test to ensure, that the password policy checking is called during password hashing
      */
-    public function testPasswordHashServiceBcryptEnforcesPasswordPolicy()
+    public function testPasswordHashArgon2iServiceEnforcesPasswordPolicy()
     {
+        if (!defined('PASSWORD_ARGON2ID')) {
+            $this->markTestSkipped('The password hashing algorithm "PASSWORD_ARGON2ID" is not available');
+        }
         $this->expectException(PasswordPolicyException::class);
 
         $passwordUtf8 = 'äääääää';
         $passwordIso = mb_convert_encoding($passwordUtf8, 'ISO-8859-15');
 
-        $passwordHash = password_hash($passwordIso, PASSWORD_DEFAULT);
-
-        $passwordVerificationService = $this->get(PasswordVerificationServiceInterface::class);
-        $passwordVerificationService->verifyPassword($passwordIso, $passwordHash);
+        $passwordHashService = $this->get(PasswordHashArgon2idService::class);
+        $passwordHashService->hash($passwordIso);
     }
 }

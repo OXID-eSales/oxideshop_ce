@@ -17,10 +17,16 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashBcryptService
     public: true
 
+  OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashArgon2iService:
+    class: OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashArgon2iService
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashArgon2idService:
+    class: OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashArgon2idService
+    public: true
+
   OxidEsales\EshopCommunity\Internal\Password\Service\PasswordVerificationServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Password\Service\PasswordVerificationService
-    arguments:
-      ['@OxidEsales\EshopCommunity\Internal\Password\Service\PasswordPolicyServiceInterface']
 
   OxidEsales\EshopCommunity\Internal\Password\Service\PasswordPolicyServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Password\Service\PasswordPolicyService

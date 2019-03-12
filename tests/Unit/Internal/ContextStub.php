@@ -102,6 +102,15 @@ class ContextStub extends BasicContextStub implements ContextInterface
     }
 
     /**
+     * @return string
+     */
+    public function getContainerCacheFile(): string
+    {
+        return '';
+    }
+
+
+    /**
      * @return integer
      */
     public function getPasswordHashingBcryptCost(): int
@@ -111,10 +120,26 @@ class ContextStub extends BasicContextStub implements ContextInterface
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getContainerCacheFile(): string
+    public function getPasswordHashingArgon2MemoryCost(): int
     {
-        return '';
+        return 1024;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPasswordHashingArgon2TimeCost(): int
+    {
+        return 2;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPasswordHashingArgon2Threads(): int
+    {
+        return 2;
     }
 }

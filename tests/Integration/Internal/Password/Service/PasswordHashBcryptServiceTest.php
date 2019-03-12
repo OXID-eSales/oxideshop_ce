@@ -16,7 +16,6 @@ use PHPUnit\Framework\TestCase;
  */
 class PasswordHashBcryptServiceTest extends TestCase
 {
-
     use ContainerTrait;
 
     /**
@@ -24,6 +23,9 @@ class PasswordHashBcryptServiceTest extends TestCase
      */
     public function testPasswordHashServiceBcryptEnforcesPasswordPolicy()
     {
+        if (!defined('PASSWORD_BCRYPT')) {
+            $this->markTestSkipped('The password hashing algorithm "PASSWORD_BCRYPT" is not available');
+        }
         $this->expectException(PasswordPolicyException::class);
 
         $passwordUtf8 = 'äääääää';

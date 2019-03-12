@@ -12,7 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 /**
  * @internal
  */
-class PasswordHashBcryptServiceOptionsProvider
+class PasswordHashBcryptServiceOptionsProvider implements PasswordHashServiceOptionsProviderInterface
 {
     /**
      * @var ContextInterface

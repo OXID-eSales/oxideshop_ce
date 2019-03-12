@@ -21,6 +21,7 @@ class Context extends BasicContext implements ContextInterface
 
     /**
      * Context constructor.
+     *
      * @param Config $config
      */
     public function __construct(Config $config)
@@ -90,6 +91,30 @@ class Context extends BasicContext implements ContextInterface
     public function getPasswordHashingBcryptCost(): int
     {
         return $this->getConfigParameter('passwordHashingBcryptCost', PASSWORD_BCRYPT_DEFAULT_COST);
+    }
+
+    /**
+     * @return int
+     */
+    public function getPasswordHashingArgon2MemoryCost(): int
+    {
+        return $this->getConfigParameter('passwordHashingArgon2MemoryCost', PASSWORD_ARGON2_DEFAULT_MEMORY_COST);
+    }
+
+    /**
+     * @return int
+     */
+    public function getPasswordHashingArgon2TimeCost(): int
+    {
+        return $this->getConfigParameter('passwordHashingArgon2TimeCost', PASSWORD_ARGON2_DEFAULT_TIME_COST);
+    }
+
+    /**
+     * @return int
+     */
+    public function getPasswordHashingArgon2Threads(): int
+    {
+        return $this->getConfigParameter('passwordHashingArgon2Threads', PASSWORD_ARGON2_DEFAULT_THREADS);
     }
 
     /**

@@ -9,18 +9,18 @@ namespace OxidEsales\EshopCommunity\Internal\Password\Service;
 use OxidEsales\EshopCommunity\Internal\Password\Exception\UnavailablePasswordHashAlgorithm;
 
 /**
- * @internal
+ * Class PasswordHashArgon2idService
  */
-class PasswordHashBcryptService extends AbstractPasswordHashService implements PasswordHashServiceInterface
+class PasswordHashArgon2idService extends AbstractPasswordHashService implements PasswordHashServiceInterface
 {
     /**
      * @throws UnavailablePasswordHashAlgorithm
      */
     protected function setHashAlgorithm()
     {
-        if (!defined('PASSWORD_BCRYPT')) {
-            throw new UnavailablePasswordHashAlgorithm('The password hash algorithm "PASSWORD_BCRYPT" is not available on your installation');
+        if (!defined('PASSWORD_ARGON2ID')) {
+            throw new UnavailablePasswordHashAlgorithm('The password hash algorithm "PASSWORD_ARGON2ID" is not available on your installation');
         }
-        $this->hashAlgorithm = PASSWORD_BCRYPT;
+        $this->hashAlgorithm = PASSWORD_ARGON2ID;
     }
 }

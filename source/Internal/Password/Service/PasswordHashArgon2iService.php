@@ -11,16 +11,16 @@ use OxidEsales\EshopCommunity\Internal\Password\Exception\UnavailablePasswordHas
 /**
  * @internal
  */
-class PasswordHashBcryptService extends AbstractPasswordHashService implements PasswordHashServiceInterface
+class PasswordHashArgon2iService extends AbstractPasswordHashService implements PasswordHashServiceInterface
 {
     /**
      * @throws UnavailablePasswordHashAlgorithm
      */
     protected function setHashAlgorithm()
     {
-        if (!defined('PASSWORD_BCRYPT')) {
-            throw new UnavailablePasswordHashAlgorithm('The password hash algorithm "PASSWORD_BCRYPT" is not available on your installation');
+        if (!defined('PASSWORD_ARGON2I')) {
+            throw new UnavailablePasswordHashAlgorithm('The password hash algorithm "PASSWORD_ARGON2I" is not available on your installation');
         }
-        $this->hashAlgorithm = PASSWORD_BCRYPT;
+        $this->hashAlgorithm = PASSWORD_ARGON2I;
     }
 }

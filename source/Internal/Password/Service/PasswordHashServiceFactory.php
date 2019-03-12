@@ -8,7 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Password\Service;
 
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Password\Exception\PasswordHashException;
-use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashBcryptService;
 
 /**
  * @internal
@@ -37,8 +36,20 @@ class PasswordHashServiceFactory implements PasswordHashServiceFactoryInterface
      */
     private function getAlgorithmToClassMap(): array
     {
-        return [
-            PASSWORD_BCRYPT => \OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashBcryptService::class,
-        ];
+        $algorithmToClassMap = [];
+
+        if (defined('PASSWORD_BCRYPT')) {
+            $algorithmToClassMap[PASSWORD_BCRYPT] = PasswordHashBcryptService::class;
+        }
+
+        if (defined('PASSWORD_ARGON2I')) {
+            $algorithmToClassMap[PASSWORD_ARGON2I] = PasswordHashArgon2iService::class;
+        }
+
+        if (defined('PASSWORD_ARGON2ID')) {
+            $algorithmToClassMap[PASSWORD_ARGON2ID] = PasswordHashArgon2idService::class;
+        }
+
+        return $algorithmToClassMap;
     }
 }

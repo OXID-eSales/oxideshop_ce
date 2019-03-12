@@ -16,7 +16,7 @@ class LoginTest extends UserTestCase
      * Tries to login with password which is generated with old algorithm
      * and checks if password and salt were regenerated.
      */
-    public function testLoginWithOldPassword()
+    public function testRehashingPasswordWorksOnLoginWithOldPassword()
     {
         $oUser = $this->_createUser($this->_sDefaultUserName, $this->_sOldEncodedPassword, $this->_sOldSalt);
 

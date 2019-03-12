@@ -8,7 +8,10 @@ namespace OxidEsales\EshopCommunity\Core\Module;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ModuleConfigurationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * Module class.
@@ -89,6 +92,8 @@ class Module extends \OxidEsales\Eshop\Core\Base
      */
     public function load($sModuleId)
     {
+        $this->_aModule['id'] = $sModuleId;
+
         $sModulePath = $this->getModuleFullPath($sModuleId);
         $sMetadataPath = $sModulePath . "/metadata.php";
 
@@ -169,9 +174,14 @@ class Module extends \OxidEsales\Eshop\Core\Base
      */
     public function getExtensions()
     {
-        $rawExtensions = isset($this->_aModule['extend']) ? $this->_aModule['extend'] : [];
+        $moduleConfiguration = $this
+            ->getContainer()
+            ->get(ModuleConfigurationBridgeInterface::class)
+            ->get($this->getId());
 
-        return $this->getUnifiedShopClassExtensionsForBc($rawExtensions);
+        return $moduleConfiguration->hasSetting(ModuleSetting::CLASS_EXTENSIONS)
+            ? $moduleConfiguration->getSetting(ModuleSetting::CLASS_EXTENSIONS)->getValue()
+            : [];
     }
 
     /**
@@ -329,7 +339,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
             return false;
         }
 
-        $moduleActivationBridge = ContainerFactory::getInstance()
+        $moduleActivationBridge = $this
             ->getContainer()
             ->get(ModuleActivationBridgeInterface::class);
 
@@ -346,11 +356,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
      */
     public function hasExtendClass()
     {
-        $aExtensions = $this->getExtensions();
-
-        return isset($aExtensions)
-               && is_array($aExtensions)
-               && !empty($aExtensions);
+        return !empty($this->getExtensions());
     }
 
     /**
@@ -609,5 +615,13 @@ class Module extends \OxidEsales\Eshop\Core\Base
         }
 
         return $moduleId;
+    }
+
+    /**
+     * @return ContainerInterface
+     */
+    private function getContainer(): ContainerInterface
+    {
+        return ContainerFactory::getInstance()->getContainer();
     }
 }

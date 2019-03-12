@@ -1,0 +1,6 @@
+
+services:
+  OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ModuleConfigurationBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ModuleConfigurationBridge
+    autowire: true
+    public: true

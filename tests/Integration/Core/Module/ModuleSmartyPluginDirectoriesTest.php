@@ -7,22 +7,28 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Module;
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\Eshop\Core\UtilsView;
-use OxidEsales\TestingLibrary\UnitTestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class ModuleSmartyPluginDirectoryTest
  */
-class ModuleSmartyPluginDirectoriesTest extends UnitTestCase
+class ModuleSmartyPluginDirectoriesTest extends TestCase
 {
-    public function setUpBeforeTestSuite()
+    use ContainerTrait;
+
+    public function setUp()
     {
-        parent::setUpBeforeTestSuite();
         $this->activateTestModule();
+    }
+
+    public function tearDown()
+    {
+        $this->deactivateTestModule();
     }
 
     /**
@@ -85,8 +91,7 @@ class ModuleSmartyPluginDirectoriesTest extends UnitTestCase
 
     private function activateTestModule()
     {
-        $container = ContainerFactory::getInstance()->getContainer();
-        $container
+        $this
             ->get(ModuleInstallerInterface::class)
             ->install(
                 new OxidEshopPackage(
@@ -96,8 +101,15 @@ class ModuleSmartyPluginDirectoriesTest extends UnitTestCase
                 )
             );
 
-        $container
+        $this
             ->get(ModuleActivationBridgeInterface::class)
             ->activate('with_metadata_v21', Registry::getConfig()->getShopId());
+    }
+
+    private function deactivateTestModule()
+    {
+        $this
+            ->get(ModuleActivationBridgeInterface::class)
+            ->deactivate('with_metadata_v21', Registry::getConfig()->getShopId());
     }
 }

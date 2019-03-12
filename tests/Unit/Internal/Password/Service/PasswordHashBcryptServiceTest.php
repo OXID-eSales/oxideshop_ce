@@ -59,18 +59,6 @@ class PasswordHashBcryptServiceTest extends TestCase
     }
 
     /**
-     * This test should make you aware of the fact, that the input encoding must not change, if password verification
-     * should not fail for special chars.
-     */
-    public function testUtf8EncodePasswordThrowsNoException()
-    {
-        $passwordUtf8 = 'äääää';
-
-        $passwordHashService = $this->getPasswordHashService();
-        $passwordHashService->hash($passwordUtf8);
-    }
-
-    /**
      * @return PasswordHashBcryptService
      */
     private function getPasswordHashService(): PasswordHashBcryptService

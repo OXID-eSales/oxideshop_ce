@@ -6,6 +6,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use oxConfig;
+use OxidEsales\Eshop\Application\Controller\Admin\ModuleList;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class ModuleListTest extends \OxidTestCase
@@ -17,8 +18,8 @@ class ModuleListTest extends \OxidTestCase
      */
     public function testRender()
     {
-        $oView = oxNew('Module_List');
-        $this->assertEquals('module_list.tpl', $oView->render());
+        $moduleList = oxNew(ModuleList::class);
+        $this->assertEquals('module_list.tpl', $moduleList->render());
     }
 
     public function testRenderWithCorrectModuleNames()

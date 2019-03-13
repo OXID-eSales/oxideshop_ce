@@ -63,7 +63,7 @@ class ModuleActivationService implements ModuleActivationServiceInterface
     public function __construct(
         ModuleConfigurationDaoInterface             $moduleConfigurationDao,
         EventDispatcherInterface                    $eventDispatcher,
-        ModuleConfigurationHandlingServiceInterface      $moduleSettingsHandlingService,
+        ModuleConfigurationHandlingServiceInterface $moduleSettingsHandlingService,
         ModuleStateServiceInterface                 $stateService,
         ExtensionChainServiceInterface              $classExtensionChainService,
         ModuleServicesActivationServiceInterface    $moduleServicesActivationService

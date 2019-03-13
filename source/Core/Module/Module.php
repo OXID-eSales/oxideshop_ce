@@ -8,7 +8,7 @@ namespace OxidEsales\EshopCommunity\Core\Module;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ModuleConfigurationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use Psr\Container\ContainerInterface;
@@ -176,7 +176,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
     {
         $moduleConfiguration = $this
             ->getContainer()
-            ->get(ModuleConfigurationBridgeInterface::class)
+            ->get(ModuleConfigurationDaoBridgeInterface::class)
             ->get($this->getId());
 
         return $moduleConfiguration->hasSetting(ModuleSetting::CLASS_EXTENSIONS)

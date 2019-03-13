@@ -11,7 +11,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleCon
 /**
  * @internal
  */
-interface ModuleConfigurationBridgeInterface
+interface ModuleConfigurationDaoBridgeInterface
 {
     /**
      * @param string $moduleId

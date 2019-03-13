@@ -6,13 +6,13 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Configuration\Bridge;
 
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ModuleConfigurationBridge;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ModuleConfigurationDaoBridge;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
 
-class ModuleConfigurationBridgeTest extends TestCase
+class ModuleConfigurationDaoBridgeTest extends TestCase
 {
     public function testGet()
     {
@@ -27,7 +27,7 @@ class ModuleConfigurationBridgeTest extends TestCase
             ->method('get')
             ->with('testModuleId', 1789);
 
-        $bridge = new ModuleConfigurationBridge($context, $moduleConfigurationDao);
+        $bridge = new ModuleConfigurationDaoBridge($context, $moduleConfigurationDao);
         $bridge->get('testModuleId');
     }
 
@@ -46,7 +46,7 @@ class ModuleConfigurationBridgeTest extends TestCase
             ->method('save')
             ->with($moduleConfiguration, 1799);
 
-        $bridge = new ModuleConfigurationBridge($context, $moduleConfigurationDao);
+        $bridge = new ModuleConfigurationDaoBridge($context, $moduleConfigurationDao);
         $bridge->save($moduleConfiguration);
     }
 }

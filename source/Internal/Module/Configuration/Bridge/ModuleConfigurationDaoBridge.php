@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 /**
  * @internal
  */
-class ModuleConfigurationBridge implements ModuleConfigurationBridgeInterface
+class ModuleConfigurationDaoBridge implements ModuleConfigurationDaoBridgeInterface
 {
     /**
      * @var ContextInterface
@@ -26,7 +26,7 @@ class ModuleConfigurationBridge implements ModuleConfigurationBridgeInterface
     private $moduleConfigurationDao;
 
     /**
-     * ModuleConfigurationBridge constructor.
+     * ModuleConfigurationDaoBridge constructor.
      * @param ContextInterface                $context
      * @param ModuleConfigurationDaoInterface $moduleConfigurationDao
      */

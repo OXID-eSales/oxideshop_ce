@@ -27,4 +27,8 @@ interface PasswordHashServiceInterface
      * @return bool
      */
     public function passwordNeedsRehash(string $passwordHash): bool;
+
+    /**
+     */
+    public function initialize();
 }

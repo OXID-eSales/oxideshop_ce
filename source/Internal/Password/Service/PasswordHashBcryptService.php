@@ -19,7 +19,9 @@ class PasswordHashBcryptService extends AbstractPasswordHashService implements P
     protected function setHashAlgorithm()
     {
         if (!defined('PASSWORD_BCRYPT')) {
-            throw new UnavailablePasswordHashAlgorithm('The password hash algorithm "PASSWORD_BCRYPT" is not available on your installation');
+            throw new UnavailablePasswordHashAlgorithm(
+                'The password hash algorithm "PASSWORD_BCRYPT" is not available on your installation'
+            );
         }
         $this->hashAlgorithm = PASSWORD_BCRYPT;
     }

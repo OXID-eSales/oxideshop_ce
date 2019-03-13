@@ -19,7 +19,9 @@ class PasswordHashArgon2idService extends AbstractPasswordHashService implements
     protected function setHashAlgorithm()
     {
         if (!defined('PASSWORD_ARGON2ID')) {
-            throw new UnavailablePasswordHashAlgorithm('The password hash algorithm "PASSWORD_ARGON2ID" is not available on your installation');
+            throw new UnavailablePasswordHashAlgorithm(
+                'The password hash algorithm "PASSWORD_ARGON2ID" is not available on your installation'
+            );
         }
         $this->hashAlgorithm = PASSWORD_ARGON2ID;
     }

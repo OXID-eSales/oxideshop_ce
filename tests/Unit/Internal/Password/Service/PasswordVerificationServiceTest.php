@@ -6,7 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Password\Service;
 
-use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordPolicyService;
 use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordPolicyServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordVerificationService;
 use PHPUnit\Framework\TestCase;
@@ -34,7 +33,7 @@ class PasswordVerificationServiceTest extends TestCase
     /**
      *
      */
-    public function testPasswordVerificationDoesNotVerifiyWrongPassword()
+    public function testPasswordVerificationDoesNotVerifyWrongPassword()
     {
         $passwordUtf8 = 'äääää';
         $passwordHash = password_hash($passwordUtf8, PASSWORD_DEFAULT);
@@ -60,4 +59,3 @@ class PasswordVerificationServiceTest extends TestCase
         return $passwordVerificationService;
     }
 }
-

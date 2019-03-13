@@ -6,62 +6,31 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Password\Service;
 
-use OxidEsales\EshopCommunity\Internal\Password\Exception\PasswordPolicyException;
 use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashBcryptService;
 use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashBcryptServiceOptionsProvider;
+use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordPolicyServiceInterface;
-use PHPUnit\Framework\TestCase;
 
 /**
  *
  */
-class PasswordHashBcryptServiceTest extends TestCase
+class PasswordHashBcryptServiceTest extends AbstractPasswordHashServiceTest
 {
     /**
      *
      */
-    public function testHashForGivenPasswordIsEncryptedWithBcrypt()
+    protected function setUp()
     {
-        $password = 'secret';
-        $passwordHashService = $this->getPasswordHashService();
-        $hash = $passwordHashService->hash($password);
-        $info = password_get_info($hash);
-
-        $this->assertSame(PASSWORD_BCRYPT, $info['algo']);
-    }
-
-    /**
-     *
-     */
-    public function testHashForEmptyPasswordIsEncryptedWithBcrypt()
-    {
-        $password = '';
-
-        $passwordHashService = $this->getPasswordHashService();
-        $hash = $passwordHashService->hash($password);
-        $info = password_get_info($hash);
-
-        $this->assertSame(PASSWORD_BCRYPT, $info['algo']);
-    }
-
-    /**
-     *
-     */
-    public function testConsecutiveHashingTheSamePasswordProducesDifferentHashes()
-    {
-        $password = 'secret';
-
-        $passwordHashService = $this->getPasswordHashService();
-        $hash_1 = $passwordHashService->hash($password);
-        $hash_2 = $passwordHashService->hash($password);
-
-        $this->assertNotSame($hash_1, $hash_2);
+        if (!defined('PASSWORD_BCRYPT')) {
+            $this->markTestSkipped('The password hashing algorithm "PASSWORD_BCRYPT" is not available');
+        }
+        $this->hashingAlgorithm = PASSWORD_BCRYPT;
     }
 
     /**
      * @return PasswordHashBcryptService
      */
-    private function getPasswordHashService(): PasswordHashBcryptService
+    protected function getPasswordHashServiceImplementation(): PasswordHashServiceInterface
     {
         $passwordHashBcryptServiceOptionProviderMock = $this
             ->getMockBuilder(PasswordHashBcryptServiceOptionsProvider::class)
@@ -79,6 +48,7 @@ class PasswordHashBcryptServiceTest extends TestCase
             $passwordHashBcryptServiceOptionProviderMock,
             $passwordPolicyServiceMock
         );
+        $passwordHashService->initialize();
 
         return $passwordHashService;
     }

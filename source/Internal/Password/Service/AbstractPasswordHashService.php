@@ -17,7 +17,7 @@ abstract class AbstractPasswordHashService
     /**
      * @var int
      */
-    protected $hashAlgorithm = PASSWORD_DEFAULT;
+    protected $hashAlgorithm;
     /**
      * @var PasswordPolicyServiceInterface
      */
@@ -39,13 +39,19 @@ abstract class AbstractPasswordHashService
     ) {
         $this->passwordHashServiceOptionsProvider = $passwordHashServiceOptionsProvider;
         $this->passwordPolicyService = $passwordPolicyService;
-        $this->setHashAlgorithm();
     }
 
     /**
      * @throws UnavailablePasswordHashAlgorithm
      */
     abstract protected function setHashAlgorithm();
+
+    /**
+     */
+    public function initialize()
+    {
+        $this->setHashAlgorithm();
+    }
 
     /**
      * Creates a password hash

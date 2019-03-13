@@ -6,8 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Password\Service;
 
-use OxidEsales\Eshop\Core\Hasher;
-
 /**
  * @internal
  */
@@ -19,4 +17,10 @@ interface PasswordHashServiceFactoryInterface
      * @return PasswordHashServiceInterface
      */
     public function getPasswordHashService(int $algorithm): PasswordHashServiceInterface;
+
+    /**
+     * @param string                       $description
+     * @param PasswordHashServiceInterface $passwordHashService
+     */
+    public function addPasswordHashService(string $description, PasswordHashServiceInterface $passwordHashService);
 }

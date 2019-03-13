@@ -7,7 +7,9 @@
 namespace OxidEsales\EshopCommunity\Internal\Utility;
 
 use OxidEsales\Eshop\Core\Config;
+use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
+use PDO;
 
 /**
  * @internal
@@ -99,6 +101,8 @@ class Context extends BasicContext implements ContextInterface
      */
     private function getConfigParameter($name, $default = null)
     {
-        return $this->config->getConfigParam($name, $default);
+        $value = $this->config->getConfigParam($name, $default);
+        DatabaseProvider::getDb()->setFetchMode(PDO::FETCH_ASSOC);
+        return $value;
     }
 }

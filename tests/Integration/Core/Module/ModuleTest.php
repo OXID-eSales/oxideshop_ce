@@ -73,6 +73,38 @@ class ModuleTest extends TestCase
         $this->assertFalse($module->hasExtendClass());
     }
 
+    public function testGetExtensions()
+    {
+        $moduleId = 'with_class_extensions';
+        $this->installModule($moduleId);
+        $this->activateModule($moduleId);
+
+        $module = oxNew(Module::class);
+        $module->load($moduleId);
+
+        $this->assertSame(
+            [
+                'OxidEsales\Eshop\Application\Model\Article' => 'ModuleArticle',
+            ],
+            $module->getExtensions()
+        );
+    }
+
+    public function testGetExtensionsReturnsEmptyArrayIfNoExtensions()
+    {
+        $moduleId = 'with_metadata_v21';
+        $this->installModule($moduleId);
+        $this->activateModule($moduleId);
+
+        $module = oxNew(Module::class);
+        $module->load($moduleId);
+
+        $this->assertSame(
+            [],
+            $module->getExtensions()
+        );
+    }
+
     private function installModule(string $id)
     {
         ContainerFactory::getInstance()

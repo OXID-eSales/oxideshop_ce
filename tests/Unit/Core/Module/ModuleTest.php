@@ -356,56 +356,6 @@ class ModuleTest extends \OxidTestCase
         $this->assertEquals('testModuleId', $oModule->getId());
     }
 
-    public function dataProviderTestGetExtensions()
-    {
-        $data = [
-            'all_is_well' => ['metadata_extend' =>
-                                  [\OxidEsales\Eshop\Application\Model\Article::class => '\MyVendor\MyModule1\MyArticleClass',
-                                   \OxidEsales\Eshop\Application\Model\Order::class => '\MyVendor\MyModule1\MyOrderClass',
-                                   \OxidEsales\Eshop\Application\Model\User::class => '\MyVendor\MyModule1\MyUserClass'
-                                  ],
-                              'expected' =>
-                                  [\OxidEsales\Eshop\Application\Model\Article::class => '\MyVendor\MyModule1\MyArticleClass',
-                                   \OxidEsales\Eshop\Application\Model\Order::class => '\MyVendor\MyModule1\MyOrderClass',
-                                   \OxidEsales\Eshop\Application\Model\User::class => '\MyVendor\MyModule1\MyUserClass'
-                                  ]
-            ],
-            'all_is_well_bc' => ['metadata_extend' =>
-                                     ['oxArticle' => '\MyVendor\MyModule1\MyArticleClass',
-                                      'oxOrder' => '\MyVendor\MyModule1\MyOrderClass',
-                                      'oxUser' => '\MyVendor\MyModule1\MyUserClass'
-                                     ],
-                                 'expected' =>
-                                     [\OxidEsales\Eshop\Application\Model\Article::class => '\MyVendor\MyModule1\MyArticleClass',
-                                      \OxidEsales\Eshop\Application\Model\Order::class => '\MyVendor\MyModule1\MyOrderClass',
-                                      \OxidEsales\Eshop\Application\Model\User::class => '\MyVendor\MyModule1\MyUserClass'
-                                     ]
-            ],
-            'case_mismatch' => ['metadata_extend' =>
-                                    ['oxidEsales\eshop\application\model\article' => '\MyVendor\MyModule1\MyArticleClass',
-                                     'OxidEsales\Eshop\Application\Model\Order' => '\MyVendor\MyModule1\MyOrderClass',
-                                     'OxidEsales\Eshop\Application\Model\user' => '\MyVendor\MyModule1\MyUserClass'
-                                    ],
-                                'expected' => ['oxidEsales\eshop\application\model\article' => '\MyVendor\MyModule1\MyArticleClass',
-                                               'OxidEsales\Eshop\Application\Model\Order' => '\MyVendor\MyModule1\MyOrderClass',
-                                               'OxidEsales\Eshop\Application\Model\user' => '\MyVendor\MyModule1\MyUserClass'
-                                ],
-            ],
-            'edition_instead_of_vns' => ['metadata_extend' =>
-                                             [\OxidEsales\Eshop\Application\Model\Article::class => '\MyVendor\MyModule1\MyArticleClass',
-                                              \OxidEsales\EshopCommunity\Application\Model\Order::class => '\MyVendor\MyModule1\MyOrderClass',
-                                              \OxidEsales\EshopCommunity\Application\Model\User::class => '\MyVendor\MyModule1\MyUserClass'
-                                             ],
-                                         'expected' => [\OxidEsales\Eshop\Application\Model\Article::class => '\MyVendor\MyModule1\MyArticleClass',
-                                                        \OxidEsales\EshopCommunity\Application\Model\Order::class => '\MyVendor\MyModule1\MyOrderClass',
-                                                        \OxidEsales\EshopCommunity\Application\Model\User::class => '\MyVendor\MyModule1\MyUserClass'
-                                         ],
-            ]
-        ];
-
-        return $data;
-    }
-
     public function testGetFilesWhenModuleHasFiles()
     {
         $aModule = array(

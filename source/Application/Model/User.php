@@ -1250,12 +1250,12 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $userNameCondition = $this->formQueryPartForUserName($userName, $database);
         $passwordCondition = $this->formQueryPartForMD5Password($password, $database);
         $shopOrRightsCondition = $this->formQueryPartForAdminView($shopId, $isAdmin);
-        $activeCondition =  'oxuser.oxactive = 1';
+        $userActiveCondition = $this->formQueryPartForActiveUser();
 
         $query = "SELECT `oxid`
                     FROM oxuser 
                     WHERE 1  
-                    AND $activeCondition 
+                    AND $userActiveCondition 
                     AND $passwordCondition 
                     AND $userNameCondition 
                     $shopOrRightsCondition
@@ -1280,13 +1280,13 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $userNameCondition = $this->formQueryPartForUserName($userName, $database);
         $shopOrRightsCondition = $this->formQueryPartForAdminView($shopId, $isAdmin);
         $passwordCondition = $this->formQueryPartForSha512Password($password, $database, $userNameCondition, $shopOrRightsCondition);
-        $activeCondition =  'oxuser.oxactive = 1';
+        $userActiveCondition = $this->formQueryPartForActiveUser();
 
 
         $query = "SELECT `oxid`
                     FROM oxuser 
                     WHERE 1  
-                    AND $activeCondition 
+                    AND $userActiveCondition 
                     AND $passwordCondition 
                     AND $userNameCondition 
                     $shopOrRightsCondition
@@ -1427,12 +1427,12 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $database = DatabaseProvider::getDb();
         $userNameCondition = $this->formQueryPartForUserName($userName, $database);
         $shopOrRightsCondition = $this->formQueryPartForAdminView($shopId, $isLoginToAdminBackend);
-        $activeCondition =  'oxuser.oxactive = 1';
+        $userActiveCondition = $this->formQueryPartForActiveUser();
 
         $query = "SELECT `OXID`
                     FROM oxuser 
                     WHERE 1  
-                    AND $activeCondition 
+                    AND $userActiveCondition 
                     AND $userNameCondition 
                     $shopOrRightsCondition
                     ";
@@ -2273,12 +2273,12 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $database = DatabaseProvider::getDb();
         $userNameCondition = $this->formQueryPartForUserName($userName, $database);
         $shopOrRightsCondition = $this->formQueryPartForAdminView($shopId, $isLoginToAdminBackend);
-        $activeCondition =  'oxuser.oxactive = 1';
+        $userActiveCondition = $this->formQueryPartForActiveUser();
 
         $query = "SELECT `oxpassword`
                     FROM oxuser 
                     WHERE 1  
-                    AND $activeCondition 
+                    AND $userActiveCondition 
                     AND $userNameCondition 
                     $shopOrRightsCondition
                     ";
@@ -2336,26 +2336,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Forms shop select query.
-     *
-     * @param string $sShopID Shop id is used when method is overridden.
-     * @param bool   $blAdmin
-     *
-     * @return string
-     */
-    protected function formQueryPartForAdminView($sShopID, $blAdmin)
-    {
-        $sShopSelect = '';
-
-        // Admin view: can only login with higher than 'user' rights
-        if ($blAdmin) {
-            $sShopSelect = " and ( oxrights != 'user' ) ";
-        }
-
-        return $sShopSelect;
-    }
-
-    /**
      * Method is used to make additional delete actions.
      *
      * @param string $sOXIDQuoted
@@ -2392,23 +2372,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
                 $this->load($userId);
             }
         }
-    }
-
-    /**
-     * Updates given query. Method is for overriding.
-     *
-     * @param string $user
-     * @param string $shopId
-     *
-     * @return string
-     */
-    protected function formUserCookieQuery($user, $shopId)
-    {
-        $query = 'select oxid, oxpassword, oxpasssalt from oxuser '
-            . 'where oxuser.oxpassword != "" and  oxuser.oxactive = 1 and oxuser.oxusername = '
-            . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($user);
-
-        return $query;
     }
 
     /**
@@ -2561,6 +2524,26 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
+     * Callback function for array_walk to delete items using the delete method of the given model class
+     *
+     * @param string  $id        Id of the item to be deleted
+     * @param integer $key       Key of the array
+     * @param string  $className Model class to be used
+     */
+    private function deleteItemById($id, $key, $className)
+    {
+        /** @var \OxidEsales\Eshop\Core\Model\BaseModel $modelObject */
+        $modelObject = oxNew($className);
+
+        if ($modelObject->load($id)) {
+            if ($this->_blMallUsers) {
+                $modelObject->setIsDerived(false);
+            }
+            $modelObject->delete();
+        }
+    }
+
+    /**
      * @param string            $password
      * @param DatabaseInterface $database
      * @param string            $userCondition
@@ -2607,22 +2590,49 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Callback function for array_walk to delete items using the delete method of the given model class
+     * Forms shop select query.
      *
-     * @param string  $id        Id of the item to be deleted
-     * @param integer $key       Key of the array
-     * @param string  $className Model class to be used
+     * @param string $sShopID Shop id is used when method is overridden.
+     * @param bool   $blAdmin
+     *
+     * @return string
      */
-    private function deleteItemById($id, $key, $className)
+    protected function formQueryPartForAdminView($sShopID, $blAdmin)
     {
-        /** @var \OxidEsales\Eshop\Core\Model\BaseModel $modelObject */
-        $modelObject = oxNew($className);
+        $sShopSelect = '';
 
-        if ($modelObject->load($id)) {
-            if ($this->_blMallUsers) {
-                $modelObject->setIsDerived(false);
-            }
-            $modelObject->delete();
+        // Admin view: can only login with higher than 'user' rights
+        if ($blAdmin) {
+            $sShopSelect = " and ( oxrights != 'user' ) ";
         }
+
+        return $sShopSelect;
+    }
+
+    /**
+     * @return string
+     */
+    protected function formQueryPartForActiveUser(): string
+    {
+        $userActiveCondition = 'oxuser.oxactive = 1';
+
+        return $userActiveCondition;
+    }
+
+    /**
+     * Updates given query. Method is for overriding.
+     *
+     * @param string $user
+     * @param string $shopId
+     *
+     * @return string
+     */
+    protected function formUserCookieQuery($user, $shopId)
+    {
+        $query = 'select oxid, oxpassword, oxpasssalt from oxuser '
+                 . 'where oxuser.oxpassword != "" and  oxuser.oxactive = 1 and oxuser.oxusername = '
+                 . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($user);
+
+        return $query;
     }
 }

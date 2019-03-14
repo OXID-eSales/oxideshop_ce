@@ -19,6 +19,14 @@ class PasswordHashServiceFactory implements PasswordHashServiceFactoryInterface
     private $passwordHashServices;
 
     /**
+     * PasswordHashServiceFactory constructor.
+     */
+    public function __construct()
+    {
+        $this->passwordHashServices = new PasswordHashServiceArray();
+    }
+
+    /**
      * @param int $algorithm
      *
      * @throws UnavailablePasswordHashAlgorithm

@@ -6,6 +6,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
 
 use \oxCurl;
+use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\OnlineServerEmailBuilder;
 use OxidEsales\EshopCommunity\Core\Exception\SystemComponentException;
 use \oxModule;
@@ -63,18 +64,28 @@ class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
         $oEmailBuilder = oxNew(OnlineServerEmailBuilder::class);
         $oOnlineModuleVersionNotifierCaller = new oxOnlineModuleVersionNotifierCaller($curlMock, $oEmailBuilder, new oxSimpleXml());
 
-        $oModule1 = oxNew('oxModule');
+        $oModule1 = $this
+            ->getMockBuilder(Module::class)
+            ->setMethods(['isActive'])
+            ->getMock();
+
+        $oModule1->method('isActive')->willReturn(true);
+
         $oModule1->setModuleData(array(
             'id' => 'moduleId1',
             'version' => '1.0',
-            'active' => true,
         ));
 
-        $oModule2 = oxNew('oxModule');
+        $oModule2 = $this
+            ->getMockBuilder(Module::class)
+            ->setMethods(['isActive'])
+            ->getMock();
+
+        $oModule2->method('isActive')->willReturn(true);
+
         $oModule2->setModuleData(array(
             'id' => 'moduleId2',
             'version' => '2.0',
-            'active' => true,
         ));
 
         $oModuleList = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, array('getList'));

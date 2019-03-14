@@ -6,6 +6,9 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
+
 /**
  * Modules list class.
  *
@@ -524,36 +527,21 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getModulesFromDir($sModulesDir, $sVendorDir = null)
     {
-        $sModulesDir = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->normalizeDir($sModulesDir);
+        $container = ContainerFactory::getInstance()->getContainer();
+        $shopConfiguration = $container->get(ShopConfigurationDaoBridgeInterface::class)->get();
 
-        foreach (glob($sModulesDir . '*') as $sModuleDirPath) {
-            $sModuleDirPath .= (is_dir($sModuleDirPath)) ? '/' : '';
-            $sModuleDirName = basename($sModuleDirPath);
+        $modules = [];
 
-            // skipping some file
-            if (in_array($sModuleDirName, $this->_aSkipFiles) || (!is_dir($sModuleDirPath) && substr($sModuleDirName, -4) != ".php")) {
-                continue;
-            }
-
-            if ($this->_isVendorDir($sModuleDirPath)) {
-                // scanning modules vendor directory
-                $this->getModulesFromDir($sModuleDirPath, basename($sModuleDirPath));
-            } else {
-                // loading module info
-                $oModule = $this->getModule();
-                $sModuleDirName = (!empty($sVendorDir)) ? $sVendorDir . '/' . $sModuleDirName : $sModuleDirName;
-                if ($oModule->loadByDir($sModuleDirName)) {
-                    $sModuleId = $oModule->getId();
-                    $this->_aModules[$sModuleId] = $oModule;
-                }
-            }
-        }
-        // sorting by name
-        if ($this->_aModules !== null) {
-            uasort($this->_aModules, [$this, '_sortModules']);
+        foreach ($shopConfiguration->getModuleConfigurations() as $moduleConfiguration) {
+            $module = $this->getModule();
+            $module->load($moduleConfiguration->getId());
+            $modules[$moduleConfiguration->getId()] = $module;
         }
 
-        return $this->_aModules;
+        $this->_aModules = $modules;
+        uasort($this->_aModules, [$this, '_sortModules']);
+
+        return $modules;
     }
 
     /**

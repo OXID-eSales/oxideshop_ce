@@ -55,12 +55,12 @@ class ModuleExtensionsCleaner
 
         $path = '';
         if (isset($modulePaths[$moduleId])) {
-            $path = $modulePaths[$moduleId] . "/";
+            $path = $modulePaths[$moduleId];
         }
 
         // TODO: This condition should be removed. Need to check integration tests.
         if (!$path) {
-            $path = $moduleId . "/";
+            $path = $moduleId;
         }
 
         $filteredModules = [];

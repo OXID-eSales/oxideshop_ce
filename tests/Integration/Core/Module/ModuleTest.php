@@ -84,7 +84,7 @@ class ModuleTest extends TestCase
 
         $this->assertSame(
             [
-                'OxidEsales\Eshop\Application\Model\Article' => 'ModuleArticle',
+                'OxidEsales\Eshop\Application\Model\Article' => 'with_class_extensions/ModuleArticle',
             ],
             $module->getExtensions()
         );

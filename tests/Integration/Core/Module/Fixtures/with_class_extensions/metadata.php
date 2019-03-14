@@ -20,6 +20,6 @@ $aModule = array(
     'version'      => '1.0',
     'author'       => 'OXID eSales AG',
     'extend'       => [
-        \OxidEsales\Eshop\Application\Model\Article::class => 'ModuleArticle',
+        \OxidEsales\Eshop\Application\Model\Article::class => 'with_class_extensions/ModuleArticle',
     ]
 );

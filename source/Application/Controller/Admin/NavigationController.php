@@ -157,7 +157,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
 
         if ($this->getConfig()->getConfigParam('blCheckSysReq') !== false) {
             // check if system reguirements are ok
-            $oSysReq = new \OxidEsales\Eshop\Core\SystemRequirements();
+            $oSysReq = oxNew(\OxidEsales\Eshop\Core\SystemRequirements::class);
             if (!$oSysReq->getSysReqStatus()) {
                 $aMessage['warning'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE');
                 $aMessage['warning'] .= '<a href="?cl=sysreq&amp;stoken=' . $this->getSession()->getSessionChallengeToken() . '" target="basefrm">';

@@ -24,7 +24,7 @@ class SystemRequirementsMain extends \OxidEsales\Eshop\Application\Controller\Ad
     {
         parent::render();
 
-        $oSysReq = new \OxidEsales\Eshop\Core\SystemRequirements();
+        $oSysReq = oxNew(\OxidEsales\Eshop\Core\SystemRequirements::class);
 
         $this->_aViewData['aInfo'] = $oSysReq->getSystemInfo();
         $this->_aViewData['aCollations'] = $oSysReq->checkCollation();
@@ -67,7 +67,7 @@ class SystemRequirementsMain extends \OxidEsales\Eshop\Application\Controller\Ad
      */
     public function getReqInfoUrl($sIdent)
     {
-        $oSysReq = new \OxidEsales\Eshop\Core\SystemRequirements();
+        $oSysReq = oxNew(\OxidEsales\Eshop\Core\SystemRequirements::class);
 
         return $oSysReq->getReqInfoUrl($sIdent);
     }

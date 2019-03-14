@@ -33,13 +33,13 @@ class ModuleActivationBridge implements ModuleActivationBridgeInterface
     /**
      * ModuleActivationBridge constructor.
      * @param ModuleActivationServiceInterface $moduleActivationService
-     * @param ModuleStateServiceInterface $moduleStateService
-     * @param Config $config
+     * @param ModuleStateServiceInterface      $moduleStateService
+     * @param Config                           $config
      */
     public function __construct(
-        ModuleActivationServiceInterface $moduleActivationService,
-        ModuleStateServiceInterface $moduleStateService,
-        Config $config
+        ModuleActivationServiceInterface    $moduleActivationService,
+        ModuleStateServiceInterface         $moduleStateService,
+        Config                              $config
     ) {
         $this->moduleActivationService = $moduleActivationService;
         $this->moduleStateService = $moduleStateService;

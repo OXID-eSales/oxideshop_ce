@@ -27,7 +27,7 @@ class ShopConfigurationDaoBridge implements ShopConfigurationDaoBridgeInterface
 
     /**
      * ShopConfigurationDaoBridge constructor.
-     * @param ContextInterface $context
+     * @param ContextInterface                 $context
      * @param ProjectConfigurationDaoInterface $projectConfigurationDao
      */
     public function __construct(ContextInterface $context, ProjectConfigurationDaoInterface $projectConfigurationDao)

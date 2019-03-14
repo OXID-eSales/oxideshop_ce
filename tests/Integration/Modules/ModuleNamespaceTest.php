@@ -617,19 +617,9 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         //NOTE: using shop to store changes in database triggers refill of amodules cache.
         $newAModules = $this->removeModule();
 
-        // Accessing the admin modulelist controller refills the file cache for 'amodules'
-        // because the controller calls oxModuleList::getModulesDir(
         $moduleList = oxNew('OxidEsales\Eshop\Core\Module\ModuleList');
-        $moduleList->getModulesFromDir($this->getConfig()->getModulesDir());
-        $this->assertNull($subShopSpecificCache->getFromCache('amodulefiles'));
-        $this->assertNull($subShopSpecificCache->getFromCache('adisabledmodules'));
-        $this->assertEquals($newAModules, $subShopSpecificCache->getFromCache('amodules'));
-
         $expectedDeletedExtension = array('EshopTestModuleNone' => array('files' => array('EshopTestModuleNone/metadata.php')));
         $this->assertEquals($expectedDeletedExtension, $moduleList->getDeletedExtensions());
-        $this->assertNull($subShopSpecificCache->getFromCache('amodulefiles'));
-        $this->assertNull($subShopSpecificCache->getFromCache('adisabledmodules'));
-        $this->assertEquals($newAModules, $subShopSpecificCache->getFromCache('amodules'));
 
         // run cleanup on module list
         $moduleList->cleanup();
@@ -637,13 +627,6 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         $this->assertNull($subShopSpecificCache->getFromCache('amodulefiles'));
         $this->assertNull($subShopSpecificCache->getFromCache('adisabledmodules'));
         $this->assertNull($subShopSpecificCache->getFromCache('amodules'));
-
-        // run ModuleList::getModulesFromDir again
-        $moduleList->getModulesFromDir($this->getConfig()->getModulesDir());
-        $this->assertNull($subShopSpecificCache->getFromCache('amodulefiles'));
-        $this->assertNull($subShopSpecificCache->getFromCache('adisabledmodules'));
-        $this->assertEquals($resultToAsserts[2]['extend'], $subShopSpecificCache->getFromCache('amodules'));
-        $this->assertPrice($priceAsserts[1]);
     }
 
     /**

@@ -241,23 +241,6 @@ class ModuleTest extends \OxidTestCase
     }
 
     /**
-     * oxModule::getModulePaths() test case
-     */
-    public function testGetModulePaths()
-    {
-        $aModulePaths = array(
-            'testExt1' => 'testExt1/testExt11',
-            'testExt2' => 'testExt2'
-        );
-
-        $this->getConfig()->setConfigParam("aModulePaths", $aModulePaths);
-
-        $oModule = oxNew('oxModule');
-
-        $this->assertEquals($aModulePaths, $oModule->getModulePaths());
-    }
-
-    /**
      * oxModule::testGetModuleFullPaths() test case
      *
      * @return null

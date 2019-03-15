@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - New methods:
   - `OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay::getValues` [PR-660](https://github.com/OXID-eSales/oxideshop_ce/pull/660)
   - `OxidEsales\EshopCommunity\Application\Model\Article::getStock` [PR-640](https://github.com/OXID-eSales/oxideshop_ce/pull/640)
+  - `\OxidEsales\EshopCommunity\Application\Model\User::hashPassword` Replacement for user User::encodePassword 
+  - `\OxidEsales\EshopCommunity\Application\Model\User::getAuthenticatedUserId` Method for retrieving a user Id during the authentication process 
+  - `\OxidEsales\EshopCommunity\Application\Model\User::loadAuthenticatedUser` Method for loading an authenticated user 
+  - `OxidEsales\EshopCommunity\Core\PasswordSaltGenerator::generateStrongSalt` generates a salt, which is suitable for cryptographic use 
 - Log a warnings for missused db method calls [PR-649](https://github.com/OXID-eSales/oxideshop_ce/pull/649)
 - New blocks:
   - `admin_module_sortlist` in `admin/tpl/module_sortlist.tpl` [PR-534](https://github.com/OXID-eSales/oxideshop_ce/pull/534)
@@ -37,6 +41,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\BeforeModuleDeactivationEvent`
     - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\FinalizingModuleActivationEvent`
     - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\FinalizingModuleDeactivationEvent`
+- Configuration options in `config.inc.php`
+    - `passwordHashingAlgorithm` with default value: PASSWORD_BCRYPT
+    - `passwordHashingBcryptCost` with default value: 10
+    - `passwordHashingArgon2MemoryCost` with default value: 1024;
+    - `passwordHashingArgon2TimeCost` with default value: 2;
+    - `passwordHashingArgon2Threads` with default value: 2;
+
 
 ### Changed
 - category_main form layout improvements [PR-585](https://github.com/OXID-eSales/oxideshop_ce/pull/585)

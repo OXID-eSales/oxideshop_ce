@@ -9,19 +9,32 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Module;
 use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
 class ModuleTest extends TestCase
 {
-    use ContainerTrait;
+    public function setUp()
+    {
+        ContainerFactory::getInstance()
+            ->getContainer()
+            ->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')
+            ->generate();
+
+        parent::setUp();
+    }
 
     public function tearDown()
     {
         parent::tearDown();
+
+        ContainerFactory::getInstance()
+            ->getContainer()
+            ->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')
+            ->generate();
 
         Registry::getConfig()->saveShopConfVar('aarr', 'activeModules', []);
     }
@@ -105,6 +118,23 @@ class ModuleTest extends TestCase
         );
     }
 
+    public function testGetPathsReturnsInstalledModulePahts()
+    {
+        $this->installModule('with_class_extensions');
+        $this->installModule('with_metadata_v21');
+
+        $module = oxNew(Module::class);
+
+
+        $this->assertSame(
+            [
+                'with_class_extensions' => $this->getModuleConfiguration('with_class_extensions')->getPath(),
+                'with_metadata_v21'     => $this->getModuleConfiguration('with_metadata_v21')->getPath(),
+            ],
+            $module->getModulePaths()
+        );
+    }
+
     private function installModule(string $id)
     {
         ContainerFactory::getInstance()
@@ -125,5 +155,13 @@ class ModuleTest extends TestCase
             ->getContainer()
             ->get(ModuleActivationBridgeInterface::class)
             ->activate($id, 1);
+    }
+
+    private function getModuleConfiguration(string $moduleId)
+    {
+        return ContainerFactory::getInstance()
+            ->getContainer()
+            ->get(ModuleConfigurationDaoBridgeInterface::class)
+            ->get($moduleId);
     }
 }

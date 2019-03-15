@@ -9,7 +9,9 @@ namespace OxidEsales\EshopCommunity\Core\Module;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use Psr\Container\ContainerInterface;
 
@@ -408,6 +410,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
         }
 
         $aModulePaths = $this->getModulePaths();
+
         $sModulePath = (isset($aModulePaths[$sModuleId])) ? $aModulePaths[$sModuleId] : '';
 
         // if still no module dir, try using module ID as dir name
@@ -445,7 +448,13 @@ class Module extends \OxidEsales\Eshop\Core\Base
      */
     public function getModulePaths()
     {
-        return $this->getConfig()->getConfigParam('aModulePaths');
+        $moduleConfigurations = $this->getInstalledModuleConfigurations();
+        $paths = [];
+        foreach ($moduleConfigurations as $moduleConfiguration) {
+            $paths[$moduleConfiguration->getId()] = $moduleConfiguration->getPath();
+        }
+
+        return $paths;
     }
 
     /**
@@ -615,6 +624,25 @@ class Module extends \OxidEsales\Eshop\Core\Base
         }
 
         return $moduleId;
+    }
+
+    /**
+     * @return array
+     */
+    private function getInstalledModuleConfigurations(): array
+    {
+        $shopConfiguration = $this->getShopConfiguration();
+
+        return $shopConfiguration->getModuleConfigurations();
+    }
+
+    /**
+     * @return ShopConfiguration
+     */
+    private function getShopConfiguration(): ShopConfiguration
+    {
+        $container = $this->getContainer();
+        return $container->get(ShopConfigurationDaoBridgeInterface::class)->get();
     }
 
     /**

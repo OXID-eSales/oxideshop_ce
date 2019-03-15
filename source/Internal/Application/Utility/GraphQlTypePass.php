@@ -50,7 +50,10 @@ class GraphQlTypePass implements CompilerPassInterface
      * GraphQlTypePass constructor.
      *
      * @param string $graphQlSchemaFactoryId
+     * @param string $graphQlPermissionsServiceId
      * @param string $graphqlQueryTag
+     * @param string $graphqlMutationTag
+     * @param string $graphqlPermissionsTag
      */
     public function __construct(
         $graphQlSchemaFactoryId = 'OxidEsales\GraphQl\Framework\SchemaFactoryInterface',
@@ -58,8 +61,7 @@ class GraphQlTypePass implements CompilerPassInterface
         $graphqlQueryTag = 'graphql_query_provider',
         $graphqlMutationTag = 'graphql_mutation_provider',
         $graphqlPermissionsTag = 'graphql_permissions_provider'
-    )
-    {
+    ) {
         $this->graphQlSchemaFactoryId = $graphQlSchemaFactoryId;
         $this->graphQlPermissionsServiceId = $graphQlPermissionsServiceId;
         $this->graphqlQueryTag = $graphqlQueryTag;

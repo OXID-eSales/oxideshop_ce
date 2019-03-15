@@ -7,6 +7,9 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxFileCheckerResult;
+use OxidEsales\Eshop\Core\Module\Module;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
 
 /**
  * Checks Version of System files.
@@ -252,12 +255,8 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
          * Modules
          */
         if ($this->getParam('oxdiag_frm_modules')) {
-            $sModulesDir = $this->getConfig()->getModulesDir();
-            $oModuleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
-            $aModules = $oModuleList->getModulesFromDir($sModulesDir);
-
             $aViewData['oxdiag_frm_modules'] = true;
-            $aViewData['mylist'] = $aModules;
+            $aViewData['mylist'] = $this->getInstalledModules();
         }
 
         /**
@@ -342,5 +341,24 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     public function getParam($sParam)
     {
         return $this->getConfig()->getRequestParameter($sParam);
+    }
+
+    /**
+     * @return array
+     */
+    private function getInstalledModules(): array
+    {
+        $container = ContainerFactory::getInstance()->getContainer();
+        $shopConfiguration = $container->get(ShopConfigurationDaoBridgeInterface::class)->get();
+
+        $modules = [];
+
+        foreach ($shopConfiguration->getModuleConfigurations() as $moduleConfiguration) {
+            $module = oxNew(Module::class);
+            $module->load($moduleConfiguration->getId());
+            $modules[$moduleConfiguration->getId()] = $module;
+        }
+
+        return $modules;
     }
 }

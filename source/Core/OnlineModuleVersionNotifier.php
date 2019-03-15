@@ -6,6 +6,9 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Module\Module;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
 use stdClass;
 use oxOnlineModulesNotifierRequest;
 
@@ -115,9 +118,28 @@ class OnlineModuleVersionNotifier
      */
     protected function _getModules()
     {
-        $aModules = $this->_oModuleList->getList();
+        $aModules = $this->getInstalledModules();
         ksort($aModules);
 
         return $aModules;
+    }
+
+    /**
+     * @return array
+     */
+    private function getInstalledModules(): array
+    {
+        $container = ContainerFactory::getInstance()->getContainer();
+        $shopConfiguration = $container->get(ShopConfigurationDaoBridgeInterface::class)->get();
+
+        $modules = [];
+
+        foreach ($shopConfiguration->getModuleConfigurations() as $moduleConfiguration) {
+            $module = oxNew(Module::class);
+            $module->load($moduleConfiguration->getId());
+            $modules[$moduleConfiguration->getId()] = $module;
+        }
+
+        return $modules;
     }
 }

@@ -30,8 +30,6 @@ class ModuleWithNoMetadataTest extends \OxidTestCase
 
         $this->assertEquals(array(), $oModuleList->getDisabledModules());
 
-        $oModuleList->getModulesFromDir($sShopDir . 'modules/');
-
         $this->assertFalse(in_array(null, $oModuleList->getDisabledModules()), 'Module id with value null was found in disabled modules list');
     }
 }

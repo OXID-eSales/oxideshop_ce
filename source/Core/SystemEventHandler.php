@@ -119,15 +119,11 @@ class SystemEventHandler
                 $simpleXml
             );
 
-            /** @var \OxidEsales\Eshop\Core\Module\ModuleList $moduleList */
-            $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
-            $moduleList->getModulesFromDir(\OxidEsales\Eshop\Core\Registry::getConfig()->getModulesDir());
-
             /** @var \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier $onlineModuleVersionNotifier */
             $onlineModuleVersionNotifier = oxNew(
                 \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier::class,
                 $onlineModuleVersionNotifierCaller,
-                $moduleList
+                oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class)
             );
 
             $this->setOnlineModuleVersionNotifier($onlineModuleVersionNotifier);

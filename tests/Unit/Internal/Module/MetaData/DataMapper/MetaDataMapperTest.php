@@ -43,7 +43,6 @@ class MetaDataMapperTest extends TestCase
     {
         $metadata = [
             MetaDataProvider::METADATA_METADATA_VERSION => '0',
-            MetaDataProvider::METADATA_PATH             => '',
             MetaDataProvider::METADATA_FILEPATH         => '',
             MetaDataProvider::METADATA_CHECKSUM         => '',
             MetaDataProvider::METADATA_MODULE_DATA      => [

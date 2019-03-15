@@ -14,6 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleConfig
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\DataMapper\MetaDataToModuleConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use Webmozart\PathUtil\Path;
 
 /**
  * @internal
@@ -74,12 +75,15 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
 
 
     /**
-     * @param string $moduleFullPath
+     * @param string $moduleSourcePath
+     * @param string $moduleTargetPath
      */
-    public function install(string $moduleFullPath)
+    public function install(string $moduleSourcePath, string $moduleTargetPath)
     {
-        $metadata = $this->metadataProvider->getData($this->getMetadataFilePath($moduleFullPath));
+        $metadata = $this->metadataProvider->getData($this->getMetadataFilePath($moduleSourcePath));
         $moduleConfiguration = $this->metadataMapper->fromData($metadata);
+
+        $moduleConfiguration->setPath($this->getModuleRelativePath($moduleTargetPath));
 
         $projectConfiguration = $this->projectConfigurationDao->getConfiguration();
         $projectConfiguration = $this->addModuleConfigurationToAllShops($moduleConfiguration, $projectConfiguration);
@@ -140,5 +144,16 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
     private function getMetadataFilePath(string $moduleFullPath): string
     {
         return $moduleFullPath . DIRECTORY_SEPARATOR . $this->metadataFileName;
+    }
+
+    /**
+     * @param string $moduleTargetPath
+     * @return string
+     */
+    private function getModuleRelativePath(string $moduleTargetPath): string
+    {
+        return Path::isRelative($moduleTargetPath)
+            ? $moduleTargetPath
+            : Path::makeRelative($moduleTargetPath, $this->context->getModulesPath());
     }
 }

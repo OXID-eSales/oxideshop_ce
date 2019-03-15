@@ -41,9 +41,22 @@ class InstallModuleConfigurationCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('oe:module:install-configuration')
-            ->setDescription('Install module configuration into project configuration file. Module configuration already present in the project configuration file will be overwriten.')
-            ->addArgument('module-path', InputArgument::REQUIRED, 'Path to module source, e.g. vendor/myvendor/mymodule');
+            ->setName(
+                'oe:module:install-configuration'
+            )
+            ->setDescription(
+                'Install module configuration into project configuration file. Module configuration already present in the project configuration file will be overwriten.'
+            )
+            ->addArgument(
+                'module-source-path',
+                InputArgument::REQUIRED,
+                'Path to module source, e.g. vendor/myvendor/mymodule'
+            )
+            ->addArgument(
+                'module-target-path',
+                InputArgument::REQUIRED,
+                'Path to module target, e.g. myModules/module or source/modules/myModules/module'
+            );
     }
 
     /**
@@ -54,10 +67,11 @@ class InstallModuleConfigurationCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $modulePath = $input->getArgument('module-path');
+        $moduleSourcePath = $input->getArgument('module-source-path');
+        $moduleTargetPath = $input->getArgument('module-target-path');
 
         try {
-            $this->moduleConfigurationInstaller->install($modulePath);
+            $this->moduleConfigurationInstaller->install($moduleSourcePath, $moduleTargetPath);
             $output->writeln('<info>' . self::MESSAGE_INSTALLATION_WAS_SUCCESSFUL . '</info>');
         } catch (\Throwable $throwable) {
             $output->writeln('<error>' . self::MESSAGE_INSTALLATION_FAILED . '</error>');

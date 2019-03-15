@@ -52,7 +52,6 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId($moduleData[MetaDataProvider::METADATA_ID])
-            ->setPath($metaData[MetaDataProvider::METADATA_PATH])
             ->setVersion($moduleData[MetaDataProvider::METADATA_VERSION] ?? '')
             ->setDescription($moduleData[MetaDataProvider::METADATA_DESCRIPTION] ?? [])
             ->setLang($moduleData[MetaDataProvider::METADATA_LANG] ?? '')
@@ -139,7 +138,6 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
         $mandatoryKeys = [
             MetaDataProvider::METADATA_METADATA_VERSION,
             MetaDataProvider::METADATA_MODULE_DATA,
-            MetaDataProvider::METADATA_PATH
         ];
         foreach ($mandatoryKeys as $mandatoryKey) {
             if (false === array_key_exists($mandatoryKey, $data)) {

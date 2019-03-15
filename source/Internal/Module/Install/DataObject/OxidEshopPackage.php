@@ -37,7 +37,7 @@ class OxidEshopPackage
      * @param string $packagePath
      * @param array  $extraParameters
      */
-    public function __construct(string $name, string $packagePath, array $extraParameters)
+    public function __construct(string $name, string $packagePath, array $extraParameters = [])
     {
         $this->packagePath = $packagePath;
 

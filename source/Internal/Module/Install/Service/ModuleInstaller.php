@@ -42,7 +42,7 @@ class ModuleInstaller implements ModuleInstallerInterface
     public function install(OxidEshopPackage $package)
     {
         $this->moduleFilesInstaller->install($package);
-        $this->moduleConfigurationInstaller->install($package->getPackageSourcePath());
+        $this->moduleConfigurationInstaller->install($package->getPackageSourcePath(), $package->getTargetDirectory());
     }
 
     /**

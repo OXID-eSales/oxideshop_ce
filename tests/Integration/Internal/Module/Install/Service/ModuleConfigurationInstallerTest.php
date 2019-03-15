@@ -12,6 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Environme
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleConfigurationInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -42,7 +43,7 @@ class ModuleConfigurationInstallerTest extends TestCase
     public function testInstall()
     {
         $configurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
-        $configurationInstaller->install($this->modulePath);
+        $configurationInstaller->install($this->modulePath, 'targetPath');
 
         $this->assertProjectConfigurationHasModuleConfigurationForAllShops();
     }
@@ -55,10 +56,46 @@ class ModuleConfigurationInstallerTest extends TestCase
             $moduleConfigurationInstaller->isInstalled($this->modulePath)
         );
 
-        $moduleConfigurationInstaller->install($this->modulePath);
+        $moduleConfigurationInstaller->install($this->modulePath, 'targetPath');
 
         $this->assertTrue(
             $moduleConfigurationInstaller->isInstalled($this->modulePath)
+        );
+    }
+
+    public function testModuleTargetPathIsSetToModuleConfigurations()
+    {
+        $moduleConfigurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
+        $moduleConfigurationInstaller->install($this->modulePath, 'myModules/TestModule');
+
+        $shopConfiguration = $this
+            ->projectConfigurationDao
+            ->getConfiguration()
+            ->getEnvironmentConfiguration('prod')
+            ->getShopConfiguration(1);
+
+        $this->assertSame(
+            'myModules/TestModule',
+            $shopConfiguration->getModuleConfiguration('testModule')->getPath()
+        );
+    }
+
+    public function testModuleTargetPathIsSetToModuleConfigurationsIfAbsolutePathGiven()
+    {
+        $modulesPath = $this->get(ContextInterface::class)->getModulesPath();
+
+        $moduleConfigurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
+        $moduleConfigurationInstaller->install($this->modulePath, $modulesPath . '/myModules/TestModule');
+
+        $shopConfiguration = $this
+            ->projectConfigurationDao
+            ->getConfiguration()
+            ->getEnvironmentConfiguration('prod')
+            ->getShopConfiguration(1);
+
+        $this->assertSame(
+            'myModules/TestModule',
+            $shopConfiguration->getModuleConfiguration('testModule')->getPath()
         );
     }
 

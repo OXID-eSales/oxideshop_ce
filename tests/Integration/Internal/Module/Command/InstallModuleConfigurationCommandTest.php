@@ -49,7 +49,11 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
         $consoleOutput = $this->execute(
             $app,
             $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
-            new ArrayInput(['command' => 'oe:module:install-configuration', 'module-path' => __DIR__ . '/Fixtures/modules/testmodule'])
+            new ArrayInput([
+                'command' => 'oe:module:install-configuration',
+                'module-source-path' => __DIR__ . '/Fixtures/modules/testmodule',
+                'module-target-path' => 'testmodule',
+            ])
         );
 
         $this->assertContains(InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_WAS_SUCCESSFUL, $consoleOutput);
@@ -67,7 +71,11 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
         $consoleOutput = $this->execute(
             $app,
             $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
-            new ArrayInput(['command' => 'oe:module:install-configuration', 'module-path' => 'fakePath'])
+            new ArrayInput([
+                'command' => 'oe:module:install-configuration',
+                'module-source-path' => 'fakePath',
+                'module-target-path' => 'testmodule',
+            ])
         );
 
         $this->assertContains(InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_FAILED, $consoleOutput);

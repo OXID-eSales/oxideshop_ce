@@ -102,7 +102,6 @@ class MetaDataMapperTest extends TestCase
         $this->assertSame('', $message);
 
         $this->assertSame($expectedModuleData['id'], $moduleConfiguration->getId());
-        $this->assertSame($testModuleDirectory . DIRECTORY_SEPARATOR, $moduleConfiguration->getPath());
         $this->assertSame($expectedModuleData['version'], $moduleConfiguration->getVersion());
         $this->assertSame($expectedModuleData['title'], $moduleConfiguration->getTitle());
         $this->assertSame($expectedModuleData['description'], $moduleConfiguration->getDescription());
@@ -224,7 +223,6 @@ class MetaDataMapperTest extends TestCase
         $this->assertEquals('', $message);
 
         $this->assertSame($expectedModuleData['id'], $moduleConfiguration->getId());
-        $this->assertSame($testModuleDirectory . DIRECTORY_SEPARATOR, $moduleConfiguration->getPath());
         $this->assertSame($expectedModuleData['version'], $moduleConfiguration->getVersion());
         $this->assertSame($expectedModuleData['title'], $moduleConfiguration->getTitle());
         $this->assertSame($expectedModuleData['description'], $moduleConfiguration->getDescription());

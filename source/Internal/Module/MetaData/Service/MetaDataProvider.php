@@ -26,7 +26,6 @@ class MetaDataProvider implements MetaDataProviderInterface
     const METADATA_AUTHOR = 'author';
     const METADATA_URL = 'url';
     const METADATA_EMAIL = 'email';
-    const METADATA_PATH = 'path';
     const METADATA_VERSION = 'version';
     const METADATA_EXTEND = 'extend';
     const METADATA_BLOCKS = 'blocks';
@@ -89,7 +88,6 @@ class MetaDataProvider implements MetaDataProviderInterface
         }
         $this->filePath = $filePath;
         $normalizedMetaData = $this->getNormalizedMetaDataFileContent();
-        $normalizedMetaData = $this->addPathToData($normalizedMetaData);
         $normalizedMetaData = $this->addFilePathToData($normalizedMetaData);
         $normalizedMetaData = $this->addCheckSumToData($normalizedMetaData);
 
@@ -121,23 +119,6 @@ class MetaDataProvider implements MetaDataProviderInterface
             static::METADATA_METADATA_VERSION => $sMetadataVersion,
             static::METADATA_MODULE_DATA      => $normalizedMetaData
         ];
-    }
-
-    /**
-     * @param array $normalizedMetaData
-     *
-     * @return array
-     */
-    private function addPathToData(array $normalizedMetaData): array
-    {
-        /**
-         * @todo Define how the path should be and implement this.
-         * if meta data file path is /var/www/eshop/source/modules/MyModule/metadata.php,
-         * the path should be something like /modules/MyModule/ or modules/MyModule/ or MyModule/
-         */
-        $normalizedMetaData[static::METADATA_PATH] = $this->getModuleDirectoryName() . DIRECTORY_SEPARATOR;
-
-        return $normalizedMetaData;
     }
 
     /**

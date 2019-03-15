@@ -8,6 +8,8 @@ namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * Encrypt string with sha512 algorithm.
+ *
+ * @deprecated since v6.4.0 (2019-03-15); This class will be removed completely.
  */
 class Sha512Hasher extends \OxidEsales\Eshop\Core\Hasher
 {

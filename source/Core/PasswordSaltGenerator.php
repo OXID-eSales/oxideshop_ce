@@ -8,6 +8,8 @@ namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * Generates Salt for the user password
+ *
+ * @deprecated since v6.4.0 (2019-03-15); This class will be removed completely.
  */
 class PasswordSaltGenerator
 {

@@ -8,6 +8,8 @@ namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * Hasher abstract class
+ *
+ * @deprecated since v6.4.0 (2019-03-15); This class will be removed completely.
  */
 abstract class Hasher
 {

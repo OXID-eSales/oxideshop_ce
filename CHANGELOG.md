@@ -134,6 +134,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Fix Bank code validation bug in Direct Debit [#0006939](https://bugs.oxid-esales.com/view.php?id=6939)
 
+- Classes:
+    - `OxidEsales\EshopCommunity\Core\Module\ModuleInstaller` 
+    
 ## [6.3.3] - 2019-04-16
 
 ### Fixed

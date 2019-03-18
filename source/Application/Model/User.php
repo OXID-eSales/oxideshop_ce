@@ -1426,7 +1426,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param bool   $isLoginToAdminBackend
      *
      * @return false|string
-     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
      */
     protected function getAuthenticatedUserId(string $userName, int $shopId, bool $isLoginToAdminBackend)
     {

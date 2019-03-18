@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Password\Service;
 
+use OxidEsales\EshopCommunity\Internal\Password\Exception\PasswordHashException;
 use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashArgon2iService;
 use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceOptionsProviderInterface;
@@ -25,6 +26,33 @@ class PasswordHashArgon2iServiceTest extends AbstractPasswordHashServiceTest
             $this->markTestSkipped('The password hashing algorithm "PASSWORD_ARGON2I" is not available');
         }
         $this->hashingAlgorithm = PASSWORD_ARGON2I;
+    }
+
+    /**
+     */
+    public function testImplementationThrowsExceptionOnPasswordHashWarnings()
+    {
+        $this->expectException(PasswordHashException::class);
+
+        $options = [
+            'memory_cost' => 1 << 32, // The value 2^32 is out of range and will produce a PHP Warning.
+            'time_cost'   => PASSWORD_ARGON2_DEFAULT_TIME_COST,
+            'threads'     => PASSWORD_ARGON2_DEFAULT_THREADS
+        ];
+
+        $passwordHashServiceOptionProviderMock = $this->getPasswordHashServiceOptionProviderMock();
+        $passwordHashServiceOptionProviderMock->method('getOptions')->willReturn(
+            $options
+        );
+        $passwordPolicyServiceMock = $this->getPasswordPolicyServiceMock();
+
+        $passwordHashService = new PasswordHashArgon2iService(
+            $passwordHashServiceOptionProviderMock,
+            $passwordPolicyServiceMock
+        );
+        $passwordHashService->initialize();
+
+        $passwordHashService->hash('secret');
     }
 
     /**

@@ -64,17 +64,34 @@ abstract class AbstractPasswordHashService
      */
     public function hash(string $password): string
     {
+        $additionalErrorMessage = '';
+        $hash = null;
+
         $this->passwordPolicyService->enforcePasswordPolicy($password);
 
         $options = $this->passwordHashServiceOptionsProvider->getOptions();
-        $hash = password_hash(
-            $password,
-            $this->hashAlgorithm,
-            $options
+        set_error_handler(
+            function ($severity, $message, $file, $line) {
+                throw new \ErrorException($message, $severity, $severity, $file, $line);
+            },
+            E_WARNING
         );
+        try {
+            $hash = password_hash(
+                $password,
+                $this->hashAlgorithm,
+                $options
+            );
+        } catch (\Throwable $throwable) {
+            $additionalErrorMessage = $throwable->getMessage();
+        } finally {
+            restore_error_handler();
+        }
 
-        if (false === $hash) {
-            throw new PasswordHashException('The password could not have been hashed');
+        if ($hash === false || $hash === null) {
+            throw new PasswordHashException(
+                'The password could not have been hashed. ' . $additionalErrorMessage
+            );
         }
 
         return $hash;

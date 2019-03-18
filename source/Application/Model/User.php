@@ -1368,7 +1368,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             if ($passwordNeedsRehash) {
                 $generatedPasswordHash = $this->hashPassword($password);
                 $this->oxuser__oxpassword = new Field($generatedPasswordHash, Field::T_RAW);
-                /** As the use of a salt is deprecated and an empty salt will be stored */
+                /** The use of a salt is deprecated and an empty salt will be stored */
                 $this->oxuser__oxpasssalt = new Field('');
                 $this->save();
             }
@@ -1377,7 +1377,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         /** Event for alternative authentication and authorization mechanisms, or whatsoever */
         $this->onLogin($userName, $password);
 
-        /** If the user has not been loaded until this point authentication & authorization is considered as failed */
+        /** If the user has not been loaded until this point, authentication & authorization is considered as failed */
         if (!$this->isLoaded()) {
             throw oxNew(UserException::class, 'ERROR_MESSAGE_USER_NOVALIDLOGIN');
         }

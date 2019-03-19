@@ -17,7 +17,7 @@ class ModuleSmartyPluginDirectoriesTest extends \OxidEsales\TestingLibrary\UnitT
     private $fullPathToModule = '/var/www/myshop/modules/oe/mymodule';
 
     /**
-     * @covers ModuleSmartyPluginDirectories::add()
+     * @covers \OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectories::add()
      */
     public function testAdd()
     {

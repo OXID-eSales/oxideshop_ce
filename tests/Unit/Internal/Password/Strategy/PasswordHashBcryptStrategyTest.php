@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Password\Strategy;
 use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashBcryptStrategy;
 use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashBcryptStrategyOptionsProvider;
 use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashStrategyInterface;
-use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordPolicyServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Password\Policy\PasswordPolicyInterface;
 
 /**
  *
@@ -39,14 +39,14 @@ class PasswordHashBcryptStrategyTest extends AbstractPasswordHashStrategyTest
             ->getMock();
         $passwordHashBcryptStrategyOptionProviderMock->method('getOptions')->willReturn(['cost' => 4]);
 
-        $passwordPolicyServiceMock = $this
-            ->getMockBuilder(PasswordPolicyServiceInterface::class)
+        $passwordPolicyMock = $this
+            ->getMockBuilder(PasswordPolicyInterface::class)
             ->setMethods(['enforcePasswordPolicy'])
             ->getMock();
 
         $passwordHashService = new PasswordHashBcryptStrategy(
             $passwordHashBcryptStrategyOptionProviderMock,
-            $passwordPolicyServiceMock
+            $passwordPolicyMock
         );
         $passwordHashService->initialize();
 

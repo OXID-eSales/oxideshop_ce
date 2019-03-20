@@ -4,14 +4,14 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Password\Service;
+namespace OxidEsales\EshopCommunity\Internal\Password\Policy;
 
 use OxidEsales\EshopCommunity\Internal\Password\Exception\PasswordPolicyException;
 
 /**
- * Class PasswordPolicyService
+ * Class PasswordPolicy
  */
-class PasswordPolicyService implements PasswordPolicyServiceInterface
+class PasswordPolicy implements PasswordPolicyInterface
 {
     /**
      * Enforces password policy

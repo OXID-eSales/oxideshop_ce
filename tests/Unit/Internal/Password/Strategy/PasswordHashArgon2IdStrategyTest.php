@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Password\Strategy;
 use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashArgon2IdStrategy;
 use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashStrategyInterface;
 use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashStrategyOptionsProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordPolicyServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Password\Policy\PasswordPolicyInterface;
 
 /**
  * Class PasswordHashArgon2IdStrategyTest
@@ -41,11 +41,11 @@ class PasswordHashArgon2IdStrategyTest extends AbstractPasswordHashStrategyTest
             ]
         );
 
-        $passwordPolicyServiceMock = $this->getPasswordPolicyServiceMock();
+        $passwordPolicyMock = $this->getPasswordPolicyMock();
 
         $passwordHashService = new PasswordHashArgon2IdStrategy(
             $passwordHashStrategyOptionProviderMock,
-            $passwordPolicyServiceMock
+            $passwordPolicyMock
         );
         $passwordHashService->initialize();
 
@@ -67,15 +67,15 @@ class PasswordHashArgon2IdStrategyTest extends AbstractPasswordHashStrategyTest
     }
 
     /**
-     * @return PasswordPolicyServiceInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @return PasswordPolicyInterface|\PHPUnit\Framework\MockObject\MockObject
      */
-    private function getPasswordPolicyServiceMock()
+    private function getPasswordPolicyMock(): PasswordPolicyInterface
     {
-        $passwordPolicyServiceMock = $this
-            ->getMockBuilder(PasswordPolicyServiceInterface::class)
+        $passwordPolicyMock = $this
+            ->getMockBuilder(PasswordPolicyInterface::class)
             ->setMethods(['enforcePasswordPolicy'])
             ->getMock();
 
-        return $passwordPolicyServiceMock;
+        return $passwordPolicyMock;
     }
 }

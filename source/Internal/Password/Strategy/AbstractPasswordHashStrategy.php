@@ -8,7 +8,7 @@ namespace OxidEsales\EshopCommunity\Internal\Password\Strategy;
 
 use OxidEsales\EshopCommunity\Internal\Password\Exception\PasswordHashException;
 use OxidEsales\EshopCommunity\Internal\Password\Exception\UnavailablePasswordHashStrategy;
-use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordPolicyServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Password\Policy\PasswordPolicyInterface;
 
 /**
  * Class AbstractPasswordHashStrategy
@@ -20,9 +20,9 @@ abstract class AbstractPasswordHashStrategy
      */
     protected $hashAlgorithm;
     /**
-     * @var PasswordPolicyServiceInterface
+     * @var PasswordPolicyInterface
      */
-    protected $passwordPolicyService;
+    protected $passwordPolicy;
     /**
      * @var PasswordHashStrategyOptionsProviderInterface
      */
@@ -32,14 +32,14 @@ abstract class AbstractPasswordHashStrategy
      * AbstractPasswordHashStrategy constructor.
      *
      * @param PasswordHashStrategyOptionsProviderInterface $passwordHashStrategyOptionsProvider
-     * @param PasswordPolicyServiceInterface               $passwordPolicyService
+     * @param PasswordPolicyInterface                      $passwordPolicy
      */
     public function __construct(
         PasswordHashStrategyOptionsProviderInterface $passwordHashStrategyOptionsProvider,
-        PasswordPolicyServiceInterface $passwordPolicyService
+        PasswordPolicyInterface $passwordPolicy
     ) {
         $this->passwordHashStrategyOptionsProvider = $passwordHashStrategyOptionsProvider;
-        $this->passwordPolicyService = $passwordPolicyService;
+        $this->passwordPolicy = $passwordPolicy;
     }
 
     /**
@@ -68,7 +68,7 @@ abstract class AbstractPasswordHashStrategy
         $additionalErrorMessage = '';
         $hash = null;
 
-        $this->passwordPolicyService->enforcePasswordPolicy($password);
+        $this->passwordPolicy->enforcePasswordPolicy($password);
 
         $options = $this->passwordHashStrategyOptionsProvider->getOptions();
         set_error_handler(

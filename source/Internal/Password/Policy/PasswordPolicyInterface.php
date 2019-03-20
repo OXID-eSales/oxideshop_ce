@@ -4,12 +4,12 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Password\Service;
+namespace OxidEsales\EshopCommunity\Internal\Password\Policy;
 
 /**
- * Class PasswordStringValidationService
+ * Class PasswordPolicyInterface
  */
-interface PasswordPolicyServiceInterface
+interface PasswordPolicyInterface
 {
     /**
      * @param string $password

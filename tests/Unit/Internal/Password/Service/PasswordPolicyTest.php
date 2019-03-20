@@ -7,13 +7,13 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Password\Service;
 
 use OxidEsales\EshopCommunity\Internal\Password\Exception\PasswordPolicyException;
-use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordPolicyService;
+use OxidEsales\EshopCommunity\Internal\Password\Policy\PasswordPolicy;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class PasswordVerificationServiceTest
  */
-class PasswordPolicyServiceTest extends TestCase
+class PasswordPolicyTest extends TestCase
 {
     /**
      *
@@ -22,8 +22,8 @@ class PasswordPolicyServiceTest extends TestCase
     {
         $passwordUtf8 = 'äääää';
 
-        $passwordPolicyService = new PasswordPolicyService();
-        $passwordPolicyService->enforcePasswordPolicy($passwordUtf8);
+        $passwordPolicy = new PasswordPolicy();
+        $passwordPolicy->enforcePasswordPolicy($passwordUtf8);
     }
 
     /**
@@ -41,8 +41,8 @@ class PasswordPolicyServiceTest extends TestCase
         $passwordUtf8 = 'äääää';
         $passwordIso = mb_convert_encoding($passwordUtf8, $unsupportedEncoding);
 
-        $passwordPolicyService = new PasswordPolicyService();
-        $passwordPolicyService->enforcePasswordPolicy($passwordIso);
+        $passwordPolicy = new PasswordPolicy();
+        $passwordPolicy->enforcePasswordPolicy($passwordIso);
     }
 
     /**

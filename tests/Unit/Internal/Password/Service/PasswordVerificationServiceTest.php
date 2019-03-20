@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Password\Service;
 
-use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordPolicyServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Password\Policy\PasswordPolicyInterface;
 use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordVerificationService;
 use PHPUnit\Framework\TestCase;
 
@@ -50,11 +50,11 @@ class PasswordVerificationServiceTest extends TestCase
      */
     private function getPasswordVerificationService(): PasswordVerificationService
     {
-        $passwordPolicyServiceMock = $this
-            ->getMockBuilder(PasswordPolicyServiceInterface::class)
+        $passwordPolicyMock = $this
+            ->getMockBuilder(PasswordPolicyInterface::class)
             ->setMethods(['enforcePasswordPolicy'])
             ->getMock();
-        $passwordVerificationService = new PasswordVerificationService($passwordPolicyServiceMock);
+        $passwordVerificationService = new PasswordVerificationService($passwordPolicyMock);
 
         return $passwordVerificationService;
     }

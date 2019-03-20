@@ -10,7 +10,7 @@ use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashArgon2IStra
 use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashBcryptStrategy;
 use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashStrategyOptionsProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceFactory;
-use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordPolicyServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Password\Policy\PasswordPolicyInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -86,11 +86,11 @@ class PasswordHashServiceFactoryTest extends TestCase
         $passwordHashServiceOptionProviderMock = $this->getPasswordHashServiceOptionProviderMock();
         $passwordHashServiceOptionProviderMock->method('getOptions')->willReturn(['cost' => 4]);
 
-        $passwordPolicyServiceMock = $this->getPasswordPolicyServiceMock();
+        $passwordPolicyMock = $this->getPasswordPolicyMock();
 
         $passwordHashService = new PasswordHashBcryptStrategy(
             $passwordHashServiceOptionProviderMock,
-            $passwordPolicyServiceMock
+            $passwordPolicyMock
         );
 
         return $passwordHashService;
@@ -110,11 +110,11 @@ class PasswordHashServiceFactoryTest extends TestCase
             ]
         );
 
-        $passwordPolicyServiceMock = $this->getPasswordPolicyServiceMock();
+        $passwordPolicyMock = $this->getPasswordPolicyMock();
 
         $passwordHashService = new PasswordHashArgon2IStrategy(
             $passwordHashServiceOptionProviderMock,
-            $passwordPolicyServiceMock
+            $passwordPolicyMock
         );
 
         return $passwordHashService;
@@ -134,10 +134,10 @@ class PasswordHashServiceFactoryTest extends TestCase
             ]
         );
 
-        $passwordPolicyServiceMock = $this->getPasswordPolicyServiceMock();
+        $passwordPolicyMock = $this->getPasswordPolicyMock();
         $passwordHashService = new PasswordHashArgon2IStrategy(
             $passwordHashServiceOptionProviderMock,
-            $passwordPolicyServiceMock
+            $passwordPolicyMock
         );
 
         return $passwordHashService;
@@ -158,15 +158,15 @@ class PasswordHashServiceFactoryTest extends TestCase
     }
 
     /**
-     * @return PasswordPolicyServiceInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @return PasswordPolicyInterface|\PHPUnit\Framework\MockObject\MockObject
      */
-    private function getPasswordPolicyServiceMock()
+    private function getPasswordPolicyMock(): PasswordPolicyInterface
     {
-        $passwordPolicyServiceMock = $this
-            ->getMockBuilder(PasswordPolicyServiceInterface::class)
+        $passwordPolicyMock = $this
+            ->getMockBuilder(PasswordPolicyInterface::class)
             ->setMethods(['enforcePasswordPolicy'])
             ->getMock();
 
-        return $passwordPolicyServiceMock;
+        return $passwordPolicyMock;
     }
 }

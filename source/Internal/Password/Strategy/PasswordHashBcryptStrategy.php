@@ -4,22 +4,22 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Password\Service;
+namespace OxidEsales\EshopCommunity\Internal\Password\Strategy;
 
-use OxidEsales\EshopCommunity\Internal\Password\Exception\UnavailablePasswordHashAlgorithm;
+use OxidEsales\EshopCommunity\Internal\Password\Exception\UnavailablePasswordHashStrategy;
 
 /**
  * @internal
  */
-class PasswordHashBcryptService extends AbstractPasswordHashService implements PasswordHashServiceInterface
+class PasswordHashBcryptStrategy extends AbstractPasswordHashStrategy implements PasswordHashStrategyInterface
 {
     /**
-     * @throws UnavailablePasswordHashAlgorithm
+     * @throws UnavailablePasswordHashStrategy
      */
     protected function setHashAlgorithm()
     {
         if (!defined('PASSWORD_BCRYPT')) {
-            throw new UnavailablePasswordHashAlgorithm(
+            throw new UnavailablePasswordHashStrategy(
                 'The password hash algorithm "PASSWORD_BCRYPT" is not available on your installation'
             );
         }

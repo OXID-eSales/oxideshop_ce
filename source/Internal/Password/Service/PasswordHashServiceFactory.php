@@ -6,7 +6,9 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Password\Service;
 
-use OxidEsales\EshopCommunity\Internal\Password\Exception\UnavailablePasswordHashAlgorithm;
+use OxidEsales\EshopCommunity\Internal\Password\Exception\UnavailablePasswordHashStrategy;
+use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashStrategiesArray;
+use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashStrategyInterface;
 
 /**
  * @internal
@@ -14,42 +16,42 @@ use OxidEsales\EshopCommunity\Internal\Password\Exception\UnavailablePasswordHas
 class PasswordHashServiceFactory implements PasswordHashServiceFactoryInterface
 {
     /**
-     * @var PasswordHashServiceArray
+     * @var PasswordHashStrategiesArray
      */
-    private $passwordHashServices;
+    private $passwordHashStrategies;
 
     /**
      * PasswordHashServiceFactory constructor.
      */
     public function __construct()
     {
-        $this->passwordHashServices = new PasswordHashServiceArray();
+        $this->passwordHashStrategies = new PasswordHashStrategiesArray();
     }
 
     /**
      * @param string $algorithm
      *
-     * @return  PasswordHashServiceInterface
+     * @return  PasswordHashStrategyInterface
      */
-    public function getPasswordHashService(string $algorithm): PasswordHashServiceInterface
+    public function getPasswordHashService(string $algorithm): PasswordHashStrategyInterface
     {
-        if (!isset($this->passwordHashServices[$algorithm])) {
-            throw new UnavailablePasswordHashAlgorithm(
+        if (!isset($this->passwordHashStrategies[$algorithm])) {
+            throw new UnavailablePasswordHashStrategy(
                 'The password requested hash algorithm: "' . $algorithm . '" is not available.'
             );
         }
-        $passwordHashService = $this->passwordHashServices[$algorithm];
+        $passwordHashService = $this->passwordHashStrategies[$algorithm];
         $passwordHashService->initialize();
 
         return $passwordHashService;
     }
 
     /**
-     * @param string                       $description
-     * @param PasswordHashServiceInterface $passwordHashService
+     * @param string                        $description
+     * @param PasswordHashStrategyInterface $passwordHashStrategy
      */
-    public function addPasswordHashService(string $description, PasswordHashServiceInterface $passwordHashService)
+    public function addPasswordHashStrategy(string $description, PasswordHashStrategyInterface $passwordHashStrategy)
     {
-        $this->passwordHashServices[$description] = $passwordHashService;
+        $this->passwordHashStrategies[$description] = $passwordHashStrategy;
     }
 }

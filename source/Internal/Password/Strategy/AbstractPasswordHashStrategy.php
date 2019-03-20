@@ -4,15 +4,16 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Password\Service;
+namespace OxidEsales\EshopCommunity\Internal\Password\Strategy;
 
 use OxidEsales\EshopCommunity\Internal\Password\Exception\PasswordHashException;
-use OxidEsales\EshopCommunity\Internal\Password\Exception\UnavailablePasswordHashAlgorithm;
+use OxidEsales\EshopCommunity\Internal\Password\Exception\UnavailablePasswordHashStrategy;
+use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordPolicyServiceInterface;
 
 /**
- * Class AbstractPasswordHashService
+ * Class AbstractPasswordHashStrategy
  */
-abstract class AbstractPasswordHashService
+abstract class AbstractPasswordHashStrategy
 {
     /**
      * @var int
@@ -23,26 +24,26 @@ abstract class AbstractPasswordHashService
      */
     protected $passwordPolicyService;
     /**
-     * @var PasswordHashArgon2ServiceOptionsProvider
+     * @var PasswordHashStrategyOptionsProviderInterface
      */
-    protected $passwordHashServiceOptionsProvider;
+    protected $passwordHashStrategyOptionsProvider;
 
     /**
-     * AbstractPasswordHashService constructor.
+     * AbstractPasswordHashStrategy constructor.
      *
-     * @param PasswordHashServiceOptionsProviderInterface $passwordHashServiceOptionsProvider
-     * @param PasswordPolicyServiceInterface              $passwordPolicyService
+     * @param PasswordHashStrategyOptionsProviderInterface $passwordHashStrategyOptionsProvider
+     * @param PasswordPolicyServiceInterface               $passwordPolicyService
      */
     public function __construct(
-        PasswordHashServiceOptionsProviderInterface $passwordHashServiceOptionsProvider,
+        PasswordHashStrategyOptionsProviderInterface $passwordHashStrategyOptionsProvider,
         PasswordPolicyServiceInterface $passwordPolicyService
     ) {
-        $this->passwordHashServiceOptionsProvider = $passwordHashServiceOptionsProvider;
+        $this->passwordHashStrategyOptionsProvider = $passwordHashStrategyOptionsProvider;
         $this->passwordPolicyService = $passwordPolicyService;
     }
 
     /**
-     * @throws UnavailablePasswordHashAlgorithm
+     * @throws UnavailablePasswordHashStrategy
      */
     abstract protected function setHashAlgorithm();
 
@@ -69,7 +70,7 @@ abstract class AbstractPasswordHashService
 
         $this->passwordPolicyService->enforcePasswordPolicy($password);
 
-        $options = $this->passwordHashServiceOptionsProvider->getOptions();
+        $options = $this->passwordHashStrategyOptionsProvider->getOptions();
         set_error_handler(
             function ($severity, $message, $file, $line) {
                 throw new \ErrorException($message, $severity, $severity, $file, $line);
@@ -104,7 +105,7 @@ abstract class AbstractPasswordHashService
      */
     public function passwordNeedsRehash(string $passwordHash): bool
     {
-        $options = $this->passwordHashServiceOptionsProvider->getOptions();
+        $options = $this->passwordHashStrategyOptionsProvider->getOptions();
 
         return password_needs_rehash($passwordHash, $this->hashAlgorithm, $options);
     }

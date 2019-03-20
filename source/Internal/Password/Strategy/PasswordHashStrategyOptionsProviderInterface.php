@@ -4,12 +4,12 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Password\Service;
+namespace OxidEsales\EshopCommunity\Internal\Password\Strategy;
 
 /**
  * @internal
  */
-interface PasswordHashServiceOptionsProviderInterface
+interface PasswordHashStrategyOptionsProviderInterface
 {
     /**
      * @return array

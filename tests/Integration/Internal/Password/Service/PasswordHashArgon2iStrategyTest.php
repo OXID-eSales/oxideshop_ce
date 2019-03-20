@@ -7,14 +7,14 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Password\Service;
 
 use OxidEsales\EshopCommunity\Internal\Password\Exception\PasswordPolicyException;
-use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashArgon2idService;
+use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashArgon2IStrategy;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class PasswordHashBcryptServiceTest
+ * Class PasswordHashArgon2iStrategyTest
  */
-class PasswordHashArgon2idServiceTest extends TestCase
+class PasswordHashArgon2iStrategyTest extends TestCase
 {
     use ContainerTrait;
 
@@ -23,8 +23,8 @@ class PasswordHashArgon2idServiceTest extends TestCase
      */
     protected function setUp()
     {
-        if (!defined('PASSWORD_ARGON2ID')) {
-            $this->markTestSkipped('The password hashing algorithm "PASSWORD_ARGON2ID" is not available');
+        if (!defined('PASSWORD_ARGON2I')) {
+            $this->markTestSkipped('The password hashing algorithm "PASSWORD_ARGON2I" is not available');
         }
     }
 
@@ -38,7 +38,7 @@ class PasswordHashArgon2idServiceTest extends TestCase
         $passwordUtf8 = 'äääääää';
         $passwordIso = mb_convert_encoding($passwordUtf8, 'ISO-8859-15');
 
-        $passwordHashService = $this->get(PasswordHashArgon2idService::class);
+        $passwordHashService = $this->get(PasswordHashArgon2IStrategy::class);
         $passwordHashService->hash($passwordIso);
     }
 }

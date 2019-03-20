@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Password\Service;
 
+use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashStrategyInterface;
+
 /**
  * @internal
  */
@@ -14,13 +16,13 @@ interface PasswordHashServiceFactoryInterface
     /**
      * @param string $algorithm
      *
-     * @return PasswordHashServiceInterface
+     * @return PasswordHashStrategyInterface
      */
-    public function getPasswordHashService(string $algorithm): PasswordHashServiceInterface;
+    public function getPasswordHashService(string $algorithm): PasswordHashStrategyInterface;
 
     /**
-     * @param string                       $description
-     * @param PasswordHashServiceInterface $passwordHashService
+     * @param string                        $description
+     * @param PasswordHashStrategyInterface $passwordHashStrategy
      */
-    public function addPasswordHashService(string $description, PasswordHashServiceInterface $passwordHashService);
+    public function addPasswordHashStrategy(string $description, PasswordHashStrategyInterface $passwordHashStrategy);
 }

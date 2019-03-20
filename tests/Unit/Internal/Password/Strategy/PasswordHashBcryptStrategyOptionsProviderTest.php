@@ -4,17 +4,17 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Password\Service;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Password\Strategy;
 
 use OxidEsales\EshopCommunity\Internal\Password\Exception\PasswordHashException;
-use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashBcryptServiceOptionsProvider;
+use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashBcryptStrategyOptionsProvider;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class PasswordHashBcryptServiceOptionsProviderTest
+ * Class PasswordHashBcryptStrategyOptionsProviderTest
  */
-class PasswordHashBcryptServiceOptionsProviderTest extends TestCase
+class PasswordHashBcryptStrategyOptionsProviderTest extends TestCase
 {
 
     /**
@@ -30,7 +30,7 @@ class PasswordHashBcryptServiceOptionsProviderTest extends TestCase
 
         $contextStub->method('getPasswordHashingBcryptCost')->willReturn($validCostOption);
 
-        $passwordHashBcryptServiceOptionsProvider = new PasswordHashBcryptServiceOptionsProvider($contextStub);
+        $passwordHashBcryptServiceOptionsProvider = new PasswordHashBcryptStrategyOptionsProvider($contextStub);
         $options = $passwordHashBcryptServiceOptionsProvider->getOptions();
 
 
@@ -68,7 +68,7 @@ class PasswordHashBcryptServiceOptionsProviderTest extends TestCase
 
         $contextStub->method('getPasswordHashingBcryptCost')->willReturn($invalidCostOption);
 
-        $passwordHashBcryptServiceOptionsProvider = new PasswordHashBcryptServiceOptionsProvider($contextStub);
+        $passwordHashBcryptServiceOptionsProvider = new PasswordHashBcryptStrategyOptionsProvider($contextStub);
         $passwordHashBcryptServiceOptionsProvider->getOptions();
     }
 

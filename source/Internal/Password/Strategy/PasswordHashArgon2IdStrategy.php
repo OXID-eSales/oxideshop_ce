@@ -4,22 +4,22 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Password\Service;
+namespace OxidEsales\EshopCommunity\Internal\Password\Strategy;
 
-use OxidEsales\EshopCommunity\Internal\Password\Exception\UnavailablePasswordHashAlgorithm;
+use OxidEsales\EshopCommunity\Internal\Password\Exception\UnavailablePasswordHashStrategy;
 
 /**
- * Class PasswordHashArgon2idService
+ * Class PasswordHashArgon2IdStrategy
  */
-class PasswordHashArgon2idService extends AbstractPasswordHashService implements PasswordHashServiceInterface
+class PasswordHashArgon2IdStrategy extends AbstractPasswordHashStrategy implements PasswordHashStrategyInterface
 {
     /**
-     * @throws UnavailablePasswordHashAlgorithm
+     * @throws UnavailablePasswordHashStrategy
      */
     protected function setHashAlgorithm()
     {
         if (!defined('PASSWORD_ARGON2ID')) {
-            throw new UnavailablePasswordHashAlgorithm(
+            throw new UnavailablePasswordHashStrategy(
                 'The password hash algorithm "PASSWORD_ARGON2ID" is not available on your installation'
             );
         }

@@ -6,8 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Password\Bridge;
 
-use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordVerificationServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashStrategyInterface;
 
 /**
  * @internal
@@ -17,9 +17,9 @@ interface PasswordServiceBridgeInterface
     /**
      * @param string $algorithm
      *
-     * @return PasswordHashServiceInterface
+     * @return PasswordHashStrategyInterface
      */
-    public function getPasswordHashService(string $algorithm): PasswordHashServiceInterface;
+    public function getPasswordHashService(string $algorithm): PasswordHashStrategyInterface;
 
     /**
      * @return PasswordVerificationServiceInterface

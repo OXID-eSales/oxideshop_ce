@@ -4,16 +4,16 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Password\Service;
+namespace OxidEsales\EshopCommunity\Internal\Password\Strategy;
 
 use ArrayAccess;
 
 /**
- * Class PasswordHashServiceArray
+ * Class PasswordHashStrategiesArray
  *
  * @package OxidEsales\EshopCommunity\Internal\Password\Service
  */
-class PasswordHashServiceArray implements ArrayAccess
+class PasswordHashStrategiesArray implements ArrayAccess
 {
     /**
      * @var array
@@ -26,8 +26,8 @@ class PasswordHashServiceArray implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        if (!$value instanceof PasswordHashServiceInterface) {
-            throw new \RuntimeException('value must be an instance of PasswordHashServiceInterface');
+        if (!$value instanceof PasswordHashStrategyInterface) {
+            throw new \RuntimeException('value must be an instance of PasswordHashStrategyInterface');
         }
 
         if ($offset === null) {
@@ -58,9 +58,9 @@ class PasswordHashServiceArray implements ArrayAccess
     /**
      * @param mixed $offset
      *
-     * @return PasswordHashServiceInterface
+     * @return PasswordHashStrategyInterface
      */
-    public function offsetGet($offset): PasswordHashServiceInterface
+    public function offsetGet($offset): PasswordHashStrategyInterface
     {
         return $this->container[$offset] ?? null;
     }

@@ -4,16 +4,16 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Password\Service;
+namespace OxidEsales\EshopCommunity\Internal\Password\Strategy;
 
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 
 /**
- * Class PasswordHashArgon2ServiceOptionsProvider
+ * Class PasswordHashArgon2StrategyOptionsProvider
  *
  * @package OxidEsales\EshopCommunity\Internal\Password\Service
  */
-class PasswordHashArgon2ServiceOptionsProvider implements PasswordHashServiceOptionsProviderInterface
+class PasswordHashArgon2StrategyOptionsProvider implements PasswordHashStrategyOptionsProviderInterface
 {
     /**
      * @var ContextInterface

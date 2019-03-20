@@ -10,11 +10,11 @@ services:
   OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceFactory
     calls:
-        - [addPasswordHashService, [PASSWORD_BCRYPT, "@OxidEsales\\EshopCommunity\\Internal\\Password\\Service\\PasswordHashBcryptService"]]
-        - [addPasswordHashService, [PASSWORD_ARGON2I, "@OxidEsales\\EshopCommunity\\Internal\\Password\\Service\\PasswordHashArgon2iService"]]
-        - [addPasswordHashService, [PASSWORD_ARGON2ID, "@OxidEsales\\EshopCommunity\\Internal\\Password\\Service\\PasswordHashArgon2idService"]]
+        - [addPasswordHashStrategy, [PASSWORD_BCRYPT, "@OxidEsales\\EshopCommunity\\Internal\\Password\\Strategy\\PasswordHashBcryptStrategy"]]
+        - [addPasswordHashStrategy, [PASSWORD_ARGON2I, "@OxidEsales\\EshopCommunity\\Internal\\Password\\Strategy\\PasswordHashArgon2IStrategy"]]
+        - [addPasswordHashStrategy, [PASSWORD_ARGON2ID, "@OxidEsales\\EshopCommunity\\Internal\\Password\\Strategy\\PasswordHashArgon2IdStrategy"]]
 
-  OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashBcryptServiceOptionsProvider: ~
+  OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashBcryptStrategyOptionsProvider: ~
 
   OxidEsales\EshopCommunity\Internal\Password\Service\PasswordVerificationServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Password\Service\PasswordVerificationService
@@ -22,8 +22,8 @@ services:
   OxidEsales\EshopCommunity\Internal\Password\Service\PasswordPolicyServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Password\Service\PasswordPolicyService
 
-  OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashBcryptService: ~
+  OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashBcryptStrategy: ~
 
-  OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashArgon2iService: ~
+  OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashArgon2IdStrategy: ~
 
-  OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashArgon2idService: ~
+  OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashArgon2IStrategy: ~

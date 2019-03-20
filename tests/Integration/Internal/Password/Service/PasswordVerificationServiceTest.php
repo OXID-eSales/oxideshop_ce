@@ -21,7 +21,7 @@ class PasswordVerificationServiceTest extends TestCase
     /**
      * End-to-end test to ensure, that the password policy checking is called during password verification
      */
-    public function testPasswordHashServiceBcryptEnforcesPasswordPolicy()
+    public function testPasswordHashStrategyEnforcesPasswordPolicy()
     {
         $this->expectException(PasswordPolicyException::class);
 

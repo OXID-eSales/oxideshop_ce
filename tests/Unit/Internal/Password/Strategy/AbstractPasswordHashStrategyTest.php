@@ -4,15 +4,15 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Password\Service;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Password\Strategy;
 
-use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashStrategyInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class AbstractPasswordHashServiceTest
+ * Class AbstractPasswordHashStrategyTest
  */
-abstract class AbstractPasswordHashServiceTest extends TestCase
+abstract class AbstractPasswordHashStrategyTest extends TestCase
 {
     /**
      * @var
@@ -25,7 +25,7 @@ abstract class AbstractPasswordHashServiceTest extends TestCase
     public function testHashForGivenPasswordIsEncryptedWithProperAlgorithm()
     {
         $password = 'secret';
-        $passwordHashService = $this->getPasswordHashServiceImplementation();
+        $passwordHashService = $this->getPasswordHashStrategyImplementation();
         $hash = $passwordHashService->hash($password);
         $info = password_get_info($hash);
 
@@ -33,9 +33,9 @@ abstract class AbstractPasswordHashServiceTest extends TestCase
     }
 
     /**
-     * @return PasswordHashServiceInterface
+     * @return PasswordHashStrategyInterface
      */
-    abstract protected function getPasswordHashServiceImplementation(): PasswordHashServiceInterface;
+    abstract protected function getPasswordHashStrategyImplementation(): PasswordHashStrategyInterface;
 
     /**
      *
@@ -44,7 +44,7 @@ abstract class AbstractPasswordHashServiceTest extends TestCase
     {
         $password = '';
 
-        $passwordHashService = $this->getPasswordHashServiceImplementation();
+        $passwordHashService = $this->getPasswordHashStrategyImplementation();
         $hash = $passwordHashService->hash($password);
         $info = password_get_info($hash);
 
@@ -58,7 +58,7 @@ abstract class AbstractPasswordHashServiceTest extends TestCase
     {
         $password = 'secret';
 
-        $passwordHashService = $this->getPasswordHashServiceImplementation();
+        $passwordHashService = $this->getPasswordHashStrategyImplementation();
         $hash_1 = $passwordHashService->hash($password);
         $hash_2 = $passwordHashService->hash($password);
 

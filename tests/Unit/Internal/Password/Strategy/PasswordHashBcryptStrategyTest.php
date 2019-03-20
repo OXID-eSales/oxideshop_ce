@@ -4,17 +4,17 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Password\Service;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Password\Strategy;
 
-use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashBcryptService;
-use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashBcryptServiceOptionsProvider;
-use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashBcryptStrategy;
+use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashBcryptStrategyOptionsProvider;
+use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashStrategyInterface;
 use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordPolicyServiceInterface;
 
 /**
  *
  */
-class PasswordHashBcryptServiceTest extends AbstractPasswordHashServiceTest
+class PasswordHashBcryptStrategyTest extends AbstractPasswordHashStrategyTest
 {
     /**
      *
@@ -28,24 +28,24 @@ class PasswordHashBcryptServiceTest extends AbstractPasswordHashServiceTest
     }
 
     /**
-     * @return PasswordHashBcryptService
+     * @return PasswordHashBcryptStrategy
      */
-    protected function getPasswordHashServiceImplementation(): PasswordHashServiceInterface
+    protected function getPasswordHashStrategyImplementation(): PasswordHashStrategyInterface
     {
-        $passwordHashBcryptServiceOptionProviderMock = $this
-            ->getMockBuilder(PasswordHashBcryptServiceOptionsProvider::class)
+        $passwordHashBcryptStrategyOptionProviderMock = $this
+            ->getMockBuilder(PasswordHashBcryptStrategyOptionsProvider::class)
             ->disableOriginalConstructor()
             ->setMethods(['getOptions'])
             ->getMock();
-        $passwordHashBcryptServiceOptionProviderMock->method('getOptions')->willReturn(['cost' => 4]);
+        $passwordHashBcryptStrategyOptionProviderMock->method('getOptions')->willReturn(['cost' => 4]);
 
         $passwordPolicyServiceMock = $this
             ->getMockBuilder(PasswordPolicyServiceInterface::class)
             ->setMethods(['enforcePasswordPolicy'])
             ->getMock();
 
-        $passwordHashService = new PasswordHashBcryptService(
-            $passwordHashBcryptServiceOptionProviderMock,
+        $passwordHashService = new PasswordHashBcryptStrategy(
+            $passwordHashBcryptStrategyOptionProviderMock,
             $passwordPolicyServiceMock
         );
         $passwordHashService->initialize();

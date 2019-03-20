@@ -4,7 +4,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Password\Service;
+namespace OxidEsales\EshopCommunity\Internal\Password\Strategy;
 
 use OxidEsales\EshopCommunity\Internal\Password\Exception\PasswordHashException;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
@@ -12,7 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 /**
  * @internal
  */
-class PasswordHashBcryptServiceOptionsProvider implements PasswordHashServiceOptionsProviderInterface
+class PasswordHashBcryptStrategyOptionsProvider implements PasswordHashStrategyOptionsProviderInterface
 {
     /**
      * @var ContextInterface
@@ -20,7 +20,7 @@ class PasswordHashBcryptServiceOptionsProvider implements PasswordHashServiceOpt
     private $context;
 
     /**
-     * PasswordHashBcryptServiceOptionsProvider constructor.
+     * PasswordHashBcryptStrategyOptionsProvider constructor.
      *
      * @param ContextInterface $context
      */

@@ -4,17 +4,17 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Password\Service;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Password\Strategy;
 
-use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashArgon2idService;
-use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceOptionsProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashArgon2IdStrategy;
+use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashStrategyInterface;
+use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashStrategyOptionsProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordPolicyServiceInterface;
 
 /**
- * Class PasswordHashArgon2idServiceTest
+ * Class PasswordHashArgon2IdStrategyTest
  */
-class PasswordHashArgon2idServiceTest extends AbstractPasswordHashServiceTest
+class PasswordHashArgon2IdStrategyTest extends AbstractPasswordHashStrategyTest
 {
     /**
      *
@@ -28,12 +28,12 @@ class PasswordHashArgon2idServiceTest extends AbstractPasswordHashServiceTest
     }
 
     /**
-     * @return PasswordHashServiceInterface
+     * @return PasswordHashStrategyInterface
      */
-    protected function getPasswordHashServiceImplementation(): PasswordHashServiceInterface
+    protected function getPasswordHashStrategyImplementation(): PasswordHashStrategyInterface
     {
-        $passwordHashServiceOptionProviderMock = $this->getPasswordHashServiceOptionProviderMock();
-        $passwordHashServiceOptionProviderMock->method('getOptions')->willReturn(
+        $passwordHashStrategyOptionProviderMock = $this->getPasswordHashStrategyOptionProviderMock();
+        $passwordHashStrategyOptionProviderMock->method('getOptions')->willReturn(
             [
                 'memory_cost' => PASSWORD_ARGON2_DEFAULT_MEMORY_COST,
                 'time_cost'   => PASSWORD_ARGON2_DEFAULT_TIME_COST,
@@ -43,8 +43,8 @@ class PasswordHashArgon2idServiceTest extends AbstractPasswordHashServiceTest
 
         $passwordPolicyServiceMock = $this->getPasswordPolicyServiceMock();
 
-        $passwordHashService = new PasswordHashArgon2idService(
-            $passwordHashServiceOptionProviderMock,
+        $passwordHashService = new PasswordHashArgon2IdStrategy(
+            $passwordHashStrategyOptionProviderMock,
             $passwordPolicyServiceMock
         );
         $passwordHashService->initialize();
@@ -53,17 +53,17 @@ class PasswordHashArgon2idServiceTest extends AbstractPasswordHashServiceTest
     }
 
     /**
-     * @return PasswordHashServiceOptionsProviderInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @return PasswordHashStrategyOptionsProviderInterface|\PHPUnit\Framework\MockObject\MockObject
      */
-    private function getPasswordHashServiceOptionProviderMock()
+    private function getPasswordHashStrategyOptionProviderMock()
     {
-        $passwordHashServiceOptionProviderMock = $this
-            ->getMockBuilder(PasswordHashServiceOptionsProviderInterface::class)
+        $passwordHashStrategyOptionProviderMock = $this
+            ->getMockBuilder(PasswordHashStrategyOptionsProviderInterface::class)
             ->disableOriginalConstructor()
             ->setMethods(['getOptions'])
             ->getMock();
 
-        return $passwordHashServiceOptionProviderMock;
+        return $passwordHashStrategyOptionProviderMock;
     }
 
     /**

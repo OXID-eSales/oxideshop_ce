@@ -12,11 +12,11 @@ namespace OxidEsales\EshopCommunity\Internal\Password\Service;
 interface PasswordHashServiceFactoryInterface
 {
     /**
-     * @param int $algorithm
+     * @param string $algorithm
      *
      * @return PasswordHashServiceInterface
      */
-    public function getPasswordHashService(int $algorithm): PasswordHashServiceInterface;
+    public function getPasswordHashService(string $algorithm): PasswordHashServiceInterface;
 
     /**
      * @param string                       $description

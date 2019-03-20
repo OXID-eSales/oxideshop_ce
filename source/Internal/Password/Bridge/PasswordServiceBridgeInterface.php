@@ -15,11 +15,11 @@ use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordVerificationServ
 interface PasswordServiceBridgeInterface
 {
     /**
-     * @param int $algorithm
+     * @param string $algorithm
      *
      * @return PasswordHashServiceInterface
      */
-    public function getPasswordHashService(int $algorithm): PasswordHashServiceInterface;
+    public function getPasswordHashService(string $algorithm): PasswordHashServiceInterface;
 
     /**
      * @return PasswordVerificationServiceInterface

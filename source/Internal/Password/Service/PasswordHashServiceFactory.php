@@ -27,22 +27,18 @@ class PasswordHashServiceFactory implements PasswordHashServiceFactoryInterface
     }
 
     /**
-     * @param int $algorithm
-     *
-     * @throws UnavailablePasswordHashAlgorithm
+     * @param string $algorithm
      *
      * @return  PasswordHashServiceInterface
      */
-    public function getPasswordHashService(int $algorithm): PasswordHashServiceInterface
+    public function getPasswordHashService(string $algorithm): PasswordHashServiceInterface
     {
-        $map = $this->getPasswordHashAlgorithmConstantsToDescriptionMap();
-        if (!isset($map[$algorithm])) {
+        if (!isset($this->passwordHashServices[$algorithm])) {
             throw new UnavailablePasswordHashAlgorithm(
-                'The password hash algorithm "' . $algorithm . '" is not available on your installation'
+                'The password requested hash algorithm: "' . $algorithm . '" is not available.'
             );
         }
-
-        $passwordHashService = $this->passwordHashServices[$map[$algorithm]];
+        $passwordHashService = $this->passwordHashServices[$algorithm];
         $passwordHashService->initialize();
 
         return $passwordHashService;
@@ -55,24 +51,5 @@ class PasswordHashServiceFactory implements PasswordHashServiceFactoryInterface
     public function addPasswordHashService(string $description, PasswordHashServiceInterface $passwordHashService)
     {
         $this->passwordHashServices[$description] = $passwordHashService;
-    }
-
-    /**
-     * @return array
-     */
-    private function getPasswordHashAlgorithmConstantsToDescriptionMap(): array
-    {
-        $map = [];
-        if (defined('PASSWORD_BCRYPT')) {
-            $map[PASSWORD_BCRYPT] = 'PASSWORD_BCRYPT';
-        }
-        if (defined('PASSWORD_ARGON2I')) {
-            $map[PASSWORD_ARGON2I] = 'PASSWORD_ARGON2I';
-        }
-        if (defined('PASSWORD_ARGON2ID')) {
-            $map[PASSWORD_ARGON2ID] = 'PASSWORD_ARGON2ID';
-        }
-
-        return $map;
     }
 }

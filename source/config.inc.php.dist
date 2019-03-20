@@ -198,7 +198,7 @@ $this->blDelSetupDir = true;
  * Supported values are the PASSWORD_* constants available in your PHP version.
  * Some of the hashing algorithms may not be available on your system.
  */
-$this->passwordHashingAlgorithm = PASSWORD_BCRYPT;
+$this->passwordHashingAlgorithm = 'PASSWORD_BCRYPT';
 
 /**
  * See http://php.net/manual/en/function.password-hash.php for options and values

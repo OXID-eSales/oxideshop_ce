@@ -24,7 +24,7 @@ class PasswordHashServiceFactoryTest extends TestCase
     {
         $this->expectException(\OxidEsales\EshopCommunity\Internal\Password\Exception\UnavailablePasswordHashAlgorithm::class);
 
-        $algorithm = 1234;
+        $algorithm = '1234';
         $factory = new PasswordHashServiceFactory();
 
         $factory->getPasswordHashService($algorithm);
@@ -37,7 +37,7 @@ class PasswordHashServiceFactoryTest extends TestCase
         if (!defined('PASSWORD_BCRYPT')) {
             $this->markTestSkipped('The password hashing algorithm "PASSWORD_BCRYPT" is not available');
         }
-        $algorithm = PASSWORD_BCRYPT;
+        $algorithm = 'PASSWORD_BCRYPT';
         $factory = new PasswordHashServiceFactory();
         $factory->addPasswordHashService('PASSWORD_BCRYPT', $this->getPasswordHashServiceBcrypt());
 
@@ -53,7 +53,7 @@ class PasswordHashServiceFactoryTest extends TestCase
         if (!defined('PASSWORD_ARGON2I')) {
             $this->markTestSkipped('The password hashing algorithm "PASSWORD_ARGON2I" is not available');
         }
-        $algorithm = PASSWORD_ARGON2I;
+        $algorithm = 'PASSWORD_ARGON2I';
         $factory = new PasswordHashServiceFactory();
         $factory->addPasswordHashService('PASSWORD_ARGON2I', $this->getPasswordHashServiceArgon2i());
 
@@ -69,7 +69,7 @@ class PasswordHashServiceFactoryTest extends TestCase
         if (!defined('PASSWORD_ARGON2ID')) {
             $this->markTestSkipped('The password hashing algorithm "PASSWORD_ARGON2ID" is not available');
         }
-        $algorithm = PASSWORD_ARGON2ID;
+        $algorithm = 'PASSWORD_ARGON2ID';
         $factory = new PasswordHashServiceFactory();
         $factory->addPasswordHashService('PASSWORD_ARGON2ID', $this->getPasswordHashServiceArgon2id());
 

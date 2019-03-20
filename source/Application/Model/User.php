@@ -1362,7 +1362,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         /** If needed, store a rehashed password with the authenticated user */
         if ($password && $this->isLoaded()) {
-            $algorithm = Registry::getConfig()->getConfigParam('passwordHashingAlgorithm', PASSWORD_DEFAULT);
+            $algorithm = Registry::getConfig()->getConfigParam('passwordHashingAlgorithm', 'PASSWORD_BCRYPT');
             $passwordHashService = $passwordServiceBridge->getPasswordHashService($algorithm);
             $passwordNeedsRehash = $this->isOutdatedPasswordHashAlgorithmUsed || $passwordHashService->passwordNeedsRehash($passwordHashFromDatabase);
             if ($passwordNeedsRehash) {

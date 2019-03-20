@@ -27,7 +27,7 @@ class PasswordServiceBridgeTest extends TestCase
         }
         /** @var PasswordServiceBridgeInterface $passwordServiceBridge */
         $passwordServiceBridge = $this->get(PasswordServiceBridgeInterface::class);
-        $passwordHashService = $passwordServiceBridge->getPasswordHashService(PASSWORD_BCRYPT);
+        $passwordHashService = $passwordServiceBridge->getPasswordHashService('PASSWORD_BCRYPT');
         $hash = $passwordHashService->hash('secret');
         $info = password_get_info($hash);
 
@@ -44,7 +44,7 @@ class PasswordServiceBridgeTest extends TestCase
         }
         /** @var PasswordServiceBridgeInterface $passwordServiceBridge */
         $passwordServiceBridge = $this->get(PasswordServiceBridgeInterface::class);
-        $passwordHashService = $passwordServiceBridge->getPasswordHashService(PASSWORD_ARGON2I);
+        $passwordHashService = $passwordServiceBridge->getPasswordHashService('PASSWORD_ARGON2I');
         $hash = $passwordHashService->hash('secret');
         $info = password_get_info($hash);
 
@@ -62,7 +62,7 @@ class PasswordServiceBridgeTest extends TestCase
         }
         /** @var PasswordServiceBridgeInterface $passwordServiceBridge */
         $passwordServiceBridge = $this->get(PasswordServiceBridgeInterface::class);
-        $passwordHashService = $passwordServiceBridge->getPasswordHashService(PASSWORD_ARGON2ID);
+        $passwordHashService = $passwordServiceBridge->getPasswordHashService('PASSWORD_ARGON2ID');
         $hash = $passwordHashService->hash('secret');
         $info = password_get_info($hash);
 

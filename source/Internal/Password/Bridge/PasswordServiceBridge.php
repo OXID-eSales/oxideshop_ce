@@ -37,11 +37,11 @@ class PasswordServiceBridge implements PasswordServiceBridgeInterface
     }
 
     /**
-     * @param int $algorithm
+     * @param string $algorithm
      *
      * @return PasswordHashServiceInterface
      */
-    public function getPasswordHashService(int $algorithm): PasswordHashServiceInterface
+    public function getPasswordHashService(string $algorithm): PasswordHashServiceInterface
     {
         return $this->passwordHashServiceFactory->getPasswordHashService($algorithm);
     }

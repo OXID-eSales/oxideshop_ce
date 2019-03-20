@@ -19,9 +19,7 @@ use \oxTestModules;
 /**
  * Class Integration_OnlineInfo_FrontendServersInformationStoringTest
  *
- * @covers oxServerProcessor
- * @covers oxApplicationServer
- * @covers \OxidEsales\Eshop\Core\Service\ApplicationServerService
+ * @covers \OxidEsales\EshopCommunity\Core\Service\ApplicationServerService
  */
 class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
 {

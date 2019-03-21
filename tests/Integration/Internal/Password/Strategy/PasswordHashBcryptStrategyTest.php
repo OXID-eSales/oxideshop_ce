@@ -4,7 +4,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Password\Service;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Password\Strategy;
 
 use OxidEsales\EshopCommunity\Internal\Password\Exception\PasswordPolicyException;
 use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashBcryptStrategy;

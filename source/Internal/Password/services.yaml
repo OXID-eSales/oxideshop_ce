@@ -6,15 +6,16 @@ services:
   OxidEsales\EshopCommunity\Internal\Password\Bridge\PasswordServiceBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Password\Bridge\PasswordServiceBridge
     public: true
+    arguments:
+      ['@OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceInterface',
+       '@OxidEsales\EshopCommunity\Internal\Password\Service\PasswordVerificationServiceInterface']
 
-  OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceFactoryInterface:
-    class: OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceFactory
+  OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashService
     calls:
         - [addPasswordHashStrategy, [PASSWORD_BCRYPT, "@OxidEsales\\EshopCommunity\\Internal\\Password\\Strategy\\PasswordHashBcryptStrategy"]]
         - [addPasswordHashStrategy, [PASSWORD_ARGON2I, "@OxidEsales\\EshopCommunity\\Internal\\Password\\Strategy\\PasswordHashArgon2IStrategy"]]
         - [addPasswordHashStrategy, [PASSWORD_ARGON2ID, "@OxidEsales\\EshopCommunity\\Internal\\Password\\Strategy\\PasswordHashArgon2IdStrategy"]]
-
-  OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashBcryptStrategyOptionsProvider: ~
 
   OxidEsales\EshopCommunity\Internal\Password\Service\PasswordVerificationServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Password\Service\PasswordVerificationService
@@ -22,8 +23,21 @@ services:
   OxidEsales\EshopCommunity\Internal\Password\Policy\PasswordPolicyInterface:
     class: OxidEsales\EshopCommunity\Internal\Password\Policy\PasswordPolicy
 
-  OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashBcryptStrategy: ~
+  OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashBcryptStrategyOptionsProvider: ~
 
-  OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashArgon2IdStrategy: ~
+  OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashArgon2StrategyOptionsProvider: ~
 
-  OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashArgon2IStrategy: ~
+  OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashBcryptStrategy:
+    arguments:
+      ['@OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashBcryptStrategyOptionsProvider',
+       '@OxidEsales\EshopCommunity\Internal\Password\Policy\PasswordPolicyInterface']
+
+  OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashArgon2IdStrategy:
+    arguments:
+      ['@OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashArgon2StrategyOptionsProvider',
+       '@OxidEsales\EshopCommunity\Internal\Password\Policy\PasswordPolicyInterface']
+
+  OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashArgon2IStrategy:
+    arguments:
+      ['@OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashArgon2StrategyOptionsProvider',
+       '@OxidEsales\EshopCommunity\Internal\Password\Policy\PasswordPolicyInterface']

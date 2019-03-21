@@ -6,9 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Password\Bridge;
 
-use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordVerificationServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashStrategyInterface;
 
 /**
  * @internal
@@ -16,41 +15,58 @@ use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashStrategyInt
 class PasswordServiceBridge implements PasswordServiceBridgeInterface
 {
     /**
-     * @var PasswordHashServiceFactoryInterface
+     * @var PasswordHashServiceInterface
      */
-    private $passwordHashServiceFactory;
+    private $passwordHashService;
     /**
      * @var PasswordVerificationServiceInterface
      */
     private $passwordVerificationService;
 
     /**
-     * @param PasswordHashServiceFactoryInterface  $passwordHashServiceFactory
+     * @param PasswordHashServiceInterface         $passwordHashService
      * @param PasswordVerificationServiceInterface $passwordVerificationService
      */
     public function __construct(
-        PasswordHashServiceFactoryInterface $passwordHashServiceFactory,
+        PasswordHashServiceInterface $passwordHashService,
         PasswordVerificationServiceInterface $passwordVerificationService
     ) {
-        $this->passwordHashServiceFactory = $passwordHashServiceFactory;
+        $this->passwordHashService = $passwordHashService;
         $this->passwordVerificationService = $passwordVerificationService;
     }
 
     /**
+     * @param string $password
      * @param string $algorithm
      *
-     * @return PasswordHashStrategyInterface
+     * @return string
      */
-    public function getPasswordHashService(string $algorithm): PasswordHashStrategyInterface
+    public function hash(string $password, string $algorithm): string
     {
-        return $this->passwordHashServiceFactory->getPasswordHashService($algorithm);
+        return $this->passwordHashService->hash($password, $algorithm);
     }
 
     /**
-     * @return PasswordVerificationServiceInterface
+     * @param string $passwordHash
+     * @param string $algorithm
+     *
+     * @return bool
      */
-    public function getPasswordVerificationService(): PasswordVerificationServiceInterface
+    public function passwordNeedsRehash(string $passwordHash, string $algorithm): bool
     {
-        return $this->passwordVerificationService;
+        return $this->passwordHashService->passwordNeedsRehash($passwordHash, $algorithm);
+    }
+
+    /**
+     * Verify that a given password matches a given hash
+     *
+     * @param string $password
+     * @param string $passwordHash
+     *
+     * @return bool
+     */
+    public function verifyPassword(string $password, string $passwordHash): bool
+    {
+        return $this->passwordVerificationService->verifyPassword($password, $passwordHash);
     }
 }

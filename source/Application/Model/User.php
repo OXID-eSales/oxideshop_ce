@@ -1347,9 +1347,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $passwordHashFromDatabase = $this->getPasswordHashFromDatabase($userName, $shopId, $isLoginAttemptToAdminBackend);
         $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
         if ($password && !$this->isLoaded()) {
-            $userIsAuthenticated = $passwordServiceBridge
-                ->getPasswordVerificationService()
-                ->verifyPassword($password, $passwordHashFromDatabase);
+            $userIsAuthenticated = $passwordServiceBridge->verifyPassword($password, $passwordHashFromDatabase);
             if ($userIsAuthenticated) {
                 $this->loadAuthenticatedUser($userName, $shopId);
             }
@@ -1363,8 +1361,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         /** If needed, store a rehashed password with the authenticated user */
         if ($password && $this->isLoaded()) {
             $algorithm = Registry::getConfig()->getConfigParam('passwordHashingAlgorithm', 'PASSWORD_BCRYPT');
-            $passwordHashService = $passwordServiceBridge->getPasswordHashService($algorithm);
-            $passwordNeedsRehash = $this->isOutdatedPasswordHashAlgorithmUsed || $passwordHashService->passwordNeedsRehash($passwordHashFromDatabase);
+            $passwordNeedsRehash = $this->isOutdatedPasswordHashAlgorithmUsed ||
+                                   $passwordServiceBridge->passwordNeedsRehash($passwordHashFromDatabase, $algorithm);
             if ($passwordNeedsRehash) {
                 $generatedPasswordHash = $this->hashPassword($password);
                 $this->oxuser__oxpassword = new Field($generatedPasswordHash, Field::T_RAW);
@@ -1984,9 +1982,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $algorithm = Registry::getConfig()->getConfigParam('passwordHashingAlgorithm') ?? PASSWORD_DEFAULT;
         $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
-        $passwordHashService = $passwordServiceBridge->getPasswordHashService($algorithm);
 
-        return $passwordHashService->hash($password);
+        return $passwordServiceBridge->hash($password, $algorithm);
     }
 
     /**

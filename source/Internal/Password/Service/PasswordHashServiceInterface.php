@@ -4,15 +4,21 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Password\Bridge;
+namespace OxidEsales\EshopCommunity\Internal\Password\Service;
 
-use OxidEsales\EshopCommunity\Internal\Password\Service\PasswordVerificationServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Password\Strategy\PasswordHashStrategyInterface;
 
 /**
  * @internal
  */
-interface PasswordServiceBridgeInterface
+interface PasswordHashServiceInterface
 {
+    /**
+     * @param string                        $description
+     * @param PasswordHashStrategyInterface $passwordHashStrategy
+     */
+    public function addPasswordHashStrategy(string $description, PasswordHashStrategyInterface $passwordHashStrategy);
+
     /**
      * @param string $password
      * @param string $algorithm
@@ -21,7 +27,6 @@ interface PasswordServiceBridgeInterface
      */
     public function hash(string $password, string $algorithm): string;
 
-
     /**
      * @param string $passwordHash
      * @param string $algorithm
@@ -29,14 +34,4 @@ interface PasswordServiceBridgeInterface
      * @return bool
      */
     public function passwordNeedsRehash(string $passwordHash, string $algorithm): bool;
-
-    /**
-     * Verify that a given password matches a given hash
-     *
-     * @param string $password
-     * @param string $passwordHash
-     *
-     * @return bool
-     */
-    public function verifyPassword(string $password, string $passwordHash): bool;
 }

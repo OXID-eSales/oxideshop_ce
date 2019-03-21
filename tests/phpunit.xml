@@ -17,59 +17,15 @@
          verbose="false">
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">Application</directory>
-            <directory suffix=".php">Core</directory>
-        </whitelist>
-        <blacklist>
-            <directory suffix=".php">Application/Controller/Admin/Report/</directory>
-            <directory suffix=".php">Application/views/</directory>
-            <directory suffix=".php">Core/Smarty</directory>
-            <directory suffix=".php">Core/jpgraph/</directory>
-            <directory suffix=".php">Core/phpmailer/</directory>
-            <directory suffix=".php">Core/Smarty/</directory>
-            <directory suffix=".php">Core/utils/</directory>
-            <directory suffix=".php">Core/objects/</directory>
-            <file>Core/oxerpbase.php</file>
-            <file>Core/oxerpcsv.php</file>
-            <file>Core/oxerpinterface.php</file>
+            <directory suffix=".php">../source</directory>
             <exclude>
-                <file>Core/Smarty/Plugin/block.oxhasrights.php</file>
-                <file>Core/Smarty/Plugin/block.oxifcontent.php</file>
-                <file>Core/Smarty/Plugin/function.oxcontent.php</file>
-                <file>Core/Smarty/Plugin/function.oxeval.php</file>
-                <file>Core/Smarty/Plugin/function.oxgetseourl.php</file>
-                <file>Core/Smarty/Plugin/function.oxid_include_dynamic.php</file>
-                <file>Core/Smarty/Plugin/function.oxid_include_widget.php</file>
-                <file>Core/Smarty/Plugin/function.oxinputhelp.php</file>
-                <file>Core/Smarty/Plugin/function.oxmailto.php</file>
-                <file>Core/Smarty/Plugin/function.oxmultilang.php</file>
-                <file>Core/Smarty/Plugin/function.oxprice.php</file>
-                <file>Core/Smarty/Plugin/function.oxscript.php</file>
-                <file>Core/Smarty/Plugin/function.oxstyle.php</file>
-                <file>Core/Smarty/Plugin/function.oxvariantselect.php</file>
-                <file>Core/Smarty/Plugin/insert.oxid_cmplogin.php</file>
-                <file>Core/Smarty/Plugin/insert.oxid_cssmanager.php</file>
-                <file>Core/Smarty/Plugin/insert.oxid_fblogin.php</file>
-                <file>Core/Smarty/Plugin/insert.oxid_newbasketitem.php</file>
-                <file>Core/Smarty/Plugin/insert.oxid_nocache.php</file>
-                <file>Core/Smarty/Plugin/insert.oxid_tracker.php</file>
-                <file>Core/Smarty/Plugin/modifier.oxaddparams.php</file>
-                <file>Core/Smarty/Plugin/modifier.oxaddslashes.php</file>
-                <file>Core/Smarty/Plugin/modifier.oxenclose.php</file>
-                <file>Core/Smarty/Plugin/modifier.oxescape.php</file>
-                <file>Core/Smarty/Plugin/modifier.oxfilesize.php</file>
-                <file>Core/Smarty/Plugin/modifier.oxformattime.php</file>
-                <file>Core/Smarty/Plugin/modifier.oxformdate.php</file>
-                <file>Core/Smarty/Plugin/modifier.oxlower.php</file>
-                <file>Core/Smarty/Plugin/modifier.oxmultilangassign.php</file>
-                <file>Core/Smarty/Plugin/modifier.oxmultilangsal.php</file>
-                <file>Core/Smarty/Plugin/modifier.oxnumberformat.php</file>
-                <file>Core/Smarty/Plugin/modifier.oxtruncate.php</file>
-                <file>Core/Smarty/Plugin/modifier.oxupper.php</file>
-                <file>Core/Smarty/Plugin/modifier.oxwordwrap.php</file>
-                <file>Core/Smarty/Plugin/prefilter.oxblock.php</file>
-                <file>Core/Smarty/Plugin/prefilter.oxtpldebug.php</file>
+                <directory suffix=".php">../source/Application/views</directory>
+                <directory suffix=".php">../source/Application/translations</directory>
+                <file>../source/Core/Autoload/UnifiedNameSpaceClassMap.php</file>
+                <file>../source/Setup/De/lang.php</file>
+                <file>../source/Setup/En/lang.php</file>
+                <file>../source/Application/Controller/Admin/ShopCountries.php</file>
             </exclude>
-        </blacklist>
+        </whitelist>
     </filter>
 </phpunit>

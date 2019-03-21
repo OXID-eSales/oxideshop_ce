@@ -2953,7 +2953,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleInstaller::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Module\ModuleList'                                    => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleList::class,

@@ -49,8 +49,8 @@ class RssTest extends \OxidTestCase
 
     public function testRender()
     {
-        $oSmarty = $this->getMock('Smarty', array('assign_by_ref', 'assign', 'fetch'));
-        $oSmarty->expects($this->any())->method('assign_by_ref');
+        $oSmarty = $this->getMock('Smarty', array('assign', 'fetch'));
+        $oSmarty->expects($this->any())->method('assign');
         $oSmarty->expects($this->once())->method('fetch')->with($this->equalTo('widget/rss.tpl'), $this->equalTo('viewid'))->will($this->returnValue('smarty processed xml'));
         $oUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getSmarty'));
         $oUtilsView->expects($this->once())->method('getSmarty')->will($this->returnValue($oSmarty));

@@ -76,7 +76,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
         }
 
         foreach (array_keys($this->_aViewData) as $sViewName) {
-            $oSmarty->assign_by_ref($sViewName, $this->_aViewData[$sViewName]);
+            $oSmarty->assign($sViewName, $this->_aViewData[$sViewName]);
         }
 
         // return rss xml, no further processing

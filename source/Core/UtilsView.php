@@ -97,7 +97,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
                     echo("TemplateData[$viewName] : \n");
                     var_export($viewData[$viewName]);
                 }
-                $smarty->assign_by_ref($viewName, $viewData[$viewName]);
+                $smarty->assign($viewName, $viewData[$viewName]);
             }
         }
 
@@ -237,7 +237,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
         $viewData = $oActView->getViewData();
         foreach (array_keys($viewData) as $name) {
-            $smarty->assign_by_ref($name, $viewData[$name]);
+            $smarty->assign($name, $viewData[$name]);
         }
 
         if (is_array($sDesc)) {

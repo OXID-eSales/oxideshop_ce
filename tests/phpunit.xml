@@ -22,11 +22,11 @@
                 <directory suffix=".php">../source/Application/views</directory>
                 <directory suffix=".php">../source/Application/translations</directory>
                 <directory suffix=".php">../source/out</directory>
-                <file suffix=".php">../source/Core/Autoload/UnifiedNameSpaceClassMap.php</file>
-                <file suffix=".php">../source/Setup/De/lang.php</file>
-                <file suffix=".php">../source/Setup/En/lang.php</file>
-                <file suffix=".php">../source/Application/Controller/Admin/ShopCountries.php</file>
-                <file suffix=".js">../source/out/admin/src/yui/oxid-aoc.js</file>
+                <file>../source/Core/Autoload/UnifiedNameSpaceClassMap.php</file>
+                <file>../source/Setup/De/lang.php</file>
+                <file>../source/Setup/En/lang.php</file>
+                <file>../source/Application/Controller/Admin/ShopCountries.php</file>
+                <file>../source/out/admin/src/yui/oxid-aoc.js</file>
             </exclude>
         </whitelist>
     </filter>

@@ -6,7 +6,9 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use oxSystemComponentException;
+use Psr\Container\ContainerInterface;
 
 /**
  * Basic class which is used as parent class by other OXID eShop classes.
@@ -187,5 +189,15 @@ class Base
     public function setAdminMode($isAdmin)
     {
         self::$_blIsAdmin = $isAdmin;
+    }
+
+    /**
+     * @internal
+     *
+     * @return ContainerInterface
+     */
+    protected function getContainer()
+    {
+        return ContainerFactory::getInstance()->getContainer();
     }
 }

@@ -479,7 +479,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         }
 
         foreach (array_keys($viewData) as $viewName) {
-            $smarty->assign_by_ref($viewName, $viewData[$viewName]);
+            $smarty->assign($viewName, $viewData[$viewName]);
         }
 
         // passing current view object to smarty

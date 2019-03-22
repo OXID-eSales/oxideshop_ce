@@ -104,8 +104,8 @@ class GenExportDoTest extends \OxidTestCase
         $this->assertEquals("assign", $aCallLog[0][0]);
         $this->assertEquals("sCustomHeader", $aCallLog[0][1][0]);
 
-        $this->assertEquals("assign_by_ref", $aCallLog[1][0]);
-        $this->assertEquals("assign_by_ref", $aCallLog[2][0]);
+        $this->assertEquals("assign", $aCallLog[1][0]);
+        $this->assertEquals("assign", $aCallLog[2][0]);
         $this->assertEquals("assign", $aCallLog[3][0]);
         $this->assertEquals("assign", $aCallLog[4][0]);
         $this->assertEquals("fetch", $aCallLog[5][0]);

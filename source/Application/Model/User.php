@@ -1321,6 +1321,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Performs user login by username and password. Fetches user data from DB.
      * Registers in session. Returns true on success, FALSE otherwise.
      *
+     * NOTE: It the user has already been loaded prior calling \OxidEsales\Eshop\Application\Model\User::login,
+     * NO valid password is necessary for login.
+     *
      * @param string $userName         User username
      * @param string $password         User password
      * @param bool   $setSessionCookie (default false)
@@ -1375,7 +1378,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         /** Event for alternative authentication and authorization mechanisms, or whatsoever */
         $this->onLogin($userName, $password);
 
-        /** If the user has not been loaded until this point, authentication & authorization is considered as failed */
+        /**
+         * If the user has not been loaded until this point, authentication & authorization is considered as failed.
+         */
         if (!$this->isLoaded()) {
             throw oxNew(UserException::class, 'ERROR_MESSAGE_USER_NOVALIDLOGIN');
         }
@@ -1409,7 +1414,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @throws UserException
      */
-    protected function loadAuthenticatedUser(string $userName, int $shopId)
+    private function loadAuthenticatedUser(string $userName, int $shopId)
     {
         $isLoginToAdminBackend = $this->isAdmin();
         $userId = $this->getAuthenticatedUserId($userName, $shopId, $isLoginToAdminBackend);
@@ -1425,7 +1430,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return false|string
      */
-    protected function getAuthenticatedUserId(string $userName, int $shopId, bool $isLoginToAdminBackend)
+    private function getAuthenticatedUserId(string $userName, int $shopId, bool $isLoginToAdminBackend)
     {
         $database = DatabaseProvider::getDb();
         $userNameCondition = $this->formQueryPartForUserName($userName, $database);
@@ -1959,7 +1964,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string $sPassword password to encode
      * @param string $sSalt     any unique string value
      *
-     * @deprecated since v6.4.0 (2019-03-15); This method will be removed completely. User hashPassword instead
+     * @deprecated since v6.4.0 (2019-03-15); This method will be removed completely. Use PasswordServiceBridgeInterface
      *
      * @return string
      */
@@ -1972,20 +1977,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         return $oHasher->hash($sPassword, $sSalt);
     }
-
-    /**
-     * @param string $password
-     *
-     * @return string
-     */
-    public function hashPassword(string $password): string
-    {
-        $algorithm = Registry::getConfig()->getConfigParam('passwordHashingAlgorithm') ?? PASSWORD_DEFAULT;
-        $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
-
-        return $passwordServiceBridge->hash($password, $algorithm);
-    }
-
     /**
      * Sets new password for user ( save is not called)
      *
@@ -2001,6 +1992,19 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         $this->oxuser__oxpassword = new \OxidEsales\Eshop\Core\Field($passwordHash, \OxidEsales\Eshop\Core\Field::T_RAW);
         $this->oxuser__oxpasssalt = new \OxidEsales\Eshop\Core\Field('');
+    }
+
+    /**
+     * @param string $password
+     *
+     * @return string
+     */
+    private function hashPassword(string $password): string
+    {
+        $algorithm = Registry::getConfig()->getConfigParam('passwordHashingAlgorithm') ?? PASSWORD_DEFAULT;
+        $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
+
+        return $passwordServiceBridge->hash($password, $algorithm);
     }
 
     /**
@@ -2275,7 +2279,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @return false|string
      * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
      */
-    public function getPasswordHashFromDatabase(string $userName, int $shopId, bool $isLoginToAdminBackend)
+    protected function getPasswordHashFromDatabase(string $userName, int $shopId, bool $isLoginToAdminBackend)
     {
         $database = DatabaseProvider::getDb();
         $userNameCondition = $this->formQueryPartForUserName($userName, $database);
@@ -2593,7 +2597,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function formQueryPartForUserName($user, DatabaseInterface $database): string
+    private function formQueryPartForUserName($user, DatabaseInterface $database): string
     {
         $condition = 'oxuser.oxusername = ' . $database->quote($user);
 
@@ -2623,7 +2627,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * @return string
      */
-    protected function formQueryPartForActiveUser(): string
+    private function formQueryPartForActiveUser(): string
     {
         $userActiveCondition = 'oxuser.oxactive = 1';
 

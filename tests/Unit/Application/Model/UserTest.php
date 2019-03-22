@@ -19,6 +19,8 @@ use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Application\Model\PriceAlarm;
 use OxidEsales\EshopCommunity\Application\Model\UserPayment;
 use OxidEsales\Eshop\Core\UtilsObject;
+use OxidEsales\EshopCommunity\Internal\Password\Bridge\PasswordServiceBridgeInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use \oxnewssubscribed;
 use oxUser;
 use \oxUtilsServer;
@@ -115,6 +117,7 @@ class UserTest_oxUtilsServerHelper2 extends oxUtilsServer
  */
 class UserTest extends \OxidTestCase
 {
+    use ContainerTrait;
 
     protected $_aShops = array(1);
     protected $_aUsers = array();
@@ -507,16 +510,6 @@ class UserTest extends \OxidTestCase
 
         $oUser->setPassword();
         $this->assertTrue('' == $oUser->oxuser__oxpassword->value);
-    }
-
-    public function testEncodePasswordDefaultAlgorithmIsBcrypt()
-    {
-        $user = oxNew(User::class);
-        $passwordHash = $user->hashPassword('secret');
-
-        $algorithm = password_get_info($passwordHash)['algo'];
-
-        $this->assertEquals(PASSWORD_BCRYPT, $algorithm);
     }
 
     public function testEncodePasswordIsDeterministic()
@@ -2138,7 +2131,8 @@ class UserTest extends \OxidTestCase
         $testUser->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
 
         $sOriginalPassword = $this->getDb()->getOne('select OXPASSWORD from oxuser where OXID="oxdefaultadmin"');
-        $sTemporaryPassword = $oActUser->hashPassword($sOriginalPassword);
+        $sTemporaryPassword = $this->get(PasswordServiceBridgeInterface::class)->hash($sOriginalPassword, 'PASSWORD_BCRYPT');
+
         $sSql = "update oxuser set OXPASSWORD = '{$sTemporaryPassword}'  where OXID='oxdefaultadmin'";
         $this->addToDatabase($sSql, 'oxuser');
         $sVal = oxADMIN_LOGIN . '@@@' . crypt($sTemporaryPassword, \OxidEsales\EshopCommunity\Application\Model\User::USER_COOKIE_SALT);

@@ -6,12 +6,15 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\User;
 
 use oxField;
-use OxidEsales\Eshop\Application\Model\User;
+use OxidEsales\EshopCommunity\Internal\Password\Bridge\PasswordServiceBridgeInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use oxRegistry;
 use oxUser;
 
 class LoginTest extends UserTestCase
 {
+    use ContainerTrait;
+
     /**
      * Tries to login with password which is generated with old algorithm
      * and checks if password and salt were regenerated.
@@ -74,9 +77,8 @@ class LoginTest extends UserTestCase
      */
     public function testLoginWithNewPassword()
     {
-        $user = oxNew(User::class);
         $salt = '';
-        $passwordHash = $user->hashPassword($this->_sDefaultUserPassword);
+        $passwordHash = $this->get(PasswordServiceBridgeInterface::class)->hash($this->_sDefaultUserPassword, 'PASSWORD_BCRYPT');
 
         $oUser = $this->_createUser($this->_sDefaultUserName, $passwordHash, $salt);
         $this->_login();

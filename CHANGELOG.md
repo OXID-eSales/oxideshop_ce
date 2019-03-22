@@ -18,8 +18,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay::getValues` [PR-660](https://github.com/OXID-eSales/oxideshop_ce/pull/660)
   - `OxidEsales\EshopCommunity\Application\Model\Article::getStock` [PR-640](https://github.com/OXID-eSales/oxideshop_ce/pull/640)
   - `\OxidEsales\EshopCommunity\Application\Model\User::hashPassword` Replacement for user User::encodePassword 
-  - `\OxidEsales\EshopCommunity\Application\Model\User::getAuthenticatedUserId` Method for retrieving a user Id during the authentication process 
-  - `\OxidEsales\EshopCommunity\Application\Model\User::loadAuthenticatedUser` Method for loading an authenticated user 
   - `OxidEsales\EshopCommunity\Core\PasswordSaltGenerator::generateStrongSalt` generates a salt, which is suitable for cryptographic use 
 - Log a warnings for missused db method calls [PR-649](https://github.com/OXID-eSales/oxideshop_ce/pull/649)
 - New blocks:

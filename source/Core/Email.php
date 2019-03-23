@@ -309,6 +309,8 @@ class Email extends PHPMailer
         $this->setLanguage("en", $myConfig->getConfigParam('sShopDir') . "/Core/phpmailer/language/");
 
         $this->_getSmarty();
+		
+        $this->Encoding='base64';
     }
 
     /**

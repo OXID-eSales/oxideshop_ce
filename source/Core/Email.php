@@ -302,6 +302,15 @@ class Email extends PHPMailer
         $this->setLanguage("en", $myConfig->getConfigParam('sShopDir') . "/Core/phpmailer/language/");
 
         $this->_getSmarty();
+		
+        // base64-encoding automatically limits the line length smtp-servers and email-clients see without changing the
+        // actual email content.
+        // email-templates containing/generating long lines may get corrupted (smtp-server issue) or may not get
+        // rendered correctly (e.g. Office365/Outlook users may be affected)
+        // phpmailer uses quoted-printable for emails with long lines, which seems not to be sufficient to prevent such
+        // problems in some cases
+        // base64 side effect: the email-size will increase slightly due to the base64-encoding
+        $this->Encoding='base64';
     }
 
     /**

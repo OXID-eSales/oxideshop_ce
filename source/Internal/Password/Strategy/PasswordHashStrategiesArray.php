@@ -27,14 +27,14 @@ class PasswordHashStrategiesArray implements ArrayAccess
     public function offsetSet($offset, $value)
     {
         if (!$value instanceof PasswordHashStrategyInterface) {
-            throw new \RuntimeException('value must be an instance of PasswordHashStrategyInterface');
+            throw new \RuntimeException('The array value must be an instance of PasswordHashStrategyInterface');
         }
 
         if ($offset === null) {
-            $this->container[] = $value;
-        } else {
-            $this->container[$offset] = $value;
+            throw new \RuntimeException('The array key must be set');
         }
+
+        $this->container[$offset] = $value;
     }
 
     /**
@@ -62,6 +62,9 @@ class PasswordHashStrategiesArray implements ArrayAccess
      */
     public function offsetGet($offset): PasswordHashStrategyInterface
     {
+        if (!isset($this->container[$offset])) {
+            throw new \RuntimeException('The requested password hash strategy is not available: ' . $offset);
+        }
         return $this->container[$offset] ?? null;
     }
 }

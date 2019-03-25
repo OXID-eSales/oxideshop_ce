@@ -104,6 +104,8 @@ abstract class UserTestCase extends UnitTestCase
     /**
      * @param string $sUserName
      * @param string $sUserPassword
+     *
+     * @return string
      */
     protected function _login($sUserName = null, $sUserPassword = null)
     {
@@ -115,7 +117,7 @@ abstract class UserTestCase extends UnitTestCase
         }
         $this->_setLoginParametersToRequest($sUserName, $sUserPassword);
         $oCmpUser = oxNew('oxcmp_user');
-        $oCmpUser->login();
+        return $oCmpUser->login();
     }
 
     /**

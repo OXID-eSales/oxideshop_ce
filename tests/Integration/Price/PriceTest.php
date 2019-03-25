@@ -96,6 +96,7 @@ class PriceTest extends BaseTestCase
 
         // user login
         if ($oUser) {
+            $oUser->load($oUser->getId());
             $oUser->login($aTestCase['user']['oxusername'], '');
         }
 

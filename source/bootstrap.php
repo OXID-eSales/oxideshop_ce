@@ -4,8 +4,8 @@
  * See LICENSE file for license details.
  */
 
-error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
-ini_set('display_errors', 0);
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
+ini_set('display_errors', '0');
 
 define('INSTALLATION_ROOT_PATH', dirname(__DIR__));
 define('OX_BASE_PATH', INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'source' . DIRECTORY_SEPARATOR);
@@ -126,8 +126,8 @@ unset($configMissing);
  */
 $bootstrapConfigFileReader = new \BootstrapConfigFileReader();
 if ($bootstrapConfigFileReader->isDebugMode()) {
-    ini_set('display_errors', 'On');
-    error_reporting(E_ALL ^ E_DEPRECATED);
+    ini_set('display_errors', '1');
+    error_reporting(E_ALL & ~E_DEPRECATED);
 }
 unset($bootstrapConfigFileReader);
 
@@ -221,7 +221,7 @@ function oxTriggerOfflinePageDisplay()
          * If offline.php exists its content is displayed.
          * Like this the error message is overridable within that file.
          */
-        if (file_exists(OX_OFFLINE_FILE) && is_readable(OX_OFFLINE_FILE)) {
+        if (is_readable(OX_OFFLINE_FILE)) {
             echo file_get_contents(OX_OFFLINE_FILE);
         };
     }

@@ -627,7 +627,7 @@ class ProductInfoFrontendTest extends FrontendTestCase
         $this->selectDropDown("viewOptions", "%line%");
         $this->assertEquals("50,00 € *", $this->clearString($this->getText("productPrice_productList_1")));
         $this->assertEquals("100,00 €", $this->clearString($this->getText("productPrice_productList_2")));
-        $this->loginInFrontend("example0a@oxid-esales.dev", "userAuser");
+        $this->loginInFrontend("example0a@oxid-esales.dev", "useruser");
         $this->selectDropDown("viewOptions", "%line%");
         $this->assertEquals("100,00 €", $this->clearString($this->getText("productPrice_productList_2")));
         $this->clickAndWait("productList_1");
@@ -644,7 +644,7 @@ class ProductInfoFrontendTest extends FrontendTestCase
         $this->searchFor("1003");
         $this->clickAndWait("//ul[@id='searchList']/li[1]//a");
         $this->assertEquals("75,00 € *", $this->getText("productPrice"));
-        $this->loginInFrontend("example0a@oxid-esales.dev", "userAuser");
+        $this->loginInFrontend("example0a@oxid-esales.dev", "useruser");
         $this->clickAndWait("toBasket");
         $this->openBasket();
         $this->type("am_2", "3");
@@ -660,7 +660,7 @@ class ProductInfoFrontendTest extends FrontendTestCase
         $this->clearCache();
         $this->openShop();
         $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
-        $this->loginInFrontend("example0c@oxid-esales.dev", "userCuser");
+        $this->loginInFrontend("example0c@oxid-esales.dev", "useruser");
         $this->clickAndWait("//ul[@id='productList']/li[1]//a");
         $this->assertEquals("2 kg | 27,50 €/kg", $this->getText("productPriceUnit"));
 
@@ -672,7 +672,7 @@ class ProductInfoFrontendTest extends FrontendTestCase
         $this->clearCache();
         $this->openShop();
         $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
-        $this->loginInFrontend("example0b@oxid-esales.dev", "userBuser");
+        $this->loginInFrontend("example0b@oxid-esales.dev", "useruser");
         $this->clickAndWait("//ul[@id='productList']/li[1]//a");
         $this->assertEquals("2 kg | 22,50 €/kg", $this->getText("productPriceUnit"));
 
@@ -689,7 +689,7 @@ class ProductInfoFrontendTest extends FrontendTestCase
         $this->openShop();
         $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
         $this->selectDropDown("viewOptions", "%line%");
-        $this->loginInFrontend("example0a@oxid-esales.dev", "userAuser");
+        $this->loginInFrontend("example0a@oxid-esales.dev", "useruser");
         $this->assertEquals("35,00 € *", $this->clearString($this->getText("productPrice_productList_1")));
         $this->assertEquals("0,00 €", $this->clearString($this->getText("productPrice_productList_2")));
     }

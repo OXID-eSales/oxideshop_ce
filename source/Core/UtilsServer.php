@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\EshopCommunity\Application\Model\User;
+
 /**
  * Server data manipulation class
  */
@@ -276,16 +278,16 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     /**
      * Sets user info into cookie
      *
-     * @param string  $sUser     user ID
-     * @param string  $sPassword password
-     * @param string  $sShopId   shop ID (default null)
-     * @param integer $iTimeout  timeout value (default 31536000)
-     * @param string  $sSalt     Salt for password encryption
+     * @param string  $userName     user name
+     * @param string  $passwordHash password hash
+     * @param int     $shopId       shop ID (default null)
+     * @param integer $timeout      timeout value (default 31536000)
+     * @param string  $salt
      */
-    public function setUserCookie($sUser, $sPassword, $sShopId = null, $iTimeout = 31536000, $sSalt = 'ox')
+    public function setUserCookie($userName, $passwordHash, $shopId = null, $timeout = 31536000, $salt = User::USER_COOKIE_SALT)
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $sShopId = (!$sShopId) ? $myConfig->getShopId() : $sShopId;
+        $shopId = $shopId ?? $myConfig->getShopId();
         $sSslUrl = $myConfig->getSslShopUrl();
         if (stripos($sSslUrl, 'https') === 0) {
             $blSsl = true;
@@ -293,9 +295,9 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
             $blSsl = false;
         }
 
-        $this->_aUserCookie[$sShopId] = $sUser . '@@@' . crypt($sPassword, $sSalt);
-        $this->setOxCookie('oxid_' . $sShopId, $this->_aUserCookie[$sShopId], \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() + $iTimeout, '/', null, true, $blSsl);
-        $this->setOxCookie('oxid_' . $sShopId . '_autologin', '1', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() + $iTimeout, '/', null, true, false);
+        $this->_aUserCookie[$shopId] = $userName . '@@@' . crypt($passwordHash, $salt);
+        $this->setOxCookie('oxid_' . $shopId, $this->_aUserCookie[$shopId], \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() + $timeout, '/', null, true, $blSsl);
+        $this->setOxCookie('oxid_' . $shopId . '_autologin', '1', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() + $timeout, '/', null, true, false);
     }
 
     /**

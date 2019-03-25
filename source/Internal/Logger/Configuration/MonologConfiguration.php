@@ -51,7 +51,7 @@ class MonologConfiguration implements MonologConfigurationInterface
     /**
      * @return string
      */
-    public function getLoggerName()
+    public function getLoggerName(): string
     {
         return $this->loggerName;
     }
@@ -59,7 +59,7 @@ class MonologConfiguration implements MonologConfigurationInterface
     /**
      * @return string
      */
-    public function getLogFilePath()
+    public function getLogFilePath(): string
     {
         return $this->logFilePath;
     }
@@ -67,10 +67,8 @@ class MonologConfiguration implements MonologConfigurationInterface
     /**
      * @return string
      */
-    public function getLogLevel()
+    public function getLogLevel(): string
     {
-        return $this->logLevel !== null
-            ? $this->logLevel
-            : $this->defaultLogLevel;
+        return $this->logLevel !== '' ? $this->logLevel : $this->defaultLogLevel;
     }
 }

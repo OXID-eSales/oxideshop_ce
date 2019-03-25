@@ -7,6 +7,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxField;
 use \oxException;
+use OxidEsales\Eshop\Application\Model\User;
 use \stdClass;
 use \oxConnectionException;
 use \oxUserException;
@@ -23,10 +24,10 @@ class LoginTest extends \OxidTestCase
 
     public function setUp()
     {
+        parent::setUp();
+
         $this->setAdminMode(true);
         $this->getSession()->setVariable("blIsAdmin", true);
-
-        return parent::setUp();
     }
 
     /**
@@ -52,7 +53,11 @@ class LoginTest extends \OxidTestCase
      */
     public function testLogin()
     {
-        $oUser = oxNew("oxUser");
+        $oUser = $this
+            ->getMockBuilder(User::class)
+            ->setMethods(['_getUserRights'])
+            ->getMock();
+        $oUser->method('_getUserRights')->willReturn('malladmin');
         $oUser->setId("_testUserId");
         $oUser->oxuser__oxactive = new oxField("1");
         $oUser->oxuser__oxusername = new oxField("&\"\'\\<>adminname", oxField::T_RAW);
@@ -83,9 +88,8 @@ class LoginTest extends \OxidTestCase
      */
     public function testLoginNotAdmin()
     {
-        $this->expectException('oxException'); $this->expectExceptionMessage( 'LOGIN_ERROR');
-
-        $this->setAdminMode(true);
+        $this->expectException('oxException');
+        $this->expectExceptionMessage( 'LOGIN_ERROR');
 
         $oUser = oxNew("oxUser");
         $oUser->setId("_testUserId");

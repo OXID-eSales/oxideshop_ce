@@ -8,6 +8,8 @@ namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * Hash password together with salt, using set hash algorithm
+ *
+ * @deprecated since v6.4.0 (2019-03-15); This class will be removed completely.
  */
 class PasswordHasher
 {

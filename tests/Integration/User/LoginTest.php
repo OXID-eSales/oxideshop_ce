@@ -6,26 +6,29 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\User;
 
 use oxField;
+use OxidEsales\EshopCommunity\Internal\Password\Bridge\PasswordServiceBridgeInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use oxRegistry;
 use oxUser;
 
-require_once 'UserTestCase.php';
-
 class LoginTest extends UserTestCase
 {
+    use ContainerTrait;
+
     /**
      * Tries to login with password which is generated with old algorithm
      * and checks if password and salt were regenerated.
      */
-    public function testLoginWithOldPassword()
+    public function testRehashingPasswordWorksOnLoginWithOldPassword()
     {
         $oUser = $this->_createUser($this->_sDefaultUserName, $this->_sOldEncodedPassword, $this->_sOldSalt);
 
-        $this->_login($this->_sDefaultUserName, $this->_sDefaultUserPassword);
+        $result = $this->_login($this->_sDefaultUserName, $this->_sDefaultUserPassword);
+
+        $this->assertSame('payment', $result);
+        $this->assertSame($oUser->getId(), oxRegistry::getSession()->getVariable('usr'), 'User ID is missing in session.');
 
         $oUser->load($oUser->getId());
-
-        $this->assertSame($oUser->getId(), oxRegistry::getSession()->getVariable('usr'), 'User ID is missing in session.');
         $this->assertNotSame($this->_sOldEncodedPassword, $oUser->oxuser__oxpassword->value, 'Old and new passwords must not match.');
         $this->assertNotSame($this->_sOldSalt, $oUser->oxuser__oxpasssalt->value, 'Old and new salt must not match.');
     }
@@ -33,7 +36,7 @@ class LoginTest extends UserTestCase
     /**
      * Tries to login with old password from different subshop, makes sure there are no crashes
      */
-    public function testAdminLoginWithOldPasswordMultishop()
+    public function testAdminLoginWithOldPasswordMultiShop()
     {
 
         $this->setAdminMode(true);
@@ -57,7 +60,9 @@ class LoginTest extends UserTestCase
         oxRegistry::getConfig()->setShopId(2);
 
         //perform the login
-        $this->_login($this->_sDefaultUserName, $this->_sDefaultUserPassword);
+        $result = $this->_login($this->_sDefaultUserName, $this->_sDefaultUserPassword);
+
+        $this->assertSame('payment', $result);
 
         $oUser->load($oUser->getId());
         $this->assertEquals(1, $oUser->oxuser__oxshopid->value, "User shop ID changed");
@@ -72,14 +77,17 @@ class LoginTest extends UserTestCase
      */
     public function testLoginWithNewPassword()
     {
-        $oUser = $this->_createUser($this->_sDefaultUserName, $this->_sNewEncodedPassword, $this->_sNewSalt);
+        $salt = '';
+        $passwordHash = $this->get(PasswordServiceBridgeInterface::class)->hash($this->_sDefaultUserPassword, 'PASSWORD_BCRYPT');
+
+        $oUser = $this->_createUser($this->_sDefaultUserName, $passwordHash, $salt);
         $this->_login();
 
         $oUser->load($oUser->getId());
 
         $this->assertSame($oUser->getId(), oxRegistry::getSession()->getVariable('usr'), 'User ID is missing in session.');
-        $this->assertSame($this->_sNewEncodedPassword, $oUser->oxuser__oxpassword->value, 'Password in database must match with new password.');
-        $this->assertSame($this->_sNewSalt, $oUser->oxuser__oxpasssalt->value, 'Salt in database must match with new salt.');
+        $this->assertSame($passwordHash, $oUser->oxuser__oxpassword->value, 'Password in database must match with new password.');
+        $this->assertEmpty($oUser->oxuser__oxpasssalt->value, 'Salt in database must be empty.');
     }
 
     public function providerNotSuccessfulLogin()

@@ -2833,7 +2833,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Hasher::class,
         'isAbstract'       => true,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Header'                                               => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Header::class,
@@ -3067,13 +3067,13 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\PasswordHasher::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\PasswordSaltGenerator'                                => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\PasswordSaltGenerator::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\PictureHandler'                                       => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\PictureHandler::class,
@@ -3175,7 +3175,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Sha512Hasher::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\ShopControl'                                          => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\ShopControl::class,

@@ -109,6 +109,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\BeforeModuleDeactivationEvent`
     - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\FinalizingModuleActivationEvent`
     - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\FinalizingModuleDeactivationEvent`
+- Configuration options in `config.inc.php`
+    - `passwordHashingAlgorithm` with default value: PASSWORD_BCRYPT
+    - `passwordHashingBcryptCost` with default value: 10
+    - `passwordHashingArgon2MemoryCost` with default value: 1024;
+    - `passwordHashingArgon2TimeCost` with default value: 2;
+    - `passwordHashingArgon2Threads` with default value: 2;
+- Interface:
+    - `\OxidEsales\EshopCommunity\Internal\Password\Bridge\PasswordServiceBridgeInterface`
+- Constants
+    - `\OxidEsales\EshopCommunity\Application\Model\User::USER_COOKIE_SALT`
 
 ### Changed
 - category_main form layout improvements [PR-585](https://github.com/OXID-eSales/oxideshop_ce/pull/585)
@@ -117,19 +127,34 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Make adding template blocks more fast andn reliable [PR-580](https://github.com/OXID-eSales/oxideshop_ce/pull/580)
 - Support PHP 7.2
 - Modules will not be disabled on class loading errors anymore, Error is just logged [PR-661](https://github.com/OXID-eSales/oxideshop_ce/pull/661)
+- Backwards compatibility break: `\OxidEsales\EshopCommunity\Application\Model\User::_dbLogin` will only called until the user successfully logs in the 
+  first time. Afterwards the password hash will have been recreated and a new authentication mechanism will be used. This 
+  breaks backwards compatibility for modules, which directly override `_dbLogin` or one of the methods in the call stack.
 
 ### Removed
 - Removed old not used blAutoSearchOnCat option from shop_config tab [PR-654](https://github.com/OXID-eSales/oxideshop_ce/pull/654)
 - Removed unnecessary class imports [PR-667](https://github.com/OXID-eSales/oxideshop_ce/pull/667)
 - Removed deprecated `\OxidEsales\EshopCommunity\Core\Email::$Version` use `\PHPMailer\PHPMailer\PHPMailer::VERSION` instead
+- The value for the password salt will not be stored in the database column `oxuser.OXPASSSALT` anymore, but in the password hash itself  
 
 ### Deprecated
+- `\OxidEsales\EshopCommunity\Application\Model\User::_dbLogin` will no longer be needed and removed completely
+- `\OxidEsales\EshopCommunity\Application\Model\User::_getLoginQuery` will no longer be needed and removed completely
+- `\OxidEsales\EshopCommunity\Application\Model\User::_getLoginQueryHashedWithMD5` will no longer be needed and removed completely
+- `\OxidEsales\EshopCommunity\Application\Model\User::encodePassword` will no longer be needed and removed completely. Use `PasswordServiceBridgeInterface` instead
+- `\OxidEsales\EshopCommunity\Application\Model\User::formQueryPartForMD5Password` will no longer be needed and removed completely
+- `\OxidEsales\EshopCommunity\Application\Model\User::formQueryPartForSha512Password` will no longer be needed and removed completely
 - `\OxidEsales\EshopCommunity\Core\Base::setConfig`
 - `\OxidEsales\EshopCommunity\Core\Base::getConfig`
 - `\OxidEsales\EshopCommunity\Core\Email::$_oConfig`
 - `\OxidEsales\EshopCommunity\Core\Email::setConfig`
 - `\OxidEsales\EshopCommunity\Core\Email::getConfig`
 - `blDoNotDisableModuleOnError` config option
+- `\OxidEsales\EshopCommunity\Core\OpenSSLFunctionalityChecker` will no longer be needed and removed completely
+- `\OxidEsales\EshopCommunity\Core\Hasher` will no longer be needed and removed completely
+- `\OxidEsales\EshopCommunity\Core\PasswordHasher` will no longer be needed and removed completely. Use `PasswordServiceBridgeInterface` instead
+- `\OxidEsales\EshopCommunity\Core\PasswordSaltGenerator` will no longer be needed and removed completely
+- `\OxidEsales\EshopCommunity\Core\Sha512Hasher` will no longer be needed and removed completely
 
 ## [6.3.3] - Unreleased
 

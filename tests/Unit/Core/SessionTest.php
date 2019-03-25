@@ -206,9 +206,6 @@ class SessionTest extends \OxidTestCase
 
         $this->oSession->freeze();
 
-        $reportingLevel = (int) getenv('TRAVIS_ERROR_LEVEL');
-        error_reporting($reportingLevel ? $reportingLevel : ((E_ALL ^ E_NOTICE) | E_STRICT));
-
         parent::tearDown();
     }
 
@@ -1464,16 +1461,21 @@ class SessionTest extends \OxidTestCase
     /**
      * Test handling of supplying an array instead of a string for rtoken.
      */
-    public function __testIsRemoteAccessTokenValidArrayRequestParameter()
+    public function DISABLED_testIsRemoteAccessTokenValidArrayRequestParameter()
     {
         //Suppress all error reporting on purpose for this test
-        error_reporting(0);
+        $originalErrorReportingLevel =  error_reporting(0);
+        try{
+            $this->setRequestParam('rtoken', array(1) );
 
-        $this->setRequestParam('rtoken', array(1) );
-
-        $session = $this->getProxyClass('oxSession');
-        $session->setVariable('_rtoken', 'test1');
-        $this->assertFalse($session->_isValidRemoteAccessToken());
+            $session = $this->getProxyClass('oxSession');
+            $session->setVariable('_rtoken', 'test1');
+            $this->assertFalse($session->_isValidRemoteAccessToken());
+        } catch (\Throwable $throwable) {
+            throw $throwable;
+        } finally {
+            error_reporting($originalErrorReportingLevel);
+        }
     }
 
     public function testIsTokenValidNot()

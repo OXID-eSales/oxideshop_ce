@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Password\Bridge;
 
 use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Password\Bridge\PasswordServiceBridge;
 use OxidEsales\EshopCommunity\Internal\Password\Bridge\PasswordServiceBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
@@ -141,6 +142,32 @@ class PasswordServiceBridgeTest extends TestCase
         $this->assertSame($expectedMemoryCost, $info['options']['memory_cost']);
         $this->assertSame($expectedTimeCost, $info['options']['time_cost']);
         $this->assertSame($expectedThreads, $info['options']['threads']);
+    }
+
+    /**
+     */
+    public function testPasswordNeedsRehashReturnsTrueOnChangedAlgorithm()
+    {
+        $originalAlgorithm = 'PASSWORD_BCRYPT';
+        $newAlgorithm = 'PASSWORD_ARGON2I';
+        if (!defined($originalAlgorithm) || !defined($newAlgorithm)) {
+            $this->markTestSkipped(
+                'The password hashing algorithms "' . $originalAlgorithm . '" and/or "' . $newAlgorithm . '" are not available'
+            );
+        }
+        $originalAlgorithmConstantValue = PASSWORD_BCRYPT;
+
+        $passwordHashedWithOriginalAlgorithm = password_hash('secret', $originalAlgorithmConstantValue);
+
+
+        $passwordServiceBridge = $this->get(PasswordServiceBridgeInterface::class);
+
+        $this->assertTrue(
+            $passwordServiceBridge->passwordNeedsRehash(
+                $passwordHashedWithOriginalAlgorithm,
+                $newAlgorithm
+            )
+        );
     }
 
     /**

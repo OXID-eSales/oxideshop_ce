@@ -9,7 +9,9 @@ namespace OxidEsales\EshopCommunity\Internal\Password\Strategy;
 use OxidEsales\EshopCommunity\Internal\Password\Exception\UnavailablePasswordHashStrategy;
 
 /**
- * @internal
+ * Class PasswordHashArgon2IStrategy
+ *
+ * @codeCoverageIgnore
  */
 class PasswordHashArgon2IStrategy extends AbstractPasswordHashStrategy implements PasswordHashStrategyInterface
 {
@@ -18,11 +20,13 @@ class PasswordHashArgon2IStrategy extends AbstractPasswordHashStrategy implement
      */
     protected function setHashAlgorithm()
     {
+        // @codeCoverageIgnoreStart
         if (!defined('PASSWORD_ARGON2I')) {
             throw new UnavailablePasswordHashStrategy(
                 'The password hash algorithm "PASSWORD_ARGON2I" is not available on your installation'
             );
         }
         $this->hashAlgorithm = PASSWORD_ARGON2I;
+        // @codeCoverageIgnoreEnd
     }
 }

@@ -10,6 +10,8 @@ use OxidEsales\EshopCommunity\Internal\Password\Exception\UnavailablePasswordHas
 
 /**
  * Class PasswordHashArgon2IdStrategy
+ *
+ * @codeCoverageIgnore
  */
 class PasswordHashArgon2IdStrategy extends AbstractPasswordHashStrategy implements PasswordHashStrategyInterface
 {
@@ -18,11 +20,13 @@ class PasswordHashArgon2IdStrategy extends AbstractPasswordHashStrategy implemen
      */
     protected function setHashAlgorithm()
     {
+        // @codeCoverageIgnoreStart
         if (!defined('PASSWORD_ARGON2ID')) {
             throw new UnavailablePasswordHashStrategy(
                 'The password hash algorithm "PASSWORD_ARGON2ID" is not available on your installation'
             );
         }
         $this->hashAlgorithm = PASSWORD_ARGON2ID;
+        // @codeCoverageIgnoreEnd
     }
 }

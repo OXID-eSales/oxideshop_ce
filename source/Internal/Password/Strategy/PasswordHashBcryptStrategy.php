@@ -9,7 +9,9 @@ namespace OxidEsales\EshopCommunity\Internal\Password\Strategy;
 use OxidEsales\EshopCommunity\Internal\Password\Exception\UnavailablePasswordHashStrategy;
 
 /**
- * @internal
+ * Class PasswordHashBcryptStrategy
+ *
+ * @codeCoverageIgnore
  */
 class PasswordHashBcryptStrategy extends AbstractPasswordHashStrategy implements PasswordHashStrategyInterface
 {

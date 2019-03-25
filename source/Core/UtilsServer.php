@@ -278,13 +278,13 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     /**
      * Sets user info into cookie
      *
-     * @param string  $userName user name
-     * @param string  $password password
-     * @param int     $shopId   shop ID (default null)
-     * @param integer $timeout  timeout value (default 31536000)
+     * @param string  $userName     user name
+     * @param string  $passwordHash password hash
+     * @param int     $shopId       shop ID (default null)
+     * @param integer $timeout      timeout value (default 31536000)
      * @param string  $salt
      */
-    public function setUserCookie($userName, $password, $shopId = null, $timeout = 31536000, $salt = User::USER_COOKIE_SALT)
+    public function setUserCookie($userName, $passwordHash, $shopId = null, $timeout = 31536000, $salt = User::USER_COOKIE_SALT)
     {
         $myConfig = $this->getConfig();
         $shopId = $shopId ?? $myConfig->getShopId();
@@ -295,7 +295,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
             $blSsl = false;
         }
 
-        $this->_aUserCookie[$shopId] = $userName . '@@@' . crypt($password, $salt);
+        $this->_aUserCookie[$shopId] = $userName . '@@@' . crypt($passwordHash, $salt);
         $this->setOxCookie('oxid_' . $shopId, $this->_aUserCookie[$shopId], \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() + $timeout, '/', null, true, $blSsl);
         $this->setOxCookie('oxid_' . $shopId . '_autologin', '1', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() + $timeout, '/', null, true, false);
     }

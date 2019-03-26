@@ -27,21 +27,16 @@ use oxOnlineModulesNotifierRequest;
 class OnlineModuleVersionNotifier
 {
     /** @var \OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller */
-    private $_oCaller = null;
-
-    /** @var \OxidEsales\Eshop\Core\Module\ModuleList */
-    private $_oModuleList = null;
+    private $_oCaller;
 
     /**
      * Class constructor, initiates class parameters.
      *
-     * @param \OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller $oCaller     Online module version notifier caller object
-     * @param \OxidEsales\Eshop\Core\Module\ModuleList                 $oModuleList Module list object
+     * @param \OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller $oCaller Online module version notifier caller object
      */
-    public function __construct(\OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller $oCaller, \OxidEsales\Eshop\Core\Module\ModuleList $oModuleList)
+    public function __construct(\OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller $oCaller)
     {
         $this->_oCaller = $oCaller;
-        $this->_oModuleList = $oModuleList;
     }
 
     /**

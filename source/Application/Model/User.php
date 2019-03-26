@@ -2001,7 +2001,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     private function hashPassword(string $password): string
     {
-        $algorithm = Registry::getConfig()->getConfigParam('passwordHashingAlgorithm') ?? PASSWORD_DEFAULT;
+        $algorithm = Registry::getConfig()->getConfigParam('passwordHashingAlgorithm') ?? 'PASSWORD_BCRYPT';
         $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
 
         return $passwordServiceBridge->hash($password, $algorithm);

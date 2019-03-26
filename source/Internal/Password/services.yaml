@@ -13,9 +13,9 @@ services:
   OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Password\Service\PasswordHashService
     calls:
-        - [addPasswordHashStrategy, [PASSWORD_BCRYPT, "@OxidEsales\\EshopCommunity\\Internal\\Password\\Strategy\\PasswordHashBcryptStrategy"]]
-        - [addPasswordHashStrategy, [PASSWORD_ARGON2I, "@OxidEsales\\EshopCommunity\\Internal\\Password\\Strategy\\PasswordHashArgon2IStrategy"]]
-        - [addPasswordHashStrategy, [PASSWORD_ARGON2ID, "@OxidEsales\\EshopCommunity\\Internal\\Password\\Strategy\\PasswordHashArgon2IdStrategy"]]
+        - [addPasswordHashStrategy, ['PASSWORD_BCRYPT', "@OxidEsales\\EshopCommunity\\Internal\\Password\\Strategy\\PasswordHashBcryptStrategy"]]
+        - [addPasswordHashStrategy, ['PASSWORD_ARGON2I', "@OxidEsales\\EshopCommunity\\Internal\\Password\\Strategy\\PasswordHashArgon2IStrategy"]]
+        - [addPasswordHashStrategy, ['PASSWORD_ARGON2ID', "@OxidEsales\\EshopCommunity\\Internal\\Password\\Strategy\\PasswordHashArgon2IdStrategy"]]
 
   OxidEsales\EshopCommunity\Internal\Password\Service\PasswordVerificationServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Password\Service\PasswordVerificationService

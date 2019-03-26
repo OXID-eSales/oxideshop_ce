@@ -18,7 +18,7 @@ class PasswordHashStrategiesArray implements ArrayAccess
     /**
      * @var array
      */
-    private $container = [];
+    private $strategies = [];
 
     /**
      * @param mixed $offset
@@ -34,7 +34,7 @@ class PasswordHashStrategiesArray implements ArrayAccess
             throw new \RuntimeException('The array key must be set');
         }
 
-        $this->container[$offset] = $value;
+        $this->strategies[$offset] = $value;
     }
 
     /**
@@ -44,7 +44,7 @@ class PasswordHashStrategiesArray implements ArrayAccess
      */
     public function offsetExists($offset): bool
     {
-        return isset($this->container[$offset]);
+        return isset($this->strategies[$offset]);
     }
 
     /**
@@ -52,7 +52,7 @@ class PasswordHashStrategiesArray implements ArrayAccess
      */
     public function offsetUnset($offset)
     {
-        unset($this->container[$offset]);
+        unset($this->strategies[$offset]);
     }
 
     /**
@@ -62,9 +62,9 @@ class PasswordHashStrategiesArray implements ArrayAccess
      */
     public function offsetGet($offset): PasswordHashStrategyInterface
     {
-        if (!isset($this->container[$offset])) {
+        if (!isset($this->strategies[$offset])) {
             throw new \RuntimeException('The requested password hash strategy is not available: ' . $offset);
         }
-        return $this->container[$offset] ?? null;
+        return $this->strategies[$offset] ?? null;
     }
 }

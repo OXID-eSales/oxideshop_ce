@@ -182,8 +182,8 @@ $this->aSlaveHosts = null;
 $this->blDelSetupDir = true;
 
 /**
- * Supported values are the PASSWORD_* constants available in your PHP version.
- * Some of the hashing algorithms may not be available on your system.
+ * Supported values are the strings PASSWORD_BCRYPT, PASSWORD_ARGON2I and PASSWORD_ARGON2ID.
+ * Some of the hashing algorithms may not be available on your system depending on your PHP version.
  */
 $this->passwordHashingAlgorithm = 'PASSWORD_BCRYPT';
 

@@ -5,10 +5,10 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -31,7 +31,7 @@ abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCas
     {
         parent::setUp();
 
-        $this->container = $this->getContainer();
+        $this->container = ContainerFactory::getInstance()->getContainer();
 
         $environment = new Environment();
         $environment->clean();
@@ -121,15 +121,5 @@ abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCas
                 'Config values does not match expectations'
             );
         }
-    }
-
-    private function getContainer(): ContainerBuilder
-    {
-        $container = (new TestContainerFactory())->create();
-        $container->compile();
-
-        $container->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')->generate();
-
-        return $container;
     }
 }

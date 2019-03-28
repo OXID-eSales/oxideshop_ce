@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge;
 
-use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
 
@@ -26,24 +26,16 @@ class ModuleActivationBridge implements ModuleActivationBridgeInterface
     private $moduleStateService;
 
     /**
-     * @var Config
-     */
-    private $config;
-
-    /**
      * ModuleActivationBridge constructor.
      * @param ModuleActivationServiceInterface $moduleActivationService
      * @param ModuleStateServiceInterface      $moduleStateService
-     * @param Config                           $config
      */
     public function __construct(
         ModuleActivationServiceInterface    $moduleActivationService,
-        ModuleStateServiceInterface         $moduleStateService,
-        Config                              $config
+        ModuleStateServiceInterface         $moduleStateService
     ) {
         $this->moduleActivationService = $moduleActivationService;
         $this->moduleStateService = $moduleStateService;
-        $this->config = $config;
     }
 
     /**
@@ -53,7 +45,7 @@ class ModuleActivationBridge implements ModuleActivationBridgeInterface
     public function activate(string $moduleId, int $shopId)
     {
         $this->moduleActivationService->activate($moduleId, $shopId);
-        $this->config->reinitialize();
+        Registry::getConfig()->reinitialize();
     }
 
     /**
@@ -63,7 +55,7 @@ class ModuleActivationBridge implements ModuleActivationBridgeInterface
     public function deactivate(string $moduleId, int $shopId)
     {
         $this->moduleActivationService->deactivate($moduleId, $shopId);
-        $this->config->reinitialize();
+        Registry::getConfig()->reinitialize();
     }
 
     /**

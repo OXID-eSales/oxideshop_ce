@@ -44,10 +44,10 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         // checking if there are any deleted extensions
         if (\OxidEsales\Eshop\Core\Registry::getSession()->getVariable("blSkipDeletedExtChecking") == false) {
             $aDeletedExt = $oModuleList->getDeletedExtensions();
-        }
 
-        if (!empty($aDeletedExt)) {
-            $this->_aViewData["aDeletedExt"] = $aDeletedExt;
+            if (!empty($aDeletedExt)) {
+                $this->_aViewData["aDeletedExt"] = $aDeletedExt;
+            }
         }
 
         return 'module_sortlist.tpl';

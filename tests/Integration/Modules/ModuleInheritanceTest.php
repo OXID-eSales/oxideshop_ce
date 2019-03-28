@@ -7,6 +7,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapter;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
@@ -537,9 +538,7 @@ class ModuleInheritanceTest extends UnitTestCase
 
     private function getContainer(): ContainerBuilder
     {
-        $container = (new TestContainerFactory())->create();
-        $container->compile();
-
+        $container = ContainerFactory::getInstance()->getContainer();
         $container->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')->generate();
 
         return $container;

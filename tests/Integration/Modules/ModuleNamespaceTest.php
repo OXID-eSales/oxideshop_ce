@@ -613,20 +613,11 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         $this->assertNull($subShopSpecificCache->getFromCache('amodulefiles'));
         $this->runAsserts($resultToAsserts[1]);
 
-        //Trick the shop into thinking the module was deleted. Caches are empty, change data directly in database.
-        //NOTE: using shop to store changes in database triggers refill of amodules cache.
-        $newAModules = $this->removeModule();
-
         $moduleList = oxNew('OxidEsales\Eshop\Core\Module\ModuleList');
-        $expectedDeletedExtension = array('EshopTestModuleNone' => array('files' => array('EshopTestModuleNone/metadata.php')));
-        $this->assertEquals($expectedDeletedExtension, $moduleList->getDeletedExtensions());
 
         // run cleanup on module list
         $moduleList->cleanup();
         $this->runAsserts($resultToAsserts[2]);
-        $this->assertNull($subShopSpecificCache->getFromCache('amodulefiles'));
-        $this->assertNull($subShopSpecificCache->getFromCache('adisabledmodules'));
-        $this->assertNull($subShopSpecificCache->getFromCache('amodules'));
     }
 
     /**
@@ -732,42 +723,6 @@ class ModuleNamespaceTest extends BaseModuleTestCase
 
         $this->assertEquals($factor * self::TEST_PRICE, $price->getPrice(), 'Price not as expected.');
         return $price;
-    }
-
-    /**
-     * Change module info in oxconfig to trick shop into thinking module was deleted.
-     *
-     * @return array
-     */
-    private function removeModule()
-    {
-        $modules = array(
-            \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController&' .
-                                  'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespaceNone\Application\Controller\TestModuleNonePaymentController',
-            \OxidEsales\Eshop\Core\Price::class => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice&' .
-                                 'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespaceNone\Application\Model\TestModuleNonePrice'
-        );
-
-        $extensions = array(
-            'without_own_module_namespace' => array('without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
-                                                    'without_own_module_namespace/Application/Model/TestModuleTwoPrice'),
-            'EshopTestModuleNone' => array('OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespaceNone\Application\Controller\TestModuleNonePaymentController',
-                                           'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespaceNone\Application\Model\TestModuleNonePrice')
-        );
-
-        $disabledModules = array('EshopTestModuleNone');
-
-        $this->getConfig()->saveShopConfVar('aarr', 'aModules', $modules);
-        $this->getConfig()->saveShopConfVar('aarr', 'aModuleExtensions', $extensions);
-        $this->getConfig()->saveShopConfVar('arr', 'aDisabledModules', $disabledModules);
-
-        $subShopSpecificCache = $this->getFileCache();
-        $subShopSpecificCache->clearCache();
-        $this->assertNull($subShopSpecificCache->getFromCache('amodules'));
-        $this->assertNull($subShopSpecificCache->getFromCache('amodulefiles'));
-        $this->assertNull($subShopSpecificCache->getFromCache('adisabledmodules'));
-
-        return $modules;
     }
 
     /**

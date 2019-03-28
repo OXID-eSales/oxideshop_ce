@@ -164,14 +164,6 @@ class BasicContext implements BasicContextInterface
     }
 
     /**
-     * @return bool
-     */
-    private function areUnifiedNamespacesGenerated(): bool
-    {
-        return class_exists('\OxidEsales\Eshop\Core\Registry');
-    }
-
-    /**
      * @return string
      */
     public function getConfigFilePath(): string

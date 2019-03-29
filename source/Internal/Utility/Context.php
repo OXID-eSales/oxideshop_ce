@@ -10,6 +10,7 @@ use OxidEsales\Eshop\Core\Config;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
 use PDO;
+use Psr\Log\LogLevel;
 
 /**
  * @internal
@@ -32,9 +33,9 @@ class Context extends BasicContext implements ContextInterface
     /**
      * @return string
      */
-    public function getLogLevel()
+    public function getLogLevel(): string
     {
-        return $this->getConfigParameter('sLogLevel');
+        return $this->getConfigParameter('sLogLevel') ?? LogLevel::ERROR;
     }
 
     /**

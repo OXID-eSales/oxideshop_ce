@@ -644,12 +644,4 @@ class Module extends \OxidEsales\Eshop\Core\Base
         $container = $this->getContainer();
         return $container->get(ShopConfigurationDaoBridgeInterface::class)->get();
     }
-
-    /**
-     * @return ContainerInterface
-     */
-    private function getContainer(): ContainerInterface
-    {
-        return ContainerFactory::getInstance()->getContainer();
-    }
 }

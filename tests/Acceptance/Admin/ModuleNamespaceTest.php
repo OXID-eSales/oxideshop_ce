@@ -38,6 +38,9 @@ class ModuleNamespaceTest extends ModuleBaseTest
         $this->clearCookies();
         $this->clearTemp();
 
+        $this->installModule(self::TEST_MODULE_OLDSTYLE);
+        $this->installModule(self::TEST_MODULE_NAMESPACE);
+
         //TODO: check if test works for subshop as well (which login to use, do we need to provide shopid somewhere ...)
         $testConfig = $this->getTestConfig();
         if ($testConfig->isSubShop()) {

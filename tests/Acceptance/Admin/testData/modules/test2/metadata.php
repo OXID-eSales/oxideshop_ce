@@ -4,6 +4,8 @@
  * See LICENSE file for license details.
  */
 
+$sMetadataVersion = '1.1';
+
 /**
  * Module information
  */

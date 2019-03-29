@@ -5,6 +5,8 @@
  */
 use OxidEsales\Eshop\Application\Controller\ContentController;
 
+$sMetadataVersion = '1.1';
+
 /**
  * Module information
  */

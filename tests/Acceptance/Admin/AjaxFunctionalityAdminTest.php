@@ -6,11 +6,20 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin;
 
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Tests\Acceptance\AdminTestCase;
 
 /** Ajax functionality */
 class AjaxFunctionalityAdminTest extends AdminTestCase
 {
+    public function setUp()
+    {
+        $this->installModule('oxid/test11');
+        $this->installModule('oxid/test12');
+        parent::setUp();
+    }
+
     /**
      * ajax: Distributors -> Assign Products
      *
@@ -1941,5 +1950,17 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
         $this->frame("edit");
         $this->clickAndWait("//form[@id='myedit']//input[@value='Activate']");
         $this->assertElementPresent("//form[@id='myedit']//input[@value='Deactivate']");
+    }
+
+    private function installModule(string $path)
+    {
+        $moduleConfigurationInstaller = ContainerFactory::getInstance()
+            ->getContainer()
+            ->get(ModuleConfigurationInstallerInterface::class);
+
+        $moduleConfigurationInstaller->install(
+            __DIR__ . '/testData/modules/' . $path,
+            $path
+        );
     }
 }

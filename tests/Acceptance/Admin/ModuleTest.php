@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin;
 
 use OxidEsales\Eshop\Application\Controller\ContentController;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 
 /**
  * Admin interface functionality.
@@ -16,6 +17,23 @@ use OxidEsales\Eshop\Core\Registry;
  */
 class ModuleTest extends ModuleBaseTest
 {
+    public function setUp()
+    {
+        ContainerFactory::getInstance()
+            ->getContainer()
+            ->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')
+            ->generate();
+
+        $this->installModule('test1');
+        $this->installModule('test2');
+        $this->installModule('oxid/test6');
+        $this->installModule('oxid/test7');
+        $this->installModule('oxid/namespace1');
+        $this->installModule('oxid/InvalidNamespaceModule1');
+
+        parent::setUp();
+    }
+
     /**
      * Testing modules in vendor directory. Checking when any file with source code class of module is deleted.
      *

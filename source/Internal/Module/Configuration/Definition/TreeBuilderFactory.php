@@ -108,7 +108,7 @@ class TreeBuilderFactory implements TreeBuilderFactoryInterface
                                                                         ->end()
                                                                         ->scalarNode('type')
                                                                         ->end()
-                                                                        ->scalarNode('value')
+                                                                        ->variableNode('value')
                                                                         ->end()
                                                                         ->scalarNode('position')
                                                                         ->end()

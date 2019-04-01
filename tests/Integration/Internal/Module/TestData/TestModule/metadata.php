@@ -23,5 +23,13 @@ $aModule = array(
     'smartyPluginDirectories'  => [
         'SmartyPlugins/directory1',
         'SmartyPlugins/directory2',
-    ]
+    ],
+    'settings' => [
+        [
+            'group' => 'main',
+            'name' => 'setting',
+            'type' => 'arr',
+            'value' => ['Preis', 'Hersteller'],
+        ]
+    ],
 );

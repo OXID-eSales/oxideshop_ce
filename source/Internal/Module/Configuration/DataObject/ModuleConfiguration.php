@@ -221,9 +221,10 @@ class ModuleConfiguration
      * @param bool $autoActive
      * @return ModuleConfiguration
      */
-    public function setAutoActive(bool $autoActive)
+    public function setAutoActive(bool $autoActive): ModuleConfiguration
     {
         $this->autoActive = $autoActive;
+
         return $this;
     }
 

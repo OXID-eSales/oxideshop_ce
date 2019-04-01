@@ -54,7 +54,7 @@ $aModule = [
     ],
     'settings'    => [
         ['group' => 'main', 'name' => 'setting_1', 'type' => 'select', 'value' => '0', 'constraints' => '0|1|2|3', 'position' => 3],
-        ['group' => 'main', 'name' => 'setting_2', 'type' => 'password', 'value' => 'changeMe']
+        ['group' => 'main', 'name' => 'setting_2', 'type' => 'arr', 'value' => ['value1', 'value2']]
     ],
     'events'      => [
         'onActivate'   => '\OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\TestData\TestModuleMetaData20\Events::onActivate',

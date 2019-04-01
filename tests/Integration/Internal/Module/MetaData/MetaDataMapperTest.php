@@ -20,9 +20,7 @@ class MetaDataMapperTest extends TestCase
 {
     public function testModuleMetaData20()
     {
-        $testModuleDirectory = ucfirst(__FUNCTION__);
-        /** The content of metadata.php and $expectedModuleData must match  */
-        $metaDataFilePath = $this->getMetaDataFilePath($testModuleDirectory);
+        $metaDataFilePath = $this->getMetaDataFilePath('TestModuleMetaData20');
         $metaDataCheckSum = md5_file($metaDataFilePath);
         $expectedModuleData = [
             'id'          => 'TestModuleMetaData20',
@@ -68,7 +66,7 @@ class MetaDataMapperTest extends TestCase
             ],
             'settings'    => [
                 ['group' => 'main', 'name' => 'setting_1', 'type' => 'select', 'value' => '0', 'constraints' => ['0', '1', '2', '3'], 'position' => 3],
-                ['group' => 'main', 'name' => 'setting_2', 'type' => 'password', 'value' => 'changeMe']
+                ['group' => 'main', 'name' => 'setting_2', 'type' => 'arr', 'value' => ['value1', 'value2']]
             ],
             'events'      => [
                 'onActivate'   => '\OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\TestData\TestModuleMetaData20\Events::onActivate',
@@ -139,9 +137,7 @@ class MetaDataMapperTest extends TestCase
     }
     public function testModuleMetaData21()
     {
-        $testModuleDirectory = ucfirst(__FUNCTION__);
-        /** The content of metadata.php and $expectedModuleData must match  */
-        $metaDataFilePath = $this->getMetaDataFilePath($testModuleDirectory);
+        $metaDataFilePath = $this->getMetaDataFilePath('TestModuleMetaData21');
         $expectedModuleData = [
             'id'                      => 'TestModuleMetaData21',
             'title'                   => [
@@ -266,8 +262,8 @@ class MetaDataMapperTest extends TestCase
      */
     public function testModuleWithPartialMetaData()
     {
-        $testModuleDirectory = ucfirst(__FUNCTION__);
-        /** The content of metadata.php and $expectedModuleData must match  */
+        $testModuleDirectory = 'TestModuleWithPartialMetaData';
+
         $metaDataFilePath = $this->getMetaDataFilePath($testModuleDirectory);
         $expectedModuleData = [
             'extend' => [
@@ -330,11 +326,9 @@ class MetaDataMapperTest extends TestCase
      */
     public function testModuleWithSurplusData()
     {
-        $testModuleDirectory = $moduleId = ucfirst(__FUNCTION__);
-        /** The content of metadata.php and $expectedModuleData must match  */
-        $metaDataFilePath = $this->getMetaDataFilePath($testModuleDirectory);
+        $metaDataFilePath = $this->getMetaDataFilePath('TestModuleWithSurplusData');
         $expectedModuleData = [
-            'id' => $moduleId,
+            'id' => 'TestModuleWithSurplusData',
         ];
 
         $container = $this->getCompiledTestContainer();

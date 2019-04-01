@@ -13,6 +13,8 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Environme
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
+use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleFilesInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 
@@ -42,7 +44,34 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
         parent::setUp();
     }
 
-    public function testInstall()
+    public function testInstallFromModulesDirectoryWithoutProvidedTargetPath()
+    {
+        $context = $this->get(ContextInterface::class);
+
+        $this->get(ModuleFilesInstallerInterface::class)->install(
+            new OxidEshopPackage($this->moduleId, $this->getTestModuleSourcePath())
+        );
+
+        $app = $this->getApplication();
+
+        $consoleOutput = $this->execute(
+            $app,
+            $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
+            new ArrayInput([
+                'command' => 'oe:module:install-configuration',
+                'module-source-path' => $context->getModulesPath() . '/' . $this->moduleId,
+            ])
+        );
+
+        $this->assertContains(InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_WAS_SUCCESSFUL, $consoleOutput);
+
+        $this->assertInstanceOf(
+            ModuleConfiguration::class,
+            $this->get(ModuleConfigurationDaoInterface::class)->get($this->moduleId, $this->shopId)
+        );
+    }
+
+    public function testInstallFromNotModulesDirectoryWithProvidedTargetPath()
     {
         $app = $this->getApplication();
 
@@ -51,7 +80,7 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
             $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
             new ArrayInput([
                 'command' => 'oe:module:install-configuration',
-                'module-source-path' => __DIR__ . '/Fixtures/modules/testmodule',
+                'module-source-path' => $this->getTestModuleSourcePath(),
                 'module-target-path' => 'testmodule',
             ])
         );
@@ -62,6 +91,25 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
             ModuleConfiguration::class,
             $this->get(ModuleConfigurationDaoInterface::class)->get($this->moduleId, $this->shopId)
         );
+    }
+
+    public function testInstallFromNotModulesDirectoryWithoutProvidedTargetPath()
+    {
+        $app = $this->getApplication();
+
+        $consoleOutput = $this->execute(
+            $app,
+            $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
+            new ArrayInput([
+                'command' => 'oe:module:install-configuration',
+                'module-source-path' => $this->getTestModuleSourcePath(),
+            ])
+        );
+
+        $this->assertContains(InstallModuleConfigurationCommand::MESSAGE_TARGET_PATH_IS_REQUIRED, $consoleOutput);
+
+        $this->expectException(\DomainException::class);
+        $this->get(ModuleConfigurationDaoInterface::class)->get($this->moduleId, $this->shopId);
     }
 
     public function testInstallWithWrongModulePath()
@@ -79,6 +127,9 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
         );
 
         $this->assertContains(InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_FAILED, $consoleOutput);
+
+        $this->expectException(\DomainException::class);
+        $this->get(ModuleConfigurationDaoInterface::class)->get($this->moduleId, $this->shopId);
     }
 
     private function createTestProjectConfiguration()
@@ -90,5 +141,10 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
         $projectConfiguration->addEnvironmentConfiguration($this->environment, $environmentConfiguration);
 
         $this->projectConfigurationDao->persistConfiguration($projectConfiguration);
+    }
+
+    private function getTestModuleSourcePath(): string
+    {
+        return __DIR__ . '/Fixtures/modules/testmodule';
     }
 }

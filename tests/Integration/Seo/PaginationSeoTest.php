@@ -55,8 +55,7 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         parent::setUp();
 
         $this->origTheme = $this->getConfig()->getConfigParam('sTheme');
-        $query = "UPDATE `oxconfig` SET `OXVARVALUE` = encode('azure', 'fq45QS09_fqyx09239QQ') WHERE `OXVARNAME` = 'sTheme'";
-        \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($query);
+        $this->activateTheme('azure');
 
         $this->getConfig()->saveShopConfVar('bool', 'blEnableSeoCache', false);
 
@@ -66,6 +65,8 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $facts = new \OxidEsales\Facts\Facts;
         $this->seoUrl = ('EE' == $facts->getEdition()) ? 'Party/Bar-Equipment/' : 'Geschenke/';
         $this->categoryOxid = ('EE' == $facts->getEdition()) ? '30e44ab8593023055.23928895' : '8a142c3e4143562a5.46426637';
+        oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class)->renewPriceUpdateTime();
+        oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class)->onShopEnd();
     }
 
     /**
@@ -73,6 +74,10 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     protected function tearDown()
     {
+        //restore theme, do it directly in database as it might be dummy 'basic' theme
+        $query = "UPDATE `oxconfig` SET `OXVARVALUE` = encode('" . $this->origTheme . "', 'fq45QS09_fqyx09239QQ') WHERE `OXVARNAME` = 'sTheme'";
+        \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($query);
+
         $this->cleanRegistry();
         $this->cleanSeoTable();
         $_GET = [];
@@ -88,6 +93,13 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     public function testCallWithSeoUrlNoEntryInTableExists()
     {
+        $this->callCurl('');
+        $this->callCurl($this->seoUrl);
+
+        $this->cleanRegistry();
+        $this->cleanSeoTable();
+        $this->clearProxyCache();
+
         $seoUrl = $this->seoUrl;
         $checkResponse = '404 Not Found';
 
@@ -569,6 +581,8 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $productSeoUrlsCountBeforeRequest = $this->getProductSeoUrlsCount($seoUrl);
 
         $this->callCurl($seoUrl . '?pgNr=0');
+        $this->clearProxyCache();
+        $this->callCurl($seoUrl . '?pgNr=0');
 
         $productSeoUrlsCountAfterRequest = $this->getProductSeoUrlsCount($seoUrl);
 
@@ -604,7 +618,9 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     private function initSeoUrlGeneration()
     {
+        $this->clearProxyCache();
         $this->callCurl(''); //call shop startpage
+        $this->clearProxyCache();
     }
 
     private function getProductSeoUrlsCount($url)
@@ -699,6 +715,7 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $curl = oxNew(\OxidEsales\Eshop\Core\Curl::class);
         $curl->setOption('CURLOPT_HEADER', true);
+        $curl->setOption( 'CURLOPT_RETURNTRANSFER', true);
         $curl->setUrl($url);
         $return = $curl->execute();
 

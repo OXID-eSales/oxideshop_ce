@@ -7,6 +7,10 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridge
     public: true
 
+  OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ClassExtensionChainBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ClassExtensionChainBridge
+    public: true
+
   OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationService
     arguments:

@@ -215,13 +215,11 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
         $disabledModules = $this->getDisabledModuleConfigurations();
         $disabledModuleClasses = [];
 
-        /** @var $module ModuleConfiguration */
         foreach ($disabledModules as $module) {
             if ($module->hasSetting(ModuleSetting::CLASS_EXTENSIONS)) {
-                $disabledModuleClasses = array_merge(
-                    $disabledModuleClasses,
-                    $module->getSetting(ModuleSetting::CLASS_EXTENSIONS)->getValue()
-                );
+                foreach ($module->getSetting(ModuleSetting::CLASS_EXTENSIONS)->getValue() as $extensionClass) {
+                    $disabledModuleClasses[] = $extensionClass;
+                }
             }
         }
 

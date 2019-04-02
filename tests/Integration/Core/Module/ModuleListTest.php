@@ -92,7 +92,7 @@ class ModuleListTest extends TestCase
 
         $this->assertSame(
             [
-                Article::class => 'with_class_extensions/ModuleArticle',
+                'with_class_extensions/ModuleArticle',
             ],
             oxNew(ModuleList::class)->getDisabledModuleClasses()
         );

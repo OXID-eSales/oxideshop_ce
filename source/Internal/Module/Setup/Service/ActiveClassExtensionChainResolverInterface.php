@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Service;
 
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 
 /**
  * @internal
@@ -15,7 +15,7 @@ interface ActiveClassExtensionChainResolverInterface
 {
     /**
      * @param int $shopId
-     * @return Chain
+     * @return ClassExtensionsChain
      */
-    public function getActiveExtensionChain(int $shopId): Chain;
+    public function getActiveExtensionChain(int $shopId): ClassExtensionsChain;
 }

@@ -12,13 +12,9 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\Exception\ExtensionN
 /**
  * @internal
  */
-class Chain
+class ClassExtensionsChain implements \IteratorAggregate
 {
-    const CLASS_EXTENSIONS = 'classExtensions';
-    /**
-     * @var string
-     */
-    private $name;
+    const NAME = 'classExtensions';
 
     /**
      * @var array
@@ -30,17 +26,7 @@ class Chain
      */
     public function getName(): string
     {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     * @return Chain
-     */
-    public function setName(string $name): Chain
-    {
-        $this->name = $name;
-        return $this;
+        return self::NAME;
     }
 
     /**
@@ -53,9 +39,9 @@ class Chain
 
     /**
      * @param array $chain
-     * @return Chain
+     * @return ClassExtensionsChain
      */
-    public function setChain(array $chain): Chain
+    public function setChain(array $chain): ClassExtensionsChain
     {
         $this->chain = $chain;
         return $this;
@@ -107,5 +93,13 @@ class Chain
         } else {
             $this->chain[$extended] = [$extension];
         }
+    }
+
+    /**
+     * @return \Traversable
+     */
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->chain);
     }
 }

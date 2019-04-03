@@ -7,7 +7,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
@@ -40,8 +40,7 @@ class ActiveClassExtensionChainResolverTest extends TestCase
             'anotherShopClassNamespace' => 'notActiveModuleExtensionClass',
         ]);
 
-        $classExtensionChain = new Chain();
-        $classExtensionChain->setName('classExtensions');
+        $classExtensionChain = new ClassExtensionsChain();
         $classExtensionChain->setChain([
             'shopClassNamespace' => [
                 'activeModule2ExtensionClass',
@@ -56,7 +55,7 @@ class ActiveClassExtensionChainResolverTest extends TestCase
         ]);
 
         $shopConfiguration = new ShopConfiguration();
-        $shopConfiguration->addChain($classExtensionChain);
+        $shopConfiguration->setClassExtensionsChain($classExtensionChain);
 
         $shopConfiguration
             ->addModuleConfiguration($activeModuleConfiguration1)
@@ -89,9 +88,8 @@ class ActiveClassExtensionChainResolverTest extends TestCase
             new ContextStub()
         );
 
-        $expectedChain = new Chain();
+        $expectedChain = new ClassExtensionsChain();
         $expectedChain
-            ->setName('classExtensions')
             ->setChain(
                 [
                     'shopClassNamespace' => [

@@ -8,7 +8,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ClassExtensionChainBridgeInterface;
 
@@ -38,8 +37,7 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
         $classExtensionsChain = $this
             ->getShopConfiguration()
-            ->getChain(Chain::CLASS_EXTENSIONS)
-            ->getChain();
+            ->getClassExtensionsChain();
 
         $sanitizedExtendClass = [];
         foreach ($classExtensionsChain as $extendedClass => $classChain) {
@@ -78,10 +76,10 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         $shopConfigurationDao = $container->get(ShopConfigurationDaoBridgeInterface::class);
         $shopConfiguration = $shopConfigurationDao->get();
 
-        $chain = $shopConfiguration->getChain(Chain::CLASS_EXTENSIONS);
+        $chain = $shopConfiguration->getClassExtensionsChain();
         $chain->setChain($sanitizedClassExtensionsChain);
 
-        $shopConfiguration->addChain($chain);
+        $shopConfiguration->setClassExtensionsChain($chain);
 
         $shopConfigurationDao->save($shopConfiguration);
 

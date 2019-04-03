@@ -9,7 +9,7 @@ declare(strict_types = 1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Configuration\DataObject;
 
 use DomainException;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use PHPUnit\Framework\TestCase;
@@ -85,31 +85,23 @@ class ShopConfigurationTest extends TestCase
 
     public function testChains()
     {
-        $chain = new Chain();
-        $chain->setName('classes');
+        $chain = new ClassExtensionsChain();
 
-        $this->shopConfiguration->addChain($chain);
+        $this->shopConfiguration->setClassExtensionsChain($chain);
 
         $this->assertSame(
             $chain,
-            $this->shopConfiguration->getChain('classes')
+            $this->shopConfiguration->getClassExtensionsChain()
         );
     }
 
     public function testDefaultChains()
     {
-        $chain = new Chain();
-        $chain->setName(Chain::CLASS_EXTENSIONS);
+        $chain = new ClassExtensionsChain();
 
         $this->assertEquals(
             $chain,
-            $this->shopConfiguration->getChain(Chain::CLASS_EXTENSIONS)
+            $this->shopConfiguration->getClassExtensionsChain()
         );
-    }
-
-    public function testGetChainIfChainDoesNotExist()
-    {
-        $this->expectException(DomainException::class);
-        $this->shopConfiguration->getChain('fakeChainId');
     }
 }

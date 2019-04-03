@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Configuration\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
@@ -155,8 +155,7 @@ class ProjectConfigurationDaoTest extends TestCase
                 ]
             ));
 
-        $classExtensionChain = new Chain();
-        $classExtensionChain->setName('classExtensions');
+        $classExtensionChain = new ClassExtensionsChain();
         $classExtensionChain->setChain([
             'shopClassNamespace' => [
                 'activeModule2ExtensionClass',
@@ -172,7 +171,7 @@ class ProjectConfigurationDaoTest extends TestCase
 
         $shopConfiguration = new ShopConfiguration();
         $shopConfiguration->addModuleConfiguration($moduleConfiguration);
-        $shopConfiguration->addChain($classExtensionChain);
+        $shopConfiguration->setClassExtensionsChain($classExtensionChain);
 
         $environmentConfiguration = new EnvironmentConfiguration();
         $environmentConfiguration->addShopConfiguration(1, $shopConfiguration);

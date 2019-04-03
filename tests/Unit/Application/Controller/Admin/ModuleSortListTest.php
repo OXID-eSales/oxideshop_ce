@@ -7,9 +7,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Application\Controller\Admin\ModuleSortList;
 use OxidEsales\Eshop\Application\Model\Article;
-use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
 
 /**
  * Tests for Shop_Config class
@@ -18,7 +15,7 @@ class ModuleSortListTest extends \OxidTestCase
 {
     public function testRender()
     {
-        $oView = oxNew('Module_SortList');
+        $oView = oxNew(ModuleSortList::class);
         $this->assertEquals('module_sortlist.tpl', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['aExtClasses']));
@@ -38,16 +35,20 @@ class ModuleSortListTest extends \OxidTestCase
 
         $this->setRequestParameter('aModules', json_encode($chain));
 
-        oxNew(ModuleSortList::class)->save();
+        $moduleSortList = oxNew(ModuleSortList::class);
+        $moduleSortList->save();
 
-        $shopConfiguration = ContainerFactory::getInstance()
-            ->getContainer()
-            ->get(ShopConfigurationDaoBridgeInterface::class)
-            ->get();
+        $moduleSortList->render();
 
+        $viewData = $moduleSortList->getViewData();
         $this->assertSame(
-            $chain,
-            $shopConfiguration->getChain(Chain::CLASS_EXTENSIONS)->getChain()
+            [
+                'OxidEsales---Eshop---Application---Model---Article' => [
+                    'dir1/module1',
+                    'dir2/module2',
+                ]
+            ],
+            $viewData['aExtClasses']
         );
     }
 

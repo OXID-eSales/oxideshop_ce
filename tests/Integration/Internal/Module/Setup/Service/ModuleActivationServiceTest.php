@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapter;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
@@ -244,15 +244,13 @@ class ModuleActivationServiceTest extends TestCase
      */
     private function persistModuleConfiguration(ModuleConfiguration $moduleConfiguration)
     {
-        $chain = new Chain();
-        $chain
-            ->setName(Chain::CLASS_EXTENSIONS)
-            ->setChain([
-                'originalClassNamespace' => ['moduleClassNamespace'],
-            ]);
+        $chain = new ClassExtensionsChain();
+        $chain->setChain([
+            'originalClassNamespace' => ['moduleClassNamespace'],
+        ]);
 
         $shopConfiguration = new ShopConfiguration();
-        $shopConfiguration->addChain($chain);
+        $shopConfiguration->setClassExtensionsChain($chain);
         $shopConfiguration->addModuleConfiguration($moduleConfiguration);
 
         $environmentConfiguration = new EnvironmentConfiguration();

@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Setup\Serv
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopSettingType;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ActiveClassExtensionChainResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ClassExtensionChainService;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
@@ -24,7 +24,7 @@ class ClassExtensionChainServiceTest extends TestCase
 
     public function testUpdateChain()
     {
-        $activeClassExtensionChain = new Chain();
+        $activeClassExtensionChain = new ClassExtensionsChain();
         $activeClassExtensionChain->setChain(
             [
                 'shopClassNamespace' => [

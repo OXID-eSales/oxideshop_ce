@@ -6,8 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\Service;
 
-use DomainException;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
@@ -28,7 +27,7 @@ class ModuleConfigurationMergingService implements ModuleConfigurationMergingSer
         ModuleConfiguration $moduleConfigurationToMerge
     ): ShopConfiguration {
         $mergedClassExtensionChain = $this->updateClassExtensionChain($shopConfiguration, $moduleConfigurationToMerge);
-        $shopConfiguration->addChain($mergedClassExtensionChain);
+        $shopConfiguration->setClassExtensionsChain($mergedClassExtensionChain);
 
         $mergedModuleConfiguration = $this->mergeModuleConfiguration($shopConfiguration, $moduleConfigurationToMerge);
         $shopConfiguration->addModuleConfiguration($mergedModuleConfiguration);
@@ -40,13 +39,13 @@ class ModuleConfigurationMergingService implements ModuleConfigurationMergingSer
      * @param ShopConfiguration   $shopConfiguration
      * @param ModuleConfiguration $moduleConfiguration
      *
-     * @return Chain
+     * @return ClassExtensionsChain
      */
     private function updateClassExtensionChain(
         ShopConfiguration $shopConfiguration,
         ModuleConfiguration $moduleConfiguration
-    ): Chain {
-        $classExtensionChain = $shopConfiguration->getChain(Chain::CLASS_EXTENSIONS);
+    ): ClassExtensionsChain {
+        $classExtensionChain = $shopConfiguration->getClassExtensionsChain();
 
         if ($moduleConfiguration->hasSetting(ModuleSetting::CLASS_EXTENSIONS)) {
             $classExtensionsToMerge = $moduleConfiguration->getSetting(ModuleSetting::CLASS_EXTENSIONS)->getValue();
@@ -63,20 +62,6 @@ class ModuleConfigurationMergingService implements ModuleConfigurationMergingSer
                 $classExtensionChain->addExtensions($classExtensionsToMerge);
             }
         }
-
-        return $classExtensionChain;
-    }
-
-    /**
-     * @param array $classExtensionsToMerge
-     *
-     * @return Chain
-     */
-    private function createNewChain(array $classExtensionsToMerge) : Chain
-    {
-        $classExtensionChain = new Chain();
-        $classExtensionChain->setName(Chain::CLASS_EXTENSIONS);
-        $classExtensionChain->addExtensions($classExtensionsToMerge);
 
         return $classExtensionChain;
     }
@@ -146,17 +131,17 @@ class ModuleConfigurationMergingService implements ModuleConfigurationMergingSer
     }
 
     /**
-     * @param ModuleConfiguration $existingModuleConfiguration
-     * @param array               $classExtensionsToMerge
-     * @param Chain               $chain
+     * @param ModuleConfiguration  $existingModuleConfiguration
+     * @param array                $classExtensionsToMerge
+     * @param ClassExtensionsChain $chain
      *
-     * @return Chain
+     * @return ClassExtensionsChain
      */
     private function compareClassExtensionsAndUpdateChain(
         ModuleConfiguration $existingModuleConfiguration,
         array $classExtensionsToMerge,
-        Chain $chain
-    ): Chain {
+        ClassExtensionsChain $chain
+    ): ClassExtensionsChain {
         if ($existingModuleConfiguration->hasSetting(ModuleSetting::CLASS_EXTENSIONS)) {
             $classExtensionsOfExistingModuleConfiguration = $existingModuleConfiguration
                 ->getSetting(ModuleSetting::CLASS_EXTENSIONS)

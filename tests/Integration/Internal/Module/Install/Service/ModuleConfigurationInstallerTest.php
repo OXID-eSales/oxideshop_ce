@@ -7,7 +7,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Install\Service;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
@@ -118,15 +118,13 @@ class ModuleConfigurationInstallerTest extends TestCase
     {
         $shopConfigurationWithChain = new ShopConfiguration();
 
-        $chain = new Chain();
-        $chain
-            ->setName(Chain::CLASS_EXTENSIONS)
-            ->setChain([
-                'shopClass'             => ['alreadyInstalledShopClass', 'anotherAlreadyInstalledShopClass'],
-                'someAnotherShopClass'  => ['alreadyInstalledShopClass'],
-            ]);
+        $chain = new ClassExtensionsChain();
+        $chain->setChain([
+            'shopClass'             => ['alreadyInstalledShopClass', 'anotherAlreadyInstalledShopClass'],
+            'someAnotherShopClass'  => ['alreadyInstalledShopClass'],
+        ]);
 
-        $shopConfigurationWithChain->addChain($chain);
+        $shopConfigurationWithChain->setClassExtensionsChain($chain);
 
         $shopConfigurationWithoutChain = new ShopConfiguration();
 

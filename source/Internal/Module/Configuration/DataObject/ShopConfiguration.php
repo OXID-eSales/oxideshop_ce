@@ -18,18 +18,17 @@ class ShopConfiguration
     private $moduleConfigurations = [];
 
     /**
-     * @var array
+     * @var ClassExtensionsChain
      */
-    private $chains = [];
+    private $chain;
 
     /**
      * ShopConfiguration constructor.
      */
     public function __construct()
     {
-        $classExtensionChain = new Chain();
-        $classExtensionChain->setName(Chain::CLASS_EXTENSIONS);
-        $this->addChain($classExtensionChain);
+        $classExtensionChain = new ClassExtensionsChain();
+        $this->setClassExtensionsChain($classExtensionChain);
     }
 
     /**
@@ -89,35 +88,19 @@ class ShopConfiguration
     }
 
     /**
-     * @param Chain $chain
+     * @param ClassExtensionsChain $chain
      */
-    public function addChain(Chain $chain)
+    public function setClassExtensionsChain(ClassExtensionsChain $chain)
     {
-        $this->chains[$chain->getName()] = $chain;
+        $this->chain = $chain;
     }
 
     /**
-     * @param string $name
-     *
-     * @throws DomainException
-     *
-     * @return Chain
+     * @return ClassExtensionsChain
      */
-    public function getChain(string $name): Chain
+    public function getClassExtensionsChain(): ClassExtensionsChain
     {
-        if (!isset($this->chains[$name])) {
-            throw new DomainException('There is no chain with name: ' . $name);
-        }
-
-        return $this->chains[$name];
-    }
-
-    /**
-     * @return array
-     */
-    public function getChains(): array
-    {
-        return $this->chains;
+        return $this->chain;
     }
 
     /**

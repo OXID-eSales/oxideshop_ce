@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Configuration\Service;
 
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
@@ -41,15 +41,13 @@ class ModuleConfigurationMergingServiceTest extends TestCase
         ));
 
         $shopConfigurationWithChain = new ShopConfiguration();
-        $chain = new Chain();
-        $chain
-            ->setName(Chain::CLASS_EXTENSIONS)
-            ->setChain([
-                'shopClass'             => ['alreadyInstalledShopClass', 'anotherAlreadyInstalledShopClass'],
-                'someAnotherShopClass'  => ['alreadyInstalledShopClass'],
-            ]);
+        $chain = new ClassExtensionsChain();
+        $chain->setChain([
+            'shopClass'             => ['alreadyInstalledShopClass', 'anotherAlreadyInstalledShopClass'],
+            'someAnotherShopClass'  => ['alreadyInstalledShopClass'],
+        ]);
 
-        $shopConfigurationWithChain->addChain($chain);
+        $shopConfigurationWithChain->setClassExtensionsChain($chain);
 
         $moduleConfigurationMergingService = new ModuleConfigurationMergingService();
         $shopConfiguration = $moduleConfigurationMergingService->merge($shopConfigurationWithChain, $moduleConfiguration);
@@ -63,7 +61,7 @@ class ModuleConfigurationMergingServiceTest extends TestCase
                 ],
                 'someAnotherShopClass'  => ['alreadyInstalledShopClass'],
             ],
-            $shopConfiguration->getChain(Chain::CLASS_EXTENSIONS)->getChain()
+            $shopConfiguration->getClassExtensionsChain()->getChain()
         );
         $this->assertEquals(
             $moduleConfiguration,
@@ -133,7 +131,7 @@ class ModuleConfigurationMergingServiceTest extends TestCase
                 'shopClass3' => ['someOtherExtension4'],
                 'shopClass5' => ['extension6']
             ],
-            $shopConfiguration->getChain(Chain::CLASS_EXTENSIONS)->getChain()
+            $shopConfiguration->getClassExtensionsChain()->getChain()
         );
     }
 
@@ -300,19 +298,17 @@ class ModuleConfigurationMergingServiceTest extends TestCase
             )
         );
 
-        $chain = new Chain();
-        $chain
-            ->setName(Chain::CLASS_EXTENSIONS)
-            ->setChain([
-                'shopClass1'            => ['someOtherExtension1', 'extension1ToStayInNewModuleConfiguration'],
-                'shopClass2'            => ['someOtherExtension2', 'extension2ToBeChanged', 'someOtherExtension3'],
-                'shopClass3'            => ['extension3ToBeDeleted', 'someOtherExtension4'],
-                'shopClass4ToBeDeleted' => ['extension4ToBeDeleted']
-            ]);
+        $chain = new ClassExtensionsChain();
+        $chain->setChain([
+            'shopClass1'            => ['someOtherExtension1', 'extension1ToStayInNewModuleConfiguration'],
+            'shopClass2'            => ['someOtherExtension2', 'extension2ToBeChanged', 'someOtherExtension3'],
+            'shopClass3'            => ['extension3ToBeDeleted', 'someOtherExtension4'],
+            'shopClass4ToBeDeleted' => ['extension4ToBeDeleted']
+        ]);
 
         $shopConfiguration = new ShopConfiguration();
         $shopConfiguration->addModuleConfiguration($moduleConfiguration);
-        $shopConfiguration->addChain($chain);
+        $shopConfiguration->setClassExtensionsChain($chain);
 
         return $shopConfiguration;
     }

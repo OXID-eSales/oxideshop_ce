@@ -7,7 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
@@ -53,14 +53,14 @@ class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainReso
      * @param int $shopId
      * @return array
      */
-    public function getActiveExtensionChain(int $shopId): Chain
+    public function getActiveExtensionChain(int $shopId): ClassExtensionsChain
     {
         $shopConfiguration = $this->getShopConfiguration($shopId);
-        $classExtensionChain = $shopConfiguration->getChain(Chain::CLASS_EXTENSIONS);
+        $classExtensionChain = $shopConfiguration->getClassExtensionsChain();
 
         $activeExtensions = [];
 
-        foreach ($classExtensionChain->getChain() as $shopClass => $moduleExtensionClasses) {
+        foreach ($classExtensionChain as $shopClass => $moduleExtensionClasses) {
             $activeModuleExtensionClasses = $this->getActiveModuleExtensionClasses(
                 $moduleExtensionClasses,
                 $shopId,
@@ -72,10 +72,8 @@ class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainReso
             }
         }
 
-        $activeExtensionChain = new Chain();
-        $activeExtensionChain
-            ->setName(Chain::CLASS_EXTENSIONS)
-            ->setChain($activeExtensions);
+        $activeExtensionChain = new ClassExtensionsChain();
+        $activeExtensionChain->setChain($activeExtensions);
 
         return $activeExtensionChain;
     }

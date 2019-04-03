@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Configuration\DataObject;
 
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -16,7 +16,7 @@ class ChainTest extends TestCase
 {
     public function testAddExtensionsIfChainIsEmpty()
     {
-        $chain = new Chain();
+        $chain = new ClassExtensionsChain();
         $chain->addExtensions([
             'extendedClass'         => 'firstExtension',
             'anotherExtendedClass'  => 'someExtension',
@@ -37,7 +37,7 @@ class ChainTest extends TestCase
 
     public function testAddExtensionToChainIfAnotherExtensionsAlreadyExist()
     {
-        $chain = new Chain();
+        $chain = new ClassExtensionsChain();
         $chain->addExtensions([
             'extendedClass'         => 'firstExtension',
             'anotherExtendedClass'  => 'someExtension',
@@ -63,7 +63,7 @@ class ChainTest extends TestCase
 
     public function testRemoveExtension()
     {
-        $chain = new Chain();
+        $chain = new ClassExtensionsChain();
         $chain->setChain(
             [
                 'extendedClass1' => [
@@ -101,7 +101,7 @@ class ChainTest extends TestCase
      */
     public function testRemoveExtensionThrowsExceptionIfClassNotExistsInChain($extended, $extension)
     {
-        $chain = new Chain();
+        $chain = new ClassExtensionsChain();
         $chain->setChain(
             [
                 'extendedClass1' => [

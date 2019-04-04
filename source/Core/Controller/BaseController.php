@@ -534,6 +534,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
             if (method_exists($this, $sFunction)) {
                 $sNewAction = $this->$sFunction();
                 self::$_blExecuted = true;
+                $this->dispatchEvent(new AfterRequestProcessedEvent);
 
                 if (isset($sNewAction)) {
                     $this->_executeNewAction($sNewAction);

@@ -10,13 +10,13 @@ use OxidEsales\EshopCommunity\Internal\Module\Command\InstallModuleConfiguration
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleFilesInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use Symfony\Component\Console\Input\ArrayInput;
+use Webmozart\PathUtil\Path;
 
 /**
  * @internal
@@ -26,6 +26,7 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
     private $shopId;
     private $environment;
     private $moduleId = 'testmodule';
+    private $moduleTargetPath = 'testmodule';
 
     /**
      * ProjectConfigurationDaoInterface
@@ -44,92 +45,131 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
         parent::setUp();
     }
 
-    public function testInstallFromModulesDirectoryWithoutProvidedTargetPath()
+    public function testInstallFromModulesDirectoryWithAbsoluteSourcePath()
     {
+        $this->installTestModuleFiles();
+
         $context = $this->get(ContextInterface::class);
-
-        $this->get(ModuleFilesInstallerInterface::class)->install(
-            new OxidEshopPackage($this->moduleId, $this->getTestModuleSourcePath())
-        );
-
-        $app = $this->getApplication();
-
-        $consoleOutput = $this->execute(
-            $app,
-            $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
-            new ArrayInput([
-                'command' => 'oe:module:install-configuration',
-                'module-source-path' => $context->getModulesPath() . '/' . $this->moduleId,
-            ])
-        );
+        $consoleOutput = $this->executeModuleInstallCommand($context->getModulesPath() . '/' . $this->moduleTargetPath);
 
         $this->assertContains(InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_WAS_SUCCESSFUL, $consoleOutput);
 
-        $this->assertInstanceOf(
-            ModuleConfiguration::class,
-            $this->get(ModuleConfigurationDaoInterface::class)->get($this->moduleId, $this->shopId)
+        $moduleConfiguration = $this->get(ModuleConfigurationDaoInterface::class)->get($this->moduleId, $this->shopId);
+        $this->assertSame(
+            $this->moduleId,
+            $moduleConfiguration->getId()
         );
     }
 
-    public function testInstallFromNotModulesDirectoryWithProvidedTargetPath()
+    public function testInstallFromModulesDirectoryWithRelativeSourcePath()
     {
-        $app = $this->getApplication();
+        $this->installTestModuleFiles();
 
-        $consoleOutput = $this->execute(
-            $app,
-            $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
-            new ArrayInput([
-                'command' => 'oe:module:install-configuration',
-                'module-source-path' => $this->getTestModuleSourcePath(),
-                'module-target-path' => 'testmodule',
-            ])
+        $context = $this->get(ContextInterface::class);
+        $relativeModulePath = Path::makeRelative(
+            $context->getModulesPath() . '/' . $this->moduleTargetPath,
+            $context->getShopRootPath()
+        );
+
+        $this->assertContains(
+            InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_WAS_SUCCESSFUL,
+            $this->executeModuleInstallCommand($relativeModulePath)
+        );
+
+        $moduleConfiguration = $this->get(ModuleConfigurationDaoInterface::class)->get($this->moduleId, $this->shopId);
+        $this->assertSame(
+            $this->moduleId,
+            $moduleConfiguration->getId()
+        );
+    }
+
+    public function testInstallFromNotModulesDirectoryWithProvidedAbsoluteTargetPath()
+    {
+        $context = $this->get(ContextInterface::class);
+
+        $consoleOutput = $this->executeModuleInstallCommand(
+            $this->getTestModuleSourcePath(),
+            $context->getModulesPath() . '/' . $this->moduleTargetPath
         );
 
         $this->assertContains(InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_WAS_SUCCESSFUL, $consoleOutput);
 
-        $this->assertInstanceOf(
-            ModuleConfiguration::class,
-            $this->get(ModuleConfigurationDaoInterface::class)->get($this->moduleId, $this->shopId)
+        $moduleConfiguration = $this->get(ModuleConfigurationDaoInterface::class)->get($this->moduleId, $this->shopId);
+        $this->assertSame(
+            $this->moduleTargetPath,
+            $moduleConfiguration->getPath()
+        );
+    }
+
+    public function testInstallFromNotModulesDirectoryWithProvidedRelativeTargetPath()
+    {
+        $context = $this->get(ContextInterface::class);
+
+        $relativeModulePath = Path::makeRelative(
+            $context->getModulesPath() . '/' . $this->moduleTargetPath,
+            $context->getShopRootPath()
+        );
+
+        $consoleOutput = $this->executeModuleInstallCommand(
+            $this->getTestModuleSourcePath(),
+            $relativeModulePath
+        );
+
+        $this->assertContains(InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_WAS_SUCCESSFUL, $consoleOutput);
+
+        $moduleConfiguration = $this->get(ModuleConfigurationDaoInterface::class)->get($this->moduleId, $this->shopId);
+        $this->assertSame(
+            $this->moduleTargetPath,
+            $moduleConfiguration->getPath()
         );
     }
 
     public function testInstallFromNotModulesDirectoryWithoutProvidedTargetPath()
     {
-        $app = $this->getApplication();
-
-        $consoleOutput = $this->execute(
-            $app,
-            $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
-            new ArrayInput([
-                'command' => 'oe:module:install-configuration',
-                'module-source-path' => $this->getTestModuleSourcePath(),
-            ])
-        );
+        $consoleOutput = $this->executeModuleInstallCommand($this->getTestModuleSourcePath());
 
         $this->assertContains(InstallModuleConfigurationCommand::MESSAGE_TARGET_PATH_IS_REQUIRED, $consoleOutput);
-
-        $this->expectException(\DomainException::class);
-        $this->get(ModuleConfigurationDaoInterface::class)->get($this->moduleId, $this->shopId);
     }
 
-    public function testInstallWithWrongModulePath()
+    public function testInstallWithWrongModuleSourcePath()
     {
-        $app = $this->getApplication();
-
-        $consoleOutput = $this->execute(
-            $app,
-            $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
-            new ArrayInput([
-                'command' => 'oe:module:install-configuration',
-                'module-source-path' => 'fakePath',
-                'module-target-path' => 'testmodule',
-            ])
-        );
+        $consoleOutput = $this->executeModuleInstallCommand('fakePath');
 
         $this->assertContains(InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_FAILED, $consoleOutput);
+    }
 
-        $this->expectException(\DomainException::class);
-        $this->get(ModuleConfigurationDaoInterface::class)->get($this->moduleId, $this->shopId);
+    public function testInstallWithWrongModuleTargetPath()
+    {
+        $consoleOutput = $this->executeModuleInstallCommand($this->getTestModuleSourcePath(), 'fakePath');
+
+        $this->assertContains(InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_FAILED, $consoleOutput);
+    }
+
+    private function executeModuleInstallCommand(string $moduleSourcePath, string $moduleTargetPath = null): string
+    {
+        $input = [
+            'command' => 'oe:module:install-configuration',
+            'module-source-path' => $moduleSourcePath,
+        ];
+
+        if ($moduleTargetPath) {
+            $input['module-target-path'] = $moduleTargetPath;
+        }
+
+        $app = $this->getApplication();
+
+        return $this->execute(
+            $app,
+            $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
+            new ArrayInput($input)
+        );
+    }
+
+    private function installTestModuleFiles()
+    {
+        $this->get(ModuleFilesInstallerInterface::class)->install(
+            new OxidEshopPackage($this->moduleId, $this->getTestModuleSourcePath())
+        );
     }
 
     private function createTestProjectConfiguration()

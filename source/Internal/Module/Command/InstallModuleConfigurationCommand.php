@@ -21,7 +21,7 @@ class InstallModuleConfigurationCommand extends Command
 {
     const MESSAGE_INSTALLATION_WAS_SUCCESSFUL   = 'Module configuration has been installed.';
     const MESSAGE_INSTALLATION_FAILED           = 'An error occurred while installing module configuration.';
-    const MESSAGE_TARGET_PATH_IS_REQUIRED       = 'The module source path is not in the shop modules directory. Please provide additional parameter with module target path.';
+    const MESSAGE_TARGET_PATH_IS_REQUIRED       = 'The module source path is not inside the shop modules directory. Please provide second parameter with a module path inside the shop modules directory.';
 
     /**
      * @var ModuleConfigurationInstallerInterface
@@ -80,11 +80,13 @@ class InstallModuleConfigurationCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         try {
-            $this->moduleConfigurationInstaller->install(
-                $this->getModuleSourcePath($input),
-                $this->getModuleTargetPath($input)
-            );
+            $moduleSourcePath = $this->getModuleSourcePath($input);
+            $this->validatePath($moduleSourcePath);
 
+            $moduleTargetPath = $this->getModuleTargetPath($input);
+            $this->validatePath($moduleTargetPath);
+
+            $this->moduleConfigurationInstaller->install($moduleSourcePath, $moduleTargetPath);
             $output->writeln('<info>' . self::MESSAGE_INSTALLATION_WAS_SUCCESSFUL . '</info>');
         } catch (ModuleTargetPathIsMissingException $exception) {
             $output->writeln('<error>' . self::MESSAGE_TARGET_PATH_IS_REQUIRED . '</error>');
@@ -101,7 +103,7 @@ class InstallModuleConfigurationCommand extends Command
      */
     private function getModuleSourcePath(InputInterface $input): string
     {
-        return $input->getArgument('module-source-path');
+        return $this->getAbsolutePath($input->getArgument('module-source-path'));
     }
 
     /**
@@ -113,11 +115,11 @@ class InstallModuleConfigurationCommand extends Command
     {
         $moduleTargetPath = $input->getArgument('module-target-path');
         if ($moduleTargetPath !== null) {
-            return $moduleTargetPath;
+            return $this->getAbsolutePath($moduleTargetPath);
         }
 
         $moduleSourcePath = $this->getModuleSourcePath($input);
-        if ($this->isItModulesTargetDirectory($moduleSourcePath)) {
+        if ($this->isDirectoryInsideShopModulesDirectory($moduleSourcePath)) {
             return $moduleSourcePath;
         }
 
@@ -128,12 +130,33 @@ class InstallModuleConfigurationCommand extends Command
      * @param string $path
      * @return bool
      */
-    private function isItModulesTargetDirectory(string $path): bool
+    private function isDirectoryInsideShopModulesDirectory(string $path): bool
     {
         if (Path::isRelative($path)) {
             $path = Path::join($this->context->getShopRootPath(), $path);
         }
 
         return Path::isBasePath($this->context->getModulesPath(), $path);
+    }
+
+    /**
+     * @param string $path
+     */
+    private function validatePath(string $path)
+    {
+        if (!file_exists($path) || !is_dir($path)) {
+            throw new \InvalidArgumentException($path . ' directory doesn\'t exist');
+        }
+    }
+
+    /**
+     * @param string $path
+     * @return string
+     */
+    private function getAbsolutePath(string $path): string
+    {
+        return Path::isRelative($path)
+            ? Path::makeAbsolute($path, $this->context->getShopRootPath())
+            : $path;
     }
 }

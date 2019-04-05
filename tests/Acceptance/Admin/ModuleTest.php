@@ -98,6 +98,28 @@ class ModuleTest extends ModuleBaseTest
         $this->assertElementValue("confaarrs[testEmptyAArrConfig]", "key1 => option1\nkey2 => option2", 'Values for text area assoc array (aarr) should have been saved');
         $this->assertElementValue("confselects[testEmptySelectConfig]", '2', 'Value for select should have been saved');
 
+        // Activate module and check that new setting values are there.
+        $this->openTab("Overview");
+        $this->activateModule("Test module #1");
+        $this->openTab("Settings");
+
+        $this->assertChecked("//input[@name='confbools[testEmptyBoolConfig]' and @type='checkbox']");
+        $this->assertElementValue("confstrs[testEmptyStrConfig]", 'testString', 'Value for text input (str) should have been saved');
+        $this->assertElementValue("confarrs[testEmptyArrConfig]", "option1\noption2\noption3", 'Values for text area array (arr) should have been saved');
+        $this->assertElementValue("confaarrs[testEmptyAArrConfig]", "key1 => option1\nkey2 => option2", 'Values for text area assoc array (aarr) should have been saved');
+        $this->assertElementValue("confselects[testEmptySelectConfig]", '2', 'Value for select should have been saved');
+
+        // Deactivate module and check that new setting values are there.
+        $this->openTab("Overview");
+        $this->deactivateModule("Test module #1");
+        $this->openTab("Settings");
+
+        $this->assertChecked("//input[@name='confbools[testEmptyBoolConfig]' and @type='checkbox']");
+        $this->assertElementValue("confstrs[testEmptyStrConfig]", 'testString', 'Value for text input (str) should have been saved');
+        $this->assertElementValue("confarrs[testEmptyArrConfig]", "option1\noption2\noption3", 'Values for text area array (arr) should have been saved');
+        $this->assertElementValue("confaarrs[testEmptyAArrConfig]", "key1 => option1\nkey2 => option2", 'Values for text area assoc array (aarr) should have been saved');
+        $this->assertElementValue("confselects[testEmptySelectConfig]", '2', 'Value for select should have been saved');
+
         $oPassword = $this->getElement("confpassword[testEmptyPasswordConfig]");
         $this->assertEquals('', $oPassword->getValue(), 'With saved value password should be empty');
         $this->assertFalse($oPassword->isVisible(), 'Password confirm field should be invisible when value is saved');

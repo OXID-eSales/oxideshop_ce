@@ -21,7 +21,9 @@ class InstallModuleConfigurationCommand extends Command
 {
     const MESSAGE_INSTALLATION_WAS_SUCCESSFUL   = 'Module configuration has been installed.';
     const MESSAGE_INSTALLATION_FAILED           = 'An error occurred while installing module configuration.';
-    const MESSAGE_TARGET_PATH_IS_REQUIRED       = 'The module source path is not inside the shop modules directory. Please provide second parameter with a module path inside the shop modules directory.';
+    const MESSAGE_TARGET_PATH_IS_REQUIRED       = 'The given module source path is not inside the shop modules ' .
+                                                  'directory. Please provide a second parameter with the modules ' .
+                                                  'target path inside the shop modules directory.';
 
     /**
      * @var ModuleConfigurationInstallerInterface
@@ -156,7 +158,7 @@ class InstallModuleConfigurationCommand extends Command
     private function getAbsolutePath(string $path): string
     {
         return Path::isRelative($path)
-            ? Path::makeAbsolute($path, $this->context->getShopRootPath())
+            ? Path::makeAbsolute($path, getcwd())
             : $path;
     }
 }

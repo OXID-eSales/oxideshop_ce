@@ -27,6 +27,8 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
     private $environment;
     private $moduleId = 'testmodule';
     private $moduleTargetPath = 'testmodule';
+    private $workingDirectoryBackup;
+    private $workingDirectory;
 
     /**
      * ProjectConfigurationDaoInterface
@@ -38,11 +40,19 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
         $context = $this->get(ContextInterface::class);
         $this->shopId = $context->getCurrentShopId();
         $this->environment = $context->getEnvironment();
+        $this->workingDirectoryBackup = getcwd();
+        $this->setWorkingDirectoryForConsole(__DIR__);
 
         $this->projectConfigurationDao = $this->get(ProjectConfigurationDaoInterface::class);
         $this->createTestProjectConfiguration();
 
         parent::setUp();
+    }
+
+    public function tearDown()
+    {
+        $this->setWorkingDirectoryForConsole($this->workingDirectoryBackup);
+        parent::tearDown();
     }
 
     public function testInstallFromModulesDirectoryWithAbsoluteSourcePath()
@@ -67,32 +77,21 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
 
         $context = $this->get(ContextInterface::class);
 
-        $workingDirectoryBackup = getcwd();
-        $workingDirectory = $this->setWorkingDirectoryForConsole(__DIR__);
-
         $relativeModulePath = Path::makeRelative(
             $context->getModulesPath() . '/' . $this->moduleTargetPath,
-            $workingDirectory
+            $this->workingDirectory
         );
 
-        try {
-            $this->assertContains(
-                InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_WAS_SUCCESSFUL,
-                $this->executeModuleInstallCommand($relativeModulePath)
-            );
+        $this->assertContains(
+            InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_WAS_SUCCESSFUL,
+            $this->executeModuleInstallCommand($relativeModulePath)
+        );
 
-            $moduleConfiguration = $this->get(ModuleConfigurationDaoInterface::class)->get($this->moduleId, $this->shopId);
-            $this->assertSame(
-                $this->moduleId,
-                $moduleConfiguration->getId()
-            );
-        } catch (\Throwable $throwable) {
-            throw $throwable;
-        } finally {
-            $this->setWorkingDirectoryForConsole($workingDirectoryBackup);
-        }
-
-
+        $moduleConfiguration = $this->get(ModuleConfigurationDaoInterface::class)->get($this->moduleId, $this->shopId);
+        $this->assertSame(
+            $this->moduleId,
+            $moduleConfiguration->getId()
+        );
     }
 
     public function testInstallFromNotModulesDirectoryWithProvidedAbsoluteTargetPath()
@@ -117,32 +116,23 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
     {
         $context = $this->get(ContextInterface::class);
 
-        $workingDirectoryBackup = getcwd();
-        $workingDirectory = $this->setWorkingDirectoryForConsole(__DIR__);
-
         $relativeModulePath = Path::makeRelative(
             $context->getModulesPath() . '/' . $this->moduleTargetPath,
-            $workingDirectory
+            $this->workingDirectory
         );
 
-        try {
-            $consoleOutput = $this->executeModuleInstallCommand(
-                $this->getTestModuleSourcePath(),
-                $relativeModulePath
-            );
+        $consoleOutput = $this->executeModuleInstallCommand(
+            $this->getTestModuleSourcePath(),
+            $relativeModulePath
+        );
 
-            $this->assertContains(InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_WAS_SUCCESSFUL, $consoleOutput);
+        $this->assertContains(InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_WAS_SUCCESSFUL, $consoleOutput);
 
-            $moduleConfiguration = $this->get(ModuleConfigurationDaoInterface::class)->get($this->moduleId, $this->shopId);
-            $this->assertSame(
-                $this->moduleTargetPath,
-                $moduleConfiguration->getPath()
-            );
-        } catch (\Throwable $throwable) {
-            throw $throwable;
-        } finally {
-            $this->setWorkingDirectoryForConsole($workingDirectoryBackup);
-        }
+        $moduleConfiguration = $this->get(ModuleConfigurationDaoInterface::class)->get($this->moduleId, $this->shopId);
+        $this->assertSame(
+            $this->moduleTargetPath,
+            $moduleConfiguration->getPath()
+        );
     }
 
     public function testInstallFromNotModulesDirectoryWithoutProvidedTargetPath()
@@ -211,12 +201,10 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
 
     /**
      * @param string $workingDirectory
-     *
-     * @return string
      */
-    private function setWorkingDirectoryForConsole(string $workingDirectory) :string
+    private function setWorkingDirectoryForConsole(string $workingDirectory)
     {
         chdir($workingDirectory);
-        return getcwd();
+        $this->workingDirectory = $workingDirectory;
     }
 }

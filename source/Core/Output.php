@@ -98,7 +98,7 @@ class Output extends \OxidEsales\Eshop\Core\Base
 
         // Replacing only once per page
         $sSearch = "</head>";
-        $sReplace = "</head>\n  <!-- OXID eShop {$sEdition}, Version {$sMajorVersion}{$sShopMode}, Shopping Cart System (c) OXID eSales AG 2003 - {$sCurYear} - http://www.oxid-esales.com -->";
+        $sReplace = "</head>\n  <!-- OXID eShop {$sEdition}, Version {$sMajorVersion}{$sShopMode}, Shopping Cart System (c) OXID eSales AG 2003 - {$sCurYear} - https://www.oxid-esales.com -->";
 
         $sOutput = ltrim($sOutput);
         if (($pos = stripos($sOutput, $sSearch)) !== false) {

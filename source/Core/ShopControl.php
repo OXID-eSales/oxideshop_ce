@@ -495,12 +495,26 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         // passing current view object to smarty
         $smarty->oxobject = $view;
 
-        $output = $smarty->fetch($templateName, $view->getViewId());
+        $output = $this->fetchSmartyOutput($smarty, $templateName, $view->getViewId());
 
         //Output processing - useful for modules as sometimes you may want to process output manually.
         $output = $outputManager->process($output, $view->getClassName());
 
         return $outputManager->addVersionTags($output);
+    }
+
+    /**
+     * Call smarty::fetch.
+     *
+     * @param Smarty $smarty
+     * @param string $templateName
+     * @param string $viewId
+     *
+     * @return mixed
+     */
+    protected function fetchSmartyOutput($smarty, $templateName, $viewId)
+    {
+        return $smarty->fetch($templateName, $viewId);
     }
 
     /**

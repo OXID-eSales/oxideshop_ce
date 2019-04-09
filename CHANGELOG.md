@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Ensure temp file in tmp directory [PR-683](https://github.com/OXID-eSales/oxideshop_ce/pull/683)
 - Fix warning in inc_error.tpl [PR-690](https://github.com/OXID-eSales/oxideshop_ce/pull/690)
 - Fix url protocol in version tags [PR-696](https://github.com/OXID-eSales/oxideshop_ce/pull/696)
+- Use correct value for backing up the base language in email [PR-692](https://github.com/OXID-eSales/oxideshop_ce/pull/692)
 
 ## [6.3.2] - 2019-01-22
 

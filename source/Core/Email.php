@@ -1057,7 +1057,7 @@ class Email extends \PHPMailer
         $store['INCLUDE_ANY'] = $smarty->security_settings['INCLUDE_ANY'];
         //V send email in order language
         $oldTplLang = $lang->getTplLanguage();
-        $oldBaseLang = $lang->getTplLanguage();
+        $oldBaseLang = $lang->getBaseLanguage();
         $lang->setTplLanguage($orderLang);
         $lang->setBaseLanguage($orderLang);
 

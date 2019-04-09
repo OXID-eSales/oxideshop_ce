@@ -58,4 +58,12 @@ class ModuleSetting
     {
         return $this->value;
     }
+
+    /**
+     * @param mixed $value
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+    }
 }

@@ -8,6 +8,7 @@
     "require": {
         "php": "^7.1",
         "ext-pdo": "*",
+        "ext-json": "*",
         "phpmailer/phpmailer": "^v6.0.6",
         "smarty/smarty": "^v2.6.31",
         "doctrine/dbal": "^v2.5.13",

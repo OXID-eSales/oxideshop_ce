@@ -103,7 +103,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      * Get module id's with versions
      *
      * @return array
-     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey(ModuleList::MODULE_KEY_VERSIONS) instead.
      */
     public function getModuleVersions()
     {
@@ -140,7 +139,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      * Get module id's with path
      *
      * @return array
-     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey(ModuleList::MODULE_KEY_PATHS) instead.
      */
     public function getModulePaths()
     {
@@ -151,7 +149,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      * Get module events
      *
      * @return array
-     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey(ModuleList::MODULE_KEY_EVENTS) instead.
      */
     public function getModuleEvents()
     {
@@ -184,7 +181,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      * Get all modules files paths
      *
      * @return array
-     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey(ModuleList::MODULE_KEY_FILES) instead.
      */
     public function getModuleFiles()
     {
@@ -195,7 +191,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      * Get all modules templates paths
      *
      * @return array
-     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey(ModuleList::MODULE_KEY_TEMPLATES) instead.
      */
     public function getModuleTemplates()
     {
@@ -565,8 +560,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      * @param array  $invalidModuleClasses The Collection of module classes , which are marked as deleted
      *                                     Note: This parameter is passed by reference
      * @param string $extendedShopClass    The shop class, which is extended by the module class
-     *
-     * @deprecated since v6.0 (2017-03-14); This method will be removed in the future.
      */
     private function backwardsCompatibleGetInvalidExtensions($moduleClass, &$invalidModuleClasses, $extendedShopClass)
     {

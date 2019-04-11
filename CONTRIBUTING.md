@@ -53,13 +53,12 @@ In general, contributions can be taken over for all branches. Bug fixes committe
 1. make sure [composer](https://getcomposer.org/) is installed on your system
 2. `$ git clone https://github.com/OXID-eSales/oxideshop_ce.git`
 3. `$ cd oxideshop_ce`
-4. `$ composer install --no-dev`
+4. `$ composer install`
 5. `$ cp source/config.inc.php.dist source/config.inc.php`
 
 If you want to install OXID eShop including example data like products, categories etc., you first need to install the demo data package:
 
-1. `$ composer require --no-update oxid-esales/oxideshop-demodata-ce:dev-b-6.0`
-2. `$ composer update --no-dev`
+1. `$ composer require oxid-esales/oxideshop-demodata-ce:dev-b-6.0`
 
 ### Cloning without history
 

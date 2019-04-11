@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Internal\Application;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Application\PSR11Compliance\ContainerWrapper;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\GraphQlTypePass;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -82,6 +83,7 @@ class ContainerFactory
     private function createAndCompileSymfonyContainer()
     {
         $this->symfonyContainer = new ContainerBuilder();
+        $this->symfonyContainer->addCompilerPass(new GraphQlTypePass());
         $loader = new YamlFileLoader($this->symfonyContainer, new FileLocator(__DIR__));
         $loader->load('services.yaml');
         $this->symfonyContainer->compile();

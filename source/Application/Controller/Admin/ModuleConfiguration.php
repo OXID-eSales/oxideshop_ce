@@ -269,7 +269,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
      */
     private function formatModuleSettingsForTemplate(array $moduleSettings): array
     {
-        $aConfVars = [
+        $confVars = [
             'bool'     => [],
             'str'      => [],
             'arr'      => [],
@@ -306,7 +306,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
             $group = $setting['group'];
 
 
-            $aConfVars[$valueType][$name] = $value;
+            $confVars[$valueType][$name] = $value;
             $constraints[$name] = $setting['constraints'] ?? '';
 
             if ($group) {
@@ -319,7 +319,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
         }
 
         return [
-            'vars'        => $aConfVars,
+            'vars'        => $confVars,
             'constraints' => $constraints,
             'grouping'    => $grouping,
         ];
@@ -328,12 +328,12 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
     /**
      * Convert metadata type to DB type.
      *
-     * @param string $sType Metadata type.
+     * @param string $type Metadata type.
      *
      * @return string
      */
-    private function _getDbConfigTypeName($sType)
+    private function _getDbConfigTypeName($type)
     {
-        return $sType === 'password' ? 'str' : $sType;
+        return $type === 'password' ? 'str' : $type;
     }
 }

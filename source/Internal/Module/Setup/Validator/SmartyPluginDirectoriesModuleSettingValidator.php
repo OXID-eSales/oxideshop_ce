@@ -7,7 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Validator;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSettingNotValidException;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\DirectoryNotExistentException;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\DirectoryNotReadableException;
@@ -25,19 +25,17 @@ use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSetting
  */
 class SmartyPluginDirectoriesModuleSettingValidator implements ModuleSettingValidatorInterface
 {
+    /**
+     * @var ModulePathResolverInterface
+     */
+    private $modulePathResolver;
 
     /**
-     * @var ShopAdapterInterface
+     * @param ModulePathResolverInterface $modulePathResolver
      */
-    private $shopAdapter;
-
-    /**
-     * ControllersModuleSettingValidator constructor.
-     * @param ShopAdapterInterface $shopAdapter
-     */
-    public function __construct(ShopAdapterInterface $shopAdapter)
+    public function __construct(ModulePathResolverInterface $modulePathResolver)
     {
-        $this->shopAdapter = $shopAdapter;
+        $this->modulePathResolver = $modulePathResolver;
     }
 
     /**
@@ -68,7 +66,7 @@ class SmartyPluginDirectoriesModuleSettingValidator implements ModuleSettingVali
             );
         }
 
-        $fullPathToModule = $this->shopAdapter->getModuleFullPath($moduleId);
+        $fullPathToModule = $this->modulePathResolver->getFullModulePath($moduleId, $shopId);
 
         foreach ($directories as $directory) {
             $fullPathSmartyPluginDirectory = $fullPathToModule . DIRECTORY_SEPARATOR . $directory;

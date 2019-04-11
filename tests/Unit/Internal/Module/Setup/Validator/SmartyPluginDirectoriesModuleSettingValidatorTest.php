@@ -6,8 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Validator;
 
+use OxidEsales\EshopCommunity\Internal\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\SmartyPluginDirectoriesModuleSettingValidator;
-use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
@@ -19,19 +19,19 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
     /** @var vfsStreamDirectory */
     private $vfsStreamDirectory = null;
 
-    /** @var ShopAdapterInterface */
-    private $shopAdapter = null;
+    /** @var ModulePathResolverInterface */
+    private $modulePathResolver = null;
 
     public function setUp()
     {
         parent::setUp();
-        $this->shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
+        $this->modulePathResolver = $this->getMockBuilder(ModulePathResolverInterface::class)->getMock();
     }
 
     public function testCanValidate()
     {
         $validator = new SmartyPluginDirectoriesModuleSettingValidator(
-            $this->shopAdapter
+            $this->modulePathResolver
         );
 
         $smartyPluginDirectoriesModuleSetting = new ModuleSetting(ModuleSetting::SMARTY_PLUGIN_DIRECTORIES, []);
@@ -44,7 +44,7 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
     public function testCanNotValidate()
     {
         $validator = new SmartyPluginDirectoriesModuleSettingValidator(
-            $this->shopAdapter
+            $this->modulePathResolver
         );
 
         $invalidModuleSetting = new ModuleSetting('invalidKey', []);
@@ -58,11 +58,11 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
     {
         $this->createModuleStructure();
 
-        $this->shopAdapter
-            ->method('getModuleFullPath')
+        $this->modulePathResolver
+            ->method('getFullModulePath')
             ->willReturn(vfsStream::url('root/modules/smartyTestModule'));
 
-        $validator = new SmartyPluginDirectoriesModuleSettingValidator($this->shopAdapter);
+        $validator = new SmartyPluginDirectoriesModuleSettingValidator($this->modulePathResolver);
 
         $smartyPluginDirectoriesModuleSetting = new ModuleSetting(
             ModuleSetting::SMARTY_PLUGIN_DIRECTORIES,
@@ -78,11 +78,11 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
     {
         $this->createModuleStructure();
 
-        $this->shopAdapter
-            ->method('getModuleFullPath')
+        $this->modulePathResolver
+            ->method('getFullModulePath')
             ->willReturn(vfsStream::url('root/modules/smartyTestModule'));
 
-        $validator = new SmartyPluginDirectoriesModuleSettingValidator($this->shopAdapter);
+        $validator = new SmartyPluginDirectoriesModuleSettingValidator($this->modulePathResolver);
 
         $smartyPluginDirectoriesModuleSetting = new ModuleSetting(
             ModuleSetting::SMARTY_PLUGIN_DIRECTORIES,
@@ -100,11 +100,11 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
         $this->changePermissionsOfSmartyPluginDirectoryToNonReadable();
         $this->assertSmartyPluginDirectoryIsNonReadable();
 
-        $this->shopAdapter
-            ->method('getModuleFullPath')
+        $this->modulePathResolver
+            ->method('getFullModulePath')
             ->willReturn(vfsStream::url('root/modules/smartyTestModule'));
 
-        $validator = new SmartyPluginDirectoriesModuleSettingValidator($this->shopAdapter);
+        $validator = new SmartyPluginDirectoriesModuleSettingValidator($this->modulePathResolver);
 
         $smartyPluginDirectoriesModuleSetting = new ModuleSetting(
             ModuleSetting::SMARTY_PLUGIN_DIRECTORIES,
@@ -138,7 +138,7 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
      */
     public function testValidateThrowsExceptionIfNotAbleToValidateSetting()
     {
-        $validator = new SmartyPluginDirectoriesModuleSettingValidator($this->shopAdapter);
+        $validator = new SmartyPluginDirectoriesModuleSettingValidator($this->modulePathResolver);
 
         $smartyPluginDirectoriesModuleSetting = new ModuleSetting(
             'SettingWhichIsNotAbleToBeValidated',
@@ -152,7 +152,7 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
      */
     public function testValidateThrowsExceptionIfNotArrayConfigured()
     {
-        $validator = new SmartyPluginDirectoriesModuleSettingValidator($this->shopAdapter);
+        $validator = new SmartyPluginDirectoriesModuleSettingValidator($this->modulePathResolver);
 
         $smartyPluginDirectoriesModuleSetting = new ModuleSetting(
             ModuleSetting::SMARTY_PLUGIN_DIRECTORIES,

@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Setup\Serv
 
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
-use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapter;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
@@ -20,6 +19,8 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleCon
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Path\ModulePathResolver;
+use OxidEsales\EshopCommunity\Internal\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\SomeModuleService;
@@ -150,18 +151,17 @@ class ModuleActivationServiceTest extends TestCase
     /**
      * @return ShopAdapterInterface|\PHPUnit\Framework\MockObject\MockObject
      */
-    private function getShopAdapterMock()
+    private function getModulePathResolverMock()
     {
-        $shopAdapter = $this
-            ->getMockBuilder(ShopAdapter::class)
-            ->setMethods(['getModuleFullPath'])
+        $modulePathResolverMock = $this
+            ->getMockBuilder(ModulePathResolverInterface::class)
             ->getMock();
 
-        $shopAdapter
-            ->method('getModuleFullPath')
+        $modulePathResolverMock
+            ->method('getFullModulePath')
             ->willReturn(__DIR__ . '/../../TestData/TestModule');
 
-        return $shopAdapter;
+        return $modulePathResolverMock;
     }
 
     private function getTestModuleConfiguration(): ModuleConfiguration
@@ -272,8 +272,8 @@ class ModuleActivationServiceTest extends TestCase
     {
         $container = (new TestContainerFactory())->create();
 
-        $container->set(ShopAdapterInterface::class, $this->getShopAdapterMock());
-        $container->autowire(ShopAdapterInterface::class, ShopAdapter::class);
+        $container->set(ModulePathResolverInterface::class, $this->getModulePathResolverMock());
+        $container->autowire(ModulePathResolverInterface::class, ModulePathResolver::class);
 
         $container->compile();
 

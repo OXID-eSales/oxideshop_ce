@@ -6,11 +6,11 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Service;
 
-use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIServiceWrapper;
 use OxidEsales\EshopCommunity\Internal\Application\Exception\NoServiceYamlException;
+use OxidEsales\EshopCommunity\Internal\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Event\ServicesYamlConfigurationErrorEvent;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ServicesYamlConfigurationError;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -27,30 +27,29 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
     private $dao;
 
     /**
-     * @var ShopAdapterInterface
-     */
-    private $shopAdapter;
-
-    /**
      * @var EventDispatcherInterface $eventDispatcher
      */
     public $eventDispatcher;
 
     /**
+     * @var ModulePathResolverInterface
+     */
+    private $modulePathResolver;
+
+    /**
      * ModuleServicesActivationService constructor.
-     *
-     * @param ProjectYamlDaoInterface  $dao
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ShopAdapterInterface     $shopAdapter
+     * @param ProjectYamlDaoInterface     $dao
+     * @param EventDispatcherInterface    $eventDispatcher
+     * @param ModulePathResolverInterface $modulePathResolver
      */
     public function __construct(
         ProjectYamlDaoInterface $dao,
         EventDispatcherInterface $eventDispatcher,
-        ShopAdapterInterface $shopAdapter
+        ModulePathResolverInterface $modulePathResolver
     ) {
         $this->dao = $dao;
         $this->eventDispatcher = $eventDispatcher;
-        $this->shopAdapter = $shopAdapter;
+        $this->modulePathResolver = $modulePathResolver;
     }
 
     /**
@@ -61,7 +60,7 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
      */
     public function activateModuleServices(string $moduleId, int $shopId)
     {
-        $moduleConfigFile = $this->getModuleServicesFilePath($moduleId);
+        $moduleConfigFile = $this->getModuleServicesFilePath($moduleId, $shopId);
         try {
             $moduleConfig = $this->getModuleConfig($moduleConfigFile);
         } catch (NoServiceYamlException $e) {
@@ -95,7 +94,7 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
      */
     public function deactivateModuleServices(string $moduleId, int $shopId)
     {
-        $moduleConfigFile = $this->getModuleServicesFilePath($moduleId);
+        $moduleConfigFile = $this->getModuleServicesFilePath($moduleId, $shopId);
         try {
             $moduleConfig = $this->getModuleConfig($moduleConfigFile);
         } catch (NoServiceYamlException $e) {
@@ -134,7 +133,7 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
         }
 
         $moduleConfig = $this->dao->loadDIConfigFile($moduleConfigFile);
-        if (! $moduleConfig->checkServiceClassesCanBeLoaded()) {
+        if (!$moduleConfig->checkServiceClassesCanBeLoaded()) {
             $this->eventDispatcher->dispatch(
                 ServicesYamlConfigurationErrorEvent::NAME,
                 new ServicesYamlConfigurationErrorEvent($moduleConfigFile)
@@ -147,10 +146,12 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
 
     /**
      * @param string $moduleId
+     * @param int    $shopId
+     *
      * @return string
      */
-    private function getModuleServicesFilePath(string $moduleId): string
+    private function getModuleServicesFilePath(string $moduleId, int $shopId): string
     {
-        return $this->shopAdapter->getModuleFullPath($moduleId) . DIRECTORY_SEPARATOR . 'services.yaml';
+        return $this->modulePathResolver->getFullModulePath($moduleId, $shopId) . DIRECTORY_SEPARATOR . 'services.yaml';
     }
 }

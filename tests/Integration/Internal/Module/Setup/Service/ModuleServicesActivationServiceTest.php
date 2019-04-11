@@ -6,10 +6,10 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Setup\Service;
 
-use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIServiceWrapper;
+use OxidEsales\EshopCommunity\Internal\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ServicesYamlConfigurationError;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleServicesActivationService;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleServicesActivationServiceInterface;
@@ -53,16 +53,15 @@ class ModuleServicesActivationServiceTest extends TestCase
             ->method('saveProjectConfigFile')
             ->willReturnCallback([$this, 'saveProjectYaml']);
 
-        /** @var ShopAdapterInterface|MockObject $shopAdapter */
-        $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
-        $shopAdapter
-            ->method('getModuleFullPath')
+        $modulePathResolver = $this->getMockBuilder(ModulePathResolverInterface::class)->getMock();
+        $modulePathResolver
+            ->method('getFullModulePath')
             ->willReturn($this->testModuleDirectory);
 
         $this->eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)
             ->getMock();
 
-        $this->shopActivationService = new ModuleServicesActivationService($this->projectYamlDao, $this->eventDispatcher, $shopAdapter);
+        $this->shopActivationService = new ModuleServicesActivationService($this->projectYamlDao, $this->eventDispatcher, $modulePathResolver);
     }
 
     /** Callback function for mock to catch the given parameter */

@@ -13,7 +13,6 @@ use OxidEsales\Eshop\Core\NamespaceInformationProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider;
 use OxidEsales\EshopCommunity\Internal\Adapter\Exception\ModuleNotLoadableException;
-use \Exception;
 
 /**
  * @internal
@@ -67,26 +66,6 @@ class ShopAdapter implements ShopAdapterInterface
         if (extension_loaded('apc') && ini_get('apc.enabled')) {
             apc_clear_cache();
         }
-    }
-
-    /**
-     * @param string $moduleId
-     *
-     * @return string
-     *
-     * @throws Exception
-     */
-    public function getModuleFullPath(string $moduleId) : string
-    {
-        $modulePaths = Registry::getConfig()->getConfigParam('aModulePaths');
-
-        /**
-         * @TODO We have to throw an exception here in the future, module path should exist.
-         *       Use module id for the BC.
-         */
-        $moduleRelativePath = $modulePaths[$moduleId] ?? $moduleId;
-
-        return Registry::getConfig()->getModulesDir() . $moduleRelativePath;
     }
 
     /**

@@ -8,3 +8,4 @@ imports:
    - { resource: State/services.yaml }
    - { resource: Install/services.yaml }
    - { resource: Command/services.yaml }
+   - { resource: Path/services.yaml }

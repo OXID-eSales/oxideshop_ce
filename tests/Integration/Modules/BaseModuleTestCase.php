@@ -9,6 +9,7 @@ use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -37,10 +38,18 @@ abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCas
         $environment->clean();
     }
 
+    protected function tearDown()
+    {
+        $this->removeTestModules();
+
+        parent::tearDown();
+    }
+
     protected function installAndActivateModule(string $moduleId, int $shopId = 1)
     {
         $installService = $this->container->get(ModuleInstallerInterface::class);
-        $package = new OxidEshopPackage($moduleId, __DIR__ . '/TestData/modules/' . $moduleId, []);
+        $package = new OxidEshopPackage($moduleId, __DIR__ . '/TestData/modules/' . $moduleId);
+        $package->setTargetDirectory('oeTest/' . $moduleId);
         $installService->install($package);
 
         $activationService = $this->container->get(ModuleActivationBridgeInterface::class);
@@ -121,5 +130,11 @@ abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCas
                 'Config values does not match expectations'
             );
         }
+    }
+
+    private function removeTestModules()
+    {
+        $fileSystem = $this->container->get('oxid_esales.symfony.file_system');
+        $fileSystem->remove($this->container->get(ContextInterface::class)->getModulesPath() . '/oeTest/');
     }
 }

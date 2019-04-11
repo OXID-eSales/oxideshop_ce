@@ -71,4 +71,12 @@ class OxidEshopPackage
             ? $this->packagePath . DIRECTORY_SEPARATOR . $this->sourceDirectory
             : $this->packagePath;
     }
+
+    /**
+     * @param string $path
+     */
+    public function setTargetDirectory(string $path)
+    {
+        $this->targetDirectory = $path;
+    }
 }

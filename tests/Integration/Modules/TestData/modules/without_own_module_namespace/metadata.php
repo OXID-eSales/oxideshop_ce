@@ -13,10 +13,8 @@ $aModule = array(
     'version'      => '1.0.0',
     'author'       => 'OXID eSales AG',
     'extend'      => array(
-       # \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
-       # \OxidEsales\Eshop\Core\Price::class => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice'
-       'payment' => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
-       'oxprice' => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice'
+       'payment' => 'oeTest/without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
+       'oxprice' => 'oeTest/without_own_module_namespace/Application/Model/TestModuleTwoPrice'
 
     ),
     'files' => array(

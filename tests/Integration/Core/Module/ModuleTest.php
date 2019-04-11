@@ -13,16 +13,19 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ModuleConfigu
 use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
 
 class ModuleTest extends TestCase
 {
+    private $container;
+
     public function setUp()
     {
-        ContainerFactory::getInstance()
-            ->getContainer()
-            ->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')
-            ->generate();
+        $this->container = ContainerFactory::getInstance()->getContainer();
+
+        $this->container->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')
+             ->generate();
 
         parent::setUp();
     }
@@ -31,9 +34,9 @@ class ModuleTest extends TestCase
     {
         parent::tearDown();
 
-        ContainerFactory::getInstance()
-            ->getContainer()
-            ->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')
+        $this->removeTestModules();
+
+        $this->container->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')
             ->generate();
 
         Registry::getConfig()->saveShopConfVar('aarr', 'activeModules', []);
@@ -137,31 +140,28 @@ class ModuleTest extends TestCase
 
     private function installModule(string $id)
     {
-        ContainerFactory::getInstance()
-            ->getContainer()
-            ->get(ModuleInstallerInterface::class)
-            ->install(
-                new OxidEshopPackage(
-                    $id,
-                    __DIR__ . '/Fixtures/' . $id,
-                    []
-                )
-            );
+        $package = new OxidEshopPackage($id, __DIR__ . '/Fixtures/' . $id);
+        $package->setTargetDirectory('oeTest/' . $id);
+
+        $this->container->get(ModuleInstallerInterface::class)
+            ->install($package);
     }
 
     private function activateModule(string $id)
     {
-        ContainerFactory::getInstance()
-            ->getContainer()
-            ->get(ModuleActivationBridgeInterface::class)
+        $this->container->get(ModuleActivationBridgeInterface::class)
             ->activate($id, 1);
     }
 
     private function getModuleConfiguration(string $moduleId)
     {
-        return ContainerFactory::getInstance()
-            ->getContainer()
-            ->get(ModuleConfigurationDaoBridgeInterface::class)
+        return $this->container->get(ModuleConfigurationDaoBridgeInterface::class)
             ->get($moduleId);
+    }
+
+    private function removeTestModules()
+    {
+        $fileSystem = $this->container->get('oxid_esales.symfony.file_system');
+        $fileSystem->remove($this->container->get(ContextInterface::class)->getModulesPath() . '/oeTest/');
     }
 }

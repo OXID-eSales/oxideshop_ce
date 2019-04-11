@@ -160,13 +160,13 @@ class ModuleNamespaceTest extends BaseModuleTestCase
 
                 // full class chain to assert
                 array(
-                    '0' => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice',
+                    '0' => 'oeTest/without_own_module_namespace/Application/Model/TestModuleTwoPrice',
                     '1' => \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Model\TestModuleOnePrice::class
                 ),
 
                 // active class chain to assert
                 array(
-                    '0' => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice'
+                    '0' => 'oeTest/without_own_module_namespace/Application/Model/TestModuleTwoPrice'
                 )
             ),
             array(
@@ -183,7 +183,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
 
                 // full class chain to assert
                 array(
-                    '0' => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice',
+                    '0' => 'oeTest/without_own_module_namespace/Application/Model/TestModuleTwoPrice',
                     '1' => \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Model\TestModuleOnePrice::class
                 ),
 
@@ -236,9 +236,9 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         $environmentAssertsWithModulesActive = array(
             'blocks'          => array(),
             'extend'          => array(
-                \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController&' .
+                \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'oeTest/without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController&' .
                                                                                      'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Controller\TestModuleOnePaymentController',
-                \OxidEsales\Eshop\Core\Price::class                               => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice&' .
+                \OxidEsales\Eshop\Core\Price::class                               => 'oeTest/without_own_module_namespace/Application/Model/TestModuleTwoPrice&' .
                                                                                      'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Model\TestModuleOnePrice'
             ),
             'files'           => array(
@@ -278,8 +278,8 @@ class ModuleNamespaceTest extends BaseModuleTestCase
                     array(
                         'blocks'          => array(),
                         'extend'          => array(
-                            \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
-                            \OxidEsales\Eshop\Core\Price::class                               => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice'
+                            \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'oeTest/without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
+                            \OxidEsales\Eshop\Core\Price::class                               => 'oeTest/without_own_module_namespace/Application/Model/TestModuleTwoPrice'
                         ),
                         'files'           => array(
                             'without_own_module_namespace' =>
@@ -443,7 +443,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
 
                 // full class chain to assert after module was activated
                 array(
-                    'without_own_module_namespace/Application/Model/TestModuleTwoPrice'
+                    'oeTest/without_own_module_namespace/Application/Model/TestModuleTwoPrice'
                 ),
             ),
             array(
@@ -496,9 +496,9 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         $environmentAssertsWithModulesActive = [
             'blocks'          => [],
             'extend'          => [
-                \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController' .
+                \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'oeTest/without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController' .
                 '&OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Controller\TestModuleOnePaymentController',
-                \OxidEsales\Eshop\Core\Price::class => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice&' .
+                \OxidEsales\Eshop\Core\Price::class => 'oeTest/without_own_module_namespace/Application/Model/TestModuleTwoPrice&' .
                   'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Model\TestModuleOnePrice'
             ],
             'files' => [
@@ -525,15 +525,15 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         $environmentAssertsAfterDeactivation['versions'] = ['without_own_module_namespace' => '1.0.0'];
         $environmentAssertsAfterDeactivation['disabledModules'] = ['with_own_module_namespace'];
         $environmentAssertsAfterDeactivation['extend'] = [
-            \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
-            \OxidEsales\Eshop\Core\Price::class => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice'
+            \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'oeTest/without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
+            \OxidEsales\Eshop\Core\Price::class => 'oeTest/without_own_module_namespace/Application/Model/TestModuleTwoPrice'
         ];
 
         $environmentAssertsAfterCleanup = $environmentAssertsAfterDeactivation;
         unset($environmentAssertsAfterCleanup['disabledModules']);
         $environmentAssertsAfterCleanup['extend'] = [
-             \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
-             \OxidEsales\Eshop\Core\Price::class => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice',
+             \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'oeTest/without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
+             \OxidEsales\Eshop\Core\Price::class => 'oeTest/without_own_module_namespace/Application/Model/TestModuleTwoPrice',
         ];
 
         $priceAssertsWihModulesActive = ['factor' => 2 * 3,
@@ -682,8 +682,8 @@ class ModuleNamespaceTest extends BaseModuleTestCase
             array(
                 'blocks'          => array(),
                 'extend'          => array(
-                    \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
-                    \OxidEsales\Eshop\Core\Price::class => 'without_own_module_namespace/Application/Model/TestModuleTwoPrice'
+                    \OxidEsales\Eshop\Application\Controller\PaymentController::class => 'oeTest/without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
+                    \OxidEsales\Eshop\Core\Price::class => 'oeTest/without_own_module_namespace/Application/Model/TestModuleTwoPrice'
                 ),
                 'files'           => array(
                     'without_own_module_namespace' => array(

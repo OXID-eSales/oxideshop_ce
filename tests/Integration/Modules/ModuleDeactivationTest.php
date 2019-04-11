@@ -107,7 +107,7 @@ class ModuleDeactivationTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'oeTest/extending_1_class/myorder',
                 ),
                 'files'           => array(
                     'with_2_files' => array(
@@ -200,7 +200,7 @@ class ModuleDeactivationTest extends BaseModuleTestCase
                 'blocks'          => array(),
                 'extend'          => array(
                     \OxidEsales\Eshop\Application\Model\Order::class =>
-                                   'extending_1_class/myorder&' .
+                                   'oeTest/extending_1_class/myorder&' .
                                    'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myorder',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myuser',
@@ -248,7 +248,7 @@ class ModuleDeactivationTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'oeTest/extending_1_class/myorder&with_everything/myorder1',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                 ),

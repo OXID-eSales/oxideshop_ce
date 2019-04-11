@@ -35,7 +35,7 @@ class UnifiedNameSpaceClassMapTest extends BaseModuleTestCase
     {
         $this->environment->clean();
 
-        parent::setUp();
+        parent::tearDown();
     }
 
     /**

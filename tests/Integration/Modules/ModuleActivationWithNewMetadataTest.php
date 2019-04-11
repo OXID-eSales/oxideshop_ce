@@ -153,7 +153,7 @@ class ModuleActivationWithNewMetaDataTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
                 ),
                 'extend'          => array(
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'oeTest/extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                 ),
@@ -218,7 +218,7 @@ class ModuleActivationWithNewMetaDataTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
                 ),
                 'extend'          => array(
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'oeTest/extending_1_class/myorder&with_everything/myorder1',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                 ),
@@ -343,7 +343,7 @@ class ModuleActivationWithNewMetaDataTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'oeTest/extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                     \OxidEsales\Eshop\Core\Price::class                => 'with_everything/myprice',
@@ -409,7 +409,7 @@ class ModuleActivationWithNewMetaDataTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
                 ),
                 'extend'          => array(
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'oeTest/extending_1_class/myorder&with_everything/myorder1',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                 ),
@@ -524,7 +524,7 @@ class ModuleActivationWithNewMetaDataTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'oeTest/extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                     \OxidEsales\Eshop\Core\Price::class   => 'with_everything/myprice',
@@ -586,7 +586,7 @@ class ModuleActivationWithNewMetaDataTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
                 ),
                 'extend'          => array(
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'oeTest/extending_1_class/myorder&with_everything/myorder1',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                 ),
@@ -681,7 +681,7 @@ class ModuleActivationWithNewMetaDataTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
-                    \OxidEsales\Eshop\Application\Model\Order::class => 'extending_1_class/myorder',
+                    \OxidEsales\Eshop\Application\Model\Order::class => 'oeTest/extending_1_class/myorder',
                 ),
                 'files'           => array(
                     'with_2_files' => array(
@@ -729,7 +729,7 @@ class ModuleActivationWithNewMetaDataTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
                 ),
                 'extend'          => array(
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'oeTest/extending_1_class/myorder&with_everything/myorder1',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                 ),
@@ -854,7 +854,7 @@ class ModuleActivationWithNewMetaDataTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'oeTest/extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                 ),
@@ -925,7 +925,7 @@ class ModuleActivationWithNewMetaDataTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
                 ),
                 'extend'          => array(
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'oeTest/extending_1_class/myorder&with_everything/myorder1',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                 ),
@@ -1045,7 +1045,7 @@ class ModuleActivationWithNewMetaDataTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'oeTest/extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                 ),
@@ -1107,7 +1107,7 @@ class ModuleActivationWithNewMetaDataTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
                 ),
                 'extend'          => array(
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'extending_1_class/myorder&with_everything/myorder1',
+                    \OxidEsales\Eshop\Application\Model\Order::class   => 'oeTest/extending_1_class/myorder&with_everything/myorder1',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
                 ),

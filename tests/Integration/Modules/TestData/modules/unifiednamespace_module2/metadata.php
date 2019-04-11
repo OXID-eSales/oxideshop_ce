@@ -31,10 +31,10 @@ $aModule = array(
     'url'         => 'www.johndoe.com',
     'email'       => 'john@doe.com',
     'extend'      => array(
-        'content' => 'unifiednamespace_module2/Controller/Test2ContentController',
+        'content' => 'oeTest/unifiednamespace_module2/Controller/Test2ContentController',
     ),
     'files'       => array(
-        'Test2Content'          => 'unifiednamespace_module2/Model/Test2Content.php',
+        'Test2Content'          => 'oeTest/unifiednamespace_module2/Model/Test2Content.php',
     ),
     'templates'   => array(),
     'blocks'      => array(),

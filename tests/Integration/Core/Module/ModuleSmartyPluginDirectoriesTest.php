@@ -7,10 +7,12 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Module;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\Eshop\Core\UtilsView;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -19,16 +21,28 @@ use PHPUnit\Framework\TestCase;
  */
 class ModuleSmartyPluginDirectoriesTest extends TestCase
 {
-    use ContainerTrait;
+    private $container;
 
     public function setUp()
     {
+        $this->container = ContainerFactory::getInstance()->getContainer();
+
+        $this->container
+            ->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')
+            ->generate();
+
         $this->activateTestModule();
     }
 
     public function tearDown()
     {
         $this->deactivateTestModule();
+
+        $this->removeTestModules();
+
+        $this->container
+            ->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')
+            ->generate();
     }
 
     /**
@@ -91,25 +105,28 @@ class ModuleSmartyPluginDirectoriesTest extends TestCase
 
     private function activateTestModule()
     {
-        $this
-            ->get(ModuleInstallerInterface::class)
-            ->install(
-                new OxidEshopPackage(
-                    'with_metadata_v21',
-                    __DIR__ . '/Fixtures/with_metadata_v21',
-                    []
-                )
-            );
+        $id = 'with_metadata_v21';
+        $package = new OxidEshopPackage($id, __DIR__ . '/Fixtures/' . $id);
+        $package->setTargetDirectory('oeTest/' . $id);
 
-        $this
+        $this->container->get(ModuleInstallerInterface::class)
+            ->install($package);
+
+        $this->container
             ->get(ModuleActivationBridgeInterface::class)
             ->activate('with_metadata_v21', Registry::getConfig()->getShopId());
     }
 
     private function deactivateTestModule()
     {
-        $this
+        $this->container
             ->get(ModuleActivationBridgeInterface::class)
             ->deactivate('with_metadata_v21', Registry::getConfig()->getShopId());
+    }
+
+    private function removeTestModules()
+    {
+        $fileSystem = $this->container->get('oxid_esales.symfony.file_system');
+        $fileSystem->remove($this->container->get(ContextInterface::class)->getModulesPath() . '/oeTest/');
     }
 }

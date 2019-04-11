@@ -11,6 +11,7 @@ use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use \oxOnlineModuleVersionNotifier;
 use \oxOnlineModuleVersionNotifierCaller;
 use \oxRegistry;
@@ -23,13 +24,21 @@ use \oxSimpleXml;
  */
 class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
 {
+    private $container;
+
     public function setUp()
     {
         parent::setUp();
-        ContainerFactory::getInstance()
-            ->getContainer()
-            ->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')
+        $this->container = ContainerFactory::getInstance()->getContainer();
+
+        $this->container->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')
             ->generate();
+    }
+
+    public function tearDown()
+    {
+        $this->removeTestModules();
+        parent::tearDown();
     }
 
     public function testRequestFormation()
@@ -87,7 +96,8 @@ class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
     {
         $installService = ContainerFactory::getInstance()->getContainer()->get(ModuleInstallerInterface::class);
 
-        $package = new OxidEshopPackage($moduleId, __DIR__ . '/../Modules/TestData/modules/' . $moduleId, []);
+        $package = new OxidEshopPackage($moduleId, __DIR__ . '/../Modules/TestData/modules/' . $moduleId);
+        $package->setTargetDirectory('oeTest/' . $moduleId);
         $installService->install($package);
     }
 
@@ -96,5 +106,11 @@ class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
         $activationService = ContainerFactory::getInstance()->getContainer()->get(ModuleActivationBridgeInterface::class);
 
         $activationService->activate($moduleId, 1);
+    }
+
+    private function removeTestModules()
+    {
+        $fileSystem = $this->container->get('oxid_esales.symfony.file_system');
+        $fileSystem->remove($this->container->get(ContextInterface::class)->getModulesPath() . '/oeTest/');
     }
 }

@@ -19,5 +19,5 @@ $aModule = array(
     'thumbnail'   => 'picture.png',
     'version'     => '1.0',
     'author'      => 'OXID eSales AG',
-    'extend'      => [\OxidEsales\Eshop\Application\Model\Article::class => 'module_chain_extension_3_3/vendor_1_module_3_3_myclass']
+    'extend'      => [\OxidEsales\Eshop\Application\Model\Article::class => 'oeTest/module_chain_extension_3_3/vendor_1_module_3_3_myclass']
 );

@@ -12,6 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 class ModuleExtensionsCleanerTest extends UnitTestCase
@@ -19,6 +20,16 @@ class ModuleExtensionsCleanerTest extends UnitTestCase
     /**
      * Test case for bug #6342
      */
+    private $testModuleId = 'with_class_extensions';
+
+    public function tearDown()
+    {
+        $container = ContainerFactory::getInstance()->getContainer();
+        $fileSystem = $container->get('oxid_esales.symfony.file_system');
+        $fileSystem->remove($container->get(ContextInterface::class)->getModulesPath() . '/' . $this->testModuleId);
+        parent::tearDown();
+    }
+
     public function testChecksIfModuleIdDoesNotDependOnDirectory()
     {
         $this->activateTestModule();
@@ -35,7 +46,7 @@ class ModuleExtensionsCleanerTest extends UnitTestCase
         /** @var ModuleExtensionsCleaner $extensionsCleaner */
         $extensionsCleaner = oxNew(ModuleExtensionsCleaner::class);
         $module = oxNew('oxModule');
-        $module->load('with_class_extensions');
+        $module->load($this->testModuleId);
 
         $this->assertSame($cleanedExtensionsData, $extensionsCleaner->cleanExtensions($installedExtensions, $module));
     }
@@ -48,14 +59,13 @@ class ModuleExtensionsCleanerTest extends UnitTestCase
             ->get(ModuleInstallerInterface::class)
             ->install(
                 new OxidEshopPackage(
-                    'with_class_extensions',
-                    __DIR__ . '/Fixtures/with_class_extensions',
-                    []
+                    $this->testModuleId,
+                    __DIR__ . '/Fixtures/' . $this->testModuleId
                 )
             );
 
         $container
             ->get(ModuleActivationBridgeInterface::class)
-            ->activate('with_class_extensions', Registry::getConfig()->getShopId());
+            ->activate($this->testModuleId, Registry::getConfig()->getShopId());
     }
 }

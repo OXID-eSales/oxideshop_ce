@@ -20,7 +20,7 @@ $aModule = array(
     'version'      => '1.0',
     'author'       => 'OXID eSales AG',
     'files'        => array(
-        'vendor_1_module_1_myclass2' => 'module_inheritance_2_3_a/vendor_1_module_1_myclass.php',
-        'vendor_1_module_1_anotherclass' => 'module_inheritance_2_3_a/vendor_1_module_1_anotherclass.php'
+        'vendor_1_module_1_myclass2' => 'oeTest/module_inheritance_2_3_a/vendor_1_module_1_myclass.php',
+        'vendor_1_module_1_anotherclass' => 'oeTest/module_inheritance_2_3_a/vendor_1_module_1_anotherclass.php'
     )
 );

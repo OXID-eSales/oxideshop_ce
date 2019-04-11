@@ -12,6 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackag
 use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\InvalidClassExtensionNamespaceException;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\namespaced_from_ns\MyClass as namespaced_from_ns;
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\own_namespace_extending_unified_namespace\MyClass as own_namespace_extending_unified_namespace;
@@ -107,6 +108,13 @@ class ModuleInheritanceTest extends UnitTestCase
         $environment->clean();
     }
 
+    protected function tearDown()
+    {
+        $this->removeTestModules();
+
+        parent::tearDown();
+    }
+
     /**
      * This test covers the PHP inheritance between one module class and one shop class.
      *
@@ -186,7 +194,8 @@ class ModuleInheritanceTest extends UnitTestCase
         $installService = $this->container->get(ModuleInstallerInterface::class);
 
         foreach ($modulesToActivate as $moduleId) {
-            $package = new OxidEshopPackage($moduleId, __DIR__ . '/TestDataInheritance/modules/' . $moduleId, []);
+            $package = new OxidEshopPackage($moduleId, __DIR__ . '/TestDataInheritance/modules/' . $moduleId);
+            $package->setTargetDirectory('oeTest/' . $moduleId);
             $installService->install($package);
         }
     }
@@ -542,5 +551,11 @@ class ModuleInheritanceTest extends UnitTestCase
         $container->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')->generate();
 
         return $container;
+    }
+
+    private function removeTestModules()
+    {
+        $fileSystem = $this->container->get('oxid_esales.symfony.file_system');
+        $fileSystem->remove($this->container->get(ContextInterface::class)->getModulesPath() . '/oeTest/');
     }
 }

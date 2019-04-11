@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
@@ -40,6 +41,8 @@ class ModuleListTest extends TestCase
     public function tearDown()
     {
         parent::tearDown();
+
+        $this->removeTestModules();
 
         $this->container
             ->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')
@@ -72,7 +75,7 @@ class ModuleListTest extends TestCase
         $this->installModule($notActiveModuleId);
 
         $this->assertSame(
-            ['with_class_extensions' => 'with_class_extensions'],
+            ['with_class_extensions' => 'oeTest/with_class_extensions'],
             oxNew(ModuleList::class)->getDisabledModuleInfo()
         );
     }
@@ -128,19 +131,21 @@ class ModuleListTest extends TestCase
 
     private function installModule(string $id)
     {
-        $this->container
-            ->get(ModuleInstallerInterface::class)
-            ->install(
-                new OxidEshopPackage(
-                    $id,
-                    __DIR__ . '/Fixtures/' . $id,
-                    []
-                )
-            );
+        $package = new OxidEshopPackage($id, __DIR__ . '/Fixtures/' . $id);
+        $package->setTargetDirectory('oeTest/' . $id);
+
+        $this->container->get(ModuleInstallerInterface::class)
+            ->install($package);
     }
 
     private function activateModule(string $id)
     {
         $this->container->get(ModuleActivationBridgeInterface::class)->activate($id, 1);
+    }
+
+    private function removeTestModules()
+    {
+        $fileSystem = $this->container->get('oxid_esales.symfony.file_system');
+        $fileSystem->remove($this->container->get(ContextInterface::class)->getModulesPath() . '/oeTest/');
     }
 }

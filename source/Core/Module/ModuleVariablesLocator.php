@@ -94,10 +94,6 @@ class ModuleVariablesLocator
     {
         self::$moduleVariables = [];
         FileCache::clearCache();
-
-        $container = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
-        $dispatcher = $container->get(EventDispatcherInterface::class);
-        $dispatcher->dispatch(ModuleVariablesResettedEvent::NAME, new ModuleVariablesResettedEvent);
     }
 
     /**

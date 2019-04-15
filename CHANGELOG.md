@@ -54,7 +54,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `\OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeSessionStartEvent`
     - `\OxidEsales\EshopCommunity\Internal\ShopEvents\ViewRenderedEvent`
     - `\OxidEsales\EshopCommunity\Internal\Theme\Event\ThemeSettingChangedEvent`
-    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\ModuleVariablesResettedEvent` - this event will be removed before release
 - Configuration options in `config.inc.php`
     - `passwordHashingAlgorithm` with default value: PASSWORD_BCRYPT
     - `passwordHashingBcryptCost` with default value: 10

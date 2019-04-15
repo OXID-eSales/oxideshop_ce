@@ -10,6 +10,7 @@ use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\FileCache;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\ShopEvents\ModuleVariablesResettedEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Selects module variables from database or cache.
@@ -95,7 +96,7 @@ class ModuleVariablesLocator
         FileCache::clearCache();
 
         $container = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
-        $dispatcher = $container->get('event_dispatcher');
+        $dispatcher = $container->get(EventDispatcherInterface::class);
         $dispatcher->dispatch(ModuleVariablesResettedEvent::NAME, new ModuleVariablesResettedEvent);
     }
 

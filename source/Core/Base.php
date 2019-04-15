@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use oxSystemComponentException;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Basic class which is used as parent class by other OXID eShop classes.
@@ -201,7 +202,7 @@ class Base
     public function dispatchEvent(\Symfony\Component\EventDispatcher\Event $event)
     {
         $container = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
-        $dispatcher = $container->get('event_dispatcher');
+        $dispatcher = $container->get(EventDispatcherInterface::class);
         return $dispatcher->dispatch($event::NAME, $event);
     }
 

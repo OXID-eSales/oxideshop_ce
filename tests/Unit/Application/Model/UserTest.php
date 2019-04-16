@@ -19,7 +19,7 @@ use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Application\Model\PriceAlarm;
 use OxidEsales\EshopCommunity\Application\Model\UserPayment;
 use OxidEsales\Eshop\Core\UtilsObject;
-use OxidEsales\EshopCommunity\Internal\Password\Bridge\PasswordServiceBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use \oxnewssubscribed;
 use oxUser;

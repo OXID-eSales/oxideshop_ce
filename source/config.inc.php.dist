@@ -196,20 +196,6 @@ $this->aSlaveHosts = null;
 $this->blDelSetupDir = true;
 
 /**
- * Supported values are the strings PASSWORD_BCRYPT, PASSWORD_ARGON2I and PASSWORD_ARGON2ID.
- * Some of the hashing algorithms may not be available on your system depending on your PHP version.
- */
-$this->passwordHashingAlgorithm = 'PASSWORD_BCRYPT';
-
-/**
- * See http://php.net/manual/en/function.password-hash.php for options and values
- */
-$this->passwordHashingBcryptCost =  10; // Minimum cost is 4, maximum cost is 31
-$this->passwordHashingArgon2MemoryCost =  1024;
-$this->passwordHashingArgon2TimeCost =  2;
-$this->passwordHashingArgon2Threads =  2;
-
-/**
  * Needed for backwards compatibility. Do not change the value of this property.
  *
  * @deprecated since v6.0 (2017-05-15); This property will be removed in the future as the shop will always use UTF-8.

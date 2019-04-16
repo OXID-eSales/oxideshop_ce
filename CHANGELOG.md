@@ -68,7 +68,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `passwordHashingArgon2TimeCost` with default value: 2;
     - `passwordHashingArgon2Threads` with default value: 2;
 - Interface:
-    - `\OxidEsales\EshopCommunity\Internal\Password\Bridge\PasswordServiceBridgeInterface`
+    - `\OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface` as the new default 
+      for hashing passwords.
 - Constants
     - `\OxidEsales\EshopCommunity\Application\Model\User::USER_COOKIE_SALT`
 
@@ -96,23 +97,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - The value for the password salt will not be stored in the database column `oxuser.OXPASSSALT` anymore, but in the password hash itself  
 
 ### Deprecated
-- `\OxidEsales\EshopCommunity\Application\Model\User::_dbLogin` will no longer be needed and removed completely
-- `\OxidEsales\EshopCommunity\Application\Model\User::_getLoginQuery` will no longer be needed and removed completely
-- `\OxidEsales\EshopCommunity\Application\Model\User::_getLoginQueryHashedWithMD5` will no longer be needed and removed completely
-- `\OxidEsales\EshopCommunity\Application\Model\User::encodePassword` will no longer be needed and removed completely. Use `PasswordServiceBridgeInterface` instead
-- `\OxidEsales\EshopCommunity\Application\Model\User::formQueryPartForMD5Password` will no longer be needed and removed completely
-- `\OxidEsales\EshopCommunity\Application\Model\User::formQueryPartForSha512Password` will no longer be needed and removed completely
+- `\OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface` was added as the new default 
+  for hashing passwords. Hashing passwords with MD5 and SHA512 is still supported in order support login with 
+  older password hashes.
+    - `\OxidEsales\EshopCommunity\Application\Model\User::_dbLogin`
+    - `\OxidEsales\EshopCommunity\Application\Model\User::_getLoginQuery`
+    - `\OxidEsales\EshopCommunity\Application\Model\User::_getLoginQueryHashedWithMD5`
+    - `\OxidEsales\EshopCommunity\Application\Model\User::encodePassword`    
+    - `\OxidEsales\EshopCommunity\Core\Hasher`
+    - `\OxidEsales\EshopCommunity\Core\PasswordHasher`
+    - `\OxidEsales\EshopCommunity\Core\PasswordSaltGenerator`
+    - `\OxidEsales\EshopCommunity\Core\Sha512Hasher`
+    - `\OxidEsales\EshopCommunity\Application\Model\User::formQueryPartForMD5Password`
+    - `\OxidEsales\EshopCommunity\Application\Model\User::formQueryPartForSha512Password`
 - `\OxidEsales\EshopCommunity\Core\Base::setConfig`
 - `\OxidEsales\EshopCommunity\Core\Base::getConfig`
 - `\OxidEsales\EshopCommunity\Core\Email::$_oConfig`
 - `\OxidEsales\EshopCommunity\Core\Email::setConfig`
 - `\OxidEsales\EshopCommunity\Core\Email::getConfig`
 - `blDoNotDisableModuleOnError` config option
-- `\OxidEsales\EshopCommunity\Core\OpenSSLFunctionalityChecker` will no longer be needed and removed completely
-- `\OxidEsales\EshopCommunity\Core\Hasher` will no longer be needed and removed completely
-- `\OxidEsales\EshopCommunity\Core\PasswordHasher` will no longer be needed and removed completely. Use `PasswordServiceBridgeInterface` instead
-- `\OxidEsales\EshopCommunity\Core\PasswordSaltGenerator` will no longer be needed and removed completely
-- `\OxidEsales\EshopCommunity\Core\Sha512Hasher` will no longer be needed and removed completely
 
 ## [6.3.4] - Unreleased
 

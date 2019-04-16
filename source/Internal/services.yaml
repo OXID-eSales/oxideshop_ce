@@ -8,4 +8,4 @@ imports:
     - { resource: Adapter/services.yaml }
     - { resource: Console/services.yaml }
     - { resource: Module/services.yaml }
-    - { resource: Password/services.yaml }
+    - { resource: Authentication/services.yaml }

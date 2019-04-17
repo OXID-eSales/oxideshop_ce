@@ -752,4 +752,13 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
                  " AND oxtype = 'oxcategory'";
         return \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getAll($query);
     }
+
+    /**
+     * Test helper.
+     */
+    private function clearProxyCache()
+    {
+        $cacheService = oxNew(\OxidEsales\TestingLibrary\Services\Library\Cache::class);
+        $cacheService->clearReverseProxyCache();
+    }
 }

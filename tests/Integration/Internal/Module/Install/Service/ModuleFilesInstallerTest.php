@@ -63,9 +63,8 @@ class ModuleFilesInstallerTest extends TestCase
     public function testModuleFilesAreCopiedAfterInstallProcessWithCustomTargetDirectory()
     {
         $installer = $this->getFilesInstaller();
-        $package = $this->createPackage(['oxideshop' => [
-            'target-directory' => 'custom-test-directory',
-        ]]);
+        $package = $this->createPackage();
+        $package->setTargetDirectory('custom-test-directory');
 
         $installer->install($package);
 
@@ -78,9 +77,9 @@ class ModuleFilesInstallerTest extends TestCase
     public function testModuleFilesAreCopiedAfterInstallProcessWithCustomSourceDirectory()
     {
         $installer = $this->getFilesInstaller();
-        $package = $this->createPackage(['oxideshop' => [
-            'source-directory' => 'CustomSourceDirectory',
-        ]]);
+
+        $package = $this->createPackage();
+        $package->setSourceDirectory('CustomSourceDirectory');
 
         $installer->install($package);
 
@@ -93,10 +92,10 @@ class ModuleFilesInstallerTest extends TestCase
     public function testModuleFilesAreCopiedAfterInstallProcessWithCustomSourceDirectoryAndCustomTargetDirectory()
     {
         $installer = $this->getFilesInstaller();
-        $package = $this->createPackage(['oxideshop' => [
-            'target-directory' => 'custom-test-directory',
-            'source-directory' => 'CustomSourceDirectory',
-        ]]);
+
+        $package = $this->createPackage();
+        $package->setSourceDirectory('CustomSourceDirectory');
+        $package->setTargetDirectory('custom-test-directory');
 
         $installer->install($package);
 
@@ -109,11 +108,8 @@ class ModuleFilesInstallerTest extends TestCase
     public function testBlacklistedFilesArePresentWhenEmptyBlacklistFilterIsDefined()
     {
         $installer = $this->getFilesInstaller();
-        $package = $this->createPackage([
-            'oxideshop' => [
-                'blacklist-filter' => []
-            ]
-        ]);
+        $package = $this->createPackage();
+        $package->setBlackListFilters([]);
 
         $installer->install($package);
 
@@ -123,13 +119,9 @@ class ModuleFilesInstallerTest extends TestCase
     public function testBlacklistedFilesArePresentWhenDifferentBlacklistFilterIsDefined()
     {
         $installer = $this->getFilesInstaller();
-        $package = $this->createPackage([
-            'oxideshop' => [
-                'blacklist-filter' => [
-                    '**/*.pdf'
-                ]
-            ]
-        ]);
+
+        $package = $this->createPackage();
+        $package->setBlackListFilters(['**/*.pdf']);
 
         $installer->install($package);
 
@@ -139,13 +131,9 @@ class ModuleFilesInstallerTest extends TestCase
     public function testBlacklistedFilesAreSkippedWhenBlacklistFilterIsDefined()
     {
         $installer = $this->getFilesInstaller();
-        $package = $this->createPackage([
-            'oxideshop' => [
-                'blacklist-filter' => [
-                    '**/*.txt'
-                ]
-            ]
-        ]);
+
+        $package = $this->createPackage();
+        $package->setBlackListFilters(['**/*.txt']);
 
         $installer->install($package);
 
@@ -155,13 +143,9 @@ class ModuleFilesInstallerTest extends TestCase
     public function testBlacklistedFilesAreSkippedWhenSingleFileNameBlacklistFilterIsDefined()
     {
         $installer = $this->getFilesInstaller();
-        $package = $this->createPackage([
-            'oxideshop' => [
-                'blacklist-filter' => [
-                    'readme.txt'
-                ]
-            ]
-        ]);
+
+        $package = $this->createPackage();
+        $package->setBlackListFilters(['readme.txt']);
 
         $installer->install($package);
 
@@ -171,13 +155,8 @@ class ModuleFilesInstallerTest extends TestCase
     public function testBlacklistedDirectoryIsSkippedWhenBlacklistFilterIsDefined()
     {
         $installer = $this->getFilesInstaller();
-        $package = $this->createPackage([
-            'oxideshop' => [
-                'blacklist-filter' => [
-                    'BlackListDirectory/**/*',
-                ]
-            ]
-        ]);
+        $package = $this->createPackage();
+        $package->setBlackListFilters(['BlackListDirectory/**/*']);
 
         $installer->install($package);
 
@@ -195,8 +174,8 @@ class ModuleFilesInstallerTest extends TestCase
         return $this->get(ModuleFilesInstallerInterface::class);
     }
 
-    private function createPackage(array $extra = []): OxidEshopPackage
+    private function createPackage(): OxidEshopPackage
     {
-        return new OxidEshopPackage($this->packageName, $this->modulePackagePath, $extra);
+        return new OxidEshopPackage($this->packageName, $this->modulePackagePath);
     }
 }

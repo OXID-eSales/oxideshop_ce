@@ -57,8 +57,7 @@ class ModuleCommandsTestCase extends TestCase
             ->install(
                 new OxidEshopPackage(
                     $id,
-                    __DIR__ . '/Fixtures/modules/' . $id,
-                    []
+                    __DIR__ . '/Fixtures/modules/' . $id
                 )
             );
     }

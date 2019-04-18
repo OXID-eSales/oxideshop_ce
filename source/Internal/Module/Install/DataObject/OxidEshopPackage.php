@@ -15,12 +15,12 @@ class OxidEshopPackage
     /**
      * @var array
      */
-    private $blackListFilters;
+    private $blackListFilters = [];
 
     /**
      * @var string
      */
-    private $sourceDirectory;
+    private $sourceDirectory = '';
 
     /**
      * @var string
@@ -33,33 +33,18 @@ class OxidEshopPackage
     private $packagePath;
 
     /**
+     * @var string
+     */
+    private $name;
+
+    /**
      * @param string $name
      * @param string $packagePath
-     * @param array  $extraParameters
      */
-    public function __construct(string $name, string $packagePath, array $extraParameters = [])
+    public function __construct(string $name, string $packagePath)
     {
+        $this->name = $name;
         $this->packagePath = $packagePath;
-
-        $this->blackListFilters = $extraParameters['oxideshop']['blacklist-filter'] ?? [];
-        $this->sourceDirectory  = $extraParameters['oxideshop']['source-directory'] ?? '';
-        $this->targetDirectory  = $extraParameters['oxideshop']['target-directory'] ?? $name;
-    }
-
-    /**
-     * @return array
-     */
-    public function getBlackListFilters(): array
-    {
-        return $this->blackListFilters;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTargetDirectory(): string
-    {
-        return $this->targetDirectory;
     }
 
     /**
@@ -73,10 +58,66 @@ class OxidEshopPackage
     }
 
     /**
+     * @return array
+     */
+    public function getBlackListFilters(): array
+    {
+        return $this->blackListFilters;
+    }
+
+    /**
+     * @param array $filters
+     */
+    public function setBlackListFilters(array $filters)
+    {
+        $this->blackListFilters = $filters;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTargetDirectory(): string
+    {
+        return $this->targetDirectory ?? $this->name;
+    }
+
+    /**
      * @param string $path
      */
     public function setTargetDirectory(string $path)
     {
         $this->targetDirectory = $path;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSourceDirectory(): string
+    {
+        return $this->sourceDirectory;
+    }
+
+    /**
+     * @param string $sourceDirectory
+     */
+    public function setSourceDirectory(string $sourceDirectory)
+    {
+        $this->sourceDirectory = $sourceDirectory;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPackagePath(): string
+    {
+        return $this->packagePath;
+    }
+
+    /**
+     * @param string $packagePath
+     */
+    public function setPackagePath(string $packagePath)
+    {
+        $this->packagePath = $packagePath;
     }
 }

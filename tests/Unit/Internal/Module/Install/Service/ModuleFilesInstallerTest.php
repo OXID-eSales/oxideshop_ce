@@ -24,21 +24,18 @@ class ModuleFilesInstallerTest extends TestCase
     {
         $packageName = 'myvendor/mymodule';
         $packagePath = '/var/www/vendor/myvendor/mymodule';
-        $extra = [
-            "oxideshop" => [
-                "blacklist-filter" => [
-                    "documentation/**/*.*",
-                    "CHANGELOG.md",
-                    "composer.json",
-                    "CONTRIBUTING.md",
-                    "README.md"
-                ],
-                "target-directory" => "myvendor/myinstallationpath",
-                "source-directory" => "src/mymodule"
-            ]
+        $blackListFilters = [
+            "documentation/**/*.*",
+            "CHANGELOG.md",
+            "composer.json",
+            "CONTRIBUTING.md",
+            "README.md"
         ];
 
-        $package = new OxidEshopPackage($packageName, $packagePath, $extra);
+        $package = new OxidEshopPackage($packageName, $packagePath);
+        $package->setTargetDirectory('myvendor/myinstallationpath');
+        $package->setSourceDirectory('src/mymodule');
+        $package->setBlackListFilters($blackListFilters);
 
         vfsStream::setup();
         $context = $this->getContext();
@@ -51,7 +48,7 @@ class ModuleFilesInstallerTest extends TestCase
             ->willReturn($finder);
 
         $finder
-            ->expects($this->exactly(count($extra['oxideshop']['blacklist-filter'])))
+            ->expects($this->exactly(count($blackListFilters)))
             ->method('notName')
             ->willReturn($finder);
 
@@ -63,8 +60,8 @@ class ModuleFilesInstallerTest extends TestCase
             ->expects($this->once())
             ->method('mirror')
             ->with(
-                $packagePath . DIRECTORY_SEPARATOR . $extra['oxideshop']['source-directory'],
-                $context->getModulesPath() . DIRECTORY_SEPARATOR . $extra['oxideshop']['target-directory'],
+                $packagePath . DIRECTORY_SEPARATOR . 'src/mymodule',
+                $context->getModulesPath() . DIRECTORY_SEPARATOR . 'myvendor/myinstallationpath',
                 $finder,
                 ['override' => true]
             );

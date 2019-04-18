@@ -24,8 +24,7 @@ class OxidEshopPackageTest extends TestCase
     {
         $package = new OxidEshopPackage(
             'shinyPackage',
-            'pathToPackage',
-            []
+            'pathToPackage'
         );
 
         $this->assertSame(
@@ -38,8 +37,7 @@ class OxidEshopPackageTest extends TestCase
     {
         $package = new OxidEshopPackage(
             'shinyPackage',
-            'pathToPackage',
-            []
+            'pathToPackage'
         );
 
         $this->assertSame(
@@ -68,16 +66,14 @@ class OxidEshopPackageTest extends TestCase
 
     private function getPackage(): OxidEshopPackage
     {
-        return new OxidEshopPackage(
+        $package = new OxidEshopPackage(
             'shinyPackage',
-            'pathToPackage',
-            [
-                'oxideshop' => [
-                    'blacklist-filter' => ['blackDir'],
-                    'source-directory' => 'customSourceDir',
-                    'target-directory' => 'customTargetDir',
-                ]
-            ]
+            'pathToPackage'
         );
+        $package->setTargetDirectory('customTargetDir');
+        $package->setBlackListFilters(['blackDir']);
+        $package->setSourceDirectory('customSourceDir');
+
+        return $package;
     }
 }

@@ -62,6 +62,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Backwards compatibility break: `\OxidEsales\EshopCommunity\Application\Model\User::_dbLogin` will only called until the user successfully logs in the 
   first time. Afterwards the password hash will have been recreated and a new authentication mechanism will be used. This 
   breaks backwards compatibility for modules, which directly override `_dbLogin` or one of the methods in the call stack.
+- Fix typo in ident for help near name/surname in `application/views/admin/tpl/shop_main.tpl` [PR-701](https://github.com/OXID-eSales/oxideshop_ce/pull/701)
+    - Was `HELP_ENERAL_NAME` changed to `HELP_GENERAL_NAME`
 
 ### Removed
 - Removed old not used blAutoSearchOnCat option from shop_config tab [PR-654](https://github.com/OXID-eSales/oxideshop_ce/pull/654)

@@ -212,6 +212,10 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     public function start()
     {
+        if ($this->isSessionStarted()) {
+            return;
+        }
+
         $myConfig = $this->getConfig();
 
         if ($this->isAdmin()) {

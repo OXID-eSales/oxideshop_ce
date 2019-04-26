@@ -164,15 +164,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\PasswordSaltGenerator` will no longer be needed and removed completely
 - `\OxidEsales\EshopCommunity\Core\Sha512Hasher` will no longer be needed and removed completely
 
-## [6.3.3] - Unreleased
-
-### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
+## [6.3.3] - 2019-04-16
 
 ### Fixed
 - Ensure temp file in tmp directory [PR-683](https://github.com/OXID-eSales/oxideshop_ce/pull/683)
@@ -180,6 +172,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix url protocol in version tags [PR-696](https://github.com/OXID-eSales/oxideshop_ce/pull/696)
 - Use correct value for backing up the base language in email [PR-692](https://github.com/OXID-eSales/oxideshop_ce/pull/692)
 - Read config parameter by getConfigParam, not by getRequestParam [#0006968](https://bugs.oxid-esales.com/view.php?id=6968) [PR-698](https://github.com/OXID-eSales/oxideshop_ce/pull/698)
+- Fix Bank code validation bug in Direct Debit [#0006939](https://bugs.oxid-esales.com/view.php?id=6939)
 
 ## [6.3.2] - 2019-01-22
 
@@ -625,7 +618,7 @@ See
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
 
-[6.3.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.2...b-6.1.x
+[6.3.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.2...v6.3.3
 [6.3.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.1...v6.3.2
 [6.3.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.0...v6.3.1
 [6.3.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.1...v6.3.0

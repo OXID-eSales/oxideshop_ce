@@ -947,22 +947,6 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
     }
 
     /**
-     * Testing validatePaymentInputData with BankCodeEmpty and AccountNumberSepaCorrect
-     * expecting True
-     */
-    public function testValidatePaymentInputData_BankCodeEmptyAccountNumberSepaCorrect_True()
-    {
-        $sAccountNumber = $this->_getSepaAccountNumber();
-
-        $aDynValue = $this->_getBankData('', $sAccountNumber);
-
-        $oValidator = oxNew('oxInputValidator');
-        $oValidationResult = $oValidator->validatePaymentInputData("oxiddebitnote", $aDynValue);
-
-        $this->assertTrue($oValidationResult, 'Should validate as true.');
-    }
-
-    /**
      * Data provider for testValidatePaymentInputData_BankCodeIncorrect_ErrorBankCode
      *
      * @return array

@@ -477,7 +477,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     {
         return $this->_aInputValidationErrors[$fieldName][] = $error;
     }
-    
+
     /**
      * Validates debit note.
      *
@@ -489,22 +489,22 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     {
         $debitInformation = $this->_cleanDebitInformation($debitInformation);
         $bankCode = $debitInformation['lsblz'];
-        $sAccountNumber = $debitInformation['lsktonr'];
-        $sepaValidator = oxNew(\OxidEsales\Eshop\Core\SepaValidator::class);
+        $accountNumber = $debitInformation['lsktonr'];
+        $sepaValidator = oxNew(SepaValidator::class);
 
-        if (empty($bankCode) || $sepaValidator->isValidBIC($bankCode)) {
-            $validationResult = true;
-            if (!$sepaValidator->isValidIBAN($sAccountNumber)) {
-                $validationResult = self::INVALID_ACCOUNT_NUMBER;
+        if ($sepaValidator->isValidBIC($bankCode)) {
+            $validateResult = true;
+            if (!$sepaValidator->isValidIBAN($accountNumber)) {
+                $validateResult = self::INVALID_ACCOUNT_NUMBER;
             }
         } else {
-            $validationResult = self::INVALID_BANK_CODE;
+            $validateResult = self::INVALID_BANK_CODE;
             if (!\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blSkipDebitOldBankInfo')) {
-                $validationResult = $this->_validateOldDebitInfo($debitInformation);
+                $validateResult = $this->_validateOldDebitInfo($debitInformation);
             }
         }
 
-        return $validationResult;
+        return $validateResult;
     }
 
     /**

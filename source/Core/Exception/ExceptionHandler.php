@@ -112,31 +112,25 @@ class ExceptionHandler
      *
      * @param \Throwable $exception exception object
      *
-     * @return void
+     * @throws \Throwable
      **/
-    public function handleUncaughtException($exception)
+    public function handleUncaughtException(\Throwable $exception)
     {
-        /**
-         * Report the exception
-         */
-        $logWritten = (bool) $this->writeExceptionToLog($exception);
+        try {
+            $this->writeExceptionToLog($exception);
+        } catch (\Throwable $loggerException) {
+            /**
+             * Logger is broken because of exception.
+             * Throw original exception in order to show the root cause of a problem.
+             */
+        }
 
-        /**
-         * Render an error message.
-         */
-        if ($this->_iDebug) {
-            $this->displayDebugMessage($exception, $logWritten);
+        if ($this->_iDebug || defined('OXID_PHP_UNIT')) {
+            throw $exception;
         } else {
             $this->displayOfflinePage();
+            $this->exitApplication();
         }
-
-        /**
-         * Do not exit the application in UNIT tests
-         */
-        if (defined('OXID_PHP_UNIT')) {
-            return;
-        }
-        $this->exitApplication();
     }
 
     /**

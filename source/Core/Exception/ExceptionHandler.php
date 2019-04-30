@@ -64,24 +64,28 @@ class ExceptionHandler
      *
      * @param \Throwable $exception exception object
      *
-     * @return void
+     * @throws \Throwable
      **/
     public function handleUncaughtException(\Throwable $exception)
     {
-        Registry::getLogger()->error(
-            $exception->getMessage(),
-            [$exception]
-        );
-
-        $this->renderErrorMessage($exception);
-
-        /**
-         * Do not exit the application in UNIT tests
-         */
-        if (defined('OXID_PHP_UNIT')) {
-            return;
+        try {
+            Registry::getLogger()->error(
+                $exception->getMessage(),
+                [$exception]
+            );
+        } catch (\Throwable $loggerException) {
+            /**
+             * Logger is broken because of exception.
+             * Throw original exception in order to show the root cause of a problem.
+             */
         }
-        $this->exitApplication();
+
+        if ($this->_iDebug || defined('OXID_PHP_UNIT')) {
+            throw $exception;
+        } else {
+            $this->displayOfflinePage();
+            $this->exitApplication();
+        }
     }
 
     /**

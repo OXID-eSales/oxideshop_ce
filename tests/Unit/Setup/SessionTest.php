@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Setup\Session;
 class SessionTest extends \OxidTestCase
 {
 
-    public function setUpBeforeTestSuite()
+    public function setUp()
     {
         session_cache_limiter("no-cache");
 
@@ -90,6 +90,10 @@ class SessionTest extends \OxidTestCase
 
         $oSession = $this->_getSessionMock();
         $oSession->setIsNewSession('test');
+
+        //we need to start a session for this test
+        session_start();
+
         $oSession->UNITgetNewSessionID();
         $this->assertSame(true, $oSession->getIsNewSession());
     }

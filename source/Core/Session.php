@@ -325,11 +325,11 @@ class Session extends \OxidEsales\Eshop\Core\Base
                 if (isset($_SERVER['HTTP_USER_AGENT']) &&
                     strpos($_SERVER['HTTP_USER_AGENT'], 'AOL') !== false
                 ) {
-                    session_cache_limiter(false);
+                    session_cache_limiter('');
                     header("Cache-Control: no-store, private, must-revalidate, proxy-revalidate, post-check=0, pre-check=0, max-age=0, s-maxage=0");
                 }
             } else {
-                session_cache_limiter(false);
+                session_cache_limiter('');
             }
         }
 

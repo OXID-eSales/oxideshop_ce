@@ -12,8 +12,6 @@ use Psr\Log\LoggerInterface;
 
 class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
-    protected $testExceptionMessage = 'TEST_EXCEPTION';
-
     public function testCallUnExistingMethod()
     {
         $this->expectException( \OxidEsales\Eshop\Core\Exception\SystemComponentException::class);
@@ -46,8 +44,8 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function dataProviderExceptions()
     {
         return [
-            [ new StandardException($this->testExceptionMessage) ],
-            [ new \Exception($this->testExceptionMessage) ],
+            [ new StandardException() ],
+            [ new \Exception() ],
         ];
     }
 

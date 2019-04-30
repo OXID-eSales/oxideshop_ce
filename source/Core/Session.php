@@ -315,7 +315,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _sessionStart()
     {
-        if (headers_sent()) {
+        if (!headers_sent() && (PHP_SESSION_NONE == session_status())) {
             if ($this->needToSetHeaders()) {
                 //enforcing no caching when session is started
                 session_cache_limiter('nocache');

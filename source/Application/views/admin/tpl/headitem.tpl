@@ -42,7 +42,7 @@
         var ajaxpopup = null;
         function showDialog( sParams )
         {
-            ajaxpopup = window.open('[{$oViewConf->getSelfLink()|replace:"&amp;":"&"}]'+sParams, 'ajaxpopup', 'width=800,height=680,scrollbars=yes,resizable=yes');
+            ajaxpopup = window.open('[{$oViewConf->getSelfLink()|replace:"&amp;":"&"}]'+sParams, 'ajaxpopup', 'width=850,height=680,scrollbars=yes,resizable=yes');
         }
 
         function focusPopup()

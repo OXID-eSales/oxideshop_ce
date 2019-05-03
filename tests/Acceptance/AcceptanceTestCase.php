@@ -27,6 +27,9 @@ abstract class AcceptanceTestCase extends \OxidEsales\TestingLibrary\AcceptanceT
             $aParams = array("type" => "bool", "value" => true);
             $this->callShopSC("oxConfig", null, null, array('preventModuleVersionNotify' => $aParams));
         }
+
+        $this->activateTheme('azure');
+        $this->clearCache();
     }
 
     /**

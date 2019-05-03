@@ -6,8 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
+use OxidEsales\EshopCommunity\Internal\ShopEvents\AfterRequestProcessedEvent;
 
 /**
  * AJAX call processor class
@@ -142,6 +141,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
     {
         if ($function) {
             $this->$function();
+            $this->dispatchEvent(new AfterRequestProcessedEvent);
         } else {
             $sQAdd = $this->_getQuery();
 

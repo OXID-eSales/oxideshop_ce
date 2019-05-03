@@ -71,8 +71,9 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->openShop();
 
         //currency checking
+        $this->assertElementPresent("//p[@id='currencyTrigger']/a");
         $this->click("//p[@id='currencyTrigger']/a");
-        $this->waitForItemAppear("currencies");
+        $this->waitForItemAppear("//ul[@id='currencies']");
         $this->assertElementPresent("//ul[@id='currencies']/li[@class='active']//*[text()='EUR']");
         $this->assertElementPresent("//ul[@id='currencies']/li[2]//*[text()='EUR']");
         $this->assertElementPresent("//ul[@id='currencies']/li[3]//*[text()='GBP']");
@@ -451,7 +452,7 @@ class NavigationFrontendTest extends FrontendTestCase
      */
     public function testFrontendTopMenu()
     {
-        $this->openShop();
+        $this->openShop(false, true);
         $this->assertTrue($this->isVisible("navigation"));
         $this->assertEquals("%HOME%", $this->clearString($this->getText("//ul[@id='navigation']/li[1]")));
         $this->assertEquals("Test category 0 [EN] šÄßüл »", $this->clearString($this->getText("//ul[@id='navigation']/li[3]/a")));

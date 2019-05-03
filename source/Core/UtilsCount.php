@@ -202,7 +202,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
 
         $this->_setVendorCache($aCache);
 
-        return $aCache[$sCatId][$sActIdent];
+        return isset($aCache[$sCatId][$sActIdent]) ? $aCache[$sCatId][$sActIdent] : 0;
     }
 
     /**

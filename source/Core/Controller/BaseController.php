@@ -10,7 +10,6 @@ use OxidEsales\EshopCommunity\Core\ShopVersion;
 use Psr\Container\ContainerInterface;
 use OxidEsales\EshopCommunity\Internal\ShopEvents\AfterRequestProcessedEvent;
 
-
 /**
  * Base view class. Collects and passes data to template engine, sets some global
  * configuration parameters.

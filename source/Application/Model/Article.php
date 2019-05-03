@@ -463,6 +463,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     protected $_blCanUpdateAnyField = null;
 
     /**
+     * Triggered action type
+     *
+     * @var integer
+     */
+    protected $actionType = ACTION_NA;
+
+    /**
      * Constructor, sets shop ID for article (\OxidEsales\Eshop\Core\Config::getShopId()),
      * initiates parent constructor (parent::oxI18n()).
      *
@@ -674,6 +681,17 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function getSqlActiveSnippet($blForceCoreTable = null)
     {
         return "( {$this->_createSqlActiveSnippet($blForceCoreTable)} ) ";
+    }
+
+    /**
+     *
+     * Getter for action type.
+     *
+     * @return int
+     */
+    public function getActionType()
+    {
+        return $this->actionType;
     }
 
     /**
@@ -2169,6 +2187,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function reduceStock($dAmount, $blAllowNegativeStock = false)
     {
+        $this->actionType = ACTION_UPDATE_STOCK;
         $this->beforeUpdate();
 
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -2410,6 +2429,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $this->_assignStock();
             $this->_onChangeStockResetCount($articleId);
         }
+
+        $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelUpdateEvent($this));
     }
 
     /**
@@ -2864,6 +2885,16 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function getStockStatus()
     {
         return $this->_iStockStatus;
+    }
+
+    /**
+     * Get stock status as it was on loading this object.
+     *
+     * @return integer
+     */
+    public function getStockStatusOnLoad()
+    {
+        return $this->_iStockStatusOnLoad;
     }
 
     /**

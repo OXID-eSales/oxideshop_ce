@@ -34,7 +34,7 @@ class BasicContext implements BasicContextInterface
      */
     public function getEnvironment(): string
     {
-        return 'prod';
+        return 'production';
     }
 
     /**

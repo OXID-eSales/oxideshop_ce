@@ -23,6 +23,8 @@ use OxidEsales\EshopCommunity\Internal\Module\Path\ModulePathResolver;
 use OxidEsales\EshopCommunity\Internal\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\SomeModuleService;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use OxidEsales\TestingLibrary\Services\Library\DatabaseRestorer\DatabaseRestorer;
@@ -39,9 +41,10 @@ class ModuleActivationServiceTest extends TestCase
      */
     private $container;
     private $shopId = 1;
-    private $environment = 'prod';
     private $testModuleId = 'testModuleId';
     private $databaseRestorer;
+
+    use ContainerTrait;
 
     public function setUp()
     {
@@ -257,7 +260,7 @@ class ModuleActivationServiceTest extends TestCase
         $environmentConfiguration->addShopConfiguration($this->shopId, $shopConfiguration);
 
         $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->addEnvironmentConfiguration($this->environment, $environmentConfiguration);
+        $projectConfiguration->addEnvironmentConfiguration($this->getEnvironment(), $environmentConfiguration);
 
         $projectConfigurationDao = $this->container->get(ProjectConfigurationDaoInterface::class);
         $projectConfigurationDao->persistConfiguration($projectConfiguration);
@@ -278,5 +281,10 @@ class ModuleActivationServiceTest extends TestCase
         $container->compile();
 
         return $container;
+    }
+
+    private function getEnvironment(): string
+    {
+        return $this->get(ContextInterface::class)->getEnvironment();
     }
 }

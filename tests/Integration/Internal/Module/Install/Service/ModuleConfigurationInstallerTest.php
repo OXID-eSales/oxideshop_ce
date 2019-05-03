@@ -71,7 +71,7 @@ class ModuleConfigurationInstallerTest extends TestCase
         $shopConfiguration = $this
             ->projectConfigurationDao
             ->getConfiguration()
-            ->getEnvironmentConfiguration('prod')
+            ->getEnvironmentConfiguration($this->getEnvironment())
             ->getShopConfiguration(1);
 
         $this->assertSame(
@@ -90,7 +90,7 @@ class ModuleConfigurationInstallerTest extends TestCase
         $shopConfiguration = $this
             ->projectConfigurationDao
             ->getConfiguration()
-            ->getEnvironmentConfiguration('prod')
+            ->getEnvironmentConfiguration($this->getEnvironment())
             ->getShopConfiguration(1);
 
         $this->assertSame(
@@ -104,7 +104,7 @@ class ModuleConfigurationInstallerTest extends TestCase
         $environmentConfiguration = $this
             ->projectConfigurationDao
             ->getConfiguration()
-            ->getEnvironmentConfiguration('prod');
+            ->getEnvironmentConfiguration($this->getEnvironment());
 
         foreach ($environmentConfiguration->getShopConfigurations() as $shopConfiguration) {
             $this->assertContains(
@@ -133,8 +133,13 @@ class ModuleConfigurationInstallerTest extends TestCase
         $environmentConfiguration->addShopConfiguration(2, $shopConfigurationWithoutChain);
 
         $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->addEnvironmentConfiguration('prod', $environmentConfiguration);
+        $projectConfiguration->addEnvironmentConfiguration($this->getEnvironment(), $environmentConfiguration);
 
         $this->projectConfigurationDao->persistConfiguration($projectConfiguration);
+    }
+
+    private function getEnvironment(): string
+    {
+        return $this->get(ContextInterface::class)->getEnvironment();
     }
 }

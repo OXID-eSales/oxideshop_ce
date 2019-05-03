@@ -12,6 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Environme
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -53,10 +54,15 @@ class ModuleConfigurationDaoTest extends TestCase
         $environmentConfiguration->addShopConfiguration(1, $shopConfiguration);
 
         $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->addEnvironmentConfiguration('prod', $environmentConfiguration);
+        $projectConfiguration->addEnvironmentConfiguration($this->getEnvironment(), $environmentConfiguration);
 
         $dao = $this->get(ProjectConfigurationDaoInterface::class);
 
         $dao->persistConfiguration($projectConfiguration);
+    }
+
+    private function getEnvironment(): string
+    {
+        return $this->get(ContextInterface::class)->getEnvironment();
     }
 }

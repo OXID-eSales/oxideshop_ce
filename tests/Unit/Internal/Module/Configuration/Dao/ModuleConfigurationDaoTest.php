@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 class ModuleConfigurationDaoTest extends TestCase
 {
     private $shopId = 1;
-    private $environment = 'prod';
+    private $environment = 'test';
 
     public function testGetter()
     {

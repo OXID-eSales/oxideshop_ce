@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Core\Module;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
@@ -235,7 +234,9 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
             ->get(ModuleActivationBridgeInterface::class);
 
         foreach ($deletedModuleIds as $moduleId) {
-            $moduleActivationBridge->deactivate($moduleId, Registry::getConfig()->getShopId());
+            if ($moduleActivationBridge->isActive($moduleId, Registry::getConfig()->getShopId())) {
+                $moduleActivationBridge->deactivate($moduleId, Registry::getConfig()->getShopId());
+            }
         }
     }
 
@@ -433,10 +434,12 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getModuleIds()
     {
-        $aModuleIdsFromExtensions = $this->_getModuleIdsFromExtensions($this->getModulesWithExtendedClass());
-        $aModuleIdsFromFiles = array_keys($this->getModuleConfigParametersByKey(static::MODULE_KEY_FILES));
+        $container = ContainerFactory::getInstance()->getContainer();
 
-        return array_unique(array_merge($aModuleIdsFromExtensions, $aModuleIdsFromFiles));
+        return $container
+            ->get(ShopConfigurationDaoBridgeInterface::class)
+            ->get()
+            ->getModuleIdsOfModuleConfigurations();
     }
 
     /**
@@ -449,7 +452,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     public function getModuleExtensions($sModuleId)
     {
         if (!isset($this->_aModuleExtensions)) {
-            $aModuleExtension = $this->getConfig()->getModulesWithExtendedClass();
+            $aModuleExtension = $this->getModulesWithExtendedClass();
             $oModule = $this->getModule();
             $aExtension = [];
             foreach ($aModuleExtension as $sOxClass => $aFiles) {
@@ -462,7 +465,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
             $this->_aModuleExtensions = $aExtension;
         }
 
-        return $this->_aModuleExtensions[$sModuleId] ? $this->_aModuleExtensions[$sModuleId] : [];
+        return $this->_aModuleExtensions[$sModuleId] ?? [];
     }
 
     /**
@@ -500,27 +503,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
         }
 
         return false;
-    }
-
-    /**
-     * Returns module ids which have extensions.
-     *
-     * @param array $aData Data
-     *
-     * @return array
-     */
-    private function _getModuleIdsFromExtensions($aData)
-    {
-        $aModuleIds = [];
-        $oModule = $this->getModule();
-        foreach ($aData as $aModule) {
-            foreach ($aModule as $sFilePath) {
-                $sModuleId = $oModule->getIdByPath($sFilePath);
-                $aModuleIds[] = $sModuleId;
-            }
-        }
-
-        return $aModuleIds;
     }
 
     /**

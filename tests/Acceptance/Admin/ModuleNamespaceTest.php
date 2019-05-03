@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin;
 
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+
 /**
  * Module functionality functionality.
  *
@@ -30,6 +32,8 @@ class ModuleNamespaceTest extends ModuleBaseTest
     protected function setUp()
     {
         parent::setUp();
+
+        $this->resetProjectConfiguration();
 
         // make sure the namespaced test module is in place
         $this->deleteModule(self::TEST_MODULE_NAMESPACE);
@@ -162,5 +166,13 @@ class ModuleNamespaceTest extends ModuleBaseTest
         $this->selectMenu('Extensions', 'Modules');
         $this->frame('edit');
         $this->assertTextNotPresent('Problematic Files');
+    }
+
+    private function resetProjectConfiguration()
+    {
+        ContainerFactory::getInstance()
+            ->getContainer()
+            ->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')
+            ->generate();
     }
 }

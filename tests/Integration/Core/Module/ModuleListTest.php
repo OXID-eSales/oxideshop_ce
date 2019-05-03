@@ -10,6 +10,8 @@ use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Core\Module\ModuleList;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
@@ -126,6 +128,79 @@ class ModuleListTest extends TestCase
 
         $this->assertFalse(
             $moduleActivationBridge->isActive('with_metadata_v21', 1)
+        );
+    }
+
+    public function testModuleIds()
+    {
+        $this->installModule('with_metadata_v21');
+        $this->installModule('with_class_extensions');
+
+        $this->assertSame(
+            [
+                'with_metadata_v21',
+                'with_class_extensions',
+            ],
+            oxNew(ModuleList::class)->getModuleIds()
+        );
+    }
+
+    public function testGetDeletedExtensionsForModuleWithNoMetadata()
+    {
+        $shopConfigurationDao = $this->container->get(ShopConfigurationDaoBridgeInterface::class);
+        $shopConfiguration = $shopConfigurationDao->get();
+
+        $moduleWhichHasNoMetadata = new ModuleConfiguration();
+        $moduleWhichHasNoMetadata
+            ->setId('moduleWhichHasNoMetadata')
+            ->setPath('moduleWhichHasNoMetadata');
+
+        $shopConfiguration->addModuleConfiguration($moduleWhichHasNoMetadata);
+        $shopConfigurationDao->save($shopConfiguration);
+
+        $this->container->get(ModuleActivationBridgeInterface::class)->activate(
+            'moduleWhichHasNoMetadata',
+            Registry::getConfig()->getShopId()
+        );
+
+        $moduleExtensions = [
+            Article::class => 'moduleWhichHasNoMetadata/anyExtension',
+        ];
+
+        Registry::getConfig()->setConfigParam('aModules', $moduleExtensions);
+
+        $expectedDeletedExtensions = array(
+            'moduleWhichHasNoMetadata' => array(
+                'files' => array('moduleWhichHasNoMetadata/metadata.php')
+            ),
+        );
+
+        $this->assertEquals(
+            $expectedDeletedExtensions,
+            oxNew(ModuleList::class)->getDeletedExtensions()
+        );
+    }
+
+    public function testGetDeletedExtensionsWithMissingExtensions()
+    {
+        $moduleId = 'with_class_extensions';
+        $this->installModule($moduleId);
+
+        $moduleExtensions = [
+            Article::class => 'with_class_extensions/missingExtension',
+        ];
+
+        Registry::getConfig()->setConfigParam('aModules', $moduleExtensions);
+
+        $this->assertSame(
+            [
+                $moduleId => [
+                    'extensions' => [
+                        Article::class => ['with_class_extensions/missingExtension'],
+                    ]
+                ],
+            ],
+            oxNew(ModuleList::class)->getDeletedExtensions()
         );
     }
 

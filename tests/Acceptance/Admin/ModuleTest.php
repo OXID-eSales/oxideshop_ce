@@ -207,8 +207,6 @@ class ModuleTest extends ModuleBaseTest
         $this->clickAndWait("yesButton");
         $this->openTab("Installed Shop Modules");
         $this->assertTextNotPresent("Problematic Files");
-        $this->assertTextNotPresent('NonExistentClass');
-        $this->assertTextNotPresent('NonExistentFile');
     }
 
     /**
@@ -383,7 +381,7 @@ class ModuleTest extends ModuleBaseTest
         $this->assertTextPresent("About Us + info6");
 
         //vendor dir name is changed from test6 to test6test
-        $this->updateInformationAboutShopExtension('oxid/test6/view/myinfo6', 'oxid/test6test/view/myinfo6');
+        $this->updateInformationAboutShopExtension('oxid/test6/view/myinfo6', 'oxid/test6/view/deleted');
 
         $this->openShop();
         $this->open(shopURL."en/About-Us/");
@@ -391,14 +389,13 @@ class ModuleTest extends ModuleBaseTest
         $this->assertTextPresent("About Us");
 
         // Check if error logged
-        $this->assertLoggedException(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class, "Module class myinfo6 not found. Module ID (module id not availible)");
+        $this->assertLoggedException(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class, "Module ID (module id not availible)");
 
         //checking if module is deactivated after /dir rename
         $this->loginAdmin("Extensions", "Modules");
         $this->frame("edit");
         $this->assertTextPresent("Invalid modules were detected");
         $this->assertTextPresent("Do you want to delete all registered module information and saved configurations");
-        $this->assertTextPresent("oxid/metadata.php");
         $this->clickAndWait("yesButton");
         $this->frame("list");
         $this->clickAndWait("link=Test module #6 (in vendor dir)");

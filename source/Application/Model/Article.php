@@ -2853,6 +2853,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
+     * Set stock status
+     */
+    public function setStockStatus($iStockStatus)
+    {
+        $this->_iStockStatus = $iStockStatus;
+    }
+    
+    /**
      * Returns formatted delivery date. If the date is not set ('0000-00-00') returns false.
      *
      * @return string | bool

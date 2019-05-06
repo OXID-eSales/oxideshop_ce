@@ -158,7 +158,7 @@ class ModuleActivationServiceTest extends TestCase
             ->getMock();
 
         $modulePathResolverMock
-            ->method('getFullModulePath')
+            ->method('getFullModulePathFromConfiguration')
             ->willReturn(__DIR__ . '/../../TestData/TestModule');
 
         return $modulePathResolverMock;

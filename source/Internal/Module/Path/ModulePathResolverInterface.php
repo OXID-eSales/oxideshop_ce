@@ -17,5 +17,5 @@ interface ModulePathResolverInterface
      *
      * @return string
      */
-    public function getFullModulePath(string $moduleId, int $shopId): string;
+    public function getFullModulePathFromConfiguration(string $moduleId, int $shopId): string;
 }

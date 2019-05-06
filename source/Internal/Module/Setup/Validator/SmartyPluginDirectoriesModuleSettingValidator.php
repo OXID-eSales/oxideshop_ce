@@ -66,7 +66,7 @@ class SmartyPluginDirectoriesModuleSettingValidator implements ModuleSettingVali
             );
         }
 
-        $fullPathToModule = $this->modulePathResolver->getFullModulePath($moduleId, $shopId);
+        $fullPathToModule = $this->modulePathResolver->getFullModulePathFromConfiguration($moduleId, $shopId);
 
         foreach ($directories as $directory) {
             $fullPathSmartyPluginDirectory = $fullPathToModule . DIRECTORY_SEPARATOR . $directory;

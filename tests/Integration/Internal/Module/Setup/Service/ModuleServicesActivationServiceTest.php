@@ -55,7 +55,7 @@ class ModuleServicesActivationServiceTest extends TestCase
 
         $modulePathResolver = $this->getMockBuilder(ModulePathResolverInterface::class)->getMock();
         $modulePathResolver
-            ->method('getFullModulePath')
+            ->method('getFullModulePathFromConfiguration')
             ->willReturn($this->testModuleDirectory);
 
         $this->eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)

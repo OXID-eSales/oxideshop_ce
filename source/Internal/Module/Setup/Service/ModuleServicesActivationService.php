@@ -152,6 +152,6 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
      */
     private function getModuleServicesFilePath(string $moduleId, int $shopId): string
     {
-        return $this->modulePathResolver->getFullModulePath($moduleId, $shopId) . DIRECTORY_SEPARATOR . 'services.yaml';
+        return $this->modulePathResolver->getFullModulePathFromConfiguration($moduleId, $shopId) . DIRECTORY_SEPARATOR . 'services.yaml';
     }
 }

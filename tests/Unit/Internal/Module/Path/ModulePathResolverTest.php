@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class ModulePathResolverTest extends TestCase
 {
-    public function testGetFullModulePath()
+    public function testGetFullModulePathFromConfiguration()
     {
         $context = $this->getMockBuilder(BasicContextInterface::class)->getMock();
         $context
@@ -36,7 +36,7 @@ class ModulePathResolverTest extends TestCase
 
         $this->assertSame(
             'modules/modulePath',
-            $pathResolver->getFullModulePath('testModuleId', 1)
+            $pathResolver->getFullModulePathFromConfiguration('testModuleId', 1)
         );
     }
 }

@@ -59,7 +59,7 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
         $this->createModuleStructure();
 
         $this->modulePathResolver
-            ->method('getFullModulePath')
+            ->method('getFullModulePathFromConfiguration')
             ->willReturn(vfsStream::url('root/modules/smartyTestModule'));
 
         $validator = new SmartyPluginDirectoriesModuleSettingValidator($this->modulePathResolver);
@@ -79,7 +79,7 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
         $this->createModuleStructure();
 
         $this->modulePathResolver
-            ->method('getFullModulePath')
+            ->method('getFullModulePathFromConfiguration')
             ->willReturn(vfsStream::url('root/modules/smartyTestModule'));
 
         $validator = new SmartyPluginDirectoriesModuleSettingValidator($this->modulePathResolver);
@@ -101,7 +101,7 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
         $this->assertSmartyPluginDirectoryIsNonReadable();
 
         $this->modulePathResolver
-            ->method('getFullModulePath')
+            ->method('getFullModulePathFromConfiguration')
             ->willReturn(vfsStream::url('root/modules/smartyTestModule'));
 
         $validator = new SmartyPluginDirectoriesModuleSettingValidator($this->modulePathResolver);

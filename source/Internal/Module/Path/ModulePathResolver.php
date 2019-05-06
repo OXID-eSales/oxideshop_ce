@@ -36,12 +36,15 @@ class ModulePathResolver implements ModulePathResolverInterface
     }
 
     /**
+     * This method does not validate if the path returned exists. It returns more or less the value from the project
+     * configuration.
+     *
      * @param string $moduleId
      * @param int    $shopId
      *
      * @return string
      */
-    public function getFullModulePath(string $moduleId, int $shopId): string
+    public function getFullModulePathFromConfiguration(string $moduleId, int $shopId): string
     {
         $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
 

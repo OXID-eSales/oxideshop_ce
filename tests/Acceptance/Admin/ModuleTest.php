@@ -21,7 +21,7 @@ class ModuleTest extends ModuleBaseTest
     {
         ContainerFactory::getInstance()
             ->getContainer()
-            ->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')
+            ->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
             ->generate();
 
         $this->installModule('test1');

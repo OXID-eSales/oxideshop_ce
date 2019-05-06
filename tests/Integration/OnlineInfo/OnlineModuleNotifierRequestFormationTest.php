@@ -31,7 +31,7 @@ class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
         parent::setUp();
         $this->container = ContainerFactory::getInstance()->getContainer();
 
-        $this->container->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')
+        $this->container->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
             ->generate();
     }
 

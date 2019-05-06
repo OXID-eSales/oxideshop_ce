@@ -26,7 +26,7 @@ class OnlineModuleNotifierTest extends BaseModuleTestCase
         parent::setUp();
         ContainerFactory::getInstance()
             ->getContainer()
-            ->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')
+            ->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
             ->generate();
     }
 

@@ -179,7 +179,7 @@ class ModuleInheritanceTest extends UnitTestCase
         $container = $this->disableShopEditionClassExtensionProtection($container);
         $container->compile();
 
-        $container->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')->generate();
+        $container->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')->generate();
 
         $this->container = $container;
 
@@ -548,7 +548,7 @@ class ModuleInheritanceTest extends UnitTestCase
     private function getContainer(): ContainerBuilder
     {
         $container = ContainerFactory::getInstance()->getContainer();
-        $container->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')->generate();
+        $container->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')->generate();
 
         return $container;
     }

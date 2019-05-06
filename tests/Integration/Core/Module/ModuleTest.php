@@ -24,7 +24,7 @@ class ModuleTest extends TestCase
     {
         $this->container = ContainerFactory::getInstance()->getContainer();
 
-        $this->container->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')
+        $this->container->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
              ->generate();
 
         parent::setUp();
@@ -36,7 +36,7 @@ class ModuleTest extends TestCase
 
         $this->removeTestModules();
 
-        $this->container->get('oxid_esales.module.install.service.lanched_shop_project_configuration_generator')
+        $this->container->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
             ->generate();
 
         Registry::getConfig()->saveShopConfVar('aarr', 'activeModules', []);

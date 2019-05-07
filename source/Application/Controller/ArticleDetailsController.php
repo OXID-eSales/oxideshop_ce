@@ -866,6 +866,8 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
             // END deprecated
         } elseif ('vendor' == $this->getListType()) {
             $paths = $this->_getVendorBreadCrumb();
+        } elseif ('manufacturer' == $this->getListType()) {
+            $paths = $this->_getManufacturerBreadCrumb();
         } else {
             $paths = $this->_getCategoryBreadCrumb();
         }
@@ -1264,6 +1266,33 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
             $vendorPath['link'] = $vendor->getLink();
             $vendorPath['title'] = $vendor->oxvendor__oxtitle->value;
             $paths[] = $vendorPath;
+        }
+
+        return $paths;
+    }
+
+    /**
+     * Manufacturer bread crumb
+     *
+     * @return array
+     */
+    protected function _getManufacturerBreadCrumb()
+    {
+        $paths = [];
+        $manufacturerPath = [];
+
+        $manufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
+        $manufacturer->load('root');
+
+        $manufacturerPath['link'] = $manufacturer->getLink();
+        $manufacturerPath['title'] = $manufacturer->oxmanufacturers__oxtitle->value;
+        $paths[] = $manufacturerPath;
+
+        $manufacturer = $this->getActManufacturer();
+        if ($manufacturer instanceof \OxidEsales\Eshop\Application\Model\Manufacturer) {
+            $manufacturerPath['link'] = $manufacturer->getLink();
+            $manufacturerPath['title'] = $manufacturer->oxmanufacturers__oxtitle->value;
+            $paths[] = $manufacturerPath;
         }
 
         return $paths;

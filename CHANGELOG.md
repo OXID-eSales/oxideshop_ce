@@ -86,6 +86,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix phpdoc types and set consistent returns in BaseController [PR-676](https://github.com/OXID-eSales/oxideshop_ce/pull/676)
 - Fix checkIniSet method in SystemRequirements for php 7.2 [PR-681](https://github.com/OXID-eSales/oxideshop_ce/pull/681)
 - Fixed bug no possibility to sort accessories of articles in backend [#0003609](https://bugs.oxid-esales.com/view.php?id=3609)
+- Fix php 7.2 compatibility of tests.
 
 ### Added
 - New methods:

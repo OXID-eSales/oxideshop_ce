@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use oxRegistry;
 
 /**
@@ -38,7 +39,7 @@ class SelectListOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin
         $sArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
 
         return " from $sSelTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sSelTable.oxid " .
-                 "where oxobjectid = '$sArtId' ";
+                 "where oxobjectid = " . DatabaseProvider::getDb()->quote($sArtId) . " ";
     }
 
     /**
@@ -57,7 +58,7 @@ class SelectListOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin
     public function setSorting()
     {
         $sSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
-        $sSelect = "select * from oxobject2selectlist where oxobjectid='$sSelId' order by oxsort";
+        $sSelect = "select * from oxobject2selectlist where oxobjectid=" . DatabaseProvider::getDb()->quote($sSelId) . " order by oxsort";
 
         $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oList->init("oxbase", "oxobject2selectlist");

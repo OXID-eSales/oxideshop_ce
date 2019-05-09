@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- Rename cust_lang.php files to cust_lang.php.dist
+  - `source/Application/views/admin/de/cust_lang.php.dist`
+  - `source/Application/views/admin/en/cust_lang.php.dist`
 
 ### Deprecated
 

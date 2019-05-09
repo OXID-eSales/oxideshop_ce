@@ -13,6 +13,9 @@ use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
 use stdClass;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
+use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Event\ShopConfigurationChangedEvent;
+use OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\Event\ShopModuleSettingChangedEvent;
+use OxidEsales\EshopCommunity\Internal\Theme\Event\ThemeSettingChangedEvent;
 
 //max integer
 define('MAX_64BIT_INTEGER', '18446744073709551615');
@@ -1837,6 +1840,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $query = "insert into oxconfig (oxid, oxshopid, oxmodule, oxvarname, oxvartype, oxvarvalue)
                values($newOXIDdQuoted, $shopIdQuoted, $moduleQuoted, $varNameQuoted, $varTypeQuoted, ENCODE( $varValueQuoted, $configKeyQuoted) )";
         $db->execute($query);
+
+        $this->informServicesAfterConfigurationChanged($varName, $shopId, $module);
     }
 
     /**
@@ -2280,5 +2285,23 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $exceptionHandler = new \OxidEsales\Eshop\Core\Exception\ExceptionHandler();
 
         return $exceptionHandler;
+    }
+
+    /**
+     * Inform respective services if shop/module/theme related configuration data was changed in database.
+     *
+     * @param string  $varName   Variable name
+     * @param integer $shopId    Shop id
+     * @param string  $extension Module or theme name in case of extension config change
+     */
+    protected function informServicesAfterConfigurationChanged($varName, $shopId, $extension = '')
+    {
+        if (empty($extension)) {
+            $this->dispatchEvent(new ShopConfigurationChangedEvent($varName, (int) $shopId));
+        } elseif (false !== strpos($extension, self::OXMODULE_MODULE_PREFIX)) {
+            $this->dispatchEvent(new ShopModuleSettingChangedEvent($varName, (int) $shopId, $extension));
+        } elseif (false !== strpos($extension, self::OXMODULE_THEME_PREFIX)) {
+            $this->dispatchEvent(new ThemeSettingChangedEvent($varName, (int) $shopId, $extension));
+        }
     }
 }

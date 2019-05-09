@@ -315,7 +315,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _sessionStart()
     {
-        if (headers_sent()) {
+        if (!headers_sent() && (PHP_SESSION_NONE == session_status())) {
             if ($this->needToSetHeaders()) {
                 //enforcing no caching when session is started
                 session_cache_limiter('nocache');
@@ -325,11 +325,11 @@ class Session extends \OxidEsales\Eshop\Core\Base
                 if (isset($_SERVER['HTTP_USER_AGENT']) &&
                     strpos($_SERVER['HTTP_USER_AGENT'], 'AOL') !== false
                 ) {
-                    session_cache_limiter(false);
-                    header("Cache-Control: no-store, private, must-revalidate, proxy-revalidate, post-check=0, pre-check=0, max-age=0, s-maxage=0");
+                    session_cache_limiter('');
+                    Registry::getUtils()->setHeader("Cache-Control: no-store, private, must-revalidate, proxy-revalidate, post-check=0, pre-check=0, max-age=0, s-maxage=0");
                 }
             } else {
-                session_cache_limiter(false);
+                session_cache_limiter('');
             }
         }
 

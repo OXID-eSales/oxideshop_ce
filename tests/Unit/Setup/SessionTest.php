@@ -15,7 +15,7 @@ class SessionTest extends \OxidTestCase
 
     public function setUp()
     {
-        session_cache_limiter(false);
+        session_cache_limiter("no-cache");
 
         return parent::setUp();
     }
@@ -90,6 +90,10 @@ class SessionTest extends \OxidTestCase
 
         $oSession = $this->_getSessionMock();
         $oSession->setIsNewSession('test');
+
+        //we need to start a session for this test
+        session_start();
+
         $oSession->UNITgetNewSessionID();
         $this->assertSame(true, $oSession->getIsNewSession());
     }

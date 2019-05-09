@@ -86,12 +86,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix phpdoc types and set consistent returns in BaseController [PR-676](https://github.com/OXID-eSales/oxideshop_ce/pull/676)
 - Fix checkIniSet method in SystemRequirements for php 7.2 [PR-681](https://github.com/OXID-eSales/oxideshop_ce/pull/681)
 - Fixed bug no possibility to sort accessories of articles in backend [#0003609](https://bugs.oxid-esales.com/view.php?id=3609)
+- Fixed bug no possibility to sort accessories of articles in backend [#0003609](https://bugs.oxid-esales.com/view.php?id=3609)
+- Fix php 7.2 compatibility of tests.
+- Fix Bank code validation bug in Direct Debit [#0006939](https://bugs.oxid-esales.com/view.php?id=6939)
 
 ### Added
 - New methods:
   - `OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay::getValues` [PR-660](https://github.com/OXID-eSales/oxideshop_ce/pull/660)
   - `OxidEsales\EshopCommunity\Application\Model\Article::getStock` [PR-640](https://github.com/OXID-eSales/oxideshop_ce/pull/640)
   - `OxidEsales\EshopCommunity\Application\Controller\Admin::sortAccessoriesList()` [#0003609](https://bugs.oxid-esales.com/view.php?id=3609)
+  - `OxidEsales\EshopCommunity\Application\Controller\Admin::sortAccessoriesList()` [#0003609](https://bugs.oxid-esales.com/view.php?id=3609)
+  - `OxidEsales\EshopCommunity\Application\Model\Article::getActionType` 
+  - `OxidEsales\EshopCommunity\Application\Model\Article::getStockStatusOnLoad` 
+  - `OxidEsales\EshopCommunity\Core\Base::dispatchEvent` 
 - Log a warnings for missused db method calls [PR-649](https://github.com/OXID-eSales/oxideshop_ce/pull/649)
 - New blocks:
   - `admin_module_sortlist` in `admin/tpl/module_sortlist.tpl` [PR-534](https://github.com/OXID-eSales/oxideshop_ce/pull/534)
@@ -113,6 +120,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\BeforeModuleDeactivationEvent`
     - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\FinalizingModuleActivationEvent`
     - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\FinalizingModuleDeactivationEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Event\ShopConfigurationChangedEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\Event\ShopModuleSettingChangedEvent`
+    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelDeleteEvent`
+    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelInsertEvent`
+    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelUpdateEvent`
+    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\AllCookiesRemovedEvent`
+    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\ApplicationExitEvent`
+    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\BasketChangedEvent`
+    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeHeadersSendEvent`
+    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeModelDeleteEvent`
+    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeModelUpdateEvent`
+    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeSessionStartEvent`
+    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\ViewRenderedEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Theme\Event\ThemeSettingChangedEvent`
 - Configuration options in `config.inc.php`
     - `passwordHashingAlgorithm` with default value: PASSWORD_BCRYPT
     - `passwordHashingBcryptCost` with default value: 10
@@ -174,7 +195,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix url protocol in version tags [PR-696](https://github.com/OXID-eSales/oxideshop_ce/pull/696)
 - Use correct value for backing up the base language in email [PR-692](https://github.com/OXID-eSales/oxideshop_ce/pull/692)
 - Read config parameter by getConfigParam, not by getRequestParam [#0006968](https://bugs.oxid-esales.com/view.php?id=6968) [PR-698](https://github.com/OXID-eSales/oxideshop_ce/pull/698)
-- Fix Bank code validation bug in Direct Debit [#0006939](https://bugs.oxid-esales.com/view.php?id=6939)
 
 ## [6.3.2] - 2019-01-22
 

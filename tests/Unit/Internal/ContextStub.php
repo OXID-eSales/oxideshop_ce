@@ -19,7 +19,7 @@ class ContextStub extends BasicContextStub implements ContextInterface
     /**
      * @var array
      */
-    private $requiredContactFormFields;
+    private $requiredContactFormFields = [];
 
     /**
      * @return string

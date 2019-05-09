@@ -92,7 +92,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aBadFiles = ['php', 'php3', 'php4', 'php5', 'phps', 'php6', 'jsp', 'cgi', 'cmf', 'exe'];
+    protected $_aBadFiles = ['php', 'php3', 'php4', 'php5', 'phps', 'php6', 'jsp', 'cgi', 'cmf', 'exe', 'phtml', 'pht', 'phar'];
 
     /**
      * Allowed to upload files in demo mode ( "white list")

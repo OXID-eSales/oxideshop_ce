@@ -332,8 +332,8 @@ class ShopSetUpTest extends FrontendTestCase
         $this->provideDatabaseParameters($host, $port, 'test', $user, $password);
         $this->click(self::DIRECTORY_LOGIN_STEP);
 
-        $this->waitForText("ERROR: Database not available and also cannot be created! - ERROR: Issue while inserting this SQL statements: ( CREATE DATABASE `test` ): SQLSTATE[42000]: Syntax error or access violation: 1044 Access denied for user '$user'@'$host' to database 'test'");
-        $this->waitForText("Database is going to be created and needed tables are written. Please provide some information:");
+        $this->assertTextPresent("ERROR: Database not available and also cannot be created! - ERROR: Issue while inserting this SQL statements: ( CREATE DATABASE `test` CHARACTER SET utf8 COLLATE utf8_general_ci; ): SQLSTATE[42000]: Syntax error or access violation: 1044 Access denied for user '$user'@'$host' to database 'test'");
+        $this->assertTextPresent("Database is going to be created and needed tables are written. Please provide some information:");
     }
 
     /**

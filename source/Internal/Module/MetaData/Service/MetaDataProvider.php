@@ -106,17 +106,19 @@ class MetaDataProvider implements MetaDataProviderInterface
         $sMetadataVersion = null;
         $aModule = null;
         include $this->filePath;
+        $metadataVersion = $sMetadataVersion;
+        $moduleData = $aModule;
 
-        $this->validateMetaDataFileVariables($sMetadataVersion, $aModule);
+        $this->validateMetaDataFileVariables($metadataVersion, $moduleData);
 
-        $normalizedMetaData = $this->metaDataNormalizer->normalizeData($aModule);
+        $normalizedMetaData = $this->metaDataNormalizer->normalizeData($moduleData);
         $normalizedMetaData[static::METADATA_ID] = $this->sanitizeMetaDataId($normalizedMetaData);
         if (isset($normalizedMetaData[static::METADATA_EXTEND])) {
             $normalizedMetaData[static::METADATA_EXTEND] = $this->sanitizeExtendedClasses($normalizedMetaData);
         }
 
         return [
-            static::METADATA_METADATA_VERSION => $sMetadataVersion,
+            static::METADATA_METADATA_VERSION => $metadataVersion,
             static::METADATA_MODULE_DATA      => $normalizedMetaData
         ];
     }

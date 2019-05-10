@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use oxRegistry;
 use oxDb;
 use stdClass;
@@ -56,8 +57,8 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $aRDFaPayments = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("ardfapayments");
 
         // Delete old mappings
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $oDb->execute("DELETE FROM oxobject2payment WHERE oxpaymentid = '" . \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid") . "' AND OXTYPE = 'rdfapayment'");
+        $oDb = DatabaseProvider::getDb();
+        $oDb->execute("DELETE FROM oxobject2payment WHERE oxpaymentid = " . $oDb->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid")) . " AND OXTYPE = 'rdfapayment'");
 
         // Save new mappings
         foreach ($aRDFaPayments as $sPayment) {
@@ -96,7 +97,7 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     public function getAssignedRDFaPayments()
     {
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $oDb = DatabaseProvider::getDb();
         $aRDFaPayments = [];
         $sSelect = 'select oxobjectid from oxobject2payment where oxpaymentid=' . $oDb->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid")) . ' and oxtype = "rdfapayment" ';
         $rs = $oDb->select($sSelect);

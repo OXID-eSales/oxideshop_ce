@@ -16,6 +16,7 @@ use Exception;
 use OxidEsales\Eshop\Core\Contract\AbstractUpdatableFields;
 use OxidEsales\Eshop\Application\Model\User\UserUpdatableFields;
 use OxidEsales\Eshop\Application\Model\User\UserShippingAddressUpdatableFields;
+use OxidEsales\EshopCommunity\Application\Model\User;
 
 // defining login/logout states
 define('USER_LOGIN_SUCCESS', 1);
@@ -683,6 +684,14 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $sPassword = $sPassword2 = $oUser->oxuser__oxpassword->value;
 
         try { // testing user input
+
+            // delete user if it is a guest user
+            if (isset($aInvAdress['oxuser__oxusername'])) {
+                if (!$this->deleteGuestUser($aInvAdress['oxuser__oxusername'])) {
+                    return;
+                }
+            }
+
             $oUser->changeUserData($sUserName, $sPassword, $sPassword2, $aInvAdress, $aDelAdress);
             // assigning to newsletter
             if (($blOptin = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('blnewssubscribed')) === null) {
@@ -875,5 +884,29 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         }
 
         return $address;
+    }
+
+    /**
+     * check if this user is guest user then delete user
+     *
+     * @param string $username
+     *
+     * @return bool
+     * @throws Exception
+     */
+    private function deleteGuestUser(string $username): bool
+    {
+        $user = oxNew(User::class);
+        $user->load($user->getIdByUserName($username));
+
+        if ($user) {
+            if (isset($user->oxuser__oxpassword->value) && empty($user->oxuser__oxpassword->value)) {
+                if (!$user->delete()) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }

@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use oxRegistry;
 use oxDb;
 use oxField;
@@ -128,6 +129,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     {
         parent::save();
 
+        $oDb = DatabaseProvider::getDb();
         $oConfig = $this->getConfig();
         $soxId = $this->getEditObjectId();
         $aParams = $oConfig->getRequestParameter("editval");
@@ -172,8 +174,8 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $oArticle->oxarticles__oxartnum->value != $aParams['oxarticles__oxartnum']
         ) {
             $sSelect = "select oxid from " . getViewName('oxarticles');
-            $sSelect .= " where oxartnum = '" . $aParams['oxarticles__oxartnum'] . "'";
-            $sSelect .= " and oxid != '" . $aParams['oxarticles__oxid'] . "'";
+            $sSelect .= " where oxartnum = " . $oDb->quote($aParams['oxarticles__oxartnum']) . "";
+            $sSelect .= " and oxid != " . $oDb->quote($aParams['oxarticles__oxid']) . "";
             if ($oArticle->assignRecord($sSelect)) {
                 $this->_aViewData["errorsavingatricle"] = 1;
             }
@@ -232,7 +234,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     protected function _resetCategoriesCounter($sArticleId)
     {
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $oDb = DatabaseProvider::getDb();
         $sQ = "select oxcatnid from oxobject2category where oxobjectid = " . $oDb->quote($sArticleId);
         $oRs = $oDb->select($sQ);
         if ($oRs !== false && $oRs->count() > 0) {
@@ -328,7 +330,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $this->resetContentCache();
 
             $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
-            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+            $oDb = DatabaseProvider::getDb();
 
             //copy variants
             $sQ = "select oxid from oxarticles where oxparentid = " . $oDb->quote($sOldId);
@@ -371,7 +373,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     protected function _copyCategories($sOldId, $newArticleId)
     {
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $oDb = DatabaseProvider::getDb();
 
         $sO2CView = getViewName('oxobject2category');
         $sQ = "select oxcatnid, oxtime from {$sO2CView} where oxobjectid = " . $oDb->quote($sOldId);
@@ -397,7 +399,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     protected function _copyAttributes($sOldId, $sNewId)
     {
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $oDb = DatabaseProvider::getDb();
 
         $sQ = "select oxid from oxobject2attribute where oxobjectid = " . $oDb->quote($sOldId);
         $oRs = $oDb->select($sQ);
@@ -424,7 +426,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     protected function _copyFiles($sOldId, $sNewId)
     {
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+        $oDb = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
 
         $sQ = "SELECT * FROM `oxfiles` WHERE `oxartid` = " . $oDb->quote($sOldId);
         $oRs = $oDb->select($sQ);
@@ -452,7 +454,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     protected function _copySelectlists($sOldId, $sNewId)
     {
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $oDb = DatabaseProvider::getDb();
 
         $sQ = "select oxselnid from oxobject2selectlist where oxobjectid = " . $oDb->quote($sOldId);
         $oRs = $oDb->select($sQ);
@@ -477,7 +479,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     protected function _copyCrossseling($sOldId, $sNewId)
     {
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $oDb = DatabaseProvider::getDb();
 
         $sQ = "select oxobjectid from oxobject2article where oxarticlenid = " . $oDb->quote($sOldId);
         $oRs = $oDb->select($sQ);
@@ -502,7 +504,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     protected function _copyAccessoires($sOldId, $sNewId)
     {
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $oDb = DatabaseProvider::getDb();
 
         $sQ = "select oxobjectid from oxaccessoire2article where oxarticlenid= " . $oDb->quote($sOldId);
         $oRs = $oDb->select($sQ);
@@ -703,7 +705,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     protected function formQueryForCopyingToCategory($newArticleId, $sUid, $sCatId, $sTime)
     {
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $oDb = DatabaseProvider::getDb();
         return "insert into oxobject2category (oxid, oxobjectid, oxcatnid, oxtime) " .
             "VALUES (" . $oDb->quote($sUid) . ", " . $oDb->quote($newArticleId) . ", " .
             $oDb->quote($sCatId) . ", " . $oDb->quote($sTime) . ") ";

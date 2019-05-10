@@ -129,6 +129,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     {
         parent::save();
 
+        $oDb = DatabaseProvider::getDb();
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $soxId = $this->getEditObjectId();
         $aParams = $oConfig->getRequestParameter("editval");

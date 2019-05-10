@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use oxRegistry;
 use oxDb;
 use oxField;
@@ -50,9 +51,9 @@ class DeliverySetRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\Pay
         $aRDFaDeliveries = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("ardfadeliveries");
 
         // Delete old mappings
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $oDb = DatabaseProvider::getDb();
         $sOxIdParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid");
-        $sSql = "DELETE FROM oxobject2delivery WHERE oxdeliveryid = '{$sOxIdParameter}' AND OXTYPE = 'rdfadeliveryset'";
+        $sSql = "DELETE FROM oxobject2delivery WHERE oxdeliveryid = " . $oDb->quote($sOxIdParameter) . " AND OXTYPE = 'rdfadeliveryset'";
         $oDb->execute($sSql);
 
         // Save new mappings
@@ -92,7 +93,7 @@ class DeliverySetRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\Pay
      */
     public function getAssignedRDFaDeliveries()
     {
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $oDb = DatabaseProvider::getDb();
         $aRDFaDeliveries = [];
         $sSelect = 'select oxobjectid from oxobject2delivery where oxdeliveryid=' . $oDb->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid")) . ' and oxtype = "rdfadeliveryset" ';
         $rs = $oDb->select($sSelect);

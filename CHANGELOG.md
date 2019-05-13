@@ -114,6 +114,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\PasswordSaltGenerator` will no longer be needed and removed completely
 - `\OxidEsales\EshopCommunity\Core\Sha512Hasher` will no longer be needed and removed completely
 
+## [6.3.4] - Unreleased
+
+### Added
+
+### Changed
+- Rename cust_lang.php files to cust_lang.php.dist
+  - `source/Application/views/admin/de/cust_lang.php.dist`
+  - `source/Application/views/admin/en/cust_lang.php.dist`
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
 ## [6.3.3] - 2019-04-16
 
 ### Fixed
@@ -567,6 +582,7 @@ See
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
 
+[6.3.4]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.3...b-6.1.x
 [6.3.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.2...v6.3.3
 [6.3.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.1...v6.3.2
 [6.3.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.0...v6.3.1

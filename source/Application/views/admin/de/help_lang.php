@@ -205,7 +205,7 @@ $aLang =  [
 'HELP_SHOP_CONFIG_DOWNLOAD_EXPIRATION_TIME'   => 'Geben Sie die Zeit in Stunden an, die der Downloadlink nach dem ersten Download gültig ist. Das ist die Standardeinstellung für alle Artikel.'.
                                                  'Sie können diesen Wert für jede Datei des Artikels unter Artikel verwalten -> Artikel -> Downloads ändern.',
 
-'HELP_SHOP_CONFIG_PARCELSERVICE'   			  => 'Bitte tragen Sie die Tracking-URL Ihres Versanddienstleisters ein. <i>##ID##</i> ist ein Platzhalter, welcher durch die jeweilige Sendungsnummer ersetzt wird.',
+'HELP_SHOP_CONFIG_PARCELSERVICE'              => 'Bitte tragen Sie die Tracking-URL Ihres Versanddienstleisters ein. <i>##ID##</i> ist ein Platzhalter, welcher durch die jeweilige Sendungsnummer ersetzt wird.',
 
 'HELP_SHOP_CONFIG_LOADREVIEWS'                => 'Benutzer können Artikel bewerten und Sterne-Ratings abgeben. Wenn die Einstellung aktiv ist, werden die bereits abgegebenen Bewertungen und Sterne-Ratings beim Artikel angezeigt. ' .
                                                  'Diese Einstellung kann die Performance des Shops beeinflussen.',

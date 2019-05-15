@@ -38,7 +38,7 @@ class ShopConfiguration
      *
      * @return ModuleConfiguration
      */
-    public function getModuleConfiguration(string $moduleId) : ModuleConfiguration
+    public function getModuleConfiguration(string $moduleId): ModuleConfiguration
     {
         if (array_key_exists($moduleId, $this->moduleConfigurations)) {
             return $this->moduleConfigurations[$moduleId];
@@ -47,9 +47,9 @@ class ShopConfiguration
     }
 
     /**
-     * @return array
+     * @return ModuleConfiguration[]
      */
-    public function getModuleConfigurations() : array
+    public function getModuleConfigurations(): array
     {
         return $this->moduleConfigurations;
     }

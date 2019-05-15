@@ -1,4 +1,3 @@
-
 services:
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface:
@@ -8,10 +7,5 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridge
-    autowire: true
-    public: true
-
-  OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\EnvironmentConfigurationBridgeInterface:
-    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\EnvironmentConfigurationBridge
     autowire: true
     public: true

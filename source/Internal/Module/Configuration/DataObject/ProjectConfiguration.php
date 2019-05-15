@@ -27,7 +27,7 @@ class ProjectConfiguration
     }
 
     /**
-     * @return array
+     * @return EnvironmentConfiguration[]
      */
     public function getEnvironmentConfigurations(): array
     {

@@ -61,12 +61,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `\OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeSessionStartEvent`
     - `\OxidEsales\EshopCommunity\Internal\ShopEvents\ViewRenderedEvent`
     - `\OxidEsales\EshopCommunity\Internal\Theme\Event\ThemeSettingChangedEvent`
-- Configuration options in `config.inc.php`
-    - `passwordHashingAlgorithm` with default value: PASSWORD_BCRYPT
-    - `passwordHashingBcryptCost` with default value: 10
-    - `passwordHashingArgon2MemoryCost` with default value: 1024;
-    - `passwordHashingArgon2TimeCost` with default value: 2;
-    - `passwordHashingArgon2Threads` with default value: 2;
 - Interface:
     - `\OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface` as the new default 
       for hashing passwords.

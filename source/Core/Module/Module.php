@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
+use DomainException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
@@ -13,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigura
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
-use Psr\Container\ContainerInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 
 /**
  * Module class.
@@ -88,24 +89,31 @@ class Module extends \OxidEsales\Eshop\Core\Base
     /**
      * Load module info
      *
-     * @param string $sModuleId Module ID
+     * @param string $moduleId
      *
      * @return bool
      */
-    public function load($sModuleId)
+    public function load($moduleId)
     {
-        $this->_aModule['id'] = $sModuleId;
+        try {
+            $this->_aModule['id'] = $moduleId;
 
-        $sModulePath = $this->getModuleFullPath($sModuleId);
-        $sMetadataPath = $sModulePath . "/metadata.php";
+            $container = ContainerFactory::getInstance()->getContainer();
+            $moduleConfiguration = $container->get(ModuleConfigurationDaoBridgeInterface::class)->get($moduleId);
+            $sMetadataPath = $this->getModuleFullPath($moduleId) . "/metadata.php";
 
-        if ($sModulePath && is_readable($sMetadataPath)) {
-            $this->includeModuleMetaData($sMetadataPath);
-            $this->_blRegistered = true;
-            $this->_blMetadata = true;
-            $this->_aModule['active'] = $this->isActive();
+            if (is_readable($sMetadataPath) && $moduleConfiguration) {
+                $this->_aModule = $this->convertModuleConfigurationToArray($moduleConfiguration);
+                $this->includeModuleMetaData($sMetadataPath);
 
-            return true;
+                $this->_blRegistered = true;
+                $this->_blMetadata = true;
+                $this->_aModule['active'] = $this->isActive();
+
+                return true;
+            }
+        } catch (DomainException $e) {
+            return false;
         }
 
         return false;
@@ -564,18 +572,11 @@ class Module extends \OxidEsales\Eshop\Core\Base
     protected function includeModuleMetaData($metadataPath)
     {
         include $metadataPath;
-        /**
-         * metadata.php should include a variable called $aModule, if this variable is not set,
-         * an empty array is assigned to self::aModule
-         */
-        if (!isset($aModule)) {
-            $aModule = [];
-        }
-        $this->setModuleData($aModule);
 
         /**
          * metadata.php should include a variable called $sMetadataVersion
          */
+
         if (isset($sMetadataVersion)) {
             $this->setMetaDataVersion($sMetadataVersion);
         }
@@ -643,5 +644,47 @@ class Module extends \OxidEsales\Eshop\Core\Base
     {
         $container = $this->getContainer();
         return $container->get(ShopConfigurationDaoBridgeInterface::class)->get();
+    }
+
+    /**
+     * Convert ModuleConfiguration to Array
+     *
+     * @param ModuleConfiguration $configuration
+     *
+     * @return array
+     */
+    private function convertModuleConfigurationToArray(ModuleConfiguration $configuration): array
+    {
+        $data = [
+            'id'          => $configuration->getId(),
+            'version'     => $configuration->getVersion(),
+            'title'       => $configuration->getTitle(),
+            'description' => $configuration->getDescription(),
+            'lang'        => $configuration->getLang(),
+            'thumbnail'   => $configuration->getThumbnail(),
+            'author'      => $configuration->getAuthor(),
+            'url'         => $configuration->getUrl(),
+            'email'       => $configuration->getEmail(),
+        ];
+
+        array_merge($data, $this->convertModuleSettingsToArray($configuration));
+
+        return $data;
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     *
+     * @return array
+     */
+    private function convertModuleSettingsToArray(ModuleConfiguration $moduleConfiguration): array
+    {
+        $data = [];
+
+        foreach ($moduleConfiguration->getSettings() as $setting) {
+            $data[$setting->getName()] = $setting->getValue();
+        }
+
+        return $data;
     }
 }

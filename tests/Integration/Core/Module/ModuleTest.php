@@ -164,4 +164,16 @@ class ModuleTest extends TestCase
         $fileSystem = $this->container->get('oxid_esales.symfony.file_system');
         $fileSystem->remove($this->container->get(ContextInterface::class)->getModulesPath() . '/oeTest/');
     }
+
+    public function testHasMetadataReturnsTrue()
+    {
+        $moduleId = 'with_metadata_v21';
+        $this->installModule($moduleId);
+        $this->activateModule($moduleId);
+
+        $module = oxNew(Module::class);
+        $module->load($moduleId);
+
+        $this->assertTrue($module->hasMetadata());
+    }
 }

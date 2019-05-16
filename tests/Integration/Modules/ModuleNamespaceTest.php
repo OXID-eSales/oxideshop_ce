@@ -385,50 +385,6 @@ class ModuleNamespaceTest extends BaseModuleTestCase
     }
 
     /**
-     * Test ModuleChainsGenerator::getModuleDirectoryByModuleId
-     */
-    public function testModuleChainsGenerator_getModuleDirectoryByModuleId()
-    {
-        $modulePaths = array('bla' => 'foo/bar', 'MyTestModule' => 'myvendor/mymodule');
-        $this->getConfig()->saveShopConfVar('aarr', 'aModulePaths', $modulePaths);
-
-        $utilsObject = new TestUtilsObject;
-        $chain = $utilsObject->getTheModuleChainsGenerator();
-
-        $this->assertEquals('urgs', $chain->getModuleDirectoryByModuleId('urgs'));
-        $this->assertEquals('foo/bar', $chain->getModuleDirectoryByModuleId('bla'));
-        $this->assertEquals('myvendor/mymodule', $chain->getModuleDirectoryByModuleId('MyTestModule'));
-
-        ##Beware the case
-        $this->assertEquals('myTestmodule', $chain->getModuleDirectoryByModuleId('myTestmodule'));
-    }
-
-    /**
-     * Test ModuleChainsGenerator::getDisabledModuleIds
-     */
-    public function testModuleChainsGenerator_getDisabledModuleIds()
-    {
-        $disabledModules = array('bla', 'foo', 'wahoo');
-        $this->getConfig()->saveShopConfVar('aarr', 'aDisabledModules', $disabledModules);
-
-        $utilsObject = new TestUtilsObject;
-        $chain = $utilsObject->getTheModuleChainsGenerator();
-        $this->assertEquals($disabledModules, $chain->getDisabledModuleIds());
-    }
-
-    /**
-     * Test ModuleChainsGenerator::getDisabledModuleIds
-     */
-    public function testModuleChainsGenerator_getDisabledModuleIds_NoneDisabled()
-    {
-        $this->getConfig()->saveShopConfVar('bool', 'aDisabledModules', false);
-
-        $utilsObject = new TestUtilsObject;
-        $chain = $utilsObject->getTheModuleChainsGenerator();
-        $this->assertEquals(array(), $chain->getDisabledModuleIds());
-    }
-
-    /**
      * @return array
      */
     public function providerTestModuleChainsGenerator_cleanModuleFromClassChain()

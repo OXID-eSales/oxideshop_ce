@@ -18,15 +18,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class Base
 {
     /**
-     * oxsession instance
-     *
-     * @deprecated since v6.4.0 (2019-05-17); This attribute will be removed completely at 7.0, use Registry to get session.
-     *
-     * @var \OxidEsales\Eshop\Core\Session
-     */
-    protected static $_oSession = null;
-
-    /**
      * oxrights instance
      *
      * @var oxrights
@@ -82,7 +73,7 @@ class Base
     }
 
     /**
-     * oxSession instance getter
+     * Session instance getter
      *
      * @deprecated since v6.4.0 (2019-05-17); This method will be removed completely. Use \OxidEsales\Eshop\Core\Registry::getSession().
      *
@@ -90,15 +81,11 @@ class Base
      */
     public function getSession()
     {
-        if (self::$_oSession == null) {
-            self::$_oSession = \OxidEsales\Eshop\Core\Registry::getSession();
-        }
-
-        return self::$_oSession;
+        return \OxidEsales\Eshop\Core\Registry::getSession();
     }
 
     /**
-     * oxSession instance setter
+     * Session instance setter
      *
      * @deprecated since v6.4.0 (2019-05-17); This method will be removed completely. Use \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session).
      *
@@ -106,7 +93,7 @@ class Base
      */
     public function setSession($session)
     {
-        self::$_oSession = $session;
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
     }
 
     /**

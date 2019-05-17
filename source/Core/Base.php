@@ -20,6 +20,8 @@ class Base
     /**
      * oxsession instance
      *
+     * @deprecated since v6.4.0 (2019-05-17); This attribute will be removed completely at 7.0, use Registry to get session.
+     *
      * @var \OxidEsales\Eshop\Core\Session
      */
     protected static $_oSession = null;
@@ -82,6 +84,8 @@ class Base
     /**
      * oxSession instance getter
      *
+     * @deprecated since v6.4.0 (2019-05-17); This method will be removed completely. Use \OxidEsales\Eshop\Core\Registry::getSession().
+     *
      * @return \OxidEsales\Eshop\Core\Session
      */
     public function getSession()
@@ -95,6 +99,8 @@ class Base
 
     /**
      * oxSession instance setter
+     *
+     * @deprecated since v6.4.0 (2019-05-17); This method will be removed completely. Use \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session).
      *
      * @param \OxidEsales\Eshop\Core\Session $session session object
      */

@@ -2225,7 +2225,7 @@ class ViewConfigTest extends \OxidTestCase
 
         /** @var oxViewConfig $viewConfig */
         $viewConfig = oxNew('oxViewConfig');
-        $viewConfig->setSession($session);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         $this->assertSame($token, $viewConfig->getSessionChallengeToken());
     }

@@ -106,6 +106,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `\OxidEsales\EshopCommunity\Application\Model\User::formQueryPartForSha512Password`
 - `\OxidEsales\EshopCommunity\Core\Base::setConfig`
 - `\OxidEsales\EshopCommunity\Core\Base::getConfig`
+- `\OxidEsales\EshopCommunity\Core\Base::$_oSession`
+- `\OxidEsales\EshopCommunity\Core\Base::setSession`
+- `\OxidEsales\EshopCommunity\Core\Base::getSession`
 - `\OxidEsales\EshopCommunity\Core\Email::$_oConfig`
 - `\OxidEsales\EshopCommunity\Core\Email::setConfig`
 - `\OxidEsales\EshopCommunity\Core\Email::getConfig`

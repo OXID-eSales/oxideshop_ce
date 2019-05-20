@@ -83,7 +83,7 @@ class ExceptionHandler
         if ($this->_iDebug || defined('OXID_PHP_UNIT')) {
             throw $exception;
         } else {
-            $this->displayOfflinePage();
+            \oxTriggerOfflinePageDisplay();
             $this->exitApplication();
         }
     }

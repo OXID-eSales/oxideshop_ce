@@ -417,9 +417,10 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _getWishListId()
     {
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
         $this->_sWishId = null;
         // check if we have to set it here
-        $oBasket = $this->getSession()->getBasket();
+        $oBasket = $session->getBasket();
         foreach ($oBasket->getContents() as $oBasketItem) {
             if ($this->_sWishId = $oBasketItem->getWishId()) {
                 // stop on first found

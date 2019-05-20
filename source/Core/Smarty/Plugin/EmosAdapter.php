@@ -426,8 +426,10 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
 
         switch ($sControllerName) {
             case 'user':
+                $session = \OxidEsales\Eshop\Core\Registry::getSession();
+
                 $sOption = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('option');
-                $sOption = (isset($sOption)) ? $sOption : $this->getSession()->getVariable('option');
+                $sOption = (isset($sOption)) ? $sOption : $session->getVariable('option');
 
                 if (isset($sOption) && array_key_exists('user_' . $sOption, $aContent)) {
                     $aContent['user'] = $aContent['user_' . $sOption];

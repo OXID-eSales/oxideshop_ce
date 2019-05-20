@@ -64,7 +64,9 @@ class AccountReviewController extends \OxidEsales\Eshop\Application\Controller\A
      */
     public function deleteReviewAndRating()
     {
-        if ($this->getSession()->checkSessionChallenge()) {
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+
+        if ($session->checkSessionChallenge()) {
             try {
                 $this->deleteReview();
                 $this->deleteRating();

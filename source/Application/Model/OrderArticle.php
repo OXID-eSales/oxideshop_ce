@@ -633,8 +633,8 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
             if ($myConfig->getConfigParam('blUseStock') &&
                 $myConfig->getConfigParam('blPsBasketReservationEnabled')
             ) {
-                $this->getSession()
-                    ->getBasketReservations()
+                $session = \OxidEsales\Eshop\Core\Registry::getSession();
+                $session->getBasketReservations()
                     ->commitArticleReservation(
                         $this->oxorderarticles__oxartid->value,
                         $this->oxorderarticles__oxamount->value

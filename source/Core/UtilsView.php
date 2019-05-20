@@ -147,7 +147,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
         //starting session if not yet started as all exception
         //messages are stored in session
-        $session = $this->getSession();
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
         if (!$session->getId() && !$session->isHeaderSent()) {
             $session->setForceNewSession();
             $session->start();

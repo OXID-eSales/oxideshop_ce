@@ -352,7 +352,8 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getSessionId()
     {
         if (($sValue = $this->getViewConfigParam('sessionid')) === null) {
-            $sValue = $this->getSession()->getId();
+            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $sValue = $session->getId();
             $this->setViewConfigParam('sessionid', $sValue);
         }
 
@@ -367,7 +368,8 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getHiddenSid()
     {
         if (($sValue = $this->getViewConfigParam('hiddensid')) === null) {
-            $sValue = $this->getSession()->hiddenSid();
+            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $sValue = $session->hiddenSid();
 
             // appending language info to form
             if (($sLang = \OxidEsales\Eshop\Core\Registry::getLang()->getFormLang())) {
@@ -1096,8 +1098,9 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getShowBasketTimeout()
     {
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
         return $this->getConfig()->getConfigParam('blPsBasketReservationEnabled')
-               && ($this->getSession()->getBasketReservations()->getTimeLeft() > 0);
+               && ($session->getBasketReservations()->getTimeLeft() > 0);
     }
 
     /**
@@ -1108,7 +1111,8 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getBasketTimeLeft()
     {
         if (!isset($this->_dBasketTimeLeft)) {
-            $this->_dBasketTimeLeft = $this->getSession()->getBasketReservations()->getTimeLeft();
+            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $this->_dBasketTimeLeft = $session->getBasketReservations()->getTimeLeft();
         }
 
         return $this->_dBasketTimeLeft;
@@ -1381,7 +1385,8 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getSessionChallengeToken()
     {
         if (\OxidEsales\Eshop\Core\Registry::getSession()->isSessionStarted()) {
-            $sessionChallengeToken = $this->getSession()->getSessionChallengeToken();
+            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $sessionChallengeToken = $session->getSessionChallengeToken();
         } else {
             $sessionChallengeToken = "";
         }
@@ -1511,5 +1516,18 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getConfig()
     {
         return \OxidEsales\Eshop\Core\Registry::getConfig();
+    }
+
+    /**
+     * Session instance getter
+     *
+     * @deprecated since b-dev (2019-05-20); This method will be removed completely. Extend your views accordingly and use
+     *             $this->setViewData('someVar', 'some Value'); to provide the data to your templates
+     *
+     * @return \OxidEsales\Eshop\Core\Session
+     */
+    public function getSession()
+    {
+        return \OxidEsales\Eshop\Core\Registry::getSession();
     }
 }

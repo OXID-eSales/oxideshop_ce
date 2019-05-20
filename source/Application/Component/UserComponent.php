@@ -151,6 +151,8 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     protected function _loadSessionUser()
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+
         $oUser = $this->getUser();
 
         // no session user
@@ -166,7 +168,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         // TODO: move this to a proper place
         if ($oUser->isLoadedFromCookie() && !$myConfig->getConfigParam('blPerfNoBasketSaving')) {
-            if ($oBasket = $this->getSession()->getBasket()) {
+            if ($oBasket = $session->getBasket()) {
                 $oBasket->load();
                 $oBasket->onUpdate();
             }
@@ -232,11 +234,11 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected function _afterLogin($oUser)
     {
-        $oSession = $this->getSession();
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
 
         // generating new session id after login
         if ($this->getLoginStatus() === USER_LOGIN_SUCCESS) {
-            $oSession->regenerateSessionId();
+            $session->regenerateSessionId();
         }
 
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
@@ -248,7 +250,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         }
 
         // recalc basket
-        if ($oBasket = $oSession->getBasket()) {
+        if ($oBasket = $session->getBasket()) {
             $oBasket->onUpdate();
         }
 
@@ -273,7 +275,8 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             if (!$this->isAdmin() && !\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blPerfNoBasketSaving')) {
                 //load basket from the database
                 try {
-                    if ($oBasket = $this->getSession()->getBasket()) {
+                    $session = \OxidEsales\Eshop\Core\Registry::getSession();
+                    if ($oBasket = $session->getBasket()) {
                         $oBasket->load();
                     }
                 } catch (Exception $oE) {
@@ -291,18 +294,20 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected function _afterLogout()
     {
-        \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable('paymentid');
-        \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable('sShipSet');
-        \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable('deladrid');
-        \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable('dynvalue');
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+
+        $session->deleteVariable('paymentid');
+        $session->deleteVariable('sShipSet');
+        $session->deleteVariable('deladrid');
+        $session->deleteVariable('dynvalue');
 
         // resetting & recalc basket
-        if (($oBasket = $this->getSession()->getBasket())) {
+        if (($oBasket = $session->getBasket())) {
             $oBasket->resetUserInfo();
             $oBasket->onUpdate();
         }
 
-        \OxidEsales\Eshop\Core\Registry::getSession()->delBasket();
+        $session->delBasket();
     }
 
     /**
@@ -572,12 +577,14 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function deleteShippingAddress()
     {
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+
         $request = oxNew(Request::class);
         $addressId = $request->getRequestParameter('oxaddressid');
 
         $address = oxNew(Address::class);
         $address->load($addressId);
-        if ($this->canUserDeleteShippingAddress($address) && $this->getSession()->checkSessionChallenge()) {
+        if ($this->canUserDeleteShippingAddress($address) && $session->checkSessionChallenge()) {
             $address->delete($addressId);
         }
     }
@@ -660,7 +667,9 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected function changeUserWithoutRedirect()
     {
-        if (!$this->getSession()->checkSessionChallenge()) {
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+
+        if (!$session->checkSessionChallenge()) {
             return;
         }
 
@@ -726,12 +735,12 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $sOrderRemark = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('order_remark', true);
 
         if ($sOrderRemark) {
-            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('ordrem', $sOrderRemark);
+            $session->setVariable('ordrem', $sOrderRemark);
         } else {
-            \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable('ordrem');
+            $session->deleteVariable('ordrem');
         }
 
-        if ($oBasket = $this->getSession()->getBasket()) {
+        if ($oBasket = $session->getBasket()) {
             $oBasket->setBasketUser(null);
             $oBasket->onUpdate();
         }

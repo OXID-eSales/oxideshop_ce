@@ -293,7 +293,8 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      */
     public function removeSid($sInput)
     {
-        $sSid = $this->getSession()->getId();
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $sSid = $session->getId();
 
         // remove sid from link
         $sOutput = str_replace("sid={$sSid}/", "", $sInput);
@@ -552,7 +553,8 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
     protected function _getHeapTableName()
     {
         // table name must not start with any digit
-        return "tmp_" . str_replace("0", "", md5($this->getSession()->getId()));
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        return "tmp_" . str_replace("0", "", md5($session->getId()));
     }
 
     /**

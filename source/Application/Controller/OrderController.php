@@ -147,7 +147,8 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
             $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
             if ($myConfig->getConfigParam('blPsBasketReservationEnabled')) {
-                $this->getSession()->getBasketReservations()->renewExpiration();
+                $session = \OxidEsales\Eshop\Core\Registry::getSession();
+                $session->getBasketReservations()->renewExpiration();
                 if (!$oBasket || ($oBasket && !$oBasket->getProductsCount())) {
                     \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($myConfig->getShopHomeUrl() . 'cl=basket', true, 302);
                 }
@@ -191,7 +192,8 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      */
     public function execute()
     {
-        if (!$this->getSession()->checkSessionChallenge()) {
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        if (!$session->checkSessionChallenge()) {
             return;
         }
 
@@ -208,7 +210,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
         }
 
         // get basket contents
-        $oBasket = $this->getSession()->getBasket();
+        $oBasket = $session->getBasket();
         if ($oBasket->getProductsCount()) {
             try {
                 $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
@@ -274,7 +276,8 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     {
         if ($this->_oBasket === null) {
             $this->_oBasket = false;
-            if ($oBasket = $this->getSession()->getBasket()) {
+            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            if ($oBasket = $session->getBasket()) {
                 $this->_oBasket = $oBasket;
             }
         }

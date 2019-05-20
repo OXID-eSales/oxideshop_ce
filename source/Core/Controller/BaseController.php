@@ -291,11 +291,12 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function getBelboonParam()
     {
-        if ($sBelboon = $this->getSession()->getVariable('belboon')) {
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        if ($sBelboon = $session->getVariable('belboon')) {
             return $sBelboon;
         }
         if (($sBelboon = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('belboon'))) {
-            $this->getSession()->setVariable('belboon', $sBelboon);
+            $session->setVariable('belboon', $sBelboon);
         }
 
         return $sBelboon;
@@ -587,10 +588,12 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
                 throw $exception;
             }
 
+            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+
             // building redirect path ...
             $header = ($className) ? "cl=$className&" : ''; // adding view name
             $header .= ($pageParams) ? "$pageParams&" : ''; // adding page params
-            $header .= $this->getSession()->sid(); // adding session Id
+            $header .= $session->sid(); // adding session Id
 
             $url = $myConfig->getCurrentShopUrl($this->isAdmin());
 
@@ -875,10 +878,10 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function getSidForWidget()
     {
-        $oSession = $this->getSession();
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
         $sid = null;
-        if (!$oSession->isActualSidInCookie()) {
-            $sid = $oSession->getId();
+        if (!$session->isActualSidInCookie()) {
+            $sid = $session->getId();
         }
 
         return $sid;

@@ -70,8 +70,8 @@ class UBaseTest extends \OxidTestCase
 
         oxDb::getDb()->execute('delete from oxcontents where oxloadid = "_testKeywordsIdentId" ');
 
-        $oUBase = oxNew('oxUbase');
-        $oUBase->getSession()->setBasket(null);
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $session->setBasket(null);
 
         oxUBaseHelper::resetComponentNames();
 
@@ -1501,9 +1501,10 @@ class UBaseTest extends \OxidTestCase
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('isBelowMinOrderPrice'));
         $oBasket->expects($this->once())->method('isBelowMinOrderPrice')->will($this->returnValue(true));
 
-        $oUBase = oxNew('oxUBase');
-        $oUBase->getSession()->setBasket($oBasket);
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $session->setBasket($oBasket);
 
+        $oUBase = oxNew('oxUBase');
         $oUBase->isLowOrderPrice();
         $this->assertTrue($oUBase->isLowOrderPrice());
     }

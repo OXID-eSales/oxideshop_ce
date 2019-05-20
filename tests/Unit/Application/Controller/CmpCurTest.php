@@ -18,14 +18,16 @@ class CmpCurTest extends \OxidTestCase
         $oCurView = oxNew('oxcmp_cur');
         $oCurView->setParent($oParentView);
 
-        $oCur = $oCurView->getSession()->getBasket()->getBasketCurrency();
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+
+        $oCur = $session->getBasket()->getBasketCurrency();
         $this->assertEquals(2, $oCur->decimal);
 
         // changing decimal percision from 2 => 1
         $this->getConfig()->setConfigParam("aCurrencies", array("EUR@ 1.00@ ,@ .@ ¤@ 1"));
         $oCurView->init();
 
-        $oCur = $oCurView->getSession()->getBasket()->getBasketCurrency();
+        $oCur = $session->getBasket()->getBasketCurrency();
         $this->assertEquals(1, $oCur->decimal);
     }
 }

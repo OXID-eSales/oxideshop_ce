@@ -379,7 +379,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
         if ($this->canUserAccountBeDeleted() && $user->delete()) {
             $this->accountDeletionStatus = true;
             $user->logout();
-            $session = $this->getSession();
+            $session = \OxidEsales\Eshop\Core\Registry::getSession();
             $session->destroy();
         }
     }
@@ -415,6 +415,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     private function canUserAccountBeDeleted()
     {
-        return $this->getSession()->checkSessionChallenge() && $this->isUserAllowedToDeleteOwnAccount();
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        return $session->checkSessionChallenge() && $this->isUserAllowedToDeleteOwnAccount();
     }
 }

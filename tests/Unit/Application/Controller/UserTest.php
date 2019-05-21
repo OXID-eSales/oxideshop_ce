@@ -182,12 +182,11 @@ class UserTest extends \OxidTestCase
     {
         $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', false);
 
-        $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations'));
-        $oS->expects($this->never())->method('getBasketReservations');
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations'));
+        $session->expects($this->never())->method('getBasketReservations');
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
-        $oU = $this->getMock(\OxidEsales\Eshop\Application\Controller\UserController::class, array('getSession'));
-        $oU->expects($this->any())->method('getSession')->will($this->returnValue($oS));
-
+        $oU = oxNew(\OxidEsales\Eshop\Application\Controller\UserController::class);
         $oU->render();
     }
 
@@ -198,11 +197,11 @@ class UserTest extends \OxidTestCase
         $oR = $this->getMock('stdclass', array('renewExpiration'));
         $oR->expects($this->once())->method('renewExpiration')->will($this->throwException(new Exception("call is ok")));
 
-        $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations'));
-        $oS->expects($this->once())->method('getBasketReservations')->will($this->returnValue($oR));
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations'));
+        $session->expects($this->once())->method('getBasketReservations')->will($this->returnValue($oR));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
-        $oU = $this->getMock(\OxidEsales\Eshop\Application\Controller\UserController::class, array('getSession'));
-        $oU->expects($this->any())->method('getSession')->will($this->returnValue($oS));
+        $oU = oxNew(\OxidEsales\Eshop\Application\Controller\UserController::class);
 
         try {
             $oU->render();
@@ -227,12 +226,12 @@ class UserTest extends \OxidTestCase
         $oB = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getProductsCount'));
         $oB->expects($this->once())->method('getProductsCount')->will($this->returnValue(0));
 
-        $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations', 'getBasket'));
-        $oS->expects($this->once())->method('getBasketReservations')->will($this->returnValue($oR));
-        $oS->expects($this->any())->method('getBasket')->will($this->returnValue($oB));
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations', 'getBasket'));
+        $session->expects($this->once())->method('getBasketReservations')->will($this->returnValue($oR));
+        $session->expects($this->any())->method('getBasket')->will($this->returnValue($oB));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
-        $oO = $this->getMock(\OxidEsales\Eshop\Application\Controller\UserController::class, array('getSession'));
-        $oO->expects($this->any())->method('getSession')->will($this->returnValue($oS));
+        $oO = oxNew(\OxidEsales\Eshop\Application\Controller\UserController::class);
 
         try {
             $oO->render();
@@ -252,12 +251,11 @@ class UserTest extends \OxidTestCase
         $oB = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('hasDownloadableProducts'));
         $oB->expects($this->once())->method('hasDownloadableProducts')->will($this->returnValue(true));
 
-        $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasket'));
-        $oS->expects($this->any())->method('getBasket')->will($this->returnValue($oB));
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasket'));
+        $session->expects($this->any())->method('getBasket')->will($this->returnValue($oB));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
-        $oO = $this->getMock(\OxidEsales\Eshop\Application\Controller\UserController::class, array('getSession'));
-        $oO->expects($this->any())->method('getSession')->will($this->returnValue($oS));
-
+        $oO = oxNew(\OxidEsales\Eshop\Application\Controller\UserController::class);
         $this->assertTrue($oO->isDownloadableProductWarning());
     }
 
@@ -266,12 +264,11 @@ class UserTest extends \OxidTestCase
         $myConfig = $this->getConfig();
         $myConfig->setConfigParam("blEnableDownloads", true);
 
-        $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasket'));
-        $oS->expects($this->any())->method('getBasket')->will($this->returnValue(false));
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasket'));
+        $session->expects($this->any())->method('getBasket')->will($this->returnValue(false));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
-        $oO = $this->getMock(\OxidEsales\Eshop\Application\Controller\UserController::class, array('getSession'));
-        $oO->expects($this->any())->method('getSession')->will($this->returnValue($oS));
-
+        $oO = oxNew(\OxidEsales\Eshop\Application\Controller\UserController::class);
         $this->assertFalse($oO->isDownloadableProductWarning());
     }
 
@@ -282,12 +279,11 @@ class UserTest extends \OxidTestCase
 
         $oB = oxNew('oxBasket');
 
-        $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasket'));
-        $oS->expects($this->any())->method('getBasket')->will($this->returnValue($oB));
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasket'));
+        $session->expects($this->any())->method('getBasket')->will($this->returnValue($oB));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
-        $oO = $this->getMock(\OxidEsales\Eshop\Application\Controller\UserController::class, array('getSession'));
-        $oO->expects($this->any())->method('getSession')->will($this->returnValue($oS));
-
+        $oO = oxNew(\OxidEsales\Eshop\Application\Controller\UserController::class);
         $this->assertFalse($oO->isDownloadableProductWarning());
     }
 

@@ -25,12 +25,11 @@ class VoucherSerieListTest extends \OxidTestCase
         oxTestModules::addFunction('oxvoucherserie', 'load', '{ return true; }');
         oxTestModules::addFunction('oxvoucherserie', 'deleteVoucherList', '{ return true; }');
 
-        $oSess = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
-        $oSess->expects($this->any())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
+        $session->expects($this->any())->method('checkSessionChallenge')->will($this->returnValue(true));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
-        $oView = $this->getMock($this->getProxyClassName('VoucherSerie_List'), array('getSession'));
-        $oView->expects($this->any())->method('getSession')->will($this->returnValue($oSess));
-
+        $oView = oxNew($this->getProxyClassName('VoucherSerie_List'));
         $oView->deleteEntry();
     }
 

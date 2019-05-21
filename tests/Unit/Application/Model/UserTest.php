@@ -2667,10 +2667,11 @@ class UserTest extends \OxidTestCase
         $oBasketItem->expects($this->once())->method('getWishId')->will($this->returnValue("testwishid"));
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->once())->method('getContents')->will($this->returnValue(array($oBasketItem)));
-        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasket'));
-        $oSession->expects($this->once())->method('getBasket')->will($this->returnValue($oBasket));
-        $oUserView = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getSession'));
-        $oUserView->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasket'));
+        $session->expects($this->once())->method('getBasket')->will($this->returnValue($oBasket));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
+
+        $oUserView = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $this->assertEquals("testwishid", $oUserView->UNITgetWishListId());
     }
 

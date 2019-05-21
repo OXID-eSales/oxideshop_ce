@@ -108,11 +108,11 @@ class UtilsTest extends \OxidTestCase
         $this->expectException(
             'Exception', 'Stop process before PHP exit() is called.'
         );
-        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("freeze"));
-        $oSession->expects($this->once())->method('freeze');
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("freeze"));
+        $session->expects($this->once())->method('freeze');
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
-        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array("getSession", "commitFileCache"));
-        $oUtils->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array("commitFileCache"));
         $oUtils->expects($this->once())
             ->method('commitFileCache')
             ->will($this->throwException(new Exception('Stop process before PHP exit() is called.')));
@@ -941,12 +941,12 @@ class UtilsTest extends \OxidTestCase
 
     public function testRedirect()
     {
-        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('freeze'));
-        $oSession->expects($this->once())->method('freeze');
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('freeze'));
+        $session->expects($this->once())->method('freeze');
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
-        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_simpleRedirect', 'getSession', 'showMessageAndExit'));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_simpleRedirect', 'showMessageAndExit'));
         $oUtils->expects($this->once())->method('_simpleRedirect')->with($this->equalTo('url?redirected=1'));
-        $oUtils->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
         $oUtils->redirect('url');
     }
 
@@ -968,13 +968,13 @@ class UtilsTest extends \OxidTestCase
      */
     public function testRedirectCodes($iCode, $sHeader)
     {
-        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('freeze'));
-        $oSession->expects($this->any())->method('freeze');
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('freeze'));
+        $session->expects($this->any())->method('freeze');
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         // test also any other to redirect only temporary
-        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_simpleRedirect', 'getSession', 'showMessageAndExit'));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_simpleRedirect', 'showMessageAndExit'));
         $oUtils->expects($this->once())->method('_simpleRedirect')->with($this->equalTo('url'), $this->equalTo($sHeader));
-        $oUtils->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
         $oUtils->redirect('url', false, $iCode);
     }
 
@@ -982,10 +982,9 @@ class UtilsTest extends \OxidTestCase
     {
         $this->setRequestParameter('redirected', '1');
 
-        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_simpleRedirect', '_addUrlParameters', 'getSession'));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_simpleRedirect', '_addUrlParameters'));
         $oUtils->expects($this->never())->method('_simpleRedirect');
         $oUtils->expects($this->never())->method('_addUrlParameters');
-        $oUtils->expects($this->never())->method('getSession');
         $oUtils->redirect('url');
 
     }

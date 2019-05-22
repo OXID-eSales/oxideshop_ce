@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Validator;
 
+use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapter;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\EventsModuleSettingValidator;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\ModuleEvents;
@@ -15,7 +16,7 @@ class EventsModuleSettingValidatorTest extends TestCase
 {
     public function testCanValidate()
     {
-        $validator = new EventsModuleSettingValidator();
+        $validator = $this->createValidator();
         
         $eventsModuleSetting = new ModuleSetting(ModuleSetting::EVENTS, []);
 
@@ -26,7 +27,7 @@ class EventsModuleSettingValidatorTest extends TestCase
 
     public function testCanNotValidate()
     {
-        $validator = new EventsModuleSettingValidator();
+        $validator = $this->createValidator();
 
         $moduleSettingCanNotBeValidated = new ModuleSetting('invalidSetting', []);
 
@@ -37,7 +38,7 @@ class EventsModuleSettingValidatorTest extends TestCase
 
     public function testValidate()
     {
-        $validator = new EventsModuleSettingValidator();
+        $validator = $this->createValidator();
 
         $eventsModuleSetting = new ModuleSetting(
             ModuleSetting::EVENTS,
@@ -55,13 +56,32 @@ class EventsModuleSettingValidatorTest extends TestCase
      */
     public function testValidateThrowsExceptionIfEventsDefinedAreNotCallable()
     {
-        $validator = new EventsModuleSettingValidator();
+        $validator = $this->createValidator();
 
         $eventsModuleSetting = new ModuleSetting(
             ModuleSetting::EVENTS,
             [
-                'onActivate'   => 'noCallableMethod',
-                'onDeactivate' => 'noCallableMethod'
+                'onActivate'   => 'SomeNamespace\\class::noCallableMethod',
+                'onDeactivate' => 'SomeNamespace\\class::noCallableMethod'
+            ]
+        );
+
+        $validator->validate($eventsModuleSetting, 'eventsTestModule', 1);
+    }
+
+    /**
+     * This is needed only for the modules which has non namespaced classes.
+     * This test MUST be removed when support for non namespaced modules will be dropped (metadata v1.*).
+     */
+    public function testDoNotValidateForNonNamespacedClasses()
+    {
+        $validator = $this->createValidator();
+
+        $eventsModuleSetting = new ModuleSetting(
+            ModuleSetting::EVENTS,
+            [
+                'onActivate'   => 'class::noCallableMethod',
+                'onDeactivate' => 'class::noCallableMethod'
             ]
         );
 
@@ -73,7 +93,7 @@ class EventsModuleSettingValidatorTest extends TestCase
      */
     public function testValidateThrowsExceptionIfNotAbleToValidateSetting()
     {
-        $validator = new EventsModuleSettingValidator();
+        $validator = $this->createValidator();
 
         $moduleSetting = new ModuleSetting(
             'SettingWhichIsNotAbleToBeValidated',
@@ -89,7 +109,7 @@ class EventsModuleSettingValidatorTest extends TestCase
      */
     public function testValidateDoesNotValidateSyntax($invalidEvent)
     {
-        $validator = new EventsModuleSettingValidator();
+        $validator = $this->createValidator();
 
         $eventsModuleSetting = new ModuleSetting(
             ModuleSetting::EVENTS,
@@ -105,5 +125,13 @@ class EventsModuleSettingValidatorTest extends TestCase
             [['invalidEvent'   => 'noCallableMethod']],
             [null]
         ];
+    }
+
+    /**
+     * @return EventsModuleSettingValidator
+     */
+    private function createValidator(): EventsModuleSettingValidator
+    {
+        return new EventsModuleSettingValidator(new ShopAdapter());
     }
 }

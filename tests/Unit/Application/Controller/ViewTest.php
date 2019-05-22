@@ -412,8 +412,8 @@ class ViewTest extends \OxidTestCase
 
         $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isSsl', 'getSslShopUrl', 'getShopUrl'));
         $config->setConfigParam('sAdminSSLURL', '');
-        $config->expects($this->once())->method('isSsl')->will($this->returnValue(true));
-        $config->expects($this->once())->method('getSslShopUrl')->will($this->returnValue('SSLshopurl/'));
+        $config->expects($this->any())->method('isSsl')->will($this->returnValue(true));
+        $config->expects($this->any())->method('getSslShopUrl')->will($this->returnValue('SSLshopurl/'));
         $config->expects($this->never())->method('getShopUrl');
         $config->setConfigParam('sAdminDir', 'admin');
 

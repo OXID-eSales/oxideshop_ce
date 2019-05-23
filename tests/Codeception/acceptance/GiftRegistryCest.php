@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
+use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\Codeception\Step\Start;
 use OxidEsales\Codeception\Module\Translation\Translator;
@@ -15,6 +16,7 @@ class GiftRegistryCest
     /**
      * @group myAccount
      * @group giftRegistry
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -82,6 +84,7 @@ class GiftRegistryCest
     /**
      * @group myAccount
      * @group giftRegistry
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -154,6 +157,7 @@ class GiftRegistryCest
     /**
      * @group myAccount
      * @group giftRegistry
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */

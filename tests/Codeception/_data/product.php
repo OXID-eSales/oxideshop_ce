@@ -5,6 +5,7 @@
  */
 
 return [
+        'oxarticles' => [
     '10014' => [
         'OXID' => '10014',
         'OXSHOPID' => 1,
@@ -478,5 +479,5 @@ return [
         'OXMINDELTIME' => 0,
         'OXMAXDELTIME' => 1,
         'OXDELTIMEUNIT' => 'WEEK',
-    ],
+    ],]
 ];

@@ -6,13 +6,20 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
+use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Step\Start;
 use OxidEsales\Codeception\Module\Translation\Translator;
 
 class UserAccountCest
 {
+    public function _before(AcceptanceTester $I)
+    {
+        $this->prepareAdditionalDataForUser($I);
+    }
+
     /**
      * @group myAccount
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -40,6 +47,7 @@ class UserAccountCest
 
     /**
      * @group myAccount
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -91,6 +99,7 @@ class UserAccountCest
 
     /**
      * @group myAccount
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -122,6 +131,7 @@ class UserAccountCest
 
     /**
      * @group myAccount
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -153,12 +163,13 @@ class UserAccountCest
 
         //change password back to original
         $userAddressPage->openUserBillingAddressForm()
-            ->changeEmail("example_test@oxid-esales.dev", $userData['userPassword'])
+            ->changeEmail($userData['userLoginName'], $userData['userPassword'])
             ->logoutUser();
     }
 
     /**
      * @group myAccount
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -186,6 +197,7 @@ class UserAccountCest
 
     /**
      * @group myAccount
+     * @group frontend
      *
      * @after cleanUpUserData
      *
@@ -199,6 +211,7 @@ class UserAccountCest
         /** Change Germany and Belgium to non EU country to skip online VAT validation. */
         $I->updateInDatabase('oxcountry', ["oxvatstatus" => 0], ["OXID" => 'a7c40f632e04633c9.47194042']);
         $I->updateInDatabase('oxcountry', ["oxvatstatus" => 0], ["OXID" => 'a7c40f631fc920687.20179984']);
+        $I->updateInDatabase('oxcountry', ["OXACTIVE" => 1], ["OXTITLE_1" => 'Belgium']);
 
         $existingUserData = $this->getExistingUserData();
 
@@ -233,6 +246,7 @@ class UserAccountCest
 
     /**
      * @group myAccount
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -328,5 +342,16 @@ class UserAccountCest
         /** Change Germany and Belgium data to original. */
         $I->updateInDatabase('oxcountry', ["oxvatstatus" => 1], ["OXID" => 'a7c40f632e04633c9.47194042']);
         $I->updateInDatabase('oxcountry', ["oxvatstatus" => 1], ["OXID" => 'a7c40f631fc920687.20179984']);
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
+    private function prepareAdditionalDataForUser(AcceptanceTester $I)
+    {
+        $states = Fixtures::get('oxstates');
+        foreach ($states as $state) {
+            $I->haveInDatabase('oxstates', $state);
+        }
     }
 }

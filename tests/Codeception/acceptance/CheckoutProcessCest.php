@@ -13,13 +13,16 @@ class CheckoutProcessCest
 {
     /**
      * @group basketfrontend
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
     public function checkBasketFlyout(AcceptanceTester $I)
     {
-        $basket = new Basket($I);
         $I->wantToTest('basket flyout');
+        $basket = new Basket($I);
+        $I->updateConfigInDatabase('iNewBasketItemMessage', 0, 'select');
+        $I->updateConfigInDatabase('blDisableNavBars', false, 'bool');
 
         $homePage = $I->openShop();
 
@@ -63,18 +66,20 @@ class CheckoutProcessCest
 
         $breadCrumbName = Translator::translate("PAY");
         $paymentCheckoutPage->seeOnBreadCrumb($breadCrumbName);
+        $I->updateConfigInDatabase('blDisableNavBars', true, 'bool');
     }
     /**
      * @group basketfrontend
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
     public function buyOutOfStockNotBuyableProductDuringOrder(AcceptanceTester $I)
     {
-        $basket = new Basket($I);
         $I->wantToTest('if no fatal errors or exceptions are thrown, but an error message is shown, if the same 
         product was sold out by other user during the checkout');
 
+        //$I->updateConfigInDatabase('blUseStock', false, 'bool');
         $userData = $this->getExistingUserData();
 
         $homePage = $I->openShop()->loginUser($userData['userLoginName'], $userData['userPassword']);
@@ -94,7 +99,7 @@ class CheckoutProcessCest
         ];
 
         //add Product to basket
-        /** @var \OxidEsales\Codeception\Page\Checkout\Basket $basketPage */
+        $basket = new Basket($I);
         $basket->addProductToBasket($basketItem1['id'], 5);
         $basket->addProductToBasket($basketItem2['id'], 1);
         $basketPage = $homePage->openMiniBasket()
@@ -152,6 +157,7 @@ class CheckoutProcessCest
 
     /**
      * @group basketfrontend
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */

@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
+use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\Codeception\Module\Translation\Translator;
 
@@ -14,6 +15,7 @@ class ProductDetailsPageCest
     /**
      * @group product
      * @group search
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -91,12 +93,12 @@ class ProductDetailsPageCest
     /**
      * @group product
      * @group productSuggestion
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
     public function sendProductSuggestionEmail(AcceptanceTester $I)
     {
-        $productNavigation = new ProductNavigation($I);
         $I->wantTo('send the product suggestion email');
 
         $productData = [
@@ -111,14 +113,16 @@ class ProductDetailsPageCest
             'sender_name' => '',
             'sender_email' => '',
         ];
+        $userData = $this->getExistingUserData();
         $suggestionEmailData = [
             'recipient_name' => 'Test User',
             'recipient_email' => 'example@oxid-esales.dev',
             'sender_name' => 'user',
-            'sender_email' => 'example_test@oxid-esales.dev',
+            'sender_email' => $userData['userLoginName'],
         ];
 
         //open details page
+        $productNavigation = new ProductNavigation($I);
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
         $I->see($productData['title']);
 
@@ -132,12 +136,12 @@ class ProductDetailsPageCest
     /**
      * @group product
      * @group priceAlarm
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
     public function sendProductPriceAlert(AcceptanceTester $I)
     {
-        $productNavigation = new ProductNavigation($I);
         $I->wantToTest('product price alert functionality');
 
         $productData = [
@@ -148,11 +152,13 @@ class ProductDetailsPageCest
         ];
 
         //open details page
+        $productNavigation = new ProductNavigation($I);
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
         $I->see($productData['title']);
         $I->see(Translator::translate('PRICE_ALERT'));
 
-        $detailsPage->sendPriceAlert('example_test@oxid-esales.dev', '99.99');
+        $userData = $this->getExistingUserData();
+        $detailsPage->sendPriceAlert($userData['userLoginName'], '99.99');
         $I->see(Translator::translate('PAGE_DETAILS_THANKYOUMESSAGE3').' 99,99 € '.Translator::translate('PAGE_DETAILS_THANKYOUMESSAGE4'));
         $I->see($productData['title']);
 
@@ -168,6 +174,7 @@ class ProductDetailsPageCest
     /**
      * @group product
      * @group productVariants
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -176,6 +183,7 @@ class ProductDetailsPageCest
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('product variant selection and order in details page');
 
+        $I->updateConfigInDatabase('iNewBasketItemMessage', 0, 'select');
         $productData = [
             'id' => 1002,
             'title' => 'Test product 2 [EN] šÄßüл',
@@ -241,6 +249,7 @@ class ProductDetailsPageCest
     /**
      * @group product
      * @group accessories
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -277,13 +286,15 @@ class ProductDetailsPageCest
     /**
      * @group product
      * @group similarProducts
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
     public function checkSimilarProducts(AcceptanceTester $I)
     {
-        $productNavigation = new ProductNavigation($I);
         $I->wantToTest('similar products on details page');
+        $this->prepareAttributeDataForProduct($I);
+        $productNavigation = new ProductNavigation($I);
 
         $productData = [
             'id' => 1000,
@@ -313,6 +324,7 @@ class ProductDetailsPageCest
     /**
      * @group product
      * @group crossSelling
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -351,6 +363,7 @@ class ProductDetailsPageCest
      * @group main
      * @group product
      * @group productVariants
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -447,6 +460,7 @@ class ProductDetailsPageCest
     /**
      * @group productList
      * @group productVariants
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -473,6 +487,7 @@ class ProductDetailsPageCest
     //TODO: Do we really need this test?
     /**
      * @group main
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -551,6 +566,7 @@ class ProductDetailsPageCest
     /**
      * @group product
      * @group productVariants
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -611,6 +627,7 @@ class ProductDetailsPageCest
     /**
      * @group product
      * @group productPrice
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -618,6 +635,9 @@ class ProductDetailsPageCest
     {
         $I->wantToTest('product price A');
 
+        $I->updateConfigInDatabase('iNewBasketItemMessage', 0, 'select');
+        $I->updateConfigInDatabase('blPerfNoBasketSaving', true, 'bool');
+        $I->updateConfigInDatabase('blUseStock', false, 'bool');
         $I->updateConfigInDatabase('blOverrideZeroABCPrices', '1');
 
         $userData = $this->getExistingUserData();
@@ -688,6 +708,7 @@ class ProductDetailsPageCest
     /**
      * @group product
      * @group productPrice
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -695,6 +716,9 @@ class ProductDetailsPageCest
     {
         $I->wantToTest('product price C and amount price discount added to this price');
 
+        $I->updateConfigInDatabase('iNewBasketItemMessage', 0, 'select');
+        $I->updateConfigInDatabase('blPerfNoBasketSaving', true, 'bool');
+        $I->updateConfigInDatabase('blUseStock', false, 'bool');
         $userData = $this->getExistingUserData();
 
         $this->preparePriceGroupDataForUser($I, $userData['userId'], 'oxidpricec');
@@ -748,6 +772,7 @@ class ProductDetailsPageCest
     /**
      * @group product
      * @group productPrice
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -755,6 +780,9 @@ class ProductDetailsPageCest
     {
         $I->wantToTest('product price B');
 
+        $I->updateConfigInDatabase('iNewBasketItemMessage', 0, 'select');
+        $I->updateConfigInDatabase('blPerfNoBasketSaving', false, 'bool');
+        $I->updateConfigInDatabase('blUseStock', false, 'bool');
         $userData = $this->getExistingUserData();
 
         $this->preparePriceGroupDataForUser($I, $userData['userId'], 'oxidpriceb');
@@ -800,6 +828,7 @@ class ProductDetailsPageCest
      * @group product
      * @group productPrice
      * @group productAmountPrice
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -907,5 +936,20 @@ class ProductDetailsPageCest
         ];
         $I->haveInDatabase('oxprice2article', $data);
 
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
+    private function prepareAttributeDataForProduct(AcceptanceTester $I)
+    {
+        $attributes = Fixtures::get('oxattribute');
+        foreach ($attributes as $attribute) {
+            $I->haveInDatabase('oxattribute', $attribute);
+        }
+        $product2Attributes = Fixtures::get('oxobject2attribute');
+        foreach ($product2Attributes as $product2Attribute) {
+            $I->haveInDatabase('oxobject2attribute', $product2Attribute);
+        }
     }
 }

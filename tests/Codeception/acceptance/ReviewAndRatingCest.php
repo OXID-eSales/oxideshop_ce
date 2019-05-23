@@ -14,6 +14,7 @@ class ReviewAndRatingCest
     /**
      * @group myAccount
      * @group reviewAndRatings
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -44,6 +45,7 @@ class ReviewAndRatingCest
     /**
      * @group myAccount
      * @group reviewAndRatings
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */

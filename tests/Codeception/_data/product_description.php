@@ -5,6 +5,7 @@
  */
 
 return [
+        'oxartextends' => [
     '10014' => [
         'OXID' => '10014',
         'OXLONGDESC' => '',
@@ -34,5 +35,5 @@ return [
         'OXID' => '1000',
         'OXLONGDESC' => '<p>Test product 0 long description [DE]</p>',
         'OXLONGDESC_1' => '<p>Test product 0 long description [EN] šÄßüл</p>'
-    ],
+    ],]
 ];

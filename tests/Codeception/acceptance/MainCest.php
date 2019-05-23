@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
+use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Page\Home;
 use OxidEsales\Codeception\Page\Account\UserOrderHistory;
 use OxidEsales\Codeception\Module\Translation\Translator;
@@ -21,6 +22,7 @@ class MainCest
 
     /**
      * TODO: Should it be without translations?
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -49,10 +51,16 @@ class MainCest
         $I->waitForElement('h1', 10);
         $I->see(Translator::translate('LOGIN'), 'h1');
 
-        $I->fillField($orderHistoryPage->loginUserNameField,'example_test@oxid-esales.dev');
-        $I->fillField($orderHistoryPage->loginUserPasswordField,'useruser');
+        $userData = $this->getExistingUserData();
+        $I->fillField($orderHistoryPage->loginUserNameField, $userData['userLoginName']);
+        $I->fillField($orderHistoryPage->loginUserPasswordField, $userData['userPassword']);
         $I->click($orderHistoryPage->loginButton);
 
         $I->see(Translator::translate('ORDER_HISTORY'), 'h1');
+    }
+
+    private function getExistingUserData()
+    {
+        return \Codeception\Util\Fixtures::get('existingUser');
     }
 }

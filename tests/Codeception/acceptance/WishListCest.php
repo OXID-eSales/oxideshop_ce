@@ -15,6 +15,7 @@ class WishListCest
     /**
      * @group myAccount
      * @group wishList
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -75,6 +76,7 @@ class WishListCest
     /**
      * @group myAccount
      * @group wishList
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */

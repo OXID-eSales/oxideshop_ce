@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
+use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Step\Start;
 use OxidEsales\Codeception\Step\UserRegistration;
@@ -14,9 +15,20 @@ use OxidEsales\Codeception\Step\UserRegistrationInCheckout;
 
 class UserRegistrationCest
 {
+    public function _before(AcceptanceTester $I)
+    {
+        $this->prepareAdditionalDataForUser($I);
+    }
+
+    public function _after(AcceptanceTester $I)
+    {
+        $I->updateInDatabase('oxcountry', ["OXACTIVE" => 0], ["OXTITLE_1" => 'Belgium']);
+    }
+
     /**
      * @group main
      * @group registration
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -41,6 +53,7 @@ class UserRegistrationCest
 
     /**
      * @group registration
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -75,6 +88,7 @@ class UserRegistrationCest
 
     /**
      * @group registration
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -87,6 +101,11 @@ class UserRegistrationCest
         $I->openShop();
 
         // prepare user data
+
+        $I->updateConfigInDatabase('iNewBasketItemMessage', 0, 'select');
+        $I->updateConfigInDatabase('blPerfNoBasketSaving', true, 'bool');
+        $I->updateConfigInDatabase('blUseStock', false, 'bool');
+
         $userId = '2';
         $userLoginData = $this->getUserLoginData($userId);
         $userData = $this->getUserData($userId);
@@ -123,6 +142,7 @@ class UserRegistrationCest
 
     /**
      * @group registration
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -166,14 +186,15 @@ class UserRegistrationCest
 
     /**
      * @group registration
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
     public function createBasketUserAccountWithoutRegistrationTwice(AcceptanceTester $I)
     {
+        $I->wantTo('create user account without registration twice in the checkout process');
         $basket = new Basket($I);
         $checkout = new UserRegistrationInCheckout($I);
-        $I->wantTo('create user account without registration twice in the checkout process');
 
         // prepare user data
         $userId = '4';
@@ -223,6 +244,7 @@ class UserRegistrationCest
 
     /**
      * @group registration
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -282,6 +304,7 @@ class UserRegistrationCest
 
     /**
      * @group registration
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -332,6 +355,7 @@ class UserRegistrationCest
 
     /**
      * @group registration
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -375,6 +399,7 @@ class UserRegistrationCest
 
     /**
      * @group registration
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -516,5 +541,17 @@ class UserRegistrationCest
                 'oxcountry' => $deliveryAddressData['countryId'],
             ]
         );
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     */
+    private function prepareAdditionalDataForUser(AcceptanceTester $I)
+    {
+        $states = Fixtures::get('oxstates');
+        foreach ($states as $state) {
+            $I->haveInDatabase('oxstates', $state);
+        }
+        $I->updateInDatabase('oxcountry', ["OXACTIVE" => 1], ["OXTITLE_1" => 'Belgium']);
     }
 }

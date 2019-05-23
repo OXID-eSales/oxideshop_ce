@@ -6,14 +6,22 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
+use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\Codeception\Step\Start;
 use OxidEsales\Codeception\Module\Translation\Translator;
 
 class ProductCompareCest
 {
+
+    public function _before(AcceptanceTester $I)
+    {
+        $this->prepareAttributeDataForProduct($I);
+    }
+
     /**
      * @group myAccount
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -59,6 +67,7 @@ class ProductCompareCest
 
     /**
      * @group myAccount
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -166,6 +175,7 @@ class ProductCompareCest
 
     /**
      * @group myAccount
+     * @group frontend
      *
      * @param AcceptanceTester $I
      */
@@ -217,4 +227,18 @@ class ProductCompareCest
         return \Codeception\Util\Fixtures::get('existingUser');
     }
 
+    /**
+     * @param AcceptanceTester $I
+     */
+    private function prepareAttributeDataForProduct(AcceptanceTester $I)
+    {
+        $attributes = Fixtures::get('oxattribute');
+        foreach ($attributes as $attribute) {
+            $I->haveInDatabase('oxattribute', $attribute);
+        }
+        $product2Attributes = Fixtures::get('oxobject2attribute');
+        foreach ($product2Attributes as $product2Attribute) {
+            $I->haveInDatabase('oxobject2attribute', $product2Attribute);
+        }
+    }
 }

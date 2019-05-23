@@ -34,3 +34,6 @@ modules:
         - \OxidEsales\Codeception\Module\Translation\TranslationsModule:
             shop_path: '%SHOP_SOURCE_PATH%'
             paths: 'Application/views/flow'
+extensions:
+    enabled:
+        - OxidEsales\EshopCommunity\Tests\Codeception\Group\Frontend

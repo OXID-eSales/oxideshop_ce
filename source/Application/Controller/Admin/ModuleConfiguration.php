@@ -232,6 +232,9 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
                         if ($moduleSetting['type'] === 'aarr') {
                             $value = $this->_multilineToAarray($value);
                         }
+                        if ($moduleSetting['type'] === 'bool') {
+                            $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+                        }
                         $shopModuleSettingValues[$key]['value'] = $value;
                     }
                 }

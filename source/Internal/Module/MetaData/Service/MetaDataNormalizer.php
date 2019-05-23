@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Service;
 
-use is_string;
+use function is_string;
 
 /**
  * @internal
@@ -31,6 +31,7 @@ class MetaDataNormalizer implements MetaDataNormalizerInterface
 
         if (isset($normalizedMetaData[MetaDataProvider::METADATA_SETTINGS])) {
             $normalizedMetaData[MetaDataProvider::METADATA_SETTINGS] = $this->convertModuleSettingConstraintsToArray($normalizedMetaData[MetaDataProvider::METADATA_SETTINGS]);
+            $normalizedMetaData[MetaDataProvider::METADATA_SETTINGS] = $this->convertBooleanSettingsToRealBoolean($normalizedMetaData[MetaDataProvider::METADATA_SETTINGS]);
         }
 
         if (isset($normalizedMetaData[MetaDataProvider::METADATA_TITLE])) {
@@ -53,6 +54,21 @@ class MetaDataNormalizer implements MetaDataNormalizerInterface
         foreach ($metadataModuleSettings as $key => $setting) {
             if (isset($setting['constraints'])) {
                 $metadataModuleSettings[$key]['constraints'] = explode('|', $setting['constraints']);
+            }
+        }
+
+        return $metadataModuleSettings;
+    }
+
+    /**
+     * @param array $metadataModuleSettings
+     * @return array
+     */
+    private function convertBooleanSettingsToRealBoolean(array $metadataModuleSettings): array
+    {
+        foreach ($metadataModuleSettings as $key => $setting) {
+            if (isset($setting['type'], $setting['value']) && $setting['type'] === 'bool') {
+                $metadataModuleSettings[$key]['value'] = filter_var($setting['value'], FILTER_VALIDATE_BOOLEAN);
             }
         }
 

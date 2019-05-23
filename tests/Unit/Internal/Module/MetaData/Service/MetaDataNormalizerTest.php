@@ -1,5 +1,4 @@
 <?php declare(strict_types=1);
-
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,11 +9,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData\Service;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataNormalizer;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class MetaDataNormalizerTest
- *
- * @package OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData\Service
- */
 class MetaDataNormalizerTest extends TestCase
 {
     public function testNormalizeMetaData()
@@ -149,6 +143,30 @@ class MetaDataNormalizerTest extends TestCase
                 'settings' => [
                     ['constraints' => ['1', '2', '3']],
                     ['constraints' => ['le', 'la', 'les']],
+                ]
+            ],
+            (new MetaDataNormalizer())->normalizeData($metadata)
+        );
+    }
+
+    public function testNormalizerBooleanSettingsToRealBoolean()
+    {
+        $metadata = [
+            'settings' => [
+                ['type' => 'bool', 'value' => 'true'],
+                ['type' => 'bool', 'value' => 'false'],
+                ['type' => 'bool', 'value' => true],
+                ['type' => 'bool', 'value' => false],
+            ]
+        ];
+
+        $this->assertSame(
+            [
+                'settings' => [
+                    ['type' => 'bool', 'value' => true],
+                    ['type' => 'bool', 'value' => false],
+                    ['type' => 'bool', 'value' => true],
+                    ['type' => 'bool', 'value' => false],
                 ]
             ],
             (new MetaDataNormalizer())->normalizeData($metadata)

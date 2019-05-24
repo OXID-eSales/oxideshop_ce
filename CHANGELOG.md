@@ -151,6 +151,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Use error_404_handler in article list controller in place of outdated 404 handling [PR-643](https://github.com/OXID-eSales/oxideshop_ce/pull/643)
+- Fix indents in config.inc.php.dist [PR-527](https://github.com/OXID-eSales/oxideshop_ce/pull/527)
 
 ## [6.2.2] 2019-02-21
 

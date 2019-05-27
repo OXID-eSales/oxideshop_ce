@@ -284,7 +284,7 @@ class ShopControlTest extends \OxidTestCase
         $this->assertTrue($aViewData["Errors"]["default"][0] instanceof ExceptionToDisplay);
 
         /**
-         * Although no exception is thrown, the underlying error will be logged in EXCEPTION_LOG.txt
+         * Although no exception is thrown, the underlying error will be logged in oxideshop.log
          */
         $expectedExceptionClass = \OxidEsales\Eshop\Core\Exception\SystemComponentException::class;
         $this->assertLoggedException($expectedExceptionClass);

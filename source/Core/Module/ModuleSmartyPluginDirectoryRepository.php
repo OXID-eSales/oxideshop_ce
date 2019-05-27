@@ -77,6 +77,9 @@ class ModuleSmartyPluginDirectoryRepository
     }
 
     /**
+     * @deprecated since v6.4.0 (2019-05-24); Module smarty plugins directory are stored in project configuration file now.
+     *             Use appropriate Dao to save them.
+     *
      * @param EshopModuleSmartyPluginDirectories $moduleSmartyPluginDirectories
      */
     public function save(EshopModuleSmartyPluginDirectories $moduleSmartyPluginDirectories)

@@ -558,7 +558,7 @@ class ViewConfigTest extends \OxidTestCase
         $this->assertEquals('', $viewConfig->getModulePath('test1', '/out/blocks/non_existing_template.tpl'));
 
         /**
-         * Although no exception is thrown, the underlying error will be logged in EXCEPTION_LOG.txt
+         * Although no exception is thrown, the underlying error will be logged in oxideshop.log
          */
         $expectedExceptionClass = \OxidEsales\Eshop\Core\Exception\FileException::class;
         $this->assertLoggedException($expectedExceptionClass);

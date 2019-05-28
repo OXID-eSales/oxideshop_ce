@@ -6,6 +6,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
+use OxidEsales\Eshop\Application\Model\Order;
 
 class OrderarticlelistTest extends \OxidTestCase
 {
@@ -20,16 +21,16 @@ class OrderarticlelistTest extends \OxidTestCase
     protected function setup()
     {
         parent::setUp();
-        $this->_oOrderArticle = oxNew('oxorderarticle');
-        $this->_oOrderArticle->setId('_testOrderArticleId');
-        $this->_oOrderArticle->oxorderarticles__oxartid = new oxField('_testArticleId', oxField::T_RAW);
-        $this->_oOrderArticle->oxorderarticles__oxorderid = new oxField('_testOrderId', oxField::T_RAW);
-        $this->_oOrderArticle->save();
-
-        $oOrder = oxNew('oxorder');
+        $oOrder = oxNew(Order::class);
         $oOrder->setId('_testOrderId');
         $oOrder->oxorder__oxuserid = new oxField('oxdefaultadmin', oxField::T_RAW);
         $oOrder->save();
+
+        $this->_oOrderArticle = oxNew('oxorderarticle');
+        $this->_oOrderArticle->setId('_testOrderArticleId');
+        $this->_oOrderArticle->oxorderarticles__oxartid = new oxField('_testArticleId', oxField::T_RAW);
+        $this->_oOrderArticle->oxorderarticles__oxorderid = new oxField($oOrder->getId());
+        $this->_oOrderArticle->save();
 
         $oArticle = oxNew('oxArticle');
         $oArticle->setId('_testArticleId');

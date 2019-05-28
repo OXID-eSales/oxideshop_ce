@@ -6,6 +6,8 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
+use oxfield;
+use OxidEsales\Eshop\Core\Field;
 use \oxRegistry;
 use \oxTestModules;
 
@@ -211,6 +213,7 @@ class ArticleFilesTest extends \OxidTestCase
 
         $oOrderArticle = oxNew('oxOrderArticle');
         $oOrderArticle->setId('_orderArticleId');
+        $oOrderArticle->oxorderarticles__oxorderid = new Field($oOrder->getId());
         $oOrderArticle->save();
 
         oxTestModules::addFunction('oxfile', '_deleteFile', '{ return true; }');

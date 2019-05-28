@@ -7,6 +7,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
 use \oxDb;
+use OxidEsales\Eshop\Core\Field;
 
 class OrderfilelistTest extends \OxidTestCase
 {
@@ -18,6 +19,8 @@ class OrderfilelistTest extends \OxidTestCase
      */
     protected function setUp()
     {
+        parent::setUp();
+
         $oOrder = oxNew('oxOrder');
         $oOrder->setId('_orderId_1');
         $oOrder->oxorder__oxuserid = new oxField('_userId');
@@ -33,12 +36,14 @@ class OrderfilelistTest extends \OxidTestCase
         $oOrderArticle->setId('_orderArticleId_1');
         $oOrderArticle->oxorderarticles__oxtitle = new oxField('title');
         $oOrderArticle->oxorderarticles__oxartnum = new oxField('artnum');
+        $oOrderArticle->oxorderarticles__oxorderid = new Field($oOrder->getId());
         $oOrderArticle->save();
 
         $oOrderArticle = oxNew('oxOrderArticle');
         $oOrderArticle->setId('_orderArticleId_2');
         $oOrderArticle->oxorderarticles__oxtitle = new oxField('title');
         $oOrderArticle->oxorderarticles__oxartnum = new oxField('artnum');
+        $oOrderArticle->oxorderarticles__oxorderid = new Field($oOrder->getId());
         $oOrderArticle->save();
 
         $oOrderFile1 = oxNew('oxOrderFile');
@@ -66,8 +71,6 @@ class OrderfilelistTest extends \OxidTestCase
         $oOrderFile4->setShopId('_shopId');
         $oOrderFile4->setFile('_fileName_2', '_fileId_2', 10, 24, 12);
         $oOrderFile4->save();
-
-        parent::setUp();
     }
 
     /**

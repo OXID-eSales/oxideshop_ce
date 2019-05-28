@@ -114,6 +114,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\Email::setConfig`
 - `\OxidEsales\EshopCommunity\Core\Email::getConfig`
 - `blDoNotDisableModuleOnError` config option
+- `OrderArticle::$_aOrderCache`
 
 ## [6.3.4] - 2019-05-24
 

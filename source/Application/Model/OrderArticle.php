@@ -7,19 +7,16 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use OxidEsales\EshopCommunity\Application\Model\Contract\ArticleInterface;
-use oxRegistry;
-use oxField;
-use oxDb;
 
 /**
  * Order article manager.
  * Performs copying of article.
- *
  */
 class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements ArticleInterface
 {
     /**
-     * Order cache
+     * Order cache.
+     * @deprecated since v6.4.0 (2019-05-29); This static property will not be used anymore.
      */
     protected static $_aOrderCache = [];
 

@@ -15,6 +15,8 @@ use oxDb;
 use oxEmail;
 use oxField;
 use oxGroups;
+use OxidEsales\Eshop\Application\Model\Order;
+use OxidEsales\Eshop\Core\Field;
 use OxidEsales\EshopCommunity\Application\Model\RssFeed;
 use oxLinks;
 use oxList;
@@ -968,11 +970,16 @@ class UtfTest extends \OxidTestCase
             $fieldsToCheck[] = 'oxorderarticles__oxerpstatus';
         }
 
+        $order = oxNew(Order::class);
+        $order->setId('_orderArticleId');
+        $order->save();
+
         $orderArticle = oxNew('oxOrderArticle');
         $orderArticle->setId('_testOrder');
         foreach ($fieldsToCheck as $fieldName) {
             $orderArticle->{$fieldName} = new oxField($value);
         }
+        $orderArticle->oxorderarticles__oxorderid = new Field($order->getId());
         $orderArticle->save();
 
         $orderArticle = oxNew('oxOrderArticle');

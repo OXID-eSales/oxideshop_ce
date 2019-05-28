@@ -461,6 +461,7 @@ class OrderTest extends \OxidTestCase
         $oOrder = oxNew('oxOrder');
         $oOrder->setId("_testOrderId");
         $oOrder->oxorder__oxshopid = new oxField($sShopId);
+        $oOrder->save();
 
         // test order products
         $oOrderProd = oxNew('oxOrderArticle');
@@ -471,6 +472,7 @@ class OrderTest extends \OxidTestCase
         $oOrderProd->oxorderarticles__oxstorno = new oxField(0);
         $oOrderProd->save();
 
+        $oOrder->setOrderArticleList(null);
         $oOrder->save();
 
         // canceling order
@@ -2631,10 +2633,14 @@ class OrderTest extends \OxidTestCase
 
     public function testSaveOrderSavesOrderArticles()
     {
+        $order = oxNew(Order::class);
+        $order->setId('_testOrderId2');
+        $order->save();
+
         $oOrderArticle = oxNew('oxOrderArticle');
         $oOrderArticle->setId('_testOrderArticleId');
         $oOrderArticle->oxorderarticles__oxartid = new oxField('1126', oxField::T_RAW);
-        $oOrderArticle->oxorderarticles__oxorderid = new oxField('_testOrderId2', oxField::T_RAW);
+        $oOrderArticle->oxorderarticles__oxorderid = new oxField($order->getId(), oxField::T_RAW);
         $oOrderArticle->oxorderarticles__oxamount = new oxField('3', oxField::T_RAW);
         $oOrderArticle->save();
 

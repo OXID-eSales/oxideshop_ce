@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal;
 
 use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
 
 /**
@@ -15,9 +16,13 @@ use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBu
  */
 class TestContainerFactory
 {
-    public function create(): SymfonyContainerBuilder
+    public function create(BasicContextInterface $basicContext = null): SymfonyContainerBuilder
     {
-        $containerBuilder = new ContainerBuilder(new BasicContext());
+        if ($basicContext == null) {
+            $containerBuilder = new ContainerBuilder(new BasicContext());
+        } else {
+            $containerBuilder = new ContainerBuilder($basicContext);
+        }
         $container = $containerBuilder->getContainer();
 
         $container = $this->setAllServicesAsPublic($container);

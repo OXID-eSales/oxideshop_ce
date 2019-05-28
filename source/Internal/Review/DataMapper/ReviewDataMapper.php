@@ -6,14 +6,17 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Review\DataMapper;
 
+use OxidEsales\EshopCommunity\Internal\Common\DataMapper\DynamicDataMapper;
 use OxidEsales\EshopCommunity\Internal\Common\DataMapper\EntityMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Review\DataObject\Review;
+use OxidEsales\EshopCommunity\Internal\Utility\LegacyServiceInterface;
 
 /**
  * @internal
  */
-class ReviewDataMapper implements EntityMapperInterface
+class ReviewDataMapper extends DynamicDataMapper implements EntityMapperInterface
 {
+
     /**
      * @param Review $object
      * @param array  $data
@@ -31,6 +34,8 @@ class ReviewDataMapper implements EntityMapperInterface
             ->setType($data['OXTYPE'])
             ->setCreatedAt($data['OXTIMESTAMP']);
 
+        $this->mapDynamicProperties($object, $data);
+
         return $object;
     }
 
@@ -41,7 +46,7 @@ class ReviewDataMapper implements EntityMapperInterface
      */
     public function getData($object)
     {
-        return [
+        return array_merge([
             'OXID'          => $object->getId(),
             'OXRATING'      => $object->getRating(),
             'OXTEXT'        => $object->getText(),
@@ -49,7 +54,7 @@ class ReviewDataMapper implements EntityMapperInterface
             'OXUSERID'      => $object->getUserId(),
             'OXTYPE'        => $object->getType(),
             'OXTIMESTAMP'   => $object->getCreatedAt(),
-        ];
+        ], $this->getDataDynamicProperties($object));
     }
 
     /**

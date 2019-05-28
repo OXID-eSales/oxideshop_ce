@@ -24,6 +24,8 @@ class BasicContext implements BasicContextInterface
 
     const GENERATED_PROJECT_FILE_NAME = 'generated_project.yaml';
 
+    const CONFIGURABLE_PROJECT_FILE_NAME = 'configurable_project.yaml';
+
     /**
      * @var Facts
      */
@@ -44,6 +46,14 @@ class BasicContext implements BasicContextInterface
     public function getGeneratedProjectFilePath(): string
     {
         return Path::join($this->getSourcePath(), static::GENERATED_PROJECT_FILE_NAME);
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfigurableProjectFilePath(): string
+    {
+        return Path::join($this->getSourcePath(), static::CONFIGURABLE_PROJECT_FILE_NAME);
     }
 
     /**

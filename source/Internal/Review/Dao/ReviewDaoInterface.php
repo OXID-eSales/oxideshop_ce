@@ -28,4 +28,13 @@ interface ReviewDaoInterface
      * @param Review $review
      */
     public function delete(Review $review);
+
+    /**
+     * Returns the id of the Review object
+     *
+     * @param Review $review
+     * @return string
+     */
+    public function save(Review $review);
+
 }

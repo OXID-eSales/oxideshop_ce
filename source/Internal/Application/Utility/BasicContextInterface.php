@@ -25,6 +25,11 @@ interface BasicContextInterface
     /**
      * @return string
      */
+    public function getConfigurableProjectFilePath(): string;
+
+    /**
+     * @return string
+     */
     public function getSourcePath(): string;
 
     /**

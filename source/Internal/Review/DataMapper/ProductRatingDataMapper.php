@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Review\DataMapper;
 
+use OxidEsales\EshopCommunity\Internal\Common\DataMapper\DynamicDataMapper;
 use OxidEsales\EshopCommunity\Internal\Common\DataMapper\EntityMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Review\DataObject\ProductRating;
 
@@ -14,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Review\DataObject\ProductRating;
  */
 class ProductRatingDataMapper implements EntityMapperInterface
 {
+
     /**
      * @param ProductRating $object
      * @param array         $data
@@ -26,7 +28,6 @@ class ProductRatingDataMapper implements EntityMapperInterface
             ->setProductId($data['OXID'])
             ->setRatingAverage($data['OXRATING'])
             ->setRatingCount($data['OXRATINGCNT']);
-
         return $object;
     }
 
@@ -37,11 +38,11 @@ class ProductRatingDataMapper implements EntityMapperInterface
      */
     public function getData($object)
     {
-        return [
+        return array_merge([
             'OXID'          => $object->getProductId(),
             'OXRATING'      => $object->getRatingAverage(),
             'OXRATINGCNT'   => $object->getRatingCount(),
-        ];
+        ]);
     }
 
     /**

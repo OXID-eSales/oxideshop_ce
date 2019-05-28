@@ -1,0 +1,3 @@
+imports:
+  - { resource: include1.yaml }
+  - { resource: include2.yaml }

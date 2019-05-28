@@ -6,7 +6,9 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Review\Dao;
 
+use OxidEsales\EshopCommunity\Internal\Common\Dao\DynamicDataObjectDao;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Common\DataMapper\DynamicDataMapper;
 use OxidEsales\EshopCommunity\Internal\Common\DataMapper\EntityMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Review\DataObject\ProductRating;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\InvalidObjectIdDaoException;
@@ -22,9 +24,9 @@ class ProductRatingDao implements ProductRatingDaoInterface
     private $queryBuilderFactory;
 
     /**
-     * @var EntityMapperInterface
+     * @var EntityMapperInterface|DynamicDataMapper
      */
-    private $mapper;
+    protected $mapper;
 
     /**
      * @param QueryBuilderFactoryInterface $queryBuilderFactory
@@ -48,8 +50,9 @@ class ProductRatingDao implements ProductRatingDaoInterface
             ->update('oxarticles')
             ->set('OXRATING', ':OXRATING')
             ->set('OXRATINGCNT', ':OXRATINGCNT')
-            ->where('OXID = :OXID')
-            ->setParameters($this->mapper->getData($productRating));
+            ->where('OXID = :OXID');
+        $queryBuilder->setParameters($this->mapper->getData($productRating));
+
 
         $queryBuilder->execute();
     }
@@ -65,11 +68,11 @@ class ProductRatingDao implements ProductRatingDaoInterface
 
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
-            ->select([
+            ->select(array_merge([
                 'OXID',
                 'OXRATING',
                 'OXRATINGCNT'
-            ])
+            ]))
             ->from('oxarticles')
             ->where('oxid = :productId')
             ->setMaxResults(1)

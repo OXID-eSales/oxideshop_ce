@@ -10,10 +10,12 @@ use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Application\Service\ProjectYamlImportService;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\DataObjectExtension;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\GraphQlTypePass;
 use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\DependencyInjection\AddConsoleCommandPass;
+use Symfony\Component\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
 use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
@@ -49,6 +51,8 @@ class ContainerBuilder
     public function getContainer(): SymfonyContainerBuilder
     {
         $symfonyContainer = new SymfonyContainerBuilder();
+        $symfonyContainer->registerExtension(new DataObjectExtension());
+        $symfonyContainer->addCompilerPass(new ExtensionCompilerPass());
         $symfonyContainer->addCompilerPass(new RegisterListenersPass(EventDispatcherInterface::class));
         $symfonyContainer->addCompilerPass(new GraphQlTypePass());
         $symfonyContainer->addCompilerPass(new AddConsoleCommandPass());
@@ -78,10 +82,15 @@ class ContainerBuilder
      */
     private function loadProjectServices(SymfonyContainerBuilder $symfonyContainer)
     {
+        $loader = new YamlFileLoader($symfonyContainer, new FileLocator());
         try {
             $this->cleanupProjectYaml();
-            $loader = new YamlFileLoader($symfonyContainer, new FileLocator());
             $loader->load($this->context->getGeneratedProjectFilePath());
+        } catch (FileLocatorFileNotFoundException $exception) {
+            // In case project file not found, do nothing.
+        }
+        try {
+            $loader->load($this->context->getConfigurableProjectFilePath());
         } catch (FileLocatorFileNotFoundException $exception) {
             // In case project file not found, do nothing.
         }
@@ -92,7 +101,7 @@ class ContainerBuilder
      */
     private function cleanupProjectYaml()
     {
-        $projectYamlDao = new ProjectYamlDao(new BasicContext());
+        $projectYamlDao = new ProjectYamlDao($this->context);
         $yamlImportService = new ProjectYamlImportService($projectYamlDao);
         $yamlImportService->removeNonExistingImports();
     }

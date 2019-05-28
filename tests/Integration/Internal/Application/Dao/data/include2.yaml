@@ -1,0 +1,3 @@
+oxid_dataobject_extension:
+  - {daokey: OxidEsales\EshopCommunity\Internal\Review\Dao\ReviewDaoInterface,
+     additionaltimestamp: timestamp}

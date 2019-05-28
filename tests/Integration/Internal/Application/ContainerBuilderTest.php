@@ -8,6 +8,8 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Application;
 
 use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use OxidEsales\Facts\Edition\EditionSelector;
 use PHPUnit\Framework\TestCase;
 
@@ -16,8 +18,8 @@ class ContainerBuilderTest extends TestCase
     public function testWhenCeServicesLoaded()
     {
         $context = $this->makeContextStub();
-        $context->method('getEdition')->willReturn(EditionSelector::COMMUNITY);
-        $context->method('getGeneratedProjectFilePath')->willReturn('not_existing.yaml');
+        $context->setEdition(EditionSelector::COMMUNITY);
+        $context->setGeneratedProjectFilePath("nonexiting.yaml");
         $container = $this->makeContainer($context);
 
         $this->assertSame('CE service!', $container->get('oxid_esales.tests.internal.dummy_executor')->execute());
@@ -26,8 +28,8 @@ class ContainerBuilderTest extends TestCase
     public function testWhenPeOverwritesMainServices()
     {
         $context = $this->makeContextStub();
-        $context->method('getEdition')->willReturn(EditionSelector::PROFESSIONAL);
-        $context->method('getGeneratedProjectFilePath')->willReturn('not_existing.yaml');
+        $context->setEdition(EditionSelector::PROFESSIONAL);
+        $context->setGeneratedProjectFilePath("nonexiting.yaml");
         $container = $this->makeContainer($context);
 
         $this->assertSame('Service overwriting for PE!', $container->get('oxid_esales.tests.internal.dummy_executor')->execute());
@@ -36,8 +38,8 @@ class ContainerBuilderTest extends TestCase
     public function testWhenEeOverwritesMainServices()
     {
         $context = $this->makeContextStub();
-        $context->method('getEdition')->willReturn(EditionSelector::ENTERPRISE);
-        $context->method('getGeneratedProjectFilePath')->willReturn('not_existing.yaml');
+        $context->setEdition(EditionSelector::ENTERPRISE);
+        $context->setGeneratedProjectFilePath("nonexiting.yaml");
         $container = $this->makeContainer($context);
 
         $this->assertSame('Service overwriting for EE!', $container->get('oxid_esales.tests.internal.dummy_executor')->execute());
@@ -46,8 +48,8 @@ class ContainerBuilderTest extends TestCase
     public function testWhenProjectOverwritesMainServices()
     {
         $context = $this->makeContextStub();
-        $context->method('getEdition')->willReturn(EditionSelector::COMMUNITY);
-        $context->method('getGeneratedProjectFilePath')->willReturn(__DIR__ . '/Fixtures/Project/' . BasicContext::GENERATED_PROJECT_FILE_NAME);
+        $context->setEdition(EditionSelector::COMMUNITY);
+        $context->setGeneratedProjectFilePath(__DIR__ . '/Fixtures/Project/' . BasicContext::GENERATED_PROJECT_FILE_NAME);
         $container = $this->makeContainer($context);
 
         $this->assertSame('Service overwriting for Project!', $container->get('oxid_esales.tests.internal.dummy_executor')->execute());
@@ -56,18 +58,18 @@ class ContainerBuilderTest extends TestCase
     public function testWhenProjectOverwritesEditions()
     {
         $context = $this->makeContextStub();
-        $context->method('getEdition')->willReturn(EditionSelector::ENTERPRISE);
-        $context->method('getGeneratedProjectFilePath')->willReturn(__DIR__ . '/Fixtures/Project/' . BasicContext::GENERATED_PROJECT_FILE_NAME);
+        $context->setEdition(EditionSelector::ENTERPRISE);
+        $context->setGeneratedProjectFilePath(__DIR__ . '/Fixtures/Project/' . BasicContext::GENERATED_PROJECT_FILE_NAME);
         $container = $this->makeContainer($context);
 
         $this->assertSame('Service overwriting for Project!', $container->get('oxid_esales.tests.internal.dummy_executor')->execute());
     }
 
     /**
-     * @param BasicContext $context
+     * @param ContextInterface $context
      * @return \Symfony\Component\DependencyInjection\Container
      */
-    private function makeContainer(BasicContext $context): \Symfony\Component\DependencyInjection\Container
+    private function makeContainer(ContextInterface $context): \Symfony\Component\DependencyInjection\Container
     {
         $containerBuilder = new ContainerBuilder($context);
         $container = $containerBuilder->getContainer();
@@ -76,14 +78,14 @@ class ContainerBuilderTest extends TestCase
     }
 
     /**
-     * @return BasicContext|\PHPUnit\Framework\MockObject\MockObject
+     * @return ContextStub
      */
     private function makeContextStub()
     {
-        $context = $this->getMockBuilder(BasicContext::class)->getMock();
-        $context->method('getCommunityEditionSourcePath')->willReturn(__DIR__ . '/Fixtures/CE');
-        $context->method('getProfessionalEditionRootPath')->willReturn(__DIR__ . '/Fixtures/PE');
-        $context->method('getEnterpriseEditionRootPath')->willReturn(__DIR__ . '/Fixtures/EE');
+        $context = new ContextStub();
+        $context->setCommunityEditionSourcePath(__DIR__ . '/Fixtures/CE');
+        $context->setProfessionalEditionRootPath(__DIR__ . '/Fixtures/PE');
+        $context->setEnterpriseEditionRootPath(__DIR__ . '/Fixtures/EE');
         return $context;
     }
 }

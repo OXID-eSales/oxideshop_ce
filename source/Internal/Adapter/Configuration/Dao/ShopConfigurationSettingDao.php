@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Common\Dao\DynamicDataObjectDao;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
@@ -16,7 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 /**
  * @internal
  */
-class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterface
+class ShopConfigurationSettingDao extends DynamicDataObjectDao implements ShopConfigurationSettingDaoInterface
 {
     /**
      * @var QueryBuilderFactoryInterface

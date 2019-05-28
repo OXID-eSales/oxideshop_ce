@@ -6,15 +6,83 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Review\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewBridge;
-use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Review\Service\UserReviewService;
-use OxidEsales\Eshop\Application\Model\Review;
+use OxidEsales\EshopCommunity\Internal\Review\Dao\ReviewDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Review\DataObject\Review;
 use OxidEsales\Eshop\Core\Field;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
+use PHPUnit\Framework\TestCase;
 
-class ReviewDaoTest extends \PHPUnit\Framework\TestCase
+class ReviewDaoTest extends TestCase
 {
+
+    /** @var ReviewDaoInterface */
+    private $reviewDao;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->cleanupDatabase();
+
+    }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+        $this->cleanupDatabase();
+    }
+
+    private function cleanupDatabase()
+    {
+        foreach ($this->getReviewDao()->getReviewsByUserId('user1') as $review) {
+            $this->getReviewDao()->delete($review);
+        }
+    }
+
+    public function testInsert()
+    {
+
+        $review = $this->getReviewDao()->create();
+        $review->setRating(5);
+        $review->setText("Some review text");
+        $review->setType("whatever");
+        $review->setUserId("user1");
+        $review->setObjectId("some OXID");
+
+        $id = $this->getReviewDao()->save($review);
+
+        $reviews = $this->getReviewDao()->getReviewsByUserId('user1');
+        $this->assertEquals(sizeof($reviews), 1);
+        $this->assertEquals($id, $reviews[0]->getId());
+
+
+
+    }
+
+    public function testUpdate()
+    {
+
+        $review = new Review();
+        $review->setRating(5);
+        $review->setText("Some review text");
+        $review->setType("whatever");
+        $review->setUserId("user1");
+        $review->setObjectId("some OXID");
+
+        $this->getReviewDao()->save($review);
+
+        $reviews = $this->getReviewDao()->getReviewsByUserId('user1');
+        $this->assertEquals(sizeof($reviews), 1);
+        $reviews[0]->setText("Some other text");
+
+        $this->getReviewDao()->save($reviews[0]);
+
+        $reviews = $this->getReviewDao()->getReviewsByUserId('user1');
+        $this->assertEquals(sizeof($reviews), 1);
+        $this->assertEquals('Some other text', $reviews[0]->getText());
+
+
+    }
+
     public function testGetReviewsByUserId()
     {
         $this->createTestReviewsForGetRatingsByUserIdTest();
@@ -48,12 +116,12 @@ class ReviewDaoTest extends \PHPUnit\Framework\TestCase
 
     private function createTestReviewsForDeleteReviewTest()
     {
-        $review = oxNew(Review::class);
+        $review = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
         $review->setId('id1');
         $review->oxreviews__oxuserid = new Field('user1');
         $review->save();
 
-        $review = oxNew(Review::class);
+        $review = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
         $review->setId('id2');
         $review->oxreviews__oxuserid = new Field('user1');
         $review->save();
@@ -61,31 +129,36 @@ class ReviewDaoTest extends \PHPUnit\Framework\TestCase
 
     private function createTestReviewsForGetRatingsByUserIdTest()
     {
-        $review = oxNew(Review::class);
+        $review = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
         $review->setId('id1');
         $review->oxreviews__oxuserid = new Field('user1');
         $review->save();
 
-        $review = oxNew(Review::class);
+        $review = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
         $review->setId('id2');
         $review->oxreviews__oxuserid = new Field('user1');
         $review->save();
 
-        $review = oxNew(Review::class);
+        $review = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
         $review->setId('id3');
         $review->oxreviews__oxuserid = new Field('userNotMatched');
         $review->save();
     }
 
-    private function getReviewDao()
+    /**
+     * @return ReviewDaoInterface
+     * @throws \Exception
+     */
+    private function getReviewDao(): ReviewDaoInterface
     {
-        $bridge = ContainerFactory::getInstance()->getContainer()->get(UserReviewBridgeInterface::class);
-        $serviceProperty = new \ReflectionProperty(UserReviewBridge::class, 'userReviewService');
-        $serviceProperty->setAccessible(true);
-        $service = $serviceProperty->getValue($bridge);
-        $daoProperty = new \ReflectionProperty(UserReviewService::class, 'reviewDao');
-        $daoProperty->setAccessible(true);
+        if ($this->reviewDao !== null) {
+            return $this->reviewDao;
+        }
+        $testContainerFactory = new TestContainerFactory();
+        $container = $testContainerFactory->create();
+        $container->compile();
 
-        return $daoProperty->getValue($service);
+        $this->reviewDao = $container->get(ReviewDaoInterface::class);
+        return $this->reviewDao;
     }
 }

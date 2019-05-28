@@ -7,15 +7,24 @@
 namespace OxidEsales\EshopCommunity\Internal\Review\Dao;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Common\Dao\DynamicDataObjectDao;
+use OxidEsales\EshopCommunity\Internal\Common\Dao\DynamicDataObjectDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Common\DataMapper\EntityMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Review\DataObject\Review;
+use OxidEsales\EshopCommunity\Internal\Utility\LegacyServiceInterface;
 
 /**
  * @internal
  */
-class ReviewDao implements ReviewDaoInterface
+class ReviewDao extends DynamicDataObjectDao implements ReviewDaoInterface, DynamicDataObjectDaoInterface
 {
+    const TABLE = 'oxreviews';
+
+    /** @var LegacyServiceInterface $legacyService */
+    private $legacyService;
+
     /**
      * @var QueryBuilderFactoryInterface
      */
@@ -24,7 +33,7 @@ class ReviewDao implements ReviewDaoInterface
     /**
      * @var EntityMapperInterface
      */
-    private $mapper;
+    protected $mapper;
 
     /**
      * @param QueryBuilderFactoryInterface $queryBuilderFactory
@@ -32,10 +41,13 @@ class ReviewDao implements ReviewDaoInterface
      */
     public function __construct(
         QueryBuilderFactoryInterface    $queryBuilderFactory,
-        EntityMapperInterface           $mapper
+        EntityMapperInterface           $mapper,
+        LegacyServiceInterface          $legacyService
     ) {
         $this->queryBuilderFactory = $queryBuilderFactory;
         $this->mapper = $mapper;
+        $this->legacyService = $legacyService;
+        $this->addObjectClass(Review::class);
     }
 
     /**
@@ -50,7 +62,7 @@ class ReviewDao implements ReviewDaoInterface
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
             ->select('r.*')
-            ->from('oxreviews', 'r')
+            ->from($this::TABLE, 'r')
             ->where('r.oxuserid = :userId')
             ->orderBy('r.oxcreate', 'DESC')
             ->setParameter('userId', $userId);
@@ -65,10 +77,60 @@ class ReviewDao implements ReviewDaoInterface
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
-            ->delete('oxreviews')
+            ->delete($this::TABLE)
             ->where('oxid = :id')
             ->setParameter('id', $review->getId())
             ->execute();
+    }
+
+    public function save(Review $review) {
+
+        if ($review->getId() == null) {
+            return $this->insert($review);
+        }
+        else {
+            return $this->update($review);
+        }
+
+    }
+
+    private function insert(Review $review) {
+
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $data = $this->mapper->getData($review);
+        $data['OXID'] = $this->legacyService->getUniqueId();
+
+        $queryBuilder->insert($this::TABLE);
+
+        foreach ($data as $column => $value) {
+            $queryBuilder
+                ->setValue($column, ":$column")
+                ->setParameter($column, $value);
+        };
+        $queryBuilder->execute();
+
+        return $data['OXID'];
+
+    }
+
+    private function update(Review $review) {
+
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $data = $this->mapper->getData($review);
+        $queryBuilder
+            ->update($this::TABLE);
+        foreach ($data as $column => $value) {
+            $queryBuilder
+                ->set($column, ":$column")
+                ->setParameter($column, $value);
+        };
+        $queryBuilder
+            ->where($queryBuilder->expr()->eq('OXID', ":id"))
+            ->setParameter('id', $data['OXID']);
+        $queryBuilder->execute();
+
+        return $data['OXID'];
+
     }
 
     /**
@@ -83,7 +145,7 @@ class ReviewDao implements ReviewDaoInterface
         $reviews = new ArrayCollection();
 
         foreach ($reviewsData as $reviewData) {
-            $review = new Review();
+            $review = $this->create();
             $reviews[] = $this->mapper->map($review, $reviewData);
         }
 

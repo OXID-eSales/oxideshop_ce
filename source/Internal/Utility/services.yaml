@@ -7,3 +7,5 @@ services:
     factory: ['OxidEsales\Eshop\Core\Registry', getConfig]
   OxidEsales\EshopCommunity\Internal\Utility\ContextInterface:
     class: OxidEsales\EshopCommunity\Internal\Utility\Context
+  OxidEsales\EshopCommunity\Internal\Utility\LegacyServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Utility\LegacyService

@@ -20,6 +20,7 @@ class BasicContextStub implements BasicContextInterface
     private $edition;
     private $enterpriseEditionRootPath;
     private $generatedProjectFilePath;
+    private $configurableProjectFilePath;
     private $professionalEditionRootPath;
     private $sourcePath;
     
@@ -31,6 +32,7 @@ class BasicContextStub implements BasicContextInterface
         $this->edition = $basicContext->getEdition();
         $this->enterpriseEditionRootPath = $basicContext->getEnterpriseEditionRootPath();
         $this->generatedProjectFilePath = $basicContext->getGeneratedProjectFilePath();
+        $this->configurableProjectFilePath = $basicContext->getConfigurableProjectFilePath();
         $this->professionalEditionRootPath = $basicContext->getProfessionalEditionRootPath();
         $this->sourcePath = $basicContext->getSourcePath();
     }
@@ -113,6 +115,22 @@ class BasicContextStub implements BasicContextInterface
     public function setGeneratedProjectFilePath(string $generatedProjectFilePath)
     {
         $this->generatedProjectFilePath = $generatedProjectFilePath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfigurableProjectFilePath(): string
+    {
+        return $this->configurableProjectFilePath;
+    }
+
+    /**
+     * @param string $configurableProjectFilePath
+     */
+    public function setConfigurableProjectFilePath(string $configurableProjectFilePath)
+    {
+        $this->configurableProjectFilePath = $configurableProjectFilePath;
     }
 
     /**

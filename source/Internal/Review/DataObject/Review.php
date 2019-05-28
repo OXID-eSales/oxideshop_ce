@@ -6,10 +6,12 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Review\DataObject;
 
+use OxidEsales\EshopCommunity\Internal\Common\DataObject\DynamicDataObject;
+
 /**
   * @internal
  */
-class Review
+class Review extends DynamicDataObject
 {
     /**
      * @var string

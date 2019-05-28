@@ -15,12 +15,6 @@ use OxidEsales\EshopCommunity\Application\Model\Contract\ArticleInterface;
 class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements ArticleInterface
 {
     /**
-     * Order cache.
-     * @deprecated since v6.4.0 (2019-05-29); This static property will not be used anymore.
-     */
-    protected static $_aOrderCache = [];
-
-    /**
      * Current class name
      *
      * @var string
@@ -76,6 +70,9 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      * @var array
      */
     protected $_aSkipSaveFields = ['oxtimestamp'];
+
+    /** @var \OxidEsales\Eshop\Application\Model\Order */
+    private $order;
 
     /**
      * Class constructor, initiates class constructor (parent::oxbase()).
@@ -726,22 +723,20 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
     }
 
     /**
-     * Returns oxOrder object that the article belongs to
+     * Returns Order object that the article belongs to.
      *
-     * @return mixed - on success returns oxOrder object, else returns null
+     * @return null|\OxidEsales\Eshop\Application\Model\Order
      */
     public function getOrder()
     {
         if ($this->oxorderarticles__oxorderid->value) {
-            // checking if the object already exists in the cache
-            if (@isset($this->_aOrderCache[$this->oxorderarticles__oxorderid->value])) {
-                // returning the cached object
-                return $this->_aOrderCache[$this->oxorderarticles__oxorderid->value];
+            if ($this->order !== null) {
+                return $this->order;
             }
-            // creatina new order object and trying to load it
+
             $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
             if ($oOrder->load($this->oxorderarticles__oxorderid->value)) {
-                return $this->_aOrderCache[$this->oxorderarticles__oxorderid->value] = $oOrder;
+                return $this->order = $oOrder;
             }
         }
 

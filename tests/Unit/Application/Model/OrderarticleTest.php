@@ -7,6 +7,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use OxidEsales\Eshop\Application\Model\Order;
 use OxidEsales\Eshop\Application\Model\OrderArticle;
+use OxidEsales\Eshop\Core\Field;
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Application\Model\Wrapping;
 
@@ -747,18 +748,14 @@ class OrderarticleTest extends \OxidTestCase
      */
     public function testGetOrder()
     {
-        // oxOrderArticle instance
+        $orderArticle = oxNew(OrderArticle::class);
+        $orderArticle->oxorderarticles__oxorderid = new Field('test');
+        $this->assertNull($orderArticle->getOrder());
 
-        $oOrderArticle = $this->getProxyClass('oxOrderArticle');
-
-        // checking if function returns NULL
-        // when it's impossible to get the order object
-        $oOrderArticle->oxorderarticles__oxorderid = new oxField('test');
-        $this->assertNull($oOrderArticle->getOrder());
-
-        // checking if method returns the result from cache
-        $oOrderArticle->setNonPublicVar('_aOrderCache', array('test' => 'result'));
-        $this->assertEquals('result', $oOrderArticle->getOrder());
+        $order = oxNew(Order::class);
+        $order->setId('test');
+        $order->save();
+        $this->assertInstanceOf(Order::class, $orderArticle->getOrder());
     }
 
     /**

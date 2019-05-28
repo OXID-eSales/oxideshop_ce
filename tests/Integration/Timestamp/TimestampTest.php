@@ -7,6 +7,8 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Timestamp;
 
 use oxDb;
 use oxField;
+use OxidEsales\Eshop\Application\Model\Order;
+use OxidEsales\Eshop\Core\Field;
 
 /**
  * Integration test testing corect timestamp setting on update and insert in all tables
@@ -128,6 +130,12 @@ class TimestampTest extends \OxidTestCase
         $attNameMod = $tableName . '__' . $modifyField;
 
         $oObject = oxNew($objectName);
+        if ('oxorderarticles' == $tableName) {
+            $order = oxNew(Order::class);
+            $order->setId('100');
+            $order->save();
+            $oObject->oxorderarticles__oxorderid = new Field('100');
+        }
         $oObject->setId($this->formTestIdByTable($tableName));
         $oObject->$attNameMod = new oxField('test');
         $oObject->save();
@@ -156,6 +164,12 @@ class TimestampTest extends \OxidTestCase
         $oObject->$attNameMod = new oxField('test');
         if ('oxdiscount' == $tableName) {
             $oObject->oxdiscount__oxsort = new oxField(9999);
+        }
+        if ('oxorderarticles' == $tableName) {
+            $order = oxNew(Order::class);
+            $order->setId('100');
+            $order->save();
+            $oObject->oxorderarticles__oxorderid = new Field('100');
         }
         $oObject->save();
 

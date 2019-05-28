@@ -737,7 +737,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
     {
         if ($this->oxorderarticles__oxorderid->value) {
             // checking if the object already exists in the cache
-            if (isset($this->_aOrderCache[$this->oxorderarticles__oxorderid->value])) {
+            if (@isset($this->_aOrderCache[$this->oxorderarticles__oxorderid->value])) {
                 // returning the cached object
                 return $this->_aOrderCache[$this->oxorderarticles__oxorderid->value];
             }

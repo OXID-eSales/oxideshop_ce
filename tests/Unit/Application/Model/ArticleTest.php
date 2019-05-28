@@ -7,10 +7,8 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Application\Model\Order;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
-use OxidEsales\EshopCommunity\Core\DatabaseProvider;
-use \oxList;
-use \oxSimpleVariant;
 use \oxArticle;
 use oxArticleHelper;
 use \oxField;
@@ -80,6 +78,7 @@ class ArticleTest extends \OxidTestCase
         $oDB->execute('delete from oxaccessoire2article where oxarticlenid="_testArt" ');
         $oDB->execute("update oxattribute set oxdisplayinbasket = 0 where oxid = '8a142c3f0b9527634.96987022' ");
 
+        $this->cleanUpTable('oxorder');
         $this->cleanUpTable('oxarticles');
         $this->cleanUpTable('oxartextends');
         $this->cleanUpTable('oxcategories');
@@ -1886,17 +1885,21 @@ class ArticleTest extends \OxidTestCase
     {
         $oArticle = $this->_createArticle('_testArt');
 
+        $order = oxNew(Order::class);
+        $order->setId('_orderArticleId');
+        $order->save();
+
         $sShopId = $this->getConfig()->getShopId();
         $oOrderArticle = oxNew('oxorderarticle');
         $oOrderArticle->setId('_testId');
         $oOrderArticle->oxorderarticles__oxartid = new oxField('_testArt', oxField::T_RAW);
-        $oOrderArticle->oxorderarticles__oxorderid = new oxField('51', oxField::T_RAW);
+        $oOrderArticle->oxorderarticles__oxorderid = new oxField($order->getId(), oxField::T_RAW);
         $oOrderArticle->oxorderarticles__oxordershopid = new oxField($sShopId, oxField::T_RAW);
         $oOrderArticle->save();
         $oOrderArticle = oxNew('oxorderarticle');
         $oOrderArticle->setId('_testId2');
         $oOrderArticle->oxorderarticles__oxartid = new oxField('1651', oxField::T_RAW);
-        $oOrderArticle->oxorderarticles__oxorderid = new oxField('51', oxField::T_RAW);
+        $oOrderArticle->oxorderarticles__oxorderid = new oxField($order->getId(), oxField::T_RAW);
         $oOrderArticle->oxorderarticles__oxordershopid = new oxField($sShopId, oxField::T_RAW);
         $oOrderArticle->save();
         $aArticles = $oArticle->getCustomerAlsoBoughtThisProducts();

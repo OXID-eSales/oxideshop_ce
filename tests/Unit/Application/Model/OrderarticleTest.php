@@ -5,6 +5,8 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
+use OxidEsales\Eshop\Application\Model\Order;
+use OxidEsales\Eshop\Application\Model\OrderArticle;
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Application\Model\Wrapping;
 
@@ -19,8 +21,11 @@ use \oxTestModules;
 class OrderarticleTest extends \OxidTestCase
 {
 
-    /** @var oxOrderArticle orderArticle */
-    protected $_oOrderArticle = null;
+    /** @var OrderArticle orderArticle */
+    private $_oOrderArticle;
+
+    /** @var Order */
+    private $order;
 
     /**
      * Initialize the fixture.
@@ -29,10 +34,14 @@ class OrderarticleTest extends \OxidTestCase
     {
         parent::setUp();
 
+        $this->order = oxNew(Order::class);
+        $this->order->setId('_orderArticleId');
+        $this->order->save();
+
         $this->_oOrderArticle = oxNew('oxorderarticle');
         $this->_oOrderArticle->setId('_testOrderArticleId');
         $this->_oOrderArticle->oxorderarticles__oxartid = new oxField('_testArticleId', oxField::T_RAW);
-        $this->_oOrderArticle->oxorderarticles__oxorderid = new oxField('51', oxField::T_RAW);
+        $this->_oOrderArticle->oxorderarticles__oxorderid = new oxField($this->order->getId(), oxField::T_RAW);
         $this->_oOrderArticle->save();
 
         $oArticle = oxNew('oxArticle');
@@ -53,6 +62,7 @@ class OrderarticleTest extends \OxidTestCase
         $this->cleanUpTable('oxorderarticles');
         $this->cleanUpTable('oxobject2selectlist');
         $this->cleanUpTable('oxarticles');
+        $this->cleanUpTable('oxorder');
 
         parent::tearDown();
     }
@@ -83,6 +93,7 @@ class OrderarticleTest extends \OxidTestCase
 
         $oOrderArticle->oxorderarticles__oxstorno = new oxField(0);
         $oOrderArticle->oxorderarticles__oxamount = new oxField(999);
+        $oOrderArticle->oxorderarticles__oxorderid = new oxField($this->order->getId());
         $oOrderArticle->save();
     }
 
@@ -106,6 +117,7 @@ class OrderarticleTest extends \OxidTestCase
         $oOrderArticle->oxorderarticles__oxamount = new oxField(999);
         $oOrderArticle->oxorderarticles__oxartid = new oxField('asd');
         $oOrderArticle->oxorderarticles__oxamount = new oxField(20);
+        $oOrderArticle->oxorderarticles__oxorderid = new oxField($this->order->getId());
         $oOrderArticle->save();
     }
 

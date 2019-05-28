@@ -7,12 +7,11 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
 use \oxDb;
-use \oxRegistry;
+use OxidEsales\EshopCommunity\Core\Field;
 use \oxTestModules;
 
 class FileTest extends \OxidTestCase
 {
-
     /**
      * Initialize the fixture.
      */
@@ -286,6 +285,7 @@ class FileTest extends \OxidTestCase
 
         $oOrderArticle = oxNew('oxOrderArticle');
         $oOrderArticle->setId('_orderArticleId');
+        $oOrderArticle->oxorderarticles__oxorderid = new Field($oOrder->getId());
         $oOrderArticle->save();
 
         $oFile = oxNew('oxFile');

@@ -730,7 +730,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
     public function getOrder()
     {
         if ($this->oxorderarticles__oxorderid->value) {
-            if ($this->order !== null) {
+            if ($this->order !== null && $this->order->getId() === $this->oxorderarticles__oxorderid->value) {
                 return $this->order;
             }
 

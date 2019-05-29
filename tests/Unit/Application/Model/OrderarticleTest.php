@@ -758,6 +758,23 @@ class OrderarticleTest extends \OxidTestCase
         $this->assertInstanceOf(Order::class, $orderArticle->getOrder());
     }
 
+    public function testGetOrderLazyLoadingWhenOrderIdWasChanged()
+    {
+        $originalOrderId = 'test';
+        $this->makeOrder($originalOrderId);
+        $orderArticle = oxNew(OrderArticle::class);
+        $orderArticle->oxorderarticles__oxorderid = new Field($originalOrderId);
+        $orderArticle->save();
+        $orderArticle->getOrder();
+
+        $newOrderId = 'test2';
+        $this->makeOrder($newOrderId);
+        $orderArticle->oxorderarticles__oxorderid = new Field($newOrderId);
+        $orderArticle->save();
+
+        $this->assertSame($newOrderId, $orderArticle->getOrder()->getId());
+    }
+
     /**
      * Test article insert.
      *
@@ -786,7 +803,15 @@ class OrderarticleTest extends \OxidTestCase
         $oOrderArticle->setArticle($oArticle);
 
         $this->assertEquals($oArticle, $oOrderArticle->getArticle());
-
     }
 
+    /**
+     * @param string $id
+     */
+    private function makeOrder(string $id)
+    {
+        $originalOrder = oxNew(Order::class);
+        $originalOrder->setId($id);
+        $originalOrder->save();
+    }
 }

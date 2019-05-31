@@ -91,6 +91,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - Was `HELP_ENERAL_NAME` changed to `HELP_GENERAL_NAME`
 - Drop support for PHP 7.0
 - Use user from Order::validateOrder method in validatePayment as well [PR-706](https://github.com/OXID-eSales/oxideshop_ce/pull/706)
+- Config option `aDisabledModules` isn't used anymore.
+- Config option `aModulePaths`: module path will be added to the option only after the module activation.   
 - Travis runs phpcs and tests scripts with calling the php directly, not relying on script shebang anymore.
 
 ### Removed

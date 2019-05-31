@@ -72,6 +72,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
       for hashing passwords.
 - Constants
     - `\OxidEsales\EshopCommunity\Application\Model\User::USER_COOKIE_SALT`
+- Directory
+    - var/ directory, it contains files to which the application writes data during the course of its operation. Must always be writable by the HTTP server during the run time.
 
 ### Changed
 - category_main form layout improvements [PR-585](https://github.com/OXID-eSales/oxideshop_ce/pull/585)

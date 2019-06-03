@@ -9,7 +9,9 @@ namespace OxidEsales\EshopCommunity\Core\Module;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
 
@@ -63,13 +65,33 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Get parsed modules
+     * Get all modules with Extended classes
      *
      * @return array
      */
     public function getModulesWithExtendedClass()
     {
-        return $this->parseModuleChains(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModules'));
+        $moduleExtensions = [];
+
+        $container = ContainerFactory::getInstance()->getContainer();
+        $moduleConfigurations = $container
+            ->get(ShopConfigurationDaoBridgeInterface::class)
+            ->get()
+            ->getModuleConfigurations();
+
+        foreach ($moduleConfigurations as $moduleConfiguration) {
+            if ($moduleConfiguration->hasSetting(ModuleSetting::CLASS_EXTENSIONS)) {
+                foreach ($moduleConfiguration->getSetting(ModuleSetting::CLASS_EXTENSIONS)->getValue() as $extendedClass => $extensions) {
+                    if (!isset($moduleExtensions[$extendedClass])) {
+                        $moduleExtensions[$extendedClass] = $extensions;
+                    } else {
+                        $moduleExtensions[$extendedClass] .= '&' . $extensions;
+                    }
+                }
+            }
+        }
+
+        return $this->parseModuleChains($moduleExtensions);
     }
 
     /**
@@ -115,7 +137,28 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getModules()
     {
-        return $this->getConfig()->getConfigParam('aModules');
+        $extendedClasses = [];
+
+        $container = ContainerFactory::getInstance()->getContainer();
+        $moduleConfigurations = $container
+            ->get(ShopConfigurationDaoBridgeInterface::class)
+            ->get()
+            ->getModuleConfigurations();
+
+        foreach ($moduleConfigurations as $moduleConfiguration) {
+            if ($moduleConfiguration->hasSetting(ModuleSetting::CLASS_EXTENSIONS)) {
+                foreach ($moduleConfiguration->getSetting(ModuleSetting::CLASS_EXTENSIONS)->getValue() as $extendedClass => $extensions) {
+                    if (!isset($extendedClasses[$extendedClass])) {
+                        $extendedClasses[$extendedClass] = $extensions;
+                    } else {
+                        $extendedClasses[$extendedClass] .= '&' . $extensions;
+                    }
+                }
+            }
+        }
+
+
+        return $extendedClasses;
     }
 
     /**
@@ -452,7 +495,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     public function getModuleExtensions($sModuleId)
     {
         if (!isset($this->_aModuleExtensions)) {
-            $aModuleExtension = $this->getModulesWithExtendedClass();
+            $aModuleExtension = $this->getActivateModulesWithExtendedClass();
             $oModule = $this->getModule();
             $aExtension = [];
             foreach ($aModuleExtension as $sOxClass => $aFiles) {
@@ -574,5 +617,56 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
         }
 
         return $disabledModuleConfigurations;
+    }
+
+    /**
+     * Returns Active module ids which have extensions or files.
+     *
+     * @return ModuleConfiguration[]
+     */
+    private function getActiveModuleConfigurations(): array
+    {
+        $container = ContainerFactory::getInstance()->getContainer();
+
+        $moduleConfigurations = $container
+            ->get(ShopConfigurationDaoBridgeInterface::class)
+            ->get()
+            ->getModuleConfigurations();
+
+        $activeModules = [];
+
+        $moduleStateService = $container->get(ModuleStateServiceInterface::class);
+
+        foreach ($moduleConfigurations as $moduleConfiguration) {
+            if ($moduleStateService->isActive($moduleConfiguration->getId(), Registry::getConfig()->getShopId())) {
+                $activeModules[] = $moduleConfiguration;
+            }
+        }
+
+        return $activeModules;
+    }
+
+    /**
+     * Get activate modules with Extended classes
+     *
+     * @return array
+     */
+    private function getActivateModulesWithExtendedClass()
+    {
+        $extendedClasses = [];
+
+        foreach ($this->getActiveModuleConfigurations() as $moduleConfiguration) {
+            if ($moduleConfiguration->hasSetting(ModuleSetting::CLASS_EXTENSIONS)) {
+                foreach ($moduleConfiguration->getSetting(ModuleSetting::CLASS_EXTENSIONS)->getValue() as $extendedClass => $extensions) {
+                    if (!isset($extendedClasses[$extendedClass])) {
+                        $extendedClasses[$extendedClass] = $extensions;
+                    } else {
+                        $extendedClasses[$extendedClass] .= '&' . $extensions;
+                    }
+                }
+            }
+        }
+
+        return $this->parseModuleChains($extendedClasses);
     }
 }

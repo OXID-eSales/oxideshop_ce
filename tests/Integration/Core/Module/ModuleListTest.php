@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Module;
 
 use OxidEsales\Eshop\Application\Model\Article;
+use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Module\ModuleList;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
@@ -183,25 +184,93 @@ class ModuleListTest extends TestCase
 
     public function testGetDeletedExtensionsWithMissingExtensions()
     {
-        $moduleId = 'with_class_extensions';
+        $moduleId = 'InvalidNamespaceModule';
         $this->installModule($moduleId);
+        $this->activateModule($moduleId);
 
-        $moduleExtensions = [
-            Article::class => 'with_class_extensions/missingExtension',
-        ];
 
-        Registry::getConfig()->setConfigParam('aModules', $moduleExtensions);
+        $module = oxNew(Module::class);
+        $module->load($moduleId);
 
         $this->assertSame(
             [
                 $moduleId => [
                     'extensions' => [
-                        Article::class => ['with_class_extensions/missingExtension'],
+                        'OxidEsales\Eshop\Application\Model\Article' => ['OxidEsales\EshopCommunity\Tests\Acceptance\Admin\testData\modules\oxid\InvalidNamespaceModule1\Model\NonExistentFile'],
                     ]
                 ],
             ],
             oxNew(ModuleList::class)->getDeletedExtensions()
         );
+    }
+
+    public function testGetModulesWithExtendedClass()
+    {
+        $this->installModule('with_class_extensions');
+        $this->installModule('with_class_extensions2');
+        $this->activateModule('with_class_extensions');
+        $this->activateModule('with_class_extensions2');
+
+        $this->assertEquals(
+            [
+                'OxidEsales\Eshop\Application\Controller\ContentController' => ['OxidEsales\EshopCommunity\Tests\Integration\Core\Module\Fixtures\with_class_extenstions2\Controllers\ContentController'],
+                'OxidEsales\Eshop\Application\Model\Article'         => ['with_class_extensions/ModuleArticle'],
+            ], oxNew(ModuleList::class)->getModulesWithExtendedClass()
+        );
+    }
+
+    public function testExtractModulePaths()
+    {
+        $this->installModule('with_class_extensions');
+
+        $this->assertEquals(
+            [
+                'with_class_extensions' => 'with_class_extensions'
+            ], oxNew(ModuleList::class)->extractModulePaths()
+        );
+    }
+
+    public function testGetModuleExtensionsWithMultipleExtensions()
+    {
+        $extensions = [
+            'OxidEsales\Eshop\Application\Model\Article' => [
+                'with_multiple_extensions/articleExtension1',
+                'with_multiple_extensions/articleExtension2',
+                'with_multiple_extensions/articleExtension3',
+            ],
+            'OxidEsales\Eshop\Application\Model\Order'   => [
+                'with_multiple_extensions/oxOrder'
+            ],
+            'OxidEsales\Eshop\Application\Model\Basket'  => [
+                'with_multiple_extensions/basketExtension'
+            ]
+        ];
+
+        $this->installModule('with_multiple_extensions');
+        $this->activateModule('with_multiple_extensions');
+
+        $this->assertSame($extensions, oxNew(ModuleList::class)->getModuleExtensions('with_multiple_extensions'));
+    }
+
+    public function testGetModuleExtensionsWithNoExtensions()
+    {
+        $this->installModule('with_metadata_v21');
+        $this->assertSame([], oxNew(ModuleList::class)->getModuleExtensions('with_metadata_v21'));
+    }
+
+    public function testGetModules()
+    {
+        $extensions = [
+            'OxidEsales\Eshop\Application\Model\Article' => 'with_multiple_extensions/articleExtension1&with_multiple_extensions/articleExtension2&with_multiple_extensions/articleExtension3',
+            'OxidEsales\Eshop\Application\Model\Order'   => 'with_multiple_extensions/oxOrder',
+            'OxidEsales\Eshop\Application\Model\Basket'  => 'with_multiple_extensions/basketExtension',
+            'OxidEsales\Eshop\Application\Controller\ContentController' => 'OxidEsales\EshopCommunity\Tests\Integration\Core\Module\Fixtures\with_class_extenstions2\Controllers\ContentController'
+        ];
+
+        $this->installModule('with_multiple_extensions');
+        $this->installModule('with_class_extensions2');
+
+        $this->assertSame($extensions, oxNew(ModuleList::class)->getModules());
     }
 
     private function installModule(string $id)

@@ -121,7 +121,28 @@ class ModuleTest extends TestCase
         );
     }
 
-    public function testGetPathsReturnsInstalledModulePahts()
+    public function testModuleGetTemplates()
+    {
+        $moduleId = "with_extending_blocks";
+
+        $this->installModule($moduleId);
+        $this->activateModule($moduleId);
+
+        $module = oxNew(Module::class);
+        $module->load($moduleId);
+
+        $expected = [
+            'page/checkout/basket.tpl',
+            'page/checkout/payment.tpl',
+            'page/checkout/basket.tpl'
+        ];
+
+        $actual = $module->getTemplates();
+
+        $this->assertEquals(0, count(array_diff($expected, $actual)) + count(array_diff($actual, $expected)));
+    }
+
+    public function testGetPathsReturnsInstalledModulePaths()
     {
         $this->installModule('with_class_extensions');
         $this->installModule('with_metadata_v21');
@@ -175,5 +196,17 @@ class ModuleTest extends TestCase
         $module->load($moduleId);
 
         $this->assertTrue($module->hasMetadata());
+    }
+
+    public function testGetModuleIdByClassName()
+    {
+        $moduleId = 'with_class_extensions';
+        $this->installModule($moduleId);
+        $this->activateModule($moduleId);
+
+        $this->assertEquals(
+            'with_class_extensions',
+            oxNew(Module::class)->getModuleIdByClassName("with_class_extensions/ModuleArticle")
+        );
     }
 }

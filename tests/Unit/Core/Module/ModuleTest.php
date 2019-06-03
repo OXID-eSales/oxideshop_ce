@@ -6,6 +6,9 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use OxidEsales\Eshop\Core\Module\Module;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use oxModule;
 use \shop;
 use \oxRegistry;
@@ -580,17 +583,25 @@ class ModuleTest extends \OxidTestCase
         $this->assertEquals("testDesc", $oModule->getDescription());
     }
 
-    public function testGetIdByPath()
+    public function testGetIdByPathWithProjectConfiguration()
     {
-        $aDisabledModules = array('test1');
-        $aModulePaths = array("ModuleName2" => "oe/ModuleName2", "ModuleName" => "oe/ModuleName");
-        $this->getConfig()->setConfigParam("aDisabledModules", $aDisabledModules);
-        $this->getConfig()->setConfigParam("aModulePaths", $aModulePaths);
-        $sModule = "oe/ModuleName2/myorder";
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration
+            ->setId('testModule')
+            ->setPath('oe/testModule');
 
-        $oModule = $this->getProxyClass('oxmodule');
-        $oModule->getIdByPath($sModule);
-        $this->assertEquals('ModuleName2', $oModule->getIdByPath($sModule));
+        $container = ContainerFactory::getInstance()->getContainer();
+        $shopConfigurationDao = $container->get(ShopConfigurationDaoBridgeInterface::class);
+
+        $shopConfiguration = $shopConfigurationDao->get();
+        $shopConfiguration->addModuleConfiguration($moduleConfiguration);
+
+        $shopConfigurationDao->save($shopConfiguration);
+
+        $module = "oe/testModule/mytest";
+
+        $moduleClass = oxNew(Module::class);
+        $this->assertEquals('testModule', $moduleClass->getIdByPath($module));
     }
 
     public function testGetIdByPathUnknownPath()

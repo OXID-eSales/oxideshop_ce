@@ -149,52 +149,6 @@ class ModuleListTest extends \OxidTestCase
     }
 
     /**
-     * oxmodulelist::getModulesWithExtendedClass() test case
-     *
-     * @return null
-     */
-    public function testgetModulesWithExtendedClass()
-    {
-        $aModules = array(
-            'oxorder' => 'testExt1/module1&testExt2/module1',
-            'oxnews'  => 'testExt2/module2'
-        );
-
-        $aResult = array(
-            'oxorder' => array('testExt1/module1', 'testExt2/module1'),
-            'oxnews'  => array('testExt2/module2')
-        );
-
-        $oModuleList = $this->getProxyClass('oxmodulelist');
-        $this->getConfig()->setConfigParam("aModules", $aModules);
-
-        $this->assertEquals($aResult, $oModuleList->getModulesWithExtendedClass());
-    }
-
-    /**
-     * oxmodulelist::extractModulePaths() test case
-     *
-     * @return null
-     */
-    public function testExtractModulePaths()
-    {
-        $aModules = array(
-            'oxorder' => 'testExt1/module1&testExt2/module1',
-            'oxnews'  => 'testExt2/module2'
-        );
-
-        $aResult = array(
-            'testExt1' => 'testExt1',
-            'testExt2' => 'testExt2'
-        );
-
-        $oModuleList = $this->getProxyClass('oxmodulelist');
-        $this->getConfig()->setConfigParam("aModules", $aModules);
-
-        $this->assertEquals($aResult, $oModuleList->extractModulePaths());
-    }
-
-    /**
      * oxmodulelist::getActiveModuleInfo() test case
      *
      * @return null
@@ -296,38 +250,6 @@ class ModuleListTest extends \OxidTestCase
         $oModuleList = oxNew('oxModuleList');
 
         $this->assertSame(array(), $oModuleList->getModuleFiles());
-    }
-
-    public function testGetModuleExtensionsWithMultipleExtensions()
-    {
-        $oModuleList = oxNew('oxModuleList');
-        $aModuleExtensions = array(
-            'oxArticle' => 'mod/articleExtension1&mod/articleExtension2&mod2/articleExtension3',
-            'oxOrder'   => 'mod2/oxOrder',
-            'oxBasket'  => 'mod/basketExtension',
-        );
-
-        $this->getConfig()->setConfigParam('aModules', $aModuleExtensions);
-        $aExtensions = array(
-            'oxArticle' => array(
-                'mod/articleExtension1',
-                'mod/articleExtension2'
-            ),
-            'oxBasket'  => array(
-                'mod/basketExtension'
-            )
-        );
-
-        $this->assertSame($aExtensions, $oModuleList->getModuleExtensions('mod'));
-    }
-
-    public function testGetModuleExtensionsWithNoExtensions()
-    {
-        $oModuleList = oxNew('oxModuleList');
-
-        $this->getConfig()->setConfigParam('aModules', array());
-
-        $this->assertSame(array(), $oModuleList->getModuleExtensions('mod'));
     }
 
     /**

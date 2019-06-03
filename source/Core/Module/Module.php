@@ -6,19 +6,21 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
-use DomainException;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Adapter\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 
 /**
  * Module class.
  *
+ * @deprecated since v6.4.0 (2019-03-22); Use service 'OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface'.
  * @internal Do not make a module extension for this class.
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
@@ -112,7 +114,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
 
                 return true;
             }
-        } catch (DomainException $e) {
+        } catch (ModuleConfigurationNotFoundException $e) {
             return false;
         }
 
@@ -241,9 +243,9 @@ class Module extends \OxidEsales\Eshop\Core\Base
     {
         $moduleId = null;
         $moduleFile = $module;
-        $moduleId = $this->getIdFromExtension($module);
+        $moduleId = $this->getModuleIdByClassName($module);
         if (!$moduleId) {
-            $modulePaths = $this->getConfig()->getConfigParam('aModulePaths');
+            $modulePaths = $this->getModulePaths();
 
             if (is_array($modulePaths)) {
                 foreach ($modulePaths as $id => $path) {
@@ -286,16 +288,11 @@ class Module extends \OxidEsales\Eshop\Core\Base
      */
     public function getModuleIdByClassName($className)
     {
-        if (!\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($className)) {
-            return $this->backwardsCompatibleGetModuleIdByClassName($className);
-        }
-
         $moduleId = '';
-        $extensions = (array) $this->getConfig()->getConfigParam('aModuleExtensions');
-        foreach ($extensions as $id => $moduleClasses) {
-            if (in_array($className, $moduleClasses)) {
-                $moduleId = $id;
-                break;
+
+        foreach ($this->getShopConfiguration()->getModuleConfigurations() as $module) {
+            if ($module->hasClassExtension($className)) {
+                return $module->getId();
             }
         }
 
@@ -490,81 +487,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Counts activated module extensions.
-     *
-     * @param array $aModuleExtensions    Module extensions
-     * @param array $aInstalledExtensions Installed extensions
-     *
-     * @return int
-     */
-    protected function _countActivatedExtensions($aModuleExtensions, $aInstalledExtensions)
-    {
-        $iActive = 0;
-        foreach ($aModuleExtensions as $sClass => $mExtension) {
-            if (is_array($mExtension)) {
-                foreach ($mExtension as $sExtension) {
-                    if ((isset($aInstalledExtensions[$sClass]) && in_array($sExtension, $aInstalledExtensions[$sClass]))) {
-                        $iActive++;
-                    }
-                }
-            } elseif ((isset($aInstalledExtensions[$sClass]) && in_array($mExtension, $aInstalledExtensions[$sClass]))) {
-                $iActive++;
-            }
-        }
-
-        return $iActive;
-    }
-
-    /**
-     * Counts module extensions.
-     *
-     * @param array $aModuleExtensions Module extensions
-     *
-     * @return int
-     */
-    protected function _countExtensions($aModuleExtensions)
-    {
-        $iCount = 0;
-        foreach ($aModuleExtensions as $mExtensions) {
-            if (is_array($mExtensions)) {
-                $iCount += count($mExtensions);
-            } else {
-                $iCount++;
-            }
-        }
-
-        return $iCount;
-    }
-
-    /**
-     * Checks if module extensions count is the same as in activated extensions list.
-     *
-     * @return bool
-     */
-    protected function _isExtensionsActive()
-    {
-        $aModuleExtensions = $this->getExtensions();
-
-        $aInstalledExtensions = $this->getConfig()->getModulesWithExtendedClass();
-        $iModuleExtensionsCount = $this->_countExtensions($aModuleExtensions);
-        $iActivatedModuleExtensionsCount = $this->_countActivatedExtensions($aModuleExtensions, $aInstalledExtensions);
-
-        return $iModuleExtensionsCount > 0 && $iActivatedModuleExtensionsCount == $iModuleExtensionsCount;
-    }
-
-    /**
-     * Checks if module is in disabled list.
-     *
-     * @param string $sId Module id
-     *
-     * @return bool
-     */
-    protected function _isInDisabledList($sId)
-    {
-        return in_array($sId, (array) $this->getConfig()->getConfigParam('aDisabledModules'));
-    }
-
-    /**
      * Include data from metadata.php
      *
      * @param string $metadataPath Path to metadata.php
@@ -580,51 +502,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
         if (isset($sMetadataVersion)) {
             $this->setMetaDataVersion($sMetadataVersion);
         }
-    }
-
-    /**
-     * Translate module metadata information about the patched shop classes
-     * into Unified Namespace. There might still be BC class names used in module metadata.php.
-     *
-     * @param array $rawExtensions Extension information from module metadata.php.
-     *
-     * @return array
-     */
-    protected function getUnifiedShopClassExtensionsForBc($rawExtensions)
-    {
-        $extensions = [];
-
-        foreach ($rawExtensions as $classToBePatched => $moduleClass) {
-            if (!\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($classToBePatched)) {
-                $bcMap = \OxidEsales\Eshop\Core\Registry::getBackwardsCompatibilityClassMap();
-                $classToBePatched = array_key_exists(strtolower($classToBePatched), $bcMap) ? $bcMap[strtolower($classToBePatched)]: $classToBePatched;
-            }
-            $extensions[$classToBePatched] = $moduleClass;
-        }
-        return $extensions;
-    }
-
-    /**
-     * @deprecated since v6.0.0 (2017-03-21); Needed to ensure backwards compatibility.
-     *
-     * Backwards compatible version of self::getModuleIdByClassName()
-     *
-     * @param string $classPath The class path as defined in metadata.php section 'extend'. This is not a valid file path.
-     *
-     * @return bool
-     */
-    private function backwardsCompatibleGetModuleIdByClassName($classPath)
-    {
-        $moduleId = '';
-        $extensions = (array) $this->getConfig()->getConfigParam('aModuleExtensions');
-        foreach ($extensions as $id => $moduleClasses) {
-            if (in_array($classPath, $moduleClasses)) {
-                $moduleId = $id;
-                break;
-            }
-        }
-
-        return $moduleId;
     }
 
     /**
@@ -667,7 +544,9 @@ class Module extends \OxidEsales\Eshop\Core\Base
             'email'       => $configuration->getEmail(),
         ];
 
-        array_merge($data, $this->convertModuleSettingsToArray($configuration));
+        foreach ($this->convertModuleSettingsToArray($configuration) as $key => $value) {
+            $data[$key] = $value;
+        }
 
         return $data;
     }
@@ -682,7 +561,39 @@ class Module extends \OxidEsales\Eshop\Core\Base
         $data = [];
 
         foreach ($moduleConfiguration->getSettings() as $setting) {
-            $data[$setting->getName()] = $setting->getValue();
+            switch ($setting->getName()) {
+                case ModuleSetting::CLASS_EXTENSIONS:
+                    $data[MetaDataProvider::METADATA_EXTEND] = $setting->getValue();
+                    break;
+
+                case ModuleSetting::CLASSES_WITHOUT_NAMESPACE:
+                    $data[MetaDataProvider::METADATA_FILES] = $setting->getValue();
+                    break;
+
+                case ModuleSetting::TEMPLATE_BLOCKS:
+                    $data[MetaDataProvider::METADATA_BLOCKS] = $setting->getValue();
+                    break;
+
+                case ModuleSetting::CONTROLLERS:
+                    $data[MetaDataProvider::METADATA_CONTROLLERS] = $setting->getValue();
+                    break;
+
+                case ModuleSetting::EVENTS:
+                    $data[MetaDataProvider::METADATA_EVENTS] = $setting->getValue();
+                    break;
+
+                case ModuleSetting::TEMPLATES:
+                    $data[MetaDataProvider::METADATA_TEMPLATES] = $setting->getValue();
+                    break;
+
+                case ModuleSetting::SHOP_MODULE_SETTING:
+                    $data[MetaDataProvider::METADATA_SETTINGS] = $setting->getValue();
+                    break;
+
+                case ModuleSetting::SMARTY_PLUGIN_DIRECTORIES:
+                    $data[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES] = $setting->getValue();
+                    break;
+            }
         }
 
         return $data;

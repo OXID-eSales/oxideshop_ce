@@ -45,9 +45,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - New oe-console command to install module configuration: oe:module:install-configuration
   - New parameter in config file to change database connection charset - `dbCharset` [PR-670](https://github.com/OXID-eSales/oxideshop_ce/pull/670)
 
-- Module configuration:
-    - option `activeModules` in table oxconfig in order to determine the currently active modules
-
 - Events:
     - `\OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\BadMetaDataFoundEvent`
     - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\BeforeModuleDeactivationEvent`

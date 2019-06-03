@@ -52,11 +52,7 @@ class ShopModuleSettingsMergingService implements ShopModuleSettingsMergingServi
     {
         foreach ($settingsToMerge as &$settingToMerge) {
             foreach ($existingSettings as $existingSetting) {
-                if (isset($existingSetting['value']) &&
-                    $existingSetting['name'] === $settingToMerge['name'] &&
-                    $existingSetting['type'] === $settingToMerge['type'] &&
-                    $this->constraintsAllowThisValue($existingSetting['value'], $settingToMerge)
-                ) {
+                if ($this->shouldMerge($existingSetting, $settingToMerge)) {
                     $settingToMerge['value'] = $existingSetting['value'];
                 }
             }
@@ -65,17 +61,19 @@ class ShopModuleSettingsMergingService implements ShopModuleSettingsMergingServi
     }
 
     /**
-     * @param string $value
-     * @param array  $shopModuleSettingSettingToMerge
-     *
+     * @param array $existingSetting
+     * @param array $settingToMerge
      * @return bool
      */
-    private function constraintsAllowThisValue(string $value, array $shopModuleSettingSettingToMerge): bool
+    private function shouldMerge(array $existingSetting, array $settingToMerge): bool
     {
-        if (isset($shopModuleSettingSettingToMerge['constraints']) && ($shopModuleSettingSettingToMerge['type'] === 'select')) {
-            $resultPosition = array_search($value, $shopModuleSettingSettingToMerge['constraints'], true);
-            return $resultPosition !== false;
+        $shouldMerge = isset($existingSetting['value']) &&
+            $existingSetting['name'] === $settingToMerge['name'] &&
+            $existingSetting['type'] === $settingToMerge['type'];
+        if ($shouldMerge === true && isset($settingToMerge['constraints']) && ($settingToMerge['type'] === 'select')) {
+            $resultPosition = array_search($existingSetting['value'], $settingToMerge['constraints'], true);
+            $shouldMerge = $resultPosition !== false;
         }
-        return true;
+        return $shouldMerge;
     }
 }

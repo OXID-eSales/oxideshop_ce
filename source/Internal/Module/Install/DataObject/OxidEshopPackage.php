@@ -13,21 +13,33 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Install\DataObject;
 class OxidEshopPackage
 {
     /**
+     * If blacklist-filter is given, it will be used to filter out unwanted files and directories while the copy from
+     * source-directory to target-directory takes place.
+     *
      * @var array
      */
     private $blackListFilters = [];
 
     /**
+     * If source-directory is given, the value defines which directory will be used to define where the files
+     * and directories will be picked from. When the parameter is not given, the root directory of the module is used
+     * instead.
+     *
      * @var string
      */
     private $sourceDirectory = '';
 
     /**
+     * target-directory value will be used to create a folder inside the Shop modules directory.
+     * This folder will be used to place all files of the module.
+     *
      * @var string
      */
     private $targetDirectory;
 
     /**
+     * Package path is the absolute path to the root directory, e.g. /var/www/oxideshop/vendor/oxid-esales/paypal-module
+     *
      * @var string
      */
     private $packagePath;
@@ -111,13 +123,5 @@ class OxidEshopPackage
     public function getPackagePath(): string
     {
         return $this->packagePath;
-    }
-
-    /**
-     * @param string $packagePath
-     */
-    public function setPackagePath(string $packagePath)
-    {
-        $this->packagePath = $packagePath;
     }
 }

@@ -4,23 +4,26 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Configuration\Service;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Configuration\Service;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleConfigurationMergingService;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleConfigurationMergingServiceInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
 class ModuleConfigurationMergingServiceTest extends TestCase
 {
+    use ContainerTrait;
+
     public function testMergeNewModuleConfiguration()
     {
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('newModule');
 
-        $moduleConfigurationMergingService = new ModuleConfigurationMergingService();
+        $moduleConfigurationMergingService = $this->getMergingService();
         $shopConfiguration = $moduleConfigurationMergingService->merge(new ShopConfiguration(), $moduleConfiguration);
 
         $this->assertSame(
@@ -49,7 +52,7 @@ class ModuleConfigurationMergingServiceTest extends TestCase
 
         $shopConfigurationWithChain->setClassExtensionsChain($chain);
 
-        $moduleConfigurationMergingService = new ModuleConfigurationMergingService();
+        $moduleConfigurationMergingService = $this->getMergingService();
         $shopConfiguration = $moduleConfigurationMergingService->merge($shopConfigurationWithChain, $moduleConfiguration);
 
         $this->assertSame(
@@ -74,7 +77,7 @@ class ModuleConfigurationMergingServiceTest extends TestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('installedModule');
 
-        $moduleConfigurationMergingService = new ModuleConfigurationMergingService();
+        $moduleConfigurationMergingService = $this->getMergingService();
         $shopConfiguration = $moduleConfigurationMergingService->merge(
             $this->getShopConfigurationWithAlreadyInstalledModule(),
             $moduleConfiguration
@@ -93,7 +96,7 @@ class ModuleConfigurationMergingServiceTest extends TestCase
 
         $shopConfiguration = new ShopConfiguration();
 
-        $moduleConfigurationMergingService = new ModuleConfigurationMergingService();
+        $moduleConfigurationMergingService = $this->getMergingService();
         $shopConfiguration = $moduleConfigurationMergingService->merge(
             $shopConfiguration,
             $moduleConfiguration
@@ -118,7 +121,7 @@ class ModuleConfigurationMergingServiceTest extends TestCase
             ]
         ));
 
-        $moduleConfigurationMergingService = new ModuleConfigurationMergingService();
+        $moduleConfigurationMergingService = $this->getMergingService();
         $shopConfiguration = $moduleConfigurationMergingService->merge(
             $this->getShopConfigurationWithAlreadyInstalledModule(),
             $moduleConfiguration
@@ -183,7 +186,7 @@ class ModuleConfigurationMergingServiceTest extends TestCase
             )
         );
 
-        $moduleConfigurationMergingService = new ModuleConfigurationMergingService();
+        $moduleConfigurationMergingService = $this->getMergingService();
         $shopConfiguration = $moduleConfigurationMergingService->merge(
             $this->getShopConfigurationWithAlreadyInstalledModule(),
             $moduleConfiguration
@@ -311,5 +314,13 @@ class ModuleConfigurationMergingServiceTest extends TestCase
         $shopConfiguration->setClassExtensionsChain($chain);
 
         return $shopConfiguration;
+    }
+
+    /**
+     * @return ModuleConfigurationMergingServiceInterface
+     */
+    private function getMergingService(): ModuleConfigurationMergingServiceInterface
+    {
+        return $this->get(ModuleConfigurationMergingServiceInterface::class);
     }
 }

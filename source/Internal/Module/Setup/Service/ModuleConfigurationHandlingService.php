@@ -21,7 +21,7 @@ class ModuleConfigurationHandlingService implements ModuleConfigurationHandlingS
     private $handlers = [];
 
     /**
-     * @var array
+     * @var ModuleSettingValidatorInterface[]
      */
     private $moduleSettingValidators = [];
 

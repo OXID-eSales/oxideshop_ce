@@ -50,3 +50,12 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleConfigurationMergingServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleConfigurationMergingService
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ShopModuleSettingsMergingServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ShopModuleSettingsMergingService
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleClassExtensionsMergingServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleClassExtensionsMergingService
+    public: false

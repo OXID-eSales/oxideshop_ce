@@ -2929,7 +2929,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\Module::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Module\ModuleCache'                                   => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleCache::class,
@@ -2959,7 +2959,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleList::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Module\ModuleMetadataValidator'                       => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleMetadataValidator::class,

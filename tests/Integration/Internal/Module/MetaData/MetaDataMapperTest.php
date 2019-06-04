@@ -21,7 +21,6 @@ class MetaDataMapperTest extends TestCase
     public function testModuleMetaData20()
     {
         $metaDataFilePath = $this->getMetaDataFilePath('TestModuleMetaData20');
-        $metaDataCheckSum = md5_file($metaDataFilePath);
         $expectedModuleData = [
             'id'          => 'TestModuleMetaData20',
             'title'                   => [
@@ -108,7 +107,6 @@ class MetaDataMapperTest extends TestCase
         $this->assertSame($expectedModuleData['author'], $moduleConfiguration->getAuthor());
         $this->assertSame($expectedModuleData['url'], $moduleConfiguration->getUrl());
         $this->assertSame($expectedModuleData['email'], $moduleConfiguration->getEmail());
-        $this->assertSame($metaDataCheckSum, $moduleConfiguration->getMetaDataCheckSum());
 
         $this->assertSame(
             $expectedModuleData['extend'],

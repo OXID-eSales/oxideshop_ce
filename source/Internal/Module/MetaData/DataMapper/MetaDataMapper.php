@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\DataMapper;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidator;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidatorInterface;
@@ -36,6 +37,7 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
      * @param array $metaData
      *
      * @return ModuleConfiguration
+     * @throws UnsupportedMetaDataValueTypeException
      */
     public function fromData(array $metaData): ModuleConfiguration
     {
@@ -58,8 +60,7 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
             ->setThumbnail($moduleData[MetaDataProvider::METADATA_THUMBNAIL] ?? '')
             ->setAuthor($moduleData[MetaDataProvider::METADATA_AUTHOR] ?? '')
             ->setUrl($moduleData[MetaDataProvider::METADATA_URL] ?? '')
-            ->setEmail($moduleData[MetaDataProvider::METADATA_EMAIL] ?? '')
-            ->setMetaDataCheckSum($metaData[MetaDataProvider::METADATA_CHECKSUM]);
+            ->setEmail($moduleData[MetaDataProvider::METADATA_EMAIL] ?? '');
 
         if (isset($moduleData[MetaDataProvider::METADATA_TITLE])) {
             $moduleConfiguration->setTitle($moduleData[MetaDataProvider::METADATA_TITLE]);

@@ -132,27 +132,6 @@ class MetaDataProviderTest extends TestCase
     /**
      * @throws \OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\InvalidMetaDataException
      */
-    public function testGetDataProvidesMetaDataChecksum()
-    {
-        $metaDataFilePath = $this->getPathToTemporaryFile();
-        $metaDataContent = '<?php
-            $sMetadataVersion = "2.0";
-            $aModule = [];
-        ';
-        if (false === file_put_contents($metaDataFilePath, $metaDataContent)) {
-            throw new \RuntimeException('Could not write to ' . $metaDataFilePath);
-        }
-
-        $metaDataChecksum = md5_file($metaDataFilePath);
-        $metaDataProvider = new MetaDataProvider($this->eventDispatcherStub, $this->metaDataNormalizerStub, $this->contextStub);
-        $metaData = $metaDataProvider->getData($metaDataFilePath);
-
-        $this->assertEquals($metaDataChecksum, $metaData[MetaDataProvider::METADATA_CHECKSUM]);
-    }
-
-    /**
-     * @throws \OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\InvalidMetaDataException
-     */
     public function testGetDataDispatchesEventIfMetaDataIsNotConfigured()
     {
         $metaDataFilePath = $this->getPathToTemporaryFile();

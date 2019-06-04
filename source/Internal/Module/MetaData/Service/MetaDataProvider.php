@@ -34,7 +34,6 @@ class MetaDataProvider implements MetaDataProviderInterface
     const METADATA_TEMPLATES = 'templates';
     const METADATA_SETTINGS = 'settings';
     const METADATA_SMARTY_PLUGIN_DIRECTORIES = 'smartyplugindirectories';
-    const METADATA_CHECKSUM = 'checksum';
     const METADATA_FILEPATH = 'metaDataFilePath';
     const METADATA_FILES = 'files';
 
@@ -89,7 +88,6 @@ class MetaDataProvider implements MetaDataProviderInterface
         $this->filePath = $filePath;
         $normalizedMetaData = $this->getNormalizedMetaDataFileContent();
         $normalizedMetaData = $this->addFilePathToData($normalizedMetaData);
-        $normalizedMetaData = $this->addCheckSumToData($normalizedMetaData);
 
         return $normalizedMetaData;
     }
@@ -121,18 +119,6 @@ class MetaDataProvider implements MetaDataProviderInterface
             static::METADATA_METADATA_VERSION => $metadataVersion,
             static::METADATA_MODULE_DATA      => $normalizedMetaData
         ];
-    }
-
-    /**
-     * @param array $normalizedMetaData
-     *
-     * @return array
-     */
-    private function addCheckSumToData(array $normalizedMetaData): array
-    {
-        $normalizedMetaData[static::METADATA_CHECKSUM] = md5_file($this->filePath);
-
-        return $normalizedMetaData;
     }
 
     /**

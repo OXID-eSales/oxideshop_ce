@@ -6,15 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin;
 
-use OxidEsales\Eshop\Application\Controller\ContentController;
-use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
-use Webmozart\PathUtil\Path;
-
 /**
  * Admin interface functionality.
  *
@@ -24,10 +15,7 @@ class ModuleTest extends ModuleBaseTest
 {
     public function setUp()
     {
-        ContainerFactory::getInstance()
-            ->getContainer()
-            ->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
-            ->generate();
+        parent::setUp();
 
         $this->installModule('test1');
         $this->installModule('test2');
@@ -35,8 +23,6 @@ class ModuleTest extends ModuleBaseTest
         $this->installModule('oxid/test7');
         $this->installModule('oxid/namespace1');
         $this->installModule('oxid/InvalidNamespaceModule1');
-
-        parent::setUp();
     }
 
     /**
@@ -244,6 +230,7 @@ class ModuleTest extends ModuleBaseTest
         $this->clickAndWait("//form[@id='myedit']//input[@value='Deactivate']");
         $this->assertActivationButtonIsPresent();
         $this->assertDeactivationButtonIsNotPresent();
+        $this->waitForFrameToLoad('adminnav');
     }
 
     /**

@@ -2455,7 +2455,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Contract\IModuleValidator::class,
         'isAbstract'       => false,
         'isInterface'      => true,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Contract\ISelectList'                                 => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Contract\ISelectList::class,
@@ -2965,7 +2965,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleMetadataValidator::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Module\ModuleTemplateBlockContentReader'              => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockContentReader::class,

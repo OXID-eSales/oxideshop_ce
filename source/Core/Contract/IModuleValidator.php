@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Core\Contract;
 
 /**
  * Interface oxIModuleValidator
+ * @deprecated since v6.4.0 (2019-05-24); Validation was moved to Internal\Module package and will be executed during the module activation.
  */
 interface IModuleValidator
 {

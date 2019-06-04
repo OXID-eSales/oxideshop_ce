@@ -145,6 +145,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `OxidEsales\EshopCommunity\Core\Module\ModuleInstaller` 
     - `OxidEsales\EshopCommunity\source\Module\Core\Module`
     - `OxidEsales\EshopCommunity\source\Module\Core\ModuleList` 
+    - `OxidEsales\EshopCommunity\Core\Contract\IModuleValidator ` 
+    - `OxidEsales\EshopCommunity\Core\Module\ModuleMetadataValidator` 
     
 ## [6.3.3] - 2019-04-16
 

@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\NamespaceInformationProvider;
  * Module metadata validation class.
  * Used for validating if module metadata exists and is usable.
  *
+ * @deprecated since v6.4.0 (2019-05-24); Validation was moved to Internal\Module package and will be executed during the module activation.
  * @internal Do not make a module extension for this class.
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */

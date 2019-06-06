@@ -5,9 +5,15 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Module;
 
+use oxException;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
+use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockPathFormatter;
-use oxTestModules;
 
 /**
  * @group module
@@ -33,6 +39,7 @@ class ModuleTemplateBlockPathFormatterTest extends UnitTestCase
      * @param $moduleId
      * @param $fileName
      *
+     * @throws oxException
      * @dataProvider providerGetPathThrowExceptionWhenNoParametersAreSet
      */
     public function testGetPathThrowExceptionWhenNoParametersAreSet($moduleId, $fileName)
@@ -47,18 +54,21 @@ class ModuleTemplateBlockPathFormatterTest extends UnitTestCase
     public function testGetPathDoesNotThrowExceptionWhenParametersAreSet()
     {
         $pathFormatter = $this->getModuleTemplateBlockPathFormatter('myTestModule', 'filePathForBlock');
-        $this->stubActiveModulesList();
+        $moduleId = 'myTestModule';
+
+        $this->installModule($moduleId);
+        $this->activateTestModule($moduleId);
 
         $pathFormatter->getPath();
+        $this->deactivateTestModule($moduleId);
+        $this->removeTestModule($moduleId);
     }
 
     public function providerGetPathWhenFileContainsValueFromModuleRoot()
     {
         return [
-            ['myTestModule', 'myTestModulePath', 'pathToFile/filePathForBlock.tpl', 'pathToShop/modules/myTestModulePath/pathToFile/filePathForBlock.tpl'],
-            ['myTestModule', 'myTestModulePath', 'pathToFile/filePathForBlock', 'pathToShop/modules/myTestModulePath/pathToFile/filePathForBlock'],
-            ['myTestModule2', 'myTestModulePath2', 'pathToFile/filePathForBlock.tpl', 'pathToShop/modules/myTestModulePath2/pathToFile/filePathForBlock.tpl'],
-            ['myTestModule', 'myTestModulePath', 'pathToFile/filePathForBlock2.tpl', 'pathToShop/modules/myTestModulePath/pathToFile/filePathForBlock2.tpl'],
+            ['myTestModule', 'pathToFile/filePathForBlock.tpl', 'pathToShop/modules/oeTest/myTestModule/pathToFile/filePathForBlock.tpl'],
+            ['myTestModule', 'pathToFile/filePathForBlock', 'pathToShop/modules/oeTest/myTestModule/pathToFile/filePathForBlock'],
         ];
     }
 
@@ -66,20 +76,25 @@ class ModuleTemplateBlockPathFormatterTest extends UnitTestCase
      * To test case when file contains path from module root:
      * as defined in metadata 1.1 and above.
      *
-     * @param $moduleId
-     * @param $modulePath
-     * @param $fileName
+     * @param  $moduleId
+     * @param  $fileName
      * @param  $expectedFullPathToFile
      *
+     * @throws oxException
      * @dataProvider providerGetPathWhenFileContainsValueFromModuleRoot
      */
-    public function testGetPathWhenFileContainsValueFromModuleRoot($moduleId, $modulePath, $fileName, $expectedFullPathToFile)
+    public function testGetPathWhenFileContainsValueFromModuleRoot($moduleId, $fileName, $expectedFullPathToFile)
     {
         $pathFormatter = $this->getModuleTemplateBlockPathFormatter($moduleId, $fileName);
-        $this->stubActiveModulesList([$moduleId => $modulePath]);
+
+        $this->installModule($moduleId);
+        $this->activateTestModule($moduleId);
 
         $actualFilePath = $pathFormatter->getPath();
         $this->assertSame($expectedFullPathToFile, $actualFilePath);
+        $this->deactivateTestModule($moduleId);
+        $this->removeTestModule($moduleId);
+
     }
 
     public function testGetPathWhenFileContainsOnlyFileName()
@@ -88,11 +103,14 @@ class ModuleTemplateBlockPathFormatterTest extends UnitTestCase
         $fileName = 'filePathForBlock.tpl';
 
         $pathFormatter = $this->getModuleTemplateBlockPathFormatter($moduleId, $fileName);
-        $this->stubActiveModulesList();
+        $this->installModule($moduleId);
+        $this->activateTestModule($moduleId);
 
-        $expectedFullPathToFile = 'pathToShop/modules/myTestModulePath/out/blocks/filePathForBlock.tpl';
+        $expectedFullPathToFile = 'pathToShop/modules/oeTest/myTestModule/out/blocks/filePathForBlock.tpl';
         $actualFilePath = $pathFormatter->getPath();
         $this->assertSame($expectedFullPathToFile, $actualFilePath);
+        $this->deactivateTestModule($moduleId);
+        $this->removeTestModule($moduleId);
     }
 
     public function testGetPathWhenFileNameDoesNotContainAnExtension()
@@ -101,11 +119,14 @@ class ModuleTemplateBlockPathFormatterTest extends UnitTestCase
         $fileName = 'filePathForBlock';
 
         $pathFormatter = $this->getModuleTemplateBlockPathFormatter($moduleId, $fileName);
-        $this->stubActiveModulesList();
+        $this->installModule($moduleId);
+        $this->activateTestModule($moduleId);
 
-        $expectedFullPathToFile = 'pathToShop/modules/myTestModulePath/out/blocks/filePathForBlock.tpl';
+        $expectedFullPathToFile = 'pathToShop/modules/oeTest/myTestModule/out/blocks/filePathForBlock.tpl';
         $actualFilePath = $pathFormatter->getPath();
         $this->assertSame($expectedFullPathToFile, $actualFilePath);
+        $this->deactivateTestModule($moduleId);
+        $this->removeTestModule($moduleId);
     }
 
     public function testGetPathForDifferentShopDirectory()
@@ -114,11 +135,14 @@ class ModuleTemplateBlockPathFormatterTest extends UnitTestCase
         $fileName = 'pathToFile/filePathForBlock.tpl';
 
         $pathFormatter = $this->getModuleTemplateBlockPathFormatter($moduleId, $fileName, 'differentShopPath/modules');
-        $this->stubActiveModulesList();
+        $this->installModule($moduleId);
+        $this->activateTestModule($moduleId);
 
-        $expectedFullPathToFile = 'differentShopPath/modules/myTestModulePath/pathToFile/filePathForBlock.tpl';
+        $expectedFullPathToFile = 'differentShopPath/modules/oeTest/myTestModule/pathToFile/filePathForBlock.tpl';
         $actualFilePath = $pathFormatter->getPath();
         $this->assertSame($expectedFullPathToFile, $actualFilePath);
+        $this->deactivateTestModule($moduleId);
+        $this->removeTestModule($moduleId);
     }
 
     public function testGetPathThrowExceptionIfModuleIsNotActiveOrIsNotAvailable()
@@ -148,15 +172,42 @@ class ModuleTemplateBlockPathFormatterTest extends UnitTestCase
         return $pathFormatter;
     }
 
-    /**
-     * Force system to Show module as active for provided module id list.
-     *
-     * @param array $activeModules
-     */
-    private function stubActiveModulesList($activeModules = ['myTestModule' => 'myTestModulePath'])
+    private function activateTestModule(string $moduleId)
     {
-        $moduleListMock = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleList::class, ['getActiveModuleInfo']);
-        $moduleListMock->method('getActiveModuleInfo')->willReturn($activeModules);
-        oxTestModules::addModuleObject('oxmodulelist', $moduleListMock);
+        $package = new OxidEshopPackage($moduleId, __DIR__ . '/Fixtures/' . $moduleId);
+        $package->setTargetDirectory('oeTest/' . $moduleId);
+        $container = ContainerFactory::getInstance()->getContainer();
+        $container->get(ModuleInstallerInterface::class)
+            ->install($package);
+        $container
+            ->get(ModuleActivationBridgeInterface::class)
+            ->activate($moduleId, Registry::getConfig()->getShopId());
     }
+
+    private function installModule(string $moduleId)
+    {
+        $container = ContainerFactory::getInstance()->getContainer();
+        $installService = $container->get(ModuleInstallerInterface::class);
+        $package = new OxidEshopPackage($moduleId, __DIR__ . '/Fixtures/' . $moduleId);
+        $package->setTargetDirectory('oeTest/'. $moduleId);
+        $installService->install($package);
+    }
+
+
+    private function removeTestModule(string $moduleId)
+    {
+        $container = ContainerFactory::getInstance()->getContainer();
+        $fileSystem = $container->get('oxid_esales.symfony.file_system');
+        $fileSystem->remove($container->get(ContextInterface::class)->getModulesPath() . '/oeTest/' . $moduleId);
+    }
+
+    private function deactivateTestModule(string $moduleId)
+    {
+        $container = ContainerFactory::getInstance()->getContainer();
+        $container
+            ->get(ModuleActivationBridgeInterface::class)
+            ->deactivate($moduleId, Registry::getConfig()->getShopId());
+    }
+
+
 }

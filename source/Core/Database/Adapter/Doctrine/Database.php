@@ -1113,7 +1113,7 @@ class Database implements DatabaseInterface
             $item->auto_increment = strtolower($extra) == 'auto_increment';
             $item->binary = (false !== strpos(strtolower($type), 'blob'));
             $item->unsigned = (false !== strpos(strtolower($type), 'unsigned'));
-            $item->has_default = ('' === $default || is_null($default)) ? false : true;
+            $item->has_default = ('' === trim($default, "'") || is_null($default)) ? false : true;
             if ($item->has_default) {
                 $item->default_value = $default;
             }

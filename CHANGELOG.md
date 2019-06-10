@@ -87,6 +87,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix typo in ident for help near name/surname in `application/views/admin/tpl/shop_main.tpl` [PR-701](https://github.com/OXID-eSales/oxideshop_ce/pull/701)
     - Was `HELP_ENERAL_NAME` changed to `HELP_GENERAL_NAME`
 - Drop support for PHP 7.0
+- Use user from Order::validateOrder method in validatePayment as well [PR-706](https://github.com/OXID-eSales/oxideshop_ce/pull/706)
 
 ### Removed
 - Removed old not used blAutoSearchOnCat option from shop_config tab [PR-654](https://github.com/OXID-eSales/oxideshop_ce/pull/654)

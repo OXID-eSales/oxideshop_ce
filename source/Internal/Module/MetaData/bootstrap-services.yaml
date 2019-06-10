@@ -66,30 +66,34 @@ parameters:
       13: smartyPluginDirectories
 
 services:
+  _defaults:
+    autowire: true
+    public: false
+
   OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProviderInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider
-    public: false
-    autowire: true
 
   oxid_esales.module.metadata.datamapper.metadatamapper:
     class: OxidEsales\EshopCommunity\Internal\Module\MetaData\DataMapper\MetaDataMapper
-    public: false
-    autowire: true
 
   OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataSchemaValidatorInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataSchemaValidator
-    public: false
-    autowire: true
 
   OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataSchemataProviderInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataSchemataProvider
     arguments:
       - '%oxid_esales.module.metadata.service.metadata_schemata%'
-    public: false
 
   OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataNormalizerInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataNormalizer
-    public: false
+
+  OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidatorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidatorAggregate
+    arguments:
+      - '@oxid_esales.module.meta_data.validator.shop_module_setting_boolean_validator'
+
+  oxid_esales.module.meta_data.validator.shop_module_setting_boolean_validator:
+    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\ShopModuleSettingBooleanValidator
 
   OxidEsales\EshopCommunity\Internal\Module\MetaData\Converter\MetaDataConverterInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Converter\MetaDataConverterAggregate

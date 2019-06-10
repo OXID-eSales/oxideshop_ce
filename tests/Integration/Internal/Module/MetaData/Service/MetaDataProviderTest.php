@@ -11,15 +11,11 @@ use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Converter\MetaDataConverterInterface;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataNormalizer;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidatorInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * Class MetaDataProviderTest
- *
- * @package OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData\Service
- */
 class MetaDataProviderTest extends TestCase
 {
     use ContainerTrait;
@@ -32,6 +28,9 @@ class MetaDataProviderTest extends TestCase
 
     /** @var BasicContextInterface */
     private $contextStub;
+
+    /** @var MetaDataValidatorInterface */
+    private $validatorStub;
 
     /**
      * @expectedException \InvalidArgumentException
@@ -213,6 +212,7 @@ class MetaDataProviderTest extends TestCase
         $this->metaDataNormalizerStub = $this->getMockBuilder(MetaDataNormalizer::class)->getMock();
         $this->metaDataNormalizerStub->method('normalizeData')->willReturnArgument(0);
         $this->contextStub = $this->getMockBuilder(BasicContextInterface::class)->getMock();
+        $this->validatorStub = $this->getMockBuilder(MetaDataValidatorInterface::class)->getMock();
     }
 
     /**

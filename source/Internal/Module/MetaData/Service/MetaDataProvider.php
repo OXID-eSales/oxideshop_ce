@@ -10,6 +10,7 @@ use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Converter\MetaDataConverterInterface;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\BadMetaDataFoundEvent;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\InvalidMetaDataException;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidatorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -125,6 +126,7 @@ class MetaDataProvider implements MetaDataProviderInterface
         $this->metaDataValidatorService->validate($moduleData);
         $moduleData = $this->metaDataConverter->convert($moduleData);
         $normalizedMetaData = $this->metaDataNormalizer->normalizeData($moduleData);
+
         $normalizedMetaData[static::METADATA_ID] = $this->sanitizeMetaDataId($normalizedMetaData);
         if (isset($normalizedMetaData[static::METADATA_EXTEND])) {
             $normalizedMetaData[static::METADATA_EXTEND] = $this->sanitizeExtendedClasses($normalizedMetaData);
@@ -182,13 +184,19 @@ class MetaDataProvider implements MetaDataProviderInterface
      *
      * @throws InvalidMetaDataException
      */
-    private function validateMetaDataFileVariables($metaDataVersion, $moduleData)
+    private function validateMetaDataFileVariables($metaDataVersion, $moduleData): void
     {
         if ($metaDataVersion === null || !is_scalar($metaDataVersion)) {
-            throw new InvalidMetaDataException('The variable $sMetadataVersion must be present in ' . $this->filePath . ' and it must be a scalar');
+            throw new InvalidMetaDataException(
+                'The variable $sMetadataVersion must be present in '
+                . $this->filePath . ' and it must be a scalar.'
+            );
         }
         if ($moduleData === null || !is_array($moduleData)) {
-            throw new InvalidMetaDataException('The variable $aModule must be present in ' . $this->filePath . ' and it must be an array');
+            throw new InvalidMetaDataException(
+                'The variable $aModule must be present in '
+                . $this->filePath . ' and it must be an array'
+            );
         }
     }
 

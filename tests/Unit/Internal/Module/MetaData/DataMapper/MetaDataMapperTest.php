@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\DataMapper\MetaDataMapper;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidatorInterface;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataSchemaValidatorInterface;
 use PHPUnit\Framework\TestCase;
 
 class MetaDataMapperTest extends TestCase
@@ -66,7 +66,7 @@ class MetaDataMapperTest extends TestCase
     {
         parent::setUp();
 
-        $this->metaDataValidatorStub = $this->getMockBuilder(MetaDataValidatorInterface::class)
+        $this->metaDataValidatorStub = $this->getMockBuilder(MetaDataSchemaValidatorInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->metaDataValidatorStub->method('validate');

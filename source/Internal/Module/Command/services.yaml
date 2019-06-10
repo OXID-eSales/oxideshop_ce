@@ -1,20 +1,20 @@
 services:
   oxid_esales.command.module_activate_command:
     class: OxidEsales\EshopCommunity\Internal\Module\Command\ModuleActivateCommand
-    public: true
+    public: false
     autowire: true
     tags:
     - { name: 'console.command', command: 'oe:module:activate' }
   oxid_esales.command.module_deactivate_command:
     class: OxidEsales\EshopCommunity\Internal\Module\Command\ModuleDeactivateCommand
-    public: true
+    public: false
     autowire: true
     tags:
     - { name: 'console.command', command: 'oe:module:deactivate' }
 
   OxidEsales\EshopCommunity\Internal\Module\Command\InstallModuleConfigurationCommand:
     class: OxidEsales\EshopCommunity\Internal\Module\Command\InstallModuleConfigurationCommand
-    public: true
+    public: false
     autowire: true
     tags:
     - { name: 'console.command', command: 'oe:module:install-configuration' }

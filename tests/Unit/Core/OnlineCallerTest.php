@@ -71,7 +71,7 @@ class OnlineCallerTest extends \OxidTestCase
         $this->assertSame(0, $this->getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
 
         /**
-         * Although no exception is thrown, the underlying error will be logged in EXCEPTION_LOG.txt
+         * Although no exception is thrown, the underlying error will be logged in oxideshop.log
          */
         $expectedExceptionClass = \OxidEsales\Eshop\Core\Exception\StandardException::class;
         $this->assertLoggedException($expectedExceptionClass);

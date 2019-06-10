@@ -16,7 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ModuleSettingValid
 class ModuleConfigurationHandlingService implements ModuleConfigurationHandlingServiceInterface
 {
     /**
-     * @var array
+     * @var ModuleConfigurationHandlerInterface[]
      */
     private $handlers = [];
 

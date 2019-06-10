@@ -118,8 +118,11 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
 
             // checking if all articles were moved from one
             $sSelect = "select 1 from $sArticleTable left join $sO2CView on $sArticleTable.oxid=$sO2CView.oxobjectid ";
-            $sSelect .= "where $sO2CView.oxcatnid = " . DatabaseProvider::getDb()->quote($soxId) . " and $sArticleTable.oxparentid = '' and $sArticleTable.oxid ";
-            $sSelect .= "not in ( " . implode(", ", DatabaseProvider::getDb()->quoteArray($aSkipArt)) . " ) ";
+            $sSelect .= "where $sO2CView.oxcatnid = " . DatabaseProvider::getDb()->quote($soxId);
+            if (count($aSkipArt)) {
+                $sSelect .= " and $sArticleTable.oxparentid = '' and $sArticleTable.oxid ";
+                $sSelect .= "not in ( " . implode(", ", DatabaseProvider::getDb()->quoteArray($aSkipArt)) . " ) ";
+            }
 
             // simply echoing "1" if some items found, and 0 if nothing was found
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).

@@ -9,11 +9,11 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Configuration\Val
 
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataSchemataProvider;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidator;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataSchemaValidator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class MetaDataValidatorTest extends TestCase
+class MetaDataSchemaValidatorTest extends TestCase
 {
     private $metaDataSchemata;
     private $metaDataSchemaVersion20;
@@ -28,7 +28,7 @@ class MetaDataValidatorTest extends TestCase
 
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);
         $eventDispatcherStub = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
-        $validator = new MetaDataValidator($metaDataSchemata, $eventDispatcherStub);
+        $validator = new MetaDataSchemaValidator($metaDataSchemata, $eventDispatcherStub);
 
         $validator->validate('path/to/metadata.php', '1.2', $metaDataToValidate);
     }
@@ -42,7 +42,7 @@ class MetaDataValidatorTest extends TestCase
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);
         $eventDispatcherMock = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
         $eventDispatcherMock->expects($this->once())->method('dispatch');
-        $validator = new MetaDataValidator($metaDataSchemata, $eventDispatcherMock);
+        $validator = new MetaDataSchemaValidator($metaDataSchemata, $eventDispatcherMock);
 
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
@@ -69,7 +69,7 @@ class MetaDataValidatorTest extends TestCase
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);
         $eventDispatcherMock = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
         $eventDispatcherMock->expects($this->once())->method('dispatch');
-        $validator = new MetaDataValidator($metaDataSchemata, $eventDispatcherMock);
+        $validator = new MetaDataSchemaValidator($metaDataSchemata, $eventDispatcherMock);
 
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
@@ -118,7 +118,7 @@ class MetaDataValidatorTest extends TestCase
 
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);
         $eventDispatcherStub = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
-        $validator = new MetaDataValidator($metaDataSchemata, $eventDispatcherStub);
+        $validator = new MetaDataSchemaValidator($metaDataSchemata, $eventDispatcherStub);
 
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
@@ -142,7 +142,7 @@ class MetaDataValidatorTest extends TestCase
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);
         $eventDispatcherMock = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
         $eventDispatcherMock->expects($this->once())->method('dispatch');
-        $validator = new MetaDataValidator($metaDataSchemata, $eventDispatcherMock);
+        $validator = new MetaDataSchemaValidator($metaDataSchemata, $eventDispatcherMock);
 
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
@@ -158,7 +158,7 @@ class MetaDataValidatorTest extends TestCase
 
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);
         $eventDispatcherStub = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
-        $validator = new MetaDataValidator($metaDataSchemata, $eventDispatcherStub);
+        $validator = new MetaDataSchemaValidator($metaDataSchemata, $eventDispatcherStub);
 
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
@@ -177,7 +177,7 @@ class MetaDataValidatorTest extends TestCase
 
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);
         $eventDispatcherStub = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
-        $validator = new MetaDataValidator($metaDataSchemata, $eventDispatcherStub);
+        $validator = new MetaDataSchemaValidator($metaDataSchemata, $eventDispatcherStub);
 
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
@@ -196,7 +196,7 @@ class MetaDataValidatorTest extends TestCase
 
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);
         $eventDispatcherStub = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
-        $validator = new MetaDataValidator($metaDataSchemata, $eventDispatcherStub);
+        $validator = new MetaDataSchemaValidator($metaDataSchemata, $eventDispatcherStub);
 
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }

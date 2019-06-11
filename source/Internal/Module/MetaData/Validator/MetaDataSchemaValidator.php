@@ -16,7 +16,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * @internal
  */
-class MetaDataValidator implements MetaDataValidatorInterface
+class MetaDataSchemaValidator implements MetaDataSchemaValidatorInterface
 {
     /**
      * @var MetaDataSchemataProviderInterface

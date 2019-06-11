@@ -76,8 +76,8 @@ services:
     public: false
     autowire: true
 
-  OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidatorInterface:
-    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidator
+  OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataSchemaValidatorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataSchemaValidator
     public: false
     autowire: true
 

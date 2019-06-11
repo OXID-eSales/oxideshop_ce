@@ -10,8 +10,8 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleCon
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidator;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidatorInterface;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataSchemaValidator;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataSchemaValidatorInterface;
 
 /**
  * @internal
@@ -19,16 +19,16 @@ use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidat
 class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
 {
     /**
-     * @var MetaDataValidator
+     * @var MetaDataSchemaValidator
      */
     private $validator;
 
     /**
      * MetaDataMapper constructor.
      *
-     * @param MetaDataValidatorInterface $validator
+     * @param MetaDataSchemaValidatorInterface $validator
      */
-    public function __construct(MetaDataValidatorInterface $validator)
+    public function __construct(MetaDataSchemaValidatorInterface $validator)
     {
         $this->validator = $validator;
     }

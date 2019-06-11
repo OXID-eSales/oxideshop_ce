@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator;
 /**
  * @internal
  */
-interface MetaDataValidatorInterface
+interface MetaDataSchemaValidatorInterface
 {
     /**
      * @param string $metaDataFilePath

@@ -6,8 +6,10 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
-use oxException;
+use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\FileSystem\FileSystem;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Theme;
 
 /**
  * Forms path to module template.
@@ -20,7 +22,7 @@ class ModuleTemplatePathCalculator
     /** @var string Path to modules directory inside the shop. */
     private $modulesPath = '';
 
-    /** @var \OxidEsales\Eshop\Core\Theme */
+    /** @var Theme */
     private $theme;
 
     /** @var \OxidEsales\Eshop\Core\Module\ModuleList */
@@ -30,10 +32,15 @@ class ModuleTemplatePathCalculator
     private $fileSystem;
 
     /**
+     * @var Config
+     */
+    private $config;
+
+    /**
      * Sets required dependencies
      *
      * @param \OxidEsales\Eshop\Core\Module\ModuleList $moduleList
-     * @param \OxidEsales\Eshop\Core\Theme             $theme
+     * @param Theme                                    $theme
      * @param FileSystem                               $fileSystem
      */
     public function __construct($moduleList = null, $theme = null, $fileSystem = null)
@@ -42,7 +49,7 @@ class ModuleTemplatePathCalculator
             $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
         }
         if (is_null($theme)) {
-            $theme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
+            $theme = oxNew(Theme::class);
         }
         if (is_null($fileSystem)) {
             $fileSystem = oxNew(FileSystem::class);
@@ -76,15 +83,18 @@ class ModuleTemplatePathCalculator
      *
      * @return string
      *
-     * @throws oxException
      */
     public function calculateModuleTemplatePath($templateName)
     {
-        $moduleList = $this->getModuleList();
-        $theme = $this->getTheme();
+        $theme = $this->theme;
 
-        $moduleTemplates = $moduleList->getModuleTemplates();
-        $activeModules = $moduleList->getActiveModuleInfo();
+        $moduleTemplates = $this->getConfig()->getConfigParam('aModuleTemplates');
+
+        $activeModules = (array) $this->getConfig()->getConfigParam('aModulePaths');
+        if (empty($activeModules)) {
+            $activeModules = ['moduleId' => true];
+        }
+
         $finalTemplatePath = '';
 
         if (is_array($moduleTemplates) && is_array($activeModules)) {
@@ -92,7 +102,7 @@ class ModuleTemplatePathCalculator
                 // check if module is active
                 if (isset($activeModules[$sModuleId])) {
                     $foundTemplate = null;
-                    $fileSystem = $this->getFileSystem();
+                    $fileSystem = $this->fileSystem;
 
                     // check if template for our active themes exists
                     foreach ((array) $theme->getActiveThemesList() as $oneActiveThemeId) {
@@ -126,26 +136,14 @@ class ModuleTemplatePathCalculator
     }
 
     /**
-     * @return \OxidEsales\Eshop\Core\Theme
+     * @return Config
      */
-    protected function getTheme()
+    private function getConfig()
     {
-        return $this->theme;
-    }
+        if ($this->config === null) {
+            $this->config = Registry::getConfig();
+        }
 
-    /**
-     * @return \OxidEsales\Eshop\Core\Module\ModuleList
-     */
-    protected function getModuleList()
-    {
-        return $this->moduleList;
-    }
-
-    /**
-     * @return FileSystem
-     */
-    protected function getFileSystem()
-    {
-        return $this->fileSystem;
+        return $this->config;
     }
 }

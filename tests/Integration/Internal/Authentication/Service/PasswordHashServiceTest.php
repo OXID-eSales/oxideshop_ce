@@ -99,5 +99,4 @@ class PasswordHashServiceTest extends TestCase
 
         return $passwordPolicyMock;
     }
-
 }

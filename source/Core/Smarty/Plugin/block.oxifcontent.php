@@ -21,31 +21,30 @@
  *
  * @return string
  */
-function smarty_block_oxifcontent( $params, $content, &$smarty, &$repeat)
+function smarty_block_oxifcontent($params, $content, &$smarty, &$repeat)
 {
     $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-    $sIdent  = isset( $params['ident'] )?$params['ident']:null;
-    $sOxid   = isset( $params['oxid'] )?$params['oxid']:null;
-    $sAssign = isset( $params['assign'])?$params['assign']:null;
-    $sObject = isset( $params['object'])?$params['object']:'oCont';
+    $sIdent  = isset($params['ident'])?$params['ident']:null;
+    $sOxid   = isset($params['oxid'])?$params['oxid']:null;
+    $sAssign = isset($params['assign'])?$params['assign']:null;
+    $sObject = isset($params['object'])?$params['object']:'oCont';
 
     if ($repeat) {
-        if ( $sIdent || $sOxid ) {
-
+        if ($sIdent || $sOxid) {
             static $aContentCache = [];
 
-            if ( ( $sIdent && isset( $aContentCache[$sIdent] ) ) ||
-                 ( $sOxid && isset( $aContentCache[$sOxid] ) ) ) {
+            if (($sIdent && isset($aContentCache[$sIdent])) ||
+                 ($sOxid && isset($aContentCache[$sOxid]))) {
                 $oContent = $sOxid ? $aContentCache[$sOxid] : $aContentCache[$sIdent];
             } else {
-                $oContent = oxNew( "oxContent" );
-                $blLoaded = $sOxid ? $oContent->load( $sOxid ) : ( $oContent->loadbyIdent( $sIdent ) );
-                if ( $blLoaded && $oContent->isActive() ) {
+                $oContent = oxNew("oxContent");
+                $blLoaded = $sOxid ? $oContent->load($sOxid) : ($oContent->loadbyIdent($sIdent));
+                if ($blLoaded && $oContent->isActive()) {
                     $aContentCache[$oContent->getId()] = $aContentCache[$oContent->getLoadId()] = $oContent;
                 } else {
                     $oContent = false;
-                    if ( $sOxid ) {
+                    if ($sOxid) {
                         $aContentCache[$sOxid] = $oContent;
                     } else {
                         $aContentCache[$sIdent] = $oContent;
@@ -54,7 +53,7 @@ function smarty_block_oxifcontent( $params, $content, &$smarty, &$repeat)
             }
 
             $blLoaded = false;
-            if ( $oContent ) {
+            if ($oContent) {
                 $smarty->assign($sObject, $oContent);
                 $blLoaded = true;
             }
@@ -64,9 +63,9 @@ function smarty_block_oxifcontent( $params, $content, &$smarty, &$repeat)
         $repeat = $blLoaded;
     } else {
         $oStr = getStr();
-        $blHasSmarty = $oStr->strstr( $content, '[{' );
-        if ( $blHasSmarty  ) {
-            $content = \OxidEsales\Eshop\Core\Registry::getUtilsView()->parseThroughSmarty( $content, $sIdent.md5($content), $myConfig->getActiveView() );
+        $blHasSmarty = $oStr->strstr($content, '[{');
+        if ($blHasSmarty) {
+            $content = \OxidEsales\Eshop\Core\Registry::getUtilsView()->parseThroughSmarty($content, $sIdent.md5($content), $myConfig->getActiveView());
         }
 
         if ($sAssign) {
@@ -75,5 +74,4 @@ function smarty_block_oxifcontent( $params, $content, &$smarty, &$repeat)
             return $content;
         }
     }
-
 }

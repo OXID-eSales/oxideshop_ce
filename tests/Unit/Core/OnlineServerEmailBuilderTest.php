@@ -13,7 +13,6 @@ use \oxRegistry;
  */
 class OnlineServerEmailBuilderTest extends \OxidTestCase
 {
-
     public function testBuildIfParametersWereSetCorrectly()
     {
         $sBody = '_testXML';

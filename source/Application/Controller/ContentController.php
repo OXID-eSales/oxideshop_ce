@@ -166,7 +166,8 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     protected function _canShowContent($sContentIdent)
     {
-        return !($this->isEnabledPrivateSales() &&
+        return !(
+            $this->isEnabledPrivateSales() &&
             !$this->getUser() && !in_array($sContentIdent, $this->_aPsAllowedContents)
         );
     }

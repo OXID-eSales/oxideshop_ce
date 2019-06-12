@@ -17,13 +17,12 @@ require_once TEST_LIBRARY_HELPERS_PATH . 'oxUtilsHelper.php';
 
 class modOxView extends oxView
 {
-
     public function setVar($sName, $sValue)
     {
         $this->$sName = $sValue;
     }
 
-    static public function reset()
+    public static function reset()
     {
         self::$_blExecuted = false;
     }
@@ -53,7 +52,6 @@ class ViewTestSecondModuleController extends \OxidEsales\Eshop\Core\Controller\B
 
 class ViewTest extends \OxidTestCase
 {
-
     protected $_oView = null;
 
     /**
@@ -347,7 +345,8 @@ class ViewTest extends \OxidTestCase
         $view = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('getConfig'));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
 
-        $this->expectException('oxSystemComponentException'); $this->expectExceptionMessage( 'ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND' . ' testAction');
+        $this->expectException('oxSystemComponentException');
+        $this->expectExceptionMessage('ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND' . ' testAction');
         $view->_executeNewAction("testAction");
     }
 
@@ -734,7 +733,8 @@ class ViewTest extends \OxidTestCase
         $this->assertEmpty(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('ViewTestModuleControllerResult'));
         $view = oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\ViewTestFirstModuleController::class);
 
-        $this->expectException(\Exception::class); $this->expectExceptionMessage( 'Bail out before redirect, all is well.');
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Bail out before redirect, all is well.');
         $view->executeFunction('doSomething');
     }
 

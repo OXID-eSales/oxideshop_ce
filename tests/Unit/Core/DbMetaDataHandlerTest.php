@@ -95,7 +95,6 @@ class DbMetaDataHandlerTest extends \OxidTestCase
         $this->assertTrue($oDbMeta->fieldExists("OXUSERID", "oxreviews"));
         $this->assertFalse($oDbMeta->fieldExists("oxblablabla", "oxreviews"));
         $this->assertFalse($oDbMeta->fieldExists("", "oxreviews"));
-
     }
 
     /**

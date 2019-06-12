@@ -69,7 +69,6 @@ class AdminLinksMainTest extends \OxidTestCase
 
         $this->assertNotNull($aViewData["updatelist"]);
         $this->assertEquals(1, $aViewData["updatelist"]);
-
     }
 
     /**

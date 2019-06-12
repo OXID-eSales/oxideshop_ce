@@ -24,7 +24,6 @@ class EventLoggingSubscriberTest extends UnitTestCase
 
     public function setUp()
     {
-
         $containerBuilder = new ContainerBuilder(new BasicContextStub());
         $this->container = $containerBuilder->getContainer();
         $contextDefinition = $this->container->getDefinition(ContextInterface::class);
@@ -47,10 +46,11 @@ class EventLoggingSubscriberTest extends UnitTestCase
 
         /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = $this->container->get(EventDispatcherInterface::class);
-        $dispatcher->dispatch(ServicesYamlConfigurationErrorEvent::NAME,
-            new ServicesYamlConfigurationErrorEvent('just/some/path/services.yaml'));
+        $dispatcher->dispatch(
+            ServicesYamlConfigurationErrorEvent::NAME,
+            new ServicesYamlConfigurationErrorEvent('just/some/path/services.yaml')
+        );
 
         $this->assertTrue(file_exists(__DIR__ . DIRECTORY_SEPARATOR . 'test.log'));
     }
-
 }

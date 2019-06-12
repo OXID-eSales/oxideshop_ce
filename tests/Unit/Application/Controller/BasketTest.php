@@ -325,5 +325,4 @@ class BasketTest extends \OxidTestCase
         $oView = oxNew('Basket');
         $this->assertSame(false, $oView->isWrapping());
     }
-
 }

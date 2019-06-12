@@ -40,7 +40,6 @@ class FileCollectorTest extends \OxidTestCase
         $this->assertContains('bin/.htaccess', $aResultExistingAll);
         $this->assertContains('bin/cron.php', $aResultExistingAll);
         $this->assertContains('bin/log.txt', $aResultExistingAll);
-
     }
 
     /**
@@ -60,5 +59,4 @@ class FileCollectorTest extends \OxidTestCase
         $this->assertContains('bin/cron.php', $aResult);
         $this->assertContains('index.php', $aResult);
     }
-
 }

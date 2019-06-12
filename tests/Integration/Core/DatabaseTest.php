@@ -60,7 +60,8 @@ class DatabaseTest extends UnitTestCase
 
         $this->setProtectedClassProperty(oxDb::getInstance(), 'db', $dbMock);
 
-        $this->expectException('Exception'); $this->expectExceptionMessage( $exceptionMessage);
+        $this->expectException('Exception');
+        $this->expectExceptionMessage($exceptionMessage);
 
         oxDb::getDb()->connect();
     }

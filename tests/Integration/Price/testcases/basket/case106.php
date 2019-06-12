@@ -7,19 +7,19 @@
  * Currency rate: 1.00
  * Discounts: -
  * Costs:
- *  1. Payment + 
- *  2. Delivery + 
+ *  1. Payment +
+ *  2. Delivery +
  *  3. TS  -
  * Vouchers: -
  * Wrapping:  -
  * Gift cart: -
- * Short description: 
+ * Short description:
  * Payment methods calculation in Neto-Bruto Mode.Payment 10%
  */
 $aData = array(
     // Articles
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
             // oxarticles db fields
             'oxid'                     => 111,
             'oxprice'                  => 1,00,
@@ -61,20 +61,20 @@ $aData = array(
 
     ),
     // TEST EXPECTATIONS
-    'expected' => array (
+    'expected' => array(
         // Article expected prices: ARTICLE ID => ( Unit price, Total Price )
-        'articles' => array (
-             111 => array ( '1,20', '1,20' ),
+        'articles' => array(
+             111 => array( '1,20', '1,20' ),
 
         ),
         // Expectations of other totals
-        'totals' => array (
+        'totals' => array(
             // Total BRUTTO
             'totalBrutto' => '1,20',
             // Total NETTO
             'totalNetto'  => '1,00',
             // Total VAT amount: vat% => total cost
-            'vats' => array (
+            'vats' => array(
                 20 => '0,20',
             ),
 
@@ -96,7 +96,7 @@ $aData = array(
         ),
     ),
     // Test case options
-    'options' => array (
+    'options' => array(
         // Configs (real named)
         'config' => array(
             'blEnterNetPrice' => true,

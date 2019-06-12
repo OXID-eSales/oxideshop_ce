@@ -7,7 +7,7 @@
 /**
  * Include the {@link modifier.escape.php} plugin
  */
-require_once $smarty->_get_plugin_filepath( 'modifier', 'escape' );
+require_once $smarty->_get_plugin_filepath('modifier', 'escape');
 
 /**
  * Smarty escape modifier plugin
@@ -22,8 +22,8 @@ require_once $smarty->_get_plugin_filepath( 'modifier', 'escape' );
  *
  * @return string
  */
-function smarty_modifier_oxescape( $sString, $sEscType = 'html', $sCharSet = null )
+function smarty_modifier_oxescape($sString, $sEscType = 'html', $sCharSet = null)
 {
     $sCharSet = $sCharSet ? $sCharSet : \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView()->getCharSet();
-    return smarty_modifier_escape( $sString, $sEscType, $sCharSet );
+    return smarty_modifier_escape($sString, $sEscType, $sCharSet);
 }

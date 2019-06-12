@@ -164,20 +164,20 @@ class BasketitemTest extends \OxidTestCase
      */
     public function testInitFromOrderArticle()
     {
-    $oOrderArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\OrderArticle::class, array("getOrderArticleSelectList", "getPersParams", "isBundle"));
-    $oOrderArticle->expects($this->once())->method('getOrderArticleSelectList')->will($this->returnValue("aOrderArticleSelectList"));
-    $oOrderArticle->expects($this->once())->method('getPersParams')->will($this->returnValue("aPersParams"));
-    $oOrderArticle->expects($this->once())->method('isBundle')->will($this->returnValue(true));
-    $oOrderArticle->oxorderarticles__oxamount = new oxField(999);
+        $oOrderArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\OrderArticle::class, array("getOrderArticleSelectList", "getPersParams", "isBundle"));
+        $oOrderArticle->expects($this->once())->method('getOrderArticleSelectList')->will($this->returnValue("aOrderArticleSelectList"));
+        $oOrderArticle->expects($this->once())->method('getPersParams')->will($this->returnValue("aPersParams"));
+        $oOrderArticle->expects($this->once())->method('isBundle')->will($this->returnValue(true));
+        $oOrderArticle->oxorderarticles__oxamount = new oxField(999);
 
-    $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array("_setFromOrderArticle", "setAmount", "_setSelectList", "setPersParams", "setBundle"));
-    $oBasketItem->expects($this->once())->method('_setFromOrderArticle')->with($this->equalTo($oOrderArticle));
-    $oBasketItem->expects($this->once())->method('setAmount')->with($this->equalTo(999));
-    $oBasketItem->expects($this->once())->method('_setSelectList')->with($this->equalTo("aOrderArticleSelectList"));
-    $oBasketItem->expects($this->once())->method('setPersParams')->with($this->equalTo("aPersParams"));
-    $oBasketItem->expects($this->once())->method('setBundle')->with($this->equalTo(true));
+        $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array("_setFromOrderArticle", "setAmount", "_setSelectList", "setPersParams", "setBundle"));
+        $oBasketItem->expects($this->once())->method('_setFromOrderArticle')->with($this->equalTo($oOrderArticle));
+        $oBasketItem->expects($this->once())->method('setAmount')->with($this->equalTo(999));
+        $oBasketItem->expects($this->once())->method('_setSelectList')->with($this->equalTo("aOrderArticleSelectList"));
+        $oBasketItem->expects($this->once())->method('setPersParams')->with($this->equalTo("aPersParams"));
+        $oBasketItem->expects($this->once())->method('setBundle')->with($this->equalTo(true));
 
-    $oBasketItem->initFromOrderArticle($oOrderArticle);
+        $oBasketItem->initFromOrderArticle($oOrderArticle);
     }
 
     /**
@@ -244,7 +244,8 @@ class BasketitemTest extends \OxidTestCase
         $article = $this->createArticle();
 
         $oBasketItem = $this->getMock(
-            'oxBasketItem', array('_setArticle',
+            'oxBasketItem',
+            array('_setArticle',
                                   'setAmount',
                                   '_setSelectList',
                                   'setPersParams',
@@ -1110,20 +1111,20 @@ class BasketitemTest extends \OxidTestCase
      */
     public function testSetLanguageId_change_noArticle()
     {
-        $oBasketItem = $this->getMock( 'oxbasketitem', array( '_setArticle' ) );
-        $oBasketItem->setLanguageId( '15' );
-        $oEx = oxNew( "oxNoArticleException" );
-        $oBasketItem->expects( $this->once() )->method( '_setArticle')->will( $this->throwException( $oEx ) );
-        $oBasketItem->setLanguageId( '17' );
-        $this->assertEquals( '17', $oBasketItem->getLanguageId() );
-        $aErrors = $this->getSession()->getVariable( 'Errors' );
+        $oBasketItem = $this->getMock('oxbasketitem', array( '_setArticle' ));
+        $oBasketItem->setLanguageId('15');
+        $oEx = oxNew("oxNoArticleException");
+        $oBasketItem->expects($this->once())->method('_setArticle')->will($this->throwException($oEx));
+        $oBasketItem->setLanguageId('17');
+        $this->assertEquals('17', $oBasketItem->getLanguageId());
+        $aErrors = $this->getSession()->getVariable('Errors');
 
-        $this->assertTrue( is_array( $aErrors ) );
-        $this->assertEquals( 1, count( $aErrors ) );
+        $this->assertTrue(is_array($aErrors));
+        $this->assertEquals(1, count($aErrors));
 
-        $oExcp = unserialize( current( $aErrors['default'] ));
-        $this->assertNotNull( $oExcp );
-        $this->assertTrue( $oExcp instanceof ExceptionToDisplay );
+        $oExcp = unserialize(current($aErrors['default']));
+        $this->assertNotNull($oExcp);
+        $this->assertTrue($oExcp instanceof ExceptionToDisplay);
     }
 
     /**
@@ -1133,20 +1134,20 @@ class BasketitemTest extends \OxidTestCase
      */
     public function testSetLanguageId_change_wrongArticleInput()
     {
-        $oBasketItem = $this->getMock( 'oxbasketitem', array( '_setArticle' ) );
-        $oBasketItem->setLanguageId( '15' );
-        $oEx = oxNew( "oxArticleInputException" );
-        $oBasketItem->expects( $this->once() )->method( '_setArticle')->will( $this->throwException( $oEx ) );
-        $oBasketItem->setLanguageId( '17' );
-        $this->assertEquals( '17', $oBasketItem->getLanguageId() );
-        $aErrors = $this->getSession()->getVariable( 'Errors' );
+        $oBasketItem = $this->getMock('oxbasketitem', array( '_setArticle' ));
+        $oBasketItem->setLanguageId('15');
+        $oEx = oxNew("oxArticleInputException");
+        $oBasketItem->expects($this->once())->method('_setArticle')->will($this->throwException($oEx));
+        $oBasketItem->setLanguageId('17');
+        $this->assertEquals('17', $oBasketItem->getLanguageId());
+        $aErrors = $this->getSession()->getVariable('Errors');
 
-        $this->assertTrue( is_array( $aErrors ) );
-        $this->assertEquals( 1, count( $aErrors ) );
+        $this->assertTrue(is_array($aErrors));
+        $this->assertEquals(1, count($aErrors));
 
-        $oExcp = unserialize( current( $aErrors['default'] ));
-        $this->assertNotNull( $oExcp );
-        $this->assertTrue( $oExcp instanceof ExceptionToDisplay );
+        $oExcp = unserialize(current($aErrors['default']));
+        $this->assertNotNull($oExcp);
+        $this->assertTrue($oExcp instanceof ExceptionToDisplay);
     }
 
     /**
@@ -1220,5 +1221,4 @@ class BasketitemTest extends \OxidTestCase
 
         return $article;
     }
-
 }

@@ -11,5 +11,4 @@ namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception;
  */
 class InvalidMetaDataException extends \Exception
 {
-
 }

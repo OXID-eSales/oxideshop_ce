@@ -8,7 +8,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Exception;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseErrorException;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
-
 /**
  *
  * Test class for DatabaseException

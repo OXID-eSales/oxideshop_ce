@@ -241,7 +241,8 @@ class FileTest extends \OxidTestCase
      */
     public function testProcessFileUploadBad()
     {
-        $this->expectException('oxException'); $this->expectExceptionMessage( "EXCEPTION_COULDNOTWRITETOFILE");
+        $this->expectException('oxException');
+        $this->expectExceptionMessage("EXCEPTION_COULDNOTWRITETOFILE");
 
         $filePath = $this->createFile('out/downloads/testFile', 'test jpg file');
 

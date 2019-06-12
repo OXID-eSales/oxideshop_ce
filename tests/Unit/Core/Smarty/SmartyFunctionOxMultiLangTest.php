@@ -194,5 +194,4 @@ class SmartyFunctionOxMultiLangTest extends \OxidTestCase
 
         $this->assertEquals($sTranslation, smarty_function_oxmultilang($aArgs, $oSmarty));
     }
-
 }

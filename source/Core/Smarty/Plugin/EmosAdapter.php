@@ -627,7 +627,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
                             //$sPath = $this->_getDeepestCategoryPath( $oProduct );
                             $sPath = $this->_getBasketProductCatPath($oProduct);
                             $oEmos->removeFromBasket($this->_convProd2EmosItem($oProduct, $sPath, ($aItemData['oldam'] - $aItemData['am'])));
-                            //$oEmos->appendPreScript($aItemData['oldam'].'->'.$aItemData['am'].':'.$oProduct->load( $aItemData['aid']));
+                        //$oEmos->appendPreScript($aItemData['oldam'].'->'.$aItemData['am'].':'.$oProduct->load( $aItemData['aid']));
                         } elseif ($aItemData['oldam'] < $aItemData['am'] && $oProduct->load($aItemData['aid'])) {
                             $sPath = $this->_getBasketProductCatPath($oProduct);
                             $oEmos->addToBasket($this->_convProd2EmosItem($oProduct, $sPath, $aItemData['am'] - $aItemData['oldam']));

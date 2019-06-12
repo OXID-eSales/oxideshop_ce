@@ -17,15 +17,14 @@ class TestEventSubscriber extends AbstractShopAwareEventSubscriber
         $this->stopPropagation = $stopPropagation;
     }
 
-    public function handleEvent(TestEvent $event) {
-
+    public function handleEvent(TestEvent $event)
+    {
         $event->handleEvent();
-        if ($this->stopPropagation){
+        if ($this->stopPropagation) {
             $event->stopPropagation();
         }
 
         return $event;
-
     }
 
     /**

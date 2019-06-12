@@ -211,7 +211,6 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function _mergeAttributes($aAttributes, $aParentAttributes)
     {
-
         if (count($aParentAttributes)) {
             $aAttrIds = [];
             foreach ($aAttributes as $aAttribute) {

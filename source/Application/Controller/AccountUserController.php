@@ -34,7 +34,6 @@ class AccountUserController extends \OxidEsales\Eshop\Application\Controller\Acc
      */
     public function render()
     {
-
         parent::render();
 
         // is logged in ?

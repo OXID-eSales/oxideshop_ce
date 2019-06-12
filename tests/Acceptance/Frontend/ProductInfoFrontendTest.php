@@ -262,7 +262,7 @@ class ProductInfoFrontendTest extends FrontendTestCase
         //In admin Set option (Installed GDLib Version) if "value" => ""
         $this->callShopSC("oxConfig", null, null, array("iUseGDVersion" => array("type" => "str", "value" => 0)));
 
-        $this->openArticle( 1001, true );
+        $this->openArticle(1001, true);
         $this->assertElementPresent("link=%PRICE_ALERT%");
         $this->click("productLinks");
         $this->waitForItemAppear("//a[@id='priceAlarmLink']");
@@ -279,7 +279,7 @@ class ProductInfoFrontendTest extends FrontendTestCase
         $this->callShopSC("oxArticle", "save", "1001", array("oxblfixedprice" => 1), null, 1);
         $this->clearTemp();
 
-        $this->openArticle( 1001 );
+        $this->openArticle(1001);
         $this->assertElementNotPresent("link=%PRICE_ALERT%");
         $this->assertElementNotPresent("pa[email]");
         $this->assertElementNotPresent("pa[price]");
@@ -299,7 +299,7 @@ class ProductInfoFrontendTest extends FrontendTestCase
      */
     public function testFrontendDetailsVariants()
     {
-        $this->openArticle( 1002, true );
+        $this->openArticle(1002, true);
         $this->_assertArticle('', '', '1002', "%PRICE_FROM% 55,00 € *", false);
         $this->_assertReview(array("review for parent product šÄßüл"));
 
@@ -371,7 +371,7 @@ class ProductInfoFrontendTest extends FrontendTestCase
      */
     public function testFrontendAccessories()
     {
-        $this->openArticle( 1000, true );
+        $this->openArticle(1000, true);
         $this->assertEquals("%ACCESSORIES%", $this->getText("//div[@id='accessories']/h3"));
         $this->assertEquals("Test product 2 [EN] šÄßüл %PRICE_FROM% 55,00 €", $this->clearString($this->getText("//div[@id='accessories']/ul/li[2]/a")));
 
@@ -386,18 +386,18 @@ class ProductInfoFrontendTest extends FrontendTestCase
      */
     public function testFrontendSimilarProducts()
     {
-        $this->openArticle( 1000, true );
-        $this->assertEquals( "Test product 0 [EN] šÄßüл", $this->getText( "//h1" ) );
-        $this->assertEquals( "%SIMILAR_PRODUCTS%", $this->getText( "//div[@id='similar']/h3" ) );
-        $this->assertEquals( "Test product 1 [EN] šÄßüл 100,00 €", $this->clearString( $this->getText( "//div[@id='similar']/ul/li[2]/a" ) ) );
-        $this->clickAndWait( "//div[@id='similar']/ul/li[2]/a" );
-        $this->assertEquals( "Test product 1 [EN] šÄßüл", $this->getText( "//h1" ) );
-        $this->assertEquals( "%SIMILAR_PRODUCTS%", $this->getText( "//div[@id='similar']/h3" ) );
-        $this->assertEquals( "Test product 0 [EN] šÄßüл 50,00 € *", $this->clearString( $this->getText( "//div[@id='similar']/ul/li[2]/a" ) ) );
-        $this->clickAndWait( "//div[@id='similar']/ul/li[2]/a" );
-        $this->assertEquals( "Test product 0 [EN] šÄßüл", $this->getText( "//h1" ) );
-        $this->assertEquals( "%SIMILAR_PRODUCTS%", $this->getText( "//div[@id='similar']/h3" ) );
-        $this->assertEquals( "Test product 1 [EN] šÄßüл 100,00 €", $this->clearString( $this->getText( "//div[@id='similar']/ul/li[2]/a" ) ) );
+        $this->openArticle(1000, true);
+        $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("//h1"));
+        $this->assertEquals("%SIMILAR_PRODUCTS%", $this->getText("//div[@id='similar']/h3"));
+        $this->assertEquals("Test product 1 [EN] šÄßüл 100,00 €", $this->clearString($this->getText("//div[@id='similar']/ul/li[2]/a")));
+        $this->clickAndWait("//div[@id='similar']/ul/li[2]/a");
+        $this->assertEquals("Test product 1 [EN] šÄßüл", $this->getText("//h1"));
+        $this->assertEquals("%SIMILAR_PRODUCTS%", $this->getText("//div[@id='similar']/h3"));
+        $this->assertEquals("Test product 0 [EN] šÄßüл 50,00 € *", $this->clearString($this->getText("//div[@id='similar']/ul/li[2]/a")));
+        $this->clickAndWait("//div[@id='similar']/ul/li[2]/a");
+        $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("//h1"));
+        $this->assertEquals("%SIMILAR_PRODUCTS%", $this->getText("//div[@id='similar']/h3"));
+        $this->assertEquals("Test product 1 [EN] šÄßüл 100,00 €", $this->clearString($this->getText("//div[@id='similar']/ul/li[2]/a")));
     }
 
     /**
@@ -427,7 +427,7 @@ class ProductInfoFrontendTest extends FrontendTestCase
         $aArticleParams = array("oxactive" => 1);
         $this->callShopSC("oxArticle", "save", "10014", $aArticleParams, null, 1);
 
-        $this->openArticle( 10014 );
+        $this->openArticle(10014);
         $this->_assertArticle('14 EN product šÄßüл', '13 EN description šÄßüл', '10014', 'from 15,00 € *', false);
 
         $this->assertEquals("size[EN]:", $this->getText("//div[@id='variants']/div//label"));
@@ -649,12 +649,12 @@ class ProductInfoFrontendTest extends FrontendTestCase
         $this->openBasket();
         $this->type("am_2", "3");
         $this->clickAndWait("basketUpdate");
-        $this->assertEquals("96,00 € \n101,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"),"price with discount not shown in basket");
-        $this->assertEquals("63,00 € \n70,00 €", $this->getText("//tr[@id='cartItem_2']/td[6]"),"price with discount not shown in basket");
+        $this->assertEquals("96,00 € \n101,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"), "price with discount not shown in basket");
+        $this->assertEquals("63,00 € \n70,00 €", $this->getText("//tr[@id='cartItem_2']/td[6]"), "price with discount not shown in basket");
         if (!isSUBSHOP) {  //staffepreis is not inherited to subshop
             $this->type("am_2", "7");
             $this->clickAndWait("basketUpdate");
-            $this->assertEquals("50,40 € \n56,00 €", $this->getText("//tr[@id='cartItem_2']/td[6]"),"price with discount not shown in basket");
+            $this->assertEquals("50,40 € \n56,00 €", $this->getText("//tr[@id='cartItem_2']/td[6]"), "price with discount not shown in basket");
         }
         //checking price C
         $this->clearCache();
@@ -664,9 +664,9 @@ class ProductInfoFrontendTest extends FrontendTestCase
         $this->clickAndWait("//ul[@id='productList']/li[1]//a");
         $this->assertEquals("2 kg | 27,50 €/kg", $this->getText("productPriceUnit"));
 
-        $this->addToBasket( "1003", 3 );
+        $this->addToBasket("1003", 3);
 
-        $this->assertEquals("67,50 € \n75,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"),"price with discount not shown in basket");
+        $this->assertEquals("67,50 € \n75,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"), "price with discount not shown in basket");
 
         //checking price B
         $this->clearCache();
@@ -676,12 +676,12 @@ class ProductInfoFrontendTest extends FrontendTestCase
         $this->clickAndWait("//ul[@id='productList']/li[1]//a");
         $this->assertEquals("2 kg | 22,50 €/kg", $this->getText("productPriceUnit"));
 
-        $this->addToBasket( "1003", 2 );
+        $this->addToBasket("1003", 2);
 
         if (!isSUBSHOP) {  //staffepreis(stock price for product) is not inherited to subshp
-            $this->assertEquals("67,50 € \n75,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"),"price with discount not shown in basket");
+            $this->assertEquals("67,50 € \n75,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"), "price with discount not shown in basket");
         } else {
-            $this->assertEquals("76,50 € \n85,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"),"price with discount not shown in basket");
+            $this->assertEquals("76,50 € \n85,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"), "price with discount not shown in basket");
         }
         //option "Use normal article price instead of zero A, B, C price" is OFF
         $this->callShopSC("oxConfig", null, null, array("blOverrideZeroABCPrices" => array("type" => "bool", "value" => "false")));
@@ -781,4 +781,3 @@ class ProductInfoFrontendTest extends FrontendTestCase
         $this->assertElementNotPresent("reviewText_" . (count($aReviews) + 1));
     }
 }
-

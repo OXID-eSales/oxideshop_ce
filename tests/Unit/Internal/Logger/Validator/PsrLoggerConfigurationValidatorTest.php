@@ -62,7 +62,7 @@ class PsrLoggerConfigurationValidatorTest extends PHPUnit\Framework\TestCase
     public function dataProviderInvalidLogLevels()
     {
         return [
-            [NULL],
+            [null],
             [false],
             [true],
             ['string'],

@@ -23,5 +23,3 @@ function smarty_modifier_oxwordwrap($sString, $iLength=80, $sWraper="\n", $blCut
 {
     return getStr()->wordwrap($sString, $iLength, $sWraper, $blCut);
 }
-
-?>

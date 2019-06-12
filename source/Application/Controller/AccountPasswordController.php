@@ -41,7 +41,6 @@ class AccountPasswordController extends \OxidEsales\Eshop\Application\Controller
      */
     public function render()
     {
-
         parent::render();
 
         // is logged in ?

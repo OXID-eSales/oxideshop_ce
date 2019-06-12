@@ -12,15 +12,15 @@
  */
 $aData = array(
 
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
             'oxid'                     => 'vine1',
             'oxprice'                  => 100,
             'oxvat'                    => 19,
             'amount'                   => 1,
         ),
 
-        1 => array (
+        1 => array(
             'oxid'                     => 'coupon',
             'oxprice'                  => 50,
             'oxvat'                    => 19,
@@ -46,15 +46,15 @@ $aData = array(
 
         ),
     ),
-    'expected' => array (
-        'articles' => array (
-            'vine1' => array ( '100,00', '100,00' ),
-            'coupon' => array ( '50,00', '100,00' ),
+    'expected' => array(
+        'articles' => array(
+            'vine1' => array( '100,00', '100,00' ),
+            'coupon' => array( '50,00', '100,00' ),
         ),
-        'totals' => array (
+        'totals' => array(
             'totalBrutto' => '200,00',
             'totalNetto'  => '168,07',
-            'vats' => array (
+            'vats' => array(
                 19 => '31,93',
             ),
             'delivery' => array(
@@ -63,7 +63,7 @@ $aData = array(
             'grandTotal'  => '210,00'
         ),
     ),
-    'options' => array (
+    'options' => array(
         'activeCurrencyRate' => 1,
         'config' => array(
             'blEnterNetPrice' => false,

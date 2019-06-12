@@ -14,7 +14,6 @@ use \oxRegistry;
  */
 class GroupsTest extends \OxidTestCase
 {
-
     protected $_aAdd = array('oxobject2delivery' => array('oxobjectid', ''),
                              'oxobject2discount' => array('oxobjectid', ''),
                              'oxobject2group'    => array('oxgroupsid', ''),

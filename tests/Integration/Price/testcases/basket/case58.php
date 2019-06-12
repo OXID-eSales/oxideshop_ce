@@ -22,49 +22,49 @@
  */
 $aData = array(
     // Articles
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
                 // oxarticles db fields
                 'oxid'                     => 1001,
                 'oxprice'                  => 9.00,
                 'oxvat'                    => 19,
                 // Amount in basket
                 'amount'                   => 4,
-				    'scaleprices' => array(
-					    'oxaddabs'     => 2.00,
+                    'scaleprices' => array(
+                        'oxaddabs'     => 2.00,
                         'oxamount'     => 3,
                         'oxamountto'   => 5,
                         'oxartid'      => 1001,
-					//	'oxaddperc'    => 10,
+                    //	'oxaddperc'    => 10,
 
                 ),
         ),
-        1 => array (
-		 // oxarticles db fields
+        1 => array(
+         // oxarticles db fields
                 'oxid'                  => 1002,
                 'oxprice'               => 5.52,
                 'oxvat'                 => 19,
                 // Amount in basket
                 'amount'                => 1,
         ),
-	    2 => array (
-		 // oxarticles db fields
+        2 => array(
+         // oxarticles db fields
                 'oxid'                  => 1003,
                 'oxprice'               => 945.95,
                 'oxvat'                 => 19,
                 // Amount in basket
                 'amount'                => 1,
         ),
-	    3 => array (
-		 // oxarticles db fields
+        3 => array(
+         // oxarticles db fields
                 'oxid'                  => 1004,
                 'oxprice'               => 4.74,
                 'oxvat'                 => 19,
                 // Amount in basket
                 'amount'                => 1,
         ),
-	    4 => array (
-		 // oxarticles db fields
+        4 => array(
+         // oxarticles db fields
                 'oxid'                  => 1005,
                 'oxprice'               => 1.00,
                 'oxvat'                 => 19,
@@ -73,9 +73,9 @@ $aData = array(
         ),
      ),
 
-    'discounts' => array (
+    'discounts' => array(
         // oxdiscount DB fields
-        0 => array (
+        0 => array(
             // ID needed for expectation later on, specify meaningful name
             'oxid'         => '%discount',
             'oxaddsum'     => 10,
@@ -111,33 +111,33 @@ $aData = array(
                 'oxfromamount' => 0,
                 'oxtoamount' => 1000000,
                 'oxchecked' => 1,
-	        	'oxaddsumrules'=>1,
+                'oxaddsumrules'=>1,
             ),
         ),
     ),
     // TEST EXPECTATIONS
-    'expected' => array (
+    'expected' => array(
         // Article expected prices: ARTICLE ID => ( Unit price, Total Price )
-        'articles' => array (
-             1001 => array ( '2,00', '8,00' ),
-             1002 => array ( '5,52', '5,52' ),
-			 1003 => array ( '945,95', '945,95' ),
-			 1004 => array ( '4,74', '4,74' ),
-			 1005 => array ( '1,00', '5,00' ),
+        'articles' => array(
+             1001 => array( '2,00', '8,00' ),
+             1002 => array( '5,52', '5,52' ),
+             1003 => array( '945,95', '945,95' ),
+             1004 => array( '4,74', '4,74' ),
+             1005 => array( '1,00', '5,00' ),
         ),
         // Expectations of other totals
-        'totals' => array (
+        'totals' => array(
             // Total BRUTTO
             'totalBrutto' => '1.038,02',
             // Total NETTO
 
             'totalNetto'  => '969,21',
             // Total VAT amount: vat% => total cost
-            'vats' => array (
+            'vats' => array(
                 19 => '165,73',
             ),
             // Total discount amounts: discount id => total cost
-            'discounts' => array (
+            'discounts' => array(
                 // Expectation for special discount with specified ID
                 '%discount' => '96,92',
             ),
@@ -160,7 +160,7 @@ $aData = array(
         ),
     ),
     // Test case options
-    'options' => array (
+    'options' => array(
         // Configs (real named)
         'config' => array(
             'blEnterNetPrice' => true,

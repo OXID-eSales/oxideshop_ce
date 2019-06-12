@@ -9,7 +9,6 @@ use \oxDb;
 
 class CounterTest extends \OxidTestCase
 {
-
     protected function tearDown()
     {
         oxDb::getDb("delete from oxcounters");
@@ -45,7 +44,6 @@ class CounterTest extends \OxidTestCase
      */
     public function testUpdate()
     {
-
         $oCounter = oxNew('oxCounter');
 
         $this->assertEquals(1, $oCounter->getNext("test4"));
@@ -54,6 +52,5 @@ class CounterTest extends \OxidTestCase
         $oCounter->update("test3", 2);
         $this->assertEquals(5, $oCounter->getNext("test3"));
         $this->assertEquals(2, $oCounter->getNext("test4"));
-
     }
 }

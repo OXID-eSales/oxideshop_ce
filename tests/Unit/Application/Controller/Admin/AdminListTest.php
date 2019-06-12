@@ -107,7 +107,6 @@ class AdminListTest extends \OxidTestCase
         $oAdminList = oxNew('oxAdminList');
         $this->assertEquals(" like '%\'test\'\\\"%' ", $oAdminList->UNITbuildFilter("'test'\"", true));
         $this->assertEquals(" = 'test' ", $oAdminList->UNITbuildFilter('test', false));
-
     }
 
     /**
@@ -120,7 +119,6 @@ class AdminListTest extends \OxidTestCase
         $oAdminList = oxNew('oxAdminList');
         $this->assertTrue($oAdminList->UNITisSearchValue('%test%'));
         $this->assertFalse($oAdminList->UNITisSearchValue('test'));
-
     }
 
     /**
@@ -874,5 +872,4 @@ class AdminListTest extends \OxidTestCase
 
         $this->assertNull($oAdminList->getNonPublicVar('_oList'));
     }
-
 }

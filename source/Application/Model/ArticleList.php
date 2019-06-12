@@ -696,7 +696,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sNow = date('Y-m-d H:i:s');
         foreach ($this as $oArticle) {
             if (!$oArticle->oxarticles__oxactive->value &&
-                ($oArticle->oxarticles__oxactivefrom->value > $sNow ||
+                (
+                    $oArticle->oxarticles__oxactivefrom->value > $sNow ||
                  $oArticle->oxarticles__oxactiveto->value < $sNow
                 )
             ) {

@@ -109,4 +109,3 @@ class EmosItem
     public $variant2 = "NULL";
     public $variant3 = "NULL";
 }
-

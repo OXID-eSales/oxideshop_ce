@@ -91,5 +91,4 @@ class RatingTest extends \OxidTestCase
         $oRating = oxNew('oxwRating');
         $this->assertEquals(null, $oRating->getRateUrl());
     }
-
 }

@@ -250,7 +250,8 @@ class OrderTest extends \OxidTestCase
     public function testRenderWhenNoActiveUserExistWithBasket()
     {
         $sRedirUrl = $this->getConfig()->getShopHomeURL() . 'cl=basket';
-        $this->expectException('oxException'); $this->expectExceptionMessage( $sRedirUrl);
+        $this->expectException('oxException');
+        $this->expectExceptionMessage($sRedirUrl);
 
         oxTestModules::addFunction('oxUtils', 'redirect($url, $blAddRedirectParam = true, $iHeaderCode = 301)', '{throw new oxException($url);}');
         $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', false);
@@ -276,7 +277,8 @@ class OrderTest extends \OxidTestCase
     public function testRenderWhenNoActiveUserExistNoBasket()
     {
         $sRedirUrl = $this->getConfig()->getShopHomeURL();
-        $this->expectException('oxException'); $this->expectExceptionMessage( $sRedirUrl);
+        $this->expectException('oxException');
+        $this->expectExceptionMessage($sRedirUrl);
 
         oxTestModules::addFunction('oxUtils', 'redirect($url, $blAddRedirectParam = true, $iHeaderCode = 301)', '{throw new oxException($url);}');
         $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', false);
@@ -983,7 +985,6 @@ class OrderTest extends \OxidTestCase
         } catch (Exception $e) {
             $this->assertEquals($this->getConfig()->getShopHomeURL(), $e->getMessage());
         }
-
     }
 
     public function testRenderDoesCleanReservationsIfOn()
@@ -1054,7 +1055,6 @@ class OrderTest extends \OxidTestCase
         $this->getSession()->setVariable('deladrid', '_testDelAddrId');
 
         $this->assertEquals($oUser->getEncodedDeliveryAddress() . $oDelAddress->getEncodedDeliveryAddress(), $oOrder->getDeliveryAddressMD5());
-
     }
 
     private function setupConfigForOrderExecute()

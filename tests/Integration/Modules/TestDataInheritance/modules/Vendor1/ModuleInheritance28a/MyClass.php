@@ -5,4 +5,6 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\ModuleInheritance28a;
 
-class MyClass {}
+class MyClass
+{
+}

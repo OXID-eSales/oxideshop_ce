@@ -19,16 +19,16 @@
  * Case: cheking if corectrly currency rate applyed to discount
  */
 $aData = array(
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
                 'oxid'                     => 111,
                 'oxprice'                  => 100.00,
                 'oxvat'                    => 19,
                 'amount'                   => 1,
         ),
     ),
-    'discounts' => array (
-        0 => array (
+    'discounts' => array(
+        0 => array(
                 'oxid'         => 'abs_discount_for_111',
                 'oxaddsum'     => 15.00,
                 'oxaddsumtype' => 'abs',
@@ -41,20 +41,20 @@ $aData = array(
                 'oxsort' => 10,
         ),
     ),
-    'expected' => array (
-        'articles' => array (
-                 111 => array ( '68,00', '68,00' ),
+    'expected' => array(
+        'articles' => array(
+                 111 => array( '68,00', '68,00' ),
         ),
-        'totals' => array (
+        'totals' => array(
                 'totalBrutto' => '68,00',
                 'totalNetto'  => '57,14',
-                'vats' => array (
+                'vats' => array(
                     19 => '10,86',
                 ),
                 'grandTotal'  => '68,00'
         ),
     ),
-    'options' => array (
+    'options' => array(
         'config' => array(
                 'blEnterNetPrice' => false,
                 'blShowNetPrice' => false,

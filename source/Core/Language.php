@@ -683,7 +683,6 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     protected function _recodeLangArrayWithKeys($aLangArray, $sCharset, $newEncoding)
     {
-
         $aLangs = [];
         foreach ($aLangArray as $sItemKey => $sValue) {
             $sItemKey = iconv($sCharset, $newEncoding, $sItemKey);

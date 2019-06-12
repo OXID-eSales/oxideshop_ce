@@ -22,8 +22,8 @@
  */
 $aData = array(
     // Articles
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
                 // oxarticles db fields
                 'oxid'                     => 1001,
                 'oxprice'                  => 1.00,
@@ -31,8 +31,8 @@ $aData = array(
                 // Amount in basket
                 'amount'                   => 2,
         ),
-        1 => array (
-		 // oxarticles db fields
+        1 => array(
+         // oxarticles db fields
                 'oxid'                  => 1002,
                 'oxprice'               => 2.00,
                 'oxvat'                 => 30,
@@ -41,9 +41,9 @@ $aData = array(
         ),
      ),
 
-    'discounts' => array (
+    'discounts' => array(
         // oxdiscount DB fields
-        0 => array (
+        0 => array(
             // ID needed for expectation later on, specify meaningful name
             'oxid'         => '%discount',
             'oxaddsum'     => 10,
@@ -79,30 +79,30 @@ $aData = array(
                 'oxfromamount' => 0,
                 'oxtoamount' => 1000000,
                 'oxchecked' => 1,
-		'oxaddsumrules'=>1,
+        'oxaddsumrules'=>1,
             ),
         ),
     ),
     // TEST EXPECTATIONS
-    'expected' => array (
-	    1 => array (
+    'expected' => array(
+        1 => array(
         // Article expected prices: ARTICLE ID => ( Unit price, Total Price )
-        'articles' => array (
-             1001 => array ( '1,20', '2,40' ),
-             1002 => array ( '2,60', '5,20' ),
+        'articles' => array(
+             1001 => array( '1,20', '2,40' ),
+             1002 => array( '2,60', '5,20' ),
         ),
         // Expectations of other totals
-        'totals' => array (
+        'totals' => array(
             // Total BRUTTO
             'totalBrutto' => '7,60',
             // Total NETTO
             'totalNetto'  => '5,40',
             // Total VAT amount: vat% => total cost
-            'vats' => array (
+            'vats' => array(
                 20 => '0,36',
-	            30 => '1,08',
+                30 => '1,08',
             ),
-			 'discount' => '0,76',
+             'discount' => '0,76',
 
             // Total delivery amounts
             'delivery' => array(
@@ -120,25 +120,25 @@ $aData = array(
             // GRAND TOTAL
             'grandTotal'  => '13,08'
         ),
-		),
-	    2 => array (
+        ),
+        2 => array(
         // Article expected prices: ARTICLE ID => ( Unit price, Total Price )
-        'articles' => array (
-             1001 => array ( '1,20', '2,40' ),
-             1002 => array ( '2,60', '5,20' ),
+        'articles' => array(
+             1001 => array( '1,20', '2,40' ),
+             1002 => array( '2,60', '5,20' ),
         ),
         // Expectations of other totals
-        'totals' => array (
+        'totals' => array(
             // Total BRUTTO
             'totalBrutto' => '7,60',
             // Total NETTO
             'totalNetto'  => '5,40',
             // Total VAT amount: vat% => total cost
-            'vats' => array (
+            'vats' => array(
                 20 => '0,36',
-	            30 => '1,08',
+                30 => '1,08',
             ),
-			 'discount' => '0,76',
+             'discount' => '0,76',
 
             // Total delivery amounts
             'delivery' => array(
@@ -156,10 +156,10 @@ $aData = array(
             // GRAND TOTAL
             'grandTotal'  => '13,08'
         ),
-		),
+        ),
     ),
     // Test case options
-    'options' => array (
+    'options' => array(
         // Configs (real named)
         'config' => array(
             'blEnterNetPrice' => true,
@@ -175,8 +175,8 @@ $aData = array(
         // Other options
         'activeCurrencyRate' => 1,
     ),
-    'actions' => array (
-	        '_changeArticles' => array (
+    'actions' => array(
+            '_changeArticles' => array(
                     0 => array(
                             'oxid'       => '222',
                             'amount'     => 1

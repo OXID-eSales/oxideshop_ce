@@ -10,7 +10,7 @@ use \oxException;
 use \oxRegistry;
 use \oxTestModules;
 
-$filePath = oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'Core/Smarty/Plugin/prefilter.oxblock.php';
+$filePath = oxRegistry::getConfig()->getConfigParam('sShopDir').'Core/Smarty/Plugin/prefilter.oxblock.php';
 if (file_exists($filePath)) {
     require_once $filePath;
 } else {
@@ -36,7 +36,7 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
                 ->with($this->equalTo('testfile.tpl'))
                 ->will(
                     $this->returnValue(
-                        array (
+                        array(
                             'test1' => array('block content 1 [{block name="test1_2"}]orig test1_2[{/block}]'),
                             'test1_2' => array('<<[{$smarty.block.parent}]>>'),
                             'test2' => array('[[[{$smarty.block.parent}]]]'),
@@ -66,10 +66,10 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
         $oSmartyCompiler = $this->getMock('stdclass', array('_syntax_error'));
         $oSmartyCompiler->expects($this->once())->method('_syntax_error')
                 ->with(
-                        $this->equalTo('block tags mismatch (or there are more than 500 blocks in one file).'),
-                        $this->equalTo(E_USER_ERROR),
-                        $this->equalTo(realpath($this->getProfilterPluginPath())),
-                        $this->greaterThan(75)
+                    $this->equalTo('block tags mismatch (or there are more than 500 blocks in one file).'),
+                    $this->equalTo(E_USER_ERROR),
+                    $this->equalTo(realpath($this->getProfilterPluginPath())),
+                    $this->greaterThan(75)
                 )
                 ->will($this->throwException(new oxException('ok')));
 
@@ -82,7 +82,7 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
                 ->with($this->equalTo('testfile.tpl'))
                 ->will(
                     $this->returnValue(
-                        array (
+                        array(
                             'test1' => array('[{block name="test1"}]looping[{/block}]'),
                         )
                     )
@@ -117,7 +117,7 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
                 ->with($this->equalTo('testfile.tpl'))
                 ->will(
                     $this->returnValue(
-                        array (
+                        array(
                             'test1' => array('block content 1 [{block name="test1_2"}]orig test1_2[{/block}]'),
                             'test1_2' => array('<<[{$smarty.block.parent}]>>'),
                             'test2' => array('[[[{$smarty.block.parent}]]]'),
@@ -197,7 +197,7 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
                 ->with($this->equalTo('testfile.tpl'))
                 ->will(
                     $this->returnValue(
-                        array (
+                        array(
                             'test1' => array('block content 1 [{block name="test1_2"}]orig test1_2[{/block}]'),
                             'test1_2' => array('<<[{$smarty.block.parent}]>>'),
                             'test2' => array('[[[{$smarty.block.parent}]]]'),
@@ -242,8 +242,8 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
         $oSmartyCompiler = $this->getMock('stdclass', array('trigger_error'));
         $oSmartyCompiler->expects($this->once())->method('trigger_error')
                 ->with(
-                        $this->equalTo('block tags mismatch (or there are more than 500 blocks in one file).'),
-                        $this->equalTo(E_USER_ERROR)
+                    $this->equalTo('block tags mismatch (or there are more than 500 blocks in one file).'),
+                    $this->equalTo(E_USER_ERROR)
                 )
                 ->will($this->throwException(new oxException('ok')));
 
@@ -257,7 +257,7 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
                 ->with($this->equalTo('testfile.tpl'))
                 ->will(
                     $this->returnValue(
-                        array (
+                        array(
                             'test1' => array('[{block name="test1"}]looping[{/block}]'),
                         )
                     )
@@ -295,7 +295,7 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
                 ->with($this->equalTo('testfile.tpl'))
                 ->will(
                     $this->returnValue(
-                        array (
+                        array(
                             'test1' => array('block content 1 [{block name="test1_2"}]orig test1_2[{/block}]'),
                             'test1_2' => array('<<[{$smarty.block.parent}]>>'),
                             'test2' => array('[[[{$smarty.block.parent}]]]'),
@@ -376,5 +376,4 @@ class PluginSmartyOxBlockTest extends \OxidTestCase
         }
         return $filePath;
     }
-
 }

@@ -20,5 +20,3 @@ function smarty_modifier_oxupper($sString)
 {
     return getStr()->strtoupper($sString);
 }
-
-?>

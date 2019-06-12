@@ -11,7 +11,6 @@ use \oxTestModules;
 
 class RssTest extends \OxidTestCase
 {
-
     public function testGetChannel()
     {
         oxTestModules::addFunction('oxrssfeed', 'setChannel', '{$this->_aChannel = $aA[0];}');
@@ -377,7 +376,4 @@ class RssTest extends \OxidTestCase
 
         $oRss->recommlists();
     }
-
-
 }
-

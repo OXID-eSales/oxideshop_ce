@@ -147,7 +147,6 @@ class ObjectSeoTest extends \OxidTestCase
      */
     public function testGetSeoEntryType()
     {
-
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo::class, array("_getType"));
         $oView->expects($this->once())->method('_getType')->will($this->returnValue("testType"));
         $this->assertEquals("testType", $oView->UNITgetSeoEntryType());
@@ -260,5 +259,4 @@ class ObjectSeoTest extends \OxidTestCase
         $oView = oxNew('Object_Seo');
         $this->assertFalse($oView->getActCatType());
     }
-
 }

@@ -14,7 +14,6 @@ use \oxTestModules;
  */
 class DiscountlistTest extends \OxidTestCase
 {
-
     public $aDiscountIds = array();
     public $aDiscountArtIds = array();
     public $aTransparentDiscountArtIds = array();
@@ -475,6 +474,4 @@ class DiscountlistTest extends \OxidTestCase
         oxRegistry::get("oxDiscountList")->forceReload();
         $this->assertTrue(oxRegistry::get("oxDiscountList")->hasSkipDiscountCategories());
     }
-
-
 }

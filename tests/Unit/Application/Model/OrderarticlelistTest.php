@@ -10,7 +10,6 @@ use OxidEsales\Eshop\Application\Model\Order;
 
 class OrderarticlelistTest extends \OxidTestCase
 {
-
     protected $_oOrderArticle = null;
 
     /**
@@ -77,5 +76,4 @@ class OrderarticlelistTest extends \OxidTestCase
         $oOrderArticleList->loadOrderArticlesForUser(null);
         $this->assertEquals(0, $oOrderArticleList->count());
     }
-
 }

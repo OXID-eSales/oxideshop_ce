@@ -76,7 +76,6 @@ EOT;
 
     public function testWriting()
     {
-
         $projectYaml = new DIConfigWrapper(
             ['imports'  => [['resource' => 'some/path']],
                 'services' => ['somekey' => ['factory' => ['some/factory', 'someMethod']]]]

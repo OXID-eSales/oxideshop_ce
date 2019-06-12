@@ -6,21 +6,21 @@
  *  1. shop; abs
  *  2. shop; %
  */
-$aData = array (
-        'articles' => array (
-                0 => array (
+$aData = array(
+        'articles' => array(
+                0 => array(
                         'oxid'                     => '1001_a',
                         'oxprice'                  => 1001,
                         'oxvat'                    => 20,
                 ),
-                1 => array (
+                1 => array(
                         'oxid'                     => '1001_b',
                         'oxprice'                  => 1001,
                         'oxvat'                    => 20,
                 ),
         ),
-        'discounts' => array (
-                0 => array (
+        'discounts' => array(
+                0 => array(
                         'oxid'         => 'abs',
                         'oxaddsum'     => -5.2,
                         'oxaddsumtype' => 'abs',
@@ -29,10 +29,10 @@ $aData = array (
                         'oxamount' => 0,
                         'oxamountto' => 99999,
                         'oxactive' => 1,
-                        'oxarticles' => array ( '1001_a' ),
+                        'oxarticles' => array( '1001_a' ),
                         'oxsort'       => 10,
                 ),
-                1 => array (
+                1 => array(
                         'oxid'         => 'percent',
                         'oxaddsum'     => -5.2,
                         'oxaddsumtype' => '%',
@@ -41,21 +41,21 @@ $aData = array (
                         'oxamount' => 0,
                         'oxamountto' => 99999,
                         'oxactive' => 1,
-                        'oxarticles' => array ( '1001_b' ),
+                        'oxarticles' => array( '1001_b' ),
                         'oxsort'       => 20,
                 ),
         ),
-        'expected' => array (
-                '1001_a' => array (
+        'expected' => array(
+                '1001_a' => array(
                         'base_price' => '1.001,00',
                         'price' => '1.206,40',
                 ),
-                '1001_b' => array (
+                '1001_b' => array(
                         'base_price' => '1.001,00',
                         'price' => '1.263,66',
                 ),
         ),
-        'options' => array (
+        'options' => array(
                 'config' => array(
                         'blEnterNetPrice' => true,
                         'blShowNetPrice' => false,

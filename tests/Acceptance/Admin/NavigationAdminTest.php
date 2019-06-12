@@ -19,20 +19,20 @@ class NavigationAdminTest extends AdminTestCase
     {
         $aUserData = $this->_getUserData();
         $sUserId = $this->callShopSC('oxuser', 'save', null, $aUserData);
-        $aSubscriberInfo = $this->_getSubscriberInfo( $sUserId );
+        $aSubscriberInfo = $this->_getSubscriberInfo($sUserId);
         $this->callShopSC('oxNewsSubscribed', 'save', null, $aSubscriberInfo);
 
         //checking if user was created
-        $this->loginAdmin( "Administer Users", "Users" );
-        $this->clickAndWait( "link=Cust No." );
-        $this->clickAndWait( "nav.last" );
-        $this->clickAndWaitFrame( "link=example01@oxid-esa...", "edit" );
-        $this->openTab( "Extended" );
+        $this->loginAdmin("Administer Users", "Users");
+        $this->clickAndWait("link=Cust No.");
+        $this->clickAndWait("nav.last");
+        $this->clickAndWaitFrame("link=example01@oxid-esa...", "edit");
+        $this->openTab("Extended");
         //because user did not confirm newsletter by email, it is off. setting it on for testing unsubscribe option
-        $this->assertEquals( "off", $this->getValue( "//input[@name='editnews' and @value='1']" ) );
-        $this->check( "//input[@name='editnews' and @value='1']" );
-        $this->clickAndWait( "save" );
-        $this->assertEquals( "on", $this->getValue( "//input[@name='editnews' and @value='1']" ) );
+        $this->assertEquals("off", $this->getValue("//input[@name='editnews' and @value='1']"));
+        $this->check("//input[@name='editnews' and @value='1']");
+        $this->clickAndWait("save");
+        $this->assertEquals("on", $this->getValue("//input[@name='editnews' and @value='1']"));
     }
 
     /**
@@ -56,7 +56,7 @@ class NavigationAdminTest extends AdminTestCase
      * @param $sUserId
      * @return array
      */
-    protected function _getSubscriberInfo( $sUserId )
+    protected function _getSubscriberInfo($sUserId)
     {
         $aParameters = array(
             'OXSAL' => 'MRS',

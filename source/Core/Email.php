@@ -2246,7 +2246,6 @@ class Email extends PHPMailer
      */
     private function getUserIdByUserName($userName, $shopId)
     {
-
         $select = "SELECT `OXID` 
           FROM `oxuser` 
           WHERE `OXACTIVE` = 1 

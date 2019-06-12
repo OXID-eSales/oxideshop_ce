@@ -8,5 +8,4 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritanc
 
 class MyClass43 extends MyClass43_parent
 {
-
 }

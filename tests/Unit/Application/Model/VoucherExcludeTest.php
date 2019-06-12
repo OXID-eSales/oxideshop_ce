@@ -460,7 +460,8 @@ class VoucherExcludeTest extends \OxidTestCase
         $oVoucher->load('test_111');
 
         // there are no items in basket matching this discount, expecting exception
-        $this->expectException('oxVoucherException'); $this->expectExceptionMessage( 'ERROR_MESSAGE_VOUCHER_NOVOUCHER');
+        $this->expectException('oxVoucherException');
+        $this->expectExceptionMessage('ERROR_MESSAGE_VOUCHER_NOVOUCHER');
         $oVoucher->getDiscountValue(100);
     }
 
@@ -476,7 +477,8 @@ class VoucherExcludeTest extends \OxidTestCase
         $oVoucher->load('test_333');
 
         // there are no items in basket matching this discount, expecting exception
-        $this->expectException('oxVoucherException'); $this->expectExceptionMessage( 'ERROR_MESSAGE_VOUCHER_NOVOUCHER');
+        $this->expectException('oxVoucherException');
+        $this->expectExceptionMessage('ERROR_MESSAGE_VOUCHER_NOVOUCHER');
         $oVoucher->getDiscountValue(100);
     }
 
@@ -1357,5 +1359,4 @@ class VoucherExcludeTest extends \OxidTestCase
         $this->assertEquals($iExpDiscount, $oVoucher->UNITgetCategoryDiscoutValue($iTotalBasket));
         $this->assertEquals($iExpDiscount, $oVoucher->getDiscountValue($iTotalBasket));
     }
-
 }

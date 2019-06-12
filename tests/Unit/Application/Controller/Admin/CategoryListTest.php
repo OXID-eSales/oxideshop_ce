@@ -51,5 +51,4 @@ class CategoryListTest extends \OxidTestCase
 
         $this->assertEquals('category_list.tpl', $sTplName);
     }
-
 }

@@ -726,7 +726,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _setUser($oUser)
     {
-
         $this->oxorder__oxuserid = new \OxidEsales\Eshop\Core\Field($oUser->getId());
 
         // bill address
@@ -1012,7 +1011,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _updateWishlist($aArticleList, $oUser)
     {
-
         foreach ($aArticleList as $oContent) {
             if (($sWishId = $oContent->getWishId())) {
                 // checking which wishlist user uses ..

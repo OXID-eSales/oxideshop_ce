@@ -352,7 +352,6 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _isNotReserved()
     {
-
         if ($this->oxvouchers__oxreserved->value < time() - $this->_getVoucherTimeout()) {
             return true;
         }
@@ -375,7 +374,6 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function checkUserAvailability($oUser)
     {
-
         $this->_isAvailableInOtherOrder($oUser);
         $this->_isValidUserGroup($oUser);
 

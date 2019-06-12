@@ -282,7 +282,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
 
             if (($oProduct = $this->getProduct())) {
                 $this->_oActObject = $oProduct;
-                // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+            // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
             } elseif (($oRecommList = $this->getActiveRecommList())) {
                 $this->_oActObject = $oRecommList;
                 // END deprecated
@@ -301,7 +301,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     {
         if ($this->getProduct()) {
             return 'oxarticle';
-            // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+        // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         } elseif ($this->getActiveRecommList()) {
             return 'oxrecommlist';
             // END deprecated

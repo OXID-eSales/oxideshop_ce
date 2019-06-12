@@ -20,7 +20,8 @@ class MonologFactoryTest extends \PHPUnit\Framework\TestCase
         $context = new ContextStub();
 
         $configuration = new MonologConfiguration(
-            'testLogger', $context
+            'testLogger',
+            $context
         );
 
         $validator = new PsrLoggerConfigurationValidator();

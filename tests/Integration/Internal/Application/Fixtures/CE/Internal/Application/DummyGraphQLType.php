@@ -8,5 +8,4 @@ class DummyGraphQLType
     {
         return 'Type is installed';
     }
-
 }

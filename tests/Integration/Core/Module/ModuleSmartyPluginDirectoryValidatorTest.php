@@ -19,7 +19,8 @@ class ModuleSmartyPluginDirectoryValidatorTest extends UnitTestCase
     public function testNonExistingDirectoriesValidation()
     {
         $directories = $this->getModuleSmartyPluginDirectories();
-        $directories->add(['fakeDir'], 'id');;
+        $directories->add(['fakeDir'], 'id');
+        ;
 
         $validator = oxNew(ModuleSmartyPluginDirectoryValidator::class);
         $validator->validate($directories);

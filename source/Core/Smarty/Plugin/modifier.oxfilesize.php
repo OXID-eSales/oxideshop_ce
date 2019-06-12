@@ -36,5 +36,4 @@ function smarty_modifier_oxfilesize($iSize)
     $iSize = $iSize/1024;
 
     return sprintf("%.1f GB", $iSize);
-
 }

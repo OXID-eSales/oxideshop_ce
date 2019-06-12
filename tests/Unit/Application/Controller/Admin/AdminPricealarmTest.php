@@ -22,5 +22,4 @@ class AdminPricealarmTest extends \OxidTestCase
         $oView = oxNew('Admin_Pricealarm');
         $this->assertEquals('admin_pricealarm.tpl', $oView->render());
     }
-
 }

@@ -91,13 +91,11 @@ function smarty_function_assign_adv($params, &$smarty)
         $smarty->trigger_error("assign_adv: missing 'value' parameter");
         return;
     }
-    if (preg_match('/^\s*array\s*\(\s*(.*)\s*\)\s*$/s',$value,$match)){
+    if (preg_match('/^\s*array\s*\(\s*(.*)\s*\)\s*$/s', $value, $match)) {
         eval('$value=array('.str_replace("\n", "", $match[1]).');');
-    }
-    else if (preg_match('/^\s*range\s*\(\s*(.*)\s*\)\s*$/s',$value,$match)){
+    } elseif (preg_match('/^\s*range\s*\(\s*(.*)\s*\)\s*$/s', $value, $match)) {
         eval('$value=range('.str_replace("\n", "", $match[1]).');');
     }
 
     $smarty->assign($var, $value);
 }
-?>

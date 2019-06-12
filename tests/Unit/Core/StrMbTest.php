@@ -152,7 +152,9 @@ class StrMbTest extends \OxidTestCase
 
     public function testPregReplaceCallback()
     {
-        $callBack = function($matches) { return "_";};
+        $callBack = function ($matches) {
+            return "_";
+        };
         $this->assertEquals(
             $this->_2Utf("H÷_H÷"),
             $this->_oSubj->preg_replace_callback('/ /', $callBack, $this->_2Utf($this->_sStrUpperCase))
@@ -161,7 +163,9 @@ class StrMbTest extends \OxidTestCase
 
     public function testPregReplaceCallbackArray()
     {
-        $callBack = function ($matches) { return "_";};
+        $callBack = function ($matches) {
+            return "_";
+        };
         $this->assertEquals(
             $this->_2Utf("H÷_H÷"),
             $this->_oSubj->preg_replace_callback(array('/ /', '|//+|'), $callBack, $this->_2Utf($this->_sStrUpperCase))
@@ -224,7 +228,8 @@ class StrMbTest extends \OxidTestCase
         );
         $this->assertEquals(
             $this->_2Utf("H÷a\nH÷a\nH÷a\nH÷ a÷\n÷"),
-            $this->_oSubj->wordwrap($this->_2Utf("H÷a H÷a H÷a H÷ a÷ ÷"), 5, "\n"), true
+            $this->_oSubj->wordwrap($this->_2Utf("H÷a H÷a H÷a H÷ a÷ ÷"), 5, "\n"),
+            true
         );
     }
 

@@ -108,21 +108,26 @@ class ModuleChainsGeneratorTest extends UnitTestCase
 
     public function testGetDisabledModuleIds()
     {
+        $moduleId1 = 'with_class_extensions';
+        $moduleId2 = 'with_metadata_v21';
+
         $moduleChainsGenerator = $this->getModuleChainsGenerator();
         $disabledModuleIds = $moduleChainsGenerator->getDisabledModuleIds();
-        $this->assertEquals([], $disabledModuleIds);
+        $this->assertNotContains([$moduleId1, $moduleId2], $disabledModuleIds);
 
-        $this->installModule('with_class_extensions');
-        $this->installModule('with_metadata_v21');
+        $this->installModule($moduleId1);
+        $this->installModule($moduleId2);
 
-        $this->assertEquals(['with_class_extensions', 'with_metadata_v21'], $moduleChainsGenerator->getDisabledModuleIds());
+        $this->assertContains($moduleId1, $moduleChainsGenerator->getDisabledModuleIds());
+        $this->assertContains($moduleId2, $moduleChainsGenerator->getDisabledModuleIds());
 
-        $this->activateTestModule('with_class_extensions');
-        $this->assertEquals(['with_metadata_v21'], $moduleChainsGenerator->getDisabledModuleIds());
+        $this->activateTestModule($moduleId1);
+        $this->assertContains($moduleId2, $moduleChainsGenerator->getDisabledModuleIds());
+        $this->assertNotContains($moduleId1, $moduleChainsGenerator->getDisabledModuleIds());
 
-        $this->deactivateTestModule('with_class_extensions');
-        $this->removeTestModule('with_class_extensions');
-        $this->removeTestModule('with_metadata_v21');
+        $this->deactivateTestModule($moduleId1);
+        $this->removeTestModule($moduleId1);
+        $this->removeTestModule($moduleId2);
     }
 
     /**

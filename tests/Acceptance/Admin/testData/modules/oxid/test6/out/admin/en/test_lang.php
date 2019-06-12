@@ -14,4 +14,3 @@ $aLang = array(
 'charset'                                         => 'UTF-8',
 'tbclmodule_testtab'                              => 'Test tab EN',
 );
-

@@ -51,6 +51,4 @@ class FileCheckerTest extends \OxidTestCase
 
         $this->assertEquals("somedir", $oChecker->getBaseDirectory());
     }
-
-
 }

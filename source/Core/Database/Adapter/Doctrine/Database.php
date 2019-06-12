@@ -890,7 +890,6 @@ class Database implements DatabaseInterface
         switch (true) {
             case $exception instanceof Exception\ConnectionException:
                 // ConnectionException will be mapped to DatabaseConnectionException::class
-                // no break
             case $exception instanceof ConnectionException:
                 /**
                  * Doctrine does not recognise "SQLSTATE[HY000] [2003] Can't connect to MySQL server on 'mysql.example'"
@@ -1308,7 +1307,7 @@ class Database implements DatabaseInterface
 
         $assignedType = strtoupper($assignedType);
         if ((
-                in_array($assignedType, $integerTypes) ||
+            in_array($assignedType, $integerTypes) ||
                 in_array($assignedType, $fixedPointTypes) ||
                 in_array($assignedType, $floatingPointTypes) ||
                 in_array($assignedType, $textTypes) ||

@@ -12,8 +12,8 @@
  */
 $aData = array(
     // Product
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
             // oxarticles db fields
             'oxid'                     => 1001,
             'oxprice'                  => 1382.42,
@@ -21,7 +21,7 @@ $aData = array(
             // Amount in basket
             'amount'                   => 2,
         ),
-        1 => array (
+        1 => array(
             // oxarticles db fields
             'oxid'                     => 1002,
             'oxprice'                  => 13.58,
@@ -30,7 +30,7 @@ $aData = array(
             'amount'                   => 14,
 
         ),
-        2 => array (
+        2 => array(
             // oxarticles db fields
             'oxid'                     => 1003,
             'oxprice'                  => 1756.66,
@@ -39,7 +39,7 @@ $aData = array(
             'amount'                   => 13,
 
         ),
-        3 => array (
+        3 => array(
             // oxarticles db fields
             'oxid'                     => 1004,
             'oxprice'                  => 13.64,
@@ -115,23 +115,23 @@ $aData = array(
     ),
 
     // TEST EXPECTATIONS
-    'expected' => array (
+    'expected' => array(
         // Article expected prices: ARTICLE ID => ( Unit price, Total Price )
-        'articles' => array (
-            1001 => array ( '1.382,42', '2.764,84' ),
-            1002 => array ( '13,58', '190,12' ),
-            1003 => array ( '1.756,66', '22.836,58' ),
-            1004 => array ( '13,64', '845,68' ),
+        'articles' => array(
+            1001 => array( '1.382,42', '2.764,84' ),
+            1002 => array( '13,58', '190,12' ),
+            1003 => array( '1.756,66', '22.836,58' ),
+            1004 => array( '13,64', '845,68' ),
 
         ),
         // Expectations of other totals
-        'totals' => array (
+        'totals' => array(
             // Total BRUTTO
             'totalBrutto' => '26.637,22',
             // Total NETTO
             'totalNetto'  => '25.385,88',
             // Total VAT amount: vat% => total cost
-            'vats' => array (
+            'vats' => array(
                 19 => '441,45',
                 13 => '21,87',
                 3  => '665,14',
@@ -157,7 +157,7 @@ $aData = array(
                 'vat' => '4,45'
             ),
             // Total giftcard amounts
-            'giftcard' => array (
+            'giftcard' => array(
                 'brutto' => '2,97',
                 'netto' => '2,83',
                 'vat' => '0,14'
@@ -167,7 +167,7 @@ $aData = array(
         ),
     ),
     // Test case options
-    'options' => array (
+    'options' => array(
         // Configs (real named)
         'config' => array(
             'blEnterNetPrice' => false,

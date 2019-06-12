@@ -188,5 +188,4 @@ class PriceTest extends BaseTestCase
     {
         oxDb::getDb()->execute("TRUNCATE {$sTable}");
     }
-
 }

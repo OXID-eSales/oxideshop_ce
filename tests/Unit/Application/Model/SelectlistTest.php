@@ -212,7 +212,6 @@ class SelectlistTest extends \OxidTestCase
         $oSelectList = oxNew('oxselectlist');
         $oSelectList->oxselectlist__oxtitle = new oxField("test");
         $this->assertEquals("test", $oSelectList->getLabel());
-
     }
 
     /**

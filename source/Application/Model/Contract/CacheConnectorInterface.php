@@ -12,5 +12,4 @@ namespace OxidEsales\EshopCommunity\Application\Model\Contract;
  */
 interface CacheConnectorInterface
 {
-
 }

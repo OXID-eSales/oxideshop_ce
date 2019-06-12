@@ -64,7 +64,6 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
      */
     public function getWishUser()
     {
-
         if ($this->_oWishUser === null) {
             $this->_oWishUser = false;
 

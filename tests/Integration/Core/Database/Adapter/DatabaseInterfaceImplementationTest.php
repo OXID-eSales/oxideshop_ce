@@ -1164,7 +1164,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
         $expectedColumns = $this->getExpectedColumnsByTestMetaColumns();
 
-        foreach($expectedColumns as $key => $sub) {
+        foreach ($expectedColumns as $key => $sub) {
             foreach ($sub as $attributeName => $attributeValue) {
                 $this->assertObjectHasAttributeWithValue($columnInformation[$key], $attributeName, $attributeValue);
             }
@@ -1431,5 +1431,4 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($class, null);
     }
-
 }

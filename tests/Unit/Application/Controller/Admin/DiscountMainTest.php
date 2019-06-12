@@ -148,5 +148,4 @@ class DiscountMainTest extends \OxidTestCase
         $this->setRequestParameter("oxid", "_testDiscountId");
         $this->assertEquals("$sId $sTitleEn", $oView->getItemDiscountProductTitle());
     }
-
 }

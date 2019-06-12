@@ -63,4 +63,3 @@ class CmpNewsTest extends \OxidTestCase
         $this->assertTrue($oCmp->render() instanceof newslist);
     }
 }
-

@@ -13,7 +13,6 @@ use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
  */
 class DeliveryUsersAjaxTest extends \OxidTestCase
 {
-
     protected $_sShopId = ShopIdCalculator::BASE_SHOP_ID;
 
     /**

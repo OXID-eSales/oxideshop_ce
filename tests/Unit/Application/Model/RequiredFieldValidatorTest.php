@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
  */
 class RequiredFieldValidatorTest extends \OxidTestCase
 {
-
     public function providerValidateFieldValue()
     {
         return array(

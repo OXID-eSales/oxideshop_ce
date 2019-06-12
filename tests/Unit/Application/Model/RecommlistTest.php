@@ -14,7 +14,6 @@ use \oxTestModules;
 
 class RecommlistTest extends \OxidTestCase
 {
-
     private $_sArticleID;
 
     /**

@@ -789,7 +789,5 @@ class OrderarticleTest extends \OxidTestCase
         $oOrderArticle->setArticle($oArticle);
 
         $this->assertEquals($oArticle, $oOrderArticle->getArticle());
-
     }
-
 }

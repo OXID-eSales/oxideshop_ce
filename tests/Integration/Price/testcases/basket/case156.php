@@ -24,67 +24,67 @@
  * From basketCalc.csv: Complex order calculation order V.
  */
 $aData = array(
-    'articles' => array (
-            0 => array (
+    'articles' => array(
+            0 => array(
                     'oxid'                     => 9201,
                     'oxprice'                  => 72.85,
                     'oxvat'                    => 17,
                     'amount'                   => 175,
             ),
-            1 => array (
+            1 => array(
                     'oxid'                     => 9203,
                     'oxprice'                  => 33.30,
                     'oxvat'                    => 19,
                     'amount'                   => 12,
             ),
-            2 => array (
+            2 => array(
                     'oxid'                     => 9211,
                     'oxprice'                  => 5.86,
                     'oxvat'                    => 16,
                     'amount'                   => 5874,
             ),
-            3 => array (
+            3 => array(
                     'oxid'                     => 9216,
                     'oxprice'                  => 56.45,
                     'oxvat'                    => 17,
                     'amount'                   => 225,
             ),
-            4 => array (
+            4 => array(
                     'oxid'                     => 9219,
                     'oxprice'                  => 24.33,
                     'oxvat'                    => 19,
                     'amount'                   => 31,
             ),
     ),
-    'discounts' => array (
-            0 => array (
+    'discounts' => array(
+            0 => array(
                     'oxid'         => 'discount2for9201',
                     'oxaddsum'     => 2,
                     'oxaddsumtype' => '%',
                     'oxamount' => 0,
                     'oxamountto' => 99999,
                     'oxactive' => 1,
-                    'oxarticles' => array ( 9201 ),
+                    'oxarticles' => array( 9201 ),
                     'oxsort' => 10,
             ),
-            1 => array (
+            1 => array(
                     'oxid'         => 'discount4for9211',
                     'oxaddsum'     => 4,
                     'oxaddsumtype' => '%',
                     'oxamount' => 0,
                     'oxamountto' => 99999,
                     'oxactive' => 1,
-                    'oxarticles' => array ( 9211 ),
+                    'oxarticles' => array( 9211 ),
                     'oxsort' => 20,
             ),
-            2 => array (
+            2 => array(
                     'oxid'         => 'discount2for9216',
                     'oxaddsum'     => 2,
                     'oxaddsumtype' => '%',
                     'oxamount' => 0,
                     'oxamountto' => 99999,
                     'oxactive' => 1,
-                    'oxarticles' => array ( 9216 ),
+                    'oxarticles' => array( 9216 ),
                     'oxsort' => 30,
             ),
     ),
@@ -109,28 +109,28 @@ $aData = array(
                     ),
             ),
     ),
-    'expected' => array (
-        'articles' => array (
-                9201 => array ( '71,39', '12.493,25' ),
-                9203 => array ( '33,30', '399,60' ),
-                9211 => array ( '5,63', '33.070,62' ),
-                9216 => array ( '55,32', '12.447,00' ),
-                9219 => array ( '24,33', '754,23' ),
+    'expected' => array(
+        'articles' => array(
+                9201 => array( '71,39', '12.493,25' ),
+                9203 => array( '33,30', '399,60' ),
+                9211 => array( '5,63', '33.070,62' ),
+                9216 => array( '55,32', '12.447,00' ),
+                9219 => array( '24,33', '754,23' ),
         ),
-        'totals' => array (
+        'totals' => array(
                 'totalBrutto' => '59.164,70',
                 'totalNetto'  => '50.795,22',
-                'vats' => array (
+                'vats' => array(
                         16 => '4.561,46',
                         17 => '3.623,80',
                         19 => '184,22'
                 ),
-                'wrapping' => array (
+                'wrapping' => array(
                         'brutto' => '14,88',
                         'netto' => '12,50',
                         'vat' => '2,38'
                 ),
-                'delivery' => array (
+                'delivery' => array(
                         'brutto' => '15,03',
                         'netto' => '12,96',
                         'vat' => '2,07'
@@ -138,7 +138,7 @@ $aData = array(
                 'grandTotal'  => '59.194,61'
         ),
     ),
-    'options' => array (
+    'options' => array(
         'activeCurrencyRate' => 1,
         'config' => array(
                 'blEnterNetPrice' => false,

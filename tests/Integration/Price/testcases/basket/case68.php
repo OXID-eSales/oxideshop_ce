@@ -19,16 +19,16 @@
  * Case: 0004680: Discount recalculation fails on basket refresh
  */
 $aData = array(
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
                 'oxid'                     => '_testProduct',
                 'oxprice'                  => 10.00,
                 'oxvat'                    => 19,
                 'amount'                   => 31,
         ),
     ),
-    'discounts' => array (
-        0 => array (
+    'discounts' => array(
+        0 => array(
                 'oxid'         => 'basket_0',
                 'oxaddsum'     => 6.00,
                 'oxaddsumtype' => '%',
@@ -40,7 +40,7 @@ $aData = array(
                 'oxarticles' => array( '_testProduct' ),
                 'oxsort' => 10,
         ),
-        1 => array (
+        1 => array(
                 'oxid'         => 'basket_1',
                 'oxaddsum'     => 9.00,
                 'oxaddsumtype' => '%',
@@ -52,7 +52,7 @@ $aData = array(
                 'oxarticles' => array( '_testProduct' ),
                 'oxsort' => 20,
         ),
-        2 => array (
+        2 => array(
                 'oxid'         => 'basket_2',
                 'oxaddsum'     => 12.00,
                 'oxaddsumtype' => '%',
@@ -67,20 +67,20 @@ $aData = array(
 
     ),
 
-    'expected' => array (
-        'articles' => array (
-                 '_testProduct' => array ( '8,80', '272,80' ),
+    'expected' => array(
+        'articles' => array(
+                 '_testProduct' => array( '8,80', '272,80' ),
         ),
-        'totals' => array (
+        'totals' => array(
                 'totalBrutto' => '272,80',
                 'totalNetto'  => '229,24',
-                'vats' => array (
+                'vats' => array(
                     19 => '43,56'
                 ),
                 'grandTotal'  => '272,80'
         ),
     ),
-    'options' => array (
+    'options' => array(
         'config' => array(
                 'blEnterNetPrice' => false,
                 'blShowNetPrice' => false,

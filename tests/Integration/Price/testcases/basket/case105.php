@@ -19,8 +19,8 @@
  */
 $aData = array(
     // Articles
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
             // oxarticles db fields
             'oxid'                     => 111,
             'oxprice'                  => 1,00,
@@ -30,9 +30,9 @@ $aData = array(
         ),
     ),
  // Discounts
-    'discounts' => array (
+    'discounts' => array(
         // oxdiscount DB fields
-        0 => array (
+        0 => array(
             // 10% discount for basket
             'oxid'         => 'discountforbasket10%',
             'oxaddsum'     => 10,
@@ -77,24 +77,24 @@ $aData = array(
 
     ),
     // TEST EXPECTATIONS
-    'expected' => array (
+    'expected' => array(
         // Article expected prices: ARTICLE ID => ( Unit price, Total Price )
-        'articles' => array (
-             111 => array ( '1,00', '2,00' ),
+        'articles' => array(
+             111 => array( '1,00', '2,00' ),
 
         ),
         // Expectations of other totals
-        'totals' => array (
+        'totals' => array(
             // Total BRUTTO
             'totalBrutto' => '2,16',
             // Total NETTO
             'totalNetto'  => '2,00',
             // Total VAT amount: vat% => total cost
-            'vats' => array (
+            'vats' => array(
                 20 => '0,36',
             ),
         // Total discount amounts: discount id => total cost
-        'discounts' => array (
+        'discounts' => array(
             // Expectation for special discount with specified ID
             'discountforbasket10%' => '0,20'
             ),
@@ -116,7 +116,7 @@ $aData = array(
         ),
     ),
     // Test case options
-    'options' => array (
+    'options' => array(
         // Configs (real named)
         'config' => array(
             'blEnterNetPrice' => true,

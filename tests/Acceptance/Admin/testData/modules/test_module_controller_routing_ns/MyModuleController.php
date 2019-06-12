@@ -20,7 +20,7 @@ class MyModuleController extends \OxidEsales\Eshop\Application\Controller\Fronte
     /**
      * Message from request
      */
-     protected $message = '';
+    protected $message = '';
 
     /**
      * Rendering method.

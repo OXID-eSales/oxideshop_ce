@@ -190,7 +190,6 @@ class ActionsMainTest extends \OxidTestCase
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData["updatelist"]));
         $this->assertEquals(1, $aViewData["updatelist"]);
-
     }
 
     /**
@@ -276,5 +275,4 @@ class ActionsMainTest extends \OxidTestCase
         $this->assertTrue(isset($aViewData["updatelist"]));
         $this->assertEquals(1, $aViewData["updatelist"]);
     }
-
 }

@@ -38,7 +38,6 @@ class LoginTest extends UserTestCase
      */
     public function testAdminLoginWithOldPasswordMultiShop()
     {
-
         $this->setAdminMode(true);
 
         //faking cookie check

@@ -21,7 +21,6 @@ use \oxTestModules;
  */
 class LoginTest extends \OxidTestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -89,7 +88,7 @@ class LoginTest extends \OxidTestCase
     public function testLoginNotAdmin()
     {
         $this->expectException('oxException');
-        $this->expectExceptionMessage( 'LOGIN_ERROR');
+        $this->expectExceptionMessage('LOGIN_ERROR');
 
         $oUser = oxNew("oxUser");
         $oUser->setId("_testUserId");

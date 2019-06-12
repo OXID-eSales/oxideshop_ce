@@ -12,17 +12,17 @@
  * Gift cart: -
  * Short description: Vat and rounding issue test case: basket discount without articles ( Discount (from 1 unit to 99999) )
  */
-$aData = array (
-     'articles' => array (
-         0 => array (
+$aData = array(
+     'articles' => array(
+         0 => array(
              'oxid'    => 'rounding_issue_test_article',
              'oxprice' => 298.55,
              'oxvat'   => 19,
              'amount'  => 200,
          ),
      ),
-    'discounts' => array (
-        0 => array (
+    'discounts' => array(
+        0 => array(
             'oxid'         => 'discount_2_55_forShop',
             'oxaddsum'     => 2.55,
             'oxaddsumtype' => '%',
@@ -32,23 +32,23 @@ $aData = array (
             'oxsort' => 10,
         ),
     ),
-    'expected' => array (
-        'articles' => array (
-            'rounding_issue_test_article' => array ( '298,55', '59.710,00' ),
+    'expected' => array(
+        'articles' => array(
+            'rounding_issue_test_article' => array( '298,55', '59.710,00' ),
         ),
-        'totals' => array (
+        'totals' => array(
             'totalBrutto' => '59.710,00',
-            'discounts' => array (
+            'discounts' => array(
                     'discount_2_55_forShop' => '1.522,61',
             ),
             'totalNetto'  => '48.896,97',
-            'vats' => array (
+            'vats' => array(
                     '19' => '9.290,42'
             ),
             'grandTotal'  => '58.187,39'
         ),
     ),
-    'options' => array (
+    'options' => array(
             'config' => array(
                 'blEnterNetPrice' => false,
                 'blShowNetPrice' => false

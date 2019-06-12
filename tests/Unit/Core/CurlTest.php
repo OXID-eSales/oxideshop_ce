@@ -65,7 +65,6 @@ class CurlTest extends \OxidTestCase
 
         $oCurl->setParameters(array('param3' => 'value3', 'param4' => 'values4'));
         $this->assertEquals('param3=value3&param4=values4', $oCurl->getQuery());
-
     }
 
     /**

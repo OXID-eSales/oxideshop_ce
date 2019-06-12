@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
  */
 class RequiredAddressFieldsTest extends \OxidTestCase
 {
-
     public function testGetRequiredFieldsWhenNoFieldsAreSetInConfig()
     {
         $aRequiredFields = array(

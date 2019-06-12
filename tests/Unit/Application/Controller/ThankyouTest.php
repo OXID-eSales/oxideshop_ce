@@ -225,5 +225,4 @@ class ThankyouTest extends \OxidTestCase
 
         $this->assertEquals('DEU', $oTh->getCountryISO3());
     }
-
 }

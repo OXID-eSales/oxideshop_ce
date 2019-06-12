@@ -5,7 +5,6 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Setup;
 
-
 use OxidEsales\EshopCommunity\Setup\Controller;
 
 require_once OX_BASE_PATH . 'Setup' . DIRECTORY_SEPARATOR . 'functions.php';

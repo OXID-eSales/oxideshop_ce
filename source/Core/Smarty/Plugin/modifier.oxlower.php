@@ -19,5 +19,3 @@ function smarty_modifier_oxlower($sString)
 {
     return getStr()->strtolower($sString);
 }
-
-?>

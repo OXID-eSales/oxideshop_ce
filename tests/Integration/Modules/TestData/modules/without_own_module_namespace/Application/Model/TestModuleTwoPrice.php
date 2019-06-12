@@ -4,7 +4,8 @@
  * See LICENSE file for license details.
  */
 
-class TestModuleTwoPrice extends testmoduletwoprice_parent {
+class TestModuleTwoPrice extends testmoduletwoprice_parent
+{
 
     /**
      * Double the original price

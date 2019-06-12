@@ -12,7 +12,6 @@ use \oxDb;
  */
 class DeliverysetCountryAjaxTest extends \OxidTestCase
 {
-
     protected $_sShopId = '1';
     protected $_sCountryView = 'oxv_oxcountry_de';
 

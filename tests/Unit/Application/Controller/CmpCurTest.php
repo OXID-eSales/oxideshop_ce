@@ -29,4 +29,3 @@ class CmpCurTest extends \OxidTestCase
         $this->assertEquals(1, $oCur->decimal);
     }
 }
-

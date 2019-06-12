@@ -227,14 +227,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @var array
      */
-    static protected $_aLoadedParents;
+    protected static $_aLoadedParents;
 
     /**
      * Cached select lists array
      *
      * @var array
      */
-    static protected $_aSelList;
+    protected static $_aSelList;
 
     /**
      * Select lists for tpl
@@ -1070,7 +1070,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         // active ?
         $sNow = date('Y-m-d H:i:s');
         if (!$this->oxarticles__oxactive->value &&
-            ($this->oxarticles__oxactivefrom->value > $sNow ||
+            (
+                $this->oxarticles__oxactivefrom->value > $sNow ||
              $this->oxarticles__oxactiveto->value < $sNow
             )
         ) {
@@ -4090,7 +4091,6 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     protected function _generateSearchStr($sOXID, $blSearchPriceCat = false)
     {
-
         $sCatView = getViewName('oxcategories', $this->getLanguage());
         $sO2CView = getViewName('oxobject2category');
 

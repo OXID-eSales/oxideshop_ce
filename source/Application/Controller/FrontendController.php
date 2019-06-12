@@ -1310,7 +1310,6 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     protected function _prepareMetaKeyword($keywords, $removeDuplicatedWords = true)
     {
-
         $string = $this->_prepareMetaDescription($keywords, -1, false);
 
         if ($removeDuplicatedWords) {
@@ -2065,11 +2064,11 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             if ($pageNavigation->actPage <= $tmpVal) {
                 $startNo = 2;
                 $finishNo = $tmpVal + 1;
-                // actual page is at the end
+            // actual page is at the end
             } elseif ($pageNavigation->actPage >= $pageNavigation->NrOfPages - $tmpVal + 1) {
                 $startNo = $pageNavigation->NrOfPages - $tmpVal;
                 $finishNo = $pageNavigation->NrOfPages - 1;
-                // actual page is in the middle
+            // actual page is in the middle
             } else {
                 $startNo = $pageNavigation->actPage - $tmpVal2;
                 $finishNo = $pageNavigation->actPage + $tmpVal2;

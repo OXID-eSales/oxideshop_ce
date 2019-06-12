@@ -20,8 +20,8 @@
 */
 $aData = array(
     // Product
-    'articles' => array (
-         0 => array (
+    'articles' => array(
+         0 => array(
             // oxarticles db fields
             'oxid'                     => 1001,
             'oxprice'                  => 20.00,
@@ -29,7 +29,7 @@ $aData = array(
             // Amount in basket
             'amount'                   => 15,
         ),
-        1 => array (
+        1 => array(
             // oxarticles db fields
             'oxid'                     => 1002,
             'oxprice'                  => 200.00,
@@ -37,7 +37,7 @@ $aData = array(
             // Amount in basket
             'amount'                   => 1,
         ),
-	    2 => array (
+        2 => array(
             // oxarticles db fields
             'oxid'                     => 1004,
             'oxprice'                  => 200.00,
@@ -47,9 +47,9 @@ $aData = array(
 
     ),
     // Discounts
-    'discounts' => array (
+    'discounts' => array(
         // oxdiscount DB fields
-        0 => array (
+        0 => array(
             // item discount for basket
             'oxid'         => 'discountitm',
             'oxaddsum'     => 0,
@@ -58,9 +58,9 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
             'oxitmartid' => 1004,
-			'oxitmamount' => 1,
-			'oxitmultiple' => 1,
-			'oxarticles' => array ( 1002 ),
+            'oxitmamount' => 1,
+            'oxitmultiple' => 1,
+            'oxarticles' => array( 1002 ),
             'oxsort' => 10,
         ),
     ),
@@ -99,8 +99,8 @@ $aData = array(
                 'oxchecked' => 1,
             ),
         ),
-		'voucherserie' => array (
-            0 => array (
+        'voucherserie' => array(
+            0 => array(
                 'oxdiscount' => 10.00,
                 'oxdiscounttype' => '%',
                 'oxallowsameseries' => 1,
@@ -113,24 +113,24 @@ $aData = array(
     ),
 
     // TEST EXPECTATIONS
-    'expected' => array (
-	 1 => array (
+    'expected' => array(
+     1 => array(
         // Article expected prices: ARTICLE ID => ( Unit price, Total Price )
-        'articles' => array (
-            1001 => array ( '20,00', '300,00' ),
-            1002 => array ( '200,00', '200,00' ),
-		    1004 => array ( '0,00', '0,00' ),
+        'articles' => array(
+            1001 => array( '20,00', '300,00' ),
+            1002 => array( '200,00', '200,00' ),
+            1004 => array( '0,00', '0,00' ),
 
         ),
         // Expectations of other totals
-        'totals' => array (
+        'totals' => array(
             // Total BRUTTO
             'totalBrutto' => '511,20',
             // Total NETTO
             'totalNetto'  => '500,00',
             // Total VAT amount: vat% => total cost
-            'vats' => array (
-		   	    19 => '34,20',
+            'vats' => array(
+                19 => '34,20',
                 10 => '27,00',
             ),
 
@@ -146,12 +146,12 @@ $aData = array(
                 'netto' => '275,00',
                 'vat' => '27,50'
             ),
-			'discount'  => '0,00',
-			    'voucher' => array (
+            'discount'  => '0,00',
+                'voucher' => array(
                 'brutto' => '50,00',
             ),
             // Total giftcard amounts
-            'giftcard' => array (
+            'giftcard' => array(
                 'brutto' => '2,75',
                 'netto' => '2,50',
                 'vat' => '0,25'
@@ -160,23 +160,23 @@ $aData = array(
             'grandTotal'  => '1.118,95'
             ),
         ),
-    2 => array (
+    2 => array(
         // Article expected prices: ARTICLE ID => ( Unit price, Total Price )
-        'articles' => array (
-            1001 => array ( '20,00', '300,00' ),
-            1002 => array ( '200,00', '200,00' ),
-		    1004 => array ( '0,00', '0,00' ),
+        'articles' => array(
+            1001 => array( '20,00', '300,00' ),
+            1002 => array( '200,00', '200,00' ),
+            1004 => array( '0,00', '0,00' ),
 
         ),
         // Expectations of other totals
-        'totals' => array (
+        'totals' => array(
             // Total BRUTTO
             'totalBrutto' => '511,20',
             // Total NETTO
             'totalNetto'  => '500,00',
             // Total VAT amount: vat% => total cost
-            'vats' => array (
-		   	    19 => '34,20',
+            'vats' => array(
+                19 => '34,20',
                 10 => '27,00',
             ),
 
@@ -187,17 +187,17 @@ $aData = array(
                 'vat' => '27,50'
             ),
             // Total payment amounts
-			'discount'  => '0,00',
+            'discount'  => '0,00',
             'payment' => array(
                 'brutto' => '302,50',
                 'netto' => '275,00',
                 'vat' => '27,50'
             ),
-			     'voucher' => array (
+                 'voucher' => array(
                 'brutto' => '50,00',
             ),
             // Total giftcard amounts
-            'giftcard' => array (
+            'giftcard' => array(
                 'brutto' => '2,75',
                 'netto' => '2,50',
                 'vat' => '0,25'
@@ -206,9 +206,9 @@ $aData = array(
             'grandTotal'  => '1.118,95'
             ),
         ),
-	),
+    ),
     // Test case options
-    'options' => array (
+    'options' => array(
         // Configs (real named)
         'config' => array(
             'blEnterNetPrice' => true,
@@ -224,8 +224,8 @@ $aData = array(
         // Other options
         'activeCurrencyRate' => 1,
     ),
-		  'actions' => array (
-            '_changeConfigs' => array (
+          'actions' => array(
+            '_changeConfigs' => array(
                 'blShowNetPrice' => false,
             ),
     ),

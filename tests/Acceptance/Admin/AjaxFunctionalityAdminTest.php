@@ -741,7 +741,7 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
      */
     public function testAjaxDeliveryAssignProducts()
     {
-       // active config option blVariantsSelection
+        // active config option blVariantsSelection
         $this->callShopSC("oxConfig", null, null, array("blVariantsSelection" => array("type" => "bool", "value" => 'true')));
         $this->loginAdmin("Shop Settings", "Shipping Cost Rules");
         $this->changeAdminListLanguage('Deutsch');
@@ -926,7 +926,6 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
         $this->assertElementText("1 [EN] category šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]");
         $this->assertElementText("[last] [EN] category šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[11]/td[1]");
         $this->close();
-
     }
 
     /**

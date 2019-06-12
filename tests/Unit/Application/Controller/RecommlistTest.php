@@ -13,7 +13,6 @@ use \oxTestModules;
 
 class RecommlistTest extends \OxidTestCase
 {
-
     private $_sArticleID;
 
     /**
@@ -36,7 +35,6 @@ class RecommlistTest extends \OxidTestCase
         $myDB->Execute($sQ);
 
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-
     }
 
     /**
@@ -488,5 +486,4 @@ class RecommlistTest extends \OxidTestCase
 
         $this->assertEquals('7 ' . oxRegistry::getLang()->translateString('HITS_FOR', oxRegistry::getLang()->getBaseLanguage(), false) . ' "string"', $oView->getTitle());
     }
-
 }

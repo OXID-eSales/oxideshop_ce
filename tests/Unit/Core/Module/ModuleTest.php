@@ -656,7 +656,8 @@ class ModuleTest extends \OxidTestCase
     /**
      * @covers OxidEsales\Eshop\Core\Module\Module::getControllers()
      */
-    public function testGetControllersWithMissingControllersKey() {
+    public function testGetControllersWithMissingControllersKey()
+    {
         $metaData = array(
             'id' => 'testModuleId'
         );
@@ -676,7 +677,8 @@ class ModuleTest extends \OxidTestCase
      * @param $expectedResult
      * @param $message
      */
-    public function testGetControllersWithExistingControllers($metaDataControllers, $expectedResult, $message) {
+    public function testGetControllersWithExistingControllers($metaDataControllers, $expectedResult, $message)
+    {
         $expectedControllers = ['controller_id' => 'ControllerName'];
 
         $metaData = array(
@@ -690,7 +692,8 @@ class ModuleTest extends \OxidTestCase
         $this->assertEquals($expectedResult, $module->getControllers(), $message);
     }
 
-    public function dataProviderTestGetControllersWithExistingControllers() {
+    public function dataProviderTestGetControllersWithExistingControllers()
+    {
         return [
             [
                 'metaDataControllers' => ['controller_id' => 'ControllerName'],
@@ -725,7 +728,8 @@ class ModuleTest extends \OxidTestCase
      * @param $metaDataControllers
      * @param $expectedException
      */
-    public function testGetControllersWithWrongMetadataValue($metaDataControllers, $expectedException) {
+    public function testGetControllersWithWrongMetadataValue($metaDataControllers, $expectedException)
+    {
         $this->expectException($expectedException);
         $metaData = array(
             'id' => 'testModuleId',

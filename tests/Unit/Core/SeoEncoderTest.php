@@ -18,7 +18,6 @@ use \oxTestModules;
 
 class modSeoEncoder extends oxSeoEncoder
 {
-
     public function setProhibitedID($aProhibitedID)
     {
         $this->_aProhibitedID = $aProhibitedID;
@@ -628,8 +627,16 @@ class SeoEncoderTest extends \OxidTestCase
         // saving its meta data
         $oEncoder = \OxidEsales\Eshop\Core\Registry::getSeoEncoder();
         $oEncoder->addSeoEntry(
-            $oArticle->getId(), $oArticle->getShopId(), $oArticle->getLanguage(), 'http://stdlink',
-            $oArticle->getLink(), 'oxarticle', 0, 'oxseo oxkeywords', 'oxseo oxdescription', ''
+            $oArticle->getId(),
+            $oArticle->getShopId(),
+            $oArticle->getLanguage(),
+            'http://stdlink',
+            $oArticle->getLink(),
+            'oxarticle',
+            0,
+            'oxseo oxkeywords',
+            'oxseo oxdescription',
+            ''
         );
 
         // now testing if meta data was stored..
@@ -717,7 +724,8 @@ class SeoEncoderTest extends \OxidTestCase
         $sShopId = $this->getConfig()->getBaseShopId();
         $iLang = 1;
         $sObjectId = md5(strtolower($sShopId . $sStdUrl));
-        $sIdent = md5(strtolower($sSeoUrl));;
+        $sIdent = md5(strtolower($sSeoUrl));
+        ;
         $sType = 'dynamic';
 
         $sQ = "insert into oxseo (oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype)
@@ -1096,7 +1104,8 @@ class SeoEncoderTest extends \OxidTestCase
                                    values ( '{$sObjectId}', '" . md5(strtolower("de/$sSeoUrl3")) . "', '{$iShopId}', '0', '{$sStdUrl3}', '{$sSeoUrl3}', '1', 'oxarticle', '{$sRootId3}' )"
         );
 
-        $oEncoder = oxNew('oxSeoEncoder');;
+        $oEncoder = oxNew('oxSeoEncoder');
+        ;
         $oEncoder->UNITsaveToDb('oxarticle', $sObjectId, $sStdUrl3, $sSeoUrl3, 0, $iShopId, null, $sRootId3);
 
         $sSql = " select oxobjectid, oxparams, oxexpired from oxseo where oxobjectid= '{$sObjectId}' and oxexpired = '0' ";

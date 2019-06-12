@@ -15,7 +15,6 @@ use \oxTestModules;
 
 class testOxLocator extends oxLocator
 {
-
     public $oBackProduct = null;
     public $oNextProduct = null;
 
@@ -683,7 +682,6 @@ class LocatorTest extends \OxidTestCase
 
     public function testLoadIdsInListForPriceCat()
     {
-
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $query = "Insert into oxcategories (`OXID`,`OXROOTID`,`OXTITLE`,`OXACTIVE`,`OXPRICEFROM`," .
                 "`OXPRICETO`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`)
@@ -712,7 +710,6 @@ class LocatorTest extends \OxidTestCase
 
     public function testLoadIdsInListForPriceCatNonExistingArticle()
     {
-
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $query = "Insert into oxcategories (`OXID`,`OXROOTID`,`OXTITLE`,`OXACTIVE`,`OXPRICEFROM`," .
                 "`OXPRICETO`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`)
@@ -736,7 +733,7 @@ class LocatorTest extends \OxidTestCase
         $this->assertEquals('1651', $oIdList['1651']);
 
         $expectedCount = $this->getTestConfig()->getShopEdition() == 'EE'? 34 : 24;
-        $this->assertEquals($expectedCount,  count($oIdList));
+        $this->assertEquals($expectedCount, count($oIdList));
     }
 
     public function testGetPageNumber()
@@ -844,7 +841,6 @@ class LocatorTest extends \OxidTestCase
         $this->assertNotNull($locator->_oNextProduct);
         $this->assertSame('1234567', $locator->_oBackProduct->getId());
         $this->assertSame('6b6e718666bc8867719ab25a8020a978', $locator->_oNextProduct->getId());
-
     }
 
     /**
@@ -868,7 +864,7 @@ class LocatorTest extends \OxidTestCase
         $article = oxNew('oxarticle');
         $article->disableLazyLoading();
         $article->load(self::SOURCE_ARTICLE_ID);
-        $article->setId($oxid );
+        $article->setId($oxid);
         $article->save();
 
         return $article;

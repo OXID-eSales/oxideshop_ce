@@ -6,7 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
-
 use OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator;
 use OxidEsales\EshopCommunity\Core\Module\ModuleVariablesLocator;
 use OxidEsales\EshopCommunity\Core\Registry;
@@ -149,7 +148,6 @@ class ModuleChainsGeneratorTest extends UnitTestCase
 
     protected function createModuleClassFile($extensionPath)
     {
-
         $modulesDirectory = Registry::get("oxConfigFile")->getVar("sShopDir");
         $moduleClassFilePath = "$modulesDirectory/modules/$extensionPath.php";
         if (!is_dir(dirname($moduleClassFilePath))) {

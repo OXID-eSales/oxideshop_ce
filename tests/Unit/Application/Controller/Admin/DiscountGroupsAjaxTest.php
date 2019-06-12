@@ -162,5 +162,4 @@ class DiscountGroupsAjaxTest extends \OxidTestCase
         $oView->addDiscGroup();
         $this->assertEquals($iCount, oxDb::getDb()->getOne("select count(oxid) from oxobject2discount where oxdiscountid='$sSynchoxid'"));
     }
-
 }

@@ -11,5 +11,4 @@ namespace OxidEsales\EshopCommunity\Internal\Application\Exception;
  */
 class SystemServiceOverwriteException extends \Exception
 {
-
 }

@@ -84,5 +84,4 @@ class AccountdownloadsTest extends \OxidTestCase
         $oAccDownloads->setNonPublicVar('_oOrderFilesList', "testOrder");
         $this->assertEquals("testOrder", $oAccDownloads->getOrderFilesList());
     }
-
 }

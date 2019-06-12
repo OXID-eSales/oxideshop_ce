@@ -19,16 +19,16 @@
  * Case: 0004680: Discount recalculation fails on basket refresh
  */
 $aData = array(
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
                 'oxid'                     => '_testProduct',
                 'oxprice'                  => 10.00,
                 'oxvat'                    => 19,
                 'amount'                   => 36,
         ),
     ),
-    'discounts' => array (
-        0 => array (
+    'discounts' => array(
+        0 => array(
                 'oxid'         => 'basket_0',
                 'oxaddsum'     => 6.00,
                 'oxaddsumtype' => '%',
@@ -40,7 +40,7 @@ $aData = array(
                 //'oxarticles' => array( 111 ),
                 'oxsort' => 10,
         ),
-        1 => array (
+        1 => array(
                 'oxid'         => 'basket_1',
                 'oxaddsum'     => 9.00,
                 'oxaddsumtype' => '%',
@@ -51,7 +51,7 @@ $aData = array(
                 'oxactive' => 1,
                 'oxsort' => 20,
         ),
-        2 => array (
+        2 => array(
                 'oxid'         => 'basket_2',
                 'oxaddsum'     => 12.00,
                 'oxaddsumtype' => '%',
@@ -65,23 +65,23 @@ $aData = array(
 
     ),
 
-    'expected' => array (
-        'articles' => array (
-                 '_testProduct' => array ( '10,00', '360,00' ),
+    'expected' => array(
+        'articles' => array(
+                 '_testProduct' => array( '10,00', '360,00' ),
         ),
-        'totals' => array (
+        'totals' => array(
                 'totalBrutto' => '360,00',
                 'totalNetto'  => '266,22',
-                'vats' => array (
+                'vats' => array(
                     19 => '50,58',
                 ),
-                'discounts' => array (
+                'discounts' => array(
                     'basket_2' => '43,20',
                 ),
                 'grandTotal'  => '316,80'
         ),
     ),
-    'options' => array (
+    'options' => array(
         'config' => array(
                 'blEnterNetPrice' => false,
                 'blShowNetPrice' => false,

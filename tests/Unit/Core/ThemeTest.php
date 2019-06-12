@@ -11,7 +11,6 @@ use \another;
 
 class ThemeTest extends \OxidTestCase
 {
-
     public function setup()
     {
         parent::setUp();
@@ -46,7 +45,8 @@ class ThemeTest extends \OxidTestCase
     {
         $oTheme = $this->getMock(\OxidEsales\Eshop\Core\Theme::class, array('checkForActivationErrors'));
         $oTheme->expects($this->once())->method('checkForActivationErrors')->will($this->returnValue('Error Message'));
-        $this->expectException(\OxidEsales\Eshop\Core\Exception\StandardException::class); $this->expectExceptionMessage( 'Error Message');
+        $this->expectException(\OxidEsales\Eshop\Core\Exception\StandardException::class);
+        $this->expectExceptionMessage('Error Message');
         $oTheme->activate();
     }
 

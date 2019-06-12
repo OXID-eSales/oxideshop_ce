@@ -22,7 +22,7 @@ function smarty_insert_oxid_cmplogin($params, &$smarty)
 {
     $smarty->caching = false;
 
-    $sOutput = $smarty->fetch( $params['tpl']);
+    $sOutput = $smarty->fetch($params['tpl']);
 
     $smarty->caching = false;
 

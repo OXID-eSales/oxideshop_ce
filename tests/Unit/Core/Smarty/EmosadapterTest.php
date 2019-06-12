@@ -13,7 +13,6 @@ use \oxRegistry;
 
 class EmosadapterTest extends \OxidTestCase
 {
-
     protected function setUp()
     {
         parent::setUp();
@@ -134,7 +133,6 @@ class EmosadapterTest extends \OxidTestCase
         $oEmosAdapter = oxNew('oxEmosAdapter');
         $oEmos = $oEmosAdapter->getEmos();
         $this->assertTrue($oEmos instanceof Emos);
-
     }
 
     public function testGetEmosPageTitle()

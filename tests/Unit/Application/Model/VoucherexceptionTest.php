@@ -7,7 +7,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 class VoucherexceptionTest extends \OxidTestCase
 {
-
     public function testSetGetVoucherNr()
     {
         $sVoucher = "a voucher nr.";

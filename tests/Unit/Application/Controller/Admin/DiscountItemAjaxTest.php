@@ -236,5 +236,4 @@ class DiscountItemAjaxTest extends \OxidTestCase
         $oComponent->expects($this->any())->method('_getColNames')->will($this->returnValue($aColNames));
         $this->assertEquals($sQ, $oComponent->UNITgetQueryCols());
     }
-
 }

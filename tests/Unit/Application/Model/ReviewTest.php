@@ -12,7 +12,6 @@ use \oxTestModules;
 
 class ReviewTest extends \OxidTestCase
 {
-
     protected $_oReview = null;
     protected $_iNow = null;
     protected $_iReviewTime = 0;

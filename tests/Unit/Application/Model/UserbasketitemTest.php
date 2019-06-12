@@ -13,7 +13,6 @@ use \stdclass;
 
 class modOxArticle_oxUserBasketItem extends oxArticle
 {
-
     public function getClassVar($sName)
     {
         return $this->$sName;

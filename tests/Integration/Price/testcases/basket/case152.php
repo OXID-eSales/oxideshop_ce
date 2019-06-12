@@ -21,41 +21,41 @@
  * From basketCalc.csv: Complex order calculation order I.
  */
 $aData = array(
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
                 'oxid'                     => 9200,
                 'oxprice'                  => 87,
                 'oxvat'                    => 17,
                 'amount'                   => 63,
         ),
-        1 => array (
+        1 => array(
                 'oxid'                     => 9206,
                 'oxprice'                  => 103,
                 'oxvat'                    => 19,
                 'amount'                   => 125,
         ),
-        3 => array (
+        3 => array(
                 'oxid'                     => 9216,
                 'oxprice'                  => 56.45,
                 'oxvat'                    => 17,
                 'amount'                   => 14,
         ),
-        4 => array (
+        4 => array(
                 'oxid'                     => 9218,
                 'oxprice'                  => 59.60,
                 'oxvat'                    => 18,
                 'amount'                   => 39,
         ),
     ),
-    'discounts' => array (
-        0 => array (
+    'discounts' => array(
+        0 => array(
             'oxid'         => 'discount2for9200and9206',
             'oxaddsum'     => 2,
             'oxaddsumtype' => '%',
             'oxamount' => 0,
             'oxamountto' => 99999,
             'oxactive' => 1,
-            'oxarticles' => array ( 9200, 9206 ),
+            'oxarticles' => array( 9200, 9206 ),
             'oxsort' => 10,
         ),
     ),
@@ -80,17 +80,17 @@ $aData = array(
                     ),
             ),
     ),
-    'expected' => array (
-        'articles' => array (
-                 9200 => array ( '85,26', '5.371,38' ),
-                 9206 => array ( '100,94', '12.617,50' ),
-                 9216 => array ( '56,45', '790,30' ),
-                 9218 => array ( '59,60', '2.324,40' ),
+    'expected' => array(
+        'articles' => array(
+                 9200 => array( '85,26', '5.371,38' ),
+                 9206 => array( '100,94', '12.617,50' ),
+                 9216 => array( '56,45', '790,30' ),
+                 9218 => array( '59,60', '2.324,40' ),
         ),
-        'totals' => array (
+        'totals' => array(
                 'totalBrutto' => '21.103,58',
                 'totalNetto'  => '17.839,16',
-                'vats' => array (
+                'vats' => array(
                         17 => '895,29',
                         18 => '354,57',
                         19 => '2.014,56',
@@ -108,7 +108,7 @@ $aData = array(
                 'grandTotal'  => '21.126,56'
         ),
     ),
-    'options' => array (
+    'options' => array(
         'activeCurrencyRate' => 1,
         'config' => array(
             'blEnterNetPrice' => false,

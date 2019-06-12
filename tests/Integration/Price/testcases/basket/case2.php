@@ -27,62 +27,62 @@
  * Short description: bug entry / support case other info;
  */
 $aData = array(
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
             'oxid'                     => 9003,
             'oxprice'                  => 100,
             'oxvat'                    => 19,
             'amount'                   => 33,
         ),
-        1 => array (
+        1 => array(
             'oxid'                     => 9004,
             'oxprice'                  => 66,
             'oxvat'                    => 19,
             'amount'                   => 16,
         ),
     ),
-    'discounts' => array (
-        0 => array (
+    'discounts' => array(
+        0 => array(
             'oxid'         => 'shopdiscount5for9003',
             'oxaddsum'     => 5,
             'oxaddsumtype' => 'abs',
             'oxamount' => 0,
             'oxamountto' => 99999,
             'oxactive' => 1,
-            'oxarticles' => array ( 9003 ),
+            'oxarticles' => array( 9003 ),
             'oxsort' => 10,
         ),
-        1 => array (
+        1 => array(
             'oxid'         => 'shopdiscount5for9004',
             'oxaddsum'     => 5,
             'oxaddsumtype' => '%',
             'oxamount' => 0,
             'oxamountto' => 99999,
             'oxactive' => 1,
-            'oxarticles' => array ( 9004 ),
+            'oxarticles' => array( 9004 ),
             'oxsort' => 20,
         ),
-        2 => array (
+        2 => array(
             'oxid'         => 'basketdiscount5for9003',
             'oxaddsum'     => 1,
             'oxaddsumtype' => 'abs',
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
-            'oxarticles' => array ( 9003 ),
+            'oxarticles' => array( 9003 ),
             'oxsort' => 30,
         ),
-        3 => array (
+        3 => array(
             'oxid'         => 'basketdiscount5for9004',
             'oxaddsum'     => 6,
             'oxaddsumtype' => '%',
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
-            'oxarticles' => array ( 9004 ),
+            'oxarticles' => array( 9004 ),
             'oxsort' => 40,
         ),
-        4 => array (
+        4 => array(
             'oxid'         => 'absolutebasketdiscount',
             'oxaddsum'     => 5,
             'oxaddsumtype' => 'abs',
@@ -131,8 +131,8 @@ $aData = array(
                 'oxarticles' => array( 9003, 9004 ),
             ),
         ),
-        'voucherserie' => array (
-            0 => array (
+        'voucherserie' => array(
+            0 => array(
                 'oxdiscount' => 6.00,
                 'oxdiscounttype' => 'absolute',
                 'oxallowsameseries' => 1,
@@ -142,18 +142,18 @@ $aData = array(
             ),
         ),
     ),
-    'expected' => array (
-        'articles' => array (
-             9003 => array ( '76,84', '2.535,72' ),
-             9004 => array ( '47,70', '763,20' ),
+    'expected' => array(
+        'articles' => array(
+             9003 => array( '76,84', '2.535,72' ),
+             9004 => array( '47,70', '763,20' ),
         ),
-        'totals' => array (
+        'totals' => array(
             'totalBrutto' => '3.298,92',
             'totalNetto'  => '2.765,92',
-            'vats' => array (
+            'vats' => array(
                 19 => '525,52'
             ),
-            'discounts' => array (
+            'discounts' => array(
                 'absolutebasketdiscount' => '3,40',
             ),
             'wrapping' => array(
@@ -161,7 +161,7 @@ $aData = array(
                 'netto' => '224,57',
                 'vat' => '42,67'
             ),
-			'delivery' => array(
+            'delivery' => array(
                 'brutto' => '4,08',
                 'netto' => '3,43',
                 'vat' => '0,65'
@@ -171,20 +171,20 @@ $aData = array(
                 'netto' => '0,57',
                 'vat' => '0,11'
             ),
-            'voucher' => array (
+            'voucher' => array(
                 'brutto' => '4,08',
             ),
             'grandTotal'  => '3.563,44'
         ),
-	),
-    'options' => array (
+    ),
+    'options' => array(
         'config' => array(
                 'blEnterNetPrice' => true,
                 'blShowNetPrice' => false,
                 'blShowVATForWrapping' => true,
                 'blShowVATForPayCharge' => true,
                 'blShowVATForDelivery' => true,
-				'sAdditionalServVATCalcMethod' => 'biggest_net',
+                'sAdditionalServVATCalcMethod' => 'biggest_net',
         ),
         'activeCurrencyRate' => 0.68,
     ),

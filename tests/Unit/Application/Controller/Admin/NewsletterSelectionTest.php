@@ -16,7 +16,6 @@ use \oxTestModules;
  */
 class NewsletterSelectionTest extends \OxidTestCase
 {
-
     private $_oNewsSub = null;
 
     /**
@@ -50,7 +49,6 @@ class NewsletterSelectionTest extends \OxidTestCase
         $this->_oNewsSub->oxnewssubscribed__oxdboptin = new oxField('1', oxField::T_RAW);
         $this->_oNewsSub->oxnewssubscribed__oxunsubscribed = new oxField('0000-00-00 00:00:00', oxField::T_RAW);
         $this->_oNewsSub->save();
-
     }
 
     /**

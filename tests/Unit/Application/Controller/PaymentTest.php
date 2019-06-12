@@ -15,7 +15,6 @@ use \oxTestModules;
 
 class PaymentHelper2 extends oxPayment
 {
-
     public static $dBasketPrice = null;
 
     public function isValidPayment($aDynvalue, $sShopId, $oUser, $dBasketPrice, $sShipSetId)
@@ -29,7 +28,6 @@ class PaymentHelper2 extends oxPayment
 
 class PaymentTest extends \OxidTestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -304,7 +302,6 @@ class PaymentTest extends \OxidTestCase
 
         $sShopId = $this->getConfig()->GetBaseShopId();
         foreach ($aUserPaymentId as $iCnt => $sUserPaymentId) {
-
             $sOrderId = "_test" . (time() + $iCnt);
             $sOrderDate = "2011-03-1{$iCnt} 10:55:13";
 
@@ -602,7 +599,6 @@ class PaymentTest extends \OxidTestCase
         $this->assertNull($_GET["dynvalue[kkmonth]"]);
         $this->assertNull($_GET["dynvalue[kkyear]"]);
         $this->assertNull($_GET["dynvalue[kkpruef]"]);
-
     }
 
     protected function _checkInArrayRecursive($needle, $haystack)
@@ -689,7 +685,8 @@ class PaymentTest extends \OxidTestCase
     public function testRenderNoUserWithBasket()
     {
         $sRedirUrl = $this->getConfig()->getShopHomeURL() . 'cl=basket';
-        $this->expectException('oxException'); $this->expectExceptionMessage( $sRedirUrl);
+        $this->expectException('oxException');
+        $this->expectExceptionMessage($sRedirUrl);
 
         oxTestModules::addFunction('oxUtils', 'redirect($url, $blAddRedirectParam = true, $iHeaderCode = 301)', '{throw new oxException($url);}');
         $this->setConfigParam('blPsBasketReservationEnabled', false);
@@ -711,7 +708,8 @@ class PaymentTest extends \OxidTestCase
     public function testRenderNoUserEmptyBasket()
     {
         $sRedirUrl = $this->getConfig()->getShopHomeURL() . 'cl=start';
-        $this->expectException('oxException'); $this->expectExceptionMessage( $sRedirUrl);
+        $this->expectException('oxException');
+        $this->expectExceptionMessage($sRedirUrl);
 
         oxTestModules::addFunction('oxUtils', 'redirect($url, $blAddRedirectParam = true, $iHeaderCode = 301)', '{throw new oxException($url);}');
         $this->setConfigParam('blPsBasketReservationEnabled', false);
@@ -1011,5 +1009,4 @@ class PaymentTest extends \OxidTestCase
         $oPayment = oxNew('Payment');
         $this->assertTrue($oPayment->isPaymentVatSplitted());
     }
-
 }

@@ -11,5 +11,4 @@ namespace OxidEsales\EshopCommunity\Internal\Module\State;
  */
 class ModuleStateIsAlreadySetException extends \Exception
 {
-
 }

@@ -74,7 +74,7 @@ class RdfaAdminTest extends AdminTestCase
         $this->click("link=Global configuration");
         $this->click("link=Shop information");
         $this->click("link=Special product information");
-      //  $this->assertEquals("true", $this->getValue("confbools[blRDFaEmbedding]"));
+        //  $this->assertEquals("true", $this->getValue("confbools[blRDFaEmbedding]"));
         $this->assertEquals("About Us", $this->getSelectedLabel("confstrs[sRDFaBusinessEntityLoc]"));
         $this->assertEquals("Terms and Conditions", $this->getSelectedLabel("confstrs[sRDFaPaymentChargeSpecLoc]"));
         $this->assertEquals("Shipping and Charges", $this->getSelectedLabel("confstrs[sRDFaDeliveryChargeSpecLoc]"));
@@ -86,7 +86,7 @@ class RdfaAdminTest extends AdminTestCase
         $this->assertEquals("123456789", $this->getValue("confstrs[sRDFaGLN]"));
         $this->assertEquals("123456789", $this->getValue("confstrs[sRDFaISIC]"));
         $this->assertEquals("123456789", $this->getValue("confstrs[sRDFaNAICS]"));
-      //  $this->assertEquals("123456789", $this->getValue("confstrs[sRDFaDUNS]"));
+        //  $this->assertEquals("123456789", $this->getValue("confstrs[sRDFaDUNS]"));
         $this->assertEquals("incl. VAT.", $this->getSelectedLabel("confstrs[iRDFaVAT]"));
         $this->assertEquals("new", $this->getSelectedLabel("confstrs[iRDFaCondition]"));
         $this->assertEquals("Lease out", $this->getSelectedLabel("confstrs[sRDFaBusinessFnc]"));

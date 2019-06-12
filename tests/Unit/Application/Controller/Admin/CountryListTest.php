@@ -102,5 +102,4 @@ class CountryListTest extends \OxidTestCase
 
         return $countryTitle;
     }
-
 }

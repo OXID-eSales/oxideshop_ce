@@ -66,7 +66,4 @@ class VoucherserieExcludeTest extends \OxidTestCase
         $this->assertEquals(0, $iCountVouchers);
         $this->assertEquals(0, $iCountRelations);
     }
-
 }
-
-?>

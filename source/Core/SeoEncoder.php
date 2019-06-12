@@ -489,7 +489,6 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
      */
     protected function _loadFromDb($sType, $sId, $iLang, $iShopId = null, $sParams = null, $blStrictParamsCheck = true)
     {
-
         if ($iShopId === null) {
             $iShopId = $this->getConfig()->getShopId();
         }

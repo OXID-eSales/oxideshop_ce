@@ -108,5 +108,4 @@ class ShopRDFaTest extends \OxidTestCase
         $oErr = unserialize($aErr['default'][0]);
         $this->assertEquals('To many times submited', $oErr->getOxMessage());
     }
-
 }

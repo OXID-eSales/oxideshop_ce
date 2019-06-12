@@ -6,5 +6,4 @@
 
 class vendor_2_module_5_myclass extends vendor_1_module_1_onemoreclass
 {
-
 }

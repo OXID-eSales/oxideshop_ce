@@ -36,7 +36,8 @@ class InvalidateModuleCacheEventSubscriberTest extends TestCase
             ->expects($this->once())
             ->method('invalidateModuleCache');
 
-        $event = new class(1, 'testModuleId') extends ModuleSetupEvent {};
+        $event = new class(1, 'testModuleId') extends ModuleSetupEvent {
+        };
 
         $subscriber = new InvalidateModuleCacheEventSubscriber($moduleCacheService);
         $subscriber->invalidateModuleCache($event);

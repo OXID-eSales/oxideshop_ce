@@ -17,15 +17,15 @@
  */
 $aData = array(
 
-    'categories' => array (
-        0 =>  array (
+    'categories' => array(
+        0 =>  array(
             'oxid'       => 'books',
             'oxparentid' => 'oxrootid',
             'oxshopid'   => 1,
             'oxactive'   => 1,
             'oxarticles' => array( 'book' )
         ),
-        1 =>  array (
+        1 =>  array(
             'oxid'       => 'otherStuff',
             'oxparentid' => 'oxrootid',
             'oxshopid'   => 1,
@@ -34,14 +34,14 @@ $aData = array(
         ),
     ),
 
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
             'oxid'                     => 'stuff',
             'oxprice'                  => 20,
             'oxvat'                    => 20,
             'amount'                   => 6,
         ),
-        1 => array (
+        1 => array(
             'oxid'                     => 'book',
             'oxprice'                  => 10,
             'oxvat'                    => 10,
@@ -74,15 +74,15 @@ $aData = array(
             ),
         ),
     ),
-    'expected' => array (
-        'articles' => array (
-            'book' => array ( '10,00', '10,00' ),
-            'stuff' => array ( '20,00', '120,00' )
+    'expected' => array(
+        'articles' => array(
+            'book' => array( '10,00', '10,00' ),
+            'stuff' => array( '20,00', '120,00' )
         ),
-        'totals' => array (
+        'totals' => array(
             'totalBrutto' => '130,00',
             'totalNetto'  => '109,09',
-            'vats' => array (
+            'vats' => array(
                 10 => '0,91',
                 20 => '20,00'
             ),
@@ -92,7 +92,7 @@ $aData = array(
             'grandTotal'  => '135,00'
         ),
     ),
-    'options' => array (
+    'options' => array(
         'activeCurrencyRate' => 1,
         'config' => array(
             'blEnterNetPrice' => false,

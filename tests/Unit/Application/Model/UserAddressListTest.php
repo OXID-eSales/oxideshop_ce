@@ -10,7 +10,6 @@ use \oxRegistry;
 
 class UserAddressListTest extends \OxidTestCase
 {
-
     public $aList = array();
 
     const AUSTRIA_ID = 'a7c40f6320aeb2ec2.72885259';

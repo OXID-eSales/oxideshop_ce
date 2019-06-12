@@ -95,10 +95,10 @@ class NewsTest extends \OxidTestCase
     {
         $this->getConfig()->setConfigParam('blCheckTemplates', false);
 
-        $oNews = oxNew( 'oxnews' );
-        $oNews->oxnews__oxlongdesc = new oxField( "[{* *}]generated" );
+        $oNews = oxNew('oxnews');
+        $oNews->oxnews__oxlongdesc = new oxField("[{* *}]generated");
         $oNews->getLongDesc();
-        $oNews->oxnews__oxlongdesc = new oxField( "[{* *}]regenerated" );
+        $oNews->oxnews__oxlongdesc = new oxField("[{* *}]regenerated");
         $this->assertEquals('regenerated', $oNews->getLongDesc());
     }
 
@@ -289,5 +289,4 @@ class NewsTest extends \OxidTestCase
 
         $this->assertEquals('<p>test text</p>', $oNews->oxnews__oxlongdesc->value);
     }
-
 }

@@ -187,7 +187,8 @@ class ArticleExtendTest extends \OxidTestCase
         $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(true));
         $oConfig->expects($this->exactly(2))->method('getUploadedFile')->will(
             $this->onConsecutiveCalls(
-                array("name" => array('FL@oxarticles__oxfile' => "testFile")), array("name" => "testName")
+                array("name" => array('FL@oxarticles__oxfile' => "testFile")),
+                array("name" => "testName")
             )
         );
         // testing..

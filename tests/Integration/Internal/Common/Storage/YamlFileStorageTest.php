@@ -19,7 +19,6 @@ use Symfony\Component\Lock\Factory;
  */
 class YamlFileStorageTest extends TestCase
 {
-
     use ContainerTrait;
 
     /**

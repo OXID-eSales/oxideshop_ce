@@ -170,7 +170,6 @@ class DetailsTest extends \OxidTestCase
         $oDetailsView->expects($this->once())->method('_getAddUrlParams')->will($this->returnValue("searchparams"));
 
         $oDetailsView->UNITprocessProduct($oProduct);
-
     }
 
     /**
@@ -1020,7 +1019,6 @@ class DetailsTest extends \OxidTestCase
      */
     public function testGetBreadCrumb()
     {
-
         $details = oxNew('Details');
 
         $this->setRequestParameter('listtype', 'search');
@@ -1591,8 +1589,5 @@ class DetailsTest extends \OxidTestCase
         $oController->expects($this->any())->method('getSorting')->will($this->returnValue(null));
 
         $this->assertNull($oController->getSortingParameters());
-
     }
 }
-
-

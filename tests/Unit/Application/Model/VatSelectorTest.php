@@ -126,7 +126,6 @@ class VatSelectorTest extends \OxidTestCase
 
     public function testGetForeignCountryUserVat()
     {
-
         $oCountry1 = $this->getMock(\OxidEsales\Eshop\Application\Model\Country::class, array('isInEU'));
         $oCountry1->expects($this->once())->method('isInEU')->will($this->returnValue(false));
 
@@ -167,8 +166,6 @@ class VatSelectorTest extends \OxidTestCase
         $oVatSelector1->expects($this->once())->method('_getVatForArticleCategory')->will($this->returnValue(false));
 
         $this->assertEquals(99, $oVatSelector1->getArticleVat($oArticle2));
-
-
     }
 
     public function testGetVatForArticleCategory()
@@ -347,5 +344,4 @@ class VatSelectorTest extends \OxidTestCase
         $oVatSelector->expects($this->once())->method("_getVatCountry")->with($oUser)->will($this->returnValue($sGermanyId));
         $oVatSelector->getUserVat($oUser, true);
     }
-
 }

@@ -24,7 +24,8 @@ class ModuleDataTest extends BaseModuleTestCase
      *
      * @covers OxidEsales\Eshop\Core\Module\Module::includeModuleMetaData()
      */
-    public function testIncludeModuleMetaDataIncludeEmptyMetadata() {
+    public function testIncludeModuleMetaDataIncludeEmptyMetadata()
+    {
         $module = oxNew(Module::class);
 
         $metaDataFile = $this->testModuleDirectory . 'emptyMetaData.php';
@@ -43,7 +44,8 @@ class ModuleDataTest extends BaseModuleTestCase
      *
      * @covers OxidEsales\Eshop\Core\Module\Module::includeModuleMetaData()
      */
-    public function testIncludeModuleMetaDataIncludeSetsModuleData() {
+    public function testIncludeModuleMetaDataIncludeSetsModuleData()
+    {
         $metaDataFile = $this->testModuleDirectory . 'metadata.php';
 
         $module = oxNew(Module::class);
@@ -58,7 +60,8 @@ class ModuleDataTest extends BaseModuleTestCase
      *
      * @covers OxidEsales\Eshop\Core\Module\Module::includeModuleMetaData()
      */
-    public function testIncludeModuleMetaDataIncludeSetsMetaDataVersion() {
+    public function testIncludeModuleMetaDataIncludeSetsMetaDataVersion()
+    {
         $metaDataFile = $this->testModuleDirectory . 'metadata.php';
 
         $module = oxNew(Module::class);

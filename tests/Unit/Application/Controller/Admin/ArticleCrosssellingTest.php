@@ -34,6 +34,5 @@ class ArticleCrosssellingTest extends \OxidTestCase
         $this->assertTrue($aViewData["readonly"]);
 
         $this->assertEquals('article_crossselling.tpl', $sTplName);
-
     }
 }

@@ -12,8 +12,8 @@
  */
 $aData = array(
     // Articles
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
                     'oxid'                     => 1126,
                     'oxprice'                  => 34.00,
                     'oxvat'                    => 19,
@@ -22,33 +22,33 @@ $aData = array(
     ),
 
     // Discounts
-    'discounts' => array (
-        0 => array (
+    'discounts' => array(
+        0 => array(
             'oxid'         => 'testdisc',
             'oxaddsum'     => 50,
             'oxaddsumtype' => '%',
             'oxamount' => 3,
             'oxamountto' => 99999,
             'oxactive' => 1,
-            'oxarticles' => array ( 1126 ),
+            'oxarticles' => array( 1126 ),
             'oxsort' => 10,
         ),
     ),
 
     // TEST EXPECTATIONS
-    'expected' => array (
+    'expected' => array(
         // Article expected prices: ARTICLE ID => ( Unit price, Total Price )
-        'articles' => array (
-             1126 => array ( '17,00', '51,00' ),
+        'articles' => array(
+             1126 => array( '17,00', '51,00' ),
         ),
         // Expectations of other totals
-        'totals' => array (
+        'totals' => array(
             // Total BRUTTO
             'totalBrutto' => '51,00',
             // Total NETTO
             'totalNetto'  => '42,86',
             // Total VAT amount: vat% => total cost
-            'vats' => array (
+            'vats' => array(
                 19 => '8,14'
             ),
 
@@ -58,12 +58,12 @@ $aData = array(
         ),
     ),
     // Test case options
-    'options' => array (
+    'options' => array(
         // Configs (real named)
         'config' => array(
             'blEnterNetPrice' => false,
             'blShowNetPrice' => false,
-		    'bl_perfLoadSelectLists' => true,
+            'bl_perfLoadSelectLists' => true,
         ),
         // Other options
         'activeCurrencyRate' => 1,

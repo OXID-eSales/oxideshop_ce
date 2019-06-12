@@ -108,7 +108,6 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      */
     public function render()
     {
-
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('showexceptionpage') == '1') {
             return 'message/exception.tpl';
         }
@@ -353,7 +352,6 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      */
     public function getBanners()
     {
-
         $oBannerList = null;
 
         if ($this->getConfig()->getConfigParam('bl_perfLoadAktion')) {
@@ -371,7 +369,6 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      */
     public function getManufacturerForSlider()
     {
-
         $oList = null;
 
         if ($this->getConfig()->getConfigParam('bl_perfLoadManufacturerTree')) {

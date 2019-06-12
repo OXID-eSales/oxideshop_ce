@@ -163,6 +163,9 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
             'aModuleTemplates',
             'aModules',
             'aDisabledModules',
+            'aModuleExtensions',
+            'aModuleControllers',
+            'moduleSmartyPluginDirectories',
             'activeModules',
         ];
         //adding non copable multishop field options

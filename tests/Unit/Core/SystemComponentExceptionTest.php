@@ -7,7 +7,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 class SystemComponentExceptionTest extends \OxidTestCase
 {
-
     public function testSetGetComponent()
     {
         $sComponent = "a Component";

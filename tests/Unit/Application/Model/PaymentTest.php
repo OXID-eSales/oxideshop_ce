@@ -12,7 +12,6 @@ use \oxRegistry;
 
 class testPayment extends oxPayment
 {
-
     public function unsetGroup($id)
     {
         unset($this->_groups[$id]);
@@ -85,12 +84,12 @@ class PaymentTest extends \OxidTestCase
                         'oxidpricec');
 
         $this->assertEquals(
-                            $aArray,
-                            $oPayment->getGroups()->arrayKeys(),
-                            "Groups are not as expected.",
-                            0.0,
-                            10,
-                            true
+            $aArray,
+            $oPayment->getGroups()->arrayKeys(),
+            "Groups are not as expected.",
+            0.0,
+            10,
+            true
         );
     }
 
@@ -283,7 +282,6 @@ class PaymentTest extends \OxidTestCase
         $aDynvalue['kknumber'] = ''; //wrong number
         $blRes = $oPayment->isValidPayment($aDynvalue, $this->getConfig()->getBaseShopId(), null, 0.0, 'oxidstandard');
         $this->assertFalse($blRes);
-
     }
 
     /**

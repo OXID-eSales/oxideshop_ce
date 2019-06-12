@@ -9,7 +9,6 @@ use \oxField;
 
 class ContentlistTest extends \OxidTestCase
 {
-
     protected $_oContent = null;
     protected $_sShopId = null;
 

@@ -7,31 +7,31 @@
  * Discount number: 4
  *  1. shop; %
  */
-$aData = array (
-        'articles' => array (
-                0 => array (
+$aData = array(
+        'articles' => array(
+                0 => array(
                         'oxid'            => '1000',
                         'oxprice'         => 70,
                         'oxtprice'        => 100
                 ),
-                1 => array (
+                1 => array(
                         'oxid'            => '1001',
                         'oxprice'         => 70,
                         'oxtprice'        => 100
                 ),
-                2 => array (
+                2 => array(
                         'oxid'            => '1002',
                         'oxprice'         => 70,
                         'oxtprice'        => 100
                 ),
-                3 => array (
+                3 => array(
                         'oxid'            => '1003',
                         'oxprice'         => 70,
                         'oxtprice'        => 100
                 ),
         ),
-        'discounts' => array (
-                0 => array (
+        'discounts' => array(
+                0 => array(
                         'oxid'             => 'percentFor1000',
                         'oxaddsum'         => 20,
                         'oxaddsumtype'     => '%',
@@ -40,10 +40,10 @@ $aData = array (
                         'oxamount'         => 0,
                         'oxamountto'       => 99999,
                         'oxactive'         => 1,
-                        'oxarticles'       => array ( 1000 ),
+                        'oxarticles'       => array( 1000 ),
                         'oxsort'           => 10,
                 ),
-                1 => array (
+                1 => array(
                         'oxid'         => 'percentFor1001',
                         'oxaddsum'     => -10,
                         'oxaddsumtype' => '%',
@@ -52,10 +52,10 @@ $aData = array (
                         'oxamount' => 0,
                         'oxamountto' => 99999,
                         'oxactive' => 1,
-                        'oxarticles' => array ( 1001 ),
+                        'oxarticles' => array( 1001 ),
                         'oxsort'       => 20,
                 ),
-                2 => array (
+                2 => array(
                         'oxid'             => 'percentFor1002',
                         'oxaddsum'         => -5.2,
                         'oxaddsumtype'     => '%',
@@ -64,10 +64,10 @@ $aData = array (
                         'oxamount'         => 0,
                         'oxamountto'       => 99999,
                         'oxactive'         => 1,
-                        'oxarticles'       => array ( 1002 ),
+                        'oxarticles'       => array( 1002 ),
                         'oxsort'           => 30,
                 ),
-                3 => array (
+                3 => array(
                         'oxid'         => 'percentFor1003',
                         'oxaddsum'     => 5.5,
                         'oxaddsumtype' => '%',
@@ -76,37 +76,37 @@ $aData = array (
                         'oxamount' => 0,
                         'oxamountto' => 99999,
                         'oxactive' => 1,
-                        'oxarticles' => array ( 1003 ),
+                        'oxarticles' => array( 1003 ),
                         'oxsort'       => 40,
                 ),
         ),
-        'expected' => array (
-                1000 => array (
+        'expected' => array(
+                1000 => array(
                         'base_price'        => '70,00',
                         'price'             => '56,00',
                         'rrp_price'         => '100,00',
                         'show_rrp'          => true
                 ),
-                1001 => array (
+                1001 => array(
                         'base_price'        => '70,00',
                         'price'             => '77,00',
                         'rrp_price'         => '100,00',
                         'show_rrp'          => true
                 ),
-                1002 => array (
+                1002 => array(
                         'base_price'        => '70,00',
                         'price'             => '73,64',
                         'rrp_price'         => '100,00',
                         'show_rrp'          => true
                 ),
-                1003 => array (
+                1003 => array(
                         'base_price'        => '70,00',
                         'price'             => '66,15',
                         'rrp_price'         => '100,00',
                         'show_rrp'          => true
                 ),
         ),
-        'options' => array (
+        'options' => array(
                 'config' => array(
                         'blEnterNetPrice' => true,
                         'blShowNetPrice' => true,

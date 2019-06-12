@@ -18,8 +18,8 @@
  * user with diferent foreign country, adn vat should not be calculated
  */
 $aData = array(
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
                 'oxid'                     => 9202,
                 'oxprice'                  => 119,
                 'oxvat'                    => 19,
@@ -33,21 +33,21 @@ $aData = array(
             // country id, for example this is United States, make sure country with specified ID is active
             'oxcountryid' => '8f241f11096877ac0.98748826',
     ),
-    'expected' => array (
-        'articles' => array (
-                 9202 => array ( '100,00', '100,00' ),
+    'expected' => array(
+        'articles' => array(
+                 9202 => array( '100,00', '100,00' ),
         ),
-        'totals' => array (
+        'totals' => array(
                 'totalBrutto' => '100,00',
                 'totalNetto'  => '100,00',
-                'vats' => array (
+                'vats' => array(
                     0 => '0,00',
                 ),
                 'grandTotal'  => '100,00'
         ),
     ),
 
-    'options' => array (
+    'options' => array(
         'config' => array(
             'blEnterNetPrice' => false,
             'blShowNetPrice' => true,

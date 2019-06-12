@@ -12,7 +12,6 @@ use \oxField;
  */
 class RequiredFieldsValidatorTest extends \OxidTestCase
 {
-
     public function testSetGetRequiredFields()
     {
         $aRequiredFields = array('field1', 'field2');

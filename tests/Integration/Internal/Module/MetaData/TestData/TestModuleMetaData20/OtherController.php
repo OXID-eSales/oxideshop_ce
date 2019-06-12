@@ -9,5 +9,4 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\T
 
 class OtherController
 {
-
 }

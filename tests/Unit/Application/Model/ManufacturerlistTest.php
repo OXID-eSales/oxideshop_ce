@@ -12,7 +12,6 @@ use \oxTestModules;
 
 class modUtils_oxManufacturerlist extends oxutils
 {
-
     public function seoIsActive($blReset = false, $sShopId = null, $iActLang = null)
     {
         return true;
@@ -78,7 +77,6 @@ class ManufacturerlistTest extends \OxidTestCase
      */
     public function testLoadManufacturerListAndCountManufacturerArticles()
     {
-
         $myUtils = oxRegistry::getUtils();
 
         $this->getConfig()->setConfigParam('bl_perfShowActionCatArticleCnt', true);
@@ -172,7 +170,5 @@ class ManufacturerlistTest extends \OxidTestCase
                 $this->fail("SEO link was not added to Manufacturer object ({$sManufacturerLink})");
             }
         }
-
     }
-
 }

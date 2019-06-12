@@ -18,7 +18,7 @@ class ArticleTest extends \OxidTestCase
     public function setUp()
     {
         parent::setUp();
-         $this->addTableForCleanup('oxarticles');
+        $this->addTableForCleanup('oxarticles');
     }
 
     public function testArticleParentFieldsInChild_ParentUpdate_SetParentValueToChild()

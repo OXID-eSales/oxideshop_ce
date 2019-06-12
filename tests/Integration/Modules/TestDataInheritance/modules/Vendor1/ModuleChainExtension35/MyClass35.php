@@ -5,4 +5,6 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\ModuleChainExtension35;
 
-class MyClass35 extends MyClass35_parent {}
+class MyClass35 extends MyClass35_parent
+{
+}

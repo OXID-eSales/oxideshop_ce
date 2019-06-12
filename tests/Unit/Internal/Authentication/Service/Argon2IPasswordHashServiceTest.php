@@ -13,7 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Authentication\Service\PasswordHashServic
 use OxidEsales\EshopCommunity\Internal\Authentication\Policy\PasswordPolicyInterface;
 use PHPUnit\Framework\TestCase;
 
-
 /**
  * Class Argon2IPasswordHashServiceTest
  */

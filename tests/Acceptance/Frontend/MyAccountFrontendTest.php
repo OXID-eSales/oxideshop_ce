@@ -74,7 +74,7 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->assertEquals("%YOU_ARE_HERE%: / %PAGE_TITLE_REGISTER%", $this->getText("breadCrumb"));
         $this->assertEquals("%PAGE_TITLE_REGISTER%", $this->getText("//h1"));
 
-        $this->openArticle( 1000 );
+        $this->openArticle(1000);
 
         $this->assertEquals("%MY_PRODUCT_COMPARISON%", $this->clearString($this->getText("//ul[@id='services']/li[4]")));
         $this->assertEquals("%MY_WISH_LIST%", $this->clearString($this->getText("//ul[@id='services']/li[5]")));
@@ -459,7 +459,7 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->openShop();
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
 
-        $this->openArticle( 1003 );
+        $this->openArticle(1003);
 
         $this->assertEquals("Test product 3 [EN] šÄßüл", $this->clearString($this->getText("//h1")));
         $this->click("productLinks");
@@ -476,7 +476,7 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->assertEquals("Test product 3 [EN] šÄßüл", $this->getText("//ul[@id='noticelistProductList']/li/form[@name='tobasket.noticelistProductList_1']/div[2]/div/a"));
         //$this->assertEquals("Art.No. 1003", $this->getText("//form[@name='tobasket.noticelistProductList_1']/div[2]/div/span"));
         $this->assertEquals("Test product 3 short desc [EN] šÄßüл", $this->getText("//form[@name='tobasket.noticelistProductList_1']/div[2]/div[2]"));
-        $this->assertEquals("75,00 € *",$this->getText("productPrice_noticelistProductList_1"));
+        $this->assertEquals("75,00 € *", $this->getText("productPrice_noticelistProductList_1"));
         $this->clickAndWait("//form[@name='tobasket.noticelistProductList_1']/div/a");
         $this->assertEquals("%YOU_ARE_HERE%: / Test category 0 [EN] šÄßüл / Test category 1 [EN] šÄßüл", $this->getText("breadCrumb"));
         $this->assertEquals("Test product 3 [EN] šÄßüл", $this->getText("//h1"));
@@ -552,7 +552,7 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
 
         //gift registry
-        $this->openArticle( 1000 );
+        $this->openArticle(1000);
         $this->click("productLinks");
         $this->waitForItemAppear("linkToWishList");
         $this->clickAndWait("linkToWishList");
@@ -617,7 +617,7 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
 
         //gift registry
-        $this->openArticle( 1000 );
+        $this->openArticle(1000);
         $this->click("productLinks");
         $this->waitForItemAppear("linkToWishList");
         $this->clickAndWait("linkToWishList");
@@ -649,7 +649,6 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->waitForElementText("2", "//div[@id='miniBasket']/span");
         $this->clickAndWait("//button[@triggerform='remove_towishlistwishlistProductList_1']");
         $this->assertTextPresent("%GIFT_REGISTRY_EMPTY%");
-
     }
 
     /**
@@ -663,7 +662,7 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
 
         //creating gift registry
-        $this->openArticle( 1000 );
+        $this->openArticle(1000);
         $this->click("productLinks");
         $this->waitForItemAppear("linkToWishList");
         $this->clickAndWait("linkToWishList");
@@ -736,7 +735,7 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->openShop();
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
 
-        $this->openArticle( 1000 );
+        $this->openArticle(1000);
         $this->click("productLinks");
         $this->waitForItemAppear("linkToNoticeList");
 
@@ -756,17 +755,17 @@ class MyAccountFrontendTest extends FrontendTestCase
      */
     public function testFrontendMyAccountCompare()
     {
-        $this->openArticle( 1000, true );
+        $this->openArticle(1000, true);
         $this->click("productLinks");
         $this->waitForItemAppear("addToCompare");
         $this->clickAndWait("addToCompare");
 
-        $this->openArticle( 1001 );
+        $this->openArticle(1001);
         $this->click("productLinks");
         $this->waitForItemAppear("addToCompare");
         $this->clickAndWait("addToCompare");
 
-        $this->openArticle( 1002 );
+        $this->openArticle(1002);
         $this->click("productLinks");
         $this->waitForItemAppear("addToCompare");
         $this->clickAndWait("addToCompare");
@@ -841,7 +840,7 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->openShop();
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
 
-        $this->openArticle( 1000 );
+        $this->openArticle(1000);
         $this->waitForItemDisappear("recommList");
         $this->click("productLinks");
         $this->waitForItemAppear("recommList");
@@ -1038,7 +1037,6 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->clickAndWait("//form[@name='saverecommlist']//button[text()='%SAVE%']");
         $this->assertTextPresent("%LISTMANIA_LIST_SAVED%");
         $this->assertEquals("%PAGE_TITLE_ACCOUNT_RECOMMLIST%", $this->getText("//h1"));
-
     }
 
     /**
@@ -1048,7 +1046,7 @@ class MyAccountFrontendTest extends FrontendTestCase
      */
     public function testFrontendListmaniaDelete()
     {
-        if ( isSUBSHOP ) {
+        if (isSUBSHOP) {
             $this->executeSql("UPDATE `oxrecommlists` SET `OXSHOPID` = ".oxSHOPID."  WHERE 1");
             $this->executeSql("UPDATE `oxratings` SET `OXSHOPID` = ".oxSHOPID."  WHERE 1");
         }
@@ -1160,5 +1158,4 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->waitForItemAppear("services");
         $this->assertEquals("%MY_GIFT_REGISTRY%", $this->clearString($this->getText("//ul[@id='services']/li[6]")));
     }
-
 }

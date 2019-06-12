@@ -7,7 +7,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritanc
 
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\ModuleInheritance28a\MyClass as AnotherMyClass;
 
-class MyClass extends AnotherMyClass {}
-
-
-
+class MyClass extends AnotherMyClass
+{
+}

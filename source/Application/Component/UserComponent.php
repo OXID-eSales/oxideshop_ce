@@ -684,7 +684,6 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $sPassword = $sPassword2 = $oUser->oxuser__oxpassword->value;
 
         try { // testing user input
-
             // delete user if it is a guest user
             if (isset($aInvAdress['oxuser__oxusername'])) {
                 if (!$this->deleteGuestUser($aInvAdress['oxuser__oxusername'])) {

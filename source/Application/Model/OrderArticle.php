@@ -505,7 +505,6 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      */
     public function getBasePrice($dAmount = 1)
     {
-
         return $this->getPrice();
     }
 

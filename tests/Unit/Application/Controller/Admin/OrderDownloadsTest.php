@@ -116,7 +116,5 @@ class OrderDownloadsTest extends \OxidTestCase
         $this->assertTrue($oOrderFile->oxorderfiles__oxvaliduntil->value >= $sDate);
         $this->assertEquals('0000-00-00 00:00:00', $oOrderFile->oxorderfiles__oxfirstdownload->value);
         $this->assertEquals('0000-00-00 00:00:00', $oOrderFile->oxorderfiles__oxlastdownload->value);
-
     }
-
 }

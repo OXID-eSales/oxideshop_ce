@@ -7,7 +7,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 class ObjectexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
-
     public function testSetGetObject()
     {
         $testObject = oxNew(\OxidEsales\Eshop\Core\Exception\ObjectException::class);

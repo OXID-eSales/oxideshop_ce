@@ -538,7 +538,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
             // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
             } elseif ('recommlist' == $listType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_RECOMM;
-                // END deprecated
+            // END deprecated
             } else {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_CATEGORY;
 
@@ -863,7 +863,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         } elseif ('recommlist' == $this->getListType()) {
             $paths = $this->_getRecommendationListBredCrumb();
-            // END deprecated
+        // END deprecated
         } elseif ('vendor' == $this->getListType()) {
             $paths = $this->_getVendorBreadCrumb();
         } else {

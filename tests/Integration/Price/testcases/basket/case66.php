@@ -19,16 +19,16 @@
  * Case: 0004462: Incorrect calculation when entered basket item and basket discounts
  */
 $aData = array(
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
                 'oxid'                     => 111,
                 'oxprice'                  => 120.00,
                 'oxvat'                    => 20,
                 'amount'                   => 1,
         ),
     ),
-    'discounts' => array (
-        0 => array (
+    'discounts' => array(
+        0 => array(
                 'oxid'         => 'discount_for_111',
                 'oxaddsum'     => 50.00,
                 'oxaddsumtype' => '%',
@@ -40,7 +40,7 @@ $aData = array(
                 'oxarticles' => array( 111 ),
                 'oxsort' => 10,
         ),
-        1 => array (
+        1 => array(
                 'oxid'         => 'basket',
                 'oxaddsum'     => 50.00,
                 'oxaddsumtype' => '%',
@@ -54,23 +54,23 @@ $aData = array(
 
     ),
 
-    'expected' => array (
-        'articles' => array (
-                 111 => array ( '60,00', '60,00' ),
+    'expected' => array(
+        'articles' => array(
+                 111 => array( '60,00', '60,00' ),
         ),
-        'totals' => array (
+        'totals' => array(
                 'totalBrutto' => '60,00',
                 'totalNetto'  => '25,00',
-                'vats' => array (
+                'vats' => array(
                     20 => '5,00',
                 ),
-                'discounts' => array (
+                'discounts' => array(
                     'basket' => '30,00',
                 ),
                 'grandTotal'  => '30,00'
         ),
     ),
-    'options' => array (
+    'options' => array(
         'config' => array(
                 'blEnterNetPrice' => false,
                 'blShowNetPrice' => false,

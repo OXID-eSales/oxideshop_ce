@@ -15,7 +15,6 @@ use \oxTestModules;
  */
 class StartTest extends \OxidTestCase
 {
-
     public function testGetTitleSuffix()
     {
         $oShop = oxNew('oxShop');
@@ -159,7 +158,5 @@ class StartTest extends \OxidTestCase
 
         $oView = oxNew('start');
         $oView->getBanners();
-
     }
-
 }

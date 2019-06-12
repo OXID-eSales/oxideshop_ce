@@ -65,5 +65,4 @@ class DynscreenTest extends \OxidTestCase
         $oView->expects($this->once())->method('_setupNavigation');
         $this->assertEquals('dynscreen.tpl', $oView->render());
     }
-
 }

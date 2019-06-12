@@ -4,4 +4,6 @@
  * See LICENSE file for license details.
  */
 
-class vendor_1_module_4_3_myclass {}
+class vendor_1_module_4_3_myclass
+{
+}

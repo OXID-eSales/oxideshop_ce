@@ -46,7 +46,6 @@ class AccountNewsletterController extends \OxidEsales\Eshop\Application\Controll
      */
     public function render()
     {
-
         parent::render();
 
         // is logged in ?

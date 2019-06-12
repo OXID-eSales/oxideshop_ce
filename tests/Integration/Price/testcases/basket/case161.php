@@ -22,62 +22,62 @@
  * Short description:
  */
 $aData = array(
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
             'oxid'                     => 9005,
             'oxprice'                  => 100,
             'oxvat'                    => 19,
             'amount'                   => 33,
         ),
-        1 => array (
+        1 => array(
             'oxid'                     => 9006,
             'oxprice'                  => 66,
             'oxvat'                    => 19,
             'amount'                   => 16,
         ),
     ),
-    'discounts' => array (
-        0 => array (
+    'discounts' => array(
+        0 => array(
             'oxid'         => 'shopdiscount5for9005',
             'oxaddsum'     => 5,
             'oxaddsumtype' => 'abs',
             'oxamount' => 0,
             'oxamountto' => 99999,
             'oxactive' => 1,
-            'oxarticles' => array ( 9005 ),
+            'oxarticles' => array( 9005 ),
             'oxsort' => 10,
         ),
-        1 => array (
+        1 => array(
             'oxid'         => 'shopdiscount5for9006',
             'oxaddsum'     => 5,
             'oxaddsumtype' => '%',
             'oxamount' => 0,
             'oxamountto' => 99999,
             'oxactive' => 1,
-            'oxarticles' => array ( 9006 ),
+            'oxarticles' => array( 9006 ),
             'oxsort' => 20,
         ),
-        2 => array (
+        2 => array(
             'oxid'         => 'basketdiscount5for9005',
             'oxaddsum'     => 1,
             'oxaddsumtype' => 'abs',
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
-            'oxarticles' => array ( 9005 ),
+            'oxarticles' => array( 9005 ),
             'oxsort' => 30,
         ),
-        3 => array (
+        3 => array(
             'oxid'         => 'basketdiscount5for9006',
             'oxaddsum'     => 6,
             'oxaddsumtype' => '%',
             'oxamount' => 1,
             'oxamountto' => 99999,
             'oxactive' => 1,
-            'oxarticles' => array ( 9006 ),
+            'oxarticles' => array( 9006 ),
             'oxsort' => 40,
         ),
-        4 => array (
+        4 => array(
             'oxid'         => 'absolutebasketdiscount',
             'oxaddsum'     => 5,
             'oxaddsumtype' => 'abs',
@@ -125,8 +125,8 @@ $aData = array(
                 'oxchecked' => 1,
             ),
         ),
-        'voucherserie' => array (
-            0 => array (
+        'voucherserie' => array(
+            0 => array(
                 'oxdiscount' => 6.00,
                 'oxdiscounttype' => 'absolute',
                 'oxallowsameseries' => 1,
@@ -136,18 +136,18 @@ $aData = array(
             ),
         ),
     ),
-    'expected' => array (
-        'articles' => array (
-             9005 => array ( '113,00', '3.729,00' ),
-             9006 => array ( '70,13', '1.122,08' ),
+    'expected' => array(
+        'articles' => array(
+             9005 => array( '113,00', '3.729,00' ),
+             9006 => array( '70,13', '1.122,08' ),
         ),
-        'totals' => array (
+        'totals' => array(
             'totalBrutto' => '4.851,08',
             'totalNetto'  => '4.067,29',
-            'vats' => array (
+            'vats' => array(
                 19 => '772,79'
             ),
-            'discounts' => array (
+            'discounts' => array(
                 'absolutebasketdiscount' => '5,00',
             ),
             'wrapping' => array(
@@ -165,18 +165,18 @@ $aData = array(
                 'netto' => '0,84',
                     'vat' => '0,16'
             ),
-            'voucher' => array (
+            'voucher' => array(
                 'brutto' => '6,00',
             ),
             'grandTotal'  => '5.240,08'
         ),
     ),
-    'options' => array (
+    'options' => array(
         'config' => array(
                 'blEnterNetPrice' => true,
                 'blShowNetPrice' => false,
                 'blShowVATForWrapping' => true,
-				'sAdditionalServVATCalcMethod' => 'biggest_net',
+                'sAdditionalServVATCalcMethod' => 'biggest_net',
                 'blShowVATForPayCharge' => true,
                 'blShowVATForDelivery' => true,
         ),

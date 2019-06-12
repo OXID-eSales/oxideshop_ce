@@ -249,5 +249,4 @@ class ActionListTest extends \OxidTestCase
 
         $oL->loadBanners();
     }
-
 }

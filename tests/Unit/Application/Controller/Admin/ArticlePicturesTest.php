@@ -184,7 +184,6 @@ class ArticlePicturesTest extends \OxidTestCase
      */
     public function testDeleteThumbnail()
     {
-
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('isDerived'));
         $oArticle->expects($this->atLeastOnce())->method('isDerived')->will($this->returnValue(null));
 

@@ -34,5 +34,4 @@ class CategoryOrderTest extends \OxidTestCase
 
         $this->assertEquals('category_order.tpl', $sTplName);
     }
-
 }

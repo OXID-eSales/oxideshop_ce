@@ -23,22 +23,22 @@
  */
 $aData = array(
 
-    'articles' => array (
+    'articles' => array(
 
-		0 => array (
+        0 => array(
                 'oxid'                     => 1000,
                 'oxprice'                  => 50,
                 'oxvat'                    => 5,
-				'oxunitname'               => 'kg',
+                'oxunitname'               => 'kg',
                 'oxunitquantity'           => 10,
                 'oxweight'                 => 10,
                 'amount'                   => 3.4,
 
         ),
     ),
-	    // Discounts
-    'discounts' => array (
-        0 => array (
+        // Discounts
+    'discounts' => array(
+        0 => array(
             // Discount 10%
             'oxid'         => 'test',
             'oxshopid' => 1,
@@ -52,20 +52,20 @@ $aData = array(
             'oxsort' => 10,
         ),
     ),
-    'expected' => array (
-        'articles' => array (
-				 1000 => array ( '45,00', '153,00' ),
+    'expected' => array(
+        'articles' => array(
+                 1000 => array( '45,00', '153,00' ),
         ),
-        'totals' => array (
+        'totals' => array(
                 'totalBrutto' => '153,00',
                 'totalNetto'  => '145,71',
-                'vats' => array (
+                'vats' => array(
                         5 => '7,29',
                 ),
                 'grandTotal'  => '153,00'
         ),
     ),
-    'options' => array (
+    'options' => array(
         'config' => array(
             'blAllowUnevenAmounts' => true,
             'blEnterNetPrice' => false,

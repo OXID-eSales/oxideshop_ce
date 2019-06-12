@@ -6,9 +6,12 @@ use Doctrine\DBAL\Schema\Schema;
 
 class Version_pe extends AbstractMigration
 {
-    public function up(Schema $schema) {
+    public function up(Schema $schema)
+    {
         $this->addSql("CREATE TABLE migrations_test_pe ( `OXID` char(32) NOT NULL)");
     }
 
-    public function down(Schema $schema) {}
+    public function down(Schema $schema)
+    {
+    }
 }

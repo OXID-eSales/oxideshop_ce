@@ -15,7 +15,6 @@ use \oxTestModules;
 
 class modSeoEncoderArticle extends oxSeoEncoderArticle
 {
-
     public function setProhibitedID($aProhibitedID)
     {
         $this->_aProhibitedID = $aProhibitedID;
@@ -184,7 +183,8 @@ class SeoEncoderArticleTest extends \OxidTestCase
     public function testGetArticleUrlRecommType()
     {
         $oEncoder = $this->getMock(
-            "oxSeoEncoderArticle", array("getArticleVendorUri", "getArticleManufacturerUri",
+            "oxSeoEncoderArticle",
+            array("getArticleVendorUri", "getArticleManufacturerUri",
                                          "getArticleTagUri", "getArticleRecommUri",
                                          "getArticleUri", "getArticleMainUri", "_getFullUrl")
         );
@@ -310,7 +310,6 @@ class SeoEncoderArticleTest extends \OxidTestCase
         $oVendor = $oEncoder->UNITgetVendor($oArticle, 1);
         $this->assertNotNull($oVendor);
         $this->assertEquals($sVendorId, $oVendor->getId());
-
     }
 
     /**
@@ -434,7 +433,6 @@ class SeoEncoderArticleTest extends \OxidTestCase
         $oManufacturer = $oEncoder->UNITgetManufacturer($oArticle, 1);
         $this->assertNotNull($oManufacturer);
         $this->assertEquals($sManufacturerId, $oManufacturer->getId());
-
     }
 
     /**
@@ -480,7 +478,8 @@ class SeoEncoderArticleTest extends \OxidTestCase
         $sRecommSeoUrl = oxRegistry::get("oxSeoEncoderRecomm")->getRecommUri($oRecomm, $iLang);
 
         $oEncoder = $this->getMock(
-            "oxSeoEncoderArticle", array("_getRecomm",
+            "oxSeoEncoderArticle",
+            array("_getRecomm",
                                          "_loadFromDb",
                                          "_getProductForLang",
                                          "_prepareArticleTitle",
@@ -503,7 +502,8 @@ class SeoEncoderArticleTest extends \OxidTestCase
         $oArticle->expects($this->never())->method('getStdLink');
 
         $oEncoder = $this->getMock(
-            "oxseoencoderarticle", array("_loadFromDb", "_getProductForLang", "_createArticleCategoryUri",
+            "oxseoencoderarticle",
+            array("_loadFromDb", "_getProductForLang", "_createArticleCategoryUri",
                                          "_processSeoUrl", "_prepareArticleTitle", "_saveToDb")
         );
 
@@ -529,7 +529,8 @@ class SeoEncoderArticleTest extends \OxidTestCase
         $oArticle->expects($this->never())->method('getStdLink');
 
         $oEncoder = $this->getMock(
-            "oxseoencoderarticle", array("_loadFromDb", "_getProductForLang", "_createArticleCategoryUri",
+            "oxseoencoderarticle",
+            array("_loadFromDb", "_getProductForLang", "_createArticleCategoryUri",
                                          "_processSeoUrl", "_prepareArticleTitle", "_saveToDb")
         );
 
@@ -556,7 +557,8 @@ class SeoEncoderArticleTest extends \OxidTestCase
         $oArticle->expects($this->never())->method('getStdLink');
 
         $oEncoder = $this->getMock(
-            "oxseoencoderarticle", array("_loadFromDb", "_getProductForLang", "_createArticleCategoryUri",
+            "oxseoencoderarticle",
+            array("_loadFromDb", "_getProductForLang", "_createArticleCategoryUri",
                                          "_processSeoUrl", "_prepareArticleTitle", "_saveToDb")
         );
 
@@ -577,7 +579,8 @@ class SeoEncoderArticleTest extends \OxidTestCase
         $oArticle->expects($this->once())->method('getBaseStdLink')->with($this->equalTo(0))->will($this->returnValue('testBaseStdLink'));
 
         $oEncoder = $this->getMock(
-            "oxseoencoderarticle", array("_loadFromDb", "_getProductForLang", "_createArticleCategoryUri",
+            "oxseoencoderarticle",
+            array("_loadFromDb", "_getProductForLang", "_createArticleCategoryUri",
                                          "_processSeoUrl", "_prepareArticleTitle", "_saveToDb")
         );
 
@@ -609,7 +612,6 @@ class SeoEncoderArticleTest extends \OxidTestCase
         $oEncoder = oxNew('oxSeoEncoderArticle');
         $oArticle = $oEncoder->UNITgetProductForLang($oArticle, 0);
         $this->assertEquals('1126', $oArticle->getId());
-
     }
 
     public function testCreateArticleSeoUrlWhenTitleContainsOnlyBadChars()
@@ -875,7 +877,8 @@ class SeoEncoderArticleTest extends \OxidTestCase
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderArticle::class, array('_getFullUrl', 'getArticleUri', 'getArticleVendorUri', 'getArticleManufacturerUri', 'getArticleMainUri'));
         $oEncoder->expects($this->once())->method('_getFullUrl')->will($this->returnValue('seoarturl'));
         $oEncoder->expects($this->never())->method('getArticleUri');
-        $oEncoder->expects($this->once())->method('getArticleVendorUri')->will($this->returnValue('seoarturl'));;
+        $oEncoder->expects($this->once())->method('getArticleVendorUri')->will($this->returnValue('seoarturl'));
+        ;
         $oEncoder->expects($this->never())->method('getArticleManufacturerUri');
         $oEncoder->expects($this->never())->method('getArticleMainUri');
 

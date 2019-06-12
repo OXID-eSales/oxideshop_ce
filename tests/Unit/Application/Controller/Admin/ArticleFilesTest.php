@@ -81,7 +81,6 @@ class ArticleFilesTest extends \OxidTestCase
 
     public function providerSaveDoNotSaveIfWrongFileName()
     {
-
         return array(
             array(array('oxfiles__oxfilename' => 'some__not_existing_file')),
             array(array('oxfiles__oxfilename' => '../../../config.inc.php'))
@@ -296,7 +295,6 @@ class ArticleFilesTest extends \OxidTestCase
         $aErr = oxRegistry::getSession()->getVariable('Errors');
         $oErr = unserialize($aErr['default'][0]);
         $this->assertEquals('Keine Dateien hochgeladen', $oErr->getOxMessage());
-
     }
 
     /**
@@ -372,5 +370,4 @@ class ArticleFilesTest extends \OxidTestCase
         $this->assertEquals(0, $oView->getConfigOptionValue(0));
         $this->assertEquals(20, $oView->getConfigOptionValue(20));
     }
-
 }

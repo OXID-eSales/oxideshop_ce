@@ -151,7 +151,8 @@ class UtilsFileTest extends \OxidTestCase
 
     public function testProcessFilesSkipBadFiles()
     {
-        $this->expectException('oxFileException'); $this->expectExceptionMessage( 'this is ok');
+        $this->expectException('oxFileException');
+        $this->expectExceptionMessage('this is ok');
 
         $_FILES['myfile']['name'] = array('testname.php5');
         $_FILES['myfile']['tmp_name'] = 'testname';
@@ -205,7 +206,6 @@ class UtilsFileTest extends \OxidTestCase
 
         //test with textfile
         if ($this->_prepareCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathText)) {
-
             \OxidEsales\Eshop\Core\Registry::getUtilsFile()->copyDir($sSourceDir, $sTargetDir);
             $this->assertEquals(is_file($sSourceFilePathText), is_file($sTargetFilePathText));
             $this->_cleanupCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathText, $sTargetFilePathText);
@@ -213,7 +213,6 @@ class UtilsFileTest extends \OxidTestCase
 
         //test with nopic.jpg
         if ($this->_prepareCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathnopic)) {
-
             \OxidEsales\Eshop\Core\Registry::getUtilsFile()->copyDir($sSourceDir, $sTargetDir);
             $this->assertEquals(is_file($sSourceFilePathnopic), is_file($sTargetFilePathnopic));
             $this->_cleanupCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathnopic, $sTargetFilePathnopic);
@@ -221,7 +220,6 @@ class UtilsFileTest extends \OxidTestCase
 
         //test with nopic_ico.jpg
         if ($this->_prepareCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathnopicIco)) {
-
             \OxidEsales\Eshop\Core\Registry::getUtilsFile()->copyDir($sSourceDir, $sTargetDir);
             $this->assertEquals(is_file($sSourceFilePathnopicIco), is_file($sTargetFilePathnopicIco));
             $this->_cleanupCopyDir($sSourceDir, $sTargetDir, $sSourceFilePathnopicIco, $sTargetFilePathnopicIco);
@@ -279,17 +277,18 @@ class UtilsFileTest extends \OxidTestCase
 
     public function testProcessFileEmpty()
     {
-        $this->expectException('OxidEsales\EshopCommunity\Core\Exception\StandardException'); $this->expectExceptionMessage( 'EXCEPTION_NOFILE');
+        $this->expectException('OxidEsales\EshopCommunity\Core\Exception\StandardException');
+        $this->expectExceptionMessage('EXCEPTION_NOFILE');
         \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFile(null, '/out/media/');
     }
 
     public function testProcessFileWrongChar1()
     {
-
         $_FILES['fileItem']['name'] = 'testfile_\xc4\xaf\xc5\xa1.jpg';
         $_FILES['fileItem']['tmp_name'] = 'testfile';
 
-        $this->expectException('OxidEsales\EshopCommunity\Core\Exception\StandardException'); $this->expectExceptionMessage( 'EXCEPTION_FILENAMEINVALIDCHARS');
+        $this->expectException('OxidEsales\EshopCommunity\Core\Exception\StandardException');
+        $this->expectExceptionMessage('EXCEPTION_FILENAMEINVALIDCHARS');
         \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFile('fileItem', '/out/media/');
     }
 
@@ -456,7 +455,7 @@ class UtilsFileTest extends \OxidTestCase
     protected function _cleanupCopyDir($sSourceDir, $sTargetDir, $sSourceFilePath, $sTargetFilePath)
     {
         //try to remove dir and delete files
-        if (file_exists ($sTargetFilePath) && unlink($sTargetFilePath)) {
+        if (file_exists($sTargetFilePath) && unlink($sTargetFilePath)) {
             //$dirTargetHandle = opendir($sTargetDir);
             //closedir($dirTargetHandle);
             if (!rmDir($sTargetDir)) {
@@ -466,7 +465,7 @@ class UtilsFileTest extends \OxidTestCase
             $this->fail("could not delete $sTargetFilePath ");
         }
 
-        if (file_exists ($sSourceFilePath) && unlink($sSourceFilePath)) {
+        if (file_exists($sSourceFilePath) && unlink($sSourceFilePath)) {
             //$dirSourceHandle = opendir($sSourceDir);
             //closedir($dirSourceHandle);
             if (!rmDir($sSourceDir)) {

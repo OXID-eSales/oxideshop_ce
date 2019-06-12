@@ -42,10 +42,10 @@ class ArticleAttributeAjaxTest extends \OxidTestCase
      */
     protected function tearDown()
     {
-        oxDb::getDb()->execute( "delete from oxattribute where oxid='_testAttribute'" );
+        oxDb::getDb()->execute("delete from oxattribute where oxid='_testAttribute'");
 
-        oxDb::getDb()->execute( "delete from oxarticles where oxid='_testAttributeArticle'" );
-        oxDb::getDb()->execute( "delete from oxattribute where oxid='_testAttributeSaveAttr'" );
+        oxDb::getDb()->execute("delete from oxarticles where oxid='_testAttributeArticle'");
+        oxDb::getDb()->execute("delete from oxattribute where oxid='_testAttributeSaveAttr'");
 
         oxDb::getDb()->execute("delete from oxobject2attribute where oxid='_testAttribute1'");
         oxDb::getDb()->execute("delete from oxobject2attribute where oxid='_testAttribute2'");
@@ -185,5 +185,4 @@ class ArticleAttributeAjaxTest extends \OxidTestCase
         $oView->saveAttributeValue();
         $this->assertEquals(1, oxDb::getDb()->getOne("select count(oxid) from oxobject2attribute where oxvalue='$sAttrValue'"));
     }
-
 }

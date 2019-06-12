@@ -4,8 +4,8 @@
  * See LICENSE file for license details.
  */
 
-class TestModuleTwoPaymentController extends TestModuleTwoPaymentController_parent {
-
+class TestModuleTwoPaymentController extends TestModuleTwoPaymentController_parent
+{
     public function render()
     {
         $template = parent::render();

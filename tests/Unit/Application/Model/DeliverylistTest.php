@@ -18,7 +18,6 @@ use \PHPUnit\Framework\MockObject\MockObject as MockObject;
 
 class oxDeliveryListTestClass extends oxdeliverylist
 {
-
     public function getList($oUser = null, $sCountryId = null, $sDelSet = null)
     {
         return parent::_getList($oUser, $sCountryId, $sDelSet);
@@ -42,7 +41,6 @@ class oxDeliveryListTestClass extends oxdeliverylist
 
 class oxdeliverylistTest_forGetList extends oxdeliverylist
 {
-
     public $sFilterUser;
     public $sFilterCountryId;
     public $sFilterDeliverySet;
@@ -70,7 +68,6 @@ class oxdeliverylistTest_forGetList extends oxdeliverylist
 
 class oxDb_noActiveSnippetInDeliveryList extends oxDb
 {
-
     public function getActiveSnippet($param1, $param3 = null)
     {
         return '1';

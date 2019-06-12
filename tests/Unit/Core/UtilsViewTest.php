@@ -555,7 +555,6 @@ class UtilsViewTest extends \OxidTestCase
         $sExp = $compileDirectory . "/smarty/";
 
         $this->assertSame($sExp, $oUV->getSmartyDir());
-
     }
 
     /**

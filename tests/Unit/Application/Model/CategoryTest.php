@@ -18,7 +18,6 @@ require_once TEST_LIBRARY_HELPERS_PATH . 'oxCategoryHelper.php';
 
 class oxcategoryTest_oxUtilsView extends oxUtilsView
 {
-
     public function parseThroughSmarty($sDesc, $sOxid = null, $oActView = null, $blRecompile = false)
     {
         return 'aazz';
@@ -27,7 +26,6 @@ class oxcategoryTest_oxUtilsView extends oxUtilsView
 
 class CategoryTest extends \OxidTestCase
 {
-
     protected $_oCategoryA = null;
     protected $_oCategoryB = null;
 
@@ -267,10 +265,10 @@ class CategoryTest extends \OxidTestCase
     {
         $this->getConfig()->setConfigParam('blCheckTemplates', false);
 
-        $oCategory = oxNew( 'oxcategory' );
-        $oCategory->oxcategories__oxlongdesc = new oxField( "[{* *}]generated" );
+        $oCategory = oxNew('oxcategory');
+        $oCategory->oxcategories__oxlongdesc = new oxField("[{* *}]generated");
         $oCategory->getLongDesc();
-        $oCategory->oxcategories__oxlongdesc = new oxField( "[{* *}]regenerated" );
+        $oCategory->oxcategories__oxlongdesc = new oxField("[{* *}]regenerated");
         $this->assertEquals('regenerated', $oCategory->getLongDesc());
     }
 

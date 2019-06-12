@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
  */
 class EncryptorTest extends \OxidTestCase
 {
-
     public function providerEncodingAndDecoding()
     {
         return array(

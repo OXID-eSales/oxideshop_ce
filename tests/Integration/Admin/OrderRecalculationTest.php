@@ -245,7 +245,6 @@ class OrderRecalculationTest extends \OxidTestCase
         $this->assertEquals($expectedDiscount, $order->oxorder__oxdiscount->value);
         $this->assertEquals($expectedVoucherDiscount, $order->oxorder__oxvoucherdiscount->value);
         $this->assertEquals($payDate, $order->oxorder__oxpaid->value);
-
     }
 
     /**
@@ -264,13 +263,13 @@ class OrderRecalculationTest extends \OxidTestCase
         $payDate = date('Y-m-d H:i:s');
 
         //119.0 and 20% off -> 95.20
-        $expectedOrderTotalBruttoSum = round($buyAmount * self::TEST_ARTICLE_PRICE * 0.8,2);
+        $expectedOrderTotalBruttoSum = round($buyAmount * self::TEST_ARTICLE_PRICE * 0.8, 2);
         //two 20% vouchers applied on 95.20 -> 60.928
-        $expectedOrderTotalSum       = round($buyAmount * self::TEST_ARTICLE_PRICE * 0.8 * 0.8 * 0.8,2);
+        $expectedOrderTotalSum       = round($buyAmount * self::TEST_ARTICLE_PRICE * 0.8 * 0.8 * 0.8, 2);
         //total discount -> 95.20 - 60.928 = 34.272
-        $expectedVoucherDiscount     = round($buyAmount * self::TEST_ARTICLE_PRICE * 0.8 * (1.0 - 0.8*0.8),2);
+        $expectedVoucherDiscount     = round($buyAmount * self::TEST_ARTICLE_PRICE * 0.8 * (1.0 - 0.8*0.8), 2);
         //netto sum 100 * 0.8 * 0.8 * 0.8 = 51.20
-        $expectedOrderTotalNettoSum  = round($expectedOrderTotalSum * 100.0 / (100.0 + $defaultVat),2);
+        $expectedOrderTotalNettoSum  = round($expectedOrderTotalSum * 100.0 / (100.0 + $defaultVat), 2);
         $expectedDiscount = 0.0;
 
         $vouchers = array(self::TESTVOUCHER_ID_PREFIX . '1',
@@ -325,7 +324,6 @@ class OrderRecalculationTest extends \OxidTestCase
         $this->assertEquals($expectedDiscount, $order->oxorder__oxdiscount->value);
         $this->assertEquals($expectedVoucherDiscount, $order->oxorder__oxvoucherdiscount->value);
         $this->assertEquals($payDate, $order->oxorder__oxpaid->value);
-
     }
 
     /**
@@ -348,13 +346,13 @@ class OrderRecalculationTest extends \OxidTestCase
         $payDate = date('Y-m-d H:i:s');
 
         //119.0 and 20% off -> 95.20
-        $expectedOrderTotalBruttoSum = round($buyAmount * self::TEST_ARTICLE_PRICE * 0.8,2);
+        $expectedOrderTotalBruttoSum = round($buyAmount * self::TEST_ARTICLE_PRICE * 0.8, 2);
         //two 20% vouchers applied on 95.20 -> 60.928
-        $expectedOrderTotalSum       = round($buyAmount * self::TEST_ARTICLE_PRICE * 0.8 * 0.8 * 0.8,2);
+        $expectedOrderTotalSum       = round($buyAmount * self::TEST_ARTICLE_PRICE * 0.8 * 0.8 * 0.8, 2);
         //total discount -> 95.20 - 60.928 = 34.272
-        $expectedVoucherDiscount     = round($buyAmount * self::TEST_ARTICLE_PRICE * 0.8 * (1.0 - 0.8*0.8),2);
+        $expectedVoucherDiscount     = round($buyAmount * self::TEST_ARTICLE_PRICE * 0.8 * (1.0 - 0.8*0.8), 2);
         //netto sum 100 * 0.8 * 0.8 * 0.8 = 51.20
-        $expectedOrderTotalNettoSum  = round($expectedOrderTotalSum * 100.0 / (100.0 + $defaultVat),2);
+        $expectedOrderTotalNettoSum  = round($expectedOrderTotalSum * 100.0 / (100.0 + $defaultVat), 2);
         $expectedDiscount = 0.0;
 
         $vouchers = array(self::TESTVOUCHER_ID_PREFIX . '1',
@@ -409,7 +407,6 @@ class OrderRecalculationTest extends \OxidTestCase
         $this->assertEquals($expectedDiscount, $order->oxorder__oxdiscount->value);
         $this->assertEquals($expectedVoucherDiscount, $order->oxorder__oxvoucherdiscount->value);
         $this->assertEquals($payDate, $order->oxorder__oxpaid->value);
-
     }
 
     /**
@@ -417,8 +414,8 @@ class OrderRecalculationTest extends \OxidTestCase
      */
     private function insertArticle()
     {
-        $this->testArticleId = substr_replace( oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1 );
-        $this->testArticleParentId = substr_replace( oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1 );
+        $this->testArticleId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
+        $this->testArticleParentId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
 
         //copy from original article parent and variant
         $articleParent = oxNew('oxarticle');
@@ -437,7 +434,6 @@ class OrderRecalculationTest extends \OxidTestCase
         $article->oxarticles__oxartnum = new oxField('666-T-V', oxField::T_RAW);
         $article->oxarticles__oxactive = new oxField('1', oxField::T_RAW);
         $article->save();
-
     }
 
     /**
@@ -457,7 +453,7 @@ class OrderRecalculationTest extends \OxidTestCase
         //mocked to circumvent delivery address change md5 check from requestParameter
         $order->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(0));
 
-        $this->testOrderId = substr_replace( oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1 );
+        $this->testOrderId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
         $order->setId($this->testOrderId);
 
         return $order;
@@ -501,9 +497,11 @@ class OrderRecalculationTest extends \OxidTestCase
         $user->oxuser__oxrights = new oxField('user', oxField::T_RAW);
         $user->oxuser__oxshopid = new oxField('1', oxField::T_RAW);
         $user->oxuser__oxusername = new oxField('testuser@oxideshop.dev', oxField::T_RAW);
-        $user->oxuser__oxpassword = new oxField('c630e7f6dd47f9ad60ece4492468149bfed3da3429940181464baae99941d0ffa5562' .
+        $user->oxuser__oxpassword = new oxField(
+            'c630e7f6dd47f9ad60ece4492468149bfed3da3429940181464baae99941d0ffa5562' .
                                                 'aaecd01eab71c4d886e5467c5fc4dd24a45819e125501f030f61b624d7d',
-            oxField::T_RAW); //password is asdfasdf
+            oxField::T_RAW
+        ); //password is asdfasdf
         $user->oxuser__oxpasssalt = new oxField('3ddda7c412dbd57325210968cd31ba86', oxField::T_RAW);
         $user->oxuser__oxcustnr = new oxField('666', oxField::T_RAW);
         $user->oxuser__oxfname = new oxField('Bla', oxField::T_RAW);
@@ -641,7 +639,7 @@ class OrderRecalculationTest extends \OxidTestCase
         $this->assertEquals(0, $basket->getBasketSummary()->iArticleCount);
         $this->assertNull(oxRegistry::getSession()->getVariable('_newitem'));
 
-        foreach ($vouchers as $name){
+        foreach ($vouchers as $name) {
             $basket->addVoucher($name);
         }
 

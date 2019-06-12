@@ -12,7 +12,6 @@ use OxidEsales\EshopCommunity\Setup\Session;
  */
 class SessionTest extends \OxidTestCase
 {
-
     public function setUp()
     {
         session_cache_limiter("no-cache");

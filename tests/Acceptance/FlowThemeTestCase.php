@@ -13,7 +13,6 @@ namespace OxidEsales\EshopCommunity\Tests\Acceptance;
  */
 abstract class FlowThemeTestCase extends AcceptanceTestCase
 {
-
     protected function setUp()
     {
         parent::setUp();

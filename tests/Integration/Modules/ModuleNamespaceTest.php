@@ -7,11 +7,13 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 class TestUtilsObject extends \OxidEsales\EshopCommunity\Core\UtilsObject
 {
-    public function getTheModuleChainsGenerator() {
+    public function getTheModuleChainsGenerator()
+    {
         return $this->getModuleChainsGenerator();
     }
 
-    public function getTheClassNameProvider() {
+    public function getTheClassNameProvider()
+    {
         return $this->getClassNameProvider();
     }
 }
@@ -95,7 +97,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
      * @param array  $resultToAsserts
      * @param array  $priceAsserts
      */
-    public function testModuleWorksAfterActivation($installModules, $moduleName,  $moduleId, $resultToAsserts, $priceAsserts)
+    public function testModuleWorksAfterActivation($installModules, $moduleName, $moduleId, $resultToAsserts, $priceAsserts)
     {
         $environment = new Environment();
         $environment->prepare($installModules);
@@ -146,7 +148,6 @@ class ModuleNamespaceTest extends BaseModuleTestCase
      */
     public function providerClassChainWithActivationAndDeactivation()
     {
-
         return array(
             array(
 
@@ -219,8 +220,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         $idOfModuleToBeDeactivated,
         $fullClassChainToAssert,
         $classChainWithActiveModulesToAssert
-    )
-    {
+    ) {
         $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
 
         $this->setUpEnvironmentAndActivateModules($installModules, $nameOfModuleToBeDeactivated, $idOfModuleToBeDeactivated, $module);
@@ -473,7 +473,6 @@ class ModuleNamespaceTest extends BaseModuleTestCase
                 ),
             ),
         );
-
     }
 
     /**
@@ -489,8 +488,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
         $moduleNameToBeActivated,
         $moduleIdToBeActivated,
         $fullChainToAssert
-    )
-    {
+    ) {
         $environment = new Environment();
         $environment->prepare(array($moduleNameToBeActivated));
 
@@ -817,5 +815,4 @@ class ModuleNamespaceTest extends BaseModuleTestCase
 
         return $subShopSpecificCache;
     }
-
 }

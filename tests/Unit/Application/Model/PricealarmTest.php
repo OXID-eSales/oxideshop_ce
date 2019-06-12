@@ -166,5 +166,4 @@ class PricealarmTest extends \OxidTestCase
         $oAlarm->load('testalarm');
         $this->assertEquals(1, $oAlarm->getPriceAlarmStatus());
     }
-
 }

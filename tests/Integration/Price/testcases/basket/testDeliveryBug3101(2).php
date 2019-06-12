@@ -14,8 +14,8 @@ $aData = array(
 
     'skipped' => 1, // remove when #3101 will be fixed
 
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
             'oxid'                     => 'vine1',
             'oxprice'                  => 27.9,
             'oxvat'                    => 19,
@@ -23,8 +23,8 @@ $aData = array(
         ),
     ),
 
-    'discounts' => array (
-        0 => array (
+    'discounts' => array(
+        0 => array(
             'oxid'         => 'discount11',
             'oxaddsum'     => 11,
             'oxaddsumtype' => '%',
@@ -61,26 +61,26 @@ $aData = array(
             ),
         ),
     ),
-    'expected' => array (
-        'articles' => array (
-            'vine1' => array ( '27,90', '139,50' ),
+    'expected' => array(
+        'articles' => array(
+            'vine1' => array( '27,90', '139,50' ),
         ),
-        'totals' => array (
+        'totals' => array(
             'totalBrutto' => '139,50',
             'totalNetto'  => '104,33',
-            'vats' => array (
+            'vats' => array(
                 19 => '19,82',
             ),
             'delivery' => array(
                 'brutto' => '10,00',
             ),
-            'discounts' => array (
+            'discounts' => array(
                 'discount11' => '15,35',
             ),
             'grandTotal'  => '134,15'
         ),
     ),
-    'options' => array (
+    'options' => array(
         'activeCurrencyRate' => 1,
         'config' => array(
             'blEnterNetPrice' => false,

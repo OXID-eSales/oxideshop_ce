@@ -209,7 +209,6 @@ class ArticleMainTest extends \OxidTestCase
         $oView->UNITcopyAccessoires("_testArtId", "_testArtId2");
 
         $this->assertEquals(2, $oDb->getOne("select count(*) from oxaccessoire2article where oxarticlenid = '_testArtId2'"));
-
     }
 
     /**
@@ -283,7 +282,6 @@ class ArticleMainTest extends \OxidTestCase
 
         // testing..
         try {
-
             $aTasks[] = 'resetContentCache';
 
             $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleMain::class, $aTasks);
@@ -618,7 +616,6 @@ class ArticleMainTest extends \OxidTestCase
      */
     public function testAddToCategoryGenerateOneEntry()
     {
-
         $iCount = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getOne("select count(*) from oxobject2category where OXCATNID = '_testCategory1' AND OXOBJECTID = '_testArticle1'");
         $this->assertEquals(0, $iCount, "expected no entries oxobject2category, but got {$iCount}.");
 

@@ -35,7 +35,6 @@ class WrappingList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
      */
     public function render()
     {
-
         parent::render();
 
         return "wrapping_list.tpl";

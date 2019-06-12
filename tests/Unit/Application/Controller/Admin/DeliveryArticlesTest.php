@@ -33,5 +33,4 @@ class DeliveryArticlesTest extends \OxidTestCase
         $this->assertTrue($aViewData['edit'] instanceof Delivery);
         $this->assertTrue(isset($aViewData['readonly']));
     }
-
 }

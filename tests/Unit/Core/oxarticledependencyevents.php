@@ -9,7 +9,6 @@
  */
 class Unit_Core_oxArticleTest extends OxidTestCase
 {
-
     public function testHasSortingFieldsChangedWhenNoFieldsWereChanged()
     {
         $oArticle = oxNew('oxArticle');
@@ -87,4 +86,3 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $this->assertFalse($oArticle->hasSortingFieldsChanged());
     }
 }
-

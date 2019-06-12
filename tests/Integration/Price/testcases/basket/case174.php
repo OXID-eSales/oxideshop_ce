@@ -13,8 +13,8 @@
  */
 $aData = array(
     // Articles
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
                     'oxid'                     => 1126,
                     'oxprice'                  => 34.00,
                     'oxvat'                    => 19,
@@ -23,45 +23,45 @@ $aData = array(
     ),
 
     // Discounts
-    'discounts' => array (
-        0 => array (
+    'discounts' => array(
+        0 => array(
             'oxid'         => 'testdisc',
             'oxaddsum'     => 50,
             'oxaddsumtype' => '%',
             'oxamount' => 3,
             'oxamountto' => 99999,
             'oxactive' => 0,
-            'oxarticles' => array ( 1126 ),
+            'oxarticles' => array( 1126 ),
             'oxsort' => 10,
         ),
-		1 => array (
+        1 => array(
             'oxid'         => '_testoxdiscount2',
             'oxaddsum'     => 50,
             'oxaddsumtype' => '%',
             'oxamount' => 3,
             'oxamountto' => 99999,
-			'oxprice' => 69,
-			'oxpriceto' => 999999,
+            'oxprice' => 69,
+            'oxpriceto' => 999999,
             'oxactive' => 1,
-            'oxarticles' => array ( 1126 ),
+            'oxarticles' => array( 1126 ),
             'oxsort' => 20,
         ),
     ),
 
     // TEST EXPECTATIONS
-    'expected' => array (
+    'expected' => array(
         // Article expected prices: ARTICLE ID => ( Unit price, Total Price )
-        'articles' => array (
-             1126 => array ( '34,00', '68,00' ),
+        'articles' => array(
+             1126 => array( '34,00', '68,00' ),
         ),
         // Expectations of other totals
-        'totals' => array (
+        'totals' => array(
             // Total BRUTTO
             'totalBrutto' => '68,00',
             // Total NETTO
             'totalNetto'  => '57,14',
             // Total VAT amount: vat% => total cost
-            'vats' => array (
+            'vats' => array(
                 19 => '10,86'
             ),
 
@@ -71,12 +71,12 @@ $aData = array(
         ),
     ),
     // Test case options
-    'options' => array (
+    'options' => array(
         // Configs (real named)
         'config' => array(
             'blEnterNetPrice' => false,
             'blShowNetPrice' => false,
-		    'bl_perfLoadSelectLists' => true,
+            'bl_perfLoadSelectLists' => true,
         ),
         // Other options
         'activeCurrencyRate' => 1,

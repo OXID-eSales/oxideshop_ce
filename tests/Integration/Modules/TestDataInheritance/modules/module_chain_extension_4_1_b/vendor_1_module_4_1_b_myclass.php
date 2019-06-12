@@ -4,4 +4,6 @@
  * See LICENSE file for license details.
  */
 
-class vendor_1_module_4_1_b_myclass extends vendor_1_module_4_1_b_myclass_parent {}
+class vendor_1_module_4_1_b_myclass extends vendor_1_module_4_1_b_myclass_parent
+{
+}

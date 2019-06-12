@@ -233,7 +233,8 @@ class AccountControllerTest extends UnitTestCase
         $oUser->oxuser__oxpassword = new Field(1);
 
         $oView = $this->getMock(
-            "account", array("redirectAfterLogin",
+            "account",
+            array("redirectAfterLogin",
                              "getUser", "isEnabledPrivateSales")
         );
 
@@ -258,7 +259,8 @@ class AccountControllerTest extends UnitTestCase
         $oUser->oxuser__oxpassword = new Field(1);
 
         $oView = $this->getMock(
-            "account", array("redirectAfterLogin",
+            "account",
+            array("redirectAfterLogin",
                              "getUser", 'isActive')
         );
 

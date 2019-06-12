@@ -12,7 +12,6 @@ use \oxDb;
  */
 class ArticleCrosssellingAjaxTest extends \OxidTestCase
 {
-
     protected $_sArticleView = 'oxv_oxarticles_1_de';
     protected $_sObject2CategoryView = 'oxv_oxobject2category_1';
     protected $_sShopId = '1';

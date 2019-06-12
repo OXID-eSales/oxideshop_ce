@@ -12,7 +12,7 @@ require "_header.php"; ?>
 <table cellpadding="0" cellspacing="5" border="0">
   <tr>
     <td><?php $this->getText('STEP_5_LICENCE_KEY'); ?>:</td>
-    <td>&nbsp;&nbsp;<input size="47" name="sLicence" class="editinput" value="<?php echo $this->getViewParam( "sLicense" ); ?>"></td>
+    <td>&nbsp;&nbsp;<input size="47" name="sLicence" class="editinput" value="<?php echo $this->getViewParam("sLicense"); ?>"></td>
     <td>&nbsp;&nbsp;<input type="submit" id="step5Submit" class="edittext" value="<?php $this->getText('BUTTON_WRITE_LICENCE'); ?>"></td>
   </tr>
 </table>

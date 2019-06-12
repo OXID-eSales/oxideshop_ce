@@ -12,7 +12,6 @@ use \oxDb;
  */
 class ArticleExtendAjaxTest extends \OxidTestCase
 {
-
     protected $_sCategoriesView = 'oxv_oxcategories_1_de';
     protected $_sObject2CategoryView = 'oxv_oxobject2category_1';
     protected $_sShopId = '1';
@@ -321,5 +320,4 @@ class ArticleExtendAjaxTest extends \OxidTestCase
         $this->assertEquals(11, $oDb->getOne("select oxtime from oxobject2category where oxobjectid='$sOxid' and oxcatnid!='$sDefCat'"));
         $this->assertEquals(0, $oDb->getOne("select oxtime from oxobject2category where oxobjectid='$sOxid' and oxcatnid='$sDefCat' $sShopCheck"));
     }
-
 }

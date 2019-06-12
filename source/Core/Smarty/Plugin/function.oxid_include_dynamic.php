@@ -26,7 +26,7 @@ function smarty_function_oxid_include_dynamic($params, &$smarty)
         return;
     }
 
-    if ( !empty($smarty->_tpl_vars["_render4cache"]) ) {
+    if (!empty($smarty->_tpl_vars["_render4cache"])) {
         $sContent = "<oxid_dynamic>";
         foreach ($params as $key => $val) {
             $sContent .= " $key='".base64_encode($val)."'";
@@ -35,7 +35,7 @@ function smarty_function_oxid_include_dynamic($params, &$smarty)
         return $sContent;
     } else {
         $sPrefix="_";
-        if ( array_key_exists('type', $params) ) {
+        if (array_key_exists('type', $params)) {
             $sPrefix.= $params['type']."_";
         }
 

@@ -350,5 +350,4 @@ class VendorListTest extends \OxidTestCase
 
         $this->assertTrue(count($oView->getBreadCrumb()) >= 1);
     }
-
 }

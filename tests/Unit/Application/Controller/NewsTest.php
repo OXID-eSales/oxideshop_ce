@@ -13,7 +13,6 @@ use \oxRegistry;
  */
 class NewsTest extends \OxidTestCase
 {
-
     public $aNews = array();
 
     /**
@@ -42,7 +41,6 @@ class NewsTest extends \OxidTestCase
         $this->aNews[1]->oxnews__oxactive = new oxField(1, oxField::T_RAW);
         $this->aNews[1]->oxnews__oxdate = new oxField('2007-01-02', oxField::T_RAW);
         $this->aNews[1]->save();
-
     }
 
     /**
@@ -142,5 +140,4 @@ class NewsTest extends \OxidTestCase
 
         $this->assertEquals(oxRegistry::getLang()->translateString('LATEST_NEWS_AND_UPDATES_AT', oxRegistry::getLang()->getBaseLanguage(), false) . ' shop', $oView->getTitle());
     }
-
 }

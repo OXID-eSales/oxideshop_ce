@@ -1674,7 +1674,6 @@ class ArticleTest extends \OxidTestCase
 
         $this->assertEquals(3, $oArticle->getArticleRatingAverage(true));
         $this->assertEquals(3, $oArticle->getArticleRatingCount(true));
-
     }
 
     /**
@@ -2037,7 +2036,6 @@ class ArticleTest extends \OxidTestCase
 
         $this->assertEquals($amount, count($oAmPriceList));
         $this->assertEquals(27.5, $oArticle->getPrice(6)->getBruttoPrice());
-
     }
 
     /**
@@ -2400,7 +2398,6 @@ class ArticleTest extends \OxidTestCase
         $oParent->load($oVariant->oxarticles__oxparentid->value);
         $this->assertEquals(0, $oParent->getVariants(true)->count());
         $this->assertEquals(1, $oParent->getVariants(false)->count());
-
     }
 
     /**
@@ -2969,7 +2966,7 @@ class ArticleTest extends \OxidTestCase
         $sSql = "insert into oxobject2category (oxid, oxobjectid, oxcatnid) values ('test', '_testArt', '$sCat' )";
         if ($this->getConfig()->getEdition() === 'EE') :
             $sCat = "30e44ab82c03c3848.49471214";
-            $sSql = "insert into oxobject2category (oxid, oxobjectid, oxcatnid) values ('test', '_testArt', '$sCat')";
+        $sSql = "insert into oxobject2category (oxid, oxobjectid, oxcatnid) values ('test', '_testArt', '$sCat')";
         endif;
         $this->addToDatabase($sSql, 'oxobject2category');
         $this->assertTrue($this->_createArticle('_testArt')->isAssignedToCategory($sCat));
@@ -3221,7 +3218,6 @@ class ArticleTest extends \OxidTestCase
         $oArticle->setVar('blCalcPrice', false);
         $oTPrice = $oArticle->getPrice();
         $this->assertEquals(123, $oTPrice->getBruttoPrice());
-
     }
 
     /**
@@ -3982,7 +3978,6 @@ class ArticleTest extends \OxidTestCase
      */
     public function testOnChangeUpdateStockResetCounts2()
     {
-
         $this->_createArticle('_testArt');
         $oVariant = $this->_createVariant('_testVar', '_testArt');
         $oVariant->delete();
@@ -3999,7 +3994,6 @@ class ArticleTest extends \OxidTestCase
         $oArticle->UNITonChangeUpdateStock('_testArt');
         $this->assertEquals(0, oxDb::getDB()->getOne("select oxvarstock from oxarticles where oxid = '_testArt'"));
         $this->assertEquals(0, oxDb::getDB()->getOne("select oxvarcount from oxarticles where oxid = '_testArt'"));
-
     }
 
     /**
@@ -4310,7 +4304,6 @@ class ArticleTest extends \OxidTestCase
         $oVariant = oxNew('oxArticle');
         $oVariant->load('_testVar');
         $this->assertEquals('test &amp;', $oVariant->getLongDescription()->value);
-
     }
 
     /**
@@ -4494,13 +4487,12 @@ class ArticleTest extends \OxidTestCase
      */
     public function testGetAttributesDisplayableInBasket()
     {
-
-        $attrList = $this->getMock('oxAttributeList',array('loadAttributesDisplayableInBasket'));
+        $attrList = $this->getMock('oxAttributeList', array('loadAttributesDisplayableInBasket'));
         $attrList
             ->expects($this->once())
             ->method('loadAttributesDisplayableInBasket')
-            ->with($this->equalTo('1672'),$this->equalTo('1351'));
-        $oArticle = $this->getMock('oxArticle',array('newAttributeList'));
+            ->with($this->equalTo('1672'), $this->equalTo('1351'));
+        $oArticle = $this->getMock('oxArticle', array('newAttributeList'));
         $oArticle->expects($this->once())->method('newAttributeList')->willReturn($attrList);
         $oArticle->setId('1672');
         $oArticle->oxarticles__oxparentid = new oxField('1351');
@@ -5392,7 +5384,6 @@ class ArticleTest extends \OxidTestCase
         }
 
         $this->assertEquals($this->getConfig()->getShopUrl() . $sExp, $oArticle->getLink(1));
-
     }
 
     /**
@@ -6609,7 +6600,6 @@ class ArticleTest extends \OxidTestCase
      */
     public function testGetMasterZoomPictureUrl_hasImage()
     {
-
         $sMasterPicDir = $this->getConfig()->getPictureUrl("master");
         $sPic = $sMasterPicDir . "/product/1/30-360-back_p1_z_f_th_665.jpg";
 
@@ -6957,7 +6947,6 @@ class ArticleTest extends \OxidTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->load('_testVar');
         $this->assertEquals(3, count($oArticle->getArticleFiles(true)));
-
     }
 
     /**
@@ -7174,5 +7163,4 @@ class ArticleTest extends \OxidTestCase
 
         return $oProduct;
     }
-
 }

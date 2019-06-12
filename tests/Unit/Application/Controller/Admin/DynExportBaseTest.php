@@ -19,7 +19,6 @@ use stdClass;
  */
 class _DynExportBase extends DynExportBase
 {
-
     public function initArticle($heapTable, $count, & $continue)
     {
         try {
@@ -380,7 +379,8 @@ class DynExportBaseTest extends \OxidTestCase
         oxTestModules::addFunction('oxUtils', 'showMessageAndExit', '{}');
 
         $oView = $this->getMock(
-            "DynExportBase", array("_getHeapTableName", "_generateTableCharSet",
+            "DynExportBase",
+            array("_getHeapTableName", "_generateTableCharSet",
                                    "_createHeapTable", "_getCatAdd",
                                    "_insertArticles", "_removeParentArticles",
                                    "_setSessionParams")

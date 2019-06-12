@@ -49,6 +49,4 @@ class ProductInfoAdminTest extends AdminTestCase
         $this->assertEquals("99,99 EUR", $this->getText("//tr[@id='row.1']/td[6]"));
         $this->assertEquals("100,00 EUR", $this->getText("//tr[@id='row.1']/td[7]"));
     }
-
 }
-

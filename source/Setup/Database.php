@@ -73,7 +73,7 @@ class Database extends Core
     {
         try {
             $pdo = $this->getConnection();
-            list ($sStatement) = explode(" ", ltrim($sQ));
+            list($sStatement) = explode(" ", ltrim($sQ));
             if (in_array(strtoupper($sStatement), ['SELECT', 'SHOW'])) {
                 $oStatement = $pdo->query($sQ);
             } else {

@@ -108,5 +108,4 @@ class PricealarmTest extends \OxidTestCase
 
         $this->assertEquals(1, $iLang);
     }
-
 }

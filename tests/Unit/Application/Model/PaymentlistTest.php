@@ -10,7 +10,6 @@ use oxRegistry;
 
 class PaymentlistTest extends \OxidTestCase
 {
-
     protected $_aPayList = array();
     protected $_oDefPaymentList = null;
 
@@ -846,5 +845,4 @@ class PaymentlistTest extends \OxidTestCase
             }
         }
     }
-
 }

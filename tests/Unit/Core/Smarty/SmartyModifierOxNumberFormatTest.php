@@ -40,5 +40,4 @@ class SmartyModifierOxNumberFormatTest extends \OxidTestCase
     {
         $this->assertEquals($sExpected, smarty_modifier_oxnumberformat($sFormat, $mValue));
     }
-
 }

@@ -39,7 +39,6 @@ use OxidEsales\Eshop\Core\Utils;
  */
 class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
-
     const TESTUSER_ID = 'AccountReviewControllerTest';
 
     /**

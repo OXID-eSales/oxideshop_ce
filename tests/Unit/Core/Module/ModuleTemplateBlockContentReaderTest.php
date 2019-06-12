@@ -68,7 +68,8 @@ class ModuleTemplateBlockContentReaderTest extends UnitTestCase
         $filePath = $vfsStreamWrapper->getRootPath() . DIRECTORY_SEPARATOR . 'someFile';
 
         $exceptionMessage = "Template block file (%s) was not found for module '%s'.";
-        $this->expectException(oxException::class); $this->expectExceptionMessage( sprintf($exceptionMessage, $filePath, 'myModuleId'));
+        $this->expectException(oxException::class);
+        $this->expectExceptionMessage(sprintf($exceptionMessage, $filePath, 'myModuleId'));
 
         $pathFormatter = $this->getMock(ModuleTemplateBlockPathFormatter::class, ['getPath', 'getModuleId']);
         $pathFormatter->method('getPath')->willReturn($filePath);
@@ -86,7 +87,8 @@ class ModuleTemplateBlockContentReaderTest extends UnitTestCase
         chmod($filePath, $notReadableMode);
 
         $exceptionMessage = "Template block file (%s) is not readable for module '%s'.";
-        $this->expectException(oxException::class); $this->expectExceptionMessage( sprintf($exceptionMessage, $filePath, 'myModuleId'));
+        $this->expectException(oxException::class);
+        $this->expectExceptionMessage(sprintf($exceptionMessage, $filePath, 'myModuleId'));
 
         $pathFormatter = $this->getMock(ModuleTemplateBlockPathFormatter::class, ['getPath', 'getModuleId']);
         $pathFormatter->method('getPath')->willReturn($filePath);

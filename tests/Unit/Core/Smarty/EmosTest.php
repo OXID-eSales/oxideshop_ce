@@ -643,7 +643,7 @@ class EmosTest extends \OxidTestCase
     {
         $oSubj = $this->getProxyClass("EMOS");
 
-        $mInput = Array(array("one", 23), array("four five", 6), 7);
+        $mInput = array(array("one", 23), array("four five", 6), 7);
         $sExpt = '[["one",23],["four five",6],7]';
         $sRes = $oSubj->UNITjsEncode($mInput);
 

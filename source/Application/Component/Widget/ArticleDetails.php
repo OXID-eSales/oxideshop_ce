@@ -332,7 +332,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
             // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
             } elseif ('recommlist' == $sListType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_RECOMM;
-                // END deprecated
+            // END deprecated
             } else {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_CATEGORY;
 
@@ -748,7 +748,6 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      */
     public function getRatingValue()
     {
-
         if ($this->_dRatingValue === null) {
             $this->_dRatingValue = (double) 0;
             if ($this->isReviewActive() && ($oDetailsProduct = $this->getProduct())) {

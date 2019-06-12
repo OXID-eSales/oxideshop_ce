@@ -11,5 +11,4 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Exception;
  */
 class ModuleSetupException extends \Exception
 {
-
 }

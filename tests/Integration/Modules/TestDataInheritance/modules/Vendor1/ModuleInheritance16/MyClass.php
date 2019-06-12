@@ -6,4 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\ModuleInheritance16;
 
-class MyClass extends \oxArticle {}
+class MyClass extends \oxArticle
+{
+}

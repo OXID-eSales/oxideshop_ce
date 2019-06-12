@@ -5,9 +5,9 @@
  * Discounts: 1
  *  1. shop 10 %
  */
-$aData = array (
-        'articles' => array (
-                0 => array (
+$aData = array(
+        'articles' => array(
+                0 => array(
                         'oxid'                     => 'tomatoes',
                         'oxprice'                  => 1001,
                         'oxvat'                    => 20,
@@ -16,8 +16,8 @@ $aData = array (
                         'oxweight'                 => 10
                 ),
         ),
-        'discounts' => array (
-                0 => array (
+        'discounts' => array(
+                0 => array(
                         'oxid'         => 'percent',
                         'oxaddsum'     => -10,
                         'oxaddsumtype' => '%',
@@ -26,18 +26,18 @@ $aData = array (
                         'oxamount' => 0,
                         'oxamountto' => 99999,
                         'oxactive' => 1,
-                        'oxarticles' => array ( 'tomatoes' ),
+                        'oxarticles' => array( 'tomatoes' ),
                         'oxsort'       => 10
                 ),
         ),
-        'expected' => array (
-                'tomatoes' => array (
+        'expected' => array(
+                'tomatoes' => array(
                         'base_price'    => '1.001,00',
                         'price'         => '1.101,10',
                         'unit_price'    => '110,11'
                 ),
         ),
-        'options' => array (
+        'options' => array(
                 'config' => array(
                         'blEnterNetPrice' => false,
                         'blShowNetPrice' => false,

@@ -10,7 +10,6 @@ use \oxTestModules;
 
 class SearchTest extends \OxidTestCase
 {
-
     public function testIsEmptySearch()
     {
         $oSearch = oxNew('search');
@@ -171,7 +170,8 @@ class SearchTest extends \OxidTestCase
     {
         $this->getConfig()->setConfigParam('bl_rssSearch', false);
         $n = $this->getMock(
-            'search', array(
+            'search',
+            array(
                            '_processListArticles'
                       )
         );
@@ -206,7 +206,8 @@ class SearchTest extends \OxidTestCase
         $this->setRequestParameter('searchmanufacturer', 'ysearchmanufacturer');
 
         $n = $this->getMock(
-            'search', array(
+            'search',
+            array(
                            '_processListArticles',
                            'addRssFeed'
                       )
@@ -232,7 +233,6 @@ class SearchTest extends \OxidTestCase
         $this->assertEquals(false, oxNew('search')->UNITisSearchClass());
         $this->setRequestParameter('cl', 'search');
         $this->assertEquals(true, oxNew('search')->UNITisSearchClass());
-
     }
 
     public function testGetSearchManufacturer()

@@ -16,7 +16,6 @@ use \oxRegistry;
 
 class Unit_oxInputValidatorTest_oxutils extends oxutils
 {
-
     public function isValidEmail($sEmail)
     {
         return false;
@@ -28,7 +27,6 @@ class Unit_oxInputValidatorTest_oxutils extends oxutils
  */
 class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
-
     private $_oValidator = null;
 
     /**
@@ -447,7 +445,6 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     public function testCheckRequiredFieldsSomeMissingAccordingToaMustFillFields()
     {
-
         $aMustFillFields = array('oxuser__oxfname', 'oxuser__oxlname', 'oxuser__oxstreet',
                                  'oxuser__oxstreetnr', 'oxuser__oxzip', 'oxuser__oxcity',
                                  'oxuser__oxcountryid',
@@ -489,7 +486,6 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
     {
         $oViewConf = oxNew('oxInputValidator');
         $this->assertEquals(6, $oViewConf->getPasswordLength());
-
     }
 
     public function testGetPasswordLengthFromConfig()
@@ -498,7 +494,6 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $this->getConfig()->setConfigParam("iPasswordLength", 66);
         $this->assertEquals(66, $oViewConf->getPasswordLength());
-
     }
 
     /**
@@ -680,7 +675,7 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     public function testCheckEmailEmailValidation()
     {
-       $oUser = oxNew('oxuser');
+        $oUser = oxNew('oxuser');
         $oUser->setId("testlalaa_");
 
         $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('_addValidationError'));
@@ -783,7 +778,8 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
                     $this->isInstanceOf(\OxidEsales\Eshop\Core\Exception\UserException::class),
                     $this->attributeEqualTo(
                         'message',
-                        \OxidEsales\Eshop\Core\Registry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH'))
+                        \OxidEsales\Eshop\Core\Registry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH')
+                    )
                 )
             );
 

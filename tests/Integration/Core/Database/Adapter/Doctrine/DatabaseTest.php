@@ -175,7 +175,8 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
                '"' . self::FIXTURE_OXID_3 . '"' .
                ')';
 
-        $this->expectException(\InvalidArgumentException::class); $this->expectExceptionMessage( 'Argument $offset must not be smaller than zero.');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Argument $offset must not be smaller than zero.');
 
         $this->database->selectLimit($sql, 1, -1);
     }
@@ -351,7 +352,8 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
      */
     public function testQuoteIdentifierWithInvalidValues($identifier, $expectedMessage)
     {
-        $this->expectException('OxidEsales\EshopCommunity\Core\Exception\DatabaseException'); $this->expectExceptionMessage( $expectedMessage);
+        $this->expectException('OxidEsales\EshopCommunity\Core\Exception\DatabaseException');
+        $this->expectExceptionMessage($expectedMessage);
 
         $quotedIdentifier = $this->database->quoteIdentifier($identifier);
 
@@ -567,7 +569,8 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
 
         $expectedSqlMode = '';
         $actualSqlMode = $this->database->getOne($query);
-        $this->assertSame($expectedSqlMode,
+        $this->assertSame(
+            $expectedSqlMode,
             $actualSqlMode,
             "The sql_mode variable on the database is not the expected one."
         );
@@ -583,5 +586,4 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
         $unique = array_unique($expectUnique);
         $this->assertEquals($unique, $expectUnique, 'There should not be any doubled entries in the given array!');
     }
-
 }

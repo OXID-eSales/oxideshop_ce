@@ -19,9 +19,9 @@
  * Netto - Netto start case, after order saving, added one product's,
  * updating, Netto - Brutto start case, after order saving, switching to Netto - Netto, updating
 */
-$aData = array (
-     'articles' => array (
-         0 => array (
+$aData = array(
+     'articles' => array(
+         0 => array(
              'oxid'       => '111',
              'oxtitle'    => '111',
              'oxprice'    => 1,
@@ -30,8 +30,8 @@ $aData = array (
              'amount'     => 1,
          ),
      ),
-    'discounts' => array (
-        0 => array (
+    'discounts' => array(
+        0 => array(
             'oxid'         => 'discount10for111',
             'oxaddsum'     => 10,
             'oxaddsumtype' => '%',
@@ -41,7 +41,7 @@ $aData = array (
             'oxsort' => 10,
         ),
     ),
-    'costs' => array (
+    'costs' => array(
         'delivery' => array(
                 0 => array(
                     'oxactive' => 1,
@@ -62,17 +62,17 @@ $aData = array (
                 ),
         ),
     ),
-    'expected' => array (
-        1 => array (
-            'articles' => array (
+    'expected' => array(
+        1 => array(
+            'articles' => array(
                     // brut total
-                    '111' => array ( '1,19', '1,19' ),
+                    '111' => array( '1,19', '1,19' ),
             ),
-            'totals' => array (
+            'totals' => array(
                     'totalBrutto' => '1,19',
                     'discount' => '0,12',
                     'totalNetto'  => '0,90',
-                    'vats' => array (
+                    'vats' => array(
                             19 => '0,17'
                     ),
                     'delivery' => array(
@@ -84,18 +84,18 @@ $aData = array (
                     'grandTotal'  => '21,07',
             ),
         ),
-        2 => array (
-            'articles' => array (
+        2 => array(
+            'articles' => array(
                     // brut total
-                    '111' => array ( '1,19', '1,19' ),
-					'1111' => array ( '4,17', '4,17' ),
+                    '111' => array( '1,19', '1,19' ),
+                    '1111' => array( '4,17', '4,17' ),
 
             ),
-            'totals' => array (
+            'totals' => array(
                     'totalBrutto' => '5,36',
                     'discount' => '0,54',
                     'totalNetto'  => '4,05',
-                    'vats' => array (
+                    'vats' => array(
                             19 => '0,77'
                     ),
                     'delivery' => array(
@@ -108,11 +108,11 @@ $aData = array (
             ),
         ),
     ),
-    'options' => array (
-            'config' => array (
+    'options' => array(
+            'config' => array(
                 'blEnterNetPrice' => true,
                 'blShowNetPrice' => false,
-				'blShowVATForDelivery'=> false,
+                'blShowVATForDelivery'=> false,
                 'blShowVATForPayCharge'=> false,
                 'blShowVATForWrapping'=> false,
                 'sAdditionalServVATCalcMethod' => 'biggest_net',
@@ -121,11 +121,11 @@ $aData = array (
                 'blWrappingVatOnTop' => false,
             ),
     ),
-    'actions' => array (
-        '_changeConfigs' => array (
+    'actions' => array(
+        '_changeConfigs' => array(
             'blShowNetPrice' => true,
         ),
-		    '_addArticles' => array (
+            '_addArticles' => array(
                     0 => array(
                             'oxid'       => '1111',
                             'oxtitle'    => '1111',

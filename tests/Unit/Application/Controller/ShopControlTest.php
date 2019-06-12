@@ -57,7 +57,9 @@ class ShopControlTest extends \OxidTestCase
         $this->setRequestParameter('fnc', "testFnc");
         $this->getSession()->setVariable('actshop', null);
         oxTestModules::addFunction('oxUtils', 'redirect', '{ throw new Exception("Error in testStart()"); }');
-        modDB::getInstance()->addClassFunction('getOne', function($x) { return 2;});
+        modDB::getInstance()->addClassFunction('getOne', function ($x) {
+            return 2;
+        });
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getShopHomeUrl"));
         //$oConfig->expects( $this->never() )->method( 'getShopId' )->will( $this->returnValue( 999 ) );
@@ -448,8 +450,9 @@ class ShopControlTest extends \OxidTestCase
         $oOut = $this->getMock(\OxidEsales\Eshop\Core\Output::class, array('output', 'flushOutput', 'sendHeaders', 'setOutputFormat'));
         $oOut->expects($this->at(0))->method('setOutputFormat')->with($this->equalTo(oxOutput::OUTPUT_FORMAT_JSON));
         $oOut->expects($this->at(1))->method('output')->with(
-            $this->equalTo('errors'), $this->equalTo(
-            array(
+            $this->equalTo('errors'),
+            $this->equalTo(
+                array(
                 'other'   => array('test1', 'test3'),
                 'default' => array('test2', 'test4'),
             )
@@ -695,5 +698,4 @@ class ShopControlTest extends \OxidTestCase
 
         return $control->getTemplateName();
     }
-
 }

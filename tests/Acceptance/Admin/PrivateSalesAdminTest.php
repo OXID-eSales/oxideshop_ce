@@ -76,5 +76,4 @@ class PrivateSalesAdminTest extends AdminTestCase
         $this->type("editval[oxcontents__oxtermversion]", "2");
         $this->clickAndWait("saveContent");
     }
-
 }

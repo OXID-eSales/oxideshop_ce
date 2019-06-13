@@ -29,7 +29,8 @@ function isAdmin()
  */
 function warningHandler($iErrorNr, $sErrorText)
 {
-    echo "<div class='error_box'>" . Registry::getLang()->translateString('userError') . "<code>[$iErrorNr] $sErrorText</code></div>";
+    echo "<div class='error_box'>" . Registry::getLang()->translateString('userError') . "<code>[$iErrorNr] " .
+         "$sErrorText</code></div>";
 }
 
 /**

@@ -61,11 +61,11 @@ class AccountNoticeListController extends \OxidEsales\Eshop\Application\Controll
 
     /**
      * If user is not logged in - returns name of template
-     * \OxidEsales\Eshop\Application\Controller\AccountNoticeListController::_sThisLoginTemplate, or if user is allready
+     * \OxidEsales\Eshop\Application\Controller\AccountNoticeListController::_sThisLoginTemplate, or if user is already
      * logged in - loads notice list articles (articles may be accessed
      * by \OxidEsales\Eshop\Application\Model\User::getBasket()), loads similar articles (if available) for
-     * the last article in list \OxidEsales\Eshop\Application\Model\Article::GetSimilarProducts() and
-     * returns name of template to render \OxidEsales\Eshop\Application\Controller\AccountNoticeListController::_sThisTemplate
+     * the last article in list \OxidEsales\Eshop\Application\Model\Article::GetSimilarProducts() and returns name of
+     * template to render AccountNoticeListController::_sThisTemplate
      *
      * @return string current template file name
      */

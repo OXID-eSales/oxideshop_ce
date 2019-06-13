@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxException;
 use oxExceptionToDisplay;
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 
 /**
@@ -33,7 +34,7 @@ class DownloadController extends \OxidEsales\Eshop\Application\Controller\Fronte
      */
     public function render()
     {
-        $sFileOrderId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sorderfileid');
+        $sFileOrderId = Registry::getConfig()->getRequestParameter('sorderfileid');
 
         if ($sFileOrderId) {
             $oArticleFile = oxNew(\OxidEsales\Eshop\Application\Model\File::class);
@@ -58,8 +59,8 @@ class DownloadController extends \OxidEsales\Eshop\Application\Controller\Fronte
         if ($sError) {
             $oEx = new \OxidEsales\Eshop\Core\Exception\ExceptionToDisplay();
             $oEx->setMessage($sError);
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false);
-            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl() . 'index.php?cl=account_downloads');
+            Registry::getUtilsView()->addErrorToDisplay($oEx, false);
+            Registry::getUtils()->redirect(Registry::getConfig()->getShopUrl() . 'index.php?cl=account_downloads');
         }
     }
 }

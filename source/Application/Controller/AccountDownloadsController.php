@@ -6,6 +6,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxArticleList;
+use OxidEsales\Eshop\Core\Registry;
 use oxOrderFileList;
 use oxRegistry;
 
@@ -44,14 +45,14 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
         $aPaths = [];
         $aPath = [];
 
-        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        $iBaseLanguage = Registry::getLang()->getBaseLanguage();
         /** @var \OxidEsales\Eshop\Core\SeoEncoder $oSeoEncoder */
-        $oSeoEncoder = \OxidEsales\Eshop\Core\Registry::getSeoEncoder();
-        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
+        $oSeoEncoder = Registry::getSeoEncoder();
+        $aPath['title'] = Registry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
         $aPath['link'] = $oSeoEncoder->getStaticUrl($this->getViewConfig()->getSelfLink() . "cl=account");
         $aPaths[] = $aPath;
 
-        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_DOWNLOADS', $iBaseLanguage, false);
+        $aPath['title'] = Registry::getLang()->translateString('MY_DOWNLOADS', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 

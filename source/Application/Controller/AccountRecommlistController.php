@@ -7,6 +7,8 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxField;
+use OxidEsales\Eshop\Core\Field;
+use OxidEsales\Eshop\Core\Registry;
 use oxObjectException;
 use oxRegistry;
 
@@ -71,9 +73,9 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
 
     /**
      * If user is logged in loads his wishlist articles (articles may be accessed by
-     * \OxidEsales\Eshop\Application\Model\User::GetBasket()), loads similar articles (is available) for
-     * the last article in list loaded by \OxidEsales\Eshop\Application\Model\Article::GetSimilarProducts() and
-     * returns name of template to render \OxidEsales\Eshop\Application\Controller\AccountWishlistController::_sThisTemplate
+     * \OxidEsales\Eshop\Application\Model\User::GetBasket()), loads similar articles (is available) for the last
+     * article in list loaded by \OxidEsales\Eshop\Application\Model\Article::GetSimilarProducts() and returns name of
+     * template to render \OxidEsales\Eshop\Application\Controller\AccountWishlistController::_sThisTemplate
      *
      * @return  string  $_sThisTemplate current template file name
      */
@@ -181,7 +183,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
             $this->_oActRecommList = false;
 
             if (($oUser = $this->getUser()) &&
-                ($sRecommId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recommid'))
+                ($sRecommId = Registry::getConfig()->getRequestParameter('recommid'))
             ) {
                 $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
                 $sUserIdField = 'oxrecommlists__oxuserid';
@@ -211,7 +213,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
      */
     public function saveRecommList()
     {
-        if (!\OxidEsales\Eshop\Core\Registry::getSession()->checkSessionChallenge()) {
+        if (!Registry::getSession()->checkSessionChallenge()) {
             return;
         }
 
@@ -222,19 +224,19 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
         if (($oUser = $this->getUser())) {
             if (!($oRecommList = $this->getActiveRecommList())) {
                 $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
-                $oRecommList->oxrecommlists__oxuserid = new \OxidEsales\Eshop\Core\Field($oUser->getId());
-                $oRecommList->oxrecommlists__oxshopid = new \OxidEsales\Eshop\Core\Field($this->getConfig()->getShopId());
+                $oRecommList->oxrecommlists__oxuserid = new Field($oUser->getId());
+                $oRecommList->oxrecommlists__oxshopid = new Field($this->getConfig()->getShopId());
             } else {
                 $this->_sThisTemplate = 'page/account/recommendationedit.tpl';
             }
 
-            $sTitle = trim(( string ) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recomm_title', true));
-            $sAuthor = trim(( string ) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recomm_author', true));
-            $sText = trim(( string ) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recomm_desc', true));
+            $sTitle = trim(( string ) Registry::getConfig()->getRequestParameter('recomm_title', true));
+            $sAuthor = trim(( string ) Registry::getConfig()->getRequestParameter('recomm_author', true));
+            $sText = trim(( string ) Registry::getConfig()->getRequestParameter('recomm_desc', true));
 
-            $oRecommList->oxrecommlists__oxtitle = new \OxidEsales\Eshop\Core\Field($sTitle);
-            $oRecommList->oxrecommlists__oxauthor = new \OxidEsales\Eshop\Core\Field($sAuthor);
-            $oRecommList->oxrecommlists__oxdesc = new \OxidEsales\Eshop\Core\Field($sText);
+            $oRecommList->oxrecommlists__oxtitle = new Field($sTitle);
+            $oRecommList->oxrecommlists__oxauthor = new Field($sAuthor);
+            $oRecommList->oxrecommlists__oxdesc = new Field($sText);
 
             try {
                 // marking entry as saved
@@ -242,7 +244,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
                 $this->setActiveRecommList($this->_blSavedEntry ? $oRecommList : false);
             } catch (\OxidEsales\Eshop\Core\Exception\ObjectException $oEx) {
                 //add to display at specific position
-                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false, true, 'user');
+                Registry::getUtilsView()->addErrorToDisplay($oEx, false, true, 'user');
             }
         }
     }
@@ -264,7 +266,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
      */
     public function editList()
     {
-        if (!\OxidEsales\Eshop\Core\Registry::getSession()->checkSessionChallenge()) {
+        if (!Registry::getSession()->checkSessionChallenge()) {
             return;
         }
 
@@ -273,7 +275,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
         }
 
         // deleting on demand
-        if (($sAction = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('deleteList')) &&
+        if (($sAction = Registry::getConfig()->getRequestParameter('deleteList')) &&
             ($oRecommList = $this->getActiveRecommList())
         ) {
             $oRecommList->delete();
@@ -290,7 +292,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
      */
     public function removeArticle()
     {
-        if (!\OxidEsales\Eshop\Core\Registry::getSession()->checkSessionChallenge()) {
+        if (!Registry::getSession()->checkSessionChallenge()) {
             return;
         }
 
@@ -298,7 +300,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
             return;
         }
 
-        if (($sArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aid')) &&
+        if (($sArtId = Registry::getConfig()->getRequestParameter('aid')) &&
             ($oRecommList = $this->getActiveRecommList())
         ) {
             $oRecommList->removeArticle($sArtId);
@@ -333,13 +335,13 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
         $aPaths = [];
         $aPath = [];
 
-        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        $iBaseLanguage = Registry::getLang()->getBaseLanguage();
         $sSelfLink = $this->getViewConfig()->getSelfLink();
-        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
-        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($sSelfLink . 'cl=account');
+        $aPath['title'] = Registry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
+        $aPath['link'] = Registry::getSeoEncoder()->getStaticUrl($sSelfLink . 'cl=account');
         $aPaths[] = $aPath;
 
-        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('LISTMANIA', $iBaseLanguage, false);
+        $aPath['title'] = Registry::getLang()->translateString('LISTMANIA', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 

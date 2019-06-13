@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use OxidEsales\Eshop\Application\Model\Wrapping;
 use oxList;
 use oxRegistry;
 use oxUBase;
@@ -74,7 +75,7 @@ class WrappingController extends \OxidEsales\Eshop\Application\Controller\Fronte
 
             // load wrapping papers
             if ($this->getViewConfig()->getShowGiftWrapping()) {
-                $this->_oWrappings = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class)->getWrappingList('WRAP');
+                $this->_oWrappings = oxNew(Wrapping::class)->getWrappingList('WRAP');
             }
         }
 
@@ -93,7 +94,7 @@ class WrappingController extends \OxidEsales\Eshop\Application\Controller\Fronte
 
             // load gift cards
             if ($this->getViewConfig()->getShowGiftWrapping()) {
-                $this->_oCards = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class)->getWrappingList('CARD');
+                $this->_oCards = oxNew(Wrapping::class)->getWrappingList('CARD');
             }
         }
 

@@ -2057,7 +2057,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         $iState = 0;
         if ($sDelAddressMD5 != $sDeliveryAddress || !$blFieldsValid) {
-            $iState = self::ORDER_STATE_INVALIDDElADDRESSCHANGED;
+            $iState = self::ORDER_STATE_INVALIDDELADDRESSCHANGED;
         }
 
         return $iState;

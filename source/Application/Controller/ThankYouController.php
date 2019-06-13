@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 use oxUBase;
 use oxBasket;
@@ -99,19 +100,19 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
 
         // get basket we might need some information from it here
         $oBasket = $this->getSession()->getBasket();
-        $oBasket->setOrderId(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('sess_challenge'));
+        $oBasket->setOrderId(Registry::getSession()->getVariable('sess_challenge'));
 
         // copying basket object
         $this->_oBasket = clone $oBasket;
 
         // delete it from the session
         $oBasket->deleteBasket();
-        \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable('sess_challenge');
+        Registry::getSession()->deleteVariable('sess_challenge');
         
         // if not in order-context, redirect to start
         $order = $this->getOrder();
         if (!$order || !$order->getFieldData('oxordernr')) {
-            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getConfig()->getShopHomeURL() . '&cl=start');
+            Registry::getUtils()->redirect($this->getConfig()->getShopHomeURL() . '&cl=start');
         }
     }
 
@@ -125,7 +126,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     public function render()
     {
         if (!$this->_oBasket || !$this->_oBasket->getProductsCount()) {
-            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . '&cl=start', true, 302);
+            Registry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . '&cl=start', true, 302);
         }
 
         parent::render();
@@ -134,8 +135,8 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
 
         // removing also unregistered user info (#2580)
         if (!$oUser || !$oUser->oxuser__oxpassword->value) {
-            \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable('usr');
-            \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable('dynvalue');
+            Registry::getSession()->deleteVariable('usr');
+            Registry::getSession()->deleteVariable('dynvalue');
         }
 
         // loading order sometimes needed in template
@@ -266,7 +267,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     {
         if ($this->_sMailError === null) {
             $this->_sMailError = false;
-            $this->_sMailError = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('mailerror');
+            $this->_sMailError = Registry::getConfig()->getRequestParameter('mailerror');
         }
 
         return $this->_sMailError;
@@ -328,8 +329,8 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
         $aPath = [];
 
 
-        $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
-        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('ORDER_COMPLETED', $iLang, false);
+        $iLang = Registry::getLang()->getBaseLanguage();
+        $aPath['title'] = Registry::getLang()->translateString('ORDER_COMPLETED', $iLang, false);
         $aPath['link']  = $this->getLink();
         $aPaths[] = $aPath;
 

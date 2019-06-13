@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 
 /**
@@ -83,7 +84,7 @@ class InviteController extends \OxidEsales\Eshop\Application\Controller\Frontend
         $oConfig = $this->getConfig();
 
         if (!$oConfig->getConfigParam("blInvitationsEnabled")) {
-            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($oConfig->getShopHomeUrl());
+            Registry::getUtils()->redirect($oConfig->getShopHomeUrl());
 
             return;
         }
@@ -104,10 +105,10 @@ class InviteController extends \OxidEsales\Eshop\Application\Controller\Frontend
         $oConfig = $this->getConfig();
 
         if (!$oConfig->getConfigParam("blInvitationsEnabled")) {
-            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($oConfig->getShopHomeUrl());
+            Registry::getUtils()->redirect($oConfig->getShopHomeUrl());
         }
 
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval', true);
+        $aParams = Registry::getConfig()->getRequestParameter('editval', true);
         $oUser = $this->getUser();
         if (!is_array($aParams) || !$oUser) {
             return;
@@ -115,9 +116,9 @@ class InviteController extends \OxidEsales\Eshop\Application\Controller\Frontend
 
         // storing used written values
         $oParams = (object) $aParams;
-        $this->setInviteData((object) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval'));
+        $this->setInviteData((object) Registry::getConfig()->getRequestParameter('editval'));
 
-        $oUtilsView = \OxidEsales\Eshop\Core\Registry::getUtilsView();
+        $oUtilsView = Registry::getUtilsView();
 
         // filled not all fields ?
         foreach ($this->_aReqFields as $sFieldName) {
@@ -175,7 +176,7 @@ class InviteController extends \OxidEsales\Eshop\Application\Controller\Frontend
             //saving statistics for sent emails
             $oUser->updateInvitationStatistics($aParams["rec_email"]);
         } else {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL');
+            Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL');
         }
     }
 
@@ -219,8 +220,8 @@ class InviteController extends \OxidEsales\Eshop\Application\Controller\Frontend
         $aPaths = [];
         $aPath = [];
 
-        $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
-        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('INVITE_YOUR_FRIENDS', $iLang, false);
+        $iLang = Registry::getLang()->getBaseLanguage();
+        $aPath['title'] = Registry::getLang()->translateString('INVITE_YOUR_FRIENDS', $iLang, false);
         $aPath['link']  = $this->getLink();
         $aPaths[] = $aPath;
 

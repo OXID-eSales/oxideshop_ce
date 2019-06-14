@@ -133,12 +133,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::cleanModuleFromClassChain()` If you want to clean a module from the class chain, deactivate the module.
 - `\OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::getDisabledModuleIds()` Use `OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface` instead to get inactive modules.
 - `\OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::getModuleDirectoryByModuleId()` Use `\OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface` instead.
-- `\OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectoryValidator`
-- `\OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectoryRepository::save`
-- `\OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectories::getWithRelativePath`
-- `\OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectories::add`
-- `\OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectories::remove`
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectoryValidator` Validation was moved to Internal\Module package and will be executed during the module activation.
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectoryRepository::save` Module smarty plugins directory are stored in project configuration file now. Use appropriate Dao to save them.
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectories::getWithRelativePath` Module smarty plugins directory are stored in project configuration file now. Use appropriate Dao to get them.
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectories::add` Module smarty plugins directory are stored in project configuration file now. Use appropriate Dao to add them.
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectories::set` Module smarty plugins directory are stored in project configuration file now. Use appropriate Dao to set them.
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectories::remove` Module smarty plugins directory are stored in project configuration file now. Use appropriate Dao to remove them.
 - `\OxidEsales\EshopCommunity\Core\Module\ModuleExtensionsCleaner::cleanExtensions` will use internal module services instead aModulePaths 
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleInstaller` Use service "OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface".
+- `\OxidEsales\EshopCommunity\Core\Module\Module` Use service 'OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface'.
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleList` Use service 'OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface'.
+- `\OxidEsales\EshopCommunity\Core\Contract\IModuleValidator` Validation was moved to Internal\Module package and will be executed during the module activation.
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleMetadataValidator` Validation was moved to Internal\Module package and will be executed during the module activation.
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleCache` ModuleCache moved to Internal\Module package.
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleExtensionsCleaner` The whole chain is updated during module activation and deactivation in the database. We do not need this functionality any more
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleValidatorFactory` Module metadata validation moved to Internal\Module package
 
 
 ## [6.3.4] - 2019-05-24

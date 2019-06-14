@@ -55,6 +55,10 @@ class ModuleSmartyPluginDirectories
     }
 
     /**
+     *
+     * @deprecated since v6.4.0 (2019-05-24); Module smarty plugins directory are stored in project configuration file now.
+     *             Use appropriate Dao to set them.
+     *
      * @param array $moduleSmartyPluginDirectories
      */
     public function set($moduleSmartyPluginDirectories)

@@ -74,7 +74,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
     /**
      * return module filter for config variables
      *
-     * @deprecated since v6.4.0 (2019-04-08);
+     * @deprecated since v6.4.0 (2019-04-08); it moved to Internal\Module package
      *
      * @return string
      */
@@ -90,7 +90,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
      *      'constraints' => constraints list as array[name] = constraint
      *      'grouping'    => grouping info as array[name] = grouping
      *
-     * @deprecated since v6.4.0 (2019-04-08);
+     * @deprecated since v6.4.0 (2019-04-08); it moved to Internal\Module package
      *
      * @param array $aModuleSettings settings array from module metadata
      *

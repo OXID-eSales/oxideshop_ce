@@ -2935,7 +2935,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleCache::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Module\ModuleChainsGenerator'                         => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::class,
@@ -2947,7 +2947,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleExtensionsCleaner::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Module\ModuleInstaller'                               => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleInstaller::class,
@@ -3001,7 +3001,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleValidatorFactory::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Module\ModuleVariablesLocator'                        => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleVariablesLocator::class,

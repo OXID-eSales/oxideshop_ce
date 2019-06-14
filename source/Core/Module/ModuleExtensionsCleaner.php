@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigura
 /**
  * Class responsible for cleaning not used extensions for module which is going to be activated.
  *
+ * @deprecated since v6.4.0 (2019-03-22); the whole chain is updated during module activation and deactivation in the database we do not need this functionality any more
  * @package  OxidEsales\EshopCommunity\Core\Module
  * @internal Do not make a module extension for this class.
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html

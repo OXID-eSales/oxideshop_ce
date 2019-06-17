@@ -90,3 +90,11 @@ services:
   OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataNormalizerInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataNormalizer
     public: false
+
+  OxidEsales\EshopCommunity\Internal\Module\MetaData\Converter\MetaDataConverterInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Converter\MetaDataConverterAggregate
+    arguments:
+      - '@oxid_esales.module.setup.converter.shop_module_settings_boolean_converter'
+
+  oxid_esales.module.setup.converter.shop_module_settings_boolean_converter:
+    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Converter\ShopModuleSettingsBooleanConverter

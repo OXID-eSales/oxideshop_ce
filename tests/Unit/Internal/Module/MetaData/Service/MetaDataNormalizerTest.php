@@ -149,30 +149,6 @@ class MetaDataNormalizerTest extends TestCase
         );
     }
 
-    public function testNormalizerBooleanSettingsToRealBoolean()
-    {
-        $metadata = [
-            'settings' => [
-                ['type' => 'bool', 'value' => 'true'],
-                ['type' => 'bool', 'value' => 'false'],
-                ['type' => 'bool', 'value' => true],
-                ['type' => 'bool', 'value' => false],
-            ]
-        ];
-
-        $this->assertSame(
-            [
-                'settings' => [
-                    ['type' => 'bool', 'value' => true],
-                    ['type' => 'bool', 'value' => false],
-                    ['type' => 'bool', 'value' => true],
-                    ['type' => 'bool', 'value' => false],
-                ]
-            ],
-            (new MetaDataNormalizer())->normalizeData($metadata)
-        );
-    }
-
     /**
      * @dataProvider multiLanguageFieldDataProvider
      */

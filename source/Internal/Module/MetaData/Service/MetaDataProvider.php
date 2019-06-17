@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Service;
 
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Converter\MetaDataConverterInterface;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\BadMetaDataFoundEvent;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\InvalidMetaDataException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -56,22 +57,35 @@ class MetaDataProvider implements MetaDataProviderInterface
      * @var BasicContextInterface
      */
     private $context;
+    /**
+     * @var MetaDataValidatorInterface
+     */
+    private $metaDataValidatorService;
 
     /**
-     * MetaDataProvider constructor.
-     *
-     * @param EventDispatcherInterface    $eventDispatcher
+     * @var MetaDataConverterInterface
+     */
+    private $metaDataConverter;
+
+    /**
+     * @param EventDispatcherInterface $eventDispatcher
      * @param MetaDataNormalizerInterface $metaDataNormalizer
-     * @param BasicContextInterface       $context
+     * @param BasicContextInterface $context
+     * @param MetaDataValidatorInterface $metaDataValidator
+     * @param MetaDataConverterInterface $metaDataConverter
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         MetaDataNormalizerInterface $metaDataNormalizer,
-        BasicContextInterface $context
+        BasicContextInterface $context,
+        MetaDataValidatorInterface $metaDataValidator,
+        MetaDataConverterInterface $metaDataConverter
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->metaDataNormalizer = $metaDataNormalizer;
         $this->context = $context;
+        $this->metaDataValidatorService = $metaDataValidator;
+        $this->metaDataConverter = $metaDataConverter;
     }
 
     /**
@@ -108,7 +122,8 @@ class MetaDataProvider implements MetaDataProviderInterface
         $moduleData = $aModule;
 
         $this->validateMetaDataFileVariables($metadataVersion, $moduleData);
-
+        $this->metaDataValidatorService->validate($moduleData);
+        $moduleData = $this->metaDataConverter->convert($moduleData);
         $normalizedMetaData = $this->metaDataNormalizer->normalizeData($moduleData);
         $normalizedMetaData[static::METADATA_ID] = $this->sanitizeMetaDataId($normalizedMetaData);
         if (isset($normalizedMetaData[static::METADATA_EXTEND])) {

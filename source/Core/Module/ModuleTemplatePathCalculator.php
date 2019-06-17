@@ -88,12 +88,9 @@ class ModuleTemplatePathCalculator
     {
         $theme = $this->theme;
 
-        $moduleTemplates = $this->getConfig()->getConfigParam('aModuleTemplates');
+        $moduleTemplates = Registry::getConfig()->getConfigParam('aModuleTemplates');
 
-        $activeModules = (array) $this->getConfig()->getConfigParam('aModulePaths');
-        if (empty($activeModules)) {
-            $activeModules = ['moduleId' => true];
-        }
+        $activeModules = (array) Registry::getConfig()->getConfigParam('aModulePaths');
 
         $finalTemplatePath = '';
 
@@ -133,17 +130,5 @@ class ModuleTemplatePathCalculator
         }
 
         return $finalTemplatePath;
-    }
-
-    /**
-     * @return Config
-     */
-    private function getConfig()
-    {
-        if ($this->config === null) {
-            $this->config = Registry::getConfig();
-        }
-
-        return $this->config;
     }
 }

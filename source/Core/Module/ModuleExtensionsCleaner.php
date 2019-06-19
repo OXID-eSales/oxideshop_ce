@@ -6,6 +6,10 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
+use OxidEsales\EshopCommunity\Internal\Adapter\Exception\ModuleConfigurationNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
+
 /**
  * Class responsible for cleaning not used extensions for module which is going to be activated.
  *
@@ -15,6 +19,7 @@ namespace OxidEsales\EshopCommunity\Core\Module;
  */
 class ModuleExtensionsCleaner
 {
+
     /**
      * Removes garbage ( module not used extensions ) from all installed extensions list.
      * For example: some classes were renamed, so these should be removed.
@@ -23,6 +28,7 @@ class ModuleExtensionsCleaner
      * @param \OxidEsales\Eshop\Core\Module\Module $module
      *
      * @return array
+     * @throws ModuleConfigurationNotFoundException
      */
     public function cleanExtensions($installedExtensions, \OxidEsales\Eshop\Core\Module\Module $module)
     {
@@ -44,35 +50,32 @@ class ModuleExtensionsCleaner
     /**
      * Returns extensions list by module id.
      *
-     * @param array  $modules  Module array (nested format)
-     * @param string $moduleId Module id/folder name
+     * @param array  $installedExtensions
+     * @param string $moduleId
      *
      * @return array
+     * @throws ModuleConfigurationNotFoundException
      */
-    protected function filterExtensionsByModuleId($modules, $moduleId)
+    private function filterExtensionsByModuleId(array $installedExtensions, string $moduleId)
     {
-        $modulePaths = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModulePaths');
+        $container = ContainerFactory::getInstance()->getContainer();
 
-        $path = '';
-        if (isset($modulePaths[$moduleId])) {
-            $path = $modulePaths[$moduleId];
-        }
+        $moduleConfiguration = $container
+            ->get(ShopConfigurationDaoBridgeInterface::class)
+            ->get()
+            ->getModuleConfiguration($moduleId);
 
-        // TODO: This condition should be removed. Need to check integration tests.
-        if (!$path) {
-            $path = $moduleId;
-        }
+        $filteredExtensions = [];
 
-        $filteredModules = [];
-        foreach ($modules as $class => $extend) {
+        foreach ($installedExtensions as $class => $extend) {
             foreach ($extend as $extendPath) {
-                if (strpos($extendPath, $path) === 0) {
-                    $filteredModules[$class][] = $extendPath;
+                if (strpos($extendPath, $moduleConfiguration->getPath()) === 0) {
+                    $filteredExtensions[$class][] = $extendPath;
                 }
             }
         }
 
-        return $filteredModules;
+        return $filteredExtensions;
     }
 
     /**

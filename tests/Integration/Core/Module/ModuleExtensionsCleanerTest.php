@@ -6,6 +6,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model\Module;
 
 use OxidEsales\Eshop\Application\Model\Article;
+use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Module\ModuleExtensionsCleaner;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
@@ -20,7 +21,7 @@ class ModuleExtensionsCleanerTest extends UnitTestCase
     /**
      * Test case for bug #6342
      */
-    private $testModuleId = 'with_class_extensions';
+    private $testModuleId = 'with_class_extensions_cleaner';
 
     public function tearDown()
     {
@@ -32,26 +33,28 @@ class ModuleExtensionsCleanerTest extends UnitTestCase
 
     public function testChecksIfModuleIdDoesNotDependOnDirectory()
     {
-        $this->activateTestModule();
+        $this->installTestModule();
 
         $installedExtensions = [
-            Article::class => ['with_class_extensions/ModuleArticle'],
-            'otherEshopClass' => ['with_class_extensions/testModuleDirectory/class/which/is/garbage'],
+            Article::class => ['with_class_extensions_cleaner/ModuleArticle'],
+            'otherEshopClass' => ['with_class_extensions_cleaner/testModuleDirectory/class/which/is/garbage'],
+            'yetAnotherEshopClass' => ['anyModule/testModuleDirectory/class/which/is/not/garbage'],
         ];
 
         $cleanedExtensionsData = [
-            Article::class => ['with_class_extensions/ModuleArticle'],
+            Article::class => ['with_class_extensions_cleaner/ModuleArticle'],
+            'yetAnotherEshopClass' => ['anyModule/testModuleDirectory/class/which/is/not/garbage'],
         ];
 
         /** @var ModuleExtensionsCleaner $extensionsCleaner */
         $extensionsCleaner = oxNew(ModuleExtensionsCleaner::class);
-        $module = oxNew('oxModule');
+        $module = oxNew(Module::class);
         $module->load($this->testModuleId);
 
         $this->assertSame($cleanedExtensionsData, $extensionsCleaner->cleanExtensions($installedExtensions, $module));
     }
 
-    private function activateTestModule()
+    private function installTestModule()
     {
         $container = ContainerFactory::getInstance()->getContainer();
 
@@ -63,9 +66,5 @@ class ModuleExtensionsCleanerTest extends UnitTestCase
                     __DIR__ . '/Fixtures/' . $this->testModuleId
                 )
             );
-
-        $container
-            ->get(ModuleActivationBridgeInterface::class)
-            ->activate($this->testModuleId, Registry::getConfig()->getShopId());
     }
 }

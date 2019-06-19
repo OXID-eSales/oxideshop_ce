@@ -138,6 +138,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectories::getWithRelativePath`
 - `\OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectories::add`
 - `\OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectories::remove`
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleExtensionsCleaner::cleanExtensions` will use internal module services instead aModulePaths 
 
 
 ## [6.3.4] - 2019-05-24

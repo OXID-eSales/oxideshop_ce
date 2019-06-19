@@ -98,7 +98,8 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
         parent::init();
 
         // get basket we might need some information from it here
-        $oBasket = $this->getSession()->getBasket();
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $oBasket = $session->getBasket();
         $oBasket->setOrderId(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('sess_challenge'));
 
         // copying basket object

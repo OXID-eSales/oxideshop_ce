@@ -2300,7 +2300,8 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     private function getDynamicValues()
     {
-        $dynamicValues = $this->getSession()->getVariable('dynvalue');
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $dynamicValues = $session->getVariable('dynvalue');
 
         if (!$dynamicValues) {
             $dynamicValues = Registry::getRequest()->getRequestParameter('dynvalue');

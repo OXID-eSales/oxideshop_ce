@@ -73,30 +73,6 @@ class Base
     }
 
     /**
-     * Session instance getter
-     *
-     * @deprecated since v6.4.0 (2019-05-17); This method will be removed completely. Use \OxidEsales\Eshop\Core\Registry::getSession().
-     *
-     * @return \OxidEsales\Eshop\Core\Session
-     */
-    public function getSession()
-    {
-        return \OxidEsales\Eshop\Core\Registry::getSession();
-    }
-
-    /**
-     * Session instance setter
-     *
-     * @deprecated since v6.4.0 (2019-05-17); This method will be removed completely. Use \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session).
-     *
-     * @param \OxidEsales\Eshop\Core\Session $session session object
-     */
-    public function setSession($session)
-    {
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
-    }
-
-    /**
      * Active user getter
      *
      * @return \OxidEsales\Eshop\Application\Model\User

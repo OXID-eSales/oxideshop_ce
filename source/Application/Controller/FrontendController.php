@@ -2366,7 +2366,8 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function isLowOrderPrice()
     {
-        if ($this->_blLowOrderPrice === null && ($basket = $this->getSession()->getBasket())) {
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        if ($this->_blLowOrderPrice === null && ($basket = $session->getBasket())) {
             $this->_blLowOrderPrice = $basket->isBelowMinOrderPrice();
         }
 

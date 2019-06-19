@@ -320,10 +320,11 @@ class BasketitemTest extends \OxidTestCase
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getArtStockInBasket'));
         $oBasket->expects($this->any())->method('getArtStockInBasket')->with($this->equalTo($article->getId()), $this->equalTo('testItemKey'))->will($this->returnValue(1));
-        $oSession = oxNew('oxSession');
-        $oSession->setBasket($oBasket);
-        $oBasketItem = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketItem::class, array('getSession'));
-        $oBasketItem->expects($this->any())->method('getSession')->will($this->returnValue($oSession));
+        $session = oxNew('oxSession');
+        $session->setBasket($oBasket);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
+
+        $oBasketItem = oxNew(\OxidEsales\Eshop\Application\Model\BasketItem::class);
 
         $oBasketItem->UNITsetArticle($article->getId());
         $oBasketItem->setAmount(10, true, 'testItemKey');

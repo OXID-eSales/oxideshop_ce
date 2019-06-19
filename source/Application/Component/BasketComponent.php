@@ -60,10 +60,11 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     public function init()
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
         if ($oConfig->getConfigParam('blPsBasketReservationEnabled')) {
-            if ($oReservations = $this->getSession()->getBasketReservations()) {
+            if ($oReservations = $session->getBasketReservations()) {
                 if (!$oReservations->getTimeLeft()) {
-                    $oBasket = $this->getSession()->getBasket();
+                    $oBasket = $session->getBasket();
                     if ($oBasket && $oBasket->getProductsCount()) {
                         $this->emptyBasket($oBasket);
                     }
@@ -80,7 +81,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         // Basket exclude
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blBasketExcludeEnabled')) {
-            if ($oBasket = $this->getSession()->getBasket()) {
+            if ($oBasket = $session->getBasket()) {
                 $this->getParent()->setRootCatChanged($this->isRootCatChanged() && $oBasket->getContents());
             }
         }
@@ -94,8 +95,10 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function render()
     {
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+
         // recalculating
-        if ($oBasket = $this->getSession()->getBasket()) {
+        if ($oBasket = $session->getBasket()) {
             $oBasket->calculateBasket(false);
         }
 
@@ -194,12 +197,14 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             return;
         }
 
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+
         // fetching item ID
         if (!$sProductId) {
             $sBasketItemId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('bindex');
 
             if ($sBasketItemId) {
-                $oBasket = $this->getSession()->getBasket();
+                $oBasket = $session->getBasket();
                 //take params
                 $aBasketContents = $oBasket->getContents();
                 $oItem = $aBasketContents[$sBasketItemId];
@@ -218,7 +223,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         // adding articles
         if ($aProducts = $this->_getItems($sProductId, $dAmount, $aSel, $aPersParam, $blOverride)) {
             // information that last call was changebasket
-            $oBasket = $this->getSession()->getBasket();
+            $oBasket = $session->getBasket();
             $oBasket->onUpdate();
             $this->_setLastCallFnc('changebasket');
 
@@ -372,8 +377,9 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     {
         $activeView = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView();
         $errorDestination = $activeView->getErrorDestination();
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
 
-        $basket = $this->getSession()->getBasket();
+        $basket = $session->getBasket();
         $basketInfo = $basket->getBasketSummary();
 
         $basketItemAmounts = [];
@@ -462,7 +468,8 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     public function isRootCatChanged()
     {
         // in Basket
-        $oBasket = $this->getSession()->getBasket();
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $oBasket = $session->getBasket();
         if ($oBasket->showCatChangeWarning()) {
             $oBasket->setCatChangeWarningState(false);
 
@@ -500,7 +507,8 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             return "basket";
         } else {
             // clear basket
-            $this->getSession()->getBasket()->deleteBasket();
+            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $session->getBasket()->deleteBasket();
             $this->getParent()->setRootCatChanged(false);
         }
     }

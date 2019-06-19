@@ -475,8 +475,9 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected function _authorize()
     {
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
         return ( bool ) (
-            $this->getSession()->checkSessionChallenge()
+            $session->checkSessionChallenge()
             && count(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie())
             && \OxidEsales\Eshop\Core\Registry::getUtils()->checkAccessRights()
         );

@@ -82,11 +82,13 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if ($this->getIsOrderStep()) {
+            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+
             if ($config->getConfigParam('blPsBasketReservationEnabled')) {
-                $this->getSession()->getBasketReservations()->renewExpiration();
+                $session->getBasketReservations()->renewExpiration();
             }
 
-            $basket = $this->getSession()->getBasket();
+            $basket = $session->getBasket();
             $isPsBasketReservationsEnabled = $config->getConfigParam('blPsBasketReservationEnabled');
             if ($this->_blIsOrderStep && $isPsBasketReservationsEnabled &&
                 (!$basket || ($basket && !$basket->getProductsCount()))) {
@@ -226,7 +228,8 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
      */
     public function isDownloadableProductWarning()
     {
-        $basket = $this->getSession()->getBasket();
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $basket = $session->getBasket();
         if ($basket && \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("blEnableDownloads")) {
             if ($basket->hasDownloadableProducts()) {
                 return true;

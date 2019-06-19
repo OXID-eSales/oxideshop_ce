@@ -73,6 +73,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\SystemRequirements::getConfig`
 - `\OxidEsales\EshopCommunity\Core\Module::getConfigBlDoNotDisableModuleOnError`
 - `\OxidEsales\EshopCommunity\Application\Model\OrderArticle::$_aOrderCache`
+- Removed deprecated getSession and setSession usages around the code
 
 ### Fixed
 

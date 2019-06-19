@@ -152,13 +152,13 @@ class NavigationTest extends \OxidTestCase
 
         Registry::getConfig()->setConfigParam('blClearCacheOnLogout', true);
 
-        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("destroy", "getId"));
-        $oSession->expects($this->once())->method('destroy');
-        $oSession->expects($this->never())->method('getId');
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("destroy", "getId"));
+        $session->expects($this->once())->method('destroy');
+        $session->expects($this->never())->method('getId');
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         // testing..
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationController::class, array("getSession", "getConfig", "resetContentCache"), array(), '', false);
-        $oView->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationController::class, array("getConfig", "resetContentCache"), array(), '', false);
         $oView->expects($this->once())->method('resetContentCache');
         $oView->logout();
 

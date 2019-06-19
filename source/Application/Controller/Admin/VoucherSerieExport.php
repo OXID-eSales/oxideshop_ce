@@ -85,7 +85,8 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
     {
         $sSessionFileName = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("sExportFileName");
         if (!$sSessionFileName) {
-            $sSessionFileName = md5($this->getSession()->getId() . \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUId());
+            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $sSessionFileName = md5($session->getId() . \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUId());
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("sExportFileName", $sSessionFileName);
         }
 

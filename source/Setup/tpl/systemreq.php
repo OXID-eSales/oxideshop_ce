@@ -18,7 +18,7 @@ require "_header.php"; ?>
                 ?>
                 <option value="<?php echo $sLangId; ?>" <?php if ($this->getViewParam("sLanguage") == $sLangId) {
                     echo 'selected';
-                               } ?>><?php echo $sLangTitle; ?></option>
+                } ?>><?php echo $sLangTitle; ?></option>
                 <?php
             }
             ?>
@@ -40,16 +40,16 @@ require "_header.php"; ?>
     $aGroupModuleInfo = $this->getViewParam("aGroupModuleInfo");
     foreach ($aGroupModuleInfo as $sGroupName => $aGroupInfo) {
         ?><li class="group"><?php echo $sGroupName; ?><ul><?php
-foreach ($aGroupInfo as $aModuleInfo) {
-    ?><li id="<?php echo $aModuleInfo['module']; ?>" class="<?php echo $aModuleInfo['class']; ?>"><?php
-if ($aModuleInfo['class'] == "fail" || $aModuleInfo['class'] == "pmin" || $aModuleInfo['class'] == "null") {
-    ?><a href="<?php $this->getReqInfoUrl($aModuleInfo['module']); ?>" target="_blank"><?php
-}
-    echo $aModuleInfo['modulename'];
-if ($aModuleInfo['class'] == "fail" || $aModuleInfo['class'] == "pmin" || $aModuleInfo['class'] == "null") {
-    ?></a><?php
-} ?></li><?php
-} ?></ul></li><?php
+        foreach ($aGroupInfo as $aModuleInfo) {
+            ?><li id="<?php echo $aModuleInfo['module']; ?>" class="<?php echo $aModuleInfo['class']; ?>"><?php
+            if ($aModuleInfo['class'] == "fail" || $aModuleInfo['class'] == "pmin" || $aModuleInfo['class'] == "null") {
+                ?><a href="<?php $this->getReqInfoUrl($aModuleInfo['module']); ?>" target="_blank"><?php
+            }
+            echo $aModuleInfo['modulename'];
+            if ($aModuleInfo['class'] == "fail" || $aModuleInfo['class'] == "pmin" || $aModuleInfo['class'] == "null") {
+                ?></a><?php
+            } ?></li><?php
+        } ?></ul></li><?php
     }
     ?><li class="clear"></li></ul>
     <?php $this->getText('STEP_0_TEXT'); ?>
@@ -63,7 +63,7 @@ if ($aModuleInfo['class'] == "fail" || $aModuleInfo['class'] == "pmin" || $aModu
 </form>
     <?php
 } else {
-    ?><b><?php $this->getText('STEP_0_ERROR_TEXT'); ?></b><br>
+        ?><b><?php $this->getText('STEP_0_ERROR_TEXT'); ?></b><br>
     <a target="_blank" href="<?php $this->getText('STEP_0_ERROR_URL'); ?>"><?php $this->getText('STEP_0_ERROR_URL'); ?></a><?php
-}
+    }
 require "_footer.php";

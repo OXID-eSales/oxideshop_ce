@@ -217,8 +217,8 @@ class ViewConfigTest extends \OxidTestCase
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
 
         $oVC = $this->getMock(
-            'oxviewconfig'
-            , array('getTopActionClassName', 'getActCatId', 'getActTplName', 'getActContentLoadId'
+            'oxviewconfig',
+            array('getTopActionClassName', 'getActCatId', 'getActTplName', 'getActContentLoadId'
                     , 'getActArticleId', 'getActSearchParam', 'getActSearchTag', 'getActListType', 'getActRecommendationId')
         );
 
@@ -267,8 +267,8 @@ class ViewConfigTest extends \OxidTestCase
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
 
         $oVC = $this->getMock(
-            'oxviewconfig'
-            , array('getTopActionClassName', 'getActCatId', 'getActTplName', 'getActContentLoadId'
+            'oxviewconfig',
+            array('getTopActionClassName', 'getActCatId', 'getActTplName', 'getActContentLoadId'
                     , 'getActArticleId', 'getActSearchParam', 'getActSearchTag', 'getActListType', 'getActRecommendationId')
         );
 

@@ -110,7 +110,7 @@ class UserComponentTest extends \OxidTestCase
             $oView = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array("getUser", "getConfig", "getParent"), array(), '', false);
             $oView->expects($this->atLeastOnce())->method('getUser')->will($this->returnValue(false));
             $oView->expects($this->atLeastOnce())->method('getParent')->will($this->returnValue($oParent));
-		    \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+            \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
             $oView->render();
         } catch (Exception $oExcp) {
             $this->assertEquals("testUrlcl=account", $oExcp->getMessage(), "Error in oxscloginoxcmpuser::render()");
@@ -181,7 +181,7 @@ class UserComponentTest extends \OxidTestCase
             $oView = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array("getUser", "getConfig", "getParent"), array(), '', false);
             $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
             $oView->expects($this->any())->method('getParent')->will($this->returnValue($oParent));
-		    \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+            \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
             $oView->render();
         } catch (Exception $oExcp) {
             $this->assertEquals("testUrlcl=account&term=1", $oExcp->getMessage(), "Error in oxscloginoxcmpuser::render()");

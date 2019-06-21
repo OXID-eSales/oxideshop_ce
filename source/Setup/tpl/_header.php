@@ -84,9 +84,9 @@ $facts = new \OxidEsales\Facts\Facts();
     </style>
 
     <?php
-    if (($iRedir2Step = $this->getNextSetupStep()) !== null) {
-        ?><meta http-equiv="refresh" content="3; URL=index.php?istep=<?php echo $iRedir2Step; ?>&sid=<?php $this->getSid(); ?>"><?php
-    }
+        if (($iRedir2Step = $this->getNextSetupStep()) !== null) {
+            ?><meta http-equiv="refresh" content="3; URL=index.php?istep=<?php echo $iRedir2Step; ?>&sid=<?php $this->getSid(); ?>"><?php
+        }
     ?>
 </head>
 

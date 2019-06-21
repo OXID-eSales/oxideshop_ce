@@ -19,7 +19,7 @@
  * @param integer
  * @return integer
  */
-function smarty_modifier_smartwordwrap($string, $length = 80, $break = "\n", $cutrows = 0, $tollerance = 0, $etc = '...')
+function smarty_modifier_smartwordwrap($string, $length=80, $break="\n", $cutrows=0, $tollerance=0, $etc = '...')
 {
     $wraptag = "<wrap>";
     $wrapchars = ["-"];

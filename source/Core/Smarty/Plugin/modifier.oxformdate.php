@@ -19,8 +19,7 @@
  * @return string
  */
 function smarty_modifier_oxformdate($oConvObject, $sFieldType = null, $blPassedValue = false)
-{
-   // creating fake bject
+{   // creating fake bject
     if ($blPassedValue || is_string($oConvObject)) {
         $sValue = $oConvObject;
         $oConvObject = new \OxidEsales\Eshop\Core\Field();

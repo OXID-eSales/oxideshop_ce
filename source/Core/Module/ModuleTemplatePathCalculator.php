@@ -32,11 +32,6 @@ class ModuleTemplatePathCalculator
     private $fileSystem;
 
     /**
-     * @var Config
-     */
-    private $config;
-
-    /**
      * Sets required dependencies
      *
      * @param \OxidEsales\Eshop\Core\Module\ModuleList $moduleList

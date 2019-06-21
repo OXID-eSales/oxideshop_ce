@@ -12,7 +12,6 @@ use \oxDb;
  */
 class CategoryMainAjaxTest extends \OxidTestCase
 {
-
     protected $_sArticleView = 'oxv_oxarticles_1_de';
     protected $_sObject2CategoryView = 'oxv_oxobject2category_1';
     protected $_sShopId = '1';
@@ -37,12 +36,14 @@ class CategoryMainAjaxTest extends \OxidTestCase
         $this->addToDatabase("insert into oxobject2category set oxid='_testObject2CategoryRemove1', oxcatnid='_testCategory', oxobjectid = '_testObjectRemove1'", 'oxcategories');
         $this->addToDatabase("insert into oxobject2category set oxid='_testObject2CategoryRemove2', oxcatnid='_testCategory', oxobjectid = '_testObjectRemove2'", 'oxcategories');
 
-        $this->addToDatabase("insert into oxarticles set
+        $this->addToDatabase(
+            "insert into oxarticles set
                                             oxid='_testObjectRemoveChild1',
                                             oxparentid='_testObjectRemove1',
                                             oxtitle='_testArticleChild1',
                                             oxshopid='" . $this->getShopIdTest() . "'",
-            'oxarticles');
+            'oxarticles'
+        );
         $this->addToDatabase("insert into oxobject2category set oxid='_testObject2CategoryRemoveChild1', oxcatnid='_testCategory', oxobjectid = '_testObjectRemoveChild1'", 'oxcategories');
     }
 
@@ -227,5 +228,4 @@ class CategoryMainAjaxTest extends \OxidTestCase
         $oView->UNITupdateOxTime($oDb->quote($sOxid));
         $this->assertEquals(1, $oDb->getOne("select count(oxid) from oxobject2category where oxtime=0 and oxobjectid = '$sOxid'"));
     }
-
 }

@@ -35,5 +35,4 @@ class DeliveryListTest extends \OxidTestCase
         $this->assertEquals(array("oxdelivery" => array("oxsort" => "asc")), $oView->getListSorting());
         $this->assertEquals('delivery_list.tpl', $oView->render());
     }
-
 }

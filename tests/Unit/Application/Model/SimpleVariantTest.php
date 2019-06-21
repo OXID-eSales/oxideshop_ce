@@ -122,7 +122,6 @@ class SimpleVariantTest extends \OxidTestCase
      */
     public function testGetGroupPricePriceC()
     {
-
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('inGroup'));
         $oUser->expects($this->any())->method('inGroup')->will($this->onConsecutiveCalls($this->returnValue(false), $this->returnValue(false), $this->returnValue(true)));
 
@@ -385,7 +384,7 @@ class SimpleVariantTest extends \OxidTestCase
      * 0002030: Option "Calculate Product Price" does not work with variants.
      * Check if no price returned when unset Calculate Product Price.
      */
-    function testGetPriceNoPriceCalculate()
+    public function testGetPriceNoPriceCalculate()
     {
         $this->getConfig()->setConfigParam('bl_perfLoadPrice', false);
 

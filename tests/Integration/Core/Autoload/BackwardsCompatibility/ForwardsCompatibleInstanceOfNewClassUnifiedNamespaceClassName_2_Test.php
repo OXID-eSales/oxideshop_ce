@@ -28,6 +28,5 @@ class ForwardsCompatibleInstanceOfNewClassUnifiedNamespaceClassName_2_Test exten
 
         $message = 'An object created with new \OxidEsales\Eshop\Application\Model\Article() is an instance of \OxidEsales\Eshop\Application\Model\Article::class';
         $this->assertInstanceOf($unifiedNamespaceClassName, $object, $message);
-
     }
 }

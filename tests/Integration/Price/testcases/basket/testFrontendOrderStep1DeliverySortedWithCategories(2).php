@@ -18,15 +18,15 @@ $aData = array(
 
     //'skipped' => 1,
 
-    'categories' => array (
-        0 =>  array (
+    'categories' => array(
+        0 =>  array(
             'oxid'       => 'testCategory1',
             'oxparentid' => 'oxrootid',
             'oxshopid'   => 1,
             'oxactive'   => 1,
             'oxarticles' => array( '_test_10012' )
         ),
-        1 =>  array (
+        1 =>  array(
             'oxid'       => 'testCategory2',
             'oxparentid' => 'oxrootid',
             'oxshopid'   => 1,
@@ -35,14 +35,14 @@ $aData = array(
         ),
     ),
 
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
             'oxid'                     => '_test_1002',
             'oxprice'                  => 20,
             'oxvat'                    => 20,
             'amount'                   => 6,
         ),
-        1 => array (
+        1 => array(
             'oxid'                     => '_test_10012',
             'oxprice'                  => 10,
             'oxvat'                    => 10,
@@ -80,15 +80,15 @@ $aData = array(
             ),
         ),
     ),
-    'expected' => array (
-        'articles' => array (
-            '_test_10012' => array ( '10,00', '10,00' ),
-            '_test_1002' => array ( '20,00', '120,00' )
+    'expected' => array(
+        'articles' => array(
+            '_test_10012' => array( '10,00', '10,00' ),
+            '_test_1002' => array( '20,00', '120,00' )
         ),
-        'totals' => array (
+        'totals' => array(
             'totalBrutto' => '130,00',
             'totalNetto'  => '109,09',
-            'vats' => array (
+            'vats' => array(
                 10 => '0,91',
                 20 => '20,00'
             ),
@@ -98,7 +98,7 @@ $aData = array(
             'grandTotal'  => '132,00'
         ),
     ),
-    'options' => array (
+    'options' => array(
         'activeCurrencyRate' => 1,
         'config' => array(
             'blEnterNetPrice' => false,

@@ -6,14 +6,14 @@
  * Price type: range
  *
  */
-$aData = array (
-    'articles' => array (
-            0 => array (
+$aData = array(
+    'articles' => array(
+            0 => array(
                     'oxid'                      => '_testId_1',
                     'oxpricea'                  => 100,
                     'inheritToShops'           => array(2)
             ),
-            1 => array (
+            1 => array(
                     'oxid'                      => '_testId_1_child_1',
                     'oxpricea'                  => 100,
                     'oxparentid'                => '_testId_1',
@@ -23,7 +23,7 @@ $aData = array (
                     ),
                     'inheritToShops'                => array(2),
             ),
-            2 => array (
+            2 => array(
                     'oxid'                      => '_testId_1_child_1',
                     'oxpricea'                  => 100,
                     'oxparentid'                => '_testId_1',
@@ -34,12 +34,12 @@ $aData = array (
                     'inheritToShops'                => array(2),
             ),
 
-            3 => array (
+            3 => array(
                 'oxid'                      => '_testId_2',
                 'oxpricea'                  => 50,
                 'inheritToShops'           => array(2)
             ),
-            4 => array (
+            4 => array(
                     'oxid'                      => '_testId_2_child_1',
                     'oxpricea'                  => 70,
                     'oxparentid'                => '_testId_2',
@@ -49,7 +49,7 @@ $aData = array (
                     ),
                     'inheritToShops'                => array(2),
             ),
-            5 => array (
+            5 => array(
                     'oxid'                      => '_testId_2_child_2',
                     'oxpricea'                  => 80,
                     'oxparentid'                => '_testId_2',
@@ -60,12 +60,12 @@ $aData = array (
                     'inheritToShops'           => array(2)
             ),
 
-            6 => array (
+            6 => array(
                     'oxid'                      => '_testId_3',
                     'oxpricea'                  => 80,
                     'inheritToShops'           => array(2)
             ),
-            7 => array (
+            7 => array(
                     'oxid'                      => '_testId_3_child_1',
                     'oxpricea'                  => 70,
                     'oxparentid'                => '_testId_3',
@@ -76,7 +76,7 @@ $aData = array (
                     'inheritToShops'                => array(2),
             ),
 
-            8 => array (
+            8 => array(
                     'oxid'                     => '_testId_4',
                     'oxprice'                  => 80,
                     'oxpricea'                 => 80,
@@ -85,8 +85,8 @@ $aData = array (
 
     ),
 
-    'shop' => array (
-            0 => array (
+    'shop' => array(
+            0 => array(
                     'oxactive'      => 1,
                     'oxid'          => 2,
                     'oxparentid'    => 1,
@@ -103,39 +103,39 @@ $aData = array (
 
     ),
 
-    'group' => array (
-            0 => array (
+    'group' => array(
+            0 => array(
                     'oxid'              => 'oxidpricea',
                     'oxactive'          => 1,
                     'oxtitle'           => 'Price A',
-                    'oxobject2group'    => array ( '_testUser' ),
+                    'oxobject2group'    => array( '_testUser' ),
             ),
 
     ),
 
-   'expected' => array (
-            '_testId_1' => array (
+   'expected' => array(
+            '_testId_1' => array(
                     'base_price' => '100,00',
                     'price' => '100,00',
                     'min_price' => '100,00',
                     'var_min_price' => '100,00',
                     'is_range_price' => false
             ),
-            '_testId_2' => array (
+            '_testId_2' => array(
                     'base_price' => '50,00',
                     'price' => '50,00',
                     'min_price' => '50,00',
                     'var_min_price' => '70,00',
                     'is_range_price' => true
             ),
-            '_testId_3' => array (
+            '_testId_3' => array(
                     'base_price' => '80,00',
                     'price' => '80,00',
                     'min_price' => '70,00',
                     'var_min_price' => '70,00',
                     'is_range_price' => true
             ),
-            '_testId_4' => array (
+            '_testId_4' => array(
                     'base_price' => '80,00',
                     'price' => '80,00',
                     'min_price' => '80,00',
@@ -144,7 +144,7 @@ $aData = array (
 
     ),
 
-    'options' => array (
+    'options' => array(
             'config' => array(
                     'blEnterNetPrice' => false,
                     'blShowNetPrice' => false,

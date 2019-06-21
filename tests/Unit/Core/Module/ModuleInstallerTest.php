@@ -194,7 +194,8 @@ class ModuleInstallerTest extends \OxidTestCase
      *
      * @covers \OxidEsales\EshopCommunity\Core\Module\ModuleInstaller::addModuleControllers()
      */
-    public function testModuleInstallerActivateCallsAddModuleControllers () {
+    public function testModuleInstallerActivateCallsAddModuleControllers()
+    {
         $moduleMock = $this->getMock(Module::class, ['getId','getMetaDataVersion']);
         $moduleMock->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $moduleMock->expects($this->any())->method('getMetaDataVersion')->will($this->returnValue('2.0'));
@@ -210,7 +211,8 @@ class ModuleInstallerTest extends \OxidTestCase
      *
      * @covers \OxidEsales\EshopCommunity\Core\Module\ModuleInstaller::addModuleControllers()
      */
-    public function testModuleInstallerActivateCallsAddModuleControllersChecksMetaDataVersion () {
+    public function testModuleInstallerActivateCallsAddModuleControllersChecksMetaDataVersion()
+    {
         /** @var Module|\PHPUnit\Framework\MockObject\MockObject $moduleMock */
         $moduleMock = $this->getMock(Module::class, ['getId','getMetaDataVersion']);
         $moduleMock->expects($this->any())->method('getId')->will($this->returnValue('test'));
@@ -227,7 +229,8 @@ class ModuleInstallerTest extends \OxidTestCase
      * Support for the key 'files' was dropped in MetaData v2.0.
      * Test that this information is not evaluated any longer.
      */
-    public function testModuleInstallerActivateCallsAddModuleFilesChecksMetaDataVersion () {
+    public function testModuleInstallerActivateCallsAddModuleFilesChecksMetaDataVersion()
+    {
         /** @var Module|\PHPUnit\Framework\MockObject\MockObject $moduleMock */
         // $moduleMock = $this->getMock(Module::class, ['getId','getMetaDataVersion']);
         // $moduleMock->expects($this->any())->method('getId')->will($this->returnValue('test'));
@@ -246,7 +249,8 @@ class ModuleInstallerTest extends \OxidTestCase
      *
      * @covers \OxidEsales\EshopCommunity\Core\Module\ModuleInstaller::deleteModuleControllers()
      */
-    public function testModuleInstallerDeActivateCallsDeleteModuleControllers () {
+    public function testModuleInstallerDeActivateCallsDeleteModuleControllers()
+    {
         /** @var Module|\PHPUnit\Framework\MockObject\MockObject $moduleMock */
         $moduleMock = $this->getMock(Module::class, array('getId'));
         $moduleMock->expects($this->any())->method('getId')->will($this->returnValue('test'));
@@ -261,7 +265,8 @@ class ModuleInstallerTest extends \OxidTestCase
     /**
      * @covers \OxidEsales\EshopCommunity\Core\Module\ModuleInstaller::validateModuleMetadataControllersOnActivation()
      */
-    public function testValidateModuleControllersOnActivationIsCalledOnActivate() {
+    public function testValidateModuleControllersOnActivationIsCalledOnActivate()
+    {
         $moduleMock = $this->getMock(Module::class, ['getId','getMetaDataVersion']);
         $moduleMock->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $moduleMock->expects($this->any())->method('getMetaDataVersion')->will($this->returnValue('2.0'));
@@ -273,7 +278,8 @@ class ModuleInstallerTest extends \OxidTestCase
         $moduleInstallerMock->activate($moduleMock);
     }
 
-    public function testModuleControllersValidationFailureTriggersModuleDeactivationAndThrowsExpectedException() {
+    public function testModuleControllersValidationFailureTriggersModuleDeactivationAndThrowsExpectedException()
+    {
         $this->expectException(StandardException::class);
 
         $moduleControllerMap = ['existingkey' => 'existingvalue'];
@@ -307,7 +313,8 @@ class ModuleInstallerTest extends \OxidTestCase
      *
      * @dataProvider dataProviderTestValidateModuleInstallerOnActivationThrowsExpectedException()
      */
-    public function testValidateModuleInstallerOnActivationThrowsExpectedException($shopControllerMap, $moduleControllerMap, $metaDataControllerMap) {
+    public function testValidateModuleInstallerOnActivationThrowsExpectedException($shopControllerMap, $moduleControllerMap, $metaDataControllerMap)
+    {
         $this->expectException(ModuleValidationException::class);
 
         $moduleControllerMapProviderMock = $this->getMock(\OxidEsales\EshopCommunity\Core\Routing\ModuleControllerMapProvider::class, ['getControllerMap']);
@@ -324,7 +331,8 @@ class ModuleInstallerTest extends \OxidTestCase
         $moduleInstallerMock->validateModuleMetadataControllersOnActivation($metaDataControllerMap);
     }
 
-    public function dataProviderTestValidateModuleInstallerOnActivationThrowsExpectedException() {
+    public function dataProviderTestValidateModuleInstallerOnActivationThrowsExpectedException()
+    {
         return [
             // throw an exception, if a controller key existing already in the shopControllerMap is found in metadata.php
             [
@@ -377,7 +385,8 @@ class ModuleInstallerTest extends \OxidTestCase
      *
      * @covers \OxidEsales\EshopCommunity\Core\Module\ModuleInstaller::validateModuleMetadataControllersOnActivation()
      */
-    public function testValidateModuleInstallerOnActivationCaseSensitiveValue() {
+    public function testValidateModuleInstallerOnActivationCaseSensitiveValue()
+    {
         $moduleControllerMapProviderMock = $this->getMock(\OxidEsales\EshopCommunity\Core\Routing\ModuleControllerMapProvider::class, ['getControllerMap']);
         $moduleControllerMapProviderMock->expects($this->any())->method('getControllerMap')->will($this->returnValue(['existingKey' => 'existingvalue']));
 
@@ -572,9 +581,9 @@ class ModuleInstallerTest extends \OxidTestCase
             $msg .= $patchee . ' => ' . $patch . ', ';
         }
         $msg = rtrim($msg, ', ');
-        $this->expectException(\OxidEsales\EshopCommunity\Core\Exception\ModuleValidationException::class); $this->expectExceptionMessage( $msg);
+        $this->expectException(\OxidEsales\EshopCommunity\Core\Exception\ModuleValidationException::class);
+        $this->expectExceptionMessage($msg);
 
         $installer->activate($moduleMock);
     }
-
 }

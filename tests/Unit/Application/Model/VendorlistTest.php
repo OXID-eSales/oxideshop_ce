@@ -164,7 +164,5 @@ class VendorlistTest extends \OxidTestCase
                 $this->fail("SEO link was not added to vendor object ({$sVendorLink})");
             }
         }
-
     }
-
 }

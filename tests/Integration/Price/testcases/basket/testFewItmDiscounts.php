@@ -14,36 +14,36 @@
  */
 $aData = array(
     // Articles
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
             // oxarticles db fields
             'oxid'                     => 1000,
             'oxprice'                  => 50.00,
-		    'oxvat'                    => 5,
+            'oxvat'                    => 5,
             // Amount in basket
             'amount'                   => 1,
         ),
-		1 => array (
+        1 => array(
             // oxarticles db fields
             'oxid'                     => 1003,
             'oxprice'                  => 50.00,
-		    'oxvat'                    => 5,
+            'oxvat'                    => 5,
             // Amount in basket
           //  'amount'                   => 1,
         ),
-		2 => array (
+        2 => array(
             // oxarticles db fields
             'oxid'                     => 1002,
             'oxprice'                  => 50.00,
-		    'oxvat'                    => 5,
+            'oxvat'                    => 5,
             // Amount in basket
            // 'amount'                   => 1,
         ),
     ),
     // Discounts
-    'discounts' => array (
+    'discounts' => array(
         // oxdiscount DB fields
-        0 => array (
+        0 => array(
             'oxid'         => 'testitmdiscount',
             'oxshopid' => 1,
             'oxaddsum'     => 0,
@@ -56,11 +56,11 @@ $aData = array(
             'oxitmartid' => 1003,
             'oxitmamount' => 1,
             'oxitmmultiple' => 0,
-			'oxarticles' => array ( 1000 ),
+            'oxarticles' => array( 1000 ),
             'oxsort' => 10,
         ),
-		        // oxdiscount DB fields
-        1 => array (
+                // oxdiscount DB fields
+        1 => array(
             'oxid'         => 'testitmdiscounts',
             'oxshopid' => 1,
             'oxaddsum'     => 0,
@@ -73,26 +73,26 @@ $aData = array(
             'oxitmartid' => 1002,
             'oxitmamount' => 1,
             'oxitmmultiple' => 0,
-			'oxarticles' => array ( 1000 ),
+            'oxarticles' => array( 1000 ),
             'oxsort' => 20,
         ),
     ),
     // TEST EXPECTATIONS
-    'expected' => array (
+    'expected' => array(
         // Article expected prices: ARTICLE ID => ( Unit price, Total Price )
-        'articles' => array (
-             1000 => array ( '50,00', '50,00' ),
-			 1003 => array ( '0,00', '0,00' ),
-			 1002=> array ( '0,00', '0,00' ),
+        'articles' => array(
+             1000 => array( '50,00', '50,00' ),
+             1003 => array( '0,00', '0,00' ),
+             1002=> array( '0,00', '0,00' ),
         ),
         // Expectations of other totals
-        'totals' => array (
+        'totals' => array(
             // Total BRUTTO
             'totalBrutto' => '50,00',
             // Total NETTO
             'totalNetto'  => '47,62',
             // Total VAT amount: vat% => total cost
-            'vats' => array (
+            'vats' => array(
                 5 => '2,38'
             ),
             // Total discount amounts: discount id => total cost
@@ -105,7 +105,7 @@ $aData = array(
             'grandTotal'  => '50,00'
         ),
     ),
-	    'options' => array (
+        'options' => array(
                 'config' => array(
                         'blEnterNetPrice' => false,
                         'blShowNetPrice' => false,

@@ -22,5 +22,4 @@ class AdminWrappingTest extends \OxidTestCase
         $oView = oxNew('Admin_Wrapping');
         $this->assertEquals('wrapping.tpl', $oView->render());
     }
-
 }

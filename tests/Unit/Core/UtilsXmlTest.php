@@ -9,7 +9,6 @@ use \DOMDocument;
 
 class UtilsXmlTest extends \OxidTestCase
 {
-
     public function xmlProviderNoDomDocument()
     {
         return array(

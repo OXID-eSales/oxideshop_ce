@@ -14,7 +14,6 @@ use \oxField;
 //T2009-04-20
 class SimplevariantlistTest extends \OxidTestCase
 {
-
     public function testSetParent()
     {
         $oSubj = $this->getProxyClass("oxSimpleVariantList");

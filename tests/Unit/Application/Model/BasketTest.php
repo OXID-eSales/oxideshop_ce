@@ -26,7 +26,6 @@ require_once TEST_LIBRARY_HELPERS_PATH . 'oxVoucherHelper.php';
 
 class modForTestAddBundles extends oxBasket
 {
-
     public function setBasket($aBasket)
     {
         $this->_aBasketContents = $aBasket;
@@ -45,7 +44,6 @@ class modForTestAddBundles extends oxBasket
 
 class BasketTest extends \OxidTestCase
 {
-
     public $oArticle = null;
     public $oCategory = null;
     public $oSelList = null;
@@ -91,7 +89,8 @@ class BasketTest extends \OxidTestCase
         $this->oCategory->oxcategories__oxparentid = new oxField('oxrootid', oxField::T_RAW);
         $this->oCategory->oxcategories__oxrootid = new oxField($sCatId, oxField::T_RAW);
         $this->oCategory->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
-        $this->oCategory->oxcategories__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);;
+        $this->oCategory->oxcategories__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
+        ;
         $this->oCategory->oxcategories__oxtitle = new oxField('Test category 1', oxField::T_RAW);
         $this->oCategory->save();
 
@@ -368,7 +367,6 @@ class BasketTest extends \OxidTestCase
      */
     protected function _prepareDataForTestBasketCalculationWithSpecUseCaseDescribedAbove()
     {
-
         oxDb::getDb()->execute('delete from oxuserbaskets');
         oxDb::getDb()->execute('delete from oxuserbasketitems');
 
@@ -479,8 +477,6 @@ class BasketTest extends \OxidTestCase
         $oBasket->expects($this->any())->method('getDiscountedProductsBruttoPrice')->will($this->returnValue(10.2));
 
         $this->assertTrue($oBasket->isBelowMinOrderPrice());
-
-
     }
 
     /**
@@ -726,7 +722,6 @@ class BasketTest extends \OxidTestCase
         $oItem = next($aContents);
         $this->assertEquals('1127', $oItem->getArticle()->getId());
         $this->assertEquals(2, $oItem->getAmount());
-
     }
 
     /**
@@ -1708,7 +1703,6 @@ class BasketTest extends \OxidTestCase
      */
     public function testCalcVoucherDiscountSkipChecking()
     {
-
         oxAddClassModule('oxVoucherHelper', 'oxvoucher');
         oxVoucherHelper::$blCheckWasPerformed = false;
 
@@ -1783,7 +1777,6 @@ class BasketTest extends \OxidTestCase
         $this->assertEquals('11,90', $oBasket->getFGiftCardCosts());
         $this->assertEquals('10,00', $oBasket->getGiftCardCostNet());
         $this->assertEquals('1,90', $oBasket->getGiftCardCostVat());
-
     }
 
     /**
@@ -2851,7 +2844,8 @@ class BasketTest extends \OxidTestCase
         $oCur->name = 'testCurrencyName';
         $oCur->desc = 'testDescription';
 
-        $oBasket->setBasketCurrency($oCur);;
+        $oBasket->setBasketCurrency($oCur);
+        ;
 
         $this->assertEquals($oCur, $oBasket->getBasketCurrency());
     }
@@ -3758,7 +3752,6 @@ class BasketTest extends \OxidTestCase
      */
     public function testCalcBasketDiscountMinimizeDiscountIfBiggerThanTotal()
     {
-
         $oDiscount2 = oxNew("oxDiscount");
         $oDiscount2->setId('_testDiscountId2');
         $oDiscount2->oxdiscount__oxtitle = new oxField('Test discount title 123', oxField::T_RAW);
@@ -3798,7 +3791,6 @@ class BasketTest extends \OxidTestCase
      */
     public function testCalcBasketDiscountIfDiscountIsMinus()
     {
-
         $oDiscount2 = oxNew("oxDiscount");
         $oDiscount2->setId('_testDiscountId2');
         $oDiscount2->oxdiscount__oxtitle = new oxField('Test discount title 123', oxField::T_RAW);
@@ -4197,7 +4189,6 @@ class BasketTest extends \OxidTestCase
         $this->assertTrue(oxRegistry::getSession()->getVariable("blAddedNewItem"));
         $this->assertTrue($oBasket->isNewItemAdded());
         $this->assertNull(oxRegistry::getSession()->getVariable("blAddedNewItem"));
-
     }
 
     /**

@@ -49,7 +49,6 @@ class ContactFormBridgeTest extends \PHPUnit\Framework\TestCase
             'marina.ginesta@bcn.cat',
             $message
         );
-
     }
 
     private function getContainer()

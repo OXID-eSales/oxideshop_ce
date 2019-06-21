@@ -13,7 +13,6 @@ use \oxField;
 
 class ShopTest extends \OxidTestCase
 {
-
     public function testStructure()
     {
         $oShop = oxNew('oxShop');

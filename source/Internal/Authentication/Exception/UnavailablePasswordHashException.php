@@ -11,5 +11,4 @@ namespace OxidEsales\EshopCommunity\Internal\Authentication\Exception;
  */
 class UnavailablePasswordHashException extends \Exception
 {
-
 }

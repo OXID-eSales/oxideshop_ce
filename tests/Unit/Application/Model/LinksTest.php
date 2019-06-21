@@ -10,7 +10,6 @@ use \oxDb;
 
 class LinksTest extends \OxidTestCase
 {
-
     private $_oxLinks;
 
     /**

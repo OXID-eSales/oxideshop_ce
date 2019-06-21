@@ -12,7 +12,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 class SystemRequirementsTest extends \OxidTestCase
 {
-
     public function testGetBytes()
     {
         $systemRequirements = new \OxidEsales\Eshop\Core\SystemRequirements();
@@ -514,13 +513,16 @@ class SystemRequirementsTest extends \OxidTestCase
             ]
         ];
 
-        $filterFunction = function($groupId, $moduleId, $status) {
-            if (($groupId === 'group_a') && ($moduleId === 'module_a'))
+        $filterFunction = function ($groupId, $moduleId, $status) {
+            if (($groupId === 'group_a') && ($moduleId === 'module_a')) {
                 $status = SystemRequirements::MODULE_STATUS_OK;
-            if (($groupId === 'group_a') && ($moduleId === 'module_b'))
+            }
+            if (($groupId === 'group_a') && ($moduleId === 'module_b')) {
                 $status = SystemRequirements::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS;
-            if (($groupId === 'group_b') && ($moduleId === 'module_c'))
+            }
+            if (($groupId === 'group_b') && ($moduleId === 'module_c')) {
                 $status = SystemRequirements::MODULE_STATUS_BLOCKS_SETUP;
+            }
 
             return $status;
         };

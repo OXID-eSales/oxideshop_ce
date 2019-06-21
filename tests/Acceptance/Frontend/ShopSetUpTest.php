@@ -875,8 +875,9 @@ class ShopSetUpTest extends FrontendTestCase
         list($host, $port, $name, $user, $password) = $this->getDatabaseParameters();
 
         $dsn = "mysql:host=$host";
-        if ($useDatabase)
+        if ($useDatabase) {
             $dsn .= ";dbname=$name";
+        }
 
         $pdo = new \PDO($dsn, $user, $password);
 
@@ -1198,12 +1199,15 @@ class ShopSetUpTest extends FrontendTestCase
 
     private function provideEshopDirectoryParameters($shopUrl = null, $sourcePath = null, $temporaryPath = null)
     {
-        if ($shopUrl)
+        if ($shopUrl) {
             $this->type("//input[@name='aPath[sShopURL]']", $sourcePath);
-        if ($sourcePath)
+        }
+        if ($sourcePath) {
             $this->type("//input[@name='aPath[sShopDir]']", $sourcePath);
-        if ($temporaryPath)
+        }
+        if ($temporaryPath) {
             $this->type("//input[@name='aPath[sCompileDir]']", $temporaryPath);
+        }
     }
 
     private function provideLicenseNumber($licenseNumber)
@@ -1230,8 +1234,9 @@ EOL;
     private function deleteInvalidMigration()
     {
         $fileNamePath = $this->getInvalidMigrationFilePath();
-        if (file_exists($fileNamePath))
+        if (file_exists($fileNamePath)) {
             unlink($fileNamePath);
+        }
     }
 
     private function getInvalidMigrationFilePath()
@@ -1291,7 +1296,7 @@ SCRIPT;
 
     private function skipOnInstalledDemodata()
     {
-        if ($this->checkDemodataPackageExists()){
+        if ($this->checkDemodataPackageExists()) {
             $this->markTestSkipped("The test checks the workflow with no demodata package");
         }
     }
@@ -1320,8 +1325,8 @@ SCRIPT;
     {
         $packagePaths = $this->getDemodataPackageImitationPaths();
 
-        mkdir ($packagePaths['package'], 0777, true);
-        mkdir ($packagePaths['source'], 0777, true);
+        mkdir($packagePaths['package'], 0777, true);
+        mkdir($packagePaths['source'], 0777, true);
         file_put_contents($packagePaths['demodata'], "");
     }
 

@@ -11,7 +11,7 @@ $facts = new \OxidEsales\Facts\Facts();
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title><?php $this->getText( 'HEADER_META_MAIN_TITLE'); ?> - <?php echo( $this->getTitle() ) ?></title>
+    <title><?php $this->getText('HEADER_META_MAIN_TITLE'); ?> - <?php echo($this->getTitle()) ?></title>
     <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
     <script language="JavaScript">
     <!--
@@ -57,10 +57,10 @@ $facts = new \OxidEsales\Facts\Facts();
             $cssData = file_get_contents($cssPath . 'main.css');
             preg_match_all("/url\('img\/([^']+)'\);/", $cssData, $matches);
             $images = array_unique($matches[1]);
-            foreach ($images as $image) {
-                $imgData = 'data:image/png;base64,' . base64_encode(file_get_contents($imgPath . $image));
-                $cssData = str_replace('img/' . $image, $imgData, $cssData);
-            }
+        foreach ($images as $image) {
+            $imgData = 'data:image/png;base64,' . base64_encode(file_get_contents($imgPath . $image));
+            $cssData = str_replace('img/' . $image, $imgData, $cssData);
+        }
             echo $cssData;
         ?>
     </style>
@@ -68,15 +68,15 @@ $facts = new \OxidEsales\Facts\Facts();
         <?php
             $iTabWidth = 147;
             $iSepWidth = 3;
-            if ($facts->isEnterprise()) {
-                $iTabCount = 7;
-            }
-            if ($facts->isProfessional()) {
-                $iTabCount = 7;
-            }
-            if ($facts->isCommunity()) {
-                $iTabCount = 6;
-            }
+        if ($facts->isEnterprise()) {
+            $iTabCount = 7;
+        }
+        if ($facts->isProfessional()) {
+            $iTabCount = 7;
+        }
+        if ($facts->isCommunity()) {
+            $iTabCount = 6;
+        }
             $iDocWidth = ($iTabWidth + $iSepWidth)*$iTabCount;
         ?>
         #page { width: <?php echo $iDocWidth; ?>px; }
@@ -84,40 +84,40 @@ $facts = new \OxidEsales\Facts\Facts();
     </style>
 
     <?php
-        if ( ( $iRedir2Step = $this->getNextSetupStep() ) !== null ) {
-            ?><meta http-equiv="refresh" content="3; URL=index.php?istep=<?php echo $iRedir2Step;?>&sid=<?php $this->getSid();?>"><?php
-        }
+    if (($iRedir2Step = $this->getNextSetupStep()) !== null) {
+        ?><meta http-equiv="refresh" content="3; URL=index.php?istep=<?php echo $iRedir2Step; ?>&sid=<?php $this->getSid(); ?>"><?php
+    }
     ?>
 </head>
 
 <body>
 <div id="page">
-    <a href="index.php?istep=<?php $this->getSetupStep('STEP_SYSTEMREQ' ); ?>&sid=<?php $this->getSid(); ?>"><img src="<?php echo $imgLogo; ?>" class="oxid_eshop_logo" alt="OXID eSales"></a>
+    <a href="index.php?istep=<?php $this->getSetupStep('STEP_SYSTEMREQ'); ?>&sid=<?php $this->getSid(); ?>"><img src="<?php echo $imgLogo; ?>" class="oxid_eshop_logo" alt="OXID eSales"></a>
     <div id="header">
         <?php
         $iCntr = 0;
-        foreach ( $this->getSetupSteps() as $iTab ) :
+        foreach ($this->getSetupSteps() as $iTab) :
             // only "real" steps
-            if ( fmod( $iTab, 100 ) ) {
+            if (fmod($iTab, 100)) {
                 continue;
             }
 
-            $blAct = ( floor( $this->getCurrentSetupStep() / 100 ) == ( $iTab / 100 ) );
-            $iStepId = floor( $iTab / 100 ) - 1;
+            $blAct = (floor($this->getCurrentSetupStep() / 100) == ($iTab / 100));
+            $iStepId = floor($iTab / 100) - 1;
             $iCntr++;
 
             $sTabClass = $sTabLinkOpen = $sTabLinkClose = '';
-            if ( $blAct ) {
+            if ($blAct) {
                 $sTabClass     = 'act';
                 $sTabLinkOpen  = '<a href="index.php?istep='.$iTab.'&sid='.$this->getSid(false).'">';
                 $sTabLinkClose = '</a>';
             }
-         ?>
+            ?>
             <dl class="tab <?php echo $sTabClass; ?>">
-                <dt><?php echo $sTabLinkOpen ?><?php echo $iCntr ,'. ',$this->getText( 'TAB_'.$iStepId.'_TITLE', false ); ?><?php echo $sTabLinkClose?></dt>
-                <dd><?php echo $sTabLinkOpen ?><?php $this->getText( 'TAB_'.$iStepId.'_DESC'); ?><?php echo $sTabLinkClose?></dd>
+                <dt><?php echo $sTabLinkOpen ?><?php echo $iCntr ,'. ',$this->getText('TAB_'.$iStepId.'_TITLE', false); ?><?php echo $sTabLinkClose?></dt>
+                <dd><?php echo $sTabLinkOpen ?><?php $this->getText('TAB_'.$iStepId.'_DESC'); ?><?php echo $sTabLinkClose?></dd>
             </dl>
-        <?php
+            <?php
         endforeach;
         ?>
     </div>
@@ -125,14 +125,14 @@ $facts = new \OxidEsales\Facts\Facts();
     <div id="body">
     <?php
     $aMessages = $this->getMessages();
-    foreach ( $this->getMessages() as $sMessage ) {
-        ?><br><b><?php echo $sMessage;?></b><?php
+    foreach ($this->getMessages() as $sMessage) {
+        ?><br><b><?php echo $sMessage; ?></b><?php
     }
-    if ( count( $aMessages ) ) {
+    if (count($aMessages)) {
         ?><br><br><?php
     }
 
-    if ( ( $iRedir2Step = $this->getNextSetupStep() ) !== null ) {
-        ?><br><br><?php $this->getText( 'HEADER_TEXT_SETUP_NOT_RUNS_AUTOMATICLY');?>
-        <a href="index.php?istep=<?php echo $iRedir2Step;?>&sid=<?php $this->getSid();?>" id="continue"><b><?php $this->getText( 'HERE' ); ?></b></a>.<br><br><?php
+    if (($iRedir2Step = $this->getNextSetupStep()) !== null) {
+        ?><br><br><?php $this->getText('HEADER_TEXT_SETUP_NOT_RUNS_AUTOMATICLY'); ?>
+        <a href="index.php?istep=<?php echo $iRedir2Step; ?>&sid=<?php $this->getSid(); ?>" id="continue"><b><?php $this->getText('HERE'); ?></b></a>.<br><br><?php
     }

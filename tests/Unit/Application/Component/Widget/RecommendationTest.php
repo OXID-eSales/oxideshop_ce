@@ -57,5 +57,4 @@ class RecommendationTest extends \OxidTestCase
         $oRecommList = oxNew('oxwRecommendation');
         $this->assertTrue($oRecommList->getRecommList() instanceof \OxidEsales\EshopCommunity\Application\Controller\RecommListController);
     }
-
 }

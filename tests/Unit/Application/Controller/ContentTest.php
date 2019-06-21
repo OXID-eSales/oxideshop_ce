@@ -24,7 +24,6 @@ use \oxTestModules;
  */
 class contentTest_oxUtilsView extends oxUtilsView
 {
-
     public function parseThroughSmarty($sDesc, $sOxid = null, $oActView = null, $blRecompile = false)
     {
         return $sDesc;
@@ -300,7 +299,6 @@ class ContentTest extends \OxidTestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ContentController::class, array('getUser'));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
         $this->assertFalse($oView->showPlainTemplate());
-
     }
 
     /**
@@ -701,7 +699,7 @@ class ContentTest extends \OxidTestCase
         $this->setRequestParameter('oxcid', $oSecond->getId());
         $oContent = oxNew('content');
 
-        $this->assertEquals( 'ADSSSSSSSS', $oContent->getParsedContent(), 'Content not as in second page. If result ABSSSSSSSS than it is ame as in first page, so used wrong smarty cache file.' );
+        $this->assertEquals('ADSSSSSSSS', $oContent->getParsedContent(), 'Content not as in second page. If result ABSSSSSSSS than it is ame as in first page, so used wrong smarty cache file.');
     }
 
     /**

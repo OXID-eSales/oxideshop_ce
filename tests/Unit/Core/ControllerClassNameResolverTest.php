@@ -131,4 +131,3 @@ class ControllerClassNameResolverTest extends UnitTestCase
         return $resolver;
     }
 }
-

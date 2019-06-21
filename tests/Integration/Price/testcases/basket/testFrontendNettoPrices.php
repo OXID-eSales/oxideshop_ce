@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
 /**
  * Price enter mode: netto;
  * Price view mode: brutto;
@@ -10,16 +10,16 @@
  * Wrapping: +;
  * Gift cart: +;
  * Discounts: -;
- * Short description: test added from selenium test (testFrontendNettoPrices) ;Checking when prices are entered in NETTO 
+ * Short description: test added from selenium test (testFrontendNettoPrices) ;Checking when prices are entered in NETTO
  */
 $aData = array(
     // Articles
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
             // oxarticles db fields
             'oxid'                     => 1000,
             'oxprice'                  => 50.00,
-		    'oxvat'                    => 5,
+            'oxvat'                    => 5,
             // Amount in basket
             'amount'                   => 3,
         ),
@@ -50,19 +50,19 @@ $aData = array(
 
     ),
     // TEST EXPECTATIONS
-    'expected' => array (
+    'expected' => array(
         // Article expected prices: ARTICLE ID => ( Unit price, Total Price )
-        'articles' => array (
-            1000 => array ( '52,50', '157,50' ),
+        'articles' => array(
+            1000 => array( '52,50', '157,50' ),
         ),
         // Expectations of other totals
-        'totals' => array (
+        'totals' => array(
             // Total BRUTTO
             'totalBrutto' => '157,50',
             // Total NETTO
             'totalNetto'  => '150,00',
             // Total VAT amount: vat% => total cost
-            'vats' => array (
+            'vats' => array(
                 5 => '7,50'
             ),
             // Total wrapping amounts
@@ -70,7 +70,7 @@ $aData = array(
                 'brutto' => '2,84',
             ),
             // Total giftcard amounts
-            'giftcard' => array (
+            'giftcard' => array(
                 'brutto' => '0,21',
 
             ),
@@ -78,11 +78,11 @@ $aData = array(
             'grandTotal'  => '160,55'
         ),
     ),
-	   'options' => array (
+       'options' => array(
             'config' => array(
-			    'blShowNetPrice' => false,
+                'blShowNetPrice' => false,
                 'blEnterNetPrice' => true,
-				'blWrappingVatOnTop' =>true,
+                'blWrappingVatOnTop' =>true,
                 'blDeliveryVatOnTop' => true,
             ),
                 'activeCurrencyRate' => 1,

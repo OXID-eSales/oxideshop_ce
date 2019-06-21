@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Component;
 
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 
 /**
@@ -41,14 +42,14 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $blBundle = false
     ) {
         // only if enabled and not search engine..
-        if ($this->getViewConfig()->getShowCompareList() && !\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()) {
+        if ($this->getViewConfig()->getShowCompareList() && !Registry::getUtils()->isSearchEngine()) {
             // #657 special treatment if we want to put on comparelist
-            $blAddCompare = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('addcompare');
-            $blRemoveCompare = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('removecompare');
-            $sProductId = $sProductId ? $sProductId : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aid');
+            $blAddCompare = Registry::getConfig()->getRequestParameter('addcompare');
+            $blRemoveCompare = Registry::getConfig()->getRequestParameter('removecompare');
+            $sProductId = $sProductId ? $sProductId : Registry::getConfig()->getRequestParameter('aid');
             if (($blAddCompare || $blRemoveCompare) && $sProductId) {
                 // toggle state in session array
-                $aItems = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('aFiltcompproducts');
+                $aItems = Registry::getSession()->getVariable('aFiltcompproducts');
                 if ($blAddCompare && !isset($aItems[$sProductId])) {
                     $aItems[$sProductId] = true;
                 }
@@ -57,7 +58,7 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
                     unset($aItems[$sProductId]);
                 }
 
-                \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('aFiltcompproducts', $aItems);
+                Registry::getSession()->setVariable('aFiltcompproducts', $aItems);
                 $oParentView = $this->getParent();
 
                 // #843C there was problem then field "blIsOnComparisonList" was not set to article object
@@ -95,7 +96,7 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function toNoticeList($sProductId = null, $dAmount = null, $aSel = null)
     {
-        if (!\OxidEsales\Eshop\Core\Registry::getSession()->checkSessionChallenge()) {
+        if (!Registry::getSession()->checkSessionChallenge()) {
             return;
         }
 
@@ -114,7 +115,7 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function toWishList($sProductId = null, $dAmount = null, $aSel = null)
     {
-        if (!\OxidEsales\Eshop\Core\Registry::getSession()->checkSessionChallenge()) {
+        if (!Registry::getSession()->checkSessionChallenge()) {
             return;
         }
 
@@ -136,10 +137,10 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     {
         // only if user is logged in
         if ($oUser = $this->getUser()) {
-            $sProductId = ($sProductId) ? $sProductId : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('itmid');
-            $sProductId = ($sProductId) ? $sProductId : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aid');
-            $dAmount = isset($dAmount) ? $dAmount : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('am');
-            $aSel = $aSel ? $aSel : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sel');
+            $sProductId = ($sProductId) ? $sProductId : Registry::getConfig()->getRequestParameter('itmid');
+            $sProductId = ($sProductId) ? $sProductId : Registry::getConfig()->getRequestParameter('aid');
+            $dAmount = isset($dAmount) ? $dAmount : Registry::getConfig()->getRequestParameter('am');
+            $aSel = $aSel ? $aSel : Registry::getConfig()->getRequestParameter('sel');
 
             // processing amounts
             $dAmount = str_replace(',', '.', $dAmount);

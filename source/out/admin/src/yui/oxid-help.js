@@ -1,13 +1,12 @@
 // http://developer.yahoo.com/yui/articles/hosting/?container&dragdrop&utilities&MIN&nocombine&norollup&basepath&[{$shop->basetpldir}]yui/build/
 
-YAHOO.namespace( 'YAHOO.oxid' );
+YAHOO.namespace('YAHOO.oxid');
 
 var $ = YAHOO.util.Dom.get;
 
 // --------------------------------------------------------------------------------
 
-YAHOO.oxid.help = new function()
-{
+YAHOO.oxid.help = new function () {
     var helpBtnIdPrefix   = "helpBtn_";
     var helpTexttIdPrefix = "helpText_";
 
@@ -18,7 +17,7 @@ YAHOO.oxid.help = new function()
     /*
      * Show help panel
      */
-    this.showPanel = function(helpId) {
+    this.showPanel = function (helpId) {
 
         this.helpBtntId   = helpBtnIdPrefix + helpId;
         this.helpTextBody = $(helpTexttIdPrefix + helpId).innerHTML;
@@ -42,7 +41,7 @@ YAHOO.oxid.help = new function()
     /*
      * Set general panel properties
      */
-    this.setTextPanelProperties = function() {
+    this.setTextPanelProperties = function () {
 
         this.helpTextPanel.cfg.setProperty("width", "370px");
         this.helpTextPanel.cfg.setProperty("visible", false);

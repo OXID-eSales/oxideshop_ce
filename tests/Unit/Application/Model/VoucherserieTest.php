@@ -14,7 +14,6 @@ use \oxRegistry;
  */
 class VoucherserieTest extends \OxidTestCase
 {
-
     protected $_aIds = null;
 
     /**

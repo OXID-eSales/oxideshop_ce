@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Controller\TextEditorHandler;
+use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\ShopVersion;
 
 /**
@@ -70,14 +72,14 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
     {
         $sEditObjectValue = '';
         if ($oObject && $sField && isset($oObject->$sField)) {
-            if ($oObject->$sField instanceof \OxidEsales\Eshop\Core\Field) {
+            if ($oObject->$sField instanceof Field) {
                 $sEditObjectValue = $oObject->$sField->getRawValue();
             } else {
                 $sEditObjectValue = $oObject->$sField->value;
             }
 
             $sEditObjectValue = $this->_processEditValue($sEditObjectValue);
-            $oObject->$sField = new \OxidEsales\Eshop\Core\Field($sEditObjectValue, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $oObject->$sField = new Field($sEditObjectValue, Field::T_RAW);
         }
 
         return $sEditObjectValue;
@@ -119,7 +121,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
     {
         $objectValue = $this->_getEditValue($object, $field);
 
-        $textEditor = oxNew(\OxidEsales\Eshop\Application\Controller\TextEditorHandler::class);
+        $textEditor = oxNew(TextEditorHandler::class);
 
         return $textEditor->renderPlainTextEditor($width, $height, $objectValue, $field);
     }
@@ -223,7 +225,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
 
         // add first fake category for not assigned articles
         $oRoot = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
-        $oRoot->oxcategories__oxtitle = new \OxidEsales\Eshop\Core\Field('--');
+        $oRoot->oxcategories__oxtitle = new Field('--');
 
         $oCatTree->assign(array_merge(['' => $oRoot], $oCatTree->getArray()));
 
@@ -245,8 +247,13 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function _getCategoryTree($sTplVarName, $sSelectedCatId, $sEditCatId = '', $blForceNonCache = false, $iTreeShopId = null)
-    {
+    protected function _getCategoryTree(
+        $sTplVarName,
+        $sSelectedCatId,
+        $sEditCatId = '',
+        $blForceNonCache = false,
+        $iTreeShopId = null
+    ) {
         $oCatTree = $this->_createCategoryTree($sTplVarName, $sEditCatId, $blForceNonCache, $iTreeShopId);
 
         // mark selected
@@ -287,7 +294,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
 
         $oObject = oxNew($sFolderClass);
         if ($oObject->load($this->getEditObjectId())) {
-            $oObject->{$oObject->getCoreTableName() . '__oxfolder'} = new \OxidEsales\Eshop\Core\Field($sFolder);
+            $oObject->{$oObject->getCoreTableName() . '__oxfolder'} = new Field($sFolder);
             $oObject->save();
         }
     }
@@ -337,18 +344,16 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * Note: the parameters editedObject and field are not used here but in the enterprise edition.
      *
-     * @param \OxidEsales\Eshop\Application\Controller\TextEditorHandler $textEditorHandler
-     * @param mixed                                                      $editedObject      The object we want to edit.
-     *                                                                                      Either type of
-     *                                                                                      \OxidEsales\Eshop\Core\BaseModel
-     *                                                                                      if you want to persist or
-     *                                                                                      anything else
-     * @param string                                                     $field             The input field we want to edit
-     * @param string                                                     $stylesheet        The name of the CSS file
+     * @param TextEditorHandler $textEditorHandler
+     * @param mixed             $editedObject      The object we want to edit, either type of
+     *                                             \OxidEsales\Eshop\Core\BaseModel if you want to persist or anything
+     *                                             else
+     * @param string            $field             The input field we want to edit
+     * @param string            $stylesheet        The name of the CSS file
      *
      */
     protected function configureTextEditorHandler(
-        \OxidEsales\Eshop\Application\Controller\TextEditorHandler $textEditorHandler,
+        TextEditorHandler $textEditorHandler,
         $editedObject,
         $field,
         $stylesheet
@@ -359,11 +364,11 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
     /**
      * Create the handler for the text editor.
      *
-     * @return \OxidEsales\Eshop\Application\Controller\TextEditorHandler The text editor handler
+     * @return TextEditorHandler The text editor handler
      */
     protected function createTextEditorHandler()
     {
-        $textEditorHandler = oxNew(\OxidEsales\Eshop\Application\Controller\TextEditorHandler::class);
+        $textEditorHandler = oxNew(TextEditorHandler::class);
 
         return $textEditorHandler;
     }

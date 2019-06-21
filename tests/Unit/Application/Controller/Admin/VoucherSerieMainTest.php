@@ -184,7 +184,6 @@ class VoucherSerieMainTest extends \OxidTestCase
 
         $this->assertNotNull($oVoucherSerie);
         $this->assertEquals("_testvoucherserie", $oVoucherSerie->getId());
-
     }
 
     /**

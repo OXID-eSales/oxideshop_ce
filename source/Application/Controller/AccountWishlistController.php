@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 use oxField;
 
@@ -107,8 +108,8 @@ class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller
     /**
      * If user is logged in loads his wishlist articles (articles may be accessed by
      * \OxidEsales\Eshop\Application\Model\User::GetBasket()), loads similar articles (is available) for
-     * the last article in list loaded by \OxidEsales\Eshop\Application\Model\Article::GetSimilarProducts() and
-     * returns name of template to render \OxidEsales\Eshop\Application\Controller\AccountWishlistController::_sThisTemplate
+     * the last article in list loaded by \OxidEsales\Eshop\Application\Model\Article::GetSimilarProducts() and returns
+     * name of template to render \OxidEsales\Eshop\Application\Controller\AccountWishlistController::_sThisTemplate
      *
      * @return  string  $_sThisTemplate current template file name
      */
@@ -133,7 +134,7 @@ class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller
     public function showSuggest()
     {
         if ($this->_blShowSuggest === null) {
-            $this->_blShowSuggest = ( bool ) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('blshowsuggest');
+            $this->_blShowSuggest = ( bool ) Registry::getConfig()->getRequestParameter('blshowsuggest');
         }
 
         return $this->_blShowSuggest;
@@ -202,15 +203,15 @@ class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller
      */
     public function sendWishList()
     {
-        if (!\OxidEsales\Eshop\Core\Registry::getSession()->checkSessionChallenge()) {
+        if (!Registry::getSession()->checkSessionChallenge()) {
             return false;
         }
 
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval', true);
+        $aParams = Registry::getConfig()->getRequestParameter('editval', true);
         if (is_array($aParams)) {
-            $oUtilsView = \OxidEsales\Eshop\Core\Registry::getUtilsView();
+            $oUtilsView = Registry::getUtilsView();
             $oParams = ( object ) $aParams;
-            $this->setEnteredData(( object ) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval'));
+            $this->setEnteredData(( object ) Registry::getConfig()->getRequestParameter('editval'));
 
             if (!isset($aParams['rec_name']) || !isset($aParams['rec_email']) ||
                 !$aParams['rec_name'] || !$aParams['rec_email']
@@ -276,12 +277,12 @@ class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller
      */
     public function togglePublic()
     {
-        if (!\OxidEsales\Eshop\Core\Registry::getSession()->checkSessionChallenge()) {
+        if (!Registry::getSession()->checkSessionChallenge()) {
             return false;
         }
 
         if ($oUser = $this->getUser()) {
-            $blPublic = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('blpublic');
+            $blPublic = (int) Registry::getConfig()->getRequestParameter('blpublic');
             $oBasket = $oUser->getBasket('wishlist');
             $oBasket->oxuserbaskets__oxpublic = new \OxidEsales\Eshop\Core\Field(($blPublic == 1) ? $blPublic : 0);
             $oBasket->save();
@@ -294,7 +295,7 @@ class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller
      */
     public function searchForWishList()
     {
-        if ($sSearch = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('search')) {
+        if ($sSearch = Registry::getConfig()->getRequestParameter('search')) {
             // search for baskets
             $oUserList = oxNew(\OxidEsales\Eshop\Application\Model\UserList::class);
             $oUserList->loadWishlistUsers($sSearch);
@@ -337,14 +338,14 @@ class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller
         $aPaths = [];
         $aPath = [];
 
-        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        $iBaseLanguage = Registry::getLang()->getBaseLanguage();
         $sSelfLink = $this->getViewConfig()->getSelfLink();
 
-        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
-        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($sSelfLink . 'cl=account');
+        $aPath['title'] = Registry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
+        $aPath['link'] = Registry::getSeoEncoder()->getStaticUrl($sSelfLink . 'cl=account');
         $aPaths[] = $aPath;
 
-        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_GIFT_REGISTRY', $iBaseLanguage, false);
+        $aPath['title'] = Registry::getLang()->translateString('MY_GIFT_REGISTRY', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 

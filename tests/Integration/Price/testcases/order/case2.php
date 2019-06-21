@@ -1,8 +1,8 @@
 <?php
 // Netto - Brutto start case, after order saving, switching to Netto - Netto, updating
-$aData = array (
-     'articles' => array (
-         0 => array (
+$aData = array(
+     'articles' => array(
+         0 => array(
              'oxid'       => '111',
              'oxtitle'    => '111',
              'oxprice'    => 1,
@@ -11,8 +11,8 @@ $aData = array (
              'amount'     => 1,
          ),
      ),
-    'discounts' => array (
-        0 => array (
+    'discounts' => array(
+        0 => array(
             'oxid'         => 'discount10for111',
             'oxaddsum'     => 10,
             'oxaddsumtype' => '%',
@@ -22,7 +22,7 @@ $aData = array (
             'oxsort' => 10,
         ),
     ),
-    'costs' => array (
+    'costs' => array(
         'delivery' => array(
                 0 => array(
                     'oxactive' => 1,
@@ -43,17 +43,17 @@ $aData = array (
                 ),
         ),
     ),
-    'expected' => array (
-        1 => array (
-            'articles' => array (
+    'expected' => array(
+        1 => array(
+            'articles' => array(
                     // brut total
-                    '111' => array ( '1,19', '1,19' ),
+                    '111' => array( '1,19', '1,19' ),
             ),
-            'totals' => array (
+            'totals' => array(
                     'totalBrutto' => '1,19',
                     'discount' => '0,12',
                     'totalNetto'  => '0,90',
-                    'vats' => array (
+                    'vats' => array(
                             19 => '0,17'
                     ),
                     'delivery' => array(
@@ -65,16 +65,16 @@ $aData = array (
                     'grandTotal'  => '65,21',
             ),
         ),
-        2 => array (
-            'articles' => array (
+        2 => array(
+            'articles' => array(
                     // brut total
-                    '111' => array ( '1,19', '1,19' ),
+                    '111' => array( '1,19', '1,19' ),
             ),
-            'totals' => array (
+            'totals' => array(
                     'totalBrutto' => '1,19',
                     'discount' => '0,12',
                     'totalNetto'  => '0,90',
-                    'vats' => array (
+                    'vats' => array(
                             19 => '0,17'
                     ),
                     'delivery' => array(
@@ -87,14 +87,14 @@ $aData = array (
             ),
         )
     ),
-    'options' => array (
-            'config' => array (
+    'options' => array(
+            'config' => array(
                 'blEnterNetPrice' => true,
                 'blShowNetPrice' => false,
             ),
     ),
-    'actions' => array (
-        '_changeConfigs' => array (
+    'actions' => array(
+        '_changeConfigs' => array(
             'blShowNetPrice' => true,
         ),
     ),

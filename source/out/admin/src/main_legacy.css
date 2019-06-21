@@ -467,7 +467,7 @@ span.new{
 
 a#linkToUpdate,
 .underlined {
-    text-decoration:underline;	
+    text-decoration:underline;
 }
 
 a#linkToUpdate:hover,
@@ -475,11 +475,11 @@ a#linkToUpdate:hover,
     color: #787878;
 }
 #tShopLicense {
-	float: left;
+    float: left;
 }
 #tVersionInfo {
-	float: right;
-	width: 45%;
+    float: right;
+    width: 45%;
     border-collapse: collapse;
 }
 .mallAssignment {

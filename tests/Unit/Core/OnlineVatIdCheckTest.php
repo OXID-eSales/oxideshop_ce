@@ -79,7 +79,6 @@ class OnlineVatIdCheckTest extends \OxidTestCase
         $this->assertFalse($oOnlineVatCheck->UNITcheckOnline($oCheckVat));
         ini_set('default_socket_timeout', $iTime);
         $this->assertEquals('INVALID_INPUT', $oOnlineVatCheck->getNonPublicVar('_sError'));
-
     }
 
     /**

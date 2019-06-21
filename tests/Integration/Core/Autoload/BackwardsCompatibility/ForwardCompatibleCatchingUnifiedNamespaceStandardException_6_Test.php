@@ -25,7 +25,7 @@ class ForwardCompatibleCatchingUnifiedNamespaceStandardException_6_Test extends 
             $this->assertTrue(true, 'The given exception (new \oxException()) was caught as \OxidEsales\Eshop\Core\Exception\StandardException');
         } catch (\Exception $exception) {
             /** If the exception has not been caught before, the test has failed */
-            $this->fail( 'The given exception (new \oxException()) was not caught as \OxidEsales\Eshop\Core\Exception\StandardException');
+            $this->fail('The given exception (new \oxException()) was not caught as \OxidEsales\Eshop\Core\Exception\StandardException');
         }
     }
 }

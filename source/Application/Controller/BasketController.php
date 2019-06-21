@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxArticle;
+use OxidEsales\Eshop\Application\Model\Wrapping;
 use oxRegistry;
 use oxList;
 use oxBasketContentMarkGenerator;
@@ -280,7 +281,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
         if ($this->_iWrapCnt === null) {
             $this->_iWrapCnt = 0;
 
-            $oWrap = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class);
+            $oWrap = oxNew(Wrapping::class);
             $this->_iWrapCnt += $oWrap->getWrappingCount('WRAP');
             $this->_iWrapCnt += $oWrap->getWrappingCount('CARD');
         }
@@ -300,7 +301,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
 
             // load wrapping papers
             if ($this->getViewConfig()->getShowGiftWrapping()) {
-                $this->_oWrappings = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class)->getWrappingList('WRAP');
+                $this->_oWrappings = oxNew(Wrapping::class)->getWrappingList('WRAP');
             }
         }
 
@@ -319,7 +320,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
 
             // load gift cards
             if ($this->getViewConfig()->getShowGiftWrapping()) {
-                $this->_oCards = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class)->getWrappingList('CARD');
+                $this->_oCards = oxNew(Wrapping::class)->getWrappingList('CARD');
             }
         }
 

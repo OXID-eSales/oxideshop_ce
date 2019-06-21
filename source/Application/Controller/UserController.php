@@ -5,6 +5,7 @@
  */
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 
 /**
@@ -92,7 +93,7 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
             $isPsBasketReservationsEnabled = $config->getConfigParam('blPsBasketReservationEnabled');
             if ($this->_blIsOrderStep && $isPsBasketReservationsEnabled &&
                 (!$basket || ($basket && !$basket->getProductsCount()))) {
-                \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($config->getShopHomeUrl() . 'cl=basket', true, 302);
+                Registry::getUtils()->redirect($config->getShopHomeUrl() . 'cl=basket', true, 302);
             }
         }
 
@@ -124,7 +125,7 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
     {
         if ($this->_iOption === null) {
             // passing user chosen option value to display correct content
-            $option = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('option');
+            $option = Registry::getConfig()->getRequestParameter('option');
             // if user chosen "Option 2"" - we should show user details only if he is authorized
             if ($option == 2 && !$this->getUser()) {
                 $option = 0;
@@ -142,11 +143,11 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
      */
     public function getOrderRemark()
     {
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $config = Registry::getConfig();
         if ($this->_sOrderRemark === null) {
             // if already connected, we can use the session
             if ($this->getUser()) {
-                $orderRemark = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('ordrem');
+                $orderRemark = Registry::getSession()->getVariable('ordrem');
             } else {
                 // not connected so nowhere to save, we're gonna use what we get from post
                 $orderRemark = $config->getRequestParameter('order_remark', true);
@@ -166,7 +167,7 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
     public function isNewsSubscribed()
     {
         if ($this->_blNewsSubscribed === null) {
-            if (($isSubscribedToNews = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('blnewssubscribed')) === null) {
+            if (($isSubscribedToNews = Registry::getConfig()->getRequestParameter('blnewssubscribed')) === null) {
                 $isSubscribedToNews = false;
             }
             if (($user = $this->getUser())) {
@@ -189,7 +190,7 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
      */
     public function showShipAddress()
     {
-        return \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('blshowshipaddress');
+        return Registry::getSession()->getVariable('blshowshipaddress');
     }
 
     /**
@@ -199,7 +200,7 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
      */
     public function modifyBillAddress()
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('blnewssubscribed');
+        return Registry::getConfig()->getRequestParameter('blnewssubscribed');
     }
 
     /**
@@ -212,8 +213,8 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
         $paths = [];
         $path = [];
 
-        $baseLanguageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
-        $path['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('ADDRESS', $baseLanguageId, false);
+        $baseLanguageId = Registry::getLang()->getBaseLanguage();
+        $path['title'] = Registry::getLang()->translateString('ADDRESS', $baseLanguageId, false);
         $path['link'] = $this->getLink();
 
         $paths[] = $path;

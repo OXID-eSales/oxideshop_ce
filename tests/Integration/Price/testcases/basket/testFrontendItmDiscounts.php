@@ -14,28 +14,28 @@
  */
 $aData = array(
     // Articles
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
             // oxarticles db fields
             'oxid'                     => 1000,
             'oxprice'                  => 50.00,
-		    'oxvat'                    => 5,
+            'oxvat'                    => 5,
             // Amount in basket
             'amount'                   => 5,
         ),
-		1 => array (
+        1 => array(
             // oxarticles db fields
             'oxid'                     => 1003,
             'oxprice'                  => 50.00,
-		    'oxvat'                    => 5,
+            'oxvat'                    => 5,
             // Amount in basket
           //  'amount'                   => 1,
         ),
     ),
     // Discounts
-    'discounts' => array (
+    'discounts' => array(
         // oxdiscount DB fields
-        0 => array (
+        0 => array(
             'oxid'         => 'testitmdiscount',
             'oxshopid' => 1,
             'oxaddsum'     => 0,
@@ -48,11 +48,11 @@ $aData = array(
             'oxitmartid' => 1003,
             'oxitmamount' => 1,
             'oxitmmultiple' => 0,
-			'oxarticles' => array ( 1000 ),
+            'oxarticles' => array( 1000 ),
             'oxsort' => 10,
 
         ),
-        1 => array (
+        1 => array(
             // Discount 10% on 200 Euro or more
             'oxid'         => 'testdiscountfrom200',
             'oxshopid' => 1,
@@ -67,24 +67,24 @@ $aData = array(
         ),
     ),
     // TEST EXPECTATIONS
-    'expected' => array (
+    'expected' => array(
         // Article expected prices: ARTICLE ID => ( Unit price, Total Price )
-        'articles' => array (
-             1000 => array ( '50,00', '250,00' ),
-			 1003 => array ( '0,00', '0,00' ),
+        'articles' => array(
+             1000 => array( '50,00', '250,00' ),
+             1003 => array( '0,00', '0,00' ),
         ),
         // Expectations of other totals
-        'totals' => array (
+        'totals' => array(
             // Total BRUTTO
             'totalBrutto' => '250,00',
             // Total NETTO
             'totalNetto'  => '214,29',
             // Total VAT amount: vat% => total cost
-            'vats' => array (
+            'vats' => array(
                 5 => '10,71'
             ),
             // Total discount amounts: discount id => total cost
-            'discounts' => array (
+            'discounts' => array(
                 // Expectation for special discount with specified ID
                 'testdiscountfrom200' => '25,00',
             ),
@@ -93,7 +93,7 @@ $aData = array(
             'grandTotal'  => '225,00'
         ),
     ),
-	   'options' => array (
+       'options' => array(
             'config' => array(
                 'blEnterNetPrice' => false,
                 'blShowNetPrice' => false,

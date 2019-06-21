@@ -6,4 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\namespaced_from_ns;
 
-class MyClass extends \OxidEsales\EshopCommunity\Application\Model\Article {}
+class MyClass extends \OxidEsales\EshopCommunity\Application\Model\Article
+{
+}

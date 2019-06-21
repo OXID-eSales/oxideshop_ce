@@ -42,7 +42,6 @@ class modForTestGetBaseTplDirExpectsDefault extends oxConfig
 
 class modForTestInitLoadingPriority extends oxConfig
 {
-
     public $iDebug;
 
     protected function _loadVarsFromDb($sShopID, $aOnlyVars = null, $sModule = '')
@@ -55,7 +54,6 @@ class modForTestInitLoadingPriority extends oxConfig
 
 class ConfigTest extends \OxidTestCase
 {
-
     protected $_iCurr = null;
     protected $_aShops = array();
     private $shopUrl = 'http://www.example.com/';
@@ -203,16 +201,18 @@ class ConfigTest extends \OxidTestCase
      * test that is httpsOnly method on config returns true if connection is using https and the shop is configured
      * with https for both urls
      */
-    public function testIsHttpsOnlySameUrlWithSSl() {
+    public function testIsHttpsOnlySameUrlWithSSl()
+    {
         $res = $this->isHttpsOnlySameUrl(true);
-        $this->assertTrue( $res);
+        $this->assertTrue($res);
     }
 
     /**
      * test that is httpsOnly method on config returns false if connection is not using https and the shop is configured
      * with http for both urls
      */
-    public function testIsHttpsOnlySameUrlNotSsl() {
+    public function testIsHttpsOnlySameUrlNotSsl()
+    {
         $res = $this->isHttpsOnlySameUrl(false);
         $this->assertFalse($res);
     }
@@ -704,7 +704,6 @@ class ConfigTest extends \OxidTestCase
                        "theme:basic#sZoomImageSize",
                        "theme:azure#sZoomImageSize");
         foreach ($aVars as $sData) {
-
             $aData = explode("#", $sData);
             $sModule = $aData[0] ? $aData[0] : oxConfig::OXMODULE_THEME_PREFIX . $oConfig->getConfigParam('sTheme');
             $sVar = $aData[1];
@@ -730,7 +729,6 @@ class ConfigTest extends \OxidTestCase
 
         $oConfig = oxNew('oxConfig');
         $this->assertFalse($oConfig->getShopConfVar('testVar1') == null);
-
     }
 
 
@@ -1335,7 +1333,6 @@ class ConfigTest extends \OxidTestCase
         try {
             $this->assertEquals($sLangDir, $oConfig->getImageDir());
             $this->assertEquals($sNoLangDir, $oConfig->getImageDir());
-
         } catch (Exception $e) {
         }
 
@@ -1665,7 +1662,6 @@ class ConfigTest extends \OxidTestCase
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
         $this->assertEquals($oGbp, $oConfig->getActShopCurrencyObject());
-
     }
 
     public function testGetActShopCurrencyObjectDefauls()
@@ -2278,7 +2274,6 @@ class ConfigTest extends \OxidTestCase
 
         $oConfig->setIsSsl(true);
         $this->assertEquals($sSSLUrl, $oConfig->getShopMainUrl());
-
     }
 
     /**
@@ -2519,7 +2514,7 @@ class ConfigTest extends \OxidTestCase
     /**
      * @covers \OxidEsales\Eshop\Core\Config::getExceptionHandler()
      */
-    public function testGetExceptionHandlerReturnsInstanceOfExceptionHandler ()
+    public function testGetExceptionHandlerReturnsInstanceOfExceptionHandler()
     {
         $expectedClass = \OxidEsales\Eshop\Core\Exception\ExceptionHandler::class;
 
@@ -2616,5 +2611,4 @@ class ConfigTest extends \OxidTestCase
 
         return $resolver;
     }
-
 }

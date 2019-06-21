@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Application\Container;
 
 /**
@@ -107,7 +108,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function moveLeft() //#777C
     {
-        $sArticleId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aid');
+        $sArticleId = Registry::getConfig()->getRequestParameter('aid');
         if ($sArticleId && ($aItems = $this->getCompareItems())) {
             $sPrevArticleId = null;
 
@@ -143,7 +144,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function moveRight() //#777C
     {
-        $sArticleId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aid');
+        $sArticleId = Registry::getConfig()->getRequestParameter('aid');
         if ($sArticleId && ($aItems = $this->getCompareItems())) {
             $sNextArticleId = 0;
 
@@ -218,7 +219,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getCompareItems()
     {
         if ($this->_aCompItems === null) {
-            $aItems = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('aFiltcompproducts');
+            $aItems = Registry::getSession()->getVariable('aFiltcompproducts');
             if (is_array($aItems) && count($aItems)) {
                 $this->_aCompItems = $aItems;
             }
@@ -235,7 +236,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function setCompareItems($aItems)
     {
         $this->_aCompItems = $aItems;
-        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('aFiltcompproducts', $aItems);
+        Registry::getSession()->setVariable('aFiltcompproducts', $aItems);
     }
 
     /**
@@ -360,7 +361,8 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $aKeys = array_intersect($aItemKeys, $aListKeys);
         $aNewItems = [];
         $iActPage = $this->getActPage();
-        for ($i = $this->_iArticlesPerPage * $iActPage; $i < $this->_iArticlesPerPage * $iActPage + $this->_iArticlesPerPage; $i++) {
+        $maxPageIndex = $this->_iArticlesPerPage * $iActPage + $this->_iArticlesPerPage;
+        for ($i = $this->_iArticlesPerPage * $iActPage; $i < $maxPageIndex; $i++) {
             if (!isset($aKeys[$i])) {
                 break;
             }
@@ -436,11 +438,19 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $aPaths = [];
         $aPath = [];
 
-        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_ACCOUNT', \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage(), false);
-        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($this->getViewConfig()->getSelfLink() . 'cl=account');
+        $aPath['title'] = Registry::getLang()->translateString(
+            'MY_ACCOUNT',
+            Registry::getLang()->getBaseLanguage(),
+            false
+        );
+        $aPath['link'] = Registry::getSeoEncoder()->getStaticUrl($this->getViewConfig()->getSelfLink() . 'cl=account');
         $aPaths[] = $aPath;
 
-        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('PRODUCT_COMPARISON', \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage(), false);
+        $aPath['title'] = Registry::getLang()->translateString(
+            'PRODUCT_COMPARISON',
+            Registry::getLang()->getBaseLanguage(),
+            false
+        );
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 

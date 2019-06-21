@@ -103,7 +103,7 @@ class BasketAdminTest extends AdminTestCase
     {
         $aParams = array("type" => "bool", "value" => $sParamValue);
 
-        if (!is_null($sModule)){
+        if (!is_null($sModule)) {
             $aParams = array_merge($aParams, array("module" => $sModule));
         }
 

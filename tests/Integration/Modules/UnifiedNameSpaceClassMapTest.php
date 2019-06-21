@@ -225,7 +225,7 @@ class UnifiedNameSpaceClassMapTest extends BaseModuleTestCase
         $this->assertObjectHasInheritances($createdContentController, $expectedInheritanceChainEdition);
 
         $resultTitle = $createdContentController->getTitle();
-        $this->assertSame($expectedTitle,$resultTitle);
+        $this->assertSame($expectedTitle, $resultTitle);
     }
 
     /**

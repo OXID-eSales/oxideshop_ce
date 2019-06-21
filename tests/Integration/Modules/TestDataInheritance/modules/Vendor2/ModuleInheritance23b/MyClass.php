@@ -7,4 +7,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritanc
 
 use \vendor_1_module_1_myclass2;
 
-class MyClass extends vendor_1_module_1_myclass2 {}
+class MyClass extends vendor_1_module_1_myclass2
+{
+}

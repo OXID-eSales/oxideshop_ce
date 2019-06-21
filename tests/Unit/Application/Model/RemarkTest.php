@@ -10,7 +10,6 @@ use \oxRegistry;
 
 class RemarkTest extends \OxidTestCase
 {
-
     private $_oRemark = null;
 
     protected $_iNow = null;

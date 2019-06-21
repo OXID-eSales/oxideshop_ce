@@ -7,7 +7,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 class OutofstockexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
-
     private $testObject = null;
     private $message = 'Erik was here..';
     private $amount = 13;
@@ -66,5 +65,4 @@ class OutofstockexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $exception = oxNew($class);
         $this->assertSame($class, $exception->getType());
     }
-
 }

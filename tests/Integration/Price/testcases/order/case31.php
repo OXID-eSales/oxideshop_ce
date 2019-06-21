@@ -15,9 +15,9 @@
  * Actions with order:
  *  1. update :changed products amounts
  */
-$aData = array (
-     'articles' => array (
-             0 => array (
+$aData = array(
+     'articles' => array(
+             0 => array(
                      'oxid'       => '111',
                      'oxtitle'    => '111',
                      'oxprice'    => 55.55,
@@ -26,18 +26,18 @@ $aData = array (
                      'amount'     => 6,
              ),
      ),
-    'discounts' => array (
-			0 => array (
+    'discounts' => array(
+            0 => array(
                     'oxid'         => 'discount15fo678',
                     'oxaddsum'     => 15,
                     'oxaddsumtype' => '%',
                     'oxamount' => 1,
                     'oxamountto' => 99999,
                     'oxactive' => 1,
-				    'oxarticles' => array ( 111, ),
+                    'oxarticles' => array( 111, ),
                     'oxsort' => 10,
             ),
-        1 => array (
+        1 => array(
             'oxid'         => 'discountitm',
             'oxaddsum'     => 0,
             'oxaddsumtype' => 'itm',
@@ -47,13 +47,13 @@ $aData = array (
             'oxitmartid' => 1004,
             'oxitmamount' => 1,
             'oxitmultiple' => 2,
-            'oxarticles' => array ( 111 ),
+            'oxarticles' => array( 111 ),
             'oxsort' => 20,
         ),
     ),
-    'costs' => array (
-        'delivery' => array (
-                    0 => array (
+    'costs' => array(
+        'delivery' => array(
+                    0 => array(
                             'oxactive' => 1,
                             'oxtitle' => 'Shipping costs for Example Set2: UPS 24 hrs Express: $12.90',
                             'oxaddsum' => 13,
@@ -63,7 +63,7 @@ $aData = array (
                             'oxparamend' => 99999,
                             'oxsort' => '5000',
                             'oxfixed' => 0,
-                            'oxdeliveryset' => array (
+                            'oxdeliveryset' => array(
                                     'oxactive' => 1,
                                     'oxpos' => 30,
                                     'oxtitle' => 'Example Set2: UPS Express 24 hours',
@@ -77,21 +77,21 @@ $aData = array (
                     'oxfromamount' => 0,
                     'oxtoamount' => 1000000,
                     'oxchecked' => 1,
-					'oxaddsumrules'=>7,
+                    'oxaddsumrules'=>7,
                 ),
         ),
     ),
-    'expected' => array (
-        1 => array (
-            'articles' => array (
-                    '111' => array ( '40,86', '245,16' ),
+    'expected' => array(
+        1 => array(
+            'articles' => array(
+                    '111' => array( '40,86', '245,16' ),
 
-					),
-            'totals' => array (
+                    ),
+            'totals' => array(
                     'totalBrutto' => '283,28',
-					'discount' => '0,00',
+                    'discount' => '0,00',
                     'totalNetto'  => '245,16',
-                    'vats' => array (
+                    'vats' => array(
                             15.55 => '38,12',
                     ),
                     'delivery' => array(
@@ -103,15 +103,15 @@ $aData = array (
                     'grandTotal'  => '347,02',
             ),
         ),
-        2 => array (
-			'articles' => array (
-                    '111' => array ( '40,86', '40,86' ),
-					),
-            'totals' => array (
+        2 => array(
+            'articles' => array(
+                    '111' => array( '40,86', '40,86' ),
+                    ),
+            'totals' => array(
                     'totalBrutto' => '47,21',
-					'discount' => '0,00',
+                    'discount' => '0,00',
                     'totalNetto'  => '40,86',
-                    'vats' => array (
+                    'vats' => array(
                             15.55 => '6,35',
 
                     ),
@@ -125,24 +125,24 @@ $aData = array (
             ),
         ),
     ),
-    'options' => array (
-            'config' => array (
+    'options' => array(
+            'config' => array(
                 'blEnterNetPrice' => false,
                 'blShowNetPrice' => true,
             ),
     ),
-    'actions' => array (
-            '_changeConfigs' => array (
+    'actions' => array(
+            '_changeConfigs' => array(
                 'blEnterNetPrice' => false,
                 'blShowNetPrice' => true,
             ),
 
-			 '_changeArticles' => array (
+             '_changeArticles' => array(
              0 => array(
                       'oxid'       => '111',
                       'amount'     => 1,
             ),
             ),
-	),
+    ),
 
 );

@@ -33,7 +33,7 @@ class ContainerTest extends \PHPUnit\Framework\TestCase
 
     public function setUp()
     {
-        if (file_exists($this->getCacheFilePath())){
+        if (file_exists($this->getCacheFilePath())) {
             unlink($this->getCacheFilePath());
         }
 
@@ -45,7 +45,7 @@ class ContainerTest extends \PHPUnit\Framework\TestCase
 
     public function tearDown()
     {
-        if (file_exists($this->getCacheFilePath())){
+        if (file_exists($this->getCacheFilePath())) {
             unlink($this->getCacheFilePath());
         }
     }
@@ -106,7 +106,6 @@ EOT;
         $container = $factory->getContainer();
 
         $this->assertEquals("This is a dummy container", $container->get(LoggerInterface::class));
-
     }
 
     /**

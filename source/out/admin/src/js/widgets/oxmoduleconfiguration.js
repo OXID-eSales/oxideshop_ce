@@ -19,9 +19,9 @@
  * @version   OXID eShop CE
  */
 
-( function( $ ) {
+( function ( $ ) {
 
-    oxModuleConfiguration = (function() {
+    oxModuleConfiguration = (function () {
 
         /**
          * Object for jQuery widget creation.
@@ -132,6 +132,6 @@
         return obj;
     })();
 
-    $.widget( "ui.oxModuleConfiguration", oxModuleConfiguration );
+    $.widget("ui.oxModuleConfiguration", oxModuleConfiguration);
 
-} )( jQuery );
+} )(jQuery);

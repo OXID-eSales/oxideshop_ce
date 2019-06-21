@@ -4,8 +4,8 @@
  * See LICENSE file for license details.
  */
 
-class MyEvents {
-
+class MyEvents
+{
     public static function onActivate()
     {
         $oConfig = oxRegistry::getConfig();
@@ -17,4 +17,4 @@ class MyEvents {
         $oConfig = oxRegistry::getConfig();
         $oConfig->setConfigParam('sTestDeactivateEvent', 'Deactivate');
     }
-} 
+}

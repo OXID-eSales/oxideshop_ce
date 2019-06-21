@@ -148,12 +148,14 @@ class LangIntegrityTest extends \OxidTestCase
         //https://en.wikipedia.org/wiki/Specials_(Unicode_block)#Replacement_character
         $posOfIlligalChar = strpos($sFileContent, "�");
         $this->assertTrue(
-            $posOfIlligalChar === false, "there is an unicode replacement character in file $sFileName in Line at $posOfIlligalChar"
+            $posOfIlligalChar === false,
+            "there is an unicode replacement character in file $sFileName in Line at $posOfIlligalChar"
         );
 
         //converting from utf-8 into utf-8 will fail if there is anything wrong with that string
         $this->assertEquals(
-            iconv('UTF-8', 'UTF-8', $sFileContent), $sFileContent,
+            iconv('UTF-8', 'UTF-8', $sFileContent),
+            $sFileContent,
             "there is an invalid unicode character in file $sFileName "
         );
 
@@ -166,11 +168,14 @@ class LangIntegrityTest extends \OxidTestCase
         //converting utf8 to ISO-8859-1 to check if there are double encodings in the next step
         $sISO88591 = utf8_decode($sFileContent);
         $this->assertFalse(
-            mb_detect_encoding($sISO88591) === 'UTF-8', "There are double UTF-8 encoding in file $sFileName."
+            mb_detect_encoding($sISO88591) === 'UTF-8',
+            "There are double UTF-8 encoding in file $sFileName."
         );
 
         $this->assertEquals(
-            mb_ereg_replace("\t", "", $sFileContent), $sFileContent, "There are tab characters in file $sFileName."
+            mb_ereg_replace("\t", "", $sFileContent),
+            $sFileContent,
+            "There are tab characters in file $sFileName."
         );
     }
 
@@ -224,7 +229,6 @@ class LangIntegrityTest extends \OxidTestCase
             }
         }
         $this->assertEquals(array(), $aIncorrectIndents, "html entities found. Params: lang - $sLang, theme - $sTheme ");
-
     }
 
     /**
@@ -397,7 +401,6 @@ class LangIntegrityTest extends \OxidTestCase
                         $sLineToPrint = ''; // clearing line
                     }
                 }
-
             }
         }
 
@@ -490,7 +493,7 @@ class LangIntegrityTest extends \OxidTestCase
             preg_match($sSearch, $sKey, $match);
             if ($match[0]) {
                 $aExcludedConstants[] = $aData[$sKey];
-                unset ($aData[$sKey]);
+                unset($aData[$sKey]);
             }
         }
 
@@ -520,7 +523,7 @@ class LangIntegrityTest extends \OxidTestCase
             preg_match($sSearch, $sValue, $match);
             if ($match[0]) {
                 $aExcludedConstants[] = $aData[$key];
-                unset ($aData[$key]);
+                unset($aData[$key]);
             }
         }
         return $aData;
@@ -620,7 +623,6 @@ class LangIntegrityTest extends \OxidTestCase
         $aResults = array_diff($aConstants, array_unique($aUsages));
 
         return $aResults;
-
     }
 
     /**
@@ -873,7 +875,7 @@ class LangIntegrityTest extends \OxidTestCase
                 //find illegal unicode sequences
                 //http://stackoverflow.com/questions/6723562/how-to-detect-malformed-utf-8-string-in-php
                 //http://unicode.org/faq/utf_bom.html
-                $isValidEncoding = mb_check_encoding($fileContent, 'UTF-8' );
+                $isValidEncoding = mb_check_encoding($fileContent, 'UTF-8');
                 $errorMessage = "invalid utf8 encoding detected in $filePath";
             } else {
                 $isInvalidEncoding = static::isUTF8CharacterPresentInContent($fileContent);
@@ -1064,7 +1066,7 @@ EOD;
     {
         $languageFilesProviderData = $this->providerAllLanguageFilesForExistence();
 
-        $filePaths = array_map(function($providerDataInput) {
+        $filePaths = array_map(function ($providerDataInput) {
             list($languageCode, $type, $fileName) = $providerDataInput;
 
             return realpath($this->_getLanguageFilePath($type, $languageCode, $fileName));
@@ -1121,7 +1123,7 @@ EOD;
 
         $pathItems = explode(DIRECTORY_SEPARATOR, $filePath);
 
-        $pathGlobItems = array_map(function($pathItem) {
+        $pathGlobItems = array_map(function ($pathItem) {
             $firstLetter = $pathItem[0];
 
             if ($firstLetter) {

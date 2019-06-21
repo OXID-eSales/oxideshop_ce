@@ -154,7 +154,8 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function isRunning()
     {
-        if (!($this->oxactions__oxactive->value
+        if (!(
+            $this->oxactions__oxactive->value
               && $this->oxactions__oxtype->value == 2
               && $this->oxactions__oxactivefrom->value != '0000-00-00 00:00:00'
         )

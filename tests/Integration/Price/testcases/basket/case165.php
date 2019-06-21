@@ -18,39 +18,39 @@
  * Short description:
  */
 $aData = array(
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
             'oxid'                     => 9005,
             'oxprice'                  => 1001,
             'oxvat'                    => 19,
             'amount'                   => 1,
         ),
-        1 => array (
+        1 => array(
             'oxid'                     => 9006,
             'oxprice'                  => 0.5,
             'oxvat'                    => 19,
             'amount'                   => 1,
         ),
     ),
-    'discounts' => array (
-        0 => array (
+    'discounts' => array(
+        0 => array(
             'oxid'         => 'shopdiscount5.5for9005',
             'oxaddsum'     => 5.5,
             'oxaddsumtype' => '%',
             'oxamount' => 0,
             'oxamountto' => 99999,
             'oxactive' => 1,
-            'oxarticles' => array ( 9005 ),
+            'oxarticles' => array( 9005 ),
             'oxsort' => 10,
         ),
-        1 => array (
+        1 => array(
             'oxid'         => 'shopdiscount-10for9006',
             'oxaddsum'     => -10,
             'oxaddsumtype' => '%',
             'oxamount' => 0,
             'oxamountto' => 99999,
             'oxactive' => 1,
-            'oxarticles' => array ( 9006 ),
+            'oxarticles' => array( 9006 ),
             'oxsort' => 20,
         ),
 
@@ -77,17 +77,17 @@ $aData = array(
                 'oxtoamount' => 1000000,
                 'oxchecked' => 1,
             ),
-		),
-    ),
-    'expected' => array (
-        'articles' => array (
-             9005 => array ( '1.125,67', '1.125,67' ),
-             9006 => array ( '0,66', '0,66' ),
         ),
-        'totals' => array (
+    ),
+    'expected' => array(
+        'articles' => array(
+             9005 => array( '1.125,67', '1.125,67' ),
+             9006 => array( '0,66', '0,66' ),
+        ),
+        'totals' => array(
             'totalBrutto' => '1.126,33',
             'totalNetto'  => '946,50',
-            'vats' => array (
+            'vats' => array(
                 19 => '179,83'
             ),
             'delivery' => array(
@@ -103,12 +103,12 @@ $aData = array(
             'grandTotal'  => '1.248,96'
         ),
     ),
-    'options' => array (
+    'options' => array(
         'config' => array(
                 'blEnterNetPrice' => true,
                 'blShowNetPrice' => false,
                 'blShowVATForWrapping' => true,
-				'sAdditionalServVATCalcMethod' => 'biggest_net',
+                'sAdditionalServVATCalcMethod' => 'biggest_net',
                 'blShowVATForPayCharge' => true,
                 'blShowVATForDelivery' => true,
         ),

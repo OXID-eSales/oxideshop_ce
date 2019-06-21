@@ -157,7 +157,8 @@ class ModuleTemplatePathFormatterTest extends UnitTestCase
      */
     public function testCalculateModuleTemplatePathFileNotExists()
     {
-        $this->expectException('oxException'); $this->expectExceptionMessage( 'Cannot find template file "/test_path/first_default.tpl"');
+        $this->expectException('oxException');
+        $this->expectExceptionMessage('Cannot find template file "/test_path/first_default.tpl"');
 
         /** @var oxModuleList|PHPUnit\Framework\MockObject\MockObject $moduleListMock */
         $moduleListMock = $this->getMock(oxModuleList::class, ['getActiveModuleInfo']);

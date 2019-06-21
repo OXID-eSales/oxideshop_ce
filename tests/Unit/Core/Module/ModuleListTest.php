@@ -1026,5 +1026,4 @@ class ModuleListTest extends \OxidTestCase
         $modulesArray = array('oxtest' => array('test/mytest', 'test1/mytest1'));
         $this->assertEquals($modulesArray, $moduleList->parseModuleChains($modules));
     }
-
 }

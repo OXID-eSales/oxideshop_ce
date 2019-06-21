@@ -19,7 +19,6 @@ use \oxTestModules;
 
 class modcmp_user_parent
 {
-
     public $sModDynUrlParams = '&amp;searchparam=a';
 
     public function getDynUrlParams()
@@ -30,7 +29,6 @@ class modcmp_user_parent
 
 class modcmp_user extends oxcmp_user
 {
-
     protected $_oParent;
 
     public function getLogoutLink()
@@ -39,7 +37,6 @@ class modcmp_user extends oxcmp_user
 
         return $this->_getLogoutLink();
     }
-
 }
 
 class UserComponentTest extends \OxidTestCase
@@ -1383,7 +1380,8 @@ class UserComponentTest extends \OxidTestCase
      */
     public function testCreateUser_setPasswordWithSpecChars()
     {
-        $this->expectException('oxException'); $this->expectExceptionMessage( 'Create user test');
+        $this->expectException('oxException');
+        $this->expectExceptionMessage('Create user test');
 
         $sPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';
         $this->setRequestParameter('lgn_usr', 'test_username');
@@ -1413,7 +1411,8 @@ class UserComponentTest extends \OxidTestCase
      */
     public function testChangeUser_noRedirect_setPasswordWithSpecChars()
     {
-        $this->expectException('oxException'); $this->expectExceptionMessage( 'Change user test');
+        $this->expectException('oxException');
+        $this->expectExceptionMessage('Change user test');
 
         $sPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';
         $this->setRequestParameter('invadr', null);
@@ -1443,7 +1442,8 @@ class UserComponentTest extends \OxidTestCase
      */
     public function testLogin_setPasswordWithSpecChars()
     {
-        $this->expectException('oxException'); $this->expectExceptionMessage( 'Login user test');
+        $this->expectException('oxException');
+        $this->expectExceptionMessage('Login user test');
 
         $sPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';
         $this->setRequestParameter('lgn_usr', 'test_username');

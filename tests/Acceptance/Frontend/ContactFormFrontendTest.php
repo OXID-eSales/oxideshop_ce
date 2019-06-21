@@ -6,7 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Acceptance\Frontend;
 
-
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Facts\Facts;

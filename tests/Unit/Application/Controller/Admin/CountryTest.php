@@ -22,5 +22,4 @@ class CountryTest extends \OxidTestCase
         $oView = oxNew('Country');
         $this->assertEquals('country.tpl', $oView->render());
     }
-
 }

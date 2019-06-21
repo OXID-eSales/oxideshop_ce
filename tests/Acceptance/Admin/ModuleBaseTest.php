@@ -107,7 +107,8 @@ abstract class ModuleBaseTest extends AdminTestCase
     protected function deleteModuleClass()
     {
         $oServiceCaller = new ServiceCaller($this->getTestConfig());
-        $oServiceCaller->setParameter(Remove::FILES_PARAMETER_NAME,
+        $oServiceCaller->setParameter(
+            Remove::FILES_PARAMETER_NAME,
             [
                 $this->getTestConfig()->getShopPath() . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . 'test1'
                 . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR . 'test1content.php'

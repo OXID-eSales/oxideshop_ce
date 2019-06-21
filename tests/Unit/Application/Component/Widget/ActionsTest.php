@@ -7,7 +7,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Component\Widget;
 
 use OxidEsales\EshopCommunity\Application\Model\ArticleList;
 
-
 /**
  * Tests for oxwAction class
  */

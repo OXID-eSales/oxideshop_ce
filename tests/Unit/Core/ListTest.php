@@ -13,7 +13,6 @@ use \oxListObject;
 
 class TestElement extends oxI18n
 {
-
     public function isInList()
     {
         return $this->_blIsInList;
@@ -22,7 +21,6 @@ class TestElement extends oxI18n
 
 class ListTest extends \OxidTestCase
 {
-
     private $_oList;
 
     /**
@@ -50,7 +48,6 @@ class ListTest extends \OxidTestCase
 
     public function testSplArrayAccess()
     {
-
         $oTest = new stdClass();
         $oTest->sTest = "HELLO";
 
@@ -97,7 +94,6 @@ class ListTest extends \OxidTestCase
             $this->assertEquals($value, $aTest[$key]);
         }
         $this->assertEquals($i, 3);
-
     }
 
     public function testAssignArray()
@@ -169,7 +165,6 @@ class ListTest extends \OxidTestCase
 
     public function testSelectString()
     {
-
         $oAction = oxNew("oxBase");
         $oAction->init('oxactions');
         $oAction->setId('_test1');
@@ -332,7 +327,6 @@ class ListTest extends \OxidTestCase
 
     public function testSetsInListAttritbue()
     {
-
         $sQ = "select * from oxarticles limit 0,5";
         $oSubj = oxNew('oxList');
         $oSubj->init(\OxidEsales\EshopCommunity\Tests\Unit\Core\TestElement::class, "oxarticles");

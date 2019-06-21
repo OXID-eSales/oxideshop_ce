@@ -11,7 +11,6 @@ use \oxField;
 
 class CompanyVatInCountryCheckerTest extends \OxidTestCase
 {
-
     public function testGetCountry_set()
     {
         $oChecker = oxNew('oxCompanyVatInCountryChecker');
@@ -113,6 +112,4 @@ class CompanyVatInCountryCheckerTest extends \OxidTestCase
 
         $this->assertSame('', $oChecker->getError());
     }
-
-
 }

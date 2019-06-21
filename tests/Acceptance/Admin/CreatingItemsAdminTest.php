@@ -1549,7 +1549,7 @@ class CreatingItemsAdminTest extends AdminTestCase
         $inputPath = "//tr[@id='test_variant.%d']/td[%d]/input";
 
         // gets values of all three variant input fields: Title, Code, Price
-        $variantValues = function($index) use ($inputPath) {
+        $variantValues = function ($index) use ($inputPath) {
             // 3 = Title, 4 = Code, 5 = Price
             return [
                 $this->getValue(sprintf($inputPath, $index, 3)),

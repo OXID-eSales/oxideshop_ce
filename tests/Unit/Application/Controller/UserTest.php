@@ -16,7 +16,6 @@ use \oxTestModules;
  */
 class UserTest extends \OxidTestCase
 {
-
     protected $_oUser = array();
 
     /**
@@ -44,7 +43,6 @@ class UserTest extends \OxidTestCase
         }
 
         parent::tearDown();
-
     }
 
     /**
@@ -163,7 +161,6 @@ class UserTest extends \OxidTestCase
 
         $this->getSession()->setVariable('blshowshipaddress', true);
         $this->assertTrue($oUserView->showShipAddress());
-
     }
 
     /**

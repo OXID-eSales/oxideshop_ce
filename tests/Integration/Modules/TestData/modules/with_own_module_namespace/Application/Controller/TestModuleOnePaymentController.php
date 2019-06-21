@@ -8,8 +8,8 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\w
 
 use oxRegistry;
 
-class TestModuleOnePaymentController extends TestModuleOnePaymentController_parent {
-
+class TestModuleOnePaymentController extends TestModuleOnePaymentController_parent
+{
     public function render()
     {
         $template = parent::render();

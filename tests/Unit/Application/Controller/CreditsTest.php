@@ -37,6 +37,5 @@ class CreditsTest extends \OxidTestCase
         $this->assertTrue($oContent instanceof Content);
         $this->assertEquals("oxcredits", $oContent->oxcontents__oxloadid->value);
         $this->assertNotEquals("", $oContent->oxcontents__oxcontent->value);
-
     }
 }

@@ -36,5 +36,4 @@ class ArticleAttributeTest extends \OxidTestCase
 
         $this->assertEquals('article_attribute.tpl', $sTplName);
     }
-
 }

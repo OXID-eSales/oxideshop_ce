@@ -17,45 +17,45 @@
  *
  * @return string
  */
-function smarty_function_oxgetseourl( $params, &$smarty )
+function smarty_function_oxgetseourl($params, &$smarty)
 {
-    $sOxid = isset( $params['oxid'] ) ? $params['oxid'] : null;
-    $sType = isset( $params['type'] ) ? $params['type'] : null;
-    $sUrl  = $sIdent = isset( $params['ident'] ) ? $params['ident'] : null;
+    $sOxid = isset($params['oxid']) ? $params['oxid'] : null;
+    $sType = isset($params['type']) ? $params['type'] : null;
+    $sUrl  = $sIdent = isset($params['ident']) ? $params['ident'] : null;
 
     // requesting specified object SEO url
-    if ( $sType ) {
-        $oObject = oxNew( $sType );
+    if ($sType) {
+        $oObject = oxNew($sType);
 
         // special case for content type object when ident is provided
-        if ( $sType == 'oxcontent' && $sIdent && $oObject->loadByIdent( $sIdent ) ) {
+        if ($sType == 'oxcontent' && $sIdent && $oObject->loadByIdent($sIdent)) {
             $sUrl = $oObject->getLink();
-        } elseif ( $sOxid ) {
+        } elseif ($sOxid) {
             //minimising aricle object loading
-            if ( strtolower($sType) == "oxarticle") {
+            if (strtolower($sType) == "oxarticle") {
                 $oObject->disablePriceLoad();
-                $oObject->setNoVariantLoading( true );
+                $oObject->setNoVariantLoading(true);
             }
 
-            if ( $oObject->load( $sOxid ) ) {
+            if ($oObject->load($sOxid)) {
                 $sUrl = $oObject->getLink();
             }
         }
-    } elseif ( $sUrl && \OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() ) {
+    } elseif ($sUrl && \OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive()) {
         // if SEO is on ..
         $oEncoder = \OxidEsales\Eshop\Core\Registry::getSeoEncoder();
-        if ( ( $sStaticUrl = $oEncoder->getStaticUrl( $sUrl ) ) ) {
+        if (($sStaticUrl = $oEncoder->getStaticUrl($sUrl))) {
             $sUrl = $sStaticUrl;
         } else {
             // in case language parameter is not added to url
-            $sUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl( $sUrl );
+            $sUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($sUrl);
         }
     }
 
-    $sDynParams = isset( $params['params'] )?$params['params']:false;
-    if ( $sDynParams ) {
-        include_once $smarty->_get_plugin_filepath( 'modifier', 'oxaddparams' );
-        $sUrl = smarty_modifier_oxaddparams( $sUrl, $sDynParams );
+    $sDynParams = isset($params['params'])?$params['params']:false;
+    if ($sDynParams) {
+        include_once $smarty->_get_plugin_filepath('modifier', 'oxaddparams');
+        $sUrl = smarty_modifier_oxaddparams($sUrl, $sDynParams);
     }
 
     return $sUrl;

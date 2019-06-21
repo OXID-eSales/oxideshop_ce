@@ -7,7 +7,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 class LanguageexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
-
     private $testObject = null;
     private $message = 'Erik was here..';
     private $languageConstant = 'a language';

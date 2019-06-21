@@ -16,7 +16,6 @@ use \oxTestModules;
 
 class modOxDeliverySetList extends oxDeliverySetList
 {
-
     public function getObjectsInListName()
     {
         return $this->_sObjectsInListName;
@@ -25,7 +24,6 @@ class modOxDeliverySetList extends oxDeliverySetList
 
 class oxDb_noActiveSnippetInDeliverySetList extends oxDb
 {
-
     public function getActiveSnippet($param1, $param3 = null)
     {
         return '1';
@@ -34,7 +32,6 @@ class oxDb_noActiveSnippetInDeliverySetList extends oxDb
 
 class modOxDeliverySetList_paymentList extends oxPaymentList
 {
-
     public static $dBasketPrice = null;
 
     public function getPaymentList($sShipSetId, $dBasketPrice, $oUser = null)
@@ -324,7 +321,7 @@ class DeliverysetListTest extends \OxidTestCase
          * act. delivery set must be "Standard Germany" ('oxidstandard')
          */
         $oDeliverySetList = oxNew('oxDeliverySetList');
-        list(, $sActShipSet,) = $oDeliverySetList->getDeliverySetData(null, $oUser, $oBasket);
+        list(, $sActShipSet, ) = $oDeliverySetList->getDeliverySetData(null, $oUser, $oBasket);
         $this->assertEquals('oxidstandard', $sActShipSet);
 
         /**
@@ -336,7 +333,7 @@ class DeliverysetListTest extends \OxidTestCase
         $oBasket->calculateBasket();
 
         $oDeliverySetList = oxNew('oxDeliverySetList');
-        list(, $sActShipSet,) = $oDeliverySetList->getDeliverySetData(null, $oUser, $oBasket);
+        list(, $sActShipSet, ) = $oDeliverySetList->getDeliverySetData(null, $oUser, $oBasket);
         $this->assertEquals('oxidstandard', $sActShipSet);
 
         /**
@@ -351,7 +348,7 @@ class DeliverysetListTest extends \OxidTestCase
         $oBasket->setBasketUser($oUser);
 
         $oDeliverySetList = oxNew('oxDeliverySetList');
-        list(, $sActShipSet,) = $oDeliverySetList->getDeliverySetData(null, $oUser, $oBasket);
+        list(, $sActShipSet, ) = $oDeliverySetList->getDeliverySetData(null, $oUser, $oBasket);
         $this->assertEquals('_testdeliveryset1', $sActShipSet);
 
         /**
@@ -362,7 +359,7 @@ class DeliverysetListTest extends \OxidTestCase
         $oBasket->calculateBasket();
 
         $oDeliverySetList = oxNew('oxDeliverySetList');
-        list(, $sActShipSet,) = $oDeliverySetList->getDeliverySetData(null, $oUser, $oBasket);
+        list(, $sActShipSet, ) = $oDeliverySetList->getDeliverySetData(null, $oUser, $oBasket);
         $this->assertEquals('_testdeliveryset2', $sActShipSet);
 
         /**
@@ -379,22 +376,22 @@ class DeliverysetListTest extends \OxidTestCase
         $oBasket->calculateBasket();
 
         $oDeliverySetList = oxNew('oxDeliverySetList');
-        list(, $sActShipSet,) = $oDeliverySetList->getDeliverySetData(null, $oUser, $oBasket);
+        list(, $sActShipSet, ) = $oDeliverySetList->getDeliverySetData(null, $oUser, $oBasket);
         $this->assertEquals('_testdeliveryset2', $sActShipSet);
 
         // if user is not set
         $oDeliverySetList = oxNew('oxDeliverySetList');
-        list(, $sActShipSet,) = $oDeliverySetList->getDeliverySetData(null, null, $oBasket);
+        list(, $sActShipSet, ) = $oDeliverySetList->getDeliverySetData(null, null, $oBasket);
         $this->assertNull($sActShipSet);
 
         // if shipset selected
         $oDeliverySetList = oxNew('oxDeliverySetList');
-        list(, $sActShipSet,) = $oDeliverySetList->getDeliverySetData('_testdeliveryset2', $oUser, $oBasket);
+        list(, $sActShipSet, ) = $oDeliverySetList->getDeliverySetData('_testdeliveryset2', $oUser, $oBasket);
         $this->assertEquals('_testdeliveryset2', $sActShipSet);
 
         // if wrong shipset selected
         $oDeliverySetList = oxNew('oxDeliverySetList');
-        list(, $sActShipSet,) = $oDeliverySetList->getDeliverySetData('someshipset', $oUser, $oBasket);
+        list(, $sActShipSet, ) = $oDeliverySetList->getDeliverySetData('someshipset', $oUser, $oBasket);
         $this->assertEquals('_testdeliveryset2', $sActShipSet);
     }
 
@@ -479,14 +476,14 @@ class DeliverysetListTest extends \OxidTestCase
 
         // testing
         $oList->UNITgetList(null, null);
-
     }
 
     // when user is passed by param
     public function testgetListCodeExecUserIsTakenFromSession()
     {
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getId', 'getActiveCountry'));
-        $oUser->expects($this->once())->method('getId')->will($this->returnValue('xxx'));;
+        $oUser->expects($this->once())->method('getId')->will($this->returnValue('xxx'));
+        ;
         $oUser->expects($this->once())->method('getActiveCountry')->will($this->returnValue('yyy'));
 
         $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\DeliverySetList::class, array('getUser', 'setUser', '_getFilterSelect', 'selectString', 'rewind'));
@@ -717,7 +714,6 @@ class DeliverysetListTest extends \OxidTestCase
 
         $this->assertTrue(count($aList) > 1);
         $this->assertEquals('_testDeliverySetId2', $oItem->getId());
-
     }
 
     /**
@@ -893,5 +889,4 @@ class DeliverysetListTest extends \OxidTestCase
             }
         }
     }
-
 }

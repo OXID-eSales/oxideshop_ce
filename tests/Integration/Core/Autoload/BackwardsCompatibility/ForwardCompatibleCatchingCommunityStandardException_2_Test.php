@@ -24,7 +24,7 @@ class ForwardCompatibleCatchingCommunityStandardException_2_Test extends \PHPUni
             $this->assertTrue(true, 'The given exception (oxNew(\'oxException\')) was caught as \OxidEsales\EshopCommunity\Core\Exception\StandardException');
         } catch (\Exception $exception) {
             /** If the exception has not been caught before, the test has failed */
-            $this->fail( 'The given exception (oxNew(\'oxException\')) was not caught as \OxidEsales\EshopCommunity\Core\Exception\StandardException');
+            $this->fail('The given exception (oxNew(\'oxException\')) was not caught as \OxidEsales\EshopCommunity\Core\Exception\StandardException');
         }
     }
 }

@@ -127,7 +127,7 @@ class UserRegistrationAdminTest extends AdminTestCase
         $this->selectAndWait("oxaddressid", "label=" . $sAddressId);
 
         $this->assertEquals("Germany", $this->getSelectedLabel("editval[oxaddress__oxcountryid]"));
-        unset( $aAddressData["oxcountryid"] );
+        unset($aAddressData["oxcountryid"]);
 
         foreach ($aAddressData as $sKey => $sValue) {
             $sKey = "editval[oxaddress__$sKey]";
@@ -135,4 +135,3 @@ class UserRegistrationAdminTest extends AdminTestCase
         }
     }
 }
-

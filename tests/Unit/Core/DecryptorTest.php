@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
  */
 class DecryptorTest extends \OxidTestCase
 {
-
     public function providerDecodingOfStringWithCorrectKey()
     {
         return array(

@@ -69,11 +69,11 @@ class MetaDataProvider implements MetaDataProviderInterface
     private $metaDataConverter;
 
     /**
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param EventDispatcherInterface    $eventDispatcher
      * @param MetaDataNormalizerInterface $metaDataNormalizer
-     * @param BasicContextInterface $context
-     * @param MetaDataValidatorInterface $metaDataValidator
-     * @param MetaDataConverterInterface $metaDataConverter
+     * @param BasicContextInterface       $context
+     * @param MetaDataValidatorInterface  $metaDataValidator
+     * @param MetaDataConverterInterface  $metaDataConverter
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,

@@ -8,6 +8,8 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Templating\TemplateLoaderInterface;
 
 /**
  * System requirements class.
@@ -1065,16 +1067,16 @@ class SystemRequirements
      */
     protected function _checkTemplateBlock($sTemplate, $sBlockName)
     {
-        $sTplFile = $this->getConfig()->getTemplatePath($sTemplate, false);
-        if (!$sTplFile || !file_exists($sTplFile)) {
-            // check if file is in admin theme
-            $sTplFile = $this->getConfig()->getTemplatePath($sTemplate, true);
-            if (!$sTplFile || !file_exists($sTplFile)) {
+        /** @var TemplateLoaderInterface $templateLoader */
+        $templateLoader = $this->getContainer()->get('oxid_esales.templating.template.loader');
+        if (!$templateLoader->exists($sTemplate)) {
+            $templateLoader = $this->getContainer()->get('oxid_esales.templating.admin.template.loader');
+            if (!$templateLoader->exists($sTemplate)) {
                 return false;
             }
         }
 
-        $sFile = file_get_contents($sTplFile);
+        $sFile = $templateLoader->getContext($sTemplate);
         $sBlockNameQuoted = preg_quote($sBlockName, '/');
 
         return (bool) preg_match('/\[\{\s*block\s+name\s*=\s*([\'"])' . $sBlockNameQuoted . '\1\s*\}\]/is', $sFile);
@@ -1171,5 +1173,15 @@ class SystemRequirements
     protected function _getRecommendMemoryLimit()
     {
         return '60M';
+    }
+
+    /**
+     * @internal
+     *
+     * @return \Psr\Container\ContainerInterface
+     */
+    protected function getContainer()
+    {
+        return ContainerFactory::getInstance()->getContainer();
     }
 }

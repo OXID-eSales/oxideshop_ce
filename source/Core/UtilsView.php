@@ -15,6 +15,8 @@ use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository;
 use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryRepository;
 use OxidEsales\Eshop\Core\ShopIdCalculator as EshopShopIdCalculator;
+use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererInterface;
 use Smarty;
 
 /**
@@ -75,6 +77,19 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * Templating instance getter
+     *
+     * @return TemplateRendererInterface
+     */
+    private function getRenderer()
+    {
+        $bridge = $this->getContainer()->get(TemplateRendererBridgeInterface::class);
+        $bridge->setEngine($this->getSmarty());
+
+        return $bridge->getTemplateRenderer();
+    }
+
+    /**
      * Returns rendered template output. According to debug configuration outputs
      * debug information.
      *
@@ -85,7 +100,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      */
     public function getTemplateOutput($templateName, $oObject)
     {
-        $smarty = $this->getSmarty();
         $debugMode = $this->getConfig()->getConfigParam('iDebug');
 
         // assign
@@ -97,11 +111,12 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
                     echo("TemplateData[$viewName] : \n");
                     var_export($viewData[$viewName]);
                 }
-                $smarty->assign($viewName, $viewData[$viewName]);
             }
+        } else {
+            $viewData = [];
         }
 
-        return $smarty->fetch($templateName);
+        return $this->getRenderer()->renderTemplate($templateName, $viewData);
     }
 
     /**
@@ -193,6 +208,32 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * Runs long description through template engine.
+     *
+     * @param string $description Description
+     * @param array  $context     View data to use its view data (optional)
+     * @param string $oxid        Current object id
+     *
+     * @return string
+     */
+    public function getRenderedContent(string $description, array $context, string $oxid = null) : string
+    {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop()) {
+            return $description;
+        }
+
+        $activeLanguageId = \OxidEsales\Eshop\Core\Registry::getLang()->getTplLanguage();
+
+        $renderer = clone $this->getRenderer();
+
+        return $renderer->renderFragment(
+            $description,
+            "ox:" . $oxid . $activeLanguageId,
+            $context
+        );
+    }
+
+    /**
      * Runs long description through smarty. If you pass array of data
      * to process, array will be returned, if you pass string - string
      * will be passed as result
@@ -207,10 +248,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      */
     public function parseThroughSmarty($sDesc, $sOxid = null, $oActView = null, $blRecompile = false)
     {
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop()) {
-            return $sDesc;
-        }
-
         startProfile("parseThroughSmarty");
 
         if (!is_array($sDesc) && strpos($sDesc, "[{") === false) {
@@ -219,40 +256,18 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
             return $sDesc;
         }
 
-        $activeLanguageId = \OxidEsales\Eshop\Core\Registry::getLang()->getTplLanguage();
-
-        // now parse it through smarty
-        $smarty = clone $this->getSmarty();
-
-        // save old tpl data
-        $tplVars = $smarty->_tpl_vars;
-        $forceRecompile = $smarty->force_compile;
-
-        $smarty->force_compile = $blRecompile;
-
         if (!$oActView) {
             $oActView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
             $oActView->addGlobalParams();
         }
 
-        $viewData = $oActView->getViewData();
-        foreach (array_keys($viewData) as $name) {
-            $smarty->assign($name, $viewData[$name]);
-        }
-
         if (is_array($sDesc)) {
             foreach ($sDesc as $name => $aData) {
-                $smarty->oxidcache = new \OxidEsales\Eshop\Core\Field($aData[1], \OxidEsales\Eshop\Core\Field::T_RAW);
-                $result[$name] = $smarty->fetch("ox:" . $aData[0] . $activeLanguageId);
+                $result[$name] = $this->getRenderedContent($aData[1], $oActView->getViewData(), $sOxid);
             }
         } else {
-            $smarty->oxidcache = new \OxidEsales\Eshop\Core\Field($sDesc, \OxidEsales\Eshop\Core\Field::T_RAW);
-            $result = $smarty->fetch("ox:{$sOxid}{$activeLanguageId}");
+            $result = $this->getRenderedContent($sDesc, $oActView->getViewData(), $sOxid);
         }
-
-        // restore tpl vars for continuing smarty processing if it is in one
-        $smarty->_tpl_vars = $tplVars;
-        $smarty->force_compile = $forceRecompile;
 
         stopProfile("parseThroughSmarty");
 
@@ -361,8 +376,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         $smarty->default_template_handler_func = [\OxidEsales\Eshop\Core\Registry::getUtilsView(), '_smartyDefaultTemplateHandler'];
 
         $smarty->plugins_dir = array_merge(
-            $this->getModuleSmartyPluginDirectories(),
-            $this->getShopSmartyPluginDirectories(),
+            $this->getSmartyPluginDirectories(),
             $smarty->plugins_dir
         );
 
@@ -402,6 +416,19 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * Returns all Smarty plugins including defined in modules
+     *
+     * @return array
+     */
+    public function getSmartyPluginDirectories()
+    {
+        return array_merge(
+            $this->getModuleSmartyPluginDirectories(),
+            $this->getShopSmartyPluginDirectories()
+        );
+    }
+
+    /**
      * @return array
      */
     protected function getShopSmartyPluginDirectories()
@@ -424,6 +451,10 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     {
         $config = $this->getConfig();
         $smarty->compile_check = $config->getConfigParam('blCheckTemplates');
+        if ($config->isProductiveMode()) {
+            // override in any case
+            $smarty->compile_check = false;
+        }
     }
 
     /**

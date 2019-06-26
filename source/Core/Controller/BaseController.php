@@ -7,7 +7,6 @@
 namespace OxidEsales\EshopCommunity\Core\Controller;
 
 use OxidEsales\EshopCommunity\Core\ShopVersion;
-use Psr\Container\ContainerInterface;
 use OxidEsales\EshopCommunity\Internal\ShopEvents\AfterRequestProcessedEvent;
 
 /**

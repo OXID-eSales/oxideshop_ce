@@ -5,65 +5,9 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use \oxTestModules;
-
-/**
- * Smarty emulation class
- */
-class GenExportDoTest_smarty
-{
-
-    /**
-     * Instance storage
-     *
-     * @var GenExportDoTest_smarty
-     */
-    protected static $_oInst = null;
-
-    /**
-     * Call data log
-     *
-     * @var call data log
-     */
-    protected $_aCallData = array();
-
-    /**
-     * Emulated smarty instance getter
-     *
-     * @return GenExportDoTest_smarty
-     */
-    public static function getInstance()
-    {
-        if (self::$_oInst === null) {
-            self::$_oInst = new GenExportDoTest_smarty();
-        }
-
-        return self::$_oInst;
-    }
-
-    /**
-     * Logging call data
-     *
-     * @param string $sMethod called method
-     * @param array  $aParams parameters
-     *
-     * @return null
-     */
-    public function __call($sMethod, $aParams)
-    {
-        $this->_aCallData[] = array($sMethod, $aParams);
-    }
-
-    /**
-     * Returns call log
-     *
-     * @return array
-     */
-    public function getLog()
-    {
-        return $this->_aCallData;
-    }
-}
+use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * Tests for GenExport_Do class
@@ -90,25 +34,39 @@ class GenExportDoTest extends \OxidTestCase
      */
     public function testNextTick()
     {
-        oxTestModules::addFunction("oxUtilsView", "getSmarty", "{return \\OxidEsales\\EshopCommunity\\Tests\\Unit\\Application\\Controller\\Admin\\GenExportDoTest_smarty::getInstance();}");
+        $article = oxNew('oxArticle');
+        $parameters = [
+            "sCustomHeader" => '',
+            "linenr" => 1,
+            "article" => $article,
+            "spr" => $this->getConfigParam('sCSVSign'),
+            "encl" => $this->getConfigParam('sGiCsvFieldEncloser'),
+            'oxEngineTemplateId' => 'dyn_interface'
+        ];
+        $renderer = $this->getMockBuilder(TemplateRendererInterface::class)
+            ->setMethods(['renderTemplate', 'renderFragment', 'getTemplateEngine', 'exists'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $renderer->expects($this->any())->method('renderTemplate')->with(
+            $this->equalTo('genexport.tpl'),
+            $this->equalTo($parameters)
+        );
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\GenericExportDo::class, array("getOneArticle", "write", "getViewId"));
-        $oView->expects($this->once())->method('getOneArticle')->will($this->returnValue(oxNew('oxArticle')));
+        $bridge = $this->getMockBuilder(TemplateRendererBridgeInterface::class)
+            ->setMethods(['setEngine', 'getEngine', 'getTemplateRenderer'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $bridge->expects($this->any())->method('getTemplateRenderer')->will($this->returnValue($renderer));
+
+        $container = $this->getContainerMock('OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererBridgeInterface', $bridge);
+
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\GenericExportDo::class, array("getOneArticle", "write", "getViewId", "getContainer"));
+        $oView->expects($this->once())->method('getOneArticle')->will($this->returnValue($article));
         $oView->expects($this->once())->method('write');
         $oView->expects($this->once())->method('getViewId')->will($this->returnValue('dyn_interface'));
+        $oView->expects($this->any())->method('getContainer')->will($this->returnValue($container));
+
         $this->assertEquals(2, $oView->nextTick(1));
-
-        $aCallLog = GenExportDoTest_smarty::getInstance()->getLog();
-
-        //#3611
-        $this->assertEquals("assign", $aCallLog[0][0]);
-        $this->assertEquals("sCustomHeader", $aCallLog[0][1][0]);
-
-        $this->assertEquals("assign", $aCallLog[1][0]);
-        $this->assertEquals("assign", $aCallLog[2][0]);
-        $this->assertEquals("assign", $aCallLog[3][0]);
-        $this->assertEquals("assign", $aCallLog[4][0]);
-        $this->assertEquals("fetch", $aCallLog[5][0]);
     }
 
     /**
@@ -139,5 +97,26 @@ class GenExportDoTest extends \OxidTestCase
         // testing..
         $oView = oxNew('GenExport_Do');
         $this->assertEquals('dynbase_do.tpl', $oView->render());
+    }
+
+    /**
+     * Check that render method returns expected template name.
+     * Could be useful as an integrational test to test that template from controller is set to template engine
+     *
+     * @param $expectedTemplate
+     *
+     * @return \PHPUnit\Framework\MockObject\MockObject
+     */
+    private function getContainerMock($serviceName, $serviceMock)
+    {
+        $container = $this->getMockBuilder(ContainerInterface::class)
+            ->setMethods(['get', 'has'])
+            ->getMock();
+        $container->expects($this->any())
+            ->method('get')
+            ->with($this->equalTo($serviceName))
+            ->will($this->returnValue($serviceMock));
+
+        return $container;
     }
 }

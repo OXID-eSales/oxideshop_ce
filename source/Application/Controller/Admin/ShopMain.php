@@ -28,9 +28,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
     const SHOP_FIELD_SET_SIZE = 64;
 
     /**
-     * Executes parent method parent::render(), creates oxCategoryList and
-     * oxshop objects, passes it's data to Smarty engine and returns name of
-     * template file "shop_main.tpl".
+     * Controller render method, which returns the name of the template file.
      *
      * @return string
      */

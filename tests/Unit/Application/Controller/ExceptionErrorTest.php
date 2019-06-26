@@ -34,17 +34,15 @@ class ExceptionErrorTest extends \OxidTestCase
         $sEx = "testText";
         $aErrors = array("default" => array("aaa" => serialize($sEx)));
 
-        $oErr = $this->getMock(\OxidEsales\Eshop\Application\Controller\ExceptionErrorController::class, array("_getErrors", 'getViewData'));
-        $oErr->expects($this->once())->method('getViewData')->will($this->returnValue(array()));
+        $oErr = $this->getMock(\OxidEsales\Eshop\Application\Controller\ExceptionErrorController::class, array("_getErrors"));
         $oErr->expects($this->once())->method('_getErrors')->will($this->returnValue($aErrors));
 
         $oErr->displayExceptionError();
 
-        $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
-        $aTplVars = $oSmarty->get_template_vars("Errors");
+        $aTplVars = $oErr->getViewDataElement("Errors");
         $oViewEx = $aTplVars["default"]["aaa"];
 
-        $this->assertEquals("testText", $sEx);
+        $this->assertEquals($sEx, $oViewEx);
     }
 
     /**

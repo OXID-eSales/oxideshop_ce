@@ -58,8 +58,8 @@ class UserPayment extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     protected $_oUserPayments = null;
 
     /**
-     * Executes parent method parent::render(), creates oxlist and oxuser objects,
-     * passes data to Smarty engine and returns name of template file "user_payment.tpl".
+     * Executes parent method parent::render(), creates oxlist and oxuser objects
+     * and returns the name of the template file.
      *
      * @return string
      */

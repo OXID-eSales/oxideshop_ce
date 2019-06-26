@@ -12,10 +12,13 @@ use oxException;
 use OxidEsales\EshopCommunity\Core\Exception\ConnectionException;
 use OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay;
 use OxidEsales\EshopCommunity\Core\Output;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererInterface;
 use oxOutput;
 use oxRegistry;
 use oxSystemComponentException;
 use oxTestModules;
+use Psr\Container\ContainerInterface;
 
 // Force autoloading of Smarty class, so that mocking would work correctly.
 class_exists('Smarty');
@@ -302,6 +305,7 @@ class ShopControlTest extends \OxidTestCase
      */
     public function testRenderTemplateNotFound()
     {
+        ContainerFactory::resetContainer();
         $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('render'));
         $oView->expects($this->once())->method('render')->will($this->returnValue('wrongTpl'));
 
@@ -315,7 +319,9 @@ class ShopControlTest extends \OxidTestCase
         $oControl->expects($this->any())->method('_isDebugMode')->will($this->returnValue(true));
 
         $oSmarty = $this->getMock("Smarty", array('fetch'));
-        $oSmarty->expects($this->once())->method('fetch')->with($this->equalTo("message/exception.tpl"));
+        $oSmarty->expects($this->once())->method('fetch')
+            ->with($this->equalTo("message/exception.tpl"))
+            ->will($this->returnValue(''));
 
         $oUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array('getSmarty'));
         $oUtilsView->expects($this->once())->method('getSmarty')->will($this->returnValue($oSmarty));
@@ -340,6 +346,7 @@ class ShopControlTest extends \OxidTestCase
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community/Professional edition only.');
         }
+        ContainerFactory::resetContainer();
         $this->getConfig()->setConfigParam('sTheme', 'azure');
 
         $controllerClassName = 'content';
@@ -382,6 +389,7 @@ class ShopControlTest extends \OxidTestCase
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community/Professional edition only.');
         }
+        ContainerFactory::resetContainer();
         $this->getConfig()->setConfigParam('sTheme', 'azure');
 
         $controllerClassName = 'content';
@@ -428,6 +436,7 @@ class ShopControlTest extends \OxidTestCase
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community/Professional edition only.');
         }
+        ContainerFactory::resetContainer();
         $this->getConfig()->setConfigParam('sTheme', 'azure');
 
         $controllerClassName = 'content';
@@ -678,7 +687,9 @@ class ShopControlTest extends \OxidTestCase
     private function getSmartyMock($expectedTemplate)
     {
         $oSmarty = $this->getMock("Smarty", array('fetch'));
-        $oSmarty->expects($this->once())->method('fetch')->with($this->equalTo($expectedTemplate));
+        $oSmarty->expects($this->once())->method('fetch')
+            ->with($this->equalTo($expectedTemplate))
+            ->will($this->returnValue('string'));
 
         return $oSmarty;
     }

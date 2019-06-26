@@ -10,6 +10,8 @@ use Exception;
 use OxidEsales\Eshop\Application\Model\OrderFileList;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererInterface;
 use PHPMailer\PHPMailer\PHPMailer;
 
 /**
@@ -310,6 +312,9 @@ class Email extends PHPMailer
 
         $this->_getSmarty();
 
+        //setting default view
+        $this->setViewData('oEmailView', $this);
+
         $this->Encoding = 'base64';
     }
 
@@ -378,10 +383,30 @@ class Email extends PHPMailer
             $this->_oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
         }
 
-        //setting default view
-        $this->_oSmarty->assign("oEmailView", $this);
-
         return $this->_oSmarty;
+    }
+
+    /**
+     * Templating instance getter
+     *
+     * @return TemplateRendererInterface
+     */
+    private function getRenderer()
+    {
+        $bridge = $this->getContainer()->get(TemplateRendererBridgeInterface::class);
+        $bridge->setEngine($this->_getSmarty());
+
+        return $bridge->getTemplateRenderer();
+    }
+
+    /**
+     * @internal
+     *
+     * @return \Psr\Container\ContainerInterface
+     */
+    protected function getContainer()
+    {
+        return \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
     }
 
     /**
@@ -550,7 +575,7 @@ class Email extends PHPMailer
         $this->setUser($user);
 
         // create messages
-        $smarty = $this->_getSmarty();
+        $renderer = $this->getRenderer();
         $this->setViewData("order", $order);
 
         $this->setViewData("blShowReviewLink", $this->shouldProductReviewLinksBeIncluded());
@@ -558,13 +583,13 @@ class Email extends PHPMailer
         // Process view data array through oxOutput processor
         $this->_processViewArray();
 
-        $this->setBody($smarty->fetch($this->_sOrderUserTemplate));
-        $this->setAltBody($smarty->fetch($this->_sOrderUserPlainTemplate));
+        $this->setBody($renderer->renderTemplate($this->_sOrderUserTemplate, $this->getViewData()));
+        $this->setAltBody($renderer->renderTemplate($this->_sOrderUserPlainTemplate, $this->getViewData()));
 
         // #586A
         if ($subject === null) {
-            if ($smarty->template_exists($this->_sOrderUserSubjectTemplate)) {
-                $subject = $smarty->fetch($this->_sOrderUserSubjectTemplate);
+            if ($renderer->exists($this->_sOrderUserSubjectTemplate)) {
+                $subject = $renderer->renderTemplate($this->_sOrderUserSubjectTemplate, $this->getViewData());
             } else {
                 $subject = $shop->oxshops__oxordersubject->getRawValue() . " (#" . $order->oxorder__oxordernr->value . ")";
             }
@@ -620,20 +645,20 @@ class Email extends PHPMailer
         $this->setSmtp($shop);
 
         // create messages
-        $smarty = $this->_getSmarty();
+        $renderer = $this->getRenderer();
         $this->setViewData("order", $order);
 
         // Process view data array through oxoutput processor
         $this->_processViewArray();
 
-        $this->setBody($smarty->fetch($config->getTemplatePath($this->_sOrderOwnerTemplate, false)));
-        $this->setAltBody($smarty->fetch($config->getTemplatePath($this->_sOrderOwnerPlainTemplate, false)));
+        $this->setBody($renderer->renderTemplate($config->getTemplatePath($this->_sOrderOwnerTemplate, false), $this->getViewData()));
+        $this->setAltBody($renderer->renderTemplate($config->getTemplatePath($this->_sOrderOwnerPlainTemplate, false), $this->getViewData()));
 
         //Sets subject to email
         // #586A
         if ($subject === null) {
-            if ($smarty->template_exists($this->_sOrderOwnerSubjectTemplate)) {
-                $subject = $smarty->fetch($this->_sOrderOwnerSubjectTemplate);
+            if ($renderer->exists($this->_sOrderOwnerSubjectTemplate)) {
+                $subject = $renderer->renderTemplate($this->_sOrderOwnerSubjectTemplate, $this->getViewData());
             } else {
                 $subject = $shop->oxshops__oxordersubject->getRawValue() . " (#" . $order->oxorder__oxordernr->value . ")";
             }
@@ -715,14 +740,14 @@ class Email extends PHPMailer
         $this->_setMailParams($shop);
 
         // create messages
-        $smarty = $this->_getSmarty();
+        $renderer = $this->getRenderer();
         $this->setUser($user);
 
         // Process view data array through oxOutput processor
         $this->_processViewArray();
 
-        $this->setBody($smarty->fetch($this->_sRegisterTemplate));
-        $this->setAltBody($smarty->fetch($this->_sRegisterTemplatePlain));
+        $this->setBody($renderer->renderTemplate($this->_sRegisterTemplate, $this->getViewData()));
+        $this->setAltBody($renderer->renderTemplate($this->_sRegisterTemplatePlain, $this->getViewData()));
 
         $this->setSubject(($subject !== null) ? $subject : $shop->oxshops__oxregistersubject->getRawValue());
 
@@ -753,13 +778,13 @@ class Email extends PHPMailer
         $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         if ($oxid && $user->load($oxid)) {
             // create messages
-            $smarty = $this->_getSmarty();
+            $renderer = $this->getRenderer();
             $this->setUser($user);
             $this->_processViewArray();
 
             $this->_setMailParams($shop);
-            $this->setBody($smarty->fetch($this->_sForgotPwdTemplate));
-            $this->setAltBody($smarty->fetch($this->_sForgotPwdTemplatePlain));
+            $this->setBody($renderer->renderTemplate($this->_sForgotPwdTemplate, $this->getViewData()));
+            $this->setAltBody($renderer->renderTemplate($this->_sForgotPwdTemplatePlain, $this->getViewData()));
             $this->setSubject(($subject !== null) ? $subject : $shop->oxshops__oxforgotpwdsubject->getRawValue());
 
             $fullName = $user->oxuser__oxfname->getRawValue() . " " . $user->oxuser__oxlname->getRawValue();
@@ -828,7 +853,7 @@ class Email extends PHPMailer
         $this->_setMailParams($shop);
 
         // create messages
-        $smarty = $this->_getSmarty();
+        $renderer = $this->getRenderer();
         $confirmCode = md5($user->oxuser__oxusername->value . $user->oxuser__oxpasssalt->value);
         $this->setViewData("subscribeLink", $this->_getNewsSubsLink($user->oxuser__oxid->value, $confirmCode));
         $this->setUser($user);
@@ -836,8 +861,8 @@ class Email extends PHPMailer
         // Process view data array through oxOutput processor
         $this->_processViewArray();
 
-        $this->setBody($smarty->fetch($this->_sNewsletterOptInTemplate));
-        $this->setAltBody($smarty->fetch($this->_sNewsletterOptInTemplatePlain));
+        $this->setBody($renderer->renderTemplate($this->_sNewsletterOptInTemplate, $this->getViewData()));
+        $this->setAltBody($renderer->renderTemplate($this->_sNewsletterOptInTemplatePlain, $this->getViewData()));
         $this->setSubject(($subject !== null) ? $subject : \OxidEsales\Eshop\Core\Registry::getLang()->translateString("NEWSLETTER") . " " . $shop->oxshops__oxname->getRawValue());
 
         $fullName = $user->oxuser__oxfname->getRawValue() . " " . $user->oxuser__oxlname->getRawValue();
@@ -937,7 +962,7 @@ class Email extends PHPMailer
         $this->setSmtp();
 
         // create messages
-        $smarty = $this->_getSmarty();
+        $renderer = $this->getRenderer();
         $this->setViewData("product", $product);
         $this->setUser($user);
 
@@ -954,8 +979,8 @@ class Email extends PHPMailer
         // Process view data array through oxOutput processor
         $this->_processViewArray();
 
-        $this->setBody($smarty->fetch($this->_sSuggestTemplate));
-        $this->setAltBody($smarty->fetch($this->_sSuggestTemplatePlain));
+        $this->setBody($renderer->renderTemplate($this->_sSuggestTemplate, $this->getViewData()));
+        $this->setAltBody($renderer->renderTemplate($this->_sSuggestTemplatePlain, $this->getViewData()));
         $this->setSubject($user->send_subject);
 
         $this->setRecipient($user->rec_email, $user->rec_name);
@@ -987,7 +1012,8 @@ class Email extends PHPMailer
         $this->setSmtp();
 
         // create messages
-        $smarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
+        /** @var TemplateRendererInterface $renderer */
+        $renderer = $this->getContainer()->get(TemplateRendererBridgeInterface::class)->getTemplateRenderer();
         $this->setUser($user);
 
         $homeUrl = $this->getViewConfig()->getHomeLink();
@@ -1009,9 +1035,9 @@ class Email extends PHPMailer
                     // Process view data array through oxoutput processor
                     $this->_processViewArray();
 
-                    $this->setBody($smarty->fetch($this->_sInviteTemplate));
+                    $this->setBody($renderer->renderTemplate($this->_sInviteTemplate, $this->getViewData()));
 
-                    $this->setAltBody($smarty->fetch($this->_sInviteTemplatePlain));
+                    $this->setAltBody($renderer->renderTemplate($this->_sInviteTemplatePlain, $this->getViewData()));
                     $this->setSubject($user->send_subject);
 
                     $this->setRecipient($email);
@@ -1050,7 +1076,7 @@ class Email extends PHPMailer
 
         //create messages
         $lang = \OxidEsales\Eshop\Core\Registry::getLang();
-        $smarty = $this->_getSmarty();
+        $renderer = $this->getRenderer();
         $this->setViewData("order", $order);
         $this->setViewData("shopTemplateDir", $myConfig->getTemplateDir(false));
 
@@ -1065,24 +1091,19 @@ class Email extends PHPMailer
         // Process view data array through oxoutput processor
         $this->_processViewArray();
 
-        // #1469 - we need to patch security here as we do not use standard template dir, so smarty stops working
-        $store['INCLUDE_ANY'] = $smarty->security_settings['INCLUDE_ANY'];
         //V send email in order language
         $oldTplLang = $lang->getTplLanguage();
         $oldBaseLang = $lang->getBaseLanguage();
         $lang->setTplLanguage($orderLang);
         $lang->setBaseLanguage($orderLang);
 
-        $smarty->security_settings['INCLUDE_ANY'] = true;
         // force non admin to get correct paths (tpl, img)
         $myConfig->setAdminMode(false);
-        $this->setBody($smarty->fetch($this->_sSenedNowTemplate));
-        $this->setAltBody($smarty->fetch($this->_sSenedNowTemplatePlain));
+        $this->setBody($renderer->renderTemplate($this->_sSenedNowTemplate, $this->getViewData()));
+        $this->setAltBody($renderer->renderTemplate($this->_sSenedNowTemplatePlain, $this->getViewData()));
         $myConfig->setAdminMode(true);
         $lang->setTplLanguage($oldTplLang);
         $lang->setBaseLanguage($oldBaseLang);
-        // set it back
-        $smarty->security_settings['INCLUDE_ANY'] = $store['INCLUDE_ANY'];
 
         //Sets subject to email
         $this->setSubject(($subject !== null) ? $subject : $shop->oxshops__oxsendednowsubject->getRawValue());
@@ -1118,7 +1139,7 @@ class Email extends PHPMailer
 
         //create messages
         $lang = \OxidEsales\Eshop\Core\Registry::getLang();
-        $smarty = $this->_getSmarty();
+        $renderer = $this->getRenderer();
         $this->setViewData("order", $order);
         $this->setViewData("shopTemplateDir", $myConfig->getTemplateDir(false));
 
@@ -1128,24 +1149,19 @@ class Email extends PHPMailer
         // Process view data array through oxoutput processor
         $this->_processViewArray();
 
-        // #1469 - we need to patch security here as we do not use standard template dir, so smarty stops working
-        $store['INCLUDE_ANY'] = $smarty->security_settings['INCLUDE_ANY'];
         //V send email in order language
         $oldTplLang = $lang->getTplLanguage();
         $oldBaseLang = $lang->getTplLanguage();
         $lang->setTplLanguage($orderLang);
         $lang->setBaseLanguage($orderLang);
 
-        $smarty->security_settings['INCLUDE_ANY'] = true;
         // force non admin to get correct paths (tpl, img)
         $myConfig->setAdminMode(false);
-        $this->setBody($smarty->fetch($this->_sSendDownloadsTemplate));
-        $this->setAltBody($smarty->fetch($this->_sSendDownloadsTemplatePlain));
+        $this->setBody($renderer->renderTemplate($this->_sSendDownloadsTemplate, $this->getViewData()));
+        $this->setAltBody($renderer->renderTemplate($this->_sSendDownloadsTemplatePlain, $this->getViewData()));
         $myConfig->setAdminMode(true);
         $lang->setTplLanguage($oldTplLang);
         $lang->setBaseLanguage($oldBaseLang);
-        // set it back
-        $smarty->security_settings['INCLUDE_ANY'] = $store['INCLUDE_ANY'];
 
         //Sets subject to email
         $this->setSubject(($subject !== null) ? $subject : $lang->translateString("DOWNLOAD_LINKS", null, false));
@@ -1273,7 +1289,7 @@ class Email extends PHPMailer
             $this->_setMailParams($shop);
             $lang = \OxidEsales\Eshop\Core\Registry::getLang();
 
-            $smarty = $this->_getSmarty();
+            $renderer = $this->getRenderer();
             $this->setViewData("articles", $articleList);
 
             // Process view data array through oxOutput processor
@@ -1281,7 +1297,7 @@ class Email extends PHPMailer
 
             $this->setRecipient($shop->oxshops__oxowneremail->value, $shop->oxshops__oxname->getRawValue());
             $this->setFrom($shop->oxshops__oxowneremail->value, $shop->oxshops__oxname->getRawValue());
-            $this->setBody($smarty->fetch($this->getConfig()->getTemplatePath($this->_sReminderMailTemplate, false)));
+            $this->setBody($renderer->renderTemplate($this->getConfig()->getTemplatePath($this->_sReminderMailTemplate, false), $this->getViewData()));
             $this->setAltBody("");
             $this->setSubject(($subject !== null) ? $subject : $lang->translateString('STOCK_LOW'));
 
@@ -1308,14 +1324,14 @@ class Email extends PHPMailer
         $this->setSmtp();
 
         // create messages
-        $smarty = $this->_getSmarty();
+        $renderer = $this->getRenderer();
         $this->setUser($params);
 
         // Process view data array through oxoutput processor
         $this->_processViewArray();
 
-        $this->setBody($smarty->fetch($this->_sWishListTemplate));
-        $this->setAltBody($smarty->fetch($this->_sWishListTemplatePlain));
+        $this->setBody($renderer->renderTemplate($this->_sWishListTemplate, $this->getViewData()));
+        $this->setAltBody($renderer->renderTemplate($this->_sWishListTemplatePlain, $this->getViewData()));
         $this->setSubject($params->send_subject);
 
         $this->setRecipient($params->rec_email, $params->rec_name);
@@ -1350,7 +1366,7 @@ class Email extends PHPMailer
         $lang = \OxidEsales\Eshop\Core\Registry::getLang();
 
         // create messages
-        $smarty = $this->_getSmarty();
+        $renderer = $this->getRenderer();
         $this->setViewData("product", $article);
         $this->setViewData("email", $params['email']);
         $this->setViewData("bidprice", $lang->formatCurrency($alarm->oxpricealarm__oxprice->value));
@@ -1360,7 +1376,7 @@ class Email extends PHPMailer
 
         $this->setRecipient($shop->oxshops__oxorderemail->value, $shop->oxshops__oxname->getRawValue());
         $this->setSubject(($subject !== null) ? $subject : $lang->translateString('PRICE_ALERT_FOR_PRODUCT', $alarmLang) . " " . $article->oxarticles__oxtitle->getRawValue());
-        $this->setBody($smarty->fetch($this->_sOwnerPricealarmTemplate));
+        $this->setBody($renderer->renderTemplate($this->_sOwnerPricealarmTemplate, $this->getViewData()));
         $this->setFrom($params['email'], "");
         $this->setReplyTo($params['email'], "");
 
@@ -1394,7 +1410,7 @@ class Email extends PHPMailer
         $this->_setMailParams($shop);
 
         // create messages
-        $smarty = $this->_getSmarty();
+        $renderer = $this->getRenderer();
 
         $this->setViewData("product", $alarm->getArticle());
         $this->setViewData("oPriceAlarm", $alarm);
@@ -1408,7 +1424,7 @@ class Email extends PHPMailer
         $this->setSubject($shop->oxshops__oxname->value);
 
         if ($body === null) {
-            $body = $smarty->fetch($this->_sPricealamrCustomerTemplate);
+            $body = $renderer->renderTemplate($this->_sPricealamrCustomerTemplate, $this->getViewData());
         }
 
         $this->setBody($body);
@@ -2082,26 +2098,17 @@ class Email extends PHPMailer
         return $result;
     }
 
-
     /**
      * Process view data array through oxOutput processor
      */
     protected function _processViewArray()
     {
-        $smarty = $this->_getSmarty();
         $outputProcessor = oxNew(\OxidEsales\Eshop\Core\Output::class);
 
-        // processing all view data
-        foreach ($this->_aViewData as $key => $value) {
-            $smarty->assign($key, $value);
-        }
-
         // processing assigned smarty variables
-        $newSmartyArray = $outputProcessor->processViewArray($smarty->get_template_vars(), "oxemail");
+        $newArray = $outputProcessor->processViewArray($this->_aViewData, "oxemail");
 
-        foreach ($newSmartyArray as $key => $val) {
-            $smarty->assign($key, $val);
-        }
+        $this->_aViewData = array_merge($this->_aViewData, $newArray);
     }
 
     /**

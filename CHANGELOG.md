@@ -88,6 +88,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - Was `HELP_ENERAL_NAME` changed to `HELP_GENERAL_NAME`
 - Drop support for PHP 7.0
 - Use user from Order::validateOrder method in validatePayment as well [PR-706](https://github.com/OXID-eSales/oxideshop_ce/pull/706)
+- Travis runs phpcs and tests scripts with calling the php directly, not relying on script shebang anymore.
 
 ### Removed
 - Removed old not used blAutoSearchOnCat option from shop_config tab [PR-654](https://github.com/OXID-eSales/oxideshop_ce/pull/654)

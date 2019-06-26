@@ -10,7 +10,6 @@ use \oxCompanyVatIn;
 
 class CompanyVatInValidatorTest extends \OxidTestCase
 {
-
     public function testGetCountry_Construct()
     {
         $oCountry = oxNew('oxCountry');

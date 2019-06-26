@@ -14,7 +14,6 @@ use \oxTestModules;
 
 class EmailAzureTplTest extends \OxidTestCase
 {
-
     protected $_oEmail = null;
     protected $_oUser = null;
     protected $_oShop = null;

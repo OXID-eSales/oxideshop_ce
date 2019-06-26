@@ -15,7 +15,6 @@ use \oxRegistry;
  */
 class UserpaymentTest extends \OxidTestCase
 {
-
     protected $_oUpay = null;
 
     /**
@@ -272,7 +271,6 @@ class UserpaymentTest extends \OxidTestCase
 
         $sShopId = $this->getConfig()->GetBaseShopId();
         foreach ($aUserPaymentId as $iCnt => $sUserPaymentId) {
-
             $sOrderId = "_test" . (time() + $iCnt);
             $sOrderDate = "2011-03-1{$iCnt} 10:55:13";
 
@@ -360,5 +358,4 @@ class UserpaymentTest extends \OxidTestCase
         $oUserPayment->oxuserpayments__oxpaymentsid = new oxField('oxidcreditcard', oxField::T_RAW);
         $this->assertNull($oUserPayment->getDynValues());
     }
-
 }

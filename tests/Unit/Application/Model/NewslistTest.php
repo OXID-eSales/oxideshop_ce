@@ -9,7 +9,6 @@ use \oxField;
 
 class NewslistTest extends \OxidTestCase
 {
-
     public $aNews = array();
 
     /**

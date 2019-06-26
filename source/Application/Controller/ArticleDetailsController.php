@@ -11,6 +11,10 @@ use oxArticleList;
 use oxCategory;
 use oxDeliveryList;
 use oxDeliverySetList;
+use OxidEsales\Eshop\Application\Model\Category;
+use OxidEsales\Eshop\Core\Field;
+use OxidEsales\Eshop\Core\MailValidator;
+use OxidEsales\Eshop\Core\Registry;
 use oxPaymentList;
 use oxRegistry;
 use oxField;
@@ -206,8 +210,8 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     {
         $parameters = parent::getNavigationParams();
 
-        $variantSelectionListId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('varselid');
-        $selectListParameters = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sel');
+        $variantSelectionListId = Registry::getConfig()->getRequestParameter('varselid');
+        $selectListParameters = Registry::getConfig()->getRequestParameter('sel');
         if (!$variantSelectionListId && !$selectListParameters) {
             return $parameters;
         }
@@ -273,7 +277,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
             $this->_sThisTemplate = $article->oxarticles__oxtemplate->value;
         }
 
-        if (($templateName = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('tpl'))) {
+        if (($templateName = Registry::getConfig()->getRequestParameter('tpl'))) {
             $this->_sThisTemplate = 'custom/' . basename($templateName);
         }
 
@@ -377,7 +381,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      */
     public function saveReview()
     {
-        if (!\OxidEsales\Eshop\Core\Registry::getSession()->checkSessionChallenge()) {
+        if (!Registry::getSession()->checkSessionChallenge()) {
             return;
         }
 
@@ -393,10 +397,10 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
             if ($articleRating !== null && $articleRating >= 1 && $articleRating <= 5) {
                 $rating = oxNew(\OxidEsales\Eshop\Application\Model\Rating::class);
                 if ($rating->allowRating($user->getId(), 'oxarticle', $article->getId())) {
-                    $rating->oxratings__oxuserid = new \OxidEsales\Eshop\Core\Field($user->getId());
-                    $rating->oxratings__oxtype = new \OxidEsales\Eshop\Core\Field('oxarticle');
-                    $rating->oxratings__oxobjectid = new \OxidEsales\Eshop\Core\Field($article->getId());
-                    $rating->oxratings__oxrating = new \OxidEsales\Eshop\Core\Field($articleRating);
+                    $rating->oxratings__oxuserid = new Field($user->getId());
+                    $rating->oxratings__oxtype = new Field('oxarticle');
+                    $rating->oxratings__oxobjectid = new Field($article->getId());
+                    $rating->oxratings__oxrating = new Field($articleRating);
                     $rating->save();
                     $article->addToRatingAverage($articleRating);
                 }
@@ -404,12 +408,12 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
 
             if (($reviewText = trim(( string ) $this->getConfig()->getRequestParameter('rvw_txt', true)))) {
                 $review = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
-                $review->oxreviews__oxobjectid = new \OxidEsales\Eshop\Core\Field($article->getId());
-                $review->oxreviews__oxtype = new \OxidEsales\Eshop\Core\Field('oxarticle');
-                $review->oxreviews__oxtext = new \OxidEsales\Eshop\Core\Field($reviewText, \OxidEsales\Eshop\Core\Field::T_RAW);
-                $review->oxreviews__oxlang = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage());
-                $review->oxreviews__oxuserid = new \OxidEsales\Eshop\Core\Field($user->getId());
-                $review->oxreviews__oxrating = new \OxidEsales\Eshop\Core\Field(($articleRating !== null) ? $articleRating : 0);
+                $review->oxreviews__oxobjectid = new Field($article->getId());
+                $review->oxreviews__oxtype = new Field('oxarticle');
+                $review->oxreviews__oxtext = new Field($reviewText, Field::T_RAW);
+                $review->oxreviews__oxlang = new Field(Registry::getLang()->getBaseLanguage());
+                $review->oxreviews__oxuserid = new Field($user->getId());
+                $review->oxreviews__oxrating = new Field(($articleRating !== null) ? $articleRating : 0);
                 $review->save();
             }
         }
@@ -424,7 +428,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      */
     public function addToRecomm()
     {
-        if (!\OxidEsales\Eshop\Core\Registry::getSession()->checkSessionChallenge()) {
+        if (!Registry::getSession()->checkSessionChallenge()) {
             return;
         }
 
@@ -463,7 +467,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     public function getProduct()
     {
         $config = $this->getConfig();
-        $utils = \OxidEsales\Eshop\Core\Registry::getUtils();
+        $utils = Registry::getUtils();
 
         if ($this->_oProduct === null) {
             //this option is only for lists and we must reset value
@@ -501,7 +505,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     protected function _additionalChecksForArticle()
     {
         $config = $this->getConfig();
-        $utils = \OxidEsales\Eshop\Core\Registry::getUtils();
+        $utils = Registry::getUtils();
 
         $shouldContinue = true;
         if (!$this->_oProduct->isVisible()) {
@@ -538,7 +542,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
             // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
             } elseif ('recommlist' == $listType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_RECOMM;
-                // END deprecated
+            // END deprecated
             } else {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_CATEGORY;
 
@@ -840,8 +844,8 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
                 $article = $this->_getParentProduct($article->oxarticles__oxparentid->value);
             }
 
-            $utilsUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl();
-            if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive()) {
+            $utilsUrl = Registry::getUtilsUrl();
+            if (Registry::getUtils()->seoIsActive()) {
                 $url = $utilsUrl->prepareCanonicalUrl($article->getBaseSeoLink($article->getLanguage(), true));
             } else {
                 $url = $utilsUrl->prepareCanonicalUrl($article->getBaseStdLink($article->getLanguage()));
@@ -863,7 +867,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         } elseif ('recommlist' == $this->getListType()) {
             $paths = $this->_getRecommendationListBredCrumb();
-            // END deprecated
+        // END deprecated
         } elseif ('vendor' == $this->getListType()) {
             $paths = $this->_getVendorBreadCrumb();
         } else {
@@ -884,11 +888,11 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     public function addMe()
     {
         $config = $this->getConfig();
-        $utils = \OxidEsales\Eshop\Core\Registry::getUtils();
+        $utils = Registry::getUtils();
 
         $parameters = $this->getConfig()->getRequestParameter('pa');
 
-        if (!isset($parameters['email']) || !oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($parameters['email'])) {
+        if (!isset($parameters['email']) || !oxNew(MailValidator::class)->isValidEmail($parameters['email'])) {
             $this->_iPriceAlarmStatus = 0;
             return;
         }
@@ -899,14 +903,14 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         $price = $utils->currency2Float($parameters['price']);
 
         $priceAlarm = oxNew(\OxidEsales\Eshop\Application\Model\PriceAlarm::class);
-        $priceAlarm->oxpricealarm__oxuserid = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('usr'));
-        $priceAlarm->oxpricealarm__oxemail = new \OxidEsales\Eshop\Core\Field($parameters['email']);
-        $priceAlarm->oxpricealarm__oxartid = new \OxidEsales\Eshop\Core\Field($parameters['aid']);
-        $priceAlarm->oxpricealarm__oxprice = new \OxidEsales\Eshop\Core\Field($utils->fRound($price, $activeCurrency));
-        $priceAlarm->oxpricealarm__oxshopid = new \OxidEsales\Eshop\Core\Field($config->getShopId());
-        $priceAlarm->oxpricealarm__oxcurrency = new \OxidEsales\Eshop\Core\Field($activeCurrency->name);
+        $priceAlarm->oxpricealarm__oxuserid = new Field(Registry::getSession()->getVariable('usr'));
+        $priceAlarm->oxpricealarm__oxemail = new Field($parameters['email']);
+        $priceAlarm->oxpricealarm__oxartid = new Field($parameters['aid']);
+        $priceAlarm->oxpricealarm__oxprice = new Field($utils->fRound($price, $activeCurrency));
+        $priceAlarm->oxpricealarm__oxshopid = new Field($config->getShopId());
+        $priceAlarm->oxpricealarm__oxcurrency = new Field($activeCurrency->name);
 
-        $priceAlarm->oxpricealarm__oxlang = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage());
+        $priceAlarm->oxpricealarm__oxlang = new Field(Registry::getLang()->getBaseLanguage());
 
         $priceAlarm->save();
 
@@ -937,8 +941,8 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
 
             $parameters = $this->getConfig()->getRequestParameter('pa');
             $activeCurrency = $this->getConfig()->getActShopCurrencyObject();
-            $price = \OxidEsales\Eshop\Core\Registry::getUtils()->currency2Float($parameters['price']);
-            $this->_sBidPrice = \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($price, $activeCurrency);
+            $price = Registry::getUtils()->currency2Float($parameters['price']);
+            $this->_sBidPrice = Registry::getLang()->formatCurrency($price, $activeCurrency);
         }
 
         return $this->_sBidPrice;
@@ -1036,7 +1040,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         if ($configVariableName) {
             $validity = [];
             $days = $this->getConfig()->getConfigParam($configVariableName);
-            $from = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
+            $from = Registry::getUtilsDate()->getTime();
 
             $through = $from + ($days * 24 * 60 * 60);
             $validity["from"] = date('Y-m-d\TH:i:s', $from) . "Z";
@@ -1217,7 +1221,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         $sorting = parent::getDefaultSorting();
         $activeCategory = $this->getActiveCategory();
 
-        if ($this->getListType() != 'search' && $activeCategory && $activeCategory instanceof \OxidEsales\Eshop\Application\Model\Category) {
+        if ($this->getListType() != 'search' && $activeCategory && $activeCategory instanceof Category) {
             if ($categorySorting = $activeCategory->getDefaultSorting()) {
                 $sortingDirection = ($activeCategory->getDefaultSortingMode()) ? "desc" : "asc";
                 $sorting = ['sortby' => $categorySorting, 'sortdir' => $sortingDirection];
@@ -1280,8 +1284,8 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     {
         $paths = [];
         $recommListPath = [];
-        $baseLanguageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
-        $recommListPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('LISTMANIA', $baseLanguageId, false);
+        $baseLanguageId = Registry::getLang()->getBaseLanguage();
+        $recommListPath['title'] = Registry::getLang()->translateString('LISTMANIA', $baseLanguageId, false);
         $paths[] = $recommListPath;
 
         return $paths;
@@ -1297,10 +1301,10 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         $paths = [];
         $searchPath = [];
 
-        $baseLanguageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
-        $translatedString = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('SEARCH_RESULT', $baseLanguageId, false);
+        $baseLanguageId = Registry::getLang()->getBaseLanguage();
+        $translatedString = Registry::getLang()->translateString('SEARCH_RESULT', $baseLanguageId, false);
         $selfLink = $this->getViewConfig()->getSelfLink();
-        $sessionToken = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('sess_stoken');
+        $sessionToken = Registry::getSession()->getVariable('sess_stoken');
 
         $searchPath['title'] = sprintf($translatedString, $this->getSearchParamForHtml());
         $searchPath['link'] = $selfLink . 'stoken=' . $sessionToken . "&amp;cl=search&amp;".
@@ -1324,7 +1328,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
 
         if ($categoryTree) {
             foreach ($categoryTree as $category) {
-                /** @var \OxidEsales\Eshop\Application\Model\Category $category */
+                /** @var Category $category */
                 $categoryPath = [];
 
                 $categoryPath['link'] = $category->getLink();

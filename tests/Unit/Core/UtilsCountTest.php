@@ -560,7 +560,6 @@ class UtilsCountTest extends \OxidTestCase
 
     public function testGetUserViewId()
     {
-
         $myConfig = $this->getConfig();
         $myUtilsTest = oxNew('oxUtilsCount');
 

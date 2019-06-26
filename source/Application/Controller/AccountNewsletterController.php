@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 
 /**
@@ -38,15 +39,13 @@ class AccountNewsletterController extends \OxidEsales\Eshop\Application\Controll
     protected $_iSubscriptionStatus = 0;
 
     /**
-     * If user is not logged in - returns name of template \OxidEsales\Eshop\Application\Controller\AccountNewsletterController::_sThisLoginTemplate,
-     * or if user is allready logged in - returns name of template
-     * \OxidEsales\Eshop\Application\Controller\AccountNewsletterController::_sThisTemplate
+     * If user is not logged in - returns name of template AccountNewsletterController::_sThisLoginTemplate, or if user
+     * is already logged in - returns name of template AccountNewsletterController::_sThisTemplate
      *
      * @return string
      */
     public function render()
     {
-
         parent::render();
 
         // is logged in ?
@@ -82,7 +81,7 @@ class AccountNewsletterController extends \OxidEsales\Eshop\Application\Controll
      */
     public function subscribe()
     {
-        if (!\OxidEsales\Eshop\Core\Registry::getSession()->checkSessionChallenge()) {
+        if (!Registry::getSession()->checkSessionChallenge()) {
             return false;
         }
 
@@ -118,15 +117,15 @@ class AccountNewsletterController extends \OxidEsales\Eshop\Application\Controll
     {
         $aPaths = [];
         $aPath = [];
-        $oUtils = \OxidEsales\Eshop\Core\Registry::getUtilsUrl();
-        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        $oUtils = Registry::getUtilsUrl();
+        $iBaseLanguage = Registry::getLang()->getBaseLanguage();
         $sSelfLink = $this->getViewConfig()->getSelfLink();
 
-        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
-        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($sSelfLink . 'cl=account');
+        $aPath['title'] = Registry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
+        $aPath['link'] = Registry::getSeoEncoder()->getStaticUrl($sSelfLink . 'cl=account');
         $aPaths[] = $aPath;
 
-        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('NEWSLETTER_SETTINGS', $iBaseLanguage, false);
+        $aPath['title'] = Registry::getLang()->translateString('NEWSLETTER_SETTINGS', $iBaseLanguage, false);
         $aPath['link'] = $oUtils->cleanUrl($this->getLink(), ['fnc']);
         $aPaths[] = $aPath;
 

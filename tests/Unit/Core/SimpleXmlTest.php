@@ -13,7 +13,6 @@ use \SimpleXMLElement;
  */
 class SimpleXmlTest extends \OxidTestCase
 {
-
     public function testObjectToXml()
     {
         $oXml = oxNew('oxSimpleXml');

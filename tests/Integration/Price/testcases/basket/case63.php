@@ -22,16 +22,16 @@ $aData = array(
     'skipped' => 1,
     'skipped' => 1, // while not fixed 0004631: Discount quantity and purchase price filters are working incorrectly
 
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
                 'oxid'                     => 111,
                 'oxprice'                  => 159.00,
                 'oxvat'                    => 19,
                 'amount'                   => 2,
         ),
     ),
-    'discounts' => array (
-        0 => array (
+    'discounts' => array(
+        0 => array(
                 'oxid'         => 'abs_discount_for_111',
                 'oxaddsum'     => 20.00,
                 'oxaddsumtype' => 'abs',
@@ -44,20 +44,20 @@ $aData = array(
                 'oxsort' => 10,
         ),
     ),
-    'expected' => array (
-        'articles' => array (
-                 111 => array ( '139,00', '278,00' ),
+    'expected' => array(
+        'articles' => array(
+                 111 => array( '139,00', '278,00' ),
         ),
-        'totals' => array (
+        'totals' => array(
                 'totalBrutto' => '278,00',
                 'totalNetto'  => '233,61',
-                'vats' => array (
+                'vats' => array(
                     19 => '44,39',
                 ),
                 'grandTotal'  => '278,00'
         ),
     ),
-    'options' => array (
+    'options' => array(
         'config' => array(
                 'blEnterNetPrice' => false,
                 'blShowNetPrice' => false,

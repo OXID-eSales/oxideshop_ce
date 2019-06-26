@@ -4,8 +4,8 @@
 */
 $aData = array(
     // Product
-    'articles' => array (
-         0 => array (
+    'articles' => array(
+         0 => array(
             // oxarticles db fields
             'oxid'                     => 1001,
             'oxprice'                  => 20.00,
@@ -13,7 +13,7 @@ $aData = array(
             // Amount in basket
             'amount'                   => 15,
         ),
-        1 => array (
+        1 => array(
             // oxarticles db fields
             'oxid'                     => 1002,
             'oxprice'                  => 200.00,
@@ -62,21 +62,21 @@ $aData = array(
     ),
 
     // TEST EXPECTATIONS
-    'expected' => array (
+    'expected' => array(
         // Article expected prices: ARTICLE ID => ( Unit price, Total Price )
-        'articles' => array (
-            1001 => array ( '20,00', '300,00' ),
-            1002 => array ( '200,00', '200,00' ),
+        'articles' => array(
+            1001 => array( '20,00', '300,00' ),
+            1002 => array( '200,00', '200,00' ),
 
         ),
         // Expectations of other totals
-        'totals' => array (
+        'totals' => array(
             // Total BRUTTO
             'totalBrutto' => '568,00',
             // Total NETTO
-            'totalNetto'  => '500,00', 
+            'totalNetto'  => '500,00',
             // Total VAT amount: vat% => total cost
-            'vats' => array (
+            'vats' => array(
                 10 => '30,00',
                 19 => '38,00',
 
@@ -95,17 +95,17 @@ $aData = array(
             ),
 
             // Total giftcard amounts
-            'giftcard' => array (
+            'giftcard' => array(
                 'brutto' => '2,84',
                 'netto' => '2,50',
                 'vat' => '0,34'
             ),
             // GRAND TOTAL
-            'grandTotal'  => '1.195,64' 
+            'grandTotal'  => '1.195,64'
         ),
     ),
     // Test case options
-    'options' => array (
+    'options' => array(
         // Configs (real named)
         'config' => array(
             'blEnterNetPrice' => true,
@@ -113,7 +113,7 @@ $aData = array(
             'blShowVATForDelivery'=> true,
             'blShowVATForPayCharge'=> true,
             'blShowVATForWrapping'=> true,
-            'sAdditionalServVATCalcMethod' => 'proportional', 
+            'sAdditionalServVATCalcMethod' => 'proportional',
             'blDeliveryVatOnTop' => true,
             'blPaymentVatOnTop' => true,
             'blWrappingVatOnTop' => true,

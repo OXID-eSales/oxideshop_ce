@@ -52,7 +52,7 @@ class MasterSlaveConnectionTest extends UnitTestCase
      */
     public function testGetDb()
     {
-        if('EE' == $this->getTestConfig()->getShopEdition()) {
+        if ('EE' == $this->getTestConfig()->getShopEdition()) {
             $this->markTestSkipped('Test is for CE/PE only.');
         }
 
@@ -70,7 +70,7 @@ class MasterSlaveConnectionTest extends UnitTestCase
      */
     public function testGetMasterNoMasterSlaveSetup()
     {
-        if('EE' == $this->getTestConfig()->getShopEdition()) {
+        if ('EE' == $this->getTestConfig()->getShopEdition()) {
             $this->markTestSkipped('Test is for CE/PE only.');
         }
 
@@ -88,7 +88,7 @@ class MasterSlaveConnectionTest extends UnitTestCase
      */
     public function testForceMasterNoMasterSlaveSetup()
     {
-        if('EE' == $this->getTestConfig()->getShopEdition()) {
+        if ('EE' == $this->getTestConfig()->getShopEdition()) {
             $this->markTestSkipped('Test is for CE/PE only.');
         }
 
@@ -107,7 +107,7 @@ class MasterSlaveConnectionTest extends UnitTestCase
      */
     public function testForceSlaveNoMasterSlaveSetup()
     {
-        if('EE' == $this->getTestConfig()->getShopEdition()) {
+        if ('EE' == $this->getTestConfig()->getShopEdition()) {
             $this->markTestSkipped('Test is for CE/PE only.');
         }
 
@@ -120,5 +120,4 @@ class MasterSlaveConnectionTest extends UnitTestCase
         $this->assertFalse(is_a($dbConnection, 'Doctrine\DBAL\Connections\MasterSlaveConnection'));
         $this->assertSame($this->getConfig()->getConfigParam('dbHost'), $dbConnection->getHost());
     }
-
 }

@@ -11,5 +11,4 @@ namespace OxidEsales\EshopCommunity\Internal\Authentication\Exception;
  */
 class PasswordPolicyException extends \Exception
 {
-
 }

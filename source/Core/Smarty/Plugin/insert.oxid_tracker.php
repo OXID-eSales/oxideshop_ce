@@ -25,7 +25,6 @@ function smarty_insert_oxid_tracker($params, &$smarty)
 {
     $config = \OxidEsales\Eshop\Core\Registry::getConfig();
     if ($config->getConfigParam('blEcondaActive')) {
-
         $output = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter::class)->getCode($params, $smarty);
 
         // returning JS code to output

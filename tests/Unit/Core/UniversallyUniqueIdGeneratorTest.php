@@ -12,7 +12,6 @@ use \oxUniversallyUniqueIdGenerator;
  */
 class UniversallyUniqueIdGeneratorTest extends \OxidTestCase
 {
-
     public function testUUIDUniqueness()
     {
         $oGenerator = oxNew('oxUniversallyUniqueIdGenerator');

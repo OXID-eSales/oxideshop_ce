@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 
 /**
@@ -112,7 +113,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getViewId()
     {
         if (!isset($this->_sViewId)) {
-            $this->_sViewId = parent::getViewId() . '|' . \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxcid');
+            $this->_sViewId = parent::getViewId() . '|' . Registry::getConfig()->getRequestParameter('oxcid');
         }
 
         return $this->_sViewId;
@@ -131,7 +132,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
         $oContent = $this->getContent();
         if ($oContent && !$this->_canShowContent($oContent->oxcontents__oxloadid->value)) {
-            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . 'cl=account');
+            Registry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . 'cl=account');
         }
 
         $sTpl = false;
@@ -166,7 +167,8 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     protected function _canShowContent($sContentIdent)
     {
-        return !($this->isEnabledPrivateSales() &&
+        return !(
+            $this->isEnabledPrivateSales() &&
             !$this->getUser() && !in_array($sContentIdent, $this->_aPsAllowedContents)
         );
     }
@@ -234,7 +236,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function showPlainTemplate()
     {
-        $blPlain = (bool) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('plain');
+        $blPlain = (bool) Registry::getConfig()->getRequestParameter('plain');
         if ($blPlain === false) {
             $oUser = $this->getUser();
             if ($this->isEnabledPrivateSales() &&
@@ -254,7 +256,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     protected function _getSeoObjectId()
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxcid');
+        return Registry::getConfig()->getRequestParameter('oxcid');
     }
 
     /**
@@ -266,8 +268,8 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getContentId()
     {
         if ($this->_sContentId === null) {
-            $sContentId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxcid');
-            $sLoadId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxloadid');
+            $sContentId = Registry::getConfig()->getRequestParameter('oxcid');
+            $sLoadId = Registry::getConfig()->getRequestParameter('oxloadid');
 
             $this->_sContentId = false;
             $oContent = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
@@ -328,7 +330,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     protected function _getTplName()
     {
         // assign template name
-        $sTplName = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('tpl');
+        $sTplName = Registry::getConfig()->getRequestParameter('tpl');
 
         if ($sTplName) {
             // security fix so that you cant access files from outside template dir
@@ -514,7 +516,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getRdfaPriceValidity()
     {
         $iDays = $this->getConfig()->getConfigParam('iRDFaPriceValidity');
-        $iFrom = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
+        $iFrom = Registry::getUtilsDate()->getTime();
         $iThrough = $iFrom + ($iDays * 24 * 60 * 60);
         $oPriceValidity = [];
         $oPriceValidity['validfrom'] = date('Y-m-d\TH:i:s', $iFrom) . "Z";
@@ -531,8 +533,13 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getParsedContent()
     {
         /** @var \OxidEsales\Eshop\Core\UtilsView $oUtilsView */
-        $oUtilsView = \OxidEsales\Eshop\Core\Registry::getUtilsView();
-        return $oUtilsView->parseThroughSmarty($this->getContent()->oxcontents__oxcontent->value, $this->getContent()->getId(), null, true);
+        $oUtilsView = Registry::getUtilsView();
+        return $oUtilsView->parseThroughSmarty(
+            $this->getContent()->oxcontents__oxcontent->value,
+            $this->getContent()->getId(),
+            null,
+            true
+        );
     }
 
     /**
@@ -544,8 +551,8 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     {
         $url = '';
         if ($content = $this->getContent()) {
-            $utils = \OxidEsales\Eshop\Core\Registry::getUtilsUrl();
-            if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive()) {
+            $utils = Registry::getUtilsUrl();
+            if (Registry::getUtils()->seoIsActive()) {
                 $url = $utils->prepareCanonicalUrl($content->getBaseSeoLink($content->getLanguage()));
             } else {
                 $url = $utils->prepareCanonicalUrl($content->getBaseStdLink($content->getLanguage()));

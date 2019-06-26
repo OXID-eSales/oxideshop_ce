@@ -14,7 +14,6 @@ use oxTestModules;
  */
 class StartControllerTest extends \OxidTestCase
 {
-
     public function testGetTitleSuffix()
     {
         $oShop = oxNew('oxShop');

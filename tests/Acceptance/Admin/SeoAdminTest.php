@@ -445,7 +445,6 @@ class SeoAdminTest extends AdminTestCase
         $this->assertEquals("last-EN-category/EN/", $this->getValue("aSeoData[oxseourl]"));
         $this->assertEquals("keywords EN", $this->getValue("aSeoData[oxkeywords]"));
         $this->assertEquals("description EN", $this->getValue("aSeoData[oxdescription]"));
-
     }
 
     /**

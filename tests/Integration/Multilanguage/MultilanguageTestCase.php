@@ -129,6 +129,4 @@ abstract class MultilanguageTestCase extends \OxidTestCase
         }
         return $this->languageMain;
     }
-
 }
-

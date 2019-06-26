@@ -355,7 +355,6 @@ class VoucherTest extends \OxidTestCase
         if ($myDB->GetOne($sQ) > 0) {
             $this->fail('voucherserie was not marked as reserved');
         }
-
     }
 
     public function testUnMarkAsReserved()
@@ -803,7 +802,8 @@ class VoucherTest extends \OxidTestCase
 
     public function testIsValidDate_WhenDateIsInFuture()
     {
-        $this->expectException('oxVoucherException'); $this->expectExceptionMessage( 'ERROR_MESSAGE_VOUCHER_NOVOUCHER');
+        $this->expectException('oxVoucherException');
+        $this->expectExceptionMessage('ERROR_MESSAGE_VOUCHER_NOVOUCHER');
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($this->_aSerieOxid[0]);
         $oSerie->oxvoucherseries__oxbegindate = new oxField(date('Y-m-d H:i:s', time() + 3600), oxField::T_RAW);
@@ -823,7 +823,8 @@ class VoucherTest extends \OxidTestCase
 
     public function testIsValidDate_WhenEndDateIsAutoSetInFuture()
     {
-        $this->expectException('oxVoucherException'); $this->expectExceptionMessage( 'ERROR_MESSAGE_VOUCHER_NOVOUCHER');
+        $this->expectException('oxVoucherException');
+        $this->expectExceptionMessage('ERROR_MESSAGE_VOUCHER_NOVOUCHER');
         $oSerie = oxNew('oxvoucherserie');
         $oSerie->load($this->_aSerieOxid[0]);
         $oSerie->oxvoucherseries__oxbegindate = new oxField(date('Y-m-d H:i:s', time() + 3600), oxField::T_RAW);
@@ -1091,7 +1092,6 @@ class VoucherTest extends \OxidTestCase
      */
     public function testIsAvailableInOtherOrder0()
     {
-
         $sOXID = $this->_aVoucherOxid[$this->_aSerieOxid[0]][$this->getRandLTAmnt()];
         $oNewVoucher = oxNew('oxvoucher');
         if (!$oNewVoucher->Load($sOXID)) {
@@ -1221,7 +1221,6 @@ class VoucherTest extends \OxidTestCase
 
     public function testIsValidUserGroupIfValidGroup()
     {
-
         $sOXID = $this->_aVoucherOxid[$this->_aSerieOxid[0]][$this->getRandLTAmnt()];
         $oNewVoucher = oxNew('oxvoucher');
         if (!$oNewVoucher->Load($sOXID)) {
@@ -1243,7 +1242,6 @@ class VoucherTest extends \OxidTestCase
     // user is not loaded, should throw an exception
     public function testIsValidUserGroupNoUser()
     {
-
         $sOXID = $this->_aVoucherOxid[$this->_aSerieOxid[0]][$this->getRandLTAmnt()];
         $oNewVoucher = oxNew('oxvoucher');
         $oNewVoucher->Load($sOXID);
@@ -1260,7 +1258,6 @@ class VoucherTest extends \OxidTestCase
     // returns true
     public function testIsValidUserGroupNoUserGroupSet()
     {
-
         $sOXID = $this->_aVoucherOxid[$this->_aSerieOxid[0]][$this->getRandLTAmnt()];
         $myDB = oxDb::getDb();
 

@@ -1039,9 +1039,11 @@ class SystemRequirements
             case 'g':
                 $sBytes *= 1024;
             // megabytes
+            // no break
             case 'm':
                 $sBytes *= 1024;
             // kilobytes
+            // no break
             case 'k':
                 $sBytes *= 1024;
                 break;

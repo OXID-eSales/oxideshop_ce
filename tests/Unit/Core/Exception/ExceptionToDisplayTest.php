@@ -10,7 +10,6 @@ use \oxTestModules;
 
 class ExceptionToDisplayTest extends \OxidTestCase
 {
-
     public function testSetGetStackTrace()
     {
         $oTestObject = oxNew('oxExceptionToDisplay');
@@ -96,5 +95,4 @@ class ExceptionToDisplayTest extends \OxidTestCase
 
         $this->assertEquals(array(100, "200", "testString"), $oTestObject->getNonPublicVar('_aMessageArgs'));
     }
-
 }

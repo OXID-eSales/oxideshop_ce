@@ -12,7 +12,6 @@ use \oxRegistry;
 
 class UtilsDateTest extends \OxidTestCase
 {
-
     public function testFormatDBDate()
     {
         $oUtilsDate = oxNew('oxUtilsDate');
@@ -59,7 +58,6 @@ class UtilsDateTest extends \OxidTestCase
 
     public function testGetWeekNumber()
     {
-
         $sTimeStamp = '1186052540'; // from 2007-08-02 -> week nr = 31;
 
         $this->assertEquals(31, \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getWeekNumber(0, $sTimeStamp));
@@ -443,7 +441,6 @@ class UtilsDateTest extends \OxidTestCase
         $iExpectedTimeStamp = $oDateTime->getTimestamp();
 
         $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formTime('tomorrow', '17:10:15'), $iExpectedTimeStamp);
-
     }
 
     public function testFormTimeWithTimeShift()
@@ -469,7 +466,6 @@ class UtilsDateTest extends \OxidTestCase
         $iExpectedTimeStamp = $oDateTime->getTimestamp() + $iTimeShiftSeconds;
 
         $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formTime('tomorrow', '17:10:15'), $iExpectedTimeStamp);
-
     }
 
     public function providerShiftServerTime()

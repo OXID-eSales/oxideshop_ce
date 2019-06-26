@@ -9,7 +9,6 @@ use \oxPasswordSaltGenerator;
 
 class PasswordSaltGeneratorTest extends \OxidTestCase
 {
-
     public function providerOpenSslRandomBytesGeneratorAvailability()
     {
         return array(

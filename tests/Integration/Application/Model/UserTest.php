@@ -81,7 +81,7 @@ class UserTest extends \OxidEsales\TestingLibrary\UnitTestCase
     private function assertUserDataDeletedAfterTransactionCommit($userId, $addressId)
     {
         $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
-        $userAddress = oxNew (\OxidEsales\Eshop\Application\Model\Address::class);
+        $userAddress = oxNew(\OxidEsales\Eshop\Application\Model\Address::class);
 
         $this->assertFalse($user->load($userId), 'User has been deleted');
         $this->assertFalse($userAddress->load($addressId), 'User address has been deleted');
@@ -96,7 +96,7 @@ class UserTest extends \OxidEsales\TestingLibrary\UnitTestCase
     private function assertUserDataNotDeletedAfterTransactionRollback($userId, $addressId)
     {
         $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
-        $userAddress = oxNew (\OxidEsales\Eshop\Application\Model\Address::class);
+        $userAddress = oxNew(\OxidEsales\Eshop\Application\Model\Address::class);
 
         $this->assertTrue($user->load($userId), 'User has not been deleted');
         $this->assertTrue($userAddress->load($addressId), 'User address has not been deleted');
@@ -113,11 +113,11 @@ class UserTest extends \OxidEsales\TestingLibrary\UnitTestCase
     {
         $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $user->setId($userId);
-        if(!$user->save()) {
+        if (!$user->save()) {
             $this->fail('User cannot be saved: ' . $userId);
         }
 
-        $userAddress = oxNew (\OxidEsales\Eshop\Application\Model\Address::class);
+        $userAddress = oxNew(\OxidEsales\Eshop\Application\Model\Address::class);
         $userAddress->setId($addressId);
         $userAddress->oxaddress__oxuserid = new \OxidEsales\Eshop\Core\Field($userId, \OxidEsales\Eshop\Core\Field::T_RAW);
         if (!$userAddress->save()) {

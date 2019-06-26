@@ -12,7 +12,6 @@ use \oxDb;
  */
 class DeliverysetPaymentAjaxTest extends \OxidTestCase
 {
-
     protected $_sGroupsView = 'oxv_oxgroups_de';
 
     /**

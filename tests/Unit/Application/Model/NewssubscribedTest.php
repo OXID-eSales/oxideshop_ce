@@ -273,7 +273,7 @@ class NewssubscribedTest extends \OxidTestCase
     /**
      * Check if return right result after subscribe and unsubscribe.
      */
-    function testWasUnsubscribed()
+    public function testWasUnsubscribed()
     {
         $oUser = $this->_oUser;
         $oNewsSubscribed = $this->_oNewsSub;

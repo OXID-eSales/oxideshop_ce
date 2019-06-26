@@ -13,7 +13,6 @@ use \oxDb;
 
 class oxVariantHandlerForOxvarianthandlerTest extends oxVariantHandler
 {
-
     public function fillVariantSelections($oVariantList, $iVarSelCnt, &$aFilter, $sActVariantId)
     {
         return parent::_fillVariantSelections($oVariantList, $iVarSelCnt, $aFilter, $sActVariantId);
@@ -420,7 +419,6 @@ class VarianthandlerTest extends \OxidTestCase
         $aFilter = array(md5('a2'), md5('b2'), md5('c3'));
 
         $this->assertEquals(array($aResult, "test3", true), $oHandler->UNITapplyVariantSelectionsFilter($aArray, $aFilter));
-
     }
 
     /**

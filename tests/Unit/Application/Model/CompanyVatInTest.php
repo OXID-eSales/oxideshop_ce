@@ -9,7 +9,6 @@ use \oxCompanyVatIn;
 
 class CompanyVatInTest extends \OxidTestCase
 {
-
     public function testConstruct()
     {
         $oVatIn = new oxCompanyVatIn('LT12345');
@@ -74,5 +73,4 @@ class CompanyVatInTest extends \OxidTestCase
             array('LT,123,45', ',123,45'),
         );
     }
-
 }

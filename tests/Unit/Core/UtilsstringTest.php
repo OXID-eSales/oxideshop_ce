@@ -9,7 +9,6 @@ use \oxRegistry;
 
 class UtilsstringTest extends \OxidTestCase
 {
-
     public function testPrepareCSVField()
     {
         $this->assertEquals('"blafoo;wurst;suppe"', \OxidEsales\Eshop\Core\Registry::getUtilsString()->prepareCSVField("blafoo;wurst;suppe"));

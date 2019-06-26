@@ -82,7 +82,8 @@ class ArticleStockTest extends \OxidTestCase
     {
         oxTestModules::addFunction('oxbase', 'save', '{ throw new Exception( "save" ); }');
         $this->setRequestParameter(
-            "editval", array("oxprice2article__oxamountto" => 9,
+            "editval",
+            array("oxprice2article__oxamountto" => 9,
                              "pricetype"                   => "oxaddabs",
                              "price"                       => 9)
         );
@@ -109,7 +110,8 @@ class ArticleStockTest extends \OxidTestCase
         oxTestModules::addFunction('oxbase', 'save', '{ throw new Exception( "save" ); }');
         //set default params witch will be overriden
         $this->setRequestParameter(
-            "editval", array("oxprice2article__oxamountto" => 9,
+            "editval",
+            array("oxprice2article__oxamountto" => 9,
                              "pricetype"                   => "oxaddabs",
                              "price"                       => 9)
         );
@@ -138,7 +140,8 @@ class ArticleStockTest extends \OxidTestCase
     {
         //set default params witch will be overriden
         $this->setRequestParameter(
-            "editval", array("oxprice2article__oxamountto" => 9,
+            "editval",
+            array("oxprice2article__oxamountto" => 9,
                              "pricetype"                   => "oxaddabs",
                              "price"                       => 9)
         );
@@ -171,7 +174,8 @@ class ArticleStockTest extends \OxidTestCase
     {
         //set default params witch will be overwritten
         $this->setRequestParameter(
-            "updateval", array("_testId" => array("oxprice2article__oxamountto" => 50,
+            "updateval",
+            array("_testId" => array("oxprice2article__oxamountto" => 50,
                                                   "pricetype"                   => "oxaddabs",
                                                   "price"                       => 20))
         );
@@ -183,13 +187,13 @@ class ArticleStockTest extends \OxidTestCase
         $this->assertFalse($oDb->getOne("select 1 from oxprice2article where oxid='_testId'"));
 
         $this->setRequestParameter(
-            "editval", array("oxprice2article__oxamountto" => 9,
+            "editval",
+            array("oxprice2article__oxamountto" => 9,
                              "pricetype"                   => "oxaddabs",
                              "price"                       => 9)
         );
         $oView->updateprices();
         $this->assertEquals("50", $oDb->getOne("select oxamountto from oxprice2article where oxid='_testId'"));
-
     }
 
     /**
@@ -229,7 +233,8 @@ class ArticleStockTest extends \OxidTestCase
     {
         //set default params for first save
         $this->setRequestParameter(
-            "editval", array("oxprice2article__oxamountto" => 123,
+            "editval",
+            array("oxprice2article__oxamountto" => 123,
                              "pricetype"                   => "oxaddabs", "price" => 9)
         );
         //set oxid
@@ -269,8 +274,5 @@ class ArticleStockTest extends \OxidTestCase
         $oView->addprice($sOXID, $aParams);
         $this->assertEquals("10101", $oDb->getOne("select oxamountto from oxprice2article where oxid='_testId'"));
         $this->assertEquals($sShopId, $oDb->getOne("select oxshopid from oxprice2article where oxid='_testId'"));
-
     }
-
-
 }

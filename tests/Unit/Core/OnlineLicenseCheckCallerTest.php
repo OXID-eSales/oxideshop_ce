@@ -21,7 +21,6 @@ use \oxTestModules;
  */
 class OnlineLicenseCheckCallerTest extends \OxidTestCase
 {
-
     public function testIfCorrectRequestPassedToXmlFormatter()
     {
         /** @var oxOnlineLicenseCheckRequest $oRequest */
@@ -81,7 +80,8 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
      */
     public function testUnexpectedExceptionIsThrownOnIncorrectResponse($sMessage, $sResponseXml)
     {
-        $this->expectException('oxException'); $this->expectExceptionMessage( $sMessage);
+        $this->expectException('oxException');
+        $this->expectExceptionMessage($sMessage);
 
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute', 'getStatusCode'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue($sResponseXml));
@@ -136,7 +136,7 @@ class OnlineLicenseCheckCallerTest extends \OxidTestCase
         $emailRequest = clone $oRequest;
         $emailRequest->keys = null;
         $simpleXml = new \OxidEsales\Eshop\Core\SimpleXml();
-        $expectedEmailBody = $simpleXml->objectToXml($emailRequest,'olcRequest');
+        $expectedEmailBody = $simpleXml->objectToXml($emailRequest, 'olcRequest');
 
         $oCurl = $this->getMock(\OxidEsales\Eshop\Core\Curl::class, array('execute'));
         $stubbedExceptionMessage = 'This is a stubbed exception';

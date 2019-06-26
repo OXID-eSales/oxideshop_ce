@@ -65,5 +65,4 @@ class ListobjectTest extends \OxidTestCase
         $oListObject->assign('oxid');
         $this->assertEquals(0, count(get_object_vars($oListObject)));
     }
-
 }

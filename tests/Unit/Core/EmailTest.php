@@ -17,7 +17,6 @@ use oxTestModules;
 
 class EmailTest extends \OxidTestCase
 {
-
     protected $_oEmail = null;
     protected $_oUser = null;
     protected $_oShop = null;
@@ -85,7 +84,6 @@ class EmailTest extends \OxidTestCase
             "Insert into oxorderarticles (`oxid`, `oxartid`, `oxamount`, `oxtitle`, `oxartnum`)
                              values ('_testOrderArtId', '_testArticleId' , '7' , 'testArticleTitle', '5')"
         );
-
     }
 
     /**
@@ -167,8 +165,11 @@ class EmailTest extends \OxidTestCase
         $email->expects($this->once())->method('setBody')->with($this->equalTo($generatedEmailBody));
 
         $email->_includeImages(
-            $imageDirectory, $config->getImageUrl(false), $config->getPictureUrl(null),
-            $imageDirectory, $config->getPictureDir(false)
+            $imageDirectory,
+            $config->getImageUrl(false),
+            $config->getPictureUrl(null),
+            $imageDirectory,
+            $config->getPictureDir(false)
         );
     }
 
@@ -518,8 +519,10 @@ class EmailTest extends \OxidTestCase
         $oEmail->setBody("<img src='{$sImageDir}/logo.png'> --- <img src='{$sImageDir}/stars.jpg'>");
 
         $oEmail->UNITincludeImages(
-            $myConfig->getImageDir(), $myConfig->getImageUrl(isAdmin()),
-            $myConfig->getPictureUrl(null), $myConfig->getImageDir(),
+            $myConfig->getImageDir(),
+            $myConfig->getImageUrl(isAdmin()),
+            $myConfig->getPictureUrl(null),
+            $myConfig->getImageDir(),
             $myConfig->getPictureDir(false)
         );
 
@@ -1154,8 +1157,7 @@ class EmailTest extends \OxidTestCase
         bool $configParameterLoadReviewsValue,
         bool $isReviewLinkExpectedToBeIncluded,
         string $message
-    )
-    {
+    ) {
         $this->setConfigParam('bl_perfLoadReviews', $configParameterLoadReviewsValue);
         $orderStub = $this->getOrderStub();
         $emailStub = $this->getEmailStub();
@@ -1209,8 +1211,7 @@ class EmailTest extends \OxidTestCase
         bool $configParameterIncludeProductReviewLinksInEmail,
         bool $isReviewLinkExpectedToBeIncluded,
         string $message
-    )
-    {
+    ) {
         $this->setConfigParam('bl_perfLoadReviews', $configParameterLoadReviews);
         $this->setConfigParam('includeProductReviewLinksInEmail', $configParameterIncludeProductReviewLinksInEmail);
         $orderStub = $this->getOrderStub();
@@ -1329,7 +1330,8 @@ class EmailTest extends \OxidTestCase
 
         $emailStub = $this->getMockBuilder(\OxidEsales\Eshop\Core\Email::class)
             ->setMethods(['_sendMail', '_getShop', 'getOrderFileList'])
-            ->getMock();;
+            ->getMock();
+        ;
         $emailStub->method('_sendMail')->will($this->returnValue(true));
         $emailStub->method('_getShop')->will($this->returnValue($shop));
         $emailStub->method('getOrderFileList')->will($this->returnValue(false));

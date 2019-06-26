@@ -6,7 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_own_module_namespace\Application\Model;
 
-class TestModuleOnePrice extends TestModuleOnePrice_parent {
+class TestModuleOnePrice extends TestModuleOnePrice_parent
+{
 
     /**
      * Double the original price

@@ -113,7 +113,6 @@ class RatingDaoTest extends \PHPUnit\Framework\TestCase
         $rating->oxratings__oxobjectid = new Field('product1');
         $rating->oxratings__oxtype = new Field('oxrecommlist');
         $rating->save();
-
     }
 
     private function getRatingDao()

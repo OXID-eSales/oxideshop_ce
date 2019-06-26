@@ -12,7 +12,6 @@ use \oxDb;
  */
 class AttributeMainAjaxTest extends \OxidTestCase
 {
-
     protected $_sArticleView = 'oxv_oxarticles_1_de';
     protected $_sObject2AttributeView = 'oxv_oxobject2attribute_de';
     protected $_sObject2CategoryView = 'oxv_oxobject2category_de';

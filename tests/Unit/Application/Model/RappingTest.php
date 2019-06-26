@@ -11,7 +11,6 @@ use \oxRegistry;
 
 class testOxWrapping extends oxWrapping
 {
-
     public function __get($name)
     {
         if (isset($this->$name)) {
@@ -32,7 +31,6 @@ class testOxWrapping extends oxWrapping
  */
 class RappingTest extends \OxidTestCase
 {
-
     protected $_sCardOxid = null;
     protected $_sWrapOxid = null;
     protected $_dDefaultVAT;

@@ -12,15 +12,15 @@
  */
 $aData = array(
 
-    'categories' => array (
-        0 =>  array (
+    'categories' => array(
+        0 =>  array(
             'oxid'       => 'vine',
             'oxparentid' => 'oxrootid',
             'oxshopid'   => 1,
             'oxactive'   => 1,
             'oxarticles' => array( 'vine1' )
         ),
-        1 =>  array (
+        1 =>  array(
             'oxid'       => 'supplies',
             'oxparentid' => 'oxrootid',
             'oxshopid'   => 1,
@@ -29,14 +29,14 @@ $aData = array(
         ),
     ),
 
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
             'oxid'                     => 'vine1',
             'oxprice'                  => 5,
             'oxvat'                    => 10,
             'amount'                   => 2,
         ),
-        1 => array (
+        1 => array(
             'oxid'                     => 'supply1',
             'oxprice'                  => 10,
             'oxvat'                    => 10,
@@ -104,15 +104,15 @@ $aData = array(
             ),
         ),
     ),
-    'expected' => array (
-        'articles' => array (
-            'vine1' => array ( '5,00', '10,00' ),
-            'supply1' => array ( '10,00', '10,00' )
+    'expected' => array(
+        'articles' => array(
+            'vine1' => array( '5,00', '10,00' ),
+            'supply1' => array( '10,00', '10,00' )
         ),
-        'totals' => array (
+        'totals' => array(
             'totalBrutto' => '20,00',
             'totalNetto'  => '18,18',
-            'vats' => array (
+            'vats' => array(
                 10 => '1,82',
             ),
             'delivery' => array(
@@ -121,7 +121,7 @@ $aData = array(
             'grandTotal'  => '24,90'
         ),
     ),
-    'options' => array (
+    'options' => array(
         'activeCurrencyRate' => 1,
         'config' => array(
             'blEnterNetPrice' => false,

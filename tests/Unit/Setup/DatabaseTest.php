@@ -77,7 +77,8 @@ class DatabaseTest extends \OxidTestCase
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("getConnection"));
         $database->expects($this->any())->method("getConnection")->will($this->throwException(new Exception('Test')));
 
-        $this->expectException('Exception'); $this->expectExceptionMessage( 'Test');
+        $this->expectException('Exception');
+        $this->expectExceptionMessage('Test');
         $database->execSql("select 1 + 1");
     }
 
@@ -239,14 +240,15 @@ class DatabaseTest extends \OxidTestCase
         $aParams['dbName'] = time();
 
         $message = 'WARNING: A bug in MySQL 5.6 may lead to problems in OXID eShop Enterprise Edition. Hence, we do not recommend MySQL 5.6.';
-        $this->expectException('Exception'); $this->expectExceptionMessage( $message);
+        $this->expectException('Exception');
+        $this->expectExceptionMessage($message);
 
         $sessionMock = $this->getMockBuilder('OxidEsales\\EshopCommunity\\Setup\\Language')->disableOriginalConstructor()->getMock();
         $languageMock = $this->getMock(\OxidEsales\EshopCommunity\Setup\Language::class, array('getInstance', 'getLanguage'), array(), '', false);
         $languageMock->expects($this->any())->method('getLanguage')->will($this->returnValue('en'));
 
         /** @var Database|PHPUnit\Framework\MockObject\MockObject $database */
-        $database = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Setup\TestSetupDatabase::class,  array('getDatabaseVersion', 'userDecidedIgnoreDBWarning'), array($sessionMock, $languageMock));
+        $database = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Setup\TestSetupDatabase::class, array('getDatabaseVersion', 'userDecidedIgnoreDBWarning'), array($sessionMock, $languageMock));
         $database->expects($this->any())->method('getDatabaseVersion')->will($this->returnValue('5.6.53-0ubuntu0.14.04.1'));
         $database->expects($this->any())->method('userDecidedIgnoreDBWarning')->will($this->returnValue(false));
         $database->openDatabase($aParams);
@@ -266,14 +268,15 @@ class DatabaseTest extends \OxidTestCase
         $aParams['dbPwd'] = $myConfig->getConfigParam('dbPwd');
         $aParams['dbName'] = time();
 
-        $this->expectException('Exception'); $this->expectExceptionMessage( 'ERROR: Database not available and also cannot be created!');
+        $this->expectException('Exception');
+        $this->expectExceptionMessage('ERROR: Database not available and also cannot be created!');
 
         $sessionMock = $this->getMockBuilder('OxidEsales\\EshopCommunity\\Setup\\Language')->disableOriginalConstructor()->getMock();
         $languageMock = $this->getMock(\OxidEsales\EshopCommunity\Setup\Language::class, array('getInstance', 'getLanguage'), array(), '', false);
         $languageMock->expects($this->any())->method('getLanguage')->will($this->returnValue('en'));
 
         /** @var Database|PHPUnit\Framework\MockObject\MockObject $database */
-        $database = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Setup\TestSetupDatabase::class,  array('getDatabaseVersion', 'userDecidedIgnoreDBWarning'), array($sessionMock, $languageMock));
+        $database = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Setup\TestSetupDatabase::class, array('getDatabaseVersion', 'userDecidedIgnoreDBWarning'), array($sessionMock, $languageMock));
         $database->expects($this->any())->method('getDatabaseVersion')->will($this->returnValue('5.6.53-0ubuntu0.14.04.1'));
         $database->expects($this->any())->method('userDecidedIgnoreDBWarning')->will($this->returnValue(true));
         $database->openDatabase($aParams);

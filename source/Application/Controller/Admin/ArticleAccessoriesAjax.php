@@ -237,7 +237,6 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      */
     private function rebuildAccessoriesSortIndexes(ListModel $inputList): array
     {
-
         $counter = 0;
         $outputList = [];
         foreach ($inputList as $key => $value) {

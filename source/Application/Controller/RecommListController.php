@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use OxidEsales\Eshop\Core\Field;
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 use oxrecommlist;
 use oxUBase;
@@ -181,7 +183,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
     public function getAddSeoUrlParams()
     {
         $sAddParams = parent::getAddSeoUrlParams();
-        if ($sParam = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("searchrecomm", true)) {
+        if ($sParam = Registry::getConfig()->getRequestParameter("searchrecomm", true)) {
             $sAddParams .= "&amp;searchrecomm=" . rawurlencode($sParam);
         }
 
@@ -195,7 +197,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
      */
     public function saveReview()
     {
-        if (!\OxidEsales\Eshop\Core\Registry::getSession()->checkSessionChallenge()) {
+        if (!Registry::getSession()->checkSessionChallenge()) {
             return;
         }
 
@@ -203,7 +205,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
             ($oRecommList = $this->getActiveRecommList()) && ($oUser = $this->getUser())
         ) {
             //save rating
-            $dRating = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recommlistrating');
+            $dRating = Registry::getConfig()->getRequestParameter('recommlistrating');
             if ($dRating !== null) {
                 $dRating = (int) $dRating;
             }
@@ -211,23 +213,23 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
             if ($dRating !== null && $dRating >= 1 && $dRating <= 5) {
                 $oRating = oxNew(\OxidEsales\Eshop\Application\Model\Rating::class);
                 if ($oRating->allowRating($oUser->getId(), 'oxrecommlist', $oRecommList->getId())) {
-                    $oRating->oxratings__oxuserid = new \OxidEsales\Eshop\Core\Field($oUser->getId());
-                    $oRating->oxratings__oxtype = new \OxidEsales\Eshop\Core\Field('oxrecommlist');
-                    $oRating->oxratings__oxobjectid = new \OxidEsales\Eshop\Core\Field($oRecommList->getId());
-                    $oRating->oxratings__oxrating = new \OxidEsales\Eshop\Core\Field($dRating);
+                    $oRating->oxratings__oxuserid = new Field($oUser->getId());
+                    $oRating->oxratings__oxtype = new Field('oxrecommlist');
+                    $oRating->oxratings__oxobjectid = new Field($oRecommList->getId());
+                    $oRating->oxratings__oxrating = new Field($dRating);
                     $oRating->save();
                     $oRecommList->addToRatingAverage($dRating);
                 }
             }
 
-            if (($sReviewText = trim(( string ) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('rvw_txt', true)))) {
+            if (($sReviewText = trim(( string ) Registry::getConfig()->getRequestParameter('rvw_txt', true)))) {
                 $oReview = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
-                $oReview->oxreviews__oxobjectid = new \OxidEsales\Eshop\Core\Field($oRecommList->getId());
-                $oReview->oxreviews__oxtype = new \OxidEsales\Eshop\Core\Field('oxrecommlist');
-                $oReview->oxreviews__oxtext = new \OxidEsales\Eshop\Core\Field($sReviewText, \OxidEsales\Eshop\Core\Field::T_RAW);
-                $oReview->oxreviews__oxlang = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage());
-                $oReview->oxreviews__oxuserid = new \OxidEsales\Eshop\Core\Field($oUser->getId());
-                $oReview->oxreviews__oxrating = new \OxidEsales\Eshop\Core\Field(($dRating !== null) ? $dRating : null);
+                $oReview->oxreviews__oxobjectid = new Field($oRecommList->getId());
+                $oReview->oxreviews__oxtype = new Field('oxrecommlist');
+                $oReview->oxreviews__oxtext = new Field($sReviewText, Field::T_RAW);
+                $oReview->oxreviews__oxlang = new Field(Registry::getLang()->getBaseLanguage());
+                $oReview->oxreviews__oxuserid = new Field($oUser->getId());
+                $oReview->oxreviews__oxrating = new Field(($dRating !== null) ? $dRating : null);
                 $oReview->save();
             }
         }
@@ -241,7 +243,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
     public function getNavigationParams()
     {
         $aParams = \OxidEsales\Eshop\Application\Controller\FrontendController::getNavigationParams();
-        $aParams['recommid'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recommid');
+        $aParams['recommid'] = Registry::getConfig()->getRequestParameter('recommid');
 
         return $aParams;
     }
@@ -257,7 +259,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
             $this->_aArticleList = false;
             if ($oActiveRecommList = $this->getActiveRecommList()) {
                 // sets active page
-                $iActPage = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pgNr');
+                $iActPage = (int) Registry::getConfig()->getRequestParameter('pgNr');
                 $iActPage = ($iActPage < 0) ? 0 : $iActPage;
 
                 // load only lists which we show on screen
@@ -338,7 +340,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
             $this->_blRate = false;
             if ($this->isReviewActive() && ($oActiveRecommList = $this->getActiveRecommList())) {
                 $oRating = oxNew(\OxidEsales\Eshop\Application\Model\Rating::class);
-                $sUserVariable = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('usr');
+                $sUserVariable = Registry::getSession()->getVariable('usr');
                 $this->_blRate = $oRating->allowRating($sUserVariable, 'oxrecommlist', $oActiveRecommList->getId());
             }
         }
@@ -411,7 +413,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
     {
         if ($this->_sSearch === null) {
             $this->_sSearch = false;
-            if ($sSearch = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchrecomm', false)) {
+            if ($sSearch = Registry::getConfig()->getRequestParameter('searchrecomm', false)) {
                 $this->_sSearch = $sSearch;
             }
         }
@@ -426,11 +428,11 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
      */
     public function getTreePath()
     {
-        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
+        $oLang = Registry::getLang();
 
         $aPath[0] = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         $aPath[0]->setLink(false);
-        $aPath[0]->oxcategories__oxtitle = new \OxidEsales\Eshop\Core\Field($oLang->translateString('RECOMMLIST'));
+        $aPath[0]->oxcategories__oxtitle = new Field($oLang->translateString('RECOMMLIST'));
 
         if ($sSearchParam = $this->getRecommSearch()) {
             $shopHomeURL = $this->getConfig()->getShopHomeUrl();
@@ -439,7 +441,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
 
             $aPath[1] = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             $aPath[1]->setLink($sUrl);
-            $aPath[1]->oxcategories__oxtitle = new \OxidEsales\Eshop\Core\Field($sTitle);
+            $aPath[1]->oxcategories__oxtitle = new Field($sTitle);
         }
 
         return $aPath;
@@ -457,7 +459,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
             return $oActiveRecommList->oxrecommlists__oxtitle->value;
         }
 
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchrecomm');
+        return Registry::getConfig()->getRequestParameter('searchrecomm');
     }
 
     /**
@@ -467,7 +469,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
      */
     public function generatePageNavigationUrl()
     {
-        if ((\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && ($oRecomm = $this->getActiveRecommList()))) {
+        if ((Registry::getUtils()->seoIsActive() && ($oRecomm = $this->getActiveRecommList()))) {
             return $oRecomm->getLink();
         }
 
@@ -485,7 +487,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
      */
     protected function _addPageNrParam($sUrl, $iPage, $iLang = null)
     {
-        if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && ($oRecomm = $this->getActiveRecommList())) {
+        if (Registry::getUtils()->seoIsActive() && ($oRecomm = $this->getActiveRecommList())) {
             if ($iPage) {
                 // only if page number > 0
                 $sUrl = $oRecomm->getBaseSeoLink($iLang, $iPage);
@@ -531,7 +533,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
         } else {
             $sLink = \OxidEsales\Eshop\Application\Controller\FrontendController::getLink($iLang);
         }
-        $sSearch = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchrecomm');
+        $sSearch = Registry::getConfig()->getRequestParameter('searchrecomm');
         if ($sSearch) {
             $sLink .= ((strpos($sLink, '?') === false) ? '?' : '&amp;') . "searchrecomm={$sSearch}";
         }
@@ -549,8 +551,8 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
         $aPaths = [];
         $aPath = [];
 
-        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
-        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('LISTMANIA', $iBaseLanguage, false);
+        $iBaseLanguage = Registry::getLang()->getBaseLanguage();
+        $aPath['title'] = Registry::getLang()->translateString('LISTMANIA', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
@@ -564,7 +566,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
      */
     public function getTitle()
     {
-        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
+        $oLang = Registry::getLang();
         if ($aActiveList = $this->getActiveRecommList()) {
             $sTranslatedString = $oLang->translateString('LIST_BY', $oLang->getBaseLanguage(), false);
             $sTitleField = 'oxrecommlists__oxtitle';

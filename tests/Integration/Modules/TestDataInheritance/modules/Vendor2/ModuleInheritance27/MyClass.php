@@ -8,5 +8,4 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritanc
 
 class MyClass extends \vendor_1_module_1_onemoreclass
 {
-
 }

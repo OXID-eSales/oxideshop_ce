@@ -323,12 +323,20 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
             }
         }
 
-        $deliveryList = oxRegistry::get("oxDeliveryList")->getDeliveryList($basket, $user, $user->getActiveCountry(),
-            $deliverySetId);
+        $deliveryList = oxRegistry::get("oxDeliveryList")->getDeliveryList(
+            $basket,
+            $user,
+            $user->getActiveCountry(),
+            $deliverySetId
+        );
         $this->assertTrue(0 < count($deliveryList));
 
-        $hasDeliveries = oxRegistry::get("oxDeliveryList")->hasDeliveries($basket, $user, $user->getActiveCountry(),
-            $deliverySetId);
+        $hasDeliveries = oxRegistry::get("oxDeliveryList")->hasDeliveries(
+            $basket,
+            $user,
+            $user->getActiveCountry(),
+            $deliverySetId
+        );
         $this->assertTrue($hasDeliveries);
 
         $deliveryCost = $basket->getDeliveryCost()->getPrice();
@@ -441,7 +449,8 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
         $data['once_per_product_goody_only']                      = $data['once_per_different_product'];
         $data['once_per_product_goody_only'][0]['expected_costs'] = 2.9;
         $data['once_per_product_goody_only'][0]['rules_fit']      = array('fourth');
-        $data['once_per_product_goody_only'][0]['buyamount']      = array(0, 0, 1);;
+        $data['once_per_product_goody_only'][0]['buyamount']      = array(0, 0, 1);
+        ;
 
         //similar dataset, once per cart with three different products
         $data['once_per_cart_three_products']                           = $data['once_per_different_product'];
@@ -537,12 +546,20 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
             }
         }
 
-        $deliveryList = oxRegistry::get("oxDeliveryList")->getDeliveryList($basket, $user, $user->getActiveCountry(),
-            $deliverySetId);
+        $deliveryList = oxRegistry::get("oxDeliveryList")->getDeliveryList(
+            $basket,
+            $user,
+            $user->getActiveCountry(),
+            $deliverySetId
+        );
         $this->assertTrue(0 < count($deliveryList));
 
-        $hasDeliveries = oxRegistry::get("oxDeliveryList")->hasDeliveries($basket, $user, $user->getActiveCountry(),
-            $deliverySetId);
+        $hasDeliveries = oxRegistry::get("oxDeliveryList")->hasDeliveries(
+            $basket,
+            $user,
+            $user->getActiveCountry(),
+            $deliverySetId
+        );
         $this->assertTrue($hasDeliveries);
 
         $deliveryCost = $basket->getDeliveryCost()->getPrice();
@@ -670,12 +687,20 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
             }
         }
 
-        $deliveryList = oxRegistry::get("oxDeliveryList")->getDeliveryList($basket, $user, $user->getActiveCountry(),
-            $deliverySetId);
+        $deliveryList = oxRegistry::get("oxDeliveryList")->getDeliveryList(
+            $basket,
+            $user,
+            $user->getActiveCountry(),
+            $deliverySetId
+        );
         $this->assertTrue(0 < count($deliveryList));
 
-        $hasDeliveries = oxRegistry::get("oxDeliveryList")->hasDeliveries($basket, $user, $user->getActiveCountry(),
-            $deliverySetId);
+        $hasDeliveries = oxRegistry::get("oxDeliveryList")->hasDeliveries(
+            $basket,
+            $user,
+            $user->getActiveCountry(),
+            $deliverySetId
+        );
         $this->assertTrue($hasDeliveries);
 
         $deliveryCost = $basket->getDeliveryCost()->getPrice();
@@ -742,9 +767,11 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
         $user->oxuser__oxrights    = new oxField('user', oxField::T_RAW);
         $user->oxuser__oxshopid    = new oxField('1', oxField::T_RAW);
         $user->oxuser__oxusername  = new oxField('testuser@oxideshop.dev', oxField::T_RAW);
-        $user->oxuser__oxpassword  = new oxField('c630e7f6dd47f9ad60ece4492468149bfed3da3429940181464baae99941d0ffa5562' .
+        $user->oxuser__oxpassword  = new oxField(
+            'c630e7f6dd47f9ad60ece4492468149bfed3da3429940181464baae99941d0ffa5562' .
                                                  'aaecd01eab71c4d886e5467c5fc4dd24a45819e125501f030f61b624d7d',
-            oxField::T_RAW); //password is asdfasdf
+            oxField::T_RAW
+        ); //password is asdfasdf
         $user->oxuser__oxpasssalt  = new oxField('3ddda7c412dbd57325210968cd31ba86', oxField::T_RAW);
         $user->oxuser__oxcustnr    = new oxField('666', oxField::T_RAW);
         $user->oxuser__oxfname     = new oxField('Bla', oxField::T_RAW);

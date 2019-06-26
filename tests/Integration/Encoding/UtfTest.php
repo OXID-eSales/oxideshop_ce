@@ -1157,7 +1157,6 @@ class UtfTest extends \OxidTestCase
         $expectedArticle->date = "Tue, 06 Sep 2011 09:46:42 +0200";
 
         $this->assertEquals(array($expectedArticle), $rssFeed->UNITgetArticleItems($articleList));
-
     }
 
     public function testOxRssFeedPrepareFeedName()
@@ -1181,7 +1180,6 @@ class UtfTest extends \OxidTestCase
         $oRss = new oxrssfeed();
         $sResult = $this->getConfig()->getShopUrl() . 'rss/Suche/?searchparam=agent%C5%AB%D0%9B%D0%B8%D1%82%D0%BE%D0%B2f%C3%BCr&amp;searchcnid=BB&amp;searchvendor=CC&amp;searchmanufacturer=DD';
         $this->assertEquals($sResult, $oRss->getSearchArticlesUrl($sValue, "BB", "CC", "DD"));
-
     }
 
     public function testOxRssFeedGetSearchArticlesTitle()

@@ -21,5 +21,4 @@ class ManufacturerListTest extends \OxidTestCase
         $oManufacturerList = oxNew('oxwManufacturerList');
         $this->assertEquals('widget/footer/manufacturerlist.tpl', $oManufacturerList->render());
     }
-
 }

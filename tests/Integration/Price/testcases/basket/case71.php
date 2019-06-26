@@ -17,8 +17,8 @@
  * Neto-Neto mode. Additiona products Neto-Neto.
  */
 $aData = array(
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
             'oxid'                     => 9001,
             'oxprice'                  => 10,
             'oxvat'                    => 19,
@@ -50,14 +50,14 @@ $aData = array(
             ),
         ),
     ),
-    'expected' => array (
-        'articles' => array (
-             9001 => array ( '10,00', '500,00' ),
+    'expected' => array(
+        'articles' => array(
+             9001 => array( '10,00', '500,00' ),
         ),
-        'totals' => array (
+        'totals' => array(
             'totalBrutto' => '595,00',
             'totalNetto'  => '500,00',
-            'vats' => array (
+            'vats' => array(
                 19 => '95,00'
             ),
             'delivery' => array(
@@ -73,7 +73,7 @@ $aData = array(
             'grandTotal'  => '618,80'
         ),
     ),
-    'options' => array (
+    'options' => array(
         // Configs (real named)
         'config' => array(
             'blEnterNetPrice' => true,

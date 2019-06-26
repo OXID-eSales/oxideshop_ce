@@ -96,7 +96,6 @@ class OrderfilelistTest extends \OxidTestCase
      */
     public function testLoadUserFiles()
     {
-
         $oUserFilesList = oxNew('oxOrderFileList');
         $oUserFilesList->loadUserFiles('_userId');
 

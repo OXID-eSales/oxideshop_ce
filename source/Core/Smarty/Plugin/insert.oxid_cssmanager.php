@@ -19,7 +19,8 @@
  * @return string
  */
 function smarty_insert_oxid_cssmanager($params, &$smarty)
-{   $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+{
+    $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
     $smarty->caching = false;
 
@@ -30,7 +31,7 @@ function smarty_insert_oxid_cssmanager($params, &$smarty)
     $sCssExt  = "css";
 
     // sets name of alternative CSS file passed template parameters
-    if ( isset($params["cssname"]) && $params["cssname"]) {
+    if (isset($params["cssname"]) && $params["cssname"]) {
         $sAltCss = $params["cssname"];
     // possible CSS file for current template
     } else {
@@ -41,17 +42,17 @@ function smarty_insert_oxid_cssmanager($params, &$smarty)
     $sAltCssDir = "styles/";
 
     // URL to templates, there may be stored and css files
-    if ( isset($params["cssurl"]) && $params["cssurl"]) {
+    if (isset($params["cssurl"]) && $params["cssurl"]) {
         $sTplURL = $params["cssurl"];
     } else {
-        $sTplURL =  $myConfig->getResourceUrl( $sAltCssDir, isAdmin() );
+        $sTplURL =  $myConfig->getResourceUrl($sAltCssDir, isAdmin());
     }
 
     // direct path to templates, there may be stored and css files
-    if ( isset($params["csspath"]) && $params["csspath"]) {
+    if (isset($params["csspath"]) && $params["csspath"]) {
         $sTplPath = $params["csspath"];
     } else {
-        $sTplPath = $myConfig->getResourcePath( $sAltCssDir, isAdmin() );
+        $sTplPath = $myConfig->getResourcePath($sAltCssDir, isAdmin());
     }
 
     // full path to alternavive CSS file
@@ -59,7 +60,7 @@ function smarty_insert_oxid_cssmanager($params, &$smarty)
 
     $sOutput = "";
     // checking if alternative CSS file exists and returning URL to CSS file
-    if ( $sTplName && file_exists( $sAltFullPath) && is_file( $sAltFullPath)) {
+    if ($sTplName && file_exists($sAltFullPath) && is_file($sAltFullPath)) {
         $sOutput = '<link rel="stylesheet" href="'.$sTplURL . $sAltCss.'">';
     }
 

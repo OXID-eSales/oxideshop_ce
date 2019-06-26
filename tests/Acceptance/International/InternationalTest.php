@@ -125,7 +125,7 @@ class InternationalTest extends AcceptanceTestCase
         $this->selectDropDown("viewOptions", "Line");
         $this->assertEquals("Test product 0 short desc [EN] šųößлы", $this->clearString($this->getText("//ul[@id='searchList']/li[1]//div[2]/div[2]")));
 
-         //checking if all product links in relusts are working
+        //checking if all product links in relusts are working
 
         $this->clickAndWait("//ul[@id='searchList']/li[1]//a");
         $this->assertEquals("You are here: / Search result for \"šųößлы1000\"", $this->getText("breadCrumb"));
@@ -352,7 +352,7 @@ class InternationalTest extends AcceptanceTestCase
         $this->assertEquals("%PAGE_TITLE_ACCOUNT_ORDER%", $this->getText("//h1"));
         $this->assertEquals("Test product 1 [EN] šųößлы test selection list [EN] šųößлы : selvar1 [EN] įÄк +1,00 € - 1 qty.", $this->clearString($this->getText("//tr[@id='accOrderAmount_12_1']/td")));
         $this->assertEquals("Test product 2 [EN] šųößлы var2 [EN] šųößлы - 1 qty.", $this->clearString($this->getText("//tr[@id='accOrderAmount_12_2']/td")));
-     }
+    }
 
     /**
      * Checking Top Menu Navigation

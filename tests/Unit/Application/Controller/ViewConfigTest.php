@@ -243,8 +243,8 @@ class ViewConfigTest extends \OxidTestCase
             ->will($this->returnValue(false));
 
         $oVC = $this->getMock(
-            'oxviewconfig'
-            , array('getConfig', 'getTopActionClassName', 'getActCatId', 'getActTplName', 'getActContentLoadId'
+            'oxviewconfig',
+            array('getConfig', 'getTopActionClassName', 'getActCatId', 'getActTplName', 'getActContentLoadId'
                     , 'getActArticleId', 'getActSearchParam', 'getActSearchTag', 'getActListType', 'getActRecommendationId')
         );
 
@@ -295,8 +295,8 @@ class ViewConfigTest extends \OxidTestCase
             ->will($this->returnValue(true));
 
         $oVC = $this->getMock(
-            'oxviewconfig'
-            , array('getConfig', 'getTopActionClassName', 'getActCatId', 'getActTplName', 'getActContentLoadId'
+            'oxviewconfig',
+            array('getConfig', 'getTopActionClassName', 'getActCatId', 'getActTplName', 'getActContentLoadId'
                     , 'getActArticleId', 'getActSearchParam', 'getActSearchTag', 'getActListType', 'getActRecommendationId')
         );
 
@@ -626,7 +626,6 @@ class ViewConfigTest extends \OxidTestCase
 
     public function testGetModuleUrlExceptionThrownWhenPathNotFoundAndDebugEnabled()
     {
-
         $config = $this->fakeModuleStructure();
         $fakeShopDirectory = $config->getConfigParam('sShopDir');
         $message = "Requested file not found for module test1 (" . $fakeShopDirectory .
@@ -2288,7 +2287,6 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testIsModuleActive($aModules, $aModuleVersions, $aDisabledModules, $sModuleId, $blModuleIsActive)
     {
-
         $this->setConfigParam('aModules', $aModules);
         $this->setConfigParam('aDisabledModules', $aDisabledModules);
         $this->setConfigParam('aModuleVersions', $aModuleVersions);

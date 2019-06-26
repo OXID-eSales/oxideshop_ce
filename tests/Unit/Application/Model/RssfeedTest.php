@@ -14,7 +14,6 @@ use \oxTestModules;
 
 class RssfeedTest extends \OxidTestCase
 {
-
     public function testGetChannel()
     {
         oxTestModules::addFunction('oxrssfeed', 'setChannel', '{$this->_aChannel = $aA[0];}');
@@ -52,8 +51,7 @@ class RssfeedTest extends \OxidTestCase
             'copyright'   => 'name',
             'selflink'    => '',
             'generator'   => 'name',
-            'image'       => array
-            (
+            'image'       => array(
                 'url'   => "http://homeurl/lalala/logo_$edition.png",
                 'title' => 'name',
                 'link'  => 'http://homeurl/extra',
@@ -75,7 +73,6 @@ class RssfeedTest extends \OxidTestCase
 
     public function testGetCacheId()
     {
-
         oxTestModules::addFunction('oxlang', 'getBaseLanguage', '{return 4;}');
         oxTestModules::publicize('oxrssfeed', '_getCacheId');
         $oRss = oxNew('oxRssFeed');
@@ -88,7 +85,6 @@ class RssfeedTest extends \OxidTestCase
 
     public function testLoadFromCache()
     {
-
         oxTestModules::addFunction('oxrssfeed', '_getCacheId', '{return $aA[0]."4";}');
         oxTestModules::addFunction('oxutils', 'fromFileCache', '{return false;}');
         oxTestModules::publicize('oxrssfeed', '_loadFromCache');
@@ -150,7 +146,6 @@ class RssfeedTest extends \OxidTestCase
         $this->assertLessThanOrEqual($end, $res[1]['timestamp']);
         $this->assertEquals('content', $res[1]['content']);
         $this->assertEquals('asdid', $res[0]);
-
     }
 
     public function testGetArticleItems()
@@ -546,7 +541,8 @@ class RssfeedTest extends \OxidTestCase
         );
 
         $this->assertEquals(
-            $aChannel, $oRss->getChannel()
+            $aChannel,
+            $oRss->getChannel()
         );
     }
 
@@ -749,7 +745,8 @@ class RssfeedTest extends \OxidTestCase
         );
 
         $this->assertEquals(
-            $aChannel, $oRss->getChannel()
+            $aChannel,
+            $oRss->getChannel()
         );
     }
 
@@ -857,7 +854,9 @@ class RssfeedTest extends \OxidTestCase
         oxTestModules::addFunction('oxrssfeed', 'getSearchArticlesTitle', '{ return "dastitle"; }');
 
         oxTestModules::addFunction(
-            'oxsearch', 'getSearchArticles', '{
+            'oxsearch',
+            'getSearchArticles',
+            '{
             $oArtList = oxNew("oxArticleList");
             $oArt = oxNew("oxArticle");
             $oArt->setId("loaded".$aA[0].$aA[1].$aA[2].$aA[3].$aA[4]);
@@ -1029,7 +1028,8 @@ class RssfeedTest extends \OxidTestCase
         );
 
         $this->assertEquals(
-            $aChannel, $oRss->getChannel()
+            $aChannel,
+            $oRss->getChannel()
         );
     }
 
@@ -1179,7 +1179,8 @@ class RssfeedTest extends \OxidTestCase
         );
 
         $this->assertEquals(
-            $aChannel, $oRss->getChannel()
+            $aChannel,
+            $oRss->getChannel()
         );
     }
 
@@ -1275,6 +1276,4 @@ class RssfeedTest extends \OxidTestCase
 
         $oRssFeed->removeCacheFile('oxnewest');
     }
-
 }
-

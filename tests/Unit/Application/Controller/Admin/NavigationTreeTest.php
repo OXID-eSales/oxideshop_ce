@@ -14,7 +14,6 @@ use \oxTestModules;
 
 class NavigationTreeTest extends \OxidTestCase
 {
-
     protected $_sWrongDynfile = 'wrongfile.xml';
     protected $_sValidDynfile = 'goodfile.xml';
 
@@ -29,14 +28,14 @@ class NavigationTreeTest extends \OxidTestCase
 
         // files for test
         switch ($this->getName()) {
-            case 'testCheckDynFileWrongFileContent' :
+            case 'testCheckDynFileWrongFileContent':
                 // creating wrong file
                 if ($rHandle = @fopen($this->getConfig()->getConfigParam('sCompileDir') . "{$this->_sWrongDynfile}", 'w')) {
                     fwrite($rHandle, 'some wrong content');
                     fclose($rHandle);
                 }
                 break;
-            case 'testCheckDynFileFileIsValidXml' :
+            case 'testCheckDynFileFileIsValidXml':
                 // creating valid file
                 if ($rHandle = @fopen($this->getConfig()->getConfigParam('sCompileDir') . "{$this->_sValidDynfile}", 'w')) {
                     fwrite($rHandle, '<?xml version="1.0" encoding="UTF-8"?><OX>');
@@ -55,10 +54,10 @@ class NavigationTreeTest extends \OxidTestCase
     {
         // deleting test files
         switch ($this->getName()) {
-            case 'testCheckDynFileWrongFileContent' :
+            case 'testCheckDynFileWrongFileContent':
                 @unlink($this->getConfig()->getConfigParam('sCompileDir') . "{$this->_sWrongDynfile}");
                 break;
-            case 'testCheckDynFileFileIsValidXml' :
+            case 'testCheckDynFileFileIsValidXml':
                 // creating valid file
                 @unlink($this->getConfig()->getConfigParam('sCompileDir') . "{$this->_sValidDynfile}");
                 break;
@@ -136,7 +135,6 @@ class NavigationTreeTest extends \OxidTestCase
         $oNavTree->expects($this->never())->method('_getAdminUrl');
         $oNavTree->UNITaddDynLinks($oDom);
         $this->assertEquals(str_replace(array("\t", " ", "\n", "\r"), "", $oRezDom->saveXML()), str_replace(array("\t", " ", "\n", "\r"), "", $oDom->saveXML()));
-
     }
 
     /**
@@ -424,7 +422,6 @@ class NavigationTreeTest extends \OxidTestCase
         $this->assertNotNull($oTab);
         $this->assertEquals("testTabClass2", $oTab->getAttribute("cl"));
         $this->assertEquals(1, $oTab->getAttribute("active"));
-
     }
 
     /**
@@ -638,7 +635,6 @@ class NavigationTreeTest extends \OxidTestCase
         $sFilePath = $this->getConfig()->getConfigParam('sCompileDir') . "xxx.file";
         $oNavTree = oxNew('oxnavigationtree');
         $this->assertNull($oNavTree->UNITcheckDynFile($sFilePath));
-
     }
 
     /**

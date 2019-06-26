@@ -13,10 +13,12 @@ use Psr\Container\ContainerInterface;
 
 class ContainerStub implements ContainerInterface
 {
-    public function get($key){
+    public function get($key)
+    {
         return null;
     }
-    public function has($key){
+    public function has($key)
+    {
         return $key == 'existing.service';
     }
 }
@@ -38,12 +40,11 @@ class DIConfigWrapperTest extends TestCase
                               'services.yaml';
     }
 
-    public function testCleaningSections() {
-
+    public function testCleaningSections()
+    {
         $projectYaml = new DIConfigWrapper(['imports' => [], 'services' => []]);
         // These empty sections should be cleaned away
         $this->assertCount(0, $projectYaml->getConfigAsArray());
-
     }
 
     public function testGetAllImportFileNames()
@@ -66,7 +67,6 @@ class DIConfigWrapperTest extends TestCase
         $wrapper->addImport($this->servicePath2);
 
         $this->assertEquals(2, count($wrapper->getConfigAsArray()['imports']));
-
     }
 
     public function testAddFirstImport()
@@ -78,7 +78,6 @@ class DIConfigWrapperTest extends TestCase
 
         $expected = ['imports' => [['resource' => realpath($this->servicePath1)]]];
         $this->assertEquals($expected, $wrapper->getConfigAsArray());
-
     }
 
     public function testRemoveImport()
@@ -100,11 +99,10 @@ class DIConfigWrapperTest extends TestCase
         $wrapper->removeImport($this->servicePath1);
 
         $this->assertEquals([], $wrapper->getConfigAsArray());
-
     }
 
-    public function testActivateServicesForShop() {
-
+    public function testActivateServicesForShop()
+    {
         $projectYaml = new DIConfigWrapper(['services' =>
                                                 ['testmodulesubscriber' =>
                                                      ['class' => 'OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\TestModule\TestEventSubscriber']]]);
@@ -116,11 +114,10 @@ class DIConfigWrapperTest extends TestCase
 
         $this->assertEquals([1, 5], $yamlArray['services']['testmodulesubscriber']['calls'][0]['arguments'][0]);
         $this->assertEquals([1, 5], $activeShops);
-
     }
 
-    public function testRemovingActiveShops() {
-
+    public function testRemovingActiveShops()
+    {
         $projectYaml = new DIConfigWrapper(['services' =>
                                                 ['testmodulesubscriber' =>
                                                      ['class' => 'OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\TestModule\TestEventSubscriber',
@@ -133,11 +130,10 @@ class DIConfigWrapperTest extends TestCase
         $yamlArray = $projectYaml->getConfigAsArray();
         $this->assertEquals([7], $yamlArray['services']['testmodulesubscriber']['calls'][0]['arguments'][0]);
         $this->assertEquals([7], $activeShops);
-
     }
 
-    public function testGetServices() {
-
+    public function testGetServices()
+    {
         $projectYaml = new DIConfigWrapper(['services' =>
                                                 ['testmodulesubscriber' =>
                                                      ['class' => 'OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\TestModule\TestEventSubscriber',
@@ -146,12 +142,11 @@ class DIConfigWrapperTest extends TestCase
         $services = $projectYaml->getServices();
         $this->assertCount(1, $services);
         $this->assertEquals('testmodulesubscriber', $services[0]->getKey());
-
     }
 
 
-    public function testCleaningUncalledServices() {
-
+    public function testCleaningUncalledServices()
+    {
         $projectYaml = new DIConfigWrapper(['services' =>
                                                 ['testmodulesubscriber' =>
                                                      ['class' => 'OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\TestModule\TestEventSubscriber',
@@ -161,31 +156,29 @@ class DIConfigWrapperTest extends TestCase
         $projectYaml->addOrUpdateService($service);
         // services section should be cleaned away after removeal of service
         $this->assertCount(0, $projectYaml->getConfigAsArray());
-
     }
 
-    public function testSystemServiceCheckSucceeding() {
-
+    public function testSystemServiceCheckSucceeding()
+    {
         $config = new DIConfigWrapper(['services' => ['nonexisting.service' => []]]);
         try {
             $config->checkServices(new ContainerStub());
-        }
-        catch (SystemServiceOverwriteException $e) {
+        } catch (SystemServiceOverwriteException $e) {
             $this->fail('There should no exception been raised!');
         }
         // This is for php unit that is too stupid to recognize the above construct as test
         $this->assertTrue(true);
     }
 
-    public function testSystemServiceCheckFailing() {
-
+    public function testSystemServiceCheckFailing()
+    {
         $this->expectException(SystemServiceOverwriteException::class);
         $config = new DIConfigWrapper(['services' => ['existing.service' => []]]);
         $config->checkServices(new ContainerStub());
     }
 
-    public function testServiceClassCheckWorking() {
-
+    public function testServiceClassCheckWorking()
+    {
         $servicesYaml = new DIConfigWrapper(['services' =>
                                                 ['testmodulesubscriber' =>
                                                      ['class' => 'OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\TestModule\TestEventSubscriber']]]);
@@ -194,8 +187,8 @@ class DIConfigWrapperTest extends TestCase
         $this->assertTrue($servicesYaml->checkServiceClassesCanBeLoaded());
     }
 
-    public function testServiceClassCheckFailing() {
-
+    public function testServiceClassCheckFailing()
+    {
         $servicesYaml = new DIConfigWrapper(['services' =>
                                                  ['testmodulesubscriber' =>
                                                       ['class' => 'OxidEsales\EshopCommunity\Tests\SomeNotExistingClass']]]);

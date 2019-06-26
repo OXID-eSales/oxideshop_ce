@@ -339,7 +339,7 @@ class AlistTest extends \OxidTestCase
 
         $listView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getActiveCategory', 'getArticleList', 'getActPage', 'getPageCount'));
         $listView->expects($this->atLeastOnce())->method('getActiveCategory')->will($this->returnValue($category));
-        $listView->expects($this->once())->method('getActPage')->will( $this->returnValue( 12 ) );
+        $listView->expects($this->once())->method('getActPage')->will($this->returnValue(12));
         $listView->expects($this->once())->method('getPageCount')->will($this->returnValue(0));
         $listView->expects($this->atLeastOnce())->method('getArticleList');
 
@@ -975,7 +975,6 @@ class AlistTest extends \OxidTestCase
         $oListView->expects($this->any())->method('getActiveCategory')->will($this->returnValue($oCat));
 
         $this->assertEquals('Men', $oListView->getTitle());
-
     }
 
     /**
@@ -1086,7 +1085,6 @@ class AlistTest extends \OxidTestCase
         $oView->expects($this->once())->method('getCategoryTree')->will($this->returnValue($oCategoryList));
 
         $this->assertTrue(count($oView->getBreadCrumb()) == 2);
-
     }
 
     /**
@@ -1106,7 +1104,6 @@ class AlistTest extends \OxidTestCase
         $this->assertEquals(1, count($aPath));
         $this->assertNotNull($aPath[0]['title']);
         $this->assertEquals("moreLink", $aPath[0]['link']);
-
     }
 
     /**

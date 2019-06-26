@@ -12,7 +12,6 @@ use \oxTestModules;
 
 class CmpCategoriesTest extends \OxidTestCase
 {
-
     public static $oCL = null;
 
     public function tearDown()
@@ -484,7 +483,6 @@ class CmpCategoriesTest extends \OxidTestCase
      */
     public function testAddAdditionalParamsVendor()
     {
-
         $this->setRequestParameter("searchparam", null);
         $this->setRequestParameter("searchcnid", null);
         $this->setRequestParameter("searchvendor", null);

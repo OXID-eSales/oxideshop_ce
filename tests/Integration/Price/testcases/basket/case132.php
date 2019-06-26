@@ -12,16 +12,16 @@
  * Sum: 500 abs (500 EUR)
  * Product price less than discount value.
  */
-$aData = array (
-    'articles' => array (
-         0 => array (
+$aData = array(
+    'articles' => array(
+         0 => array(
              'oxid'                     => '3727',
              'oxprice'                  => 5,
              'amount'                   => 1,
          ),
      ),
-    'discounts' => array (
-        0 => array (
+    'discounts' => array(
+        0 => array(
             'oxid'         => 'discount500forShop',
             'oxaddsum'     => 500,
             'oxaddsumtype' => 'abs',
@@ -31,24 +31,24 @@ $aData = array (
             'oxsort' => 10,
         ),
     ),
-    'expected' => array (
-        'articles' => array (
-            '3727' => array ( '5,00', '5,00' ),
+    'expected' => array(
+        'articles' => array(
+            '3727' => array( '5,00', '5,00' ),
         ),
-        'totals' => array (
+        'totals' => array(
             'totalBrutto' => '5,00',
-            'discounts' => array (
+            'discounts' => array(
                 'discount500forShop' => '5,00',
             ),
             'totalNetto'  => '0,00',
-            'vats' => array (
+            'vats' => array(
                 '19' => '0,00'
             ),
             'grandTotal'  => '0,00'
         ),
     ),
-    'options' => array (
-            'config' => array (
+    'options' => array(
+            'config' => array(
                 'blEnterNetPrice' => false,
                 'blShowNetPrice' => false
             ),

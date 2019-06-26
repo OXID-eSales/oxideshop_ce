@@ -33,15 +33,14 @@ class AccountPasswordController extends \OxidEsales\Eshop\Application\Controller
     protected $_blPasswordChanged = false;
 
     /**
-     * If user is not logged in - returns name of template \OxidEsales\Eshop\Application\Controller\AccountUserController::_sThisLoginTemplate,
-     * or if user is allready logged in additionally loads user delivery address
-     * info and forms country list. Returns name of template \OxidEsales\Eshop\Application\Controller\AccountUserController::_sThisTemplate
+     * If user is not logged in - returns name of template AccountUserController::_sThisLoginTemplate, or if user is
+     * already logged in additionally loads user delivery address info and forms country list. Returns name of template
+     * AccountUserController::_sThisTemplate
      *
      * @return string $_sThisTemplate current template file name
      */
     public function render()
     {
-
         parent::render();
 
         // is logged in ?

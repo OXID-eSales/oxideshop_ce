@@ -190,7 +190,6 @@ class UtilsServerTest extends \OxidTestCase
         $aC = $_COOKIE;
         $e = null;
         try {
-
             $_COOKIE['test'] = "asd'\"\000aa";
             $this->assertEquals("asd&#039;&quot;aa", \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('test'));
         } catch (Exception $e) {
@@ -241,7 +240,8 @@ class UtilsServerTest extends \OxidTestCase
         $sName = md5(uniqid());
         $sValue = time();
 
-        $_SERVER[$sName] = $sValue;;
+        $_SERVER[$sName] = $sValue;
+        ;
         $this->assertEquals($sValue, \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getServerVar($sName));
         $this->assertEquals($_SERVER, \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getServerVar());
     }

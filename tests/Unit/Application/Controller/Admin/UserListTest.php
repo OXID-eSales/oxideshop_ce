@@ -88,7 +88,6 @@ class UserListTest extends \OxidTestCase
             $oView->expects($this->any())->method('buildWhere')->will($this->returnValue([]));
             $oView->getItemList();
             $oView->deleteEntry();
-
         } catch (Exception $oExcp) {
             $this->assertEquals("deleteEntry", $oExcp->getMessage(), "Error in User_List::deleteEntry()");
             try {

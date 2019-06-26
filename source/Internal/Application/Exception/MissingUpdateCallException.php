@@ -13,5 +13,4 @@ namespace OxidEsales\EshopCommunity\Internal\DIProjectConfig\Exception;
  */
 class MissingUpdateCallException extends \Exception
 {
-
 }

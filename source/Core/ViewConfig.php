@@ -977,7 +977,6 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getNavFormParams()
     {
-
         if (($sParams = $this->getViewConfigParam('navformparams')) === null) {
             $oStr = getStr();
             $sParams = '';

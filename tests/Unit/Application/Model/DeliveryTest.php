@@ -13,7 +13,6 @@ use \oxDb;
 
 class modOxDelivery extends oxDelivery
 {
-
     public function getiItemCnt()
     {
         return $this->_iItemCnt;
@@ -53,12 +52,10 @@ class modOxDelivery extends oxDelivery
     {
         return $this->_blFreeShipping;
     }
-
 }
 
 class DeliveryTest extends \OxidTestCase
 {
-
     protected $_sOxId = null;
 
     /** @var oxBasketItem $_oBasketItem */
@@ -602,7 +599,6 @@ class DeliveryTest extends \OxidTestCase
 
         $this->assertEquals(512, $oDelivery->getDeliveryAmount($this->_oBasketItem));
         $this->assertFalse($oDelivery->getblFreeShipping());
-
     }
 
     /*

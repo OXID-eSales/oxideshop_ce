@@ -12,7 +12,6 @@ use \oxDb;
  */
 class DeliverysetMainAjaxTest extends \OxidTestCase
 {
-
     protected $_sDeliveryView = 'oxv_oxdelivery_1_de';
 
     /**

@@ -187,8 +187,7 @@ class UserPaymentTest extends \OxidTestCase
 
         $payments = $oPaymentList->getArray();
         $paymentsIds = '';
-        foreach ($payments as $payment)
-        {
+        foreach ($payments as $payment) {
             $paymentsIds .= $payment->getId() ."\n";
         }
 

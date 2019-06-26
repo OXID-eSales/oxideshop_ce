@@ -6,7 +6,7 @@
 ?>
 </div>
 <div id="footer">
-    <?php $this->getText( 'FOOTER_OXID_ESALES' ); ?>
+    <?php $this->getText('FOOTER_OXID_ESALES'); ?>
 </div>
 </body>
 </html>

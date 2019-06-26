@@ -16,16 +16,15 @@ require "_header.php"; ?>
                     <td>
                         <select name="country_lang" style="font-size: 11px;">
                             <?php
-                                $aCountries   = $this->getViewParam( "aCountries" );
-                                $sLanguage   = $this->getViewParam( "sLanguage" );
-                                $sCountryLang = $this->getViewParam( "sCountryLang" );
+                                $aCountries   = $this->getViewParam("aCountries");
+                                $sLanguage   = $this->getViewParam("sLanguage");
+                                $sCountryLang = $this->getViewParam("sCountryLang");
 
-                                if ( isset( $aCountries[$sLanguage] ) ) {
-                                    foreach ( $aCountries[$sLanguage] as $sKey => $sValue ) {
-                                        $sSelected = ( $sCountryLang !== null && $sCountryLang == $sKey ) ? 'selected' : '';
-                                        ?><option value="<?php echo $sKey; ?>" <?php echo $sSelected; ?>><?php echo $sValue; ?></option><?php
-                                    }
+                            if (isset($aCountries[$sLanguage])) {
+                                foreach ($aCountries[$sLanguage] as $sKey => $sValue) {
+                                    $sSelected = ($sCountryLang !== null && $sCountryLang == $sKey) ? 'selected' : ''; ?><option value="<?php echo $sKey; ?>" <?php echo $sSelected; ?>><?php echo $sValue; ?></option><?php
                                 }
+                            }
                             ?>
                         </select>
                     </td>
@@ -47,10 +46,12 @@ require "_header.php"; ?>
                     <td>
                         <select name="sShopLang" style="font-size: 11px;">
                             <?php
-                            $aLanguages = $this->getViewParam( "aLanguages" );
-                            foreach ( $aLanguages as $sLangId => $sLangTitle ) {
+                            $aLanguages = $this->getViewParam("aLanguages");
+                            foreach ($aLanguages as $sLangId => $sLangTitle) {
                                 ?>
-                                <option value="<?php echo $sLangId; ?>" <?php if ( $this->getViewParam( "sShopLang" ) == $sLangId ) echo 'selected'; ?>><?php echo $sLangTitle; ?></option>
+                                <option value="<?php echo $sLangId; ?>" <?php if ($this->getViewParam("sShopLang") == $sLangId) {
+                                    echo 'selected';
+                                               } ?>><?php echo $sLangTitle; ?></option>
                                 <?php
                             }
                             ?>
@@ -95,7 +96,7 @@ require "_header.php"; ?>
     <br><br>
     <?php $this->getText('STEP_1_ADDRESS'); ?>
     <br>
-    <input type="hidden" name="istep" value="<?php $this->getSetupStep( 'STEP_LICENSE' ); ?>">
+    <input type="hidden" name="istep" value="<?php $this->getSetupStep('STEP_LICENSE'); ?>">
     <input type="hidden" name="sid" value="<?php $this->getSid(); ?>">
     <input type="submit" id="step1Submit" class="edittext" value="<?php $this->getText('BUTTON_BEGIN_INSTALL'); ?>">
 </form>

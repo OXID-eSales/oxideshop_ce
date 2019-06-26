@@ -68,8 +68,11 @@ class ThemeConfigTest extends \OxidTestCase
 
         /** @var Theme_Config|PHPUnit\Framework\MockObject\MockObject $oTheme_Config */
         $oTheme_Config = $this->getMock(
-            'Theme_Config', array('getEditObjectId', '_serializeConfVar')
-            , array(), '', false
+            'Theme_Config',
+            array('getEditObjectId', '_serializeConfVar'),
+            array(),
+            '',
+            false
         );
         $oTheme_Config->expects($this->once())->method('getEditObjectId')->will($this->returnValue($sThemeName));
         $oTheme_Config->expects($this->atLeastOnce())->method('_serializeConfVar')->will($this->returnValue($sValue));
@@ -77,5 +80,4 @@ class ThemeConfigTest extends \OxidTestCase
 
         $oTheme_Config->saveConfVars();
     }
-
 }

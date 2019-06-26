@@ -114,7 +114,6 @@ class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainReso
         int                 $shopId,
         ShopConfiguration   $shopConfiguration
     ): bool {
-
         foreach ($shopConfiguration->getModuleConfigurations() as $moduleConfiguration) {
             if ($moduleConfiguration->hasClassExtension($classExtension)
                 && $this->moduleStateService->isActive($moduleConfiguration->getId(), $shopId)

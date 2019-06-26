@@ -1,8 +1,8 @@
 <?php
 // Netto - Netto start case, after order saving, switching to Netto - Brutto, updating
-$aData = array (
-     'articles' => array (
-         0 => array (
+$aData = array(
+     'articles' => array(
+         0 => array(
              'oxid'       => '111',
              'oxtitle'    => '111',
              'oxprice'    => 1,
@@ -10,7 +10,7 @@ $aData = array (
              'oxstock'    => 999,
              'amount'     => 1,
          ),
-         1 => array (
+         1 => array(
              'oxid'       => '111',
              'oxtitle'    => '111',
              'oxprice'    => 1,
@@ -19,8 +19,8 @@ $aData = array (
              'amount'     => 1,
          ),
      ),
-    'discounts' => array (
-        0 => array (
+    'discounts' => array(
+        0 => array(
             'oxid'         => 'discount10for111',
             'oxaddsum'     => 10,
             'oxaddsumtype' => '%',
@@ -28,7 +28,7 @@ $aData = array (
             'oxamountto' => 99999,
             'oxactive' => 1,
         ),
-        1 => array (
+        1 => array(
             'oxid'         => 'discount10for111',
             'oxaddsum'     => 10,
             'oxaddsumtype' => '%',
@@ -37,7 +37,7 @@ $aData = array (
             'oxactive' => 1,
         ),
     ),
-    'costs' => array (
+    'costs' => array(
         'delivery' => array(
                 0 => array(
                     'oxactive' => 1,
@@ -73,7 +73,7 @@ $aData = array (
                 ),
         ),
     ),
-    'options' => array (
+    'options' => array(
             'separateNumbering' => true,
     ),
 );

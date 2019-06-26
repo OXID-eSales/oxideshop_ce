@@ -12,7 +12,6 @@ use \oxTestModules;
  */
 class ShopConfigTest extends \OxidTestCase
 {
-
     public function setUp()
     {
         $this->setAdminMode(true);

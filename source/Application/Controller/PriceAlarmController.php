@@ -7,6 +7,9 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxField;
+use OxidEsales\Eshop\Core\Field;
+use OxidEsales\Eshop\Core\MailValidator;
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 
 /**
@@ -59,10 +62,10 @@ class PriceAlarmController extends \OxidEsales\Eshop\Application\Controller\Fron
     public function addme()
     {
         $myConfig = $this->getConfig();
-        $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
+        $myUtils = Registry::getUtils();
 
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pa');
-        if (!isset($aParams['email']) || !oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams['email'])) {
+        $aParams = Registry::getConfig()->getRequestParameter('pa');
+        if (!isset($aParams['email']) || !oxNew(MailValidator::class)->isValidEmail($aParams['email'])) {
             $this->_iPriceAlarmStatus = 0;
 
             return;
@@ -73,14 +76,14 @@ class PriceAlarmController extends \OxidEsales\Eshop\Application\Controller\Fron
         $dPrice = $myUtils->currency2Float($aParams['price']);
 
         $oAlarm = oxNew(\OxidEsales\Eshop\Application\Model\PriceAlarm::class);
-        $oAlarm->oxpricealarm__oxuserid = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('usr'));
-        $oAlarm->oxpricealarm__oxemail = new \OxidEsales\Eshop\Core\Field($aParams['email']);
-        $oAlarm->oxpricealarm__oxartid = new \OxidEsales\Eshop\Core\Field($aParams['aid']);
-        $oAlarm->oxpricealarm__oxprice = new \OxidEsales\Eshop\Core\Field($myUtils->fRound($dPrice, $oCur));
-        $oAlarm->oxpricealarm__oxshopid = new \OxidEsales\Eshop\Core\Field($myConfig->getShopId());
-        $oAlarm->oxpricealarm__oxcurrency = new \OxidEsales\Eshop\Core\Field($oCur->name);
+        $oAlarm->oxpricealarm__oxuserid = new Field(Registry::getSession()->getVariable('usr'));
+        $oAlarm->oxpricealarm__oxemail = new Field($aParams['email']);
+        $oAlarm->oxpricealarm__oxartid = new Field($aParams['aid']);
+        $oAlarm->oxpricealarm__oxprice = new Field($myUtils->fRound($dPrice, $oCur));
+        $oAlarm->oxpricealarm__oxshopid = new Field($myConfig->getShopId());
+        $oAlarm->oxpricealarm__oxcurrency = new Field($oCur->name);
 
-        $oAlarm->oxpricealarm__oxlang = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage());
+        $oAlarm->oxpricealarm__oxlang = new Field(Registry::getLang()->getBaseLanguage());
 
         $oAlarm->save();
 
@@ -101,8 +104,8 @@ class PriceAlarmController extends \OxidEsales\Eshop\Application\Controller\Fron
 
             $aParams = $this->_getParams();
             $oCur = $this->getConfig()->getActShopCurrencyObject();
-            $iPrice = \OxidEsales\Eshop\Core\Registry::getUtils()->currency2Float($aParams['price']);
-            $this->_sBidPrice = \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($iPrice, $oCur);
+            $iPrice = Registry::getUtils()->currency2Float($aParams['price']);
+            $this->_sBidPrice = Registry::getLang()->formatCurrency($iPrice, $oCur);
         }
 
         return $this->_sBidPrice;
@@ -133,7 +136,7 @@ class PriceAlarmController extends \OxidEsales\Eshop\Application\Controller\Fron
      */
     private function _getParams()
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pa');
+        return Registry::getConfig()->getRequestParameter('pa');
     }
 
     /**

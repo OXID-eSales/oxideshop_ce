@@ -29,7 +29,7 @@ class ShopAwareEventDispatcher extends EventDispatcher
                 is_object($listener[0]) &&
                 in_array(ShopAwareInterface::class, class_implements($listener[0])) &&
                 ! $listener[0]->isActive()) {
-                    continue;
+                continue;
             }
             call_user_func($listener, $event, $eventName, $this);
         }

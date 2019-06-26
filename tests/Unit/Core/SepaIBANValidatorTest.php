@@ -166,5 +166,4 @@ class SepaIBANValidatorTest extends \OxidTestCase
             'NX' => 15,
         );
     }
-
 }

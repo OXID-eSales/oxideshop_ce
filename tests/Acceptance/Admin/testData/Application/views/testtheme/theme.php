@@ -6,7 +6,7 @@
 
 /**
  * Theme Information
- */ 
+ */
 $aTheme = array(
     'id'           => 'testtheme',
     'title'        => 'testtheme',

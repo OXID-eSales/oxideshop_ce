@@ -157,7 +157,8 @@ class DiagnosticsTest extends \OxidTestCase
     public function testGetServerInfo()
     {
         $oDiagnostics = $this->getMock(
-            'oxDiagnostics', array('_getCpuAmount', '_getCpuMhz', '_getBogoMips',
+            'oxDiagnostics',
+            array('_getCpuAmount', '_getCpuMhz', '_getBogoMips',
                                    '_getMemoryTotal', '_getMemoryFree', '_getCpuModel', '_getVirtualizationSystem', '_getApacheVersion',
                                    'isExecAllowed', '_getPhpVersion', '_getMySqlServerInfo', '_getDiskTotalSpace', '_getDiskFreeSpace')
         );
@@ -191,5 +192,4 @@ class DiagnosticsTest extends \OxidTestCase
         $this->assertEquals('500 MHz', $aServerInfo['CPU frequency']);
         $this->assertEquals(2, $aServerInfo['CPU cores']);
     }
-
 }

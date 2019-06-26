@@ -9,7 +9,6 @@ use \oxPrice;
 
 class PriceTest extends \OxidTestCase
 {
-
     protected $_oPrice;
 
     /**
@@ -172,7 +171,6 @@ class PriceTest extends \OxidTestCase
 
     public function testNegativePriceCalculationWithZeroVatWithNetPriceMode()
     {
-
         $this->_oPrice->setNettoPriceMode();
         $this->_oPrice->setPrice(-18, 0);
         $this->assertEquals(-18.00, $this->_oPrice->getBruttoPrice());
@@ -215,7 +213,7 @@ class PriceTest extends \OxidTestCase
         $this->assertEquals(-84.00, $this->_oPrice->getNettoPrice());
     }
 
-// ------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------
 
     public function testAddPercentCalculationWithZeroVat()
     {
@@ -331,7 +329,7 @@ class PriceTest extends \OxidTestCase
         $this->assertEquals(200.00, $this->_oPrice->getNettoPrice());
     }
 
-// multiply
+    // multiply
 
     public function testMultiplyCalculationWithZeroVat()
     {
@@ -371,7 +369,7 @@ class PriceTest extends \OxidTestCase
         $this->assertEquals(320.00, $this->_oPrice->getNettoPrice());
     }
 
-// --------------
+    // --------------
 
     public function testDivideCalculationWithZeroVat()
     {
@@ -497,7 +495,6 @@ class PriceTest extends \OxidTestCase
         $oPrice->setBruttoPriceMode();
         $oPrice->setPrice(10, 19);
         $this->assertEquals(10, $oPrice->getPrice());
-
     }
 
     /**
@@ -520,7 +517,6 @@ class PriceTest extends \OxidTestCase
         $this->assertEquals(8.40, $oPrice->getNettoPrice());
         $this->assertEquals(10, $oPrice->getBruttoPrice());
         $this->assertEquals(1.60, $oPrice->getVatValue());
-
     }
 
 
@@ -565,7 +561,6 @@ class PriceTest extends \OxidTestCase
         $this->assertEquals(0, $oPrice->getNettoPrice());
         $this->assertEquals(0, $oPrice->getBruttoPrice());
         $this->assertEquals(0, $oPrice->getVatValue());
-
     }
 
     public function testSetModeNetto_defaultParam_NettoMode()
@@ -591,5 +586,4 @@ class PriceTest extends \OxidTestCase
         $oPrice->setNettoMode(false);
         $this->assertFalse($oPrice->isNettoMode());
     }
-
 }

@@ -39,7 +39,6 @@ class CmpLangTest extends \OxidTestCase
     {
         oxRegistry::getUtils()->seoIsActive(true);
         parent::tearDown();
-
     }
 
     // if addVoucher fnc was executed
@@ -83,4 +82,3 @@ class CmpLangTest extends \OxidTestCase
         $this->assertEquals($sExpLink1, $oLang[1]->link);
     }
 }
-

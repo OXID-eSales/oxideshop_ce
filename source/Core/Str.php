@@ -20,7 +20,7 @@ class Str
      *
      * @var object
      */
-    static protected $_oHandler;
+    protected static $_oHandler;
 
     /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.

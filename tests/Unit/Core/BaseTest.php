@@ -150,7 +150,7 @@ class _oxBase extends oxBase
      *
      * @return string
      */
-    function getObjectViewName($sTable)
+    public function getObjectViewName($sTable)
     {
         return parent::_getObjectViewName($sTable);
     }
@@ -414,7 +414,6 @@ class BaseTest extends \OxidTestCase
      */
     public function testOxBase()
     {
-
         $oBase = oxNew('oxBase');
 
         $this->assertEquals($this->getConfig()->getShopId(), $oBase->getShopId());
@@ -428,7 +427,6 @@ class BaseTest extends \OxidTestCase
      */
     public function testOxClone()
     {
-
         $o = oxNew('oxBase');
         $u = oxNew('oxBase');
         $u->aa = 'a';
@@ -681,7 +679,8 @@ class BaseTest extends \OxidTestCase
         $this->assertFalse($oBase->isPropertyLoaded('oxactions__oxtitle'));
 
         $aFieldNames = $oBase->getClassVar("_aFieldNames");
-        $this->assertFalse(isset($aFieldNames['oxtitle']));;
+        $this->assertFalse(isset($aFieldNames['oxtitle']));
+        ;
     }
 
     /**
@@ -991,7 +990,6 @@ class BaseTest extends \OxidTestCase
         $oBase->assignRecord($sQ);
 
         $this->assertEquals('testTitle', $oBase->oxactions__oxtitle->value);
-
     }
 
     /**
@@ -1231,7 +1229,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testBuildSelectStringWithShopId()
+    public function testBuildSelectStringWithShopId()
     {
         if ($this->getConfig()->getEdition() === 'EE') {
             $this->markTestSkipped("Test for Community and Professional editions only");
@@ -1249,7 +1247,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testBuildSelectStringWithoutWhere()
+    public function testBuildSelectStringWithoutWhere()
     {
         $oBase = new _oxBase();
         $oBase->init('oxuser');
@@ -1267,7 +1265,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testSelectExistingData()
+    public function testSelectExistingData()
     {
         $sSelect = "select oxactions.oxid, oxactions.oxtitle from oxactions  where oxactions.oxid = 'oxstart'";
         $oBase = new _oxBase();
@@ -1281,7 +1279,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testSelectNonExistingData()
+    public function testSelectNonExistingData()
     {
         $sSelect = "select oxactions.oxid,oxactions.oxtitle from oxactions  where oxactions.oxid = 'sss'";
         $oBase = new _oxBase();
@@ -1293,7 +1291,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testGetSelectFields()
+    public function testGetSelectFields()
     {
         $oBase = oxNew('oxBase');
         $oBase->init('oxactions');
@@ -1307,7 +1305,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testGetSelectFieldsNoFields()
+    public function testGetSelectFieldsNoFields()
     {
         $oBase = oxNew('oxBase');
         $this->assertEquals($oBase->getSelectFields(), ".`oxid`");
@@ -1318,7 +1316,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testExists()
+    public function testExists()
     {
         $oBase = new _oxBase();
         $oBase->init("oxactions");
@@ -1331,7 +1329,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testExistsNot()
+    public function testExistsNot()
     {
         $oBase = new _oxBase();
         $oBase->init("oxactions");
@@ -1344,7 +1342,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testExistsWithId()
+    public function testExistsWithId()
     {
         $oBase = new _oxBase();
         $oBase->init("oxactions");
@@ -1356,7 +1354,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testExistsWithIdIfNotExists()
+    public function testExistsWithIdIfNotExists()
     {
         $oBase = new _oxBase();
         $oBase->init("oxactions");
@@ -1368,7 +1366,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testExistsNotLoaded()
+    public function testExistsNotLoaded()
     {
         $oBase = new _oxBase();
         $oBase->init("oxactions");
@@ -1380,7 +1378,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testDelete()
+    public function testDelete()
     {
         $myDB = oxDb::getDb();
         $sInsert = "Insert into oxactions (`OXID`, `OXTITLE`) values ('_test', 'test')";
@@ -1400,7 +1398,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testDeleteIsDerived()
+    public function testDeleteIsDerived()
     {
         $myDB = oxDb::getDb();
         $sInsert = "Insert into oxactions (`OXID`, `OXTITLE`) values ('_test','test')";
@@ -1421,7 +1419,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testDeleteWithSetOxid()
+    public function testDeleteWithSetOxid()
     {
         $myDB = oxDb::getDb();
         $sInsert = "Insert into oxactions (`OXID`, `OXTITLE`) values ('_test','test')";
@@ -1441,7 +1439,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testDeleteWithoutOxid()
+    public function testDeleteWithoutOxid()
     {
         $myDB = oxDb::getDb();
         $sInsert = "Insert into oxactions (`OXID`, `OXTITLE`) values ('_test','test')";
@@ -1460,7 +1458,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testDeleteWithNonExistingOxid()
+    public function testDeleteWithNonExistingOxid()
     {
         $myDB = oxDb::getDb();
         $sInsert = "Insert into oxactions (`OXID`, `OXTITLE`) values ('_test','test')";
@@ -1480,7 +1478,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testSaveIfExists()
+    public function testSaveIfExists()
     {
         $oBase = new _oxBase();
         $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('update'));
@@ -1498,7 +1496,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testSaveIfFieldsNotSet()
+    public function testSaveIfFieldsNotSet()
     {
         $oBase = new _oxBase();
         $oBase->init("oxactions");
@@ -1512,7 +1510,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testSaveIfNew()
+    public function testSaveIfNew()
     {
         $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('_insert'));
         $oBase->expects($this->any())
@@ -1529,7 +1527,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testSaveIfCannotInsert()
+    public function testSaveIfCannotInsert()
     {
         $oBase = $this->getMock(\OxidEsales\Eshop\Core\Model\BaseModel::class, array('_insert'));
         $oBase->expects($this->any())
@@ -1546,7 +1544,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testSaveIsDerived()
+    public function testSaveIsDerived()
     {
         $oBase = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxBase::class, array('update'));
         $oBase->expects($this->any())
@@ -1564,7 +1562,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testSaveIfExistsInAdminTimeStamp()
+    public function testSaveIfExistsInAdminTimeStamp()
     {
         $myDB = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
         $sInsert = "Insert into oxuserbaskets (`OXID`,`OXUSERID`,`OXTITLE`) values ('_test','test','test')";
@@ -1586,7 +1584,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testSaveIfNewInAdminDateTime()
+    public function testSaveIfNewInAdminDateTime()
     {
         //$this->getConfig()->blAdmin = true;
         $oBase = new _oxBase();
@@ -1607,7 +1605,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testSaveIfNewInAdminDate()
+    public function testSaveIfNewInAdminDate()
     {
         $myDB = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
         //$this->getConfig()->blAdmin = true;
@@ -1629,7 +1627,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testUpdateWithoutOXID()
+    public function testUpdateWithoutOXID()
     {
         $oBase = new _oxBase();
         $oBase->init("oxarticles");
@@ -1646,7 +1644,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testUpdateWithOXID()
+    public function testUpdateWithOXID()
     {
         $myDB = oxDb::getDb();
         $shopId = $this->getUpdateShopId();
@@ -1669,7 +1667,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testUpdateWithOXIDIsDerived()
+    public function testUpdateWithOXIDIsDerived()
     {
         $myDB = oxDb::getDb();
         $sInsert = "Insert into oxarticles (`OXID`,`OXTITLE`) values ('_test','test')";
@@ -1686,7 +1684,7 @@ class BaseTest extends \OxidTestCase
     /**
      * Test update with oxid, wrong sql.
      */
-    public function  testUpdateWithOXIDWrongSql()
+    public function testUpdateWithOXIDWrongSql()
     {
         $myDB = oxDb::getDb();
         $sInsert = "Insert into oxarticles (`OXID`,`OXTITLE`) values ('_test','test')";
@@ -1717,7 +1715,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testInsertWithShopId()
+    public function testInsertWithShopId()
     {
         $myDB = oxDb::getDb();
         $oBase = oxNew('oxBase');
@@ -1735,7 +1733,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testInsertWithSetOxid()
+    public function testInsertWithSetOxid()
     {
         $myDB = oxDb::getDb();
         $oBase = new _oxBase();
@@ -1752,7 +1750,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testInsertWithoutOxid()
+    public function testInsertWithoutOxid()
     {
         $myDB = oxDb::getDb();
         $oBase = new _oxBase();
@@ -1768,7 +1766,7 @@ class BaseTest extends \OxidTestCase
     /**
      * Test get object view name.
      */
-    public function  testGetObjectViewName()
+    public function testGetObjectViewName()
     {
         if ($this->getConfig()->getEdition() === 'EE') {
             $this->markTestSkipped("Test for Community and Professional editions only");
@@ -1782,7 +1780,7 @@ class BaseTest extends \OxidTestCase
     /**
      * Test get object view name, forcing core table usage.
      */
-    public function  testGetObjectViewNameForceCoreTblUsage()
+    public function testGetObjectViewNameForceCoreTblUsage()
     {
         if ($this->getConfig()->getEdition() === 'EE') {
             $this->markTestSkipped("Test for Community and Professional editions only");
@@ -1796,7 +1794,7 @@ class BaseTest extends \OxidTestCase
     /**
      * Test get object view name for multishop table.
      */
-    public function  testGetObjectViewNameNotMullShopTable()
+    public function testGetObjectViewNameNotMullShopTable()
     {
         if ($this->getConfig()->getEdition() === 'EE') {
             $this->markTestSkipped("Test for Community and Professional editions only");
@@ -1812,7 +1810,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testGetAllFields()
+    public function testGetAllFields()
     {
         oxTestModules::addFunction('oxUtils', 'fromFileCache', '{return false;}');
         oxTestModules::addFunction('oxUtils', 'fromStaticCache', '{return false;}');
@@ -2089,7 +2087,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testGetAllFieldsFull()
+    public function testGetAllFieldsFull()
     {
         $oBase = new _oxBase();
         $oBase->init('oxactions');
@@ -2115,7 +2113,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testAddField()
+    public function testAddField()
     {
         $oBase = new _oxBase();
         $oBase->setClassVar("_sCoreTable", "oxtesttable");
@@ -2132,7 +2130,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testAddFieldIfLenghtSet()
+    public function testAddFieldIfLenghtSet()
     {
         $oBase = new _oxBase();
         $oBase->setClassVar("_sCoreTable", "oxtesttable");
@@ -2151,7 +2149,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testAddFieldIfTypeSet()
+    public function testAddFieldIfTypeSet()
     {
         $oBase = new _oxBase();
         $oBase->setClassVar("_sCoreTable", "oxtesttable");
@@ -2170,7 +2168,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    public function  testGetSqlActiveSnippet()
+    public function testGetSqlActiveSnippet()
     {
         $iCurrTime = 1453734000; //some rounded timestamp
 

@@ -294,7 +294,8 @@ class AjaxListComponentTest extends \OxidTestCase
     public function testGetFilter()
     {
         $this->setRequestParameter(
-            'aFilter', array(
+            'aFilter',
+            array(
                             "_0" => "a",
                             "_1" => "b",
                             "_2" => "",

@@ -105,7 +105,6 @@ class WishlistTest extends \OxidTestCase
      */
     public function testSearchForWishList()
     {
-
         $this->setRequestParameter('search', 'testUserName');
 
         $oWishList = $this->getProxyClass("Wishlist");

@@ -36,5 +36,4 @@ class test_12_ajax_controller extends \OxidEsales\Eshop\Application\Controller\A
 
         return "test_12_ajax_controller.tpl";
     }
-
 }

@@ -50,8 +50,10 @@ class ProjectYamlImportServiceTest extends TestCase
         $this->dao->method('loadProjectConfigFile')->willReturn(new DIConfigWrapper([]));
         $this->service->addImport(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'TestModule1');
         $resource = $this->savedArray['imports'][0]['resource'];
-        $this->assertStringEndsWith('tests/Unit/Internal/Application/TestModule1/services.yaml',
-            $resource);
+        $this->assertStringEndsWith(
+            'tests/Unit/Internal/Application/TestModule1/services.yaml',
+            $resource
+        );
     }
 
     public function testAddImportSeveralTimes()
@@ -71,8 +73,10 @@ class ProjectYamlImportServiceTest extends TestCase
         $this->service->removeImport(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'TestModule1');
         $resource = $this->savedArray['imports'][0]['resource'];
         $this->assertEquals(1, count($this->savedArray['imports']));
-        $this->assertStringEndsWith('tests/Unit/Internal/Application/TestModule2/services.yaml',
-            $resource);
+        $this->assertStringEndsWith(
+            'tests/Unit/Internal/Application/TestModule2/services.yaml',
+            $resource
+        );
     }
 
     public function testRemoveAllImports()
@@ -108,7 +112,8 @@ class ProjectYamlImportServiceTest extends TestCase
         $this->dao->method('loadProjectConfigFile')->willReturn(new DIConfigWrapper(
             ['imports' =>[
                 ['resource' => $nonexistingImport],
-                ['resource' => $existingImport]]]));
+                ['resource' => $existingImport]]]
+        ));
         $this->service->removeNonExistingImports();
 
         $this->assertArrayHasKey('imports', $this->savedArray);

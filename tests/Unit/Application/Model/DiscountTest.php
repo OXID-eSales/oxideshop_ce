@@ -14,15 +14,14 @@ use \oxDb;
 
 class modoxprice extends oxprice
 {
-
     protected $_dPrice = null;
 
-    function getBruttoPrice()
+    public function getBruttoPrice()
     {
         return $this->_dPrice;
     }
 
-    function setPrice($newPrice, $dVat = null)
+    public function setPrice($newPrice, $dVat = null)
     {
         $this->_dPrice = $newPrice;
     }
@@ -30,10 +29,9 @@ class modoxprice extends oxprice
 
 class oxBasket_Extended extends oxbasket
 {
-
     public $oBasketSummaryCache = null;
 
-    function getBasketSummary()
+    public function getBasketSummary()
     {
         if ($this->oBasketSummaryCache) {
             return $this->oBasketSummaryCache;
@@ -45,13 +43,12 @@ class oxBasket_Extended extends oxbasket
 
 class oxArticle_Extended extends oxArticle
 {
-
     public $aCategoryIdsCache = null;
     public $oBasketSummaryCache = null;
     public $dBasePriceCache = null;
     public $oPriceCache = null;
 
-    function getCategoryIds($blActCats = false, $blSkipCache = false)
+    public function getCategoryIds($blActCats = false, $blSkipCache = false)
     {
         if ($this->aCategoryIdsCache) {
             return $this->aCategoryIdsCache;
@@ -60,7 +57,7 @@ class oxArticle_Extended extends oxArticle
         }
     }
 
-    function getBasketSummary()
+    public function getBasketSummary()
     {
         if ($this->oBasketSummaryCache) {
             return $this->oBasketSummaryCache;
@@ -69,7 +66,7 @@ class oxArticle_Extended extends oxArticle
         }
     }
 
-    function getBasePrice($dAmount = 1)
+    public function getBasePrice($dAmount = 1)
     {
         if ($this->dBasePriceCache) {
             return $this->dBasePriceCache;
@@ -78,7 +75,7 @@ class oxArticle_Extended extends oxArticle
         }
     }
 
-    function getPrice($dAmount = 1)
+    public function getPrice($dAmount = 1)
     {
         if ($this->oPriceCache) {
             return $this->oPriceCache;
@@ -86,7 +83,6 @@ class oxArticle_Extended extends oxArticle
             return parent::getPrice();
         }
     }
-
 }
 
 /**
@@ -192,7 +188,8 @@ class DiscountTest extends \OxidTestCase
      */
     public function testSaveOxSortNotNumeric()
     {
-        $this->expectException('OxidEsales\EshopCommunity\Core\Exception\InputException'); $this->expectExceptionMessage( 'DISCOUNT_ERROR_OXSORT_NOT_A_NUMBER');
+        $this->expectException('OxidEsales\EshopCommunity\Core\Exception\InputException');
+        $this->expectExceptionMessage('DISCOUNT_ERROR_OXSORT_NOT_A_NUMBER');
 
         $id = '_testSaveOxSortNotNumeric';
         $shopId = 1;
@@ -211,10 +208,11 @@ class DiscountTest extends \OxidTestCase
      */
     public function testSaveOxSortNotUnique()
     {
-        $this->expectException('OxidEsales\EshopCommunity\Core\Exception\InputException'); $this->expectExceptionMessage( 'DISCOUNT_ERROR_OXSORT_NOT_UNIQUE');
+        $this->expectException('OxidEsales\EshopCommunity\Core\Exception\InputException');
+        $this->expectExceptionMessage('DISCOUNT_ERROR_OXSORT_NOT_UNIQUE');
         $oxSort = 1;
 
-       /** Save the first record */
+        /** Save the first record */
         $id_1 = '_testSaveOxSortNotUnique_1';
         $shopId = 1;
 
@@ -874,7 +872,6 @@ class DiscountTest extends \OxidTestCase
         $oDiscount->expects($this->never())->method('isForBundleItem');
 
         $this->assertTrue($oDiscount->isForBasketAmount($oBasket));
-
     }
 
     public function testIsForBasketAmountIfNotIsForBundle()
@@ -896,7 +893,6 @@ class DiscountTest extends \OxidTestCase
         $oDiscount->expects($this->never())->method('isForBasketItem');
 
         $this->assertTrue($oDiscount->isForBasketAmount($oBasket));
-
     }
 
     public function testIsForBasketAmountForPricedDiscountIfBundleType()
@@ -1058,7 +1054,8 @@ class DiscountTest extends \OxidTestCase
         $this->assertFalse($oDiscount->isForBundleItem($oUnrelatedProduct));
     }
 
-    public function testGetNextOxsortReturnsIncrementedValue() {
+    public function testGetNextOxsortReturnsIncrementedValue()
+    {
         $shopId = 1;
         $query = 'SELECT MAX(oxsort) FROM oxdiscount';
         $currentValue = oxDb::getDb()->getOne($query, [$shopId]);
@@ -1067,6 +1064,5 @@ class DiscountTest extends \OxidTestCase
         $incrementedValue = $oDiscount->getNextOxsort($shopId);
 
         $this->assertGreaterThan($currentValue, $incrementedValue);
-
     }
 }

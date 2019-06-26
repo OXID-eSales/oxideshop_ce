@@ -11,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
  */
 class ModuleVariablesCacheTest extends \OxidTestCase
 {
-
     public function testSetGetCache()
     {
         $sTest = "test val";

@@ -1,6 +1,6 @@
 // http://developer.yahoo.com/yui/articles/hosting/?button&connection&container&datatable&dragdrop&json&menu&utilities&MIN&nocombine&norollup&basepath&[{$shop-%3Ebasetpldir}]yui/build/
 
-YAHOO.namespace( 'YAHOO.oxid' );
+YAHOO.namespace('YAHOO.oxid');
 
 var $  = YAHOO.util.Dom.get,
     $D = YAHOO.util.Dom,
@@ -8,8 +8,7 @@ var $  = YAHOO.util.Dom.get,
 
 //--------------------------------------------------------------------------------
 
-YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
-{
+YAHOO.oxid.aoc = function ( elContainer , aColumnDefs , sDataSource , oConfigs ) {
     YAHOO.widget.DataTable.MSG_EMPTY = "";
 
     /**
@@ -103,8 +102,7 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return string
      */
-    this.modRequest = function( sRequest )
-    {
+    this.modRequest = function ( sRequest ) {
         return sRequest;
     };
 
@@ -122,13 +120,12 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return string
      */
-    this.getRequest = function( iStartIndex )
-    {
+    this.getRequest = function ( iStartIndex ) {
         me.iStartIndex = iStartIndex;
         var sRequest = '&startIndex=' + iStartIndex + '&results=' + this.dataSize;
 
         // attaching ordering
-        if(me.sortCol){
+        if (me.sortCol) {
             sRequest += '&dir=' + me.sortDir + '&sort=' + me.sortCol;
         }
 
@@ -136,7 +133,7 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
         if ( me._aFilters ) {
             for ( var i=0; i < me._aFilters.length; i++ ) {
                 if ( me._aFilters[i].name && me._aFilters[i].value ) {
-                    sRequest += '&aFilter[' + me._aFilters[i].name + ']=' + encodeURIComponent( me._aFilters[i].value );
+                    sRequest += '&aFilter[' + me._aFilters[i].name + ']=' + encodeURIComponent(me._aFilters[i].value);
                 }
             }
         }
@@ -148,12 +145,12 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
             }
         }
 
-        sRequest = me.modRequest( sRequest );
+        sRequest = me.modRequest(sRequest);
         return sRequest;
     };
 
     // if config information is not passed by user - creating empty object
-    if ( !oConfigs ){
+    if ( !oConfigs ) {
         oConfigs = {};
     }
 
@@ -162,42 +159,41 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @var string
      */
-    oConfigs.initialRequest = this.getRequest( 0 ) + '&results=' + ( this.viewSize );
+    oConfigs.initialRequest = this.getRequest(0) + '&results=' + ( this.viewSize );
 
     /**
      * Scrollbar renderer, which is used for data paging
      *
      * @return null
      */
-    this.renderScrollBar = function()
-    {
+    this.renderScrollBar = function () {
         // selecting height calculation object
         if ( this._elTbody.rows.length ) {
             var oReg = this._elTbody.rows;
         } else {
             var oReg = this._elMsgTbody.rows;
         }
-        var aReg = $D.getRegion( oReg[0] );
+        var aReg = $D.getRegion(oReg[0]);
         this.rowHeight = (aReg.bottom - aReg.top - 1);
 
         // setting scroll div layer
-        $D.setStyle( this._elScroll, 'height', ( this.rowHeight * this.viewSize )+ 'px' );
-        $D.setStyle( this._elScrollView, 'height',  ( this.rowHeight * this.totalRecords ) + 'px' );
+        $D.setStyle(this._elScroll, 'height', ( this.rowHeight * this.viewSize )+ 'px');
+        $D.setStyle(this._elScrollView, 'height',  ( this.rowHeight * this.totalRecords ) + 'px');
 
-        var aTReg   = $D.getRegion( this.getTheadEl() );
+        var aTReg   = $D.getRegion(this.getTheadEl());
         var hHeight = ( aTReg.bottom - aTReg.top );
 
         if ( this.elFilterHead ) {
-            var aTReg   = $D.getRegion( this.elFilterHead );
+            var aTReg   = $D.getRegion(this.elFilterHead);
             hHeight += ( aTReg.bottom - aTReg.top );
         }
 
-        $D.setStyle( this._elScroll, 'margin-top', ( hHeight + 1 ) + 'px' );
+        $D.setStyle(this._elScroll, 'margin-top', ( hHeight + 1 ) + 'px');
 
         // subscribing event listener on scroll bar
-        $E.on( this._elScroll, 'scroll', this.scrollTo, this );
+        $E.on(this._elScroll, 'scroll', this.scrollTo, this);
 
-        this.iScrollOffset = $D.getY( this._elScroll );
+        this.iScrollOffset = $D.getY(this._elScroll);
     };
 
     /**
@@ -205,18 +201,17 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.resetScrollBar = function()
-    {
+    this.resetScrollBar = function () {
         if ( this._elTbody.rows.length ) {
             var oReg = this._elTbody.rows;
         } else {
             var oReg = this._elMsgTbody.rows;
         }
 
-        var aReg = $D.getRegion( oReg[0] );
+        var aReg = $D.getRegion(oReg[0]);
         this.rowHeight = ( aReg.bottom - aReg.top - 1);
 
-        $D.setStyle( this._elScrollView, 'height',  (this.rowHeight*this.totalRecords)+ 'px' );
+        $D.setStyle(this._elScrollView, 'height',  (this.rowHeight*this.totalRecords)+ 'px');
     };
 
     /**
@@ -227,11 +222,11 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.scrollTo = function( e, oScroll )
-    {
+    this.scrollTo = function ( e, oScroll ) {
         me.evtCtr++;
         sCall = me.evtCtr + 0;
-        setTimeout( function () { me.scrollDo( sCall ); }, 100 );
+        setTimeout(function () {
+            me.scrollDo(sCall); }, 100);
     };
 
 
@@ -242,24 +237,22 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.scrollDo = function( evtCtr )
-    {
-        if ( me.evtCtr == evtCtr )
-        {
+    this.scrollDo = function ( evtCtr ) {
+        if ( me.evtCtr == evtCtr ) {
             // initial scroll
-            var iOffset = Math.round( ( $D.getY( me ._elScrollView ) - me.iScrollOffset ) / me.rowHeight );
-            iOffset = Math.min( iOffset, 0 );
+            var iOffset = Math.round(( $D.getY(me ._elScrollView) - me.iScrollOffset ) / me.rowHeight);
+            iOffset = Math.min(iOffset, 0);
 
             var iStartRecordIndex = iOffset * - 1;
             var dataSize = me.viewSize * me.viewCount;
 
-            var page1 = Math.floor( iStartRecordIndex / dataSize );
-            var page2 = Math.floor( ( iStartRecordIndex + me.viewSize ) / dataSize );
+            var page1 = Math.floor(iStartRecordIndex / dataSize);
+            var page2 = Math.floor(( iStartRecordIndex + me.viewSize ) / dataSize);
 
-            var sRequest = me.getRequest( page1 * dataSize );
-            if ( page1 != page2 )
+            var sRequest = me.getRequest(page1 * dataSize);
+            if ( page1 != page2 ) {
                 var sKey = sRequest + "initDataView_ff";
-            else {
+            } else {
                 var sKey = sRequest + "initDataView_fl";
             }
 
@@ -277,7 +270,7 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
             }
 
             me.evtCtr = 0;
-            me.getPage( iOffset * - 1 );
+            me.getPage(iOffset * - 1);
         }
     };
 
@@ -289,47 +282,43 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.getPage = function( iStartRecordIndex )
-    {
+    this.getPage = function ( iStartRecordIndex ) {
         var dataSize = me.viewSize * me.viewCount;
 
-        var page1 = Math.floor( iStartRecordIndex / dataSize );
-        var page2 = Math.floor( ( iStartRecordIndex + me.viewSize ) / dataSize );
+        var page1 = Math.floor(iStartRecordIndex / dataSize);
+        var page2 = Math.floor(( iStartRecordIndex + me.viewSize ) / dataSize);
 
         me.viewResponse = {results:[]};
 
-        me.iStartRecordIndex = Math.min( iStartRecordIndex, Math.max( ( me.totalRecords - me.viewSize ), 0 ) );
+        me.iStartRecordIndex = Math.min(iStartRecordIndex, Math.max(( me.totalRecords - me.viewSize ), 0));
 
-        var sRequest = me.getRequest( page1 * dataSize );
+        var sRequest = me.getRequest(page1 * dataSize);
         if ( page1 != page2 ) {
             me.aRequests[sRequest + "initDataView_ff"] = 1;
-            me.oDataSource.sendRequest( sRequest, me.initDataView_ff, me );
+            me.oDataSource.sendRequest(sRequest, me.initDataView_ff, me);
         } else {
             me.aRequests[sRequest + "initDataView_fl"] = 1;
-            me.oDataSource.sendRequest( sRequest, me.initDataView_fl, me );
+            me.oDataSource.sendRequest(sRequest, me.initDataView_fl, me);
         }
 
 
 
         // Do we need second page ?
         if ( page1 != page2 ) {
-            var sRequest = me.getRequest( page2 * dataSize );
+            var sRequest = me.getRequest(page2 * dataSize);
             me.aRequests[sRequest + "initDataView_l"] = 1;
-            me.oDataSource.sendRequest( sRequest, me.initDataView_l, me );
+            me.oDataSource.sendRequest(sRequest, me.initDataView_l, me);
         }
     };
 
-    this.initDataView_fl = function( sRequest, oResponse )
-    {
-        me.initDataView( sRequest, oResponse, 1, 1, "initDataView_fl" );
+    this.initDataView_fl = function ( sRequest, oResponse ) {
+        me.initDataView(sRequest, oResponse, 1, 1, "initDataView_fl");
     };
-    this.initDataView_ff = function( sRequest, oResponse )
-    {
-        me.initDataView( sRequest, oResponse, 1, 2, "initDataView_ff" );
+    this.initDataView_ff = function ( sRequest, oResponse ) {
+        me.initDataView(sRequest, oResponse, 1, 2, "initDataView_ff");
     };
-    this.initDataView_l = function( sRequest, oResponse )
-    {
-        me.initDataView( sRequest, oResponse, 2, 2, "initDataView_l" );
+    this.initDataView_l = function ( sRequest, oResponse ) {
+        me.initDataView(sRequest, oResponse, 2, 2, "initDataView_l");
     };
 
     /**
@@ -344,15 +333,14 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.initDataView = function( sRequest, oResponse, nr, total, sRequestType )
-    {
-        var page =  Math.floor( me.iStartRecordIndex / (me.viewSize * me.viewCount ) ) + ( nr - 1 );
+    this.initDataView = function ( sRequest, oResponse, nr, total, sRequestType ) {
+        var page =  Math.floor(me.iStartRecordIndex / (me.viewSize * me.viewCount )) + ( nr - 1 );
 
         var cacheSize  = me.viewSize * me.viewCount;
         var startIndex = me.iStartRecordIndex;
 
         if ( ( startIndex - cacheSize ) > 0 ) {
-            startIndex = startIndex - Math.floor( me.iStartRecordIndex / cacheSize ) * cacheSize;
+            startIndex = startIndex - Math.floor(me.iStartRecordIndex / cacheSize) * cacheSize;
         }
 
         var iCnt = 0;
@@ -383,8 +371,7 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.sortColumn = function( oColumn )
-    {
+    this.sortColumn = function ( oColumn ) {
 
         // Which direction
         var sDir = 'asc';
@@ -395,9 +382,9 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
         }
         me.sortCol = oColumn.key;
         me.sortDir = sDir;
-        me.set( 'sortedBy', { key:oColumn.key, dir:(sDir === 'asc') ? YAHOO.widget.DataTable.CLASS_ASC : YAHOO.widget.DataTable.CLASS_DESC, column:oColumn } );
+        me.set('sortedBy', { key:oColumn.key, dir:(sDir === 'asc') ? YAHOO.widget.DataTable.CLASS_ASC : YAHOO.widget.DataTable.CLASS_DESC, column:oColumn });
 
-        me.getPage( 0 );
+        me.getPage(0);
     };
 
     /**
@@ -405,12 +392,11 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.addScrollBar = function()
-    {
+    this.addScrollBar = function () {
         $(elContainer).innerHTML = "<table class=\"oxid-aoc\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr><td  id=\""+elContainer+"_bg\" class=\"oxid-aoc-table\" valign=\"top\"><div id=\""+elContainer+"_c\"><\/div><\/td><td valign=\"top\" height=\"100%\"><div dir=RTL class=\"oxid-aoc-scrollbar\" id=\""+elContainer+"_s\"><div id=\""+elContainer+"_v\"><\/div><\/div><\/td><\/tr><\/table>";
 
-        this._elScroll     = $(elContainer + '_s' );
-        this._elScrollView = $(elContainer + '_v' );
+        this._elScroll     = $(elContainer + '_s');
+        this._elScrollView = $(elContainer + '_v');
     };
 
     /**
@@ -418,50 +404,48 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.addFilters = function()
-    {
+    this.addFilters = function () {
 
         this._aFilters = [];
-        var elTr = document.createElement( 'tr' );
+        var elTr = document.createElement('tr');
 
         // just adding class the same as headers
-        $D.addClass( elTr, 'yui-dt-first yui-dt-last' );
+        $D.addClass(elTr, 'yui-dt-first yui-dt-last');
         elTr.id = "yui-dt" + this._nIndex + "-hdrow1";
         for ( var i=0,col; col=aViewCols[i]; i++ ) {
-
-            var elInput = document.createElement( 'input' );
-            elInput.setAttribute( "name", aViewCols[i].key );
-            elInput.setAttribute( "value", "" );
+            var elInput = document.createElement('input');
+            elInput.setAttribute("name", aViewCols[i].key);
+            elInput.setAttribute("value", "");
             elInput.style.width = '95%';
 
             this._aFilters[i] = elInput;
-            $E.on( elInput, 'keyup', this.waitForfilter, this );
-            $E.on( elInput, 'click', elInput.focus );
+            $E.on(elInput, 'keyup', this.waitForfilter, this);
+            $E.on(elInput, 'click', elInput.focus);
 
             elInput.focused = false;
 
-            var elTd = document.createElement( 'th' );
+            var elTd = document.createElement('th');
             elTd.id = "yui-dt" + this._nIndex + "-filter_" + i;
 
-            $D.addClass( elTd,  'yui-dt-resizeable yui-dt-sortable' );
+            $D.addClass(elTd,  'yui-dt-resizeable yui-dt-sortable');
 
-            var elDiv = document.createElement( 'div' );
+            var elDiv = document.createElement('div');
 
             elDiv.style.padding = '2px';
             elDiv.style.overflow = 'hidden';
 
-            elDiv.appendChild( elInput );
+            elDiv.appendChild(elInput);
 
-            elTd.appendChild( elDiv );
-            elTr.appendChild( elTd );
+            elTd.appendChild(elDiv);
+            elTr.appendChild(elTd);
         }
 
-        this.elFilterHead = document.createElement( 'thead' );
-        this.elFilterHead.appendChild( elTr );
+        this.elFilterHead = document.createElement('thead');
+        this.elFilterHead.appendChild(elTr);
 
         // adding filters
         var elThead = this.getTheadEl();
-        elThead.parentNode.insertBefore( this.elFilterHead, elThead.parentNode.firstChild );
+        elThead.parentNode.insertBefore(this.elFilterHead, elThead.parentNode.firstChild);
     };
 
     /**
@@ -471,8 +455,7 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return bool
      */
-    this.isIgnoreKey = function( nKeyCode )
-    {
+    this.isIgnoreKey = function ( nKeyCode ) {
         if ( ( nKeyCode == 9 ) || ( nKeyCode == 13 )  || // tab, enter
                 (nKeyCode == 16) || (nKeyCode == 17) ||  // shift, ctl
                 (nKeyCode >= 18 && nKeyCode <= 20) ||    // alt,pause/break,caps lock
@@ -492,15 +475,16 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.waitForfilter = function( e )
-    {
-        if ( me.isIgnoreKey( e.keyCode ) )
+    this.waitForfilter = function ( e ) {
+        if ( me.isIgnoreKey(e.keyCode) ) {
             return false;
+        }
 
         me.inpCtr++;
         sCall = me.inpCtr + 0;
-        var sSecondParam = $E.getTarget( e, false );
-        setTimeout( function( ) { me.filterBy( sCall, sSecondParam ); }, 100 );
+        var sSecondParam = $E.getTarget(e, false);
+        setTimeout(function ( ) {
+            me.filterBy(sCall, sSecondParam); }, 100);
     };
 
     /**
@@ -510,11 +494,10 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.filterBy = function( inpCtr, oTarget )
-    {
+    this.filterBy = function ( inpCtr, oTarget ) {
         if ( me.inpCtr == inpCtr ) {
             me.inpCtr = 0;
-            me.getPage( 0 );
+            me.getPage(0);
 
             if ( me._aFilters && oTarget ) {
                 for ( var i=0; i < me._aFilters.length; i++ ) {
@@ -525,12 +508,10 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
                     }
                 }
             }
-
         }
     };
 
-    this.onMouseDown = function( e )
-    {
+    this.onMouseDown = function ( e ) {
         if ( !(e.shiftKey || e.event.ctrlKey || ((navigator.userAgent.toLowerCase().indexOf("mac") != -1) && e.event.metaKey)) && !this.isSelected(e.target) ) {
             this.onEventSelectRow(e);
         }
@@ -541,13 +522,12 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.addDD = function()
-    {
-        this.subscribe( 'rowClickEvent', this.onEventSelectRow );
-        this.subscribe( 'rowMousedownEvent', this.onMouseDown );
+    this.addDD = function () {
+        this.subscribe('rowClickEvent', this.onEventSelectRow);
+        this.subscribe('rowMousedownEvent', this.onMouseDown);
 
         YAHOO.util.DDM.mode = YAHOO.util.DDM.INTERSECT;
-        me.dd = new YAHOO.util.DDProxy( this.elContainer+'_bg', 'aoc', { resizeFrame: false , centerFrame  :true} );
+        me.dd = new YAHOO.util.DDProxy(this.elContainer+'_bg', 'aoc', { resizeFrame: false , centerFrame  :true});
 
         me.dd.endDrag      = this.endDrag;
         me.dd.onDragEnter  = this.onDragEnter;
@@ -561,9 +541,8 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
     /**
      *
      */
-    this.onDragDrop = function( e, DDArray )
-    {
-        me.afterDrop( me, DDArray[0].me );
+    this.onDragDrop = function ( e, DDArray ) {
+        me.afterDrop(me, DDArray[0].me);
     };
 
     /**
@@ -573,8 +552,7 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.getDropAction = function()
-    {
+    this.getDropAction = function () {
     };
 
     /**
@@ -585,8 +563,7 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.onFailureCalback = function( oResponse )
-    {
+    this.onFailureCalback = function ( oResponse ) {
     };
 
     /**
@@ -597,8 +574,7 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.onSuccessCalback = function( oResponse )
-    {
+    this.onSuccessCalback = function ( oResponse ) {
     };
 
     /**
@@ -608,16 +584,15 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.onSuccess = function( oResponse )
-    {
-        me.onSuccessCalback( oResponse );
+    this.onSuccess = function ( oResponse ) {
+        me.onSuccessCalback(oResponse);
         var oSrc = oResponse.argument[0];
             oSrc.getDataSource().flushCache();
-            oSrc.getPage( 0 );
+            oSrc.getPage(0);
 
         var oTrg = oResponse.argument[1];
             oTrg.getDataSource().flushCache();
-            oTrg.getPage( 0 );
+            oTrg.getPage(0);
     };
 
     /**
@@ -627,9 +602,8 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.onFailure = function( oResponse )
-    {
-        me.onFailureCalback( oResponse );
+    this.onFailure = function ( oResponse ) {
+        me.onFailureCalback(oResponse);
     };
 
     /**
@@ -637,8 +611,7 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return string
      */
-    this.getDropUrl = function()
-    {
+    this.getDropUrl = function () {
         return me.sDataSource;
     };
 
@@ -647,19 +620,18 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return string
      */
-    this.getDropParams = function() {
+    this.getDropParams = function () {
         var sNextAction = '';
 
-        var oBtn = $( me.elContainer + '_btn' );
-        var blChecked = $D.hasClass( oBtn, 'oxid-aoc-button-checked' );
+        var oBtn = $(me.elContainer + '_btn');
+        var blChecked = $D.hasClass(oBtn, 'oxid-aoc-button-checked');
 
         if ( blChecked ) {
             sNextAction += '&all=1';
         } else {
-
             var aSelRows = me.getSelectedRows();
             for ( var i=0, aRow; aRow = aSelRows[i]; i++ ) {
-                var oRecord = me.getRecord( aRow );
+                var oRecord = me.getRecord(aRow);
                 if ( oRecord ) {
                     var oData = oRecord.getData();
 
@@ -677,7 +649,6 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
                     }
                 }
             }
-
         }
 
         return sNextAction;
@@ -691,14 +662,13 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.afterDrop = function( oSource, oTarget )
-    {
+    this.afterDrop = function ( oSource, oTarget ) {
         var callback = { success:  me.onSuccess,
-                         failure:  me.onFailure,
-                         argument: [ oSource, oTarget ]
-                       };
+            failure:  me.onFailure,
+            argument: [ oSource, oTarget ]
+        };
 
-        YAHOO.util.Connect.asyncRequest( 'GET', me.getDropUrl() + '&' + me.getDropParams() + '&' + me.getDropAction(), callback, null );
+        YAHOO.util.Connect.asyncRequest('GET', me.getDropUrl() + '&' + me.getDropParams() + '&' + me.getDropAction(), callback, null);
     };
 
     /**
@@ -706,12 +676,11 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.endDrag = function()
-    {
+    this.endDrag = function () {
         if ( me.ddtarget ) {
-            $D.removeClass( me.ddtarget.me._elTbody, 'ddtarget' );
-            $D.removeClass( me.ddtarget.elContainer, 'ddtarget' );
-            $D.removeClass( $( me.ddtarget.me.elContainer + '_bg' ), 'ddtarget' );
+            $D.removeClass(me.ddtarget.me._elTbody, 'ddtarget');
+            $D.removeClass(me.ddtarget.elContainer, 'ddtarget');
+            $D.removeClass($(me.ddtarget.me.elContainer + '_bg'), 'ddtarget');
         }
     };
 
@@ -723,17 +692,16 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.onDragEnter = function( e, DDArray )
-    {
-        var tar = YAHOO.util.DragDropMgr.getBestMatch( DDArray );
+    this.onDragEnter = function ( e, DDArray ) {
+        var tar = YAHOO.util.DragDropMgr.getBestMatch(DDArray);
         if ( me.ddtarget ) {
-            $D.removeClass( me.ddtarget.me._elTbody, 'ddtarget' );
+            $D.removeClass(me.ddtarget.me._elTbody, 'ddtarget');
 
-            $D.removeClass( $( elContainer ), 'ddtarget' );
+            $D.removeClass($(elContainer), 'ddtarget');
         }
 
-        $D.addClass( tar.me._elTbody, 'ddtarget' );
-        $D.addClass( $( tar.me.elContainer + '_bg' ), 'ddtarget' );
+        $D.addClass(tar.me._elTbody, 'ddtarget');
+        $D.addClass($(tar.me.elContainer + '_bg'), 'ddtarget');
         me.ddtarget = tar;
     };
 
@@ -745,11 +713,10 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.onDragOut = function( e, DDArray )
-    {
-        var tar = YAHOO.util.DragDropMgr.getBestMatch( DDArray );
-        $D.removeClass( tar.me._elTbody, 'ddtarget' );
-        $D.removeClass( $(tar.me.elContainer + '_bg' ), 'ddtarget' );
+    this.onDragOut = function ( e, DDArray ) {
+        var tar = YAHOO.util.DragDropMgr.getBestMatch(DDArray);
+        $D.removeClass(tar.me._elTbody, 'ddtarget');
+        $D.removeClass($(tar.me.elContainer + '_bg'), 'ddtarget');
 
         me.ddtarget = null;
     };
@@ -762,8 +729,7 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return bool
      */
-    this.b4StartDrag = function( x, y )
-    {
+    this.b4StartDrag = function ( x, y ) {
         if ( !me.getSelectedRows().length ) {
             me.dd.endDrag();
             return false;
@@ -778,9 +744,8 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.addColumnSelector = function()
-    {
-        me.oContextMenu = new YAHOO.widget.ContextMenu( elContainer + '_m', { zindex: 1000, trigger: this._elThead.childNodes } );
+    this.addColumnSelector = function () {
+        me.oContextMenu = new YAHOO.widget.ContextMenu(elContainer + '_m', { zindex: 1000, trigger: this._elThead.childNodes });
         me.oContextMenu.clearContent();
 
         var aItems = [];
@@ -790,32 +755,30 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
             }
         }
 
-        me.oContextMenu.addItems( aItems );
-        me.oContextMenu.render( document.body );
-        me.oContextMenu.clickEvent.subscribe( me.onFieldMenuClick );
+        me.oContextMenu.addItems(aItems);
+        me.oContextMenu.render(document.body);
+        me.oContextMenu.clickEvent.subscribe(me.onFieldMenuClick);
     };
 
 
     /**
      * Iterates through
      */
-    this.hideNumberedColumn = function( nr, blShow, startIdx )
-    {
+    this.hideNumberedColumn = function ( nr, blShow, startIdx ) {
         var aCols = [ "yui-dt" + this._nIndex + "-th-_" + nr , "yui-dt" + this._nIndex + "-filter_" + nr ];
 
         if ( blShow ) {
             this._iVisibleCount++;
-            this.showColumn( this.getColumn( nr ) );
-            $D.removeClass( aCols, 'yui-dt-hidden' );
+            this.showColumn(this.getColumn(nr));
+            $D.removeClass(aCols, 'yui-dt-hidden');
 
             // somehow some elements keeps its state
-            $D.setStyle( $D.getElementsByClassName( 'yui-dt-sortable'), 'display', '');
-            $D.setStyle( $D.getElementsByClassName( 'yui-dt-col-'+ nr ), 'width', 'auto' );
-
+            $D.setStyle($D.getElementsByClassName('yui-dt-sortable'), 'display', '');
+            $D.setStyle($D.getElementsByClassName('yui-dt-col-'+ nr), 'width', 'auto');
         } else {
             this._iVisibleCount--;
-            this.hideColumn( this.getColumn( nr ) );
-            $D.addClass( aCols, 'yui-dt-hidden' );
+            this.hideColumn(this.getColumn(nr));
+            $D.addClass(aCols, 'yui-dt-hidden');
         }
     };
 
@@ -827,24 +790,24 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return bool
      */
-    this.onFieldMenuClick = function( e, args ) {
+    this.onFieldMenuClick = function ( e, args ) {
 
         var item    = args[1],
             checked = !$D.hasClass(item._oAnchor,'yuimenuitemlabel-checked'),
             nr      = item.cfg.getProperty('target');
 
-        item.cfg.setProperty( 'checked', checked );
+        item.cfg.setProperty('checked', checked);
 
         aColumnDefs[nr].visible = checked;
 
         //Set class for headers / cells
-        var oColumn = me._oColumnSet.getColumn( aColumnDefs[nr].key );
+        var oColumn = me._oColumnSet.getColumn(aColumnDefs[nr].key);
         oColumn.hidden = !checked;
 
-        me.hideNumberedColumn( nr, checked, me.getColumn(0)._sId );
+        me.hideNumberedColumn(nr, checked, me.getColumn(0)._sId);
 
-        me.getPage( 0 );
-        me.set( 'sortedBy', {} );
+        me.getPage(0);
+        me.set('sortedBy', {});
 
 
         return false;
@@ -863,8 +826,7 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return object
      */
-    this.doBeforeCallback = function( oRequest, oRawResponse, oParsedResponse )
-    {
+    this.doBeforeCallback = function ( oRequest, oRawResponse, oParsedResponse ) {
         oParsedResponse.totalRecords = me.totalRecords = oRawResponse.totalRecords;
         oParsedResponse.sortCol      = me.sortCol = oRawResponse.sort; // Which column is sorted
         oParsedResponse.sortDir      = me.sortDir = oRawResponse.dir;  // Which sort direction
@@ -883,8 +845,7 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.defaultFormatter = function( elCell, oRecord, oColumn, oData )
-    {
+    this.defaultFormatter = function ( elCell, oRecord, oColumn, oData ) {
         if ( oData ) {
             elCell.innerHTML = '<div>'+oData.toString()+'</div>';
         } else { // avoiding empty broken cells
@@ -895,13 +856,12 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
     /**
      * Binds event listener on assign all button
      */
-    this.initAssignBtn = function()
-    {
+    this.initAssignBtn = function () {
         // only if this action is allowed
-        var oBtn,sBtn = $( this.elContainer + '_btn' );
+        var oBtn,sBtn = $(this.elContainer + '_btn');
         if ( sBtn != null ) {
             oBtn = new YAHOO.widget.Button(sBtn);
-            oBtn.on("click", this.assignAll, this );
+            oBtn.on("click", this.assignAll, this);
         }
     };
 
@@ -911,8 +871,7 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return string
      */
-    this.getAssignUrl = function()
-    {
+    this.getAssignUrl = function () {
         return me.sDataSource;;
     };
 
@@ -921,8 +880,7 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return string
      */
-    this.getAssignParams = function()
-    {
+    this.getAssignParams = function () {
         return '';
     };
 
@@ -931,19 +889,18 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return string
      */
-    this.getAssignAction = function()
-    {
+    this.getAssignAction = function () {
         sRequest = me.getDropAction();
         // attaching filter
         if ( me._aFilters ) {
             for ( var i=0; i < me._aFilters.length; i++ ) {
                 if ( me._aFilters[i].name && me._aFilters[i].value ) {
-                    sRequest += '&aFilter['+me._aFilters[i].name+']='+ encodeURIComponent( me._aFilters[i].value );
+                    sRequest += '&aFilter['+me._aFilters[i].name+']='+ encodeURIComponent(me._aFilters[i].value);
                 }
             }
         }
 
-        sRequest = me.modRequest( sRequest );
+        sRequest = me.modRequest(sRequest);
         return sRequest+'&all=1';
     };
 
@@ -954,16 +911,15 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.onAssignSuccess = function( oResponse )
-    {
-        me.onSuccessCalback( oResponse );
+    this.onAssignSuccess = function ( oResponse ) {
+        me.onSuccessCalback(oResponse);
         var oSrc = oResponse.argument[0];
             oSrc.getDataSource().flushCache();
-            oSrc.getPage( 0 );
+            oSrc.getPage(0);
 
         var oTrg = oResponse.argument[1];
             oTrg.getDataSource().flushCache();
-            oTrg.getPage( 0 );
+            oTrg.getPage(0);
     };
 
     /**
@@ -972,8 +928,7 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.onAssignFailure = function()
-    {
+    this.onAssignFailure = function () {
     };
 
     /**
@@ -982,13 +937,13 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.getAssignTarget = function()
-    {
+    this.getAssignTarget = function () {
         // not nice hack ...
-        if ( me != YAHOO.oxid.container1 )
+        if ( me != YAHOO.oxid.container1 ) {
             return YAHOO.oxid.container1;
-        else
+        } else {
             return YAHOO.oxid.container2;
+        }
     };
 
     /**
@@ -996,8 +951,7 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return object
      */
-    this.getAssignSource = function()
-    {
+    this.getAssignSource = function () {
         return me;
     };
 
@@ -1006,18 +960,16 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
      *
      * @return null
      */
-    this.assignAll = function()
-    {
+    this.assignAll = function () {
         var callback = { success:  me.onAssignSuccess,
-                         failure:  me.onAssignFailure,
-                         argument: [ me.getAssignSource(), me.getAssignTarget() ]
-                       };
-        YAHOO.util.Connect.asyncRequest( 'GET', me.getAssignUrl() + '&' + me.getAssignParams() + '&' + me.getAssignAction(), callback, null );
+            failure:  me.onAssignFailure,
+            argument: [ me.getAssignSource(), me.getAssignTarget() ]
+        };
+        YAHOO.util.Connect.asyncRequest('GET', me.getAssignUrl() + '&' + me.getAssignParams() + '&' + me.getAssignAction(), callback, null);
     };
 
 
-    this.setFocusOnFilter = function()
-    {
+    this.setFocusOnFilter = function () {
         // saving information about field which has focus
         if ( this._aFilters ) {
             for ( var i=0; i < this._aFilters.length; i++ ) {
@@ -1028,8 +980,7 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
         }
     };
 
-    this.waitForFocus = function( focusCtr )
-    {
+    this.waitForFocus = function ( focusCtr ) {
         var blContinue = false;
         // saving information about field which has focus
         if ( me._aFilters ) {
@@ -1049,7 +1000,8 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
         } else {
             me.focusCtr++;
             sCall = me.focustCtr + 0;
-            setTimeout( function( ) { me.waitForFocus( sCall ); }, 100 );
+            setTimeout(function ( ) {
+                me.waitForFocus(sCall); }, 100);
         }
     };
 
@@ -1088,7 +1040,6 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
     // collecting data/view/ident fields information arrays
     for ( var i=0,col; col = aColumnDefs[i]; i++ ) {
         if ( !col.ident ) {
-
             if ( col.formatter ) {
                 sFormatters = col.formatter;
             } else {
@@ -1096,8 +1047,9 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
             }
 
             var blSortable  = true;
-            if ( col.sortable != null )
+            if ( col.sortable != null ) {
                 blSortable = col.sortable;
+            }
 
             col.sortable   = blSortable;
             col.formatter  = sFormatters;
@@ -1121,21 +1073,21 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
     this._iVisibleCount = aViewCols.length;
 
     // initiating data source
-    this.oDataSource = new YAHOO.util.DataSource( sDataSource, { maxCacheEntries: this.maxCacheEntries } );
+    this.oDataSource = new YAHOO.util.DataSource(sDataSource, { maxCacheEntries: this.maxCacheEntries });
     this.oDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
     this.oDataSource.doBeforeCallback = this.doBeforeCallback;
     this.oDataSource.responseSchema = {
-                                       resultsList: 'records',
-                                       fields: aDataCols
-                                      };
+        resultsList: 'records',
+        fields: aDataCols
+    };
 
 
 
     // adding scrollbar divs
-    this.addScrollBar( elContainer );
+    this.addScrollBar(elContainer);
 
     // constructing datatable component
-    YAHOO.oxid.aoc.superclass.constructor.call( this, elContainer + '_c', aViewCols, this.oDataSource, oConfigs );
+    YAHOO.oxid.aoc.superclass.constructor.call(this, elContainer + '_c', aViewCols, this.oDataSource, oConfigs);
 
     // adding data filters
     this.addFilters();
@@ -1150,14 +1102,14 @@ YAHOO.oxid.aoc = function( elContainer , aColumnDefs , sDataSource , oConfigs )
     this.initAssignBtn();
 
     for ( var i=0; i < this.aColsTohide.length; i++ ) {
-        this.hideNumberedColumn( this.aColsTohide[i], false, i );
+        this.hideNumberedColumn(this.aColsTohide[i], false, i);
     }
 
     // table must be 100% width ..
-    $D.addClass( this.getTableEl(), 'yui-dt-table' );
- };
+    $D.addClass(this.getTableEl(), 'yui-dt-table');
+};
 
-YAHOO.lang.extend( YAHOO.oxid.aoc, YAHOO.widget.DataTable );
+YAHOO.lang.extend(YAHOO.oxid.aoc, YAHOO.widget.DataTable);
 
 /**
  * Overriding default data set call to add additional functionality
@@ -1168,23 +1120,23 @@ YAHOO.lang.extend( YAHOO.oxid.aoc, YAHOO.widget.DataTable );
  *
  * @return null
  */
-YAHOO.oxid.aoc.prototype.onDataReturnSetRows = function( sRequest, oResponse, oPayload )
-{
-     YAHOO.oxid.aoc.superclass.onDataReturnSetRows.call( this, sRequest, oResponse, oPayload );
-     if ( this.blInitScrollBar == null ) {
-         this.renderScrollBar();
-         this.blInitScrollBar = true;
-     } else {
-         this.resetScrollBar();
-     }
+YAHOO.oxid.aoc.prototype.onDataReturnSetRows = function ( sRequest, oResponse, oPayload ) {
+     YAHOO.oxid.aoc.superclass.onDataReturnSetRows.call(this, sRequest, oResponse, oPayload);
+    if ( this.blInitScrollBar == null ) {
+        this.renderScrollBar();
+        this.blInitScrollBar = true;
+    } else {
+        this.resetScrollBar();
+    }
 
-     var oColumn = this.getColumn( this.sortCol );
-     if ( this.sortDir && this.sortCol && oColumn ) {
-         this.set( 'sortedBy', { key: this.sortCol, dir:(this.sortDir === 'asc') ? YAHOO.widget.DataTable.CLASS_ASC : YAHOO.widget.DataTable.CLASS_DESC, column:oColumn } );
-     }
+     var oColumn = this.getColumn(this.sortCol);
+    if ( this.sortDir && this.sortCol && oColumn ) {
+        this.set('sortedBy', { key: this.sortCol, dir:(this.sortDir === 'asc') ? YAHOO.widget.DataTable.CLASS_ASC : YAHOO.widget.DataTable.CLASS_DESC, column:oColumn });
+    }
 
      me = this;
-     setTimeout( function () { me.waitForFocus( 0 ); }, 100 );
+     setTimeout(function () {
+        me.waitForFocus(0); }, 100);
 
      this.hideTableMessage();
 };

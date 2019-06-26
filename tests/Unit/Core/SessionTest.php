@@ -85,7 +85,7 @@ class testSession extends oxSession
      *
      * @var array
      */
-    static protected $_aSessionVars = array();
+    protected static $_aSessionVars = array();
 
     /**
      * Set session var for testing
@@ -93,7 +93,7 @@ class testSession extends oxSession
      * @param string $sVar
      * @param string $sVal
      */
-    static public function setVar($sVar, $sVal)
+    public static function setVar($sVar, $sVal)
     {
         self::$_aSessionVars[$sVar] = $sVal;
         //parent::setVar($sVar, $sVal);
@@ -106,7 +106,7 @@ class testSession extends oxSession
      *
      * @return string
      */
-    static public function getVar($sVar)
+    public static function getVar($sVar)
     {
         if (isset(self::$_aSessionVars[$sVar])) {
             return self::$_aSessionVars[$sVar];
@@ -120,7 +120,7 @@ class testSession extends oxSession
      *
      * @param string $sVar
      */
-    static public function deleteVar($sVar)
+    public static function deleteVar($sVar)
     {
         unset(self::$_aSessionVars[$sVar]);
     }
@@ -629,12 +629,12 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::allowSessionStart() test for normal case
      */
-    function testAllowSessionStartNormal()
+    public function testAllowSessionStartNormal()
     {
         $this->assertFalse($this->oSession->UNITallowSessionStart());
     }
 
-    function testAllowSessionStartNormalForced()
+    public function testAllowSessionStartNormalForced()
     {
         $this->getConfig()->setConfigParam('blForceSessionStart', 1);
         $this->assertTrue($this->oSession->UNITallowSessionStart());
@@ -643,7 +643,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::allowSessionStart() test for search engines
      */
-    function testAllowSessionStartForSearchEngines()
+    public function testAllowSessionStartForSearchEngines()
     {
         oxRegistry::getUtils()->setSearchEngine(true);
         $this->assertFalse($this->oSession->UNITallowSessionStart());
@@ -653,7 +653,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::allowSessionStart() test forcing skip
      */
-    function testAllowSessionStartForceSkip()
+    public function testAllowSessionStartForceSkip()
     {
         $this->setRequestParameter('skipSession', true);
         $this->assertFalse($this->oSession->UNITallowSessionStart());
@@ -663,7 +663,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::isSwappedClient() normal calse
      */
-    function testIsSwappedClientNormal()
+    public function testIsSwappedClientNormal()
     {
         $this->assertFalse($this->oSession->UNITisSwappedClient());
     }
@@ -671,7 +671,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::isSwappedClient() for search engines
      */
-    function testIsSwappedClientForSearchEngines()
+    public function testIsSwappedClientForSearchEngines()
     {
         oxRegistry::getUtils()->setSearchEngine(true);
         $this->assertFalse($this->oSession->UNITisSwappedClient());
@@ -681,7 +681,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::isSwappedClient() as for differnet clients
      */
-    function testIsSwappedClientAsDifferentUserAgent()
+    public function testIsSwappedClientAsDifferentUserAgent()
     {
         $oSubj = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('_checkUserAgent'));
         $oSubj->expects($this->any())->method('_checkUserAgent')->will($this->returnValue(true));
@@ -691,7 +691,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::isSwappedClient() as for differnet clients with correct token
      */
-    function testIsSwappedClientAsDifferentUserAgentCorrectToken()
+    public function testIsSwappedClientAsDifferentUserAgentCorrectToken()
     {
         $this->setRequestParameter('rtoken', 'test1');
 
@@ -704,7 +704,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::isSwappedClient() as for differnet clients
      */
-    function testIsSwappedClientAsDifferentClientIfRemoteAccess()
+    public function testIsSwappedClientAsDifferentClientIfRemoteAccess()
     {
         $this->assertTrue($this->oSession->UNITcheckUserAgent('browser1', 'browser2'));
     }
@@ -712,7 +712,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::isSwappedClient() cookie check test is performed
      */
-    function testIsSwappedClientCookieCheck()
+    public function testIsSwappedClientCookieCheck()
     {
         $myConfig = $this->getConfig();
         oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Core\UtilsServerHelper::class, 'oxUtilsServer');
@@ -772,7 +772,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::intiNewSesssion() test
      */
-    function testInitNewSession()
+    public function testInitNewSession()
     {
         $myConfig = $this->getConfig();
 
@@ -818,7 +818,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::intiNewSesssion() test
      */
-    function testInitNewSessionWithPersParams()
+    public function testInitNewSessionWithPersParams()
     {
         $myConfig = $this->getConfig();
 
@@ -862,7 +862,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::setSessionId() test. Normal case
      */
-    function testSetSessionIdNormal()
+    public function testSetSessionIdNormal()
     {
         oxTestModules::addFunction("oxUtilsServer", "getOxCookie", "{return true;}");
         $this->getConfig()->setConfigParam('blForceSessionStart', 0);
@@ -884,7 +884,7 @@ class SessionTest extends \OxidTestCase
         $this->assertNotEquals('testSid', $oSession->getId());
     }
 
-    function testSetSessionIdSkipCookies()
+    public function testSetSessionIdSkipCookies()
     {
         oxTestModules::addFunction('oxUtilsServer', 'setOxCookie', '{throw new Exception("may not! (set cookies while they are turned off)");}');
 
@@ -898,7 +898,7 @@ class SessionTest extends \OxidTestCase
         $oSession->UNITsetSessionId('test');
     }
 
-    function testSetSessionIdForced()
+    public function testSetSessionIdForced()
     {
         oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Core\UtilsServerHelper::class, 'oxUtilsServer');
         $this->getConfig()->setConfigParam('blForceSessionStart', 1);
@@ -924,7 +924,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::setSessionId() test. Admin
      */
-    function testSetSessionIdAdmin()
+    public function testSetSessionIdAdmin()
     {
         oxTestModules::addFunction("oxUtilsServer", "getOxCookie", "{return 'testSid';}");
 
@@ -953,7 +953,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::setSessionId() test. For search engines.
      */
-    function testSetSessionIdSearchEngines()
+    public function testSetSessionIdSearchEngines()
     {
         oxRegistry::getUtils()->setSearchEngine(true);
 
@@ -1006,7 +1006,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::freeze() test
      */
-    function testFreeze()
+    public function testFreeze()
     {
         //noting to test here as oxSession::freeze() includes only PHP session functionality
         //testing at least if this method exists by just calling it
@@ -1018,7 +1018,7 @@ class SessionTest extends \OxidTestCase
     /**
      * $this->getSession()->setVariable() test
      */
-    function testSetHasGetVar()
+    public function testSetHasGetVar()
     {
         //taking real session object
         $testSession = oxNew('oxSession');
@@ -1030,7 +1030,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::sid() test normal case
      */
-    function testSidNormal()
+    public function testSidNormal()
     {
         $this->getConfig()->setConfigParam('blSessionUseCookies', false);
         $oSession = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\testSession::class, array('_getCookieSid', 'isAdmin'));
@@ -1047,7 +1047,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::sid() test normal case
      */
-    function testSidInAdmin()
+    public function testSidInAdmin()
     {
         $oSession = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\testSession::class, array('_getCookieSid', 'isAdmin', 'getSessionChallengeToken', 'getShopUrlId'));
         $oSession->expects($this->any())->method('getSessionChallengeToken')->will($this->returnValue('stok'));
@@ -1061,7 +1061,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::sid() test normal case
      */
-    function testSidIfIdNotSetButSearchEngine()
+    public function testSidIfIdNotSetButSearchEngine()
     {
         $this->setConfigParam('blSessionUseCookies', false);
         $this->setConfigParam('aCacheViews', array());
@@ -1084,7 +1084,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::sid() test in amdin
      */
-    function testSidIsSearchEngine()
+    public function testSidIsSearchEngine()
     {
         $this->setConfigParam('blSessionUseCookies', false);
         $this->setConfigParam('aCacheViews', array());
@@ -1106,7 +1106,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::hiddenSid() test
      */
-    function testHiddenSidIsAdmin()
+    public function testHiddenSidIsAdmin()
     {
         $oSession = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\testSession::class, array('isAdmin', 'getSessionChallengeToken', 'isSidNeeded'));
         $oSession->expects($this->any())->method('getSessionChallengeToken')->will($this->returnValue('stok'));
@@ -1120,7 +1120,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::hiddenSid() test
      */
-    function testHiddenSidIsAdminWithCookies()
+    public function testHiddenSidIsAdminWithCookies()
     {
         $oSession = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\testSession::class, array('isAdmin', 'getSessionChallengeToken', 'isSidNeeded'));
         $oSession->expects($this->any())->method('getSessionChallengeToken')->will($this->returnValue('stok'));
@@ -1134,7 +1134,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::hiddenSid() test
      */
-    function testHiddenSidNotAdmin()
+    public function testHiddenSidNotAdmin()
     {
         $oSession = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\testSession::class, array('isAdmin', 'getSessionChallengeToken', 'isSidNeeded'));
         $oSession->expects($this->any())->method('getSessionChallengeToken')->will($this->returnValue('stok'));
@@ -1148,7 +1148,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::hiddenSid() test
      */
-    function testHiddenSidNotAdminWithCookies()
+    public function testHiddenSidNotAdminWithCookies()
     {
         $oSession = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\testSession::class, array('isAdmin', 'getSessionChallengeToken', 'isSidNeeded'));
         $oSession->expects($this->any())->method('getSessionChallengeToken')->will($this->returnValue('stok'));
@@ -1162,7 +1162,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::getBasketName() test
      */
-    function testGetBasketNameblMallSharedBasket()
+    public function testGetBasketNameblMallSharedBasket()
     {
         $this->assertEquals($this->oSession->UNITgetBasketName(), $this->getConfig()->getShopId() . '_basket');
     }
@@ -1170,7 +1170,7 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::getBasketName() test
      */
-    function testGetBasketName()
+    public function testGetBasketName()
     {
         $this->getConfig()->setConfigParam('blMallSharedBasket', 1);
         $this->assertEquals('basket', $this->oSession->UNITgetBasketName());
@@ -1179,7 +1179,7 @@ class SessionTest extends \OxidTestCase
     /**
      *  oxsession::getBasket() not basket instance
      */
-    function testGetBasket_notBasketInstance()
+    public function testGetBasket_notBasketInstance()
     {
         $oClass = oxNew('__PHP_Incomplete_Class');
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('_getBasketName'));
@@ -1192,7 +1192,7 @@ class SessionTest extends \OxidTestCase
     /**
      *  oxsession::getBasket() wrong basket instance
      */
-    function testGetBasket_notWrongBasketInstance()
+    public function testGetBasket_notWrongBasketInstance()
     {
         $oFakeBasket = oxNew('oxBasketHelper');
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('_getBasketName'));
@@ -1206,7 +1206,7 @@ class SessionTest extends \OxidTestCase
     /**
      *  oxsession::setBasket() test
      */
-    function testSetBasket_getBasket()
+    public function testSetBasket_getBasket()
     {
         $oBasket = oxNew('oxBasket');
         $this->assertNotNull($oBasket);
@@ -1219,14 +1219,14 @@ class SessionTest extends \OxidTestCase
     /**
      * oxsession::delBasket() test
      */
-    function testDelBasket()
+    public function testDelBasket()
     {
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('_getBasketName'));
         $oSession->expects($this->once())->method('_getBasketName')->will($this->returnValue('xxx'));
         $oSession->delBasket();
     }
 
-    function testGetRequestChallengeToken()
+    public function testGetRequestChallengeToken()
     {
         $oSession = oxNew('oxSession');
         $this->setRequestParameter('stoken', 'asd');
@@ -1292,7 +1292,7 @@ class SessionTest extends \OxidTestCase
     /**
      * test _getRequireSessionWithParams if no config val exists
      */
-    function testGetRequireSessionWithParamsNoConf()
+    public function testGetRequireSessionWithParamsNoConf()
     {
         $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
         $oCfg->expects($this->once())->method('getConfigParam')
@@ -1316,15 +1316,15 @@ class SessionTest extends \OxidTestCase
                  '_artperpage' => true,
                  'ldtype'      => true,
                  'listorderby' => true,
-            )
-            , $oSess->UNITgetRequireSessionWithParams()
+            ),
+            $oSess->UNITgetRequireSessionWithParams()
         );
     }
 
     /**
      * test _getRequireSessionWithParams if config val exists
      */
-    function testGetRequireSessionWithParamsWithConf()
+    public function testGetRequireSessionWithParamsWithConf()
     {
         $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
         $oCfg->expects($this->once())->method('getConfigParam')
@@ -1355,15 +1355,15 @@ class SessionTest extends \OxidTestCase
                  '_artperpage' => true,
                  'ldtype'      => true,
                  'listorderby' => true,
-            )
-            , $oSess->UNITgetRequireSessionWithParams()
+            ),
+            $oSess->UNITgetRequireSessionWithParams()
         );
     }
 
     /**
      * check config array handling
      */
-    function testIsSessionRequiredAction()
+    public function testIsSessionRequiredAction()
     {
         $oSess = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('_getRequireSessionWithParams'));
         $oSess->expects($this->exactly(7))->method('_getRequireSessionWithParams')
@@ -1393,7 +1393,7 @@ class SessionTest extends \OxidTestCase
     /**
      * check if forces session on POST request
      */
-    function testIsSessionRequiredActionOnPost()
+    public function testIsSessionRequiredActionOnPost()
     {
         $oSess = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('_getRequireSessionWithParams'));
         $oSess->expects($this->exactly(2))->method('_getRequireSessionWithParams')
@@ -1465,8 +1465,8 @@ class SessionTest extends \OxidTestCase
     {
         //Suppress all error reporting on purpose for this test
         $originalErrorReportingLevel =  error_reporting(0);
-        try{
-            $this->setRequestParam('rtoken', array(1) );
+        try {
+            $this->setRequestParam('rtoken', array(1));
 
             $session = $this->getProxyClass('oxSession');
             $session->setVariable('_rtoken', 'test1');

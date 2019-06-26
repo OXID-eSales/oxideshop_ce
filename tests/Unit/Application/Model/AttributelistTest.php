@@ -142,7 +142,6 @@ class AttributelistTest extends \OxidTestCase
         $oAttrList = oxNew('oxAttributelist');
         $oAttrList->loadAttributesDisplayableInBasket('1672');
         $this->assertEquals(0, count($oAttrList));
-
     }
 
 
@@ -226,5 +225,4 @@ class AttributelistTest extends \OxidTestCase
         $this->assertEquals(1, $oAttrList->count());
         $this->assertEquals(6, count($oAttribute->getValues()));
     }
-
 }

@@ -5,22 +5,22 @@
  * Price view mode:  brutto
  * Product count: 2
  * VAT info: 19% Default VAT for all Products  and spec VAT=10%
- * Currency rate: 1.0 
+ * Currency rate: 1.0
  * Discounts: -
  * Vouchers: -
- * Wrapping: + 
- * Costs VAT caclulation rule: max 
+ * Wrapping: +
+ * Costs VAT caclulation rule: max
  * Costs:
- *  1. Payment + 
- *  2. Delivery + 
+ *  1. Payment +
+ *  2. Delivery +
  *  3. TS -
  * Short description:
- * if in shop there are two products with different VATs. and both products have same total value 
+ * if in shop there are two products with different VATs. and both products have same total value
  */
 $aData = array(
     // Product
-    'articles' => array (
-         0 => array (
+    'articles' => array(
+         0 => array(
             // oxarticles db fields
             'oxid'                     => 1001,
             'oxprice'                  => 200.00,
@@ -28,7 +28,7 @@ $aData = array(
             // Amount in basket
             'amount'                   => 1,
         ),
-        1 => array (
+        1 => array(
             // oxarticles db fields
             'oxid'                     => 1002,
             'oxprice'                  => 20.00,
@@ -68,20 +68,20 @@ $aData = array(
     ),
 
     // TEST EXPECTATIONS
-    'expected' => array (
+    'expected' => array(
         // Article expected prices: ARTICLE ID => ( Unit price, Total Price )
-        'articles' => array (
-            1001 => array ( '200,00', '200,00' ),
-            1002 => array ( '20,00', '200,00' ),
+        'articles' => array(
+            1001 => array( '200,00', '200,00' ),
+            1002 => array( '20,00', '200,00' ),
         ),
         // Expectations of other totals
-        'totals' => array (
+        'totals' => array(
             // Total BRUTTO
             'totalBrutto' => '400,00',
             // Total NETTO
-            'totalNetto'  => '349,89', 
+            'totalNetto'  => '349,89',
             // Total VAT amount: vat% => total cost
-            'vats' => array (
+            'vats' => array(
                 19 => '31,93',
                 10 => '18,18',
 
@@ -100,11 +100,11 @@ $aData = array(
             ),
          
             // GRAND TOTAL
-            'grandTotal'  => '989,05' 
+            'grandTotal'  => '989,05'
         ),
     ),
     // Test case options
-    'options' => array (
+    'options' => array(
         // Configs (real named)
         'config' => array(
             'blEnterNetPrice' => false,

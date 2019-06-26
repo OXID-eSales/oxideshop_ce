@@ -243,7 +243,8 @@ class AccountPasswordTest extends \OxidTestCase
     {
         $oRealInputValidator = \OxidEsales\Eshop\Core\Registry::getInputValidator();
 
-        $this->expectException('oxException'); $this->expectExceptionMessage( 'ChangePass user test');
+        $this->expectException('oxException');
+        $this->expectExceptionMessage('ChangePass user test');
 
         $sOldPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%_old';
         $sPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';

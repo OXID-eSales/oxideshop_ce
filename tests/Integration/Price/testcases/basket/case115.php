@@ -16,35 +16,35 @@
  *  3. TS +
  */
 $aData = array(
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
             'oxid'                     => 111,
             'oxprice'                  => 24.95,
             'oxvat'                    => 17.55,
             'amount'                   => 250,
         ),
     ),
-    'expected' => array (
-        'articles' => array (
-             111 => array ( '12,48', '3.120,00' ),
+    'expected' => array(
+        'articles' => array(
+             111 => array( '12,48', '3.120,00' ),
         ),
-        'totals' => array (
+        'totals' => array(
             'totalBrutto' => '3.120,00',
             'totalNetto'  => '2.654,19',
-            'vats' => array (
+            'vats' => array(
                 '17.55' => '465,81'
             ),
             'grandTotal'  => '3.120,00'
         ),
     ),
-    'options' => array (
+    'options' => array(
         'config' => array(
                 'blEnterNetPrice' => false,
                 'blShowNetPrice' => false,
                 'blShowVATForWrapping' => true,
                 'blShowVATForPayCharge' => true,
                 'blShowVATForDelivery' => true,
-				'sAdditionalServVATCalcMethod' => 'biggest_net',
+                'sAdditionalServVATCalcMethod' => 'biggest_net',
         ),
         'activeCurrencyRate' => 0.50,
     ),

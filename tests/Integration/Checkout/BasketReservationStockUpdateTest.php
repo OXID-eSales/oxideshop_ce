@@ -125,7 +125,6 @@ class BasketReservationStockUpdateTest extends \OxidTestCase
 
         //newItem not set by \OxidEsales\Eshop\Application\Component\BasketComponent::tobasket
         $this->assertNull(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('_newitem'));
-
     }
 
     /**
@@ -338,10 +337,16 @@ class BasketReservationStockUpdateTest extends \OxidTestCase
      *                                            to configured out of stock behaviour.
      * @param integer $displayWarningCnt          Number ov eventual display warning due to low stock
      */
-    public function testPutArticlesToBasketAndRemove($enableReservation, $stock, $expectedStockAfterToBasket,
-                                                     $buyAmount, $stockFlag, $allowNegativeStock, $basketAmount,
-                                                     $displayWarningCnt)
-    {
+    public function testPutArticlesToBasketAndRemove(
+        $enableReservation,
+        $stock,
+        $expectedStockAfterToBasket,
+        $buyAmount,
+        $stockFlag,
+        $allowNegativeStock,
+        $basketAmount,
+        $displayWarningCnt
+    ) {
         $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', $enableReservation);
         $this->getConfig()->setConfigParam('blAllowNegativeStock', $allowNegativeStock);
         $this->setStock($stock);
@@ -392,7 +397,7 @@ class BasketReservationStockUpdateTest extends \OxidTestCase
      */
     private function insertArticle()
     {
-        $this->testArticleId = substr_replace(\OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUId(), '_', 0, 1 );
+        $this->testArticleId = substr_replace(\OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUId(), '_', 0, 1);
         $this->testArticleParentId = substr_replace(\OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUId(), '_', 0, 1);
 
         //copy from original article parent and variant
@@ -525,9 +530,11 @@ class BasketReservationStockUpdateTest extends \OxidTestCase
         $user->oxuser__oxrights = new \OxidEsales\Eshop\Core\Field('user', \OxidEsales\Eshop\Core\Field::T_RAW);
         $user->oxuser__oxshopid = new \OxidEsales\Eshop\Core\Field(ShopIdCalculator::BASE_SHOP_ID, \OxidEsales\Eshop\Core\Field::T_RAW);
         $user->oxuser__oxusername = new \OxidEsales\Eshop\Core\Field('testuser@oxideshop.dev', \OxidEsales\Eshop\Core\Field::T_RAW);
-        $user->oxuser__oxpassword = new \OxidEsales\Eshop\Core\Field('c630e7f6dd47f9ad60ece4492468149bfed3da3429940181464baae99941d0ffa5562' .
+        $user->oxuser__oxpassword = new \OxidEsales\Eshop\Core\Field(
+            'c630e7f6dd47f9ad60ece4492468149bfed3da3429940181464baae99941d0ffa5562' .
                                                 'aaecd01eab71c4d886e5467c5fc4dd24a45819e125501f030f61b624d7d',
-            \OxidEsales\Eshop\Core\Field::T_RAW); //password is asdfasdf
+            \OxidEsales\Eshop\Core\Field::T_RAW
+        ); //password is asdfasdf
         $user->oxuser__oxpasssalt = new \OxidEsales\Eshop\Core\Field('3ddda7c412dbd57325210968cd31ba86', \OxidEsales\Eshop\Core\Field::T_RAW);
         $user->oxuser__oxcustnr = new \OxidEsales\Eshop\Core\Field('666', \OxidEsales\Eshop\Core\Field::T_RAW);
         $user->oxuser__oxfname = new \OxidEsales\Eshop\Core\Field('Bla', \OxidEsales\Eshop\Core\Field::T_RAW);
@@ -651,10 +658,9 @@ class BasketReservationStockUpdateTest extends \OxidTestCase
         $basketContents = $basket->getContents();
         $basketItemId = $basket->getItemKey($this->testArticleId);
 
-        if (is_a($basketContents[$basketItemId],\OxidEsales\Eshop\Application\Model\BasketItem::class)) {
+        if (is_a($basketContents[$basketItemId], \OxidEsales\Eshop\Application\Model\BasketItem::class)) {
             $return = $basketContents[$basketItemId]->getAmount();
         }
         return $return;
     }
-
 }

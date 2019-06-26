@@ -17,7 +17,6 @@ if (file_exists($filePath)) {
 
 class PluginSmartyOxMailToTest extends \OxidTestCase
 {
-
     public function testSmartyFunctionOxMailTo()
     {
         $aParams = array();

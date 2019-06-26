@@ -14,7 +14,6 @@ use \oxDb;
 
 class modOxNewsLetter extends oxNewsLetter
 {
-
     public function getSmarty()
     {
         return $this->_oSmarty;
@@ -33,7 +32,6 @@ class modOxNewsLetter extends oxNewsLetter
 
 class modEmailOxNewsLetter extends oxEmail
 {
-
     public $Timeout = 2;
 
     public function sendNewsletterMail($oNews, $oUser, $sSubject = null)
@@ -44,7 +42,6 @@ class modEmailOxNewsLetter extends oxEmail
 
 class modEmailOxNewsLetter2 extends oxEmail
 {
-
     public $Timeout = 2;
 
     public function sendNewsletterMail($oNews, $oUser, $sSubject = null)
@@ -59,7 +56,6 @@ class modEmailOxNewsLetter2 extends oxEmail
  */
 class modEmailOxNewsLetterSubject extends oxEmail
 {
-
     public $Timeout = 2;
 
     public function sendNewsletterMail($oNews, $oUser, $sSubject = null)
@@ -70,7 +66,6 @@ class modEmailOxNewsLetterSubject extends oxEmail
 
 class oxnewsletterForUnit_oxnewsletterTest extends oxnewsletter
 {
-
     public function setNonPublicVar($sVarName, $sVarValue)
     {
         $this->$sVarName = $sVarValue;
@@ -453,7 +448,8 @@ class NewsletterTest extends \OxidTestCase
 
         $oTestNews->oxnewsletter__oxsubject->value = "TestSubject";
 
-        $this->expectException('oxException'); $this->expectExceptionMessage( "TestSubject");
+        $this->expectException('oxException');
+        $this->expectExceptionMessage("TestSubject");
 
         $oTestNews->UNITsetUser('oxdefaultadmin');
         $blMailWasSent = $oTestNews->send();

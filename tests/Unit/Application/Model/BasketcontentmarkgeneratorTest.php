@@ -9,7 +9,6 @@ use \oxBasketContentMarkGenerator;
 
 class BasketcontentmarkgeneratorTest extends \OxidTestCase
 {
-
     public function providerGetExplanationMarks()
     {
         $aResultDownloadable = array(

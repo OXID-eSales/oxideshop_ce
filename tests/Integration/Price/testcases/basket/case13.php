@@ -22,16 +22,16 @@
 
 
 $aData = array(
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
                 'oxid'                     => 9201,
                 'oxprice'                  => 77.9,
                 'oxvat'                    => 17,
                 'amount'                   => 1,
         ),
     ),
-    'discounts' => array (
-        0 => array (
+    'discounts' => array(
+        0 => array(
                 'oxid'         => 'abs_discount_for_9201',
                 'oxaddsum'     => 5.05,
                 'oxaddsumtype' => 'abs',
@@ -42,20 +42,20 @@ $aData = array(
                 'oxsort' => 10,
         ),
     ),
-    'expected' => array (
-        'articles' => array (
-                 9201 => array ( '72,85', '72,85' ),
+    'expected' => array(
+        'articles' => array(
+                 9201 => array( '72,85', '72,85' ),
         ),
-        'totals' => array (
+        'totals' => array(
                 'totalBrutto' => '72,85',
                 'totalNetto'  => '62,26',
-                'vats' => array (
+                'vats' => array(
                         17 => '10,59',
                 ),
                 'grandTotal'  => '72,85'
         ),
     ),
-    'options' => array (
+    'options' => array(
         'config' => array(
                 'blEnterNetPrice' => false,
                 'blShowNetPrice' => false

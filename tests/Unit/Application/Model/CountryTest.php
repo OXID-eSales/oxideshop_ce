@@ -9,7 +9,6 @@ use \oxField;
 
 class CountryTest extends \OxidTestCase
 {
-
     public $oObj = null;
 
     /**

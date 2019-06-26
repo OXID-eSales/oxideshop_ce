@@ -4,4 +4,6 @@
  * See LICENSE file for license details.
  */
 
-class vendor_1_module_1_anotherclass extends oxArticle {}
+class vendor_1_module_1_anotherclass extends oxArticle
+{
+}

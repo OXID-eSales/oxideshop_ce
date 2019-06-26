@@ -23,10 +23,10 @@ function smarty_insert_oxid_newbasketitem($params, &$smarty)
     $myConfig  = \OxidEsales\Eshop\Core\Registry::getConfig();
 
     $aTypes = ['0' => 'none','1' => 'message', '2' =>'popup', '3' =>'basket'];
-    $iType  = $myConfig->getConfigParam( 'iNewBasketItemMessage' );
+    $iType  = $myConfig->getConfigParam('iNewBasketItemMessage');
 
     // If corect type of message is expected
-    if ($iType && $params['type'] && ($params['type'] != $aTypes[$iType] )) {
+    if ($iType && $params['type'] && ($params['type'] != $aTypes[$iType])) {
         return '';
     }
 
@@ -37,24 +37,24 @@ function smarty_insert_oxid_newbasketitem($params, &$smarty)
     $blRender = $params['ajax'] && ($iType == 2);
 
     //fetching article data
-    $oNewItem = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable( '_newitem' );
+    $oNewItem = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('_newitem');
 
-    if ( $oNewItem ) {
+    if ($oNewItem) {
         // loading article object here because on some system passing article by session couses problems
-        $oNewItem->oArticle = oxNew( 'oxarticle' );
-        $oNewItem->oArticle->Load( $oNewItem->sId );
+        $oNewItem->oArticle = oxNew('oxarticle');
+        $oNewItem->oArticle->Load($oNewItem->sId);
 
         // passing variable to template with unique name
-        $smarty->assign( '_newitem', $oNewItem );
+        $smarty->assign('_newitem', $oNewItem);
 
         // deleting article object data
-        \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable( '_newitem' );
+        \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable('_newitem');
 
         $blRender = true;
     }
 
     // returning generated message content
-    if ( $blRender ) {
-        return $smarty->fetch( $sTemplate );
+    if ($blRender) {
+        return $smarty->fetch($sTemplate);
     }
 }

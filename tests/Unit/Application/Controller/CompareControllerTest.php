@@ -109,7 +109,6 @@ class CompareControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $oView = oxNew('compare');
 
         $this->assertEquals("page/compare/compare.tpl", $oView->render());
-
     }
 
     /**
@@ -121,7 +120,6 @@ class CompareControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $oView->inPopup();
         $this->assertEquals("compare_popup.tpl", $oView->render());
-
     }
 
     /**

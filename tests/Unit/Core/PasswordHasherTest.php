@@ -9,7 +9,6 @@ use \oxPasswordHasher;
 
 class PasswordHasherTest extends \OxidTestCase
 {
-
     public function testHash()
     {
         $sPassword = 'password';

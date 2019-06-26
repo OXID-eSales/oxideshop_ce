@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core\DataObject;
  */
 class ApplicationServerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
-
     public function testSetGetId()
     {
         $serverNode = oxNew(\OxidEsales\Eshop\Core\DataObject\ApplicationServer::class);
@@ -131,5 +130,4 @@ class ApplicationServerTest extends \OxidEsales\TestingLibrary\UnitTestCase
             array($currentTime, $currentTime + (11 * 3600), true)  // Update server if server time is not valid.
         );
     }
-
 }

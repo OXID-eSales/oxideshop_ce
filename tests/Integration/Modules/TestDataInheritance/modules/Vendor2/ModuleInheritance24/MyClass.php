@@ -8,5 +8,4 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritanc
 
 class MyClass extends \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\namespaced_from_ns\MyClass
 {
-
 }

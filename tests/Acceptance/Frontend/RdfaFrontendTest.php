@@ -287,29 +287,29 @@ class RdfaFrontendTest extends FrontendTestCase
     protected function _setAllPaymentMethodRdfaOptions()
     {
         // Method: Cash in advance
-        $this->_setPaymentMethodRdfaOption( 'oxidpayadvance', 'ByBankTransferInAdvance' );
+        $this->_setPaymentMethodRdfaOption('oxidpayadvance', 'ByBankTransferInAdvance');
 
         // Method: COD (Cash on Delivery)
-        $this->_setPaymentMethodRdfaOption( 'oxidcashondel', 'COD' );
+        $this->_setPaymentMethodRdfaOption('oxidcashondel', 'COD');
 
         // Method: Credit Card
-        $this->_setPaymentMethodRdfaOption( 'oxidcreditcard', 'AmericanExpress' );
-        $this->_setPaymentMethodRdfaOption( 'oxidcreditcard', 'DinersClub' );
-        $this->_setPaymentMethodRdfaOption( 'oxidcreditcard', 'Discover' );
-        $this->_setPaymentMethodRdfaOption( 'oxidcreditcard', 'JCB' );
-        $this->_setPaymentMethodRdfaOption( 'oxidcreditcard', 'MasterCard' );
-        $this->_setPaymentMethodRdfaOption( 'oxidcreditcard', 'VISA' );
+        $this->_setPaymentMethodRdfaOption('oxidcreditcard', 'AmericanExpress');
+        $this->_setPaymentMethodRdfaOption('oxidcreditcard', 'DinersClub');
+        $this->_setPaymentMethodRdfaOption('oxidcreditcard', 'Discover');
+        $this->_setPaymentMethodRdfaOption('oxidcreditcard', 'JCB');
+        $this->_setPaymentMethodRdfaOption('oxidcreditcard', 'MasterCard');
+        $this->_setPaymentMethodRdfaOption('oxidcreditcard', 'VISA');
 
         // Method: Direct Debit
-        $this->_setPaymentMethodRdfaOption( 'oxiddebitnote', 'DirectDebit' );
+        $this->_setPaymentMethodRdfaOption('oxiddebitnote', 'DirectDebit');
 
         // Method: Invoice
-        $this->_setPaymentMethodRdfaOption( 'oxidinvoice', 'ByInvoice' );
+        $this->_setPaymentMethodRdfaOption('oxidinvoice', 'ByInvoice');
 
         // Method: Empty (all other options set for this payment method)
-        $this->_setPaymentMethodRdfaOption( 'oxidempty', 'CheckInAdvance' );
-        $this->_setPaymentMethodRdfaOption( 'oxidempty', 'GoogleCheckout' );
-        $this->_setPaymentMethodRdfaOption( 'oxidempty', 'PayPal' );
-        $this->_setPaymentMethodRdfaOption( 'oxidempty', 'PaySwarm' );
+        $this->_setPaymentMethodRdfaOption('oxidempty', 'CheckInAdvance');
+        $this->_setPaymentMethodRdfaOption('oxidempty', 'GoogleCheckout');
+        $this->_setPaymentMethodRdfaOption('oxidempty', 'PayPal');
+        $this->_setPaymentMethodRdfaOption('oxidempty', 'PaySwarm');
     }
 }

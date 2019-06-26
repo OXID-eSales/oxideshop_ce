@@ -51,7 +51,6 @@ class OrderFileTest extends \OxidTestCase
         $this->assertEquals('12', $oOrderFile->oxorderfiles__oxdownloadexpirationtime->value);
         $this->assertEquals('24', $oOrderFile->oxorderfiles__oxlinkexpirationtime->value);
         $this->assertEquals(substr($sDate, 0, 10), substr($oOrderFile->oxorderfiles__oxvaliduntil->value, 0, 10));
-
     }
 
     /**
@@ -130,7 +129,6 @@ class OrderFileTest extends \OxidTestCase
         $this->assertTrue($oOrderFileReset->oxorderfiles__oxvaliduntil->value >= $sDate);
         $this->assertEquals('0000-00-00 00:00:00', $oOrderFileReset->oxorderfiles__oxfirstdownload->value);
         $this->assertEquals('0000-00-00 00:00:00', $oOrderFileReset->oxorderfiles__oxlastdownload->value);
-
     }
 
     /**

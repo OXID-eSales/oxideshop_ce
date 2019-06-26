@@ -50,7 +50,6 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      */
     public function setOxCookie($sName, $sValue = "", $iExpire = 0, $sPath = '/', $sDomain = null, $blToSession = true, $blSecure = false, $blHttpOnly = true)
     {
-
         if ($blToSession && !$this->isAdmin()) {
             $this->_saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain);
         }
@@ -406,17 +405,17 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
         return $blIsCurrentUrl;
     }
 
-   /**
-     * Check if the given URL is same as used for request.
-     * The URL in this context is the base address for the shop e.g. https://www.domain.com/shop/
-     * the protocol is optional (www.domain.com/shop/)
-     * but the protocol relative syntax (//www.domain.com/shop/) is not yet supported.
-     *
-     * @param string $sURL        URL to check if is same as request.
-     * @param string $sServerHost request host.
-     *
-     * @return bool true if $sURL is equal to current page URL
-     */
+    /**
+      * Check if the given URL is same as used for request.
+      * The URL in this context is the base address for the shop e.g. https://www.domain.com/shop/
+      * the protocol is optional (www.domain.com/shop/)
+      * but the protocol relative syntax (//www.domain.com/shop/) is not yet supported.
+      *
+      * @param string $sURL        URL to check if is same as request.
+      * @param string $sServerHost request host.
+      *
+      * @return bool true if $sURL is equal to current page URL
+      */
     public function _isCurrentUrl($sURL, $sServerHost)
     {
         // #4010: force_sid added in https to every link

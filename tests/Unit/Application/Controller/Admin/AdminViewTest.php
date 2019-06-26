@@ -293,7 +293,6 @@ class AdminViewTest extends \OxidTestCase
 
         $this->assertEquals('sess:url', $oViewCfg->getSelfLink());
         $this->assertEquals('sess:url', $oViewCfg->getAjaxLink());
-
     }
 
     public function testAuthorizeChecksSessionChallenge()
@@ -398,7 +397,6 @@ class AdminViewTest extends \OxidTestCase
  */
 class AdminViewTestShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\ShopMain
 {
-
 }
 
 /**
@@ -408,5 +406,4 @@ class AdminViewTestShopMain extends \OxidEsales\Eshop\Application\Controller\Adm
  */
 class AdminViewTestSomeClass extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
-
 }

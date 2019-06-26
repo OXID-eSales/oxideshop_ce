@@ -175,7 +175,6 @@ class MediaurlTest extends \OxidTestCase
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(0, oxField::T_RAW);
         $sExpt = "<a href=\"http://www.site.com/watch?v=ZN239G6aJZo\" target=\"_blank\">test4</a>";
         $this->assertEquals($sExpt, $oMediaUrl->getHtmlLink());
-
     }
 
     public function testGetLink()
@@ -255,7 +254,6 @@ class MediaurlTest extends \OxidTestCase
         $oMediaUrl->oxmediaurls__oxisuploaded = new oxField(0, oxField::T_RAW);
         $sExpt = 'http://www.site.com/watch?v=ZN239G6aJZo';
         $this->assertEquals($sExpt, $oMediaUrl->getLink());
-
     }
 
     public function testDeleteNonUploaded()

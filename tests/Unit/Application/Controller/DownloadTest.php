@@ -80,7 +80,8 @@ class DownloadTest extends \OxidTestCase
         $oFile->expects($this->any())->method('load')->will($this->returnValue(true));
         oxTestModules::addModuleObject('oxFile', $oFile);
         try {
-            $oDownloads = oxNew('Download');;
+            $oDownloads = oxNew('Download');
+            ;
             $oDownloads->render();
         } catch (Exception $oEx) {
             $this->assertEquals(123, $oEx->getCode(), 'Error executing "testRenderWrongLink" test');
@@ -189,5 +190,4 @@ class DownloadTest extends \OxidTestCase
         $oDownloads = oxNew('Download');
         $oDownloads->render();
     }
-
 }

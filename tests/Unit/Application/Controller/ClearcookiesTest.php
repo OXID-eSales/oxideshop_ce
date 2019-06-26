@@ -12,7 +12,6 @@ use \oxRegistry;
  */
 class ClearcookiesTest extends \OxidTestCase
 {
-
     protected $_oObj = null;
 
     /**

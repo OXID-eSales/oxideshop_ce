@@ -7,7 +7,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 class PricelistTest extends \OxidTestCase
 {
-
     public $aPrices = array();
 
     /**
@@ -49,7 +48,6 @@ class PricelistTest extends \OxidTestCase
         $oList->addToPriceList($this->aPrices[3]);
 
         $this->assertEquals(50, $oList->getBruttoSum());
-
     }
 
     /**
@@ -236,7 +234,6 @@ class PricelistTest extends \OxidTestCase
         $this->assertEquals(239, $oPrice->getBruttoPrice());
         $this->assertEquals(39, $oPrice->getVatValue());
         $this->assertEquals(19.5, $oPrice->getVat());
-
     }
 
 

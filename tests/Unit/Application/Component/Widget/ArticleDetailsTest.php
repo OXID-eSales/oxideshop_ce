@@ -977,5 +977,4 @@ class ArticleDetailsTest extends \OxidTestCase
 
         $this->assertNull($oController->getDefaultSorting());
     }
-
 }

@@ -10,7 +10,6 @@ use \oxDb;
 
 class Object2groupTest extends \OxidTestCase
 {
-
     private $_oGroup = null;
     private $_sObjID = null;
 

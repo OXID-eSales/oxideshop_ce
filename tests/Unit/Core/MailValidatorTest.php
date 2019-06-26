@@ -7,7 +7,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 class MailValidatorTest extends \OxidTestCase
 {
-
     public function providerValidateEmailWithValidEmail()
     {
         return array(

@@ -265,7 +265,9 @@ class SessionTest extends UnitTestCase
     {
         $articles = Registry::getSession()->getBasket()->getBasketSummary()->aArticles;
         $this->assertGreaterThanOrEqual(
-            1, (int)$articles[$articleId], "Failed asserting that there is at least one article '$articleId' in basket."
+            1,
+            (int)$articles[$articleId],
+            "Failed asserting that there is at least one article '$articleId' in basket."
         );
     }
 
@@ -300,9 +302,11 @@ class SessionTest extends UnitTestCase
             'oxuser__oxactive'    => new oxField('1', oxField::T_RAW),
             'oxuser__oxrights'    => new oxField('user', oxField::T_RAW),
             'oxuser__oxusername'  => new oxField('firstuser@oxideshop.dev', oxField::T_RAW),
-            'oxuser__oxpassword'  => new oxField('c630e7f6dd47f9ad60ece4492468149bfed3da3429940181464baae99941d0ffa5562' .
+            'oxuser__oxpassword'  => new oxField(
+                'c630e7f6dd47f9ad60ece4492468149bfed3da3429940181464baae99941d0ffa5562' .
                                                  'aaecd01eab71c4d886e5467c5fc4dd24a45819e125501f030f61b624d7d',
-                oxField::T_RAW), //password is asdfasdf
+                oxField::T_RAW
+            ), //password is asdfasdf
             'oxuser__oxpasssalt'  => new oxField('3ddda7c412dbd57325210968cd31ba86', oxField::T_RAW),
             'oxuser__oxcustnr'    => new oxField('665', oxField::T_RAW),
             'oxuser__oxfname'     => new oxField('Bla', oxField::T_RAW),
@@ -322,9 +326,11 @@ class SessionTest extends UnitTestCase
 
         $secondUser = $firstUser;
         $secondUser['oxuser__oxusername'] = new oxField('seconduser@oxideshop.dev', oxField::T_RAW);
-        $secondUser['oxuser__oxpassword'] = new oxField('c1e113149bcc7737d1f0f91b0510f6cfb60697a5b654e9f49786d59e00e28' .
+        $secondUser['oxuser__oxpassword'] = new oxField(
+            'c1e113149bcc7737d1f0f91b0510f6cfb60697a5b654e9f49786d59e00e28' .
                                                         '1168c209de99baf94626fa0604794cc4b469a7b768c260cf5c0d1d1ea0c9933effe',
-            oxField::T_RAW); //password is qwerqwer
+            oxField::T_RAW
+        ); //password is qwerqwer
         $secondUser['oxuser__oxpasssalt'] = new oxField('e25b237fce506256b3a151256c410ab2', oxField::T_RAW);
         $secondUser['oxuser__oxcustnr'] = new oxField('667', oxField::T_RAW);
         $secondUser['oxuser__oxfname'] = new oxField('Foo', oxField::T_RAW);
@@ -403,7 +409,5 @@ class SessionTest extends UnitTestCase
         oxRegistry::getSession()->setBasket($basket);
 
         $userComponent->logout();
-
     }
-
 }

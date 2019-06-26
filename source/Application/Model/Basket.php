@@ -1558,7 +1558,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
         }
 
         try { // trying to load voucher and apply it
-
             $oVoucher = oxNew(\OxidEsales\Eshop\Application\Model\Voucher::class);
 
             if (!$this->_blSkipVouchersAvailabilityChecking) {

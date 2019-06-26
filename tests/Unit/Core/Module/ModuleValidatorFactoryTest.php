@@ -11,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
  */
 class ModuleValidatorFactoryTest extends \OxidTestCase
 {
-
     public function testModuleValidatorReturnInterface()
     {
         $oModuleValidatorFactory = oxNew('oxModuleValidatorFactory');

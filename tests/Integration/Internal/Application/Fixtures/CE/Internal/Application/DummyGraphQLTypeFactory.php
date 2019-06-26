@@ -24,5 +24,4 @@ class DummyGraphQLTypeFactory
     {
         return $this->type !== null && $this->type->getInfo() == 'Type is installed';
     }
-
 }

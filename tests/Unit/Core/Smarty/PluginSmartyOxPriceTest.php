@@ -63,7 +63,8 @@ class PluginSmartyOxPriceTest extends \OxidTestCase
     /**
      * Test, that the oxprice smarty plugin will use the admin setted currency, if we don't give some currency object in.
      */
-    public function testNoCurrencyObjectAsParameterButInConfig() {
+    public function testNoCurrencyObjectAsParameterButInConfig()
+    {
         $this->_setCurrencies(array('EUR@ 1.00@ ,@ #@ €@ 2'));
 
         $oSmarty = new Smarty();

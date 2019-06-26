@@ -41,5 +41,4 @@ class WidgetTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->assertEquals(1, count($components));
         $this->assertTrue(isset($components["oxcmp_lang"]));
     }
-
 }

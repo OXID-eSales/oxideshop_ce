@@ -162,8 +162,10 @@ class StrRegular
      *
      * @return string
      */
+    // phpcs:disable
     public function html_entity_decode($sString, $iQuotStyle = ENT_QUOTES)
     {
+        // phpcs:enable
         return html_entity_decode($sString, $iQuotStyle, $this->_sEncoding);
     }
 
@@ -177,8 +179,10 @@ class StrRegular
      *
      * @return string
      */
+    // phpcs:disable
     public function preg_split($sPattern, $sString, $iLimit = -1, $iFlag = 0)
     {
+        // phpcs:enable
         return preg_split($sPattern, $sString, $iLimit, $iFlag);
     }
 
@@ -193,8 +197,10 @@ class StrRegular
      *
      * @return string
      */
+    // phpcs:disable
     public function preg_replace($sPattern, $sString, $sSubject, $iLimit = -1, $iCount = null)
     {
+        // phpcs:enable
         return preg_replace($sPattern, $sString, $sSubject, $iLimit, $iCount);
     }
 
@@ -209,8 +215,10 @@ class StrRegular
      *
      * @return string
      */
+    // phpcs:disable
     public function preg_replace_callback($pattern, $callback, $subject, $limit = -1, &$count = null)
     {
+        // phpcs:enable
         return preg_replace_callback($pattern, $callback, $subject, $limit, $count);
     }
 
@@ -225,8 +233,10 @@ class StrRegular
      *
      * @return string
      */
+    // phpcs:disable
     public function preg_match($sPattern, $sSubject, &$aMatches = null, $iFlags = null, $iOffset = null)
     {
+        // phpcs:enable
         return preg_match($sPattern, $sSubject, $aMatches, $iFlags, $iOffset);
     }
 
@@ -241,8 +251,10 @@ class StrRegular
      *
      * @return string
      */
+    // phpcs:disable
     public function preg_match_all($sPattern, $sSubject, &$aMatches = null, $iFlags = null, $iOffset = null)
     {
+        // phpcs:enable
         return preg_match_all($sPattern, $sSubject, $aMatches, $iFlags, $iOffset);
     }
 
@@ -290,9 +302,13 @@ class StrRegular
     public function recodeEntities($sInput, $blToHtmlEntities = false, $aUmls = [], $aUmlEntities = [])
     {
         $aUmls = (count($aUmls) > 0) ? array_merge($this->_aUmls, $aUmls) : $this->_aUmls;
-        $aUmlEntities = (count($aUmlEntities) > 0) ? array_merge($this->_aUmlEntities, $aUmlEntities) : $this->_aUmlEntities;
+        $aUmlEntities = (count($aUmlEntities) > 0)
+            ? array_merge($this->_aUmlEntities, $aUmlEntities)
+            : $this->_aUmlEntities;
 
-        return $blToHtmlEntities ? str_replace($aUmls, $aUmlEntities, $sInput) : str_replace($aUmlEntities, $aUmls, $sInput);
+        return $blToHtmlEntities
+            ? str_replace($aUmls, $aUmlEntities, $sInput)
+            : str_replace($aUmlEntities, $aUmls, $sInput);
     }
 
     /**
@@ -365,8 +381,10 @@ class StrRegular
      *
      * @return string
      */
+    // phpcs:disable
     public function strip_tags($sString, $sAllowableTags = '')
     {
+        // phpcs:enable
         if (stripos($sAllowableTags, '<style>') === false) {
             // strip style tags with definitions within
             $sString = $this->preg_replace("'<style[^>]*>.*</style>'siU", '', $sString);

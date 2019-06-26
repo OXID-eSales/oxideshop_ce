@@ -32,5 +32,4 @@ class NewsletterPreviewTest extends \OxidTestCase
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue($aViewData['edit'] instanceof newsletter);
     }
-
 }

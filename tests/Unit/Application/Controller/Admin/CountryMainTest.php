@@ -95,5 +95,4 @@ class CountryMainTest extends \OxidTestCase
         }
         $this->fail("error in Country_Main::save()");
     }
-
 }

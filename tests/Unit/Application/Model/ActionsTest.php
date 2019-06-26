@@ -452,5 +452,4 @@ class ActionsTest extends \OxidTestCase
 
         $this->assertEquals("testLinkToArticle", $oPromo->getBannerLink());
     }
-
 }

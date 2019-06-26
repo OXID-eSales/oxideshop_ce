@@ -106,5 +106,4 @@ class OrderMainTest extends \OxidTestCase
         }
         $this->fail("error in Order_Main::resetorder()");
     }
-
 }

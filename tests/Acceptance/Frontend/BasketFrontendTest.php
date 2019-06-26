@@ -146,7 +146,7 @@ class BasketFrontendTest extends FrontendTestCase
     {
         //TODO: Selenium refactor to remove SQL's executions
         $this->executeSql("UPDATE `oxdelivery` SET `OXTITLE_1` = `OXTITLE` WHERE `OXTITLE_1` = '';");
-        $this->addToBasket( "1000" );
+        $this->addToBasket("1000");
 
         //min order sum is 49 €
         //when user is not logged in, default s&h are calculated and no discount applied. sum total is > 49 €
@@ -195,7 +195,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->_setShopParam("blShowVATForWrapping", "true");
 
         $this->clearCache();
-        $this->addToBasket( "1000", 3 );
+        $this->addToBasket("1000", 3);
 
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
         $this->assertEquals("3", $this->getValue("am_1"));
@@ -205,21 +205,21 @@ class BasketFrontendTest extends FrontendTestCase
         $this->clickAndWait("//button[text()='%APPLY%']");
 
         //in 1st order step check order information
-        $this->assertTextPresent("%TOTAL_NET%","info about net total not displays in cart");
-        $this->assertTextPresent("plus 5% tax, amount:","info about product VAT not displays in cart");
-        $this->assertTextPresent("%TOTAL_GROSS%","info about bruto total not displays in cart");
-        $this->assertTextPresent("%SHIPPING_NET%:","info about shipping not displays in cart");
-        $this->assertTextPresent("%BASKET_TOTAL_WRAPPING_COSTS_NET%:","info about wrapping total not displays in cart");
-        $this->assertTextPresent("%PLUS_VAT%:","info about gift wrapping vat not displays in cart");
-        $this->assertTextPresent("%GRAND_TOTAL%:","info about grand total not displays in cart");
+        $this->assertTextPresent("%TOTAL_NET%", "info about net total not displays in cart");
+        $this->assertTextPresent("plus 5% tax, amount:", "info about product VAT not displays in cart");
+        $this->assertTextPresent("%TOTAL_GROSS%", "info about bruto total not displays in cart");
+        $this->assertTextPresent("%SHIPPING_NET%:", "info about shipping not displays in cart");
+        $this->assertTextPresent("%BASKET_TOTAL_WRAPPING_COSTS_NET%:", "info about wrapping total not displays in cart");
+        $this->assertTextPresent("%PLUS_VAT%:", "info about gift wrapping vat not displays in cart");
+        $this->assertTextPresent("%GRAND_TOTAL%:", "info about grand total not displays in cart");
 
-        $this->assertEquals("128,57 €", $this->getText("basketTotalProductsNetto"),"Neto price changed or didn't displayed");
-        $this->assertEquals("6,43 €", $this->getText("//div[@id='basketSummary']//tr[2]/td"),"VAT 5% changed ");
-        $this->assertEquals("135,00 €", $this->getText("basketTotalProductsGross"),"Bruto price changed  or didn't displayed");
-        $this->assertEquals("0,00 €", $this->getText("basketDeliveryNetto"),"Shipping price changed  or didn't displayed");
+        $this->assertEquals("128,57 €", $this->getText("basketTotalProductsNetto"), "Neto price changed or didn't displayed");
+        $this->assertEquals("6,43 €", $this->getText("//div[@id='basketSummary']//tr[2]/td"), "VAT 5% changed ");
+        $this->assertEquals("135,00 €", $this->getText("basketTotalProductsGross"), "Bruto price changed  or didn't displayed");
+        $this->assertEquals("0,00 €", $this->getText("basketDeliveryNetto"), "Shipping price changed  or didn't displayed");
         $this->assertEquals("2,57 €", $this->getText("basketWrappingNetto"), "Wrapping price changed  or didn't displayed");
-        $this->assertEquals("0,13 €", $this->getText("basketWrappingVat"),"Wrapping price changed  or didn't displayed");
-        $this->assertEquals("137,70 €", $this->getText("basketGrandTotal"),"Grand total price changed  or didn't displayed");
+        $this->assertEquals("0,13 €", $this->getText("basketWrappingVat"), "Wrapping price changed  or didn't displayed");
+        $this->assertEquals("137,70 €", $this->getText("basketGrandTotal"), "Grand total price changed  or didn't displayed");
     }
 
     /**
@@ -229,9 +229,9 @@ class BasketFrontendTest extends FrontendTestCase
      */
     public function testFrontendVAT()
     {
-        $this->addToBasket( "1000" );
-        $this->addToBasket( "1001" );
-        $this->addToBasket( "1003" );
+        $this->addToBasket("1000");
+        $this->addToBasket("1001");
+        $this->addToBasket("1003");
 
         //TODO: Selenium refactor: possible place for integration test
         $this->assertEquals("5%", $this->getText("//tr[@id='cartItem_1']/td[7]"));
@@ -257,11 +257,11 @@ class BasketFrontendTest extends FrontendTestCase
         $this->assertEquals("0%", $this->getText("//tr[@id='cartItem_3']/td[7]"));
         $this->assertEquals("63,03 €", $this->getText("//tr[@id='cartItem_3']/td[6]"));
 
-        $this->assertEquals("202,47 €", $this->getText("basketTotalProductsNetto"),"Netto price changed or didn't displayed");
-        $this->assertEquals("0,00 €", $this->getText("//div[@id='basketSummary']//tr[2]/td"),"VAT 0% changed ");
-        $this->assertEquals("202,47 €", $this->getText("basketTotalProductsGross"),"Bruto price changed  or didn't displayed");
-        $this->assertEquals("6,90 €", $this->getText("basketDeliveryGross"),"Shipping price changed  or didn't displayed");
-        $this->assertEquals("209,37 €", $this->getText("basketGrandTotal"),"Grand total price changed  or didn't displayed");
+        $this->assertEquals("202,47 €", $this->getText("basketTotalProductsNetto"), "Netto price changed or didn't displayed");
+        $this->assertEquals("0,00 €", $this->getText("//div[@id='basketSummary']//tr[2]/td"), "VAT 0% changed ");
+        $this->assertEquals("202,47 €", $this->getText("basketTotalProductsGross"), "Bruto price changed  or didn't displayed");
+        $this->assertEquals("6,90 €", $this->getText("basketDeliveryGross"), "Shipping price changed  or didn't displayed");
+        $this->assertEquals("209,37 €", $this->getText("basketGrandTotal"), "Grand total price changed  or didn't displayed");
 
         //for Belgium vat 0% only with valid VATID
         $this->_continueToNextStep();
@@ -298,7 +298,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->assertEquals("91,82 €", $this->getText("//tr[@id='cartItem_2']/td[6]"));
         $this->assertEquals("0%", $this->getText("//tr[@id='cartItem_3']/td[7]"));
         $this->assertEquals("63,03 €", $this->getText("//tr[@id='cartItem_3']/td[6]"));
-        $this->assertEquals("0,00 €", $this->getText("//div[@id='basketSummary']//tr[2]/td"),"VAT 0% changed ");
+        $this->assertEquals("0,00 €", $this->getText("//div[@id='basketSummary']//tr[2]/td"), "VAT 0% changed ");
 
         //Germany
         $this->_continueToNextStep();
@@ -311,7 +311,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->assertEquals("10%", $this->getText("//tr[@id='cartItem_2']/td[7]"));
         $this->assertEquals("19%", $this->getText("//tr[@id='cartItem_3']/td[7]"));
         //vat is lower than before, because discount is applied for category products (1000, 1001) for Germany user
-        $this->assertEquals("193,16 €", $this->getText("basketTotalProductsNetto"),"Netto price changed or didn't displayed");
+        $this->assertEquals("193,16 €", $this->getText("basketTotalProductsNetto"), "Netto price changed or didn't displayed");
         $this->assertEquals("2,14 €", $this->getText("//div[@id='basketSummary']//tr[2]/td"));
         $this->assertEquals("8,73 €", $this->getText("//div[@id='basketSummary']//tr[3]/td"));
         $this->assertEquals("11,97 €", $this->getText("//div[@id='basketSummary']//tr[4]/td"));
@@ -342,8 +342,8 @@ class BasketFrontendTest extends FrontendTestCase
         $this->clickAndWait("toBasket");
         $this->selectVariant("productSelections", 1, "selvar4 [EN] šÄßüл +2%");
         $this->clickAndWait("toBasket");
-        $this->openArticle( 1000 );
-        $this->assertElementPresent("persparam[details]","persparam field should be visible");
+        $this->openArticle(1000);
+        $this->assertElementPresent("persparam[details]", "persparam field should be visible");
         $this->clickAndWait("toBasket");
         $this->type("persparam[details]", "test label šÄßüл");
         $this->clickAndWait("toBasket");
@@ -405,7 +405,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("//tr[@id='cartItem_2']/td[2]/div"));
         $this->assertElementNotPresent("cartItem_5");
         $this->assertEquals("%LABEL%: test label šÄßüл 1", $this->clearString($this->getText("//tr[@id='cartItem_2']/td[2]/p")));
-        $this->assertEquals("379,40 €", $this->getText("basketGrandTotal"),"Grand total price changed or wasn't displayed");
+        $this->assertEquals("379,40 €", $this->getText("basketGrandTotal"), "Grand total price changed or wasn't displayed");
         $this->_confirmAndOrder();
 
         $aOrderArticles = $this->callShopSC("oxOrder", 'getOrderArticles', 'lastInsertedId');
@@ -423,15 +423,15 @@ class BasketFrontendTest extends FrontendTestCase
         );
 
         $oValidator = $this->getObjectValidator();
-        $blValidationResult = $oValidator->validate( 'oxOrderArticle', $oOrderArticleParams, $sOrderArticleTestId );
-        $this->assertTrue( $blValidationResult, $oValidator->getErrorMessage());
+        $blValidationResult = $oValidator->validate('oxOrderArticle', $oOrderArticleParams, $sOrderArticleTestId);
+        $this->assertTrue($blValidationResult, $oValidator->getErrorMessage());
 
         //Disabling option (Product can be customized) where product ID is `OXID` = '1000
-        $this->_saveArticle( "1000", array("oxisconfigurable" => 0), 1);
+        $this->_saveArticle("1000", array("oxisconfigurable" => 0), 1);
 
         //Check if persparam field is not available in shop after it was disabled
-        $this->openArticle( 1000, true );
-        $this->assertElementNotPresent("persparam[details]","persparam field should not be visible");
+        $this->openArticle(1000, true);
+        $this->assertElementNotPresent("persparam[details]", "persparam field should not be visible");
     }
 
 
@@ -466,10 +466,10 @@ class BasketFrontendTest extends FrontendTestCase
      */
     public function testFrontendOrderStep1Navigation()
     {
-        $this->addToBasket( "1001", 1, 'basket', array( 'sel' => array(0=>2)) );
-        $this->addToBasket( "1002-2" );
-        $this->addToBasket( "1003" );
-        $this->addToBasket( "1000" );
+        $this->addToBasket("1001", 1, 'basket', array( 'sel' => array(0=>2)));
+        $this->addToBasket("1002-2");
+        $this->addToBasket("1003");
+        $this->addToBasket("1000");
         $this->assertEquals("%YOU_ARE_HERE%: / %PAGE_TITLE_BASKET%", $this->getText("breadCrumb"));
 
         //Order Step1
@@ -519,7 +519,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->_setShopParam("bl_showVouchers", "false", "theme:azure");
 
         $this->clearCache();
-        $this->addToBasket( "1000" );
+        $this->addToBasket("1000");
 
         $this->assertElementNotPresent("voucherNr");
         $this->assertElementNotPresent("//button[text()='%SUBMIT_COUPON%']");
@@ -533,10 +533,10 @@ class BasketFrontendTest extends FrontendTestCase
      */
     public function testFrontendVouchersForSpecificCategoriesAndProducts()
     {
-        $this->addToBasket( "1000" );
-        $this->addToBasket( "1001" );
-        $this->addToBasket( "1002-1" );
-        $this->addToBasket( "1003" );
+        $this->addToBasket("1000");
+        $this->addToBasket("1001");
+        $this->addToBasket("1002-1");
+        $this->addToBasket("1003");
 
         $this->type("voucherNr", "test111");
         $this->clickAndWait("//button[text()='%SUBMIT_COUPON%']");
@@ -571,7 +571,7 @@ class BasketFrontendTest extends FrontendTestCase
     {
         //TODO: Selenium refactor to remove SQL's executions ??
         $this->executeSql("UPDATE `oxarticles` SET `OXSTOCKFLAG` = 3 WHERE `OXID` LIKE '1002%'");
-        $this->addToBasket( "1002-1", 10);
+        $this->addToBasket("1002-1", 10);
 
         $this->assertTextNotPresent("%ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK%: 5");
         $this->assertEquals("5", $this->getValue("am_1"));
@@ -599,15 +599,15 @@ class BasketFrontendTest extends FrontendTestCase
      */
     public function testFrontendDiscounts()
     {
-        $this->addToBasket( "1000" );
-        $this->addToBasket( "1002-1" );
+        $this->addToBasket("1000");
+        $this->addToBasket("1002-1");
 
         $this->assertTextNotPresent("discount");
         $this->assertElementNotPresent("cartItem_3");
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
 
-        $this->assertTextNotPresent("discount for category [EN] šÄßüл","name of category discount should not be displayed in basket");
-        $this->assertEquals("45,00 € \n50,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"),"price with discount not shown in basket");
+        $this->assertTextNotPresent("discount for category [EN] šÄßüл", "name of category discount should not be displayed in basket");
+        $this->assertEquals("45,00 € \n50,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"), "price with discount not shown in basket");
 
         $this->assertElementNotPresent("cartItem_3");
         $this->assertTextNotPresent("discount for product [EN] šÄßüл");
@@ -617,7 +617,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->assertTextNotPresent("discount for category [EN] šÄßüл");
         $this->assertTextNotPresent("discount for product [EN] šÄßüл");
 
-        $this->assertEquals("45,00 € \n50,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"),"price with discount not shown in basket");
+        $this->assertEquals("45,00 € \n50,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"), "price with discount not shown in basket");
         $this->assertElementNotPresent("cartItem_3");
 
         $this->type("am_1", "5");
@@ -626,13 +626,13 @@ class BasketFrontendTest extends FrontendTestCase
         $this->assertEquals("Test product 3 [EN] šÄßüл %PRODUCT_NO%: 1003", $this->clearString($this->getText("//tr[@id='cartItem_3']/td[3]")));
         $this->assertEquals("+1", $this->getText("//tr[@id='cartItem_3']/td[5]"));
 
-        $this->assertEquals("297,48 €", $this->getText("basketTotalProductsNetto"),"Netto price changed or didn't displayed");
-        $this->assertEquals("10,71 €", $this->getText("//div[@id='basketSummary']//tr[2]/td"),"VAT 5% changed ");
-        $this->assertEquals("15,81 €", $this->getText("//div[@id='basketSummary']//tr[3]/td"),"VAT 5% changed ");
-        $this->assertEquals("324,00 €", $this->getText("basketTotalProductsGross"),"Bruto price changed  or didn't displayed");
-        $this->assertEquals("1,50 €", $this->getText("basketDeliveryGross"),"Shipping price changed  or didn't displayed");
-        $this->assertEquals("325,50 €", $this->getText("basketGrandTotal"),"Grand total price changed  or didn't displayed");
-        $this->assertEquals("45,00 € \n50,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"),"price with discount not shown in basket");
+        $this->assertEquals("297,48 €", $this->getText("basketTotalProductsNetto"), "Netto price changed or didn't displayed");
+        $this->assertEquals("10,71 €", $this->getText("//div[@id='basketSummary']//tr[2]/td"), "VAT 5% changed ");
+        $this->assertEquals("15,81 €", $this->getText("//div[@id='basketSummary']//tr[3]/td"), "VAT 5% changed ");
+        $this->assertEquals("324,00 €", $this->getText("basketTotalProductsGross"), "Bruto price changed  or didn't displayed");
+        $this->assertEquals("1,50 €", $this->getText("basketDeliveryGross"), "Shipping price changed  or didn't displayed");
+        $this->assertEquals("325,50 €", $this->getText("basketGrandTotal"), "Grand total price changed  or didn't displayed");
+        $this->assertEquals("45,00 € \n50,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"), "price with discount not shown in basket");
 
         //TODO: Selenium refactor to remove SQL's executions
         //test for #1822
@@ -659,7 +659,7 @@ class BasketFrontendTest extends FrontendTestCase
     {
         $this->openShop();
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
-        $this->addToBasket( "1000", 3);
+        $this->addToBasket("1000", 3);
 
         $this->_continueToNextStep();
 
@@ -682,8 +682,8 @@ class BasketFrontendTest extends FrontendTestCase
         $this->assertEquals("%SHIPPING_CARRIER% %EDIT%", $this->getText($this->clearString("orderShipping")));
         $this->assertEquals("%PAYMENT_METHOD% %EDIT% Empty", $this->getText($this->clearString("orderPayment")));
         $this->_confirmAndOrder();
-        $sMessage = sprintf( self::translate( "%REGISTERED_YOUR_ORDER%"), 12);
-        $this->assertTextPresent( $sMessage );
+        $sMessage = sprintf(self::translate("%REGISTERED_YOUR_ORDER%"), 12);
+        $this->assertTextPresent($sMessage);
     }
 
     /**
@@ -693,8 +693,8 @@ class BasketFrontendTest extends FrontendTestCase
      */
     public function testFrontendOrderStep2Options()
     {
-        $this->addToBasket( "1001" );
-        $this->addToBasket( "1002-2" );
+        $this->addToBasket("1001");
+        $this->addToBasket("1002-2");
 
         //Order Step1
         //checking if order via option 1 (without password) can be disabled
@@ -741,8 +741,8 @@ class BasketFrontendTest extends FrontendTestCase
      */
     public function testFrontendOrderStep2And3()
     {
-        $this->addToBasket( "1001" );
-        $this->addToBasket( "1002-2" );
+        $this->addToBasket("1001");
+        $this->addToBasket("1002-2");
 
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
         //Order Step1
@@ -812,8 +812,8 @@ class BasketFrontendTest extends FrontendTestCase
      */
     public function testFrontendOrderStep4()
     {
-        $this->addToBasket( "1001" );
-        $this->addToBasket( "1002-2" );
+        $this->addToBasket("1001");
+        $this->addToBasket("1002-2");
 
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
         //Order Step1
@@ -825,27 +825,27 @@ class BasketFrontendTest extends FrontendTestCase
         $this->click("//ul[@id='wrappCard']/li[4]//input");
         $this->type("//textarea", "Greeting card text");
         $this->clickAndWait("//button[text()='%APPLY%']");
-        $this->assertTextPresent("Greeting card text","No greeting card message in the greeting card message field");
+        $this->assertTextPresent("Greeting card text", "No greeting card message in the greeting card message field");
 
         $this->_continueToNextStep();
-        $this->assertTrue($this->isVisible("orderRemark"),"I wanted to say field is not available");
+        $this->assertTrue($this->isVisible("orderRemark"), "I wanted to say field is not available");
         $this->type("orderRemark", "remark text");
-        $this->assertTrue($this->isVisible("subscribeNewsletter"),"There is no Subscribe Newsletter check box");
+        $this->assertTrue($this->isVisible("subscribeNewsletter"), "There is no Subscribe Newsletter check box");
 
         $this->_continueToNextStep();
         $this->selectAndWait("sShipSet", "label=Standard");
         $this->click("payment_oxidcashondel");
 
         $this->_continueToNextStep();
-        $this->assertEquals("Test wrapping [EN] šÄßüл", $this->clearString($this->getText("//tr[@id='cartItem_1']/td[3]")),"Wrapping for the product disappears from the basket");
-        $this->assertTextPresent("Greeting card text","Greeting card message is not visible in the basket");
+        $this->assertEquals("Test wrapping [EN] šÄßüл", $this->clearString($this->getText("//tr[@id='cartItem_1']/td[3]")), "Wrapping for the product disappears from the basket");
+        $this->assertTextPresent("Greeting card text", "Greeting card message is not visible in the basket");
         $this->assertTextPresent("%WHAT_I_WANTED_TO_SAY% remark text", "%WHAT_I_WANTED_TO_SAY% field disappear from  the basket");
 
         //link to billing and address
-        $this->assertEquals("%EMAIL%: example_test@oxid-esales.dev UserCompany šÄßüл User additional info šÄßüл %MR% UserNamešÄßüл UserSurnamešÄßüл Musterstr.šÄßüл 1 79098 Musterstadt šÄßüл Germany %PHONE%: 0800 111111 %FAX%: 0800 111112 %CELLUAR_PHONE%: 0800 111114 %PERSONAL_PHONE%: 0800 111113", $this->clearString($this->getText("//div[@id='orderAddress']//dl/dd")),"user address changed");
+        $this->assertEquals("%EMAIL%: example_test@oxid-esales.dev UserCompany šÄßüл User additional info šÄßüл %MR% UserNamešÄßüл UserSurnamešÄßüл Musterstr.šÄßüл 1 79098 Musterstadt šÄßüл Germany %PHONE%: 0800 111111 %FAX%: 0800 111112 %CELLUAR_PHONE%: 0800 111114 %PERSONAL_PHONE%: 0800 111113", $this->clearString($this->getText("//div[@id='orderAddress']//dl/dd")), "user address changed");
         $this->assertTextNotPresent("%HERE_YOU_CAN_ENETER_MESSAGE%");
         $this->clickAndWait("//div[@id='orderAddress']//button");
-        $this->assertEquals("%YOU_ARE_HERE%: / %ADDRESS%", $this->getText("breadCrumb"),"user should be in 2nd order step");
+        $this->assertEquals("%YOU_ARE_HERE%: / %ADDRESS%", $this->getText("breadCrumb"), "user should be in 2nd order step");
         $this->type("order_remark", "my message");
         $this->assertEquals("on", $this->getValue("showShipAddress"));
         $this->click("showShipAddress");
@@ -862,38 +862,38 @@ class BasketFrontendTest extends FrontendTestCase
         $this->select("deladr[oxaddress__oxcountryid]", "label=Germany");
 
         $this->_continueToNextStep(2);
-        $this->assertEquals("%EMAIL%: example_test@oxid-esales.dev UserCompany šÄßüл User additional info šÄßüл %MR% UserNamešÄßüл UserSurnamešÄßüл Musterstr.šÄßüл 1 79098 Musterstadt šÄßüл Germany %PHONE%: 0800 111111 %FAX%: 0800 111112 %CELLUAR_PHONE%: 0800 111114 %PERSONAL_PHONE%: 0800 111113", $this->clearString($this->getText("//div[@id='orderAddress']//dl/dd")),"user address changed");
-        $this->assertEquals("company %MR% first last street 1 3000 city Germany", $this->clearString($this->getText("//div[@id='orderAddress']//dl[2]/dd[1]")),"billing address changed");
-        $this->assertEquals("my message", $this->clearString($this->getText("//div[@id='orderAddress']//dl[3]/dd[1]")),"what i wanted to say text not dispayed i  the last order step");
+        $this->assertEquals("%EMAIL%: example_test@oxid-esales.dev UserCompany šÄßüл User additional info šÄßüл %MR% UserNamešÄßüл UserSurnamešÄßüл Musterstr.šÄßüл 1 79098 Musterstadt šÄßüл Germany %PHONE%: 0800 111111 %FAX%: 0800 111112 %CELLUAR_PHONE%: 0800 111114 %PERSONAL_PHONE%: 0800 111113", $this->clearString($this->getText("//div[@id='orderAddress']//dl/dd")), "user address changed");
+        $this->assertEquals("company %MR% first last street 1 3000 city Germany", $this->clearString($this->getText("//div[@id='orderAddress']//dl[2]/dd[1]")), "billing address changed");
+        $this->assertEquals("my message", $this->clearString($this->getText("//div[@id='orderAddress']//dl[3]/dd[1]")), "what i wanted to say text not dispayed i  the last order step");
 
         //link to payment method
-        $this->assertEquals("%SHIPPING_CARRIER% %EDIT% Standard", $this->clearString($this->getText("orderShipping")),"shipping method not displayed correctly, should be Standart");
-        $this->assertEquals("%PAYMENT_METHOD% %EDIT% COD (Cash on Delivery)", $this->clearString($this->getText("orderPayment")),"paymenth method not displayed correctly, should be COD");
+        $this->assertEquals("%SHIPPING_CARRIER% %EDIT% Standard", $this->clearString($this->getText("orderShipping")), "shipping method not displayed correctly, should be Standart");
+        $this->assertEquals("%PAYMENT_METHOD% %EDIT% COD (Cash on Delivery)", $this->clearString($this->getText("orderPayment")), "paymenth method not displayed correctly, should be COD");
         $this->clickAndWait("//div[@id='orderShipping']//button");
         $this->selectAndWait("sShipSet", "label=Standard");
         $this->click("payment_oxidpayadvance");
 
         $this->_continueToNextStep();
-        $this->assertEquals("%PAYMENT_METHOD% %EDIT% Cash in advance", $this->clearString($this->getText("orderPayment")),"payment method not displayed correctly, should be Cash in advance");
+        $this->assertEquals("%PAYMENT_METHOD% %EDIT% Cash in advance", $this->clearString($this->getText("orderPayment")), "payment method not displayed correctly, should be Cash in advance");
         $this->clickAndWait("//div[@id='orderPayment']//button");
         $this->selectAndWait("sShipSet", "label=Standard");
         $this->click("payment_oxidcashondel");
 
         $this->_continueToNextStep();
-        $this->assertEquals("%SHIPPING_CARRIER% %EDIT% Standard", $this->clearString($this->getText("orderShipping")),"shipping method not displayed correctly, should be Standard");
-        $this->assertEquals("%PAYMENT_METHOD% %EDIT% COD (Cash on Delivery)", $this->clearString($this->getText("orderPayment")),"payment method not displayed correctly, should be COD");
+        $this->assertEquals("%SHIPPING_CARRIER% %EDIT% Standard", $this->clearString($this->getText("orderShipping")), "shipping method not displayed correctly, should be Standard");
+        $this->assertEquals("%PAYMENT_METHOD% %EDIT% COD (Cash on Delivery)", $this->clearString($this->getText("orderPayment")), "payment method not displayed correctly, should be COD");
         //testing displayed information
-        $this->assertEquals("101,00 €", $this->getText("//tr[@id='cartItem_1']//td[5]/s"),"price with discount not shown in basket");
-        $this->assertEquals("136,40 €", $this->getText("basketTotalNetto"),"Net price changed or didn't displayed");
-        $this->assertEquals("8,29 €", $this->getText("//div[@id='basketSummary']//tr[4]/td"),"VAT 10% changed");
-        $this->assertEquals("10,16 €", $this->getText("//div[@id='basketSummary']//tr[5]/td"),"VAT 19%changed");
-        $this->assertEquals("163,00 €", $this->getText("basketTotalProductsGross"),"Brut price changed or didn't displayed");
-        $this->assertEquals("%COUPON% (%NUMBER_2% 222222)", $this->clearString($this->getText("//div[@id='basketSummary']//tr[2]/th")),"Coupon changed or didn't displayed");
-        $this->assertEquals("0,00 €", $this->getText("basketDeliveryGross"),"Shipping price changed or didn't displayed");
-        $this->assertEquals("7,50 €", $this->getText("basketPaymentGross"),"Payment price changed or didn't displayed");
-        $this->assertEquals("0,90 €", $this->getText("basketWrappingGross"),"Wrapping price changed or didn't displayed");
-        $this->assertEquals("0,20 €", $this->getText("basketGiftCardGross"),"Card price changed or didn't displayed");
-        $this->assertEquals("163,45 €", $this->getText("basketGrandTotal"),"Grand total price changed or didn't displayed");
+        $this->assertEquals("101,00 €", $this->getText("//tr[@id='cartItem_1']//td[5]/s"), "price with discount not shown in basket");
+        $this->assertEquals("136,40 €", $this->getText("basketTotalNetto"), "Net price changed or didn't displayed");
+        $this->assertEquals("8,29 €", $this->getText("//div[@id='basketSummary']//tr[4]/td"), "VAT 10% changed");
+        $this->assertEquals("10,16 €", $this->getText("//div[@id='basketSummary']//tr[5]/td"), "VAT 19%changed");
+        $this->assertEquals("163,00 €", $this->getText("basketTotalProductsGross"), "Brut price changed or didn't displayed");
+        $this->assertEquals("%COUPON% (%NUMBER_2% 222222)", $this->clearString($this->getText("//div[@id='basketSummary']//tr[2]/th")), "Coupon changed or didn't displayed");
+        $this->assertEquals("0,00 €", $this->getText("basketDeliveryGross"), "Shipping price changed or didn't displayed");
+        $this->assertEquals("7,50 €", $this->getText("basketPaymentGross"), "Payment price changed or didn't displayed");
+        $this->assertEquals("0,90 €", $this->getText("basketWrappingGross"), "Wrapping price changed or didn't displayed");
+        $this->assertEquals("0,20 €", $this->getText("basketGiftCardGross"), "Card price changed or didn't displayed");
+        $this->assertEquals("163,45 €", $this->getText("basketGrandTotal"), "Grand total price changed or didn't displayed");
     }
 
     /**
@@ -903,8 +903,8 @@ class BasketFrontendTest extends FrontendTestCase
      */
     public function testFrontendOrderStep4and5()
     {
-        $this->addToBasket( "1001" );
-        $this->addToBasket( "1002-2" );
+        $this->addToBasket("1001");
+        $this->addToBasket("1002-2");
 
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
         $this->_enterCouponCode("222222");
@@ -957,8 +957,8 @@ class BasketFrontendTest extends FrontendTestCase
         //creating order
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
 
-        $this->addToBasket( "1001" );
-        $this->addToBasket( "1000" );
+        $this->addToBasket("1001");
+        $this->addToBasket("1000");
 
         $this->_continueToNextStep(3);
         $this->_confirmAndOrder();
@@ -1022,7 +1022,7 @@ class BasketFrontendTest extends FrontendTestCase
      */
     public function testFrontendOrderGiftWrapping()
     {
-        $this->addToBasket( "1001" );
+        $this->addToBasket("1001");
 
         //both wrapping and greeting cart exist
         $this->assertEquals("%ADD%", $this->clearString($this->getText("//tr[@id='cartItem_1']/td[4]")));
@@ -1065,7 +1065,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->_setShopParam("bl_showGiftWrapping", "false", "theme:azure");
 
         $this->clearCache();
-        $this->addToBasket( "1001" );
+        $this->addToBasket("1001");
 
         $this->assertEquals("", $this->clearString($this->getText("//tr[@id='cartItem_1']/td[4]")));
         $this->assertElementNotPresent("//tr[@id='cartItem_1']/td[4]/a");
@@ -1086,17 +1086,17 @@ class BasketFrontendTest extends FrontendTestCase
         $this->openShop();
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
 
-        $this->addToBasket( "1000" );
-        $this->addToBasket( "1001" );
-        $this->addToBasket( "1003" );
+        $this->addToBasket("1000");
+        $this->addToBasket("1001");
+        $this->addToBasket("1003");
 
-        $this->assertEquals("193,16 €", $this->getText("basketTotalProductsNetto"),"Netto price changed or didn't displayed");
-        $this->assertEquals("2,14 €", $this->getText("//div[@id='basketSummary']//tr[2]/td"),"VAT 5% changed ");
-        $this->assertEquals("8,73 €", $this->getText("//div[@id='basketSummary']//tr[3]/td"),"VAT 10% changed ");
-        $this->assertEquals("11,97 €", $this->getText("//div[@id='basketSummary']//tr[4]/td"),"VAT 19% changed ");
-        $this->assertEquals("216,00 €", $this->getText("basketTotalProductsGross"),"Bruto price changed  or didn't displayed");
-        $this->assertEquals("0,00 €", $this->getText("basketDeliveryGross"),"Shipping price changed  or didn't displayed");
-        $this->assertEquals("216,00 €", $this->getText("basketGrandTotal"),"Grand total price changed  or didn't displayed");
+        $this->assertEquals("193,16 €", $this->getText("basketTotalProductsNetto"), "Netto price changed or didn't displayed");
+        $this->assertEquals("2,14 €", $this->getText("//div[@id='basketSummary']//tr[2]/td"), "VAT 5% changed ");
+        $this->assertEquals("8,73 €", $this->getText("//div[@id='basketSummary']//tr[3]/td"), "VAT 10% changed ");
+        $this->assertEquals("11,97 €", $this->getText("//div[@id='basketSummary']//tr[4]/td"), "VAT 19% changed ");
+        $this->assertEquals("216,00 €", $this->getText("basketTotalProductsGross"), "Bruto price changed  or didn't displayed");
+        $this->assertEquals("0,00 €", $this->getText("basketDeliveryGross"), "Shipping price changed  or didn't displayed");
+        $this->assertEquals("216,00 €", $this->getText("basketGrandTotal"), "Grand total price changed  or didn't displayed");
 
         $this->_continueToNextStep(2);
         //no shipping address
@@ -1106,16 +1106,16 @@ class BasketFrontendTest extends FrontendTestCase
         $this->assertEquals("10%", $this->getText("//tr[@id='cartItem_2']/td[6]"));
         $this->assertEquals("19%", $this->getText("//tr[@id='cartItem_3']/td[6]"));
 
-        $this->assertEquals("193,16 €", $this->getText("basketTotalProductsNetto"),"Netto price changed or didn't displayed");
-        $this->assertEquals("2,14 €", $this->getText("//div[@id='basketSummary']//tr[2]/td"),"VAT 5% changed ");
-        $this->assertEquals("8,73 €", $this->getText("//div[@id='basketSummary']//tr[3]/td"),"VAT 10% changed ");
-        $this->assertEquals("11,97 €", $this->getText("//div[@id='basketSummary']//tr[4]/td"),"VAT 19% changed ");
-        $this->assertEquals("216,00 €", $this->getText("basketTotalProductsGross"),"Bruto price changed  or didn't displayed");
-        $this->assertEquals("0,00 €", $this->getText("basketDeliveryGross"),"Shipping price changed  or didn't displayed");
-        $this->assertEquals("216,00 €", $this->getText("basketGrandTotal"),"Grand total price changed  or didn't displayed");
+        $this->assertEquals("193,16 €", $this->getText("basketTotalProductsNetto"), "Netto price changed or didn't displayed");
+        $this->assertEquals("2,14 €", $this->getText("//div[@id='basketSummary']//tr[2]/td"), "VAT 5% changed ");
+        $this->assertEquals("8,73 €", $this->getText("//div[@id='basketSummary']//tr[3]/td"), "VAT 10% changed ");
+        $this->assertEquals("11,97 €", $this->getText("//div[@id='basketSummary']//tr[4]/td"), "VAT 19% changed ");
+        $this->assertEquals("216,00 €", $this->getText("basketTotalProductsGross"), "Bruto price changed  or didn't displayed");
+        $this->assertEquals("0,00 €", $this->getText("basketDeliveryGross"), "Shipping price changed  or didn't displayed");
+        $this->assertEquals("216,00 €", $this->getText("basketGrandTotal"), "Grand total price changed  or didn't displayed");
 
-        $this->assertEquals("50,00 €", $this->getText("//tr[@id='cartItem_1']//td[5]/s"),"price with discount not shown in basket");
-        $this->assertEquals("101,00 €", $this->getText("//tr[@id='cartItem_2']//td[5]/s"),"price with discount not shown in basket");
+        $this->assertEquals("50,00 €", $this->getText("//tr[@id='cartItem_1']//td[5]/s"), "price with discount not shown in basket");
+        $this->assertEquals("101,00 €", $this->getText("//tr[@id='cartItem_2']//td[5]/s"), "price with discount not shown in basket");
 
         $this->clickAndWait("link=%STEPS_SEND%");
         //billing germany, shipping Switzerland
@@ -1135,11 +1135,11 @@ class BasketFrontendTest extends FrontendTestCase
         $this->assertEquals("0%", $this->getText("//tr[@id='cartItem_1']/td[6]"));
         $this->assertEquals("0%", $this->getText("//tr[@id='cartItem_2']/td[6]"));
         $this->assertEquals("0%", $this->getText("//tr[@id='cartItem_3']/td[6]"));
-        $this->assertEquals("202,47 €", $this->getText("basketTotalProductsNetto"),"Netto price changed or didn't displayed");
-        $this->assertEquals("0,00 €", $this->getText("//div[@id='basketSummary']//tr[2]/td"),"VAT 0% changed ");
-        $this->assertEquals("202,47 €", $this->getText("basketTotalProductsGross"),"Bruto price changed  or didn't displayed");
-        $this->assertEquals("6,90 €", $this->getText("basketDeliveryGross"),"Shipping price changed  or didn't displayed");
-        $this->assertEquals("209,37 €", $this->getText("basketGrandTotal"),"Grand total price changed  or didn't displayed");
+        $this->assertEquals("202,47 €", $this->getText("basketTotalProductsNetto"), "Netto price changed or didn't displayed");
+        $this->assertEquals("0,00 €", $this->getText("//div[@id='basketSummary']//tr[2]/td"), "VAT 0% changed ");
+        $this->assertEquals("202,47 €", $this->getText("basketTotalProductsGross"), "Bruto price changed  or didn't displayed");
+        $this->assertEquals("6,90 €", $this->getText("basketDeliveryGross"), "Shipping price changed  or didn't displayed");
+        $this->assertEquals("209,37 €", $this->getText("basketGrandTotal"), "Grand total price changed  or didn't displayed");
 
         $this->clickAndWait("link=%STEPS_SEND%");
         //billing Switzerland, shipping germany
@@ -1151,16 +1151,16 @@ class BasketFrontendTest extends FrontendTestCase
         $this->assertEquals("5%", $this->getText("//tr[@id='cartItem_1']/td[6]"));
         $this->assertEquals("10%", $this->getText("//tr[@id='cartItem_2']/td[6]"));
         $this->assertEquals("19%", $this->getText("//tr[@id='cartItem_3']/td[6]"));
-        $this->assertEquals("193,16 €", $this->getText("basketTotalProductsNetto"),"Netto price changed or didn't displayed");
-        $this->assertEquals("2,14 €", $this->getText("//div[@id='basketSummary']//tr[2]/td"),"VAT 5% changed ");
-        $this->assertEquals("8,73 €", $this->getText("//div[@id='basketSummary']//tr[3]/td"),"VAT 10% changed ");
-        $this->assertEquals("11,97 €", $this->getText("//div[@id='basketSummary']//tr[4]/td"),"VAT 19% changed ");
-        $this->assertEquals("216,00 €", $this->getText("basketTotalProductsGross"),"Bruto price changed  or didn't displayed");
-        $this->assertEquals("0,00 €", $this->getText("basketDeliveryGross"),"Shipping price changed  or didn't displayed");
-        $this->assertEquals("216,00 €", $this->getText("basketGrandTotal"),"Grand total price changed  or didn't displayed");
+        $this->assertEquals("193,16 €", $this->getText("basketTotalProductsNetto"), "Netto price changed or didn't displayed");
+        $this->assertEquals("2,14 €", $this->getText("//div[@id='basketSummary']//tr[2]/td"), "VAT 5% changed ");
+        $this->assertEquals("8,73 €", $this->getText("//div[@id='basketSummary']//tr[3]/td"), "VAT 10% changed ");
+        $this->assertEquals("11,97 €", $this->getText("//div[@id='basketSummary']//tr[4]/td"), "VAT 19% changed ");
+        $this->assertEquals("216,00 €", $this->getText("basketTotalProductsGross"), "Bruto price changed  or didn't displayed");
+        $this->assertEquals("0,00 €", $this->getText("basketDeliveryGross"), "Shipping price changed  or didn't displayed");
+        $this->assertEquals("216,00 €", $this->getText("basketGrandTotal"), "Grand total price changed  or didn't displayed");
 
-        $this->assertEquals("50,00 €", $this->getText("//tr[@id='cartItem_1']//td[5]/s"),"price with discount not shown in basket");
-        $this->assertEquals("101,00 €", $this->getText("//tr[@id='cartItem_2']//td[5]/s"),"price with discount not shown in basket");
+        $this->assertEquals("50,00 €", $this->getText("//tr[@id='cartItem_1']//td[5]/s"), "price with discount not shown in basket");
+        $this->assertEquals("101,00 €", $this->getText("//tr[@id='cartItem_2']//td[5]/s"), "price with discount not shown in basket");
     }
 
     /**
@@ -1170,7 +1170,7 @@ class BasketFrontendTest extends FrontendTestCase
     */
     public function testFrontendOrderStep4ChangedAddress()
     {
-        $this->addToBasket( "1001" );
+        $this->addToBasket("1001");
 
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
         $this->_continueToNextStep();
@@ -1235,7 +1235,7 @@ class BasketFrontendTest extends FrontendTestCase
     /**
      * Creates user order.
      */
-    protected function _createOrder( )
+    protected function _createOrder()
     {
         $aOrderParams = array(
             'oxordernr' => 12,
@@ -1251,7 +1251,7 @@ class BasketFrontendTest extends FrontendTestCase
             'oxdelstreet' => "deliveryStreetšÄßüл",
             'oxdelcity' => 'deliveryCityšÄßüл'
         );
-        $sOderId = $this->callShopSC( 'oxOrder', 'save', null, $aOrderParams );
+        $sOderId = $this->callShopSC('oxOrder', 'save', null, $aOrderParams);
 
         $aOrderArticleParams = array(
             'oxorderid' => $sOderId,
@@ -1262,7 +1262,7 @@ class BasketFrontendTest extends FrontendTestCase
             'oxartnum' => 1000,
             'oxstock' => 10
         );
-        $this->callShopSC( 'oxOrderArticle', 'save', null, $aOrderArticleParams );
+        $this->callShopSC('oxOrderArticle', 'save', null, $aOrderArticleParams);
     }
 
     /**
@@ -1271,10 +1271,10 @@ class BasketFrontendTest extends FrontendTestCase
     private function _openOrderHistoryPage()
     {
         $sUrl = shopURL . "en/order-history/";
-        if ( isSUBSHOP ) {
+        if (isSUBSHOP) {
             $sUrl .= "?shp=" . oxSHOPID;
         }
-        $this->openNewWindow( $sUrl, false );
+        $this->openNewWindow($sUrl, false);
     }
 
     /**
@@ -1288,11 +1288,11 @@ class BasketFrontendTest extends FrontendTestCase
     {
         $aArticleParams = array( "oxstock" => $iStock );
 
-        if (!is_null($iStockFlag)){
+        if (!is_null($iStockFlag)) {
             $aArticleParams = array_merge($aArticleParams, array("oxstockflag" => $iStockFlag));
         }
 
-        $this->_saveArticle( $sArticleId, $aArticleParams, 1 );
+        $this->_saveArticle($sArticleId, $aArticleParams, 1);
     }
 
 
@@ -1313,8 +1313,8 @@ class BasketFrontendTest extends FrontendTestCase
      */
     private function _continueToNextStep($iSteps = 1)
     {
-        for ($i=1; $i <= $iSteps; $i++){
-            $this->clickAndWait( "//button[text()='%CONTINUE_TO_NEXT_STEP%']" );
+        for ($i=1; $i <= $iSteps; $i++) {
+            $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");
         }
     }
 
@@ -1327,7 +1327,7 @@ class BasketFrontendTest extends FrontendTestCase
     {
         $aParams = array("type" => "bool", "value" => $sParamValue);
 
-        if (!is_null($sModule)){
+        if (!is_null($sModule)) {
             $aParams = array_merge($aParams, array("module" => $sModule));
         }
 
@@ -1349,7 +1349,7 @@ class BasketFrontendTest extends FrontendTestCase
     private function _confirmAndOrder()
     {
         $this->check("//form[@id='orderConfirmAgbTop']//input[@name='ord_agb' and @value='1']");
-        $this->clickAndWait( "//form[@id='orderConfirmAgbTop']//button" );
+        $this->clickAndWait("//form[@id='orderConfirmAgbTop']//button");
     }
 
     private function repeatedlyAddVatIdToByPassOnlineValidator()
@@ -1357,7 +1357,6 @@ class BasketFrontendTest extends FrontendTestCase
         $this->clickAndWait("link=%STEPS_BASKET%");
 
         if ($this->getText("//tr[@id='cartItem_1']/td[7]") != "0%") {
-
             $this->_continueToNextStep();
 
             $this->select("invadr[oxuser__oxcountryid]", "label=Belgium");

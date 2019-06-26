@@ -56,4 +56,3 @@ class InputValidatorTest extends UnitTestCase
         $this->assertEquals(InputValidator::INVALID_BANK_CODE, $validationResult, 'Should validate as bank code error.');
     }
 }
-

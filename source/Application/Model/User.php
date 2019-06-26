@@ -334,7 +334,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getUserGroups($sOXID = null)
     {
-
         if (isset($this->_oGroups)) {
             return $this->_oGroups;
         }
@@ -633,7 +632,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function load($oxID)
     {
-
         $blRet = parent::load($oxID);
 
         // convert date's to international format
@@ -922,7 +920,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function onOrderExecute($oBasket, $iSuccess)
     {
-
         if (is_numeric($iSuccess) && $iSuccess != 2 && $iSuccess <= 3) {
             //adding user to particular customer groups
             $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
@@ -2221,7 +2218,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function hasAccount()
     {
-
         return (bool) $this->oxuser__oxpassword->value;
     }
 

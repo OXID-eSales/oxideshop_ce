@@ -30,5 +30,4 @@ class CategoryPicturesTest extends \OxidTestCase
 
         $this->assertEquals('category_pictures.tpl', $sTplName);
     }
-
 }

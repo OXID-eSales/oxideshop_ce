@@ -13,7 +13,6 @@ use PHPUnit\Framework\TestCase;
 
 class EventsModuleSettingValidatorTest extends TestCase
 {
-
     public function testCanValidate()
     {
         $validator = new EventsModuleSettingValidator();

@@ -36,5 +36,4 @@ class VendorListTest extends \OxidTestCase
         $this->assertTrue($oList instanceof VendorList);
         $this->assertEquals(3, $oList->count());
     }
-
 }

@@ -122,7 +122,7 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheck $onlineLicenseCheck */
         $onlineLicenseCheck = $onlineLicenseCheckMock;
-        $systemEventHandler->setOnlineLicenseCheck( $onlineLicenseCheck );
+        $systemEventHandler->setOnlineLicenseCheck($onlineLicenseCheck);
 
         $systemEventHandler->onShopEnd();
     }

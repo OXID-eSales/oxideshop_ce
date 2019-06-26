@@ -28,5 +28,4 @@ class ArticleUserdefTest extends \OxidTestCase
         $this->assertEquals('article_userdef.tpl', $oView->render());
         $this->assertTrue($oView->getViewDataElement('readonly'));
     }
-
 }

@@ -283,7 +283,6 @@ class NavigationTreeTest extends \OxidTestCase
         $this->assertNotNull($oTab);
         $this->assertEquals("testTabClass2", $oTab->getAttribute("cl"));
         $this->assertEquals(1, $oTab->getAttribute("active"));
-
     }
 
     /**

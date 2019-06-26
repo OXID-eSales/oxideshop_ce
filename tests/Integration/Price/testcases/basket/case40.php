@@ -24,8 +24,8 @@
  */
 $aData = array(
     // Articles
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
                 // oxarticles db fields
                 'oxid'                     => 1001,
                 'oxprice'                  => 20.00,
@@ -37,11 +37,11 @@ $aData = array(
                         'oxamount'     => 2,
                         'oxamountto'   => 3,
                         'oxartid'      => 1001,
-						'oxaddperc'    => 10,
+                        'oxaddperc'    => 10,
                 ),
         ),
-        1 => array (
-		 // oxarticles db fields
+        1 => array(
+         // oxarticles db fields
                 'oxid'                     => 1002,
                 'oxprice'                  => 200.00,
                 'oxvat'                    => 19,
@@ -50,13 +50,13 @@ $aData = array(
 
 
         ),
-	    2 => array (
-	     // oxarticles db fields
-		        'oxid'                     => 1004,
-		        'oxprice'                  => 200.00,
-		        'oxvat'                    => 19,
-			    'OXSHOPID'				   => 2,
-	),
+        2 => array(
+         // oxarticles db fields
+                'oxid'                     => 1004,
+                'oxprice'                  => 200.00,
+                'oxvat'                    => 19,
+                'OXSHOPID'				   => 2,
+    ),
     ),
 
 
@@ -67,32 +67,32 @@ $aData = array(
 
     ),
     // Group
-    'group' => array (
-            0 => array (
+    'group' => array(
+            0 => array(
                     'oxid' => 'oxidpricea',
                     'oxactive' => 1,
                     'oxtitle' => 'Price A',
-                    'oxobject2group' => array (
+                    'oxobject2group' => array(
                             'oxobjectid' => array( 1001, 'basketUser' ),
-							'oxobjectid' => array( 1002, 'basketUser' ),
-							'oxobjectid' => array( 'itmdiscount', 'basketUser' ),
-							'oxobjectid' => array( '%discount', 'basketUser' ),
+                            'oxobjectid' => array( 1002, 'basketUser' ),
+                            'oxobjectid' => array( 'itmdiscount', 'basketUser' ),
+                            'oxobjectid' => array( '%discount', 'basketUser' ),
                     ),
             ),
     ),
     // Discounts
-    'shop' => array (
-		0 => array (
-				'oxactive'     => 1,
-				'oxparentid'   => 1,
-				'oxname'       => 'subshop',
-				// this option sets shop to active or not
-				'activeshop'   => true
-		),
+    'shop' => array(
+        0 => array(
+                'oxactive'     => 1,
+                'oxparentid'   => 1,
+                'oxname'       => 'subshop',
+                // this option sets shop to active or not
+                'activeshop'   => true
+        ),
     ),
-    'discounts' => array (
+    'discounts' => array(
         // oxdiscount DB fields
-        0 => array (
+        0 => array(
             // ID needed for expectation later on, specify meaningful name
             'oxid'         => '%discount',
             'oxaddsum'     => 10,
@@ -102,7 +102,7 @@ $aData = array(
             'oxactive' => 1,
             'oxsort' => 10,
         ),
-        1 => array (
+        1 => array(
                 // item discount for basket
             'oxid'         => 'itmdiscount',
             'oxaddsum'     => 0,
@@ -111,9 +111,9 @@ $aData = array(
             'oxamountto' => 99999,
             'oxactive' => 1,
             'oxitmartid' => 1004,
-			'oxitmamount' => 1,
-			'oxitmultiple' => 1,
-			'oxarticles' => array ( 1002 ),
+            'oxitmamount' => 1,
+            'oxitmultiple' => 1,
+            'oxarticles' => array( 1002 ),
             'oxsort' => 20,
         ),
     ),
@@ -149,12 +149,12 @@ $aData = array(
                 'oxfromamount' => 0,
                 'oxtoamount' => 1000000,
                 'oxchecked' => 1,
-				'oxaddsumrules'=>1,
+                'oxaddsumrules'=>1,
             ),
         ),
         // VOUCHERS
-        'voucherserie' => array (
-                 0 => array (
+        'voucherserie' => array(
+                 0 => array(
                 'oxdiscount' => 10.00,
                 'oxdiscounttype' => '%',
                 'oxallowsameseries' => 1,
@@ -165,31 +165,31 @@ $aData = array(
         ),
     ),
     // TEST EXPECTATIONS
-    'expected' => array (
+    'expected' => array(
         // Article expected prices: ARTICLE ID => ( Unit price, Total Price )
-        'articles' => array (
-             1001 => array ( '18,00', '36,00' ),
-             1002 => array ( '200,00', '200,00' ),
-			 1004 => array ( '0,00', '0,00' ),
+        'articles' => array(
+             1001 => array( '18,00', '36,00' ),
+             1002 => array( '200,00', '200,00' ),
+             1004 => array( '0,00', '0,00' ),
         ),
         // Expectations of other totals
-        'totals' => array (
+        'totals' => array(
             // Total BRUTTO
             'totalBrutto' => '225,15',
             // Total NETTO
             'totalNetto'  => '236,00',
             // Total VAT amount: vat% => total cost
-            'vats' => array (
+            'vats' => array(
                 19 => '30,78',
-			    11 => '3,21',
+                11 => '3,21',
             ),
             // Total discount amounts: discount id => total cost
-            'discounts' => array (
+            'discounts' => array(
                 // Expectation for special discount with specified ID
                 '%discount' => '23,60',
             ),
             // Total giftcard amounts
-           'giftcard' => array (
+           'giftcard' => array(
                 'brutto' => '2,98',
                 'netto' => '2,50',
                 'vat' => '0,48'
@@ -207,7 +207,7 @@ $aData = array(
                 'vat' => '24,66'
             ),
             // Total voucher amounts
-            'voucher' => array (
+            'voucher' => array(
                 'brutto' => '21,24',
             ),
             // GRAND TOTAL
@@ -215,7 +215,7 @@ $aData = array(
         ),
     ),
     // Test case options
-    'options' => array (
+    'options' => array(
         // Configs (real named)
         'config' => array(
            'blEnterNetPrice' => true,

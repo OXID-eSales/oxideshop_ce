@@ -29,7 +29,6 @@ require_once TEST_LIBRARY_HELPERS_PATH . 'oxEmailHelper.php';
 
 class modoxdeliverylist_oxorder extends oxdeliverylist
 {
-
     public $aTestDeliveriesSetsRetValue = array('testShipSetId1', 'testShipSetId2');
 
     public function getDeliveryList($oBasket, $oUser = null, $sDelCountry = null, $sDelSet = null)
@@ -178,7 +177,6 @@ class OrderTest extends \OxidTestCase
         $oOrder->load($soxId);
         $this->assertEquals(25, $oOrder->oxorder__oxdelcost->value);
         $this->assertEquals("Teststr", $oOrder->oxorder__oxbillstreet->value);
-
     }
 
     public function testValidateOrder()
@@ -203,7 +201,8 @@ class OrderTest extends \OxidTestCase
         // delivery check failed
         $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array("validateStock", "validateDelivery", "validatePayment", "validateDeliveryAddress", "validateBasket"));
         $oOrder->expects($this->once())->method('validateStock');
-        $oOrder->expects($this->once())->method('validateDelivery')->will($this->returnValue("validateDelivery"));;
+        $oOrder->expects($this->once())->method('validateDelivery')->will($this->returnValue("validateDelivery"));
+        ;
         $oOrder->expects($this->never())->method('validatePayment');
         $oOrder->expects($this->never())->method('validateDeliveryAddress');
         $oOrder->expects($this->never())->method('validateBasket');
@@ -666,7 +665,6 @@ class OrderTest extends \OxidTestCase
 
         $this->assertEquals('1', $oOrder->oxorder__oxlang->value);
         $this->assertEquals('Beer homebrew kit CHEERS!', $oOrderArticle->oxorderarticles__oxtitle->value);
-
     }
 
     private function _insertTestOrder($sId = '_testOrderId')
@@ -1685,7 +1683,7 @@ class OrderTest extends \OxidTestCase
         $testMethods[] = '_setOrderStatus';
         $order = $this->getMock(Order::class, $testMethods);
 
-        foreach ($methods AS $key => $method) {
+        foreach ($methods as $key => $method) {
             $order->expects($this->once())
                 ->method($method)
                 ->will($this->returnValue(true));
@@ -1724,7 +1722,7 @@ class OrderTest extends \OxidTestCase
         $order = $this->getMock(Order::class, $testMethods);
 
 
-        foreach ($methods AS $key => $method) {
+        foreach ($methods as $key => $method) {
             $order
                 ->method($method)
                 ->will($this->returnValue(true));
@@ -2443,7 +2441,6 @@ class OrderTest extends \OxidTestCase
     // FS#1661
     public function testUpdateWishlistUpdateAmount()
     {
-
         $oBasketItem = $this->getProxyClass("oxBasketItem");
         $oBasketItem->setNonPublicVar('_sProductId', '2000');
         $oBasketItem->setNonPublicVar('_dAmount', 1);
@@ -2471,7 +2468,6 @@ class OrderTest extends \OxidTestCase
 
     public function testUpdateWishlistUpdateNegativeAmount()
     {
-
         $oBasketItem = $this->getProxyClass("oxBasketItem");
         $oBasketItem->setNonPublicVar('_sProductId', '2000');
         $oBasketItem->setNonPublicVar('_dAmount', 5);
@@ -2859,7 +2855,6 @@ class OrderTest extends \OxidTestCase
         $sSql = "select count(*) from oxorderarticles where oxorderid = '_testOrderId'";
         $sStatus = $oDB->getOne($sSql);
         $this->assertEquals(0, $sStatus);
-
     }
 
     public function testDeleteRemovesUserPaymentInfo()
@@ -3261,7 +3256,6 @@ class OrderTest extends \OxidTestCase
         $this->assertEquals($oUser, $oOrder->getNonPublicVar('_oUser'));
         $this->assertEquals($oBasket, $oOrder->getNonPublicVar('_oBasket'));
         $this->assertEquals($oPayment, $oOrder->getNonPublicVar('_oPayment'));
-
     }
 
     public function testSendOrderByEmailWhenMailingFails()

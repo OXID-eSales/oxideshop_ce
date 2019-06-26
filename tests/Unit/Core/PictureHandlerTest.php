@@ -275,7 +275,6 @@ class PictureHandlerTest extends \OxidTestCase
 
         $oPicHandler = oxNew('oxPictureHandler');
         $oPicHandler->deleteMainIcon($oArticle);
-
     }
 
     /**

@@ -21,5 +21,4 @@ class LanguageListTest extends \OxidTestCase
         $oLanguageList = oxNew('oxwLanguageList');
         $this->assertEquals('widget/header/languages.tpl', $oLanguageList->render());
     }
-
 }

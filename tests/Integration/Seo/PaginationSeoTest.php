@@ -179,8 +179,11 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('redirect'));
         $utils->expects($this->once())->method('redirect')
-            ->with($this->equalTo($shopUrl . $redirectUrl),
-                $this->equalTo(false), $this->equalTo('301'));
+            ->with(
+                $this->equalTo($shopUrl . $redirectUrl),
+                $this->equalTo(false),
+                $this->equalTo('301')
+            );
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
 
         $request = $this->getMock(\OxidEsales\Eshop\Core\Request::class, array('getRequestUrl'));
@@ -214,8 +217,11 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('redirect'));
         $utils->expects($this->once())->method('redirect')
-            ->with($this->equalTo($shopUrl . $redirectUrl),
-                   $this->equalTo(false), $this->equalTo('301'));
+            ->with(
+                $this->equalTo($shopUrl . $redirectUrl),
+                $this->equalTo(false),
+                $this->equalTo('301')
+            );
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
 
         $request = $this->getMock(\OxidEsales\Eshop\Core\Request::class, array('getRequestUrl'));
@@ -248,8 +254,11 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $utils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('redirect'));
         $utils->expects($this->once())->method('redirect')
-            ->with($this->equalTo($shopUrl . $redirectUrl),
-                $this->equalTo(false), $this->equalTo('301'));
+            ->with(
+                $this->equalTo($shopUrl . $redirectUrl),
+                $this->equalTo(false),
+                $this->equalTo('301')
+            );
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
 
         $request = $this->getMock(\OxidEsales\Eshop\Core\Request::class, array('getRequestUrl'));
@@ -438,7 +447,7 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $seoEncoderVendor = oxNew(\OxidEsales\Eshop\Application\Model\SeoEncoderVendor::class);
         $result = $seoEncoderVendor->getVendorPageUrl($vendor, 2);
 
-        $this->assertEquals( $shopUrl . $seoUrl . '?pgNr=2', $result);
+        $this->assertEquals($shopUrl . $seoUrl . '?pgNr=2', $result);
 
         //unpaginated seo url is now stored in database and should not be saved again.
         $seoEncoderVendor = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderVendor::class, ['_saveToDb']);
@@ -470,7 +479,7 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $seoEncoderManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer::class);
         $result = $seoEncoderManufacturer->getManufacturerPageUrl($manufacturer, 2, $languageId);
 
-        $this->assertEquals( $shopUrl . $seoUrl . '?pgNr=2', $result);
+        $this->assertEquals($shopUrl . $seoUrl . '?pgNr=2', $result);
     }
 
     /**
@@ -489,7 +498,7 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $seoEncoderRecomm = oxNew(\OxidEsales\Eshop\Application\Model\SeoEncoderRecomm::class);
         $result = $seoEncoderRecomm->getRecommPageUrl($recomm, 2);
 
-        $this->assertEquals( $shopUrl . $seoUrl . '?pgNr=2', $result);
+        $this->assertEquals($shopUrl . $seoUrl . '?pgNr=2', $result);
 
         //unpaginated seo url is now stored in database and should not be saved again.
         $seoEncoderRecomm = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderRecomm::class, ['_saveToDb']);
@@ -563,10 +572,10 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         }
         $response = $this->callCurl($urlToCall);
 
-        foreach ($responseContains as $checkFor){
+        foreach ($responseContains as $checkFor) {
             $this->assertContains($checkFor, $response, "Should get $checkFor");
         }
-        foreach ($responseNotContains as $checkFor){
+        foreach ($responseNotContains as $checkFor) {
             $this->assertNotContains($checkFor, $response, "Should not get $checkFor");
         }
     }
@@ -715,7 +724,7 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $curl = oxNew(\OxidEsales\Eshop\Core\Curl::class);
         $curl->setOption('CURLOPT_HEADER', true);
-        $curl->setOption( 'CURLOPT_RETURNTRANSFER', true);
+        $curl->setOption('CURLOPT_RETURNTRANSFER', true);
         $curl->setUrl($url);
         $return = $curl->execute();
 

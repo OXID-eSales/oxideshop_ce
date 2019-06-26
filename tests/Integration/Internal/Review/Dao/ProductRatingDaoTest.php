@@ -59,6 +59,5 @@ class ProductRatingDaoTest extends \PHPUnit\Framework\TestCase
         $daoProperty->setAccessible(true);
 
         return $daoProperty->getValue($service);
-
     }
 }

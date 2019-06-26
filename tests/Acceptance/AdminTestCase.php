@@ -28,5 +28,4 @@ abstract class AdminTestCase extends AcceptanceTestCase
     {
         $this->assertEquals($expectedText, $this->getText("//tr[@id='row.${row}']/td[${column}]"));
     }
-
 }

@@ -69,7 +69,6 @@ class PrivateSalesFrontendTest extends FrontendTestCase
         $this->assertTextPresent("%ROOT_CATEGORY_CHANGED%");
         $this->assertElementPresent("tobasket");
         $this->assertElementPresent("//button[text()='%CONTINUE_SHOPPING%']");
-
     }
 
     /**
@@ -80,7 +79,7 @@ class PrivateSalesFrontendTest extends FrontendTestCase
     public function testBasketExclusionCase2()
     {
         //enabling basket exclusion
-       $this->callShopSC("oxConfig", null, null, array("blBasketExcludeEnabled" => array("type" => "bool", "value" => 'true')));
+        $this->callShopSC("oxConfig", null, null, array("blBasketExcludeEnabled" => array("type" => "bool", "value" => 'true')));
         //checking in frontend
         $this->openShop();
         $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
@@ -106,7 +105,6 @@ class PrivateSalesFrontendTest extends FrontendTestCase
         $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
         $this->assertTextNotPresent("%ROOT_CATEGORY_CHANGED%");
         $this->assertElementNotPresent("scRootCatChanged");
-
     }
 
     /**
@@ -155,7 +153,7 @@ class PrivateSalesFrontendTest extends FrontendTestCase
         $this->assertTextPresent("1 %HITS_FOR% \"1000\"");
         $this->assertEquals("%YOU_ARE_HERE%: / %SEARCH%", $this->getText("breadCrumb"));
 
-       //adding to basket again and finishing order
+        //adding to basket again and finishing order
         $this->assertElementPresent("//ul[@id='searchList']/li//button");
         $this->clickAndWait("//ul[@id='searchList']/li//button");
         $this->clickAndWait("//ul[@id='searchList']/li//button");
@@ -183,7 +181,7 @@ class PrivateSalesFrontendTest extends FrontendTestCase
      */
     public function testPrivateShoppingInvitations()
     {
-      //Installed GDLib Version with empty value
+        //Installed GDLib Version with empty value
         $this->callShopSC("oxConfig", null, null, array("iUseGDVersion" => array("type" => "str", "value" => 0)));
         //checking if functionality is disabled in frontend
         $this->openShop();
@@ -239,8 +237,6 @@ class PrivateSalesFrontendTest extends FrontendTestCase
         $this->assertEquals("%YOU_ARE_HERE%: / %INVITE_YOUR_FRIENDS%", $this->getText("breadCrumb"));
         $this->assertEquals("%INVITE_YOUR_FRIENDS%", $this->getText("//h1"));
         $this->assertTextPresent("%MESSAGE_INVITE_YOUR_FRIENDS_INVITATION_SENT%");
-
-
     }
 
     /**

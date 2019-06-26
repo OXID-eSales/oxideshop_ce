@@ -6,5 +6,4 @@
 
 class vendor_2_module_6_myclass extends \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\namespaced_from_ns\MyClass
 {
-
 }

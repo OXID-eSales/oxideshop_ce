@@ -1484,9 +1484,9 @@ class SearchAndSortingAdminTest extends AdminTestCase
      */
     public function testSortPromotions()
     {
-        $futureTime = date("Y-m-d", mktime(0, 0, 0, date("m"),date("d")+1,date("Y")));
-        $this->executeSql( "UPDATE `oxactions` SET `OXACTIVETO` = '".$futureTime."' WHERE `OXTITLE_1` like 'Current%'" );
-        $this->executeSql( "UPDATE `oxactions` SET `OXACTIVEFROM` = '".$futureTime."', `OXACTIVETO` = '".$futureTime."' WHERE `OXTITLE_1` like 'Upcoming%'" );
+        $futureTime = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
+        $this->executeSql("UPDATE `oxactions` SET `OXACTIVETO` = '".$futureTime."' WHERE `OXTITLE_1` like 'Current%'");
+        $this->executeSql("UPDATE `oxactions` SET `OXACTIVEFROM` = '".$futureTime."', `OXACTIVETO` = '".$futureTime."' WHERE `OXTITLE_1` like 'Upcoming%'");
         $this->loginAdmin("Customer Info", "Promotions");
         $this->assertEquals("English", $this->getSelectedLabel("changelang"));
         $this->changeListSorting("link=Name");
@@ -1543,7 +1543,6 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->select("displaytype", "label=All");
         $this->waitForPageToLoad("30000");
         $this->assertElementPresent("row.2");
-
     }
 
     /**
@@ -1847,11 +1846,11 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->assertEquals("7 [EN] sellist šÄßüл", $this->getText("//tr[@id='row.1']/td[1]"));
     }
 
-     /**
-     * sorting Selection Lists
-      *
-     * @group search_sort
-     */
+    /**
+    * sorting Selection Lists
+     *
+    * @group search_sort
+    */
     public function testSortSelectionLists()
     {
         $this->loginAdmin("Administer Products", "Selection Lists");
@@ -2064,7 +2063,6 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->assertEquals("11 DE product šÄßüл", $this->getText("//tr[@id='row.1']/td[3]"));
         $this->assertEquals("[last] DE product šÄßüл", $this->getText("//tr[@id='row.2']/td[3]"));
         $this->assertEquals("[last] DE product šÄßüл", $this->getText("//tr[@id='row.3']/td[3]"));
-
     }
 
     /**
@@ -2647,12 +2645,12 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->frame("list");
         $this->clickAndConfirm("pau.1", "edit");
         $this->frame("edit");
-        $this->assertEquals( "3,60", $this->getText("//table[@id='order.info']/tbody/tr[1]/td[2]" ) );
-        $this->assertEquals( "- 0,00", $this->getText("//table[@id='order.info']/tbody/tr[2]/td[2]" ) );
-        $this->assertEquals( "3,03", $this->getText("//table[@id='order.info']/tbody/tr[3]/td[2]" ) );
-        $this->assertEquals( "12,90", $this->getText("//table[@id='order.info']/tbody/tr[4]/td[2]" ) );
-        $this->assertEquals( "20,90", $this->getText("//table[@id='order.info']/tbody/tr[5]/td[2]" ) );
-        $this->assertEquals( "37,40", $this->getText("//table[@id='order.info']/tbody/tr[6]/td[2]" ) );
+        $this->assertEquals("3,60", $this->getText("//table[@id='order.info']/tbody/tr[1]/td[2]"));
+        $this->assertEquals("- 0,00", $this->getText("//table[@id='order.info']/tbody/tr[2]/td[2]"));
+        $this->assertEquals("3,03", $this->getText("//table[@id='order.info']/tbody/tr[3]/td[2]"));
+        $this->assertEquals("12,90", $this->getText("//table[@id='order.info']/tbody/tr[4]/td[2]"));
+        $this->assertEquals("20,90", $this->getText("//table[@id='order.info']/tbody/tr[5]/td[2]"));
+        $this->assertEquals("37,40", $this->getText("//table[@id='order.info']/tbody/tr[6]/td[2]"));
         //testing if other tabs are working
         $this->openTab("Overview");
         $this->openTab("Main");
@@ -2928,8 +2926,8 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->assertEquals("2008-02-13 00:00:01", $this->getText("//tr[@id='row.3']/td[".$iDateCol."]"));
         $this->assertEquals("2008-02-01 00:00:01", $this->getText("//tr[@id='row.4']/td[".$iDateCol."]"));
         $this->assertEquals("http://www.zzgoogle.com", $this->getText("//tr[@id='row.2']/td[".$iUrlCol."]"));
-        $this->assertEquals("http://www.6google.com",  $this->getText("//tr[@id='row.3']/td[".$iUrlCol."]"));
-        $this->assertEquals("http://www.2google.com",  $this->getText("//tr[@id='row.4']/td[".$iUrlCol."]"));
+        $this->assertEquals("http://www.6google.com", $this->getText("//tr[@id='row.3']/td[".$iUrlCol."]"));
+        $this->assertEquals("http://www.2google.com", $this->getText("//tr[@id='row.4']/td[".$iUrlCol."]"));
         $this->clickAndWait("link=URL");
         $this->assertEquals("http://www.1google.com", $this->getText("//tr[@id='row.1']/td[".$iUrlCol."]"));
         $this->assertEquals("http://www.2google.com", $this->getText("//tr[@id='row.2']/td[".$iUrlCol."]"));
@@ -3090,76 +3088,76 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $iLastPage = 6;
         $iPreviousPageBeforeLastPage = $iLastPage - 1;
         $iLastPageLastElementId = 3;
-        $this->loginAdmin( "Customer Info", "CMS Pages" );
+        $this->loginAdmin("Customer Info", "CMS Pages");
 
         $iTitleCol = 2;
         $iIdentCol = 3;
 
         //sorting
-        $this->clickAndWait( "link=Title" );
-        $this->assertEquals( "3 [EN] content šÄßüл", $this->getText( "//tr[@id='row.1']/td[".$iTitleCol."]" ) );
-        $this->assertEquals( "About Us", $this->getText( "//tr[@id='row.2']/td[".$iTitleCol."]" ) );
-        $this->assertEquals( "Cookies Explanation",  $this->getText( "//tr[@id='row.5']/td[".$iTitleCol."]" ) );
-        $this->assertEquals( "1testcontent", $this->getText( "//tr[@id='row.1']/td[".$iIdentCol."]" ) );
-        $this->assertEquals( "oximpressum",  $this->getText( "//tr[@id='row.2']/td[".$iIdentCol."]" ) );
-        $this->assertEquals( "oxcookiesexplanation",    $this->getText( "//tr[@id='row.5']/td[".$iIdentCol."]" ) );
-        $this->clickAndWait( "link=Ident" );
-        $this->assertEquals( "1testcontent", $this->getText( "//tr[@id='row.1']/td[".$iIdentCol."]" ) );
-        $this->assertEquals( "oxadminorderemail", $this->getText( "//tr[@id='row.2']/td[".$iIdentCol."]" ) );
-        $this->assertElementNotPresent( "link=oximpressum"  );
-        $this->assertEquals( "Page 1 / $iLastPage", $this->getText( "nav.site" ) );
-        $this->assertElementPresent( "//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']" );
-        $this->clickAndWait( "nav.next" );
-        $this->assertEquals( "Page 2 / $iLastPage", $this->getText( "nav.site" ) );
-        $this->assertElementPresent( "//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']" );
-        $this->assertElementPresent( "link=oximpressum"  );
-        $this->clickAndWait( "nav.last" );
-        $this->assertEquals( "Page $iLastPage / $iLastPage", $this->getText( "nav.site" ) );
-        $this->assertElementPresent( "//a[@id='nav.page.$iLastPage'][@class='pagenavigation pagenavigationactive']" );
-        $this->assertEquals( "[last]testcontent", $this->getText( "//tr[@id='row.$iLastPageLastElementId']/td[".$iIdentCol."]" ) );
-        $this->clickAndWait( "nav.prev" );
-        $this->assertEquals( "Page $iPreviousPageBeforeLastPage / $iLastPage", $this->getText( "nav.site" ) );
-        $this->assertElementPresent( "//a[@id='nav.page.$iPreviousPageBeforeLastPage'][@class='pagenavigation pagenavigationactive']" );
-        $this->assertElementPresent( "link=oxuserorderemail"  );
-        $this->clickAndWait( "nav.first" );
-        $this->assertEquals( "Page 1 / $iLastPage", $this->getText( "nav.site" ) );
-        $this->assertElementPresent( "//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']" );
-        $this->assertEquals( "1testcontent", $this->getText( "//tr[@id='row.1']/td[".$iIdentCol."]" ) );
-        $this->changeAdminListLanguage( "Deutsch" );
-        $this->clickAndWait( "link=Title" );
-        $this->assertEquals( "1 [DE] content šÄßüл", $this->getText( "//tr[@id='row.1']/td[".$iTitleCol."]" ) );
-        $this->assertEquals( "AGB", $this->getText( "//tr[@id='row.2']/td[".$iTitleCol."]" ) );
-        $this->assertEquals( "Benutzer geblockt", $this->getText( "//tr[@id='row.8']/td[".$iTitleCol."]" ) );
-        $this->assertEquals( "[last]testcontent", $this->getText( "//tr[@id='row.1']/td[".$iIdentCol."]" ) );
-        $this->assertEquals( "oxagb",     $this->getText( "//tr[@id='row.2']/td[".$iIdentCol."]" ) );
-        $this->assertEquals( "oxblocked", $this->getText( "//tr[@id='row.8']/td[".$iIdentCol."]" ) );
-        $this->clickAndWait( "link=Ident" );
-        $this->assertEquals( "1testcontent", $this->getText( "//tr[@id='row.1']/td[".$iIdentCol."]" ) );
-        $this->assertEquals( "oxadminorderemail", $this->getText( "//tr[@id='row.2']/td[".$iIdentCol."]" ) );
-        $this->assertElementNotPresent( "link=oximpressum"  );
-        $this->assertElementNotPresent( "link=oxnewstlerinfo"  );
-        $this->clickAndWait( "nav.next" );
-        $this->assertElementPresent( "link=oximpressum"  );
-        $this->assertEquals( "Page 2 / $iLastPage", $this->getText( "nav.site" ) );
-        $this->assertElementPresent( "//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']" );
-        $this->clickAndWait( "nav.last" );
-        $this->assertEquals( "[last]testcontent", $this->getText( "//tr[@id='row.$iLastPageLastElementId']/td[".$iIdentCol."]" ) );
-        $this->clickAndWait( "nav.prev" );
-        $this->assertElementPresent( "link=oxuserorderemail"  );
-        $this->assertEquals( "Page $iPreviousPageBeforeLastPage / $iLastPage", $this->getText( "nav.site" ) );
-        $this->assertElementPresent( "//a[@id='nav.page.$iPreviousPageBeforeLastPage'][@class='pagenavigation pagenavigationactive']" );
-        $this->clickAndWait( "nav.first" );
-        $this->assertEquals( "Page 1 / $iLastPage", $this->getText( "nav.site" ) );
-        $this->assertElementPresent( "//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']" );
-        $this->assertEquals( "1testcontent", $this->getText( "//tr[@id='row.1']/td[".$iIdentCol."]" ) );
+        $this->clickAndWait("link=Title");
+        $this->assertEquals("3 [EN] content šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iTitleCol."]"));
+        $this->assertEquals("About Us", $this->getText("//tr[@id='row.2']/td[".$iTitleCol."]"));
+        $this->assertEquals("Cookies Explanation", $this->getText("//tr[@id='row.5']/td[".$iTitleCol."]"));
+        $this->assertEquals("1testcontent", $this->getText("//tr[@id='row.1']/td[".$iIdentCol."]"));
+        $this->assertEquals("oximpressum", $this->getText("//tr[@id='row.2']/td[".$iIdentCol."]"));
+        $this->assertEquals("oxcookiesexplanation", $this->getText("//tr[@id='row.5']/td[".$iIdentCol."]"));
+        $this->clickAndWait("link=Ident");
+        $this->assertEquals("1testcontent", $this->getText("//tr[@id='row.1']/td[".$iIdentCol."]"));
+        $this->assertEquals("oxadminorderemail", $this->getText("//tr[@id='row.2']/td[".$iIdentCol."]"));
+        $this->assertElementNotPresent("link=oximpressum");
+        $this->assertEquals("Page 1 / $iLastPage", $this->getText("nav.site"));
+        $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
+        $this->clickAndWait("nav.next");
+        $this->assertEquals("Page 2 / $iLastPage", $this->getText("nav.site"));
+        $this->assertElementPresent("//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']");
+        $this->assertElementPresent("link=oximpressum");
+        $this->clickAndWait("nav.last");
+        $this->assertEquals("Page $iLastPage / $iLastPage", $this->getText("nav.site"));
+        $this->assertElementPresent("//a[@id='nav.page.$iLastPage'][@class='pagenavigation pagenavigationactive']");
+        $this->assertEquals("[last]testcontent", $this->getText("//tr[@id='row.$iLastPageLastElementId']/td[".$iIdentCol."]"));
+        $this->clickAndWait("nav.prev");
+        $this->assertEquals("Page $iPreviousPageBeforeLastPage / $iLastPage", $this->getText("nav.site"));
+        $this->assertElementPresent("//a[@id='nav.page.$iPreviousPageBeforeLastPage'][@class='pagenavigation pagenavigationactive']");
+        $this->assertElementPresent("link=oxuserorderemail");
+        $this->clickAndWait("nav.first");
+        $this->assertEquals("Page 1 / $iLastPage", $this->getText("nav.site"));
+        $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
+        $this->assertEquals("1testcontent", $this->getText("//tr[@id='row.1']/td[".$iIdentCol."]"));
+        $this->changeAdminListLanguage("Deutsch");
+        $this->clickAndWait("link=Title");
+        $this->assertEquals("1 [DE] content šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iTitleCol."]"));
+        $this->assertEquals("AGB", $this->getText("//tr[@id='row.2']/td[".$iTitleCol."]"));
+        $this->assertEquals("Benutzer geblockt", $this->getText("//tr[@id='row.8']/td[".$iTitleCol."]"));
+        $this->assertEquals("[last]testcontent", $this->getText("//tr[@id='row.1']/td[".$iIdentCol."]"));
+        $this->assertEquals("oxagb", $this->getText("//tr[@id='row.2']/td[".$iIdentCol."]"));
+        $this->assertEquals("oxblocked", $this->getText("//tr[@id='row.8']/td[".$iIdentCol."]"));
+        $this->clickAndWait("link=Ident");
+        $this->assertEquals("1testcontent", $this->getText("//tr[@id='row.1']/td[".$iIdentCol."]"));
+        $this->assertEquals("oxadminorderemail", $this->getText("//tr[@id='row.2']/td[".$iIdentCol."]"));
+        $this->assertElementNotPresent("link=oximpressum");
+        $this->assertElementNotPresent("link=oxnewstlerinfo");
+        $this->clickAndWait("nav.next");
+        $this->assertElementPresent("link=oximpressum");
+        $this->assertEquals("Page 2 / $iLastPage", $this->getText("nav.site"));
+        $this->assertElementPresent("//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']");
+        $this->clickAndWait("nav.last");
+        $this->assertEquals("[last]testcontent", $this->getText("//tr[@id='row.$iLastPageLastElementId']/td[".$iIdentCol."]"));
+        $this->clickAndWait("nav.prev");
+        $this->assertElementPresent("link=oxuserorderemail");
+        $this->assertEquals("Page $iPreviousPageBeforeLastPage / $iLastPage", $this->getText("nav.site"));
+        $this->assertElementPresent("//a[@id='nav.page.$iPreviousPageBeforeLastPage'][@class='pagenavigation pagenavigationactive']");
+        $this->clickAndWait("nav.first");
+        $this->assertEquals("Page 1 / $iLastPage", $this->getText("nav.site"));
+        $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
+        $this->assertEquals("1testcontent", $this->getText("//tr[@id='row.1']/td[".$iIdentCol."]"));
         //deleting last element to check if navigation is correct
-        $this->clickAndWait( "nav.last" );
-        $this->assertEquals( "[last]testcontent", $this->getText( "//tr[@id='row.$iLastPageLastElementId']/td[".$iIdentCol."]" ) );
-        $this->clickAndConfirm( "del.1" );
-        $this->assertEquals( "Page $iLastPage / $iLastPage", $this->getText( "nav.site" ) );
-        $this->assertElementPresent( "//a[@id='nav.page.$iLastPage'][@class='pagenavigation pagenavigationactive']" );
-        $this->assertElementPresent( "//tr[@id='row.1']/td[".$iIdentCol."]"  );
-        $this->assertElementNotPresent( "//tr[@id='row.$iLastPageLastElementId']/td[".$iIdentCol."]"  );
+        $this->clickAndWait("nav.last");
+        $this->assertEquals("[last]testcontent", $this->getText("//tr[@id='row.$iLastPageLastElementId']/td[".$iIdentCol."]"));
+        $this->clickAndConfirm("del.1");
+        $this->assertEquals("Page $iLastPage / $iLastPage", $this->getText("nav.site"));
+        $this->assertElementPresent("//a[@id='nav.page.$iLastPage'][@class='pagenavigation pagenavigationactive']");
+        $this->assertElementPresent("//tr[@id='row.1']/td[".$iIdentCol."]");
+        $this->assertElementNotPresent("//tr[@id='row.$iLastPageLastElementId']/td[".$iIdentCol."]");
     }
 
     /**
@@ -3180,77 +3178,77 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $sLastPageLastElementId = "[last]testcontent";
         $sPreviuosPageBeforeLastPageText = "oxstdfooter";
 
-        $this->loginAdmin( "Customer Info", "CMS Pages" );
+        $this->loginAdmin("Customer Info", "CMS Pages");
 
         $iTitleCol = 2;
         $iIdentCol = 3;
 
         //sorting
-        $this->clickAndWait( "link=Title" );
-        $this->assertEquals( "3 [EN] content šÄßüл", $this->getText( "//tr[@id='row.1']/td[".$iTitleCol."]" ) );
-        $this->assertEquals( "About Us", $this->getText( "//tr[@id='row.2']/td[".$iTitleCol."]" ) );
-        $this->assertEquals( "Credits",  $this->getText( "//tr[@id='row.5']/td[".$iTitleCol."]" ) );
-        $this->assertEquals( "1testcontent", $this->getText( "//tr[@id='row.1']/td[".$iIdentCol."]" ) );
-        $this->assertEquals( "oximpressum",  $this->getText( "//tr[@id='row.2']/td[".$iIdentCol."]" ) );
-        $this->assertEquals( "oxcredits",    $this->getText( "//tr[@id='row.5']/td[".$iIdentCol."]" ) );
-        $this->clickAndWait( "link=Ident" );
-        $this->assertEquals( "1testcontent", $this->getText( "//tr[@id='row.1']/td[".$iIdentCol."]" ) );
-        $this->assertEquals( "oxadminorderemail", $this->getText( "//tr[@id='row.2']/td[".$iIdentCol."]" ) );
-        $this->assertElementNotPresent( "link=oximpressum"  );
-        $this->assertEquals( "Page 1 / $iLastPage", $this->getText( "nav.site" ) );
-        $this->assertElementPresent( "//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']" );
-        $this->clickAndWait( "nav.next" );
-        $this->assertEquals( "Page 2 / $iLastPage", $this->getText( "nav.site" ) );
-        $this->assertElementPresent( "//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']" );
-        $this->assertElementPresent( "link=oximpressum"  );
-        $this->clickAndWait( "nav.last" );
-        $this->assertEquals( "Page $iLastPage / $iLastPage", $this->getText( "nav.site" ) );
-        $this->assertElementPresent( "//a[@id='nav.page.$iLastPage'][@class='pagenavigation pagenavigationactive']" );
+        $this->clickAndWait("link=Title");
+        $this->assertEquals("3 [EN] content šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iTitleCol."]"));
+        $this->assertEquals("About Us", $this->getText("//tr[@id='row.2']/td[".$iTitleCol."]"));
+        $this->assertEquals("Credits", $this->getText("//tr[@id='row.5']/td[".$iTitleCol."]"));
+        $this->assertEquals("1testcontent", $this->getText("//tr[@id='row.1']/td[".$iIdentCol."]"));
+        $this->assertEquals("oximpressum", $this->getText("//tr[@id='row.2']/td[".$iIdentCol."]"));
+        $this->assertEquals("oxcredits", $this->getText("//tr[@id='row.5']/td[".$iIdentCol."]"));
+        $this->clickAndWait("link=Ident");
+        $this->assertEquals("1testcontent", $this->getText("//tr[@id='row.1']/td[".$iIdentCol."]"));
+        $this->assertEquals("oxadminorderemail", $this->getText("//tr[@id='row.2']/td[".$iIdentCol."]"));
+        $this->assertElementNotPresent("link=oximpressum");
+        $this->assertEquals("Page 1 / $iLastPage", $this->getText("nav.site"));
+        $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
+        $this->clickAndWait("nav.next");
+        $this->assertEquals("Page 2 / $iLastPage", $this->getText("nav.site"));
+        $this->assertElementPresent("//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']");
+        $this->assertElementPresent("link=oximpressum");
+        $this->clickAndWait("nav.last");
+        $this->assertEquals("Page $iLastPage / $iLastPage", $this->getText("nav.site"));
+        $this->assertElementPresent("//a[@id='nav.page.$iLastPage'][@class='pagenavigation pagenavigationactive']");
 
-        $this->assertEquals( $sLastPageLastElementId, $this->getText( "//tr[@id='row.$iLastPageLastElementId']/td[".$iIdentCol."]" ) );
-        $this->clickAndWait( "nav.prev" );
-        $this->assertEquals( "Page $iPreviousPageBeforeLastPage / $iLastPage", $this->getText( "nav.site" ) );
-        $this->assertElementPresent( "//a[@id='nav.page.$iPreviousPageBeforeLastPage'][@class='pagenavigation pagenavigationactive']" );
-        $this->assertElementPresent( "link=$sPreviuosPageBeforeLastPageText"  );
-        $this->clickAndWait( "nav.first" );
-        $this->assertEquals( "Page 1 / $iLastPage", $this->getText( "nav.site" ) );
-        $this->assertElementPresent( "//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']" );
-        $this->assertEquals( "1testcontent", $this->getText( "//tr[@id='row.1']/td[".$iIdentCol."]" ) );
-        $this->selectAndWaitFrame( "changelang", "label=Deutsch", "edit" );
-        $this->clickAndWait( "link=Title" );
-        $this->assertEquals( "1 [DE] content šÄßüл", $this->getText( "//tr[@id='row.1']/td[".$iTitleCol."]" ) );
-        $this->assertEquals( "AGB", $this->getText( "//tr[@id='row.2']/td[".$iTitleCol."]" ) );
-        $this->assertEquals( "Benutzer geblockt", $this->getText( "//tr[@id='row.8']/td[".$iTitleCol."]" ) );
-        $this->assertEquals( "[last]testcontent", $this->getText( "//tr[@id='row.1']/td[".$iIdentCol."]" ) );
-        $this->assertEquals( "oxagb", $this->getText( "//tr[@id='row.2']/td[".$iIdentCol."]" ) );
-        $this->assertEquals( "oxblocked", $this->getText( "//tr[@id='row.8']/td[".$iIdentCol."]" ) );
-        $this->clickAndWait( "link=Ident" );
-        $this->assertEquals( "1testcontent", $this->getText( "//tr[@id='row.1']/td[".$iIdentCol."]" ) );
-        $this->assertEquals( "oxadminorderemail", $this->getText( "//tr[@id='row.2']/td[".$iIdentCol."]" ) );
-        $this->assertElementNotPresent( "link=oximpressum"  );
-        $this->assertElementNotPresent( "link=oxnewstlerinfo"  );
-        $this->clickAndWait( "nav.next" );
-        $this->assertElementPresent( "link=oximpressum"  );
-        $this->assertEquals( "Page 2 / $iLastPage", $this->getText( "nav.site" ) );
-        $this->assertElementPresent( "//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']" );
-        $this->clickAndWait( "nav.last" );
-        $this->assertEquals( $sLastPageLastElementId, $this->getText( "//tr[@id='row.$iLastPageLastElementId']/td[".$iIdentCol."]" ) );
-        $this->clickAndWait( "nav.prev" );
-        $this->assertElementPresent( "link=$sPreviuosPageBeforeLastPageText"  );
-        $this->assertEquals( "Page $iPreviousPageBeforeLastPage / $iLastPage", $this->getText( "nav.site" ) );
-        $this->assertElementPresent( "//a[@id='nav.page.$iPreviousPageBeforeLastPage'][@class='pagenavigation pagenavigationactive']" );
-        $this->clickAndWait( "nav.first" );
-        $this->assertEquals( "Page 1 / $iLastPage", $this->getText( "nav.site" ) );
-        $this->assertElementPresent( "//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']" );
-        $this->assertEquals( "1testcontent", $this->getText( "//tr[@id='row.1']/td[".$iIdentCol."]" ) );
+        $this->assertEquals($sLastPageLastElementId, $this->getText("//tr[@id='row.$iLastPageLastElementId']/td[".$iIdentCol."]"));
+        $this->clickAndWait("nav.prev");
+        $this->assertEquals("Page $iPreviousPageBeforeLastPage / $iLastPage", $this->getText("nav.site"));
+        $this->assertElementPresent("//a[@id='nav.page.$iPreviousPageBeforeLastPage'][@class='pagenavigation pagenavigationactive']");
+        $this->assertElementPresent("link=$sPreviuosPageBeforeLastPageText");
+        $this->clickAndWait("nav.first");
+        $this->assertEquals("Page 1 / $iLastPage", $this->getText("nav.site"));
+        $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
+        $this->assertEquals("1testcontent", $this->getText("//tr[@id='row.1']/td[".$iIdentCol."]"));
+        $this->selectAndWaitFrame("changelang", "label=Deutsch", "edit");
+        $this->clickAndWait("link=Title");
+        $this->assertEquals("1 [DE] content šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iTitleCol."]"));
+        $this->assertEquals("AGB", $this->getText("//tr[@id='row.2']/td[".$iTitleCol."]"));
+        $this->assertEquals("Benutzer geblockt", $this->getText("//tr[@id='row.8']/td[".$iTitleCol."]"));
+        $this->assertEquals("[last]testcontent", $this->getText("//tr[@id='row.1']/td[".$iIdentCol."]"));
+        $this->assertEquals("oxagb", $this->getText("//tr[@id='row.2']/td[".$iIdentCol."]"));
+        $this->assertEquals("oxblocked", $this->getText("//tr[@id='row.8']/td[".$iIdentCol."]"));
+        $this->clickAndWait("link=Ident");
+        $this->assertEquals("1testcontent", $this->getText("//tr[@id='row.1']/td[".$iIdentCol."]"));
+        $this->assertEquals("oxadminorderemail", $this->getText("//tr[@id='row.2']/td[".$iIdentCol."]"));
+        $this->assertElementNotPresent("link=oximpressum");
+        $this->assertElementNotPresent("link=oxnewstlerinfo");
+        $this->clickAndWait("nav.next");
+        $this->assertElementPresent("link=oximpressum");
+        $this->assertEquals("Page 2 / $iLastPage", $this->getText("nav.site"));
+        $this->assertElementPresent("//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']");
+        $this->clickAndWait("nav.last");
+        $this->assertEquals($sLastPageLastElementId, $this->getText("//tr[@id='row.$iLastPageLastElementId']/td[".$iIdentCol."]"));
+        $this->clickAndWait("nav.prev");
+        $this->assertElementPresent("link=$sPreviuosPageBeforeLastPageText");
+        $this->assertEquals("Page $iPreviousPageBeforeLastPage / $iLastPage", $this->getText("nav.site"));
+        $this->assertElementPresent("//a[@id='nav.page.$iPreviousPageBeforeLastPage'][@class='pagenavigation pagenavigationactive']");
+        $this->clickAndWait("nav.first");
+        $this->assertEquals("Page 1 / $iLastPage", $this->getText("nav.site"));
+        $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
+        $this->assertEquals("1testcontent", $this->getText("//tr[@id='row.1']/td[".$iIdentCol."]"));
         //deleting last element to check if navigation is correct
-        $this->clickAndWait( "nav.last" );
-        $this->assertEquals( $sLastPageLastElementId, $this->getText( "//tr[@id='row.$iLastPageLastElementId']/td[".$iIdentCol."]" ) );
-        $this->clickAndConfirm( "del.1" );
-        $this->assertEquals( "Page $iLastPage / $iLastPage", $this->getText( "nav.site" ) );
-        $this->assertElementPresent( "//a[@id='nav.page.$iLastPage'][@class='pagenavigation pagenavigationactive']" );
-        $this->assertElementPresent( "//tr[@id='row.1']/td[".$iIdentCol."]"  );
-        $this->assertElementNotPresent( "//tr[@id='row.$sLastPageLastElementId']/td[".$iIdentCol."]"  );
+        $this->clickAndWait("nav.last");
+        $this->assertEquals($sLastPageLastElementId, $this->getText("//tr[@id='row.$iLastPageLastElementId']/td[".$iIdentCol."]"));
+        $this->clickAndConfirm("del.1");
+        $this->assertEquals("Page $iLastPage / $iLastPage", $this->getText("nav.site"));
+        $this->assertElementPresent("//a[@id='nav.page.$iLastPage'][@class='pagenavigation pagenavigationactive']");
+        $this->assertElementPresent("//tr[@id='row.1']/td[".$iIdentCol."]");
+        $this->assertElementNotPresent("//tr[@id='row.$sLastPageLastElementId']/td[".$iIdentCol."]");
     }
 
     /**

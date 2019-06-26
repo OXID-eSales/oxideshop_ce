@@ -19,7 +19,8 @@ class ContactFormConfigurationFactoryTest extends \PHPUnit\Framework\TestCase
         $context = $this->getMockBuilder(ContextInterface::class)->getMock();
 
         $formFieldsConfigurationDataProvider = $this->getMockBuilder(
-            FormFieldsConfigurationDataProviderInterface::class)->getMock();
+            FormFieldsConfigurationDataProviderInterface::class
+        )->getMock();
         $formFieldsConfigurationDataProvider
             ->method('getFormFieldsConfiguration')
             ->willReturn([]);
@@ -45,7 +46,8 @@ class ContactFormConfigurationFactoryTest extends \PHPUnit\Framework\TestCase
             ]);
 
         $formFieldsConfigurationDataProvider = $this->getMockBuilder(
-            FormFieldsConfigurationDataProviderInterface::class)->getMock();
+            FormFieldsConfigurationDataProviderInterface::class
+        )->getMock();
         $formFieldsConfigurationDataProvider
             ->method('getFormFieldsConfiguration')
             ->willReturn([

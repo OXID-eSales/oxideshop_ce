@@ -27,7 +27,6 @@ class ConnectionFactory
      */
     public static function get()
     {
-
         $database = DatabaseProvider::getDb();
         $r = new \ReflectionMethod(Database::class, 'getConnection');
         $r->setAccessible(true);

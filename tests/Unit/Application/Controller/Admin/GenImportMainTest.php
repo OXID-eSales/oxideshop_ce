@@ -287,7 +287,6 @@ class GenImportMainTest extends \OxidTestCase
         // testing..
         $oView = oxNew('GenImport_Main');
         $this->assertEquals($this->getConfig()->getConfigParam('sGiCsvFieldTerminator'), $oView->UNITgetCsvFieldsTerminator());
-
     }
 
     /**

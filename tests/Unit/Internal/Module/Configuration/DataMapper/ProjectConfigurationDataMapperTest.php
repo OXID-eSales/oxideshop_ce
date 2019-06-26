@@ -35,7 +35,7 @@ class ProjectConfigurationDataMapperTest extends TestCase
 
         $projectConfiguration = new ProjectConfiguration();
         $projectConfiguration->addEnvironmentConfiguration('dev', new EnvironmentConfiguration());
-        $projectConfiguration->addEnvironmentConfiguration('prod',new EnvironmentConfiguration());
+        $projectConfiguration->addEnvironmentConfiguration('prod', new EnvironmentConfiguration());
 
         $projectConfigurationDataMapper = new ProjectConfigurationDataMapper(
             $this->getMockBuilder(ShopConfigurationDataMapperInterface::class)->getMock()

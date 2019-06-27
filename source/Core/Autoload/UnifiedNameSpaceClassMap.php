@@ -2425,13 +2425,13 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Contract\ClassProviderStorageInterface::class,
         'isAbstract'       => false,
         'isInterface'      => true,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Contract\ControllerMapProviderInterface'              => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Contract\ControllerMapProviderInterface::class,
         'isAbstract'       => false,
         'isInterface'      => true,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Contract\IConfigurable'                               => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Contract\IConfigurable::class,

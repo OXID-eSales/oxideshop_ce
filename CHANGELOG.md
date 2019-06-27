@@ -148,7 +148,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\Module\ModuleCache` ModuleCache moved to Internal\Module package.
 - `\OxidEsales\EshopCommunity\Core\Module\ModuleExtensionsCleaner` The whole chain is updated during module activation and deactivation in the database. We do not need this functionality any more
 - `\OxidEsales\EshopCommunity\Core\Module\ModuleValidatorFactory` Module metadata validation moved to Internal\Module package
-
+- `\OxidEsales\EshopCommunity\Core\Routing\Module\ClassProviderStorage` Use service "OxidEsales\EshopCommunity\Internal\Common\Storage\YamlFileStorage".
+- `\OxidEsales\EshopCommunity\Core\Contract\ClassProviderStorageInterface` Use service "OxidEsales\EshopCommunity\Internal\Common\Storage\ArrayStorageInterface".
 
 ## [6.3.4] - 2019-05-24
 
@@ -165,8 +166,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `OxidEsales\EshopCommunity\source\Module\Core\Module`
     - `OxidEsales\EshopCommunity\source\Module\Core\ModuleList` 
     - `OxidEsales\EshopCommunity\Core\Contract\IModuleValidator ` 
-    - `OxidEsales\EshopCommunity\Core\Module\ModuleMetadataValidator` 
-    
+    - `OxidEsales\EshopCommunity\Core\Module\ModuleMetadataValidator`    
+
 ## [6.3.3] - 2019-04-16
 
 ### Fixed

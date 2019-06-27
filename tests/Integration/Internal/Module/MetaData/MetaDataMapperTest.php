@@ -1,5 +1,4 @@
 <?php declare(strict_types=1);
-
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,17 +7,18 @@
 namespace OxidEsales\EshopCommunity\Test\Integration\Internal\Module\MetaData;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\BadMetaDataFoundEvent;
-
-
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\ModuleIdNotValidException;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataKeyException;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProviderInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Webmozart\PathUtil\Path;
 
 class MetaDataMapperTest extends TestCase
 {
-    public function testModuleMetaData20()
+    public function testModuleMetaData20(): void
     {
         $metaDataFilePath = $this->getMetaDataFilePath('TestModuleMetaData20');
         $expectedModuleData = [
@@ -37,12 +37,12 @@ class MetaDataMapperTest extends TestCase
             'url'         => 'https://www.oxid-esales.com',
             'email'       => 'info@oxid-esales.com',
             'extend'      => [
-                'OxidEsales\Eshop\Application\Model\Payment' => 'OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\TestData\TestModuleMetaData20\Payment',
-                'OxidEsales\Eshop\Application\Model\Article' => 'OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\TestData\TestModuleMetaData20\Article'
+                'OxidEsales\Eshop\Application\Model\Payment' => 'TestModuleMetaData20\Payment',
+                'OxidEsales\Eshop\Application\Model\Article' => 'TestModuleMetaData20\Article',
             ],
             'controllers' => [
-                'myvendor_mymodule_MyModuleController'      => 'OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\TestData\TestModuleMetaData20\Controller',
-                'myvendor_mymodule_MyOtherModuleController' => 'OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\TestData\TestModuleMetaData20\OtherController',
+                'myvendor_mymodule_MyModuleController'      => 'TestModuleMetaData20\Controller',
+                'myvendor_mymodule_MyOtherModuleController' => 'TestModuleMetaData20\OtherController',
             ],
             'templates'   => [
                 'mymodule.tpl'       => 'TestModuleMetaData20/mymodule.tpl',
@@ -64,39 +64,28 @@ class MetaDataMapperTest extends TestCase
                 ],
             ],
             'settings'    => [
-                ['group' => 'main', 'name' => 'setting_1', 'type' => 'select', 'value' => '0', 'constraints' => ['0', '1', '2', '3'], 'position' => 3],
+                [
+                    'group' => 'main',
+                    'name' => 'setting_1',
+                    'type' => 'select',
+                    'value' => '0',
+                    'constraints' => ['0', '1', '2', '3'],
+                    'position' => 3],
                 ['group' => 'main', 'name' => 'setting_2', 'type' => 'arr', 'value' => ['value1', 'value2']]
             ],
             'events'      => [
-                'onActivate'   => '\OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\TestData\TestModuleMetaData20\Events::onActivate',
-                'onDeactivate' => '\OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\TestData\TestModuleMetaData20\Events::onDeactivate'
+                'onActivate'   => 'TestModuleMetaData20\Events::onActivate',
+                'onDeactivate' => 'TestModuleMetaData20\Events::onDeactivate'
             ],
         ];
 
         $container = $this->getCompiledTestContainer();
-
-        $filePath = '';
-        $message = '';
-        $eventDispatcher = $container->get(EventDispatcherInterface::class);
-        $eventDispatcher->addListener(
-            BadMetaDataFoundEvent::NAME,
-            function (BadMetaDataFoundEvent $event) use (&$filePath, &$message) {
-                $filePath = $event->getMetaDataFilePath();
-                $message = $event->getMessage();
-            }
-        );
 
         $metaDataDataProvider = $container->get(MetaDataProviderInterface::class);
         $normalizedMetaData = $metaDataDataProvider->getData($metaDataFilePath);
 
         $metaDataDataMapper = $container->get('oxid_esales.module.metadata.datamapper.metadatamapper');
         $moduleConfiguration = $metaDataDataMapper->fromData($normalizedMetaData);
-
-        /**
-         * No InvalidMetaDataEvents should be dispatched
-         */
-        $this->assertSame('', $filePath);
-        $this->assertSame('', $message);
 
         $this->assertSame($expectedModuleData['id'], $moduleConfiguration->getId());
         $this->assertSame($expectedModuleData['version'], $moduleConfiguration->getVersion());
@@ -133,7 +122,8 @@ class MetaDataMapperTest extends TestCase
             $moduleConfiguration->getSetting(ModuleSetting::EVENTS)->getValue()
         );
     }
-    public function testModuleMetaData21()
+
+    public function testModuleMetaData21(): void
     {
         $metaDataFilePath = $this->getMetaDataFilePath('TestModuleMetaData21');
         $expectedModuleData = [
@@ -152,12 +142,12 @@ class MetaDataMapperTest extends TestCase
             'url'                     => 'https://www.oxid-esales.com',
             'email'                   => 'info@oxid-esales.com',
             'extend'                  => [
-                'OxidEsales\Eshop\Application\Model\Payment' => 'OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\TestData\TestModuleMetaData21\Payment',
-                'OxidEsales\Eshop\Application\Model\Article' => 'OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\TestData\TestModuleMetaData21\Article'
+                'OxidEsales\Eshop\Application\Model\Payment' => 'TestModuleMetaData21\Payment',
+                'OxidEsales\Eshop\Application\Model\Article' => 'TestModuleMetaData21\Article'
             ],
             'controllers'             => [
-                'myvendor_mymodule_MyModuleController'      => 'OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\TestData\TestModuleMetaData21\Controller',
-                'myvendor_mymodule_MyOtherModuleController' => 'OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\TestData\TestModuleMetaData21\OtherController',
+                'myvendor_mymodule_MyModuleController'      => 'TestModuleMetaData21\Controller',
+                'myvendor_mymodule_MyOtherModuleController' => 'TestModuleMetaData21\OtherController',
             ],
             'templates'               => [
                 'mymodule.tpl'       => 'TestModuleMetaData21/mymodule.tpl',
@@ -179,12 +169,19 @@ class MetaDataMapperTest extends TestCase
                 ],
             ],
             'settings'                => [
-                ['group' => 'main', 'name' => 'setting_1', 'type' => 'select', 'value' => '0', 'constraints' => ['0', '1', '2', '3'], 'position' => 3],
+                [
+                    'group' => 'main',
+                    'name' => 'setting_1',
+                    'type' => 'select',
+                    'value' => '0',
+                    'constraints' => ['0', '1', '2', '3'],
+                    'position' => 3
+                ],
                 ['group' => 'main', 'name' => 'setting_2', 'type' => 'password', 'value' => 'changeMe']
             ],
             'events'                  => [
-                'onActivate'   => '\OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\TestData\TestModuleMetaData21\Events::onActivate',
-                'onDeactivate' => '\OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\TestData\TestModuleMetaData21\Events::onDeactivate'
+                'onActivate'   => 'TestModuleMetaData21\Events::onActivate',
+                'onDeactivate' => 'TestModuleMetaData21\Events::onDeactivate'
             ],
             'smartyPluginDirectories' => [
                 'Smarty/PluginDirectory'
@@ -193,28 +190,11 @@ class MetaDataMapperTest extends TestCase
 
         $container = $this->getCompiledTestContainer();
 
-        $filePath = '';
-        $message = '';
-        $eventDispatcher = $container->get(EventDispatcherInterface::class);
-        $eventDispatcher->addListener(
-            BadMetaDataFoundEvent::NAME,
-            function (BadMetaDataFoundEvent $event) use (&$filePath, &$message) {
-                $filePath = $event->getMetaDataFilePath();
-                $message = $event->getMessage();
-            }
-        );
-
         $metaDataDataProvider = $container->get(MetaDataProviderInterface::class);
         $normalizedMetaData = $metaDataDataProvider->getData($metaDataFilePath);
 
         $metaDataDataMapper = $container->get('oxid_esales.module.metadata.datamapper.metadatamapper');
         $moduleConfiguration = $metaDataDataMapper->fromData($normalizedMetaData);
-
-        /**
-         * No InvalidMetaDataEvents should be dispatched
-         */
-        $this->assertSame('', $filePath);
-        $this->assertEquals('', $message);
 
         $this->assertSame($expectedModuleData['id'], $moduleConfiguration->getId());
         $this->assertSame($expectedModuleData['version'], $moduleConfiguration->getVersion());
@@ -258,33 +238,20 @@ class MetaDataMapperTest extends TestCase
     /**
      * Test that on metadata.php, which is only partially filled, safe types are returned by the corresponding methods
      */
-    public function testModuleWithPartialMetaData()
+    public function testModuleWithPartialMetaData(): void
     {
+        $this->expectException(ModuleIdNotValidException::class);
         $testModuleDirectory = 'TestModuleWithPartialMetaData';
 
         $metaDataFilePath = $this->getMetaDataFilePath($testModuleDirectory);
         $expectedModuleData = [
             'extend' => [
-                'OxidEsales\Eshop\Application\Model\Payment' => 'OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\TestData\TestModuleWithPartialMetaData\Payment',
-                'OxidEsales\Eshop\Application\Model\Article' => 'OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\TestData\TestModuleWithPartialMetaData\Article'
+                'OxidEsales\Eshop\Application\Model\Payment' => 'TestModuleWithPartialMetaData\Payment',
+                'OxidEsales\Eshop\Application\Model\Article' => 'TestModuleWithPartialMetaData\Article'
             ],
         ];
 
         $container = $this->getCompiledTestContainer();
-
-        /**
-         * As no module ID was set, an InvalidMetaDataEvent should be fired
-         */
-        $filePath = '';
-        $message = '';
-        $eventDispatcher = $container->get(EventDispatcherInterface::class);
-        $eventDispatcher->addListener(
-            BadMetaDataFoundEvent::NAME,
-            function (BadMetaDataFoundEvent $event) use (&$filePath, &$message) {
-                $filePath = $event->getMetaDataFilePath();
-                $message = $event->getMessage();
-            }
-        );
 
         $metaDataDataProvider = $container->get(MetaDataProviderInterface::class);
         $normalizedMetaData = $metaDataDataProvider->getData($metaDataFilePath);
@@ -296,12 +263,6 @@ class MetaDataMapperTest extends TestCase
          * The module directory name should be set as the module ID is missing in metadata.Same
          */
         $this->assertEquals($testModuleDirectory, $moduleConfiguration->getId());
-
-        /**
-         * Additionally an event should have been fired, which mentions the missing Id and is of level ERROR
-         */
-        $this->assertSame($metaDataFilePath, $filePath);
-        $this->assertContains('id', strtolower($message));
 
         /** All methods should return type safe default values, if there were no values defined in metadata.php */
         $this->assertSame([], $moduleConfiguration->getTitle());
@@ -320,10 +281,11 @@ class MetaDataMapperTest extends TestCase
     }
 
     /**
-     * @expectedException  \OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException
+     * @expectedException  UnsupportedMetaDataValueTypeException
      */
-    public function testModuleWithSurplusData()
+    public function testModuleWithSurplusData(): void
     {
+        $this->expectException(UnsupportedMetaDataKeyException::class);
         $metaDataFilePath = $this->getMetaDataFilePath('TestModuleWithSurplusData');
         $expectedModuleData = [
             'id' => 'TestModuleWithSurplusData',
@@ -331,28 +293,11 @@ class MetaDataMapperTest extends TestCase
 
         $container = $this->getCompiledTestContainer();
 
-        /**
-         * As an extra key is present in metadata.php, an InvalidMetaDataEvent should be fired
-         */
-        $filePath = '';
-        $message = '';
-        $eventDispatcher = $container->get(EventDispatcherInterface::class);
-        $eventDispatcher->addListener(
-            BadMetaDataFoundEvent::NAME,
-            function (BadMetaDataFoundEvent $event) use (&$filePath, &$message) {
-                $filePath = $event->getMetaDataFilePath();
-                $message = $event->getMessage();
-            }
-        );
-
         $metaDataDataProvider = $container->get(MetaDataProviderInterface::class);
         $normalizedMetaData = $metaDataDataProvider->getData($metaDataFilePath);
 
         $metaDataDataMapper = $container->get('oxid_esales.module.metadata.datamapper.metadatamapper');
         $moduleConfiguration = $metaDataDataMapper->fromData($normalizedMetaData);
-
-        $this->assertSame($metaDataFilePath, $filePath);
-        $this->assertContains('extrastuff', strtolower($message));
 
         $this->assertEquals($expectedModuleData['id'], $moduleConfiguration->getId());
     }
@@ -364,15 +309,15 @@ class MetaDataMapperTest extends TestCase
      */
     private function getMetaDataFilePath(string $testModuleDirectory): string
     {
-        $metaDataFilePath = __DIR__ . DIRECTORY_SEPARATOR . 'TestData' . DIRECTORY_SEPARATOR . $testModuleDirectory . DIRECTORY_SEPARATOR . 'metadata.php';
+        $metaDataFilePath = Path::join(__DIR__, 'TestData', $testModuleDirectory, 'metadata.php');
 
         return $metaDataFilePath;
     }
 
     /**
-     * @return \Symfony\Component\DependencyInjection\ContainerBuilder
+     * @return ContainerBuilder
      */
-    private function getCompiledTestContainer(): \Symfony\Component\DependencyInjection\ContainerBuilder
+    private function getCompiledTestContainer(): ContainerBuilder
     {
         $container = (new TestContainerFactory())->create();
         $container->compile();

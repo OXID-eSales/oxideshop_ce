@@ -40,22 +40,6 @@ class MetaDataSchemataProviderTest extends TestCase
         $this->assertEquals($this->schemaVersion21, $actualSchema21);
     }
 
-    public function testGetFlippedMetadataSchemaForVersion()
-    {
-        $expectedSchema20 = [
-            '20only'    => 0,
-            'subschema' => [
-                'subkey1' => 0,
-                'subkey2' => 1
-            ],
-        ];
-        $metaDataSchema = new MetaDataSchemataProvider($this->metaDataSchemata);
-
-        $actualSchema20 = $metaDataSchema->getFlippedMetaDataSchemaForVersion('2.0');
-
-        $this->assertSame($expectedSchema20, $actualSchema20);
-    }
-
     /**
      * @expectedException  \OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataVersionException
      */
@@ -65,6 +49,22 @@ class MetaDataSchemataProviderTest extends TestCase
         $metaDataSchema = new MetaDataSchemataProvider($this->metaDataSchemata);
 
         $metaDataSchema->getFlippedMetaDataSchemaForVersion($unsupportedVersion);
+    }
+
+    public function testGetFlippedMetadataSchemaForVersion()
+    {
+        $expectedSchema20 = [
+            '20only'    => 0,
+            'subSchema' => [
+                'subKey1' => 0,
+                'subKey2' => 1
+            ],
+        ];
+        $metaDataSchema = new MetaDataSchemataProvider($this->metaDataSchemata);
+
+        $actualSchema20 = $metaDataSchema->getFlippedMetaDataSchemaForVersion('2.0');
+
+        $this->assertSame($expectedSchema20, $actualSchema20);
     }
 
     /**

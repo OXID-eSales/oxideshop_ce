@@ -81,22 +81,12 @@ class MetaDataSchemataProvider implements MetaDataSchemataProviderInterface
 
         foreach ($metaDataVersion as $key => $item) {
             if (is_numeric($key) && \is_string($item)) {
-                $transposedArray[$this->convertKeyToLowerCase($item)] = $key;
+                $transposedArray[$item] = $key;
             } elseif (\is_string($key) && \is_array($item)) {
-                $transposedArray[$this->convertKeyToLowerCase($key)] = $this->arrayFlipRecursive($item);
+                $transposedArray[$key] = $this->arrayFlipRecursive($item);
             }
         }
 
         return $transposedArray;
-    }
-
-    /**
-     * @param string $key
-     *
-     * @return string
-     */
-    private function convertKeyToLowerCase(string $key): string
-    {
-        return strtolower($key);
     }
 }

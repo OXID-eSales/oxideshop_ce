@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\S
 
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Converter\MetaDataConverterInterface;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\ModuleIdNotValidException;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataNormalizer;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidatorInterface;
@@ -19,9 +20,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class MetaDataProviderTest extends TestCase
 {
     use ContainerTrait;
-
-    /** @var EventDispatcherInterface */
-    private $eventDispatcherStub;
 
     /** @var MetaDataNormalizer */
     private $metaDataNormalizerStub;
@@ -115,33 +113,10 @@ class MetaDataProviderTest extends TestCase
         );
     }
 
-    /**
-     * @throws \OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\InvalidMetaDataException
-     */
-    public function testGetDataProvidesDirectoryNameForMetadataIdIfMetaDataIsNotConfigured()
+    public function testGetDataThrowsExceptionIfMetaDataIsNotConfigured()
     {
+        $this->expectException(ModuleIdNotValidException::class);
         $metaDataFilePath = $this->getPathToTemporaryFile();
-        $metaDataDir = trim(dirname($metaDataFilePath), DIRECTORY_SEPARATOR);
-        $metaDataContent = '<?php
-            $sMetadataVersion = "2.0";
-            $aModule = [];
-        ';
-        if (false === file_put_contents($metaDataFilePath, $metaDataContent)) {
-            throw new \RuntimeException('Could not write to ' . $metaDataFilePath);
-        }
-        $metaDataProvider = $this->createMetaDataProvider();
-        $metaData = $metaDataProvider->getData($metaDataFilePath);
-
-        $this->assertEquals(
-            $metaDataDir,
-            $metaData[MetaDataProvider::METADATA_MODULE_DATA][MetaDataProvider::METADATA_ID]
-        );
-    }
-
-    public function testGetDataDispatchesEventIfMetaDataIsNotConfigured()
-    {
-        $metaDataFilePath = $this->getPathToTemporaryFile();
-        $metaDataDir = trim(dirname($metaDataFilePath), DIRECTORY_SEPARATOR);
         $metaDataContent = '<?php
             $sMetadataVersion = "2.0";
             $aModule = [];
@@ -150,14 +125,13 @@ class MetaDataProviderTest extends TestCase
             throw new \RuntimeException('Could not write to ' . $metaDataFilePath);
         }
 
-        $this->eventDispatcherStub->expects($this->atLeastOnce())->method('dispatch');
-        $metaDataProvider = $this->createMetaDataProvider();
-        $metaData = $metaDataProvider->getData($metaDataFilePath);
-
-        $this->assertEquals(
-            $metaDataDir,
-            $metaData[MetaDataProvider::METADATA_MODULE_DATA][MetaDataProvider::METADATA_ID]
+        $metaDataProvider = new MetaDataProvider(
+            $this->metaDataNormalizerStub,
+            $this->contextStub,
+            $this->get(MetaDataValidatorInterface::class),
+            $this->get(MetaDataConverterInterface::class)
         );
+        $metaDataProvider->getData($metaDataFilePath);
     }
 
     public function testGetDataConvertsBackwardsCompatibleClasses()
@@ -186,7 +160,6 @@ class MetaDataProviderTest extends TestCase
             ]
         );
         $metaDataProvider = new MetaDataProvider(
-            $this->eventDispatcherStub,
             $this->metaDataNormalizerStub,
             $basicContext,
             $this->validatorStub,
@@ -208,7 +181,6 @@ class MetaDataProviderTest extends TestCase
     {
         parent::setUp();
 
-        $this->eventDispatcherStub = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
         $this->metaDataNormalizerStub = $this->getMockBuilder(MetaDataNormalizer::class)->getMock();
         $this->metaDataNormalizerStub->method('normalizeData')->willReturnArgument(0);
         $this->contextStub = $this->getMockBuilder(BasicContextInterface::class)->getMock();
@@ -221,7 +193,6 @@ class MetaDataProviderTest extends TestCase
     private function createMetaDataProvider(): MetaDataProvider
     {
         $metaDataProvider = new MetaDataProvider(
-            $this->eventDispatcherStub,
             $this->metaDataNormalizerStub,
             $this->contextStub,
             $this->validatorStub,

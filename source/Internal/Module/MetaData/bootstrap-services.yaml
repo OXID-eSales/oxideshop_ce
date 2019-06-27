@@ -90,15 +90,19 @@ services:
   OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidatorInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidatorAggregate
     arguments:
+      - '@oxid_esales.module.meta_data.validator.module_id_validator'
       - '@oxid_esales.module.meta_data.validator.shop_module_setting_boolean_validator'
 
   oxid_esales.module.meta_data.validator.shop_module_setting_boolean_validator:
     class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\ShopModuleSettingBooleanValidator
 
+  oxid_esales.module.meta_data.validator.module_id_validator:
+    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\ModuleIdValidator
+
   OxidEsales\EshopCommunity\Internal\Module\MetaData\Converter\MetaDataConverterInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Converter\MetaDataConverterAggregate
     arguments:
-      - '@oxid_esales.module.setup.converter.shop_module_settings_boolean_converter'
+      - '@oxid_esales.module.meta_data.converter.shop_module_settings_boolean_converter'
 
-  oxid_esales.module.setup.converter.shop_module_settings_boolean_converter:
+  oxid_esales.module.meta_data.converter.shop_module_settings_boolean_converter:
     class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Converter\ShopModuleSettingsBooleanConverter

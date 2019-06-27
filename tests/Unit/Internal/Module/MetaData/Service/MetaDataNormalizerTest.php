@@ -15,111 +15,19 @@ class MetaDataNormalizerTest extends TestCase
     {
         $metaData =
             [
-                'ID'          => 'value1',
-                'title'       => [
-                    'en' => 'title en',
-                    'de' => 'title de',
-                ],
-                'DESCRIPTION' => [
-                    'DE' => 'value1',
-                    'EN' => 'value2',
-                ],
-                'EXTEND'      => [
-                    '\ShopNameSpace\ShopClass1' => '\ModuleNameSpace\ModuleClass1',
-                    '\ShopNameSpace\ShopClass2' => '\ModuleNameSpace\ModuleClass2'
-                ],
-                'CONTROLLERS' => [
-                    'CamelCaseKey_1' => '\ModuleNameSpace\ModuleClass1',
-                    'CamelCaseKey_2' => '\ModuleNameSpace\ModuleClass2'
-                ],
-                'SETTINGS'    => [
+                'id'          => 'value1',
+                'settings'    => [
                     [
-                        'GROUP'       => 'value1',
-                        'NAME'        => 'value1',
-                        'TYPE'        => 'value1',
-                        'VALUE'       => 'value1',
-                        'CONSTRAINTS' => 'value1',
-                        'POSITION'    => 1
+                        'constraints' => 'value1',
                     ],
-                    [
-                        'GROUP'       => 'value2',
-                        'NAME'        => 'value2',
-                        'TYPE'        => 'value2',
-                        'VALUE'       => 'value2',
-                        'CONSTRAINTS' => 'value2',
-                        'POSITION'    => 2
-                    ],
-                ],
-                'BLOCKS'      => [
-                    [
-                        'TEMPLATE' => 'value1',
-                        'BLOCK'    => 'value1',
-                        'FILE'     => 'value1',
-                        'POSITION' => 'value1'
-                    ],
-                    [
-                        'TEMPLATE' => 'value2',
-                        'BLOCK'    => 'value2',
-                        'FILE'     => 'value2',
-                        'POSITION' => 'value2'
-                    ],
-                ],
-                'FILES' => [
-                    'className' => 'dir/filename.php',
                 ],
             ];
         $expectedNormalizedData = [
             'id'          => 'value1',
-            'title'       => [
-                'en' => 'title en',
-                'de' => 'title de',
-            ],
-            'description' => [
-                'de' => 'value1',
-                'en' => 'value2',
-            ],
-            'extend'      => [
-                '\ShopNameSpace\ShopClass1' => '\ModuleNameSpace\ModuleClass1',
-                '\ShopNameSpace\ShopClass2' => '\ModuleNameSpace\ModuleClass2'
-            ],
-            'controllers' => [
-                'CamelCaseKey_1' => '\ModuleNameSpace\ModuleClass1',
-                'CamelCaseKey_2' => '\ModuleNameSpace\ModuleClass2'
-            ],
             'settings'    => [
                 [
-                    'group'       => 'value1',
-                    'name'        => 'value1',
-                    'type'        => 'value1',
-                    'value'       => 'value1',
                     'constraints' => ['value1'],
-                    'position'    => 1
                 ],
-                [
-                    'group'       => 'value2',
-                    'name'        => 'value2',
-                    'type'        => 'value2',
-                    'value'       => 'value2',
-                    'constraints' => ['value2'],
-                    'position'    => 2
-                ],
-            ],
-            'blocks'      => [
-                [
-                    'template' => 'value1',
-                    'block'    => 'value1',
-                    'file'     => 'value1',
-                    'position' => 'value1'
-                ],
-                [
-                    'template' => 'value2',
-                    'block'    => 'value2',
-                    'file'     => 'value2',
-                    'position' => 'value2'
-                ],
-            ],
-            'files' => [
-                'classname' => 'dir/filename.php',
             ],
         ];
 

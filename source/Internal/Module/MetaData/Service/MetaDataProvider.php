@@ -8,7 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Service;
 
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Converter\MetaDataConverterInterface;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\BadMetaDataFoundEvent;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\InvalidMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidatorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -35,7 +34,7 @@ class MetaDataProvider implements MetaDataProviderInterface
     const METADATA_EVENTS = 'events';
     const METADATA_TEMPLATES = 'templates';
     const METADATA_SETTINGS = 'settings';
-    const METADATA_SMARTY_PLUGIN_DIRECTORIES = 'smartyplugindirectories';
+    const METADATA_SMARTY_PLUGIN_DIRECTORIES = 'smartyPluginDirectories';
     const METADATA_FILEPATH = 'metaDataFilePath';
     const METADATA_FILES = 'files';
 
@@ -69,20 +68,17 @@ class MetaDataProvider implements MetaDataProviderInterface
     private $metaDataConverter;
 
     /**
-     * @param EventDispatcherInterface    $eventDispatcher
      * @param MetaDataNormalizerInterface $metaDataNormalizer
      * @param BasicContextInterface       $context
      * @param MetaDataValidatorInterface  $metaDataValidator
      * @param MetaDataConverterInterface  $metaDataConverter
      */
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
         MetaDataNormalizerInterface $metaDataNormalizer,
         BasicContextInterface $context,
         MetaDataValidatorInterface $metaDataValidator,
         MetaDataConverterInterface $metaDataConverter
     ) {
-        $this->eventDispatcher = $eventDispatcher;
         $this->metaDataNormalizer = $metaDataNormalizer;
         $this->context = $context;
         $this->metaDataValidatorService = $metaDataValidator;
@@ -127,7 +123,6 @@ class MetaDataProvider implements MetaDataProviderInterface
         $moduleData = $this->metaDataConverter->convert($moduleData);
         $normalizedMetaData = $this->metaDataNormalizer->normalizeData($moduleData);
 
-        $normalizedMetaData[static::METADATA_ID] = $this->sanitizeMetaDataId($normalizedMetaData);
         if (isset($normalizedMetaData[static::METADATA_EXTEND])) {
             $normalizedMetaData[static::METADATA_EXTEND] = $this->sanitizeExtendedClasses($normalizedMetaData);
         }
@@ -148,34 +143,6 @@ class MetaDataProvider implements MetaDataProviderInterface
         $normalizedMetaData[static::METADATA_FILEPATH] = $this->filePath;
 
         return $normalizedMetaData;
-    }
-
-    /**
-     * @return string
-     */
-    private function getModuleDirectoryName(): string
-    {
-        return trim(basename(\dirname($this->filePath)), DIRECTORY_SEPARATOR);
-    }
-
-    /**
-     * @param array $metaData
-     *
-     * @return string
-     */
-    private function sanitizeMetaDataId(array $metaData): string
-    {
-        $metaDataId = $metaData[static::METADATA_ID] ?? '';
-        if ('' === $metaDataId) {
-            $message = 'No metadata key "id" was not found in ' . $this->filePath;
-
-            $event = new BadMetaDataFoundEvent($this->filePath, $message);
-            $this->eventDispatcher->dispatch($event::NAME, $event);
-
-            $metaDataId = trim(basename($this->getModuleDirectoryName()), DIRECTORY_SEPARATOR);
-        }
-
-        return $metaDataId;
     }
 
     /**

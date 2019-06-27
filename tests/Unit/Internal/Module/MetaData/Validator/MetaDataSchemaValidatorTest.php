@@ -7,11 +7,11 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Configuration\Validator;
 
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataKeyException;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataSchemataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataSchemaValidator;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MetaDataSchemaValidatorTest extends TestCase
 {
@@ -27,22 +27,21 @@ class MetaDataSchemaValidatorTest extends TestCase
         $metaDataToValidate = [];
 
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);
-        $eventDispatcherStub = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
-        $validator = new MetaDataSchemaValidator($metaDataSchemata, $eventDispatcherStub);
+        $validator = new MetaDataSchemaValidator($metaDataSchemata);
 
         $validator->validate('path/to/metadata.php', '1.2', $metaDataToValidate);
     }
 
-    public function testValidateDispatchesEventOnUnsupportedMetaDataKey()
+    public function testValidateUnsupportedMetaDataKey()
     {
+        $this->expectException(UnsupportedMetaDataKeyException::class);
+
         $metaDataToValidate = [
             'smartyPluginDirectories' => [],
         ];
 
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);
-        $eventDispatcherMock = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
-        $eventDispatcherMock->expects($this->once())->method('dispatch');
-        $validator = new MetaDataSchemaValidator($metaDataSchemata, $eventDispatcherMock);
+        $validator = new MetaDataSchemaValidator($metaDataSchemata);
 
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
@@ -50,8 +49,10 @@ class MetaDataSchemaValidatorTest extends TestCase
     /**
      * This test covers metaData sections like 'blocks' or 'settings', which have their own well defined subKeys
      */
-    public function testValidateDispatchesEventOnUnsupportedMetaDataSubKey()
+    public function testValidateUnsupportedMetaDataSubKey()
     {
+        $this->expectException(UnsupportedMetaDataKeyException::class);
+
         $metaDataToValidate = [
             '20only'   => 'value',
             'section1' => [
@@ -67,9 +68,7 @@ class MetaDataSchemaValidatorTest extends TestCase
         ];
 
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);
-        $eventDispatcherMock = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
-        $eventDispatcherMock->expects($this->once())->method('dispatch');
-        $validator = new MetaDataSchemaValidator($metaDataSchemata, $eventDispatcherMock);
+        $validator = new MetaDataSchemaValidator($metaDataSchemata);
 
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
@@ -83,27 +82,15 @@ class MetaDataSchemaValidatorTest extends TestCase
             '20only'                                             => 'value',
             'section1'                                           => [
                 [
-                    'subkey1' => 'value1',
-                    'subkey2' => 'value1',
+                    'subKey1' => 'value1',
+                    'subKey2' => 'value1',
                 ],
                 [
-                    'subkey1' => 'value2',
-                    'subkey2' => 'value2',
+                    'subKey1' => 'value2',
+                    'subKey2' => 'value2',
                 ],
             ],
             MetaDataProvider::METADATA_EXTEND                    => [
-                'excludedsubkey1' => 'value2',
-                'excludedsubkey2' => 'value2',
-            ],
-            MetaDataProvider::METADATA_CONTROLLERS               => [
-                'excludedsubkey1' => 'value2',
-                'excludedsubkey2' => 'value2',
-            ],
-            MetaDataProvider::METADATA_EVENTS                    => [
-                'excludedsubkey1' => 'value2',
-                'excludedsubkey2' => 'value2',
-            ],
-            MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES => [
                 'excludedsubkey1' => 'value2',
                 'excludedsubkey2' => 'value2',
             ],
@@ -117,14 +104,15 @@ class MetaDataSchemaValidatorTest extends TestCase
         ];
 
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);
-        $eventDispatcherStub = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
-        $validator = new MetaDataSchemaValidator($metaDataSchemata, $eventDispatcherStub);
+        $validator = new MetaDataSchemaValidator($metaDataSchemata);
 
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
 
     public function testValidateIsCaseSensitive()
     {
+        $this->expectException(UnsupportedMetaDataKeyException::class);
+
         $metaDataToValidate = [
             '20ONLY'   => 'value', // This UPPERCASE key will not validate
             'section1' => [
@@ -140,9 +128,7 @@ class MetaDataSchemaValidatorTest extends TestCase
         ];
 
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);
-        $eventDispatcherMock = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
-        $eventDispatcherMock->expects($this->once())->method('dispatch');
-        $validator = new MetaDataSchemaValidator($metaDataSchemata, $eventDispatcherMock);
+        $validator = new MetaDataSchemaValidator($metaDataSchemata);
 
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
@@ -157,8 +143,7 @@ class MetaDataSchemaValidatorTest extends TestCase
         ];
 
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);
-        $eventDispatcherStub = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
-        $validator = new MetaDataSchemaValidator($metaDataSchemata, $eventDispatcherStub);
+        $validator = new MetaDataSchemaValidator($metaDataSchemata);
 
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
@@ -169,15 +154,14 @@ class MetaDataSchemaValidatorTest extends TestCase
             // missing '20only'        => 'value',
             'section1' => [
                 [
-                    'subkey1' => 'value1',
-                    'subkey2' => 'value1'
+                    'subKey1' => 'value1',
+                    'subKey2' => 'value1'
                 ],
             ]
         ];
 
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);
-        $eventDispatcherStub = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
-        $validator = new MetaDataSchemaValidator($metaDataSchemata, $eventDispatcherStub);
+        $validator = new MetaDataSchemaValidator($metaDataSchemata);
 
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
@@ -189,14 +173,13 @@ class MetaDataSchemaValidatorTest extends TestCase
             'section1' => [
                 [
                     // missing 'subKey1' => 'value1',
-                    'subkey2' => 'value1'
+                    'subKey2' => 'value1'
                 ],
             ]
         ];
 
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);
-        $eventDispatcherStub = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
-        $validator = new MetaDataSchemaValidator($metaDataSchemata, $eventDispatcherStub);
+        $validator = new MetaDataSchemaValidator($metaDataSchemata);
 
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }

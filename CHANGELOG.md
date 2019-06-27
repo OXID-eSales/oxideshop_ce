@@ -46,7 +46,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - New parameter in config file to change database connection charset - `dbCharset` [PR-670](https://github.com/OXID-eSales/oxideshop_ce/pull/670)
 
 - Events:
-    - `\OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\BadMetaDataFoundEvent`
     - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\BeforeModuleDeactivationEvent`
     - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\FinalizingModuleActivationEvent`
     - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\FinalizingModuleDeactivationEvent`

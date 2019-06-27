@@ -726,7 +726,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _setUser($oUser)
     {
-
         $this->oxorder__oxuserid = new \OxidEsales\Eshop\Core\Field($oUser->getId());
 
         // bill address
@@ -1012,7 +1011,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _updateWishlist($aArticleList, $oUser)
     {
-
         foreach ($aArticleList as $oContent) {
             if (($sWishId = $oContent->getWishId())) {
                 // checking which wishlist user uses ..
@@ -1989,7 +1987,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         if (!$iValidState) {
             // validating payment
-            $iValidState = $this->validatePayment($oBasket);
+            $iValidState = $this->validatePayment($oBasket, $oUser);
         }
 
         if (!$iValidState) {
@@ -2092,15 +2090,16 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Checks if payment used for current order is available and active.
      * Throws exception if not available
      *
-     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket basket object
+     * @param \OxidEsales\Eshop\Application\Model\Basket    $oBasket basket object
+     * @param \OxidEsales\Eshop\Application\Model\User|null $oUser   user object
      *
      * @return null
      */
-    public function validatePayment($oBasket)
+    public function validatePayment($oBasket, $oUser = null)
     {
         $paymentId = $oBasket->getPaymentId();
 
-        if (!$this->isValidPaymentId($paymentId) || !$this->isValidPayment($oBasket)) {
+        if (!$this->isValidPaymentId($paymentId) || !$this->isValidPayment($oBasket, $oUser)) {
             return self::ORDER_STATE_INVALIDPAYMENT;
         }
     }
@@ -2267,11 +2266,12 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Returns true if payment is valid.
      *
-     * @param \OxidEsales\Eshop\Application\Model\Basket $basket
+     * @param \OxidEsales\Eshop\Application\Model\Basket    $basket
+     * @param \OxidEsales\Eshop\Application\Model\User|null $oUser  user object
      *
      * @return bool
      */
-    private function isValidPayment($basket)
+    private function isValidPayment($basket, $oUser = null)
     {
         $paymentId = $basket->getPaymentId();
         $paymentModel = oxNew(EshopPayment::class);
@@ -2280,10 +2280,14 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         $dynamicValues = $this->getDynamicValues();
         $shopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
 
+        if (!$oUser) {
+            $oUser = $this->getUser();
+        }
+
         return $paymentModel->isValidPayment(
             $dynamicValues,
             $shopId,
-            $this->getUser(),
+            $oUser,
             $basket->getPriceForPayment(),
             $basket->getShippingId()
         );
@@ -2294,7 +2298,8 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     private function getDynamicValues()
     {
-        $dynamicValues = $this->getSession()->getVariable('dynvalue');
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $dynamicValues = $session->getVariable('dynvalue');
 
         if (!$dynamicValues) {
             $dynamicValues = Registry::getRequest()->getRequestParameter('dynvalue');

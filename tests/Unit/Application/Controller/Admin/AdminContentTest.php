@@ -22,5 +22,4 @@ class AdminContentTest extends \OxidTestCase
         $oView = oxNew('Admin_Content');
         $this->assertEquals('content.tpl', $oView->render());
     }
-
 }

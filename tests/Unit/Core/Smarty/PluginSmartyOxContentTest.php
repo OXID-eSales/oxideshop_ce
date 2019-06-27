@@ -21,7 +21,6 @@ if (file_exists($filePath)) {
 
 class PluginSmartyOxContentTest extends \OxidTestCase
 {
-
     public function testGetContentWhenShopIsNotProductiveAndContentDoesNotExist()
     {
         oxTestModules::addFunction("oxconfig", "getActiveShop", "{ \$oShop = oxNew('oxShop');; \$oShop->oxshops__oxproductive = new oxField();  return \$oShop;}");

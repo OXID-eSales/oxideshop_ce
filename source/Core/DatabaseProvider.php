@@ -298,8 +298,15 @@ class DatabaseProvider
             ]
         ];
 
-        /** The charset has to be set during the connection to the database */
-        $charset = 'utf8';
+        /**
+         * The charset has to be set during the connection to the database.
+         */
+        $charset = (string) $this->getConfigParam('dbCharset');
+        //backwards compatibility with old config files.
+        if (null == $charset) {
+            $charset = 'utf8';
+        }
+        
         $connectionParameters['default'] = array_merge($connectionParameters['default'], ['connectionCharset' => $charset]);
 
         return $connectionParameters;

@@ -599,9 +599,8 @@ class Basket extends \OxidEsales\Eshop\Core\Base
             if (isset($this->_aBasketContents[$sItemKey])) {
                 $sArticleId = $this->_aBasketContents[$sItemKey]->getProductId();
                 if ($sArticleId) {
-                    $this->getSession()
-                        ->getBasketReservations()
-                        ->discardArticleReservation($sArticleId);
+                    $session = \OxidEsales\Eshop\Core\Registry::getSession();
+                    $session->getBasketReservations()->discardArticleReservation($sArticleId);
                 }
             }
         }
@@ -1559,7 +1558,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
         }
 
         try { // trying to load voucher and apply it
-
             $oVoucher = oxNew(\OxidEsales\Eshop\Application\Model\Voucher::class);
 
             if (!$this->_blSkipVouchersAvailabilityChecking) {
@@ -1750,11 +1748,12 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     public function deleteBasket()
     {
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
         $this->_aBasketContents = [];
-        $this->getSession()->delBasket();
+        $session->delBasket();
 
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
-            $this->getSession()->getBasketReservations()->discardReservations();
+            $session->getBasketReservations()->discardReservations();
         }
 
         // merging basket history

@@ -9,20 +9,20 @@
  * Short description: Brutto-Brutto user group Price C,
  * Test case is moved from selenium test "testFrontendPriceC"
  */
-$aData = array (
-        'articles' => array (
-                0 => array (
+$aData = array(
+        'articles' => array(
+                0 => array(
                         'oxid'            => "variantDiscountTestParentArticle",
                         'oxprice'         => 50.00,
                 ),
-                1 => array (
+                1 => array(
                         'oxid'            => 'variantDiscountTestChildArticle',
                         'oxparentid'      => 1000,
                         'oxprice'         => 50.00,
                 ),
         ),
-        'categories' => array (
-                0 =>  array (
+        'categories' => array(
+                0 =>  array(
                         'oxid'       => "variantDiscountTestCategory",
                         'oxparentid' => 'oxrootid',
                         'oxshopid'   => 1,
@@ -30,8 +30,8 @@ $aData = array (
                         'oxarticles' => array( 'variantDiscountTestChildArticle' )
                 ),
         ),
-        'discounts' => array (
-                0 => array (
+        'discounts' => array(
+                0 => array(
                         'oxid'         => 'variantDiscountDiscountId',
                         'oxaddsum'     => 20,
                         'oxaddsumtype' => 'abs',
@@ -40,17 +40,17 @@ $aData = array (
                         'oxamount' => 0,
                         'oxamountto' => 99999,
                         'oxactive' => 1,
-                        'oxcategories' => array ( 'variantDiscountTestCategory' ),
+                        'oxcategories' => array( 'variantDiscountTestCategory' ),
                         'oxsort'       => 10,
                 ),
         ),
-        'expected' => array (
-            1001 => array (
+        'expected' => array(
+            1001 => array(
                         'base_price'        => '50,00',
                         'price'             => '30,00',
                 ),
         ),
-        'options' => array (
+        'options' => array(
                 'config' => array(
                         'blEnterNetPrice' => false,
                         'blShowNetPrice' => false,

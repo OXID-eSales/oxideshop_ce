@@ -20,7 +20,6 @@ use \oxTestModules;
 
 class modOxUtilsObject_oxUtilsObject extends \oxUtilsObject
 {
-
     public function setClassNameCache($aValue)
     {
         parent::$_aInstanceCache = $aValue;
@@ -30,7 +29,6 @@ class modOxUtilsObject_oxUtilsObject extends \oxUtilsObject
     {
         return parent::$_aInstanceCache;
     }
-
 }
 
 /**
@@ -190,7 +188,8 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     public function testOxNewCreationOfNonExistingClassContainsClassNameInExceptionMessage()
     {
-        $this->expectException(SystemComponentException::class); $this->expectExceptionMessage( 'non_existing_class');
+        $this->expectException(SystemComponentException::class);
+        $this->expectExceptionMessage('non_existing_class');
 
         oxNew("non_existing_class");
     }

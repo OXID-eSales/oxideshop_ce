@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Core\Controller;
 
 use OxidEsales\EshopCommunity\Core\ShopVersion;
 use Psr\Container\ContainerInterface;
+use OxidEsales\EshopCommunity\Internal\ShopEvents\AfterRequestProcessedEvent;
 
 /**
  * Base view class. Collects and passes data to template engine, sets some global
@@ -290,11 +291,12 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function getBelboonParam()
     {
-        if ($sBelboon = $this->getSession()->getVariable('belboon')) {
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        if ($sBelboon = $session->getVariable('belboon')) {
             return $sBelboon;
         }
         if (($sBelboon = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('belboon'))) {
-            $this->getSession()->setVariable('belboon', $sBelboon);
+            $session->setVariable('belboon', $sBelboon);
         }
 
         return $sBelboon;
@@ -532,6 +534,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
             if (method_exists($this, $sFunction)) {
                 $sNewAction = $this->$sFunction();
                 self::$_blExecuted = true;
+                $this->dispatchEvent(new AfterRequestProcessedEvent);
 
                 if (isset($sNewAction)) {
                     $this->_executeNewAction($sNewAction);
@@ -585,10 +588,12 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
                 throw $exception;
             }
 
+            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+
             // building redirect path ...
             $header = ($className) ? "cl=$className&" : ''; // adding view name
             $header .= ($pageParams) ? "$pageParams&" : ''; // adding page params
-            $header .= $this->getSession()->sid(); // adding session Id
+            $header .= $session->sid(); // adding session Id
 
             $url = $myConfig->getCurrentShopUrl($this->isAdmin());
 
@@ -601,6 +606,8 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
             }
 
             $this->onExecuteNewAction();
+
+            $this->dispatchEvent(new AfterRequestProcessedEvent);
 
             //#M341 do not add redirect parameter
             \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($url, (bool) $myConfig->getRequestParameter('redirected'), 302);
@@ -871,10 +878,10 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function getSidForWidget()
     {
-        $oSession = $this->getSession();
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
         $sid = null;
-        if (!$oSession->isActualSidInCookie()) {
-            $sid = $oSession->getId();
+        if (!$session->isActualSidInCookie()) {
+            $sid = $session->getId();
         }
 
         return $sid;

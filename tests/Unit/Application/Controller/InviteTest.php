@@ -203,5 +203,4 @@ class InviteTest extends \OxidTestCase
 
         $this->assertEquals(null, $oView->render());
     }
-
 }

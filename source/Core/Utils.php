@@ -1072,7 +1072,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         $this->_simpleRedirect($sUrl, $sHeaderCode);
 
         try { //may occur in case db is lost
-            $this->getSession()->freeze();
+            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $session->freeze();
         } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
             \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
             //do nothing else to make sure the redirect takes place
@@ -1098,8 +1099,20 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     protected function prepareToExit()
     {
-        $this->getSession()->freeze();
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $session->freeze();
         $this->commitFileCache();
+
+        $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\ShopEvents\ApplicationExitEvent());
+
+        if ($this->isSearchEngine()) {
+            $header = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\Header::class);
+            $header->setNonCacheable();
+        }
+
+        //Send headers that have been registered
+        $header = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\Header::class);
+        $header->sendHeader();
     }
 
     /**

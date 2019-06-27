@@ -28,7 +28,7 @@ class MdvariantTest extends \OxidTestCase
     {
         parent::setUp();
 
-        $aNames = Array("Red|S|Silk",
+        $aNames = array("Red|S|Silk",
                         "Red|M|Silk",
                         "Red|M|Wool",
                         "Red|L|Silk",
@@ -47,8 +47,8 @@ class MdvariantTest extends \OxidTestCase
                         "Magenta|S|Silk"
         );
 
-        $aPrices = Array(1, 1, 1, 1, 2, 3, 4, 4, 4, 4, 4, 4, 5, 5, 1, 2, 3);
-        $aArtIds = Array("id01",
+        $aPrices = array(1, 1, 1, 1, 2, 3, 4, 4, 4, 4, 4, 4, 5, 5, 1, 2, 3);
+        $aArtIds = array("id01",
                          "id02",
                          "id03",
                          "id04",
@@ -67,7 +67,7 @@ class MdvariantTest extends \OxidTestCase
                          "id17",
         );
 
-        $aLinks = Array("ld01",
+        $aLinks = array("ld01",
                         "ld02",
                         "ld03",
                         "ld04",
@@ -96,8 +96,6 @@ class MdvariantTest extends \OxidTestCase
                 $aLinks[$i]
             );
         }
-
-
     }
 
     /**
@@ -161,8 +159,8 @@ class MdvariantTest extends \OxidTestCase
         $oVariant2 = oxNew('oxMdVariant');
         $oVariant2->setName("testas2");
 
-        $this->_oSubj->setMdSubvariants(Array($oVariant1, $oVariant2));
-        $this->assertEquals(Array($oVariant1, $oVariant2), $this->_oSubj->getMdSubvariants());
+        $this->_oSubj->setMdSubvariants(array($oVariant1, $oVariant2));
+        $this->assertEquals(array($oVariant1, $oVariant2), $this->_oSubj->getMdSubvariants());
     }
 
     /**
@@ -194,7 +192,7 @@ class MdvariantTest extends \OxidTestCase
         $oVariant2 = oxNew('oxMdVariant');
         $oVariant2->setName("testas2");
 
-        $this->_oSubj->setMdSubvariants(Array($oVariant1, $oVariant2));
+        $this->_oSubj->setMdSubvariants(array($oVariant1, $oVariant2));
         $this->assertSame($oVariant1, $this->_oSubj->getFirstMdSubvariant());
     }
 
@@ -358,7 +356,7 @@ class MdvariantTest extends \OxidTestCase
      * 0002030: Option "Calculate Product Price" does not work with variants.
      * Check if no price returned when unset Calculate Product Price.
      */
-    function testGetPriceNoPriceCalculate()
+    public function testGetPriceNoPriceCalculate()
     {
         $this->getConfig()->setConfigParam('bl_perfLoadPrice', false);
 
@@ -371,5 +369,4 @@ class MdvariantTest extends \OxidTestCase
         $iPrice = $oSubj->getFPrice();
         $this->assertTrue(empty($iPrice));
     }
-
 }

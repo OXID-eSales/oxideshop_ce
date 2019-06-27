@@ -12,7 +12,6 @@ use \oxRegistry;
 
 class WidgetControlTest extends \OxidTestCase
 {
-
     protected function tearDown()
     {
         parent::tearDown();
@@ -104,5 +103,4 @@ class WidgetControlTest extends \OxidTestCase
 
         $this->assertEquals("oxwCookieNote", Registry::getConfig()->getActiveView()->getClassName());
     }
-
 }

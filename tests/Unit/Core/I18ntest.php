@@ -16,7 +16,6 @@ use oxTestModules;
 
 class _oxI18n extends \oxI18n
 {
-
     public function getClassVar($sName)
     {
         return $this->$sName;
@@ -31,7 +30,6 @@ class _oxI18n extends \oxI18n
     {
         $this->_blUseLazyLoading = true;
     }
-
 }
 
 class I18ntest extends \OxidTestCase
@@ -91,7 +89,6 @@ class I18ntest extends \OxidTestCase
 
     public function testUpdateAndSeoIsOnMock()
     {
-
         $oSeo = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('markAsExpired'));
         $oSeo->expects($this->once())->method('markAsExpired')->with(
             $this->equalTo('testa'),
@@ -374,7 +371,6 @@ class I18ntest extends \OxidTestCase
         $sExpRes = "oxid = '',oxshopid = '" . $shopId . "',oxtitle = '',oxpos = '9999',oxdisplayinbasket = '0'";
 
         $this->assertEquals($sExpRes, $oObj->UNITgetUpdateFields());
-
     }
 
     public function testGetSelectFieldsLang0()
@@ -882,7 +878,6 @@ class I18ntest extends \OxidTestCase
         $oObj->setEnableMultilang(false);
 
         $this->assertEquals(array(), $oObj->UNITGetAllFields('simeple?'));
-
     }
 
     /**

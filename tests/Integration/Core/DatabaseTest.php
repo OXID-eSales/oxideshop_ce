@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
 use oxDb;
 use OxidEsales\Eshop\Core\ConfigFile;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseNotConfiguredException;
 use OxidEsales\EshopCommunity\Core\Registry;
@@ -59,7 +60,8 @@ class DatabaseTest extends UnitTestCase
 
         $this->setProtectedClassProperty(oxDb::getInstance(), 'db', $dbMock);
 
-        $this->expectException('Exception'); $this->expectExceptionMessage( $exceptionMessage);
+        $this->expectException('Exception');
+        $this->expectExceptionMessage($exceptionMessage);
 
         oxDb::getDb()->connect();
     }
@@ -165,6 +167,33 @@ class DatabaseTest extends UnitTestCase
 
         $this->assertSame(1, count($tableDescription));
         $this->assertSame(2, count($tableDescriptionTwo));
+    }
+
+    /**
+     * Test default connection encoding is utf8
+     */
+    public function testDefaultDatabaseConnectionEncoding()
+    {
+        $connection = DatabaseProvider::getDb();
+
+        $result = $connection->getRow("SHOW VARIABLES LIKE  'character_set_connection';");
+        $this->assertSame("utf8", $result[1]);
+    }
+
+    /**
+     * Test default connection encoding is utf8
+     */
+    public function testSpecificDatabaseConnectionEncoding()
+    {
+        $configFile = Registry::get(ConfigFile::class);
+        $configFile->setVar('dbCharset', 'utf8mb4');
+        Registry::set(ConfigFile::class, $configFile);
+
+        $this->setProtectedClassProperty(DatabaseProvider::getInstance(), 'db', null);
+        $connection = DatabaseProvider::getDb();
+
+        $result = $connection->getRow("SHOW VARIABLES LIKE  'character_set_connection';");
+        $this->assertSame("utf8mb4", $result[1]);
     }
 
     /**

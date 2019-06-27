@@ -74,7 +74,6 @@ class AdditionalTablesTest extends MultilanguageTestCase
         $sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_NAME LIKE 'addtest_set1'";
         $result = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getOne($sql);
         $this->assertEquals('addtest_set1', $result);
-
     }
 
     /**
@@ -103,7 +102,6 @@ class AdditionalTablesTest extends MultilanguageTestCase
 
         $sql = "SELECT TITLE FROM " . getViewName('addtest', 0) . " WHERE OXID = '" . $oxid . "'";
         $this->assertSame('some default title', oxDb::getDb()->getOne($sql));
-
     }
 
     /**
@@ -133,7 +131,6 @@ class AdditionalTablesTest extends MultilanguageTestCase
 
         $sql = "SELECT TITLE FROM " . getViewName('addtest', 0) . " WHERE OXID = '" . $oxid . "'";
         $this->assertSame('some default title', oxDb::getDb()->getOne($sql));
-
     }
 
     /**
@@ -174,6 +171,4 @@ class AdditionalTablesTest extends MultilanguageTestCase
             oxDb::getDb()->execute("DROP TABLE IF EXISTS `" . $sub['TABLE_NAME'] . "`");
         }
     }
-
 }
-

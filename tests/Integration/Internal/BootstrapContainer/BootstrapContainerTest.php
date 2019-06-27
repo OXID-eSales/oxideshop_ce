@@ -17,11 +17,9 @@ use Psr\Container\ContainerInterface;
  */
 class BootstrapContainerTest extends UnitTestCase
 {
-
     public function testContainerBuilding()
     {
         $container = BootstrapContainerFactory::getBootstrapContainer();
         $this->assertInstanceOf(ContainerInterface::class, $container);
     }
-
 }

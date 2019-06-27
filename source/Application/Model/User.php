@@ -12,7 +12,7 @@ use OxidEsales\Eshop\Core\Exception\CookieException;
 use OxidEsales\Eshop\Core\Exception\UserException;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Password\Bridge\PasswordServiceBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface;
 use oxpasswordhasher;
 use oxsha512hasher;
 
@@ -171,7 +171,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * @var bool
      *
-     * @deprecated since v6.4.0 (2019-03-15); This property will be removed completely.
+     * @deprecated since v6.4.0 (2019-03-15); `\OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface`
+     *                                        was added as the new default for hashing passwords.
      */
     private $isOutdatedPasswordHashAlgorithmUsed = false;
 
@@ -333,7 +334,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getUserGroups($sOXID = null)
     {
-
         if (isset($this->_oGroups)) {
             return $this->_oGroups;
         }
@@ -416,9 +416,10 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _getWishListId()
     {
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
         $this->_sWishId = null;
         // check if we have to set it here
-        $oBasket = $this->getSession()->getBasket();
+        $oBasket = $session->getBasket();
         foreach ($oBasket->getContents() as $oBasketItem) {
             if ($this->_sWishId = $oBasketItem->getWishId()) {
                 // stop on first found
@@ -631,7 +632,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function load($oxID)
     {
-
         $blRet = parent::load($oxID);
 
         // convert date's to international format
@@ -920,7 +920,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function onOrderExecute($oBasket, $iSuccess)
     {
-
         if (is_numeric($iSuccess) && $iSuccess != 2 && $iSuccess <= 3) {
             //adding user to particular customer groups
             $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
@@ -1243,7 +1242,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string $shopId   shopid
      * @param bool   $isAdmin  admin/non admin mode
      *
-     * @deprecated since v6.4.0 (2019-03-15); This method will be removed completely.
+     * @deprecated since v6.4.0 (2019-03-15); `\OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface`
+     *                                        was added as the new default for hashing passwords.
      *
      * @return string
      */
@@ -1276,7 +1276,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param int    $shopId
      * @param bool   $isAdmin
      *
-     * @deprecated since v6.4.0 (2019-03-15); This method will be removed completely.
+     * @deprecated since v6.4.0 (2019-03-15); `\OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface`
+     *                                        was added as the new default for hashing passwords.
      *
      * @return string
      */
@@ -1363,9 +1364,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         /** If needed, store a rehashed password with the authenticated user */
         if ($password && $this->isLoaded()) {
-            $algorithm = Registry::getConfig()->getConfigParam('passwordHashingAlgorithm', 'PASSWORD_BCRYPT');
             $passwordNeedsRehash = $this->isOutdatedPasswordHashAlgorithmUsed ||
-                                   $passwordServiceBridge->passwordNeedsRehash($passwordHashFromDatabase, $algorithm);
+                                   $passwordServiceBridge->passwordNeedsRehash($passwordHashFromDatabase);
             if ($passwordNeedsRehash) {
                 $generatedPasswordHash = $this->hashPassword($password);
                 $this->oxuser__oxpassword = new Field($generatedPasswordHash, Field::T_RAW);
@@ -1963,8 +1963,10 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param string $sPassword password to encode
      * @param string $sSalt     any unique string value
+     * @deprecated since v6.4.0 (2019-03-15); `\OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface`
+     *                                        was added as the new default for hashing passwords.
      *
-     * @deprecated since v6.4.0 (2019-03-15); This method will be removed completely. Use PasswordServiceBridgeInterface
+
      *
      * @return string
      */
@@ -2216,7 +2218,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function hasAccount()
     {
-
         return (bool) $this->oxuser__oxpassword->value;
     }
 
@@ -2249,7 +2250,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @throws UserException
      *
-     * @deprecated since v6.4.0 (2019-03-15); This method will be removed completely. Verify the password directly
+     * @deprecated since v6.4.0 (2019-03-15); `\OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface`
+     *                                        was added as the new default for hashing passwords.
      * against the password hash
      *
      * @return void
@@ -2560,7 +2562,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string            $userCondition
      * @param string            $shopCondition
      *
-     * @deprecated since v6.4.0 (2019-03-15); This method will be removed completely.
+     * @deprecated since v6.4.0 (2019-03-15); `\OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface`
+     *                                        was added as the new default for hashing passwords.
      *
      * @return string
      */
@@ -2580,7 +2583,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string            $password
      * @param DatabaseInterface $databaseb
      *
-     * @deprecated since v6.4.0 (2019-03-15); This method will be removed completely.
+     * @deprecated since v6.4.0 (2019-03-15); `\OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface`
+     *                                        was added as the new default for hashing passwords.
      *
      * @return string
      */

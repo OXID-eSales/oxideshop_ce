@@ -70,6 +70,4 @@ class FilesizeTest extends \OxidTestCase
 
         $this->assertEquals("1.3 GB", $sRes);
     }
-
-
 }

@@ -12,7 +12,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 class SystemRequirementsTest extends \OxidTestCase
 {
-
     public function testGetBytes()
     {
         $systemRequirements = new \OxidEsales\Eshop\Core\SystemRequirements();
@@ -426,12 +425,12 @@ class SystemRequirementsTest extends \OxidTestCase
             array('5.5.50', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
             array('5.6.0', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
             array('5.6.27', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
-            array('7.0.0', SystemRequirements::MODULE_STATUS_OK),
-            array('7.0.8-0ubuntu0.16.04.3', SystemRequirements::MODULE_STATUS_OK),
-            array('7.0.12-2ubuntu2', SystemRequirements::MODULE_STATUS_OK),
             array('7.1.0', SystemRequirements::MODULE_STATUS_OK),
-            array('7.1.22', SystemRequirements::MODULE_STATUS_OK),
-            array('7.2.0', SystemRequirements::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS)
+            array('7.1.8-0ubuntu0.16.04.3', SystemRequirements::MODULE_STATUS_OK),
+            array('7.1.12-2ubuntu2', SystemRequirements::MODULE_STATUS_OK),
+            array('7.2.0', SystemRequirements::MODULE_STATUS_OK),
+            array('7.2.22', SystemRequirements::MODULE_STATUS_OK),
+            array('7.3.0', SystemRequirements::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS)
         );
     }
 
@@ -514,13 +513,16 @@ class SystemRequirementsTest extends \OxidTestCase
             ]
         ];
 
-        $filterFunction = function($groupId, $moduleId, $status) {
-            if (($groupId === 'group_a') && ($moduleId === 'module_a'))
+        $filterFunction = function ($groupId, $moduleId, $status) {
+            if (($groupId === 'group_a') && ($moduleId === 'module_a')) {
                 $status = SystemRequirements::MODULE_STATUS_OK;
-            if (($groupId === 'group_a') && ($moduleId === 'module_b'))
+            }
+            if (($groupId === 'group_a') && ($moduleId === 'module_b')) {
                 $status = SystemRequirements::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS;
-            if (($groupId === 'group_b') && ($moduleId === 'module_c'))
+            }
+            if (($groupId === 'group_b') && ($moduleId === 'module_c')) {
                 $status = SystemRequirements::MODULE_STATUS_BLOCKS_SETUP;
+            }
 
             return $status;
         };

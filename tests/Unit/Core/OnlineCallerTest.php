@@ -19,7 +19,6 @@ use \OxidEsales\Eshop\Core\OnlineServerEmailBuilder;
  */
 class OnlineCallerTest extends \OxidTestCase
 {
-
     const SUT = 'oxOnlineCaller';
 
     public function testCallWhenSucceedsOnTheLastAllowedCall()
@@ -28,7 +27,11 @@ class OnlineCallerTest extends \OxidTestCase
         $oCaller = $this->getMockForAbstractClass(
             'oxOnlineCaller',
             array($this->_getMockedCurl(), $this->_getMockedEmailBuilder(), $this->_getMockedSimpleXML()),
-            '', true, true, true, array('_getXMLDocumentName', '_getServiceUrl')
+            '',
+            true,
+            true,
+            true,
+            array('_getXMLDocumentName', '_getServiceUrl')
         );
         $this->getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 4);
         $oCaller->call($this->_getRequest());
@@ -42,7 +45,11 @@ class OnlineCallerTest extends \OxidTestCase
         $oCaller = $this->getMockForAbstractClass(
             'oxOnlineCaller',
             array($this->_getMockedCurlWhichThrowsException(), $this->_getMockedEmailBuilder(), $this->_getMockedSimpleXML()),
-            '', true, true, true, array('_getXMLDocumentName', '_getServiceUrl')
+            '',
+            true,
+            true,
+            true,
+            array('_getXMLDocumentName', '_getServiceUrl')
         );
         $this->getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 4);
 
@@ -61,7 +68,11 @@ class OnlineCallerTest extends \OxidTestCase
         $oCaller = $this->getMockForAbstractClass(
             'oxOnlineCaller',
             array($this->_getMockedCurlWhichThrowsException(), $oEmailBuilder, $this->_getMockedSimpleXML()),
-            '', true, true, true, array('_getXMLDocumentName', '_getServiceUrl')
+            '',
+            true,
+            true,
+            true,
+            array('_getXMLDocumentName', '_getServiceUrl')
         );
         $oCaller->expects($this->any())->method('_getXMLDocumentName')->will($this->returnValue('testXML'));
         /** @var oxOnlineCaller $oCaller */
@@ -71,7 +82,7 @@ class OnlineCallerTest extends \OxidTestCase
         $this->assertSame(0, $this->getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
 
         /**
-         * Although no exception is thrown, the underlying error will be logged in EXCEPTION_LOG.txt
+         * Although no exception is thrown, the underlying error will be logged in oxideshop.log
          */
         $expectedExceptionClass = Exception::class;
         $this->assertLoggedException($expectedExceptionClass);
@@ -87,7 +98,11 @@ class OnlineCallerTest extends \OxidTestCase
         $oCaller = $this->getMockForAbstractClass(
             'oxOnlineCaller',
             array($oCurl, $this->_getMockedEmailBuilder(), $this->_getMockedSimpleXML()),
-            '', true, true, true, array('_getXMLDocumentName', '_getServiceUrl')
+            '',
+            true,
+            true,
+            true,
+            array('_getXMLDocumentName', '_getServiceUrl')
         );
         $this->getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 4);
         $oCaller->call($this->_getRequest());

@@ -21,6 +21,11 @@ use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use oxObjectException;
 use \OxidEsales\Eshop\Core\Field;
 use Psr\Container\ContainerInterface;
+use OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeModelUpdateEvent;
+use OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeModelDeleteEvent;
+use OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelUpdateEvent;
+use OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelDeleteEvent;
+use OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelInsertEvent;
 
 /**
  * Class BaseModel
@@ -788,6 +793,8 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
             return false;
         }
 
+        $this->dispatchEvent(new BeforeModelDeleteEvent($this));
+
         $this->_removeElement2ShopRelations($oxid);
 
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
@@ -852,6 +859,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         } else {
             $response = $this->_insert();
             $action = ACTION_INSERT;
+            $this->dispatchEvent(new AfterModelInsertEvent($this));
         }
 
         $this->onChange($action);
@@ -931,8 +939,6 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         return $query;
     }
 
-
-
     /**
      * This function is triggered before the record is updated.
      * If you make any update to the database record manually you should also call beforeUpdate() from your script.
@@ -941,6 +947,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      */
     public function beforeUpdate($oxid = null)
     {
+        $this->dispatchEvent(new BeforeModelUpdateEvent($this));
     }
 
     /**
@@ -953,6 +960,11 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      */
     public function onChange($action = null, $oxid = null)
     {
+        if (ACTION_DELETE == $action) {
+            $this->dispatchEvent(new AfterModelDeleteEvent($this));
+        } else {
+            $this->dispatchEvent(new AfterModelUpdateEvent($this));
+        }
     }
 
     /**

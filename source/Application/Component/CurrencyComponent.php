@@ -60,6 +60,8 @@ class CurrencyComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         }
 
         $iCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cur');
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+
         if (isset($iCur)) {
             $aCurrencies = $myConfig->getCurrencyArray();
             if (!isset($aCurrencies[$iCur])) {
@@ -70,7 +72,7 @@ class CurrencyComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             $myConfig->setActShopCurrency($iCur);
 
             // recalc basket
-            $oBasket = $this->getSession()->getBasket();
+            $oBasket = $session->getBasket();
             $oBasket->onUpdate();
         }
 
@@ -81,7 +83,7 @@ class CurrencyComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         //setting basket currency (M:825)
         if (!isset($oBasket)) {
-            $oBasket = $this->getSession()->getBasket();
+            $oBasket = $session->getBasket();
         }
         $oBasket->setBasketCurrency($this->_oActCur);
         parent::init();

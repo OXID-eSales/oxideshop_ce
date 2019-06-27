@@ -22,7 +22,6 @@ class ApplicationServerExporterTest extends \OxidEsales\TestingLibrary\UnitTestC
      */
     public function testExport($activeServers, $count, $expectedServerCollection)
     {
-
         $service = $this->getApplicationServerServiceMock($activeServers);
         $exporter = oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerExporter::class, $service);
 
@@ -31,7 +30,6 @@ class ApplicationServerExporterTest extends \OxidEsales\TestingLibrary\UnitTestC
         $this->assertCount($count, $appServers);
 
         $this->assertEquals($expectedServerCollection, $appServers[0]);
-
     }
 
     /**

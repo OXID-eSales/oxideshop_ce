@@ -12,7 +12,6 @@ use \oxDb;
  */
 class CategoryOrderAjaxTest extends \OxidTestCase
 {
-
     protected $_sArticleView = 'oxv_oxarticles_1_de';
     protected $_sObject2CategoryView = 'oxv_oxobject2category_1';
     protected $_sShopId = '1';
@@ -28,7 +27,7 @@ class CategoryOrderAjaxTest extends \OxidTestCase
 
         if ($this->getConfig()->getEdition() !== 'EE') :
             $this->setArticleViewTable('oxv_oxarticles_de');
-            $this->setObject2CategoryViewTable('oxobject2category');
+        $this->setObject2CategoryViewTable('oxobject2category');
         endif;
 
         $this->addToDatabase("replace into oxcategories set oxid='_testCategory', oxtitle='_testCategory', oxshopid='" . $this->getShopIdTest() . "'", 'oxcategories');
@@ -46,7 +45,6 @@ class CategoryOrderAjaxTest extends \OxidTestCase
         $this->addTeardownSql("delete from oxobject2category where oxobjectid like '_test%'");
         $this->addTeardownSql("delete from oxarticles where oxid like '_test%'");
         $this->addTeardownSql("delete from oxcategories where oxid like '_test%'");
-
     }
 
     public function setArticleViewTable($sParam)
@@ -199,5 +197,4 @@ class CategoryOrderAjaxTest extends \OxidTestCase
         $this->assertEquals(0, oxDb::getDb()->getOne("select oxpos from oxobject2category where oxobjectid='_testOxid1'"));
         $this->assertEquals(0, oxDb::getDb()->getOne("select oxpos from oxobject2category where oxobjectid='_testOxid2'"));
     }
-
 }

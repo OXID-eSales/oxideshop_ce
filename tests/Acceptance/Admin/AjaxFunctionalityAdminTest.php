@@ -741,7 +741,7 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
      */
     public function testAjaxDeliveryAssignProducts()
     {
-       // active config option blVariantsSelection
+        // active config option blVariantsSelection
         $this->callShopSC("oxConfig", null, null, array("blVariantsSelection" => array("type" => "bool", "value" => 'true')));
         $this->loginAdmin("Shop Settings", "Shipping Cost Rules");
         $this->changeAdminListLanguage('Deutsch');
@@ -926,7 +926,6 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
         $this->assertElementText("1 [EN] category šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]");
         $this->assertElementText("[last] [EN] category šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[11]/td[1]");
         $this->close();
-
     }
 
     /**
@@ -1212,11 +1211,11 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
     }
 
     /**
-     * ajax: Products -> Assign Accessories
+     * ajax: Products -> Assign Accessories and sort Accessories
      *
      * @group ajax
      */
-    public function testAjaxProductsAssignAccessories()
+    public function testAjaxProductsAssignAndSortAccessories()
     {
         $this->loginAdmin("Administer Products", "Products");
         $this->changeAdminListLanguage('Deutsch');
@@ -1251,6 +1250,25 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
         $this->click("container2_btn");
         $this->assertElementText("1001", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]");
         $this->assertElementText("10016", "//div[@id='container1_c']/table/tbody[2]/tr[7]/td[1]");
+
+        // check sort
+        $this->click("container1_btn");
+        $this->assertElementText("0", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[3]");
+        $this->assertElementText("0", "//div[@id='container2_c']/table/tbody[2]/tr[7]/td[3]");
+        $this->click("//div[@id='container2_c']/table/tbody[2]/tr[7]/td[1]");
+        $this->waitForItemAppear("orderup");
+        $this->click("orderup");
+        $this->assertElementText("0", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[3]");
+        $this->assertElementText("6", "//div[@id='container2_c']/table/tbody[2]/tr[7]/td[3]");
+        $firstRow = $this->getText("//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]");
+        $secondRow = $this->getText("//div[@id='container2_c']/table/tbody[2]/tr[2]/td[1]");
+        $this->click("//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]");
+        $this->waitForItemAppear("orderdown");
+        $this->click("orderdown");
+        $this->assertElementText($secondRow, "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]");
+        $this->assertElementText($firstRow, "//div[@id='container2_c']/table/tbody[2]/tr[2]/td[1]");
+        $this->assertElementText("0", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[3]");
+        $this->assertElementText("1", "//div[@id='container2_c']/table/tbody[2]/tr[2]/td[3]");
         $this->close();
     }
 

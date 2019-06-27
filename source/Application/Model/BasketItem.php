@@ -377,7 +377,8 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
 
         // checking for stock
         if ($this->getStockCheckStatus() == true) {
-            $dArtStockAmount = $this->getSession()->getBasket()->getArtStockInBasket($oArticle->getId(), $sItemKey);
+            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $dArtStockAmount = $session->getBasket()->getArtStockInBasket($oArticle->getId(), $sItemKey);
             $selectForUpdate = false;
             if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
                 $selectForUpdate = true;
@@ -604,7 +605,8 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
             $this->_sLink = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->cleanUrl($this->getArticle()->getLink(), ['force_sid']);
         }
 
-        return $this->getSession()->processUrl($this->_sLink);
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        return $session->processUrl($this->_sLink);
     }
 
     /**

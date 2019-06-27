@@ -29,7 +29,7 @@ class CmpShopTest extends \OxidTestCase
 
         $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('showOfflinePage'));
         $oUtils->expects($this->once())->method('showOfflinePage');
-        Registry::set(\OxidEsales\Eshop\Core\Utils::Class, $oUtils);
+        Registry::set(\OxidEsales\Eshop\Core\Utils::class, $oUtils);
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getConfigParam", "getActiveView", "getActiveShop"));
         $oConfig->expects($this->once())->method('getActiveView')->will($this->returnValue($oView));

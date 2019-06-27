@@ -11,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
  */
 class ModuleVariablesLocatorTest extends \OxidTestCase
 {
-
     public function testGetModuleVarFromDB()
     {
         $cache = $this->getMock('oxFileCache');
@@ -20,6 +19,6 @@ class ModuleVariablesLocatorTest extends \OxidTestCase
         $shopIdCalculator->expects($this->any())->method('getShopId')->will($this->returnValue($this->getShopId()));
 
         $moduleCache = oxNew('oxModuleVariablesLocator', $cache, $shopIdCalculator);
-        $this->assertEquals(Array("a7c40f631fc920687.20179984"), $moduleCache->getModuleVariable("aHomeCountry"));
+        $this->assertEquals(array("a7c40f631fc920687.20179984"), $moduleCache->getModuleVariable("aHomeCountry"));
     }
 }

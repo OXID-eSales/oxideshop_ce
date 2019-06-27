@@ -12,7 +12,6 @@ use \oxTestModules;
 
 class ContentTest extends \OxidTestCase
 {
-
     protected $_oContent = null;
     protected $_sShopId = null;
 

@@ -7,7 +7,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 class SubShopSpecificFileCacheTest extends \OxidTestCase
 {
-
     public function testSetGetCacheSubShopSpecific()
     {
         $sTest = "test val";

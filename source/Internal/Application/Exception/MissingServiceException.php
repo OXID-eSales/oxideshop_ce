@@ -13,5 +13,4 @@ namespace OxidEsales\EshopCommunity\Internal\Application\Exception;
  */
 class MissingServiceException extends \Exception
 {
-
 }

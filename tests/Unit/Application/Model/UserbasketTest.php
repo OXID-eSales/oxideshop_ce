@@ -13,7 +13,6 @@ use \oxTestModules;
 
 class UserbasketTest extends \OxidTestCase
 {
-
     private $_oUserBasket;
 
     /**
@@ -400,7 +399,6 @@ class UserbasketTest extends \OxidTestCase
 
         $this->assertEquals(3, $oBasket->addItemToBasket($sArtId, $dAmount, null, true));
         $this->assertEquals(3, $oBasket->addItemToBasket($sArtId, $dAmount, null, true));
-
     }
 
     /**

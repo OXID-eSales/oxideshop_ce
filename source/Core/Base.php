@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use oxSystemComponentException;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Basic class which is used as parent class by other OXID eShop classes.
@@ -16,13 +17,6 @@ use Psr\Container\ContainerInterface;
  */
 class Base
 {
-    /**
-     * oxsession instance
-     *
-     * @var \OxidEsales\Eshop\Core\Session
-     */
-    protected static $_oSession = null;
-
     /**
      * oxrights instance
      *
@@ -79,30 +73,6 @@ class Base
     }
 
     /**
-     * oxSession instance getter
-     *
-     * @return \OxidEsales\Eshop\Core\Session
-     */
-    public function getSession()
-    {
-        if (self::$_oSession == null) {
-            self::$_oSession = \OxidEsales\Eshop\Core\Registry::getSession();
-        }
-
-        return self::$_oSession;
-    }
-
-    /**
-     * oxSession instance setter
-     *
-     * @param \OxidEsales\Eshop\Core\Session $session session object
-     */
-    public function setSession($session)
-    {
-        self::$_oSession = $session;
-    }
-
-    /**
      * Active user getter
      *
      * @return \OxidEsales\Eshop\Application\Model\User
@@ -152,6 +122,20 @@ class Base
     public function setAdminMode($isAdmin)
     {
         self::$_blIsAdmin = $isAdmin;
+    }
+
+    /**
+     * Dispatch given event.
+     *
+     * @param \Symfony\Component\EventDispatcher\Event $event Event to dispatch
+     *
+     * @return \Symfony\Component\EventDispatcher\Event
+     */
+    public function dispatchEvent(\Symfony\Component\EventDispatcher\Event $event)
+    {
+        $container = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
+        $dispatcher = $container->get(EventDispatcherInterface::class);
+        return $dispatcher->dispatch($event::NAME, $event);
     }
 
     /**

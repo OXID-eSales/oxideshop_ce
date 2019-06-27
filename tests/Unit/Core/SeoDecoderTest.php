@@ -34,7 +34,6 @@ class SeoDecoderTest extends \OxidTestCase
                 $oDb->execute("ALTER TABLE `oxarticles` DROP `OXSEOID_1`");
                 $this->regenerateViews();
             }
-
         } catch (Exception $oEx) {
             // avoiding exceptions while removing columns ..
         }
@@ -315,7 +314,6 @@ class SeoDecoderTest extends \OxidTestCase
             // this forces redirect to "/oxideshop/eshop/source/asd" + "/"
             $this->assertEquals("asd/", $oD->UNITgetParams("/oxideshop/eshop/source/asd", "/oxideshop/eshop/source/"));
         } catch (Exception $oE) {
-
             if ($oE->getCode() === 123) {
                 $this->assertEquals("Admin-oxid/", $oD->UNITgetParams("/oxideshop/eshop/source/Admin-oxid/?pgNr=1", "/oxideshop/eshop/source/"));
                 $this->assertEquals("Admin-oxid/", $oD->UNITgetParams("/oxideshop/eshop/source/Admin-oxid/", "/oxideshop/eshop/source/"));
@@ -341,7 +339,6 @@ class SeoDecoderTest extends \OxidTestCase
             $_SERVER = array('SCRIPT_URI' => 'sRe', 'SCRIPT_NAME' => 'sPoxseo.phpa');
             $oD->processSeoCall();
             $this->assertEquals(array('test' => 'test', 'was' => 'was'), $_GET);
-
         } catch (Exception $e) {
         }
         $_GET = $aG;

@@ -44,7 +44,6 @@ class AddressTest extends \OxidTestCase
         $oSubj->oxaddress__oxcity = new oxField('Kaunas');
 
         $this->assertEquals("Street StreetNr, Kaunas", $oSubj->toString());
-
     }
 
     /**
@@ -61,7 +60,6 @@ class AddressTest extends \OxidTestCase
         $oSubj->oxaddress__oxcity = new oxField('Kaunas');
 
         $this->assertEquals("Lname, Street StreetNr, Kaunas", $oSubj->toString());
-
     }
 
     /**

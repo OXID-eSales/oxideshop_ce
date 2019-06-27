@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use OxidEsales\Eshop\Core\Registry;
 use oxManufacturer;
 use oxRegistry;
 use oxUBase;
@@ -88,8 +89,8 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      * list sorting rules. Loads list of articles which belong to this Manufacturer
      * Generates page navigation data
      * such as previous/next window URL, number of available pages, generates
-     * metatags info (\OxidEsales\Eshop\Application\Controller\FrontendController::_convertForMetaTags()) and returns name of
-     * template to render.
+     * metatags info (\OxidEsales\Eshop\Application\Controller\FrontendController::_convertForMetaTags()) and returns
+     * name of template to render.
      *
      * @return  string  $this->_sThisTemplate   current template file name
      */
@@ -178,7 +179,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      */
     protected function _addPageNrParam($sUrl, $iPage, $iLang = null)
     {
-        if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && ($oManufacturer = $this->getActManufacturer())) {
+        if (Registry::getUtils()->seoIsActive() && ($oManufacturer = $this->getActManufacturer())) {
             if ($iPage) {
                 // only if page number > 0
                 return $oManufacturer->getBaseSeoLink($iLang, $iPage);
@@ -195,7 +196,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      */
     public function generatePageNavigationUrl()
     {
-        if ((\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && ($oManufacturer = $this->getActManufacturer()))) {
+        if ((Registry::getUtils()->seoIsActive() && ($oManufacturer = $this->getActManufacturer()))) {
             return $oManufacturer->getLink();
         } else {
             return parent::generatePageNavigationUrl();

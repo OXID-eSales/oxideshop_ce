@@ -200,7 +200,7 @@ if (!function_exists("resizePng")) {
                 $imgWhite = imagecolorallocate($hDestinationImage, 255, 255, 255);
                 imagefill($hDestinationImage, 0, 0, $imgWhite);
                 imagecolortransparent($hDestinationImage, $imgWhite);
-                //end of fix
+            //end of fix
             } else {
                 imagealphablending($hDestinationImage, false);
                 imagesavealpha($hDestinationImage, true);

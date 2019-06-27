@@ -12,8 +12,8 @@
  */
 $aData = array(
     // Product
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
             // oxarticles db fields
             'oxid'                     => 1001,
             'oxprice'                  => 1382.42,
@@ -21,7 +21,7 @@ $aData = array(
             // Amount in basket
             'amount'                   => 2,
         ),
-        1 => array (
+        1 => array(
             // oxarticles db fields
             'oxid'                     => 1002,
             'oxprice'                  => 13.58,
@@ -30,7 +30,7 @@ $aData = array(
             'amount'                   => 14,
 
         ),
-        2 => array (
+        2 => array(
             // oxarticles db fields
             'oxid'                     => 1003,
             'oxprice'                  => 1756.66,
@@ -39,7 +39,7 @@ $aData = array(
             'amount'                   => 13,
 
         ),
-        3 => array (
+        3 => array(
             // oxarticles db fields
             'oxid'                     => 1004,
             'oxprice'                  => 13.64,
@@ -51,7 +51,7 @@ $aData = array(
     ),
     // Additional costs
     'costs' => array(
-	 // Wrappings
+     // Wrappings
         'wrapping' => array(
             // oxwrapping DB fields
             0 => array(
@@ -61,33 +61,33 @@ $aData = array(
                 'oxactive' => 1,
                
                 // If for article, specify here
-                'oxarticles' => array( 1001 )   
+                'oxarticles' => array( 1001 )
             ),
             1 => array(
-				'oxtype' => 'WRAP',
+                'oxtype' => 'WRAP',
                 'oxname' => 'testWrap9002',
                 'oxprice' => 1.47,
                 'oxactive' => 1,
               
                 // If for article, specify here
-                'oxarticles' => array( 1002 )   
+                'oxarticles' => array( 1002 )
             ),
            2 => array(
-				'oxtype' => 'WRAP',
+                'oxtype' => 'WRAP',
                 'oxname' => 'testWrap9003',
                 'oxprice' => 2.14,
                 'oxactive' => 1,
            
                 // If for article, specify here
-                'oxarticles' => array( 1003 )   
-            ), 
-			// Giftcard
+                'oxarticles' => array( 1003 )
+            ),
+            // Giftcard
            3 => array(
-				'oxtype' => 'CARD',
+                'oxtype' => 'CARD',
                 'oxname' => 'testCard9001',
                 'oxprice' => 2.97,
-                'oxactive' => 1, 
-            ),		
+                'oxactive' => 1,
+            ),
         ),
         // Delivery
         'delivery' => array(
@@ -113,25 +113,25 @@ $aData = array(
             ),
         ),
     ),
-	
+    
     // TEST EXPECTATIONS
-    'expected' => array (
+    'expected' => array(
         // Article expected prices: ARTICLE ID => ( Unit price, Total Price )
-        'articles' => array (
-            1001 => array ( '1.382,42', '2.764,84' ),
-            1002 => array ( '13,58', '190,12' ),
-            1003 => array ( '1.756,66', '22.836,58' ),
-            1004 => array ( '13,64', '845,68' ),
+        'articles' => array(
+            1001 => array( '1.382,42', '2.764,84' ),
+            1002 => array( '13,58', '190,12' ),
+            1003 => array( '1.756,66', '22.836,58' ),
+            1004 => array( '13,64', '845,68' ),
            
         ),
         // Expectations of other totals
-        'totals' => array (
+        'totals' => array(
             // Total BRUTTO
             'totalBrutto' => '26.637,22',
             // Total NETTO
             'totalNetto'  => '25.385,88',
             // Total VAT amount: vat% => total cost
-            'vats' => array (
+            'vats' => array(
                 19 => '441,45',
                 13 => '21,87',
                 3  => '665,14',
@@ -140,24 +140,24 @@ $aData = array(
             ),
             // Total delivery amounts
             'delivery' => array(
-			    'brutto' => '3,14',
+                'brutto' => '3,14',
                 'netto' => '3,05',
                 'vat' => '0,09'
             ),
             // Total payment amounts
             'payment' => array(
-			    'brutto' => '7,59',
+                'brutto' => '7,59',
                 'netto' => '7,37',
                 'vat' => '0,22'
             ),
-			// Total wrapping amounts
-            'wrapping' => array( 
+            // Total wrapping amounts
+            'wrapping' => array(
                 'brutto' => '56,36',
                 'netto' => '51,91',
                 'vat' => '4,45'
-			),
-			// Total giftcard amounts
-            'giftcard' => array (
+            ),
+            // Total giftcard amounts
+            'giftcard' => array(
                 'brutto' => '2,97',
                 'netto' => '2,88',
                 'vat' => '0,09'
@@ -167,14 +167,14 @@ $aData = array(
         ),
     ),
     // Test case options
-    'options' => array (
+    'options' => array(
         // Configs (real named)
         'config' => array(
             'blEnterNetPrice' => false,
             'blShowNetPrice' => false,
-			'blShowVATForDelivery'=> true,
-			'blShowVATForPayCharge'=> true,
-			'blShowVATForWrapping'=> true,
+            'blShowVATForDelivery'=> true,
+            'blShowVATForPayCharge'=> true,
+            'blShowVATForWrapping'=> true,
         ),
         // Other options
         'activeCurrencyRate' => 1,

@@ -15,6 +15,8 @@ use oxDb;
 use oxEmail;
 use oxField;
 use oxGroups;
+use OxidEsales\Eshop\Application\Model\Order;
+use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Model\RssFeed;
@@ -970,11 +972,16 @@ class UtfTest extends \OxidTestCase
             $fieldsToCheck[] = 'oxorderarticles__oxerpstatus';
         }
 
+        $order = oxNew(Order::class);
+        $order->setId('_orderArticleId');
+        $order->save();
+
         $orderArticle = oxNew('oxOrderArticle');
         $orderArticle->setId('_testOrder');
         foreach ($fieldsToCheck as $fieldName) {
             $orderArticle->{$fieldName} = new oxField($value);
         }
+        $orderArticle->oxorderarticles__oxorderid = new Field($order->getId());
         $orderArticle->save();
 
         $orderArticle = oxNew('oxOrderArticle');
@@ -1152,7 +1159,6 @@ class UtfTest extends \OxidTestCase
         $expectedArticle->date = "Tue, 06 Sep 2011 09:46:42 +0200";
 
         $this->assertEquals(array($expectedArticle), $rssFeed->UNITgetArticleItems($articleList));
-
     }
 
     public function testOxRssFeedPrepareFeedName()
@@ -1176,7 +1182,6 @@ class UtfTest extends \OxidTestCase
         $oRss = new oxrssfeed();
         $sResult = $this->getConfig()->getShopUrl() . 'rss/Suche/?searchparam=agent%C5%AB%D0%9B%D0%B8%D1%82%D0%BE%D0%B2f%C3%BCr&amp;searchcnid=BB&amp;searchvendor=CC&amp;searchmanufacturer=DD';
         $this->assertEquals($sResult, $oRss->getSearchArticlesUrl($sValue, "BB", "CC", "DD"));
-
     }
 
     public function testOxRssFeedGetSearchArticlesTitle()

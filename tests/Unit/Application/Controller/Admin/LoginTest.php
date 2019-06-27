@@ -21,7 +21,6 @@ use \oxTestModules;
  */
 class LoginTest extends \OxidTestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -89,7 +88,7 @@ class LoginTest extends \OxidTestCase
     public function testLoginNotAdmin()
     {
         $this->expectException('oxException');
-        $this->expectExceptionMessage( 'LOGIN_ERROR');
+        $this->expectExceptionMessage('LOGIN_ERROR');
 
         $oUser = oxNew("oxUser");
         $oUser->setId("_testUserId");
@@ -267,6 +266,14 @@ class LoginTest extends \OxidTestCase
      */
     public function testCheckloginSettingProfile()
     {
+        //We have no sesison started yet. When UtilsView::addErrorToDisplay starts a new session,
+        //non persistent data is lost so better add a mock here.
+        $utilsView = $this->getMockBuilder(\OxidEsales\Eshop\Core\UtilsView::class)
+            ->setMethods(['addErrorToDisplay'])
+            ->getMock();
+        $utilsView->expects($this->once())->method('addErrorToDisplay');
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsView::class, $utilsView);
+
         oxTestModules::addFunction('oxuser', 'login', '{ throw new oxConnectionException(); }');
         oxTestModules::addFunction('oxUtils', 'logger', '{ return true; }');
 

@@ -22,8 +22,8 @@
  */
 $aData = array(
     // Product
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
                 // oxarticles db fields
                 'oxid'                     => 1001,
                 'oxprice'                  => 30.00,
@@ -31,17 +31,17 @@ $aData = array(
                 // Amount in basket
                 'amount'                   => 15,
         ),
-	    1 => array (
-	     // oxarticles db fields
-		        'oxid'                     => 1002,
-		        'oxprice'                  => 100.00,
-		        'oxvat'                    => 20,
-				'amount'                   => 15,
-	    ),
+        1 => array(
+         // oxarticles db fields
+                'oxid'                     => 1002,
+                'oxprice'                  => 100.00,
+                'oxvat'                    => 20,
+                'amount'                   => 15,
+        ),
 
     ),
 
-	     // Additional costs
+         // Additional costs
     'costs' => array(
         // oxwrapping db fields
         // Delivery
@@ -65,12 +65,12 @@ $aData = array(
                 'oxfromamount' => 0,
                 'oxtoamount' => 1000000,
                 'oxchecked' => 1,
-				'oxaddsumrules'=>1,
+                'oxaddsumrules'=>1,
             ),
         ),
-		        // VOUCHERS
-        'voucherserie' => array (
-                 0 => array (
+                // VOUCHERS
+        'voucherserie' => array(
+                 0 => array(
                 'oxdiscount' => 10.00,
                 'oxdiscounttype' => '%',
                 'oxallowsameseries' => 1,
@@ -82,25 +82,25 @@ $aData = array(
     ),
 
     // TEST EXPECTATIONS
-    'expected' => array (
+    'expected' => array(
         // Article expected prices: ARTICLE ID => ( Unit price, Total Price )
-        'articles' => array (
-             1001 => array ( '30,00', '450,00' ),
-             1002 => array ( '100,00', '1.500,00' ),
+        'articles' => array(
+             1001 => array( '30,00', '450,00' ),
+             1002 => array( '100,00', '1.500,00' ),
         ),
         // Expectations of other totals
-        'totals' => array (
+        'totals' => array(
             // Total BRUTTO
             'totalBrutto' => '2.126,25',
             // Total NETTO
             'totalNetto'  => '1.950,00',
             // Total VAT amount: vat% => total cost
-            'vats' => array (
+            'vats' => array(
                 25 => '101,25',
-				20 => '270,00',
+                20 => '270,00',
 
             ),
-			  // Total delivery amounts
+              // Total delivery amounts
         'delivery' => array(
                 'brutto' => '1.299,38',
                 'netto' => '1.072,50',
@@ -112,8 +112,8 @@ $aData = array(
                 'netto' => '1.072,50',
                 'vat' => '226,88'
         ),
-		       // VOUCHERS
-             'voucher' => array (
+               // VOUCHERS
+             'voucher' => array(
                 'brutto' => '195,00',
             ),
             // GRAND TOTAL
@@ -121,7 +121,7 @@ $aData = array(
         ),
     ),
     // Test case options
-    'options' => array (
+    'options' => array(
         // Configs (real named)
         'config' => array(
             'blEnterNetPrice' => true,

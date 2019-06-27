@@ -352,7 +352,6 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _isNotReserved()
     {
-
         if ($this->oxvouchers__oxreserved->value < time() - $this->_getVoucherTimeout()) {
             return true;
         }
@@ -375,7 +374,6 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function checkUserAvailability($oUser)
     {
-
         $this->_isAvailableInOtherOrder($oUser);
         $this->_isValidUserGroup($oUser);
 
@@ -552,9 +550,10 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _getBasketItems($oDiscount = null)
     {
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
         if ($this->oxvouchers__oxorderid->value) {
             return $this->_getOrderBasketItems($oDiscount);
-        } elseif ($this->getSession()->getBasket()) {
+        } elseif ($session->getBasket()) {
             return $this->_getSessionBasketItems($oDiscount);
         } else {
             return [];
@@ -608,7 +607,8 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
             $oDiscount = $this->_getSerieDiscount();
         }
 
-        $oBasket = $this->getSession()->getBasket();
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $oBasket = $session->getBasket();
         $aItems = [];
         $iCount = 0;
 

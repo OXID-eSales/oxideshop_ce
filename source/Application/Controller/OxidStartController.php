@@ -68,10 +68,9 @@ class OxidStartController extends \OxidEsales\Eshop\Application\Controller\Front
         $systemEventHandler = $this->_getSystemEventHandler();
         $systemEventHandler->onShopEnd();
 
-        $mySession = $this->getSession();
-
-        if (isset($mySession)) {
-            $mySession->freeze();
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        if (isset($session)) {
+            $session->freeze();
         }
 
         //commit file cache

@@ -6,7 +6,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\User;
 
 use oxField;
-use OxidEsales\EshopCommunity\Internal\Password\Bridge\PasswordServiceBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use oxRegistry;
 use oxUser;
@@ -38,7 +38,6 @@ class LoginTest extends UserTestCase
      */
     public function testAdminLoginWithOldPasswordMultiShop()
     {
-
         $this->setAdminMode(true);
 
         //faking cookie check

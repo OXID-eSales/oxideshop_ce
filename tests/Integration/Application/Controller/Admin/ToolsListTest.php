@@ -27,7 +27,7 @@ class ToolsListTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     protected function tearDown()
     {
-        if (file_exists($this->tempFile)){
+        if (file_exists($this->tempFile)) {
             unlink($this->tempFile);
         }
     }

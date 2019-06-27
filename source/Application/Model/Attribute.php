@@ -240,7 +240,6 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function getActiveValue()
     {
-
         return $this->_sActiveValue;
     }
 

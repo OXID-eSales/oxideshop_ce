@@ -19,16 +19,16 @@
  * From articlePrice.csv: article final price calculations. 9203 - 1st
  */
 $aData = array(
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
                 'oxid'                     => 9203,
                 'oxprice'                  => 29.99,
                 'oxvat'                    => 19,
                 'amount'                   => 1,
         ),
     ),
-    'discounts' => array (
-        0 => array (
+    'discounts' => array(
+        0 => array(
                 'oxid'         => 'abs_discount_for_9203',
                 'oxaddsum'     => 2.01,
                 'oxaddsumtype' => 'abs',
@@ -39,20 +39,20 @@ $aData = array(
                 'oxsort' => 10,
         ),
     ),
-    'expected' => array (
-        'articles' => array (
-                 9203 => array ( '27,98', '27,98' ),
+    'expected' => array(
+        'articles' => array(
+                 9203 => array( '27,98', '27,98' ),
         ),
-        'totals' => array (
+        'totals' => array(
                 'totalBrutto' => '33,30',
                 'totalNetto'  => '27,98',
-                'vats' => array (
+                'vats' => array(
                         19 => '5,32',
                 ),
                 'grandTotal'  => '33,30'
         ),
     ),
-    'options' => array (
+    'options' => array(
         'config' => array(
                 'blEnterNetPrice' => true,
                 'blShowNetPrice' => true,

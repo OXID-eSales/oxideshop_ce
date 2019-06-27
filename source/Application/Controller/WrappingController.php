@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use OxidEsales\Eshop\Application\Model\Wrapping;
 use oxList;
 use oxRegistry;
 use oxUBase;
@@ -54,7 +55,8 @@ class WrappingController extends \OxidEsales\Eshop\Application\Controller\Fronte
             $this->_aBasketItemList = false;
 
             // passing basket articles
-            if ($oBasket = $this->getSession()->getBasket()) {
+            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            if ($oBasket = $session->getBasket()) {
                 $this->_aBasketItemList = $oBasket->getBasketArticles();
             }
         }
@@ -74,7 +76,7 @@ class WrappingController extends \OxidEsales\Eshop\Application\Controller\Fronte
 
             // load wrapping papers
             if ($this->getViewConfig()->getShowGiftWrapping()) {
-                $this->_oWrappings = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class)->getWrappingList('WRAP');
+                $this->_oWrappings = oxNew(Wrapping::class)->getWrappingList('WRAP');
             }
         }
 
@@ -93,7 +95,7 @@ class WrappingController extends \OxidEsales\Eshop\Application\Controller\Fronte
 
             // load gift cards
             if ($this->getViewConfig()->getShowGiftWrapping()) {
-                $this->_oCards = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class)->getWrappingList('CARD');
+                $this->_oCards = oxNew(Wrapping::class)->getWrappingList('CARD');
             }
         }
 
@@ -116,7 +118,8 @@ class WrappingController extends \OxidEsales\Eshop\Application\Controller\Fronte
         $aWrapping = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('wrapping');
 
         if ($this->getViewConfig()->getShowGiftWrapping()) {
-            $oBasket = $this->getSession()->getBasket();
+            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $oBasket = $session->getBasket();
             // setting wrapping info
             if (is_array($aWrapping) && count($aWrapping)) {
                 foreach ($oBasket->getContents() as $sKey => $oBasketItem) {

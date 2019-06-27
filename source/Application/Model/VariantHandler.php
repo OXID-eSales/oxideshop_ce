@@ -436,7 +436,6 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getSelections($sTitle)
     {
-
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blUseMultidimensionVariants')) {
             $aSelections = explode($this->_sMdSeparator, $sTitle);
         } else {

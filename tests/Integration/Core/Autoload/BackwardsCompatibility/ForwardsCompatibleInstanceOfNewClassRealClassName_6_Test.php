@@ -34,7 +34,5 @@ class ForwardsCompatibleInstanceOfNewClassRealClassName_6_Test extends \OxidEsal
 
         $message = 'An object created with new \OxidEsales\EshopCommunity\Application\Model\Article() is not an instance of \OxidEsales\Eshop\Application\Model\Article::class';
         $this->assertNotInstanceOf($unifiedNamespaceClassName, $object, $message);
-
-
     }
 }

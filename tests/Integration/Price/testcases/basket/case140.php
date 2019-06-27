@@ -22,8 +22,8 @@
  * #1456: Discount validity is wrong if article in basket has Scale Prices
  */
 $aData = array(
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
             'oxid'       => 'testarticle',
             'oxprice'    => 12.95,
             'amount'     => 1,
@@ -35,8 +35,8 @@ $aData = array(
             ),
         ),
     ),
-    'discounts' => array (
-        0 => array (
+    'discounts' => array(
+        0 => array(
             'oxid'         => '_testDiscount',
             'oxactive'     => 1,
             'oxtitle'      => 'new discount',
@@ -47,14 +47,14 @@ $aData = array(
             'oxsort'       => 10,
         ),
     ),
-    'expected' => array (
-        'articles' => array (
-             'testarticle' => array ( '12,95', '12,95' ),
+    'expected' => array(
+        'articles' => array(
+             'testarticle' => array( '12,95', '12,95' ),
         ),
-        'totals' => array (
+        'totals' => array(
             'totalBrutto' => '12,95',
             'totalNetto'  => '8,36',
-            'vats' => array (
+            'vats' => array(
                 19 => '1,59'
             ),
             'discounts' => array(
@@ -63,7 +63,7 @@ $aData = array(
             'grandTotal'  => '9,95'
         ),
     ),
-    'options' => array (
+    'options' => array(
         'config' => array(
             'blEnterNetPrice' => false,
             'blShowNetPrice' => false,

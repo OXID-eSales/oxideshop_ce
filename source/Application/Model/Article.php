@@ -227,14 +227,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @var array
      */
-    static protected $_aLoadedParents;
+    protected static $_aLoadedParents;
 
     /**
      * Cached select lists array
      *
      * @var array
      */
-    static protected $_aSelList;
+    protected static $_aSelList;
 
     /**
      * Select lists for tpl
@@ -463,6 +463,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     protected $_blCanUpdateAnyField = null;
 
     /**
+     * Triggered action type
+     *
+     * @var integer
+     */
+    protected $actionType = ACTION_NA;
+
+    /**
      * Constructor, sets shop ID for article (\OxidEsales\Eshop\Core\Config::getShopId()),
      * initiates parent constructor (parent::oxI18n()).
      *
@@ -674,6 +681,17 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function getSqlActiveSnippet($blForceCoreTable = null)
     {
         return "( {$this->_createSqlActiveSnippet($blForceCoreTable)} ) ";
+    }
+
+    /**
+     *
+     * Getter for action type.
+     *
+     * @return int
+     */
+    public function getActionType()
+    {
+        return $this->actionType;
     }
 
     /**
@@ -1041,7 +1059,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         // active ?
         $sNow = date('Y-m-d H:i:s');
         if (!$this->oxarticles__oxactive->value &&
-            ($this->oxarticles__oxactivefrom->value > $sNow ||
+            (
+                $this->oxarticles__oxactivefrom->value > $sNow ||
              $this->oxarticles__oxactiveto->value < $sNow
             )
         ) {
@@ -1052,7 +1071,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blUseStock') && $this->oxarticles__oxstockflag->value == 2) {
             $iOnStock = $this->oxarticles__oxstock->value + $this->oxarticles__oxvarstock->value;
             if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
-                $iOnStock += $this->getSession()->getBasketReservations()->getReservedAmount($this->getId());
+                $session = \OxidEsales\Eshop\Core\Registry::getSession();
+                $iOnStock += $session->getBasketReservations()->getReservedAmount($this->getId());
             }
             if ($iOnStock <= 0) {
                 return false;
@@ -2169,6 +2189,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function reduceStock($dAmount, $blAllowNegativeStock = false)
     {
+        $this->actionType = ACTION_UPDATE_STOCK;
         $this->beforeUpdate();
 
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -2410,6 +2431,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $this->_assignStock();
             $this->_onChangeStockResetCount($articleId);
         }
+
+        $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelUpdateEvent($this));
     }
 
     /**
@@ -2470,7 +2493,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             }
         }
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
-            $iOnStock += $this->getSession()->getBasketReservations()->getReservedAmount($this->getId());
+            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $iOnStock += $session->getBasketReservations()->getReservedAmount($this->getId());
         }
         if ($iOnStock >= $dAmount) {
             return true;
@@ -2864,6 +2888,16 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function getStockStatus()
     {
         return $this->_iStockStatus;
+    }
+
+    /**
+     * Get stock status as it was on loading this object.
+     *
+     * @return integer
+     */
+    public function getStockStatusOnLoad()
+    {
+        return $this->_iStockStatusOnLoad;
     }
 
     /**
@@ -4048,7 +4082,6 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     protected function _generateSearchStr($sOXID, $blSearchPriceCat = false)
     {
-
         $sCatView = getViewName('oxcategories', $this->getLanguage());
         $sO2CView = getViewName('oxobject2category');
 
@@ -4373,7 +4406,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         if ($myConfig->getConfigParam('blUseStock') && ($this->oxarticles__oxstockflag->value == 3 || $this->oxarticles__oxstockflag->value == 2)) {
             $iOnStock = $this->oxarticles__oxstock->value;
             if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
-                $iOnStock += $this->getSession()->getBasketReservations()->getReservedAmount($this->getId());
+                $session = \OxidEsales\Eshop\Core\Registry::getSession();
+                if ($reservations = $session->getBasketReservations()){
+                    $iOnStock += $reservations->getReservedAmount($this->getId());
+                }
             }
             if ($iOnStock <= 0) {
                 $this->setBuyableState(false);

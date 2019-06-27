@@ -22,8 +22,8 @@
  * Brutto-Brutto mode.
  */
 $aData = array(
-    'articles' => array (
-        0 => array (
+    'articles' => array(
+        0 => array(
             'oxid'       => 'testarticle',
             'oxprice'    => 12.00,
             'amount'     => 2,
@@ -35,8 +35,8 @@ $aData = array(
             ),
         ),
     ),
-    'discounts' => array (
-        0 => array (
+    'discounts' => array(
+        0 => array(
             'oxid'         => '_testDiscount',
             'oxactive'     => 1,
             'oxtitle'      => 'new discount',
@@ -47,14 +47,14 @@ $aData = array(
             'oxsort'       => 10,
         ),
     ),
-    'expected' => array (
-        'articles' => array (
-             'testarticle' => array ( '11,95', '23,90' ),
+    'expected' => array(
+        'articles' => array(
+             'testarticle' => array( '11,95', '23,90' ),
         ),
-        'totals' => array (
+        'totals' => array(
             'totalBrutto' => '23,90',
             'totalNetto'  => '17,56',
-            'vats' => array (
+            'vats' => array(
                 19 => '3,34'
             ),
             'discounts' => array(
@@ -63,7 +63,7 @@ $aData = array(
             'grandTotal'  => '20,90'
         ),
     ),
-    'options' => array (
+    'options' => array(
         'config' => array(
             'blEnterNetPrice' => false,
             'blShowNetPrice' => false,

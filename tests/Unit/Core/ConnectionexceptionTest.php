@@ -12,7 +12,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
  */
 class ConnectionexceptionTest extends \OxidTestCase
 {
-
     public function testSetGetAddress()
     {
         $sAddress = 'sServerAddress';

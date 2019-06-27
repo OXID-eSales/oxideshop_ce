@@ -176,9 +176,8 @@ class ModuleServicesActivationServiceTest extends TestCase
         $this->assertArrayNotHasKey('services', $this->projectYamlArray);
     }
 
-    function testDeActivateServicesWithConfigurationError()
+    public function testDeActivateServicesWithConfigurationError()
     {
-
         $moduleConfig = new DIConfigWrapper(['services' => ['testeventsubscriber' => ['class' => 'some/not/existing/class'],
                                                             'otherservice' => ['class' => 'also/not/existing/class']]]);
 
@@ -187,12 +186,10 @@ class ModuleServicesActivationServiceTest extends TestCase
         $this->projectYamlDao->method('loadDIConfigFile')->willReturn($moduleConfig);
 
         $this->shopActivationService->deactivateModuleServices($this->testModuleId, 1);
-
     }
 
-    function testActivateServicesWithConfigurationError()
+    public function testActivateServicesWithConfigurationError()
     {
-
         $this->expectException(ServicesYamlConfigurationError::class);
 
         $moduleConfig = new DIConfigWrapper(['services' => ['testeventsubscriber' => ['class' => 'some/not/existing/class'],
@@ -203,7 +200,6 @@ class ModuleServicesActivationServiceTest extends TestCase
         $this->projectYamlDao->method('loadDIConfigFile')->willReturn($moduleConfig);
 
         $this->shopActivationService->activateModuleServices($this->testModuleId, 1);
-
     }
 
     private function assertProjectYamlHasImport(string $import)

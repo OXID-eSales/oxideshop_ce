@@ -7,12 +7,11 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
 use \oxDb;
-use \oxRegistry;
+use OxidEsales\EshopCommunity\Core\Field;
 use \oxTestModules;
 
 class FileTest extends \OxidTestCase
 {
-
     /**
      * Initialize the fixture.
      */
@@ -242,7 +241,8 @@ class FileTest extends \OxidTestCase
      */
     public function testProcessFileUploadBad()
     {
-        $this->expectException('oxException'); $this->expectExceptionMessage( "EXCEPTION_COULDNOTWRITETOFILE");
+        $this->expectException('oxException');
+        $this->expectExceptionMessage("EXCEPTION_COULDNOTWRITETOFILE");
 
         $filePath = $this->createFile('out/downloads/testFile', 'test jpg file');
 
@@ -286,6 +286,7 @@ class FileTest extends \OxidTestCase
 
         $oOrderArticle = oxNew('oxOrderArticle');
         $oOrderArticle->setId('_orderArticleId');
+        $oOrderArticle->oxorderarticles__oxorderid = new Field($oOrder->getId());
         $oOrderArticle->save();
 
         $oFile = oxNew('oxFile');

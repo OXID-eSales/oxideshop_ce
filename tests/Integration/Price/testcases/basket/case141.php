@@ -21,8 +21,8 @@
  * Testing basket item price calculator also sets items discounts
  */
 $aData = array(
-        'articles' => array (
-                0 => array (
+        'articles' => array(
+                0 => array(
                         'oxid'        => 'testarticle',
                         'oxprice'     => 19,
                         'oxweight'    => 10,
@@ -33,8 +33,8 @@ $aData = array(
                         'scaleprices' => array(),
                 ),
         ),
-        'discounts' => array (
-                0 => array (
+        'discounts' => array(
+                0 => array(
                         'oxid'        => 'testdiscount0',
                         'oxactive'    => 1,
                         'oxtitle'     => 'Test discount 0',
@@ -46,7 +46,7 @@ $aData = array(
                         'oxaddsum'    => 5,
                         'oxsort'      => 10,
                 ),
-                1 => array (
+                1 => array(
                         'oxid'        => 'testdiscount1',
                         'oxactive'    => 1,
                         'oxtitle'     => 'Test discount 1',
@@ -59,14 +59,14 @@ $aData = array(
                         'oxsort'      => 20,
                 ),
         ),
-        'expected' => array (
-                'articles' => array (
-                        'testarticle' => array ( '19,00', '19,00' ),
+        'expected' => array(
+                'articles' => array(
+                        'testarticle' => array( '19,00', '19,00' ),
                 ),
-                'totals' => array (
+                'totals' => array(
                         'totalBrutto' => '19,00',
                         'totalNetto'  => '15,97',
-                        'vats' => array (
+                        'vats' => array(
                                 19 => '3,03'
                         ),
                         'discounts' => array(
@@ -75,7 +75,7 @@ $aData = array(
                         'grandTotal'  => '19,00'
                 ),
         ),
-        'options' => array (
+        'options' => array(
                 'config' => array(
                         'blEnterNetPrice' => false,
                         'blShowNetPrice' => false,

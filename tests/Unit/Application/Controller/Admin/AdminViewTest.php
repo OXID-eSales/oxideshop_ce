@@ -293,7 +293,6 @@ class AdminViewTest extends \OxidTestCase
 
         $this->assertEquals('sess:url', $oViewCfg->getSelfLink());
         $this->assertEquals('sess:url', $oViewCfg->getAjaxLink());
-
     }
 
     public function testAuthorizeChecksSessionChallenge()
@@ -301,17 +300,16 @@ class AdminViewTest extends \OxidTestCase
         oxTestModules::addFunction('oxUtils', 'checkAccessRights', '{return true;}');
         oxTestModules::addFunction('oxUtilsServer', 'getOxCookie', '{return array("asd");}');
 
-        $oSess = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
-        $oSess->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
-        $oAView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminController::class, array('getSession'));
-        $oAView->expects($this->once())->method('getSession')->will($this->returnValue($oSess));
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
+        $session->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
+        $oAView = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\AdminController::class);
         $this->assertEquals(true, $oAView->UNITauthorize());
-
-
-        $oSess = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
-        $oSess->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(false));
-        $oAView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminController::class, array('getSession'));
-        $oAView->expects($this->once())->method('getSession')->will($this->returnValue($oSess));
+        
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
+        $session->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(false));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
+        $oAView = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\AdminController::class);
         $this->assertEquals(false, $oAView->UNITauthorize());
     }
 
@@ -399,7 +397,6 @@ class AdminViewTest extends \OxidTestCase
  */
 class AdminViewTestShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\ShopMain
 {
-
 }
 
 /**
@@ -409,5 +406,4 @@ class AdminViewTestShopMain extends \OxidEsales\Eshop\Application\Controller\Adm
  */
 class AdminViewTestSomeClass extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
-
 }

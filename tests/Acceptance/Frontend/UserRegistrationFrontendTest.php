@@ -27,17 +27,17 @@ class UserRegistrationFrontendTest extends FrontendTestCase
         $this->assertEquals("off", $this->getValue("//input[@name='blnewssubscribed' and @value='1']"));
         $this->assertFalse($this->isVisible("oxStateSelect_invadr[oxuser__oxstateid]"));
 
-        $aUserData = $this->getUserData( 1, 'user1user1' );
-        $this->fillUserInfo( $aUserData );
+        $aUserData = $this->getUserData(1, 'user1user1');
+        $this->fillUserInfo($aUserData);
 
         $this->clickAndWait("accUserSaveTop", 90);
         $this->assertTextPresent("%PAGE_TITLE_REGISTER%");
 
         $sUser = $aUserData['oxfname'].' '.$aUserData['oxlname'];
-        $this->assertEquals( $sUser, $this->getText("//ul[@id='topMenu']/li/a"));
+        $this->assertEquals($sUser, $this->getText("//ul[@id='topMenu']/li/a"));
         $this->assertEquals("%YOU_ARE_HERE%: / %PAGE_TITLE_REGISTER%", $this->getText("breadCrumb"));
 
-        $this->assertUserExists( $aUserData );
+        $this->assertUserExists($aUserData);
     }
 
     /**
@@ -64,28 +64,28 @@ class UserRegistrationFrontendTest extends FrontendTestCase
         $this->assertEquals("%PURCHASE_WITHOUT_REGISTRATION%", $this->getText("//div[@id='optionNoRegistration']/h3"));
         $this->clickAndWait("//div[@id='optionNoRegistration']//button");
 
-        $aUserData = $this->getUserData( '2' );
-        $this->fillUserInfo( $aUserData );
+        $aUserData = $this->getUserData('2');
+        $this->fillUserInfo($aUserData);
 
         $this->click("showShipAddress");
         $this->waitForItemAppear("deladr[oxaddress__oxfname]");
         $this->assertEquals("Berlin", $this->getSelectedLabel("oxStateSelect_invadr[oxuser__oxstateid]"));
 
-        $aAddressData = $this->getAddressData( '2_2' );
-        $this->fillAddressInfo( $aAddressData );
+        $aAddressData = $this->getAddressData('2_2');
+        $this->fillAddressInfo($aAddressData);
 
         $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");
         $this->click("payment_oxidcashondel");
         $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");
 
-        $sOrderUser = $this->formOrderUserData( $aUserData );
+        $sOrderUser = $this->formOrderUserData($aUserData);
         $this->assertEquals($sOrderUser, $this->clearString($this->getText("//div[@id='orderAddress']/dl[1]/dd")));
 
-        $sOrderAddress = $this->formOrderAddressData( $aAddressData );
+        $sOrderAddress = $this->formOrderAddressData($aAddressData);
         $this->assertEquals($sOrderAddress, $this->clearString($this->getText("//div[@id='orderAddress']/dl[2]/dd")));
 
         //check in admin if information is saved correctly
-        $this->assertUserExists( $aUserData, $aAddressData );
+        $this->assertUserExists($aUserData, $aAddressData);
     }
 
     /**
@@ -110,30 +110,30 @@ class UserRegistrationFrontendTest extends FrontendTestCase
         $this->assertEquals("%OPEN_ACCOUNT%", $this->getText("//div[@id='optionRegistration']/h3"));
         $this->clickAndWait("//div[@id='optionRegistration']//button");
 
-        $aUserData = $this->getUserData( '3', 'user33' );
-        $this->fillUserInfo( $aUserData );
+        $aUserData = $this->getUserData('3', 'user33');
+        $this->fillUserInfo($aUserData);
         $this->type("orderRemark", "remark text");
 
         $this->click("showShipAddress");
         $this->waitForItemAppear("deladr[oxaddress__oxfname]");
         $this->assertEquals("Berlin", $this->getSelectedLabel("oxStateSelect_invadr[oxuser__oxstateid]"));
 
-        $aAddressData = $this->getAddressData( '3_2' );
-        $this->fillAddressInfo( $aAddressData );
+        $aAddressData = $this->getAddressData('3_2');
+        $this->fillAddressInfo($aAddressData);
 
         $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");
         $this->click("payment_oxidcashondel");
         $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");
         $this->assertTextPresent("%WHAT_I_WANTED_TO_SAY% remark text");
 
-        $sOrderUser = $this->formOrderUserData( $aUserData );
+        $sOrderUser = $this->formOrderUserData($aUserData);
         $this->assertEquals($sOrderUser, $this->clearString($this->getText("//div[@id='orderAddress']/dl[1]/dd")));
 
-        $sOrderAddress = $this->formOrderAddressData( $aAddressData );
+        $sOrderAddress = $this->formOrderAddressData($aAddressData);
         $this->assertEquals($sOrderAddress, $this->clearString($this->getText("//div[@id='orderAddress']/dl[2]/dd")));
 
         //check in admin if information is saved correctly
-        $this->assertUserExists( $aUserData, $aAddressData );
+        $this->assertUserExists($aUserData, $aAddressData);
     }
 
     /**
@@ -147,14 +147,14 @@ class UserRegistrationFrontendTest extends FrontendTestCase
         //option 1
         $this->clickAndWait("//div[@id='optionNoRegistration']//button");
 
-        $aUserData = $this->getUserData( '4' );
-        $this->fillUserInfo( $aUserData );
+        $aUserData = $this->getUserData('4');
+        $this->fillUserInfo($aUserData);
 
         $this->click("showShipAddress");
         $this->waitForItemAppear("deladr[oxaddress__oxfname]");
 
-        $aAddressData = $this->getAddressData( '4_2', 'Belgium' );
-        $this->fillAddressInfo( $aAddressData );
+        $aAddressData = $this->getAddressData('4_2', 'Belgium');
+        $this->fillAddressInfo($aAddressData);
 
         $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");
         $this->assertTextPresent("Currently we have no shipping method set up for this country.");
@@ -166,21 +166,21 @@ class UserRegistrationFrontendTest extends FrontendTestCase
         //option 1
         $this->clickAndWait("//div[@id='optionNoRegistration']//button");
 
-        $aUserData = $this->getUserData( '4_3' );
-        $this->fillUserInfo( $aUserData );
+        $aUserData = $this->getUserData('4_3');
+        $this->fillUserInfo($aUserData);
 
         $this->click("showShipAddress");
         $this->waitForItemAppear("deladr[oxaddress__oxfname]");
 
-        $aAddressData = $this->getAddressData( '4_4' );
-        $this->fillAddressInfo( $aAddressData );
+        $aAddressData = $this->getAddressData('4_4');
+        $this->fillAddressInfo($aAddressData);
 
         $this->assertEquals("example01@oxid-esales.dev", $this->getValue("userLoginName"));
         $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");
         $this->assertEquals("%YOU_ARE_HERE%: / %PAY%", $this->getText("breadCrumb"));
 
         //check in admin if information is saved correctly
-        $this->assertUserExists( $aUserData, $aAddressData );
+        $this->assertUserExists($aUserData, $aAddressData);
     }
 
     /**
@@ -194,15 +194,15 @@ class UserRegistrationFrontendTest extends FrontendTestCase
         //option 1
         $this->clickAndWait("//div[@id='optionNoRegistration']//button");
 
-        $aUserData = $this->getUserData( '5' );
+        $aUserData = $this->getUserData('5');
         $aUserData['oxusername'] = 'example01@oxid-esales.dev';
-        $this->fillUserInfo( $aUserData );
+        $this->fillUserInfo($aUserData);
 
         $this->click("showShipAddress");
         $this->waitForItemAppear("deladr[oxaddress__oxfname]");
 
-        $aAddressData = $this->getAddressData( '5_2', 'Belgium' );
-        $this->fillAddressInfo( $aAddressData );
+        $aAddressData = $this->getAddressData('5_2', 'Belgium');
+        $this->fillAddressInfo($aAddressData);
 
         $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");
         $this->assertEquals("%YOU_ARE_HERE%: / %PAY%", $this->getText("breadCrumb"));
@@ -212,20 +212,20 @@ class UserRegistrationFrontendTest extends FrontendTestCase
         $this->addToBasket("1001", 1, 'user');
         $this->clickAndWait("//div[@id='optionRegistration']//button");
 
-        $aUserData = $this->getUserData( '5_3', 'user55', 'Finland' );
+        $aUserData = $this->getUserData('5_3', 'user55', 'Finland');
         $aUserData['oxusername'] = 'example01@oxid-esales.dev';
-        $this->fillUserInfo( $aUserData );
+        $this->fillUserInfo($aUserData);
 
         $this->click("showShipAddress");
         $this->waitForItemAppear("deladr[oxaddress__oxfname]");
 
-        $aAddressData = $this->getAddressData( '5_4' );
-        $this->fillAddressInfo( $aAddressData );
+        $aAddressData = $this->getAddressData('5_4');
+        $this->fillAddressInfo($aAddressData);
 
         $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");
 
         //check in admin if information is saved correctly
-        $this->assertUserExists( $aUserData, $aAddressData );
+        $this->assertUserExists($aUserData, $aAddressData);
     }
 
     /**
@@ -238,15 +238,15 @@ class UserRegistrationFrontendTest extends FrontendTestCase
         $this->addToBasket("1001", 1, 'user');
         $this->clickAndWait("//div[@id='optionRegistration']//button");
 
-        $aUserData = $this->getUserData( '6', 'user66', 'Belgium' );
+        $aUserData = $this->getUserData('6', 'user66', 'Belgium');
         $aUserData['oxusername'] = 'example01@oxid-esales.dev';
-        $this->fillUserInfo( $aUserData );
+        $this->fillUserInfo($aUserData);
 
         $this->click("showShipAddress");
         $this->waitForItemAppear("deladr[oxaddress__oxfname]");
 
-        $aAddressData = $this->getAddressData( '6_2', 'Belgium' );
-        $this->fillAddressInfo( $aAddressData );
+        $aAddressData = $this->getAddressData('6_2', 'Belgium');
+        $this->fillAddressInfo($aAddressData);
 
         $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");
         $this->assertEquals("%YOU_ARE_HERE%: / %PAY%", $this->getText("breadCrumb"));
@@ -256,16 +256,16 @@ class UserRegistrationFrontendTest extends FrontendTestCase
         $this->addToBasket("1001", 1, 'user');
         $this->clickAndWait("//div[@id='optionRegistration']//button");
 
-        $aUserData2 = $this->getUserData( '6_3', 'aaaaaa', 'Finland' );
+        $aUserData2 = $this->getUserData('6_3', 'aaaaaa', 'Finland');
         $aUserData2['oxusername'] = 'example01@oxid-esales.dev';
-        $this->fillUserInfo( $aUserData2 );
+        $this->fillUserInfo($aUserData2);
 
         $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");
         $this->assertEquals("%YOU_ARE_HERE%: / %ADDRESS%", $this->getText("breadCrumb"));
         $this->assertTextPresent("Not possible to register example01@oxid-esales.dev. Maybe you have already registered?");
 
         //check in admin if information is saved correctly
-        $this->assertUserExists( $aUserData, $aAddressData );
+        $this->assertUserExists($aUserData, $aAddressData);
     }
 
     /**
@@ -278,14 +278,14 @@ class UserRegistrationFrontendTest extends FrontendTestCase
         $this->addToBasket("1001", 1, 'user');
         $this->clickAndWait("//div[@id='optionNoRegistration']//button");
 
-        $aUserData = $this->getUserData( '7' );
+        $aUserData = $this->getUserData('7');
         $aUserData['oxusername'] = 'example01@oxid-esales.dev';
-        $this->fillUserInfo( $aUserData );
+        $this->fillUserInfo($aUserData);
 
         $this->click("showShipAddress");
         $this->waitForItemAppear("deladr[oxaddress__oxfname]");
-        $aAddressData = $this->getAddressData( '7_2' );
-        $this->fillAddressInfo( $aAddressData );
+        $aAddressData = $this->getAddressData('7_2');
+        $this->fillAddressInfo($aAddressData);
 
         $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");
         $this->assertEquals("%YOU_ARE_HERE%: / %PAY%", $this->getText("breadCrumb"));
@@ -302,7 +302,7 @@ class UserRegistrationFrontendTest extends FrontendTestCase
         $this->assertTextPresent("%MESSAGE_THANKYOU_FOR_SUBSCRIBING_NEWSLETTERS%");
 
         //check in admin previous entered user information is not damaged
-        $this->assertUserExists( $aUserData, $aAddressData );
+        $this->assertUserExists($aUserData, $aAddressData);
     }
 
     /**
@@ -317,9 +317,9 @@ class UserRegistrationFrontendTest extends FrontendTestCase
         $this->openShop();
         $this->clickAndWait("//ul[@id='topMenu']//a[text()='%PAGE_TITLE_REGISTER%']");
 
-        $aUserData = $this->getUserData( '7', 'user99' );
+        $aUserData = $this->getUserData('7', 'user99');
         $aUserData['oxusername'] = 'example01@oxid-esales.dev';
-        $this->fillUserInfo( $aUserData );
+        $this->fillUserInfo($aUserData);
 
         $this->clickAndWait("//button[text()='Save']");
         //exit;
@@ -338,7 +338,7 @@ class UserRegistrationFrontendTest extends FrontendTestCase
         $this->assertTextPresent("%MESSAGE_THANKYOU_FOR_SUBSCRIBING_NEWSLETTERS%");
 
         //check in admin previous entered user information is not damaged
-        $this->assertUserExists( $aUserData );
+        $this->assertUserExists($aUserData);
     }
 
     /**
@@ -351,15 +351,15 @@ class UserRegistrationFrontendTest extends FrontendTestCase
         $this->addToBasket("1001", 1, 'user');
         $this->clickAndWait("//div[@id='optionRegistration']//button");
 
-        $aUserData = $this->getUserData( '8', 'user66', 'Belgium' );
+        $aUserData = $this->getUserData('8', 'user66', 'Belgium');
         $aUserData['oxusername'] = 'example01@oxid-esales.dev';
-        $this->fillUserInfo( $aUserData );
+        $this->fillUserInfo($aUserData);
 
         $this->click("showShipAddress");
         $this->waitForItemAppear("deladr[oxaddress__oxfname]");
 
-        $aAddressData = $this->getAddressData( '8_2', 'Belgium' );
-        $this->fillAddressInfo( $aAddressData );
+        $aAddressData = $this->getAddressData('8_2', 'Belgium');
+        $this->fillAddressInfo($aAddressData);
 
         $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");
 
@@ -368,22 +368,22 @@ class UserRegistrationFrontendTest extends FrontendTestCase
         $this->addToBasket("1001", 1, 'user');
         $this->clickAndWait("//div[@id='optionRegistration']//button");
 
-        $aUserData2 = $this->getUserData( '8_3', 'user66', 'Finland' );
+        $aUserData2 = $this->getUserData('8_3', 'user66', 'Finland');
         $aUserData2['oxusername'] = 'example01@oxid-esales.dev';
-        $this->fillUserInfo( $aUserData2 );
+        $this->fillUserInfo($aUserData2);
 
         $this->click("showShipAddress");
         $this->waitForItemAppear("deladr[oxaddress__oxfname]");
 
-        $aAddressData2 = $this->getAddressData( '8_4', 'Germany' );
-        $this->fillAddressInfo( $aAddressData2 );
+        $aAddressData2 = $this->getAddressData('8_4', 'Germany');
+        $this->fillAddressInfo($aAddressData2);
 
         $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");
         $this->assertEquals("%YOU_ARE_HERE%: / %ADDRESS%", $this->getText("breadCrumb"));
         $this->assertTextPresent("Not possible to register example01@oxid-esales.dev. Maybe you have already registered?");
 
         //check in admin if information is saved correctly
-        $this->assertUserExists( $aUserData, $aAddressData );
+        $this->assertUserExists($aUserData, $aAddressData);
     }
 
     /**
@@ -392,7 +392,7 @@ class UserRegistrationFrontendTest extends FrontendTestCase
      * @param string $sCountry
      * @return array
      */
-    public function getUserData( $sId, $sPassword = '', $sCountry = "Germany" )
+    public function getUserData($sId, $sPassword = '', $sCountry = "Germany")
     {
         $aData = array(
             "oxusername" => "example01@oxid-esales.dev",
@@ -402,7 +402,7 @@ class UserRegistrationFrontendTest extends FrontendTestCase
             "oxbirthdate" => rand(1960, 2000).'-'.rand(10, 12).'-'.rand(10, 28),
         );
 
-        if ( $sPassword ) {
+        if ($sPassword) {
             $aData['oxpassword'] = $sPassword;
         }
 
@@ -416,7 +416,7 @@ class UserRegistrationFrontendTest extends FrontendTestCase
      * @param string $sCountry
      * @return array
      */
-    public function getAddressData( $sId, $sCountry = "Germany" )
+    public function getAddressData($sId, $sCountry = "Germany")
     {
         $aData = array(
             "oxfname" => "user$sId name_šÄßüл",
@@ -431,7 +431,7 @@ class UserRegistrationFrontendTest extends FrontendTestCase
             "oxfax" => "111-111-111-$sId",
             "oxcountryid" => $sCountry,
         );
-        if ( $sCountry == 'Germany' ) {
+        if ($sCountry == 'Germany') {
             $aData["oxstateid"] = "BE";
         }
 
@@ -442,28 +442,28 @@ class UserRegistrationFrontendTest extends FrontendTestCase
      * @param $aUserData
      * @param bool $blSubscribed
      */
-    public function fillUserInfo( $aUserData, $blSubscribed = false )
+    public function fillUserInfo($aUserData, $blSubscribed = false)
     {
-        list($sYear, $sMonth, $sDay) = explode('-',$aUserData['oxbirthdate']);
-        unset( $aUserData['oxbirthdate'] );
+        list($sYear, $sMonth, $sDay) = explode('-', $aUserData['oxbirthdate']);
+        unset($aUserData['oxbirthdate']);
 
-        $this->select( "invadr[oxuser__oxbirthdate][month]", "value=".$sMonth );
-        $this->type( "invadr[oxuser__oxbirthdate][year]", $sYear );
-        $this->type( "invadr[oxuser__oxbirthdate][day]", $sDay );
+        $this->select("invadr[oxuser__oxbirthdate][month]", "value=".$sMonth);
+        $this->type("invadr[oxuser__oxbirthdate][year]", $sYear);
+        $this->type("invadr[oxuser__oxbirthdate][day]", $sDay);
 
-        $this->type( "userLoginName", $aUserData['oxusername'] );
-        unset( $aUserData['oxusername'] );
+        $this->type("userLoginName", $aUserData['oxusername']);
+        unset($aUserData['oxusername']);
 
-        if ( isset($aUserData['oxpassword']) && $aUserData['oxpassword'] ) {
-            $this->type( "userPassword", $aUserData['oxpassword'] );
-            $this->type( "userPasswordConfirm", $aUserData['oxpassword'] );
-            unset( $aUserData['oxpassword'] );
+        if (isset($aUserData['oxpassword']) && $aUserData['oxpassword']) {
+            $this->type("userPassword", $aUserData['oxpassword']);
+            $this->type("userPasswordConfirm", $aUserData['oxpassword']);
+            unset($aUserData['oxpassword']);
         }
 
-        $this->fillAddressInfo( $aUserData, true );
+        $this->fillAddressInfo($aUserData, true);
 
-        if ( $blSubscribed ) {
-            $this->uncheck( "//input[@name='blnewssubscribed' and @value='1']" );
+        if ($blSubscribed) {
+            $this->uncheck("//input[@name='blnewssubscribed' and @value='1']");
         }
     }
 
@@ -471,20 +471,20 @@ class UserRegistrationFrontendTest extends FrontendTestCase
      * @param $aUserData
      * @param bool $blBilling
      */
-    public function fillAddressInfo( $aUserData, $blBilling = false )
+    public function fillAddressInfo($aUserData, $blBilling = false)
     {
         $sPrefix = $blBilling? "invadr[oxuser__" : "deladr[oxaddress__";
 
-        foreach ( $aUserData as $sKey => $sValue ) {
+        foreach ($aUserData as $sKey => $sValue) {
             $sInputLocator = "${sPrefix}${sKey}]";
 
-            if ( $sKey == 'oxcountryid') {
-                $this->select( $sInputLocator, "label=".$sValue );
-            } else if ($sKey == 'oxstateid') {
+            if ($sKey == 'oxcountryid') {
+                $this->select($sInputLocator, "label=".$sValue);
+            } elseif ($sKey == 'oxstateid') {
                 $this->waitForItemAppear($sInputLocator);
-                $this->select( $sInputLocator, "value=".$sValue );
+                $this->select($sInputLocator, "value=".$sValue);
             } else {
-                $this->type( $sInputLocator, $sValue );
+                $this->type($sInputLocator, $sValue);
             }
         }
     }
@@ -493,10 +493,10 @@ class UserRegistrationFrontendTest extends FrontendTestCase
      * @param $aUserData
      * @return string
      */
-    public function formOrderUserData( $aUserData )
+    public function formOrderUserData($aUserData)
     {
         $sUserData = "%EMAIL%: ".$aUserData['oxusername'].' ';
-        $sUserData .= $this->formOrderAddressData( $aUserData, true ) . ' ';
+        $sUserData .= $this->formOrderAddressData($aUserData, true) . ' ';
         $sUserData .= "%CELLUAR_PHONE%: " . $aUserData['oxmobfon'].' ';
         $sUserData .= "%PERSONAL_PHONE%: " . $aUserData['oxprivfon'];
 
@@ -507,7 +507,7 @@ class UserRegistrationFrontendTest extends FrontendTestCase
      * @param $aData
      * @return string
      */
-    public function formOrderAddressData( $aData )
+    public function formOrderAddressData($aData)
     {
         $sAddress =  $aData["oxcompany"].' '.$aData["oxaddinfo"].' ';
         $sAddress .= isset($aData["oxsal"])? $aData["oxsal"] : "Mr";
@@ -526,7 +526,7 @@ class UserRegistrationFrontendTest extends FrontendTestCase
      * @param array      $aUserData
      * @param array|bool $aAddressData
      */
-    public  function assertUserExists( $aUserData, $aAddressData = false )
+    public function assertUserExists($aUserData, $aAddressData = false)
     {
         unset($aUserData['oxpassword']);
         unset($aUserData['oxcountryid']);
@@ -534,7 +534,7 @@ class UserRegistrationFrontendTest extends FrontendTestCase
         $oValidator = $this->getObjectValidator();
         $this->assertTrue($oValidator->validate('oxuser', $aUserData), $oValidator->getErrorMessage());
 
-        if ( $aAddressData ) {
+        if ($aAddressData) {
             unset($aAddressData['oxcountryid']);
 
             $oValidator = $this->getObjectValidator();
@@ -542,4 +542,3 @@ class UserRegistrationFrontendTest extends FrontendTestCase
         }
     }
 }
-

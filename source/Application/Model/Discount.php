@@ -292,7 +292,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         // amounts check
         if ($this->oxdiscount__oxamount->value && ($oSummary->iArticleCount < $this->oxdiscount__oxamount->value || $oSummary->iArticleCount > $this->oxdiscount__oxamountto->value)) {
             return false;
-            // price check
+        // price check
         } elseif ($this->oxdiscount__oxprice->value) {
             $dRate = $oBasket->getBasketCurrency()->rate;
             if ($oSummary->dArticleDiscountablePrice < $this->oxdiscount__oxprice->value * $dRate || $oSummary->dArticleDiscountablePrice > $this->oxdiscount__oxpriceto->value * $dRate) {

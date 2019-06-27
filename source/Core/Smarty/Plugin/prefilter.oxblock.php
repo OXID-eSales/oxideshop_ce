@@ -83,4 +83,3 @@ function smarty_prefilter_oxblock($sSource, &$oSmartyCompiler)
     }
     return $sSource;
 }
-

@@ -23,8 +23,8 @@
  */
 
 $aData = array(
-        'articles' => array (
-                0 => array (
+        'articles' => array(
+                0 => array(
                         'oxid'        => '_tArticle',
                         'oxprice'     => 50,
                         'oxweight'    => 10,
@@ -33,7 +33,7 @@ $aData = array(
                         'oxvat'       => 10,
                         'amount'      => 2,
                 ),
-                1 => array (
+                1 => array(
                         'oxid'        => 2000,
                         'oxprice'     => 29.9,
                         'oxtitle'     => "Wall Clock ROBOT",
@@ -41,7 +41,7 @@ $aData = array(
                         'oxstockflag' => 1,
                         'amount'      => 1,
                 ),
-                2 => array (
+                2 => array(
                         'oxid'        => '_t1651',
                         'oxprice'     => 29.9,
                         'oxtitle'     => "Beer homebrew kit CHEERS!",
@@ -50,8 +50,8 @@ $aData = array(
                         'amount'      => 1,
                 ),
         ),
-        'discounts' => array (
-                0 => array (
+        'discounts' => array(
+                0 => array(
                         'oxid'        => 'testdiscount0',
                         'oxactive'    => 1,
                         'oxtitle'     => 'Test discount 0',
@@ -65,16 +65,16 @@ $aData = array(
                         'oxsort' => 10,
                 ),
         ),
-        'expected' => array (
-                'articles' => array (
-                        '_tArticle' => array ( '45,00', '90,00' ),
-                        2000          => array ( '24,90', '24,90' ),
-                        '_t1651'          => array ( '29,90', '29,90' ),
+        'expected' => array(
+                'articles' => array(
+                        '_tArticle' => array( '45,00', '90,00' ),
+                        2000          => array( '24,90', '24,90' ),
+                        '_t1651'          => array( '29,90', '29,90' ),
                 ),
-                'totals' => array (
+                'totals' => array(
                         'totalBrutto' => '144,80',
                         'totalNetto'  => '127,87',
-                        'vats' => array (
+                        'vats' => array(
                                 19 => '8,75',
                                 10 => '8,18'
                         ),
@@ -83,7 +83,7 @@ $aData = array(
                         'grandTotal'  => '144,80'
                 ),
         ),
-        'options' => array (
+        'options' => array(
                 'config' => array(
                         'blEnterNetPrice' => false,
                         'blShowNetPrice' => false,

@@ -10,7 +10,6 @@ use oxStrMb;
 
 class StrTest extends \OxidTestCase
 {
-
     public function testGetStrHandler()
     {
         $oStr = $this->getProxyClass('oxStr');

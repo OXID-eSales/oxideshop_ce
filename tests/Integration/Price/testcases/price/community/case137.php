@@ -11,9 +11,9 @@
  *  3. shop; %; 5.5; general
  * Short description: brutto-netto general discount to user groups, prices ABC and separate discounts;
  */
-$aData = array (
-        'articles' => array (
-                0 => array (
+$aData = array(
+        'articles' => array(
+                0 => array(
                         'oxid'            => 1000,
                         'oxprice'         => 99,
                         'oxpricea'        => 9,
@@ -25,8 +25,8 @@ $aData = array (
                 'oxactive' => 1,
                 'oxusername' => 'groupAUser',
         ),
-        'discounts' => array (
-                0 => array (
+        'discounts' => array(
+                0 => array(
                         'oxid'             => 'percentForShop',
                         'oxaddsum'         => 5.5,
                         'oxaddsumtype'     => '%',
@@ -37,7 +37,7 @@ $aData = array (
                         'oxactive'         => 1,
                         'oxsort'           => 10,
                 ),
-                1 => array (
+                1 => array(
                         'oxid'             => 'groupADiscount',
                         'oxaddsum'         => 10,
                         'oxaddsumtype'     => '%',
@@ -46,10 +46,10 @@ $aData = array (
                         'oxamount'         => 0,
                         'oxamountto'       => 99999,
                         'oxactive'         => 1,
-                        'oxgroups'         => array ( 'oxidpricea' ),
+                        'oxgroups'         => array( 'oxidpricea' ),
                         'oxsort'           => 20,
                 ),
-                2 => array (
+                2 => array(
                         'oxid'             => 'groupBDiscount',
                         'oxaddsum'         => 5,
                         'oxaddsumtype'     => '%',
@@ -58,31 +58,31 @@ $aData = array (
                         'oxamount'         => 0,
                         'oxamountto'       => 99999,
                         'oxactive'         => 1,
-                        'oxgroups'         => array ( 'oxidpriceb' ),
+                        'oxgroups'         => array( 'oxidpriceb' ),
                         'oxsort'           => 30,
                 ),
         ),
-        'group' => array (
-                0 => array (
+        'group' => array(
+                0 => array(
                         'oxid' => 'oxidpricea',
                         'oxactive' => 1,
                         'oxtitle' => 'Price A',
-                        'oxobject2group' => array ( '_testUserA', 'groupADiscount' ),
+                        'oxobject2group' => array( '_testUserA', 'groupADiscount' ),
                 ),
-                1 => array (
+                1 => array(
                         'oxid' => 'oxidpriceb',
                         'oxactive' => 1,
                         'oxtitle' => 'Price B',
-                        'oxobject2group' => array ( '_testUserB', 'groupBDiscount' ),
+                        'oxobject2group' => array( '_testUserB', 'groupBDiscount' ),
                 ),
         ),
-        'expected' => array (
-                1000 => array (
+        'expected' => array(
+                1000 => array(
                         'base_price'        => '9,00',
                         'price'             => '6,38',
                 ),
         ),
-        'options' => array (
+        'options' => array(
                 'config' => array(
                         'blEnterNetPrice' => false,
                         'blShowNetPrice' => true,

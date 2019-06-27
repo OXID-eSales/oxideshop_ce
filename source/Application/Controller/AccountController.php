@@ -152,7 +152,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function confirmTerms()
     {
-        $termsConfirmation = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("term");
+        $termsConfirmation = Registry::getConfig()->getRequestParameter("term");
         if (!$termsConfirmation && $this->isEnabledPrivateSales()) {
             $user = $this->getUser();
             if ($user && !$user->isTermsAccepted()) {
@@ -175,11 +175,11 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
     {
         $parameters = parent::getNavigationParams();
 
-        if ($sourceClass = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sourcecl")) {
+        if ($sourceClass = Registry::getConfig()->getRequestParameter("sourcecl")) {
             $parameters['sourcecl'] = $sourceClass;
         }
 
-        if ($articleId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("anid")) {
+        if ($articleId = Registry::getConfig()->getRequestParameter("anid")) {
             $parameters['anid'] = $articleId;
         }
 
@@ -200,7 +200,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function redirectAfterLogin()
     {
         // in case source class is provided - redirecting back to it with all default parameters
-        if (($sourceClass = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sourcecl")) &&
+        if (($sourceClass = Registry::getConfig()->getRequestParameter("sourcecl")) &&
             $this->_oaComponents['oxcmp_user']->getLoginStatus() === USER_LOGIN_SUCCESS
         ) {
             $redirectUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl() . 'index.php?cl=' . rawurlencode($sourceClass);
@@ -213,8 +213,8 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
             }
 
             /** @var \OxidEsales\Eshop\Core\UtilsUrl $utilsUrl */
-            $utilsUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl();
-            return \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($utilsUrl->processUrl($redirectUrl), true, 302);
+            $utilsUrl = Registry::getUtilsUrl();
+            return Registry::getUtils()->redirect($utilsUrl->processUrl($redirectUrl), true, 302);
         }
     }
 
@@ -244,7 +244,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
     {
         if ($this->_sArticleId === null) {
             // passing wishlist information
-            if ($articleId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aid')) {
+            if ($articleId = Registry::getConfig()->getRequestParameter('aid')) {
                 $this->_sArticleId = $articleId;
             }
         }
@@ -262,7 +262,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
         if ($this->_sSearchParamForHtml === null) {
             $this->_sSearchParamForHtml = false;
             if ($this->getArticleId()) {
-                $this->_sSearchParamForHtml = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchparam');
+                $this->_sSearchParamForHtml = Registry::getConfig()->getRequestParameter('searchparam');
             }
         }
 
@@ -279,7 +279,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
         if ($this->_sSearchParam === null) {
             $this->_sSearchParam = false;
             if ($this->getArticleId()) {
-                $this->_sSearchParam = rawurlencode(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchparam', true));
+                $this->_sSearchParam = rawurlencode(Registry::getConfig()->getRequestParameter('searchparam', true));
             }
         }
 
@@ -297,7 +297,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
             $this->_sListType = false;
             if ($this->getArticleId()) {
                 // searching in vendor #671
-                $this->_sListType = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('listtype');
+                $this->_sListType = Registry::getConfig()->getRequestParameter('listtype');
             }
         }
 
@@ -313,7 +313,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
     {
         $paths = [];
         $pathData = [];
-        $language = \OxidEsales\Eshop\Core\Registry::getLang();
+        $language = Registry::getLang();
         $baseLanguageId = $language->getBaseLanguage();
         if ($user = $this->getUser()) {
             $username = $user->oxuser__oxusername->value;
@@ -379,7 +379,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
         if ($this->canUserAccountBeDeleted() && $user->delete()) {
             $this->accountDeletionStatus = true;
             $user->logout();
-            $session = $this->getSession();
+            $session = \OxidEsales\Eshop\Core\Registry::getSession();
             $session->destroy();
         }
     }
@@ -415,6 +415,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     private function canUserAccountBeDeleted()
     {
-        return $this->getSession()->checkSessionChallenge() && $this->isUserAllowedToDeleteOwnAccount();
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        return $session->checkSessionChallenge() && $this->isUserAllowedToDeleteOwnAccount();
     }
 }

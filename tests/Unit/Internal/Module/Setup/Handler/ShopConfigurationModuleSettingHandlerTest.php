@@ -160,8 +160,7 @@ class ShopConfigurationModuleSettingHandlerTest extends TestCase
 
     private function getTestShopConfigurationSettingDao(): ShopConfigurationSettingDaoInterface
     {
-        return new class implements ShopConfigurationSettingDaoInterface
-        {
+        return new class implements ShopConfigurationSettingDaoInterface {
             private $settings = [];
 
             public function save(ShopConfigurationSetting $setting)

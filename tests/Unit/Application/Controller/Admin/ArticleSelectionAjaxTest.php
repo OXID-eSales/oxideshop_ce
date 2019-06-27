@@ -194,6 +194,4 @@ class ArticleSelectionAjaxTest extends \OxidTestCase
         $oView->addSel();
         $this->assertEquals(1, $oDb->getOne("select count(oxid) from oxobject2selectlist where oxobjectid='_testAdd'"));
     }
-
-
 }

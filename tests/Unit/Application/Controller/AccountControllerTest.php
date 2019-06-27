@@ -233,7 +233,8 @@ class AccountControllerTest extends UnitTestCase
         $oUser->oxuser__oxpassword = new Field(1);
 
         $oView = $this->getMock(
-            "account", array("redirectAfterLogin",
+            "account",
+            array("redirectAfterLogin",
                              "getUser", "isEnabledPrivateSales")
         );
 
@@ -258,7 +259,8 @@ class AccountControllerTest extends UnitTestCase
         $oUser->oxuser__oxpassword = new Field(1);
 
         $oView = $this->getMock(
-            "account", array("redirectAfterLogin",
+            "account",
+            array("redirectAfterLogin",
                              "getUser", 'isActive')
         );
 
@@ -443,7 +445,7 @@ class AccountControllerTest extends UnitTestCase
         /** @var PHPUnit\Framework\MockObject\MockObject|Session $session */
         $session = $this->getMockBuilder(Session::class)->setMethods(['destroy'])->getMock();
         $session->expects($this->any())->method('destroy');
-        $this->getConfig()->setSession($session);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
     }
 
     /**

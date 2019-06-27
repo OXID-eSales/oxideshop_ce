@@ -18,7 +18,6 @@ use stdClass;
 
 class testOxUtils extends oxUtils
 {
-
     public function setNonPublicVar($name, $value)
     {
         $this->$name = $value;
@@ -44,7 +43,6 @@ class testOxUtils extends oxUtils
 
 class UtilsTest extends \OxidTestCase
 {
-
     protected $_sTestLogFileName = null;
 
     /**
@@ -106,13 +104,14 @@ class UtilsTest extends \OxidTestCase
     {
         // This Exception is used to avoid exit() in method showMessageAndExit, which would stop running tests.
         $this->expectException(
-            'Exception', 'Stop process before PHP exit() is called.'
+            'Exception',
+            'Stop process before PHP exit() is called.'
         );
-        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("freeze"));
-        $oSession->expects($this->once())->method('freeze');
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("freeze"));
+        $session->expects($this->once())->method('freeze');
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
-        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array("getSession", "commitFileCache"));
-        $oUtils->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array("commitFileCache"));
         $oUtils->expects($this->once())
             ->method('commitFileCache')
             ->will($this->throwException(new Exception('Stop process before PHP exit() is called.')));
@@ -406,7 +405,6 @@ class UtilsTest extends \OxidTestCase
 
     public function testAssignValuesToText()
     {
-
         $aTestArray = array('one' => 11, 'two' => 22, 'three' => 33, 'fourfour' => 44.44);
         $sResult = oxRegistry::getUtils()->assignValuesToText($aTestArray);
         $sShouldBeResult = "one__11@@two__22@@three__33@@fourfour__44.44@@";
@@ -556,7 +554,6 @@ class UtilsTest extends \OxidTestCase
         $this->assertEquals('-9', oxRegistry::getUtils()->fRound('-9,849', $oCur));
 
         $this->assertEquals('1522.61', oxRegistry::getUtils()->fRound('1522.605', $oCur));
-
     }
 
     public function testToFromStaticCache()
@@ -597,12 +594,10 @@ class UtilsTest extends \OxidTestCase
 
         $this->assertEquals($mContent1, $oUtils->fromStaticCache($sName1));
         $this->assertEquals(null, $oUtils->fromStaticCache($mContent1));
-
     }
 
     public function testCleanStaticCacheFullClean()
     {
-
         $oUtils = oxNew('oxutils');
 
         $sName1 = "SomeName";
@@ -790,7 +785,6 @@ class UtilsTest extends \OxidTestCase
         foreach ($aFiles as $sFile) {
             $this->assertNull($oUtils->getLangCache($sFile));
         }
-
     }
 
     /**
@@ -824,7 +818,9 @@ class UtilsTest extends \OxidTestCase
         $this->assertEquals(true, oxRegistry::getUtils()->checkAccessRights());
 
         //  self::$test_sql_used = null;
-        modDB::getInstance()->addClassFunction('getOne', function ($sql) {return 1;});
+        modDB::getInstance()->addClassFunction('getOne', function ($sql) {
+            return 1;
+        });
 
         $mySession->setVariable("auth", "oxdefaultadmin");
         $this->assertEquals(true, oxRegistry::getUtils()->checkAccessRights());
@@ -832,7 +828,9 @@ class UtilsTest extends \OxidTestCase
 
 
         //self::$test_sql_used = null;
-        modDB::getInstance()->addClassFunction('getOne', function ($sql) {return 0;});
+        modDB::getInstance()->addClassFunction('getOne', function ($sql) {
+            return 0;
+        });
 
         $this->assertEquals(false, oxRegistry::getUtils()->checkAccessRights());
 
@@ -842,7 +840,6 @@ class UtilsTest extends \OxidTestCase
 
     public function testCheckAccessRightsChecksSubshopAdminShop()
     {
-
         $session = Registry::getSession();
         $backUpAuth = $session->getVariable("auth");
 
@@ -882,7 +879,6 @@ class UtilsTest extends \OxidTestCase
             $this->setRequestParameter('currentadminshop', null);
             $this->assertEquals(true, $utils->checkAccessRights());
         } catch (Exception  $exception) {
-
         }
 
         $session->setVariable("auth", $backUpAuth);
@@ -894,7 +890,6 @@ class UtilsTest extends \OxidTestCase
 
     public function testIsValidAlpha()
     {
-
         $this->assertEquals(true, oxRegistry::getUtils()->isValidAlpha('oxid'));
         $this->assertEquals(true, oxRegistry::getUtils()->isValidAlpha('oxid1'));
         $this->assertEquals(false, oxRegistry::getUtils()->isValidAlpha('oxid.'));
@@ -916,7 +911,6 @@ class UtilsTest extends \OxidTestCase
         $sURL = 'http://www.url.com/index.php?cl=aaa';
         $sReturnURL = "http://www.url.com/index.php?cl=aaa&string=someString&bool1=&bool2=1&int=1234&float=123.45&negfloat=-123.45";
         $this->assertEquals($sReturnURL, $oUtils->UNITaddUrlParameters($sURL, $aParams));
-
     }
 
     public function testOxMimeContentType()
@@ -941,12 +935,12 @@ class UtilsTest extends \OxidTestCase
 
     public function testRedirect()
     {
-        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('freeze'));
-        $oSession->expects($this->once())->method('freeze');
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('freeze'));
+        $session->expects($this->once())->method('freeze');
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
-        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_simpleRedirect', 'getSession', 'showMessageAndExit'));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_simpleRedirect', 'showMessageAndExit'));
         $oUtils->expects($this->once())->method('_simpleRedirect')->with($this->equalTo('url?redirected=1'));
-        $oUtils->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
         $oUtils->redirect('url');
     }
 
@@ -968,13 +962,13 @@ class UtilsTest extends \OxidTestCase
      */
     public function testRedirectCodes($iCode, $sHeader)
     {
-        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('freeze'));
-        $oSession->expects($this->any())->method('freeze');
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('freeze'));
+        $session->expects($this->any())->method('freeze');
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         // test also any other to redirect only temporary
-        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_simpleRedirect', 'getSession', 'showMessageAndExit'));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_simpleRedirect', 'showMessageAndExit'));
         $oUtils->expects($this->once())->method('_simpleRedirect')->with($this->equalTo('url'), $this->equalTo($sHeader));
-        $oUtils->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
         $oUtils->redirect('url', false, $iCode);
     }
 
@@ -982,12 +976,10 @@ class UtilsTest extends \OxidTestCase
     {
         $this->setRequestParameter('redirected', '1');
 
-        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_simpleRedirect', '_addUrlParameters', 'getSession'));
+        $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('_simpleRedirect', '_addUrlParameters'));
         $oUtils->expects($this->never())->method('_simpleRedirect');
         $oUtils->expects($this->never())->method('_addUrlParameters');
-        $oUtils->expects($this->never())->method('getSession');
         $oUtils->redirect('url');
-
     }
 
     public function testRedirectWithEncodedEntities()
@@ -1112,7 +1104,6 @@ class UtilsTest extends \OxidTestCase
      */
     public function testGetPreviewId()
     {
-
         $sAdminSid = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('admin_sid');
         $sCompare = md5($sAdminSid . "testID" . "testPass" . "tesrRights");
 
@@ -1221,8 +1212,6 @@ class UtilsTest extends \OxidTestCase
         $aCacheContents = oxRegistry::getUtils()->fromPhpFileCache("testVal2");
 
         $this->assertNull($aCacheContents);
-
-
     }
 
     public function testFromPhpFileCache()

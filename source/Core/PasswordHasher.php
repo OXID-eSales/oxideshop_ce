@@ -9,7 +9,8 @@ namespace OxidEsales\EshopCommunity\Core;
 /**
  * Hash password together with salt, using set hash algorithm
  *
- * @deprecated since v6.4.0 (2019-03-15); This class will be removed completely.
+ * @deprecated since v6.4.0 (2019-03-15); `\OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface`
+ *                                        was added as the new default for hashing passwords.
  */
 class PasswordHasher
 {

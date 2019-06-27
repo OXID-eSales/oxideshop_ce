@@ -17,7 +17,7 @@
  *
  * @return string
  */
-function smarty_function_oxvariantselect( $params, &$smarty )
+function smarty_function_oxvariantselect($params, &$smarty)
 {
     $sOutput = '';
     $oMdVariants = $params['value'];
@@ -74,7 +74,6 @@ function oxvariantselect_addSubvariants($oMdVariants, $iLevel, &$aSelectBoxes, &
             if ($oVariant->hasArticleId($sArtId)) {
                 $sSelectedVariant = $oVariant->getId();
             }
-
         }
 
         $sRes .= oxvariantselect_formatSelectBox($sSelectBoxName, $aOptions, $iLevel, $blVisible, $sSelectedVariant) . "\n";
@@ -159,7 +158,7 @@ function oxvariantselect_formatJsRealVariantArray($aRealVariants)
     $sRes .= "mdRealVariantsLinks = Array($iCount);\n";
     foreach ($aRealVariants as $sMdVarian => $sRealVariant) {
         $sRes .= " mdRealVariants['$sMdVarian'] = '" . $sRealVariant['id'] . "';\n";
-        $sRes .= " mdRealVariantsLinks['$sMdVarian'] = '" . str_replace( '&amp;', '&', $sRealVariant['link']) . "';\n";
+        $sRes .= " mdRealVariantsLinks['$sMdVarian'] = '" . str_replace('&amp;', '&', $sRealVariant['link']) . "';\n";
     }
 
     $sRes .= "--></script>";

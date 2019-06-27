@@ -10,7 +10,6 @@ use \oxRegistry;
 
 class FieldTest extends \OxidTestCase
 {
-
     public function test_construct()
     {
         $oField = new oxField('ssss<');

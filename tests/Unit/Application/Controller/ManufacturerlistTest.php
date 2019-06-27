@@ -400,7 +400,6 @@ class ManufacturerlistTest extends \OxidTestCase
      */
     public function testGetBreadCrumb()
     {
-
         $oCat1 = $this->getMock(\OxidEsales\Eshop\Application\Model\Manufacturer::class, array('getLink'));
         $oCat1->expects($this->once())->method('getLink')->will($this->returnValue('linkas1'));
         $oCat1->oxcategories__oxtitle = new oxField('title1');
@@ -416,7 +415,5 @@ class ManufacturerlistTest extends \OxidTestCase
         $oView->expects($this->once())->method('getManufacturerTree')->will($this->returnValue($oCategoryList));
 
         $this->assertTrue(count($oView->getBreadCrumb()) >= 1);
-
     }
-
 }

@@ -367,7 +367,8 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     public function processSeoUrl($sUrl)
     {
         if (!$this->isAdmin()) {
-            $sUrl = $this->getSession()->processUrl($this->appendUrl($sUrl, $this->getAddUrlParams()));
+            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $sUrl = $session->processUrl($this->appendUrl($sUrl, $this->getAddUrlParams()));
         }
 
         $sUrl = $this->cleanUrlParams($sUrl);

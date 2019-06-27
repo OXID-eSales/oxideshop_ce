@@ -95,5 +95,4 @@ class DeliverySetMainTest extends \OxidTestCase
         }
         $this->fail("error in DeliverySet_Main::save()");
     }
-
 }

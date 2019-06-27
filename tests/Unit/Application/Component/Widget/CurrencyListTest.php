@@ -21,5 +21,4 @@ class CurrencyListTest extends \OxidTestCase
         $oCurrencyList = oxNew('oxwCurrencyList');
         $this->assertEquals('widget/header/currencies.tpl', $oCurrencyList->render());
     }
-
 }

@@ -86,8 +86,8 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      * list sorting rules. Loads list of articles which belong to this vendor
      * Generates page navigation data
      * such as previous/next window URL, number of available pages, generates
-     * meta tags info (\OxidEsales\Eshop\Application\Controller\FrontendController::_convertForMetaTags()) and returns name of
-     * template to render.
+     * meta tags info (\OxidEsales\Eshop\Application\Controller\FrontendController::_convertForMetaTags()) and returns
+     * name of template to render.
      *
      * @return  string  $this->_sThisTemplate   current template file name
      */

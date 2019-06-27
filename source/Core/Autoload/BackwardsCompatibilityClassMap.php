@@ -440,13 +440,8 @@ return [
     'oxcacheitem'                         => 'OxidEsales\\Eshop\\Core\\Cache\\Generic\\CacheItem',
     'oxfilecacheconnector'                => 'OxidEsales\\Eshop\\Core\\Cache\\Generic\\Connector\\FileCacheConnector',
     'oxmemcachedcacheconnector'           => 'OxidEsales\\Eshop\\Core\\Cache\\Generic\\Connector\\MemcachedCacheConnector',
-    'oxreverseproxyconnector'             => 'OxidEsales\\Eshop\\Core\\Cache\\Generic\\Connector\\ReverseProxyCacheConnector',
     'oxzenddiskcacheconnector'            => 'OxidEsales\\Eshop\\Core\\Cache\\Generic\\Connector\\ZendDiskCacheConnector',
     'oxzendshmcacheconnector'             => 'OxidEsales\\Eshop\\Core\\Cache\\Generic\\Connector\\ZendShmCacheConnector',
-    'oxreverseproxybackend'               => 'OxidEsales\\Eshop\\Core\\Cache\\ReverseProxy\\ReverseProxyBackend',
-    'oxreverseproxyheader'                => 'OxidEsales\\Eshop\\Core\\Cache\\ReverseProxy\\ReverseProxyHeader',
-    'oxreverseproxyurlgenerator'          => 'OxidEsales\\Eshop\\Core\\Cache\\ReverseProxy\\ReverseProxyUrlGenerator',
-    'oxreverseproxyurlpartstoflush'       => 'OxidEsales\\Eshop\\Core\\Cache\\ReverseProxy\\ReverseProxyUrlPartsToFlush',
     'oxcategory2shoprelations'            => 'OxidEsales\\Eshop\\Core\\Category2ShopRelations',
     'oxcompanyvatinchecker'               => 'OxidEsales\\Eshop\\Core\\CompanyVatInChecker',
     'oxcompanyvatincountrychecker'        => 'OxidEsales\\Eshop\\Core\\CompanyVatInCountryChecker',
@@ -569,5 +564,14 @@ return [
     'oxutilsview'                         => 'OxidEsales\\Eshop\\Core\\UtilsView',
     'oxutilsxml'                          => 'OxidEsales\\Eshop\\Core\\UtilsXml',
     'oxviewconfig'                        => 'OxidEsales\\Eshop\\Core\\ViewConfig',
-    'oxwidgetcontrol'                     => 'OxidEsales\\Eshop\\Core\\WidgetControl'
+    'oxwidgetcontrol'                     => 'OxidEsales\\Eshop\\Core\\WidgetControl',
+
+    /*
+     * @deprecated since 2019-11-23 (6.2.1). ReverseProxy functionality extracted to module, please use respective module classes.
+     */
+    'oxreverseproxyconnector'             => 'OxidEsales\\Eshop\\Core\\Cache\\Generic\\Connector\\ReverseProxyCacheConnector',
+    'oxreverseproxybackend'               => 'OxidEsales\\Eshop\\Core\\Cache\\ReverseProxy\\ReverseProxyBackend',
+    'oxreverseproxyheader'                => 'OxidEsales\\Eshop\\Core\\Cache\\ReverseProxy\\ReverseProxyHeader',
+    'oxreverseproxyurlgenerator'          => 'OxidEsales\\Eshop\\Core\\Cache\\ReverseProxy\\ReverseProxyUrlGenerator',
+    'oxreverseproxyurlpartstoflush'       => 'OxidEsales\\Eshop\\Core\\Cache\\ReverseProxy\\ReverseProxyUrlPartsToFlush',
 ];

@@ -114,14 +114,14 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
      */
     public function logout()
     {
-        $mySession = $this->getSession();
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $oUser->logout();
 
         // kill session
-        $mySession->destroy();
+        $session->destroy();
 
         //resetting content cache if needed
         if ($myConfig->getConfigParam('blClearCacheOnLogout')) {
@@ -154,18 +154,19 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
     protected function _doStartUpChecks()
     {
         $aMessage = [];
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
 
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blCheckSysReq') !== false) {
             // check if system reguirements are ok
             $oSysReq = oxNew(\OxidEsales\Eshop\Core\SystemRequirements::class);
             if (!$oSysReq->getSysReqStatus()) {
                 $aMessage['warning'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE');
-                $aMessage['warning'] .= '<a href="?cl=sysreq&amp;stoken=' . $this->getSession()->getSessionChallengeToken() . '" target="basefrm">';
+                $aMessage['warning'] .= '<a href="?cl=sysreq&amp;stoken=' . $session->getSessionChallengeToken() . '" target="basefrm">';
                 $aMessage['warning'] .= \OxidEsales\Eshop\Core\Registry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE2') . '</a>';
             }
         } else {
             $aMessage['message'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE_INACTIVE');
-            $aMessage['message'] .= '<a href="?cl=sysreq&amp;stoken=' . $this->getSession()->getSessionChallengeToken() . '" target="basefrm">';
+            $aMessage['message'] .= '<a href="?cl=sysreq&amp;stoken=' . $session->getSessionChallengeToken() . '" target="basefrm">';
             $aMessage['message'] .= \OxidEsales\Eshop\Core\Registry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE2') . '</a>';
         }
 

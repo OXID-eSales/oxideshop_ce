@@ -7,7 +7,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 class StateTest extends \OxidTestCase
 {
-
     public function testInit()
     {
         $oState = oxNew('oxState');
@@ -66,5 +65,4 @@ class StateTest extends \OxidTestCase
         $oState = oxNew('oxState');
         $this->assertEquals($sExpected, $oState->getTitleById($sId), $sMsg);
     }
-
 }

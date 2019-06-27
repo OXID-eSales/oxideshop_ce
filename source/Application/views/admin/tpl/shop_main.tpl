@@ -134,7 +134,7 @@ window.onload = function ()
                 <td class="edittext">
                 <input type="text" class="editinput" size="10" maxlength="[{$edit->oxshops__oxfname->fldmax_length}]" name="editval[oxshops__oxfname]" value="[{$edit->oxshops__oxfname->value}]" [{$readonly}]>
                 <input type="text" class="editinput" size="21" maxlength="[{$edit->oxshops__oxlname->fldmax_length}]" name="editval[oxshops__oxlname]" value="[{$edit->oxshops__oxlname->value}]" [{$readonly}]>
-                [{oxinputhelp ident="HELP_ENERAL_NAME"}]
+                [{oxinputhelp ident="HELP_GENERAL_NAME"}]
                 </td>
             </tr>
             <tr>

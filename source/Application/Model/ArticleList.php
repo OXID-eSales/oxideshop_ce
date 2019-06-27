@@ -79,7 +79,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getHistoryArticles()
     {
-        if ($aArticlesIds = $this->getSession()->getVariable('aHistoryArticles')) {
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        if ($aArticlesIds = $session->getVariable('aHistoryArticles')) {
             return $aArticlesIds;
         } elseif ($sArticlesIds = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('aHistoryArticles')) {
             return explode('|', $sArticlesIds);
@@ -93,8 +94,9 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function setHistoryArticles($aArticlesIds)
     {
-        if ($this->getSession()->getId()) {
-            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('aHistoryArticles', $aArticlesIds);
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        if ($session->getId()) {
+            $session->setVariable('aHistoryArticles', $aArticlesIds);
             // clean cookie, if session started
             \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie('aHistoryArticles', '');
         } else {
@@ -696,7 +698,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sNow = date('Y-m-d H:i:s');
         foreach ($this as $oArticle) {
             if (!$oArticle->oxarticles__oxactive->value &&
-                ($oArticle->oxarticles__oxactivefrom->value > $sNow ||
+                (
+                    $oArticle->oxarticles__oxactivefrom->value > $sNow ||
                  $oArticle->oxarticles__oxactiveto->value < $sNow
                 )
             ) {

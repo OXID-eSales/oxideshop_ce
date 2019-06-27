@@ -45,5 +45,4 @@ class CookieNoteTest extends \OxidTestCase
         $oCookieNote = oxNew('oxwCookieNote');
         $this->assertFalse($oCookieNote->isEnabled());
     }
-
 }

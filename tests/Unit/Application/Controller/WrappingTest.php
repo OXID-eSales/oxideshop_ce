@@ -32,11 +32,11 @@ class WrappingTest extends \OxidTestCase
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array("getBasketArticles"));
         $oBasket->expects($this->once())->method('getBasketArticles')->will($this->returnValue("getBasketArticles"));
 
-        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("getBasket"));
-        $oSession->expects($this->once())->method('getBasket')->will($this->returnValue($oBasket));
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("getBasket"));
+        $session->expects($this->once())->method('getBasket')->will($this->returnValue($oBasket));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\WrappingController::class, array("getSession"), array(), '', false);
-        $oView->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
+        $oView = oxNew(\OxidEsales\Eshop\Application\Controller\WrappingController::class);
         $this->assertEquals("getBasketArticles", $oView->getBasketItems());
     }
 
@@ -101,15 +101,15 @@ class WrappingTest extends \OxidTestCase
         $oBasket->expects($this->atLeastOnce())->method('setCardId')->with($this->equalTo("testCardId"));
         $oBasket->expects($this->atLeastOnce())->method('onUpdate');
 
-        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("getBasket"));
-        $oSession->expects($this->atLeastOnce())->method('getBasket')->will($this->returnValue($oBasket));
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("getBasket"));
+        $session->expects($this->atLeastOnce())->method('getBasket')->will($this->returnValue($oBasket));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         $oViewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array("getShowGiftWrapping"));
         $oViewConfig->expects($this->atLeastOnce())->method('getShowGiftWrapping')->will($this->returnValue(true));
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\WrappingController::class, array("getViewConfig", "getSession"), array(), '', false);
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\WrappingController::class, array("getViewConfig"), array(), '', false);
         $oView->expects($this->atLeastOnce())->method('getViewConfig')->will($this->returnValue($oViewConfig));
-        $oView->expects($this->atLeastOnce())->method('getSession')->will($this->returnValue($oSession));
         $this->assertEquals("order", $oView->changeWrapping());
     }
 }

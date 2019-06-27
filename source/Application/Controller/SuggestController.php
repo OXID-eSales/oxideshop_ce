@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use OxidEsales\Eshop\Core\MailValidator;
 use OxidEsales\Eshop\Core\Registry;
 
 /**
@@ -83,16 +84,16 @@ class SuggestController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function send()
     {
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval', true);
+        $aParams = Registry::getConfig()->getRequestParameter('editval', true);
         if (!is_array($aParams)) {
             return;
         }
 
         // storing used written values
         $oParams = (object) $aParams;
-        $this->setSuggestData((object) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval'));
+        $this->setSuggestData((object) Registry::getConfig()->getRequestParameter('editval'));
 
-        $oUtilsView = \OxidEsales\Eshop\Core\Registry::getUtilsView();
+        $oUtilsView = Registry::getUtilsView();
 
         // filled not all fields ?
         foreach ($this->_aReqFields as $sFieldName) {
@@ -103,7 +104,9 @@ class SuggestController extends \OxidEsales\Eshop\Application\Controller\Fronten
             }
         }
 
-        if (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams["rec_email"]) || !oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams["send_email"])) {
+        if (!oxNew(MailValidator::class)->isValidEmail($aParams["rec_email"])
+            || !oxNew(MailValidator::class)->isValidEmail($aParams["send_email"])
+        ) {
             $oUtilsView->addErrorToDisplay('SUGGEST_INVALIDMAIL');
 
             return;
@@ -111,26 +114,26 @@ class SuggestController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
         $sReturn = "";
         // #1834M - specialchar search
-        $sSearchParamForLink = rawurlencode(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchparam', true));
+        $sSearchParamForLink = rawurlencode(Registry::getConfig()->getRequestParameter('searchparam', true));
         if ($sSearchParamForLink) {
             $sReturn .= "&searchparam=$sSearchParamForLink";
         }
 
-        $sSearchCatId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchcnid');
+        $sSearchCatId = Registry::getConfig()->getRequestParameter('searchcnid');
         if ($sSearchCatId) {
             $sReturn .= "&searchcnid=$sSearchCatId";
         }
 
-        $sSearchVendor = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchvendor');
+        $sSearchVendor = Registry::getConfig()->getRequestParameter('searchvendor');
         if ($sSearchVendor) {
             $sReturn .= "&searchvendor=$sSearchVendor";
         }
 
-        if (($sSearchManufacturer = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchmanufacturer'))) {
+        if (($sSearchManufacturer = Registry::getConfig()->getRequestParameter('searchmanufacturer'))) {
             $sReturn .= "&searchmanufacturer=$sSearchManufacturer";
         }
 
-        $sListType = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('listtype');
+        $sListType = Registry::getConfig()->getRequestParameter('listtype');
         if ($sListType) {
             $sReturn .= "&listtype=$sListType";
         }
@@ -255,12 +258,12 @@ class SuggestController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $sLink = parent::getLink($iLang);
 
         // active category
-        if ($sVal = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid')) {
+        if ($sVal = Registry::getConfig()->getRequestParameter('cnid')) {
             $sLink .= ((strpos($sLink, '?') === false) ? '?' : '&amp;') . "cnid={$sVal}";
         }
 
         // active article
-        if ($sVal = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('anid')) {
+        if ($sVal = Registry::getConfig()->getRequestParameter('anid')) {
             $sLink .= ((strpos($sLink, '?') === false) ? '?' : '&amp;') . "anid={$sVal}";
         }
 
@@ -276,8 +279,8 @@ class SuggestController extends \OxidEsales\Eshop\Application\Controller\Fronten
     {
         $aPaths = [];
         $aPath = [];
-        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
-        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('RECOMMEND_PRODUCT', $iBaseLanguage, false);
+        $iBaseLanguage = Registry::getLang()->getBaseLanguage();
+        $aPath['title'] = Registry::getLang()->translateString('RECOMMEND_PRODUCT', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
 
         $aPaths[] = $aPath;

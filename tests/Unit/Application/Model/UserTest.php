@@ -21,7 +21,7 @@ use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Application\Model\PriceAlarm;
 use OxidEsales\EshopCommunity\Application\Model\UserPayment;
 use OxidEsales\Eshop\Core\UtilsObject;
-use OxidEsales\EshopCommunity\Internal\Password\Bridge\PasswordServiceBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use \oxnewssubscribed;
 use oxUser;
@@ -63,7 +63,6 @@ class UserTest_oxNewsSubscribed extends oxnewssubscribed
  */
 class UserTest_oxUtilsServerHelper extends oxUtilsServer
 {
-
     public function getOxCookie($sName = null)
     {
         return true;
@@ -446,7 +445,6 @@ class UserTest extends \OxidTestCase
 
         $this->assertFalse($oUser->isExpiredUpdateId($oUser->getUpdateId()));
         $this->assertTrue($oUser->isExpiredUpdateId('xxx'));
-
     }
 
     public function testMagicGetter()
@@ -456,7 +454,8 @@ class UserTest extends \OxidTestCase
         $oNewsSubscription->expects($this->once())->method('getOptInEmailStatus')->will($this->returnValue('getOptInEmailStatus'));
 
         $oUser = $this->getMock(
-            'oxuser', array('getUserGroups',
+            'oxuser',
+            array('getUserGroups',
                             'getNoticeListArtCnt',
                             'getWishListArtCnt',
                             'getRecommListsCount',
@@ -978,7 +977,6 @@ class UserTest extends \OxidTestCase
         $this->assertEquals($oUserPayment->oxuserpayments__oxuserid->value, $oUser->getId());
         $this->assertEquals($oUserPayment->oxpayments__oxdesc->value, 'Kreditkarte'); //important for compatibility to templates
         $this->assertEquals($oUserPayment->oxuserpayments__oxpaymentsid->value, 'oxidcreditcard'); //important for compatibility to templates
-
     }
 
     // 2. fetching payment info for not existing user - must return 0 payment
@@ -1555,7 +1553,6 @@ class UserTest extends \OxidTestCase
         // checking
         $sQ = 'select count(*) from oxuser where oxid = "' . $oUser->getId() . '" ';
         $this->assertEquals(1, $oDb->getOne($sQ));
-
     }
 
     // 2. creating with additional duplicate entries check for mall users
@@ -1636,7 +1633,8 @@ class UserTest extends \OxidTestCase
 
         $oUser = $this->createUser();
 
-        $sGroupId = $oDb->getOne('select oxgroupsid from oxobject2group where oxobjectid="' . $oUser->getId() . '" ');;
+        $sGroupId = $oDb->getOne('select oxgroupsid from oxobject2group where oxobjectid="' . $oUser->getId() . '" ');
+        ;
 
         // assigning to some group
         $this->assertEquals(false, $oUser->addToGroup($sGroupId));
@@ -1933,7 +1931,6 @@ class UserTest extends \OxidTestCase
         $oUser->expects($this->exactly(2))->method('inGroup')->will($this->onConsecutiveCalls($this->returnValue(false), $this->returnValue(true)));
 
         $oUser->UNITsetAutoGroups('xxx', array());
-
     }
 
     // 2. testing if native country customer is automatically assigned/removed to/from special user groups
@@ -1946,7 +1943,6 @@ class UserTest extends \OxidTestCase
         $oUser->expects($this->any())->method('inGroup')->will($this->onConsecutiveCalls($this->returnValue(true), $this->returnValue(false)));
 
         $oUser->UNITsetAutoGroups('xxx');
-
     }
 
     public function testSetAutoGroupsNativeMultiple()
@@ -2339,7 +2335,6 @@ class UserTest extends \OxidTestCase
         $this->assertNull($this->getSessionParam('usr'));
         $this->assertNull($this->getSessionParam('auth'));
         $this->assertFalse($oUser->getUser());
-
     }
 
     /**
@@ -2667,10 +2662,11 @@ class UserTest extends \OxidTestCase
         $oBasketItem->expects($this->once())->method('getWishId')->will($this->returnValue("testwishid"));
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getContents'));
         $oBasket->expects($this->once())->method('getContents')->will($this->returnValue(array($oBasketItem)));
-        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasket'));
-        $oSession->expects($this->once())->method('getBasket')->will($this->returnValue($oBasket));
-        $oUserView = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getSession'));
-        $oUserView->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasket'));
+        $session->expects($this->once())->method('getBasket')->will($this->returnValue($oBasket));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
+
+        $oUserView = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $this->assertEquals("testwishid", $oUserView->UNITgetWishListId());
     }
 

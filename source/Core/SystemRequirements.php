@@ -545,9 +545,9 @@ class SystemRequirements
     {
         $requirementFits = null;
 
-        $minimalRequiredVersion = '7.0.0';
-        $minimalRecommendedVersion = '7.0.0';
-        $maximalRecommendedVersion = '7.1.9999';
+        $minimalRequiredVersion = '7.1.0';
+        $minimalRecommendedVersion = '7.1.0';
+        $maximalRecommendedVersion = '7.2.9999';
 
         $installedPhpVersion = $this->getPhpVersion();
 
@@ -741,7 +741,7 @@ class SystemRequirements
      */
     public function checkIniSet()
     {
-        return (@ini_set('session.name', 'sid') !== false) ? 2 : 0;
+        return (@ini_set('memory_limit', @ini_get('memory_limit')) !== false) ? 2 : 0;
     }
 
     /**
@@ -1029,9 +1029,11 @@ class SystemRequirements
             case 'g':
                 $sBytes *= 1024;
             // megabytes
+            // no break
             case 'm':
                 $sBytes *= 1024;
             // kilobytes
+            // no break
             case 'k':
                 $sBytes *= 1024;
                 break;

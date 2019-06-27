@@ -40,7 +40,7 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertElementPresent("//ul[@id='languages']/li[3]//*[text()='English']");
 
         $this->clickAndWait("//ul[@id='languages']/li[2]/a");
-        $this->getTranslator()->setLanguage( 0 );
+        $this->getTranslator()->setLanguage(0);
         $this->assertFalse($this->isVisible("//ul[@id='languages']"));
         $this->assertElementPresent("//p[@id='languageTrigger']//*[text()='Deutsch']");
 
@@ -71,8 +71,9 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->openShop();
 
         //currency checking
+        $this->assertElementPresent("//p[@id='currencyTrigger']/a");
         $this->click("//p[@id='currencyTrigger']/a");
-        $this->waitForItemAppear("currencies");
+        $this->waitForItemAppear("//ul[@id='currencies']");
         $this->assertElementPresent("//ul[@id='currencies']/li[@class='active']//*[text()='EUR']");
         $this->assertElementPresent("//ul[@id='currencies']/li[2]//*[text()='EUR']");
         $this->assertElementPresent("//ul[@id='currencies']/li[3]//*[text()='GBP']");
@@ -130,7 +131,7 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertElementPresent("//div[@id='panel']/div[1]//label[text()='%NEWSLETTER%']");
         $this->assertElementPresent("//div[@id='panel']/div[1]//input[@name='editval[oxuser__oxusername]']");
         $this->assertElementPresent("//div[@id='panel']/div[1]//button[text()='%SUBSCRIBE%']");
-//exit;
+        //exit;
         //SERVICE links
         $this->assertElementPresent("footerServices");
         //there are fixed amount of links in here
@@ -451,7 +452,7 @@ class NavigationFrontendTest extends FrontendTestCase
      */
     public function testFrontendTopMenu()
     {
-        $this->openShop();
+        $this->openShop(false, true);
         $this->assertTrue($this->isVisible("navigation"));
         $this->assertEquals("%HOME%", $this->clearString($this->getText("//ul[@id='navigation']/li[1]")));
         $this->assertEquals("Test category 0 [EN] šÄßüл »", $this->clearString($this->getText("//ul[@id='navigation']/li[3]/a")));
@@ -609,7 +610,6 @@ class NavigationFrontendTest extends FrontendTestCase
 
         $this->clickAndWait("moreSubCat_1");
         $this->assertEquals("%YOU_ARE_HERE%: / Test category 0 [EN] šÄßüл / Test category 1 [EN] šÄßüл", $this->getText("breadCrumb"));
-
     }
 
 
@@ -694,26 +694,26 @@ class NavigationFrontendTest extends FrontendTestCase
     {
         $this->openShop();
         //searching for 1 product (using product search field value)
-        $this->searchFor( "šÄßüл1000" );
-        $this->assertEquals( "%YOU_ARE_HERE%: / %SEARCH%", $this->getText( "breadCrumb" ) );
-        $this->assertElementPresent( "rssSearchProducts" );
-        $this->assertEquals( "1 %HITS_FOR% \"šÄßüл1000\"", $this->getHeadingText( "//h1" ) );
-        $this->selectDropDown( "viewOptions", "%line%" );
-        $this->assertEquals( "Test product 0 short desc [EN] šÄßüл", $this->clearString( $this->getText( "//ul[@id='searchList']/li[1]//div[2]/div[2]" ) ) );
-        $this->assertEquals( "50,00 € *", $this->clearString( $this->getText( "productPrice_searchList_1" ) ) );
-        $this->assertEquals( "Test product 0 [EN] šÄßüл", $this->clearString( $this->getText( "searchList_1" ) ) );
-        $this->assertEquals( "2 kg | 25,00 €/kg", $this->getText( "productPricePerUnit_searchList_1" ) );
+        $this->searchFor("šÄßüл1000");
+        $this->assertEquals("%YOU_ARE_HERE%: / %SEARCH%", $this->getText("breadCrumb"));
+        $this->assertElementPresent("rssSearchProducts");
+        $this->assertEquals("1 %HITS_FOR% \"šÄßüл1000\"", $this->getHeadingText("//h1"));
+        $this->selectDropDown("viewOptions", "%line%");
+        $this->assertEquals("Test product 0 short desc [EN] šÄßüл", $this->clearString($this->getText("//ul[@id='searchList']/li[1]//div[2]/div[2]")));
+        $this->assertEquals("50,00 € *", $this->clearString($this->getText("productPrice_searchList_1")));
+        $this->assertEquals("Test product 0 [EN] šÄßüл", $this->clearString($this->getText("searchList_1")));
+        $this->assertEquals("2 kg | 25,00 €/kg", $this->getText("productPricePerUnit_searchList_1"));
 
-        $this->type( "amountToBasket_searchList_1", "3" );
-        $this->clickAndWait( "toBasket_searchList_1" );
+        $this->type("amountToBasket_searchList_1", "3");
+        $this->clickAndWait("toBasket_searchList_1");
         $this->waitForElementText("3", "//div[@id='miniBasket']/span");
 
-        $this->clickAndWait( "//ul[@id='searchList']/li[1]//a" ); //link on img
-        $this->assertEquals( "%YOU_ARE_HERE%: / Search result for \"šÄßüл1000\"", $this->getText( "breadCrumb" ) );
-        $this->assertEquals( "Test product 0 [EN] šÄßüл", $this->getText( "//h1" ) );
+        $this->clickAndWait("//ul[@id='searchList']/li[1]//a"); //link on img
+        $this->assertEquals("%YOU_ARE_HERE%: / Search result for \"šÄßüл1000\"", $this->getText("breadCrumb"));
+        $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("//h1"));
 
-        $this->clickAndWait( "//div[@id='overviewLink']/a" );
-        $this->assertEquals( "šÄßüл1000", $this->getValue( "searchParam" ) );
+        $this->clickAndWait("//div[@id='overviewLink']/a");
+        $this->assertEquals("šÄßüл1000", $this->getValue("searchParam"));
 
         //navigation between search results
         $this->searchFor("100");
@@ -721,10 +721,10 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->clickAndWait("searchList_1");
         $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("//h1"));
 
-        $this->assertEquals( "%DELIVERYTIME_DELIVERYTIME%: 1 day", $this->getText( "productDeliveryTime" ) );
-        $this->clickAndWait( "linkNextArticle" );
-        $this->assertEquals( "%DELIVERYTIME_DELIVERYTIME%: 1 week", $this->getText( "productDeliveryTime" ) );
-        $this->clickAndWait( "linkNextArticle" );
+        $this->assertEquals("%DELIVERYTIME_DELIVERYTIME%: 1 day", $this->getText("productDeliveryTime"));
+        $this->clickAndWait("linkNextArticle");
+        $this->assertEquals("%DELIVERYTIME_DELIVERYTIME%: 1 week", $this->getText("productDeliveryTime"));
+        $this->clickAndWait("linkNextArticle");
         //if product is not buyable, no delivery time should be shown
         $this->assertTextNotPresent("%DELIVERYTIME_DELIVERYTIME%: 1 month", "This is parent product. It is not buyable, so no delivery time should be shown. works ok in basic templates");
         $this->clickAndWait("linkNextArticle");
@@ -801,7 +801,7 @@ class NavigationFrontendTest extends FrontendTestCase
     public function testFrontendSearchConsideredFields()
     {
         //art num is not considered in search
-        $this->callShopSC("oxConfig", null, null, array("aSearchCols" => array("type" => "arr", "value" => array ("oxtitle", "oxshortdesc"))));
+        $this->callShopSC("oxConfig", null, null, array("aSearchCols" => array("type" => "arr", "value" => array("oxtitle", "oxshortdesc"))));
         $this->clearCache();
         $this->openShop();
         $this->searchFor("100");
@@ -868,7 +868,6 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->clearCache();
         $this->openShop();
         $this->assertElementNotPresent("footerManufacturers");
-
     }
 
     /**
@@ -1352,7 +1351,7 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertEquals("Test category 0 [EN] šÄßüл (2)", $this->clearString($this->getText("//ul[@id='tree']/li[1]/a")));
         $this->assertEquals("Test category 1 [EN] šÄßüл (2)", $this->clearString($this->getText("//ul[@id='tree']/li[1]/ul/li")));
         $this->assertEquals("Test category 1 [EN] šÄßüл", $this->getAttribute("//a[@id='moreSubCat_1']@title"));
-        $this->assertEquals("(2)", substr($this->getText("moreSubCat_1"),-3));
+        $this->assertEquals("(2)", substr($this->getText("moreSubCat_1"), -3));
 
         $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
 
@@ -1376,9 +1375,9 @@ class NavigationFrontendTest extends FrontendTestCase
         //theme option-> "Use compare list"
         $this->callShopSC("oxConfig", null, null, array("bl_showCompareList" => array("type" => "bool", "value" => "false", "module" => "theme:azure")));
 
-        $this->openArticle( 1002 );
+        $this->openArticle(1002);
         $this->assertTextNotPresent("review for parent product šÄßüл");
-        $this->openArticle( 1000 );
+        $this->openArticle(1000);
 
         $this->assertElementNotPresent("productPrice");
         $this->assertElementNotPresent("similar");
@@ -1508,7 +1507,7 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->clickAndWait("//ul[@id='searchList']/li[2]//a[text()='%MORE_INFO%']");
         $this->assertEquals("Kuyichi Jeans ANNA", $this->getText("//h1"));
 
-         //Check functionality if "Load Variants in Lists" is disabled in admin area
+        //Check functionality if "Load Variants in Lists" is disabled in admin area
         $this->callShopSC("oxConfig", null, null, array("blLoadVariants" => array("type" => "bool", "value" => "false")));
 
         $this->clearCache();
@@ -1539,7 +1538,7 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->clearCache();
         $this->openShop();
         $this->assertElementPresent("cookieNote");
-       // navigate to link where all cookie is deleted
+        // navigate to link where all cookie is deleted
         $this->clickAndWait("link=%COOKIE_NOTE_DISAGREE%");
         //CMS page not inherited, so for subshop we check just title
         if (!isSUBSHOP) {
@@ -1640,7 +1639,6 @@ class NavigationFrontendTest extends FrontendTestCase
         } else {
             $this->assertElementNotPresent("//form[@name='tobasket.productList_1']//button[text()='$sButtonText']");
         }
-
     }
 
     /**

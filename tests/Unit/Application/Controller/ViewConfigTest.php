@@ -217,8 +217,8 @@ class ViewConfigTest extends \OxidTestCase
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
 
         $oVC = $this->getMock(
-            'oxviewconfig'
-            , array('getTopActionClassName', 'getActCatId', 'getActTplName', 'getActContentLoadId'
+            'oxviewconfig',
+            array('getTopActionClassName', 'getActCatId', 'getActTplName', 'getActContentLoadId'
                     , 'getActArticleId', 'getActSearchParam', 'getActSearchTag', 'getActListType', 'getActRecommendationId')
         );
 
@@ -267,8 +267,8 @@ class ViewConfigTest extends \OxidTestCase
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
 
         $oVC = $this->getMock(
-            'oxviewconfig'
-            , array('getTopActionClassName', 'getActCatId', 'getActTplName', 'getActContentLoadId'
+            'oxviewconfig',
+            array('getTopActionClassName', 'getActCatId', 'getActTplName', 'getActContentLoadId'
                     , 'getActArticleId', 'getActSearchParam', 'getActSearchTag', 'getActListType', 'getActRecommendationId')
         );
 
@@ -343,12 +343,11 @@ class ViewConfigTest extends \OxidTestCase
         $oR = $this->getMock('stdclass', array('getTimeLeft'));
         $oR->expects($this->once())->method('getTimeLeft')->will($this->returnValue(5));
 
-        $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations'));
-        $oS->expects($this->once())->method('getBasketReservations')->will($this->returnValue($oR));
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations'));
+        $session->expects($this->once())->method('getBasketReservations')->will($this->returnValue($oR));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
-        $oVC = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getSession'));
-        $oVC->expects($this->any())->method('getSession')->will($this->returnValue($oS));
-
+        $oVC = oxNew(\OxidEsales\Eshop\Core\ViewConfig::class);
         $this->assertEquals(true, $oVC->getShowBasketTimeout());
     }
 
@@ -359,12 +358,11 @@ class ViewConfigTest extends \OxidTestCase
         $oR = $this->getMock('stdclass', array('getTimeLeft'));
         $oR->expects($this->once())->method('getTimeLeft')->will($this->returnValue(0));
 
-        $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations'));
-        $oS->expects($this->once())->method('getBasketReservations')->will($this->returnValue($oR));
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations'));
+        $session->expects($this->once())->method('getBasketReservations')->will($this->returnValue($oR));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
-        $oVC = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getSession'));
-        $oVC->expects($this->any())->method('getSession')->will($this->returnValue($oS));
-
+        $oVC = oxNew(\OxidEsales\Eshop\Core\ViewConfig::class);
         $this->assertEquals(false, $oVC->getShowBasketTimeout());
     }
 
@@ -372,9 +370,7 @@ class ViewConfigTest extends \OxidTestCase
     {
         $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', false);
 
-        $oVC = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getSession'));
-        $oVC->expects($this->never())->method('getSession');
-
+        $oVC = oxNew(\OxidEsales\Eshop\Core\ViewConfig::class);
         $this->assertEquals(false, $oVC->getShowBasketTimeout());
     }
 
@@ -383,11 +379,11 @@ class ViewConfigTest extends \OxidTestCase
         $oR = $this->getMock('stdclass', array('getTimeLeft'));
         $oR->expects($this->once())->method('getTimeLeft')->will($this->returnValue(954));
 
-        $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations'));
-        $oS->expects($this->once())->method('getBasketReservations')->will($this->returnValue($oR));
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations'));
+        $session->expects($this->once())->method('getBasketReservations')->will($this->returnValue($oR));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
-        $oVC = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array('getSession'));
-        $oVC->expects($this->any())->method('getSession')->will($this->returnValue($oS));
+        $oVC = oxNew(\OxidEsales\Eshop\Core\ViewConfig::class);
 
         $this->assertEquals(954, $oVC->getBasketTimeLeft());
         // return cached
@@ -521,7 +517,7 @@ class ViewConfigTest extends \OxidTestCase
         $this->assertEquals('', $modulePath);
 
         /**
-         * Although no exception is thrown, the underlying error will be logged in EXCEPTION_LOG.txt
+         * Although no exception is thrown, the underlying error will be logged in oxideshop.log
          */
         $expectedExceptionClass = \OxidEsales\Eshop\Core\Exception\FileException::class;
         $this->assertLoggedException($expectedExceptionClass);
@@ -589,7 +585,6 @@ class ViewConfigTest extends \OxidTestCase
 
     public function testGetModuleUrlExceptionThrownWhenPathNotFoundAndDebugEnabled()
     {
-
         $config = $this->fakeModuleStructure();
         $fakeShopDirectory = $config->getConfigParam('sShopDir');
         $message = "Requested file not found for module test1 (" . $fakeShopDirectory .
@@ -1038,9 +1033,8 @@ class ViewConfigTest extends \OxidTestCase
     {
         $sSid = "newSid";
 
-        $oViewConf = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array("getViewConfigParam", "getSession"));
+        $oViewConf = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array("getViewConfigParam"));
         $oViewConf->expects($this->once())->method("getViewConfigParam")->with($this->equalTo("hiddensid"))->will($this->returnValue($sSid));
-        $oViewConf->expects($this->never())->method("getSession");
 
         $this->assertEquals($sSid, $oViewConf->getHiddenSid());
     }
@@ -1057,16 +1051,16 @@ class ViewConfigTest extends \OxidTestCase
         $sLang = "testLang";
         $sSidNew = $sSid . '
 ' . $sLang;
-        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("hiddenSid"));
-        $oSession->expects($this->once())->method("hiddenSid")->will($this->returnValue($sSid));
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("hiddenSid"));
+        $session->expects($this->once())->method("hiddenSid")->will($this->returnValue($sSid));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array("getFormLang"));
         $oLang->expects($this->once())->method("getFormLang")->will($this->returnValue($sLang));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Language::class, $oLang);
 
-        $oViewConf = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array("getViewConfigParam", "getSession", "setViewConfigParam"));
+        $oViewConf = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array("getViewConfigParam", "setViewConfigParam"));
         $oViewConf->expects($this->once())->method("getViewConfigParam")->with($this->equalTo("hiddensid"))->will($this->returnValue(null));
-        $oViewConf->expects($this->once())->method("getSession")->will($this->returnValue($oSession));
         $oViewConf->expects($this->once())->method("setViewConfigParam")->with($this->equalTo("hiddensid"), $this->equalTo($sSidNew));
 
         $this->assertEquals($sSidNew, $oViewConf->getHiddenSid());
@@ -2225,7 +2219,7 @@ class ViewConfigTest extends \OxidTestCase
 
         /** @var oxViewConfig $viewConfig */
         $viewConfig = oxNew('oxViewConfig');
-        $viewConfig->setSession($session);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         $this->assertSame($token, $viewConfig->getSessionChallengeToken());
     }
@@ -2250,7 +2244,6 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testIsModuleActive($aModules, $aModuleVersions, $aDisabledModules, $sModuleId, $blModuleIsActive)
     {
-
         $this->setConfigParam('aModules', $aModules);
         $this->setConfigParam('aDisabledModules', $aDisabledModules);
         $this->setConfigParam('aModuleVersions', $aModuleVersions);

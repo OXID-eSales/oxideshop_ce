@@ -21,7 +21,7 @@ class BackwardsCompatibleCatchingOxExceptionRelativeToNamespace_8_Test extends \
             throw $exception;
         } catch (oxException $exception) {
             /** If the exception has been caught, the test has failed */
-            $this->fail( 'The given exception (new \OxidEsales\Eshop\Core\Exception\StandardException()) was caught as oxException');
+            $this->fail('The given exception (new \OxidEsales\Eshop\Core\Exception\StandardException()) was caught as oxException');
         } catch (\Exception $exception) {
             /** If the exception has not been caught before, the test has passed */
             $this->assertTrue(true, 'The given exception (new \OxidEsales\Eshop\Core\Exception\StandardException()) was not caught as oxException');

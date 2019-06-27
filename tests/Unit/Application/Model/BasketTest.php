@@ -26,7 +26,6 @@ require_once TEST_LIBRARY_HELPERS_PATH . 'oxVoucherHelper.php';
 
 class modForTestAddBundles extends oxBasket
 {
-
     public function setBasket($aBasket)
     {
         $this->_aBasketContents = $aBasket;
@@ -45,7 +44,6 @@ class modForTestAddBundles extends oxBasket
 
 class BasketTest extends \OxidTestCase
 {
-
     public $oArticle = null;
     public $oCategory = null;
     public $oSelList = null;
@@ -91,7 +89,8 @@ class BasketTest extends \OxidTestCase
         $this->oCategory->oxcategories__oxparentid = new oxField('oxrootid', oxField::T_RAW);
         $this->oCategory->oxcategories__oxrootid = new oxField($sCatId, oxField::T_RAW);
         $this->oCategory->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
-        $this->oCategory->oxcategories__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);;
+        $this->oCategory->oxcategories__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
+        ;
         $this->oCategory->oxcategories__oxtitle = new oxField('Test category 1', oxField::T_RAW);
         $this->oCategory->save();
 
@@ -368,7 +367,6 @@ class BasketTest extends \OxidTestCase
      */
     protected function _prepareDataForTestBasketCalculationWithSpecUseCaseDescribedAbove()
     {
-
         oxDb::getDb()->execute('delete from oxuserbaskets');
         oxDb::getDb()->execute('delete from oxuserbasketitems');
 
@@ -479,8 +477,6 @@ class BasketTest extends \OxidTestCase
         $oBasket->expects($this->any())->method('getDiscountedProductsBruttoPrice')->will($this->returnValue(10.2));
 
         $this->assertTrue($oBasket->isBelowMinOrderPrice());
-
-
     }
 
     /**
@@ -726,7 +722,6 @@ class BasketTest extends \OxidTestCase
         $oItem = next($aContents);
         $this->assertEquals('1127', $oItem->getArticle()->getId());
         $this->assertEquals(2, $oItem->getAmount());
-
     }
 
     /**
@@ -1067,10 +1062,12 @@ class BasketTest extends \OxidTestCase
         $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', true);
         $oBR = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketReservation::class, array('discardArticleReservation'));
         $oBR->expects($this->once())->method('discardArticleReservation')->with($this->equalTo($this->oArticle->getId()))->will($this->returnValue(null));
-        $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations'));
-        $oS->expects($this->once())->method('getBasketReservations')->will($this->returnValue($oBR));
-        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getSession'));
-        $oBasket->expects($this->any())->method('getSession')->will($this->returnValue($oS));
+
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations'));
+        $session->expects($this->any())->method('getBasketReservations')->will($this->returnValue($oBR));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
+
+        $oBasket = oxNew(\OxidEsales\Eshop\Application\Model\Basket::class);
 
         $oItem = $oBasket->addToBasket($this->oArticle->getId(), 10, null, null, false, true);
         $sKey = key($oBasket->getContents());
@@ -1706,7 +1703,6 @@ class BasketTest extends \OxidTestCase
      */
     public function testCalcVoucherDiscountSkipChecking()
     {
-
         oxAddClassModule('oxVoucherHelper', 'oxvoucher');
         oxVoucherHelper::$blCheckWasPerformed = false;
 
@@ -1781,7 +1777,6 @@ class BasketTest extends \OxidTestCase
         $this->assertEquals('11,90', $oBasket->getFGiftCardCosts());
         $this->assertEquals('10,00', $oBasket->getGiftCardCostNet());
         $this->assertEquals('1,90', $oBasket->getGiftCardCostVat());
-
     }
 
     /**
@@ -1866,13 +1861,13 @@ class BasketTest extends \OxidTestCase
                                 'formatDiscount',
                                 '_calcBasketWrapping',
                                 '_save',
-                                'afterUpdate',
-                                'getSession');
+                                'afterUpdate');
         $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', false);
-        $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations'));
-        $oS->expects($this->never())->method('getBasketReservations');
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations'));
+        $session->expects($this->never())->method('getBasketReservations');
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
+
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, $aMethodsToTest);
-        $oBasket->expects($this->any())->method('getSession')->will($this->returnValue($oS));
 
         $oBasket->expects($this->once())->method('isEnabled')->will($this->returnValue(true));
         $oBasket->expects($this->once())->method('_save');
@@ -2317,13 +2312,13 @@ class BasketTest extends \OxidTestCase
     public function testDeleteBasketNotReserved()
     {
         $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', false);
-        $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations'));
-        $oS->expects($this->never())->method('getBasketReservations');
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations'));
+        $session->expects($this->never())->method('getBasketReservations');
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
+
         $oBasket = $this->getMock(
-            oxTestModules::addFunction('oxbasket', 'iniTestContents', '{$this->_aBasketContents = "asd";}'),
-            array('getSession')
+            oxTestModules::addFunction('oxbasket', 'iniTestContents', '{$this->_aBasketContents = "asd";}')
         );
-        $oBasket->expects($this->any())->method('getSession')->will($this->returnValue($oS));
 
         $oBasket->iniTestContents();
 
@@ -2331,7 +2326,7 @@ class BasketTest extends \OxidTestCase
         $oBasket->deleteBasket();
 
         // now loading and testing if its the same
-        $oBasket = oxRegistry::getSession()->getBasket();
+        $oBasket = \OxidEsales\Eshop\Core\Registry::getSession()->getBasket();
         $this->assertNull($oBasket->getOrderId());
 
         $this->assertSame(array(), $oBasket->getContents());
@@ -2347,16 +2342,17 @@ class BasketTest extends \OxidTestCase
         $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', true);
         $oBR = $this->getMock(\OxidEsales\Eshop\Application\Model\BasketReservation::class, array('discardReservations'));
         $oBR->expects($this->once())->method('discardReservations')->will($this->returnValue(null));
-        $oS = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations'));
-        $oS->expects($this->once())->method('getBasketReservations')->will($this->returnValue($oBR));
-        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getSession'));
-        $oBasket->expects($this->any())->method('getSession')->will($this->returnValue($oS));
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasketReservations'));
+        $session->expects($this->once())->method('getBasketReservations')->will($this->returnValue($oBR));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
+
+        $oBasket = oxNew(\OxidEsales\Eshop\Application\Model\Basket::class);
 
         $oBasket->setOrderId('xxx');
         $oBasket->deleteBasket();
 
         // now loading and testing if its the same
-        $oBasket = oxRegistry::getSession()->getBasket();
+        $oBasket = \OxidEsales\Eshop\Core\Registry::getSession()->getBasket();
         $this->assertNull($oBasket->getOrderId());
     }
 
@@ -2848,7 +2844,8 @@ class BasketTest extends \OxidTestCase
         $oCur->name = 'testCurrencyName';
         $oCur->desc = 'testDescription';
 
-        $oBasket->setBasketCurrency($oCur);;
+        $oBasket->setBasketCurrency($oCur);
+        ;
 
         $this->assertEquals($oCur, $oBasket->getBasketCurrency());
     }
@@ -3755,7 +3752,6 @@ class BasketTest extends \OxidTestCase
      */
     public function testCalcBasketDiscountMinimizeDiscountIfBiggerThanTotal()
     {
-
         $oDiscount2 = oxNew("oxDiscount");
         $oDiscount2->setId('_testDiscountId2');
         $oDiscount2->oxdiscount__oxtitle = new oxField('Test discount title 123', oxField::T_RAW);
@@ -3795,7 +3791,6 @@ class BasketTest extends \OxidTestCase
      */
     public function testCalcBasketDiscountIfDiscountIsMinus()
     {
-
         $oDiscount2 = oxNew("oxDiscount");
         $oDiscount2->setId('_testDiscountId2');
         $oDiscount2->oxdiscount__oxtitle = new oxField('Test discount title 123', oxField::T_RAW);
@@ -4194,7 +4189,6 @@ class BasketTest extends \OxidTestCase
         $this->assertTrue(oxRegistry::getSession()->getVariable("blAddedNewItem"));
         $this->assertTrue($oBasket->isNewItemAdded());
         $this->assertNull(oxRegistry::getSession()->getVariable("blAddedNewItem"));
-
     }
 
     /**

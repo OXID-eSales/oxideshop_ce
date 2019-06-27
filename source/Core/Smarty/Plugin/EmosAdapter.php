@@ -426,8 +426,10 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
 
         switch ($sControllerName) {
             case 'user':
+                $session = \OxidEsales\Eshop\Core\Registry::getSession();
+
                 $sOption = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('option');
-                $sOption = (isset($sOption)) ? $sOption : $this->getSession()->getVariable('option');
+                $sOption = (isset($sOption)) ? $sOption : $session->getVariable('option');
 
                 if (isset($sOption) && array_key_exists('user_' . $sOption, $aContent)) {
                     $aContent['user'] = $aContent['user_' . $sOption];
@@ -627,7 +629,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
                             //$sPath = $this->_getDeepestCategoryPath( $oProduct );
                             $sPath = $this->_getBasketProductCatPath($oProduct);
                             $oEmos->removeFromBasket($this->_convProd2EmosItem($oProduct, $sPath, ($aItemData['oldam'] - $aItemData['am'])));
-                            //$oEmos->appendPreScript($aItemData['oldam'].'->'.$aItemData['am'].':'.$oProduct->load( $aItemData['aid']));
+                        //$oEmos->appendPreScript($aItemData['oldam'].'->'.$aItemData['am'].':'.$oProduct->load( $aItemData['aid']));
                         } elseif ($aItemData['oldam'] < $aItemData['am'] && $oProduct->load($aItemData['aid'])) {
                             $sPath = $this->_getBasketProductCatPath($oProduct);
                             $oEmos->addToBasket($this->_convProd2EmosItem($oProduct, $sPath, $aItemData['am'] - $aItemData['oldam']));

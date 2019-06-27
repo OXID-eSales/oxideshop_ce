@@ -11,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Internal\Application\DataObject;
  */
 class DICallWrapper
 {
-
     const METHOD_KEY = 'method';
     const PARAMETER_KEY = 'arguments';
 

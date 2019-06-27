@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxArticle;
+use OxidEsales\Eshop\Application\Model\Wrapping;
 use oxRegistry;
 use oxList;
 use oxBasketContentMarkGenerator;
@@ -105,7 +106,8 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     public function render()
     {
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
-            $this->getSession()->getBasketReservations()->renewExpiration();
+            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $session->getBasketReservations()->renewExpiration();
         }
 
         parent::render();
@@ -124,7 +126,8 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
             $this->_oBasketArticles = false;
 
             // passing basket articles
-            if ($oBasket = $this->getSession()->getBasket()) {
+            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            if ($oBasket = $session->getBasket()) {
                 $this->_oBasketArticles = $oBasket->getBasketArticles();
             }
         }
@@ -214,7 +217,8 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
             return;
         }
 
-        $oBasket = $this->getSession()->getBasket();
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $oBasket = $session->getBasket();
         $oBasket->addVoucher(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('voucherNr'));
     }
 
@@ -229,7 +233,8 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
             return;
         }
 
-        $oBasket = $this->getSession()->getBasket();
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $oBasket = $session->getBasket();
         $oBasket->removeVoucher(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('voucherId'));
     }
 
@@ -276,7 +281,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
         if ($this->_iWrapCnt === null) {
             $this->_iWrapCnt = 0;
 
-            $oWrap = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class);
+            $oWrap = oxNew(Wrapping::class);
             $this->_iWrapCnt += $oWrap->getWrappingCount('WRAP');
             $this->_iWrapCnt += $oWrap->getWrappingCount('CARD');
         }
@@ -296,7 +301,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
 
             // load wrapping papers
             if ($this->getViewConfig()->getShowGiftWrapping()) {
-                $this->_oWrappings = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class)->getWrappingList('WRAP');
+                $this->_oWrappings = oxNew(Wrapping::class)->getWrappingList('WRAP');
             }
         }
 
@@ -315,7 +320,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
 
             // load gift cards
             if ($this->getViewConfig()->getShowGiftWrapping()) {
-                $this->_oCards = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class)->getWrappingList('CARD');
+                $this->_oCards = oxNew(Wrapping::class)->getWrappingList('CARD');
             }
         }
 
@@ -335,7 +340,8 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if ($this->getViewConfig()->getShowGiftWrapping()) {
-            $oBasket = $this->getSession()->getBasket();
+            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $oBasket = $session->getBasket();
 
             $this->_setWrappingInfo($oBasket, $oConfig->getRequestParameter('wrapping'));
 
@@ -370,8 +376,10 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      */
     public function getBasketContentMarkGenerator()
     {
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+
         /** @var \OxidEsales\Eshop\Application\Model\BasketContentMarkGenerator $oBasketContentMarkGenerator */
-        return oxNew('oxBasketContentMarkGenerator', $this->getSession()->getBasket());
+        return oxNew('oxBasketContentMarkGenerator', $session->getBasket());
     }
 
     /**

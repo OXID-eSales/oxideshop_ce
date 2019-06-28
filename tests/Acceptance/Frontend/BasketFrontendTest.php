@@ -144,6 +144,9 @@ class BasketFrontendTest extends FrontendTestCase
      */
     public function testFrontendMinOrderSum()
     {
+        // See https://github.com/OXID-eSales/oxideshop_ce/blob/b-6.x-add-codeception-tests/tests/Codeception/acceptance/CheckoutProcessCest.php#L158
+        $this->markTestSkipped('CSRF token is missing from remove voucher link in azure theme. This test will be replaced with codeception test.');
+
         //TODO: Selenium refactor to remove SQL's executions
         $this->executeSql("UPDATE `oxdelivery` SET `OXTITLE_1` = `OXTITLE` WHERE `OXTITLE_1` = '';");
         $this->addToBasket("1000");

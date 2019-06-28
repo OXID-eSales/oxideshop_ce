@@ -8,10 +8,12 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxArticle;
 use OxidEsales\Eshop\Application\Model\Wrapping;
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 use oxList;
 use oxBasketContentMarkGenerator;
 use oxBasket;
+use Psr\Log\LoggerInterface;
 
 /**
  * Current session shopping cart (basket item list).
@@ -211,12 +213,18 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      */
     public function addVoucher()
     {
+        if (!Registry::getSession()->checkSessionChallenge()) {
+            $this->getContainer()->get(LoggerInterface::class)->warning('EXCEPTION_NON_MATCHING_CSRF_TOKEN');
+            Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_NON_MATCHING_CSRF_TOKEN');
+            return;
+        }
+
         if (!$this->getViewConfig()->getShowVouchers()) {
             return;
         }
 
         $oBasket = $this->getSession()->getBasket();
-        $oBasket->addVoucher(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('voucherNr'));
+        $oBasket->addVoucher(Registry::getConfig()->getRequestParameter('voucherNr'));
     }
 
     /**
@@ -226,12 +234,18 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      */
     public function removeVoucher()
     {
+        if (!Registry::getSession()->checkSessionChallenge()) {
+            $this->getContainer()->get(LoggerInterface::class)->warning('EXCEPTION_NON_MATCHING_CSRF_TOKEN');
+            Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_NON_MATCHING_CSRF_TOKEN');
+            return;
+        }
+
         if (!$this->getViewConfig()->getShowVouchers()) {
             return;
         }
 
         $oBasket = $this->getSession()->getBasket();
-        $oBasket->removeVoucher(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('voucherId'));
+        $oBasket->removeVoucher(Registry::getConfig()->getRequestParameter('voucherId'));
     }
 
     /**
@@ -333,7 +347,13 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      */
     public function changeWrapping()
     {
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        if (!Registry::getSession()->checkSessionChallenge()) {
+            $this->getContainer()->get(LoggerInterface::class)->warning('EXCEPTION_NON_MATCHING_CSRF_TOKEN');
+            Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_NON_MATCHING_CSRF_TOKEN');
+            return;
+        }
+
+        $oConfig = Registry::getConfig();
 
         if ($this->getViewConfig()->getShowGiftWrapping()) {
             $oBasket = $this->getSession()->getBasket();

@@ -408,6 +408,7 @@ class SessionTest extends UnitTestCase
         $basket = $this->_getFilledBasketForUser($user, $articleId);
         oxRegistry::getSession()->setBasket($basket);
 
+        $this->setRequestParameter('stoken', Registry::getSession()->getSessionChallengeToken());
         $userComponent->logout();
     }
 }

@@ -11,6 +11,7 @@ use OxidEsales\Eshop\Core\Exception\NoArticleException;
 use OxidEsales\Eshop\Core\Exception\OutOfStockException;
 use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
+use Psr\Log\LoggerInterface;
 use stdClass;
 use oxOutOfStockException;
 use oxArticleInputException;
@@ -126,9 +127,20 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *                           $dAmount (default false)
      *
      * @return mixed
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseErrorException
      */
     public function toBasket($sProductId = null, $dAmount = null, $aSel = null, $aPersParam = null, $blOverride = false)
     {
+        if (Registry::getSession()->getId() &&
+            Registry::getSession()->isActualSidInCookie() &&
+            !Registry::getSession()->checkSessionChallenge()
+        ) {
+            $this->getContainer()->get(LoggerInterface::class)->warning('EXCEPTION_NON_MATCHING_CSRF_TOKEN');
+            Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_NON_MATCHING_CSRF_TOKEN');
+            return;
+        }
+
         // adding to basket is not allowed ?
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         if (\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()) {

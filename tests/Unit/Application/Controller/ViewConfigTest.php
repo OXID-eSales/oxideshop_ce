@@ -2202,6 +2202,8 @@ class ViewConfigTest extends \OxidTestCase
      * /**
      * Tests retrieve session challenge token from session.
      *
+     * @group getsessionchallengetoken
+     *
      * @dataProvider _dpGetSessionChallengeToken
      *
      * @param boolean $isSessionStarted Was session started.

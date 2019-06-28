@@ -89,7 +89,7 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
         $projectConfiguration = $this->projectConfigurationDao->getConfiguration();
         $projectConfiguration = $this->addModuleConfigurationToAllShops($moduleConfiguration, $projectConfiguration);
 
-        $this->projectConfigurationDao->persistConfiguration($projectConfiguration);
+        $this->projectConfigurationDao->save($projectConfiguration);
     }
 
     /**

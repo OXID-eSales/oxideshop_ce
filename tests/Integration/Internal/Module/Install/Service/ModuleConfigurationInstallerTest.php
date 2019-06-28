@@ -135,7 +135,7 @@ class ModuleConfigurationInstallerTest extends TestCase
         $projectConfiguration = new ProjectConfiguration();
         $projectConfiguration->addEnvironmentConfiguration($this->getEnvironment(), $environmentConfiguration);
 
-        $this->projectConfigurationDao->persistConfiguration($projectConfiguration);
+        $this->projectConfigurationDao->save($projectConfiguration);
     }
 
     private function getEnvironment(): string

@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal;
 use OxidEsales\EshopCommunity\Internal\Application\BootstrapContainer\BootstrapContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
 
 /**
@@ -18,14 +19,11 @@ class TestContainerFactory
 {
     public function create(): SymfonyContainerBuilder
     {
-        $bootstrapContainer = BootstrapContainerFactory::getBootstrapContainer();
-        $containerBuilder = new ContainerBuilder(
-            $bootstrapContainer->get(BasicContextInterface::class)
-        );
+        $containerBuilder = new ContainerBuilder(new BasicContextStub());
 
         $container = $containerBuilder->getContainer();
         $container = $this->setAllServicesAsPublic($container);
-        $container = $this->setTestProjectConfigurationFile($container);
+        $container = $this->setBasicContextStub($container);
 
         return $container;
     }
@@ -39,17 +37,10 @@ class TestContainerFactory
         return $container;
     }
 
-    private function setTestProjectConfigurationFile(SymfonyContainerBuilder $container): SymfonyContainerBuilder
+    private function setBasicContextStub(SymfonyContainerBuilder $container): SymfonyContainerBuilder
     {
-        $projectConfigurationYmlStorageDefinition = $container->getDefinition('oxid_esales.module.configuration.project_configuration_yaml_file_storage');
-        $projectConfigurationYmlStorageDefinition->setArgument(
-            '$filePath',
-            tempnam(sys_get_temp_dir(), 'test_')
-        );
-        $container->setDefinition(
-            'oxid_esales.module.configuration.project_configuration_yaml_file_storage',
-            $projectConfigurationYmlStorageDefinition
-        );
+        $container->set(BasicContextInterface::class, new BasicContextStub());
+        $container->autowire(BasicContextInterface::class, BasicContextStub::class);
 
         return $container;
     }

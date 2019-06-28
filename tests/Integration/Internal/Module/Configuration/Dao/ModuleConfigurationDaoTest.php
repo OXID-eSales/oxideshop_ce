@@ -7,10 +7,8 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Configuration\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
@@ -48,17 +46,11 @@ class ModuleConfigurationDaoTest extends TestCase
 
     private function prepareProjectConfiguration()
     {
-        $shopConfiguration = new ShopConfiguration();
-
-        $environmentConfiguration = new EnvironmentConfiguration();
-        $environmentConfiguration->addShopConfiguration(1, $shopConfiguration);
-
-        $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->addEnvironmentConfiguration($this->getEnvironment(), $environmentConfiguration);
-
-        $dao = $this->get(ProjectConfigurationDaoInterface::class);
-
-        $dao->persistConfiguration($projectConfiguration);
+        $this->get(ShopConfigurationDaoInterface::class)->save(
+            new ShopConfiguration(),
+            1,
+            $this->getEnvironment()
+        );
     }
 
     private function getEnvironment(): string

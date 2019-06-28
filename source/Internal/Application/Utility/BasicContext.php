@@ -142,9 +142,9 @@ class BasicContext implements BasicContextInterface
     /**
      * @return string
      */
-    public function getProjectConfigurationPath(): string
+    public function getProjectConfigurationDirectory(): string
     {
-        return $this->getConfigurationDirectoryPath() . 'project_configuration.yml';
+        return $this->getConfigurationDirectoryPath() . 'project_configuration/';
     }
 
     /**

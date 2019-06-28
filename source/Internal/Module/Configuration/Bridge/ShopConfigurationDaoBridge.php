@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge;
 
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 
@@ -21,19 +21,19 @@ class ShopConfigurationDaoBridge implements ShopConfigurationDaoBridgeInterface
     private $context;
 
     /**
-     * @var ProjectConfigurationDaoInterface
+     * @var ShopConfigurationDaoInterface
      */
-    private $projectConfigurationDao;
+    private $shopConfigurationDao;
 
     /**
      * ShopConfigurationDaoBridge constructor.
-     * @param ContextInterface                 $context
-     * @param ProjectConfigurationDaoInterface $projectConfigurationDao
+     * @param ContextInterface $context
+     * @param ShopConfigurationDaoInterface $shopConfigurationDao
      */
-    public function __construct(ContextInterface $context, ProjectConfigurationDaoInterface $projectConfigurationDao)
+    public function __construct(ContextInterface $context, ShopConfigurationDaoInterface $shopConfigurationDao)
     {
         $this->context = $context;
-        $this->projectConfigurationDao = $projectConfigurationDao;
+        $this->shopConfigurationDao = $shopConfigurationDao;
     }
 
     /**
@@ -41,11 +41,10 @@ class ShopConfigurationDaoBridge implements ShopConfigurationDaoBridgeInterface
      */
     public function get(): ShopConfiguration
     {
-        return $this
-            ->projectConfigurationDao
-            ->getConfiguration()
-            ->getEnvironmentConfiguration($this->context->getEnvironment())
-            ->getShopConfiguration($this->context->getCurrentShopId());
+        return $this->shopConfigurationDao->get(
+            $this->context->getCurrentShopId(),
+            $this->context->getEnvironment()
+        );
     }
 
     /**
@@ -53,14 +52,10 @@ class ShopConfigurationDaoBridge implements ShopConfigurationDaoBridgeInterface
      */
     public function save(ShopConfiguration $shopConfiguration)
     {
-        $projectConfiguration = $this->projectConfigurationDao->getConfiguration();
-        $environmentConfiguration = $projectConfiguration->getEnvironmentConfiguration($this->context->getEnvironment());
-
-        $environmentConfiguration->addShopConfiguration(
+        $this->shopConfigurationDao->save(
+            $shopConfiguration,
             $this->context->getCurrentShopId(),
-            $shopConfiguration
+            $this->context->getEnvironment()
         );
-
-        $this->projectConfigurationDao->persistConfiguration($projectConfiguration);
     }
 }

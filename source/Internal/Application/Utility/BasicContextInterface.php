@@ -75,7 +75,7 @@ interface BasicContextInterface
     /**
      * @return string
      */
-    public function getProjectConfigurationPath(): string;
+    public function getProjectConfigurationDirectory(): string;
 
     /**
      * @return string

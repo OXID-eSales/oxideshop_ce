@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Service;
 
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
@@ -18,9 +18,9 @@ use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainResolverInterface
 {
     /**
-     * @var ProjectConfigurationDaoInterface
+     * @var ShopConfigurationDaoInterface
      */
-    private $projectConfigurationDao;
+    private $shopConfigurationDao;
 
     /**
      * @var ModuleStateServiceInterface
@@ -34,16 +34,16 @@ class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainReso
 
     /**
      * ActiveClassExtensionChainResolver constructor.
-     * @param ProjectConfigurationDaoInterface $projectConfigurationDao
+     * @param ShopConfigurationDaoInterface    $shopConfigurationDao
      * @param ModuleStateServiceInterface      $moduleStateService
      * @param ContextInterface                 $context
      */
     public function __construct(
-        ProjectConfigurationDaoInterface $projectConfigurationDao,
+        ShopConfigurationDaoInterface $shopConfigurationDao,
         ModuleStateServiceInterface $moduleStateService,
         ContextInterface $context
     ) {
-        $this->projectConfigurationDao = $projectConfigurationDao;
+        $this->shopConfigurationDao = $shopConfigurationDao;
         $this->moduleStateService = $moduleStateService;
         $this->context = $context;
     }
@@ -55,7 +55,7 @@ class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainReso
      */
     public function getActiveExtensionChain(int $shopId): ClassExtensionsChain
     {
-        $shopConfiguration = $this->getShopConfiguration($shopId);
+        $shopConfiguration = $this->shopConfigurationDao->get($shopId, $this->context->getEnvironment());
         $classExtensionChain = $shopConfiguration->getClassExtensionsChain();
 
         $activeExtensions = [];
@@ -121,17 +121,5 @@ class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainReso
         }
 
         return false;
-    }
-
-    /**
-     * @param int $shopId
-     * @return ShopConfiguration
-     */
-    private function getShopConfiguration(int $shopId): ShopConfiguration
-    {
-        return $this->projectConfigurationDao
-                    ->getConfiguration()
-                    ->getEnvironmentConfiguration($this->context->getEnvironment())
-                    ->getShopConfiguration($shopId);
     }
 }

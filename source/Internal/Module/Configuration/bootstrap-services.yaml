@@ -6,11 +6,13 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDao
-    arguments:
-      - '@oxid_esales.module.configuration.project_configuration_yaml_file_storage'
-      - '@OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ProjectConfigurationDataMapperInterface'
-      - '@oxid_esales.module.configuration.node'
     public: false
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDao
+    public: false
+    autowire: true
 
   oxid_esales.module.configuration.node:
     class: Symfony\Component\Config\Definition\NodeInterface
@@ -18,15 +20,6 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\Definition\TreeBuilderFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Definition\TreeBuilderFactory
-
-  oxid_esales.module.configuration.project_configuration_yaml_file_storage:
-    class: OxidEsales\EshopCommunity\Internal\Common\Storage\YamlFileStorage
-    arguments:
-      - '@oxid_esales.module.configuration.project_configuration_yaml_file_locator'
-      - '@=service("OxidEsales\\EshopCommunity\\Internal\\Application\\Utility\\BasicContextInterface").getProjectConfigurationPath()'
-      - '@oxid_esales.common.storage.flock_store_lock_factory'
-      - '@oxid_esales.symfony.file_system'
-    public: false
 
   oxid_esales.module.configuration.project_configuration_yaml_file_locator:
     class: Symfony\Component\Config\FileLocator
@@ -58,4 +51,8 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleClassExtensionsMergingServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleClassExtensionsMergingService
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Module\Configuration\Cache\Cache:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Cache\ClassPropertyShopConfigurationCache
     public: false

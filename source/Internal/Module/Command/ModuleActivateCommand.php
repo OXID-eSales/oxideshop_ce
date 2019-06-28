@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Command;
 
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSetupException;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
@@ -29,9 +29,9 @@ class ModuleActivateCommand extends Command
 
 
     /**
-     * @var ProjectConfigurationDaoInterface
+     * @var ShopConfigurationDaoInterface
      */
-    private $projectConfigurationDao;
+    private $shopConfigurationDao;
 
     /**
      * @var ContextInterface
@@ -44,18 +44,18 @@ class ModuleActivateCommand extends Command
     private $moduleActivationService;
 
     /**
-     * @param ProjectConfigurationDaoInterface $projectConfigurationDao
+     * @param ShopConfigurationDaoInterface    $shopConfigurationDao
      * @param ContextInterface                 $context
      * @param ModuleActivationServiceInterface $moduleActivationService
      */
     public function __construct(
-        ProjectConfigurationDaoInterface $projectConfigurationDao,
+        ShopConfigurationDaoInterface $shopConfigurationDao,
         ContextInterface $context,
         ModuleActivationServiceInterface $moduleActivationService
     ) {
         parent::__construct(null);
         
-        $this->projectConfigurationDao = $projectConfigurationDao;
+        $this->shopConfigurationDao = $shopConfigurationDao;
         $this->context = $context;
         $this->moduleActivationService = $moduleActivationService;
     }
@@ -96,7 +96,9 @@ class ModuleActivateCommand extends Command
             $this->moduleActivationService->activate($moduleId, $this->context->getCurrentShopId());
             $output->writeLn('<info>'.sprintf(static::MESSAGE_MODULE_ACTIVATED, $moduleId).'</info>');
         } catch (ModuleSetupException $exception) {
-            $output->writeLn('<info>'.sprintf(static::MESSAGE_MODULE_ALREADY_ACTIVE, $moduleId).'</info>');
+            $output->writeLn(
+                '<info>'.sprintf(static::MESSAGE_MODULE_ALREADY_ACTIVE, $moduleId).'</info>'
+            );
         }
     }
 
@@ -106,11 +108,10 @@ class ModuleActivateCommand extends Command
      */
     private function isInstalled(string $moduleId): bool
     {
-        $shopConfiguration = $this
-            ->projectConfigurationDao
-            ->getConfiguration()
-            ->getEnvironmentConfiguration($this->context->getEnvironment())
-            ->getShopConfiguration($this->context->getCurrentShopId());
+        $shopConfiguration = $this->shopConfigurationDao->get(
+            $this->context->getCurrentShopId(),
+            $this->context->getEnvironment()
+        );
         
         return $shopConfiguration->hasModuleConfiguration($moduleId);
     }

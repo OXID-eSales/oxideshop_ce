@@ -408,6 +408,6 @@ class ModuleDeactivationTest extends BaseModuleTestCase
             $environmentConfiguration->addShopConfiguration(2, new ShopConfiguration());
         }
 
-        $projectConfigurationDao->persistConfiguration($projectConfiguration);
+        $projectConfigurationDao->save($projectConfiguration);
     }
 }

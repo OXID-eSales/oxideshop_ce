@@ -28,7 +28,7 @@ class ProjectConfigurationGeneratorTest extends TestCase
         $projectConfigurationDao = $this->getMockBuilder(ProjectConfigurationDaoInterface::class)->getMock();
         $projectConfigurationDao
             ->expects($this->once())
-            ->method('persistConfiguration')
+            ->method('save')
             ->with($this->getExpectedDefaultProjectConfiguration($this->shops));
 
         $context = $this->getContext();

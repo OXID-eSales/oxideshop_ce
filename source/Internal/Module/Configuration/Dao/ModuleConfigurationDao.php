@@ -15,9 +15,9 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleCon
 class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
 {
     /**
-     * @var ProjectConfigurationDaoInterface
+     * @var ShopConfigurationDaoInterface
      */
-    private $projectConfigurationDao;
+    private $shopConfigurationDao;
 
     /**
      * @var BasicContextInterface
@@ -26,15 +26,14 @@ class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
 
     /**
      * ModuleConfigurationDao constructor.
-     * @param ProjectConfigurationDaoInterface $projectConfigurationDao
-     * @param BasicContextInterface            $context
+     * @param ShopConfigurationDaoInterface $shopConfigurationDao
+     * @param BasicContextInterface $context
      */
-    public function __construct(ProjectConfigurationDaoInterface $projectConfigurationDao, BasicContextInterface $context)
+    public function __construct(ShopConfigurationDaoInterface $shopConfigurationDao, BasicContextInterface $context)
     {
-        $this->projectConfigurationDao = $projectConfigurationDao;
+        $this->shopConfigurationDao = $shopConfigurationDao;
         $this->context = $context;
     }
-
 
     /**
      * @param string $moduleId
@@ -43,11 +42,9 @@ class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
      */
     public function get(string $moduleId, int $shopId): ModuleConfiguration
     {
-        $projectConfiguration = $this->projectConfigurationDao->getConfiguration();
-
-        return $projectConfiguration
-            ->getEnvironmentConfiguration($this->context->getEnvironment())
-            ->getShopConfiguration($shopId)
+        return $this
+            ->shopConfigurationDao
+            ->get($shopId, $this->context->getEnvironment())
             ->getModuleConfiguration($moduleId);
     }
 
@@ -57,14 +54,12 @@ class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
      */
     public function save(ModuleConfiguration $moduleConfiguration, int $shopId)
     {
-        $projectConfiguration = $this->projectConfigurationDao->getConfiguration();
-
-        $shopConfiguration = $projectConfiguration
-            ->getEnvironmentConfiguration($this->context->getEnvironment())
-            ->getShopConfiguration($shopId);
+        $shopConfiguration = $this
+            ->shopConfigurationDao
+            ->get($shopId, $this->context->getEnvironment());
 
         $shopConfiguration->addModuleConfiguration($moduleConfiguration);
 
-        $this->projectConfigurationDao->persistConfiguration($projectConfiguration);
+        $this->shopConfigurationDao->save($shopConfiguration, $shopId, $this->context->getEnvironment());
     }
 }

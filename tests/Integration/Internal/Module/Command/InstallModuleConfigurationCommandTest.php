@@ -8,10 +8,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Command;
 
 use OxidEsales\EshopCommunity\Internal\Module\Command\InstallModuleConfigurationCommand;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleFilesInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
@@ -30,11 +26,6 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
     private $workingDirectoryBackup;
     private $workingDirectory;
 
-    /**
-     * ProjectConfigurationDaoInterface
-     */
-    private $projectConfigurationDao;
-
     public function setUp()
     {
         $context = $this->get(ContextInterface::class);
@@ -42,9 +33,6 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
         $this->environment = $context->getEnvironment();
         $this->workingDirectoryBackup = getcwd();
         $this->setWorkingDirectoryForConsole(__DIR__);
-
-        $this->projectConfigurationDao = $this->get(ProjectConfigurationDaoInterface::class);
-        $this->createTestProjectConfiguration();
 
         parent::setUp();
     }
@@ -181,17 +169,6 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
         $this->get(ModuleFilesInstallerInterface::class)->install(
             new OxidEshopPackage($this->moduleId, $this->getTestModuleSourcePath())
         );
-    }
-
-    private function createTestProjectConfiguration()
-    {
-        $environmentConfiguration = new EnvironmentConfiguration();
-        $environmentConfiguration->addShopConfiguration($this->shopId, new ShopConfiguration());
-
-        $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->addEnvironmentConfiguration($this->environment, $environmentConfiguration);
-
-        $this->projectConfigurationDao->persistConfiguration($projectConfiguration);
     }
 
     private function getTestModuleSourcePath(): string

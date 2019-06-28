@@ -50,7 +50,7 @@ class ProjectConfigurationGenerator implements ProjectConfigurationGeneratorInte
             $this->createEnvironmentConfiguration()
         );
 
-        $this->projectConfigurationDao->persistConfiguration($projectConfiguration);
+        $this->projectConfigurationDao->save($projectConfiguration);
     }
 
     /**

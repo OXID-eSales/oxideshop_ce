@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Command;
 
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSetupException;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
@@ -30,9 +30,9 @@ class ModuleDeactivateCommand extends Command
     const ARGUMENT_MODULE_ID = 'module-id';
 
     /**
-     * @var ProjectConfigurationDaoInterface
+     * @var ShopConfigurationDaoInterface
      */
-    private $projectConfigurationDao;
+    private $shopConfigurationDao;
 
     /**
      * @var ContextInterface
@@ -45,18 +45,18 @@ class ModuleDeactivateCommand extends Command
     private $moduleActivationService;
 
     /**
-     * @param ProjectConfigurationDaoInterface $projectConfigurationDao
+     * @param ShopConfigurationDaoInterface    $shopConfigurationDao
      * @param ContextInterface                 $context
      * @param ModuleActivationServiceInterface $moduleActivationService
      */
     public function __construct(
-        ProjectConfigurationDaoInterface $projectConfigurationDao,
+        ShopConfigurationDaoInterface $shopConfigurationDao,
         ContextInterface $context,
         ModuleActivationServiceInterface $moduleActivationService
     ) {
         parent::__construct(null);
 
-        $this->projectConfigurationDao = $projectConfigurationDao;
+        $this->shopConfigurationDao = $shopConfigurationDao;
         $this->context = $context;
         $this->moduleActivationService = $moduleActivationService;
     }
@@ -94,9 +94,13 @@ class ModuleDeactivateCommand extends Command
     {
         try {
             $this->moduleActivationService->deactivate($moduleId, $this->context->getCurrentShopId());
-            $output->writeLn('<info>' . sprintf(static::MESSAGE_MODULE_DEACTIVATED, $moduleId) . '</info>');
+            $output->writeLn(
+                '<info>' . sprintf(static::MESSAGE_MODULE_DEACTIVATED, $moduleId) . '</info>'
+            );
         } catch (ModuleSetupException $exception) {
-            $output->writeLn('<info>' . sprintf(static::MESSAGE_NOT_POSSIBLE_TO_DEACTIVATE, $moduleId) . '</info>');
+            $output->writeLn(
+                '<info>' . sprintf(static::MESSAGE_NOT_POSSIBLE_TO_DEACTIVATE, $moduleId) . '</info>'
+            );
         }
     }
 
@@ -107,10 +111,11 @@ class ModuleDeactivateCommand extends Command
     private function isInstalled(string $moduleId): bool
     {
         $shopConfiguration = $this
-            ->projectConfigurationDao
-            ->getConfiguration()
-            ->getEnvironmentConfiguration($this->context->getEnvironment())
-            ->getShopConfiguration($this->context->getCurrentShopId());
+            ->shopConfigurationDao
+            ->get(
+                $this->context->getCurrentShopId(),
+                $this->context->getEnvironment()
+            );
 
         return $shopConfiguration->hasModuleConfiguration($moduleId);
     }

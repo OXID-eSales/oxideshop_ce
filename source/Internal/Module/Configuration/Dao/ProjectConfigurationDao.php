@@ -6,11 +6,12 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Common\Storage\ArrayStorageInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ProjectConfigurationDataMapperInterface;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Exception\ProjectConfigurationIsEmptyException;
-use Symfony\Component\Config\Definition\NodeInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Webmozart\PathUtil\Path;
 
 /**
  * @internal
@@ -18,36 +19,35 @@ use Symfony\Component\Config\Definition\NodeInterface;
 class ProjectConfigurationDao implements ProjectConfigurationDaoInterface
 {
     /**
-     * @var ArrayStorageInterface
+     * @var ShopConfigurationDaoInterface
      */
-    private $arrayStorage;
+    private $shopConfigurationDao;
 
     /**
-     * @var ProjectConfigurationDataMapperInterface
+     * @var BasicContextInterface
      */
-    private $projectConfigurationDataMapper;
+    private $context;
 
     /**
-     * @var NodeInterface
+     * @var Filesystem
      */
-    private $node;
+    private $fileSystem;
 
     /**
      * ProjectConfigurationDao constructor.
-     * @param ArrayStorageInterface                   $arrayStorage
-     * @param ProjectConfigurationDataMapperInterface $projectConfigurationDataMapper
-     * @param NodeInterface                           $node
+     * @param ShopConfigurationDaoInterface $shopConfigurationDao
+     * @param BasicContextInterface $context
+     * @param Filesystem $fileSystem
      */
     public function __construct(
-        ArrayStorageInterface                   $arrayStorage,
-        ProjectConfigurationDataMapperInterface $projectConfigurationDataMapper,
-        NodeInterface                           $node
+        ShopConfigurationDaoInterface $shopConfigurationDao,
+        BasicContextInterface $context,
+        Filesystem $fileSystem
     ) {
-        $this->arrayStorage = $arrayStorage;
-        $this->projectConfigurationDataMapper = $projectConfigurationDataMapper;
-        $this->node = $node;
+        $this->shopConfigurationDao = $shopConfigurationDao;
+        $this->context = $context;
+        $this->fileSystem = $fileSystem;
     }
-
 
     /**
      * @return ProjectConfiguration
@@ -55,27 +55,26 @@ class ProjectConfigurationDao implements ProjectConfigurationDaoInterface
      */
     public function getConfiguration(): ProjectConfiguration
     {
-        $data = $this->arrayStorage->get();
-
-        if (empty($data)) {
+        if ($this->isConfigurationEmpty()) {
             throw new ProjectConfigurationIsEmptyException('Project configuration cannot be empty.');
         }
 
-        return $this->projectConfigurationDataMapper->fromData(
-            $this->node->normalize($data)
-        );
+        return $this->getConfigurationFromStorage();
     }
 
     /**
      * @param ProjectConfiguration $configuration
      */
-    public function persistConfiguration(ProjectConfiguration $configuration)
+    public function save(ProjectConfiguration $configuration)
     {
-        $data = $this->projectConfigurationDataMapper->toData($configuration);
+        $this->deleteAllEnvironments();
 
-        $this->arrayStorage->save(
-            $this->node->normalize($data)
-        );
+        foreach ($configuration->getEnvironmentConfigurations() as $environment => $environmentConfiguration) {
+            $this->createEnvironmentDirectory($environment);
+            foreach ($environmentConfiguration->getShopConfigurations() as $shopId => $shopConfiguration) {
+                $this->shopConfigurationDao->save($shopConfiguration, $shopId, $environment);
+            }
+        }
     }
 
     /**
@@ -83,6 +82,72 @@ class ProjectConfigurationDao implements ProjectConfigurationDaoInterface
      */
     public function isConfigurationEmpty(): bool
     {
-        return empty($this->arrayStorage->get());
+        return $this->projectConfigurationDirectoryExists() === false
+            || empty($this->getEnvironments());
+    }
+
+    /**
+     * @return ProjectConfiguration
+     */
+    private function getConfigurationFromStorage(): ProjectConfiguration
+    {
+        $projectConfiguration = new ProjectConfiguration();
+
+        foreach ($this->getEnvironments() as $environment) {
+            $environmentConfiguration = new EnvironmentConfiguration();
+
+            foreach ($this->shopConfigurationDao->getAll($environment) as $shopId => $shopConfiguration) {
+                $environmentConfiguration->addShopConfiguration(
+                    $shopId,
+                    $shopConfiguration
+                );
+            }
+
+            $projectConfiguration->addEnvironmentConfiguration($environment, $environmentConfiguration);
+        }
+
+        return $projectConfiguration;
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getEnvironments(): array
+    {
+        $environments = [];
+
+        $dir = new \DirectoryIterator($this->context->getProjectConfigurationDirectory());
+
+        foreach ($dir as $fileinfo) {
+            if ($fileinfo->isDir() && !$fileinfo->isDot()) {
+                $environments[] = $fileinfo->getFilename();
+            }
+        }
+
+        return $environments;
+    }
+
+    /**
+     * @param string $environment
+     */
+    private function createEnvironmentDirectory(string $environment): void
+    {
+        $this->fileSystem->mkdir(
+            Path::join($this->context->getProjectConfigurationDirectory(), $environment)
+        );
+    }
+
+    private function deleteAllEnvironments(): void
+    {
+        $this->fileSystem->remove(
+            $this->context->getProjectConfigurationDirectory()
+        );
+    }
+
+    private function projectConfigurationDirectoryExists(): bool
+    {
+        return $this->fileSystem->exists(
+            $this->context->getProjectConfigurationDirectory()
+        );
     }
 }

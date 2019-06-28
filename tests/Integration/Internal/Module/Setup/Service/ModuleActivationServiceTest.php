@@ -12,12 +12,10 @@ use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurati
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Path\ModulePathResolver;
 use OxidEsales\EshopCommunity\Internal\Module\Path\ModulePathResolverInterface;
@@ -256,14 +254,8 @@ class ModuleActivationServiceTest extends TestCase
         $shopConfiguration->setClassExtensionsChain($chain);
         $shopConfiguration->addModuleConfiguration($moduleConfiguration);
 
-        $environmentConfiguration = new EnvironmentConfiguration();
-        $environmentConfiguration->addShopConfiguration($this->shopId, $shopConfiguration);
-
-        $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->addEnvironmentConfiguration($this->getEnvironment(), $environmentConfiguration);
-
-        $projectConfigurationDao = $this->container->get(ProjectConfigurationDaoInterface::class);
-        $projectConfigurationDao->persistConfiguration($projectConfiguration);
+        $shopConfigurationDao = $this->container->get(ShopConfigurationDaoInterface::class);
+        $shopConfigurationDao->save($shopConfiguration, $this->shopId, $this->getEnvironment());
     }
 
     /**

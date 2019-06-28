@@ -14,3 +14,7 @@ services:
   OxidEsales\EshopCommunity\Internal\Common\FileSystem\FinderFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Common\FileSystem\FinderFactory
     autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Common\Storage\FileStorageFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Common\Storage\YamlFileStorageFactory
+    autowire: true

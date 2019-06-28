@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal;
 
+use org\bovigo\vfs\vfsStream;
 use OxidEsales\EshopCommunity\Internal\Application\BootstrapContainer\BootstrapContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 
@@ -25,6 +26,9 @@ class BasicContextStub implements BasicContextInterface
     private $modulesPath;
     private $shopRootPath;
     private $configFilePath;
+    private $projectConfigurationDirectory;
+    private $environment;
+    private $backwardsCompatibilityClassMap;
 
     public function __construct()
     {
@@ -40,6 +44,10 @@ class BasicContextStub implements BasicContextInterface
         $this->modulesPath = $basicContext->getModulesPath();
         $this->configFilePath = $basicContext->getConfigFilePath();
         $this->shopRootPath = $basicContext->getShopRootPath();
+        $this->environment = $basicContext->getEnvironment();
+        $this->backwardsCompatibilityClassMap = $basicContext->getBackwardsCompatibilityClassMap();
+
+        $this->prepareVFS();
     }
 
     /**
@@ -47,7 +55,7 @@ class BasicContextStub implements BasicContextInterface
      */
     public function getEnvironment(): string
     {
-        return 'dev';
+        return $this->environment;
     }
 
     /**
@@ -191,15 +199,15 @@ class BasicContextStub implements BasicContextInterface
      */
     public function getBackwardsCompatibilityClassMap(): array
     {
-        return [];
+        return $this->backwardsCompatibilityClassMap;
     }
 
     /**
      * @return string
      */
-    public function getProjectConfigurationPath(): string
+    public function getProjectConfigurationDirectory(): string
     {
-        return $this->getSourcePath() . '/tmp/project_configuration.yml';
+        return $this->projectConfigurationDirectory;
     }
 
     /**
@@ -232,5 +240,13 @@ class BasicContextStub implements BasicContextInterface
     public function getShopRootPath(): string
     {
         return $this->shopRootPath;
+    }
+
+    private function prepareVFS()
+    {
+        $vfsStreamDirectory = vfsStream::setup('project_configuration');
+        vfsStream::create([], $vfsStreamDirectory);
+
+        $this->projectConfigurationDirectory = vfsStream::url('project_configuration/');
     }
 }

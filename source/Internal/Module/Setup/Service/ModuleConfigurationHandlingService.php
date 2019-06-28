@@ -7,8 +7,9 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ModuleConfigurationHandlerInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ModuleSettingValidatorInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ModuleConfigurationValidatorInterface;
 
 /**
  * @internal
@@ -21,9 +22,9 @@ class ModuleConfigurationHandlingService implements ModuleConfigurationHandlingS
     private $handlers = [];
 
     /**
-     * @var ModuleSettingValidatorInterface[]
+     * @var ModuleConfigurationValidatorInterface[]
      */
-    private $moduleSettingValidators = [];
+    private $moduleConfigurationValidator = [];
 
     /**
      * @param ModuleConfiguration $moduleConfiguration
@@ -31,7 +32,7 @@ class ModuleConfigurationHandlingService implements ModuleConfigurationHandlingS
      */
     public function handleOnActivation(ModuleConfiguration $moduleConfiguration, int $shopId)
     {
-        $this->validateModuleSettings($moduleConfiguration, $shopId);
+        $this->validateModuleConfiguration($moduleConfiguration, $shopId);
 
         foreach ($this->handlers as $handler) {
             $handler->handleOnModuleActivation($moduleConfiguration, $shopId);
@@ -58,23 +59,23 @@ class ModuleConfigurationHandlingService implements ModuleConfigurationHandlingS
     }
 
     /**
-     * @param ModuleSettingValidatorInterface $moduleSettingValidator
+     * @param ModuleConfigurationValidatorInterface $configuration
      */
-    public function addValidator(ModuleSettingValidatorInterface $moduleSettingValidator)
+    public function addValidator(ModuleConfigurationValidatorInterface $configuration)
     {
-        $this->moduleSettingValidators[] = $moduleSettingValidator;
+        $this->moduleConfigurationValidator[] = $configuration;
     }
 
     /**
      * @param ModuleConfiguration $moduleConfiguration
      * @param int                 $shopId
      */
-    private function validateModuleSettings(ModuleConfiguration $moduleConfiguration, int $shopId)
+    private function validateModuleConfiguration(ModuleConfiguration $moduleConfiguration, int $shopId)
     {
         foreach ($moduleConfiguration->getSettings() as $setting) {
-            foreach ($this->moduleSettingValidators as $validator) {
-                if ($validator->canValidate($setting)) {
-                    $validator->validate($setting, $moduleConfiguration->getId(), $shopId);
+            foreach ($this->moduleConfigurationValidator as $validator) {
+                if ($moduleConfiguration->hasSetting($setting->getName())) {
+                    $validator->validate($moduleConfiguration, $shopId);
                 }
             }
         }

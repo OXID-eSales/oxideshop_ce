@@ -9,6 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Exception;
 /**
  * @internal
  */
-class ControllersDuplicationModuleSettingException extends \Exception
+class ControllersDuplicationModuleConfigurationException extends \Exception
 {
 }

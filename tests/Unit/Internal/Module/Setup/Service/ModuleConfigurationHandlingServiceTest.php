@@ -12,7 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSet
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleConfigurationHandlingService;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ModuleConfigurationHandlerInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSettingNotValidException;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ModuleSettingValidatorInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ModuleConfigurationValidatorInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -69,17 +69,14 @@ class ModuleConfigurationHandlingServiceTest extends TestCase
             new ModuleSetting('testSetting', 'value')
         );
 
-        $moduleSettingValidator = $this->getMockBuilder(ModuleSettingValidatorInterface::class)->getMock();
-        $moduleSettingValidator
-            ->method('canValidate')
-            ->willReturn(true);
-        $moduleSettingValidator
+        $moduleConfigurationValidator = $this->getMockBuilder(ModuleConfigurationValidatorInterface::class)->getMock();
+        $moduleConfigurationValidator
             ->method('validate')
             ->willThrowException(new ModuleSettingNotValidException());
 
         $moduleSettingsHandlingService = new ModuleConfigurationHandlingService();
 
-        $moduleSettingsHandlingService->addValidator($moduleSettingValidator);
+        $moduleSettingsHandlingService->addValidator($moduleConfigurationValidator);
 
         $moduleSettingsHandlingService->handleOnActivation($moduleConfiguration, 1);
     }

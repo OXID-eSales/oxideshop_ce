@@ -12,14 +12,14 @@ use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurati
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ControllersDuplicationModuleSettingException;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ControllersDuplicationModuleConfigurationException;
 
 /**
  * @internal
  */
-class ControllersModuleSettingValidator implements ModuleSettingValidatorInterface
+class ControllersValidator implements ModuleConfigurationValidatorInterface
 {
     /**
      * @var ShopAdapterInterface
@@ -32,7 +32,7 @@ class ControllersModuleSettingValidator implements ModuleSettingValidatorInterfa
     private $shopConfigurationSettingDao;
 
     /**
-     * ControllersModuleSettingValidator constructor.
+     * ControllersValidator constructor.
      * @param ShopAdapterInterface                 $shopAdapter
      * @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
      */
@@ -45,36 +45,26 @@ class ControllersModuleSettingValidator implements ModuleSettingValidatorInterfa
     }
 
     /**
-     * @param ModuleSetting $moduleSetting
-     * @param string        $moduleId
-     * @param int           $shopId
+     * @param ModuleConfiguration $configuration
+     * @param int                 $shopId
      *
-     * @throws WrongModuleSettingException
+     * @throws ControllersDuplicationModuleConfigurationException
      */
-    public function validate(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
+    public function validate(ModuleConfiguration $configuration, int $shopId)
     {
-        if (!$this->canValidate($moduleSetting)) {
-            throw new WrongModuleSettingException($moduleSetting, self::class);
+        if ($configuration->hasSetting(ModuleSetting::CONTROLLERS)) {
+            $moduleSetting = $configuration->getSetting(ModuleSetting::CONTROLLERS);
+
+            $shopControllerClassMap = $this->shopAdapter->getShopControllerClassMap();
+
+            $controllerClassMap = array_merge(
+                $shopControllerClassMap,
+                $this->getModulesControllerClassMap($shopId)
+            );
+
+            $this->validateForControllerKeyDuplication($moduleSetting, $controllerClassMap);
+            $this->validateForControllerNamespaceDuplication($moduleSetting, $controllerClassMap);
         }
-
-        $shopControllerClassMap = $this->shopAdapter->getShopControllerClassMap();
-
-        $controllerClassMap = array_merge(
-            $shopControllerClassMap,
-            $this->getModulesControllerClassMap($shopId)
-        );
-
-        $this->validateForControllerKeyDuplication($moduleSetting, $controllerClassMap);
-        $this->validateForControllerNamespaceDuplication($moduleSetting, $controllerClassMap);
-    }
-
-    /**
-     * @param ModuleSetting $moduleSetting
-     * @return bool
-     */
-    public function canValidate(ModuleSetting $moduleSetting): bool
-    {
-        return $moduleSetting->getName() === ModuleSetting::CONTROLLERS;
     }
 
     /**
@@ -105,7 +95,7 @@ class ControllersModuleSettingValidator implements ModuleSettingValidatorInterfa
      * @param ModuleSetting $moduleSetting
      * @param array         $controllerClassMap
      *
-     * @throws ControllersDuplicationModuleSettingException
+     * @throws ControllersDuplicationModuleConfigurationException
      */
     private function validateForControllerNamespaceDuplication(ModuleSetting $moduleSetting, array $controllerClassMap)
     {
@@ -115,7 +105,7 @@ class ControllersModuleSettingValidator implements ModuleSettingValidatorInterfa
         );
 
         if (!empty($duplications)) {
-            throw new ControllersDuplicationModuleSettingException(
+            throw new ControllersDuplicationModuleConfigurationException(
                 'Controller namespaces duplication: ' . implode(', ', $duplications)
             );
         }
@@ -125,7 +115,7 @@ class ControllersModuleSettingValidator implements ModuleSettingValidatorInterfa
      * @param ModuleSetting $moduleSetting
      * @param array         $controllerClassMap
      *
-     * @throws ControllersDuplicationModuleSettingException
+     * @throws ControllersDuplicationModuleConfigurationException
      */
     private function validateForControllerKeyDuplication(ModuleSetting $moduleSetting, array $controllerClassMap)
     {
@@ -135,7 +125,7 @@ class ControllersModuleSettingValidator implements ModuleSettingValidatorInterfa
         );
 
         if (!empty($duplications)) {
-            throw new ControllersDuplicationModuleSettingException(
+            throw new ControllersDuplicationModuleConfigurationException(
                 'Controller keys duplication: ' . implode(', ', $duplications)
             );
         }

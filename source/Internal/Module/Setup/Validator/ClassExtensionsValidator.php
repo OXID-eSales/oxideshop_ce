@@ -7,14 +7,14 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Validator;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\InvalidClassExtensionNamespaceException;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException;
 
 /**
  * @internal
  */
-class ClassExtensionsModuleSettingValidator implements ModuleSettingValidatorInterface
+class ClassExtensionsValidator implements ModuleConfigurationValidatorInterface
 {
     /**
      * @var ShopAdapterInterface
@@ -31,32 +31,22 @@ class ClassExtensionsModuleSettingValidator implements ModuleSettingValidatorInt
     }
 
     /**
-     * @param ModuleSetting $moduleSetting
-     * @param string        $moduleId
-     * @param int           $shopId
+     * @param ModuleConfiguration $configuration
+     * @param int                 $shopId
      *
-     * @throws WrongModuleSettingException
+     * @throws InvalidClassExtensionNamespaceException
      */
-    public function validate(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
+    public function validate(ModuleConfiguration $configuration, int $shopId)
     {
-        if (!$this->canValidate($moduleSetting)) {
-            throw new WrongModuleSettingException($moduleSetting, self::class);
-        }
+        if ($configuration->hasSetting(ModuleSetting::CLASS_EXTENSIONS)) {
+            $moduleSetting = $configuration->getSetting(ModuleSetting::CLASS_EXTENSIONS);
 
-        foreach ($moduleSetting->getValue() as $classToBePatched => $moduleClass) {
-            if ($this->shopAdapter->isNamespace($classToBePatched)) {
-                $this->validateClassToBePatchedNamespace($classToBePatched);
+            foreach ($moduleSetting->getValue() as $classToBePatched => $moduleClass) {
+                if ($this->shopAdapter->isNamespace($classToBePatched)) {
+                    $this->validateClassToBePatchedNamespace($classToBePatched);
+                }
             }
         }
-    }
-
-    /**
-     * @param ModuleSetting $moduleSetting
-     * @return bool
-     */
-    public function canValidate(ModuleSetting $moduleSetting): bool
-    {
-        return $moduleSetting->getName() === ModuleSetting::CLASS_EXTENSIONS;
     }
 
     /**

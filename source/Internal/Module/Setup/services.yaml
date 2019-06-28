@@ -83,16 +83,16 @@ services:
       - '@OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface'
 
   oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator:
-    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\SmartyPluginDirectoriesModuleSettingValidator
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\SmartyPluginDirectoriesValidator
 
   oxid_esales.module.setup.validator.controllers_module_setting_validator:
-    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ControllersModuleSettingValidator
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ControllersValidator
 
   oxid_esales.module.setup.validator.class_extensions_module_setting_validator:
-    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ClassExtensionsModuleSettingValidator
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ClassExtensionsValidator
 
   oxid_esales.module.setup.validator.events_module_setting_validator:
-    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\EventsModuleSettingValidator
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\EventsValidator
 
   oxid_esales.module.setup.service.eventsubscriber.dispatch_legacy_events_subscriber:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\EventSubscriber\DispatchLegacyEventsSubscriber

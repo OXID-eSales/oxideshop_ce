@@ -170,8 +170,10 @@ class ModuleInheritanceTest extends UnitTestCase
      * @dataProvider dataProviderTestMultiModuleInheritanceTestPhpInheritance
      *
      * @param array  $modulesToActivate The modules we want to activate.
-     * @param string $extensionClass   The module class we want to instantiate.
-     * @param array  $classToExtend    The shop class from which the module class should inherit.
+     * @param string $extensionClass    The module class we want to instantiate.
+     * @param array  $classToExtend     The shop class from which the module class should inherit.
+     *
+     * @throws \Exception
      */
     public function testMultiModuleInheritanceTestPhpInheritance($modulesToActivate, $extensionClass, $classToExtend)
     {

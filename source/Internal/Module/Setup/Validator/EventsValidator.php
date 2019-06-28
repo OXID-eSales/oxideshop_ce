@@ -9,14 +9,14 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Validator;
 use function is_array;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSettingNotValidException;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException;
 
 /**
  * @internal
  */
-class EventsModuleSettingValidator implements ModuleSettingValidatorInterface
+class EventsValidator implements ModuleConfigurationValidatorInterface
 {
     /** @var array $validEvents */
     private $validEvents = ['onActivate', 'onDeactivate'];
@@ -36,33 +36,23 @@ class EventsModuleSettingValidator implements ModuleSettingValidatorInterface
     /**
      * There is another service for syntax validation and we won't validate syntax in this method.
      *
-     * @param ModuleSetting $moduleSetting
-     * @param string        $moduleId
-     * @param int           $shopId
+     * @param ModuleConfiguration $configuration
+     * @param int                 $shopId
      *
-     * @throws WrongModuleSettingException
+     * @throws ModuleSettingNotValidException
      */
-    public function validate(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
+    public function validate(ModuleConfiguration $configuration, int $shopId)
     {
-        if (!$this->canValidate($moduleSetting)) {
-            throw new WrongModuleSettingException($moduleSetting, self::class);
-        }
+        if ($configuration->hasSetting(ModuleSetting::EVENTS)) {
+            $moduleSetting = $configuration->getSetting(ModuleSetting::EVENTS);
 
-        $events = $moduleSetting->getValue();
-        foreach ($this->validEvents as $validEventName) {
-            if (is_array($events) && array_key_exists($validEventName, $events)) {
-                $this->checkIfMethodIsCallable($events[$validEventName]);
+            $events = $moduleSetting->getValue();
+            foreach ($this->validEvents as $validEventName) {
+                if (is_array($events) && array_key_exists($validEventName, $events)) {
+                    $this->checkIfMethodIsCallable($events[$validEventName]);
+                }
             }
         }
-    }
-
-    /**
-     * @param ModuleSetting $moduleSetting
-     * @return bool
-     */
-    public function canValidate(ModuleSetting $moduleSetting): bool
-    {
-        return $moduleSetting->getName() === ModuleSetting::EVENTS;
     }
 
     /**

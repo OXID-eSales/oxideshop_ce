@@ -5,6 +5,7 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
+use OxidEsales\Eshop\Application\Controller\FrontendController;
 use oxUBaseHelper;
 use \stdClass;
 use \oxField;
@@ -948,6 +949,14 @@ class UBaseTest extends \OxidTestCase
 
         $this->assertEquals($aSorting, $oView->getSorting('xxx'));
         $this->assertEquals(implode(' ', $aSorting), $oView->getSortingSql('xxx'));
+    }
+
+    public function testGetSortingWhenNotAllowedSortOrder()
+    {
+        $controller = oxNew(FrontendController::class);
+        $controller->setItemSorting('xxx', '`oxid`', 'not_allowed');
+
+        $this->assertNull($controller->getSortingSql('xxx'));
     }
 
     public function testGetListTypeAndSetListType()

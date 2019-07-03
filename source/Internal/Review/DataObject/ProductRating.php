@@ -6,10 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Review\DataObject;
 
-
-use OxidEsales\EshopCommunity\Internal\Common\DataObject\DynamicDataObject;
-use OxidEsales\EshopCommunity\Internal\Common\DataObject\DynamicDataObjectTrait;
-
 /**
   * @internal
  */

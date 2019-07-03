@@ -7,7 +7,6 @@
 namespace OxidEsales\EshopCommunity\Internal\Review\Dao;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Common\Dao\DynamicDataObjectDao;
 use OxidEsales\EshopCommunity\Internal\Common\Dao\DynamicDataObjectDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;

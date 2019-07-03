@@ -6,7 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Review\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Common\Dao\DynamicDataObjectDao;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Common\DataMapper\DynamicDataMapper;
 use OxidEsales\EshopCommunity\Internal\Common\DataMapper\EntityMapperInterface;

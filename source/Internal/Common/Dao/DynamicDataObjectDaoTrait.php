@@ -41,7 +41,7 @@ trait DynamicDataObjectDaoTrait
         $this->objectClass = $objectClass;
     }
 
-    public function addProperty($name, $type)
+    public function addProperty(string $name, string $type):void
     {
         $this->mapper->addProperty($name, $type);
     }

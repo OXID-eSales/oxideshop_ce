@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Review\DataMapper;
 use OxidEsales\EshopCommunity\Internal\Common\DataMapper\DynamicDataMapper;
 use OxidEsales\EshopCommunity\Internal\Common\DataMapper\EntityMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Review\DataObject\Review;
-use OxidEsales\EshopCommunity\Internal\Utility\LegacyServiceInterface;
 
 /**
  * @internal

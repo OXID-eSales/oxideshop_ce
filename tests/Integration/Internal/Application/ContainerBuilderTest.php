@@ -49,7 +49,7 @@ class ContainerBuilderTest extends TestCase
     {
         $context = $this->makeContextStub();
         $context->setEdition(EditionSelector::COMMUNITY);
-        $context->setGeneratedProjectFilePath(__DIR__ . '/Fixtures/Project/' . BasicContext::GENERATED_PROJECT_FILE_NAME);
+        $context->setGeneratedProjectFilePath(__DIR__ . '/Fixtures/Project/generated_test_project.yaml');
         $container = $this->makeContainer($context);
 
         $this->assertSame('Service overwriting for Project!', $container->get('oxid_esales.tests.internal.dummy_executor')->execute());
@@ -59,7 +59,7 @@ class ContainerBuilderTest extends TestCase
     {
         $context = $this->makeContextStub();
         $context->setEdition(EditionSelector::ENTERPRISE);
-        $context->setGeneratedProjectFilePath(__DIR__ . '/Fixtures/Project/' . BasicContext::GENERATED_PROJECT_FILE_NAME);
+        $context->setGeneratedProjectFilePath(__DIR__ . '/Fixtures/Project/configurable_test_project.yaml');
         $container = $this->makeContainer($context);
 
         $this->assertSame('Service overwriting for Project!', $container->get('oxid_esales.tests.internal.dummy_executor')->execute());

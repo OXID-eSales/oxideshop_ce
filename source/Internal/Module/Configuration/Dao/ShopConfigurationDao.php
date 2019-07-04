@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Storage\ArrayStorageInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Storage\FileStorageFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Cache\ShopConfigurationCache;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Cache\ShopConfigurationCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use Symfony\Component\Config\Definition\NodeInterface;
@@ -36,7 +36,7 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
     private $context;
 
     /**
-     * @var ShopConfigurationCache
+     * @var ShopConfigurationCacheInterface
      */
     private $cache;
 
@@ -55,7 +55,7 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
      * @param ShopConfigurationDataMapperInterface $shopConfigurationMapper
      * @param FileStorageFactoryInterface $fileStorageFactory
      * @param BasicContextInterface $context
-     * @param ShopConfigurationCache $cache
+     * @param ShopConfigurationCacheInterface $cache
      * @param Filesystem $fileSystem
      * @param NodeInterface $node
      */
@@ -63,7 +63,7 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
         ShopConfigurationDataMapperInterface $shopConfigurationMapper,
         FileStorageFactoryInterface $fileStorageFactory,
         BasicContextInterface $context,
-        ShopConfigurationCache $cache,
+        ShopConfigurationCacheInterface $cache,
         Filesystem $fileSystem,
         NodeInterface $node
     ) {

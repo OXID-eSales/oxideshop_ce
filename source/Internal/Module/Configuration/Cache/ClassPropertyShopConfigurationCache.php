@@ -11,7 +11,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfi
 /**
  * @internal
  */
-class ClassPropertyShopConfigurationCache implements ShopConfigurationCache
+class ClassPropertyShopConfigurationCache implements ShopConfigurationCacheInterface
 {
     /**
      * @var string[]

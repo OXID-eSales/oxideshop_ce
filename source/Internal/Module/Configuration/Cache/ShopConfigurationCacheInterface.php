@@ -11,7 +11,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfi
 /**
  * @internal
  */
-interface ShopConfigurationCache
+interface ShopConfigurationCacheInterface
 {
     public function put(string $environment, int $shopId, ShopConfiguration $configuration): void;
 

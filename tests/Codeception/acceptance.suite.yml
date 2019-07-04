@@ -21,9 +21,10 @@ modules:
             password: '%DB_PASSWORD%'
             port: '%DB_PORT%'
             dump: '%DUMP_PATH%'
+            mysql_config: '%MYSQL_CONFIG_PATH%'
             populate: true # run populator before all tests
             cleanup: true # run populator before each test
-            populator: '%PHP_BIN% %VENDOR_PATH%/bin/reset-shop && mysql -u $user -h $host -p$password --default-character-set=utf8 $dbname < $dump'
+            populator: '%PHP_BIN% %VENDOR_PATH%/bin/reset-shop && mysql --defaults-file=$mysql_config --default-character-set=utf8 $dbname < $dump'
         - \OxidEsales\Codeception\Module\Oxideshop:
             depends:
               - WebDriver

@@ -6,7 +6,11 @@
 
 namespace OxidEsales\DoctrineMigrationWrapper;
 
-$facts = new \OxidEsales\Facts\Facts();
+use OxidEsales\Facts\Facts;
+use OxidEsales\Eshop\Core\ConfigFile;
+use OxidEsales\TestingLibrary\Services\Library\DatabaseDefaultsFileGenerator;
+
+$facts = new Facts();
 
 $selenium_server_port = getenv('SELENIUM_SERVER_PORT');
 $selenium_server_port = ($selenium_server_port) ? $selenium_server_port : '4444';
@@ -22,6 +26,7 @@ return [
     'DB_HOST' => $facts->getDatabaseHost(),
     'DB_PORT' => $facts->getDatabasePort(),
     'DUMP_PATH' => getTestDataDumpFilePath(),
+    'MYSQL_CONFIG_PATH' => getMysqlConfigPath(),
     'SELENIUM_SERVER_PORT' => $selenium_server_port,
     'PHP_BIN' => $php,
 ];
@@ -42,7 +47,7 @@ function getShopSuitePath($facts)
 
 function getShopTestPath()
 {
-    $facts = new \OxidEsales\Facts\Facts();
+    $facts = new Facts();
 
     if ($facts->isEnterprise()) {
         $shopTestPath = $facts->getEnterpriseEditionRootPath().'/Tests';
@@ -50,4 +55,14 @@ function getShopTestPath()
         $shopTestPath = getShopSuitePath($facts);
     }
     return $shopTestPath;
+}
+
+function getMysqlConfigPath()
+{
+    $facts = new Facts();
+    $configFile = new ConfigFile($facts->getSourcePath() . '/config.inc.php');
+
+    $generator = new DatabaseDefaultsFileGenerator($configFile);
+
+    return $generator->generate();
 }

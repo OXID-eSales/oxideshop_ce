@@ -284,6 +284,13 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     protected $_sCardId = null;
 
     /**
+     * Card message.
+     *
+     * @var string
+     */
+    protected $_sCardMessage = '';
+
+    /**
      * Enables or disable saving to data base
      *
      * @param boolean $blSave

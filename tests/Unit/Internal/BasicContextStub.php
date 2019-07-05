@@ -7,7 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal;
 
-use org\bovigo\vfs\vfsStream;
 use OxidEsales\EshopCommunity\Internal\Application\BootstrapContainer\BootstrapContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 
@@ -46,8 +45,6 @@ class BasicContextStub implements BasicContextInterface
         $this->shopRootPath = $basicContext->getShopRootPath();
         $this->environment = $basicContext->getEnvironment();
         $this->backwardsCompatibilityClassMap = $basicContext->getBackwardsCompatibilityClassMap();
-
-        $this->prepareVFS();
     }
 
     /**
@@ -211,6 +208,14 @@ class BasicContextStub implements BasicContextInterface
     }
 
     /**
+     * @param string $projectConfigurationDirectory
+     */
+    public function setProjectConfigurationDirectory(string $projectConfigurationDirectory): void
+    {
+        $this->projectConfigurationDirectory = $projectConfigurationDirectory;
+    }
+
+    /**
      * @return string
      */
     public function getConfigFilePath(): string
@@ -240,13 +245,5 @@ class BasicContextStub implements BasicContextInterface
     public function getShopRootPath(): string
     {
         return $this->shopRootPath;
-    }
-
-    private function prepareVFS()
-    {
-        $vfsStreamDirectory = vfsStream::setup('project_configuration');
-        vfsStream::create([], $vfsStreamDirectory);
-
-        $this->projectConfigurationDirectory = vfsStream::url('project_configuration/');
     }
 }

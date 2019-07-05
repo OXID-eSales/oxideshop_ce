@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal;
 
-use OxidEsales\EshopCommunity\Internal\Application\BootstrapContainer\BootstrapContainerFactory;
+use org\bovigo\vfs\vfsStream;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
@@ -17,9 +17,20 @@ use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBu
  */
 class TestContainerFactory
 {
+    /**
+     * @var BasicContextStub
+     */
+    private $context;
+
+    public function __construct()
+    {
+        $this->prepareVFS();
+        $this->context = $this->getBasicContextStub();
+    }
+
     public function create(): SymfonyContainerBuilder
     {
-        $containerBuilder = new ContainerBuilder(new BasicContextStub());
+        $containerBuilder = new ContainerBuilder($this->context);
 
         $container = $containerBuilder->getContainer();
         $container = $this->setAllServicesAsPublic($container);
@@ -39,9 +50,28 @@ class TestContainerFactory
 
     private function setBasicContextStub(SymfonyContainerBuilder $container): SymfonyContainerBuilder
     {
-        $container->set(BasicContextInterface::class, new BasicContextStub());
+        $container->set(BasicContextInterface::class, $this->context);
         $container->autowire(BasicContextInterface::class, BasicContextStub::class);
 
         return $container;
+    }
+
+    private function getBasicContextStub(): BasicContextStub
+    {
+        $context = new BasicContextStub();
+        $context->setProjectConfigurationDirectory($this->getTestProjectConfigurationDirectory());
+
+        return $context;
+    }
+
+    private function prepareVFS(): void
+    {
+        $vfsStreamDirectory = vfsStream::setup('project_configuration');
+        vfsStream::create([], $vfsStreamDirectory);
+    }
+
+    private function getTestProjectConfigurationDirectory(): string
+    {
+        return vfsStream::url('project_configuration/');
     }
 }

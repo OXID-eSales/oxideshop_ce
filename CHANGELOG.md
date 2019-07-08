@@ -69,7 +69,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Constants
     - `\OxidEsales\EshopCommunity\Application\Model\User::USER_COOKIE_SALT`
 - Directory
-    - var/ directory, it contains files to which the application writes data during the course of its operation. Must always be writable by the HTTP server during the run time.
+    - var/ directory, it contains files to which the application writes data during the course of its operation. Must be writable by the HTTP server and CLI user.
 
 ### Changed
 - category_main form layout improvements [PR-585](https://github.com/OXID-eSales/oxideshop_ce/pull/585)
@@ -92,8 +92,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Methods in the following classes return information based on the project configuration. [See documentation about module installation](https://docs.oxid-esales.com/developer/en/6.2/modules/installation/)
     - `\OxidEsales\EshopCommunity\source\Module\Core\Module`
     - `\OxidEsales\EshopCommunity\source\Module\Core\ModuleList` 
-- Config option `aDisabledModules` isn't used anymore.
-- Config option `aModulePaths`: module path will be added to the option only after the module activation.   
+- The variable `aDisabledModules` in database table `oxconfig` isn't used anymore.
+- The variable `aModulePaths` in database table `oxconfig`: Module path will be added on module activation and removed on module deactivation.
+- The classes in the folder `Core/Module/` now mainly use the project configuration as a basis for information.
+- File `metadata.php` in a module: the key `id` is mandatory and custom php code won't be executed any more. [See Metadata documentation](https://docs.oxid-esales.com/developer/en/6.2/modules/skeleton/metadataphp/) 
 - Running tests on travis against all php versions [PR-700](https://github.com/OXID-eSales/oxideshop_ce/pull/700)
 - Travis runs phpcs and tests scripts with calling the php directly, not relying on script shebang anymore.
 - Updated Yui library components to version 2.9
@@ -149,8 +151,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\Module\ModuleCache` ModuleCache moved to Internal\Module package.
 - `\OxidEsales\EshopCommunity\Core\Module\ModuleExtensionsCleaner` The whole chain is updated during module activation and deactivation in the database. We do not need this functionality any more
 - `\OxidEsales\EshopCommunity\Core\Module\ModuleValidatorFactory` Module metadata validation moved to Internal\Module package
-- `\OxidEsales\EshopCommunity\Core\Routing\Module\ClassProviderStorage` Use service "OxidEsales\EshopCommunity\Internal\Common\Storage\YamlFileStorage".
-- `\OxidEsales\EshopCommunity\Core\Contract\ClassProviderStorageInterface` Use service "OxidEsales\EshopCommunity\Internal\Common\Storage\ArrayStorageInterface".
+- `\OxidEsales\EshopCommunity\Core\Routing\Module\ClassProviderStorage` Use `OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ModuleConfigurationDaoBridgeInterface`.
+- `\OxidEsales\EshopCommunity\Core\Contract\ClassProviderStorageInterface` Use `OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ModuleConfigurationDaoBridgeInterface`.
 
 ## [6.3.4] - 2019-05-24
 

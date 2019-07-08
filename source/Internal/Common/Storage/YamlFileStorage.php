@@ -73,9 +73,10 @@ class YamlFileStorage implements ArrayStorageInterface
     /**
      * @param array $data
      */
-    public function save(array $data)
+    public function save(array $data): void
     {
-        $lock = $this->lockFactory->createLock($this->filePath);
+        $lock = $this->lockFactory->createLock($this->getLockId());
+
         if ($lock->acquire(true)) {
             try {
                 file_put_contents(
@@ -107,7 +108,7 @@ class YamlFileStorage implements ArrayStorageInterface
     /**
      * Creates file directory if it doesn't exist.
      */
-    private function createFileDirectory()
+    private function createFileDirectory(): void
     {
         if (!$this->filesystemService->exists(\dirname($this->filePath))) {
             $this->filesystemService->mkdir(\dirname($this->filePath));
@@ -117,8 +118,16 @@ class YamlFileStorage implements ArrayStorageInterface
     /**
      * Creates file.
      */
-    private function createFile()
+    private function createFile(): void
     {
         $this->filesystemService->touch($this->filePath);
+    }
+
+    /**
+     * @return string
+     */
+    private function getLockId(): string
+    {
+        return md5($this->filePath);
     }
 }

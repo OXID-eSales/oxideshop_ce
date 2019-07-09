@@ -117,13 +117,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - OXID eShop console, which allows to register custom commands for modules and for components via `services.yaml`.
   - New command to activate module.
   - New command to deactivate module.
+  - New oe-console command to install module configuration: oe:module:install-configuration
   - New parameter in config file to change database connection charset - `dbCharset` [PR-670](https://github.com/OXID-eSales/oxideshop_ce/pull/670)
 
-- Module configuration:
-    - option `activeModules` in table oxconfig in order to determine the currently active modules
-
 - Events:
-    - `\OxidEsales\EshopCommunity\Internal\Module\MetaData\Event\BadMetaDataFoundEvent`
     - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\BeforeModuleDeactivationEvent`
     - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\FinalizingModuleActivationEvent`
     - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\FinalizingModuleDeactivationEvent`
@@ -146,6 +143,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
       for hashing passwords.
 - Constants
     - `\OxidEsales\EshopCommunity\Application\Model\User::USER_COOKIE_SALT`
+- Directory
+    - var/ directory, it contains files to which the application writes data during the course of its operation. Must always be writable by the HTTP server during the run time.
 
 ### Changed
 - category_main form layout improvements [PR-585](https://github.com/OXID-eSales/oxideshop_ce/pull/585)
@@ -165,6 +164,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - Was `HELP_ENERAL_NAME` changed to `HELP_GENERAL_NAME`
 - Drop support for PHP 7.0
 - Use user from Order::validateOrder method in validatePayment as well [PR-706](https://github.com/OXID-eSales/oxideshop_ce/pull/706)
+- Methods in the following classes return information based on the project configuration. [See documentation about module installation](https://docs.oxid-esales.com/developer/en/6.2/modules/installation/)
+    - `\OxidEsales\EshopCommunity\source\Module\Core\Module`
+    - `\OxidEsales\EshopCommunity\source\Module\Core\ModuleList` 
+- Config option `aDisabledModules` isn't used anymore.
+- Config option `aModulePaths`: module path will be added to the option only after the module activation.   
 - Travis runs phpcs and tests scripts with calling the php directly, not relying on script shebang anymore.
 
 ### Removed
@@ -197,6 +201,29 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\Email::getConfig`
 - `blDoNotDisableModuleOnError` config option
 - `OrderArticle::$_aOrderCache`
+- `\OxidEsales\EshopCommunity\Application\Controller\Admin\ModuleConfiguration::_getModuleForConfigVars`  
+- `\OxidEsales\EshopCommunity\Application\Controller\Admin\ModuleConfiguration::__loadMetadataConfVars` 
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::filterInactiveExtensions()` Now, there are only extensions of active modules in the class chain. No need to filter inactive extensions any more.
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::cleanModuleFromClassChain()` If you want to clean a module from the class chain, deactivate the module.
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::getDisabledModuleIds()` Use `OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface` instead to get inactive modules.
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::getModuleDirectoryByModuleId()` Use `\OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface` instead.
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectoryValidator` Validation was moved to Internal\Module package and will be executed during the module activation.
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectoryRepository::save` Module smarty plugins directory are stored in project configuration file now. Use appropriate Dao to save them.
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectories::getWithRelativePath` Module smarty plugins directory are stored in project configuration file now. Use appropriate Dao to get them.
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectories::add` Module smarty plugins directory are stored in project configuration file now. Use appropriate Dao to add them.
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectories::set` Module smarty plugins directory are stored in project configuration file now. Use appropriate Dao to set them.
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectories::remove` Module smarty plugins directory are stored in project configuration file now. Use appropriate Dao to remove them.
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleExtensionsCleaner::cleanExtensions` will use internal module services instead aModulePaths 
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleInstaller` Use service "OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface".
+- `\OxidEsales\EshopCommunity\Core\Module\Module` Use service 'OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface'.
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleList` Use service 'OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface'.
+- `\OxidEsales\EshopCommunity\Core\Contract\IModuleValidator` Validation was moved to Internal\Module package and will be executed during the module activation.
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleMetadataValidator` Validation was moved to Internal\Module package and will be executed during the module activation.
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleCache` ModuleCache moved to Internal\Module package.
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleExtensionsCleaner` The whole chain is updated during module activation and deactivation in the database. We do not need this functionality any more
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleValidatorFactory` Module metadata validation moved to Internal\Module package
+- `\OxidEsales\EshopCommunity\Core\Routing\Module\ClassProviderStorage` Use service "OxidEsales\EshopCommunity\Internal\Common\Storage\YamlFileStorage".
+- `\OxidEsales\EshopCommunity\Core\Contract\ClassProviderStorageInterface` Use service "OxidEsales\EshopCommunity\Internal\Common\Storage\ArrayStorageInterface".
 
 ## [6.3.4] - 2019-05-24
 
@@ -207,6 +234,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Fix Bank code validation bug in Direct Debit [#0006939](https://bugs.oxid-esales.com/view.php?id=6939)
+
+- Classes:
+    - `OxidEsales\EshopCommunity\Core\Module\ModuleInstaller` 
+    - `OxidEsales\EshopCommunity\source\Module\Core\Module`
+    - `OxidEsales\EshopCommunity\source\Module\Core\ModuleList` 
+    - `OxidEsales\EshopCommunity\Core\Contract\IModuleValidator ` 
+    - `OxidEsales\EshopCommunity\Core\Module\ModuleMetadataValidator`    
 
 ## [6.3.3] - 2019-04-16
 

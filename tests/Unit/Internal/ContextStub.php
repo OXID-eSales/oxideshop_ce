@@ -16,18 +16,12 @@ class ContextStub extends BasicContextStub implements ContextInterface
 
     private $currentShopId = 1;
 
+    private $shopIds = [1];
+
     /**
      * @var array
      */
     private $requiredContactFormFields = [];
-
-    /**
-     * @return string
-     */
-    public function getEnvironment(): string
-    {
-        return 'dev';
-    }
 
     /**
      * @param string $logLevel
@@ -101,6 +95,13 @@ class ContextStub extends BasicContextStub implements ContextInterface
         return '';
     }
 
+    /**
+     * @return array
+     */
+    public function getAllShopIds(): array
+    {
+        return $this->shopIds;
+    }
     /**
      * @return string
      */

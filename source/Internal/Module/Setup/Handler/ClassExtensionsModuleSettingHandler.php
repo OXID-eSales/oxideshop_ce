@@ -11,12 +11,12 @@ use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConf
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 
 /**
  * @internal
  */
-class ClassExtensionsModuleSettingHandler implements ModuleSettingHandlerInterface
+class ClassExtensionsModuleSettingHandler implements ModuleConfigurationHandlerInterface
 {
     /**
      * @var ShopConfigurationSettingDaoInterface
@@ -33,58 +33,50 @@ class ClassExtensionsModuleSettingHandler implements ModuleSettingHandlerInterfa
     }
 
     /**
-     * @param ModuleSetting $moduleSetting
-     * @param string        $moduleId
-     * @param int           $shopId
-     *
-     * @throws WrongModuleSettingException
+     * @param ModuleConfiguration $configuration
+     * @param int                 $shopId
      */
-    public function handleOnModuleActivation(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
+    public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId)
     {
-        if (!$this->canHandle($moduleSetting)) {
-            throw new WrongModuleSettingException($moduleSetting, self::class);
+        if ($this->canHandle($configuration)) {
+            $moduleSetting = $configuration->getSetting(ModuleSetting::CLASS_EXTENSIONS);
+
+            $shopConfigurationSetting = $this->getClassExtensionsShopConfigurationSetting($shopId);
+
+            $shopConfigurationSettingValue = $shopConfigurationSetting->getValue();
+            $shopConfigurationSettingValue[$configuration->getId()] = array_values($moduleSetting->getValue());
+
+            $shopConfigurationSetting->setValue($shopConfigurationSettingValue);
+
+            $this->shopConfigurationSettingDao->save($shopConfigurationSetting);
         }
-
-        $shopConfigurationSetting = $this->getClassExtensionsShopConfigurationSetting($shopId);
-
-        $shopConfigurationSettingValue = $shopConfigurationSetting->getValue();
-        $shopConfigurationSettingValue[$moduleId] = array_values($moduleSetting->getValue());
-
-        $shopConfigurationSetting->setValue($shopConfigurationSettingValue);
-
-        $this->shopConfigurationSettingDao->save($shopConfigurationSetting);
     }
 
     /**
-     * @param ModuleSetting $moduleSetting
-     * @param string        $moduleId
-     * @param int           $shopId
-     *
-     * @throws WrongModuleSettingException
+     * @param ModuleConfiguration $configuration
+     * @param int                 $shopId
      */
-    public function handleOnModuleDeactivation(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
+    public function handleOnModuleDeactivation(ModuleConfiguration $configuration, int $shopId)
     {
-        if (!$this->canHandle($moduleSetting)) {
-            throw new WrongModuleSettingException($moduleSetting, self::class);
+        if ($this->canHandle($configuration)) {
+            $shopConfigurationSetting = $this->getClassExtensionsShopConfigurationSetting($shopId);
+
+            $shopConfigurationSettingValue = $shopConfigurationSetting->getValue();
+            unset($shopConfigurationSettingValue[$configuration->getId()]);
+
+            $shopConfigurationSetting->setValue($shopConfigurationSettingValue);
+
+            $this->shopConfigurationSettingDao->save($shopConfigurationSetting);
         }
-
-        $shopConfigurationSetting = $this->getClassExtensionsShopConfigurationSetting($shopId);
-
-        $shopConfigurationSettingValue = $shopConfigurationSetting->getValue();
-        unset($shopConfigurationSettingValue[$moduleId]);
-
-        $shopConfigurationSetting->setValue($shopConfigurationSettingValue);
-
-        $this->shopConfigurationSettingDao->save($shopConfigurationSetting);
     }
 
     /**
-     * @param ModuleSetting $moduleSetting
+     * @param ModuleConfiguration $configuration
      * @return bool
      */
-    public function canHandle(ModuleSetting $moduleSetting): bool
+    private function canHandle(ModuleConfiguration $configuration): bool
     {
-        return $moduleSetting->getName() === ModuleSetting::CLASS_EXTENSIONS;
+        return $configuration->hasSetting(ModuleSetting::CLASS_EXTENSIONS);
     }
 
     /**

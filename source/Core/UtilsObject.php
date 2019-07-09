@@ -304,18 +304,6 @@ class UtilsObject
     }
 
     /**
-     * Disables module
-     *
-     * @param string $sModule
-     *
-     * @deprecated use ModuleChainsGenerator::disableModule instead.
-     */
-    protected function _disableModule($sModule)
-    {
-        $this->getModuleChainsGenerator()->disableModule($sModule);
-    }
-
-    /**
      * @return BackwardsCompatibleClassNameProvider
      */
     protected function getClassNameProvider()

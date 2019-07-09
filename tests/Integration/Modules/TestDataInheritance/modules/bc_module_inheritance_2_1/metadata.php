@@ -20,6 +20,6 @@ $aModule = array(
     'version'      => '1.0',
     'author'       => 'OXID eSales AG',
     'files'       => array(
-        'vendor_2_module_1_myclass' => 'bc_module_inheritance_2_1/vendor_2_module_1_myclass.php'
+        'vendor_2_module_1_myclass' => 'oeTest/bc_module_inheritance_2_1/vendor_2_module_1_myclass.php'
     )
 );

@@ -6,7 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Application;
 
-use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
+use OxidEsales\EshopCommunity\Internal\Application\BootstrapContainer\BootstrapContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 
@@ -20,6 +21,11 @@ class ContainerFactory
      * @var self
      */
     private static $instance = null;
+
+    /**
+     * @var ContainerInterface
+     */
+    private static $bootstrapContainer;
 
     /**
      * @var ContainerInterface
@@ -100,8 +106,20 @@ class ContainerFactory
      */
     private static function getCacheFilePath()
     {
-        $context = new BasicContext();
+        $context = self::getBootstrapContainer()->get(BasicContextInterface::class);
+
         return $context->getContainerCacheFilePath();
+    }
+
+    /**
+     * @return ContainerInterface
+     */
+    private static function getBootstrapContainer(): ContainerInterface
+    {
+        if (self::$bootstrapContainer === null) {
+            self::$bootstrapContainer = BootstrapContainerFactory::getBootstrapContainer();
+        }
+        return self::$bootstrapContainer;
     }
 
     /**

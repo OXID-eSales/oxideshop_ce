@@ -10,13 +10,12 @@ use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurati
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 
 /**
  * @internal
  */
-class ShopConfigurationModuleSettingHandler implements ModuleSettingHandlerInterface
+class ShopConfigurationModuleSettingHandler implements ModuleConfigurationHandlerInterface
 {
     /**
      * @var string
@@ -50,62 +49,53 @@ class ShopConfigurationModuleSettingHandler implements ModuleSettingHandlerInter
     }
 
     /**
-     * @param ModuleSetting $moduleSetting
-     * @param string        $moduleId
-     * @param int           $shopId
-     *
-     * @throws WrongModuleSettingException
+     * @param ModuleConfiguration $configuration
+     * @param int                 $shopId
      */
-    public function handleOnModuleActivation(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
+    public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId)
     {
-        if (!$this->canHandle($moduleSetting)) {
-            throw new WrongModuleSettingException($moduleSetting, self::class);
+        if ($this->canHandle($configuration)) {
+            $shopConfigurationSetting = $this->getShopConfigurationSetting($shopId);
+            $setting = $configuration->getSetting($this->settingName);
+
+            $shopSettingValue = array_merge(
+                $shopConfigurationSetting->getValue(),
+                [
+                    $configuration->getId() => $setting->getValue(),
+                ]
+            );
+
+            $shopConfigurationSetting->setValue($shopSettingValue);
+
+            $this->shopConfigurationSettingDao->save($shopConfigurationSetting);
         }
-
-        $shopConfigurationSetting = $this->getShopConfigurationSetting($shopId);
-
-        $shopSettingValue = array_merge(
-            $shopConfigurationSetting->getValue(),
-            [
-                $moduleId => $moduleSetting->getValue(),
-            ]
-        );
-
-        $shopConfigurationSetting->setValue($shopSettingValue);
-
-        $this->shopConfigurationSettingDao->save($shopConfigurationSetting);
     }
 
     /**
-     * @param ModuleSetting $moduleSetting
-     * @param string        $moduleId
-     * @param int           $shopId
-     *
-     * @throws WrongModuleSettingException
+     * @param ModuleConfiguration $configuration
+     * @param int                 $shopId
      */
-    public function handleOnModuleDeactivation(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
+    public function handleOnModuleDeactivation(ModuleConfiguration $configuration, int $shopId)
     {
-        if (!$this->canHandle($moduleSetting)) {
-            throw new WrongModuleSettingException($moduleSetting, self::class);
+        if ($this->canHandle($configuration)) {
+            $shopConfigurationSetting = $this->getShopConfigurationSetting($shopId);
+
+            $shopSettingValue = $shopConfigurationSetting->getValue();
+            unset($shopSettingValue[$configuration->getId()]);
+
+            $shopConfigurationSetting->setValue($shopSettingValue);
+
+            $this->shopConfigurationSettingDao->save($shopConfigurationSetting);
         }
-
-        $shopConfigurationSetting = $this->getShopConfigurationSetting($shopId);
-
-        $shopSettingValue = $shopConfigurationSetting->getValue();
-        unset($shopSettingValue[$moduleId]);
-
-        $shopConfigurationSetting->setValue($shopSettingValue);
-
-        $this->shopConfigurationSettingDao->save($shopConfigurationSetting);
     }
 
     /**
-     * @param ModuleSetting $moduleSetting
+     * @param ModuleConfiguration $configuration
      * @return bool
      */
-    public function canHandle(ModuleSetting $moduleSetting): bool
+    private function canHandle(ModuleConfiguration $configuration): bool
     {
-        return $this->settingName === $moduleSetting->getName();
+        return $configuration->hasSetting($this->settingName);
     }
 
     /**

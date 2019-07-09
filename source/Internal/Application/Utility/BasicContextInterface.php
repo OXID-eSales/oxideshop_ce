@@ -15,17 +15,27 @@ interface BasicContextInterface
     /**
      * @return string
      */
+    public function getEnvironment(): string;
+
+    /**
+     * @return string
+     */
     public function getContainerCacheFilePath(): string;
 
     /**
      * @return string
      */
-    public function getGeneratedProjectFilePath(): string;
+    public function getGeneratedServicesFilePath(): string;
 
     /**
      * @return string
      */
     public function getSourcePath(): string;
+
+    /**
+     * @return string
+     */
+    public function getModulesPath(): string;
 
     /**
      * @return string
@@ -46,4 +56,44 @@ interface BasicContextInterface
      * @return string
      */
     public function getEnterpriseEditionRootPath(): string;
+
+    /**
+     * @return int
+     */
+    public function getDefaultShopId(): int;
+
+    /**
+     * @return array
+     */
+    public function getAllShopIds(): array;
+
+    /**
+     * @return array
+     */
+    public function getBackwardsCompatibilityClassMap(): array;
+
+    /**
+     * @return string
+     */
+    public function getProjectConfigurationDirectory(): string;
+
+    /**
+     * @return string
+     */
+    public function getConfigurationDirectoryPath(): string;
+
+    /**
+     * @return string
+     */
+    public function getShopRootPath(): string;
+
+    /**
+     * @return string
+     */
+    public function getConfigFilePath(): string;
+
+    /**
+     * @return string
+     */
+    public function getConfigTableName(): string;
 }

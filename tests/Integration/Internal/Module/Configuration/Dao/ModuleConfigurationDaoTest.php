@@ -7,11 +7,10 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Configuration\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -32,7 +31,9 @@ class ModuleConfigurationDaoTest extends TestCase
     public function testSaving()
     {
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->setId('testId');
+        $moduleConfiguration
+            ->setId('testId')
+            ->setPath('somePath');
 
         $dao = $this->get(ModuleConfigurationDaoInterface::class);
         $dao->save($moduleConfiguration, 1);
@@ -45,16 +46,15 @@ class ModuleConfigurationDaoTest extends TestCase
 
     private function prepareProjectConfiguration()
     {
-        $shopConfiguration = new ShopConfiguration();
+        $this->get(ShopConfigurationDaoInterface::class)->save(
+            new ShopConfiguration(),
+            1,
+            $this->getEnvironment()
+        );
+    }
 
-        $environmentConfiguration = new EnvironmentConfiguration();
-        $environmentConfiguration->addShopConfiguration(1, $shopConfiguration);
-
-        $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->addEnvironmentConfiguration('prod', $environmentConfiguration);
-
-        $dao = $this->get(ProjectConfigurationDaoInterface::class);
-
-        $dao->persistConfiguration($projectConfiguration);
+    private function getEnvironment(): string
+    {
+        return $this->get(ContextInterface::class)->getEnvironment();
     }
 }

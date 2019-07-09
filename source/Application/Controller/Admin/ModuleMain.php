@@ -7,11 +7,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
-use oxException;
-use oxModule;
-use oxModuleCache;
-use oxModuleInstaller;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 
 /**
  * Admin article main deliveryset manager.
@@ -61,30 +57,20 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
      */
     public function activateModule()
     {
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop()) {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE');
-
+        if (Registry::getConfig()->isDemoShop()) {
+            Registry::getUtilsView()->addErrorToDisplay('MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE');
             return;
         }
 
-        $sModule = $this->getEditObjectId();
-        /** @var \OxidEsales\Eshop\Core\Module\Module $oModule */
-        $oModule = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
-        if (!$oModule->load($sModule)) {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_MODULE_NOT_LOADED'));
-
-            return;
-        }
         try {
-            /** @var \OxidEsales\Eshop\Core\Module\ModuleCache $oModuleCache */
-            $oModuleCache = oxNew('oxModuleCache', $oModule);
-            /** @var \OxidEsales\Eshop\Core\Module\ModuleInstaller $oModuleInstaller */
-            $oModuleInstaller = oxNew('oxModuleInstaller', $oModuleCache);
+            $moduleActivationBridge = $this->getContainer()->get(ModuleActivationBridgeInterface::class);
+            $moduleActivationBridge->activate(
+                $this->getEditObjectId(),
+                Registry::getConfig()->getShopId()
+            );
 
-            if ($oModuleInstaller->activate($oModule)) {
-                $this->_aViewData["updatenav"] = "1";
-            }
-        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
+            $this->_aViewData['updatenav'] = '1';
+        } catch (\Exception $exception) {
             Registry::getUtilsView()->addErrorToDisplay($exception);
             Registry::getLogger()->error($exception->getMessage(), [$exception]);
         }
@@ -97,30 +83,20 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
      */
     public function deactivateModule()
     {
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop()) {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE');
-
+        if (Registry::getConfig()->isDemoShop()) {
+            Registry::getUtilsView()->addErrorToDisplay('MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE');
             return;
         }
 
-        $sModule = $this->getEditObjectId();
-        /** @var \OxidEsales\Eshop\Core\Module\Module $oModule */
-        $oModule = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
-        if (!$oModule->load($sModule)) {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_MODULE_NOT_LOADED'));
-
-            return;
-        }
         try {
-            /** @var \OxidEsales\Eshop\Core\Module\ModuleCache $oModuleCache */
-            $oModuleCache = oxNew('oxModuleCache', $oModule);
-            /** @var \OxidEsales\Eshop\Core\Module\ModuleInstaller $oModuleInstaller */
-            $oModuleInstaller = oxNew('oxModuleInstaller', $oModuleCache);
+            $moduleActivationBridge = $this->getContainer()->get(ModuleActivationBridgeInterface::class);
+            $moduleActivationBridge->deactivate(
+                $this->getEditObjectId(),
+                Registry::getConfig()->getShopId()
+            );
 
-            if ($oModuleInstaller->deactivate($oModule)) {
-                $this->_aViewData["updatenav"] = "1";
-            }
-        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
+            $this->_aViewData['updatenav'] = '1';
+        } catch (\Exception $exception) {
             Registry::getUtilsView()->addErrorToDisplay($exception);
             Registry::getLogger()->error($exception->getMessage(), [$exception]);
         }

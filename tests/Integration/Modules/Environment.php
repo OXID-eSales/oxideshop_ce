@@ -171,16 +171,10 @@ class Environment
     public function activateModuleById($moduleId)
     {
         $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
+        $module->load($moduleId);
 
-        if ($module->load($moduleId)) {
-            $moduleInstaller = $this->getModuleInstaller($module);
-
-            if (!$moduleInstaller->activate($module)) {
-                throw new Exception("Module $moduleId was not activated.");
-            }
-        } else {
-            throw new Exception("Module $moduleId was not activated.");
-        }
+        $moduleInstaller = $this->getModuleInstaller($module);
+        $moduleInstaller->activate($module);
     }
 
 

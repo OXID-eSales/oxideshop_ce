@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin;
 
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Tests\Acceptance\AdminTestCase;
 use OxidEsales\TestingLibrary\ServiceCaller;
 use OxidEsales\TestingLibrary\Services\Files\Remove;
@@ -133,5 +135,17 @@ abstract class ModuleBaseTest extends AdminTestCase
             $fileCopier->createEmptyDirectory($target . $moduleDirectory);
             $fileCopier->copyFiles($testDataPath, $target . $moduleDirectory);
         }
+    }
+
+    protected function installModule(string $path)
+    {
+        $moduleConfigurationInstaller = ContainerFactory::getInstance()
+            ->getContainer()
+            ->get(ModuleConfigurationInstallerInterface::class);
+
+        $moduleConfigurationInstaller->install(
+            __DIR__ . '/testData/modules/' . $path,
+            $path
+        );
     }
 }

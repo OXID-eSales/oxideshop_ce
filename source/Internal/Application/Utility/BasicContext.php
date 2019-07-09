@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Application\Utility;
 
+use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityClassMapProvider;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use OxidEsales\Facts\Edition\EditionSelector;
 use OxidEsales\Facts\Facts;
 use Webmozart\PathUtil\Path;
@@ -22,28 +24,34 @@ class BasicContext implements BasicContextInterface
 
     const ENTERPRISE_EDITION = EditionSelector::ENTERPRISE;
 
-    const GENERATED_PROJECT_FILE_NAME = 'generated_project.yaml';
-
     /**
      * @var Facts
      */
     private $facts;
 
     /**
-     * @todo change placement of containercache.php file and move logic to Facts.
+     * @return string
+     */
+    public function getEnvironment(): string
+    {
+        return 'production';
+    }
+
+    /**
+     * @todo change placement of container cache file and move logic to Facts.
      * @return string
      */
     public function getContainerCacheFilePath(): string
     {
-        return Path::join($this->getSourcePath(), 'tmp', 'containercache.php');
+        return Path::join($this->getSourcePath(), 'tmp', 'container_cache.php');
     }
 
     /**
      * @return string
      */
-    public function getGeneratedProjectFilePath(): string
+    public function getGeneratedServicesFilePath(): string
     {
-        return Path::join($this->getSourcePath(), static::GENERATED_PROJECT_FILE_NAME);
+        return Path::join($this->getShopRootPath(), 'var', 'generated', 'generated_services.yaml');
     }
 
     /**
@@ -52,6 +60,14 @@ class BasicContext implements BasicContextInterface
     public function getSourcePath(): string
     {
         return $this->getFacts()->getSourcePath();
+    }
+
+    /**
+     * @return string
+     */
+    public function getModulesPath() : string
+    {
+        return Path::join($this->getSourcePath(), 'modules');
     }
 
     /**
@@ -87,6 +103,14 @@ class BasicContext implements BasicContextInterface
     }
 
     /**
+     * @return int
+     */
+    public function getDefaultShopId(): int
+    {
+        return ShopIdCalculator::BASE_SHOP_ID;
+    }
+
+    /**
      * @return Facts
      */
     private function getFacts(): Facts
@@ -95,5 +119,63 @@ class BasicContext implements BasicContextInterface
             $this->facts = new Facts();
         }
         return $this->facts;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllShopIds(): array
+    {
+        return [
+            $this->getDefaultShopId(),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getBackwardsCompatibilityClassMap(): array
+    {
+        return (new BackwardsCompatibilityClassMapProvider())->getMap();
+    }
+
+    /**
+     * @return string
+     */
+    public function getProjectConfigurationDirectory(): string
+    {
+        return $this->getConfigurationDirectoryPath() . 'project_configuration/';
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfigurationDirectoryPath(): string
+    {
+        return $this->getShopRootPath() . '/var/configuration/';
+    }
+
+    /**
+     * @return string
+     */
+    public function getShopRootPath(): string
+    {
+        return $this->getFacts()->getShopRootPath();
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfigFilePath(): string
+    {
+        return $this->getSourcePath() . '/config.inc.php';
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfigTableName(): string
+    {
+        return 'oxconfig';
     }
 }

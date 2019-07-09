@@ -5,6 +5,11 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
+use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use oxOnlineModulesNotifierRequest;
 use oxOnlineModuleVersionNotifier;
 use oxOnlineModuleVersionNotifierCaller;
@@ -16,23 +21,40 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class OnlineModuleNotifierTest extends BaseModuleTestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+        ContainerFactory::getInstance()
+            ->getContainer()
+            ->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
+            ->generate();
+    }
+
+    protected function tearDown()
+    {
+        $this->removeTestModules();
+
+        parent::tearDown();
+    }
+
     /**
      * Tests if module was activated.
      */
     public function testVersionNotify()
     {
-        $oEnvironment = new Environment();
-        $oEnvironment->prepare(array('extending_1_class', 'extending_1_class_3_extensions', 'with_everything'));
+        $this->installModule('extending_1_class');
+        $this->activateModule('extending_1_class');
+
+        $this->installModule('extending_1_class_3_extensions');
+        $this->activateModule('extending_1_class_3_extensions');
+
+        $this->installModule('with_everything');
 
         /** @var oxOnlineModuleVersionNotifierCaller|MockObject $oCaller */
         $oCaller = $this->getMock(\OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller::class, array('doRequest'), array(), '', false);
-        $oCaller->expects($this->any())->method('doRequest')->with($this->equalTo($this->getExpectedRequest()));
+        $oCaller->method('doRequest')->with($this->equalTo($this->getExpectedRequest()));
 
-        $oModuleList = oxNew('oxModuleList');
-        $sModuleDir = __DIR__ . '/TestData/modules';
-        $oModuleList->getModulesFromDir($sModuleDir);
-
-        $oNotifier = new oxOnlineModuleVersionNotifier($oCaller, $oModuleList);
+        $oNotifier = new oxOnlineModuleVersionNotifier($oCaller, oxNew('oxModuleList'));
         $oNotifier->versionNotify();
     }
 
@@ -56,29 +78,9 @@ class OnlineModuleNotifierTest extends BaseModuleTestCase
         $modules->module = array();
 
         $aModulesInfo = array();
-        $aModulesInfo[] = array('id' => null, 'version' => null, 'activeInShop' => array());
-        $aModulesInfo[] = array('id' => 'EshopTestModuleOne', 'version' => '1.0.0', 'activeInShop' => array());
         $aModulesInfo[] = array('id' => 'extending_1_class', 'version' => '1.0', 'activeInShop' => array($sShopUrl));
         $aModulesInfo[] = array('id' => 'extending_1_class_3_extensions', 'version' => '1.0', 'activeInShop' => array($sShopUrl));
-        $aModulesInfo[] = array('id' => 'extending_3_blocks', 'version' => '1.0', 'activeInShop' => array());
-        $aModulesInfo[] = array('id' => 'extending_3_classes', 'version' => '1.0', 'activeInShop' => array());
-        $aModulesInfo[] = array('id' => 'extending_3_classes_with_1_extension', 'version' => '1.0', 'activeInShop' => array());
-        $aModulesInfo[] = array('id' => 'metadata_controllers_feature', 'version' => '1.0', 'activeInShop' => array());
-        $aModulesInfo[] = array('id' => 'no_extending', 'version' => '1.0', 'activeInShop' => array());
-        $aModulesInfo[] = array('id' => 'translation_Application', 'version' => '1.0', 'activeInShop' => array());
-        $aModulesInfo[] = array('id' => 'unifiednamespace_module1', 'version' => '1.0.0', 'activeInShop' => array());
-        $aModulesInfo[] = array('id' => 'unifiednamespace_module2', 'version' => '1.0.0', 'activeInShop' => array());
-        $aModulesInfo[] = array('id' => 'unifiednamespace_module3', 'version' => '1.0.0', 'activeInShop' => array());
-        $aModulesInfo[] = array('id' => 'with_1_extension', 'version' => '1.0', 'activeInShop' => array());
-        $aModulesInfo[] = array('id' => 'with_2_files', 'version' => '1.0', 'activeInShop' => array());
-        $aModulesInfo[] = array('id' => 'with_2_settings', 'version' => '1.0', 'activeInShop' => array());
-        $aModulesInfo[] = array('id' => 'with_2_templates', 'version' => '1.0', 'activeInShop' => array());
-        $aModulesInfo[] = array('id' => 'with_events', 'version' => '1.0', 'activeInShop' => array());
-        $aModulesInfo[] = array('id' => 'with_everything', 'version' => '1.0', 'activeInShop' => array($sShopUrl));
-        $aModulesInfo[] = array('id' => 'with_metadata_v2', 'version' => '1.0', 'activeInShop' => array());
-        $aModulesInfo[] = array('id' => 'with_metadata_v21', 'version' => '1.0', 'activeInShop' => array());
-        $aModulesInfo[] = array('id' => 'with_more_metadata_v2', 'version' => '1.0', 'activeInShop' => array());
-        $aModulesInfo[] = array('id' => 'without_own_module_namespace', 'version' => '1.0.0', 'activeInShop' => array());
+        $aModulesInfo[] = array('id' => 'with_everything', 'version' => '1.0', 'activeInShop' => array());
 
         foreach ($aModulesInfo as $aModuleInfo) {
             $module = new \StdClass();
@@ -92,5 +94,27 @@ class OnlineModuleNotifierTest extends BaseModuleTestCase
         $oRequest->modules = $modules;
 
         return $oRequest;
+    }
+
+    private function installModule(string $moduleId)
+    {
+        $installService = ContainerFactory::getInstance()->getContainer()->get(ModuleInstallerInterface::class);
+
+        $package = new OxidEshopPackage($moduleId, __DIR__ . '/TestData/modules/' . $moduleId);
+        $package->setTargetDirectory('oeTest/' . $moduleId);
+        $installService->install($package);
+    }
+
+    private function activateModule(string $moduleId)
+    {
+        $activationService = ContainerFactory::getInstance()->getContainer()->get(ModuleActivationBridgeInterface::class);
+
+        $activationService->activate($moduleId, 1);
+    }
+
+    private function removeTestModules()
+    {
+        $fileSystem = $this->container->get('oxid_esales.symfony.file_system');
+        $fileSystem->remove($this->container->get(ContextInterface::class)->getModulesPath() . '/oeTest/');
     }
 }

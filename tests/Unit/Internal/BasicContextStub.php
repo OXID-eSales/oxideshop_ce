@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal;
 
-use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
+use OxidEsales\EshopCommunity\Internal\Application\BootstrapContainer\BootstrapContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 
 /**
@@ -19,20 +19,40 @@ class BasicContextStub implements BasicContextInterface
     private $containerCacheFilePath;
     private $edition;
     private $enterpriseEditionRootPath;
-    private $generatedProjectFilePath;
+    private $generatedServicesFilePath;
     private $professionalEditionRootPath;
     private $sourcePath;
-    
+    private $modulesPath;
+    private $shopRootPath;
+    private $configFilePath;
+    private $projectConfigurationDirectory;
+    private $environment;
+    private $backwardsCompatibilityClassMap;
+
     public function __construct()
     {
-        $basicContext = new BasicContext();
+        $basicContext = BootstrapContainerFactory::getBootstrapContainer()->get(BasicContextInterface::class);
+
         $this->communityEditionSourcePath = $basicContext->getCommunityEditionSourcePath();
         $this->containerCacheFilePath = $basicContext->getContainerCacheFilePath();
         $this->edition = $basicContext->getEdition();
         $this->enterpriseEditionRootPath = $basicContext->getEnterpriseEditionRootPath();
-        $this->generatedProjectFilePath = $basicContext->getGeneratedProjectFilePath();
+        $this->generatedServicesFilePath = $basicContext->getGeneratedServicesFilePath();
         $this->professionalEditionRootPath = $basicContext->getProfessionalEditionRootPath();
         $this->sourcePath = $basicContext->getSourcePath();
+        $this->modulesPath = $basicContext->getModulesPath();
+        $this->configFilePath = $basicContext->getConfigFilePath();
+        $this->shopRootPath = $basicContext->getShopRootPath();
+        $this->environment = $basicContext->getEnvironment();
+        $this->backwardsCompatibilityClassMap = $basicContext->getBackwardsCompatibilityClassMap();
+    }
+
+    /**
+     * @return string
+     */
+    public function getEnvironment(): string
+    {
+        return $this->environment;
     }
 
     /**
@@ -102,17 +122,17 @@ class BasicContextStub implements BasicContextInterface
     /**
      * @return string
      */
-    public function getGeneratedProjectFilePath(): string
+    public function getGeneratedServicesFilePath(): string
     {
-        return $this->generatedProjectFilePath;
+        return $this->generatedServicesFilePath;
     }
 
     /**
-     * @param string $generatedProjectFilePath
+     * @param string $generatedServicesFilePath
      */
-    public function setGeneratedProjectFilePath(string $generatedProjectFilePath)
+    public function setGeneratedServicesFilePath(string $generatedServicesFilePath)
     {
-        $this->generatedProjectFilePath = $generatedProjectFilePath;
+        $this->generatedServicesFilePath = $generatedServicesFilePath;
     }
 
     /**
@@ -145,5 +165,85 @@ class BasicContextStub implements BasicContextInterface
     public function setSourcePath(string $sourcePath)
     {
         $this->sourcePath = $sourcePath;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDefaultShopId(): int
+    {
+        return 1;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllShopIds(): array
+    {
+        return [$this->getDefaultShopId()];
+    }
+
+    /**
+     * @return string
+     */
+    public function getModulesPath(): string
+    {
+        return $this->modulesPath;
+    }
+
+    /**
+     * @return array
+     */
+    public function getBackwardsCompatibilityClassMap(): array
+    {
+        return $this->backwardsCompatibilityClassMap;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProjectConfigurationDirectory(): string
+    {
+        return $this->projectConfigurationDirectory;
+    }
+
+    /**
+     * @param string $projectConfigurationDirectory
+     */
+    public function setProjectConfigurationDirectory(string $projectConfigurationDirectory): void
+    {
+        $this->projectConfigurationDirectory = $projectConfigurationDirectory;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfigFilePath(): string
+    {
+        return $this->configFilePath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfigTableName(): string
+    {
+        return 'oxconfig';
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfigurationDirectoryPath(): string
+    {
+        return $this->getSourcePath() . '/tmp/';
+    }
+
+    /**
+     * @return string
+     */
+    public function getShopRootPath(): string
+    {
+        return $this->shopRootPath;
     }
 }

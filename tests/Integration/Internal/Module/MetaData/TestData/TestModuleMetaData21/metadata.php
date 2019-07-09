@@ -26,12 +26,12 @@ $aModule = [
     'url'                     => 'https://www.oxid-esales.com',
     'email'                   => 'info@oxid-esales.com',
     'extend'                  => [
-        \OxidEsales\Eshop\Application\Model\Payment::class => \OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\TestData\TestModuleMetaData21\Payment::class,
-        'oxArticle'                                        => \OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\TestData\TestModuleMetaData21\Article::class
+        \OxidEsales\Eshop\Application\Model\Payment::class => 'TestModuleMetaData21\Payment',
+        'oxArticle'                                        => 'TestModuleMetaData21\Article'
     ],
     'controllers'             => [
-        'myvendor_mymodule_MyModuleController'      => \OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\TestData\TestModuleMetaData21\Controller::class,
-        'myvendor_mymodule_MyOtherModuleController' => \OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\TestData\TestModuleMetaData21\OtherController::class,
+        'myvendor_mymodule_MyModuleController'      => 'TestModuleMetaData21\Controller',
+        'myvendor_mymodule_MyOtherModuleController' => 'TestModuleMetaData21\OtherController',
     ],
     'templates'               => [
         'mymodule.tpl'       => 'TestModuleMetaData21/mymodule.tpl',
@@ -52,13 +52,20 @@ $aModule = [
             'position' => '2'
         ],
     ],
-    'settings'                => [
-        ['group' => 'main', 'name' => 'setting_1', 'type' => 'select', 'value' => '0', 'constraints' => '0|1|2|3', 'position' => 3],
+    'settings' => [
+        [
+            'group' => 'main',
+            'name' => 'setting_1',
+            'type' => 'select',
+            'value' => '0',
+            'constraints' => '0|1|2|3',
+            'position' => 3
+        ],
         ['group' => 'main', 'name' => 'setting_2', 'type' => 'password', 'value' => 'changeMe']
     ],
     'events'                  => [
-        'onActivate'   => '\OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\TestData\TestModuleMetaData21\Events::onActivate',
-        'onDeactivate' => '\OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\MetaData\TestData\TestModuleMetaData21\Events::onDeactivate'
+        'onActivate'   => 'TestModuleMetaData21\Events::onActivate',
+        'onDeactivate' => 'TestModuleMetaData21\Events::onDeactivate'
     ],
     'smartyPluginDirectories' => [
         'Smarty/PluginDirectory'

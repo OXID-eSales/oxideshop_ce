@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\EventSubscriber;
 
+use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Event\BeforeModuleDeactivationEvent;
@@ -21,13 +22,21 @@ class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
      * @var ModuleConfigurationDaoInterface
      */
     private $moduleConfigurationDao;
+    /**
+     * @var ShopAdapterInterface
+     */
+    private $shopAdapter;
 
     /**
      * @param ModuleConfigurationDaoInterface $ModuleConfigurationDao
+     * @param ShopAdapterInterface            $shopAdapter
      */
-    public function __construct(ModuleConfigurationDaoInterface $ModuleConfigurationDao)
-    {
+    public function __construct(
+        ModuleConfigurationDaoInterface $ModuleConfigurationDao,
+        ShopAdapterInterface $shopAdapter
+    ) {
         $this->moduleConfigurationDao = $ModuleConfigurationDao;
+        $this->shopAdapter = $shopAdapter;
     }
 
     /**
@@ -35,6 +44,7 @@ class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
      */
     public function executeMetadataOnActivationEvent(FinalizingModuleActivationEvent $event)
     {
+        $this->invalidateModuleCache($event);
         $this->executeMetadataEvent(
             'onActivate',
             $event->getModuleId(),
@@ -81,5 +91,16 @@ class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
             FinalizingModuleActivationEvent::NAME   => 'executeMetadataOnActivationEvent',
             BeforeModuleDeactivationEvent::NAME     => 'executeMetadataOnDeactivationEvent',
         ];
+    }
+
+    /**
+     * This is needed only for the modules which has non namespaced classes.
+     * This method MUST be removed when support for non namespaced modules will be dropped (metadata v1.*).
+     *
+     * @param FinalizingModuleActivationEvent $event
+     */
+    private function invalidateModuleCache(FinalizingModuleActivationEvent $event)
+    {
+        $this->shopAdapter->invalidateModuleCache($event->getModuleId());
     }
 }

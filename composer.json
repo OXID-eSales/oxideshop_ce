@@ -7,6 +7,8 @@
     "license": "GPL-3.0-only",
     "require": {
         "php": "^7.1",
+        "ext-pdo": "*",
+        "ext-json": "*",
         "phpmailer/phpmailer": "^v6.0.6",
         "smarty/smarty": "^v2.6.31",
         "doctrine/dbal": "^v2.5.13",
@@ -15,9 +17,12 @@
         "psr/container": "1.0.*",
         "symfony/event-dispatcher": "^3.4",
         "symfony/dependency-injection": "^3.4",
+        "symfony/expression-language": "^3.4",
         "symfony/lock": "^3.4",
         "symfony/console": "^v3.4.15",
-        "webmozart/path-util": "^2.3"
+        "webmozart/path-util": "^2.3",
+        "symfony/finder": "^3.4",
+        "symfony/filesystem": "^3.4"
     },
     "require-dev": {
         "oxid-esales/flow-theme": "^v3.0.2",

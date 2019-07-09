@@ -7,7 +7,6 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Configuration\DataMapper;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationDataMapper;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Validator\SettingValidatorInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,8 +18,10 @@ class ModuleConfigurationDataMapperTest extends TestCase
     {
         $configurationData = [
             'id'          => 'moduleId',
+            'path'        => 'relativePath',
+            'version'     => '7.0',
             'autoActive'  => true,
-            'title'       => 'title',
+            'title'       => ['en' => 'title'],
             'description' => [
                 'de' => 'description de',
                 'en' => 'description en',
@@ -32,7 +33,6 @@ class ModuleConfigurationDataMapperTest extends TestCase
             'email'       => 'test@example.com',
             'settings'    => [
                 'version'   => '1.0',
-                'path'      => 'relativePath',
                 'templates' => [
                     'shopTemplate' => 'moduleTemplate',
                 ],
@@ -42,8 +42,7 @@ class ModuleConfigurationDataMapperTest extends TestCase
             ],
         ];
 
-        $settingsValidator = $this->getMockBuilder(SettingValidatorInterface::class)->getMock();
-        $moduleConfigurationDataMapper = new ModuleConfigurationDataMapper($settingsValidator);
+        $moduleConfigurationDataMapper = new ModuleConfigurationDataMapper();
 
         $moduleConfiguration = $moduleConfigurationDataMapper->fromData($configurationData);
 

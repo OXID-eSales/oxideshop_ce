@@ -1,4 +1,5 @@
+
 services:
   OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface:
     class: OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext
-    public: false
+    public: true

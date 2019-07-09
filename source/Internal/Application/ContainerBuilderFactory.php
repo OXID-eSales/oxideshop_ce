@@ -6,7 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Application;
 
-use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
+use OxidEsales\EshopCommunity\Internal\Application\BootstrapContainer\BootstrapContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 
 /**
  * @internal
@@ -18,6 +19,10 @@ class ContainerBuilderFactory
      */
     public function create(): ContainerBuilder
     {
-        return new ContainerBuilder(new BasicContext());
+        $bootstrapContainer = BootstrapContainerFactory::getBootstrapContainer();
+
+        return new ContainerBuilder(
+            $bootstrapContainer->get(BasicContextInterface::class)
+        );
     }
 }

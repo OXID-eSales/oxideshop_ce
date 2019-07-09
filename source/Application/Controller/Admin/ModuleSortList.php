@@ -6,7 +6,10 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ClassExtensionChainBridgeInterface;
 
 /**
  * Extensions sorting list handler.
@@ -32,22 +35,26 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
         $oModuleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
 
-        $extendClass = \OxidEsales\Eshop\Core\Registry::getConfig()->getModulesWithExtendedClass();
+        $classExtensionsChain = $this
+            ->getShopConfiguration()
+            ->getClassExtensionsChain();
+
         $sanitizedExtendClass = [];
-        foreach ($extendClass as $key => $value) {
-            $sanitizedKey = str_replace("\\", self::BACKSLASH_REPLACEMENT, $key);
-            $sanitizedExtendClass[$sanitizedKey] = $value;
+        foreach ($classExtensionsChain as $extendedClass => $classChain) {
+            $sanitizedKey = str_replace("\\", self::BACKSLASH_REPLACEMENT, $extendedClass);
+            $sanitizedExtendClass[$sanitizedKey] = $classChain;
         }
+
         $this->_aViewData["aExtClasses"] = $sanitizedExtendClass;
         $this->_aViewData["aDisabledModules"] = $oModuleList->getDisabledModuleClasses();
 
         // checking if there are any deleted extensions
         if (\OxidEsales\Eshop\Core\Registry::getSession()->getVariable("blSkipDeletedExtChecking") == false) {
             $aDeletedExt = $oModuleList->getDeletedExtensions();
-        }
 
-        if (!empty($aDeletedExt)) {
-            $this->_aViewData["aDeletedExt"] = $aDeletedExt;
+            if (!empty($aDeletedExt)) {
+                $this->_aViewData["aDeletedExt"] = $aDeletedExt;
+            }
         }
 
         return 'module_sortlist.tpl';
@@ -58,19 +65,27 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      */
     public function save()
     {
-        $aModule = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aModules");
+        $classExtensionsChainFromRequest = json_decode(
+            Registry::getRequest()->getRequestEscapedParameter('aModules'),
+            true
+        );
 
-        $aModules = [];
-        if ($tmp = json_decode($aModule, true)) {
-            foreach ($tmp as $key => $value) {
-                $sanitizedKey = str_replace(self::BACKSLASH_REPLACEMENT, "\\", $key);
-                $aModules[$sanitizedKey] = $value;
-            }
-            $oModuleInstaller = oxNew(\OxidEsales\Eshop\Core\Module\ModuleInstaller::class);
-            $aModules = $oModuleInstaller->buildModuleChains($aModules);
-        }
+        $sanitizedClassExtensionsChain = $this->sanitizeClassExtensionsChain($classExtensionsChainFromRequest);
 
-        \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar("aarr", "aModules", $aModules);
+        $container = $this->getContainer();
+        $shopConfigurationDao = $container->get(ShopConfigurationDaoBridgeInterface::class);
+        $shopConfiguration = $shopConfigurationDao->get();
+
+        $chain = $shopConfiguration->getClassExtensionsChain();
+        $chain->setChain($sanitizedClassExtensionsChain);
+
+        $shopConfiguration->setClassExtensionsChain($chain);
+
+        $shopConfigurationDao->save($shopConfiguration);
+
+        $container->get(ClassExtensionChainBridgeInterface::class)->updateChain(
+            Registry::getConfig()->getShopId()
+        );
     }
 
     /**
@@ -89,5 +104,29 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
         $oModuleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
         $oModuleList->cleanup();
+    }
+
+    /**
+     * @param array $chain
+     * @return array
+     */
+    private function sanitizeClassExtensionsChain(array $chain): array
+    {
+        $sanitizedClassExtensionsChain = [];
+
+        foreach ($chain as $key => $value) {
+            $sanitizedKey = str_replace(self::BACKSLASH_REPLACEMENT, "\\", $key);
+            $sanitizedClassExtensionsChain[$sanitizedKey] = $value;
+        }
+
+        return $sanitizedClassExtensionsChain;
+    }
+
+    /**
+     * @return ShopConfiguration
+     */
+    private function getShopConfiguration(): ShopConfiguration
+    {
+        return $this->getContainer()->get(ShopConfigurationDaoBridgeInterface::class)->get();
     }
 }

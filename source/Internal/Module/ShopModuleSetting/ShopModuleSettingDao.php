@@ -169,7 +169,7 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
             ])
             ->setParameters([
                 'id'        => $this->shopAdapter->generateUniqueId(),
-                'moduleId'  => $shopModuleSetting->getModuleId(),
+                'moduleId'  => $this->getPrefixedModuleId($shopModuleSetting->getModuleId()),
                 'shopId'    => $shopModuleSetting->getShopId(),
                 'name'      => $shopModuleSetting->getName(),
                 'type'      => $shopModuleSetting->getType(),
@@ -201,7 +201,7 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
             ])
             ->setParameters([
                 'id'            => $this->shopAdapter->generateUniqueId(),
-                'moduleId'      => 'module:' . $shopModuleSetting->getModuleId(),
+                'moduleId'      => $this->getPrefixedModuleId($shopModuleSetting->getModuleId()),
                 'name'          => $shopModuleSetting->getName(),
                 'groupName'     => $shopModuleSetting->getGroupName(),
                 'position'      => $shopModuleSetting->getPositionInGroup(),
@@ -226,11 +226,11 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
             ->select('decode(oxvarvalue, :key) as value, oxvartype as type, oxvarname as name')
             ->from('oxconfig')
             ->where('oxshopid = :shopId')
-            ->where('oxmodule = :moduleId')
+            ->andWhere('oxmodule = :moduleId')
             ->andWhere('oxvarname = :name')
             ->setParameters([
                 'shopId'    => $shopId,
-                'moduleId'  => $moduleId,
+                'moduleId'  => $this->getPrefixedModuleId($moduleId),
                 'name'      => $name,
                 'key'       => $this->context->getConfigurationEncryptionKey(),
             ]);
@@ -258,7 +258,7 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
             ->where('oxcfgmodule = :moduleId')
             ->andWhere('oxcfgvarname = :name')
             ->setParameters([
-                'moduleId'  => 'module:' . $moduleId,
+                'moduleId'  => $this->getPrefixedModuleId($moduleId),
                 'name'      => $name,
             ]);
 
@@ -277,11 +277,11 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
             ->delete('oxconfig')
             ->where('oxshopid = :shopId')
             ->andWhere('oxvarname = :name')
-            ->where('oxmodule = :moduleId')
+            ->andWhere('oxmodule = :moduleId')
             ->setParameters([
                 'shopId'    => $shopModuleSetting->getShopId(),
                 'name'      => $shopModuleSetting->getName(),
-                'moduleId'  => $shopModuleSetting->getModuleId(),
+                'moduleId'  => $this->getPrefixedModuleId($shopModuleSetting->getModuleId()),
             ]);
 
         $queryBuilder->execute();
@@ -298,10 +298,19 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
             ->where('oxcfgmodule = :moduleId')
             ->andWhere('oxcfgvarname = :name')
             ->setParameters([
-                'moduleId'  => 'module:' . $shopModuleSetting->getModuleId(),
+                'moduleId'  => $this->getPrefixedModuleId($shopModuleSetting->getModuleId()),
                 'name'      => $shopModuleSetting->getName(),
             ]);
 
         $queryBuilder->execute();
+    }
+
+    /**
+     * @param string $moduleId
+     * @return string
+     */
+    private function getPrefixedModuleId(string $moduleId): string
+    {
+        return 'module:' . $moduleId;
     }
 }

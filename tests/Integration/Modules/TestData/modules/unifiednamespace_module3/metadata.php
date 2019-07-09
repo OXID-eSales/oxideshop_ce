@@ -12,7 +12,7 @@ use unifiednamespace_module1\Model\TestContent;
 /**
  * Metadata version
  */
-$sMetadataVersion = '1.2';
+$sMetadataVersion = '1.1';
 
 /**
  * Module information - the commented things are not working atm or will not be implemented
@@ -32,7 +32,7 @@ $aModule = array(
     'url'         => 'www.johndoe.com',
     'email'       => 'john@doe.com',
     'extend'      => array(
-        'Test1Content' => 'unifiednamespace_module3/Model/Test3Content',
+        'Test1Content' => 'oeTest/unifiednamespace_module3/Model/Test3Content',
     ),
     'templates'   => array(),
     'blocks'      => array(),

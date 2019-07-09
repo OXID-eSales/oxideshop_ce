@@ -1,5 +1,4 @@
 <?php declare(strict_types=1);
-
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -17,16 +16,27 @@ class ModuleConfiguration
     /**
      * @var string
      */
-    private $id = '';
+    private $id;
+
+    /**
+     * @var string
+     */
+    private $path;
+
+    /**
+     * @var string
+     */
+    private $version = '';
+
     /**
      * @var bool
      */
     private $autoActive = false;
 
     /**
-     * @var string
+     * @var array
      */
-    private $title = '';
+    private $title = [];
     /**
      * @var array
      */
@@ -55,10 +65,6 @@ class ModuleConfiguration
      * @var array
      */
     private $settings = [];
-    /**
-     * @var string
-     */
-    private $metaDataChecksum;
 
     /**
      * @return string
@@ -83,17 +89,55 @@ class ModuleConfiguration
     /**
      * @return string
      */
-    public function getTitle(): string
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
+    /**
+     * @param string $path
+     * @return ModuleConfiguration
+     */
+    public function setPath(string $path): ModuleConfiguration
+    {
+        $this->path = $path;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVersion(): string
+    {
+        return $this->version;
+    }
+
+    /**
+     * @param string $version
+     *
+     * @return ModuleConfiguration
+     */
+    public function setVersion(string $version): ModuleConfiguration
+    {
+        $this->version = $version;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTitle(): array
     {
         return $this->title;
     }
 
     /**
-     * @param string $title
+     * @param array $title
      *
      * @return ModuleConfiguration
      */
-    public function setTitle(string $title): ModuleConfiguration
+    public function setTitle(array $title): ModuleConfiguration
     {
         $this->title = $title;
 
@@ -172,9 +216,10 @@ class ModuleConfiguration
      * @param bool $autoActive
      * @return ModuleConfiguration
      */
-    public function setAutoActive(bool $autoActive)
+    public function setAutoActive(bool $autoActive): ModuleConfiguration
     {
         $this->autoActive = $autoActive;
+
         return $this;
     }
 
@@ -236,26 +281,6 @@ class ModuleConfiguration
         $this->email = $email;
 
         return $this;
-    }
-
-    /**
-     * @param string $metaDataChecksum
-     *
-     * @return ModuleConfiguration
-     */
-    public function setMetaDataCheckSum(string $metaDataChecksum)
-    {
-        $this->metaDataChecksum = $metaDataChecksum;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMetaDataCheckSum()
-    {
-        return $this->metaDataChecksum;
     }
 
     /**

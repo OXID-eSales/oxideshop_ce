@@ -2383,13 +2383,13 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Contract\ClassProviderStorageInterface::class,
         'isAbstract'       => false,
         'isInterface'      => true,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Contract\ControllerMapProviderInterface'              => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Contract\ControllerMapProviderInterface::class,
         'isAbstract'       => false,
         'isInterface'      => true,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Contract\IConfigurable'                               => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Contract\IConfigurable::class,
@@ -2413,7 +2413,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Contract\IModuleValidator::class,
         'isAbstract'       => false,
         'isInterface'      => true,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Contract\ISelectList'                                 => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Contract\ISelectList::class,
@@ -2887,13 +2887,13 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\Module::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Module\ModuleCache'                                   => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleCache::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Module\ModuleChainsGenerator'                         => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::class,
@@ -2905,25 +2905,25 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleExtensionsCleaner::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Module\ModuleInstaller'                               => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleInstaller::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Module\ModuleList'                                    => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleList::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Module\ModuleMetadataValidator'                       => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleMetadataValidator::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Module\ModuleTemplateBlockContentReader'              => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockContentReader::class,
@@ -2959,7 +2959,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleValidatorFactory::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Module\ModuleVariablesLocator'                        => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleVariablesLocator::class,

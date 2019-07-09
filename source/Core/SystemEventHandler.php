@@ -119,15 +119,11 @@ class SystemEventHandler
                 $simpleXml
             );
 
-            /** @var \OxidEsales\Eshop\Core\Module\ModuleList $moduleList */
-            $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
-            $moduleList->getModulesFromDir(\OxidEsales\Eshop\Core\Registry::getConfig()->getModulesDir());
-
             /** @var \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier $onlineModuleVersionNotifier */
             $onlineModuleVersionNotifier = oxNew(
                 \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier::class,
                 $onlineModuleVersionNotifierCaller,
-                $moduleList
+                oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class)
             );
 
             $this->setOnlineModuleVersionNotifier($onlineModuleVersionNotifier);
@@ -141,9 +137,6 @@ class SystemEventHandler
      */
     public function onAdminLogin()
     {
-        // Checks if newer versions of modules are available.
-        // Will be used by the upcoming online one click installer.
-        // Is still under development - still changes at the remote server are necessary - therefore ignoring the results for now
         try {
             if ($this->isSendingShopDataEnabled()) {
                 $this->getOnlineModuleVersionNotifier()->versionNotify();

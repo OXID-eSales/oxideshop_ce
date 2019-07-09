@@ -38,19 +38,7 @@ interface ShopAdapterInterface
     /**
      * @return array
      */
-    public function getModules();
-
-    /**
-     * @return array
-     */
     public function getShopControllerClassMap(): array;
-
-    /**
-     * @param string $moduleId
-     *
-     * @return string
-     */
-    public function getModuleFullPath(string $moduleId): string;
 
     /**
      * @param string $namespace
@@ -69,9 +57,4 @@ interface ShopAdapterInterface
      * @return bool
      */
     public function isShopEditionNamespace(string $namespace): bool;
-
-    /**
-     * @return array
-     */
-    public function getBackwardsCompatibilityClassMap(): array;
 }

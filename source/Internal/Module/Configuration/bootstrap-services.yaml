@@ -1,0 +1,58 @@
+
+services:
+  OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDao
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDao
+    public: false
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDao
+    public: false
+    autowire: true
+
+  oxid_esales.module.configuration.node:
+    class: Symfony\Component\Config\Definition\NodeInterface
+    factory: 'OxidEsales\EshopCommunity\Internal\Module\Configuration\Definition\TreeBuilderFactoryInterface:create'
+
+  OxidEsales\EshopCommunity\Internal\Module\Configuration\Definition\TreeBuilderFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Definition\TreeBuilderFactory
+
+  oxid_esales.module.configuration.project_configuration_yaml_file_locator:
+    class: Symfony\Component\Config\FileLocator
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ProjectConfigurationDataMapperInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ProjectConfigurationDataMapper
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface'
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ShopConfigurationDataMapper
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationDataMapperInterface'
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationDataMapperInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationDataMapper
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleConfigurationMergingServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleConfigurationMergingService
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ShopModuleSettingsMergingServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ShopModuleSettingsMergingService
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleClassExtensionsMergingServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleClassExtensionsMergingService
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Module\Configuration\Cache\Cache:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Cache\ClassPropertyShopConfigurationCache
+    public: false

@@ -18,6 +18,8 @@ class ModuleWithNoMetadataTest extends \OxidTestCase
      */
     public function testGetDisabledModules()
     {
+        $this->markTestSkipped('We don not use aDisabledModules anymore, no sense to test.');
+
         $this->getConfig()->setConfigParam("aDisabledModules", []);
 
         $sShopDir = realpath(dirname(__FILE__)) . '/TestData/';
@@ -27,8 +29,6 @@ class ModuleWithNoMetadataTest extends \OxidTestCase
         $oModuleList = oxNew('oxModuleList');
 
         $this->assertEquals(array(), $oModuleList->getDisabledModules());
-
-        $oModuleList->getModulesFromDir($sShopDir . 'modules/');
 
         $this->assertFalse(in_array(null, $oModuleList->getDisabledModules()), 'Module id with value null was found in disabled modules list');
     }

@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Handler;
 
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\TemplateBlockModuleSettingHandler;
 use OxidEsales\EshopCommunity\Internal\Module\TemplateExtension\TemplateBlockExtension;
@@ -17,26 +18,6 @@ use PHPUnit\Framework\TestCase;
  */
 class TemplateBlockModuleSettingHandlerTest extends TestCase
 {
-    public function testCanHandleSetting()
-    {
-        $settingHandler = new TemplateBlockModuleSettingHandler($this->getTemplateBlockDaoMock());
-        $moduleSetting = new ModuleSetting(ModuleSetting::TEMPLATE_BLOCKS, []);
-
-        $this->assertTrue(
-            $settingHandler->canHandle($moduleSetting)
-        );
-    }
-
-    public function testCanNotHandleSetting()
-    {
-        $settingHandler = new TemplateBlockModuleSettingHandler($this->getTemplateBlockDaoMock());
-        $moduleSetting = new ModuleSetting('anotherSetting', []);
-
-        $this->assertFalse(
-            $settingHandler->canHandle($moduleSetting)
-        );
-    }
-
     public function testHandlingOnModuleActivation()
     {
         $moduleSetting = new ModuleSetting(
@@ -51,6 +32,11 @@ class TemplateBlockModuleSettingHandlerTest extends TestCase
                 ],
             ]
         );
+
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration
+            ->setId('testModule')
+            ->addSetting($moduleSetting);
 
         $templateBlockExtension = new TemplateBlockExtension();
         $templateBlockExtension
@@ -70,15 +56,18 @@ class TemplateBlockModuleSettingHandlerTest extends TestCase
 
         $settingHandler = new TemplateBlockModuleSettingHandler($templateBlockDao);
         $settingHandler->handleOnModuleActivation(
-            $moduleSetting,
-            'testModule',
-            1
+            $moduleConfiguration, 1
         );
     }
 
     public function testHandlingOnModuleDeactivation()
     {
         $moduleSetting = new ModuleSetting(ModuleSetting::TEMPLATE_BLOCKS, []);
+
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration
+            ->setId('testModule')
+            ->addSetting($moduleSetting);
 
         $templateBlockDao = $this->getTemplateBlockDaoMock();
         $templateBlockDao
@@ -88,37 +77,7 @@ class TemplateBlockModuleSettingHandlerTest extends TestCase
 
         $settingHandler = new TemplateBlockModuleSettingHandler($templateBlockDao);
         $settingHandler->handleOnModuleDeactivation(
-            $moduleSetting,
-            'testModule',
-            1
-        );
-    }
-
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException
-     */
-    public function testHandleWrongSettingOnModuleActivation()
-    {
-        $handler = new TemplateBlockModuleSettingHandler($this->getTemplateBlockDaoMock());
-
-        $handler->handleOnModuleActivation(
-            new ModuleSetting('wrongSettingForThisHandler', []),
-            'testModule',
-            1
-        );
-    }
-
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException
-     */
-    public function testHandleWrongSettingOnModuleDeactivation()
-    {
-        $handler = new TemplateBlockModuleSettingHandler($this->getTemplateBlockDaoMock());
-
-        $handler->handleOnModuleActivation(
-            new ModuleSetting('wrongSettingForThisHandler', []),
-            'testModule',
-            1
+            $moduleConfiguration, 1
         );
     }
 

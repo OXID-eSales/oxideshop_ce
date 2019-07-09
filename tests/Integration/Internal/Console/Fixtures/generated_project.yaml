@@ -11,10 +11,3 @@ services:
     public: true
     tags:
     - { name: 'console.command', command: 'oe:tests:test-command-changed-name' }
-
-  oxid_esales.console.symfony.component.console.application:
-    class: Symfony\Component\Console\Application
-    public: false
-    calls:
-    - [setAutoExit, [false]]
-

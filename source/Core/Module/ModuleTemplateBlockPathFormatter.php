@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Core\Module;
 
 use OxidEsales\Eshop\Core\FileSystem\FileSystem;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Forms path to module block template.
@@ -82,8 +83,7 @@ class ModuleTemplateBlockPathFormatter
             $fileName = "out/blocks/$fileName";
         }
 
-        $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
-        $activeModuleInfo = $moduleList->getActiveModuleInfo();
+        $activeModuleInfo = (array) Registry::getConfig()->getConfigParam('aModulePaths');
 
         if (!array_key_exists($this->moduleId, $activeModuleInfo)) {
             throw oxNew('oxException', 'Module: ' . $this->moduleId . ' is not active.');

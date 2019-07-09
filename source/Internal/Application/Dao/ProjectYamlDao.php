@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Internal\Application\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -21,11 +22,19 @@ class ProjectYamlDao implements ProjectYamlDaoInterface
     private $context;
 
     /**
-     * @param BasicContextInterface $context
+     * @var Filesystem
      */
-    public function __construct(BasicContextInterface $context)
+    private $filesystem;
+
+    /**
+     * ProjectYamlDao constructor.
+     * @param BasicContextInterface $context
+     * @param Filesystem            $filesystem
+     */
+    public function __construct(BasicContextInterface $context, Filesystem $filesystem)
     {
         $this->context = $context;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -33,7 +42,7 @@ class ProjectYamlDao implements ProjectYamlDaoInterface
      */
     public function loadProjectConfigFile(): DIConfigWrapper
     {
-        return $this->loadDIConfigFile($this->context->getGeneratedProjectFilePath());
+        return $this->loadDIConfigFile($this->context->getGeneratedServicesFilePath());
     }
 
     /**
@@ -41,7 +50,11 @@ class ProjectYamlDao implements ProjectYamlDaoInterface
      */
     public function saveProjectConfigFile(DIConfigWrapper $config)
     {
-        file_put_contents($this->context->getGeneratedProjectFilePath(), Yaml::dump($config->getConfigAsArray(), 3, 2));
+        if (!$this->filesystem->exists($this->getGeneratedServicesFileDirectory())) {
+            $this->filesystem->mkdir($this->getGeneratedServicesFileDirectory());
+        }
+
+        file_put_contents($this->context->getGeneratedServicesFilePath(), Yaml::dump($config->getConfigAsArray(), 3, 2));
     }
 
     /**
@@ -58,5 +71,13 @@ class ProjectYamlDao implements ProjectYamlDaoInterface
         }
 
         return new DIConfigWrapper($yamlArray);
+    }
+
+    /**
+     * @return string
+     */
+    private function getGeneratedServicesFileDirectory(): string
+    {
+        return \dirname($this->context->getGeneratedServicesFilePath());
     }
 }

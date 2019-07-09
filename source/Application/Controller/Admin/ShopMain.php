@@ -149,7 +149,25 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
      */
     protected function _getNonCopyConfigVars()
     {
-        $nonCopyVars = ["aSerials", "IMS", "IMD", "IMA", "sBackTag", "sUtilModule", "aModulePaths", "aModuleFiles", "aModuleEvents", "aModuleVersions", "aModuleTemplates", "aModules", "aDisabledModules"];
+        $nonCopyVars = [
+            'aSerials',
+            'IMS',
+            'IMD',
+            'IMA',
+            'sBackTag',
+            'sUtilModule',
+            'aModulePaths',
+            'aModuleFiles',
+            'aModuleEvents',
+            'aModuleVersions',
+            'aModuleTemplates',
+            'aModules',
+            'aDisabledModules',
+            'aModuleExtensions',
+            'aModuleControllers',
+            'moduleSmartyPluginDirectories',
+            'activeModules',
+        ];
         //adding non copable multishop field options
         $multiShopTables = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aMultiShopTables');
         foreach ($multiShopTables as $multishopTable) {

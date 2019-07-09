@@ -7,9 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData;
 
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\DataMapper\MetaDataMapper;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataValidatorInterface;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataSchemaValidatorInterface;
 use PHPUnit\Framework\TestCase;
 
 class MetaDataMapperTest extends TestCase
@@ -38,11 +39,34 @@ class MetaDataMapperTest extends TestCase
         ];
     }
 
+    public function testMetadataFilesMapping()
+    {
+        $metadata = [
+            MetaDataProvider::METADATA_METADATA_VERSION => '0',
+            MetaDataProvider::METADATA_FILEPATH         => '',
+            MetaDataProvider::METADATA_MODULE_DATA      => [
+                MetaDataProvider::METADATA_ID       => 'id',
+                MetaDataProvider::METADATA_FILES    => [
+                    'name' => 'path',
+                ]
+            ]
+        ];
+        $metaDataDataMapper = new MetaDataMapper($this->metaDataValidatorStub);
+        $moduleConfiguration = $metaDataDataMapper->fromData($metadata);
+
+        $this->assertSame(
+            [
+                'name' => 'path',
+            ],
+            $moduleConfiguration->getSetting(ModuleSetting::CLASSES_WITHOUT_NAMESPACE)->getValue()
+        );
+    }
+
     protected function setUp()
     {
         parent::setUp();
 
-        $this->metaDataValidatorStub = $this->getMockBuilder(MetaDataValidatorInterface::class)
+        $this->metaDataValidatorStub = $this->getMockBuilder(MetaDataSchemaValidatorInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->metaDataValidatorStub->method('validate');

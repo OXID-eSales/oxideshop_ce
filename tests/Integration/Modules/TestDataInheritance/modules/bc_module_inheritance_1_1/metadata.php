@@ -20,8 +20,8 @@ $aModule = array(
     'version'      => '1.0',
     'author'       => 'OXID eSales AG',
     'files'       => array(
-        'vendor_1_module_1_myclass' => 'bc_module_inheritance_1_1/vendor_1_module_1_myclass.php',
-        'vendor_1_module_1_anotherclass' => 'bc_module_inheritance_1_1/vendor_1_module_1_anotherclass.php',
-        'vendor_1_module_1_onemoreclass' => 'bc_module_inheritance_1_1/vendor_1_module_1_onemoreclass.php'
+        'vendor_1_module_1_myclass' => 'oeTest/bc_module_inheritance_1_1/vendor_1_module_1_myclass.php',
+        'vendor_1_module_1_anotherclass' => 'oeTest/bc_module_inheritance_1_1/vendor_1_module_1_anotherclass.php',
+        'vendor_1_module_1_onemoreclass' => 'oeTest/bc_module_inheritance_1_1/vendor_1_module_1_onemoreclass.php'
     )
 );

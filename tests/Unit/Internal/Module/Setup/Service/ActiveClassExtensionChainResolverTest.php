@@ -6,12 +6,10 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Service;
 
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ActiveClassExtensionChainResolver;
 use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
@@ -40,8 +38,7 @@ class ActiveClassExtensionChainResolverTest extends TestCase
             'anotherShopClassNamespace' => 'notActiveModuleExtensionClass',
         ]);
 
-        $classExtensionChain = new Chain();
-        $classExtensionChain->setName('classExtensions');
+        $classExtensionChain = new ClassExtensionsChain();
         $classExtensionChain->setChain([
             'shopClassNamespace' => [
                 'activeModule2ExtensionClass',
@@ -56,23 +53,17 @@ class ActiveClassExtensionChainResolverTest extends TestCase
         ]);
 
         $shopConfiguration = new ShopConfiguration();
-        $shopConfiguration->addChain($classExtensionChain);
+        $shopConfiguration->setClassExtensionsChain($classExtensionChain);
 
         $shopConfiguration
             ->addModuleConfiguration($activeModuleConfiguration1)
             ->addModuleConfiguration($activeModuleConfiguration2)
             ->addModuleConfiguration($notActiveModuleConfiguration);
 
-        $environmentConfiguration = new EnvironmentConfiguration();
-        $environmentConfiguration->addShopConfiguration(1, $shopConfiguration);
-
-        $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->addEnvironmentConfiguration('dev', $environmentConfiguration);
-
-        $projectConfigurationDao = $this->getMockBuilder(ProjectConfigurationDaoInterface::class)->getMock();
-        $projectConfigurationDao
-            ->method('getConfiguration')
-            ->willReturn($projectConfiguration);
+        $shopConfigurationDao = $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock();
+        $shopConfigurationDao
+            ->method('get')
+            ->willReturn($shopConfiguration);
 
         $moduleStateService = $this->getMockBuilder(ModuleStateServiceInterface::class)->getMock();
         $moduleStateService
@@ -84,14 +75,13 @@ class ActiveClassExtensionChainResolverTest extends TestCase
             ]);
 
         $classExtensionChainService = new ActiveClassExtensionChainResolver(
-            $projectConfigurationDao,
+            $shopConfigurationDao,
             $moduleStateService,
             new ContextStub()
         );
 
-        $expectedChain = new Chain();
+        $expectedChain = new ClassExtensionsChain();
         $expectedChain
-            ->setName('classExtensions')
             ->setChain(
                 [
                     'shopClassNamespace' => [

@@ -1,6 +1,4 @@
-<?php
-declare(strict_types = 1);
-
+<?php declare(strict_types = 1);
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -13,15 +11,14 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject;
  */
 class ModuleSetting
 {
-    const CLASS_EXTENSIONS          = 'extend';
+    const CLASS_EXTENSIONS          = 'classExtensions';
     const CONTROLLERS               = 'controllers';
     const TEMPLATES                 = 'templates';
-    const VERSION                   = 'version';
-    const PATH                      = 'path';
     const SMARTY_PLUGIN_DIRECTORIES = 'smartyPluginDirectories';
     const TEMPLATE_BLOCKS           = 'blocks';
     const SHOP_MODULE_SETTING       = 'settings';
     const EVENTS                    = 'events';
+    const CLASSES_WITHOUT_NAMESPACE = 'classesWithoutNamespace';
 
     /**
      * @var string
@@ -58,5 +55,13 @@ class ModuleSetting
     public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * @param mixed $value
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
     }
 }

@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Configuration\Dat
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ShopConfigurationDataMapper;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use PHPUnit\Framework\TestCase;
 
@@ -25,7 +26,9 @@ class ShopConfigurationDataMapperTest extends TestCase
                 'happyModule' => [],
                 'funnyModule' => [],
             ],
-            'moduleChains' => [],
+            'moduleChains' => [
+                ClassExtensionsChain::NAME => [],
+            ],
         ];
 
         $shopConfigurationDataMapper = new ShopConfigurationDataMapper(
@@ -45,12 +48,7 @@ class ShopConfigurationDataMapperTest extends TestCase
         $configurationData = [
             'modules'      => [],
             'moduleChains' => [
-                'blocks' => [
-                    'testBlock' => [
-                        'secondBlock',
-                        'thirdBlock',
-                    ],
-                ]
+                ClassExtensionsChain::NAME => [],
             ],
         ];
 

@@ -6,9 +6,14 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
-use OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator;
-use OxidEsales\EshopCommunity\Core\Module\ModuleVariablesLocator;
-use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\Eshop\Core\Module\ModuleChainsGenerator;
+use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
+use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**
@@ -19,6 +24,11 @@ use OxidEsales\TestingLibrary\UnitTestCase;
  */
 class ModuleChainsGeneratorTest extends UnitTestCase
 {
+
+    /**
+     * @var \OxidEsales\Eshop\Core\Module\ModuleChainsGenerator
+     */
+    private $moduleChainsGenerator = null;
 
     /**
      * Test classChainGeneration for different constellations
@@ -39,15 +49,15 @@ class ModuleChainsGeneratorTest extends UnitTestCase
         }
 
         /** @var ModuleVariablesLocator|\PHPUnit\Framework\MockObject\MockObject $moduleVariablesLocatorMock */
-        $moduleVariablesLocatorMock = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::class, array(), array(), '', false);
+        $moduleVariablesLocatorMock = $this->getMock(ModuleVariablesLocator::class, array(), array(), '', false);
 
         /**
          * Create a Mock with disabled constructor
          *
          * @var ModuleChainsGenerator|\PHPUnit\Framework\MockObject\MockObject $moduleChainsGeneratorMock
          */
-        $moduleChainsGeneratorMock = $this->getMock(ModuleChainsGenerator::class, ['getModulesArray'], [$moduleVariablesLocatorMock]);
-        $moduleChainsGeneratorMock->expects($this->any())->method('getModulesArray')->will($this->returnValue($modulesArray));
+        $moduleChainsGeneratorMock = $this->getMock(ModuleChainsGenerator::class, ['getClassExtensionChain'], [$moduleVariablesLocatorMock]);
+        $moduleChainsGeneratorMock->expects($this->any())->method('getClassExtensionChain')->will($this->returnValue($modulesArray));
         $class = $moduleChainsGeneratorMock->createClassChain(\OxidEsales\Eshop\Application\Model\User::class, 'oxuser');
 
         foreach ($classFilePaths as $classFilePath) {
@@ -76,15 +86,15 @@ class ModuleChainsGeneratorTest extends UnitTestCase
         }
 
         /** @var ModuleVariablesLocator|\PHPUnit\Framework\MockObject\MockObject $moduleVariablesLocatorMock */
-        $moduleVariablesLocatorMock = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::class, array(), array(), '', false);
+        $moduleVariablesLocatorMock = $this->getMock(ModuleVariablesLocator::class, array(), array(), '', false);
 
         /**
          * Create a Mock with disabled constructor
          *
          * @var ModuleChainsGenerator|\PHPUnit\Framework\MockObject\MockObject $moduleChainsGeneratorMock
          */
-        $moduleChainsGeneratorMock = $this->getMock(ModuleChainsGenerator::class, ['getModulesArray'], [$moduleVariablesLocatorMock]);
-        $moduleChainsGeneratorMock->expects($this->any())->method('getModulesArray')->will($this->returnValue($modulesArray));
+        $moduleChainsGeneratorMock = $this->getMock(ModuleChainsGenerator::class, ['getClassExtensionChain'], [$moduleVariablesLocatorMock]);
+        $moduleChainsGeneratorMock->expects($this->any())->method('getClassExtensionChain')->will($this->returnValue($modulesArray));
         $chain = $moduleChainsGeneratorMock->getActiveChain(\OxidEsales\Eshop\Application\Model\User::class, 'oxuser');
 
         foreach ($classFilePaths as $classFilePath) {
@@ -94,6 +104,30 @@ class ModuleChainsGeneratorTest extends UnitTestCase
         //verify that the chain is filled and that the last class in chain is as expected
         $this->assertEquals(4, count($chain), $message);
         $this->assertSame(basename($expectedResult), basename($chain[count($chain)-1]), $message);
+    }
+
+    public function testGetDisabledModuleIds()
+    {
+        $moduleId1 = 'with_class_extensions';
+        $moduleId2 = 'with_metadata_v21';
+
+        $moduleChainsGenerator = $this->getModuleChainsGenerator();
+        $disabledModuleIds = $moduleChainsGenerator->getDisabledModuleIds();
+        $this->assertNotContains([$moduleId1, $moduleId2], $disabledModuleIds);
+
+        $this->installModule($moduleId1);
+        $this->installModule($moduleId2);
+
+        $this->assertContains($moduleId1, $moduleChainsGenerator->getDisabledModuleIds());
+        $this->assertContains($moduleId2, $moduleChainsGenerator->getDisabledModuleIds());
+
+        $this->activateTestModule($moduleId1);
+        $this->assertContains($moduleId2, $moduleChainsGenerator->getDisabledModuleIds());
+        $this->assertNotContains($moduleId1, $moduleChainsGenerator->getDisabledModuleIds());
+
+        $this->deactivateTestModule($moduleId1);
+        $this->removeTestModule($moduleId1);
+        $this->removeTestModule($moduleId2);
     }
 
     /**
@@ -146,6 +180,81 @@ class ModuleChainsGeneratorTest extends UnitTestCase
         ];
     }
 
+    public function testDisableModuleReturnsTrueIfModuleWasInactiveBefore()
+    {
+        $moduleId = 'with_class_extensions';
+        $this->installModule($moduleId);
+        $moduleChainsGenerator = $this->getModuleChainsGenerator();
+        $this->assertTrue($moduleChainsGenerator->disableModule($moduleId));
+        $this->removeTestModule($moduleId);
+    }
+
+    public function testDisableModuleReturnsFalseIfModuleConfigurationIsNotInstalled()
+    {
+        $moduleChainsGenerator = $this->getModuleChainsGenerator();
+        $this->assertFalse($moduleChainsGenerator->disableModule('non-existing-module'));
+    }
+
+    public function testGetModuleDirectoryByModuleId()
+    {
+        $this->installModule('with_class_extensions');
+
+        $moduleChainsGenerator = $this->getModuleChainsGenerator();
+
+        $this->assertEquals('notExistingModuleId', $moduleChainsGenerator->getModuleDirectoryByModuleId('notExistingModuleId'));
+        $this->assertEquals('oeTest/with_class_extensions', $moduleChainsGenerator->getModuleDirectoryByModuleId('with_class_extensions'));
+
+        ## Beware of upper / lower case
+        $this->assertEquals('With_class_extensions', $moduleChainsGenerator->getModuleDirectoryByModuleId('With_class_extensions'));
+        $this->removeTestModule('with_class_extensions');
+    }
+
+    private function installModule(string $moduleId)
+    {
+        $container = ContainerFactory::getInstance()->getContainer();
+        $installService = $container->get(ModuleInstallerInterface::class);
+        $package = new OxidEshopPackage($moduleId, __DIR__ . '/Fixtures/' . $moduleId);
+        $package->setTargetDirectory('oeTest/'. $moduleId);
+        $installService->install($package);
+    }
+
+    private function activateTestModule(string $moduleId)
+    {
+        $package = new OxidEshopPackage($moduleId, __DIR__ . '/Fixtures/' . $moduleId);
+        $package->setTargetDirectory('oeTest/' . $moduleId);
+        $container = ContainerFactory::getInstance()->getContainer();
+
+        $container->get(ModuleInstallerInterface::class)
+            ->install($package);
+
+        $container
+            ->get(ModuleActivationBridgeInterface::class)
+            ->activate($moduleId, Registry::getConfig()->getShopId());
+    }
+
+    private function deactivateTestModule(string $moduleId)
+    {
+        $container = ContainerFactory::getInstance()->getContainer();
+        $container
+            ->get(ModuleActivationBridgeInterface::class)
+            ->deactivate($moduleId, Registry::getConfig()->getShopId());
+    }
+
+    /**
+     * @return \OxidEsales\Eshop\Core\Module\ModuleChainsGenerator
+     */
+    private function getModuleChainsGenerator() : ModuleChainsGenerator
+    {
+        if (is_null($this->moduleChainsGenerator)) {
+            $this->moduleChainsGenerator = new ModuleChainsGenerator(
+                $this->createMock(ModuleVariablesLocator::class)
+            );
+        }
+
+        return $this->moduleChainsGenerator;
+    }
+
+
     protected function createModuleClassFile($extensionPath)
     {
         $modulesDirectory = Registry::get("oxConfigFile")->getVar("sShopDir");
@@ -171,5 +280,12 @@ EOT;
         }
 
         return $moduleClassFilePath;
+    }
+
+    private function removeTestModule(string $moduleId)
+    {
+        $container = ContainerFactory::getInstance()->getContainer();
+        $fileSystem = $container->get('oxid_esales.symfony.file_system');
+        $fileSystem->remove($container->get(ContextInterface::class)->getModulesPath() . '/oeTest/' . $moduleId);
     }
 }

@@ -7,8 +7,9 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Validator;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ClassExtensionsModuleSettingValidator;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ClassExtensionsValidator;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -16,32 +17,6 @@ use PHPUnit\Framework\TestCase;
  */
 class ClassExtensionsModuleSettingValidatorTest extends TestCase
 {
-    public function testCanValidate()
-    {
-        $validator = new ClassExtensionsModuleSettingValidator(
-            $this->getMockBuilder(ShopAdapterInterface::class)->getMock()
-        );
-
-        $this->assertTrue(
-            $validator->canValidate(
-                new ModuleSetting(ModuleSetting::CLASS_EXTENSIONS, [])
-            )
-        );
-    }
-
-    public function testCanNotValidate()
-    {
-        $validator = new ClassExtensionsModuleSettingValidator(
-            $this->getMockBuilder(ShopAdapterInterface::class)->getMock()
-        );
-
-        $this->assertFalse(
-            $validator->canValidate(
-                new ModuleSetting('anotherSetting', [])
-            )
-        );
-    }
-
     public function testValidClassExtensionsModuleSetting()
     {
         $anyExistentClass = self::class;
@@ -61,10 +36,13 @@ class ClassExtensionsModuleSettingValidatorTest extends TestCase
             ->method('isShopUnifiedNamespace')
             ->willReturn(true);
 
-        $validator = new ClassExtensionsModuleSettingValidator($shopAdapter);
+        $validator = new ClassExtensionsValidator($shopAdapter);
+
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->addSetting($classExtensions);
 
         $this->assertNull(
-            $validator->validate($classExtensions, 'testModule', 1)
+            $validator->validate($moduleConfiguration, 1)
         );
     }
 
@@ -85,8 +63,11 @@ class ClassExtensionsModuleSettingValidatorTest extends TestCase
             ->method('isShopEditionNamespace')
             ->willReturn(true);
 
-        $validator = new ClassExtensionsModuleSettingValidator($shopAdapter);
-        $validator->validate($classExtensions, 'testModule', 1);
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->addSetting($classExtensions);
+
+        $validator = new ClassExtensionsValidator($shopAdapter);
+        $validator->validate($moduleConfiguration, 1);
     }
 
     /**
@@ -109,23 +90,11 @@ class ClassExtensionsModuleSettingValidatorTest extends TestCase
             ->method('isShopUnifiedNamespace')
             ->willReturn(true);
 
-        $validator = new ClassExtensionsModuleSettingValidator($shopAdapter);
-        $validator->validate($classExtensions, 'testModule', 1);
-    }
+        $validator = new ClassExtensionsValidator($shopAdapter);
 
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException
-     */
-    public function testValidateThrowsExceptionIfNotAbleToValidateSetting()
-    {
-        $validator = new ClassExtensionsModuleSettingValidator(
-            $this->getMockBuilder(ShopAdapterInterface::class)->getMock()
-        );
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->addSetting($classExtensions);
 
-        $moduleSetting = new ModuleSetting(
-            'SettingWhichIsNotAbleToBeValidated',
-            ['onActivate' => 'MyClass::activate']
-        );
-        $validator->validate($moduleSetting, 'testModule', 1);
+        $validator->validate($moduleConfiguration, 1);
     }
 }

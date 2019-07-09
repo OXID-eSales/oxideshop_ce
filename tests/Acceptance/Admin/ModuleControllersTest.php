@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin;
 
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Tests\Acceptance\AdminTestCase;
 
 /**
@@ -19,7 +21,7 @@ class ModuleControllersTest extends AdminTestCase
     const TEST_NAMESPACE_MODULE_TITLE = 'Test metadata_controllers_feature_ns';
     const TEST_NAMESPACE_MODULE_ID = 'test_module_controller_routing_ns';
 
-    const TEST_PLAIN_MODULE_FOLDER = 'test_namespace_module_controller_routing';
+    const TEST_PLAIN_MODULE_FOLDER = 'test_module_controller_routing';
     const TEST_PLAIN_MODULE_TITLE = 'Test metadata_controllers_feature';
     const TEST_PLAIN_MODULE_ID = 'test_namespace_module_controller_routing';
 
@@ -29,6 +31,9 @@ class ModuleControllersTest extends AdminTestCase
     protected function setUp()
     {
         parent::setUp();
+
+        $this->installModule(self::TEST_NAMESPACE_MODULE_FOLDER);
+        $this->installModule(self::TEST_PLAIN_MODULE_FOLDER);
 
         //TODO: check if test works for subshop as well (which login to use, do we need to provide shopid somewhere ...)
         $testConfig = $this->getTestConfig();
@@ -175,5 +180,17 @@ class ModuleControllersTest extends AdminTestCase
         $this->clickAndWait("//form[@id='myedit']//input[@value='Deactivate']", "list");
         $this->waitForFrameToLoad('list');
         $this->assertElementPresent("//form[@id='myedit']//input[@value='Activate']");
+    }
+
+    private function installModule(string $path)
+    {
+        $moduleConfigurationInstaller = ContainerFactory::getInstance()
+            ->getContainer()
+            ->get(ModuleConfigurationInstallerInterface::class);
+
+        $moduleConfigurationInstaller->install(
+            __DIR__ . '/testData/modules/' . $path,
+            $path
+        );
     }
 }

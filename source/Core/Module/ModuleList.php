@@ -6,9 +6,18 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
+
 /**
  * Modules list class.
  *
+ * @deprecated since v6.4.0 (2019-03-22); Use service 'OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface'.
  * @internal Do not make a module extension for this class.
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
@@ -55,13 +64,33 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Get parsed modules
+     * Get all modules with Extended classes
      *
      * @return array
      */
     public function getModulesWithExtendedClass()
     {
-        return $this->parseModuleChains(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModules'));
+        $moduleExtensions = [];
+
+        $container = ContainerFactory::getInstance()->getContainer();
+        $moduleConfigurations = $container
+            ->get(ShopConfigurationDaoBridgeInterface::class)
+            ->get()
+            ->getModuleConfigurations();
+
+        foreach ($moduleConfigurations as $moduleConfiguration) {
+            if ($moduleConfiguration->hasSetting(ModuleSetting::CLASS_EXTENSIONS)) {
+                foreach ($moduleConfiguration->getSetting(ModuleSetting::CLASS_EXTENSIONS)->getValue() as $extendedClass => $extensions) {
+                    if (!isset($moduleExtensions[$extendedClass])) {
+                        $moduleExtensions[$extendedClass] = $extensions;
+                    } else {
+                        $moduleExtensions[$extendedClass] .= '&' . $extensions;
+                    }
+                }
+            }
+        }
+
+        return $this->parseModuleChains($moduleExtensions);
     }
 
     /**
@@ -71,19 +100,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getActiveModuleInfo()
     {
-        $aModulePaths = $this->getModuleConfigParametersByKey(static::MODULE_KEY_PATHS);
-
-        // Extract module paths from extended classes
-        if (!is_array($aModulePaths) || count($aModulePaths) < 1) {
-            $aModulePaths = $this->extractModulePaths();
-        }
-
-        $aDisabledModules = $this->getDisabledModules();
-        if (is_array($aDisabledModules) && count($aDisabledModules) > 0 && count($aModulePaths) > 0) {
-            $aModulePaths = array_diff_key($aModulePaths, array_flip($aDisabledModules));
-        }
-
-        return $aModulePaths;
+        return $this->getModuleConfigParametersByKey(static::MODULE_KEY_PATHS);
     }
 
     /**
@@ -93,30 +110,19 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getDisabledModuleInfo()
     {
-        $aDisabledModules = $this->getDisabledModules();
-        $aModulePaths = [];
+        $modulePaths = [];
 
-        if (is_array($aDisabledModules) && count($aDisabledModules) > 0) {
-            $aModulePaths = $this->getModuleConfigParametersByKey(static::MODULE_KEY_PATHS);
-
-            // Extract module paths from extended classes
-            if (!is_array($aModulePaths) || count($aModulePaths) < 1) {
-                $aModulePaths = $this->extractModulePaths();
-            }
-
-            if (is_array($aModulePaths) || count($aModulePaths) > 0) {
-                $aModulePaths = array_intersect_key($aModulePaths, array_flip($aDisabledModules));
-            }
+        foreach ($this->getDisabledModuleConfigurations() as $moduleConfiguration) {
+            $modulePaths[$moduleConfiguration->getId()] = $moduleConfiguration->getPath();
         }
 
-        return $aModulePaths;
+        return $modulePaths;
     }
 
     /**
      * Get module id's with versions
      *
      * @return array
-     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey(ModuleList::MODULE_KEY_VERSIONS) instead.
      */
     public function getModuleVersions()
     {
@@ -130,7 +136,28 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getModules()
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModules');
+        $extendedClasses = [];
+
+        $container = ContainerFactory::getInstance()->getContainer();
+        $moduleConfigurations = $container
+            ->get(ShopConfigurationDaoBridgeInterface::class)
+            ->get()
+            ->getModuleConfigurations();
+
+        foreach ($moduleConfigurations as $moduleConfiguration) {
+            if ($moduleConfiguration->hasSetting(ModuleSetting::CLASS_EXTENSIONS)) {
+                foreach ($moduleConfiguration->getSetting(ModuleSetting::CLASS_EXTENSIONS)->getValue() as $extendedClass => $extensions) {
+                    if (!isset($extendedClasses[$extendedClass])) {
+                        $extendedClasses[$extendedClass] = $extensions;
+                    } else {
+                        $extendedClasses[$extendedClass] .= '&' . $extensions;
+                    }
+                }
+            }
+        }
+
+
+        return $extendedClasses;
     }
 
     /**
@@ -140,14 +167,19 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getDisabledModules()
     {
-        return (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aDisabledModules');
+        $moduleIds = [];
+
+        foreach ($this->getDisabledModuleConfigurations() as $moduleConfiguration) {
+            $moduleIds[] = $moduleConfiguration->getId();
+        }
+
+        return $moduleIds;
     }
 
     /**
      * Get module id's with path
      *
      * @return array
-     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey(ModuleList::MODULE_KEY_PATHS) instead.
      */
     public function getModulePaths()
     {
@@ -158,7 +190,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      * Get module events
      *
      * @return array
-     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey(ModuleList::MODULE_KEY_EVENTS) instead.
      */
     public function getModuleEvents()
     {
@@ -191,7 +222,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      * Get all modules files paths
      *
      * @return array
-     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey(ModuleList::MODULE_KEY_FILES) instead.
      */
     public function getModuleFiles()
     {
@@ -202,7 +232,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      * Get all modules templates paths
      *
      * @return array
-     * @deprecated since v6.0.0 (2016-09-15); Use getModuleConfigParametersByKey(ModuleList::MODULE_KEY_TEMPLATES) instead.
      */
     public function getModuleTemplates()
     {
@@ -219,29 +248,13 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getDisabledModuleClasses()
     {
-        $disabledModules = $this->getDisabledModules();
+        $disabledModules = $this->getDisabledModuleConfigurations();
         $disabledModuleClasses = [];
-        if (isset($disabledModules) && is_array($disabledModules)) {
-            //get all disabled module paths
-            $extensions = $this->getModuleConfigParametersByKey(static::MODULE_KEY_EXTENSIONS);
-            $modules = $this->getModulesWithExtendedClass();
-            $modulePaths = $this->getModuleConfigParametersByKey(static::MODULE_KEY_PATHS);
 
-            foreach ($disabledModules as $moduleId) {
-                if (!array_key_exists($moduleId, $extensions)) {
-                    $path = $modulePaths[$moduleId];
-                    if (!isset($path)) {
-                        $path = $moduleId;
-                    }
-                    foreach ($modules as $moduleClasses) {
-                        foreach ($moduleClasses as $moduleClass) {
-                            if (strpos($moduleClass, $path . "/") === 0) {
-                                $disabledModuleClasses[] = $moduleClass;
-                            }
-                        }
-                    }
-                } else {
-                    $disabledModuleClasses = array_merge($disabledModuleClasses, $extensions[$moduleId]);
+        foreach ($disabledModules as $module) {
+            if ($module->hasSetting(ModuleSetting::CLASS_EXTENSIONS)) {
+                foreach ($module->getSetting(ModuleSetting::CLASS_EXTENSIONS)->getValue() as $extensionClass) {
+                    $disabledModuleClasses[] = $extensionClass;
                 }
             }
         }
@@ -254,43 +267,19 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function cleanup()
     {
-        $aDeletedModules = $this->getDeletedExtensions();
+        $deletedModules = $this->getDeletedExtensions();
 
-        //collecting deleted extension IDs
-        $aDeletedModuleIds = array_keys($aDeletedModules);
+        $deletedModuleIds = array_keys($deletedModules);
 
-        // removing from aModules config array
-        $this->_removeExtensions($aDeletedModuleIds);
+        $moduleActivationBridge = ContainerFactory::getInstance()
+            ->getContainer()
+            ->get(ModuleActivationBridgeInterface::class);
 
-        // removing from aDisabledModules array
-        $this->_removeFromDisabledModulesArray($aDeletedModuleIds);
-
-        // removing from aModulePaths array
-        $this->removeFromModulesArray(static::MODULE_KEY_PATHS, $aDeletedModuleIds);
-
-        // removing from aModuleEvents array
-        $this->removeFromModulesArray(static::MODULE_KEY_EVENTS, $aDeletedModuleIds);
-
-        // removing from aModuleVersions array
-        $this->removeFromModulesArray(static::MODULE_KEY_VERSIONS, $aDeletedModuleIds);
-
-        // removing from aModuleExtensions array
-        $this->removeFromModulesArray(static::MODULE_KEY_EXTENSIONS, $aDeletedModuleIds);
-
-        // removing from aModuleFiles array
-        $this->removeFromModulesArray(static::MODULE_KEY_FILES, $aDeletedModuleIds);
-
-        // removing from aModuleTemplates array
-        $this->removeFromModulesArray(static::MODULE_KEY_TEMPLATES, $aDeletedModuleIds);
-
-        // removing from aModuleControllers array
-        $this->removeFromModulesArray(static::MODULE_KEY_CONTROLLERS, $aDeletedModuleIds);
-
-        //removing from config tables and templates blocks table
-        $this->_removeFromDatabase($aDeletedModuleIds);
-
-        //Remove from caches.
-        \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::resetModuleVariables();
+        foreach ($deletedModuleIds as $moduleId) {
+            if ($moduleActivationBridge->isActive($moduleId, Registry::getConfig()->getShopId())) {
+                $moduleActivationBridge->deactivate($moduleId, Registry::getConfig()->getShopId());
+            }
+        }
     }
 
     /**
@@ -414,57 +403,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Removes extension by given modules ids.
-     *
-     * @param array $aModuleIds Modules ids which must be deleted from config.
-     */
-    protected function _removeExtensions($aModuleIds)
-    {
-        $aModuleExtensions = $this->getModulesWithExtendedClass();
-        $aExtensionsToDelete = [];
-        foreach ($aModuleIds as $sModuleId) {
-            $aExtensionsToDelete = array_merge_recursive($aExtensionsToDelete, $this->getModuleExtensions($sModuleId));
-        }
-
-        $aUpdatedExtensions = $this->diffModuleArrays($aModuleExtensions, $aExtensionsToDelete);
-        $aUpdatedExtensionsChains = $this->buildModuleChains($aUpdatedExtensions);
-
-        \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar('aarr', 'aModules', $aUpdatedExtensionsChains);
-    }
-
-    /**
-     * Removes extension from disabled modules array
-     *
-     * @param array $aDeletedExtIds Deleted extension id's of array
-     */
-    protected function _removeFromDisabledModulesArray($aDeletedExtIds)
-    {
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $aDisabledExtensionIds = $this->getDisabledModules();
-        $aDisabledExtensionIds = array_diff($aDisabledExtensionIds, $aDeletedExtIds);
-        $oConfig->saveShopConfVar('arr', 'aDisabledModules', $aDisabledExtensionIds);
-    }
-
-    /**
-     * Removes extension from given modules array.
-     *
-     * @param string $key            Module array key.
-     * @param array  $aDeletedModule Deleted extensions ID's.
-     */
-    protected function removeFromModulesArray($key, $aDeletedModule)
-    {
-        $array = $this->getModuleConfigParametersByKey($key);
-
-        foreach ($aDeletedModule as $sDeletedModuleId) {
-            if (isset($array[$sDeletedModuleId])) {
-                unset($array[$sDeletedModuleId]);
-            }
-        }
-
-        \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar('aarr', 'aModule' . $key, $array);
-    }
-
-    /**
      * Gets Module config parameters by key
      *
      * e.g. to get 'aModulePaths' call $obj->getModuleConfigParametersByKey(ModuleList::MODULE_KEY_PATHS)
@@ -476,41 +414,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     public function getModuleConfigParametersByKey($key)
     {
         return (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModule' . $key);
-    }
-
-    /**
-     * Removes extension from database - oxConfig, oxConfigDisplay and oxTplBlocks tables
-     *
-     * @todo extract oxtplblocks query to ModuleTemplateBlockRepository
-     *
-     * @param array $aDeletedExtIds deleted extensions ID's
-     *
-     * @return null
-     */
-    protected function _removeFromDatabase($aDeletedExtIds)
-    {
-        if (!is_array($aDeletedExtIds) || !count($aDeletedExtIds)) {
-            return;
-        }
-
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-
-        $aConfigIds = $sDelExtIds = [];
-        foreach ($aDeletedExtIds as $sDeletedExtId) {
-            $aConfigIds[] = $oDb->quote('module:' . $sDeletedExtId);
-            $sDelExtIds[] = $oDb->quote($sDeletedExtId);
-        }
-
-        $sConfigIds = implode(', ', $aConfigIds);
-        $sDelExtIds = implode(', ', $sDelExtIds);
-
-        $aSql[] = "DELETE FROM oxconfig where oxmodule IN ($sConfigIds)";
-        $aSql[] = "DELETE FROM oxconfigdisplay where oxcfgmodule IN ($sConfigIds)";
-        $aSql[] = "DELETE FROM oxtplblocks where oxmodule IN ($sDelExtIds)";
-
-        foreach ($aSql as $sQuery) {
-            $oDb->execute($sQuery);
-        }
     }
 
     /**
@@ -545,25 +448,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
                 if ($oModule->loadByDir($sModuleDirName)) {
                     $sModuleId = $oModule->getId();
                     $this->_aModules[$sModuleId] = $oModule;
-
-                    $aModulePaths = $this->getModuleConfigParametersByKey(static::MODULE_KEY_PATHS);
-
-                    if (!is_array($aModulePaths) || !array_key_exists($sModuleId, $aModulePaths)) {
-                        // saving module path info
-                        $this->_saveModulePath($sModuleId, $sModuleDirName);
-
-                        //checking if this is new module and if it extends any eshop class
-                        if (!$this->_extendsClasses($sModuleDirName)) {
-                            // if not - marking it as disabled by default
-
-                            /** @var \OxidEsales\Eshop\Core\Module\ModuleCache $oModuleCache */
-                            $oModuleCache = oxNew('oxModuleCache', $oModule);
-                            /** @var \OxidEsales\Eshop\Core\Module\ModuleInstaller $oModuleInstaller */
-                            $oModuleInstaller = oxNew('oxModuleInstaller', $oModuleCache);
-
-                            $oModuleInstaller->deactivate($oModule);
-                        }
-                    }
                 }
             }
         }
@@ -592,10 +476,12 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getModuleIds()
     {
-        $aModuleIdsFromExtensions = $this->_getModuleIdsFromExtensions($this->getModulesWithExtendedClass());
-        $aModuleIdsFromFiles = array_keys($this->getModuleConfigParametersByKey(static::MODULE_KEY_FILES));
+        $container = ContainerFactory::getInstance()->getContainer();
 
-        return array_unique(array_merge($aModuleIdsFromExtensions, $aModuleIdsFromFiles));
+        return $container
+            ->get(ShopConfigurationDaoBridgeInterface::class)
+            ->get()
+            ->getModuleIdsOfModuleConfigurations();
     }
 
     /**
@@ -608,7 +494,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     public function getModuleExtensions($sModuleId)
     {
         if (!isset($this->_aModuleExtensions)) {
-            $aModuleExtension = \OxidEsales\Eshop\Core\Registry::getConfig()->getModulesWithExtendedClass();
+            $aModuleExtension = $this->getActivateModulesWithExtendedClass();
             $oModule = $this->getModule();
             $aExtension = [];
             foreach ($aModuleExtension as $sOxClass => $aFiles) {
@@ -621,7 +507,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
             $this->_aModuleExtensions = $aExtension;
         }
 
-        return $this->_aModuleExtensions[$sModuleId] ? $this->_aModuleExtensions[$sModuleId] : [];
+        return $this->_aModuleExtensions[$sModuleId] ?? [];
     }
 
     /**
@@ -662,62 +548,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Checks if module extends any shop class.
-     *
-     * @param string $sModuleDir dir path
-     *
-     * @return bool
-     */
-    protected function _extendsClasses($sModuleDir)
-    {
-        $aModules = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModules');
-        if (is_array($aModules)) {
-            $sModules = implode('&', $aModules);
-
-            if (preg_match("@(^|&+)" . $sModuleDir . "\b@", $sModules)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Saving module path info. Module path is saved to config variable "aModulePaths".
-     *
-     * @param string $sModuleId   Module ID
-     * @param string $sModulePath Module path
-     */
-    protected function _saveModulePath($sModuleId, $sModulePath)
-    {
-        $aModulePaths = $this->getModuleConfigParametersByKey(static::MODULE_KEY_PATHS);
-
-        $aModulePaths[$sModuleId] = $sModulePath;
-        \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar('aarr', 'aModulePaths', $aModulePaths);
-    }
-
-    /**
-     * Returns module ids which have extensions.
-     *
-     * @param array $aData Data
-     *
-     * @return array
-     */
-    private function _getModuleIdsFromExtensions($aData)
-    {
-        $aModuleIds = [];
-        $oModule = $this->getModule();
-        foreach ($aData as $aModule) {
-            foreach ($aModule as $sFilePath) {
-                $sModuleId = $oModule->getIdByPath($sFilePath);
-                $aModuleIds[] = $sModuleId;
-            }
-        }
-
-        return $aModuleIds;
-    }
-
-    /**
      * Returns shop classes and associated invalid module classes for a given module id
      *
      * @param string $moduleId Module id
@@ -754,8 +584,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      * @param array  $invalidModuleClasses The Collection of module classes , which are marked as deleted
      *                                     Note: This parameter is passed by reference
      * @param string $extendedShopClass    The shop class, which is extended by the module class
-     *
-     * @deprecated since v6.0 (2017-03-14); This method will be removed in the future.
      */
     private function backwardsCompatibleGetInvalidExtensions($moduleClass, &$invalidModuleClasses, $extendedShopClass)
     {
@@ -763,5 +591,81 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
         if (!is_readable($moduleClassFile)) {
             $invalidModuleClasses[$extendedShopClass][] = $moduleClass;
         }
+    }
+
+    /**
+     * @return array
+     */
+    private function getDisabledModuleConfigurations(): array
+    {
+        $container = ContainerFactory::getInstance()->getContainer();
+
+        $moduleConfigurations = $container
+            ->get(ShopConfigurationDaoBridgeInterface::class)
+            ->get()
+            ->getModuleConfigurations();
+
+        $disabledModuleConfigurations = [];
+
+        $moduleStateService = $container->get(ModuleStateServiceInterface::class);
+
+        foreach ($moduleConfigurations as $moduleConfiguration) {
+            if (!$moduleStateService->isActive($moduleConfiguration->getId(), Registry::getConfig()->getShopId())) {
+                $disabledModuleConfigurations[] = $moduleConfiguration;
+            }
+        }
+
+        return $disabledModuleConfigurations;
+    }
+
+    /**
+     * Returns Active module ids which have extensions or files.
+     *
+     * @return ModuleConfiguration[]
+     */
+    private function getActiveModuleConfigurations(): array
+    {
+        $container = ContainerFactory::getInstance()->getContainer();
+
+        $moduleConfigurations = $container
+            ->get(ShopConfigurationDaoBridgeInterface::class)
+            ->get()
+            ->getModuleConfigurations();
+
+        $activeModules = [];
+
+        $moduleStateService = $container->get(ModuleStateServiceInterface::class);
+
+        foreach ($moduleConfigurations as $moduleConfiguration) {
+            if ($moduleStateService->isActive($moduleConfiguration->getId(), Registry::getConfig()->getShopId())) {
+                $activeModules[] = $moduleConfiguration;
+            }
+        }
+
+        return $activeModules;
+    }
+
+    /**
+     * Get activate modules with Extended classes
+     *
+     * @return array
+     */
+    private function getActivateModulesWithExtendedClass()
+    {
+        $extendedClasses = [];
+
+        foreach ($this->getActiveModuleConfigurations() as $moduleConfiguration) {
+            if ($moduleConfiguration->hasSetting(ModuleSetting::CLASS_EXTENSIONS)) {
+                foreach ($moduleConfiguration->getSetting(ModuleSetting::CLASS_EXTENSIONS)->getValue() as $extendedClass => $extensions) {
+                    if (!isset($extendedClasses[$extendedClass])) {
+                        $extendedClasses[$extendedClass] = $extensions;
+                    } else {
+                        $extendedClasses[$extendedClass] .= '&' . $extensions;
+                    }
+                }
+            }
+        }
+
+        return $this->parseModuleChains($extendedClasses);
     }
 }

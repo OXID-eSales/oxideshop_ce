@@ -10,7 +10,7 @@ use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurati
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 
 /**
  * @internal
@@ -54,14 +54,14 @@ class ClassExtensionChainService implements ExtensionChainServiceInterface
     }
 
     /**
-     * @param Chain $chain
+     * @param ClassExtensionsChain $chain
      * @return array
      */
-    private function formatClassExtensionChain(Chain $chain): array
+    private function formatClassExtensionChain(ClassExtensionsChain $chain): array
     {
         $classExtensions = [];
 
-        foreach ($chain->getChain() as $shopClass => $moduleExtensionClasses) {
+        foreach ($chain as $shopClass => $moduleExtensionClasses) {
             $classExtensions[$shopClass] = implode('&', $moduleExtensionClasses);
         }
 

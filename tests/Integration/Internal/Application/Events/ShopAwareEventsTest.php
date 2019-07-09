@@ -28,11 +28,19 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
     public function setUp()
     {
         $context = $this->getMockBuilder(BasicContext::class)
-            ->setMethods(['getSourcePath', 'getCommunityEditionSourcePath'])->getMock();
+            ->disableOriginalConstructor()
+            ->setMethods([
+                'getSourcePath',
+                'getCommunityEditionSourcePath',
+                'getConfigurationDirectoryPath',
+                'getGeneratedServicesFilePath',
+            ])->getMock();
+
         $context->method('getCommunityEditionSourcePath')->willReturn(
             (new Facts)->getCommunityEditionSourcePath()
         );
-        $context->method('getSourcePath')->willReturn(__DIR__);
+        $context->method('getGeneratedServicesFilePath')->willReturn(__DIR__ . '/generated_project.yaml');
+        $context->method('getConfigurationDirectoryPath')->willReturn(__DIR__);
 
         $builder = $this->makeContainerBuilder($context);
         $this->container = $builder->getContainer();

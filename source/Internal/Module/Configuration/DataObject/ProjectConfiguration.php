@@ -1,6 +1,4 @@
-<?php
-declare(strict_types = 1);
-
+<?php declare(strict_types = 1);
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -27,7 +25,7 @@ class ProjectConfiguration
     }
 
     /**
-     * @return array
+     * @return EnvironmentConfiguration[]
      */
     public function getEnvironmentConfigurations(): array
     {
@@ -46,7 +44,7 @@ class ProjectConfiguration
         if (array_key_exists($name, $this->environmentConfigurations)) {
             return $this->environmentConfigurations[$name];
         }
-        throw new DomainException('There is no environment configuration with name' . $name);
+        throw new DomainException('There is no environment configuration with name ' . $name);
     }
 
     /**
@@ -68,7 +66,7 @@ class ProjectConfiguration
         if (array_key_exists($name, $this->environmentConfigurations)) {
             unset($this->environmentConfigurations[$name]);
         } else {
-            throw new DomainException('There is no environment configuration with name' . $name);
+            throw new DomainException('There is no environment configuration with name ' . $name);
         }
     }
 }

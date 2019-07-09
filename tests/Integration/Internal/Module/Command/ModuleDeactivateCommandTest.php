@@ -7,9 +7,6 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Command;
 
 use OxidEsales\Eshop\Core\Module\Module;
-use OxidEsales\Eshop\Core\Module\ModuleInstaller;
-use OxidEsales\Eshop\Core\Module\ModuleList;
-use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Module\Command\ModuleDeactivateCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 
@@ -18,7 +15,7 @@ class ModuleDeactivateCommandTest extends ModuleCommandsTestCase
     public function testModuleDeactivation()
     {
         $moduleId = 'testmodule';
-        $this->prepareTestData();
+        $this->installModule($moduleId);
         $this->activateModule($moduleId);
 
         $consoleOutput = $this->execute(
@@ -39,7 +36,7 @@ class ModuleDeactivateCommandTest extends ModuleCommandsTestCase
     public function testWhenModuleNotActive()
     {
         $moduleId = 'testmodule';
-        $this->prepareTestData();
+        $this->installModule($moduleId);
 
         $consoleOutput = $this->execute(
             $this->getApplication(),
@@ -62,17 +59,5 @@ class ModuleDeactivateCommandTest extends ModuleCommandsTestCase
         );
 
         $this->assertSame(sprintf(ModuleDeactivateCommand::MESSAGE_MODULE_NOT_FOUND, $moduleId) . PHP_EOL, $consoleOutput);
-    }
-
-    private function activateModule(string $moduleId)
-    {
-        /** @var ModuleInstaller $moduleInstaller */
-        $moduleInstaller = Registry::get(ModuleInstaller::class);
-        $moduleList = oxNew(ModuleList::class);
-        $moduleList->getModulesFromDir(Registry::getConfig()->getModulesDir());
-        $modules = $moduleList->getList();
-        /** @var Module $module */
-        $module = $modules[$moduleId];
-        $moduleInstaller->activate($module);
     }
 }

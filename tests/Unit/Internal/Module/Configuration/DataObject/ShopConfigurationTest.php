@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Configuration\DataObject;
 
-use DomainException;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
+use OxidEsales\EshopCommunity\Internal\Adapter\Exception\ModuleConfigurationNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use PHPUnit\Framework\TestCase;
@@ -55,28 +55,53 @@ class ShopConfigurationTest extends TestCase
         );
     }
 
+    public function testHasModuleConfiguration()
+    {
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->setId('testModule');
+
+        $this->assertFalse(
+            $this->shopConfiguration->hasModuleConfiguration('testModule')
+        );
+
+        $this->shopConfiguration->addModuleConfiguration($moduleConfiguration);
+
+        $this->assertTrue(
+            $this->shopConfiguration->hasModuleConfiguration('testModule')
+        );
+    }
+
     public function testGetModuleConfigurationThrowsExceptionIfModuleIdNotPresent()
     {
-        $this->expectException(DomainException::class);
+        $this->expectException(ModuleConfigurationNotFoundException::class);
         $this->shopConfiguration->getModuleConfiguration('moduleIdNotPresent');
     }
 
     public function testDeleteModuleConfigurationThrowsExceptionIfModuleIdNotPresent()
     {
-        $this->expectException(DomainException::class);
+        $this->expectException(ModuleConfigurationNotFoundException::class);
         $this->shopConfiguration->deleteModuleConfiguration('moduleIdNotPresent');
     }
 
     public function testChains()
     {
-        $chain = new Chain();
-        $chain->setName('classes');
+        $chain = new ClassExtensionsChain();
 
-        $this->shopConfiguration->addChain($chain);
+        $this->shopConfiguration->setClassExtensionsChain($chain);
 
         $this->assertSame(
             $chain,
-            $this->shopConfiguration->getChain('classes')
+            $this->shopConfiguration->getClassExtensionsChain()
+        );
+    }
+
+    public function testDefaultChains()
+    {
+        $chain = new ClassExtensionsChain();
+
+        $this->assertEquals(
+            $chain,
+            $this->shopConfiguration->getClassExtensionsChain()
         );
     }
 }

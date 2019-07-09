@@ -5,11 +5,21 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapter;
+use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
+use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\InvalidClassExtensionNamespaceException;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\namespaced_from_ns\MyClass as namespaced_from_ns;
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\own_namespace_extending_unified_namespace\MyClass as own_namespace_extending_unified_namespace;
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor2\ModuleInheritance24\MyClass as ModuleInheritance24MyClass;
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor2\ModuleInheritance27\MyClass as ModuleInheritance27MyClass;
+use OxidEsales\TestingLibrary\UnitTestCase;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Test, that the inheritance of modules and the shop works as expected.
@@ -74,12 +84,36 @@ use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modu
  *
  * @group module
  */
-class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
+class ModuleInheritanceTest extends UnitTestCase
 {
     /**
      * @var \OxidEsales\Eshop\Core\Module\ModuleChainsGenerator
      */
-    protected $moduleChainsGenerator = null;
+    protected $moduleChainsGenerator;
+
+    /**
+     * @var ContainerBuilder
+     */
+    protected $container;
+
+    /**
+     * Ensure a clean environment before each test
+     */
+    protected function setUp() {
+        parent::setUp();
+
+        $this->container = $this->getContainer();
+
+        $environment = new Environment();
+        $environment->clean();
+    }
+
+    protected function tearDown()
+    {
+        $this->removeTestModules();
+
+        parent::tearDown();
+    }
 
     /**
      * This test covers the PHP inheritance between one module class and one shop class.
@@ -89,13 +123,16 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
      *
      * @dataProvider dataProviderTestModuleInheritanceTestPhpInheritance
      *
-     * @param array  $moduleToActivate The module we want to activate.
-     * @param string $moduleClassName  The module class we want to instantiate.
-     * @param array  $shopClassNames   The shop class from which the module class should inherit.
+     * @param array  $modulesToActivate The module we want to activate.
+     * @param string $extensionClass    The module class we want to instantiate.
+     * @param array  $classToExtend     The shop class from which the module class should inherit.
      */
-    public function moduleInheritanceByPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames)
+    public function testModuleInheritanceByPhpInheritance($modulesToActivate, $extensionClass, $classToExtend)
     {
-        parent::moduleInheritanceByPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames);
+        $this->installModules($modulesToActivate);
+        $this->activateModules($modulesToActivate);
+
+        $this->assertClassInheritance($extensionClass, $classToExtend);
     }
 
     /**
@@ -116,11 +153,11 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
      */
     public function testModuleInheritanceTestPhpInheritanceForbidden($moduleToActivate, $moduleClassName, $shopClassNames, $expectedException)
     {
-        $message = sprintf(Registry::getLang()->translateString('MODULE_METADATA_PROBLEMATIC_DATA_IN_EXTEND', null, true), $expectedException);
-        $this->expectException(\OxidEsales\EshopCommunity\Core\Exception\ModuleValidationException::class);
-        $this->expectExceptionMessage($message);
+        $this->installModules($moduleToActivate);
 
-        parent::moduleInheritanceByPhpInheritance($moduleToActivate, $moduleClassName, $shopClassNames);
+        $this->expectException(InvalidClassExtensionNamespaceException::class);
+
+        $this->activateModules($moduleToActivate);
     }
 
     /**
@@ -133,12 +170,60 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
      * @dataProvider dataProviderTestMultiModuleInheritanceTestPhpInheritance
      *
      * @param array  $modulesToActivate The modules we want to activate.
-     * @param string $moduleClassName   The module class we want to instantiate.
-     * @param array  $shopClassNames    The shop class from which the module class should inherit.
+     * @param string $extensionClass    The module class we want to instantiate.
+     * @param array  $classToExtend     The shop class from which the module class should inherit.
+     *
+     * @throws \Exception
      */
-    public function testMultiModuleInheritanceTestPhpInheritance($modulesToActivate, $moduleClassName, $shopClassNames)
+    public function testMultiModuleInheritanceTestPhpInheritance($modulesToActivate, $extensionClass, $classToExtend)
     {
-        parent::moduleInheritanceByPhpInheritanceWithTestNamespaceModules($modulesToActivate, $moduleClassName, $shopClassNames);
+        $container = (new TestContainerFactory())->create();
+        $container = $this->disableShopEditionClassExtensionProtection($container);
+        $container->compile();
+
+        $container->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')->generate();
+
+        $this->container = $container;
+
+        $this->installModules($modulesToActivate);
+        $this->activateModules($modulesToActivate);
+
+        $this->assertClassInheritance($extensionClass, $classToExtend);
+    }
+
+    private function installModules(array $modulesToActivate)
+    {
+        $installService = $this->container->get(ModuleInstallerInterface::class);
+
+        foreach ($modulesToActivate as $moduleId) {
+            $package = new OxidEshopPackage($moduleId, __DIR__ . '/TestDataInheritance/modules/' . $moduleId);
+            $package->setTargetDirectory('oeTest/' . $moduleId);
+            $installService->install($package);
+        }
+    }
+
+    private function activateModules(array $modulesToActivate)
+    {
+        $activationService = $this->container->get(ModuleActivationBridgeInterface::class);
+
+        foreach ($modulesToActivate as $moduleId) {
+            $activationService->activate($moduleId, 1);
+        }
+    }
+
+    private function disableShopEditionClassExtensionProtection(ContainerBuilder $containerBuilder): ContainerBuilder
+    {
+        $shopAdapter = $this
+            ->getMockBuilder(ShopAdapter::class)
+            ->setMethods(['isShopEditionNamespace'])
+            ->getMock();
+
+        $shopAdapter->method('isShopEditionNamespace')->willReturn(false);
+
+        $containerBuilder->set(ShopAdapterInterface::class, $shopAdapter);
+        $containerBuilder->autowire(ShopAdapterInterface::class, ShopAdapter::class);
+
+        return $containerBuilder;
     }
 
     /**
@@ -149,6 +234,24 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
     public function dataProviderTestModuleInheritanceTestPhpInheritance()
     {
         return [
+            'case_1_1' => [
+                //Test case 1.1 plain module extends plain shop class
+                'moduleToActivate'  => ['bc_module_inheritance_1_1'],
+                'moduleClassName'   => 'vendor_1_module_1_myclass',
+                'shopClassNames'    => ['oxArticle']
+            ],
+            'case_1_2' => [
+                //Test case 1.2 plain module extends namespaced eShop Community class
+                'moduleToActivate' => ['bc_module_inheritance_1_2'],
+                'moduleClassName'  => 'vendor_1_module_2_myclass',
+                'shopClassNames'    => ['OxidEsales\EshopCommunity\Application\Model\Article']
+            ],
+            'case_1_5' => [
+                //Test case 1.5 plain module extends eShop unified namespace class
+                'moduleToActivate' => ['bc_module_inheritance_1_5'],
+                'moduleClassName'  => 'vendor_1_module_5_myclass',
+                'shopClassNames'   => [\OxidEsales\Eshop\Application\Model\Article::class]
+            ],
             'case_1_6'  => [
                 // Test case 1.6 namespaced module extends plain shop class
                'moduleToActivate' => ['Vendor1/ModuleInheritance16'],
@@ -165,6 +268,18 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
                 // Test case 1.10 namespaced module extends eShop unified namespace class
                 'moduleToActivate' => ['Vendor1/own_namespace_extending_unified_namespace'],
                 'moduleClassName'  => own_namespace_extending_unified_namespace::class,
+                'shopClassNames'   => [\OxidEsales\Eshop\Application\Model\Article::class]
+            ],
+            'case_3_1' => [
+                //Test case 3.1 plain module chain extends plain OXID eShop class
+                'moduleToActivate' => ['module_chain_extension_3_1'],
+                'moduleClassName'  => 'vendor_1_module_3_1_myclass',
+                'shopClassNames'   => ['oxArticle']
+            ],
+            'case_3_3' => [
+                //Test case 3.3 plain module chain extends unified namespace OXID eShop class
+                'moduleToActivate' => ['module_chain_extension_3_3'],
+                'moduleClassName'  => 'vendor_1_module_3_3_myclass',
                 'shopClassNames'   => [\OxidEsales\Eshop\Application\Model\Article::class]
             ],
             'case_3_6' => [
@@ -184,6 +299,13 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
     public function dataProviderTestModuleInheritanceTestPhpInheritanceForbidden()
     {
         return [
+            'case_3_2' => [
+                //Test case 3.2 plain module chain extends namespaced OXID eShop Community class
+                'moduleToActivate' => ['module_chain_extension_3_2'],
+                'moduleClassName'  => 'vendor_1_module_3_2_myclass',
+                'shopClassNames'   => [\OxidEsales\EshopCommunity\Application\Model\Article::class],
+                'expectsException' => \OxidEsales\EshopCommunity\Application\Model\Article::class . ' => module_chain_extension_3_2/vendor_1_module_3_2_myclass'
+            ],
             'case_3_5' => [
                 // Test case 3.5 namespaced module class chain extends namespaced OXID eShop Community class
                 'moduleToActivate' => ['Vendor1/ModuleChainExtension35'],
@@ -203,6 +325,18 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
     public function dataProviderTestMultiModuleInheritanceTestPhpInheritance()
     {
         return [
+            'case_2_1_1' => [
+                //Test case 2.1 plain module class extends same module's extended plain module class
+                'modulesToActivate' => ['bc_module_inheritance_1_1'],
+                'moduleClassName'   => 'vendor_1_module_1_anotherclass',
+                'shopClassNames'    => ['vendor_1_module_1_myclass', \OxidEsales\Eshop\Application\Model\Article::class]
+            ],
+            'case_2_1_2' => [
+                //Test case 2.1 plain module class extends an other modules extended plain module class
+                'modulesToActivate' => ['bc_module_inheritance_1_1', 'bc_module_inheritance_2_1'],
+                'moduleClassName'   => 'vendor_2_module_1_myclass',
+                'shopClassNames'    => ['vendor_1_module_1_myclass', \OxidEsales\Eshop\Application\Model\Article::class]
+            ],
             'case_2_2' => [
                 // Test case 2.2 plain module class extends an other modules extended namespaced module class
                 'modulesToActivate' => ['Vendor1/namespaced_from_ns', 'module_inheritance_2_2_a'],
@@ -224,6 +358,12 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
                 'modulesToActivate' => ['Vendor1/namespaced_from_ns', 'Vendor2/ModuleInheritance24'],
                 'moduleClassName' => ModuleInheritance24MyClass::class,
                 'shopClassNames' => [namespaced_from_ns::class, \OxidEsales\EshopCommunity\Application\Model\Article::class]
+            ],
+            'case_2_5' => [
+                //Test case 2.5 plain module_2 extends plain module_1
+                'modulesToActivate' => ['bc_module_inheritance_1_1', 'bc_module_inheritance_2_5'],
+                'moduleClassName'   => 'vendor_2_module_5_myclass',
+                'shopClassNames'    => ['vendor_1_module_1_onemoreclass']
             ],
             'case_2_6' => [
                 // Test case 2.6 plain module_2 extends namespaced module_1
@@ -284,7 +424,9 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
             'Vendor2/ModuleChainExtension37b',
             'Vendor3/ModuleChainExtension37c',
         ];
-        $this->environment->prepare($activatedModules);
+
+        $this->installModules($activatedModules);
+        $this->activateModules($activatedModules);
 
         $this->callAdminSaveModuleOrder($storedModuleChain);
 
@@ -394,5 +536,28 @@ class ModuleInheritanceTest extends BaseModuleInheritanceTestCase
             $this->moduleChainsGenerator = new \OxidEsales\Eshop\Core\Module\ModuleChainsGenerator($moduleVariablesLocator);
         }
         return $this->moduleChainsGenerator;
+    }
+
+    private function assertClassInheritance($moduleClassName, $shopClassNames)
+    {
+        $model = oxNew($moduleClassName);
+
+        foreach ($shopClassNames as $shopClassName) {
+            $this->assertTrue(is_subclass_of($model, $shopClassName), 'Expected, that object of type "' . get_class($model) . '" is subclass of "' . $shopClassName . '"!');
+        }
+    }
+
+    private function getContainer(): ContainerBuilder
+    {
+        $container = ContainerFactory::getInstance()->getContainer();
+        $container->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')->generate();
+
+        return $container;
+    }
+
+    private function removeTestModules()
+    {
+        $fileSystem = $this->container->get('oxid_esales.symfony.file_system');
+        $fileSystem->remove($this->container->get(ContextInterface::class)->getModulesPath() . '/oeTest/');
     }
 }

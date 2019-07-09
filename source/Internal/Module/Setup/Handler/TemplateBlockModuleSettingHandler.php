@@ -7,14 +7,14 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Handler;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException;
 use OxidEsales\EshopCommunity\Internal\Module\TemplateExtension\TemplateBlockExtension;
 use OxidEsales\EshopCommunity\Internal\Module\TemplateExtension\TemplateBlockExtensionDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 
 /**
  * @internal
  */
-class TemplateBlockModuleSettingHandler implements ModuleSettingHandlerInterface
+class TemplateBlockModuleSettingHandler implements ModuleConfigurationHandlerInterface
 {
     /**
      * @var TemplateBlockExtensionDaoInterface
@@ -31,52 +31,43 @@ class TemplateBlockModuleSettingHandler implements ModuleSettingHandlerInterface
     }
 
     /**
-     * @param ModuleSetting $moduleSetting
-     * @param string        $moduleId
-     * @param int           $shopId
-     *
-     * @throws WrongModuleSettingException
+     * @param ModuleConfiguration $configuration
+     * @param int                 $shopId
      */
-    public function handleOnModuleActivation(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
+    public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId)
     {
-        if (!$this->canHandle($moduleSetting)) {
-            throw new WrongModuleSettingException($moduleSetting, self::class);
-        }
+        if ($this->canHandle($configuration)) {
+            $setting = $configuration->getSetting(ModuleSetting::TEMPLATE_BLOCKS);
+            $templateBlocksData = $setting->getValue();
 
-        $templateBlocksData = $moduleSetting->getValue();
+            foreach ($templateBlocksData as $templateBlockData) {
+                $templateBlockExtension = $this->mapDataToObject($templateBlockData);
+                $templateBlockExtension->setShopId($shopId);
+                $templateBlockExtension->setModuleId($configuration->getId());
 
-        foreach ($templateBlocksData as $templateBlockData) {
-            $templateBlockExtension = $this->mapDataToObject($templateBlockData);
-            $templateBlockExtension->setShopId($shopId);
-            $templateBlockExtension->setModuleId($moduleId);
-
-            $this->templateBlockExtensionDao->add($templateBlockExtension);
+                $this->templateBlockExtensionDao->add($templateBlockExtension);
+            }
         }
     }
 
     /**
-     * @param ModuleSetting $moduleSetting
-     * @param string        $moduleId
-     * @param int           $shopId
-     *
-     * @throws WrongModuleSettingException
+     * @param ModuleConfiguration $configuration
+     * @param int                 $shopId
      */
-    public function handleOnModuleDeactivation(ModuleSetting $moduleSetting, string $moduleId, int $shopId)
+    public function handleOnModuleDeactivation(ModuleConfiguration $configuration, int $shopId)
     {
-        if (!$this->canHandle($moduleSetting)) {
-            throw new WrongModuleSettingException($moduleSetting, self::class);
+        if ($this->canHandle($configuration)) {
+            $this->templateBlockExtensionDao->deleteExtensions($configuration->getId(), $shopId);
         }
-
-        $this->templateBlockExtensionDao->deleteExtensions($moduleId, $shopId);
     }
 
     /**
-     * @param ModuleSetting $moduleSetting
+     * @param ModuleConfiguration $configuration
      * @return bool
      */
-    public function canHandle(ModuleSetting $moduleSetting): bool
+    private function canHandle(ModuleConfiguration $configuration): bool
     {
-        return $moduleSetting->getName() === ModuleSetting::TEMPLATE_BLOCKS;
+        return $configuration->hasSetting(ModuleSetting::TEMPLATE_BLOCKS);
     }
 
     /**

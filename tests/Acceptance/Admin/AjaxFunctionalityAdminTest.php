@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin;
 
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Tests\Acceptance\AdminTestCase;
 
 /** Ajax functionality */
@@ -1881,6 +1883,8 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
      */
     public function testOxAjaxContainerClassResolution()
     {
+        $this->installModule('oxid/test11');
+
         $this->loginAdmin("Extensions", "Modules");
 
         $this->activateModule("Test module #11");
@@ -1912,6 +1916,7 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
      */
     public function testOxAjaxContainerClassResolutionMetadata1Module()
     {
+        $this->installModule('oxid/test12');
         $this->loginAdmin("Extensions", "Modules");
 
         $this->activateModule("Test module #12");
@@ -1941,5 +1946,17 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
         $this->frame("edit");
         $this->clickAndWait("//form[@id='myedit']//input[@value='Activate']");
         $this->assertElementPresent("//form[@id='myedit']//input[@value='Deactivate']");
+    }
+
+    private function installModule(string $path)
+    {
+        $moduleConfigurationInstaller = ContainerFactory::getInstance()
+            ->getContainer()
+            ->get(ModuleConfigurationInstallerInterface::class);
+
+        $moduleConfigurationInstaller->install(
+            __DIR__ . '/testData/modules/' . $path,
+            $path
+        );
     }
 }

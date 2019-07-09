@@ -8,15 +8,16 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Command;
 
 use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\EshopCommunity\Internal\Module\Command\ModuleActivateCommand;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 
 class ModuleActivateCommandTest extends ModuleCommandsTestCase
 {
     public function testModuleActivation()
     {
-        $this->prepareTestData();
-
         $moduleId = 'testmodule';
+        $this->installModule($moduleId);
+
         $consoleOutput = $this->execute(
             $this->getApplication(),
             $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
@@ -34,9 +35,11 @@ class ModuleActivateCommandTest extends ModuleCommandsTestCase
 
     public function testWhenModuleAlreadyActive()
     {
-        $this->prepareTestData();
-
         $moduleId = 'testmodule';
+        $this->installModule($moduleId);
+
+        $this->get(ModuleActivationBridgeInterface::class)->activate($moduleId, 1);
+
         $consoleOutput = $this->execute(
             $this->getApplication(),
             $this->get('oxid_esales.console.commands_provider.services_commands_provider'),

@@ -288,6 +288,7 @@ class SystemRequirements
             $sPath . 'out/pictures/media/', // @deprecated, use out/media instead
             $sPath . 'out/media/',
             $sPath . 'log/',
+            $sPath . '../var/',
             $sTmp
         ];
         $iModStat = 2;

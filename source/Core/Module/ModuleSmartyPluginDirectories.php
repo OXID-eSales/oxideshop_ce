@@ -43,6 +43,9 @@ class ModuleSmartyPluginDirectories
     }
 
     /**
+     * @deprecated since v6.4.0 (2019-05-24); Module smarty plugins directory are stored in project configuration file now.
+     *             Use appropriate Dao to add them.
+     *
      * @param array  $moduleSmartyPluginDirectories
      * @param string $moduleId
      */
@@ -52,6 +55,10 @@ class ModuleSmartyPluginDirectories
     }
 
     /**
+     *
+     * @deprecated since v6.4.0 (2019-05-24); Module smarty plugins directory are stored in project configuration file now.
+     *             Use appropriate Dao to set them.
+     *
      * @param array $moduleSmartyPluginDirectories
      */
     public function set($moduleSmartyPluginDirectories)
@@ -62,6 +69,9 @@ class ModuleSmartyPluginDirectories
     /**
      * Delete the smarty plugin directories for the module, given by its ID
      *
+     * @deprecated since v6.4.0 (2019-05-24); Module smarty plugins directory are stored in project configuration file now.
+     *             Use appropriate Dao to remove them.
+     *
      * @param string $moduleId The ID of the module, for which we want to delete the controllers from the storage.
      */
     public function remove($moduleId)
@@ -70,6 +80,9 @@ class ModuleSmartyPluginDirectories
     }
 
     /**
+     * @deprecated since v6.4.0 (2019-05-24); Module smarty plugins directory are stored in project configuration file now.
+     *             Use appropriate Dao to get them.
+     *
      * @return array The smarty plugin directories of all modules with absolute path as numeric array
      */
     public function getWithRelativePath()

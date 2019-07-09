@@ -6,10 +6,10 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Command;
 
-use OxidEsales\Eshop\Core\Module\Module;
-use OxidEsales\Eshop\Core\Module\ModuleCache;
-use OxidEsales\Eshop\Core\Module\ModuleInstaller;
-use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSetupException;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,17 +30,35 @@ class ModuleDeactivateCommand extends Command
     const ARGUMENT_MODULE_ID = 'module-id';
 
     /**
-     * @var ShopAdapterInterface
+     * @var ShopConfigurationDaoInterface
      */
-    private $shopAdapter;
+    private $shopConfigurationDao;
 
     /**
-     * @param ShopAdapterInterface $shopAdapter
+     * @var ContextInterface
      */
-    public function __construct(ShopAdapterInterface $shopAdapter)
-    {
+    private $context;
+
+    /**
+     * @var ModuleActivationServiceInterface
+     */
+    private $moduleActivationService;
+
+    /**
+     * @param ShopConfigurationDaoInterface    $shopConfigurationDao
+     * @param ContextInterface                 $context
+     * @param ModuleActivationServiceInterface $moduleActivationService
+     */
+    public function __construct(
+        ShopConfigurationDaoInterface $shopConfigurationDao,
+        ContextInterface $context,
+        ModuleActivationServiceInterface $moduleActivationService
+    ) {
         parent::__construct(null);
-        $this->shopAdapter = $shopAdapter;
+
+        $this->shopConfigurationDao = $shopConfigurationDao;
+        $this->context = $context;
+        $this->moduleActivationService = $moduleActivationService;
     }
 
     /**
@@ -60,10 +78,9 @@ class ModuleDeactivateCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $moduleId = $input->getArgument('module-id');
-        $modules = $this->shopAdapter->getModules();
 
-        if (isset($modules[$moduleId])) {
-            $this->deactivateModule($output, $modules[$moduleId], $moduleId);
+        if ($this->isInstalled($moduleId)) {
+            $this->deactivateModule($output, $moduleId);
         } else {
             $output->writeLn('<error>'.sprintf(static::MESSAGE_MODULE_NOT_FOUND, $moduleId).'</error>');
         }
@@ -71,16 +88,35 @@ class ModuleDeactivateCommand extends Command
 
     /**
      * @param OutputInterface $output
-     * @param Module          $module
      * @param string          $moduleId
      */
-    protected function deactivateModule(OutputInterface $output, Module $module, string $moduleId)
+    protected function deactivateModule(OutputInterface $output, string $moduleId)
     {
-        $moduleInstaller = oxNew(ModuleInstaller::class, oxNew(ModuleCache::class, $module));
-        if ($module->isActive() && $moduleInstaller->deactivate($module)) {
-            $output->writeLn('<info>' . sprintf(static::MESSAGE_MODULE_DEACTIVATED, $moduleId) . '</info>');
-        } else {
-            $output->writeLn('<info>' . sprintf(static::MESSAGE_NOT_POSSIBLE_TO_DEACTIVATE, $moduleId) . '</info>');
+        try {
+            $this->moduleActivationService->deactivate($moduleId, $this->context->getCurrentShopId());
+            $output->writeLn(
+                '<info>' . sprintf(static::MESSAGE_MODULE_DEACTIVATED, $moduleId) . '</info>'
+            );
+        } catch (ModuleSetupException $exception) {
+            $output->writeLn(
+                '<info>' . sprintf(static::MESSAGE_NOT_POSSIBLE_TO_DEACTIVATE, $moduleId) . '</info>'
+            );
         }
+    }
+
+    /**
+     * @param string $moduleId
+     * @return bool
+     */
+    private function isInstalled(string $moduleId): bool
+    {
+        $shopConfiguration = $this
+            ->shopConfigurationDao
+            ->get(
+                $this->context->getCurrentShopId(),
+                $this->context->getEnvironment()
+            );
+
+        return $shopConfiguration->hasModuleConfiguration($moduleId);
     }
 }

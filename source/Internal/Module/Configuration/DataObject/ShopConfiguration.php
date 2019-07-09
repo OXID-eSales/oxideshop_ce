@@ -1,6 +1,4 @@
-<?php
-declare(strict_types = 1);
-
+<?php declare(strict_types = 1);
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,7 +6,7 @@ declare(strict_types = 1);
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject;
 
-use DomainException;
+use OxidEsales\EshopCommunity\Internal\Adapter\Exception\ModuleConfigurationNotFoundException;
 
 /**
  * @internal
@@ -19,29 +17,37 @@ class ShopConfiguration
     private $moduleConfigurations = [];
 
     /**
-     * @var array
+     * @var ClassExtensionsChain
      */
-    private $chains = [];
+    private $chain;
+
+    /**
+     * ShopConfiguration constructor.
+     */
+    public function __construct()
+    {
+        $classExtensionChain = new ClassExtensionsChain();
+        $this->setClassExtensionsChain($classExtensionChain);
+    }
 
     /**
      * @param string $moduleId
      *
-     * @throws DomainException
-     *
      * @return ModuleConfiguration
+     * @throws ModuleConfigurationNotFoundException
      */
-    public function getModuleConfiguration(string $moduleId) : ModuleConfiguration
+    public function getModuleConfiguration(string $moduleId): ModuleConfiguration
     {
         if (array_key_exists($moduleId, $this->moduleConfigurations)) {
             return $this->moduleConfigurations[$moduleId];
         }
-        throw new DomainException('There is no module configuration with id ' . $moduleId);
+        throw new ModuleConfigurationNotFoundException('There is no module configuration with id ' . $moduleId);
     }
 
     /**
-     * @return array
+     * @return ModuleConfiguration[]
      */
-    public function getModuleConfigurations() : array
+    public function getModuleConfigurations(): array
     {
         return $this->moduleConfigurations;
     }
@@ -60,47 +66,47 @@ class ShopConfiguration
     /**
      * @param string $moduleId
      *
-     * @throws DomainException
+     * @throws ModuleConfigurationNotFoundException
      */
     public function deleteModuleConfiguration(string $moduleId)
     {
         if (array_key_exists($moduleId, $this->moduleConfigurations)) {
             unset($this->moduleConfigurations[$moduleId]);
         } else {
-            throw new DomainException('There is no module configuration with id ' . $moduleId);
+            throw new ModuleConfigurationNotFoundException('There is no module configuration with id ' . $moduleId);
         }
     }
 
     /**
      * @return array
      */
-    public function getModuleIdsOfModuleConfigurations() : array
+    public function getModuleIdsOfModuleConfigurations(): array
     {
         return array_keys($this->moduleConfigurations);
     }
 
     /**
-     * @param Chain $chain
+     * @param ClassExtensionsChain $chain
      */
-    public function addChain(Chain $chain)
+    public function setClassExtensionsChain(ClassExtensionsChain $chain)
     {
-        $this->chains[$chain->getName()] = $chain;
+        $this->chain = $chain;
     }
 
     /**
-     * @param string $name
-     * @return Chain
+     * @return ClassExtensionsChain
      */
-    public function getChain(string $name): Chain
+    public function getClassExtensionsChain(): ClassExtensionsChain
     {
-        return $this->chains[$name];
+        return $this->chain;
     }
 
     /**
-     * @return array
+     * @param string $moduleId
+     * @return bool
      */
-    public function getChains(): array
+    public function hasModuleConfiguration(string $moduleId): bool
     {
-        return $this->chains;
+        return isset($this->moduleConfigurations[$moduleId]);
     }
 }

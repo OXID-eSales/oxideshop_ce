@@ -6,22 +6,50 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Module;
 
-use OxidEsales\EshopCommunity\Tests\Integration\Modules\Environment;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
+use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\Eshop\Core\UtilsView;
-use OxidEsales\TestingLibrary\UnitTestCase;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class ModuleSmartyPluginDirectoryTest
  */
-class ModuleSmartyPluginDirectoriesTest extends UnitTestCase
+class ModuleSmartyPluginDirectoriesTest extends TestCase
 {
+    private $container;
+
+    public function setUp()
+    {
+        $this->container = ContainerFactory::getInstance()->getContainer();
+
+        $this->container
+            ->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
+            ->generate();
+
+        $this->activateTestModule();
+    }
+
+    public function tearDown()
+    {
+        $this->deactivateTestModule();
+
+        $this->removeTestModules();
+
+        $this->container
+            ->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
+            ->generate();
+    }
+
     /**
      * Smarty should know about the smarty plugin directories of the modules being activated.
      */
     public function testModuleSmartyPluginDirectoryIsIncludedOnModuleActivation()
     {
-        $this->activateTestModule();
-
         $utilsView = oxNew(UtilsView::class);
         $smarty = $utilsView->getSmarty(true);
 
@@ -36,8 +64,6 @@ class ModuleSmartyPluginDirectoriesTest extends UnitTestCase
 
     public function testSmartyPluginDirectoriesOrder()
     {
-        $this->activateTestModule();
-
         $utilsView = oxNew(UtilsView::class);
         $smarty = $utilsView->getSmarty(true);
 
@@ -79,9 +105,28 @@ class ModuleSmartyPluginDirectoriesTest extends UnitTestCase
 
     private function activateTestModule()
     {
-        $modules = ['with_metadata_v21'];
-        $environment = new Environment();
-        $environment->prepare($modules);
-        $environment->activateModules($modules);
+        $id = 'with_metadata_v21';
+        $package = new OxidEshopPackage($id, __DIR__ . '/Fixtures/' . $id);
+        $package->setTargetDirectory('oeTest/' . $id);
+
+        $this->container->get(ModuleInstallerInterface::class)
+            ->install($package);
+
+        $this->container
+            ->get(ModuleActivationBridgeInterface::class)
+            ->activate('with_metadata_v21', Registry::getConfig()->getShopId());
+    }
+
+    private function deactivateTestModule()
+    {
+        $this->container
+            ->get(ModuleActivationBridgeInterface::class)
+            ->deactivate('with_metadata_v21', Registry::getConfig()->getShopId());
+    }
+
+    private function removeTestModules()
+    {
+        $fileSystem = $this->container->get('oxid_esales.symfony.file_system');
+        $fileSystem->remove($this->container->get(ContextInterface::class)->getModulesPath() . '/oeTest/');
     }
 }

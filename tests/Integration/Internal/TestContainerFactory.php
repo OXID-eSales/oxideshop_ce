@@ -6,8 +6,10 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal;
 
+use org\bovigo\vfs\vfsStream;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
-use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
 
 /**
@@ -15,13 +17,24 @@ use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBu
  */
 class TestContainerFactory
 {
+    /**
+     * @var BasicContextStub
+     */
+    private $context;
+
+    public function __construct()
+    {
+        $this->prepareVFS();
+        $this->context = $this->getBasicContextStub();
+    }
+
     public function create(): SymfonyContainerBuilder
     {
-        $containerBuilder = new ContainerBuilder(new BasicContext());
-        $container = $containerBuilder->getContainer();
+        $containerBuilder = new ContainerBuilder($this->context);
 
+        $container = $containerBuilder->getContainer();
         $container = $this->setAllServicesAsPublic($container);
-        $container = $this->setTestProjectConfigurationFile($container);
+        $container = $this->setBasicContextStub($container);
 
         return $container;
     }
@@ -35,18 +48,30 @@ class TestContainerFactory
         return $container;
     }
 
-    private function setTestProjectConfigurationFile(SymfonyContainerBuilder $container): SymfonyContainerBuilder
+    private function setBasicContextStub(SymfonyContainerBuilder $container): SymfonyContainerBuilder
     {
-        $projectConfigurationYmlStorageDefinition = $container->getDefinition('oxid_esales.module.configuration.project_configuration_yaml_file_storage');
-        $projectConfigurationYmlStorageDefinition->setArgument(
-            '$filePath',
-            tempnam(sys_get_temp_dir(), 'test_')
-        );
-        $container->setDefinition(
-            'oxid_esales.module.configuration.project_configuration_yaml_file_storage',
-            $projectConfigurationYmlStorageDefinition
-        );
+        $container->set(BasicContextInterface::class, $this->context);
+        $container->autowire(BasicContextInterface::class, BasicContextStub::class);
 
         return $container;
+    }
+
+    private function getBasicContextStub(): BasicContextStub
+    {
+        $context = new BasicContextStub();
+        $context->setProjectConfigurationDirectory($this->getTestProjectConfigurationDirectory());
+
+        return $context;
+    }
+
+    private function prepareVFS(): void
+    {
+        $vfsStreamDirectory = vfsStream::setup('project_configuration');
+        vfsStream::create([], $vfsStreamDirectory);
+    }
+
+    private function getTestProjectConfigurationDirectory(): string
+    {
+        return vfsStream::url('project_configuration/');
     }
 }

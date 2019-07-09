@@ -6,11 +6,13 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\ProjectDIConfig\Dao;
 
+use OxidEsales\EshopCommunity\Internal\Application\BootstrapContainer\BootstrapContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -26,15 +28,22 @@ class ProjectYamlDaoTest extends TestCase
     public function setUp()
     {
         $contextStub = $this->getMockBuilder(BasicContext::class)
-            ->setMethods(['getSourcePath'])->getMock();
-        $contextStub->method('getSourcePath')->willReturn(__DIR__);
-        $this->dao = new ProjectYamlDao($contextStub);
+            ->disableOriginalConstructor()
+            ->setMethods(['getGeneratedServicesFilePath'])->getMock();
+        $contextStub
+            ->method('getGeneratedServicesFilePath')
+            ->willReturn($this->getTestGeneratedServicesFilePath());
+
+        $this->dao = new ProjectYamlDao(
+            $contextStub,
+            $this->get('oxid_esales.symfony.file_system')
+        );
     }
 
     protected function tearDown()
     {
         parent::tearDown();
-        $projectFilePath = __DIR__ . DIRECTORY_SEPARATOR . BasicContext::GENERATED_PROJECT_FILE_NAME;
+        $projectFilePath = $this->getTestGeneratedServicesFilePath();
         if (file_exists($projectFilePath)) {
             unlink($projectFilePath);
         }
@@ -49,7 +58,7 @@ imports:
 
 EOT;
         file_put_contents(
-            __DIR__ . DIRECTORY_SEPARATOR . BasicContext::GENERATED_PROJECT_FILE_NAME,
+            $this->getTestGeneratedServicesFilePath(),
             $testData
         );
 
@@ -60,7 +69,7 @@ EOT;
     public function testLoadingEmptyFile()
     {
         file_put_contents(
-            __DIR__ . DIRECTORY_SEPARATOR . BasicContext::GENERATED_PROJECT_FILE_NAME,
+            $this->getTestGeneratedServicesFilePath(),
             ''
         );
 
@@ -90,7 +99,7 @@ EOT;
     public function testClearingCacheOnWriting()
     {
         $dao = $this->get(ProjectYamlDaoInterface::class);
-        $context = new BasicContext();
+        $context = BootstrapContainerFactory::getBootstrapContainer()->get(BasicContextInterface::class);
 
         $projectYaml = new DIConfigWrapper([]);
 
@@ -107,5 +116,10 @@ EOT;
         ContainerFactory::getInstance()->getContainer();
         // Verify container has been rebuild be checking that a cachefile exists
         $this->assertFileExists($context->getContainerCacheFilePath());
+    }
+
+    private function getTestGeneratedServicesFilePath(): string
+    {
+        return __DIR__ . DIRECTORY_SEPARATOR . 'generated_project.yaml';
     }
 }

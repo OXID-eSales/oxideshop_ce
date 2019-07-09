@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin;
 
-use OxidEsales\Eshop\Application\Controller\ContentController;
-use OxidEsales\Eshop\Core\Registry;
-
 /**
  * Admin interface functionality.
  *
@@ -16,6 +13,18 @@ use OxidEsales\Eshop\Core\Registry;
  */
 class ModuleTest extends ModuleBaseTest
 {
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->installModule('test1');
+        $this->installModule('test2');
+        $this->installModule('oxid/test6');
+        $this->installModule('oxid/test7');
+        $this->installModule('oxid/namespace1');
+        $this->installModule('oxid/InvalidNamespaceModule1');
+    }
+
     /**
      * Testing modules in vendor directory. Checking when any file with source code class of module is deleted.
      *
@@ -74,6 +83,28 @@ class ModuleTest extends ModuleBaseTest
         $this->clickAndWait('save');
 
         // Assert that added information appeared.
+        $this->assertChecked("//input[@name='confbools[testEmptyBoolConfig]' and @type='checkbox']");
+        $this->assertElementValue("confstrs[testEmptyStrConfig]", 'testString', 'Value for text input (str) should have been saved');
+        $this->assertElementValue("confarrs[testEmptyArrConfig]", "option1\noption2\noption3", 'Values for text area array (arr) should have been saved');
+        $this->assertElementValue("confaarrs[testEmptyAArrConfig]", "key1 => option1\nkey2 => option2", 'Values for text area assoc array (aarr) should have been saved');
+        $this->assertElementValue("confselects[testEmptySelectConfig]", '2', 'Value for select should have been saved');
+
+        // Activate module and check that new setting values are there.
+        $this->openTab("Overview");
+        $this->activateModule("Test module #1");
+        $this->openTab("Settings");
+
+        $this->assertChecked("//input[@name='confbools[testEmptyBoolConfig]' and @type='checkbox']");
+        $this->assertElementValue("confstrs[testEmptyStrConfig]", 'testString', 'Value for text input (str) should have been saved');
+        $this->assertElementValue("confarrs[testEmptyArrConfig]", "option1\noption2\noption3", 'Values for text area array (arr) should have been saved');
+        $this->assertElementValue("confaarrs[testEmptyAArrConfig]", "key1 => option1\nkey2 => option2", 'Values for text area assoc array (aarr) should have been saved');
+        $this->assertElementValue("confselects[testEmptySelectConfig]", '2', 'Value for select should have been saved');
+
+        // Deactivate module and check that new setting values are there.
+        $this->openTab("Overview");
+        $this->deactivateModule("Test module #1");
+        $this->openTab("Settings");
+
         $this->assertChecked("//input[@name='confbools[testEmptyBoolConfig]' and @type='checkbox']");
         $this->assertElementValue("confstrs[testEmptyStrConfig]", 'testString', 'Value for text input (str) should have been saved');
         $this->assertElementValue("confarrs[testEmptyArrConfig]", "option1\noption2\noption3", 'Values for text area array (arr) should have been saved');
@@ -167,8 +198,6 @@ class ModuleTest extends ModuleBaseTest
         $this->clickAndWait("yesButton");
         $this->openTab("Installed Shop Modules");
         $this->assertTextNotPresent("Problematic Files");
-        $this->assertTextNotPresent('NonExistentClass');
-        $this->assertTextNotPresent('NonExistentFile');
     }
 
     /**
@@ -201,6 +230,7 @@ class ModuleTest extends ModuleBaseTest
         $this->clickAndWait("//form[@id='myedit']//input[@value='Deactivate']");
         $this->assertActivationButtonIsPresent();
         $this->assertDeactivationButtonIsNotPresent();
+        $this->waitForFrameToLoad('adminnav');
     }
 
     /**
@@ -250,86 +280,6 @@ class ModuleTest extends ModuleBaseTest
         }
 
         $this->loginAdmin("Extensions", "Modules");
-        $this->openListItem("Test module #6 (in vendor dir)");
-        $this->clickAndWait("//form[@id='myedit']//input[@value='Activate']");
-        $this->assertElementPresent("//form[@id='myedit']//input[@value='Deactivate']");
-        $this->assertTextPresent("1.0");
-        $this->assertTextPresent("OXID eSales");
-        $this->assertTextPresent("info@oxid-esales.com");
-        $this->assertTextPresent("http://www.oxid-esales.com");
-
-        $this->openListItem("Test module #6 (in vendor dir)");
-        $this->openTab("Test tab EN");
-
-        $this->clearCache();
-        $this->openShop();
-        $this->open(shopURL."en/About-Us/");
-        $this->assertTextPresent("About Us + info6");
-
-        // vendor file name is change from myinfo6 to myinfo6test
-        $this->updateInformationAboutShopExtension('oxid/test6/view/myinfo6', 'oxid/test6/view/myinfo6test');
-
-        $this->openShop();
-        $this->open(shopURL."en/About-Us/");
-        $this->assertTextNotPresent(strtoupper("About Us + info6"));
-        $this->clearCache();
-        $this->openShop();
-        $this->assertTextNotPresent("Module #6 title EN");
-        $this->switchLanguage("Deutsch");
-        $this->assertTextNotPresent("Module #6 title DE");
-
-        // Check if error logged
-        $this->assertLoggedException(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class, "Module class myinfo6test not found");
-
-        //checking if module is deactive after  vendor file rename
-        $this->loginAdmin("Extensions", "Modules");
-        $this->frame("edit");
-        $this->assertTextPresent("Invalid modules were detected");
-        $this->assertTextPresent("Do you want to delete all registered module information and saved configurations");
-        $this->assertTextPresent("OxidEsales\\Eshop\\Application\\Controller\\ContentController => oxid/test6/view/myinfo6test");
-        $this->clickAndWaitFrame("yesButton");
-        $this->openListItem("link=Test module #6 (in vendor dir)");
-        $this->assertElementNotPresent("//form[@id='myedit']//input[@value='Deactivate']");
-
-        //checking if module (oxblock, menu.xml) is disabled in shop after vendor file rename
-        $this->clearCache();
-        $this->openShop();
-        $this->assertTextNotPresent("Module #6 title EN");
-        $this->switchLanguage("Deutsch");
-        $this->assertTextNotPresent("Module #6 title DE");
-        $this->clearCache();
-        $this->openShop();
-        $this->open(shopURL."en/About-Us/");
-        $this->assertTextNotPresent("About Us + info6");
-
-        //file name is reset to the original
-        $aModules = array('content' => 'oxid/test6/view/myinfo6');
-        Registry::getConfig()->saveShopConfVar("aarr", "aModules", $aModules);
-
-        $this->loginAdmin("Extensions", "Modules");
-        $this->clickAndWait("link=Test module #6 (in vendor dir)");
-        $this->frame("edit");
-        $this->clickAndWait("//form[@id='myedit']//input[@value='Activate']");
-        $this->assertElementPresent("//form[@id='myedit']//input[@value='Deactivate']");
-        $this->frame('list');
-        $this->waitForElement("link=Test tab EN");
-        $this->openTab("Test tab EN");
-        $this->assertTextPresent("oxid/test6/view/myinfo6");
-    }
-
-    /**
-     * Testing modules in vendor directory. Checking when any file with source code class of module is deleted.
-     *
-     * @group adminFunctionality
-     */
-    public function testModulesHandlingDeleteVendorDir()
-    {
-        $testConfig = $this->getTestConfig();
-        if ($testConfig->isSubShop()) {
-            $this->markTestSkipped("Test is not for SubShop");
-        }
-
-        $this->loginAdmin("Extensions", "Modules");
         $this->clickAndWait("link=Test module #6 (in vendor dir)");
         $this->frame("edit");
         $this->clickAndWait("//form[@id='myedit']//input[@value='Activate']");
@@ -342,8 +292,12 @@ class ModuleTest extends ModuleBaseTest
         $this->open(shopURL."en/About-Us/");
         $this->assertTextPresent("About Us + info6");
 
-        //vendor dir name is changed from test6 to test6test
-        $this->updateInformationAboutShopExtension('oxid/test6/view/myinfo6', 'oxid/test6test/view/myinfo6');
+        $moduleDirectoryPath= $this->getTestConfig()->getShopPath() . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR ;
+
+        rename(
+            $moduleDirectoryPath . 'oxid/test6/view/myinfo6.php',
+            $moduleDirectoryPath . 'oxid/test6/view/deleted'
+        );
 
         $this->openShop();
         $this->open(shopURL."en/About-Us/");
@@ -351,14 +305,13 @@ class ModuleTest extends ModuleBaseTest
         $this->assertTextPresent("About Us");
 
         // Check if error logged
-        $this->assertLoggedException(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class, "Module class myinfo6 not found. Module ID (module id not availible)");
+        $this->assertLoggedException(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class, "Module ID (module id not availible)");
 
         //checking if module is deactivated after /dir rename
         $this->loginAdmin("Extensions", "Modules");
         $this->frame("edit");
         $this->assertTextPresent("Invalid modules were detected");
         $this->assertTextPresent("Do you want to delete all registered module information and saved configurations");
-        $this->assertTextPresent("oxid/metadata.php");
         $this->clickAndWait("yesButton");
         $this->frame("list");
         $this->clickAndWait("link=Test module #6 (in vendor dir)");
@@ -380,8 +333,11 @@ class ModuleTest extends ModuleBaseTest
         $this->open(shopURL."en/About-Us/");
         $this->assertTextNotPresent("About Us + info6");
 
-        //checking if is restore the vendor dir name to original
-        Registry::getConfig()->saveShopConfVar("aarr", "aModules", array());
+        rename(
+            $moduleDirectoryPath . 'oxid/test6/view/deleted',
+            $moduleDirectoryPath . 'oxid/test6/view/myinfo6.php'
+        );
+
         $this->loginAdmin("Extensions", "Modules");
         $this->clickAndWait("link=Test module #6 (in vendor dir)");
         $this->clickAndWait("link=Test module #6 (in vendor dir)");
@@ -392,25 +348,5 @@ class ModuleTest extends ModuleBaseTest
         $this->waitForElement("link=Test tab EN");
         $this->openTab("Test tab EN");
         $this->assertTextPresent("oxid/test6/view/myinfo6");
-    }
-
-    /**
-     * Change module id in chain to imitate that module was updated in file system.
-     *
-     * @param string $existingExtensionInformation
-     * @param string $newExtensionInformation
-     */
-    private function updateInformationAboutShopExtension($existingExtensionInformation, $newExtensionInformation)
-    {
-        Registry::set(\OxidEsales\Eshop\Core\Config::class, null);
-        $activeModules = Registry::getConfig()->getConfigParam("aModules");
-        foreach ($activeModules as $shopClassName => $moduleClassName) {
-            if (strpos($moduleClassName, $existingExtensionInformation) !== false) {
-                $updatedModuleClassName = str_replace($existingExtensionInformation, $newExtensionInformation, $moduleClassName);
-                $activeModules[$shopClassName] = $updatedModuleClassName;
-            }
-        }
-        Registry::getConfig()->saveShopConfVar("aarr", "aModules", $activeModules);
-        $this->clearCache();
     }
 }

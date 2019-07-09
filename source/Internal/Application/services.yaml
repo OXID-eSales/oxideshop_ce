@@ -3,3 +3,7 @@ imports:
     - { resource: Events/services.yaml }
     - { resource: Service/services.yaml }
     - { resource: Utility/services.yaml }
+    - { resource: ../Common/bootstrap-services.yaml }
+    - { resource: ../Module/Install/bootstrap-services.yaml }
+    - { resource: ../Module/MetaData/bootstrap-services.yaml }
+    - { resource: ../Module/Configuration/bootstrap-services.yaml }

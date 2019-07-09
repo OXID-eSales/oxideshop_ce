@@ -19,5 +19,5 @@ $aModule = array(
     'thumbnail'   => 'picture.png',
     'version'     => '1.0',
     'author'      => 'OXID eSales AG',
-    'extend'      => [\OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\ModuleChainExtension42\MyClass42::class => 'module_chain_extension_4_2/module_chain_extension_4_2_myclass']
+    'extend'      => [\OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\ModuleChainExtension42\MyClass42::class => 'oeTest/module_chain_extension_4_2/module_chain_extension_4_2_myclass']
 );

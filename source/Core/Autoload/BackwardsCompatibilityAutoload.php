@@ -72,8 +72,6 @@ class BackwardsCompatibilityAutoload
      */
     private static function getBackwardsCompatibilityClassMap()
     {
-        $classMap = include __DIR__ . DIRECTORY_SEPARATOR . 'BackwardsCompatibilityClassMap.php';
-
-        return $classMap;
+        return (new BackwardsCompatibilityClassMapProvider())->getMap();
     }
 }

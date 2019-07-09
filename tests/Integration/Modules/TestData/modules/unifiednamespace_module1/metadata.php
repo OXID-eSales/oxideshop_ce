@@ -13,7 +13,7 @@ use unifiednamespace_module1\Model\TestContent;
 /**
  * Metadata version
  */
-$sMetadataVersion = '1.2';
+$sMetadataVersion = '1.1';
 
 /**
  * Module information
@@ -33,10 +33,10 @@ $aModule = array(
     'url'         => 'www.johndoe.com',
     'email'       => 'john@doe.com',
     'extend'      => array(
-        'content' => 'unifiednamespace_module1/Controller/Test1ContentController',
+        'content' => 'oeTest/unifiednamespace_module1/Controller/Test1ContentController',
     ),
     'files'       => array(
-        'Test1Content' => 'unifiednamespace_module1/Model/Test1Content.php',
+        'Test1Content' => 'oeTest/unifiednamespace_module1/Model/Test1Content.php',
     ),
     'templates'   => array(),
     'blocks'      => array(),

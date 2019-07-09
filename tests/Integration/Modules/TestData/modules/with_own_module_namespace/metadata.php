@@ -1,10 +1,12 @@
 <?php
 
+$sMetadataVersion = '1.1';
+
 /**
  * Module information
  */
 $aModule = array(
-    'id'           => 'EshopTestModuleOne',
+    'id'           => 'with_own_module_namespace',
     'title'        => 'OXID eShop namespaced test module',
     'description'  => 'Double the price. Show payment error message during checkout.',
     'thumbnail'    => 'module.png',

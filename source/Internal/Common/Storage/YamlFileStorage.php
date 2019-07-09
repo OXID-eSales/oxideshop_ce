@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Internal\Common\Storage;
 
 use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 use Symfony\Component\Config\FileLocatorInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Lock\Factory;
 use Symfony\Component\Yaml\Yaml;
 
@@ -25,23 +26,34 @@ class YamlFileStorage implements ArrayStorageInterface
      * @var string
      */
     private $filePath;
+
     /**
      * @var Factory
      */
     private $lockFactory;
 
     /**
+     * @var Filesystem
+     */
+    private $filesystemService;
+
+    /**
      * YamlFileStorage constructor.
-     *
      * @param FileLocatorInterface $fileLocator
      * @param string               $filePath
      * @param Factory              $lockFactory
+     * @param Filesystem           $filesystemService
      */
-    public function __construct(FileLocatorInterface $fileLocator, string $filePath, Factory $lockFactory)
-    {
+    public function __construct(
+        FileLocatorInterface $fileLocator,
+        string $filePath,
+        Factory $lockFactory,
+        Filesystem $filesystemService
+    ) {
         $this->fileLocator = $fileLocator;
         $this->filePath = $filePath;
         $this->lockFactory = $lockFactory;
+        $this->filesystemService = $filesystemService;
     }
 
     /**
@@ -61,9 +73,10 @@ class YamlFileStorage implements ArrayStorageInterface
     /**
      * @param array $data
      */
-    public function save(array $data)
+    public function save(array $data): void
     {
-        $lock = $this->lockFactory->createLock($this->filePath);
+        $lock = $this->lockFactory->createLock($this->getLockId());
+
         if ($lock->acquire(true)) {
             try {
                 file_put_contents(
@@ -84,6 +97,7 @@ class YamlFileStorage implements ArrayStorageInterface
         try {
             $filePath = $this->fileLocator->locate($this->filePath);
         } catch (FileLocatorFileNotFoundException $exception) {
+            $this->createFileDirectory();
             $this->createFile();
             $filePath = $this->fileLocator->locate($this->filePath);
         }
@@ -92,10 +106,28 @@ class YamlFileStorage implements ArrayStorageInterface
     }
 
     /**
+     * Creates file directory if it doesn't exist.
+     */
+    private function createFileDirectory(): void
+    {
+        if (!$this->filesystemService->exists(\dirname($this->filePath))) {
+            $this->filesystemService->mkdir(\dirname($this->filePath));
+        }
+    }
+
+    /**
      * Creates file.
      */
-    private function createFile()
+    private function createFile(): void
     {
-        touch($this->filePath);
+        $this->filesystemService->touch($this->filePath);
+    }
+
+    /**
+     * @return string
+     */
+    private function getLockId(): string
+    {
+        return md5($this->filePath);
     }
 }

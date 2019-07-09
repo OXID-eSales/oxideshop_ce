@@ -8,36 +8,130 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Configuration\Dao;
 
+use org\bovigo\vfs\vfsStream;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use PHPUnit\Framework\TestCase;
-use OxidEsales\EshopCommunity\Internal\Common\Storage\ArrayStorageInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDao;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ProjectConfigurationDataMapper;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ProjectConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 /**
  * @internal
  */
 class ProjectConfigurationDaoTest extends TestCase
 {
-    public function testProjectConfigurationSaving()
+    use ContainerTrait;
+
+    /**
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Configuration\Exception\ProjectConfigurationIsEmptyException
+     */
+    public function testProjectConfigurationGetterThrowsExceptionIfStorageIsEmpty(): void
     {
+        $vfsStreamDirectory = vfsStream::setup();
+        vfsStream::create([], $vfsStreamDirectory);
+
+        $context = $this
+            ->getMockBuilder(BasicContextInterface::class)
+            ->getMock();
+
+        $context
+            ->method('getProjectConfigurationDirectory')
+            ->willReturn(vfsStream::url('root'));
+
+        $projectConfigurationDao = new ProjectConfigurationDao(
+            $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock(),
+            $context,
+            $this->get('oxid_esales.symfony.file_system')
+        );
+
+        $projectConfigurationDao->getConfiguration();
+    }
+
+    public function testConfigurationIsEmptyIfNoEnvironment(): void
+    {
+        $vfsStreamDirectory = vfsStream::setup();
+        vfsStream::create([], $vfsStreamDirectory);
+
+        $context = $this
+            ->getMockBuilder(BasicContextInterface::class)
+            ->getMock();
+
+        $context
+            ->method('getProjectConfigurationDirectory')
+            ->willReturn(vfsStream::url('root'));
+
+        $projectConfigurationDao = new ProjectConfigurationDao(
+            $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock(),
+            $context,
+            $this->get('oxid_esales.symfony.file_system')
+        );
+
+        $this->assertTrue($projectConfigurationDao->isConfigurationEmpty());
+    }
+
+    public function testConfigurationIsEmptyIfDirectoryDoesNotExist(): void
+    {
+        $vfsStreamDirectory = vfsStream::setup();
+        vfsStream::create([], $vfsStreamDirectory);
+
+        $context = $this
+            ->getMockBuilder(BasicContextInterface::class)
+            ->getMock();
+
+        $context
+            ->method('getProjectConfigurationDirectory')
+            ->willReturn(vfsStream::url('root') . '/nonExistent');
+
+        $projectConfigurationDao = new ProjectConfigurationDao(
+            $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock(),
+            $context,
+            $this->get('oxid_esales.symfony.file_system')
+        );
+
+        $this->assertTrue($projectConfigurationDao->isConfigurationEmpty());
+    }
+
+    public function testConfigurationNotIsEmptyIfAtLeastOneEnvironmentPresents(): void
+    {
+        $projectConfiguration = new ProjectConfiguration();
+        $projectConfiguration->addEnvironmentConfiguration('dev', new EnvironmentConfiguration());
+
         $projectConfigurationDao = $this
             ->getContainer()
             ->get(ProjectConfigurationDaoInterface::class);
 
-        $projectConfiguration = $this->getTestProjectConfiguration();
+        $projectConfigurationDao->save($projectConfiguration);
 
-        $projectConfigurationDao->persistConfiguration($projectConfiguration);
+        $this->assertEquals(
+            $projectConfiguration,
+            $projectConfigurationDao->getConfiguration()
+        );
+
+        $this->assertFalse($projectConfigurationDao->isConfigurationEmpty());
+    }
+
+    public function testSaveEmptyEnvironment(): void
+    {
+        $projectConfiguration = new ProjectConfiguration();
+        $projectConfiguration->addEnvironmentConfiguration('someEnvironment', new EnvironmentConfiguration());
+        $projectConfiguration->addEnvironmentConfiguration('andAnotherEnvironment', new EnvironmentConfiguration());
+
+        $projectConfigurationDao = $this
+            ->getContainer()
+            ->get(ProjectConfigurationDaoInterface::class);
+
+        $projectConfigurationDao->save($projectConfiguration);
 
         $this->assertEquals(
             $projectConfiguration,
@@ -45,38 +139,40 @@ class ProjectConfigurationDaoTest extends TestCase
         );
     }
 
-    public function testWithCorrectNode()
+    public function testDeleteEnvironment(): void
     {
-        $projectConfigurationData = ['environments' => []];
+        $projectConfiguration = new ProjectConfiguration();
+        $projectConfiguration->addEnvironmentConfiguration('toDelete', new EnvironmentConfiguration());
+        $projectConfiguration->addEnvironmentConfiguration('dev', new EnvironmentConfiguration());
 
-        $projectConfigurationDataMapper = $this->getProjectConfigurationDataMapper();
+        $projectConfigurationDao = $this
+            ->getContainer()
+            ->get(ProjectConfigurationDaoInterface::class);
 
-        $arrayStorage = $this
-            ->getMockBuilder(ArrayStorageInterface::class)
-            ->getMock();
+        $projectConfigurationDao->save($projectConfiguration);
 
-        $arrayStorage
-            ->method('get')
-            ->willReturn($projectConfigurationData);
+        $projectConfiguration->deleteEnvironmentConfiguration('toDelete');
 
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('projectConfiguration');
-        $rootNode
-            ->children()
-            ->arrayNode('environments')
-            ->end()
-            ->end();
-
-        $node = $treeBuilder->buildTree();
-
-        $projectConfigurationDao = new ProjectConfigurationDao(
-            $arrayStorage,
-            $projectConfigurationDataMapper,
-            $node
-        );
+        $projectConfigurationDao->save($projectConfiguration);
 
         $this->assertEquals(
-            $projectConfigurationDataMapper->fromData($projectConfigurationData),
+            $projectConfiguration,
+            $projectConfigurationDao->getConfiguration()
+        );
+    }
+
+    public function testProjectConfigurationSaving(): void
+    {
+        $projectConfigurationDao = $this
+            ->getContainer()
+            ->get(ProjectConfigurationDaoInterface::class);
+
+        $projectConfiguration = $this->getTestProjectConfiguration();
+
+        $projectConfigurationDao->save($projectConfiguration);
+
+        $this->assertEquals(
+            $projectConfiguration,
             $projectConfigurationDao->getConfiguration()
         );
     }
@@ -84,15 +180,16 @@ class ProjectConfigurationDaoTest extends TestCase
     private function getTestProjectConfiguration(): ProjectConfiguration
     {
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->setId('testModuleConfiguration');
+        $moduleConfiguration
+            ->setId('testModuleConfiguration')
+            ->setPath('somePath')
+            ->setVersion('v2.1')
+            ->setDescription([
+                'de' => 'ja',
+                'en' => 'no',
+            ]);
 
         $moduleConfiguration
-            ->addSetting(
-                new ModuleSetting(ModuleSetting::PATH, 'somePath')
-            )
-            ->addSetting(
-                new ModuleSetting(ModuleSetting::VERSION, 'v2.1')
-            )
             ->addSetting(new ModuleSetting(
                 ModuleSetting::CONTROLLERS,
                 [
@@ -137,10 +234,12 @@ class ProjectConfigurationDaoTest extends TestCase
                 ModuleSetting::SHOP_MODULE_SETTING,
                 [
                     [
-                        'group' => 'frontend',
-                        'name'  => 'sGridRow',
-                        'type'  => 'str',
-                        'value' => 'row',
+                        'group'         => 'frontend',
+                        'name'          => 'sGridRow',
+                        'type'          => 'str',
+                        'value'         => 'row',
+                        'position'      => '2',
+                        'constraints'   => ['first', 'second'],
                     ],
                 ]
             ))
@@ -152,8 +251,7 @@ class ProjectConfigurationDaoTest extends TestCase
                 ]
             ));
 
-        $classExtensionChain = new Chain();
-        $classExtensionChain->setName('classExtensions');
+        $classExtensionChain = new ClassExtensionsChain();
         $classExtensionChain->setChain([
             'shopClassNamespace' => [
                 'activeModule2ExtensionClass',
@@ -169,57 +267,21 @@ class ProjectConfigurationDaoTest extends TestCase
 
         $shopConfiguration = new ShopConfiguration();
         $shopConfiguration->addModuleConfiguration($moduleConfiguration);
-        $shopConfiguration->addChain($classExtensionChain);
+        $shopConfiguration->setClassExtensionsChain($classExtensionChain);
 
-        $environmentConfiguration = new EnvironmentConfiguration();
-        $environmentConfiguration->addShopConfiguration(1, $shopConfiguration);
+        $devEnvironmentConfiguration = new EnvironmentConfiguration();
+        $devEnvironmentConfiguration->addShopConfiguration(1, $shopConfiguration);
+        $devEnvironmentConfiguration->addShopConfiguration(2, $shopConfiguration);
+
+        $prodEnvironmentConfiguration = new EnvironmentConfiguration();
+        $prodEnvironmentConfiguration->addShopConfiguration(1, $shopConfiguration);
+        $prodEnvironmentConfiguration->addShopConfiguration(3, new ShopConfiguration());
 
         $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->addEnvironmentConfiguration('dev', $environmentConfiguration);
+        $projectConfiguration->addEnvironmentConfiguration('dev', $devEnvironmentConfiguration);
+        $projectConfiguration->addEnvironmentConfiguration('prod', $prodEnvironmentConfiguration);
 
         return $projectConfiguration;
-    }
-
-    /**
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     */
-    public function testWithIncorrectNode()
-    {
-        $projectConfigurationData = [
-            'environments' => [],
-            'incorrectKey' => [],
-        ];
-
-        $projectConfigurationDataMapper = $this->getProjectConfigurationDataMapper();
-
-        $arrayStorage = $this
-            ->getMockBuilder(ArrayStorageInterface::class)
-            ->getMock();
-
-        $arrayStorage
-            ->method('get')
-            ->willReturn($projectConfigurationData);
-
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('projectConfiguration');
-        $rootNode
-            ->children()
-            ->arrayNode('environments')
-            ->end()
-            ->end();
-
-        $node = $treeBuilder->buildTree();
-
-        $projectConfigurationDao = new ProjectConfigurationDao(
-            $arrayStorage,
-            $projectConfigurationDataMapper,
-            $node
-        );
-
-        $this->assertEquals(
-            $projectConfigurationDataMapper->fromData($projectConfigurationData),
-            $projectConfigurationDao->getConfiguration()
-        );
     }
 
     private function getContainer()

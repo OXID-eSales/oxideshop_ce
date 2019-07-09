@@ -45,16 +45,22 @@ class ExecutorTest extends TestCase
      */
     private function makeExecutor(): ExecutorInterface
     {
-        $context = $this->getMockBuilder(BasicContext::class)->setMethods(['getSourcePath', 'getCommunityEditionSourcePath'])->getMock();
-        $context->method('getCommunityEditionSourcePath')->willReturn((new BasicContext())->getCommunityEditionSourcePath());
-        $context->method('getSourcePath')->willReturn(__DIR__ . '/Fixtures');
+        $context = $this
+            ->getMockBuilder(BasicContext::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getGeneratedServicesFilePath'])
+            ->getMock();
+        $context->method('getGeneratedServicesFilePath')->willReturn(__DIR__ . '/Fixtures/generated_project.yaml');
 
         $containerBuilder = new ContainerBuilder($context);
 
         $container = $containerBuilder->getContainer();
+        $definition = $container->getDefinition('oxid_esales.console.symfony.component.console.application');
+        $definition->addMethodCall('setAutoExit', [false]);
+
         $container->compile();
-        $executor = $container->get(ExecutorInterface::class);
-        return $executor;
+
+        return $container->get(ExecutorInterface::class);
     }
 
     /**
@@ -78,6 +84,7 @@ class ExecutorTest extends TestCase
         $executor = $this->makeExecutor();
         $output = new StreamOutput(fopen('php://memory', 'w', false));
         $executor->execute(new ArrayInput(['command' => $command]), $output);
+
         return $output;
     }
 }

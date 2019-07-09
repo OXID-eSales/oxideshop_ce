@@ -19,5 +19,5 @@ interface ArrayStorageInterface
     /**
      * @param array $data
      */
-    public function save(array $data);
+    public function save(array $data): void;
 }

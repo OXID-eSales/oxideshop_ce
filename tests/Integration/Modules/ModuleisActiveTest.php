@@ -78,8 +78,9 @@ class ModuleIsActiveTest extends BaseModuleTestCase
      */
     public function testIsActive($aInstallModules, $aDeactivateModules, $aResultToAssert)
     {
-        $oEnvironment = new Environment();
-        $oEnvironment->prepare($aInstallModules);
+        foreach ($aInstallModules as $moduleId) {
+            $this->installAndActivateModule($moduleId);
+        }
 
         //deactivation
         $oModule = oxNew('oxModule');

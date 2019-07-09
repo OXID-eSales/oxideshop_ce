@@ -7,14 +7,12 @@
 namespace OxidEsales\EshopCommunity\Internal\Adapter;
 
 use OxidEsales\Eshop\Core\MailValidator;
-use OxidEsales\Eshop\Core\Module\ModuleList;
 use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\NamespaceInformationProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider;
 use OxidEsales\EshopCommunity\Internal\Adapter\Exception\ModuleNotLoadableException;
-use \Exception;
 
 /**
  * @internal
@@ -71,26 +69,6 @@ class ShopAdapter implements ShopAdapterInterface
     }
 
     /**
-     * @param string $moduleId
-     *
-     * @return string
-     *
-     * @throws Exception
-     */
-    public function getModuleFullPath(string $moduleId) : string
-    {
-        $modulePaths = Registry::getConfig()->getConfigParam('aModulePaths');
-
-        /**
-         * @TODO We have to throw an exception here in the future, module path should exist.
-         *       Use module id for the BC.
-         */
-        $moduleRelativePath = $modulePaths[$moduleId] ?? $moduleId;
-
-        return Registry::getConfig()->getModulesDir() . $moduleRelativePath;
-    }
-
-    /**
      * @return string
      */
     public function generateUniqueId(): string
@@ -106,17 +84,6 @@ class ShopAdapter implements ShopAdapterInterface
         $shopControllerMapProvider = oxNew(ShopControllerMapProvider::class);
 
         return $shopControllerMapProvider->getControllerMap();
-    }
-
-    /**
-     * @return array
-     */
-    public function getModules()
-    {
-        $moduleList = oxNew(ModuleList::class);
-        $moduleList->getModulesFromDir(Registry::getConfig()->getModulesDir());
-
-        return $moduleList->getList();
     }
 
     /**
@@ -144,13 +111,5 @@ class ShopAdapter implements ShopAdapterInterface
     public function isShopEditionNamespace(string $namespace): bool
     {
         return NamespaceInformationProvider::classBelongsToShopEditionNamespace($namespace);
-    }
-
-    /**
-     * @return array
-     */
-    public function getBackwardsCompatibilityClassMap(): array
-    {
-        return Registry::getBackwardsCompatibilityClassMap();
     }
 }

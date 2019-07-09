@@ -32,49 +32,6 @@ class ModuleChainsGeneratorTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->assertEquals($aModuleChain, $moduleChainsGenerator->filterInactiveExtensions($aModuleChain));
     }
 
-    public function testGetActiveModuleChainIfDisabled()
-    {
-        $aModuleChain = array("oe/moduleName/myorder");
-        $aModuleChainResult = array();
-
-        /** @var ModuleVariablesLocator|MockObject $oUtilsObject */
-        $moduleVariablesLocator = $this->getMock(
-            \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::class,
-            array('getModuleVariable'),
-            array(),
-            '',
-            false
-        );
-        $valueMap = array(
-            array('aDisabledModules', array('moduleName')),
-            array('aModuleExtensions', array("moduleName" => array("oe/moduleName/myorder"))),
-        );
-        $moduleVariablesLocator->expects($this->any())->method('getModuleVariable')->will($this->returnValueMap($valueMap));
-
-        $moduleChainsGenerator = oxNew('oxModuleChainsGenerator', $moduleVariablesLocator);
-
-        $this->assertEquals($aModuleChainResult, $moduleChainsGenerator->filterInactiveExtensions($aModuleChain));
-    }
-
-    public function testDisableModule()
-    {
-        $sModuleId = 'testId';
-
-        $oModule = oxNew('oxModule');
-        $oModule->load($sModuleId);
-
-        /** @var ModuleVariablesLocator|MockObject $oUtilsObject */
-        $moduleVariablesLocator = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::class, array(), array(), '', false);
-
-        $moduleChainsGenerator = oxNew('oxModuleChainsGenerator', $moduleVariablesLocator);
-
-        $oModuleInstaller = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleInstaller::class, array('deactivate'));
-        $oModuleInstaller->expects($this->once())->method('deactivate')->with($oModule);
-        oxTestModules::addModuleObject('oxModuleInstaller', $oModuleInstaller);
-
-        $moduleChainsGenerator->disableModule($sModuleId);
-    }
-
     /**
      *
      * @covers \OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::onModuleExtensionCreationError

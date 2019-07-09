@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper;
 
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Chain;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 
 /**
@@ -96,13 +96,11 @@ class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterfac
      */
     private function setModuleChains(ShopConfiguration $shopConfiguration, array $chainsData)
     {
-        foreach ($chainsData as $chainName => $chainData) {
-            $chain = new Chain();
-            $chain
-                ->setName($chainName)
-                ->setChain($chainData);
+        if (isset($chainsData[ClassExtensionsChain::NAME])) {
+            $chain = new ClassExtensionsChain();
+            $chain->setChain($chainsData[ClassExtensionsChain::NAME]);
 
-            $shopConfiguration->addChain($chain);
+            $shopConfiguration->setClassExtensionsChain($chain);
         }
     }
 
@@ -112,12 +110,10 @@ class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterfac
      */
     private function getModuleChainData(ShopConfiguration $shopConfiguration): array
     {
-        $data = [];
+        $chain = $shopConfiguration->getClassExtensionsChain();
 
-        foreach ($shopConfiguration->getChains() as $chain) {
-            $data[$chain->getName()] = $chain->getChain();
-        }
-
-        return $data;
+        return [
+            $chain->getName() => $chain->getChain()
+        ];
     }
 }

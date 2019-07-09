@@ -6,38 +6,18 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Validator;
 
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\EventsModuleSettingValidator;
+use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapter;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\EventsValidator;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\ModuleEvents;
 use PHPUnit\Framework\TestCase;
 
 class EventsModuleSettingValidatorTest extends TestCase
 {
-    public function testCanValidate()
-    {
-        $validator = new EventsModuleSettingValidator();
-        
-        $eventsModuleSetting = new ModuleSetting(ModuleSetting::EVENTS, []);
-
-        $this->assertTrue(
-            $validator->canValidate($eventsModuleSetting)
-        );
-    }
-
-    public function testCanNotValidate()
-    {
-        $validator = new EventsModuleSettingValidator();
-
-        $moduleSettingCanNotBeValidated = new ModuleSetting('invalidSetting', []);
-
-        $this->assertFalse(
-            $validator->canValidate($moduleSettingCanNotBeValidated)
-        );
-    }
-
     public function testValidate()
     {
-        $validator = new EventsModuleSettingValidator();
+        $validator = $this->createValidator();
 
         $eventsModuleSetting = new ModuleSetting(
             ModuleSetting::EVENTS,
@@ -47,7 +27,10 @@ class EventsModuleSettingValidatorTest extends TestCase
             ]
         );
 
-        $validator->validate($eventsModuleSetting, 'eventsTestModule', 1);
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->addSetting($eventsModuleSetting);
+
+        $validator->validate($moduleConfiguration, 1);
     }
 
     /**
@@ -55,48 +38,64 @@ class EventsModuleSettingValidatorTest extends TestCase
      */
     public function testValidateThrowsExceptionIfEventsDefinedAreNotCallable()
     {
-        $validator = new EventsModuleSettingValidator();
+        $validator = $this->createValidator();
 
         $eventsModuleSetting = new ModuleSetting(
             ModuleSetting::EVENTS,
             [
-                'onActivate'   => 'noCallableMethod',
-                'onDeactivate' => 'noCallableMethod'
+                'onActivate'   => 'SomeNamespace\\class::noCallableMethod',
+                'onDeactivate' => 'SomeNamespace\\class::noCallableMethod'
             ]
         );
 
-        $validator->validate($eventsModuleSetting, 'eventsTestModule', 1);
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->addSetting($eventsModuleSetting);
+
+        $validator->validate($moduleConfiguration, 1);
     }
 
     /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\WrongModuleSettingException
+     * This is needed only for the modules which has non namespaced classes.
+     * This test MUST be removed when support for non namespaced modules will be dropped (metadata v1.*).
      */
-    public function testValidateThrowsExceptionIfNotAbleToValidateSetting()
+    public function testDoNotValidateForNonNamespacedClasses()
     {
-        $validator = new EventsModuleSettingValidator();
+        $validator = $this->createValidator();
 
-        $moduleSetting = new ModuleSetting(
-            'SettingWhichIsNotAbleToBeValidated',
-            ['onActivate' => 'MyClass::activate']
+        $eventsModuleSetting = new ModuleSetting(
+            ModuleSetting::EVENTS,
+            [
+                'onActivate'   => 'class::noCallableMethod',
+                'onDeactivate' => 'class::noCallableMethod'
+            ]
         );
-        $validator->validate($moduleSetting, 'testModule', 1);
+
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->addSetting($eventsModuleSetting);
+
+        $validator->validate($moduleConfiguration, 1);
     }
 
     /**
      * @dataProvider invalidEventsProvider
      *
      * @param array $invalidEvent
+     *
+     * @throws \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSettingNotValidException
      */
     public function testValidateDoesNotValidateSyntax($invalidEvent)
     {
-        $validator = new EventsModuleSettingValidator();
+        $validator = $this->createValidator();
 
         $eventsModuleSetting = new ModuleSetting(
             ModuleSetting::EVENTS,
             $invalidEvent
         );
 
-        $validator->validate($eventsModuleSetting, 'eventsTestModule', 1);
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->addSetting($eventsModuleSetting);
+
+        $validator->validate($moduleConfiguration, 1);
     }
 
     public function invalidEventsProvider() : array
@@ -105,5 +104,13 @@ class EventsModuleSettingValidatorTest extends TestCase
             [['invalidEvent'   => 'noCallableMethod']],
             [null]
         ];
+    }
+
+    /**
+     * @return EventsValidator
+     */
+    private function createValidator(): EventsValidator
+    {
+        return new EventsValidator(new ShopAdapter());
     }
 }

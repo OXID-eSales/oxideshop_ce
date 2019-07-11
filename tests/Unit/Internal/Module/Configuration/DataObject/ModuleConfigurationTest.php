@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Configuration\DataObject;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use PHPUnit\Framework\TestCase;
 
@@ -47,12 +48,10 @@ class ModuleConfigurationTest extends TestCase
     {
         $moduleConfiguration = new ModuleConfiguration();
 
-        $moduleConfiguration->addSetting(
-            new ModuleSetting(
-                ModuleSetting::CLASS_EXTENSIONS,
-                [
-                    'extendedClassNamespace' => 'expectedExtensionNamespace',
-                ]
+        $moduleConfiguration->addClassExtension(
+            new ClassExtension(
+                'extendedClassNamespace',
+                'expectedExtensionNamespace'
             )
         );
 
@@ -69,12 +68,10 @@ class ModuleConfigurationTest extends TestCase
             $moduleConfiguration->hasClassExtension('expectedExtensionNamespace')
         );
 
-        $moduleConfiguration->addSetting(
-            new ModuleSetting(
-                ModuleSetting::CLASS_EXTENSIONS,
-                [
-                    'extendedClassNamespace' => 'anotherExtensionNamespace',
-                ]
+        $moduleConfiguration->addClassExtension(
+            new ClassExtension(
+                'extendedClassNamespace',
+                'anotherExtensionNamespace'
             )
         );
 

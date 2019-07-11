@@ -10,7 +10,6 @@ use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurati
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 
 /**
@@ -38,13 +37,17 @@ class ClassExtensionsModuleSettingHandler implements ModuleConfigurationHandlerI
      */
     public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId)
     {
-        if ($this->canHandle($configuration)) {
-            $moduleSetting = $configuration->getSetting(ModuleSetting::CLASS_EXTENSIONS);
+        if ($configuration->hasClassExtensions()) {
+            $classExtensions=[];
+
+            foreach ($configuration->getClassExtensions() as $extension) {
+                $classExtensions[$extension->getShopClassNamespace()] = $extension->getModuleExtensionClassNamespace();
+            }
 
             $shopConfigurationSetting = $this->getClassExtensionsShopConfigurationSetting($shopId);
 
             $shopConfigurationSettingValue = $shopConfigurationSetting->getValue();
-            $shopConfigurationSettingValue[$configuration->getId()] = array_values($moduleSetting->getValue());
+            $shopConfigurationSettingValue[$configuration->getId()] = array_values($classExtensions);
 
             $shopConfigurationSetting->setValue($shopConfigurationSettingValue);
 
@@ -58,7 +61,7 @@ class ClassExtensionsModuleSettingHandler implements ModuleConfigurationHandlerI
      */
     public function handleOnModuleDeactivation(ModuleConfiguration $configuration, int $shopId)
     {
-        if ($this->canHandle($configuration)) {
+        if ($configuration->hasClassExtensions()) {
             $shopConfigurationSetting = $this->getClassExtensionsShopConfigurationSetting($shopId);
 
             $shopConfigurationSettingValue = $shopConfigurationSetting->getValue();
@@ -68,15 +71,6 @@ class ClassExtensionsModuleSettingHandler implements ModuleConfigurationHandlerI
 
             $this->shopConfigurationSettingDao->save($shopConfigurationSetting);
         }
-    }
-
-    /**
-     * @param ModuleConfiguration $configuration
-     * @return bool
-     */
-    private function canHandle(ModuleConfiguration $configuration): bool
-    {
-        return $configuration->hasSetting(ModuleSetting::CLASS_EXTENSIONS);
     }
 
     /**

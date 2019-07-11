@@ -28,6 +28,7 @@ use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use OxidEsales\TestingLibrary\Services\Library\DatabaseRestorer\DatabaseRestorer;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 
 /**
  * @internal
@@ -100,12 +101,7 @@ class ModuleActivationServiceTest extends TestCase
         $shopConfigurationSettingDao = $this->container->get(ShopConfigurationSettingDaoInterface::class);
 
         $moduleConfiguration = $this->getTestModuleConfiguration();
-        $moduleConfiguration->addSetting(new ModuleSetting(
-            ModuleSetting::CLASS_EXTENSIONS,
-            [
-                'originalClassNamespace' => 'moduleClassNamespace',
-            ]
-        ));
+        $moduleConfiguration->addClassExtension(new ClassExtension('originalClassNamespace', 'moduleClassNamespace'));
 
         $this->persistModuleConfiguration($moduleConfiguration);
 
@@ -205,13 +201,18 @@ class ModuleActivationServiceTest extends TestCase
                     ],
                 ]
             ))
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::CLASS_EXTENSIONS,
-                [
-                    'originalClassNamespace' => 'moduleClassNamespace',
-                    'otherOriginalClassNamespace' => 'moduleClassNamespace',
-                ]
-            ))
+            ->addClassExtension(
+                new ClassExtension(
+                    'originalClassNamespace',
+                    'moduleClassNamespace'
+                )
+            )
+            ->addClassExtension(
+                new ClassExtension(
+                    'otherOriginalClassNamespace',
+                    'moduleClassNamespace'
+                )
+            )
             ->addSetting(new ModuleSetting(
                 ModuleSetting::CLASSES_WITHOUT_NAMESPACE,
                 [

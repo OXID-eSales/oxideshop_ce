@@ -9,9 +9,9 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Service;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ActiveClassExtensionChainResolver;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use PHPUnit\Framework\TestCase;
@@ -104,11 +104,15 @@ class ActiveClassExtensionChainResolverTest extends TestCase
     private function getModuleConfiguration(string $moduleName, array $extensions): ModuleConfiguration
     {
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration
-            ->setId($moduleName)
-            ->addSetting(
-                new ModuleSetting(ModuleSetting::CLASS_EXTENSIONS, $extensions)
-            );
+
+        foreach ($extensions as $classNamespace => $moduleNamespace) {
+            $classExtensions = new ClassExtension($classNamespace, $moduleNamespace);
+
+            $moduleConfiguration
+                ->setId($moduleName)
+                ->addClassExtension($classExtensions);
+        }
+
         return $moduleConfiguration;
     }
 }

@@ -11,6 +11,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleCon
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ClassExtensionsValidator;
 use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 
 /**
  * @internal
@@ -20,10 +21,6 @@ class ClassExtensionsModuleSettingValidatorTest extends TestCase
     public function testValidClassExtensionsModuleSetting()
     {
         $anyExistentClass = self::class;
-
-        $classExtensions = new ModuleSetting(ModuleSetting::CLASS_EXTENSIONS, [
-            $anyExistentClass => 'moduleClass',
-        ]);
 
         $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
         $shopAdapter
@@ -39,7 +36,7 @@ class ClassExtensionsModuleSettingValidatorTest extends TestCase
         $validator = new ClassExtensionsValidator($shopAdapter);
 
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->addSetting($classExtensions);
+        $moduleConfiguration->addClassExtension(new ClassExtension($anyExistentClass,'moduleClass'));
 
         $this->assertNull(
             $validator->validate($moduleConfiguration, 1)
@@ -51,10 +48,6 @@ class ClassExtensionsModuleSettingValidatorTest extends TestCase
      */
     public function testNamespaceOfPatchedClassMustNotBeShopEditionNamespace()
     {
-        $classExtensions = new ModuleSetting(ModuleSetting::CLASS_EXTENSIONS, [
-            'shopClass' => 'moduleClass',
-        ]);
-
         $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
         $shopAdapter
             ->method('isNamespace')
@@ -64,7 +57,7 @@ class ClassExtensionsModuleSettingValidatorTest extends TestCase
             ->willReturn(true);
 
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->addSetting($classExtensions);
+        $moduleConfiguration->addClassExtension(new ClassExtension('shopClass','moduleClass'));
 
         $validator = new ClassExtensionsValidator($shopAdapter);
         $validator->validate($moduleConfiguration, 1);
@@ -75,10 +68,6 @@ class ClassExtensionsModuleSettingValidatorTest extends TestCase
      */
     public function testNamespaceOfPatchedClassIsShopUnifiedNamespaceButClassDoesNotExist()
     {
-        $classExtensions = new ModuleSetting(ModuleSetting::CLASS_EXTENSIONS, [
-            'nonExistentClass' => 'moduleClass',
-        ]);
-
         $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
         $shopAdapter
             ->method('isNamespace')
@@ -93,7 +82,7 @@ class ClassExtensionsModuleSettingValidatorTest extends TestCase
         $validator = new ClassExtensionsValidator($shopAdapter);
 
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->addSetting($classExtensions);
+        $moduleConfiguration->addClassExtension(new ClassExtension('nonExistentClass','moduleClass'));
 
         $validator->validate($moduleConfiguration, 1);
     }

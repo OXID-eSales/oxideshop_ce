@@ -36,10 +36,10 @@ class ModuleConfigurationDataMapperTest extends TestCase
                 'templates' => [
                     'shopTemplate' => 'moduleTemplate',
                 ],
-                'extend'    => [
-                    'shopClass' => 'moduleClass',
-                ],
             ],
+            'classExtensions'    => [
+                'shopClass' => 'moduleClass',
+            ]
         ];
 
         $moduleConfigurationDataMapper = new ModuleConfigurationDataMapper();

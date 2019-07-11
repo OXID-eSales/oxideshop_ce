@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\Definition;
 
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationMappingKeys;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\NodeInterface;
@@ -57,6 +58,9 @@ class TreeBuilderFactory implements TreeBuilderFactoryInterface
                             ->end()
                             ->scalarNode('email')
                             ->end()
+                            ->arrayNode(ModuleConfigurationMappingKeys::CLASS_EXTENSIONS)
+                                ->scalarPrototype()->end()
+                            ->end()
                             ->arrayNode('settings')
                                 ->children()
                                     ->arrayNode(ModuleSetting::CONTROLLERS)
@@ -83,9 +87,6 @@ class TreeBuilderFactory implements TreeBuilderFactoryInterface
                                                 ->end()
                                             ->end()
                                         ->end()
-                                    ->end()
-                                    ->arrayNode(ModuleSetting::CLASS_EXTENSIONS)
-                                        ->scalarPrototype()->end()
                                     ->end()
                                     ->arrayNode(ModuleSetting::CLASSES_WITHOUT_NAMESPACE)
                                         ->scalarPrototype()->end()

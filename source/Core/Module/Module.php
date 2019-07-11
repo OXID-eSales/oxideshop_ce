@@ -191,9 +191,15 @@ class Module extends \OxidEsales\Eshop\Core\Base
             ->get(ModuleConfigurationDaoBridgeInterface::class)
             ->get($this->getId());
 
-        return $moduleConfiguration->hasSetting(ModuleSetting::CLASS_EXTENSIONS)
-            ? $moduleConfiguration->getSetting(ModuleSetting::CLASS_EXTENSIONS)->getValue()
-            : [];
+        $extensions = [];
+
+        if ($moduleConfiguration->hasClassExtensions()) {
+            foreach ($moduleConfiguration->getClassExtensions() as $extension) {
+                $extensions[$extension->getShopClassNamespace()] = $extension->getModuleExtensionClassNamespace();
+            }
+        }
+
+        return $extensions;
     }
 
     /**
@@ -560,12 +566,10 @@ class Module extends \OxidEsales\Eshop\Core\Base
     {
         $data = [];
 
+        $data[MetaDataProvider::METADATA_EXTEND] = $this->convertClassExtensionsToArray($moduleConfiguration);
+
         foreach ($moduleConfiguration->getSettings() as $setting) {
             switch ($setting->getName()) {
-                case ModuleSetting::CLASS_EXTENSIONS:
-                    $data[MetaDataProvider::METADATA_EXTEND] = $setting->getValue();
-                    break;
-
                 case ModuleSetting::CLASSES_WITHOUT_NAMESPACE:
                     $data[MetaDataProvider::METADATA_FILES] = $setting->getValue();
                     break;
@@ -594,6 +598,17 @@ class Module extends \OxidEsales\Eshop\Core\Base
                     $data[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES] = $setting->getValue();
                     break;
             }
+        }
+
+        return $data;
+    }
+
+    private function convertClassExtensionsToArray(ModuleConfiguration $moduleConfiguration): array
+    {
+        $data = [];
+
+        foreach ($moduleConfiguration->getClassExtensions() as $extension) {
+            $data[$extension->getShopClassNamespace()] = $extension->getModuleExtensionClassNamespace();
         }
 
         return $data;

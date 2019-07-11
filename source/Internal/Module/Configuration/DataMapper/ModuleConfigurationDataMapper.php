@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 
 /**
  * @internal
@@ -33,7 +34,8 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
             'author'      => $configuration->getAuthor(),
             'url'         => $configuration->getUrl(),
             'email'       => $configuration->getEmail(),
-            'settings'    => $this->getSettingsData($configuration)
+            'settings'    => $this->getSettingsData($configuration),
+            ModuleConfigurationMappingKeys::CLASS_EXTENSIONS => $this->getClassExtension($configuration)
         ];
 
         return $data;
@@ -58,8 +60,11 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
             ->setThumbnail($data['thumbnail'])
             ->setAuthor($data['author'])
             ->setUrl($data['url'])
-            ->setEmail($data['email'])
-        ;
+            ->setEmail($data['email']);
+
+        if (isset($data[ModuleConfigurationMappingKeys::CLASS_EXTENSIONS])) {
+            $this->setClassExtension($moduleConfiguration, $data[ModuleConfigurationMappingKeys::CLASS_EXTENSIONS]);
+        }
 
         if (isset($data['settings'])) {
             $this->setSettings($moduleConfiguration, $data['settings']);
@@ -72,7 +77,7 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
      * @param ModuleConfiguration $moduleConfiguration
      * @param array               $settingsData
      */
-    private function setSettings(ModuleConfiguration $moduleConfiguration, array $settingsData)
+    private function setSettings(ModuleConfiguration $moduleConfiguration, array $settingsData): void
     {
         $settings = $this->getMappedSettings($settingsData);
 
@@ -112,5 +117,37 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
         }
 
         return $settings;
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     * @param array               $extension
+     */
+    private function setClassExtension(ModuleConfiguration $moduleConfiguration, array $extension): void
+    {
+        foreach ($extension as $shopClass => $moduleClass) {
+            $moduleConfiguration->addClassExtension(new ClassExtension(
+                $shopClass,
+                $moduleClass
+            ));
+        }
+    }
+
+    /**
+     * @param ModuleConfiguration $configuration
+     *
+     * @return array
+     */
+    private function getClassExtension(ModuleConfiguration $configuration): array
+    {
+        $extensions = [];
+
+        if ($configuration->hasClassExtensions()) {
+            foreach ($configuration->getClassExtensions() as $extension) {
+                $extensions[$extension->getShopClassNamespace()] = $extension->getModuleExtensionClassNamespace();
+            }
+        }
+
+        return $extensions;
     }
 }

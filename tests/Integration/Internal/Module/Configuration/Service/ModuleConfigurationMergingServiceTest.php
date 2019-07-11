@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfi
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleConfigurationMergingServiceInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 
 class ModuleConfigurationMergingServiceTest extends TestCase
 {
@@ -36,12 +37,12 @@ class ModuleConfigurationMergingServiceTest extends TestCase
     {
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('newModule');
-        $moduleConfiguration->addSetting(new ModuleSetting(
-            ModuleSetting::CLASS_EXTENSIONS,
-            [
-                'shopClass' => 'testModuleClassExtendsShopClass',
-            ]
-        ));
+        $moduleConfiguration->addClassExtension(
+            new ClassExtension(
+                'shopClass',
+                'testModuleClassExtendsShopClass'
+            )
+        );
 
         $shopConfigurationWithChain = new ShopConfiguration();
         $chain = new ClassExtensionsChain();
@@ -112,14 +113,21 @@ class ModuleConfigurationMergingServiceTest extends TestCase
     {
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('installedModule');
-        $moduleConfiguration->addSetting(new ModuleSetting(
-            ModuleSetting::CLASS_EXTENSIONS,
-            [
-                'shopClass1' => 'extension1ToStayInNewModuleConfiguration',
-                'shopClass2' => 'extension5',
-                'shopClass5' => 'extension6'
-            ]
-        ));
+
+        $classExtension = [
+            'shopClass1' => 'extension1ToStayInNewModuleConfiguration',
+            'shopClass2' => 'extension5',
+            'shopClass5' => 'extension6'
+        ];
+
+        foreach ($classExtension as $namespace => $moduleExtension) {
+            $moduleConfiguration->addClassExtension(
+                new ClassExtension(
+                    $namespace,
+                    $moduleExtension
+                )
+            );
+        }
 
         $moduleConfigurationMergingService = $this->getMergingService();
         $shopConfiguration = $moduleConfigurationMergingService->merge(
@@ -244,15 +252,22 @@ class ModuleConfigurationMergingServiceTest extends TestCase
     {
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('installedModule');
-        $moduleConfiguration->addSetting(new ModuleSetting(
-            ModuleSetting::CLASS_EXTENSIONS,
-            [
-                'shopClass1'            => 'extension1ToStayInNewModuleConfiguration',
-                'shopClass2'            => 'extension2ToBeChanged',
-                'shopClass3'            => 'extension3ToBeDeleted',
-                'shopClass4ToBeDeleted' => 'extension4ToBeDeleted'
-            ]
-        ));
+
+        $classExtension = [
+            'shopClass1'            => 'extension1ToStayInNewModuleConfiguration',
+            'shopClass2'            => 'extension2ToBeChanged',
+            'shopClass3'            => 'extension3ToBeDeleted',
+            'shopClass4ToBeDeleted' => 'extension4ToBeDeleted'
+        ];
+
+        foreach ($classExtension as $namespace => $moduleExtension) {
+            $moduleConfiguration->addClassExtension(
+                new ClassExtension(
+                    $namespace,
+                    $moduleExtension
+                )
+            );
+        }
 
         $moduleConfiguration->addSetting(
             new ModuleSetting(

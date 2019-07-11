@@ -38,12 +38,10 @@ class ClassExtensionsValidator implements ModuleConfigurationValidatorInterface
      */
     public function validate(ModuleConfiguration $configuration, int $shopId)
     {
-        if ($configuration->hasSetting(ModuleSetting::CLASS_EXTENSIONS)) {
-            $moduleSetting = $configuration->getSetting(ModuleSetting::CLASS_EXTENSIONS);
-
-            foreach ($moduleSetting->getValue() as $classToBePatched => $moduleClass) {
-                if ($this->shopAdapter->isNamespace($classToBePatched)) {
-                    $this->validateClassToBePatchedNamespace($classToBePatched);
+        if ($configuration->hasClassExtensions()) {
+            foreach ($configuration->getClassExtensions() as $extension) {
+                if ($this->shopAdapter->isNamespace($extension->getShopClassNamespace())) {
+                    $this->validateClassToBePatchedNamespace($extension->getShopClassNamespace());
                 }
             }
         }

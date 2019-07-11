@@ -12,6 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMeta
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataSchemaValidator;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataSchemaValidatorInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 
 /**
  * @internal
@@ -83,9 +84,11 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
         $moduleData = $metaData[MetaDataProvider::METADATA_MODULE_DATA];
 
         if (isset($moduleData[MetaDataProvider::METADATA_EXTEND])) {
-            $moduleConfiguration->addSetting(
-                new ModuleSetting(ModuleSetting::CLASS_EXTENSIONS, $moduleData[MetaDataProvider::METADATA_EXTEND])
-            );
+            foreach ($moduleData[MetaDataProvider::METADATA_EXTEND] as $shopClass => $moduleClass) {
+                $moduleConfiguration->addClassExtension(
+                    new ClassExtension($shopClass, $moduleClass)
+                );
+            }
         }
 
         if (isset($moduleData[MetaDataProvider::METADATA_FILES])) {

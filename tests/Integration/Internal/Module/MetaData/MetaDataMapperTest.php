@@ -97,10 +97,16 @@ class MetaDataMapperTest extends TestCase
         $this->assertSame($expectedModuleData['url'], $moduleConfiguration->getUrl());
         $this->assertSame($expectedModuleData['email'], $moduleConfiguration->getEmail());
 
+        $classExtensions = [];
+
+        foreach ($moduleConfiguration->getClassExtensions() as $extension) {
+            $classExtensions[$extension->getShopClassNamespace()] = $extension->getModuleExtensionClassNamespace();
+        }
         $this->assertSame(
             $expectedModuleData['extend'],
-            $moduleConfiguration->getSetting(ModuleSetting::CLASS_EXTENSIONS)->getValue()
+            $classExtensions
         );
+
         $this->assertSame(
             $expectedModuleData['controllers'],
             $moduleConfiguration->getSetting(ModuleSetting::CONTROLLERS)->getValue()
@@ -205,9 +211,16 @@ class MetaDataMapperTest extends TestCase
         $this->assertSame($expectedModuleData['author'], $moduleConfiguration->getAuthor());
         $this->assertSame($expectedModuleData['url'], $moduleConfiguration->getUrl());
         $this->assertSame($expectedModuleData['email'], $moduleConfiguration->getEmail());
+
+        $classExtensions = [];
+
+        foreach ($moduleConfiguration->getClassExtensions() as $extension) {
+            $classExtensions[$extension->getShopClassNamespace()] = $extension->getModuleExtensionClassNamespace();
+        }
+
         $this->assertSame(
             $expectedModuleData['extend'],
-            $moduleConfiguration->getSetting(ModuleSetting::CLASS_EXTENSIONS)->getValue()
+            $classExtensions
         );
         $this->assertSame(
             $expectedModuleData['controllers'],
@@ -274,9 +287,16 @@ class MetaDataMapperTest extends TestCase
         $this->assertSame('', $moduleConfiguration->getEmail());
 
         /** This is the only value defined in metadata.php */
+
+        $classExtensions = [];
+
+        foreach ($moduleConfiguration->getClassExtensions() as $extension) {
+            $classExtensions[$extension->getShopClassNamespace()] = $extension->getModuleExtensionClassNamespace();
+        }
+
         $this->assertEquals(
             $expectedModuleData['extend'],
-            $moduleConfiguration->getSetting(ModuleSetting::CLASS_EXTENSIONS)->getValue()
+            $classExtensions
         );
     }
 

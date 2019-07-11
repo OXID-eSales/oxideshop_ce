@@ -46,6 +46,8 @@ class ModuleConfigurationMergingService implements ModuleConfigurationMergingSer
      * @throws ExtensionNotInChainException
      *
      * @return ShopConfiguration
+     * @throws \OxidEsales\EshopCommunity\Internal\Adapter\Exception\ModuleConfigurationNotFoundException
+     * @throws \OxidEsales\EshopCommunity\Internal\Module\Configuration\Exception\ExtensionNotInChainException
      */
     public function merge(
         ShopConfiguration $shopConfiguration,

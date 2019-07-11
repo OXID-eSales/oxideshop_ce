@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject;
 
 use function in_array;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 
 /**
  * @internal
@@ -65,6 +66,11 @@ class ModuleConfiguration
      * @var array
      */
     private $settings = [];
+
+    /**
+     * @var ClassExtension[]
+     */
+    private $classExtensions = [];
 
     /**
      * @return string
@@ -292,6 +298,29 @@ class ModuleConfiguration
     }
 
     /**
+     * @return ClassExtension[]
+     */
+    public function getClassExtensions(): array
+    {
+        return $this->classExtensions;
+    }
+
+    public function addClassExtension(ClassExtension $extension)
+    {
+        $this->classExtensions[] = $extension;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasClassExtensions(): bool
+    {
+        return !empty($this->classExtensions);
+    }
+
+    /**
      * @param array $settings
      *
      * @return ModuleConfiguration
@@ -342,16 +371,12 @@ class ModuleConfiguration
      */
     public function hasClassExtension(string $namespace): bool
     {
-        $hasClassExtension = false;
-
-        if ($this->hasSetting(ModuleSetting::CLASS_EXTENSIONS)) {
-            $classExtensions = $this
-                ->getSetting(ModuleSetting::CLASS_EXTENSIONS)
-                ->getValue();
-
-            $hasClassExtension = in_array($namespace, $classExtensions, true);
+        foreach ($this->getClassExtensions() as $classExtension) {
+            if ($classExtension->getModuleExtensionClassNamespace() === $namespace) {
+                return true;
+            }
         }
 
-        return $hasClassExtension;
+        return false;
     }
 }

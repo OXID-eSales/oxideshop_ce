@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 
 /**
  * @internal
@@ -35,8 +36,15 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
             'url'         => $configuration->getUrl(),
             'email'       => $configuration->getEmail(),
             'settings'    => $this->getSettingsData($configuration),
-            ModuleConfigurationMappingKeys::CLASS_EXTENSIONS => $this->getClassExtension($configuration)
         ];
+
+        if ($configuration->hasClassExtensionSetting()) {
+            $data[ModuleConfigurationMappingKeys::CLASS_EXTENSIONS] = $this->getClassExtension($configuration);
+        }
+
+        if ($configuration->hasControllers()) {
+            $data[ModuleConfigurationMappingKeys::CONTROLLERS] = $this->getController($configuration);
+        }
 
         return $data;
     }
@@ -64,6 +72,10 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
 
         if (isset($data[ModuleConfigurationMappingKeys::CLASS_EXTENSIONS])) {
             $this->setClassExtension($moduleConfiguration, $data[ModuleConfigurationMappingKeys::CLASS_EXTENSIONS]);
+        }
+
+        if (isset($data[ModuleConfigurationMappingKeys::CONTROLLERS])) {
+            $this->setController($moduleConfiguration, $data[ModuleConfigurationMappingKeys::CONTROLLERS]);
         }
 
         if (isset($data['settings'])) {
@@ -123,12 +135,26 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
      * @param ModuleConfiguration $moduleConfiguration
      * @param array               $extension
      */
-    private function setClassExtension(ModuleConfiguration $moduleConfiguration, array $extension): void
+    private function setClassExtension(ModuleConfiguration $moduleConfiguration, array $extension)
     {
         foreach ($extension as $shopClass => $moduleClass) {
             $moduleConfiguration->addClassExtension(new ClassExtension(
                 $shopClass,
                 $moduleClass
+            ));
+        }
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     * @param array               $controllers
+     */
+    private function setController(ModuleConfiguration $moduleConfiguration, array $controllers)
+    {
+        foreach ($controllers as $id => $controllerClassNamespace) {
+            $moduleConfiguration->addController(new Controller(
+                $id,
+                $controllerClassNamespace
             ));
         }
     }
@@ -149,5 +175,23 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
         }
 
         return $extensions;
+    }
+
+    /**
+     * @param ModuleConfiguration $configuration
+     *
+     * @return array
+     */
+    private function getController(ModuleConfiguration $configuration): array
+    {
+        $controllers = [];
+
+        if ($configuration->hasControllers()) {
+            foreach ($configuration->getControllers() as $controller) {
+                $controllers[$controller->getId()] = $controller->getControllerClassNameSpace();
+            }
+        }
+
+        return $controllers;
     }
 }

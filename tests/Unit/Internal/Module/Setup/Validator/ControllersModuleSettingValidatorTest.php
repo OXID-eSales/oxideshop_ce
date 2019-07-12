@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleCon
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ControllersValidator;
 use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 
 /**
  * @internal
@@ -52,7 +53,7 @@ class ControllersModuleSettingValidatorTest extends TestCase
         $moduleConfiguration->addSetting($setting);
 
         $this->assertNull(
-            $validator->validate($moduleConfiguration,  1)
+            $validator->validate($moduleConfiguration, 1)
         );
     }
 
@@ -61,9 +62,10 @@ class ControllersModuleSettingValidatorTest extends TestCase
      *
      * @dataProvider duplicatedSettingValueDataProvider
      *
-     * @param array
+     * @param Controller[] $duplicatedSettingValue
+     *
      */
-    public function testValidationWithDuplicatedControllerNamespace($duplicatedSettingValue)
+    public function testValidationWithDuplicatedControllerNamespace(array $duplicatedSettingValue)
     {
         $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
         $shopAdapter
@@ -88,10 +90,15 @@ class ControllersModuleSettingValidatorTest extends TestCase
 
         $validator = new ControllersValidator($shopAdapter, $shopConfigurationSettingDao);
 
-        $setting = new ModuleSetting('controllers', $duplicatedSettingValue);
-
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->addSetting($setting);
+        foreach ($duplicatedSettingValue as $value) {
+            $moduleConfiguration->addController(
+                new Controller(
+                    $value->getId(),
+                    $value->getControllerClassNameSpace()
+                )
+            );
+        }
 
         $validator->validate($moduleConfiguration, 1);
     }
@@ -100,11 +107,13 @@ class ControllersModuleSettingValidatorTest extends TestCase
     {
         return [
             [
-                ['moduleControllerName' => 'duplicatedNamespace'],
-            ],
-            [
-                ['duplicatedName' => 'moduleControllerNamepace'],
-            ],
+                [
+                    new Controller('moduleControllerName', 'duplicatedNamespace'),
+                ],
+                [
+                    new Controller('duplicatedName', 'moduleControllerNamepace'),
+                ],
+            ]
         ];
     }
 }

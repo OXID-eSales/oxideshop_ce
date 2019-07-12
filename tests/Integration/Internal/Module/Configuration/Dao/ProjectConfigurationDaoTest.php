@@ -25,8 +25,8 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ProjectCo
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ProjectConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 
 /**
  * @internal
@@ -192,13 +192,15 @@ class ProjectConfigurationDaoTest extends TestCase
             ]);
 
         $moduleConfiguration
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::CONTROLLERS,
-                [
-                    'originalClassNamespace' => 'moduleClassNamespace',
-                    'otherOriginalClassNamespace' => 'moduleClassNamespace',
-                ]
-            ))
+            ->addController(
+                new Controller(
+                    'originalClassNamespace', 'moduleClassNamespace'
+                )
+            )->addController(
+                new Controller(
+                    'otherOriginalClassNamespace', 'moduleClassNamespace'
+                )
+            )
             ->addSetting(new ModuleSetting(
                 ModuleSetting::TEMPLATES,
                 [

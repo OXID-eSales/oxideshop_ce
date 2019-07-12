@@ -6,8 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject;
 
-use function in_array;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 
 /**
  * @internal
@@ -71,6 +71,11 @@ class ModuleConfiguration
      * @var ClassExtension[]
      */
     private $classExtensions = [];
+
+    /**
+     * @var Controller[]
+     */
+    private $controllers = [];
 
     /**
      * @return string
@@ -318,6 +323,35 @@ class ModuleConfiguration
     public function hasClassExtensions(): bool
     {
         return !empty($this->classExtensions);
+    }
+
+
+    /**
+     * @param Controller $controller
+     *
+     * @return $this
+     */
+    public function addController(Controller $controller)
+    {
+        $this->controllers[] = $controller;
+
+        return $this;
+    }
+
+    /**
+     * @return Controller[]
+     */
+    public function getControllers(): array
+    {
+        return $this->controllers;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasControllers(): bool
+    {
+        return !empty($this->controllers);
     }
 
     /**

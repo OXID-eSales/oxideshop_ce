@@ -11,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject;
  */
 class ModuleSetting
 {
-    const CONTROLLERS               = 'controllers';
     const TEMPLATES                 = 'templates';
     const SMARTY_PLUGIN_DIRECTORIES = 'smartyPluginDirectories';
     const TEMPLATE_BLOCKS           = 'blocks';

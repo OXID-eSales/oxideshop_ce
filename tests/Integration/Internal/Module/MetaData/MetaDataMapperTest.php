@@ -107,9 +107,15 @@ class MetaDataMapperTest extends TestCase
             $classExtensions
         );
 
+        $controllers = [];
+
+        foreach ($moduleConfiguration->getControllers() as $controller) {
+            $controllers[$controller->getId()] = $controller->getControllerClassNameSpace();
+        }
+
         $this->assertSame(
             $expectedModuleData['controllers'],
-            $moduleConfiguration->getSetting(ModuleSetting::CONTROLLERS)->getValue()
+            $controllers
         );
         $this->assertSame(
             $expectedModuleData['templates'],
@@ -222,9 +228,16 @@ class MetaDataMapperTest extends TestCase
             $expectedModuleData['extend'],
             $classExtensions
         );
+
+        $controllers = [];
+
+        foreach ($moduleConfiguration->getControllers() as $controller) {
+            $controllers[$controller->getId()] = $controller->getControllerClassNameSpace();
+        }
+
         $this->assertSame(
             $expectedModuleData['controllers'],
-            $moduleConfiguration->getSetting(ModuleSetting::CONTROLLERS)->getValue()
+            $controllers
         );
         $this->assertSame(
             $expectedModuleData['templates'],

@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataSchemaValidator;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataSchemaValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 
 /**
  * @internal
@@ -91,6 +92,14 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
             }
         }
 
+        if (isset($moduleData[MetaDataProvider::METADATA_CONTROLLERS])) {
+            foreach ($moduleData[MetaDataProvider::METADATA_CONTROLLERS] as $id => $controllerClassNameSpace) {
+                $moduleConfiguration->addController(
+                    new Controller($id, $controllerClassNameSpace)
+                );
+            }
+        }
+
         if (isset($moduleData[MetaDataProvider::METADATA_FILES])) {
             $moduleConfiguration->addSetting(
                 new ModuleSetting(
@@ -103,12 +112,6 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
         if (isset($moduleData[MetaDataProvider::METADATA_BLOCKS])) {
             $moduleConfiguration->addSetting(
                 new ModuleSetting(ModuleSetting::TEMPLATE_BLOCKS, $moduleData[MetaDataProvider::METADATA_BLOCKS])
-            );
-        }
-
-        if (isset($moduleData[MetaDataProvider::METADATA_CONTROLLERS])) {
-            $moduleConfiguration->addSetting(
-                new ModuleSetting(ModuleSetting::CONTROLLERS, $moduleData[MetaDataProvider::METADATA_CONTROLLERS])
             );
         }
 

@@ -8,11 +8,13 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Handler;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationMappingKeys;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ControllersModuleSettingHandler;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopSettingType;
 use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 
 /**
  * @internal
@@ -27,18 +29,20 @@ class ControllersModuleSettingHandlerTest extends TestCase
 
         $settingHandler = new ControllersModuleSettingHandler($shopConfigurationSettingDaoMock);
 
-        $moduleSetting = new ModuleSetting(
-            ModuleSetting::CONTROLLERS,
-            [
-                    'firstControllerNewModule'  => \NewModule\FirstClass::class,
-                    'secondControllerNewModule' => \NewModule\SecondClass::class,
-            ]
-        );
-
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId('newmodule')
-            ->addSetting($moduleSetting);
+            ->addController(
+                new Controller(
+                    'firstControllerNewModule',
+                    \NewModule\FirstClass::class
+                )
+            )->addController(
+                new Controller(
+                    'secondControllerNewModule',
+                    \NewModule\SecondClass::class
+                )
+            );
 
         $settingHandler->handleOnModuleActivation($moduleConfiguration, 1);
 
@@ -71,7 +75,7 @@ class ControllersModuleSettingHandlerTest extends TestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId('newmodule')
-            ->addSetting(new ModuleSetting(ModuleSetting::CONTROLLERS, []));
+            ->addSetting(new ModuleSetting(ModuleConfigurationMappingKeys::CONTROLLERS, []));
 
         $settingHandler->handleOnModuleActivation($moduleConfiguration, 1);
 
@@ -108,8 +112,7 @@ class ControllersModuleSettingHandlerTest extends TestCase
 
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
-            ->setId('existingmodule')
-            ->addSetting(new ModuleSetting(ModuleSetting::CONTROLLERS, []));
+            ->setId('existingmodule');
 
         $settingHandler->handleOnModuleDeactivation($moduleConfiguration, 1);
 

@@ -10,4 +10,5 @@ class ModuleConfigurationMappingKeys
 {
 
     const CLASS_EXTENSIONS = 'classExtensions';
+    const CONTROLLERS = 'controllers';
 }

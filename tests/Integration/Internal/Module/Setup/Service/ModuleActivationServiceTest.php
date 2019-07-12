@@ -29,6 +29,7 @@ use OxidEsales\TestingLibrary\Services\Library\DatabaseRestorer\DatabaseRestorer
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 
 /**
  * @internal
@@ -168,13 +169,15 @@ class ModuleActivationServiceTest extends TestCase
         $moduleConfiguration->setPath('TestModule');
 
         $moduleConfiguration
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::CONTROLLERS,
-                [
-                    'originalClassNamespace' => 'moduleClassNamespace',
-                    'otherOriginalClassNamespace' => 'moduleClassNamespace',
-                ]
-            ))
+            ->addController(
+                new Controller(
+                    'originalClassNamespace', 'moduleClassNamespace'
+                )
+            )->addController(
+                new Controller(
+                    'otherOriginalClassNamespace', 'moduleClassNamespace'
+                )
+            )
             ->addSetting(new ModuleSetting(
                 ModuleSetting::TEMPLATES,
                 [

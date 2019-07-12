@@ -567,6 +567,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
         $data = [];
 
         $data[MetaDataProvider::METADATA_EXTEND] = $this->convertClassExtensionsToArray($moduleConfiguration);
+        $data[MetaDataProvider::METADATA_CONTROLLERS] = $this->convertControllersToArray($moduleConfiguration);
 
         foreach ($moduleConfiguration->getSettings() as $setting) {
             switch ($setting->getName()) {
@@ -576,10 +577,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
 
                 case ModuleSetting::TEMPLATE_BLOCKS:
                     $data[MetaDataProvider::METADATA_BLOCKS] = $setting->getValue();
-                    break;
-
-                case ModuleSetting::CONTROLLERS:
-                    $data[MetaDataProvider::METADATA_CONTROLLERS] = $setting->getValue();
                     break;
 
                 case ModuleSetting::EVENTS:
@@ -603,12 +600,33 @@ class Module extends \OxidEsales\Eshop\Core\Base
         return $data;
     }
 
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     *
+     * @return array
+     */
     private function convertClassExtensionsToArray(ModuleConfiguration $moduleConfiguration): array
     {
         $data = [];
 
         foreach ($moduleConfiguration->getClassExtensions() as $extension) {
             $data[$extension->getShopClassNamespace()] = $extension->getModuleExtensionClassNamespace();
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     *
+     * @return array
+     */
+    private function convertControllersToArray(ModuleConfiguration $moduleConfiguration): array
+    {
+        $data = [];
+
+        foreach ($moduleConfiguration->getControllers() as $controller) {
+            $data[$controller->getId()] = $controller->getControllerClassNameSpace();
         }
 
         return $data;

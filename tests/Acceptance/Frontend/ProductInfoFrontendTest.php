@@ -530,7 +530,7 @@ class ProductInfoFrontendTest extends FrontendTestCase
         $this->assertElementPresent("//form[@name='tobasket.searchList_1']//a[text()='%MORE_INFO%']");
         $this->selectVariant("variantselector_searchList_1", 1, "M", "M");
         $this->assertEquals("size[EN]: M", $this->clearString($this->getText("//div[@id='variants']/div/p")));
-        $this->waitForJQueryToFinish();
+        sleep(1);
         $this->click("//a[text()='%RESET_SELECTION%']");
         $this->waitForTextDisappear("%SELECTED_COMBINATION%");
 

@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 
@@ -72,6 +73,11 @@ class ModuleConfiguration
      * @var ClassExtension[]
      */
     private $classExtensions = [];
+
+    /**
+     * @var Template[]
+     */
+    private $templates = [];
 
     /**
      * @var Controller[]
@@ -334,6 +340,29 @@ class ModuleConfiguration
     public function hasClassExtensions(): bool
     {
         return !empty($this->classExtensions);
+    }
+
+    /**
+     * @return Template[]
+     */
+    public function getTemplates(): array
+    {
+        return $this->templates;
+    }
+
+    public function addTemplate(Template $template)
+    {
+        $this->templates[] = $template;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasTemplates(): bool
+    {
+        return !empty($this->templates);
     }
 
     /**

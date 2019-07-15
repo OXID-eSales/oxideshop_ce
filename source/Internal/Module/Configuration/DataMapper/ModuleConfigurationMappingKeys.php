@@ -8,8 +8,8 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper;
 
 class ModuleConfigurationMappingKeys
 {
-
-    const CLASS_EXTENSIONS = 'classExtensions';
+    public const CLASS_EXTENSIONS = 'classExtensions';
+    public const TEMPLATES = 'templates';
     const CONTROLLERS = 'controllers';
     const SMARTY_PLUGIN_DIRECTORIES = 'smartyPluginDirectories';
 }

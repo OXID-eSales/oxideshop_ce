@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\DataMapper;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
@@ -76,7 +77,7 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
 
     /**
      * @param ModuleConfiguration $moduleConfiguration
-     * @param array               $metaData
+     * @param array $metaData
      * @return ModuleConfiguration
      */
     private function mapModuleConfigurationSettings(
@@ -89,6 +90,14 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
             foreach ($moduleData[MetaDataProvider::METADATA_EXTEND] as $shopClass => $moduleClass) {
                 $moduleConfiguration->addClassExtension(
                     new ClassExtension($shopClass, $moduleClass)
+                );
+            }
+        }
+
+        if (isset($moduleData[MetaDataProvider::METADATA_TEMPLATES])) {
+            foreach ($moduleData[MetaDataProvider::METADATA_TEMPLATES] as $templateKey => $templatePath) {
+                $moduleConfiguration->addTemplate(
+                    new Template($templateKey, $templatePath)
                 );
             }
         }
@@ -127,12 +136,6 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
         if (isset($moduleData[MetaDataProvider::METADATA_EVENTS])) {
             $moduleConfiguration->addSetting(
                 new ModuleSetting(ModuleSetting::EVENTS, $moduleData[MetaDataProvider::METADATA_EVENTS])
-            );
-        }
-
-        if (isset($moduleData[MetaDataProvider::METADATA_TEMPLATES])) {
-            $moduleConfiguration->addSetting(
-                new ModuleSetting(ModuleSetting::TEMPLATES, $moduleData[MetaDataProvider::METADATA_TEMPLATES])
             );
         }
 

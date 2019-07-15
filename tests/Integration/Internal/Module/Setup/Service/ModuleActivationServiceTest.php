@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurat
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Path\ModulePathResolver;
@@ -179,13 +180,8 @@ class ModuleActivationServiceTest extends TestCase
                     'otherOriginalClassNamespace', 'moduleClassNamespace'
                 )
             )
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::TEMPLATES,
-                [
-                    'originalTemplate' => 'moduleTemplate',
-                    'otherOriginalTemplate' => 'moduleTemplate',
-                ]
-            ))
+            ->addTemplate(new Template('originalTemplate', 'moduleTemplate'))
+            ->addTemplate(new Template('otherOriginalTemplate', 'moduleTemplate'))
             ->addSmartyPluginDirectory(
                 new SmartyPluginDirectory(
                     'SmartyPlugins/directory1'

@@ -41,9 +41,8 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ModulePathHandler
 
   oxid_esales.module.setup.templates_module_setting_handler:
-    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopConfigurationModuleSettingHandler
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\TemplatesModuleSettingHandler
     arguments:
-      - !php/const OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting::TEMPLATES
       - !php/const OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting::MODULE_TEMPLATES
       - '@OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface'
 

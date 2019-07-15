@@ -117,10 +117,16 @@ class MetaDataMapperTest extends TestCase
             $expectedModuleData['controllers'],
             $controllers
         );
+
+        $templates = [];
+        foreach ($moduleConfiguration->getTemplates() as $template) {
+            $templates[$template->getTemplateKey()] = $template->getTemplatePath();
+        }
         $this->assertSame(
             $expectedModuleData['templates'],
-            $moduleConfiguration->getSetting(ModuleSetting::TEMPLATES)->getValue()
+            $templates
         );
+
         $this->assertSame(
             $expectedModuleData['blocks'],
             $moduleConfiguration->getSetting(ModuleSetting::TEMPLATE_BLOCKS)->getValue()
@@ -219,7 +225,6 @@ class MetaDataMapperTest extends TestCase
         $this->assertSame($expectedModuleData['email'], $moduleConfiguration->getEmail());
 
         $classExtensions = [];
-
         foreach ($moduleConfiguration->getClassExtensions() as $extension) {
             $classExtensions[$extension->getShopClassNamespace()] = $extension->getModuleExtensionClassNamespace();
         }
@@ -239,10 +244,17 @@ class MetaDataMapperTest extends TestCase
             $expectedModuleData['controllers'],
             $controllers
         );
+
+        $templates = [];
+        foreach ($moduleConfiguration->getTemplates() as $template) {
+            $templates[$template->getTemplateKey()] = $template->getTemplatePath();
+        }
+
         $this->assertSame(
             $expectedModuleData['templates'],
-            $moduleConfiguration->getSetting(ModuleSetting::TEMPLATES)->getValue()
+            $templates
         );
+
         $this->assertSame(
             $expectedModuleData['blocks'],
             $moduleConfiguration->getSetting(ModuleSetting::TEMPLATE_BLOCKS)->getValue()

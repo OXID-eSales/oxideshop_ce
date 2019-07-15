@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
@@ -25,28 +26,28 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
     public function toData(ModuleConfiguration $configuration): array
     {
         $data = [
-            'id'          => $configuration->getId(),
-            'path'        => $configuration->getPath(),
-            'version'     => $configuration->getVersion(),
-            'autoActive'  => $configuration->isAutoActive(),
-            'title'       => $configuration->getTitle(),
+            'id' => $configuration->getId(),
+            'path' => $configuration->getPath(),
+            'version' => $configuration->getVersion(),
+            'autoActive' => $configuration->isAutoActive(),
+            'title' => $configuration->getTitle(),
             'description' => $configuration->getDescription(),
-            'lang'        => $configuration->getLang(),
-            'thumbnail'   => $configuration->getThumbnail(),
-            'author'      => $configuration->getAuthor(),
-            'url'         => $configuration->getUrl(),
-            'email'       => $configuration->getEmail(),
-            'settings'    => $this->getSettingsData($configuration),
+            'lang' => $configuration->getLang(),
+            'thumbnail' => $configuration->getThumbnail(),
+            'author' => $configuration->getAuthor(),
+            'url' => $configuration->getUrl(),
+            'email' => $configuration->getEmail(),
+            'settings' => $this->getSettingsData($configuration),
         ];
-
+        if ($configuration->hasTemplates()) {
+            $data[ModuleConfigurationMappingKeys::TEMPLATES] =  $this->getTemplates($configuration);
+        }
         if ($configuration->hasClassExtensions()) {
             $data[ModuleConfigurationMappingKeys::CLASS_EXTENSIONS] = $this->getClassExtension($configuration);
         }
-
         if ($configuration->hasControllers()) {
             $data[ModuleConfigurationMappingKeys::CONTROLLERS] = $this->getController($configuration);
         }
-
         if ($configuration->hasSmartyPluginDirectories()) {
             $data[ModuleConfigurationMappingKeys::SMARTY_PLUGIN_DIRECTORIES] =
                 $this->getSmartyPluginDirectory($configuration);
@@ -79,6 +80,9 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
         if (isset($data[ModuleConfigurationMappingKeys::CLASS_EXTENSIONS])) {
             $this->setClassExtension($moduleConfiguration, $data[ModuleConfigurationMappingKeys::CLASS_EXTENSIONS]);
         }
+        if (isset($data[ModuleConfigurationMappingKeys::TEMPLATES])) {
+            $this->setTemplates($moduleConfiguration, $data[ModuleConfigurationMappingKeys::TEMPLATES]);
+        }
 
         if (isset($data[ModuleConfigurationMappingKeys::CONTROLLERS])) {
             $this->setController($moduleConfiguration, $data[ModuleConfigurationMappingKeys::CONTROLLERS]);
@@ -100,7 +104,7 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
 
     /**
      * @param ModuleConfiguration $moduleConfiguration
-     * @param array               $settingsData
+     * @param array $settingsData
      */
     private function setSettings(ModuleConfiguration $moduleConfiguration, array $settingsData): void
     {
@@ -146,7 +150,7 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
 
     /**
      * @param ModuleConfiguration $moduleConfiguration
-     * @param array               $extension
+     * @param array $extension
      */
     private function setClassExtension(ModuleConfiguration $moduleConfiguration, array $extension)
     {
@@ -174,6 +178,38 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
         }
 
         return $extensions;
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     * @param array $template
+     */
+    private function setTemplates(ModuleConfiguration $moduleConfiguration, array $template): void
+    {
+        foreach ($template as $templateKey => $templatePath) {
+            $moduleConfiguration->addTemplate(new Template(
+                $templateKey,
+                $templatePath
+            ));
+        }
+    }
+
+    /**
+     * @param ModuleConfiguration $configuration
+     *
+     * @return array
+     */
+    private function getTemplates(ModuleConfiguration $configuration): array
+    {
+        $templates = [];
+
+        if ($configuration->hasTemplates()) {
+            foreach ($configuration->getTemplates() as $template) {
+                $templates[$template->getTemplateKey()] = $template->getTemplatePath();
+            }
+        }
+
+        return $templates;
     }
 
     /**

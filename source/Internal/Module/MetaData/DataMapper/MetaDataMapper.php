@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataSchemaValidator;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataSchemaValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 
 /**
  * @internal
@@ -100,6 +100,14 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
             }
         }
 
+        if (isset($moduleData[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES])) {
+            foreach ($moduleData[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES] as $directory) {
+                $moduleConfiguration->addSmartyPluginDirectory(
+                    new SmartyPluginDirectory($directory)
+                );
+            }
+        }
+
         if (isset($moduleData[MetaDataProvider::METADATA_FILES])) {
             $moduleConfiguration->addSetting(
                 new ModuleSetting(
@@ -130,15 +138,6 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
         if (isset($moduleData[MetaDataProvider::METADATA_SETTINGS])) {
             $moduleConfiguration->addSetting(
                 new ModuleSetting(ModuleSetting::SHOP_MODULE_SETTING, $moduleData[MetaDataProvider::METADATA_SETTINGS])
-            );
-        }
-
-        if (isset($moduleData[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES])) {
-            $moduleConfiguration->addSetting(
-                new ModuleSetting(
-                    ModuleSetting::SMARTY_PLUGIN_DIRECTORIES,
-                    $moduleData[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES]
-                )
             );
         }
 

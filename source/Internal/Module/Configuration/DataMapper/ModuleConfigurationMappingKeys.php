@@ -11,4 +11,5 @@ class ModuleConfigurationMappingKeys
 
     const CLASS_EXTENSIONS = 'classExtensions';
     const CONTROLLERS = 'controllers';
+    const SMARTY_PLUGIN_DIRECTORIES = 'smartyPluginDirectories';
 }

@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfiguratio
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
@@ -208,13 +209,15 @@ class ProjectConfigurationDaoTest extends TestCase
                     'otherOriginalTemplate' => 'moduleTemplate',
                 ]
             ))
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::SMARTY_PLUGIN_DIRECTORIES,
-                [
-                    'firstSmartyDirectory',
-                    'secondSmartyDirectory',
-                ]
-            ))
+            ->addSmartyPluginDirectory(
+                new SmartyPluginDirectory(
+                    'firstSmartyDirectory'
+                )
+            )->addSmartyPluginDirectory(
+                new SmartyPluginDirectory(
+                    'secondSmartyDirectory'
+                )
+            )
             ->addSetting(new ModuleSetting(
                 ModuleSetting::TEMPLATE_BLOCKS,
                 [
@@ -228,13 +231,16 @@ class ProjectConfigurationDaoTest extends TestCase
                 ]
             ))
             ->addClassExtension(
-                new ClassExtension('originalClassNamespace',
+                new ClassExtension(
+                    'originalClassNamespace',
                     'moduleClassNamespace'
                 )
             )
             ->addClassExtension(
-                new ClassExtension('otherOriginalClassNamespace',
-                    'moduleClassNamespace')
+                new ClassExtension(
+                    'otherOriginalClassNamespace',
+                    'moduleClassNamespace'
+                )
             )
             ->addSetting(new ModuleSetting(
                 ModuleSetting::SHOP_MODULE_SETTING,

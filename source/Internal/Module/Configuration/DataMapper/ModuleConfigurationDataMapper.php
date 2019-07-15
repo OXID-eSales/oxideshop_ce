@@ -10,6 +10,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleCon
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 
 /**
  * @internal
@@ -46,6 +47,11 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
             $data[ModuleConfigurationMappingKeys::CONTROLLERS] = $this->getController($configuration);
         }
 
+        if ($configuration->hasSmartyPluginDirectories()) {
+            $data[ModuleConfigurationMappingKeys::SMARTY_PLUGIN_DIRECTORIES] =
+                $this->getSmartyPluginDirectory($configuration);
+        }
+
         return $data;
     }
 
@@ -76,6 +82,13 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
 
         if (isset($data[ModuleConfigurationMappingKeys::CONTROLLERS])) {
             $this->setController($moduleConfiguration, $data[ModuleConfigurationMappingKeys::CONTROLLERS]);
+        }
+
+        if (isset($data[ModuleConfigurationMappingKeys::SMARTY_PLUGIN_DIRECTORIES])) {
+            $this->setSmartyPluginDirectory(
+                $moduleConfiguration,
+                $data[ModuleConfigurationMappingKeys::SMARTY_PLUGIN_DIRECTORIES]
+            );
         }
 
         if (isset($data['settings'])) {
@@ -146,20 +159,6 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
     }
 
     /**
-     * @param ModuleConfiguration $moduleConfiguration
-     * @param array               $controllers
-     */
-    private function setController(ModuleConfiguration $moduleConfiguration, array $controllers)
-    {
-        foreach ($controllers as $id => $controllerClassNamespace) {
-            $moduleConfiguration->addController(new Controller(
-                $id,
-                $controllerClassNamespace
-            ));
-        }
-    }
-
-    /**
      * @param ModuleConfiguration $configuration
      *
      * @return array
@@ -178,6 +177,20 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
     }
 
     /**
+     * @param ModuleConfiguration $moduleConfiguration
+     * @param array               $controllers
+     */
+    private function setController(ModuleConfiguration $moduleConfiguration, array $controllers)
+    {
+        foreach ($controllers as $id => $controllerClassNamespace) {
+            $moduleConfiguration->addController(new Controller(
+                $id,
+                $controllerClassNamespace
+            ));
+        }
+    }
+
+    /**
      * @param ModuleConfiguration $configuration
      *
      * @return array
@@ -193,5 +206,36 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
         }
 
         return $controllers;
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     * @param array               $directories
+     */
+    private function setSmartyPluginDirectory(ModuleConfiguration $moduleConfiguration, array $directories): void
+    {
+        foreach ($directories as $directory) {
+            $moduleConfiguration->addSmartyPluginDirectory(new SmartyPluginDirectory(
+                $directory
+            ));
+        }
+    }
+
+    /**
+     * @param ModuleConfiguration $configuration
+     *
+     * @return array
+     */
+    private function getSmartyPluginDirectory(ModuleConfiguration $configuration): array
+    {
+        $directories = [];
+
+        if ($configuration->hasSmartyPluginDirectories()) {
+            foreach ($configuration->getSmartyPluginDirectories() as $directory) {
+                $directories[] = $directory->getDirectory();
+            }
+        }
+
+        return $directories;
     }
 }

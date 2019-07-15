@@ -30,6 +30,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 
 /**
  * @internal
@@ -185,13 +186,15 @@ class ModuleActivationServiceTest extends TestCase
                     'otherOriginalTemplate' => 'moduleTemplate',
                 ]
             ))
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::SMARTY_PLUGIN_DIRECTORIES,
-                [
-                    'SmartyPlugins/directory1',
-                    'SmartyPlugins/directory2',
-                ]
-            ))
+            ->addSmartyPluginDirectory(
+                new SmartyPluginDirectory(
+                    'SmartyPlugins/directory1'
+                )
+            )->addSmartyPluginDirectory(
+                new SmartyPluginDirectory(
+                    'SmartyPlugins/directory2'
+                )
+            )
             ->addSetting(new ModuleSetting(
                 ModuleSetting::TEMPLATE_BLOCKS,
                 [

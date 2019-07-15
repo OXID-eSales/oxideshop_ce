@@ -8,8 +8,8 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Validator;
 
 use OxidEsales\EshopCommunity\Internal\Common\Exception\DirectoryNotExistentException;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\DirectoryNotReadableException;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationMappingKeys;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSettingNotValidException;
 
@@ -47,15 +47,19 @@ class SmartyPluginDirectoriesValidator implements ModuleConfigurationValidatorIn
      */
     public function validate(ModuleConfiguration $configuration, int $shopId)
     {
-        if ($configuration->hasSetting(ModuleSetting::SMARTY_PLUGIN_DIRECTORIES)) {
-            $directories = $configuration->getSetting(ModuleSetting::SMARTY_PLUGIN_DIRECTORIES)->getValue();
+        if ($configuration->hasSmartyPluginDirectories()) {
+            $directories = [];
 
-            if (!is_array($directories)) {
+            foreach ($configuration->getSmartyPluginDirectories() as $directory) {
+                $directories[] = $directory->getDirectory();
+            }
+
+            if ($this->isEmptyArray($directories)) {
                 throw new ModuleSettingNotValidException(
                     'Module setting ' .
-                    ModuleSetting::SMARTY_PLUGIN_DIRECTORIES .
+                    ModuleConfigurationMappingKeys::SMARTY_PLUGIN_DIRECTORIES .
                     ' must be of type array but ' .
-                    gettype($directories) .
+                    gettype($directories[0]) .
                     ' given'
                 );
             }
@@ -79,5 +83,21 @@ class SmartyPluginDirectoriesValidator implements ModuleConfigurationValidatorIn
                 }
             }
         }
+    }
+
+    /**
+     * @param array $directories
+     *
+     * @return bool
+     */
+    private function isEmptyArray(array $directories): bool
+    {
+        if (count($directories) == 1) {
+            if ($directories[0] === "") {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

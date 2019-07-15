@@ -6,8 +6,10 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject;
 
+use function in_array;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 
 /**
  * @internal
@@ -76,6 +78,11 @@ class ModuleConfiguration
      * @var Controller[]
      */
     private $controllers = [];
+
+    /**
+     * @var SmartyPluginDirectory[]
+     */
+    private $smartyPluginDirectories = [];
 
     /**
      * @return string
@@ -310,6 +317,11 @@ class ModuleConfiguration
         return $this->classExtensions;
     }
 
+    /**
+     * @param ClassExtension $extension
+     *
+     * @return $this
+     */
     public function addClassExtension(ClassExtension $extension)
     {
         $this->classExtensions[] = $extension;
@@ -323,35 +335,6 @@ class ModuleConfiguration
     public function hasClassExtensions(): bool
     {
         return !empty($this->classExtensions);
-    }
-
-
-    /**
-     * @param Controller $controller
-     *
-     * @return $this
-     */
-    public function addController(Controller $controller)
-    {
-        $this->controllers[] = $controller;
-
-        return $this;
-    }
-
-    /**
-     * @return Controller[]
-     */
-    public function getControllers(): array
-    {
-        return $this->controllers;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasControllers(): bool
-    {
-        return !empty($this->controllers);
     }
 
     /**
@@ -412,5 +395,61 @@ class ModuleConfiguration
         }
 
         return false;
+    }
+
+    /**
+     * @param Controller $controller
+     *
+     * @return $this
+     */
+    public function addController(Controller $controller)
+    {
+        $this->controllers[] = $controller;
+
+        return $this;
+    }
+
+    /**
+     * @return Controller[]
+     */
+    public function getControllers(): array
+    {
+        return $this->controllers;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasControllers(): bool
+    {
+        return !empty($this->controllers);
+    }
+
+    /**
+     * @param SmartyPluginDirectory $directory
+     *
+     * @return $this
+     */
+    public function addSmartyPluginDirectory(SmartyPluginDirectory $directory)
+    {
+        $this->smartyPluginDirectories[] = $directory;
+
+        return $this;
+    }
+
+    /**
+     * @return SmartyPluginDirectory[]
+     */
+    public function getSmartyPluginDirectories(): array
+    {
+        return $this->smartyPluginDirectories;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasSmartyPluginDirectories(): bool
+    {
+        return !empty($this->smartyPluginDirectories);
     }
 }

@@ -568,6 +568,8 @@ class Module extends \OxidEsales\Eshop\Core\Base
 
         $data[MetaDataProvider::METADATA_EXTEND] = $this->convertClassExtensionsToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_CONTROLLERS] = $this->convertControllersToArray($moduleConfiguration);
+        $data[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES] =
+            $this->convertSmartyPluginDirectoriesToArray($moduleConfiguration);
 
         foreach ($moduleConfiguration->getSettings() as $setting) {
             switch ($setting->getName()) {
@@ -590,10 +592,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
                 case ModuleSetting::SHOP_MODULE_SETTING:
                     $data[MetaDataProvider::METADATA_SETTINGS] = $setting->getValue();
                     break;
-
-                case ModuleSetting::SMARTY_PLUGIN_DIRECTORIES:
-                    $data[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES] = $setting->getValue();
-                    break;
             }
         }
 
@@ -611,6 +609,22 @@ class Module extends \OxidEsales\Eshop\Core\Base
 
         foreach ($moduleConfiguration->getClassExtensions() as $extension) {
             $data[$extension->getShopClassNamespace()] = $extension->getModuleExtensionClassNamespace();
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     *
+     * @return array
+     */
+    private function convertSmartyPluginDirectoriesToArray(ModuleConfiguration $moduleConfiguration): array
+    {
+        $data = [];
+
+        foreach ($moduleConfiguration->getSmartyPluginDirectories() as $directory) {
+            $data[] = $directory->getDirectory();
         }
 
         return $data;

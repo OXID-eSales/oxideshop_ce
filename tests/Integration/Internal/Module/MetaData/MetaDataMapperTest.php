@@ -255,9 +255,16 @@ class MetaDataMapperTest extends TestCase
             $expectedModuleData['events'],
             $moduleConfiguration->getSetting(ModuleSetting::EVENTS)->getValue()
         );
+
+        $smartyPluginDirectories = [];
+
+        foreach ($moduleConfiguration->getSmartyPluginDirectories() as $directory) {
+            $smartyPluginDirectories[] = $directory->getDirectory();
+        }
+
         $this->assertSame(
             $expectedModuleData['smartyPluginDirectories'],
-            $moduleConfiguration->getSetting(ModuleSetting::SMARTY_PLUGIN_DIRECTORIES)->getValue()
+            $smartyPluginDirectories
         );
     }
 

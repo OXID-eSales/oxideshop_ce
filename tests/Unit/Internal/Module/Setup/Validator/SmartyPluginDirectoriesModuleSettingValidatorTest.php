@@ -6,15 +6,14 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Validator;
 
-use OxidEsales\EshopCommunity\Internal\Adapter\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Path\ModulePathResolverInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSettingNotValidException;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\SmartyPluginDirectoriesValidator;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 
 class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
 {
@@ -41,13 +40,8 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
 
         $validator = new SmartyPluginDirectoriesValidator($this->modulePathResolver);
 
-        $smartyPluginDirectoriesModuleSetting = new ModuleSetting(
-            ModuleSetting::SMARTY_PLUGIN_DIRECTORIES,
-            ['smarty']
-        );
-
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->addSetting($smartyPluginDirectoriesModuleSetting);
+        $moduleConfiguration->addSmartyPluginDirectory(new SmartyPluginDirectory('smarty'));
         $moduleConfiguration->setId("smartyTestModule");
 
         $validator->validate($moduleConfiguration, 1);
@@ -66,13 +60,8 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
 
         $validator = new SmartyPluginDirectoriesValidator($this->modulePathResolver);
 
-        $smartyPluginDirectoriesModuleSetting = new ModuleSetting(
-            ModuleSetting::SMARTY_PLUGIN_DIRECTORIES,
-            ['notExistingDirectory']
-        );
-
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->addSetting($smartyPluginDirectoriesModuleSetting);
+        $moduleConfiguration->addSmartyPluginDirectory(new SmartyPluginDirectory('notExistingDirectory'));
         $moduleConfiguration->setId("smartyTestModule");
 
         $validator->validate($moduleConfiguration, 1);
@@ -93,13 +82,8 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
 
         $validator = new SmartyPluginDirectoriesValidator($this->modulePathResolver);
 
-        $smartyPluginDirectoriesModuleSetting = new ModuleSetting(
-            ModuleSetting::SMARTY_PLUGIN_DIRECTORIES,
-            ['smarty']
-        );
-
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->addSetting($smartyPluginDirectoriesModuleSetting);
+        $moduleConfiguration->addSmartyPluginDirectory(new SmartyPluginDirectory('smarty'));
         $moduleConfiguration->setId("smartyTestModule");
 
         $validator->validate($moduleConfiguration, 1);
@@ -112,13 +96,8 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
     {
         $validator = new SmartyPluginDirectoriesValidator($this->modulePathResolver);
 
-        $smartyPluginDirectoriesModuleSetting = new ModuleSetting(
-            ModuleSetting::SMARTY_PLUGIN_DIRECTORIES,
-            ''
-        );
-
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->addSetting($smartyPluginDirectoriesModuleSetting);
+        $moduleConfiguration->addSmartyPluginDirectory(new SmartyPluginDirectory(''));
         $moduleConfiguration->setId("smartyTestModule");
 
         $validator->validate($moduleConfiguration, 1);

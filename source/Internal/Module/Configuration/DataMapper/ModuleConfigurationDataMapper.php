@@ -6,7 +6,9 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper;
 
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\TemplateBlocksMappingKeys;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
@@ -53,7 +55,9 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
             $data[ModuleConfigurationMappingKeys::SMARTY_PLUGIN_DIRECTORIES] =
                 $this->getSmartyPluginDirectory($configuration);
         }
-
+        if ($configuration->hasTemplateBlocks()) {
+            $data[ModuleConfigurationMappingKeys::TEMPLATE_BLOCKS] = $this->getTemplateBlocks($configuration);
+        }
         if ($configuration->hasEvents()) {
             $data[ModuleConfigurationMappingKeys::EVENTS] =
                 $this->getEvent($configuration);
@@ -99,6 +103,10 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
                 $moduleConfiguration,
                 $data[ModuleConfigurationMappingKeys::SMARTY_PLUGIN_DIRECTORIES]
             );
+        }
+
+        if (isset($data[ModuleConfigurationMappingKeys::TEMPLATE_BLOCKS])) {
+            $this->setTemplateBlocks($moduleConfiguration, $data[ModuleConfigurationMappingKeys::TEMPLATE_BLOCKS]);
         }
 
         if (isset($data[ModuleConfigurationMappingKeys::EVENTS])) {
@@ -283,6 +291,53 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
         }
 
         return $directories;
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     * @return array
+     */
+    private function getTemplateBlocks(ModuleConfiguration $moduleConfiguration): array
+    {
+        $data = [];
+
+        foreach ($moduleConfiguration->getTemplateBlocks() as $key => $templateBlock) {
+            $data[$key] = [
+                TemplateBlocksMappingKeys::SHOP_TEMPLATE_PATH => $templateBlock->getShopTemplatePath(),
+                TemplateBlocksMappingKeys::BLOCK_NAME => $templateBlock->getBlockName(),
+                TemplateBlocksMappingKeys::MODULE_TEMPLATE_PATH => $templateBlock->getModuleTemplatePath(),
+            ];
+            if ($templateBlock->getPosition() !== 0) {
+                $data[$key][TemplateBlocksMappingKeys::POSITION] = $templateBlock->getPosition();
+            }
+            if ($templateBlock->getTheme() !== '') {
+                $data[$key][TemplateBlocksMappingKeys::THEME] = $templateBlock->getTheme();
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     * @param array $templateBlocks
+     */
+    private function setTemplateBlocks(ModuleConfiguration $moduleConfiguration, array $templateBlocks): void
+    {
+        foreach ($templateBlocks as $templateBlockData) {
+            $templateBlock = new TemplateBlock(
+                $templateBlockData[TemplateBlocksMappingKeys::SHOP_TEMPLATE_PATH],
+                $templateBlockData[TemplateBlocksMappingKeys::BLOCK_NAME],
+                $templateBlockData[TemplateBlocksMappingKeys::MODULE_TEMPLATE_PATH]
+            );
+            if (isset($templateBlockData[TemplateBlocksMappingKeys::POSITION])) {
+                $templateBlock->setPosition($templateBlockData[TemplateBlocksMappingKeys::POSITION]);
+            }
+            if (isset($templateBlockData[TemplateBlocksMappingKeys::THEME])) {
+                $templateBlock->setTheme($templateBlockData[TemplateBlocksMappingKeys::THEME]);
+            }
+            $moduleConfiguration->addTemplateBlock($templateBlock);
+        }
     }
 
     /**

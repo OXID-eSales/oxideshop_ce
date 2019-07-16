@@ -11,6 +11,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleCon
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Event;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
 
 /**
  * @internal
@@ -89,6 +90,11 @@ class ModuleConfiguration
      * @var SmartyPluginDirectory[]
      */
     private $smartyPluginDirectories = [];
+
+    /**
+     * @var TemplateBlock[]
+     */
+    private $templateBlocks = [];
 
     /**
      * @var Event[]
@@ -346,6 +352,29 @@ class ModuleConfiguration
     public function hasClassExtensions(): bool
     {
         return !empty($this->classExtensions);
+    }
+
+    /**
+     * @return TemplateBlock[]
+     */
+    public function getTemplateBlocks(): array
+    {
+        return $this->templateBlocks;
+    }
+
+    public function addTemplateBlock(TemplateBlock $templateBlock)
+    {
+        $this->templateBlocks[] = $templateBlock;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasTemplateBlocks(): bool
+    {
+        return !empty($this->templateBlocks);
     }
 
     /**

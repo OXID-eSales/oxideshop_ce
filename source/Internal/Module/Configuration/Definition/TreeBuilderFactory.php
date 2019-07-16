@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\Definition;
 
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\TemplateBlocksMappingKeys;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationMappingKeys;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -73,24 +74,24 @@ class TreeBuilderFactory implements TreeBuilderFactoryInterface
                             ->arrayNode(ModuleConfigurationMappingKeys::EVENTS)
                                 ->scalarPrototype()->end()
                             ->end()
-                            ->arrayNode('settings')
-                                ->children()
-                                    ->arrayNode(ModuleSetting::TEMPLATE_BLOCKS)
-                                        ->arrayPrototype()
-                                            ->children()
-                                                ->scalarNode('block')
-                                                ->end()
-                                                ->scalarNode('position')
-                                                ->end()
-                                                ->scalarNode('theme')
-                                                ->end()
-                                                ->scalarNode('template')
-                                                ->end()
-                                                ->scalarNode('file')
-                                                ->end()
-                                            ->end()
+                            ->arrayNode(ModuleConfigurationMappingKeys::TEMPLATE_BLOCKS)
+                                ->arrayPrototype()
+                                    ->children()
+                                        ->scalarNode(TemplateBlocksMappingKeys::BLOCK_NAME)
+                                        ->end()
+                                        ->scalarNode(TemplateBlocksMappingKeys::POSITION)
+                                        ->end()
+                                        ->scalarNode(TemplateBlocksMappingKeys::THEME)
+                                        ->end()
+                                        ->scalarNode(TemplateBlocksMappingKeys::SHOP_TEMPLATE_PATH)
+                                        ->end()
+                                        ->scalarNode(TemplateBlocksMappingKeys::MODULE_TEMPLATE_PATH)
                                         ->end()
                                     ->end()
+                                ->end()
+                            ->end()
+                            ->arrayNode('settings')
+                                ->children()
                                     ->arrayNode(ModuleSetting::CLASSES_WITHOUT_NAMESPACE)
                                         ->scalarPrototype()->end()
                                     ->end()

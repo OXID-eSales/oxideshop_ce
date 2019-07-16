@@ -571,16 +571,13 @@ class Module extends \OxidEsales\Eshop\Core\Base
         $data[MetaDataProvider::METADATA_CONTROLLERS] = $this->convertControllersToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES] =
             $this->convertSmartyPluginDirectoriesToArray($moduleConfiguration);
+        $data[MetaDataProvider::METADATA_TEMPLATES] = $this->convertTemplateBlocksToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_EVENTS] = $this->convertEventsToArray($moduleConfiguration);
 
         foreach ($moduleConfiguration->getSettings() as $setting) {
             switch ($setting->getName()) {
                 case ModuleSetting::CLASSES_WITHOUT_NAMESPACE:
                     $data[MetaDataProvider::METADATA_FILES] = $setting->getValue();
-                    break;
-
-                case ModuleSetting::TEMPLATE_BLOCKS:
-                    $data[MetaDataProvider::METADATA_BLOCKS] = $setting->getValue();
                     break;
 
                 case ModuleSetting::SHOP_MODULE_SETTING:
@@ -651,6 +648,31 @@ class Module extends \OxidEsales\Eshop\Core\Base
 
         foreach ($moduleConfiguration->getControllers() as $controller) {
             $data[$controller->getId()] = $controller->getControllerClassNameSpace();
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     * @return array
+     */
+    private function convertTemplateBlocksToArray(ModuleConfiguration $moduleConfiguration): array
+    {
+        $data = [];
+
+        foreach ($moduleConfiguration->getTemplateBlocks() as $key => $templateBlock) {
+            $data[$key] = [
+                'template' => $templateBlock->getShopTemplatePath(),
+                'block' => $templateBlock->getBlockName(),
+                'file' => $templateBlock->getModuleTemplatePath(),
+            ];
+            if ($templateBlock->getTheme() !== '') {
+                $data[$key]['theme'] = $templateBlock->getTheme();
+            }
+            if ($templateBlock->getPosition() !== 0) {
+                $data[$key]['position'] = $templateBlock->getPosition();
+            }
         }
 
         return $data;

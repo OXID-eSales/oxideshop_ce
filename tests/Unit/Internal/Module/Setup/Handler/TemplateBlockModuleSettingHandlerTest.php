@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Handler;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\TemplateBlockModuleSettingHandler;
 use OxidEsales\EshopCommunity\Internal\Module\TemplateExtension\TemplateBlockExtension;
@@ -20,23 +21,18 @@ class TemplateBlockModuleSettingHandlerTest extends TestCase
 {
     public function testHandlingOnModuleActivation()
     {
-        $moduleSetting = new ModuleSetting(
-            ModuleSetting::TEMPLATE_BLOCKS,
-            [
-                [
-                    'block'     => 'testBlock',
-                    'position'  => '3',
-                    'theme'     => 'flow_theme',
-                    'template'  => 'extendedTemplatePath',
-                    'file'      => 'filePath',
-                ],
-            ]
+        $templateBlock = new TemplateBlock(
+            'extendedTemplatePath',
+            'testBlock',
+            'filePath'
         );
+        $templateBlock->setTheme('flow_theme');
+        $templateBlock->setPosition(3);
 
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId('testModule')
-            ->addSetting($moduleSetting);
+            ->addTemplateBlock($templateBlock);
 
         $templateBlockExtension = new TemplateBlockExtension();
         $templateBlockExtension
@@ -56,18 +52,19 @@ class TemplateBlockModuleSettingHandlerTest extends TestCase
 
         $settingHandler = new TemplateBlockModuleSettingHandler($templateBlockDao);
         $settingHandler->handleOnModuleActivation(
-            $moduleConfiguration, 1
+            $moduleConfiguration,
+            1
         );
     }
 
     public function testHandlingOnModuleDeactivation()
     {
-        $moduleSetting = new ModuleSetting(ModuleSetting::TEMPLATE_BLOCKS, []);
+        $templateBlock = new TemplateBlock('', '', '');
 
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId('testModule')
-            ->addSetting($moduleSetting);
+            ->addTemplateBlock($templateBlock);
 
         $templateBlockDao = $this->getTemplateBlockDaoMock();
         $templateBlockDao
@@ -77,7 +74,8 @@ class TemplateBlockModuleSettingHandlerTest extends TestCase
 
         $settingHandler = new TemplateBlockModuleSettingHandler($templateBlockDao);
         $settingHandler->handleOnModuleDeactivation(
-            $moduleConfiguration, 1
+            $moduleConfiguration,
+            1
         );
     }
 

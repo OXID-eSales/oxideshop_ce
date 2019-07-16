@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Handler;
 
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
 use OxidEsales\EshopCommunity\Internal\Module\TemplateExtension\TemplateBlockExtension;
 use OxidEsales\EshopCommunity\Internal\Module\TemplateExtension\TemplateBlockExtensionDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
@@ -36,12 +36,9 @@ class TemplateBlockModuleSettingHandler implements ModuleConfigurationHandlerInt
      */
     public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId)
     {
-        if ($this->canHandle($configuration)) {
-            $setting = $configuration->getSetting(ModuleSetting::TEMPLATE_BLOCKS);
-            $templateBlocksData = $setting->getValue();
-
-            foreach ($templateBlocksData as $templateBlockData) {
-                $templateBlockExtension = $this->mapDataToObject($templateBlockData);
+        if ($configuration->hasTemplateBlocks()) {
+            foreach ($configuration->getTemplateBlocks() as $templateBlock) {
+                $templateBlockExtension = $this->mapDataToObject($templateBlock);
                 $templateBlockExtension->setShopId($shopId);
                 $templateBlockExtension->setModuleId($configuration->getId());
 
@@ -56,41 +53,32 @@ class TemplateBlockModuleSettingHandler implements ModuleConfigurationHandlerInt
      */
     public function handleOnModuleDeactivation(ModuleConfiguration $configuration, int $shopId)
     {
-        if ($this->canHandle($configuration)) {
+        if ($configuration->hasTemplateBlocks()) {
             $this->templateBlockExtensionDao->deleteExtensions($configuration->getId(), $shopId);
         }
     }
 
     /**
-     * @param ModuleConfiguration $configuration
-     * @return bool
-     */
-    private function canHandle(ModuleConfiguration $configuration): bool
-    {
-        return $configuration->hasSetting(ModuleSetting::TEMPLATE_BLOCKS);
-    }
-
-    /**
-     * @param array $templateBlockData
+     * @param TemplateBlock $templateBlock
      * @return TemplateBlockExtension
      */
-    public function mapDataToObject(array $templateBlockData): TemplateBlockExtension
+    public function mapDataToObject(TemplateBlock $templateBlock): TemplateBlockExtension
     {
         $templateBlockExtension = new TemplateBlockExtension();
         $templateBlockExtension
-            ->setName($templateBlockData['block'])
-            ->setFilePath($templateBlockData['file'])
-            ->setExtendedBlockTemplatePath($templateBlockData['template']);
+            ->setName($templateBlock->getBlockName())
+            ->setFilePath($templateBlock->getModuleTemplatePath())
+            ->setExtendedBlockTemplatePath($templateBlock->getShopTemplatePath());
 
-        if (isset($templateBlockData['position'])) {
+        if ($templateBlock->getPosition() !== 0) {
             $templateBlockExtension->setPosition(
-                (int) $templateBlockData['position']
+                $templateBlock->getPosition()
             );
         }
 
-        if (isset($templateBlockData['theme'])) {
+        if ($templateBlock->getTheme() !== '') {
             $templateBlockExtension->setThemeId(
-                $templateBlockData['theme']
+                $templateBlock->getTheme()
             );
         }
 

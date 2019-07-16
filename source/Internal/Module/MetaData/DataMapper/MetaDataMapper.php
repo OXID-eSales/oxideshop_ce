@@ -6,7 +6,9 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\DataMapper;
 
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\TemplateBlocksMappingKeys;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
@@ -137,9 +139,20 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
         }
 
         if (isset($moduleData[MetaDataProvider::METADATA_BLOCKS])) {
-            $moduleConfiguration->addSetting(
-                new ModuleSetting(ModuleSetting::TEMPLATE_BLOCKS, $moduleData[MetaDataProvider::METADATA_BLOCKS])
-            );
+            foreach ($moduleData[MetaDataProvider::METADATA_BLOCKS] as $templateBlockData) {
+                $templateBlock = new TemplateBlock(
+                    $templateBlockData[TemplateBlocksMappingKeys::SHOP_TEMPLATE_PATH],
+                    $templateBlockData[TemplateBlocksMappingKeys::BLOCK_NAME],
+                    $templateBlockData[TemplateBlocksMappingKeys::MODULE_TEMPLATE_PATH]
+                );
+                if (isset($templateBlockData[TemplateBlocksMappingKeys::POSITION])) {
+                    $templateBlock->setPosition((int) $templateBlockData[TemplateBlocksMappingKeys::POSITION]);
+                }
+                if (isset($templateBlockData[TemplateBlocksMappingKeys::THEME])) {
+                    $templateBlock->setTheme($templateBlockData[TemplateBlocksMappingKeys::THEME]);
+                }
+                $moduleConfiguration->addTemplateBlock($templateBlock);
+            }
         }
 
         if (isset($moduleData[MetaDataProvider::METADATA_SETTINGS])) {

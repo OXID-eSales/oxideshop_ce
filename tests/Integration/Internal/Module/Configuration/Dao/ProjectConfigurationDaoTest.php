@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * Copyright © OXID eSales AG. All rights reserved.
@@ -17,6 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\Environme
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
@@ -184,6 +184,13 @@ class ProjectConfigurationDaoTest extends TestCase
 
     private function getTestProjectConfiguration(): ProjectConfiguration
     {
+        $templateBlock = new TemplateBlock(
+            'extendedTemplatePath',
+            'testBlock',
+            'filePath'
+        );
+        $templateBlock->setTheme('flow_theme');
+        $templateBlock->setPosition(3);
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId('testModuleConfiguration')
@@ -215,18 +222,7 @@ class ProjectConfigurationDaoTest extends TestCase
                     'secondSmartyDirectory'
                 )
             )
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::TEMPLATE_BLOCKS,
-                [
-                    [
-                        'block'     => 'testBlock',
-                        'position'  => '3',
-                        'theme'     => 'flow_theme',
-                        'template'  => 'extendedTemplatePath',
-                        'file'      => 'filePath',
-                    ],
-                ]
-            ))
+            ->addTemplateBlock($templateBlock)
             ->addClassExtension(
                 new ClassExtension(
                     'originalClassNamespace',

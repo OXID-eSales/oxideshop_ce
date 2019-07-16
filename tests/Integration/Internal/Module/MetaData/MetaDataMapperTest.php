@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Test\Integration\Internal\Module\MetaData;
 
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\ModuleIdNotValidException;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataKeyException;
@@ -54,13 +55,13 @@ class MetaDataMapperTest extends TestCase
                     'template' => 'template_1.tpl',
                     'block'    => 'block_1',
                     'file'     => '/blocks/template_1.tpl',
-                    'position' => '1'
+                    'position' => 1
                 ],
                 [
                     'template' => 'template_2.tpl',
                     'block'    => 'block_2',
                     'file'     => '/blocks/template_2.tpl',
-                    'position' => '2'
+                    'position' => 2
                 ],
             ],
             'settings'    => [
@@ -126,11 +127,8 @@ class MetaDataMapperTest extends TestCase
             $expectedModuleData['templates'],
             $templates
         );
-
-        $this->assertSame(
-            $expectedModuleData['blocks'],
-            $moduleConfiguration->getSetting(ModuleSetting::TEMPLATE_BLOCKS)->getValue()
-        );
+        $templateBlocks = $this->mapTemplateBlocksForAssertion($moduleConfiguration);
+        $this->assertSame($expectedModuleData['blocks'], $templateBlocks);
         $this->assertSame(
             $expectedModuleData['settings'],
             $moduleConfiguration->getSetting(ModuleSetting::SHOP_MODULE_SETTING)->getValue()
@@ -184,13 +182,13 @@ class MetaDataMapperTest extends TestCase
                     'template' => 'template_1.tpl',
                     'block'    => 'block_1',
                     'file'     => '/blocks/template_1.tpl',
-                    'position' => '1'
+                    'position' => 1
                 ],
                 [
                     'template' => 'template_2.tpl',
                     'block'    => 'block_2',
                     'file'     => '/blocks/template_2.tpl',
-                    'position' => '2'
+                    'position' => 2
                 ],
             ],
             'settings'                => [
@@ -261,11 +259,8 @@ class MetaDataMapperTest extends TestCase
             $expectedModuleData['templates'],
             $templates
         );
-
-        $this->assertSame(
-            $expectedModuleData['blocks'],
-            $moduleConfiguration->getSetting(ModuleSetting::TEMPLATE_BLOCKS)->getValue()
-        );
+        $templateBlocks = $this->mapTemplateBlocksForAssertion($moduleConfiguration);
+        $this->assertSame($expectedModuleData['blocks'], $templateBlocks);
         $this->assertSame(
             $expectedModuleData['settings'],
             $moduleConfiguration->getSetting(ModuleSetting::SHOP_MODULE_SETTING)->getValue()
@@ -389,5 +384,24 @@ class MetaDataMapperTest extends TestCase
         $container->compile();
 
         return $container;
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     * @return array
+     */
+    private function mapTemplateBlocksForAssertion(ModuleConfiguration $moduleConfiguration): array
+    {
+        $templateBlocks = [];
+        foreach ($moduleConfiguration->getTemplateBlocks() as $key => $templateBlock) {
+            if ($templateBlock->getTheme() !== '') {
+                $templateBlocks[$key]['theme'] = $templateBlock->getTheme();
+            }
+            $templateBlocks[$key]['template'] = $templateBlock->getShopTemplatePath();
+            $templateBlocks[$key]['block'] = $templateBlock->getBlockName();
+            $templateBlocks[$key]['file'] = $templateBlock->getModuleTemplatePath();
+            $templateBlocks[$key]['position'] = $templateBlock->getPosition();
+        }
+        return $templateBlocks;
     }
 }

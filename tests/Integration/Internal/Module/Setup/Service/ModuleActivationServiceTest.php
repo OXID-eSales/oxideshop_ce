@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurat
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
@@ -170,6 +171,14 @@ class ModuleActivationServiceTest extends TestCase
         $moduleConfiguration->setId($this->testModuleId);
         $moduleConfiguration->setPath('TestModule');
 
+        $templateBlock = new TemplateBlock(
+            'extendedTemplatePath',
+            'testBlock',
+            'filePath'
+        );
+        $templateBlock->setTheme('flow_theme');
+        $templateBlock->setPosition(3);
+
         $moduleConfiguration
             ->addController(
                 new Controller(
@@ -191,18 +200,7 @@ class ModuleActivationServiceTest extends TestCase
                     'SmartyPlugins/directory2'
                 )
             )
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::TEMPLATE_BLOCKS,
-                [
-                    [
-                        'block'     => 'testBlock',
-                        'position'  => '3',
-                        'theme'     => 'flow_theme',
-                        'template'  => 'extendedTemplatePath',
-                        'file'      => 'filePath',
-                    ],
-                ]
-            ))
+            ->addTemplateBlock($templateBlock)
             ->addClassExtension(
                 new ClassExtension(
                     'originalClassNamespace',

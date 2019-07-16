@@ -519,11 +519,10 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
             } else {
                 // was not executed on any level ?
                 if (!$this->_blIsComponent) {
-                    /** @var \OxidEsales\Eshop\Core\Exception\SystemComponentException $oEx */
-                    $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class);
-                    $oEx->setMessage('ERROR_MESSAGE_SYSTEMCOMPONENT_FUNCTIONNOTFOUND' . ' ' . $sFunction);
-                    $oEx->setComponent($sFunction);
-                    throw $oEx;
+                    getLogger()->warning('ERROR_MESSAGE_SYSTEMCOMPONENT_FUNCTIONNOTFOUND' . ' ' . $sFunction);
+                    unset($_POST['fnc']);
+                    unset($_GET['fnc']);
+                    error_404_handler();
                 }
             }
         }

@@ -677,10 +677,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected function handleRoutingException($exception)
     {
-        /**
-         * @todo after removal of the BC layer this method will retrow the exception
-         * throw $exception
-         */
+        getLogger()->warning($exception->getMessage());
+        error_404_handler();
     }
 
     /**
@@ -886,7 +884,6 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             $controllerClass = $this->resolveControllerClass($controllerKey);
         } catch (\OxidEsales\Eshop\Core\Exception\RoutingException $exception) {
             $this->handleRoutingException($exception);
-            $controllerClass = $controllerKey;
         }
 
         return $controllerClass;

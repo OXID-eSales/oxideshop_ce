@@ -6,12 +6,12 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Validator;
 
+use OxidEsales\EshopCommunity\Internal\Common\Exception\DirectoryNotExistentException;
+use OxidEsales\EshopCommunity\Internal\Common\Exception\DirectoryNotReadableException;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSettingNotValidException;
-use OxidEsales\EshopCommunity\Internal\Common\Exception\DirectoryNotExistentException;
-use OxidEsales\EshopCommunity\Internal\Common\Exception\DirectoryNotReadableException;
 
 /**
  * Class SmartyPluginDirectoriesModuleSettingValidator
@@ -60,7 +60,10 @@ class SmartyPluginDirectoriesValidator implements ModuleConfigurationValidatorIn
                 );
             }
 
-            $fullPathToModule = $this->modulePathResolver->getFullModulePathFromConfiguration($configuration->getId(), $shopId);
+            $fullPathToModule = $this->modulePathResolver->getFullModulePathFromConfiguration(
+                $configuration->getId(),
+                $shopId
+            );
 
             foreach ($directories as $directory) {
                 $fullPathSmartyPluginDirectory = $fullPathToModule . DIRECTORY_SEPARATOR . $directory;

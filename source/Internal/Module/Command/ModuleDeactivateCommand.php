@@ -23,7 +23,8 @@ class ModuleDeactivateCommand extends Command
 {
     const MESSAGE_MODULE_DEACTIVATED = 'Module - "%s" has been deactivated.';
 
-    const MESSAGE_NOT_POSSIBLE_TO_DEACTIVATE = 'It was not possible to deactivate module - "%s", maybe it was not active?';
+    const MESSAGE_NOT_POSSIBLE_TO_DEACTIVATE =
+        'It was not possible to deactivate module - "%s", maybe it was not active?';
 
     const MESSAGE_MODULE_NOT_FOUND = 'Module - "%s" not found.';
 

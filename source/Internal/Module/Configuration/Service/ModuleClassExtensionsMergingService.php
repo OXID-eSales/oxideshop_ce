@@ -6,10 +6,12 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\Service;
 
+use OxidEsales\EshopCommunity\Internal\Adapter\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Exception\ExtensionNotInChainException;
 
 /**
  * @internal
@@ -19,6 +21,9 @@ class ModuleClassExtensionsMergingService implements ModuleClassExtensionsMergin
     /**
      * @param ShopConfiguration   $shopConfiguration
      * @param ModuleConfiguration $moduleConfiguration
+     *
+     * @throws ModuleConfigurationNotFoundException
+     * @throws ExtensionNotInChainException
      *
      * @return ClassExtensionsChain
      */
@@ -32,7 +37,8 @@ class ModuleClassExtensionsMergingService implements ModuleClassExtensionsMergin
             $classExtensionsToMerge = $moduleConfiguration->getSetting(ModuleSetting::CLASS_EXTENSIONS)->getValue();
 
             if ($shopConfiguration->hasModuleConfiguration($moduleConfiguration->getId())) {
-                $existingModuleConfiguration = $shopConfiguration->getModuleConfiguration($moduleConfiguration->getId());
+                $existingModuleConfiguration =
+                    $shopConfiguration->getModuleConfiguration($moduleConfiguration->getId());
 
                 $classExtensionChain = $this->compareClassExtensionsAndUpdateChain(
                     $existingModuleConfiguration,
@@ -52,6 +58,8 @@ class ModuleClassExtensionsMergingService implements ModuleClassExtensionsMergin
      * @param array                $classExtensionsToMerge
      * @param ClassExtensionsChain $chain
      *
+     * @throws ExtensionNotInChainException
+     *
      * @return ClassExtensionsChain
      */
     private function compareClassExtensionsAndUpdateChain(
@@ -66,7 +74,8 @@ class ModuleClassExtensionsMergingService implements ModuleClassExtensionsMergin
             $classExtensionChain = $chain->getChain();
             foreach ($classExtensionsOfExistingModuleConfiguration as $extended => $extension) {
                 if (\array_key_exists($extended, $classExtensionsToMerge)) {
-                    if ($classExtensionsOfExistingModuleConfiguration[$extended] !== $classExtensionsToMerge[$extended]) {
+                    if ($classExtensionsOfExistingModuleConfiguration[$extended] !==
+                        $classExtensionsToMerge[$extended]) {
                         $classExtensionChain[$extended] = $this->replaceExtendedClassAndKeepOrder(
                             $classExtensionsOfExistingModuleConfiguration[$extended],
                             $classExtensionsToMerge[$extended],
@@ -95,8 +104,11 @@ class ModuleClassExtensionsMergingService implements ModuleClassExtensionsMergin
      *
      * @return array
      */
-    private function replaceExtendedClassAndKeepOrder(string $classExtensionsExisting, string $classExtensionsToMerge, array $classExtensionChainData): array
-    {
+    private function replaceExtendedClassAndKeepOrder(
+        string $classExtensionsExisting,
+        string $classExtensionsToMerge,
+        array $classExtensionChainData
+    ): array {
         return str_replace(
             $classExtensionsExisting,
             $classExtensionsToMerge,

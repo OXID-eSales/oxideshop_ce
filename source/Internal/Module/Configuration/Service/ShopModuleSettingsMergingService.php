@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\Service;
 
+use OxidEsales\EshopCommunity\Internal\Adapter\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
@@ -19,6 +20,8 @@ class ShopModuleSettingsMergingService implements ShopModuleSettingsMergingServi
      * @param ShopConfiguration   $shopConfiguration
      * @param ModuleConfiguration $moduleConfigurationToMerge
      *
+     * @throws ModuleConfigurationNotFoundException
+     *
      * @return ModuleConfiguration
      */
     public function merge(
@@ -26,7 +29,9 @@ class ShopModuleSettingsMergingService implements ShopModuleSettingsMergingServi
         ModuleConfiguration $moduleConfigurationToMerge
     ): ModuleConfiguration {
         if ($shopConfiguration->hasModuleConfiguration($moduleConfigurationToMerge->getId())) {
-            $existingModuleConfiguration = $shopConfiguration->getModuleConfiguration($moduleConfigurationToMerge->getId());
+            $existingModuleConfiguration = $shopConfiguration->getModuleConfiguration(
+                $moduleConfigurationToMerge->getId()
+            );
             if ($existingModuleConfiguration->hasSetting(ModuleSetting::SHOP_MODULE_SETTING) &&
                 $moduleConfigurationToMerge->hasSetting(ModuleSetting::SHOP_MODULE_SETTING)
             ) {

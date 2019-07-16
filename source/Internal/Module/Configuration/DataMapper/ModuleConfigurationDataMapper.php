@@ -39,7 +39,7 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
             'settings'    => $this->getSettingsData($configuration),
         ];
 
-        if ($configuration->hasClassExtensionSetting()) {
+        if ($configuration->hasClassExtensions()) {
             $data[ModuleConfigurationMappingKeys::CLASS_EXTENSIONS] = $this->getClassExtension($configuration);
         }
 

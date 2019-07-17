@@ -96,6 +96,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Config option `aModulePaths`: module path will be added to the option only after the module activation.   
 - Running tests on travis against all php versions [PR-700](https://github.com/OXID-eSales/oxideshop_ce/pull/700)
 - Travis runs phpcs and tests scripts with calling the php directly, not relying on script shebang anymore.
+- Updated Yui library components to version 2.9
 
 ### Removed
 - Removed old not used blAutoSearchOnCat option from shop_config tab [PR-654](https://github.com/OXID-eSales/oxideshop_ce/pull/654)

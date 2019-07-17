@@ -1045,7 +1045,7 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->click("helpBtn_HELP_SHOP_MAIN_PRODUCTIVE");
         $this->waitForItemAppear("helpPanel");
         $this->assertTrue($this->isVisible("helpPanel"));
-        $this->assertEquals("Non-productive eShop mode is intended", substr($this->clearString($this->getText("helpPanel")), 0, 37));
+        $this->assertEquals("Close Non-productive eShop mode is intended", substr($this->clearString($this->getText("helpPanel")), 0, 43));
         $this->click("link=Close");
         $this->waitForItemDisappear("helpPanel");
         $this->checkForErrors();

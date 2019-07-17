@@ -23,9 +23,9 @@ class PasswordPolicy implements PasswordPolicyInterface
     public function enforcePasswordPolicy(string $password)
     {
         /**
-         * A password policy should at least ensure, that the same character encoding is used for hashing and verification.
-         * As there is no real way to ensure, that a byte stream is encoded in a certain character set, at least is should
-         * ensured that the password is valid UTF-8.
+         * A password policy should at least ensure, that the same character encoding is used for hashing and
+         * verification. As there is no real way to ensure, that a byte stream is encoded in a certain character
+         * set, at least is should ensured that the password is valid UTF-8.
          */
         if (!$this->isValidUtf8($password)) {
             throw new PasswordPolicyException('The password policy requires UTF-8 encoded strings');

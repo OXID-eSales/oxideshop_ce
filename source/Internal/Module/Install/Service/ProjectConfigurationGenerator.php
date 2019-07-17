@@ -32,8 +32,10 @@ class ProjectConfigurationGenerator implements ProjectConfigurationGeneratorInte
      * @param ProjectConfigurationDaoInterface $projectConfigurationDao
      * @param BasicContextInterface            $context
      */
-    public function __construct(ProjectConfigurationDaoInterface $projectConfigurationDao, BasicContextInterface $context)
-    {
+    public function __construct(
+        ProjectConfigurationDaoInterface $projectConfigurationDao,
+        BasicContextInterface $context
+    ) {
         $this->projectConfigurationDao = $projectConfigurationDao;
         $this->context = $context;
     }

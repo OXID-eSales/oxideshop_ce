@@ -59,7 +59,8 @@ class InstallModuleConfigurationCommand extends Command
                 'oe:module:install-configuration'
             )
             ->setDescription(
-                'Install module configuration into project configuration file. Module configuration already present in the project configuration file will be overwriten.'
+                'Install module configuration into project configuration file. ' .
+                'Module configuration already present in the project configuration file will be overwriten.'
             )
             ->addArgument(
                 'module-source-path',

@@ -29,15 +29,23 @@ class MetaDataNormalizer implements MetaDataNormalizerInterface
         }
 
         if (isset($normalizedMetaData[MetaDataProvider::METADATA_SETTINGS])) {
-            $normalizedMetaData[MetaDataProvider::METADATA_SETTINGS] = $this->convertModuleSettingConstraintsToArray($normalizedMetaData[MetaDataProvider::METADATA_SETTINGS]);
+            $normalizedMetaData[MetaDataProvider::METADATA_SETTINGS] = $this->convertModuleSettingConstraintsToArray(
+                $normalizedMetaData[MetaDataProvider::METADATA_SETTINGS]
+            );
         }
 
         if (isset($normalizedMetaData[MetaDataProvider::METADATA_TITLE])) {
-            $normalizedMetaData = $this->normalizeMultiLanguageField($normalizedMetaData, MetaDataProvider::METADATA_TITLE);
+            $normalizedMetaData = $this->normalizeMultiLanguageField(
+                $normalizedMetaData,
+                MetaDataProvider::METADATA_TITLE
+            );
         }
 
         if (isset($normalizedMetaData[MetaDataProvider::METADATA_DESCRIPTION])) {
-            $normalizedMetaData = $this->normalizeMultiLanguageField($normalizedMetaData, MetaDataProvider::METADATA_DESCRIPTION);
+            $normalizedMetaData = $this->normalizeMultiLanguageField(
+                $normalizedMetaData,
+                MetaDataProvider::METADATA_DESCRIPTION
+            );
         }
 
         return $normalizedMetaData;
@@ -87,7 +95,7 @@ class MetaDataNormalizer implements MetaDataNormalizerInterface
     private function lowerCaseFileClassesNames($key, $value)
     {
         $normalizedValue = $value;
-        if (\is_array($value) && $key === MetaDataProvider::METADATA_FILES) {
+        if (is_array($value) && $key === MetaDataProvider::METADATA_FILES) {
             $normalizedValue = [];
             foreach ($value as $className => $path) {
                 $normalizedValue[strtolower($className)] = $path;

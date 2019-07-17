@@ -6,8 +6,10 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\Service;
 
+use OxidEsales\EshopCommunity\Internal\Adapter\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Exception\ExtensionNotInChainException;
 
 /**
  * @internal
@@ -37,8 +39,11 @@ class ModuleConfigurationMergingService implements ModuleConfigurationMergingSer
     }
 
     /**
-     * @param ShopConfiguration   $shopConfiguration
+     * @param ShopConfiguration $shopConfiguration
      * @param ModuleConfiguration $moduleConfigurationToMerge
+     *
+     * @throws ModuleConfigurationNotFoundException
+     * @throws ExtensionNotInChainException
      *
      * @return ShopConfiguration
      */
@@ -46,10 +51,16 @@ class ModuleConfigurationMergingService implements ModuleConfigurationMergingSer
         ShopConfiguration $shopConfiguration,
         ModuleConfiguration $moduleConfigurationToMerge
     ): ShopConfiguration {
-        $mergedClassExtensionChain = $this->classExtensionsMergingService->merge($shopConfiguration, $moduleConfigurationToMerge);
+        $mergedClassExtensionChain = $this->classExtensionsMergingService->merge(
+            $shopConfiguration,
+            $moduleConfigurationToMerge
+        );
         $shopConfiguration->setClassExtensionsChain($mergedClassExtensionChain);
 
-        $mergedModuleConfiguration = $this->settingsMergingService->merge($shopConfiguration, $moduleConfigurationToMerge);
+        $mergedModuleConfiguration = $this->settingsMergingService->merge(
+            $shopConfiguration,
+            $moduleConfigurationToMerge
+        );
         $shopConfiguration->addModuleConfiguration($mergedModuleConfiguration);
 
         return $shopConfiguration;

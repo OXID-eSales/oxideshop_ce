@@ -6,16 +6,16 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Application;
 
-use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
-use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Application\Service\ProjectYamlImportService;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
+use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\GraphQlTypePass;
 use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\DependencyInjection\AddConsoleCommandPass;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -46,6 +46,7 @@ class ContainerBuilder
 
     /**
      * @return SymfonyContainerBuilder
+     * @throws \Exception
      */
     public function getContainer(): SymfonyContainerBuilder
     {
@@ -62,11 +63,17 @@ class ContainerBuilder
 
     /**
      * @param SymfonyContainerBuilder $symfonyContainer
+     * @throws \Exception
      */
     private function loadServiceFiles(SymfonyContainerBuilder $symfonyContainer)
     {
         foreach ($this->serviceFilePaths as $partialPath) {
-            $fullPath = Path::join($this->context->getCommunityEditionSourcePath(), 'Internal/Application/' . $partialPath);
+            $fullPath = Path::join(
+                $this->context->getCommunityEditionSourcePath(),
+                'Internal',
+                'Application',
+                $partialPath
+            );
             $loader = new YamlFileLoader($symfonyContainer, new FileLocator(Path::getDirectory($fullPath)));
             $loader->load(Path::getFilename($fullPath));
         }
@@ -76,15 +83,21 @@ class ContainerBuilder
      * Loads a 'project.yaml' file if it can be found in the shop directory.
      *
      * @param SymfonyContainerBuilder $symfonyContainer
+     * @throws \Exception
      */
     private function loadProjectServices(SymfonyContainerBuilder $symfonyContainer)
     {
+        $loader = new YamlFileLoader($symfonyContainer, new FileLocator());
         try {
             $this->cleanupProjectYaml();
-            $loader = new YamlFileLoader($symfonyContainer, new FileLocator());
             $loader->load($this->context->getGeneratedServicesFilePath());
         } catch (FileLocatorFileNotFoundException $exception) {
-            // In case project file not found, do nothing.
+            // In case generated services file not found, do nothing.
+        }
+        try {
+            $loader->load($this->context->getConfigurableServicesFilePath());
+        } catch (FileLocatorFileNotFoundException $exception) {
+            // In case manually created services file not found, do nothing.
         }
     }
 
@@ -100,6 +113,7 @@ class ContainerBuilder
 
     /**
      * @param SymfonyContainerBuilder $symfonyContainer
+     * @throws \Exception
      */
     private function loadEditionServices(SymfonyContainerBuilder $symfonyContainer)
     {

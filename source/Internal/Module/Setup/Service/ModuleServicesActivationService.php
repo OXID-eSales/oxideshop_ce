@@ -125,6 +125,7 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
      *
      * @return DIConfigWrapper
      * @throws NoServiceYamlException
+     * @throws ServicesYamlConfigurationError
      */
     private function getModuleConfig(string $moduleConfigFile): DIConfigWrapper
     {
@@ -152,6 +153,7 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
      */
     private function getModuleServicesFilePath(string $moduleId, int $shopId): string
     {
-        return $this->modulePathResolver->getFullModulePathFromConfiguration($moduleId, $shopId) . DIRECTORY_SEPARATOR . 'services.yaml';
+        return $this->modulePathResolver->getFullModulePathFromConfiguration($moduleId, $shopId)
+            . DIRECTORY_SEPARATOR . 'services.yaml';
     }
 }

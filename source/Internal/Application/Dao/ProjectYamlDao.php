@@ -54,7 +54,10 @@ class ProjectYamlDao implements ProjectYamlDaoInterface
             $this->filesystem->mkdir($this->getGeneratedServicesFileDirectory());
         }
 
-        file_put_contents($this->context->getGeneratedServicesFilePath(), Yaml::dump($config->getConfigAsArray(), 3, 2));
+        file_put_contents(
+            $this->context->getGeneratedServicesFilePath(),
+            Yaml::dump($config->getConfigAsArray(), 3, 2)
+        );
     }
 
     /**

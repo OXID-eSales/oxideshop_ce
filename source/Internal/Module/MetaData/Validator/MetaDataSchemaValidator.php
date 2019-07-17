@@ -60,28 +60,34 @@ class MetaDataSchemaValidator implements MetaDataSchemaValidatorInterface
      * @param array  $metaData
      *
      * @throws UnsupportedMetaDataValueTypeException
+     * @throws UnsupportedMetaDataKeyException
      */
     public function validate(string $metaDataFilePath, string $metaDataVersion, array $metaData)
     {
         $this->currentValidationMetaDataVersion = $metaDataVersion;
         $this->metaDataFilePath = $metaDataFilePath;
 
-        $supportedMetaDataKeys = $this->metaDataSchemataProvider->getFlippedMetaDataSchemaForVersion($this->currentValidationMetaDataVersion);
+        $supportedMetaDataKeys = $this->metaDataSchemataProvider->getFlippedMetaDataSchemaForVersion(
+            $this->currentValidationMetaDataVersion
+        );
         foreach ($metaData as $metaDataKey => $value) {
             if (is_scalar($value)) {
                 $this->validateMetaDataKey($supportedMetaDataKeys, (string) $metaDataKey);
             } elseif (true === \is_array($value)) {
                 $this->validateMetaDataSection($supportedMetaDataKeys, $metaDataKey, $value);
             } else {
-                throw new UnsupportedMetaDataValueTypeException('The value type "' . \gettype($value) . '" is not supported in metadata version ' . $this->currentValidationMetaDataVersion);
+                throw new UnsupportedMetaDataValueTypeException(
+                    'The value type "' . \gettype($value) .
+                    '" is not supported in metadata version ' . $this->currentValidationMetaDataVersion
+                );
             }
         }
     }
 
     /**
      * @param array $supportedMetaDataKeys
-     *
      * @param string $metaDataKey
+     *
      * @throws UnsupportedMetaDataKeyException
      */
     private function validateMetaDataKey(array $supportedMetaDataKeys, string $metaDataKey): void
@@ -100,6 +106,8 @@ class MetaDataSchemaValidator implements MetaDataSchemaValidatorInterface
      * @param array  $supportedMetaDataKeys
      * @param string $sectionName
      * @param array  $sectionData
+     *
+     * @throws UnsupportedMetaDataKeyException
      */
     private function validateMetaDataSectionItems(array $supportedMetaDataKeys, string $sectionName, array $sectionData)
     {
@@ -114,18 +122,20 @@ class MetaDataSchemaValidator implements MetaDataSchemaValidatorInterface
     }
 
     /**
-     * Validate a section of metadata like 'blocks' or 'settings', which are multidimensional arrays of well defined items.
-     * There are sections (e.g. extend or templates, ), which are arrays or multidimensional arrays of not well defined items.
-     * In these cases the items cannot be validated.
+     * Validate a section of metadata like 'blocks' or 'settings', which are multidimensional arrays of well
+     * defined items. There are sections (e.g. extend or templates, ), which are arrays or multidimensional arrays
+     * of not well defined items. In these cases the items cannot be validated.
      *
      * @param array  $supportedMetaDataKeys
      * @param string $sectionName
      * @param array  $sectionData
-     *
-     * @return null
+     * @throws UnsupportedMetaDataKeyException
      */
-    private function validateMetaDataSection(array $supportedMetaDataKeys, string $sectionName, array $sectionData)
-    {
+    private function validateMetaDataSection(
+        array $supportedMetaDataKeys,
+        string $sectionName,
+        array $sectionData
+    ): void {
         $this->validateMetaDataKey($supportedMetaDataKeys, $sectionName);
         if (\in_array($sectionName, static::$sectionsExcludedFromItemValidation, true)) {
             return;

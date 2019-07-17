@@ -76,8 +76,10 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
      * @param array               $metaData
      * @return ModuleConfiguration
      */
-    private function mapModuleConfigurationSettings(ModuleConfiguration $moduleConfiguration, array $metaData): ModuleConfiguration
-    {
+    private function mapModuleConfigurationSettings(
+        ModuleConfiguration $moduleConfiguration,
+        array $metaData
+    ): ModuleConfiguration {
         $moduleData = $metaData[MetaDataProvider::METADATA_MODULE_DATA];
 
         if (isset($moduleData[MetaDataProvider::METADATA_EXTEND])) {
@@ -88,7 +90,10 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
 
         if (isset($moduleData[MetaDataProvider::METADATA_FILES])) {
             $moduleConfiguration->addSetting(
-                new ModuleSetting(ModuleSetting::CLASSES_WITHOUT_NAMESPACE, $moduleData[MetaDataProvider::METADATA_FILES])
+                new ModuleSetting(
+                    ModuleSetting::CLASSES_WITHOUT_NAMESPACE,
+                    $moduleData[MetaDataProvider::METADATA_FILES]
+                )
             );
         }
 
@@ -124,7 +129,10 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
 
         if (isset($moduleData[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES])) {
             $moduleConfiguration->addSetting(
-                new ModuleSetting(ModuleSetting::SMARTY_PLUGIN_DIRECTORIES, $moduleData[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES])
+                new ModuleSetting(
+                    ModuleSetting::SMARTY_PLUGIN_DIRECTORIES,
+                    $moduleData[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES]
+                )
             );
         }
 
@@ -142,7 +150,9 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
         ];
         foreach ($mandatoryKeys as $mandatoryKey) {
             if (false === array_key_exists($mandatoryKey, $data)) {
-                throw new \InvalidArgumentException('The key "' . $mandatoryKey . '" must be present in the array passed in the parameter');
+                throw new \InvalidArgumentException(
+                    'The key "' . $mandatoryKey . '" must be present in the array passed in the parameter'
+                );
             }
         }
     }

@@ -20,5 +20,8 @@ interface ModuleConfigurationMergingServiceInterface
      *
      * @return ShopConfiguration
      */
-    public function merge(ShopConfiguration $shopConfiguration, ModuleConfiguration $moduleConfigurationToMerge): ShopConfiguration;
+    public function merge(
+        ShopConfiguration $shopConfiguration,
+        ModuleConfiguration $moduleConfigurationToMerge
+    ): ShopConfiguration;
 }

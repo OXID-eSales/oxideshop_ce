@@ -20,6 +20,7 @@ class BasicContextStub implements BasicContextInterface
     private $edition;
     private $enterpriseEditionRootPath;
     private $generatedServicesFilePath;
+    private $configurableServicesFilePath;
     private $professionalEditionRootPath;
     private $sourcePath;
     private $modulesPath;
@@ -31,6 +32,7 @@ class BasicContextStub implements BasicContextInterface
 
     public function __construct()
     {
+        /** @var BasicContextInterface $basicContext */
         $basicContext = BootstrapContainerFactory::getBootstrapContainer()->get(BasicContextInterface::class);
 
         $this->communityEditionSourcePath = $basicContext->getCommunityEditionSourcePath();
@@ -38,6 +40,7 @@ class BasicContextStub implements BasicContextInterface
         $this->edition = $basicContext->getEdition();
         $this->enterpriseEditionRootPath = $basicContext->getEnterpriseEditionRootPath();
         $this->generatedServicesFilePath = $basicContext->getGeneratedServicesFilePath();
+        $this->configurableServicesFilePath = $basicContext->getConfigurableServicesFilePath();
         $this->professionalEditionRootPath = $basicContext->getProfessionalEditionRootPath();
         $this->sourcePath = $basicContext->getSourcePath();
         $this->modulesPath = $basicContext->getModulesPath();
@@ -133,6 +136,22 @@ class BasicContextStub implements BasicContextInterface
     public function setGeneratedServicesFilePath(string $generatedServicesFilePath)
     {
         $this->generatedServicesFilePath = $generatedServicesFilePath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfigurableServicesFilePath(): string
+    {
+        return $this->configurableServicesFilePath;
+    }
+
+    /**
+     * @param string $configurableServicesFilePath
+     */
+    public function setConfigurableServicesFilePath(string $configurableServicesFilePath)
+    {
+        $this->configurableServicesFilePath = $configurableServicesFilePath;
     }
 
     /**

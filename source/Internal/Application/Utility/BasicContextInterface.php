@@ -30,6 +30,11 @@ interface BasicContextInterface
     /**
      * @return string
      */
+    public function getConfigurableServicesFilePath(): string;
+
+    /**
+     * @return string
+     */
     public function getSourcePath(): string;
 
     /**

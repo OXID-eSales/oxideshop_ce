@@ -73,8 +73,12 @@ class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
     {
         $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
 
-        if ($moduleConfiguration->hasSetting(ModuleSetting::EVENTS)) {
-            $events = $moduleConfiguration->getSetting(ModuleSetting::EVENTS)->getValue();
+        if ($moduleConfiguration->hasEvents()) {
+            $events =[];
+
+            foreach ($moduleConfiguration->getEvents() as $event) {
+                $events[$event->getAction()] = $event->getMethod();
+            }
 
             if (\is_array($events) && array_key_exists($eventName, $events)) {
                 \call_user_func($events[$eventName]);

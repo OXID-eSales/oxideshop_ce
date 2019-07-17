@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Event;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 
 /**
@@ -88,6 +89,11 @@ class ModuleConfiguration
      * @var SmartyPluginDirectory[]
      */
     private $smartyPluginDirectories = [];
+
+    /**
+     * @var Event[]
+     */
+    private $events = [];
 
     /**
      * @return string
@@ -479,5 +485,33 @@ class ModuleConfiguration
     public function hasSmartyPluginDirectories(): bool
     {
         return !empty($this->smartyPluginDirectories);
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @return $this
+     */
+    public function addEvent(Event $event)
+    {
+        $this->events[] = $event;
+
+        return $this;
+    }
+
+    /**
+     * @return Event[]
+     */
+    public function getEvents(): array
+    {
+        return $this->events;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasEvents(): bool
+    {
+        return !empty($this->events);
     }
 }

@@ -135,9 +135,16 @@ class MetaDataMapperTest extends TestCase
             $expectedModuleData['settings'],
             $moduleConfiguration->getSetting(ModuleSetting::SHOP_MODULE_SETTING)->getValue()
         );
+
+        $events = [];
+
+        foreach ($moduleConfiguration->getEvents() as $event) {
+            $events[$event->getAction()] = $event->getMethod();
+        }
+
         $this->assertSame(
             $expectedModuleData['events'],
-            $moduleConfiguration->getSetting(ModuleSetting::EVENTS)->getValue()
+            $events
         );
     }
 
@@ -263,9 +270,16 @@ class MetaDataMapperTest extends TestCase
             $expectedModuleData['settings'],
             $moduleConfiguration->getSetting(ModuleSetting::SHOP_MODULE_SETTING)->getValue()
         );
+
+        $events = [];
+
+        foreach ($moduleConfiguration->getEvents() as $event) {
+            $events[$event->getAction()] = $event->getMethod();
+        }
+
         $this->assertSame(
             $expectedModuleData['events'],
-            $moduleConfiguration->getSetting(ModuleSetting::EVENTS)->getValue()
+            $events
         );
 
         $smartyPluginDirectories = [];

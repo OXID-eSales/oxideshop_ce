@@ -43,10 +43,12 @@ class EventsValidator implements ModuleConfigurationValidatorInterface
      */
     public function validate(ModuleConfiguration $configuration, int $shopId)
     {
-        if ($configuration->hasSetting(ModuleSetting::EVENTS)) {
-            $moduleSetting = $configuration->getSetting(ModuleSetting::EVENTS);
+        if ($configuration->hasEvents()) {
+            $events = [];
 
-            $events = $moduleSetting->getValue();
+            foreach ($configuration->getEvents() as $event) {
+                $events[$event->getAction()] = $event->getMethod();
+            }
             foreach ($this->validEvents as $validEventName) {
                 if (is_array($events) && array_key_exists($validEventName, $events)) {
                     $this->checkIfMethodIsCallable($events[$validEventName]);

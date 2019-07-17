@@ -13,7 +13,6 @@ class ModuleSetting
 {
     const TEMPLATE_BLOCKS           = 'blocks';
     const SHOP_MODULE_SETTING       = 'settings';
-    const EVENTS                    = 'events';
     const CLASSES_WITHOUT_NAMESPACE = 'classesWithoutNamespace';
 
     /**

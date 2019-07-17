@@ -16,6 +16,7 @@ use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\ModuleEvents;
 use OxidEsales\TestingLibrary\Services\Library\DatabaseRestorer\DatabaseRestorer;
 use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Event;
 
 /**
  * @internal
@@ -50,12 +51,7 @@ class ModuleEventsTest extends TestCase
     public function testActivationEventWasExecuted()
     {
         $moduleConfiguration = $this->getTestModuleConfiguration();
-        $moduleConfiguration->addSetting(new ModuleSetting(
-            ModuleSetting::EVENTS,
-            [
-                'onActivate'    => ModuleEvents::class . '::onActivate',
-            ]
-        ));
+        $moduleConfiguration->addEvent(new Event('onActivate', ModuleEvents::class . '::onActivate'));
 
         $this->persistModuleConfiguration($moduleConfiguration);
 
@@ -73,12 +69,7 @@ class ModuleEventsTest extends TestCase
     public function testActivationEventWasExecutedSecondTime()
     {
         $moduleConfiguration = $this->getTestModuleConfiguration();
-        $moduleConfiguration->addSetting(new ModuleSetting(
-            ModuleSetting::EVENTS,
-            [
-                'onActivate'    => ModuleEvents::class . '::onActivate',
-            ]
-        ));
+        $moduleConfiguration->addEvent(new Event('onActivate', ModuleEvents::class . '::onActivate'));
 
         $this->persistModuleConfiguration($moduleConfiguration);
 
@@ -103,12 +94,7 @@ class ModuleEventsTest extends TestCase
     public function testDeactivationEventWasExecuted()
     {
         $moduleConfiguration = $this->getTestModuleConfiguration();
-        $moduleConfiguration->addSetting(new ModuleSetting(
-            ModuleSetting::EVENTS,
-            [
-                'onDeactivate'  => ModuleEvents::class . '::onDeactivate',
-            ]
-        ));
+        $moduleConfiguration->addEvent(new Event('onDeactivate', ModuleEvents::class . '::onDeactivate'));
 
         $this->persistModuleConfiguration($moduleConfiguration);
 

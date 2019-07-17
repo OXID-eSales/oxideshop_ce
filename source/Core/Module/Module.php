@@ -571,6 +571,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
         $data[MetaDataProvider::METADATA_CONTROLLERS] = $this->convertControllersToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES] =
             $this->convertSmartyPluginDirectoriesToArray($moduleConfiguration);
+        $data[MetaDataProvider::METADATA_EVENTS] = $this->convertEventsToArray($moduleConfiguration);
 
         foreach ($moduleConfiguration->getSettings() as $setting) {
             switch ($setting->getName()) {
@@ -580,10 +581,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
 
                 case ModuleSetting::TEMPLATE_BLOCKS:
                     $data[MetaDataProvider::METADATA_BLOCKS] = $setting->getValue();
-                    break;
-
-                case ModuleSetting::EVENTS:
-                    $data[MetaDataProvider::METADATA_EVENTS] = $setting->getValue();
                     break;
 
                 case ModuleSetting::SHOP_MODULE_SETTING:
@@ -611,6 +608,11 @@ class Module extends \OxidEsales\Eshop\Core\Base
         return $data;
     }
 
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     *
+     * @return array
+     */
     private function convertTemplatesToArray(ModuleConfiguration $moduleConfiguration): array
     {
         $data = [];
@@ -649,6 +651,22 @@ class Module extends \OxidEsales\Eshop\Core\Base
 
         foreach ($moduleConfiguration->getControllers() as $controller) {
             $data[$controller->getId()] = $controller->getControllerClassNameSpace();
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     *
+     * @return array
+     */
+    private function convertEventsToArray(ModuleConfiguration $moduleConfiguration): array
+    {
+        $data = [];
+
+        foreach ($moduleConfiguration->getEvents() as $event) {
+            $data[$event->getAction()] = $event->getMethod();
         }
 
         return $data;

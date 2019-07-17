@@ -12,6 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSet
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Event;
 
 /**
  * @internal
@@ -51,6 +52,11 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
         if ($configuration->hasSmartyPluginDirectories()) {
             $data[ModuleConfigurationMappingKeys::SMARTY_PLUGIN_DIRECTORIES] =
                 $this->getSmartyPluginDirectory($configuration);
+        }
+
+        if ($configuration->hasEvents()) {
+            $data[ModuleConfigurationMappingKeys::EVENTS] =
+                $this->getEvent($configuration);
         }
 
         return $data;
@@ -93,6 +99,10 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
                 $moduleConfiguration,
                 $data[ModuleConfigurationMappingKeys::SMARTY_PLUGIN_DIRECTORIES]
             );
+        }
+
+        if (isset($data[ModuleConfigurationMappingKeys::EVENTS])) {
+            $this->setEvent($moduleConfiguration, $data[ModuleConfigurationMappingKeys::EVENTS]);
         }
 
         if (isset($data['settings'])) {
@@ -273,5 +283,37 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
         }
 
         return $directories;
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     * @param array               $event
+     */
+    private function setEvent(ModuleConfiguration $moduleConfiguration, array $event)
+    {
+        foreach ($event as $action => $method) {
+            $moduleConfiguration->addEvent(new Event(
+                $action,
+                $method
+            ));
+        }
+    }
+
+    /**
+     * @param ModuleConfiguration $configuration
+     *
+     * @return array
+     */
+    private function getEvent(ModuleConfiguration $configuration): array
+    {
+        $events = [];
+
+        if ($configuration->hasEvents()) {
+            foreach ($configuration->getEvents() as $event) {
+                $events[$event->getAction()] = $event->getMethod();
+            }
+        }
+
+        return $events;
     }
 }

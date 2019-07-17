@@ -16,6 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataSchemaV
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Event;
 
 /**
  * @internal
@@ -118,6 +119,14 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
             }
         }
 
+        if (isset($moduleData[MetaDataProvider::METADATA_EVENTS])) {
+            foreach ($moduleData[MetaDataProvider::METADATA_EVENTS] as $action => $method) {
+                $moduleConfiguration->addEvent(
+                    new Event($action, $method)
+                );
+            }
+        }
+
         if (isset($moduleData[MetaDataProvider::METADATA_FILES])) {
             $moduleConfiguration->addSetting(
                 new ModuleSetting(
@@ -130,12 +139,6 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
         if (isset($moduleData[MetaDataProvider::METADATA_BLOCKS])) {
             $moduleConfiguration->addSetting(
                 new ModuleSetting(ModuleSetting::TEMPLATE_BLOCKS, $moduleData[MetaDataProvider::METADATA_BLOCKS])
-            );
-        }
-
-        if (isset($moduleData[MetaDataProvider::METADATA_EVENTS])) {
-            $moduleConfiguration->addSetting(
-                new ModuleSetting(ModuleSetting::EVENTS, $moduleData[MetaDataProvider::METADATA_EVENTS])
             );
         }
 

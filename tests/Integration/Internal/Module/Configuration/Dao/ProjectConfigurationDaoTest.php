@@ -29,6 +29,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ShopConfi
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Event;
 
 /**
  * @internal
@@ -251,13 +252,9 @@ class ProjectConfigurationDaoTest extends TestCase
                     ],
                 ]
             ))
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::EVENTS,
-                [
-                'onActivate' => 'ModuleClass::onActivate',
-                'onDeactivate' => 'ModuleClass::onDeactivate',
-                ]
-            ));
+            ->addEvent(new Event('onActivate', 'ModuleClass::onActivate'))
+            ->addEvent(new Event('onDeactivate', 'ModuleClass::onDeactivate'));
+
 
         $classExtensionChain = new ClassExtensionsChain();
         $classExtensionChain->setChain([

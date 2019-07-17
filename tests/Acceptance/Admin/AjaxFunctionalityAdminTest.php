@@ -273,9 +273,9 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
         $this->assertElementText("", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[3]");
         $this->assertElementText("", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[4]");
         $this->assertElementText("", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[5]");
-        $this->click("//li[@id='yui-gen3']/a"); //adds price field
+        $this->click("//li[@id='yui-gen12']/a"); //adds price field
         $this->assertElementText("50", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[5]");
-        $this->click("//li[@id='yui-gen4']/a"); //adds stock field
+        $this->click("//li[@id='yui-gen13']/a"); //adds stock field
         $this->assertElementText("15", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[6]");
         $this->assertElementText("1001", "//div[@id='container1_c']/table/tbody[2]/tr[2]/td[1]");
         $this->assertElementText("10010", "//div[@id='container1_c']/table/tbody[2]/tr[3]/td[1]");

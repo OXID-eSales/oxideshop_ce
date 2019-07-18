@@ -573,12 +573,11 @@ class Module extends \OxidEsales\Eshop\Core\Base
             $this->convertSmartyPluginDirectoriesToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_FILES] =
             $this->convertClassesWithoutNamespaceToArray($moduleConfiguration);
-        $data[MetaDataProvider::TEMPLATE_BLOCKS] = $this->convertTemplateBlocksToArray($moduleConfiguration);
+        $data[MetaDataProvider::METADATA_BLOCKS] = $this->convertTemplateBlocksToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_EVENTS] = $this->convertEventsToArray($moduleConfiguration);
 
         foreach ($moduleConfiguration->getSettings() as $setting) {
             switch ($setting->getName()) {
-
                 case ModuleSetting::SHOP_MODULE_SETTING:
                     $data[MetaDataProvider::METADATA_SETTINGS] = $setting->getValue();
                     break;

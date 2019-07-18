@@ -19,11 +19,11 @@ use Webmozart\PathUtil\Path;
  */
 class InstallModuleConfigurationCommand extends Command
 {
-    const MESSAGE_INSTALLATION_WAS_SUCCESSFUL   = 'Module configuration has been installed.';
-    const MESSAGE_INSTALLATION_FAILED           = 'An error occurred while installing module configuration.';
-    const MESSAGE_TARGET_PATH_IS_REQUIRED       = 'The given module source path is not inside the shop modules ' .
-                                                  'directory. Please provide a second parameter with the modules ' .
-                                                  'target path inside the shop modules directory.';
+    const MESSAGE_INSTALLATION_WAS_SUCCESSFUL = 'Module configuration has been installed.';
+    const MESSAGE_INSTALLATION_FAILED = 'An error occurred while installing module configuration.';
+    const MESSAGE_TARGET_PATH_IS_REQUIRED = 'The given module source path is not inside the shop modules ' .
+    'directory. Please provide a second parameter with the modules ' .
+    'target path inside the shop modules directory.';
 
     /**
      * @var ModuleConfigurationInstallerInterface
@@ -37,7 +37,7 @@ class InstallModuleConfigurationCommand extends Command
 
     /**
      * @param ModuleConfigurationInstallerInterface $moduleConfigurationInstaller
-     * @param BasicContextInterface                 $context
+     * @param BasicContextInterface $context
      */
     public function __construct(
         ModuleConfigurationInstallerInterface $moduleConfigurationInstaller,
@@ -52,30 +52,32 @@ class InstallModuleConfigurationCommand extends Command
     /**
      * @inheritdoc
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName(
                 'oe:module:install-configuration'
             )
             ->setDescription(
-                'Install module configuration into project configuration file. ' .
-                'Module configuration already present in the project configuration file will be overwriten.'
+                'Install module configuration into project configuration file.'
+                . 'Module configuration already present in the project configuration file will be overwritten.'
             )
             ->addArgument(
                 'module-source-path',
                 InputArgument::REQUIRED,
-                'Path to module source, e.g. vendor/myvendor/mymodule'
+                'Path to module source, e.g. source/modules/vendor/my_module;'
+                . ' In combination with the second parameter (module-target-path), it is possible to use the path'
+                . ' that is not in source/modules directory, e.g. vendor/my_vendor/my_module'
             )
             ->addArgument(
                 'module-target-path',
                 InputArgument::OPTIONAL,
-                'Path to module target, e.g. myModules/module or source/modules/myModules/module'
+                'Path to module target, e.g. source/modules/vendor/my_module'
             );
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      *
      * @throws \Throwable

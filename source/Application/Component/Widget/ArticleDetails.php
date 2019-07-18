@@ -12,7 +12,10 @@ use OxidEsales\Eshop\Application\Model\Manufacturer;
 use OxidEsales\Eshop\Application\Model\SimpleVariantList;
 use OxidEsales\Eshop\Application\Model\Vendor;
 use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\Utils;
+use OxidEsales\EshopCommunity\Core\SortingValidator;
 use stdClass;
 
 /**
@@ -900,8 +903,10 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     {
         $sSortingParameters = $this->getViewParameter('sorting');
         if ($sSortingParameters) {
-            list($sSortBy, $sSortDir) = explode('|', $sSortingParameters);
-            $this->setItemSorting($this->getSortIdent(), $sSortBy, $sSortDir);
+            list($sortBy, $sortOrder) = explode('|', $sSortingParameters);
+            if ((new SortingValidator())->isValid($sortBy, $sortOrder)) {
+                $this->setItemSorting($this->getSortIdent(), $sortBy, $sortOrder);
+            }
         }
     }
 

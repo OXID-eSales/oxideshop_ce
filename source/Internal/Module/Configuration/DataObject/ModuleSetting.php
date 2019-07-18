@@ -12,7 +12,6 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject;
 class ModuleSetting
 {
     const SHOP_MODULE_SETTING       = 'settings';
-    const CLASSES_WITHOUT_NAMESPACE = 'classesWithoutNamespace';
 
     /**
      * @var string

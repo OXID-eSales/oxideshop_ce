@@ -14,6 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSet
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassWithoutNamespace;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Event;
 
 /**
@@ -61,6 +62,11 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
         if ($configuration->hasEvents()) {
             $data[ModuleConfigurationMappingKeys::EVENTS] =
                 $this->getEvent($configuration);
+        }
+
+        if ($configuration->hasClassWithoutNamespaces()) {
+            $data[ModuleConfigurationMappingKeys::CLASSES_WITHOUT_NAMESPACE] =
+                $this->getClassWithoutNamespace($configuration);
         }
 
         return $data;
@@ -111,6 +117,13 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
 
         if (isset($data[ModuleConfigurationMappingKeys::EVENTS])) {
             $this->setEvent($moduleConfiguration, $data[ModuleConfigurationMappingKeys::EVENTS]);
+        }
+
+        if (isset($data[ModuleConfigurationMappingKeys::CLASSES_WITHOUT_NAMESPACE])) {
+            $this->setClassWithoutNamespace(
+                $moduleConfiguration,
+                $data[ModuleConfigurationMappingKeys::CLASSES_WITHOUT_NAMESPACE]
+            );
         }
 
         if (isset($data['settings'])) {
@@ -370,5 +383,37 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
         }
 
         return $events;
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     * @param array               $classes
+     */
+    private function setClassWithoutNamespace(ModuleConfiguration $moduleConfiguration, array $classes): void
+    {
+        foreach ($classes as $shopClass => $moduleClass) {
+            $moduleConfiguration->addClassWithoutNamespace(new ClassWithoutNamespace(
+                $shopClass,
+                $moduleClass
+            ));
+        }
+    }
+
+    /**
+     * @param ModuleConfiguration $configuration
+     *
+     * @return array
+     */
+    private function getClassWithoutNamespace(ModuleConfiguration $configuration): array
+    {
+        $classes = [];
+
+        if ($configuration->hasClassWithoutNamespaces()) {
+            foreach ($configuration->getClassesWithoutNamespace() as $class) {
+                $classes[$class->getShopClass()] = $class->getModuleClass();
+            }
+        }
+
+        return $classes;
     }
 }

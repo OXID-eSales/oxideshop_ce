@@ -571,14 +571,13 @@ class Module extends \OxidEsales\Eshop\Core\Base
         $data[MetaDataProvider::METADATA_CONTROLLERS] = $this->convertControllersToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES] =
             $this->convertSmartyPluginDirectoriesToArray($moduleConfiguration);
-        $data[MetaDataProvider::METADATA_TEMPLATES] = $this->convertTemplateBlocksToArray($moduleConfiguration);
+        $data[MetaDataProvider::METADATA_FILES] =
+            $this->convertClassesWithoutNamespaceToArray($moduleConfiguration);
+        $data[MetaDataProvider::TEMPLATE_BLOCKS] = $this->convertTemplateBlocksToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_EVENTS] = $this->convertEventsToArray($moduleConfiguration);
 
         foreach ($moduleConfiguration->getSettings() as $setting) {
             switch ($setting->getName()) {
-                case ModuleSetting::CLASSES_WITHOUT_NAMESPACE:
-                    $data[MetaDataProvider::METADATA_FILES] = $setting->getValue();
-                    break;
 
                 case ModuleSetting::SHOP_MODULE_SETTING:
                     $data[MetaDataProvider::METADATA_SETTINGS] = $setting->getValue();
@@ -652,7 +651,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
 
         return $data;
     }
-
     /**
      * @param ModuleConfiguration $moduleConfiguration
      * @return array
@@ -689,6 +687,22 @@ class Module extends \OxidEsales\Eshop\Core\Base
 
         foreach ($moduleConfiguration->getEvents() as $event) {
             $data[$event->getAction()] = $event->getMethod();
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     *
+     * @return array
+     */
+    private function convertClassesWithoutNamespaceToArray(ModuleConfiguration $moduleConfiguration): array
+    {
+        $data = [];
+
+        foreach ($moduleConfiguration->getClassesWithoutNamespace() as $class) {
+            $data[$class->getShopClass()] = $class->getModuleClass();
         }
 
         return $data;

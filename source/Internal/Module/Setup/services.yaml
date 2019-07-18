@@ -24,7 +24,7 @@ services:
       - [addHandler, ['@oxid_esales.module.setup.templates_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.controllers_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.smarty_plugin_directories_module_setting_handler']]
-      - [addHandler, ['@oxid_esales.module.setup.class_extensions_module_setting_handler']]
+      - [addHandler, ['@oxid_esales.module.setup.shop_configuration_class_extension_handler']]
       - [addHandler, ['@oxid_esales.module.setup.template_blocks_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.shop_module_setting_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.events_module_setting_handler']]
@@ -58,8 +58,8 @@ services:
       - !php/const OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting::MODULE_SMARTY_PLUGIN_DIRECTORIES
       - '@OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface'
 
-  oxid_esales.module.setup.class_extensions_module_setting_handler:
-    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ClassExtensionsModuleSettingHandler
+  oxid_esales.module.setup.shop_configuration_class_extension_handler:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopConfigurationClassExtensionsHandler
 
   oxid_esales.module.setup.template_blocks_module_setting_handler:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\TemplateBlockModuleSettingHandler
@@ -74,9 +74,8 @@ services:
       - '@OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface'
 
   oxid_esales.module.setup.files_without_namespace_module_setting_handler:
-    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopConfigurationModuleSettingHandler
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopConfigurationClassesWithoutNamespaceHandler
     arguments:
-      - !php/const OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting::CLASSES_WITHOUT_NAMESPACE
       - !php/const OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting::MODULE_CLASSES_WITHOUT_NAMESPACES
       - '@OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface'
 

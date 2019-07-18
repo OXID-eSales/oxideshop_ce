@@ -14,4 +14,5 @@ class ModuleConfigurationMappingKeys
     public const SMARTY_PLUGIN_DIRECTORIES = 'smartyPluginDirectories';
     public const TEMPLATE_BLOCKS = 'templateBlocks';
     public const EVENTS = 'events';
+    public const CLASSES_WITHOUT_NAMESPACE = 'classesWithoutNamespace';
 }

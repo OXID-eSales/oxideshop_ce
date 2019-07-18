@@ -15,19 +15,27 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleCon
 /**
  * @internal
  */
-class ClassExtensionsModuleSettingHandler implements ModuleConfigurationHandlerInterface
+class ShopConfigurationClassesWithoutNamespaceHandler implements ModuleConfigurationHandlerInterface
 {
+    /**
+     * @var string
+     */
+    private $shopConfigurationSettingName;
+
     /**
      * @var ShopConfigurationSettingDaoInterface
      */
     private $shopConfigurationSettingDao;
 
     /**
-     * ClassExtensionsModuleSettingHandler constructor.
+     * @param string                               $shopConfigurationSettingName
      * @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
      */
-    public function __construct(ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao)
-    {
+    public function __construct(
+        string                                  $shopConfigurationSettingName,
+        ShopConfigurationSettingDaoInterface    $shopConfigurationSettingDao
+    ) {
+        $this->shopConfigurationSettingName = $shopConfigurationSettingName;
         $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
     }
 
@@ -37,19 +45,25 @@ class ClassExtensionsModuleSettingHandler implements ModuleConfigurationHandlerI
      */
     public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId)
     {
-        if ($configuration->hasClassExtensions()) {
-            $classExtensions=[];
+        if ($configuration->hasClassWithoutNamespaces()) {
+            $shopConfigurationSetting = $this->getShopConfigurationSetting($shopId);
 
-            foreach ($configuration->getClassExtensions() as $extension) {
-                $classExtensions[$extension->getShopClassNamespace()] = $extension->getModuleExtensionClassNamespace();
+            $classes = [];
+
+            foreach ($configuration->getClassesWithoutNamespace() as $class) {
+                if ($class->getShopClass() !== "" && $class->getModuleClass() !== "") {
+                    $classes[$class->getShopClass()] = $class->getModuleClass();
+                }
             }
 
-            $shopConfigurationSetting = $this->getClassExtensionsShopConfigurationSetting($shopId);
+            $shopSettingValue = array_merge(
+                $shopConfigurationSetting->getValue(),
+                [
+                    $configuration->getId() => $classes
+                ]
+            );
 
-            $shopConfigurationSettingValue = $shopConfigurationSetting->getValue();
-            $shopConfigurationSettingValue[$configuration->getId()] = array_values($classExtensions);
-
-            $shopConfigurationSetting->setValue($shopConfigurationSettingValue);
+            $shopConfigurationSetting->setValue($shopSettingValue);
 
             $this->shopConfigurationSettingDao->save($shopConfigurationSetting);
         }
@@ -61,13 +75,13 @@ class ClassExtensionsModuleSettingHandler implements ModuleConfigurationHandlerI
      */
     public function handleOnModuleDeactivation(ModuleConfiguration $configuration, int $shopId)
     {
-        if ($configuration->hasClassExtensions()) {
-            $shopConfigurationSetting = $this->getClassExtensionsShopConfigurationSetting($shopId);
+        if ($configuration->hasClassWithoutNamespaces()) {
+            $shopConfigurationSetting = $this->getShopConfigurationSetting($shopId);
 
-            $shopConfigurationSettingValue = $shopConfigurationSetting->getValue();
-            unset($shopConfigurationSettingValue[$configuration->getId()]);
+            $shopSettingValue = $shopConfigurationSetting->getValue();
+            unset($shopSettingValue[$configuration->getId()]);
 
-            $shopConfigurationSetting->setValue($shopConfigurationSettingValue);
+            $shopConfigurationSetting->setValue($shopSettingValue);
 
             $this->shopConfigurationSettingDao->save($shopConfigurationSetting);
         }
@@ -77,18 +91,18 @@ class ClassExtensionsModuleSettingHandler implements ModuleConfigurationHandlerI
      * @param int $shopId
      * @return ShopConfigurationSetting
      */
-    private function getClassExtensionsShopConfigurationSetting(int $shopId): ShopConfigurationSetting
+    private function getShopConfigurationSetting(int $shopId): ShopConfigurationSetting
     {
         try {
             $shopConfigurationSetting = $this->shopConfigurationSettingDao->get(
-                ShopConfigurationSetting::MODULE_CLASS_EXTENSIONS,
+                $this->shopConfigurationSettingName,
                 $shopId
             );
         } catch (EntryDoesNotExistDaoException $exception) {
             $shopConfigurationSetting = new ShopConfigurationSetting();
             $shopConfigurationSetting
                 ->setShopId($shopId)
-                ->setName(ShopConfigurationSetting::MODULE_CLASS_EXTENSIONS)
+                ->setName($this->shopConfigurationSettingName)
                 ->setType(ShopSettingType::ARRAY)
                 ->setValue([]);
         }

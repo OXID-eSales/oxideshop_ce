@@ -12,6 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleCon
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Event;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassWithoutNamespace;
 
 /**
  * @internal
@@ -100,6 +101,11 @@ class ModuleConfiguration
      * @var Event[]
      */
     private $events = [];
+
+    /**
+     * @var ClassWithoutNamespace[]
+     */
+    private $classesWithoutNamespace = [];
 
     /**
      * @return string
@@ -542,5 +548,33 @@ class ModuleConfiguration
     public function hasEvents(): bool
     {
         return !empty($this->events);
+    }
+
+    /**
+     * @param ClassWithoutNamespace $class
+     *
+     * @return $this
+     */
+    public function addClassWithoutNamespace(ClassWithoutNamespace $class)
+    {
+        $this->classesWithoutNamespace[] = $class;
+
+        return $this;
+    }
+
+    /**
+     * @return ClassWithoutNamespace[]
+     */
+    public function getClassesWithoutNamespace(): array
+    {
+        return $this->classesWithoutNamespace;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasClassWithoutNamespaces(): bool
+    {
+        return !empty($this->classesWithoutNamespace);
     }
 }

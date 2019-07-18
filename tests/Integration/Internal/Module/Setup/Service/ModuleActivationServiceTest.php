@@ -33,6 +33,7 @@ use Psr\Container\ContainerInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassWithoutNamespace;
 
 /**
  * @internal
@@ -212,15 +213,17 @@ class ModuleActivationServiceTest extends TestCase
                     'otherOriginalClassNamespace',
                     'moduleClassNamespace'
                 )
-            )
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::CLASSES_WITHOUT_NAMESPACE,
-                [
-                    'class1' => 'class1.php',
-                    'class2' => 'class2.php',
-                ]
-            ))
-            ->addSetting(new ModuleSetting(
+            )->addClassWithoutNamespace(
+                new ClassWithoutNamespace(
+                    'class1',
+                    'class1.php'
+                )
+            )->addClassWithoutNamespace(
+                new ClassWithoutNamespace(
+                    'class2',
+                    'class2.php'
+                )
+            )->addSetting(new ModuleSetting(
                 ModuleSetting::SHOP_MODULE_SETTING,
                 [
                     [

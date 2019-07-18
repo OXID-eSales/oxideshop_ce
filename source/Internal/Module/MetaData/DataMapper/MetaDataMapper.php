@@ -18,6 +18,7 @@ use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataSchemaV
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassWithoutNamespace;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Event;
 
 /**
@@ -130,12 +131,23 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
         }
 
         if (isset($moduleData[MetaDataProvider::METADATA_FILES])) {
-            $moduleConfiguration->addSetting(
-                new ModuleSetting(
-                    ModuleSetting::CLASSES_WITHOUT_NAMESPACE,
-                    $moduleData[MetaDataProvider::METADATA_FILES]
-                )
-            );
+            if (count($moduleData[MetaDataProvider::METADATA_FILES]) === 0) {
+                $moduleConfiguration->addClassWithoutNamespace(
+                    new ClassWithoutNamespace(
+                        '',
+                        ''
+                    )
+                );
+            } else {
+                foreach ($moduleData[MetaDataProvider::METADATA_FILES] as $shopClass => $moduleClass) {
+                    $moduleConfiguration->addClassWithoutNamespace(
+                        new ClassWithoutNamespace(
+                            $shopClass,
+                            $moduleClass
+                        )
+                    );
+                }
+            }
         }
 
         if (isset($moduleData[MetaDataProvider::METADATA_BLOCKS])) {

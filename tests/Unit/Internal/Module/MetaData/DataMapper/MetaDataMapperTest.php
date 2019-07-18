@@ -54,11 +54,17 @@ class MetaDataMapperTest extends TestCase
         $metaDataDataMapper = new MetaDataMapper($this->metaDataValidatorStub);
         $moduleConfiguration = $metaDataDataMapper->fromData($metadata);
 
+        $classes = [];
+
+        foreach ($moduleConfiguration->getClassesWithoutNamespace() as $class) {
+            $classes[$class->getShopClass()] = $class->getModuleClass();
+        }
+
         $this->assertSame(
             [
                 'name' => 'path',
             ],
-            $moduleConfiguration->getSetting(ModuleSetting::CLASSES_WITHOUT_NAMESPACE)->getValue()
+            $classes
         );
     }
 

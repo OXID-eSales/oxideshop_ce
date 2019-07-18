@@ -10,7 +10,6 @@ use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurati
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ControllersValidator;
 use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
@@ -45,12 +44,13 @@ class ControllersModuleSettingValidatorTest extends TestCase
 
         $validator = new ControllersValidator($shopAdapter, $shopConfigurationSettingDao);
 
-        $setting = new ModuleSetting('controllers', [
-            'newModuleControllerName' => 'newModuleControllerNamepace',
-        ]);
-
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->addSetting($setting);
+        $moduleConfiguration->addController(
+            new Controller(
+                'newModuleControllerName',
+                'newModuleControllerNamepace'
+            )
+        );
 
         $this->assertNull(
             $validator->validate($moduleConfiguration, 1)

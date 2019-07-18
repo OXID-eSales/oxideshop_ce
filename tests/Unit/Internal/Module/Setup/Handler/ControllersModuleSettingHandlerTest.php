@@ -8,9 +8,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Handler;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationMappingKeys;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ControllersModuleSettingHandler;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopSettingType;
 use PHPUnit\Framework\TestCase;
@@ -75,13 +73,14 @@ class ControllersModuleSettingHandlerTest extends TestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId('newmodule')
-            ->addSetting(new ModuleSetting(ModuleConfigurationMappingKeys::CONTROLLERS, []));
+            ->addController(new Controller('', ''));
 
         $settingHandler->handleOnModuleActivation($moduleConfiguration, 1);
 
         $shopConfigurationSettingWithEmptyValue->setValue(['newmodule' => []]);
 
-        $shopConfigurationSetting = $shopConfigurationSettingDaoMock->get(ShopConfigurationSetting::MODULE_CONTROLLERS, 1);
+        $shopConfigurationSetting =
+            $shopConfigurationSettingDaoMock->get(ShopConfigurationSetting::MODULE_CONTROLLERS, 1);
 
         $this->assertEquals(
             $shopConfigurationSettingWithEmptyValue,

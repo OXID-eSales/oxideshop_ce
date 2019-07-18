@@ -11,7 +11,6 @@ use OxidEsales\EshopCommunity\Internal\Adapter\Exception\ModuleConfigurationNotF
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
@@ -575,14 +574,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
             $this->convertClassesWithoutNamespaceToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_BLOCKS] = $this->convertTemplateBlocksToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_EVENTS] = $this->convertEventsToArray($moduleConfiguration);
-
-        foreach ($moduleConfiguration->getSettings() as $setting) {
-            switch ($setting->getName()) {
-                case ModuleSetting::SHOP_MODULE_SETTING:
-                    $data[MetaDataProvider::METADATA_SETTINGS] = $setting->getValue();
-                    break;
-            }
-        }
+        $data[MetaDataProvider::METADATA_SETTINGS] = $this->convertSettingsToArray($moduleConfiguration);
 
         return $data;
     }
@@ -702,6 +694,42 @@ class Module extends \OxidEsales\Eshop\Core\Base
 
         foreach ($moduleConfiguration->getClassesWithoutNamespace() as $class) {
             $data[$class->getShopClass()] = $class->getModuleClass();
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     *
+     * @return array
+     */
+    private function convertSettingsToArray(ModuleConfiguration $moduleConfiguration): array
+    {
+        $data = [];
+
+        foreach ($moduleConfiguration->getModuleSettings() as $index => $setting) {
+            if ($setting->getGroupName()) {
+                $data[$index]['group'] = $setting->getGroupName();
+            }
+
+            if ($setting->getName()) {
+                $data[$index]['name'] = $setting->getName();
+            }
+
+            if ($setting->getType()) {
+                $data[$index]['type'] = $setting->getType();
+            }
+
+            $data[$index]['value'] = $setting->getValue();
+
+            if (!empty($setting->getConstraints())) {
+                $data[$index]['constraints'] = $setting->getConstraints();
+            }
+
+            if ($setting->getPositionInGroup() > 0) {
+                $data[$index]['position'] = $setting->getPositionInGroup();
+            }
         }
 
         return $data;

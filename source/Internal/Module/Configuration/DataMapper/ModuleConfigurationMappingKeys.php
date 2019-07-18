@@ -15,4 +15,5 @@ class ModuleConfigurationMappingKeys
     public const TEMPLATE_BLOCKS = 'templateBlocks';
     public const EVENTS = 'events';
     public const CLASSES_WITHOUT_NAMESPACE = 'classesWithoutNamespace';
+    public const SETTING = 'moduleSettings';
 }

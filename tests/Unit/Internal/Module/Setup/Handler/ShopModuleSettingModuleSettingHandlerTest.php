@@ -7,77 +7,55 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Handler;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\ShopModuleSettingDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\ShopModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopModuleSettingModuleSettingHandler;
+use OxidEsales\EshopCommunity\Internal\Module\Setting\SettingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setting\Setting;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\SettingModuleSettingHandler;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-class ShopModuleSettingModuleSettingHandlerTest extends TestCase
+class SettingModuleSettingHandlerTest extends TestCase
 {
     public function testHandlingOnModuleActivation()
     {
-        $moduleSetting = $this->getTestModuleSetting();
+        $shopModuleSetting = $this->getTestSetting();
 
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('testModule');
-        $moduleConfiguration->addSetting($moduleSetting);
+        $moduleConfiguration->addModuleSetting($shopModuleSetting);
 
-        $shopModuleSetting = $this->getTestShopModuleSetting();
-
-        $shopModuleSettingDao = $this->getMockBuilder(ShopModuleSettingDaoInterface::class)->getMock();
+        $shopModuleSettingDao = $this->getMockBuilder(SettingDaoInterface::class)->getMock();
         $shopModuleSettingDao
             ->expects($this->once())
             ->method('save')
             ->with($shopModuleSetting);
 
-        $handler = new ShopModuleSettingModuleSettingHandler($shopModuleSettingDao);
+        $handler = new SettingModuleSettingHandler($shopModuleSettingDao);
         $handler->handleOnModuleActivation($moduleConfiguration, 1);
     }
 
     public function testHandlingOnModuleDeactivation()
     {
-        $moduleSetting = $this->getTestModuleSetting();
-
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('testModule');
-        $moduleConfiguration->addSetting($moduleSetting);
+        $moduleConfiguration->addModuleSetting($this->getTestSetting());
 
-        $shopModuleSetting = $this->getTestShopModuleSetting();
+        $shopModuleSetting = $this->getTestSetting();
 
-        $shopModuleSettingDao = $this->getMockBuilder(ShopModuleSettingDaoInterface::class)->getMock();
+        $shopModuleSettingDao = $this->getMockBuilder(SettingDaoInterface::class)->getMock();
         $shopModuleSettingDao
             ->expects($this->once())
             ->method('delete')
             ->with($shopModuleSetting);
 
-        $handler = new ShopModuleSettingModuleSettingHandler($shopModuleSettingDao);
+        $handler = new SettingModuleSettingHandler($shopModuleSettingDao);
         $handler->handleOnModuleDeactivation($moduleConfiguration, 1);
     }
 
-    private function getTestModuleSetting(): ModuleSetting
+    private function getTestSetting(): Setting
     {
-        return new ModuleSetting(
-            ModuleSetting::SHOP_MODULE_SETTING,
-            [
-                [
-                    'name'          => 'blCustomGridFramework',
-                    'type'          => 'bool',
-                    'value'         => 'false',
-                    'constraints'   => ['1', '2', '3',],
-                    'group'         => 'frontend',
-                    'position'      => 5,
-                ],
-            ]
-        );
-    }
-
-    private function getTestShopModuleSetting(): ShopModuleSetting
-    {
-        $shopModuleSetting = new ShopModuleSetting();
+        $shopModuleSetting = new Setting();
         $shopModuleSetting
             ->setName('blCustomGridFramework')
             ->setValue('false')

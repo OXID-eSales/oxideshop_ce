@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Configuration\Dat
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
+use OxidEsales\EshopCommunity\Internal\Module\Setting\Setting;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -20,14 +20,16 @@ class ModuleConfigurationTest extends TestCase
 {
     public function testAddModuleSetting()
     {
-        $setting = new ModuleSetting('testSetting', []);
-
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->addSetting($setting);
+        $setting = new Setting();
+        $setting
+            ->setName('testSetting')
+            ->setValue([]);
+        $moduleConfiguration->addModuleSetting($setting);
 
         $this->assertSame(
             $setting,
-            $moduleConfiguration->getSetting('testSetting')
+            $moduleConfiguration->getModuleSetting('testSetting')
         );
     }
 
@@ -35,13 +37,15 @@ class ModuleConfigurationTest extends TestCase
     {
         $moduleConfiguration = new ModuleConfiguration();
 
-        $this->assertFalse($moduleConfiguration->hasSetting('testSetting'));
+        $this->assertFalse($moduleConfiguration->hasModuleSetting('testSetting'));
 
-        $moduleConfiguration->addSetting(
-            new ModuleSetting('testSetting', [])
-        );
+        $setting = new Setting();
+        $setting
+            ->setName('testSetting')
+            ->setValue([]);
+        $moduleConfiguration->addModuleSetting($setting);
 
-        $this->assertTrue($moduleConfiguration->hasSetting('testSetting'));
+        $this->assertTrue($moduleConfiguration->hasModuleSetting('testSetting'));
     }
 
     public function testConfigurationHasClassExtension()

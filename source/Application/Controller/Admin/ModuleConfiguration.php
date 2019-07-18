@@ -10,7 +10,7 @@ use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
+use OxidEsales\EshopCommunity\Internal\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 
 /**
@@ -46,10 +46,8 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
 
         try {
             $moduleConfiguration = $this->getContainer()->get(ModuleConfigurationDaoBridgeInterface::class)->get($moduleId);
-            if ($moduleConfiguration->hasSetting(ModuleSetting::SHOP_MODULE_SETTING)) {
-                $formatModuleSettings = $this->formatModuleSettingsForTemplate(
-                    $moduleConfiguration->getSetting(ModuleSetting::SHOP_MODULE_SETTING)->getValue()
-                );
+            if (!empty($moduleConfiguration->getModuleSettings())) {
+                $formatModuleSettings = $this->formatModuleSettingsForTemplate($moduleConfiguration->getModuleSettings());
 
                 $this->_aViewData["var_constraints"] = $formatModuleSettings['constraints'];
                 $this->_aViewData["var_grouping"] = $formatModuleSettings['grouping'];
@@ -222,25 +220,20 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
         $moduleConfigurationDaoBridge = $this->getContainer()->get(ModuleConfigurationDaoBridgeInterface::class);
         $moduleConfiguration = $moduleConfigurationDaoBridge->get($moduleId);
 
-        if ($moduleConfiguration->hasSetting(ModuleSetting::SHOP_MODULE_SETTING)) {
-            $shopModuleSetting = $moduleConfiguration->getSetting(ModuleSetting::SHOP_MODULE_SETTING);
-            $shopModuleSettingValues = $shopModuleSetting->getValue();
-
+        if (!empty($moduleConfiguration->getModuleSettings())) {
             foreach ($variables as $name => $value) {
-                foreach ($shopModuleSettingValues as $key => $moduleSetting) {
-                    if ($moduleSetting['name'] === $name) {
-                        if ($moduleSetting['type'] === 'aarr') {
+                foreach ($moduleConfiguration->getModuleSettings() as $moduleSetting) {
+                    if ($moduleSetting->getName() === $name) {
+                        if ($moduleSetting->getType() === 'aarr') {
                             $value = $this->_multilineToAarray($value);
                         }
-                        if ($moduleSetting['type'] === 'bool') {
+                        if ($moduleSetting->getType() === 'bool') {
                             $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
                         }
-                        $shopModuleSettingValues[$key]['value'] = $value;
+                        $moduleSetting->setValue($value);
                     }
                 }
             }
-
-            $shopModuleSetting->setValue($shopModuleSettingValues);
 
             $moduleConfigurationDaoBridge->save($moduleConfiguration);
         }
@@ -267,7 +260,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
     }
 
     /**
-     * @param array $moduleSettings
+     * @param Setting[] $moduleSettings
      * @return array
      */
     private function formatModuleSettingsForTemplate(array $moduleSettings): array
@@ -284,33 +277,33 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
         $grouping = [];
 
         foreach ($moduleSettings as $setting) {
-            $name = $setting['name'];
-            $valueType = $setting['type'];
+            $name = $setting->getName();
+            $valueType = $setting->getType();
             $value = null;
 
-            if (isset($setting['value'])) {
-                switch ($setting['type']) {
+            if ($setting->getValue() !== null) {
+                switch ($setting->getType()) {
                     case 'arr':
-                        $value = $this->_arrayToMultiline($setting['value']);
+                        $value = $this->_arrayToMultiline($setting->getValue());
                         break;
                     case 'aarr':
-                        $value = $this->_aarrayToMultiline($setting['value']);
+                        $value = $this->_aarrayToMultiline($setting->getValue());
                         break;
                     case 'bool':
-                        $value = filter_var($setting['value'], FILTER_VALIDATE_BOOLEAN);
+                        $value = filter_var($setting->getValue(), FILTER_VALIDATE_BOOLEAN);
                         break;
                     default:
-                        $value = $setting['value'];
+                        $value = $setting->getValue();
                         break;
                 }
                 $value = Str::getStr()->htmlentities($value);
             }
 
-            $group = $setting['group'];
+            $group = $setting->getGroupName();
 
 
             $confVars[$valueType][$name] = $value;
-            $constraints[$name] = $setting['constraints'] ?? '';
+            $constraints[$name] = $setting->getConstraints() ?? '';
 
             if ($group) {
                 if (!isset($grouping[$group])) {

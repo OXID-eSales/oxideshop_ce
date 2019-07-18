@@ -94,7 +94,7 @@ services:
       - '@oxid_esales.module.meta_data.validator.shop_module_setting_boolean_validator'
 
   oxid_esales.module.meta_data.validator.shop_module_setting_boolean_validator:
-    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\ShopModuleSettingBooleanValidator
+    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\ModuleSettingBooleanValidator
 
   oxid_esales.module.meta_data.validator.module_id_validator:
     class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\ModuleIdValidator
@@ -105,4 +105,4 @@ services:
       - '@oxid_esales.module.meta_data.converter.shop_module_settings_boolean_converter'
 
   oxid_esales.module.meta_data.converter.shop_module_settings_boolean_converter:
-    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Converter\ShopModuleSettingsBooleanConverter
+    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Converter\ModuleSettingsBooleanConverter

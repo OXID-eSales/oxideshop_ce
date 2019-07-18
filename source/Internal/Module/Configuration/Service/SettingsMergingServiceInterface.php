@@ -12,7 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfi
 /**
  * @internal
  */
-interface ShopModuleSettingsMergingServiceInterface
+interface SettingsMergingServiceInterface
 {
     /**
      * @param ShopConfiguration   $shopConfiguration

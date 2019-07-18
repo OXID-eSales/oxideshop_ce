@@ -6,11 +6,11 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData\Converter;
 
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\Converter\ShopModuleSettingsBooleanConverter;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Converter\ModuleSettingsBooleanConverter;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
 use PHPUnit\Framework\TestCase;
 
-class ShopModuleSettingsBooleanConverterTest extends TestCase
+class ModuleSettingsBooleanConverterTest extends TestCase
 {
     public function convertToTrueDataProvider()
     {
@@ -32,16 +32,16 @@ class ShopModuleSettingsBooleanConverterTest extends TestCase
     {
         $metaData =
             [
-                ModuleSetting::SHOP_MODULE_SETTING => [
+                MetaDataProvider::METADATA_SETTINGS => [
                     [
                         'type' => 'bool', 'value' => $value
                     ],
                 ]
             ];
-        $converter = new ShopModuleSettingsBooleanConverter();
+        $converter = new ModuleSettingsBooleanConverter();
 
         $convertedSettings = $converter->convert($metaData);
-        $this->assertTrue($convertedSettings[ModuleSetting::SHOP_MODULE_SETTING][0]['value']);
+        $this->assertTrue($convertedSettings[MetaDataProvider::METADATA_SETTINGS][0]['value']);
     }
 
     public function convertToFalseDataProvider()
@@ -64,16 +64,16 @@ class ShopModuleSettingsBooleanConverterTest extends TestCase
     {
         $metaData =
             [
-                ModuleSetting::SHOP_MODULE_SETTING => [
+                MetaDataProvider::METADATA_SETTINGS => [
                     [
                         'type' => 'bool', 'value' => $value
                     ],
                 ]
             ];
-        $converter = new ShopModuleSettingsBooleanConverter();
+        $converter = new ModuleSettingsBooleanConverter();
 
         $convertedSettings = $converter->convert($metaData);
-        $this->assertFalse($convertedSettings[ModuleSetting::SHOP_MODULE_SETTING][0]['value']);
+        $this->assertFalse($convertedSettings[MetaDataProvider::METADATA_SETTINGS][0]['value']);
     }
 
     public function whenNothingToConvertDataProvider()
@@ -82,7 +82,7 @@ class ShopModuleSettingsBooleanConverterTest extends TestCase
             [[]],
             [
                 [
-                    ModuleSetting::SHOP_MODULE_SETTING => [
+                    MetaDataProvider::METADATA_SETTINGS => [
                         [
                             'type' => 'str', 'value' => 'any'
                         ],
@@ -98,7 +98,7 @@ class ShopModuleSettingsBooleanConverterTest extends TestCase
      */
     public function testWhenNothingToConvert(array $metaData): void
     {
-        $converter = new ShopModuleSettingsBooleanConverter();
+        $converter = new ModuleSettingsBooleanConverter();
 
         $convertedSettings = $converter->convert($metaData);
         $this->assertSame($metaData, $convertedSettings);

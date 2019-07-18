@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Validator;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapter;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\EventsValidator;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\ModuleEvents;
 use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Event;

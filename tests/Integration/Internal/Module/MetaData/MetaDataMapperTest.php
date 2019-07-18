@@ -7,7 +7,6 @@
 namespace OxidEsales\EshopCommunity\Test\Integration\Internal\Module\MetaData;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\ModuleIdNotValidException;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataKeyException;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
@@ -129,11 +128,37 @@ class MetaDataMapperTest extends TestCase
         );
         $templateBlocks = $this->mapTemplateBlocksForAssertion($moduleConfiguration);
         $this->assertSame($expectedModuleData['blocks'], $templateBlocks);
+
+        $moduleSettings = [];
+
+        foreach ($moduleConfiguration->getModuleSettings() as $index => $setting) {
+            if ($setting->getGroupName()) {
+                $moduleSettings[$index]['group'] = $setting->getGroupName();
+            }
+
+            if ($setting->getName()) {
+                $moduleSettings[$index]['name'] = $setting->getName();
+            }
+
+            if ($setting->getType()) {
+                $moduleSettings[$index]['type'] = $setting->getType();
+            }
+
+            $moduleSettings[$index]['value'] = $setting->getValue();
+
+            if (!empty($setting->getConstraints())) {
+                $moduleSettings[$index]['constraints'] = $setting->getConstraints();
+            }
+
+            if ($setting->getPositionInGroup() > 0) {
+                $moduleSettings[$index]['position'] = $setting->getPositionInGroup();
+            }
+        }
+
         $this->assertSame(
             $expectedModuleData['settings'],
-            $moduleConfiguration->getSetting(ModuleSetting::SHOP_MODULE_SETTING)->getValue()
+            $moduleSettings
         );
-
         $events = [];
 
         foreach ($moduleConfiguration->getEvents() as $event) {
@@ -261,9 +286,36 @@ class MetaDataMapperTest extends TestCase
         );
         $templateBlocks = $this->mapTemplateBlocksForAssertion($moduleConfiguration);
         $this->assertSame($expectedModuleData['blocks'], $templateBlocks);
+
+        $moduleSettings = [];
+
+        foreach ($moduleConfiguration->getModuleSettings() as $index => $setting) {
+            if ($setting->getGroupName()) {
+                $moduleSettings[$index]['group'] = $setting->getGroupName();
+            }
+
+            if ($setting->getName()) {
+                $moduleSettings[$index]['name'] = $setting->getName();
+            }
+
+            if ($setting->getType()) {
+                $moduleSettings[$index]['type'] = $setting->getType();
+            }
+
+            $moduleSettings[$index]['value'] = $setting->getValue();
+
+            if (!empty($setting->getConstraints())) {
+                $moduleSettings[$index]['constraints'] = $setting->getConstraints();
+            }
+
+            if ($setting->getPositionInGroup() > 0) {
+                $moduleSettings[$index]['position'] = $setting->getPositionInGroup();
+            }
+        }
+
         $this->assertSame(
             $expectedModuleData['settings'],
-            $moduleConfiguration->getSetting(ModuleSetting::SHOP_MODULE_SETTING)->getValue()
+            $moduleSettings
         );
 
         $events = [];

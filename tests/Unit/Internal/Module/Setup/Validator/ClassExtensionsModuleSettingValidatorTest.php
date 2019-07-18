@@ -8,7 +8,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Validator;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ClassExtensionsValidator;
 use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
@@ -36,7 +35,7 @@ class ClassExtensionsModuleSettingValidatorTest extends TestCase
         $validator = new ClassExtensionsValidator($shopAdapter);
 
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->addClassExtension(new ClassExtension($anyExistentClass,'moduleClass'));
+        $moduleConfiguration->addClassExtension(new ClassExtension($anyExistentClass, 'moduleClass'));
 
         $this->assertNull(
             $validator->validate($moduleConfiguration, 1)
@@ -57,7 +56,7 @@ class ClassExtensionsModuleSettingValidatorTest extends TestCase
             ->willReturn(true);
 
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->addClassExtension(new ClassExtension('shopClass','moduleClass'));
+        $moduleConfiguration->addClassExtension(new ClassExtension('shopClass', 'moduleClass'));
 
         $validator = new ClassExtensionsValidator($shopAdapter);
         $validator->validate($moduleConfiguration, 1);
@@ -82,7 +81,7 @@ class ClassExtensionsModuleSettingValidatorTest extends TestCase
         $validator = new ClassExtensionsValidator($shopAdapter);
 
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->addClassExtension(new ClassExtension('nonExistentClass','moduleClass'));
+        $moduleConfiguration->addClassExtension(new ClassExtension('nonExistentClass', 'moduleClass'));
 
         $validator->validate($moduleConfiguration, 1);
     }

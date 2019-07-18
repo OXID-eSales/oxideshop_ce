@@ -10,12 +10,12 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleCon
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Template;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassWithoutNamespace;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Event;
+use OxidEsales\EshopCommunity\Internal\Module\Setting\Setting;
 
 /**
  * @internal
@@ -40,9 +40,9 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
             'thumbnail' => $configuration->getThumbnail(),
             'author' => $configuration->getAuthor(),
             'url' => $configuration->getUrl(),
-            'email' => $configuration->getEmail(),
-            'settings' => $this->getSettingsData($configuration),
+            'email' => $configuration->getEmail()
         ];
+
         if ($configuration->hasTemplates()) {
             $data[ModuleConfigurationMappingKeys::TEMPLATES] =  $this->getTemplates($configuration);
         }
@@ -67,6 +67,10 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
         if ($configuration->hasClassWithoutNamespaces()) {
             $data[ModuleConfigurationMappingKeys::CLASSES_WITHOUT_NAMESPACE] =
                 $this->getClassWithoutNamespace($configuration);
+        }
+
+        if ($configuration->hasModuleSettings()) {
+            $data[ModuleConfigurationMappingKeys::SETTING] = $this->mapSettingsToData($configuration);
         }
 
         return $data;
@@ -126,57 +130,9 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
             );
         }
 
-        if (isset($data['settings'])) {
-            $this->setSettings($moduleConfiguration, $data['settings']);
-        }
+        $moduleConfiguration = $this->mapSettingsFromData($moduleConfiguration, $data);
 
         return $moduleConfiguration;
-    }
-
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     * @param array $settingsData
-     */
-    private function setSettings(ModuleConfiguration $moduleConfiguration, array $settingsData): void
-    {
-        $settings = $this->getMappedSettings($settingsData);
-
-        foreach ($settings as $setting) {
-            $moduleConfiguration->addSetting(
-                $setting
-            );
-        }
-    }
-
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     *
-     * @return array
-     */
-    private function getSettingsData(ModuleConfiguration $moduleConfiguration): array
-    {
-        $data = [];
-
-        foreach ($moduleConfiguration->getSettings() as $setting) {
-            $data[$setting->getName()] = $setting->getValue();
-        }
-
-        return $data;
-    }
-
-    /**
-     * @param array $settingsData
-     *
-     * @return array
-     */
-    private function getMappedSettings(array $settingsData): array
-    {
-        $settings = [];
-        foreach ($settingsData as $settingName => $settingValue) {
-            $settings[] = new ModuleSetting($settingName, $settingValue);
-        }
-
-        return $settings;
     }
 
     /**
@@ -415,5 +371,84 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
         }
 
         return $classes;
+    }
+
+    /**
+     * @param ModuleConfiguration $configuration
+     * @return array
+     */
+    private function mapSettingsToData(ModuleConfiguration $configuration): array
+    {
+        $data = [];
+
+        foreach ($configuration->getModuleSettings() as $index => $setting) {
+            if ($setting->getGroupName()) {
+                $data[$index]['group'] = $setting->getGroupName();
+            }
+
+            if ($setting->getName()) {
+                $data[$index]['name'] = $setting->getName();
+            }
+
+            if ($setting->getType()) {
+                $data[$index]['type'] = $setting->getType();
+            }
+
+            $data[$index]['value'] = $setting->getValue();
+
+            if (!empty($setting->getConstraints())) {
+                $data[$index]['constraints'] = $setting->getConstraints();
+            }
+
+            if ($setting->getPositionInGroup() > 0) {
+                $data[$index]['position'] = $setting->getPositionInGroup();
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param ModuleConfiguration $configuration
+     * @param array $data
+     * @return ModuleConfiguration
+     */
+    private function mapSettingsFromData(ModuleConfiguration $configuration, array $data): ModuleConfiguration
+    {
+        if (isset($data[ModuleConfigurationMappingKeys::SETTING])) {
+            foreach ($data[ModuleConfigurationMappingKeys::SETTING] as $settingData) {
+                $setting = new Setting();
+
+                $setting->setType($settingData['type']);
+
+                if (isset($settingData['value'])) {
+                    $setting->setValue($settingData['value']);
+                }
+
+                if (!isset($settingData['value'])) {
+                    $setting->setValue("");
+                }
+
+                if (isset($settingData['name'])) {
+                    $setting->setName($settingData['name']);
+                }
+
+                if (isset($settingData['group'])) {
+                    $setting->setGroupName($settingData['group']);
+                }
+
+                if (isset($settingData['position'])) {
+                    $setting->setPositionInGroup($settingData['position']);
+                }
+
+                if (isset($settingData['constraints'])) {
+                    $setting->setConstraints($settingData['constraints']);
+                }
+
+                $configuration->addModuleSetting($setting);
+            }
+        }
+
+        return $configuration;
     }
 }

@@ -11,7 +11,7 @@ use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
+use OxidEsales\EshopCommunity\Internal\Module\Setting\Setting;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**
@@ -52,34 +52,24 @@ class ModuleConfigurationTest extends UnitTestCase
         $container = ContainerFactory::getInstance()->getContainer();
         $moduleConfiguration = $container->get(ModuleConfigurationDaoBridgeInterface::class)->get($this->testModuleId);
 
-        $shopModuleSettings = $moduleConfiguration->getSetting(ModuleSetting::SHOP_MODULE_SETTING)->getValue();
-
-        $this->assertSame('newValue', $shopModuleSettings[0]['value']);
+        $this->assertSame(
+            'newValue',
+            $moduleConfiguration->getModuleSettings()[0]->getValue()
+        );
     }
 
     private function prepareTestModuleConfiguration()
     {
+        $setting = new Setting();
+        $setting
+            ->setName('stringSetting')
+            ->setValue('row')
+            ->setType('str');
+
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId($this->testModuleId);
         $moduleConfiguration->setPath('testModule');
-        $moduleConfiguration
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::SHOP_MODULE_SETTING,
-                [
-                    [
-                        'group' => 'frontend',
-                        'name'  => 'stringSetting',
-                        'type'  => 'str',
-                        'value' => 'row',
-                    ],
-                    [
-                        'group' => 'frontend',
-                        'name'  => 'array',
-                        'type'  => 'aarr',
-                        'value' => ['1', '2'],
-                    ],
-                ]
-            ));
+        $moduleConfiguration->addModuleSetting($setting);
 
         $container = ContainerFactory::getInstance()->getContainer();
         $shopConfigurationDao = $container->get(ShopConfigurationDaoBridgeInterface::class);

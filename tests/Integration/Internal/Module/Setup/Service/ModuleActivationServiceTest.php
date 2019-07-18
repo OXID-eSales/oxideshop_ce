@@ -17,10 +17,10 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExte
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Template;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Path\ModulePathResolver;
 use OxidEsales\EshopCommunity\Internal\Module\Path\ModulePathResolverInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
@@ -172,6 +172,15 @@ class ModuleActivationServiceTest extends TestCase
         $moduleConfiguration->setId($this->testModuleId);
         $moduleConfiguration->setPath('TestModule');
 
+        $setting = new Setting();
+        $setting
+            ->setName('test')
+            ->setValue([1, 2])
+            ->setType('aarr')
+            ->setGroupName('group')
+            ->setPositionInGroup(7)
+            ->setConstraints([1, 2]);
+
         $templateBlock = new TemplateBlock(
             'extendedTemplatePath',
             'testBlock',
@@ -180,14 +189,18 @@ class ModuleActivationServiceTest extends TestCase
         $templateBlock->setTheme('flow_theme');
         $templateBlock->setPosition(3);
 
+        $moduleConfiguration->addModuleSetting($setting);
+
         $moduleConfiguration
             ->addController(
                 new Controller(
-                    'originalClassNamespace', 'moduleClassNamespace'
+                    'originalClassNamespace',
+                    'moduleClassNamespace'
                 )
             )->addController(
                 new Controller(
-                    'otherOriginalClassNamespace', 'moduleClassNamespace'
+                    'otherOriginalClassNamespace',
+                    'moduleClassNamespace'
                 )
             )
             ->addTemplate(new Template('originalTemplate', 'moduleTemplate'))
@@ -223,23 +236,23 @@ class ModuleActivationServiceTest extends TestCase
                     'class2',
                     'class2.php'
                 )
-            )->addSetting(new ModuleSetting(
-                ModuleSetting::SHOP_MODULE_SETTING,
-                [
-                    [
-                        'group' => 'frontend',
-                        'name'  => 'grid',
-                        'type'  => 'str',
-                        'value' => 'row',
-                    ],
-                    [
-                        'group' => 'frontend',
-                        'name'  => 'array',
-                        'type'  => 'arr',
-                        'value' => ['1', '2'],
-                    ],
-                ]
-            ));
+            );
+
+        $setting = new Setting();
+        $setting
+            ->setName('grid')
+            ->setValue('row')
+            ->setType('str')
+            ->setGroupName('frontend');
+        $moduleConfiguration->addModuleSetting($setting);
+
+        $setting = new Setting();
+        $setting
+            ->setName('array')
+            ->setValue(['1', '2'])
+            ->setType('arr')
+            ->setGroupName('frontend');
+        $moduleConfiguration->addModuleSetting($setting);
 
         return $moduleConfiguration;
     }

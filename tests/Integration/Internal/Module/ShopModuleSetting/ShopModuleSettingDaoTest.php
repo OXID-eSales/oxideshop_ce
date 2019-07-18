@@ -6,19 +6,19 @@ declare(strict_types=1);
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\ShopModuleSetting;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Setting;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\ShopModuleSettingDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\ShopModuleSetting;
+use OxidEsales\EshopCommunity\Internal\Module\Setting\SettingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-class ShopModuleSettingDaoTest extends TestCase
+class SettingDaoTest extends TestCase
 {
     use ContainerTrait;
 
@@ -27,9 +27,9 @@ class ShopModuleSettingDaoTest extends TestCase
      */
     public function testSave(string $name, string $type, $value)
     {
-        $settingDao = $this->getShopModuleSettingDao();
+        $settingDao = $this->getSettingDao();
 
-        $shopModuleSetting = new ShopModuleSetting();
+        $shopModuleSetting = new Setting();
         $shopModuleSetting
             ->setModuleId('testModuleId')
             ->setShopId(1)
@@ -54,9 +54,9 @@ class ShopModuleSettingDaoTest extends TestCase
 
     public function testSaveSeveralSettings()
     {
-        $settingDao = $this->getShopModuleSettingDao();
+        $settingDao = $this->getSettingDao();
 
-        $shopModuleSetting1 = new ShopModuleSetting();
+        $shopModuleSetting1 = new Setting();
         $shopModuleSetting1
             ->setModuleId('testModuleId')
             ->setShopId(1)
@@ -73,7 +73,7 @@ class ShopModuleSettingDaoTest extends TestCase
 
         $settingDao->save($shopModuleSetting1);
 
-        $shopModuleSetting2 = new ShopModuleSetting();
+        $shopModuleSetting2 = new Setting();
         $shopModuleSetting2
             ->setModuleId('testModuleId')
             ->setShopId(1)
@@ -106,7 +106,7 @@ class ShopModuleSettingDaoTest extends TestCase
      */
     public function testGetNonExistentSetting()
     {
-        $settingDao = $this->getShopModuleSettingDao();
+        $settingDao = $this->getSettingDao();
 
         $settingDao->get('onExistentSetting', 'moduleId', 1);
     }
@@ -116,9 +116,9 @@ class ShopModuleSettingDaoTest extends TestCase
      */
     public function testDelete()
     {
-        $settingDao = $this->getShopModuleSettingDao();
+        $settingDao = $this->getSettingDao();
 
-        $shopModuleSetting = new ShopModuleSetting();
+        $shopModuleSetting = new Setting();
         $shopModuleSetting
             ->setModuleId('testModuleId')
             ->setShopId(1)
@@ -134,9 +134,9 @@ class ShopModuleSettingDaoTest extends TestCase
 
     public function testUpdate()
     {
-        $settingDao = $this->getShopModuleSettingDao();
+        $settingDao = $this->getSettingDao();
 
-        $shopModuleSetting = new ShopModuleSetting();
+        $shopModuleSetting = new Setting();
         $shopModuleSetting
             ->setModuleId('testModuleId')
             ->setShopId(1)
@@ -164,7 +164,7 @@ class ShopModuleSettingDaoTest extends TestCase
         $this->assertSame(0, $this->getOxConfigTableRowCount($settingName, 1, $moduleId));
         $this->assertSame(0, $this->getOxDisplayConfigTableRowCount($settingName, $moduleId));
 
-        $shopModuleSetting = new ShopModuleSetting();
+        $shopModuleSetting = new Setting();
         $shopModuleSetting
             ->setModuleId($moduleId)
             ->setShopId(1)
@@ -172,7 +172,7 @@ class ShopModuleSettingDaoTest extends TestCase
             ->setType('some')
             ->setValue('valueBeforeUpdate');
 
-        $settingDao = $this->getShopModuleSettingDao();
+        $settingDao = $this->getSettingDao();
         $settingDao->save($shopModuleSetting);
 
         $this->assertSame(1, $this->getOxConfigTableRowCount($settingName, 1, $moduleId));
@@ -192,9 +192,9 @@ class ShopModuleSettingDaoTest extends TestCase
      */
     public function testBackwardsCompatibility(string $name, string $type, $value)
     {
-        $settingDao = $this->getShopModuleSettingDao();
+        $settingDao = $this->getSettingDao();
 
-        $shopModuleSetting = new ShopModuleSetting();
+        $shopModuleSetting = new Setting();
         $shopModuleSetting
             ->setModuleId('testModuleId')
             ->setShopId(1)
@@ -239,9 +239,9 @@ class ShopModuleSettingDaoTest extends TestCase
         ];
     }
 
-    private function getShopModuleSettingDao()
+    private function getSettingDao()
     {
-        return $this->get(ShopModuleSettingDaoInterface::class);
+        return $this->get(SettingDaoInterface::class);
     }
 
     private function getOxConfigTableRowCount(string $settingName, int $shopId, string $moduleId): int

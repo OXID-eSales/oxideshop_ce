@@ -10,7 +10,6 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleCon
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Template;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataSchemaValidator;
@@ -20,6 +19,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleCon
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassWithoutNamespace;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Event;
+use OxidEsales\EshopCommunity\Internal\Module\Setting\Setting;
 
 /**
  * @internal
@@ -167,11 +167,7 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
             }
         }
 
-        if (isset($moduleData[MetaDataProvider::METADATA_SETTINGS])) {
-            $moduleConfiguration->addSetting(
-                new ModuleSetting(ModuleSetting::SHOP_MODULE_SETTING, $moduleData[MetaDataProvider::METADATA_SETTINGS])
-            );
-        }
+        $moduleConfiguration = $this->mapSettings($moduleConfiguration, $moduleData);
 
         return $moduleConfiguration;
     }
@@ -192,5 +188,41 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
                 );
             }
         }
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     * @param $moduleData
+     * @return ModuleConfiguration
+     */
+    private function mapSettings(ModuleConfiguration $moduleConfiguration, $moduleData): ModuleConfiguration
+    {
+        if (isset($moduleData[MetaDataProvider::METADATA_SETTINGS])) {
+            foreach ($moduleData[MetaDataProvider::METADATA_SETTINGS] as $data) {
+                $setting = new Setting();
+                $setting->setName($data['name']);
+                $setting->setType($data['type']);
+
+                if (isset($data['group'])) {
+                    $setting->setGroupName($data['group']);
+                }
+
+                if (isset($data['value'])) {
+                    $setting->setValue($data['value']);
+                }
+
+                if (isset($data['constraints'])) {
+                    $setting->setConstraints($data['constraints']);
+                }
+
+                if (isset($data['position'])) {
+                    $setting->setPositionInGroup($data['position']);
+                }
+
+                $moduleConfiguration->addModuleSetting($setting);
+            }
+        }
+
+        return $moduleConfiguration;
     }
 }

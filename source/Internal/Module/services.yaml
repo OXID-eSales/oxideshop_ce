@@ -3,7 +3,7 @@ imports:
    - { resource: Setup/services.yaml }
    - { resource: Cache/services.yaml }
    - { resource: TemplateExtension/services.yaml }
-   - { resource: ShopModuleSetting/services.yaml }
+   - { resource: Setting/services.yaml }
    - { resource: State/services.yaml }
    - { resource: Install/services.yaml }
    - { resource: Command/services.yaml }

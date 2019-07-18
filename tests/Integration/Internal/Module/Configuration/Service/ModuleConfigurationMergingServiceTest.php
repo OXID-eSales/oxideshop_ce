@@ -8,9 +8,9 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Configurat
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleConfigurationMergingServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
@@ -146,53 +146,74 @@ class ModuleConfigurationMergingServiceTest extends TestCase
         );
     }
 
-    public function testShopModuleSettingUpdatedAfterMergingAlreadyInstalledModule()
+    public function testSettingUpdatedAfterMergingAlreadyInstalledModule()
     {
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('installedModule');
-        $moduleConfiguration->addSetting(
-            new ModuleSetting(
-                ModuleSetting::SHOP_MODULE_SETTING,
-                [
-                    [
-                        'name'     => 'existingValueIsTaken1',
-                        'group'    => 'oldGroup',
-                        'type'     => 'int',
-                        'position' => '100500'
-                    ],
-                    [
-                        'name'     => 'withTypeToChange',
-                        'type'     => 'bool',
-                        'position' => '100500',
-                        'value'    => 'true',
-                    ],
-                    [
-                        'name'     => 'existingValueIsTaken2',
-                        'type'     => 'str',
-                        'position' => '100500'
-                    ],
-                    [
-                        'name'        => 'existingValueIsTaken3',
-                        'type'        => 'select',
-                        'constraints' => ['1', '2', '3'],
-                        'position'    => '100500',
-                    ],
-                    [
-                        'name'        => 'existingValueNotTaken',
-                        'type'        => 'select',
-                        'constraints' => ['1', '2'],
-                        'position'    => '100500',
-                        'value'       => '2'
-                    ],
-                    [
-                        'name'          => 'completeNewOne',
-                        'type'          => 'string',
-                        'position'      => '100500',
-                        'value' => 'myValue'
-                    ]
-                ]
-            )
-        );
+
+        $moduleSettings = [
+            [
+                'name'     => 'existingValueIsTaken1',
+                'group'    => 'oldGroup',
+                'type'     => 'int',
+                'position' => '100500'
+            ],
+            [
+                'name'     => 'withTypeToChange',
+                'type'     => 'bool',
+                'position' => '100500',
+                'value'    => 'true',
+            ],
+            [
+                'name'     => 'existingValueIsTaken2',
+                'type'     => 'str',
+                'position' => '100500'
+            ],
+            [
+                'name'        => 'existingValueIsTaken3',
+                'type'        => 'select',
+                'constraints' => ['1', '2', '3'],
+                'position'    => '100500',
+            ],
+            [
+                'name'        => 'existingValueNotTaken',
+                'type'        => 'select',
+                'constraints' => ['1', '2'],
+                'position'    => '100500',
+                'value'       => '2'
+            ],
+            [
+                'name'     => 'completeNewOne',
+                'type'     => 'string',
+                'position' => '100500',
+                'value'    => 'myValue'
+            ]
+        ];
+
+        foreach ($moduleSettings as $settingData) {
+            $setting = new Setting();
+
+            $setting->setType($settingData['type']);
+            $setting->setName($settingData['name']);
+
+            if (isset($settingData['value'])) {
+                $setting->setValue($settingData['value']);
+            }
+
+            if (isset($settingData['group'])) {
+                $setting->setGroupName($settingData['group']);
+            }
+
+            if (isset($settingData['position'])) {
+                $setting->setPositionInGroup((int)$settingData['position']);
+            }
+
+            if (isset($settingData['constraints'])) {
+                $setting->setConstraints($settingData['constraints']);
+            }
+
+            $moduleConfiguration->addModuleSetting($setting);
+        }
 
         $moduleConfigurationMergingService = $this->getMergingService();
         $shopConfiguration = $moduleConfigurationMergingService->merge(
@@ -201,6 +222,32 @@ class ModuleConfigurationMergingServiceTest extends TestCase
         );
 
         $mergedModuleConfiguration = $shopConfiguration->getModuleConfiguration('installedModule');
+
+        $settings = [];
+
+        foreach ($mergedModuleConfiguration->getModuleSettings() as $index => $setting) {
+            if ($setting->getGroupName()) {
+                $settings[$index]['group'] = $setting->getGroupName();
+            }
+
+            if ($setting->getName()) {
+                $settings[$index]['name'] = $setting->getName();
+            }
+
+            if ($setting->getType()) {
+                $settings[$index]['type'] = $setting->getType();
+            }
+
+            $settings[$index]['value'] = $setting->getValue();
+
+            if ($setting->getPositionInGroup()) {
+                $settings[$index]['position'] = $setting->getPositionInGroup();
+            }
+
+            if (!empty($setting->getConstraints())) {
+                $settings[$index]['constraints'] = $setting->getConstraints();
+            }
+        }
 
         $this->assertEquals(
             [
@@ -244,7 +291,7 @@ class ModuleConfigurationMergingServiceTest extends TestCase
                     'value'    => 'myValue'
                 ]
             ],
-            $mergedModuleConfiguration->getSetting(ModuleSetting::SHOP_MODULE_SETTING)->getValue()
+            $settings
         );
     }
 
@@ -269,52 +316,70 @@ class ModuleConfigurationMergingServiceTest extends TestCase
             );
         }
 
-        $moduleConfiguration->addSetting(
-            new ModuleSetting(
-                ModuleSetting::SHOP_MODULE_SETTING,
+        $moduleSettings =
+            [
                 [
-                    [
-                        'name'     => 'existingValueIsTaken1',
-                        'group'    => 'oldGroup',
-                        'type'     => 'int',
-                        'position' => '100500',
-                        'value'    => '1',
-                    ],
-                    [
-                        'name'     => 'withTypeToChange',
-                        'type'     => 'str',
-                        'position' => '100500',
-                        'value'    => 'toDelete',
-                    ],
-                    [
-                        'name'     => 'existingValueIsTaken2',
-                        'type'     => 'str',
-                        'position' => '100500',
-                        'value'    => 'keep',
-                    ],
-                    [
-                        'name'        => 'existingValueIsTaken3',
-                        'type'        => 'select',
-                        'constraints' => ['1', '2', '3'],
-                        'position'    => '100500',
-                        'value'       => '3',
-                    ],
-                    [
-                        'name'        => 'existingValueNotTaken',
-                        'type'        => 'select',
-                        'constraints' => ['1', '2', '3'],
-                        'position'    => '100500',
-                        'value'       => '3',
-                    ],
-                    [
-                        'name'        => 'willBeDeleted',
-                        'type'        => 'str',
-                        'position'    => '100500',
-                        'value'       => 'myValue1',
-                    ]
+                    'name'     => 'existingValueIsTaken1',
+                    'group'    => 'oldGroup',
+                    'type'     => 'int',
+                    'position' => '100500',
+                    'value'    => '1',
+                ],
+                [
+                    'name'     => 'withTypeToChange',
+                    'type'     => 'str',
+                    'position' => '100500',
+                    'value'    => 'toDelete',
+                ],
+                [
+                    'name'     => 'existingValueIsTaken2',
+                    'type'     => 'str',
+                    'position' => '100500',
+                    'value'    => 'keep',
+                ],
+                [
+                    'name'        => 'existingValueIsTaken3',
+                    'type'        => 'select',
+                    'constraints' => ['1', '2', '3'],
+                    'position'    => '100500',
+                    'value'       => '3',
+                ],
+                [
+                    'name'        => 'existingValueNotTaken',
+                    'type'        => 'select',
+                    'constraints' => ['1', '2', '3'],
+                    'position'    => '100500',
+                    'value'       => '3',
+                ],
+                [
+                    'name'     => 'willBeDeleted',
+                    'type'     => 'str',
+                    'position' => '100500',
+                    'value'    => 'myValue1',
                 ]
-            )
-        );
+            ];
+
+        foreach ($moduleSettings as $settingData) {
+            $setting = new Setting();
+
+            $setting->setType($settingData['type']);
+            $setting->setName($settingData['name']);
+            $setting->setValue($settingData['value']);
+
+            if (isset($settingData['group'])) {
+                $setting->setGroupName($settingData['group']);
+            }
+
+            if (isset($settingData['position'])) {
+                $setting->setPositionInGroup((int)$settingData['position']);
+            }
+
+            if (isset($settingData['constraints'])) {
+                $setting->setConstraints($settingData['constraints']);
+            }
+
+            $moduleConfiguration->addModuleSetting($setting);
+        }
 
         $chain = new ClassExtensionsChain();
         $chain->setChain([

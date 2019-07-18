@@ -65,7 +65,7 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\TemplateBlockModuleSettingHandler
 
   oxid_esales.module.setup.shop_module_setting_module_setting_handler:
-    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopModuleSettingModuleSettingHandler
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\SettingModuleSettingHandler
 
   oxid_esales.module.setup.events_module_setting_handler:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopConfigurationEventsHandler

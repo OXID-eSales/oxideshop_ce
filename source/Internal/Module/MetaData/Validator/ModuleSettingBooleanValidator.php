@@ -6,14 +6,14 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator;
 
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\ShopModuleSettingNotValidException;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationMappingKeys;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\SettingNotValidException;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
 
 /**
  * @internal
  */
-class ShopModuleSettingBooleanValidator implements MetaDataValidatorInterface
+class ModuleSettingBooleanValidator implements MetaDataValidatorInterface
 {
     private const ALLOWED_VALUES = [
         0,
@@ -29,12 +29,12 @@ class ShopModuleSettingBooleanValidator implements MetaDataValidatorInterface
     /**
      * @param array $metaData
      *
-     * @throws ShopModuleSettingNotValidException
+     * @throws SettingNotValidException
      */
     public function validate(array $metaData): void
     {
-        if (isset($metaData[ModuleSetting::SHOP_MODULE_SETTING])) {
-            $settings = $metaData[ModuleSetting::SHOP_MODULE_SETTING];
+        if (isset($metaData[MetaDataProvider::METADATA_SETTINGS])) {
+            $settings = $metaData[MetaDataProvider::METADATA_SETTINGS];
             foreach ($settings as $setting) {
                 $this->validateSetting($metaData, $setting);
             }
@@ -43,15 +43,15 @@ class ShopModuleSettingBooleanValidator implements MetaDataValidatorInterface
 
     /**
      * @param array $metaData
-     * @param mixed $setting
-     * @throws ShopModuleSettingNotValidException
+     * @param array $setting
+     * @throws SettingNotValidException
      */
-    private function validateSetting(array $metaData, $setting): void
+    private function validateSetting(array $metaData, array $setting): void
     {
         if (isset($setting['type']) && $setting['type'] === 'bool') {
             $value = is_string($setting['value']) ? strtolower($setting['value']) : $setting['value'];
             if (!in_array($value, self::ALLOWED_VALUES, true)) {
-                throw new ShopModuleSettingNotValidException(
+                throw new SettingNotValidException(
                     'Invalid boolean value- "' . $setting['value'] . '" was used for module setting. '
                     . 'Please update setting value in module "' . $metaData[MetaDataProvider::METADATA_ID] . '".'
                 );

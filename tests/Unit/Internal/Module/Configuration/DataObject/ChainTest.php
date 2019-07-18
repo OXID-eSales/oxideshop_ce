@@ -142,7 +142,6 @@ class ChainTest extends TestCase
                 ]
             ]
         );
-
         $chain->removeExtension($extension);
     }
 

@@ -6,16 +6,16 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData\Validator;
 
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\ShopModuleSettingNotValidException;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationMappingKeys;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\SettingNotValidException;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
-use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\ShopModuleSettingBooleanValidator;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\ModuleSettingBooleanValidator;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\ShopModuleSettingBooleanValidator
+ * @covers \OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\ModuleSettingBooleanValidator
  */
-class ShopModuleSettingBooleanValidatorTest extends TestCase
+class SettingBooleanValidatorTest extends TestCase
 {
     public function validationPassWithDataProvider(): array
     {
@@ -32,8 +32,11 @@ class ShopModuleSettingBooleanValidatorTest extends TestCase
 
     /**
      * @dataProvider validationPassWithDataProvider
-     * @deprecated since v6.4.0 (2019-06-10);This is not recommended values for use,
-     * only boolean values should be used.
+     *
+     * @param $value
+     *
+     * @deprecated   since v6.4.0 (2019-06-10);This is not recommended values for use,
+     *               only boolean values should be used.
      */
     public function testValidationPassWithBackwardsCompatibleValues($value)
     {
@@ -72,7 +75,7 @@ class ShopModuleSettingBooleanValidatorTest extends TestCase
      */
     public function testValidationFails($value)
     {
-        $this->expectException(ShopModuleSettingNotValidException::class);
+        $this->expectException(SettingNotValidException::class);
         $this->executeValidationForBoolSetting($value);
     }
 
@@ -81,13 +84,13 @@ class ShopModuleSettingBooleanValidatorTest extends TestCase
         $settings =
             [
                 MetaDataProvider::METADATA_ID => 'test_id',
-                ModuleSetting::SHOP_MODULE_SETTING => [
+                MetaDataProvider::METADATA_SETTINGS => [
                     [
                     'type' => 'str', 'value' => 'String value'
                     ],
                 ]
             ];
-        $validator = new ShopModuleSettingBooleanValidator();
+        $validator = new ModuleSettingBooleanValidator();
 
         $validator->validate($settings);
     }
@@ -97,13 +100,13 @@ class ShopModuleSettingBooleanValidatorTest extends TestCase
         $settings =
             [
                 MetaDataProvider::METADATA_ID => 'test_id',
-                ModuleSetting::SHOP_MODULE_SETTING => [
+                MetaDataProvider::METADATA_SETTINGS => [
                     [
                         'value' => 'Any value'
                     ],
                 ]
             ];
-        $validator = new ShopModuleSettingBooleanValidator();
+        $validator = new ModuleSettingBooleanValidator();
 
         $validator->validate($settings);
     }
@@ -113,14 +116,14 @@ class ShopModuleSettingBooleanValidatorTest extends TestCase
         $settings =
             [
                 MetaDataProvider::METADATA_ID => 'test_id',
-                ModuleSetting::SHOP_MODULE_SETTING => [
+                MetaDataProvider::METADATA_SETTINGS => [
                     [
                         'type' => 'bool', 'value' => $value
                     ],
                 ]
             ];
 
-        $validator = new ShopModuleSettingBooleanValidator();
+        $validator = new ModuleSettingBooleanValidator();
 
         $validator->validate($settings);
     }

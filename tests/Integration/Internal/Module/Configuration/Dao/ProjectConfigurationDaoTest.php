@@ -17,8 +17,8 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleCon
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use PHPUnit\Framework\TestCase;
@@ -201,6 +201,15 @@ class ProjectConfigurationDaoTest extends TestCase
                 'en' => 'no',
             ]);
 
+        $setting = new Setting();
+        $setting
+            ->setName('test')
+            ->setValue([1, 2])
+            ->setType('aarr')
+            ->setGroupName('group')
+            ->setPositionInGroup(7)
+            ->setConstraints([1, 2]);
+
         $moduleConfiguration
             ->addController(
                 new Controller(
@@ -235,22 +244,11 @@ class ProjectConfigurationDaoTest extends TestCase
                     'moduleClassNamespace'
                 )
             )
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::SHOP_MODULE_SETTING,
-                [
-                    [
-                        'group'         => 'frontend',
-                        'name'          => 'sGridRow',
-                        'type'          => 'str',
-                        'value'         => 'row',
-                        'position'      => '2',
-                        'constraints'   => ['first', 'second'],
-                    ],
-                ]
-            ))
+            ->addModuleSetting(
+                $setting
+            )
             ->addEvent(new Event('onActivate', 'ModuleClass::onActivate'))
             ->addEvent(new Event('onDeactivate', 'ModuleClass::onDeactivate'));
-
 
         $classExtensionChain = new ClassExtensionsChain();
         $classExtensionChain->setChain([
@@ -291,18 +289,5 @@ class ProjectConfigurationDaoTest extends TestCase
         $container->compile();
 
         return $container;
-    }
-
-    private function getProjectConfigurationDataMapper(): ProjectConfigurationDataMapperInterface
-    {
-        $shopConfigurationDataMapper = $this
-            ->getMockBuilder(ShopConfigurationDataMapperInterface::class)
-            ->getMock();
-
-        $shopConfigurationDataMapper
-            ->method('fromData')
-            ->willReturn(new ShopConfiguration());
-
-        return new ProjectConfigurationDataMapper($shopConfigurationDataMapper);
     }
 }

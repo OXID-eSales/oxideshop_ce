@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleCon
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassWithoutNamespace;
+use OxidEsales\EshopCommunity\Internal\Module\Setting\Setting;
 
 /**
  * @internal
@@ -67,10 +68,6 @@ class ModuleConfiguration
      * @var string
      */
     private $email = '';
-    /**
-     * @var array
-     */
-    private $settings = [];
 
     /**
      * @var ClassExtension[]
@@ -106,6 +103,11 @@ class ModuleConfiguration
      * @var ClassWithoutNamespace[]
      */
     private $classesWithoutNamespace = [];
+
+    /**
+     * @var Setting[]
+     */
+    private $moduleSettings = [];
 
     /**
      * @return string
@@ -325,14 +327,6 @@ class ModuleConfiguration
     }
 
     /**
-     * @return array
-     */
-    public function getSettings(): array
-    {
-        return $this->settings;
-    }
-
-    /**
      * @return ClassExtension[]
      */
     public function getClassExtensions(): array
@@ -404,50 +398,6 @@ class ModuleConfiguration
     public function hasTemplates(): bool
     {
         return !empty($this->templates);
-    }
-
-    /**
-     * @param array $settings
-     *
-     * @return ModuleConfiguration
-     */
-    public function setSettings(array $settings): ModuleConfiguration
-    {
-        $this->settings = $settings;
-
-        return $this;
-    }
-
-    /**
-     * @param ModuleSetting $moduleSetting
-     *
-     * @return $this
-     */
-    public function addSetting(ModuleSetting $moduleSetting): ModuleConfiguration
-    {
-        $this->settings[$moduleSetting->getName()] = $moduleSetting;
-
-        return $this;
-    }
-
-    /**
-     * @param string $settingName
-     *
-     * @return bool
-     */
-    public function hasSetting(string $settingName): bool
-    {
-        return isset($this->settings[$settingName]);
-    }
-
-    /**
-     * @param string $settingName
-     *
-     * @return ModuleSetting
-     */
-    public function getSetting(string $settingName): ModuleSetting
-    {
-        return $this->settings[$settingName];
     }
 
     /**
@@ -576,5 +526,71 @@ class ModuleConfiguration
     public function hasClassWithoutNamespaces(): bool
     {
         return !empty($this->classesWithoutNamespace);
+    }
+
+    /**
+     * @return Setting[]
+     */
+    public function getModuleSettings(): array
+    {
+        return $this->moduleSettings;
+    }
+
+    /**
+     * @param string $settingName
+     *
+     * @return bool
+     */
+    public function hasModuleSetting(string $settingName): bool
+    {
+        foreach ($this->getModuleSettings() as $setting) {
+            if ($setting->getName() === $settingName) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasModuleSettings(): bool
+    {
+        return !empty($this->moduleSettings);
+    }
+
+    /**
+     * @param string $settingName
+     *
+     * @return Setting
+     */
+    public function getModuleSetting(string $settingName): Setting
+    {
+        foreach ($this->getModuleSettings() as $setting) {
+            if ($setting->getName() === $settingName) {
+                return $setting;
+            }
+        }
+    }
+
+    /**
+     * @param Setting $moduleSettings
+     * @return ModuleConfiguration
+     */
+    public function addModuleSetting(Setting $moduleSettings): ModuleConfiguration
+    {
+        $this->moduleSettings[] = $moduleSettings;
+        return $this;
+    }
+
+    /**
+     * @param Setting[] $moduleSettings
+     * @return ModuleConfiguration
+     */
+    public function setModuleSettings(array $moduleSettings): ModuleConfiguration
+    {
+        $this->moduleSettings = $moduleSettings;
+        return $this;
     }
 }

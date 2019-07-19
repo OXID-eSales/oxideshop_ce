@@ -6,7 +6,14 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject;
 
-use function in_array;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Template;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Event;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassWithoutNamespace;
+use OxidEsales\EshopCommunity\Internal\Module\Setting\Setting;
 
 /**
  * @internal
@@ -61,10 +68,46 @@ class ModuleConfiguration
      * @var string
      */
     private $email = '';
+
     /**
-     * @var array
+     * @var ClassExtension[]
      */
-    private $settings = [];
+    private $classExtensions = [];
+
+    /**
+     * @var Template[]
+     */
+    private $templates = [];
+
+    /**
+     * @var Controller[]
+     */
+    private $controllers = [];
+
+    /**
+     * @var SmartyPluginDirectory[]
+     */
+    private $smartyPluginDirectories = [];
+
+    /**
+     * @var TemplateBlock[]
+     */
+    private $templateBlocks = [];
+
+    /**
+     * @var Event[]
+     */
+    private $events = [];
+
+    /**
+     * @var ClassWithoutNamespace[]
+     */
+    private $classesWithoutNamespace = [];
+
+    /**
+     * @var Setting[]
+     */
+    private $moduleSettings = [];
 
     /**
      * @return string
@@ -284,55 +327,77 @@ class ModuleConfiguration
     }
 
     /**
-     * @return array
+     * @return ClassExtension[]
      */
-    public function getSettings(): array
+    public function getClassExtensions(): array
     {
-        return $this->settings;
+        return $this->classExtensions;
     }
 
     /**
-     * @param array $settings
-     *
-     * @return ModuleConfiguration
-     */
-    public function setSettings(array $settings): ModuleConfiguration
-    {
-        $this->settings = $settings;
-
-        return $this;
-    }
-
-    /**
-     * @param ModuleSetting $moduleSetting
+     * @param ClassExtension $extension
      *
      * @return $this
      */
-    public function addSetting(ModuleSetting $moduleSetting): ModuleConfiguration
+    public function addClassExtension(ClassExtension $extension)
     {
-        $this->settings[$moduleSetting->getName()] = $moduleSetting;
+        $this->classExtensions[] = $extension;
 
         return $this;
     }
 
     /**
-     * @param string $settingName
-     *
      * @return bool
      */
-    public function hasSetting(string $settingName): bool
+    public function hasClassExtensions(): bool
     {
-        return isset($this->settings[$settingName]);
+        return !empty($this->classExtensions);
     }
 
     /**
-     * @param string $settingName
-     *
-     * @return ModuleSetting
+     * @return TemplateBlock[]
      */
-    public function getSetting(string $settingName): ModuleSetting
+    public function getTemplateBlocks(): array
     {
-        return $this->settings[$settingName];
+        return $this->templateBlocks;
+    }
+
+    public function addTemplateBlock(TemplateBlock $templateBlock)
+    {
+        $this->templateBlocks[] = $templateBlock;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasTemplateBlocks(): bool
+    {
+        return !empty($this->templateBlocks);
+    }
+
+    /**
+     * @return Template[]
+     */
+    public function getTemplates(): array
+    {
+        return $this->templates;
+    }
+
+    public function addTemplate(Template $template)
+    {
+        $this->templates[] = $template;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasTemplates(): bool
+    {
+        return !empty($this->templates);
     }
 
     /**
@@ -342,16 +407,190 @@ class ModuleConfiguration
      */
     public function hasClassExtension(string $namespace): bool
     {
-        $hasClassExtension = false;
-
-        if ($this->hasSetting(ModuleSetting::CLASS_EXTENSIONS)) {
-            $classExtensions = $this
-                ->getSetting(ModuleSetting::CLASS_EXTENSIONS)
-                ->getValue();
-
-            $hasClassExtension = in_array($namespace, $classExtensions, true);
+        foreach ($this->getClassExtensions() as $classExtension) {
+            if ($classExtension->getModuleExtensionClassNamespace() === $namespace) {
+                return true;
+            }
         }
 
-        return $hasClassExtension;
+        return false;
+    }
+
+    /**
+     * @param Controller $controller
+     *
+     * @return $this
+     */
+    public function addController(Controller $controller)
+    {
+        $this->controllers[] = $controller;
+
+        return $this;
+    }
+
+    /**
+     * @return Controller[]
+     */
+    public function getControllers(): array
+    {
+        return $this->controllers;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasControllers(): bool
+    {
+        return !empty($this->controllers);
+    }
+
+    /**
+     * @param SmartyPluginDirectory $directory
+     *
+     * @return $this
+     */
+    public function addSmartyPluginDirectory(SmartyPluginDirectory $directory)
+    {
+        $this->smartyPluginDirectories[] = $directory;
+
+        return $this;
+    }
+
+    /**
+     * @return SmartyPluginDirectory[]
+     */
+    public function getSmartyPluginDirectories(): array
+    {
+        return $this->smartyPluginDirectories;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasSmartyPluginDirectories(): bool
+    {
+        return !empty($this->smartyPluginDirectories);
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @return $this
+     */
+    public function addEvent(Event $event)
+    {
+        $this->events[] = $event;
+
+        return $this;
+    }
+
+    /**
+     * @return Event[]
+     */
+    public function getEvents(): array
+    {
+        return $this->events;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasEvents(): bool
+    {
+        return !empty($this->events);
+    }
+
+    /**
+     * @param ClassWithoutNamespace $class
+     *
+     * @return $this
+     */
+    public function addClassWithoutNamespace(ClassWithoutNamespace $class)
+    {
+        $this->classesWithoutNamespace[] = $class;
+
+        return $this;
+    }
+
+    /**
+     * @return ClassWithoutNamespace[]
+     */
+    public function getClassesWithoutNamespace(): array
+    {
+        return $this->classesWithoutNamespace;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasClassWithoutNamespaces(): bool
+    {
+        return !empty($this->classesWithoutNamespace);
+    }
+
+    /**
+     * @return Setting[]
+     */
+    public function getModuleSettings(): array
+    {
+        return $this->moduleSettings;
+    }
+
+    /**
+     * @param string $settingName
+     *
+     * @return bool
+     */
+    public function hasModuleSetting(string $settingName): bool
+    {
+        foreach ($this->getModuleSettings() as $setting) {
+            if ($setting->getName() === $settingName) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasModuleSettings(): bool
+    {
+        return !empty($this->moduleSettings);
+    }
+
+    /**
+     * @param string $settingName
+     *
+     * @return Setting
+     */
+    public function getModuleSetting(string $settingName): Setting
+    {
+        foreach ($this->getModuleSettings() as $setting) {
+            if ($setting->getName() === $settingName) {
+                return $setting;
+            }
+        }
+    }
+
+    /**
+     * @param Setting $moduleSettings
+     * @return ModuleConfiguration
+     */
+    public function addModuleSetting(Setting $moduleSettings): ModuleConfiguration
+    {
+        $this->moduleSettings[] = $moduleSettings;
+        return $this;
+    }
+
+    /**
+     * @param Setting[] $moduleSettings
+     * @return ModuleConfiguration
+     */
+    public function setModuleSettings(array $moduleSettings): ModuleConfiguration
+    {
+        $this->moduleSettings = $moduleSettings;
+        return $this;
     }
 }

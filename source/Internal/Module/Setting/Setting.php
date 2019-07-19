@@ -4,12 +4,12 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting;
+namespace OxidEsales\EshopCommunity\Internal\Module\Setting;
 
 /**
  * @internal
  */
-class ShopModuleSetting
+class Setting
 {
     /**
      * @var string
@@ -49,7 +49,7 @@ class ShopModuleSetting
     /**
      * @var int
      */
-    private $positionInGroup = 1;
+    private $positionInGroup = 0;
 
     /**
      * @return string
@@ -61,9 +61,9 @@ class ShopModuleSetting
 
     /**
      * @param string $moduleId
-     * @return ShopModuleSetting
+     * @return Setting
      */
-    public function setModuleId(string $moduleId): ShopModuleSetting
+    public function setModuleId(string $moduleId): Setting
     {
         $this->moduleId = $moduleId;
         return $this;
@@ -79,9 +79,9 @@ class ShopModuleSetting
 
     /**
      * @param int $shopId
-     * @return ShopModuleSetting
+     * @return Setting
      */
-    public function setShopId(int $shopId): ShopModuleSetting
+    public function setShopId(int $shopId): Setting
     {
         $this->shopId = $shopId;
         return $this;
@@ -97,9 +97,9 @@ class ShopModuleSetting
 
     /**
      * @param string $name
-     * @return ShopModuleSetting
+     * @return Setting
      */
-    public function setName(string $name): ShopModuleSetting
+    public function setName(string $name): Setting
     {
         $this->name = $name;
         return $this;
@@ -110,14 +110,18 @@ class ShopModuleSetting
      */
     public function getType(): string
     {
+        if ($this->type === null) {
+            return gettype($this->value);
+        }
+
         return $this->type;
     }
 
     /**
      * @param string $type
-     * @return ShopModuleSetting
+     * @return Setting
      */
-    public function setType(string $type): ShopModuleSetting
+    public function setType(string $type): Setting
     {
         $this->type = $type;
         return $this;
@@ -133,9 +137,9 @@ class ShopModuleSetting
 
     /**
      * @param mixed $value
-     * @return ShopModuleSetting
+     * @return Setting
      */
-    public function setValue($value): ShopModuleSetting
+    public function setValue($value): Setting
     {
         $this->value = $value;
         return $this;
@@ -151,9 +155,9 @@ class ShopModuleSetting
 
     /**
      * @param array $constraints
-     * @return ShopModuleSetting
+     * @return Setting
      */
-    public function setConstraints(array $constraints): ShopModuleSetting
+    public function setConstraints(array $constraints): Setting
     {
         $this->constraints = $constraints;
         return $this;
@@ -169,9 +173,9 @@ class ShopModuleSetting
 
     /**
      * @param string $groupName
-     * @return ShopModuleSetting
+     * @return Setting
      */
-    public function setGroupName(string $groupName): ShopModuleSetting
+    public function setGroupName(string $groupName): Setting
     {
         $this->groupName = $groupName;
         return $this;
@@ -187,9 +191,9 @@ class ShopModuleSetting
 
     /**
      * @param int $positionInGroup
-     * @return ShopModuleSetting
+     * @return Setting
      */
-    public function setPositionInGroup(int $positionInGroup): ShopModuleSetting
+    public function setPositionInGroup(int $positionInGroup): Setting
     {
         $this->positionInGroup = $positionInGroup;
         return $this;

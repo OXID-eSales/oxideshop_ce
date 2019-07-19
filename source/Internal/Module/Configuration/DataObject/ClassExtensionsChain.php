@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Exception\ExtensionNotInChainException;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 
 /**
  * @internal
@@ -47,23 +48,27 @@ class ClassExtensionsChain implements \IteratorAggregate
     }
 
     /**
-     * @param array $extensions
+     * @param ClassExtension[] $extensions
+     *
+     * @return void
      */
-    public function addExtensions(array $extensions)
+    public function addExtensions(array $extensions) : void
     {
-        foreach ($extensions as $extended => $extension) {
-            $this->addExtensionToChain($extended, $extension);
+        foreach ($extensions as $extension) {
+            $this->addExtensionToChain($extension);
         }
     }
 
     /**
-     * @param string $extended
-     * @param string $extension
+     * @param ClassExtension $classExtension
      *
      * @throws ExtensionNotInChainException
      */
-    public function removeExtension(string $extended, string $extension)
+    public function removeExtension(ClassExtension $classExtension): void
     {
+        $extended = $classExtension->getShopClassNamespace();
+        $extension = $classExtension->getModuleExtensionClassNamespace();
+        
         if (false === array_key_exists($extended, $this->chain) ||
             false === \array_search($extension, $this->chain[$extended], true)) {
             throw new ExtensionNotInChainException(
@@ -82,15 +87,17 @@ class ClassExtensionsChain implements \IteratorAggregate
     }
 
     /**
-     * @param string $extended
-     * @param string $extension
+     * @param ClassExtension $extension
      */
-    private function addExtensionToChain(string $extended, string $extension)
+    private function addExtensionToChain(ClassExtension $extension): void
     {
-        if (array_key_exists($extended, $this->chain)) {
-            array_push($this->chain[$extended], $extension);
+        if (array_key_exists($extension->getShopClassNamespace(), $this->chain)) {
+            array_push(
+                $this->chain[$extension->getShopClassNamespace()],
+                $extension->getModuleExtensionClassNamespace()
+            );
         } else {
-            $this->chain[$extended] = [$extension];
+            $this->chain[$extension->getShopClassNamespace()] = [$extension->getModuleExtensionClassNamespace()];
         }
     }
 

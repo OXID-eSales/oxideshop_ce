@@ -45,8 +45,8 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleConfigurationMergingService
     autowire: true
 
-  OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ShopModuleSettingsMergingServiceInterface:
-    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ShopModuleSettingsMergingService
+  OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\SettingsMergingServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\SettingsMergingService
     public: false
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleClassExtensionsMergingServiceInterface:

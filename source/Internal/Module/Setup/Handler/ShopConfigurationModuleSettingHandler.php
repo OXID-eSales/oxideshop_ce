@@ -56,12 +56,12 @@ class ShopConfigurationModuleSettingHandler implements ModuleConfigurationHandle
     {
         if ($this->canHandle($configuration)) {
             $shopConfigurationSetting = $this->getShopConfigurationSetting($shopId);
-            $setting = $configuration->getSetting($this->settingName);
+            $moduleSetting = $configuration->getModuleSetting($this->settingName);
 
             $shopSettingValue = array_merge(
                 $shopConfigurationSetting->getValue(),
                 [
-                    $configuration->getId() => $setting->getValue(),
+                    $configuration->getId() => $moduleSetting->getValue(),
                 ]
             );
 
@@ -95,7 +95,7 @@ class ShopConfigurationModuleSettingHandler implements ModuleConfigurationHandle
      */
     private function canHandle(ModuleConfiguration $configuration): bool
     {
-        return $configuration->hasSetting($this->settingName);
+        return $configuration->hasModuleSetting($this->settingName);
     }
 
     /**

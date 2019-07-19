@@ -11,7 +11,6 @@ use OxidEsales\EshopCommunity\Internal\Adapter\Exception\ModuleConfigurationNotF
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
@@ -191,9 +190,15 @@ class Module extends \OxidEsales\Eshop\Core\Base
             ->get(ModuleConfigurationDaoBridgeInterface::class)
             ->get($this->getId());
 
-        return $moduleConfiguration->hasSetting(ModuleSetting::CLASS_EXTENSIONS)
-            ? $moduleConfiguration->getSetting(ModuleSetting::CLASS_EXTENSIONS)->getValue()
-            : [];
+        $extensions = [];
+
+        if ($moduleConfiguration->hasClassExtensions()) {
+            foreach ($moduleConfiguration->getClassExtensions() as $extension) {
+                $extensions[$extension->getShopClassNamespace()] = $extension->getModuleExtensionClassNamespace();
+            }
+        }
+
+        return $extensions;
     }
 
     /**
@@ -560,39 +565,170 @@ class Module extends \OxidEsales\Eshop\Core\Base
     {
         $data = [];
 
-        foreach ($moduleConfiguration->getSettings() as $setting) {
-            switch ($setting->getName()) {
-                case ModuleSetting::CLASS_EXTENSIONS:
-                    $data[MetaDataProvider::METADATA_EXTEND] = $setting->getValue();
-                    break;
+        $data[MetaDataProvider::METADATA_EXTEND] = $this->convertClassExtensionsToArray($moduleConfiguration);
+        $data[MetaDataProvider::METADATA_TEMPLATES] = $this->convertTemplatesToArray($moduleConfiguration);
+        $data[MetaDataProvider::METADATA_CONTROLLERS] = $this->convertControllersToArray($moduleConfiguration);
+        $data[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES] =
+            $this->convertSmartyPluginDirectoriesToArray($moduleConfiguration);
+        $data[MetaDataProvider::METADATA_FILES] =
+            $this->convertClassesWithoutNamespaceToArray($moduleConfiguration);
+        $data[MetaDataProvider::METADATA_BLOCKS] = $this->convertTemplateBlocksToArray($moduleConfiguration);
+        $data[MetaDataProvider::METADATA_EVENTS] = $this->convertEventsToArray($moduleConfiguration);
+        $data[MetaDataProvider::METADATA_SETTINGS] = $this->convertSettingsToArray($moduleConfiguration);
 
-                case ModuleSetting::CLASSES_WITHOUT_NAMESPACE:
-                    $data[MetaDataProvider::METADATA_FILES] = $setting->getValue();
-                    break;
+        return $data;
+    }
 
-                case ModuleSetting::TEMPLATE_BLOCKS:
-                    $data[MetaDataProvider::METADATA_BLOCKS] = $setting->getValue();
-                    break;
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     *
+     * @return array
+     */
+    private function convertClassExtensionsToArray(ModuleConfiguration $moduleConfiguration): array
+    {
+        $data = [];
 
-                case ModuleSetting::CONTROLLERS:
-                    $data[MetaDataProvider::METADATA_CONTROLLERS] = $setting->getValue();
-                    break;
+        foreach ($moduleConfiguration->getClassExtensions() as $extension) {
+            $data[$extension->getShopClassNamespace()] = $extension->getModuleExtensionClassNamespace();
+        }
 
-                case ModuleSetting::EVENTS:
-                    $data[MetaDataProvider::METADATA_EVENTS] = $setting->getValue();
-                    break;
+        return $data;
+    }
 
-                case ModuleSetting::TEMPLATES:
-                    $data[MetaDataProvider::METADATA_TEMPLATES] = $setting->getValue();
-                    break;
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     *
+     * @return array
+     */
+    private function convertTemplatesToArray(ModuleConfiguration $moduleConfiguration): array
+    {
+        $data = [];
 
-                case ModuleSetting::SHOP_MODULE_SETTING:
-                    $data[MetaDataProvider::METADATA_SETTINGS] = $setting->getValue();
-                    break;
+        foreach ($moduleConfiguration->getTemplates() as $template) {
+            $data[$template->getTemplateKey()] = $template->getTemplatePath();
+        }
 
-                case ModuleSetting::SMARTY_PLUGIN_DIRECTORIES:
-                    $data[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES] = $setting->getValue();
-                    break;
+        return $data;
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     *
+     * @return array
+     */
+    private function convertSmartyPluginDirectoriesToArray(ModuleConfiguration $moduleConfiguration): array
+    {
+        $data = [];
+
+        foreach ($moduleConfiguration->getSmartyPluginDirectories() as $directory) {
+            $data[] = $directory->getDirectory();
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     *
+     * @return array
+     */
+    private function convertControllersToArray(ModuleConfiguration $moduleConfiguration): array
+    {
+        $data = [];
+
+        foreach ($moduleConfiguration->getControllers() as $controller) {
+            $data[$controller->getId()] = $controller->getControllerClassNameSpace();
+        }
+
+        return $data;
+    }
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     * @return array
+     */
+    private function convertTemplateBlocksToArray(ModuleConfiguration $moduleConfiguration): array
+    {
+        $data = [];
+
+        foreach ($moduleConfiguration->getTemplateBlocks() as $key => $templateBlock) {
+            $data[$key] = [
+                'template' => $templateBlock->getShopTemplatePath(),
+                'block' => $templateBlock->getBlockName(),
+                'file' => $templateBlock->getModuleTemplatePath(),
+            ];
+            if ($templateBlock->getTheme() !== '') {
+                $data[$key]['theme'] = $templateBlock->getTheme();
+            }
+            if ($templateBlock->getPosition() !== 0) {
+                $data[$key]['position'] = $templateBlock->getPosition();
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     *
+     * @return array
+     */
+    private function convertEventsToArray(ModuleConfiguration $moduleConfiguration): array
+    {
+        $data = [];
+
+        foreach ($moduleConfiguration->getEvents() as $event) {
+            $data[$event->getAction()] = $event->getMethod();
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     *
+     * @return array
+     */
+    private function convertClassesWithoutNamespaceToArray(ModuleConfiguration $moduleConfiguration): array
+    {
+        $data = [];
+
+        foreach ($moduleConfiguration->getClassesWithoutNamespace() as $class) {
+            $data[$class->getShopClass()] = $class->getModuleClass();
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     *
+     * @return array
+     */
+    private function convertSettingsToArray(ModuleConfiguration $moduleConfiguration): array
+    {
+        $data = [];
+
+        foreach ($moduleConfiguration->getModuleSettings() as $index => $setting) {
+            if ($setting->getGroupName()) {
+                $data[$index]['group'] = $setting->getGroupName();
+            }
+
+            if ($setting->getName()) {
+                $data[$index]['name'] = $setting->getName();
+            }
+
+            if ($setting->getType()) {
+                $data[$index]['type'] = $setting->getType();
+            }
+
+            $data[$index]['value'] = $setting->getValue();
+
+            if (!empty($setting->getConstraints())) {
+                $data[$index]['constraints'] = $setting->getConstraints();
+            }
+
+            if ($setting->getPositionInGroup() > 0) {
+                $data[$index]['position'] = $setting->getPositionInGroup();
             }
         }
 

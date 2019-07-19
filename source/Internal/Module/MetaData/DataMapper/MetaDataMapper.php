@@ -6,12 +6,20 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\DataMapper;
 
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\TemplateBlocksMappingKeys;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataSchemaValidator;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\MetaDataSchemaValidatorInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassWithoutNamespace;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Event;
+use OxidEsales\EshopCommunity\Internal\Module\Setting\Setting;
 
 /**
  * @internal
@@ -73,7 +81,7 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
 
     /**
      * @param ModuleConfiguration $moduleConfiguration
-     * @param array               $metaData
+     * @param array $metaData
      * @return ModuleConfiguration
      */
     private function mapModuleConfigurationSettings(
@@ -83,58 +91,83 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
         $moduleData = $metaData[MetaDataProvider::METADATA_MODULE_DATA];
 
         if (isset($moduleData[MetaDataProvider::METADATA_EXTEND])) {
-            $moduleConfiguration->addSetting(
-                new ModuleSetting(ModuleSetting::CLASS_EXTENSIONS, $moduleData[MetaDataProvider::METADATA_EXTEND])
-            );
-        }
-
-        if (isset($moduleData[MetaDataProvider::METADATA_FILES])) {
-            $moduleConfiguration->addSetting(
-                new ModuleSetting(
-                    ModuleSetting::CLASSES_WITHOUT_NAMESPACE,
-                    $moduleData[MetaDataProvider::METADATA_FILES]
-                )
-            );
-        }
-
-        if (isset($moduleData[MetaDataProvider::METADATA_BLOCKS])) {
-            $moduleConfiguration->addSetting(
-                new ModuleSetting(ModuleSetting::TEMPLATE_BLOCKS, $moduleData[MetaDataProvider::METADATA_BLOCKS])
-            );
-        }
-
-        if (isset($moduleData[MetaDataProvider::METADATA_CONTROLLERS])) {
-            $moduleConfiguration->addSetting(
-                new ModuleSetting(ModuleSetting::CONTROLLERS, $moduleData[MetaDataProvider::METADATA_CONTROLLERS])
-            );
-        }
-
-        if (isset($moduleData[MetaDataProvider::METADATA_EVENTS])) {
-            $moduleConfiguration->addSetting(
-                new ModuleSetting(ModuleSetting::EVENTS, $moduleData[MetaDataProvider::METADATA_EVENTS])
-            );
+            foreach ($moduleData[MetaDataProvider::METADATA_EXTEND] as $shopClass => $moduleClass) {
+                $moduleConfiguration->addClassExtension(
+                    new ClassExtension($shopClass, $moduleClass)
+                );
+            }
         }
 
         if (isset($moduleData[MetaDataProvider::METADATA_TEMPLATES])) {
-            $moduleConfiguration->addSetting(
-                new ModuleSetting(ModuleSetting::TEMPLATES, $moduleData[MetaDataProvider::METADATA_TEMPLATES])
-            );
+            foreach ($moduleData[MetaDataProvider::METADATA_TEMPLATES] as $templateKey => $templatePath) {
+                $moduleConfiguration->addTemplate(
+                    new Template($templateKey, $templatePath)
+                );
+            }
         }
 
-        if (isset($moduleData[MetaDataProvider::METADATA_SETTINGS])) {
-            $moduleConfiguration->addSetting(
-                new ModuleSetting(ModuleSetting::SHOP_MODULE_SETTING, $moduleData[MetaDataProvider::METADATA_SETTINGS])
-            );
+        if (isset($moduleData[MetaDataProvider::METADATA_CONTROLLERS])) {
+            foreach ($moduleData[MetaDataProvider::METADATA_CONTROLLERS] as $id => $controllerClassNameSpace) {
+                $moduleConfiguration->addController(
+                    new Controller($id, $controllerClassNameSpace)
+                );
+            }
         }
 
         if (isset($moduleData[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES])) {
-            $moduleConfiguration->addSetting(
-                new ModuleSetting(
-                    ModuleSetting::SMARTY_PLUGIN_DIRECTORIES,
-                    $moduleData[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES]
-                )
-            );
+            foreach ($moduleData[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES] as $directory) {
+                $moduleConfiguration->addSmartyPluginDirectory(
+                    new SmartyPluginDirectory($directory)
+                );
+            }
         }
+
+        if (isset($moduleData[MetaDataProvider::METADATA_EVENTS])) {
+            foreach ($moduleData[MetaDataProvider::METADATA_EVENTS] as $action => $method) {
+                $moduleConfiguration->addEvent(
+                    new Event($action, $method)
+                );
+            }
+        }
+
+        if (isset($moduleData[MetaDataProvider::METADATA_FILES])) {
+            if (count($moduleData[MetaDataProvider::METADATA_FILES]) === 0) {
+                $moduleConfiguration->addClassWithoutNamespace(
+                    new ClassWithoutNamespace(
+                        '',
+                        ''
+                    )
+                );
+            } else {
+                foreach ($moduleData[MetaDataProvider::METADATA_FILES] as $shopClass => $moduleClass) {
+                    $moduleConfiguration->addClassWithoutNamespace(
+                        new ClassWithoutNamespace(
+                            $shopClass,
+                            $moduleClass
+                        )
+                    );
+                }
+            }
+        }
+
+        if (isset($moduleData[MetaDataProvider::METADATA_BLOCKS])) {
+            foreach ($moduleData[MetaDataProvider::METADATA_BLOCKS] as $templateBlockData) {
+                $templateBlock = new TemplateBlock(
+                    $templateBlockData[TemplateBlocksMappingKeys::SHOP_TEMPLATE_PATH],
+                    $templateBlockData[TemplateBlocksMappingKeys::BLOCK_NAME],
+                    $templateBlockData[TemplateBlocksMappingKeys::MODULE_TEMPLATE_PATH]
+                );
+                if (isset($templateBlockData[TemplateBlocksMappingKeys::POSITION])) {
+                    $templateBlock->setPosition((int) $templateBlockData[TemplateBlocksMappingKeys::POSITION]);
+                }
+                if (isset($templateBlockData[TemplateBlocksMappingKeys::THEME])) {
+                    $templateBlock->setTheme($templateBlockData[TemplateBlocksMappingKeys::THEME]);
+                }
+                $moduleConfiguration->addTemplateBlock($templateBlock);
+            }
+        }
+
+        $moduleConfiguration = $this->mapSettings($moduleConfiguration, $moduleData);
 
         return $moduleConfiguration;
     }
@@ -155,5 +188,41 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
                 );
             }
         }
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     * @param $moduleData
+     * @return ModuleConfiguration
+     */
+    private function mapSettings(ModuleConfiguration $moduleConfiguration, $moduleData): ModuleConfiguration
+    {
+        if (isset($moduleData[MetaDataProvider::METADATA_SETTINGS])) {
+            foreach ($moduleData[MetaDataProvider::METADATA_SETTINGS] as $data) {
+                $setting = new Setting();
+                $setting->setName($data['name']);
+                $setting->setType($data['type']);
+
+                if (isset($data['group'])) {
+                    $setting->setGroupName($data['group']);
+                }
+
+                if (isset($data['value'])) {
+                    $setting->setValue($data['value']);
+                }
+
+                if (isset($data['constraints'])) {
+                    $setting->setConstraints($data['constraints']);
+                }
+
+                if (isset($data['position'])) {
+                    $setting->setPositionInGroup($data['position']);
+                }
+
+                $moduleConfiguration->addModuleSetting($setting);
+            }
+        }
+
+        return $moduleConfiguration;
     }
 }

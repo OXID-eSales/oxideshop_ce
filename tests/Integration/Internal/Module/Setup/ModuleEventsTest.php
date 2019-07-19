@@ -8,7 +8,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Setup;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
@@ -16,6 +15,7 @@ use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\ModuleEvents;
 use OxidEsales\TestingLibrary\Services\Library\DatabaseRestorer\DatabaseRestorer;
 use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Event;
 
 /**
  * @internal
@@ -50,12 +50,7 @@ class ModuleEventsTest extends TestCase
     public function testActivationEventWasExecuted()
     {
         $moduleConfiguration = $this->getTestModuleConfiguration();
-        $moduleConfiguration->addSetting(new ModuleSetting(
-            ModuleSetting::EVENTS,
-            [
-                'onActivate'    => ModuleEvents::class . '::onActivate',
-            ]
-        ));
+        $moduleConfiguration->addEvent(new Event('onActivate', ModuleEvents::class . '::onActivate'));
 
         $this->persistModuleConfiguration($moduleConfiguration);
 
@@ -73,12 +68,7 @@ class ModuleEventsTest extends TestCase
     public function testActivationEventWasExecutedSecondTime()
     {
         $moduleConfiguration = $this->getTestModuleConfiguration();
-        $moduleConfiguration->addSetting(new ModuleSetting(
-            ModuleSetting::EVENTS,
-            [
-                'onActivate'    => ModuleEvents::class . '::onActivate',
-            ]
-        ));
+        $moduleConfiguration->addEvent(new Event('onActivate', ModuleEvents::class . '::onActivate'));
 
         $this->persistModuleConfiguration($moduleConfiguration);
 
@@ -103,12 +93,7 @@ class ModuleEventsTest extends TestCase
     public function testDeactivationEventWasExecuted()
     {
         $moduleConfiguration = $this->getTestModuleConfiguration();
-        $moduleConfiguration->addSetting(new ModuleSetting(
-            ModuleSetting::EVENTS,
-            [
-                'onDeactivate'  => ModuleEvents::class . '::onDeactivate',
-            ]
-        ));
+        $moduleConfiguration->addEvent(new Event('onDeactivate', ModuleEvents::class . '::onDeactivate'));
 
         $this->persistModuleConfiguration($moduleConfiguration);
 

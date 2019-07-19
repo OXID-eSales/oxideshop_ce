@@ -15,10 +15,12 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurat
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Path\ModulePathResolver;
 use OxidEsales\EshopCommunity\Internal\Module\Path\ModulePathResolverInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
@@ -28,6 +30,10 @@ use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use OxidEsales\TestingLibrary\Services\Library\DatabaseRestorer\DatabaseRestorer;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassWithoutNamespace;
 
 /**
  * @internal
@@ -100,12 +106,7 @@ class ModuleActivationServiceTest extends TestCase
         $shopConfigurationSettingDao = $this->container->get(ShopConfigurationSettingDaoInterface::class);
 
         $moduleConfiguration = $this->getTestModuleConfiguration();
-        $moduleConfiguration->addSetting(new ModuleSetting(
-            ModuleSetting::CLASS_EXTENSIONS,
-            [
-                'originalClassNamespace' => 'moduleClassNamespace',
-            ]
-        ));
+        $moduleConfiguration->addClassExtension(new ClassExtension('originalClassNamespace', 'moduleClassNamespace'));
 
         $this->persistModuleConfiguration($moduleConfiguration);
 
@@ -171,71 +172,87 @@ class ModuleActivationServiceTest extends TestCase
         $moduleConfiguration->setId($this->testModuleId);
         $moduleConfiguration->setPath('TestModule');
 
+        $setting = new Setting();
+        $setting
+            ->setName('test')
+            ->setValue([1, 2])
+            ->setType('aarr')
+            ->setGroupName('group')
+            ->setPositionInGroup(7)
+            ->setConstraints([1, 2]);
+
+        $templateBlock = new TemplateBlock(
+            'extendedTemplatePath',
+            'testBlock',
+            'filePath'
+        );
+        $templateBlock->setTheme('flow_theme');
+        $templateBlock->setPosition(3);
+
+        $moduleConfiguration->addModuleSetting($setting);
+
         $moduleConfiguration
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::CONTROLLERS,
-                [
-                    'originalClassNamespace' => 'moduleClassNamespace',
-                    'otherOriginalClassNamespace' => 'moduleClassNamespace',
-                ]
-            ))
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::TEMPLATES,
-                [
-                    'originalTemplate' => 'moduleTemplate',
-                    'otherOriginalTemplate' => 'moduleTemplate',
-                ]
-            ))
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::SMARTY_PLUGIN_DIRECTORIES,
-                [
-                    'SmartyPlugins/directory1',
-                    'SmartyPlugins/directory2',
-                ]
-            ))
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::TEMPLATE_BLOCKS,
-                [
-                    [
-                        'block'     => 'testBlock',
-                        'position'  => '3',
-                        'theme'     => 'flow_theme',
-                        'template'  => 'extendedTemplatePath',
-                        'file'      => 'filePath',
-                    ],
-                ]
-            ))
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::CLASS_EXTENSIONS,
-                [
-                    'originalClassNamespace' => 'moduleClassNamespace',
-                    'otherOriginalClassNamespace' => 'moduleClassNamespace',
-                ]
-            ))
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::CLASSES_WITHOUT_NAMESPACE,
-                [
-                    'class1' => 'class1.php',
-                    'class2' => 'class2.php',
-                ]
-            ))
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::SHOP_MODULE_SETTING,
-                [
-                    [
-                        'group' => 'frontend',
-                        'name'  => 'grid',
-                        'type'  => 'str',
-                        'value' => 'row',
-                    ],
-                    [
-                        'group' => 'frontend',
-                        'name'  => 'array',
-                        'type'  => 'arr',
-                        'value' => ['1', '2'],
-                    ],
-                ]
-            ));
+            ->addController(
+                new Controller(
+                    'originalClassNamespace',
+                    'moduleClassNamespace'
+                )
+            )->addController(
+                new Controller(
+                    'otherOriginalClassNamespace',
+                    'moduleClassNamespace'
+                )
+            )
+            ->addTemplate(new Template('originalTemplate', 'moduleTemplate'))
+            ->addTemplate(new Template('otherOriginalTemplate', 'moduleTemplate'))
+            ->addSmartyPluginDirectory(
+                new SmartyPluginDirectory(
+                    'SmartyPlugins/directory1'
+                )
+            )->addSmartyPluginDirectory(
+                new SmartyPluginDirectory(
+                    'SmartyPlugins/directory2'
+                )
+            )
+            ->addTemplateBlock($templateBlock)
+            ->addClassExtension(
+                new ClassExtension(
+                    'originalClassNamespace',
+                    'moduleClassNamespace'
+                )
+            )
+            ->addClassExtension(
+                new ClassExtension(
+                    'otherOriginalClassNamespace',
+                    'moduleClassNamespace'
+                )
+            )->addClassWithoutNamespace(
+                new ClassWithoutNamespace(
+                    'class1',
+                    'class1.php'
+                )
+            )->addClassWithoutNamespace(
+                new ClassWithoutNamespace(
+                    'class2',
+                    'class2.php'
+                )
+            );
+
+        $setting = new Setting();
+        $setting
+            ->setName('grid')
+            ->setValue('row')
+            ->setType('str')
+            ->setGroupName('frontend');
+        $moduleConfiguration->addModuleSetting($setting);
+
+        $setting = new Setting();
+        $setting
+            ->setName('array')
+            ->setValue(['1', '2'])
+            ->setType('arr')
+            ->setGroupName('frontend');
+        $moduleConfiguration->addModuleSetting($setting);
 
         return $moduleConfiguration;
     }

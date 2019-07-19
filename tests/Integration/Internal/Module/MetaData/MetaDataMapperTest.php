@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Test\Integration\Internal\Module\MetaData;
 
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\ModuleIdNotValidException;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataKeyException;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
@@ -54,13 +54,13 @@ class MetaDataMapperTest extends TestCase
                     'template' => 'template_1.tpl',
                     'block'    => 'block_1',
                     'file'     => '/blocks/template_1.tpl',
-                    'position' => '1'
+                    'position' => 1
                 ],
                 [
                     'template' => 'template_2.tpl',
                     'block'    => 'block_2',
                     'file'     => '/blocks/template_2.tpl',
-                    'position' => '2'
+                    'position' => 2
                 ],
             ],
             'settings'    => [
@@ -97,29 +97,77 @@ class MetaDataMapperTest extends TestCase
         $this->assertSame($expectedModuleData['url'], $moduleConfiguration->getUrl());
         $this->assertSame($expectedModuleData['email'], $moduleConfiguration->getEmail());
 
+        $classExtensions = [];
+
+        foreach ($moduleConfiguration->getClassExtensions() as $extension) {
+            $classExtensions[$extension->getShopClassNamespace()] = $extension->getModuleExtensionClassNamespace();
+        }
         $this->assertSame(
             $expectedModuleData['extend'],
-            $moduleConfiguration->getSetting(ModuleSetting::CLASS_EXTENSIONS)->getValue()
+            $classExtensions
         );
+
+        $controllers = [];
+
+        foreach ($moduleConfiguration->getControllers() as $controller) {
+            $controllers[$controller->getId()] = $controller->getControllerClassNameSpace();
+        }
+
         $this->assertSame(
             $expectedModuleData['controllers'],
-            $moduleConfiguration->getSetting(ModuleSetting::CONTROLLERS)->getValue()
+            $controllers
         );
+
+        $templates = [];
+        foreach ($moduleConfiguration->getTemplates() as $template) {
+            $templates[$template->getTemplateKey()] = $template->getTemplatePath();
+        }
         $this->assertSame(
             $expectedModuleData['templates'],
-            $moduleConfiguration->getSetting(ModuleSetting::TEMPLATES)->getValue()
+            $templates
         );
-        $this->assertSame(
-            $expectedModuleData['blocks'],
-            $moduleConfiguration->getSetting(ModuleSetting::TEMPLATE_BLOCKS)->getValue()
-        );
+        $templateBlocks = $this->mapTemplateBlocksForAssertion($moduleConfiguration);
+        $this->assertSame($expectedModuleData['blocks'], $templateBlocks);
+
+        $moduleSettings = [];
+
+        foreach ($moduleConfiguration->getModuleSettings() as $index => $setting) {
+            if ($setting->getGroupName()) {
+                $moduleSettings[$index]['group'] = $setting->getGroupName();
+            }
+
+            if ($setting->getName()) {
+                $moduleSettings[$index]['name'] = $setting->getName();
+            }
+
+            if ($setting->getType()) {
+                $moduleSettings[$index]['type'] = $setting->getType();
+            }
+
+            $moduleSettings[$index]['value'] = $setting->getValue();
+
+            if (!empty($setting->getConstraints())) {
+                $moduleSettings[$index]['constraints'] = $setting->getConstraints();
+            }
+
+            if ($setting->getPositionInGroup() > 0) {
+                $moduleSettings[$index]['position'] = $setting->getPositionInGroup();
+            }
+        }
+
         $this->assertSame(
             $expectedModuleData['settings'],
-            $moduleConfiguration->getSetting(ModuleSetting::SHOP_MODULE_SETTING)->getValue()
+            $moduleSettings
         );
+        $events = [];
+
+        foreach ($moduleConfiguration->getEvents() as $event) {
+            $events[$event->getAction()] = $event->getMethod();
+        }
+
         $this->assertSame(
             $expectedModuleData['events'],
-            $moduleConfiguration->getSetting(ModuleSetting::EVENTS)->getValue()
+            $events
         );
     }
 
@@ -159,13 +207,13 @@ class MetaDataMapperTest extends TestCase
                     'template' => 'template_1.tpl',
                     'block'    => 'block_1',
                     'file'     => '/blocks/template_1.tpl',
-                    'position' => '1'
+                    'position' => 1
                 ],
                 [
                     'template' => 'template_2.tpl',
                     'block'    => 'block_2',
                     'file'     => '/blocks/template_2.tpl',
-                    'position' => '2'
+                    'position' => 2
                 ],
             ],
             'settings'                => [
@@ -205,33 +253,91 @@ class MetaDataMapperTest extends TestCase
         $this->assertSame($expectedModuleData['author'], $moduleConfiguration->getAuthor());
         $this->assertSame($expectedModuleData['url'], $moduleConfiguration->getUrl());
         $this->assertSame($expectedModuleData['email'], $moduleConfiguration->getEmail());
+
+        $classExtensions = [];
+        foreach ($moduleConfiguration->getClassExtensions() as $extension) {
+            $classExtensions[$extension->getShopClassNamespace()] = $extension->getModuleExtensionClassNamespace();
+        }
+
         $this->assertSame(
             $expectedModuleData['extend'],
-            $moduleConfiguration->getSetting(ModuleSetting::CLASS_EXTENSIONS)->getValue()
+            $classExtensions
         );
+
+        $controllers = [];
+
+        foreach ($moduleConfiguration->getControllers() as $controller) {
+            $controllers[$controller->getId()] = $controller->getControllerClassNameSpace();
+        }
+
         $this->assertSame(
             $expectedModuleData['controllers'],
-            $moduleConfiguration->getSetting(ModuleSetting::CONTROLLERS)->getValue()
+            $controllers
         );
+
+        $templates = [];
+        foreach ($moduleConfiguration->getTemplates() as $template) {
+            $templates[$template->getTemplateKey()] = $template->getTemplatePath();
+        }
+
         $this->assertSame(
             $expectedModuleData['templates'],
-            $moduleConfiguration->getSetting(ModuleSetting::TEMPLATES)->getValue()
+            $templates
         );
-        $this->assertSame(
-            $expectedModuleData['blocks'],
-            $moduleConfiguration->getSetting(ModuleSetting::TEMPLATE_BLOCKS)->getValue()
-        );
+        $templateBlocks = $this->mapTemplateBlocksForAssertion($moduleConfiguration);
+        $this->assertSame($expectedModuleData['blocks'], $templateBlocks);
+
+        $moduleSettings = [];
+
+        foreach ($moduleConfiguration->getModuleSettings() as $index => $setting) {
+            if ($setting->getGroupName()) {
+                $moduleSettings[$index]['group'] = $setting->getGroupName();
+            }
+
+            if ($setting->getName()) {
+                $moduleSettings[$index]['name'] = $setting->getName();
+            }
+
+            if ($setting->getType()) {
+                $moduleSettings[$index]['type'] = $setting->getType();
+            }
+
+            $moduleSettings[$index]['value'] = $setting->getValue();
+
+            if (!empty($setting->getConstraints())) {
+                $moduleSettings[$index]['constraints'] = $setting->getConstraints();
+            }
+
+            if ($setting->getPositionInGroup() > 0) {
+                $moduleSettings[$index]['position'] = $setting->getPositionInGroup();
+            }
+        }
+
         $this->assertSame(
             $expectedModuleData['settings'],
-            $moduleConfiguration->getSetting(ModuleSetting::SHOP_MODULE_SETTING)->getValue()
+            $moduleSettings
         );
+
+        $events = [];
+
+        foreach ($moduleConfiguration->getEvents() as $event) {
+            $events[$event->getAction()] = $event->getMethod();
+        }
+
         $this->assertSame(
             $expectedModuleData['events'],
-            $moduleConfiguration->getSetting(ModuleSetting::EVENTS)->getValue()
+            $events
         );
+
+        $smartyPluginDirectories = [];
+
+        foreach ($moduleConfiguration->getSmartyPluginDirectories() as $directory) {
+            $smartyPluginDirectories[] = $directory->getDirectory();
+        }
+
         $this->assertSame(
             $expectedModuleData['smartyPluginDirectories'],
-            $moduleConfiguration->getSetting(ModuleSetting::SMARTY_PLUGIN_DIRECTORIES)->getValue()
+            $smartyPluginDirectories
         );
     }
 
@@ -274,9 +380,16 @@ class MetaDataMapperTest extends TestCase
         $this->assertSame('', $moduleConfiguration->getEmail());
 
         /** This is the only value defined in metadata.php */
+
+        $classExtensions = [];
+
+        foreach ($moduleConfiguration->getClassExtensions() as $extension) {
+            $classExtensions[$extension->getShopClassNamespace()] = $extension->getModuleExtensionClassNamespace();
+        }
+
         $this->assertEquals(
             $expectedModuleData['extend'],
-            $moduleConfiguration->getSetting(ModuleSetting::CLASS_EXTENSIONS)->getValue()
+            $classExtensions
         );
     }
 
@@ -323,5 +436,24 @@ class MetaDataMapperTest extends TestCase
         $container->compile();
 
         return $container;
+    }
+
+    /**
+     * @param ModuleConfiguration $moduleConfiguration
+     * @return array
+     */
+    private function mapTemplateBlocksForAssertion(ModuleConfiguration $moduleConfiguration): array
+    {
+        $templateBlocks = [];
+        foreach ($moduleConfiguration->getTemplateBlocks() as $key => $templateBlock) {
+            if ($templateBlock->getTheme() !== '') {
+                $templateBlocks[$key]['theme'] = $templateBlock->getTheme();
+            }
+            $templateBlocks[$key]['template'] = $templateBlock->getShopTemplatePath();
+            $templateBlocks[$key]['block'] = $templateBlock->getBlockName();
+            $templateBlocks[$key]['file'] = $templateBlock->getModuleTemplatePath();
+            $templateBlocks[$key]['position'] = $templateBlock->getPosition();
+        }
+        return $templateBlocks;
     }
 }

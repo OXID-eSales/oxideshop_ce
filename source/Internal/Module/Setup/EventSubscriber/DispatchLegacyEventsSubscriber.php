@@ -8,7 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Setup\EventSubscriber;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Event\BeforeModuleDeactivationEvent;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Event\FinalizingModuleActivationEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -73,8 +72,12 @@ class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
     {
         $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
 
-        if ($moduleConfiguration->hasSetting(ModuleSetting::EVENTS)) {
-            $events = $moduleConfiguration->getSetting(ModuleSetting::EVENTS)->getValue();
+        if ($moduleConfiguration->hasEvents()) {
+            $events =[];
+
+            foreach ($moduleConfiguration->getEvents() as $event) {
+                $events[$event->getAction()] = $event->getMethod();
+            }
 
             if (\is_array($events) && array_key_exists($eventName, $events)) {
                 \call_user_func($events[$eventName]);

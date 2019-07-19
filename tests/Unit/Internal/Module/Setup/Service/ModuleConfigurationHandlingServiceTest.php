@@ -8,7 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
+use OxidEsales\EshopCommunity\Internal\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleConfigurationHandlingService;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ModuleConfigurationHandlerInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSettingNotValidException;
@@ -22,11 +22,15 @@ class ModuleConfigurationHandlingServiceTest extends TestCase
 {
     public function testHandlingOnActivation()
     {
-        $moduleSetting = new ModuleSetting('testSetting', 'value');
-
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('testModule');
-        $moduleConfiguration->addSetting($moduleSetting);
+
+        $setting = new Setting();
+        $setting
+            ->setName('testSetting')
+            ->setValue('value');
+
+        $moduleConfiguration->addModuleSetting($setting);
 
         $handler = $this->getMockBuilder(ModuleConfigurationHandlerInterface::class)->getMock();
         $handler
@@ -41,11 +45,15 @@ class ModuleConfigurationHandlingServiceTest extends TestCase
 
     public function testHandlingOnDeactivation()
     {
-        $moduleSetting = new ModuleSetting('testSetting', 'value');
-
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('testModule');
-        $moduleConfiguration->addSetting($moduleSetting);
+        $setting = new Setting();
+        $setting
+            ->setName('testSetting')
+            ->setValue('value');
+
+        $moduleConfiguration->addModuleSetting($setting);
+
 
         $handler = $this->getMockBuilder(ModuleConfigurationHandlerInterface::class)->getMock();
 
@@ -65,9 +73,12 @@ class ModuleConfigurationHandlingServiceTest extends TestCase
 
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('testModule');
-        $moduleConfiguration->addSetting(
-            new ModuleSetting('testSetting', 'value')
-        );
+        $setting = new Setting();
+        $setting
+            ->setName('testSetting')
+            ->setValue('value');
+
+        $moduleConfiguration->addModuleSetting($setting);
 
         $moduleConfigurationValidator = $this->getMockBuilder(ModuleConfigurationValidatorInterface::class)->getMock();
         $moduleConfigurationValidator

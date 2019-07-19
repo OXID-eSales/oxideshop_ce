@@ -82,6 +82,7 @@ class ModuleActivationService implements ModuleActivationServiceInterface
      * @param int    $shopId
      *
      * @throws ModuleSetupException
+     * @throws \OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateIsAlreadySetException
      */
     public function activate(string $moduleId, int $shopId)
     {
@@ -113,6 +114,7 @@ class ModuleActivationService implements ModuleActivationServiceInterface
      * @param int    $shopId
      *
      * @throws ModuleSetupException
+     * @throws \OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateIsAlreadySetException
      */
     public function deactivate(string $moduleId, int $shopId)
     {

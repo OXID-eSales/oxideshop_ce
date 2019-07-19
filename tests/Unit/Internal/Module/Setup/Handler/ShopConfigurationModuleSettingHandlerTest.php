@@ -10,7 +10,7 @@ use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurati
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
+use OxidEsales\EshopCommunity\Internal\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ShopConfigurationModuleSettingHandler;
 use PHPUnit\Framework\TestCase;
 
@@ -36,11 +36,16 @@ class ShopConfigurationModuleSettingHandlerTest extends TestCase
             'shopSetting',
             $shopConfigurationSettingDao
         );
-        $moduleSetting = new ModuleSetting('moduleSetting', 'testModulePath');
 
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('testModule');
-        $moduleConfiguration->addSetting($moduleSetting);
+
+        $setting = new Setting();
+        $setting
+            ->setName('moduleSetting')
+            ->setValue('testModulePath');
+
+        $moduleConfiguration->addModuleSetting($setting);
 
         $settingHandler->handleOnModuleActivation($moduleConfiguration, 1);
 
@@ -75,11 +80,15 @@ class ShopConfigurationModuleSettingHandlerTest extends TestCase
             'shopSetting',
             $shopConfigurationSettingDao
         );
-        $moduleSetting = new ModuleSetting('moduleSetting', 'value');
 
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('moduleToDeactivate');
-        $moduleConfiguration->addSetting($moduleSetting);
+        $setting = new Setting();
+        $setting
+            ->setName('moduleSetting')
+            ->setValue('value');
+
+        $moduleConfiguration->addModuleSetting($setting);
 
         $settingHandler->handleOnModuleDeactivation($moduleConfiguration, 1);
 

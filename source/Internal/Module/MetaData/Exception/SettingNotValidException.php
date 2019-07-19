@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception;
 /**
  * @internal
  */
-class ShopModuleSettingNotValidException extends \Exception
+class SettingNotValidException extends \Exception
 {
-
 }

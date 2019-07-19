@@ -9,9 +9,9 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Setup\Validator;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapter;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\EventsValidator;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\ModuleEvents;
 use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Event;
 
 class EventsModuleSettingValidatorTest extends TestCase
 {
@@ -19,16 +19,9 @@ class EventsModuleSettingValidatorTest extends TestCase
     {
         $validator = $this->createValidator();
 
-        $eventsModuleSetting = new ModuleSetting(
-            ModuleSetting::EVENTS,
-            [
-                'onActivate'   => ModuleEvents::class . '::onActivate',
-                'onDeactivate' => ModuleEvents::class . '::onDeactivate'
-            ]
-        );
-
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->addSetting($eventsModuleSetting);
+        $moduleConfiguration->addEvent(new Event('onActivate', ModuleEvents::class . '::onActivate'));
+        $moduleConfiguration->addEvent(new Event('onDeactivate', ModuleEvents::class . '::onDeactivate'));
 
         $validator->validate($moduleConfiguration, 1);
     }
@@ -40,16 +33,9 @@ class EventsModuleSettingValidatorTest extends TestCase
     {
         $validator = $this->createValidator();
 
-        $eventsModuleSetting = new ModuleSetting(
-            ModuleSetting::EVENTS,
-            [
-                'onActivate'   => 'SomeNamespace\\class::noCallableMethod',
-                'onDeactivate' => 'SomeNamespace\\class::noCallableMethod'
-            ]
-        );
-
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->addSetting($eventsModuleSetting);
+        $moduleConfiguration->addEvent(new Event('onActivate', 'SomeNamespace\\class::noCallableMethod'));
+        $moduleConfiguration->addEvent(new Event('onDeactivate', 'SomeNamespace\\class::noCallableMethod'));
 
         $validator->validate($moduleConfiguration, 1);
     }
@@ -62,16 +48,9 @@ class EventsModuleSettingValidatorTest extends TestCase
     {
         $validator = $this->createValidator();
 
-        $eventsModuleSetting = new ModuleSetting(
-            ModuleSetting::EVENTS,
-            [
-                'onActivate'   => 'class::noCallableMethod',
-                'onDeactivate' => 'class::noCallableMethod'
-            ]
-        );
-
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->addSetting($eventsModuleSetting);
+        $moduleConfiguration->addEvent(new Event('onActivate', 'class::noCallableMethod'));
+        $moduleConfiguration->addEvent(new Event('onDeactivate', 'class::noCallableMethod'));
 
         $validator->validate($moduleConfiguration, 1);
     }
@@ -79,7 +58,7 @@ class EventsModuleSettingValidatorTest extends TestCase
     /**
      * @dataProvider invalidEventsProvider
      *
-     * @param array $invalidEvent
+     * @param Event $invalidEvent
      *
      * @throws \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSettingNotValidException
      */
@@ -87,22 +66,17 @@ class EventsModuleSettingValidatorTest extends TestCase
     {
         $validator = $this->createValidator();
 
-        $eventsModuleSetting = new ModuleSetting(
-            ModuleSetting::EVENTS,
-            $invalidEvent
-        );
-
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->addSetting($eventsModuleSetting);
+        $moduleConfiguration->addEvent($invalidEvent);
 
         $validator->validate($moduleConfiguration, 1);
     }
 
-    public function invalidEventsProvider() : array
+    public function invalidEventsProvider(): array
     {
         return [
-            [['invalidEvent'   => 'noCallableMethod']],
-            [null]
+            [new Event('invalidEvent', 'noCallableMethod')],
+            [new Event('', '')]
         ];
     }
 

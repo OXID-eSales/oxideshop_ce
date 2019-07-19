@@ -6,16 +6,16 @@ declare(strict_types=1);
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\Event;
+namespace OxidEsales\EshopCommunity\Internal\Module\Setting\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class ShopModuleSettingChangedEvent
+ * Class SettingChangedEvent
  *
- * @package OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\Event
+ * @package OxidEsales\EshopCommunity\Internal\Module\Setting\Event
  */
-class ShopModuleSettingChangedEvent extends Event
+class SettingChangedEvent extends Event
 {
     const NAME = self::class;
 
@@ -41,7 +41,7 @@ class ShopModuleSettingChangedEvent extends Event
     private $module;
 
     /**
-     * ShopModuleSettingChangedEvent constructor.
+     * SettingChangedEvent constructor.
      *
      * @param string $configurationVariable Config varname.
      * @param int    $shopId                Shop id.

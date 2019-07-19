@@ -17,7 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\Exception\ExtensionN
 class ModuleConfigurationMergingService implements ModuleConfigurationMergingServiceInterface
 {
     /**
-     * @var ShopModuleSettingsMergingService
+     * @var SettingsMergingService
      */
     private $settingsMergingService;
 
@@ -27,11 +27,11 @@ class ModuleConfigurationMergingService implements ModuleConfigurationMergingSer
     private $classExtensionsMergingService;
 
     /**
-     * @param ShopModuleSettingsMergingServiceInterface    $moduleSettingsMergingService
+     * @param SettingsMergingServiceInterface    $moduleSettingsMergingService
      * @param ModuleClassExtensionsMergingServiceInterface $classExtensionsMergingService
      */
     public function __construct(
-        ShopModuleSettingsMergingServiceInterface $moduleSettingsMergingService,
+        SettingsMergingServiceInterface $moduleSettingsMergingService,
         ModuleClassExtensionsMergingServiceInterface $classExtensionsMergingService
     ) {
         $this->settingsMergingService = $moduleSettingsMergingService;
@@ -46,6 +46,8 @@ class ModuleConfigurationMergingService implements ModuleConfigurationMergingSer
      * @throws ExtensionNotInChainException
      *
      * @return ShopConfiguration
+     * @throws \OxidEsales\EshopCommunity\Internal\Adapter\Exception\ModuleConfigurationNotFoundException
+     * @throws \OxidEsales\EshopCommunity\Internal\Module\Configuration\Exception\ExtensionNotInChainException
      */
     public function merge(
         ShopConfiguration $shopConfiguration,

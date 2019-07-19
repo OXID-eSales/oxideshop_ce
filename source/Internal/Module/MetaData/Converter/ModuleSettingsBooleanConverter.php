@@ -6,12 +6,12 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\MetaData\Converter;
 
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
 
 /**
  * @internal
  */
-class ShopModuleSettingsBooleanConverter implements MetaDataConverterInterface
+class ModuleSettingsBooleanConverter implements MetaDataConverterInterface
 {
     private const CONVERSION_MAP = [
         'true' => true,
@@ -23,10 +23,10 @@ class ShopModuleSettingsBooleanConverter implements MetaDataConverterInterface
     public function convert(array $metaData): array
     {
         $convertedMetaData = $metaData;
-        if (isset($metaData[ModuleSetting::SHOP_MODULE_SETTING])) {
-            $settings = $metaData[ModuleSetting::SHOP_MODULE_SETTING];
+        if (isset($metaData[MetaDataProvider::METADATA_SETTINGS])) {
+            $settings = $metaData[MetaDataProvider::METADATA_SETTINGS];
             foreach ($settings as $key => $setting) {
-                $convertedMetaData[ModuleSetting::SHOP_MODULE_SETTING][$key] = $this->updateValue($setting);
+                $convertedMetaData[MetaDataProvider::METADATA_SETTINGS][$key] = $this->updateValue($setting);
             }
         }
 

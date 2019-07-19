@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * Copyright © OXID eSales AG. All rights reserved.
@@ -15,8 +14,11 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfiguratio
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleSetting;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Template;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use PHPUnit\Framework\TestCase;
@@ -25,6 +27,9 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ProjectCo
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ProjectConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Event;
 
 /**
  * @internal
@@ -179,6 +184,13 @@ class ProjectConfigurationDaoTest extends TestCase
 
     private function getTestProjectConfiguration(): ProjectConfiguration
     {
+        $templateBlock = new TemplateBlock(
+            'extendedTemplatePath',
+            'testBlock',
+            'filePath'
+        );
+        $templateBlock->setTheme('flow_theme');
+        $templateBlock->setPosition(3);
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId('testModuleConfiguration')
@@ -189,67 +201,54 @@ class ProjectConfigurationDaoTest extends TestCase
                 'en' => 'no',
             ]);
 
+        $setting = new Setting();
+        $setting
+            ->setName('test')
+            ->setValue([1, 2])
+            ->setType('aarr')
+            ->setGroupName('group')
+            ->setPositionInGroup(7)
+            ->setConstraints([1, 2]);
+
         $moduleConfiguration
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::CONTROLLERS,
-                [
-                    'originalClassNamespace' => 'moduleClassNamespace',
-                    'otherOriginalClassNamespace' => 'moduleClassNamespace',
-                ]
-            ))
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::TEMPLATES,
-                [
-                    'originalTemplate' => 'moduleTemplate',
-                    'otherOriginalTemplate' => 'moduleTemplate',
-                ]
-            ))
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::SMARTY_PLUGIN_DIRECTORIES,
-                [
-                    'firstSmartyDirectory',
-                    'secondSmartyDirectory',
-                ]
-            ))
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::TEMPLATE_BLOCKS,
-                [
-                    [
-                        'block'     => 'testBlock',
-                        'position'  => '3',
-                        'theme'     => 'flow_theme',
-                        'template'  => 'extendedTemplatePath',
-                        'file'      => 'filePath',
-                    ],
-                ]
-            ))
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::CLASS_EXTENSIONS,
-                [
-                    'originalClassNamespace' => 'moduleClassNamespace',
-                    'otherOriginalClassNamespace' => 'moduleClassNamespace',
-                ]
-            ))
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::SHOP_MODULE_SETTING,
-                [
-                    [
-                        'group'         => 'frontend',
-                        'name'          => 'sGridRow',
-                        'type'          => 'str',
-                        'value'         => 'row',
-                        'position'      => '2',
-                        'constraints'   => ['first', 'second'],
-                    ],
-                ]
-            ))
-            ->addSetting(new ModuleSetting(
-                ModuleSetting::EVENTS,
-                [
-                'onActivate' => 'ModuleClass::onActivate',
-                'onDeactivate' => 'ModuleClass::onDeactivate',
-                ]
-            ));
+            ->addController(
+                new Controller(
+                    'originalClassNamespace', 'moduleClassNamespace'
+                )
+            )->addController(
+                new Controller(
+                    'otherOriginalClassNamespace', 'moduleClassNamespace'
+                )
+            )
+            ->addTemplate(new Template('originalTemplate', 'moduleTemplate'))
+            ->addTemplate(new Template('otherOriginalTemplate', 'moduleTemplate'))
+            ->addSmartyPluginDirectory(
+                new SmartyPluginDirectory(
+                    'firstSmartyDirectory'
+                )
+            )->addSmartyPluginDirectory(
+                new SmartyPluginDirectory(
+                    'secondSmartyDirectory'
+                )
+            )
+            ->addTemplateBlock($templateBlock)
+            ->addClassExtension(
+                new ClassExtension(
+                    'originalClassNamespace',
+                    'moduleClassNamespace'
+                )
+            )
+            ->addClassExtension(
+                new ClassExtension(
+                    'otherOriginalClassNamespace',
+                    'moduleClassNamespace'
+                )
+            )
+            ->addModuleSetting(
+                $setting
+            )
+            ->addEvent(new Event('onActivate', 'ModuleClass::onActivate'))
+            ->addEvent(new Event('onDeactivate', 'ModuleClass::onDeactivate'));
 
         $classExtensionChain = new ClassExtensionsChain();
         $classExtensionChain->setChain([
@@ -290,18 +289,5 @@ class ProjectConfigurationDaoTest extends TestCase
         $container->compile();
 
         return $container;
-    }
-
-    private function getProjectConfigurationDataMapper(): ProjectConfigurationDataMapperInterface
-    {
-        $shopConfigurationDataMapper = $this
-            ->getMockBuilder(ShopConfigurationDataMapperInterface::class)
-            ->getMock();
-
-        $shopConfigurationDataMapper
-            ->method('fromData')
-            ->willReturn(new ShopConfiguration());
-
-        return new ProjectConfigurationDataMapper($shopConfigurationDataMapper);
     }
 }

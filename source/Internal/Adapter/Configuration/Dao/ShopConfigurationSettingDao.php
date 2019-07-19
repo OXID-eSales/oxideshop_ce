@@ -39,7 +39,6 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
     private $shopAdapter;
 
     /**
-     * ShopModuleSettingDao constructor.
      * @param QueryBuilderFactoryInterface $queryBuilderFactory
      * @param ContextInterface             $context
      * @param ShopSettingEncoderInterface  $shopSettingEncoder

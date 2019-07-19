@@ -4,7 +4,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting;
+namespace OxidEsales\EshopCommunity\Internal\Module\Setting;
 
 use function is_string;
 
@@ -18,7 +18,7 @@ use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 /**
  * @internal
  */
-class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
+class SettingDao implements SettingDaoInterface
 {
     /**
      * @var QueryBuilderFactoryInterface
@@ -46,7 +46,7 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
     private $transactionService;
 
     /**
-     * ShopModuleSettingDao constructor.
+     * SettingDao constructor.
      * @param QueryBuilderFactoryInterface $queryBuilderFactory
      * @param ContextInterface             $context
      * @param ShopSettingEncoderInterface  $shopSettingEncoder
@@ -68,11 +68,11 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
     }
 
     /**
-     * @param ShopModuleSetting $shopModuleSetting
+     * @param Setting $shopModuleSetting
      *
      * @throws \Throwable
      */
-    public function save(ShopModuleSetting $shopModuleSetting)
+    public function save(Setting $shopModuleSetting)
     {
         $this->transactionService->begin();
 
@@ -95,9 +95,9 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
     }
 
     /**
-     * @param ShopModuleSetting $shopModuleSetting
+     * @param Setting $shopModuleSetting
      */
-    public function delete(ShopModuleSetting $shopModuleSetting)
+    public function delete(Setting $shopModuleSetting)
     {
         $this->deleteFromOxConfigTable($shopModuleSetting);
     }
@@ -107,10 +107,10 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
      * @param string $moduleId
      * @param int    $shopId
      *
-     * @return ShopModuleSetting
+     * @return Setting
      * @throws EntryDoesNotExistDaoException
      */
-    public function get(string $name, string $moduleId, int $shopId): ShopModuleSetting
+    public function get(string $name, string $moduleId, int $shopId): Setting
     {
         /**
          * The same entity was splitted between two tables.
@@ -121,7 +121,7 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
             $this->getDataFromOxConfigDisplayTable($name, $moduleId)
         );
 
-        $setting = new ShopModuleSetting();
+        $setting = new Setting();
         $setting
             ->setName($name)
             ->setValue($this->shopSettingEncoder->decode($settingsData['type'], $settingsData['value']))
@@ -152,9 +152,9 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
     }
 
     /**
-     * @param ShopModuleSetting $shopModuleSetting
+     * @param Setting $shopModuleSetting
      */
-    private function saveDataToOxConfigTable(ShopModuleSetting $shopModuleSetting)
+    private function saveDataToOxConfigTable(Setting $shopModuleSetting)
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
@@ -184,9 +184,9 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
     }
 
     /**
-     * @param ShopModuleSetting $shopModuleSetting
+     * @param Setting $shopModuleSetting
      */
-    private function saveDataToOxConfigDisplayTable(ShopModuleSetting $shopModuleSetting)
+    private function saveDataToOxConfigDisplayTable(Setting $shopModuleSetting)
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
@@ -268,9 +268,9 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
     }
 
     /**
-     * @param ShopModuleSetting $shopModuleSetting
+     * @param Setting $shopModuleSetting
      */
-    private function deleteFromOxConfigTable(ShopModuleSetting $shopModuleSetting)
+    private function deleteFromOxConfigTable(Setting $shopModuleSetting)
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
@@ -288,9 +288,9 @@ class ShopModuleSettingDao implements ShopModuleSettingDaoInterface
     }
 
     /**
-     * @param ShopModuleSetting $shopModuleSetting
+     * @param Setting $shopModuleSetting
      */
-    private function deleteFromOxConfigDisplayTable(ShopModuleSetting $shopModuleSetting)
+    private function deleteFromOxConfigDisplayTable(Setting $shopModuleSetting)
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder

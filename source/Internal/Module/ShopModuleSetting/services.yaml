@@ -1,6 +1,0 @@
-services:
-
-  OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\ShopModuleSettingDaoInterface:
-    class: OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\ShopModuleSettingDao
-    autowire: true
-    public: false

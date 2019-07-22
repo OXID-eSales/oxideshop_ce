@@ -65,9 +65,9 @@ class InstallModuleConfigurationCommand extends Command
             ->addArgument(
                 'module-source-path',
                 InputArgument::REQUIRED,
-                'Path to module source, e.g. source/modules/vendor/my_module;'
-                . ' In combination with the second parameter (module-target-path), it is possible to use the path'
-                . ' that is not in source/modules directory, e.g. vendor/my_vendor/my_module'
+                'Path to module source, e.g. vendor/my_vendor/my_module;'
+                . ' If the module source path is in source/modules directory, e.g. source/modules/vendor/my_module 
+                then module-target-path is optional'
             )
             ->addArgument(
                 'module-target-path',

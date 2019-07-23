@@ -73,7 +73,7 @@ class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\
         }
         if ($iSuccess !== true) {
             $sError = ($iSuccess === false) ? 'ERROR_MESSAGE_PASSWORD_EMAIL_INVALID' : 'MESSAGE_NOT_ABLE_TO_SEND_EMAIL';
-            Registry::getUtilsView()->addErrorToDisplay($sError, false, true);
+            Registry::getUtilsView()->addErrorToDisplay($sError);
             $this->_sForgotEmail = false;
         }
     }

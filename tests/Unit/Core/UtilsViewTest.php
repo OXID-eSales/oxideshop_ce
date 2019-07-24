@@ -550,7 +550,7 @@ class UtilsViewTest extends \OxidTestCase
             ->with($this->equalTo('smarty_prefilter_oxblock'));
 
         $utilsView = oxNew(\OxidEsales\Eshop\Core\UtilsView::class);
-        $utilsView->setConfig($config);
+        Registry::set(Config::class, $config);
         $utilsView->UNITfillCommonSmartyProperties($smarty);
         $utilsView->UNITsmartyCompileCheck($smarty);
 
@@ -558,7 +558,7 @@ class UtilsViewTest extends \OxidTestCase
         $mockedConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['isProductiveMode']);
         $mockedConfig->expects($this->once())->method('isProductiveMode')->will($this->returnValue(true));
         $utilsView = oxNew(\OxidEsales\Eshop\Core\UtilsView::class);
-        $utilsView->setConfig($mockedConfig);
+        Registry::set(Config::class, $mockedConfig);
         $utilsView->UNITsmartyCompileCheck($smarty);
         $this->assertFalse($smarty->compile_check);
     }

@@ -14,16 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleCon
  */
 interface ModuleConfigurationDataMapperInterface
 {
-    /**
-     * @param ModuleConfiguration $configuration
-     * @return array
-     */
     public function toData(ModuleConfiguration $configuration): array;
 
-    /**
-     * @param array $data
-     *
-     * @return ModuleConfiguration
-     */
-    public function fromData(array $data): ModuleConfiguration;
+    public function fromData(ModuleConfiguration $moduleConfiguration, array $data): ModuleConfiguration;
 }

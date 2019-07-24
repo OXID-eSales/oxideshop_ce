@@ -6,7 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\MetaData\Validator;
 
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationMappingKeys;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\SettingNotValidException;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Validator\ModuleSettingBooleanValidator;

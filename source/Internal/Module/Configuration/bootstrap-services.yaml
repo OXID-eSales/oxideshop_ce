@@ -44,7 +44,40 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationDataMapperInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationDataMapper
-    public: false
+    arguments:
+      - '@oxid_esales.module.configuration.classses_without_namespace_data_mapper'
+      - '@oxid_esales.module.configuration.classses_without_namespace_data_mapper'
+      - '@oxid_esales.module.configuration.class_extensions_data_mapper'
+      - '@oxid_esales.module.configuration.controllers_data_mapper'
+      - '@oxid_esales.module.configuration.events_data_mapper'
+      - '@oxid_esales.module.configuration.module_settings_data_mapper'
+      - '@oxid_esales.module.configuration.smarty_plugin_directories_data_mapper'
+      - '@oxid_esales.module.configuration.template_blocks_data_mapper'
+      - '@oxid_esales.module.configuration.templates_data_mapper'
+
+  oxid_esales.module.configuration.classses_without_namespace_data_mapper:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\ClassesWithoutNamespaceDataMapper
+
+  oxid_esales.module.configuration.class_extensions_data_mapper:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\ClassExtensionsDataMapper
+
+  oxid_esales.module.configuration.controllers_data_mapper:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\ControllersDataMapper
+
+  oxid_esales.module.configuration.events_data_mapper:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\EventsDataMapper
+
+  oxid_esales.module.configuration.module_settings_data_mapper:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\ModuleSettingsDataMapper
+
+  oxid_esales.module.configuration.smarty_plugin_directories_data_mapper:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\SmartyPluginDirectoriesDataMapper
+
+  oxid_esales.module.configuration.template_blocks_data_mapper:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\TemplateBlocksDataMapper
+
+  oxid_esales.module.configuration.templates_data_mapper:
+      class: OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\TemplatesDataMapper
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleConfigurationMergingServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleConfigurationMergingService
